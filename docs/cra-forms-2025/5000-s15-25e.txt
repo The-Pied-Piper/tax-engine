@@ -1,0 +1,270 @@
+5000-S15 (Page 1 of 4) 
+ 
+Protected B when completed 
+ 
+T1-2025 
+ 
+Schedule 15 
+ 
+FHSA Contributions, Transfers and Activities 
+ 
+Complete this schedule to calculate your first home savings account (FHSA) 
+deduction for 2025 and any unused FHSA contributions available to deduct in 
+future years. Also complete this schedule to let the Canada Revenue Agency 
+know that you opened your first FHSA or became a successor holder in 2025. 
+ 
+For more information about FHSAs and the terms used in this schedule, go to 
+canada.ca/fhsa. 
+ 
+Attach a copy of this schedule to your paper return. 
+ 
+Before you start 
+ 
+Note: 
+The annual FHSA limit calculation has been updated to reflect legislative 
+changes effective April 1, 2023. 
+ 
+Gather your 2025 T4FHSA slips. If you opened an FHSA in 2023 or 2024, you 
+will also need each of your annual FHSA participation room statements which 
+are available in your CRA account. For information on how to find your 
+statements in your CRA account, go to canada.ca/participating-fhsa. Your FHSA 
+participation room statement may also be included with your notice of 
+assessment (NOA), notice of reassessment (NOR), or Form T1028, Your RRSP, 
+HBP, LLP, or FHSA Information for 2024 or 2025. 
+ 
+How to complete this schedule 
+ 
+Complete Step 1 if either of the following applies: 
+ 
+- You opened your first FHSA in 2025 
+ 
+- You did not open an FHSA of your own in 2025 or a prior year, but you 
+became a successor holder in 2025 
+ 
+For information about successor holders, go to canada.ca/death-fhsa. 
+ 
+Complete Steps 2 and 3 if any of the following applies: 
+ 
+- You made contributions to your FHSAs in 2023 or 2024 that you did not fully 
+deduct on your 2023 or 2024 return (your unused FHSA contributions available 
+to deduct in 2025 are shown on your 2025 FHSA participation room statement) 
+ 
+- You opened an FHSA or became a successor holder in 2025 or a prior year and 
+did any of the following in 2025: 
+ 
+-- made contributions to your FHSAs 
+ 
+-- transferred property from your registered retirement savings plans (RRSPs) 
+to your FHSAs 
+ 
+-- made designated withdrawals from your FHSAs to reduce or eliminate an 
+excess FHSA amount 
+ 
+-- made designated transfers from your FHSAs to your RRSPs or registered 
+retirement income funds (RRIFs) to reduce or eliminate an excess FHSA amount 
+ 
+Complete Step 4 if you made a qualifying withdrawal from your FHSAs in 2025 
+to buy or build a home. 
+ 
+If you need help 
+ 
+If you need help completing this schedule, go to canada.ca/income-tax-return-
+fhsa. 
+ 
+ 
+5000-S15 (Page 2 of 4) 
+ 
+Step 1: Did you open your first FHSA in 2025? 
+ 
+Line 68930: Tick this box if you opened your first FHSA in 2025 or became a 
+successor holder in 2025 and did not open another FHSA of your own in 2025 or 
+a prior year. ^
+ 
+If you also made FHSA contributions, transfers, or withdrawals in 2025, 
+continue at Step 2. 
+ 
+Step 2: Calculate your annual FHSA limit for 2025 
+ 
+If your maximum participation period (MPP) ended in a prior year, do not 
+complete this step. Your 2025 annual FHSA limit is "0". Enter "0" on line 40 
+and continue at Step 3. For more information about your MPP, go to 
+canada.ca/closing-fhsa. 
+ 
+Line 1 and line 68935: Total contributions made to your FHSAs in 2025 (box 18 
+of your 2025 T4FHSA slips) ^
+ 
+Line 2 and line 68940: Total contributions made to your FHSAs in 2025 after 
+your first qualifying withdrawal ^
+ 
+Line 3: Line 1 minus line 2 = ^
+ 
+Line 4: Variable "B" amount of your annual FHSA limit for 2024 (from your 
+2025 FHSA participation room statement) ^
+ 
+Line 5: Line 3 plus line 4 = ^
+ 
+Line 6 and line 68945: Total designated withdrawals from your FHSAs in 2025 
+(box 38 of your 2025 T4FHSA slips) ^
+ 
+Line 7: Total contributions made to your FHSAs in 2024 (from your 2025 FHSA 
+participation room statement) ^
+ 
+Line 8: Contributions to your FHSAs in 2024 before your first qualifying 
+withdrawal (from your 2025 FHSA participation room statement) ^
+ 
+Line 9: Line 7 minus line 8 = ^
+ 
+Line 10: Amount from line 2 ^
+ 
+Line 11: Line 9 plus line 10 = ^
+ 
+Line 12: Line 6 minus line 11 (if negative, enter "0") = ^
+ 
+Line 13: Line 5 minus line 12 (if negative, enter "0") = ^
+ 
+Line 14: 8,000.00 
+ 
+Line 15: Your FHSA carryforward for 2025 (from your 2025 FHSA participation 
+room statement) ^
+ 
+Line 16: Line 14 plus line 15 = ^
+ 
+Line 17: Total transfers from your RRSPs to your FHSAs in 2024 and prior 
+years (from your 2025 FHSA participation room statement) ^
+ 
+Line 18 and line 68950: Total transfers from your RRSPs to your FHSAs in 2025 
+(boxes 32 and 34 of your 2025 T4FHSA slips) ^
+ 
+Line 19: Line 17 plus line 18 = ^
+ 
+Line 20: Total designated transfers from your FHSAs to your RRSPs or RRIFs in 
+2024 and prior years (from your 2025 FHSA participation room statement) ^
+ 
+Line 21 and line 68955: Total designated transfers from your FHSAs to your 
+RRSPs or RRIFs in 2025 (box 36 of your 2025 T4FHSA slips) ^
+ 
+Line 22: Line 20 plus line 21 = ^
+ 
+Line 23: Line 19 minus line 22 Net RRSP-to-FHSA transfer amount = ^
+ 
+ 
+5000-S15 (Page 3 of 4) 
+ 
+Step 2: Calculate your annual FHSA limit for 2025 (continued) 
+ 
+Line 24: Amount from line 23 of the previous page ^
+ 
+Line 25: Amount from line 17  of the previous page ^
+ 
+Line 26: Amount from line 20 of the previous page ^
+ 
+Line 27: Net RRSP-to-FHSA transfer amount for 2024 and prior years: Line 25 
+minus line 26 = ^
+ 
+Line 28: Variable "H" amount of your annual FHSA limit for 2024 (from your 
+2025 FHSA participation room statement) ^
+ 
+Line 29: Line 27 minus line 28 (if negative, enter "0") = ^
+ 
+Line 30: 8,000.00 
+ 
+Line 31: Your FHSA carryforward for 2024 (from your 2024 FHSA participation 
+room statement) ^
+ 
+Line 32: Line 30 plus line 31 = ^
+ 
+Line 33: Enter whichever is less: amount from line 29 or line 32. ^
+ 
+Line 34: Variable "F" amount of your annual FHSA limit for 2024 (from your 
+2025 FHSA participation room statement) ^
+ 
+Line 35: Line 33 plus line 34 = ^
+ 
+Line 36: Line 24 minus line 35 = ^
+ 
+Line 37: Amount from line 16 of the previous page ^
+ 
+Line 38: Amount from line 36 ^
+ 
+Line 39: Line 37 minus line 38 (if negative, enter "0") = ^
+ 
+Line 40: Enter whichever is less: amount from line 13 of the previous page or 
+line 39. Annual FHSA limit for 2025 ^
+ 
+Step 3: Calculate your FHSA deduction and unused FHSA contributions available 
+to deduct in future years 
+ 
+Line 41: Annual FHSA limit from line 40 ^
+ 
+Line 42: Your total annual FHSA limits for 2024 and prior years (from your 
+2025 FHSA participation room statement) ^
+ 
+Line 43: Line 41 plus line 42 = ^
+ 
+Line 44: Your total FHSA deductions for 2024 and prior years (from your 2025 
+FHSA participation room statement) ^
+ 
+Line 45: Line 43 minus line 44 = ^
+ 
+Line 46: Lifetime FHSA limit 40,000.00 
+ 
+Line 47: Your FHSA deduction from line 44 ^
+ 
+Line 48: Line 46 minus line 47 = ^
+ 
+Line 49: Net RRSP-to-FHSA transfer amount from line 24 ^
+ 
+Line 50: Line 48 minus line 49 (if negative, enter "0") = ^
+ 
+Line 51: Enter whichever is less: amount from line 45 or line 50. Maximum 
+FHSA deduction available for 2025 ^
+ 
+ 
+5000-S15 (Page 4 of 4) 
+ 
+Step 3: Calculate your FHSA deduction and unused FHSA contributions available 
+to deduct in future years (continued) 
+ 
+Line 52: Your unused FHSA contributions available to deduct in future years 
+(from your 2025 FHSA participation room statement) ^
+ 
+Line 53: Amount from line 3 of page 2 ^
+ 
+Line 54: Line 52 plus line 53 = ^
+ 
+Line 55: Amount from line 12 of page 2 ^
+ 
+Line 56: Line 54 minus line 55 = ^
+ 
+Line 57: Enter the FHSA contributions you are deducting for 2025 (cannot be 
+more than the amount on line 51 of the previous page). Enter this amount on 
+line 20805 of your return. FHSA deduction for 2025 ^
+ 
+Line 58: Line 56 minus line 57 Your unused FHSA contributions available to 
+deduct in future years = ^
+ 
+Note: 
+If you have an excess FHSA amount or you contributed some or all of your 
+unused FHSA re-participation room, you may not be able to fully deduct your 
+unused FHSA contributions in future years. For more information, go to 
+canada.ca/contribute-transfer-too-much-fhsa. 
+ 
+Step 4: Did you make a qualifying withdrawal from your FHSA? 
+ 
+Complete this part if you made a withdrawal from your FHSAs to buy or build a 
+qualifying home. For more information about making qualifying withdrawals, go 
+to canada.ca/withdrawal-transfer-out-fhsa. 
+ 
+Line 59 and line 68960: Total amount of qualifying withdrawals made in 2025 
+(box 20 of your 2025 T4FHSA slips) ^
+ 
+Line 68965: Tick this box if the address on page 1 of your return is the same 
+as the address of the home that you bought or built under the FHSA. ^
+ 
+See the privacy notice on your return.
+
+ 
+
+
+
+

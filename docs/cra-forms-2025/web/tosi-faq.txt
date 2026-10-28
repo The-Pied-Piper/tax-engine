@@ -1,0 +1,70 @@
+Frequently asked questions – Income sprinkling
+Notice to the reader 
+This measure has received Royal Assent.
+The following frequently asked questions are intended to provide a general overview of the proposed changes to the tax on split income (TOSI) rules to address income sprinkling. They are not a substitute for the law. 
+For more information on the proposed changes, please refer to the Canada Revenue Agency (CRA) Guidance on the application of the split income rules for adults. 
+ Expand all 
+ Collapse all 
+Q1 What is income sprinkling?  
+Income sprinkling – sometimes referred to as "income splitting" – is a strategy that can be used by high-income owners of private corporations to divert their income to family members with lower personal tax rates. 
+Q2 What are the TOSI rules?  
+Under the current income tax rules, the TOSI applies the highest marginal tax rate (currently 33%) to "split income" of an individual under the age of 18. In general, an individual's split income includes certain taxable dividends, taxable capital gains and income from partnerships or trusts. 
+Additional information on the existing TOSI rules can be found on our Claiming deductions, credits, and expenses  webpage. 
+Q3 What changes have been announced in respect of income sprinkling?  
+It is proposed to extend the application of the TOSI rules to individuals over the age of 17, but only with respect to income derived from a "related business". The proposed changes will be subject to important exclusions as described below in the answers to Questions 4 and 5, and are discussed in detail in CRA Guidance on the application of the split income rules for adults. 
+It is also proposed to extend the definition "split income" to include income received from certain debt obligations, and taxable capital gains or profits from the disposition of certain properties. 
+Q4 Do the proposed changes provide for any exclusions from the TOSI rules?  
+Under the proposed changes, each of the following amounts are excluded from an individual's split income for a tax year, depending on the individual's age*: 
+For an individual that has attained the age of 17 before the year, an amount that is either 
+not derived from a "related business"; or 
+derived from an "excluded business". 
+For an individual between the age of 18 and 24, either 
+an amount that is the individual's "safe harbour capital return" for the year; or 
+an amount that is a "reasonable return" on capital contributions that were made with "arm's length capital". 
+For an individual over the age of 24, either 
+an amount that represents a "reasonable return" from a "related business"; or 
+an amount that is income from, or a taxable capital gain from the disposition of, "excluded shares".
+This also extends to individuals between the age of 18 and 24 with respect to amounts from property they inherited from a person over the age of 24. 
+* The following new terms, which are relevant in determining whether an amount is excluded from the TOSI rules, are described in the CRA Guidance on the application of the split income rules for adults: 
+arm's length capital 
+excluded business 
+excluded shares 
+reasonable return 
+related business, and 
+safe harbour capital return. 
+Q5 Do the proposed changes provide any other exclusions from the TOSI rules?  
+The following amounts will also be excluded from an individual's split income for a tax year: 
+Taxable capital gains from the disposition of qualified farm or fishing property or qualified small business corporation shares. This does not include taxable capital gains from the disposition of certain shares to a person that does not deal at arm's length with the individual, when the individual is under the age of 18. 
+A taxable capital gain that arises because of the individual's death. 
+Income from a property acquired by the individual pursuant to a court order or a written separation agreement. This is applicable if when the property was acquired, the taxpayer and his or her spouse or common-law partner were separated and living apart as a result of the breakdown of their marriage or common-law partnership. 
+Income from property, or taxable capital gains or profits from the disposition of property, where either: 
+the individual's spouse or common-law partner attained the age of 64 before the year and the income would have been excluded from that spouse or common-law partner's split income if it was earned by them; or 
+the individual's spouse or common-law partner has died and the income would have been excluded from that spouse or common-law partner's split income if it was earned by them in their last taxation year. 
+In addition, the existing exclusion applicable to property inherited by minors will be extended to individuals that have not attained the age of 24 before the end of the taxation year.   
+Q6 Do the TOSI rules apply to the salary I earned?  
+The TOSI rules do not apply to salary received by an individual. 
+Q7 I am over the age of 17 and actively involved in my family's business. Do the TOSI rules apply to me in respect of the dividends I receive from the business?  
+The TOSI rules will not apply to dividends an individual receives from a business in a taxation year if the individual has attained the age of 17 before the taxation year and is engaged on a regular, continuous and substantial basis* in the business during the year. 
+Please consult the CRA's Guidance on the application of the split income rules for adults for more examples of the application of the proposed changes to the TOSI rules. 
+* An individual is deemed to have satisfied this requirement if he or she is engaged in the business at least an average of 20 hours per week during the part of the taxation year that the business operates. If an individual does not satisfy this deeming rule, then it is a question of fact whether he or she was engaged on a regular, continuous and substantial basis. 
+Q8 I was not actively involved in my family's business this year, but was actively involved in the business in previous years. Do the TOSI rules apply to me in respect of the dividends I receive from the business?  
+The TOSI rules will not apply to dividends an individual receives from a business in a taxation year if the individual has attained the age of 17 before the taxation year and is engaged on a regular, continuous and substantial basis* in the business in at least five prior taxation years (the five prior taxation years do not have to be consecutive). 
+Please consult the CRA's Guidance on the application of the split income rules for adults for more examples of the application of the proposed changes to the TOSI rules. 
+* An individual is deemed to have satisfied this requirement if he or she is engaged in the business at least an average of 20 hours per week during the part of the taxation year that the business operates. If an individual does not satisfy this deeming rule, then it is a question of fact whether he or she was engaged on a regular, continuous and substantial basis. 
+Q9 How can I demonstrate to the CRA that I have worked an average of at least 20 hours per week during the part of the year that the business operates?  
+Records such as timesheets, schedules or logbooks retained by either an individual or a business will be sufficient to establish the number of hours the individual worked in a given year. Where the individual also receives a salary or wages from the business, the CRA would also consider information contained in payroll records that supports the number of hours the individual worked. 
+Q10 When are the new rules effective?  
+The new rules are proposed to apply to the 2018 and subsequent taxation years. 
+Q11 Will the CRA administer the new income sprinkling proposals before the law is enacted?  
+Taxpayers are asked to file on the basis of proposed legislation. This is the CRA's longstanding practice. It eases both the compliance burden on taxpayers and the administrative burden on the CRA. 
+To enable taxpayers to calculate their TOSI for the 2018 and later taxation years, Form T1206 Tax on Split Income will be updated by January 2019 to reflect the proposed legislation. In addition, the CRA would begin to assess taxpayers on the basis of the proposed legislation in 2019, for tax returns filed in respect of the 2018 and later taxation years. 
+Q12 How was the Guidance on the application of the split income rules for adults developed?  
+The guidance document was developed in partnership with the Department of Finance based on the proposed changes that have been announced. The guidance document also took into account feedback that the Government received from Canadians during the consultation period. 
+The guidance document will be updated as needed (e.g., based on the CRA’s evolving experience in dealing with specific factual circumstances, and as feedback is received from internal and external stakeholders) to ensure that the CRA continues to provide taxpayers and their representatives with meaningful information that will assist them in understanding how the CRA will administer the proposed changes. 
+Q13 Where can I get more information on how the CRA will administer the proposed exclusions from split income?  
+The CRA has prepared Guidance on the application of the split income rules for adults. This document provides a detailed overview of the proposed changes to the TOSI rules, as well as general guidance and examples, on how the CRA will administer the rules. 
+Q14 Where can I get more information on the proposed changes?  
+The CRA provides the latest information on the proposed changes on Canada.ca. Taxpayers should check online regularly for updated forms, policies, guidelines, questions and answers, and guidance. 
+For details on the revised legislative proposals, taxpayers can consult the Department of Finance Canada website. 
+Page details
+	2024-09-24

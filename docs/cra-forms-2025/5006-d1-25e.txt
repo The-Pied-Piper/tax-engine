@@ -1,0 +1,101 @@
+﻿5006-D1 
+ 
+2025 
+ 
+Worksheet ON479 
+ 
+Use this worksheet to calculate the amounts to enter on your Form ON479, 
+Ontario Credits. 
+ 
+Keep this worksheet for your records. Do not attach it to your return. 
+ 
+Line 16 - Ontario political contribution tax credit 
+ 
+Use the amount from line 63110 of your Form ON479 to complete the appropriate 
+column below. 
+ 
+*** Transcriber's Note: Line 63110 is $500.05 or less. Use the amount from 
+column 2 if line 63110 is more than $500.05 but not more than $1,666.82. Use 
+the amount from column 3 if line 63110 is more than $1,666.82. *** 
+ 
+Column 1: Line 63110 is $500.05 or less 
+Line 1: Enter your total political contributions from line 63110 of your Form 
+ON479. ^
+Line 2: 0.00 
+Line 3: Line 1 minus line 2 (cannot be negative) = ^
+Line 4: Rate 75% 
+Line 5: Line 3 multiplied by the percentage from line 4 = ^
+Line 6: 0.00 
+Line 7: Line 5 plus line 6 Enter this amount on line 16 of your Form ON479. = 
+^
+ 
+Column 2: Line 63110 is more than $500.05 but not more than $1,666.82 
+Line 1: Enter your total political contributions from line 63110 of your Form 
+ON479. ^
+Line 2: 500.05 
+Line 3: Line 1 minus line 2 (cannot be negative) = ^
+Line 4: Rate 50% 
+Line 5: Line 3 multiplied by the percentage from line 4 = ^
+Line 6: 375.03 
+Line 7: Line 5 plus line 6 Enter this amount on line 16 of your Form ON479. = 
+^
+ 
+Column 3: Line 63110 is more than $1,666.82 
+Line 1: Enter your total political contributions from line 63110 of your Form 
+ON479. ^
+Line 2: 1,666.82 
+Line 3: Line 1 minus line 2 (cannot be negative) = ^
+Line 4: Rate 33.33% 
+Line 5: Line 3 multiplied by the percentage from line 4 = ^
+Line 6: 958.41 
+Line 7: Line 5 plus line 6 Enter this amount on line 16 of your Form ON479. =
+ 
+Line 20 - Ontario co-operative education tax credit 
+ 
+If the total salaries and wages paid in the 2024 taxation year were more than 
+$400,000 but less than $600,000, complete this chart for each qualifying work 
+placement of each employed student. 
+ 
+Line 1: Amount of eligible expenditures (Note 1) incurred in 2025 Line A ^
+multiplied by 25% = ^
+ 
+Line 2: 5% 
+ 
+Line 3: Amount A multiplied by the percentage from line 2 = ^
+ 
+Line 4: Total salaries and wages paid in the 2024 taxation year ^
+ 
+Line 5: 400,000.00 
+ 
+Line 6: Line 4 minus line 5 (if negative, enter "0") = ^
+ 
+Line 7: 200,000.00 
+ 
+Line 8: Line 6 divided by line 7 = ^
+ 
+Line 9: 1.00 
+ 
+Line 10: Amount from line 8 above ^
+ 
+Line 11: Line 9 minus line 10 (if negative, enter "0") = ^
+ 
+Line 12: Line 3 multiplied by line 11 = ^
+ 
+Line 13: Line 1 plus line 12 (maximum $3,000 per student) = ^
+ 
+The maximum credit is $3,000 per student per qualifying work placement that 
+ended in 2025. 
+ 
+Enter the total amount claimed for all qualifying work placements on line 20 
+of your Form ON479. 
+ 
+Note 1: 
+You must reduce your eligible expenditures by the amount of government 
+assistance you received, are entitled to receive, or may reasonably expect to 
+receive, for the eligible expenditures.
+
+ 
+
+
+
+

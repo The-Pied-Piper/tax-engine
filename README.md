@@ -11,6 +11,7 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
 uv sync --extra dev --locked
 uv run --extra dev --locked ruff check .
 uv run --extra dev --locked ruff format --check .
+uv run --extra dev --locked mypy src tests
 uv run --extra dev --locked python -m pytest
 uv build
 ```
@@ -39,6 +40,7 @@ Then install, test, and build:
 python -m pip install -e ".[dev]"
 python -m ruff check .
 python -m ruff format --check .
+python -m mypy src tests
 python -m pytest
 python -m build
 ```
@@ -49,8 +51,11 @@ the uv lockfile.
 Both build workflows produce a wheel and source distribution in `dist/`.
 The distributions include the jurisdiction manifests and parameter YAML files.
 
-CI runs the lint, formatting, and test checks on Python 3.12 for pull requests
+CI runs the lint, formatting, type, and test checks on Python 3.12 for pull requests
 targeting `main` and pushes to `main`.
+
+The [CRA reference archive](docs/cra-forms-2025/README.md) contains the saved
+forms, guides, and source provenance used to verify the Canadian calculations.
 
 ## Engine usage
 

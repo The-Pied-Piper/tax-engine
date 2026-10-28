@@ -1,0 +1,59 @@
+﻿5006-S11
+
+Protected B when completed
+
+2025
+
+Schedule ON(S11)
+
+Ontario Tuition and Education Amounts
+
+Only the student completes this schedule.
+
+Complete this schedule to claim your Ontario tuition and education amounts carried forward from a previous year, and to calculate your unused provincial tuition and education amounts available to carry forward to a future year.
+
+Attach a copy of this schedule to your paper return.
+
+For more information, go to canada.ca/on-tax-info. Also see Guide P105, Students and Income Tax.
+
+Notes:
+If you did not reside in Ontario on December 31, 2017, you cannot claim your unused tuition and education amounts.
+
+If you resided in Ontario on December 31, 2017, but were not resident in Ontario on the last day of any year since 2021, your unused Ontario tuition and education amounts balance will be zero.
+
+Unused tuition and education amounts:
+Line 1: Enter your unused Ontario tuition and education amounts from your 2024 notice of assessment or reassessment. ^
+
+Enter the amount from line 26000 of your return on line 2 if it is $52,886 or less. If it is more than $52,886, enter the result of the following calculation:
+Line 2: Amount from line 8 of your Form ON428 ^
+divided by 5.05% = ^
+
+Line 3: Enter the amount from line 31 of your Form ON428. ^
+
+Line 4: Line 2 minus line 3 (if negative, enter "0") = ^
+
+Line 5: Enter whichever is less: amount from line 1 or line 4. Enter this amount on line 58560 of your Form ON428. Your unused Ontario tuition and education amounts claimed for 2025 ^
+
+Carryforward of unused amounts
+
+Complete this section to calculate your unused provincial tuition and education amounts available to carry forward to a future year.
+
+Line 6: Amount from line 1 above ^
+
+Line 7: Amount from line 5 above ^
+
+Line 8: Line 6 minus line 7 Unused provincial tuition and education amounts available to carry forward to a future year = ^
+
+See the privacy notice on your return.
+
+
+ 
+
+
+
+
+
+
+
+
+

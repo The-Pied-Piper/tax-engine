@@ -1,0 +1,245 @@
+﻿*** Transcriber's Note: Please set your voice synthesizer to read most punctuation. When you encounter the caret sign at the end of a line, please enter the applicable information, if necessary. ***
+
+Canada Revenue Agency
+
+2025
+
+Protected B when completed
+
+T1032 E (25) (Page 1 of 4)
+
+Joint Election to Split Pension Income
+
+Complete this form if you (the transferring spouse or common-law partner) are electing to split your eligible pension income with your spouse or common-law partner (the receiving spouse or common-law partner). You must meet all of the following conditions:
+
+- You and your spouse or common-law partner were not living separate and apart from each other, because of a breakdown in your marriage or common-law relationship, for a continuous period of 90 days or more which includes December 31, 2025
+
+- You and your spouse or common-law partner were residents of Canada on December 31, 2025 (or on the date of death)
+
+- You received any of the following amounts in the tax year:
+
+-- pension income that qualifies for the pension income amount (see line 31400 of the Federal Worksheet), including eligible veterans benefits
+
+-- certain qualifying amounts distributed from a retirement compensation arrangement (box 17 of your T4A-RCA slips) and you reached 65 years of age before the end of the tax year
+
+Note:
+Only one joint election can be made for a tax year. If both you and your spouse or common-law partner have eligible pension income, you need to decide who will be transferring and who will be receiving. The transferring spouse or common-law partner will be electing to allocate part of the eligible pension income to the receiving spouse or common-law partner.
+
+Filing instructions
+
+If you are filing electronically, keep this form in case the Canada Revenue Agency (CRA) asks to see it later. If you are filing a paper return, you must complete, sign, and attach copies of this form to both your return and your spouse's or common-law partner's return. The information on the forms must be the same.
+
+This form needs to be filed by your filing due date for the year. For more information on filing due dates, go to canada.ca/taxes-dates-individuals.
+
+Under certain circumstances, the CRA may allow you to make a late or amended election, or revoke an original election. Contact the CRA if you need more information.
+
+Step 1 - Identification
+
+Information about you (the transferring spouse or common-law partner)
+
+Last name ^
+First name ^
+Social insurance number (enter 9 digits) ^
+Home address (if different from above) ^
+Postal code ^
+
+Information about your spouse or common-law partner (the receiving spouse or common-law partner)
+
+Last name ^
+First name ^
+Social insurance number (enter 9 digits) ^
+Home address (if different from above) ^
+Postal code ^
+
+
+T1032 E (25) (Page 2 of 4)
+
+Step 2 - Calculate the maximum split-pension amount
+
+To calculate the eligible pension income amount, the transferring spouse or common-law partner must complete the calculation for line 31400 on the Federal Worksheet found in the income tax package.
+
+Line 1 and line 68020: Enter the amount of eligible pension income that was calculated on line 8 of the transferring spouse's or common-law partner's Federal Worksheet for line 31400. ^
+
+Line 2 and line 68025: Enter the amount from box 128 of the transferring spouse's or common-law partner's T4A slip. ^
+
+Line 3: Line 1 minus line 2 = ^
+
+Qualifying retirement compensation arrangement (RCA) payments
+
+If the transferring spouse or common-law partner received life annuity payments from an RCA and was 65 years of age or older on December 31, 2025 (or on the date of death), complete lines 4 to 8. Otherwise, enter "0" on line 8 and continue to line 9 for veterans benefits.
+
+Line 4 and line 68026: Enter the amount from box 17 of the transferring spouse's or common-law partner's T4A-RCA slips. ^
+
+Line 5: 131,483.45
+
+Line 6: Enter the amount from line 3. ^
+
+Line 7: Line 5 minus line 6 (if negative, enter "0") = ^
+
+Line 8: Enter whichever is less: line 4 or line 7. ^
+
+Veterans benefits
+
+If the transferring spouse or common-law partner received eligible veterans benefits, complete lines 9 to 16. Otherwise, enter "0" on line 16 and continue to line 17.
+
+Line 9: Enter the amount from line 2. ^
+
+Line 10: Enter the amount from line 3. ^
+
+Line 11: Enter the amount from line 8. ^
+
+Line 12: Line 10 plus line 11 = ^
+
+Line 13: 131,483.45
+
+Line 14: Enter the amount from line 12. ^
+
+Line 15: Line 13 minus line 14 (if negative, enter "0") = ^
+
+Line 16: Enter whichever is less: line 9 or line 15. ^
+
+Line 17: Add lines 3, 8, and 16. = ^
+
+Adjustment for marital status change during the tax year
+
+If your marital status changed during the year, use line 18 to calculate the eligible pension income to enter at line 19. Otherwise, enter the amount from line 17 on line 19.
+
+Line 18: Number of months married or living common-law Line 68030 ^
+Divided by Number of months in the tax year (12) (Note 1) multiplied by Amount from line 17 ^
+= ^
+
+Note 1: 
+If the transferring spouse or common-law partner is deceased, replace the "12" with the number of months up to and including the month of death. For example, if the month of death is May, the number of months in the tax year would be "5".
+
+Line 19: Enter the amount from line 18, if it applies. Otherwise, enter the amount from line 17. ^
+
+Line 20: Maximum rate 50%
+
+Line 21: Line 19 multiplied by line 20 Maximum split-pension amount  = ^
+
+Step 3 - Enter the elected split-pension amount
+
+Line 22: Enter the amount that you and your spouse or common-law partner decide to jointly elect to be your split-pension amount for the year. The split-pension amount cannot be more than the amount from line 21. ^
+
+Enter this amount on line 21000 of the transferring spouse's or common-law partner's return and on line 11600 of the receiving spouse's or common-law partner's return.
+
+
+T1032 E (25) (Page 3 of 4)
+
+Step 4 - Determine the adjustment to pension income amount
+
+Part A - Calculate the pension income amount of the transferring spouse or common-law partner
+
+Line 23: Amount from line 1 ^
+
+If the transferring spouse or common-law partner entered an amount on line 8, complete lines 24 to 30. If not, enter the amount from line 22 on line 30.
+
+Line 24: Amount from line 22 ^
+
+Line 25: Amount from line 8 ^
+
+Line 26: Amount from line 17 ^
+
+Line 27: Line 25 divided by line 26 = ^
+
+Line 28: Amount from line 24 ^
+
+Line 29: Line 27 multiplied by line 28 = ^
+
+Line 30: Line 24 minus line 29 = ^
+
+Line 31: Line 23 minus line 30 = ^
+
+Enter on line 31400 of the transferring spouse's or common-law partner's return, whichever is less: $2,000 or the amount from line 31.
+
+Part B - Calculate the pension income amount of the receiving spouse or common-law partner
+
+Line 32: If there is an amount on line 11500 or line 12900 of the receiving spouse's or common-law partner's return, enter the amount from line 8 of their Federal Worksheet for line 31400. Otherwise, enter "0". ^
+
+If all of the following conditions apply, calculate line 33 according to the instructions in note 1:
+
+- the amount on line 32 is less than $2,000
+
+- the receiving spouse or common-law partner was under age 65 on December 31, 2025
+
+- the transferring spouse or common-law partner was age 65 or older and received any of the following amounts in the year:
+
+a) registered retirement income fund (RRIF), registered retirement savings plan (RRSP), or other annuity payments
+
+b) payments (other than life annuity payments) from a money purchase provision of a registered pension plan (RPP) or a specified pension plan (SPP)
+
+c) payments out of a pooled registered pension plan (PRPP)
+
+d) payments out of an advanced life deferred annuity
+
+e) eligible veterans benefits
+
+Line 33: Otherwise, enter the amount from line 30 ^
+
+Line 34: Line 32 plus line 33 = ^
+
+Enter on line 31400 of the receiving spouse's or common-law partner's return, whichever is less: $2,000 or the amount from line 34.
+
+Note 1:
+If all the above conditions apply, calculate the amount to enter on line 33 as follows:
+
+- Subtract from line 1 any of the above amounts noted in a) through e) received by the transferring spouse or common-law partner in the year. The receiving spouse or common-law partner does not need to remove those payments from line 1 if the transferring spouse or common-law partner has received those payments as a consequence of the death of a spouse or common-law partner in the year:
+
+-- If the result is $4,000 or more, enter on line 33 the amount from line 30.
+
+-- to recalculate lines 18 to 31. Enter on line 33 whichever is less: the amount from line 22 or line 30.
+
+
+T1032 E (25) (Page 4 of 4)
+
+Step 5 - Calculate the income tax deducted
+
+Line 35 and line 68040: Enter the total tax deducted from the transferring spouse's or common-law partner's pension income entered on line 17. ^
+
+If the information slips of the transferring spouse or common-law partner include income tax deducted for eligible and non-eligible pension income on the same slip, calculate the proportionate amount of income tax deducted to be included at line 35 for each slip as follows:
+
+Total tax deducted multiplied by (Eligible pension divided by Total of eligible and non-eligible pension)
+
+Calculate the income tax deducted for the elected split-pension amount
+
+Line 36: Amount from line 35 ^
+multiplied by Amount from line 22 ^
+divided by Amount from line 17 Line 68050 = ^
+
+Part A - Calculate the income tax deducted for the transferring spouse or common-law partner
+
+Line 37: Total tax deducted from all of the transferring spouse's or common-law partner's slips. Enter the amount that you would have entered on line 43700 of your return if you did not choose to split your eligible pension income. If you were a resident of Quebec on December 31, 2025, do not include any of your Quebec provincial income tax deducted. ^
+
+Line 38: Amount from line 36 ^
+
+Line 39: Line 37 minus line 38 Enter the result on line 43700 of the transferring spouse's or common-law partner's return. = ^
+
+Part B - Calculate the income tax deducted for the receiving spouse or common-law partner
+
+Line 40: Total tax deducted from all of the receiving spouse's or common-law partner's slips. Enter the amount that you would have entered on line 43700 of your return if you did not choose to split your eligible pension income. If you were a resident of Quebec on December 31, 2025, do not include any of your Quebec provincial income tax deducted. ^
+
+Line 41: Amount from line 36 ^
+
+Line 42: Line 40 plus line 41 Enter the result on line 43700 of the receiving spouse's or common-law partner's return. = ^
+
+Step 6 - Complete the joint certification
+
+By completing this form and signing below, we jointly elect and certify that the split-pension amount entered on line 22 of Step 3 will be deducted in calculating the net income of the transferring spouse or common-law partner and reported as income by the receiving spouse or common-law partner on our income tax and benefit returns for 2025.
+
+We understand that we will be jointly and severally liable for any amounts of tax, interest and penalties that may be owing as a result of this election.
+
+Signature of transferring spouse or common-law partner ^
+Date (Year/Month/Day) ^
+
+Signature of receiving spouse or common-law partner ^
+Date (Year/Month/Day) ^
+
+It is a serious offence to make a false statement.
+
+See the privacy notice on your return.
+
+
+
+
+
+

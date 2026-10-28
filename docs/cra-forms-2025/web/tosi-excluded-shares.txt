@@ -1,0 +1,108 @@
+Tax on split income – Excluded shares 
+Tax on split income (TOSI) relates to the rules for  determining whether an individual will be taxed at the highest marginal tax  rate on income derived from a business. Starting with the 2018 tax year, these updated  rules apply for adults aged 18 or older.
+Individuals may be excluded from TOSI if the  income they receive in the year comes from excluded  shares, provided they reached the age of 25 before the end of the year in  which the income was received. This page provides a series of examples which  can help these individuals determine whether their income is derived from  excluded shares. 
+For more information  about the new rules and the related exclusions, see Guidance on the  application of the split income rules for adults. 
+Excluded shares—Definition
+Excluded shares are defined in subsection 120.4(1) of the Income  Tax Act as shares of a corporation that are owned directly by an individual  and that meet all of the  following conditions when the income is received by the individual:
+The gross  business income test reveals that less than 90% of the business income of the  corporation was from providing services (based on the corporation’s previous tax  year or, for new corporations, its current tax year). 
+Applying the gross business income test
+In determining if a corporation derives less  than 90% of its business income from  the provision of services, business  income means gross business income (the gross business income test).  
+In general, gross business income means  revenue or sales before any expenses. Gross business income does not include  capital gains.
+If a corporation carries on more than one  business, the test will apply to the gross business income of all of the  businesses added together.
+In circumstances where the corporation  distributing income to the individual has an off-calendar year-end, eligibility  for the exclusion is based on the corporation’s last tax year-end. 
+ For example, if a corporation has a June 30  year-end, eligibility for the exclusion for dividends declared and paid on June 29, 2018, will be based on the corporation’s June 30, 2017, tax year-end.  Eligibility for dividends declared and paid on September 30, 2018, will be  based on the corporation’s June 30, 2018, tax year-end. 
+The corporation is not a professional  corporation (one that, as defined in subsection 248(1) of the Act, carries on the professional  practice of an accountant, dentist, lawyer, medical doctor, veterinarian, or  chiropractor).
+The individual directly owns shares amounting  to at least 10% of the fair market value of the issued and outstanding capital  stock of the corporation and giving the individual 10% or more of the votes that  could be cast at an annual meeting of the shareholders of the corporation.
+All or substantially all (generally this means  90% or more) of the income of the corporation for its previous tax year is not  derived directly or indirectly from one or more related businesses, as defined  in subsection 120.4(1) of the Act in respect of the individual, other  than a business of the corporation. 
+Examples of scenarios where the gross business  income test is applied
+The Canada  Revenue Agency (CRA) collaborated with external stakeholders to develop the  following examples. Consultations are ongoing and may highlight the need for  more examples to be added.
+The  following examples show how to apply the gross  business income test to determine if less than 90% of the business  income of a corporation is from providing services.
+In each example, the corporation has a  December 31 year-end and a dividend has been paid by the corporation to the  individual in 2018. It is assumed that the following conditions are also met:
+the individual  directly owns at least 10% of the fair market value of the issued and  outstanding shares, which represents 10% or more of the voting rights of the  corporation; 
+the corporation  is not a professional corporation; and, 
+the income earned  by the corporation is not derived directly or indirectly from another related  business, other than a business of the corporation.  
+If the gross business income test is met in the examples, the  individual’s shares would qualify as excluded shares. 
+        Example 1: General calculation 
+Facts
+A corporation  carries on a management consulting business that provides services to other  businesses and sells computer hardware to its clients
+Gross business income of the corporation for  the previous tax year (2017): $2,000,000 made up as follows:
+sales of management consulting  services (2017): $1,900,000
+sales of computer hardware (2017):  $100,000
+Gross business income test: $1,900,000 ∕ $2,000,000 = 95%
+Conclusion
+  Since more than 90% of the gross business  income of the corporation in the previous tax year was for services, the  condition in subparagraph 120.4(1)(a)(i) of the definition of excluded shares  is not met. So the shares of the corporation would not qualify as excluded  shares for 2018.
+        Example 2: New business
+Facts
+A corporation  incorporated and began operating a business in 2018
+There is no  previous tax year
+The corporation  carries on a management consulting business that provides consulting services  to other businesses and sells computer hardware to its clients
+Gross business  income of the corporation (2018): $1,000,000 made up as follows:
+sales of management  consulting services (2018): $990,000
+sales of computer hardware (2018):  $10,000
+Gross business  income test: $990,000 ∕ $1,000,000 = 99%
+Conclusion
+  Since more than  90% of the business income of the corporation in the current tax year was for providing  services, the condition in subparagraph 120.4(1)(a)(i) of the  definition of excluded shares is not met. So the shares of the corporation  would not qualify as excluded shares for 2018. 
+Note
+  The shares of  the corporation would also not qualify as excluded shares for 2019. Since the  90% test is applied to the previous tax year of the corporation when such a  year exists, the 2018 tax year would be used again when determining if the  shares qualify as excluded shares for 2019.
+        Example 3: Result of 90% test varies from one year to another
+Facts
+A corporation  operates a plumbing business
+The main business  activity is providing repairs and maintenance services
+The corporation  also operates a retail store to sell parts and plumbing fixtures. The retail  products are not used in providing the services, but are sold separately to  customers
+Gross business  income of the corporation (2017): $1,000,000 made up as follows:
+sales of repairs  and maintenance services (2017): $950,000
+sales of parts  and fixtures (2017): $50,000
+Gross business  income test applied to income from 2017: $950,000 ∕ $1,000,000 = 95%
+Gross business  income of the corporation (2018): $1,200,000 made up as follows:
+sales of repairs  and maintenance services (2018): $900,000
+sales of parts and  fixtures (2018): $300,000
+Gross business  income test applied to income from 2018: $900,000 ∕ $1,200,000 = 75%
+Conclusion
+  Since more than 90% of the gross business  income of the corporation in the previous tax year (2017) was for services, the  condition in subparagraph 120.4(1)(a)(i) of the definition of excluded shares  is not met. So the shares of the corporation would not qualify as excluded  shares for 2018.
+However, in applying the test in 2019 using  the 2018 amounts, less than 90% of the business income of the corporation was  for services, so the condition in subparagraph 120.4(1)(a)(i) of the definition  of excluded shares would be met. The shares of the corporation would qualify as  excluded shares for 2019.
+        Example 4: Incidental goods used or consumed in providing services 
+Facts
+A corporation  operates a cleaning business that provides cleaning services
+The corporation  does not sell cleaning products, but uses them in providing services to its  customers
+Gross business  income of the corporation (2017): $1,000,000
+Sales of services  (2017): $1,000,000
+The cost of  cleaning products used for the services was $150,000
+Gross business  income test: $1,000,000 ∕ $1,000,000 = 100%
+Conclusion
+  Since more than 90% of the business income of the  corporation in the previous tax year was for services, the condition in  subparagraph 120.4(1)(a)(i) of the definition of excluded shares was not met. So  the shares of the corporation would not qualify as excluded shares for 2018.
+In this example, the cleaning products are  incidental to the services, since they were used in providing the services. So  the incidental goods amount ($150,000 cost of the cleaning products) would not be  subtracted from the service part of the gross business income.
+This would still be the case if an amount for  the goods was listed separately on the invoice for services or on a separate  invoice. 
+        Example 5: Income from both services and non-services – Cleaning business
+Facts
+Assume the same  facts as in Example 4, except that the business also sells various cleaning  supplies and equipment separately 
+The cleaning  supplies and equipment may be sold to retail customers who are not customers of  the service business, or they may be sold to customers when they are buying  cleaning services 
+Gross business  income of the corporation (2017): $1,000,000 made up as follows: 
+Sales for cleaning  services (2017): $800,000
+Sales of cleaning supplies and equipment (2017): $200,000
+Gross business  income test: $800,000 ∕ $1,000,000 = 80%
+Conclusion
+  Since  less than 90% of the business income of the corporation is for services, the  condition in subparagraph 120.4(1)(a)(i) of the  definition of excluded shares is met. So the shares of the corporation would  qualify as excluded shares in 2018.
+If goods are provided with a service and the  goods are not incidental to the service, because they are provided separately  for use by the customer, the sale price allocated to the goods is not included as  service income in applying the gross business income test. 
+In this example, the business had sales of cleaning  supplies and equipment that were not incidental to the services, since they  were either sold separately or, if sold with a cleaning service, were distinct  and separate from the cleaning service. So the $200,000 in sales of the  cleaning supplies and equipment would not be included in the service part of  the gross business income. 
+Any incidental goods used or consumed in  performing the cleaning services would not be subtracted from the service part  of the gross business income.
+        Example 6: Income from both services and non-services – Construction business
+Facts
+A corporation  operates a business that includes the design, construction and repair of decks
+When constructing  and repairing decks, the corporation supplies all materials and labour
+For a fee, the  corporation also designs decks and provides plans to customers who want to  build the deck on their own 
+Gross business  income of the corporation (2017): $200,000 made up as follows:
+Deck  construction: $175,000:
+Materials $90,000
+Labour $85,000
+Deck repairs:  $20,000:
+Materials $10,000
+Labour $10,000
+Deck design:  $5,000
+Gross business  income for services: $100,000 ($200,000 − $90,000 − $10,000)
+Gross business income  test: $100,000 ∕ $200,000 = 50%
+Conclusion
+  Since less than 90% of the business income  from all activities of the corporation is for services, the condition in  subparagraph 120.4(1)(a)(i) of the definition of excluded shares is met. So the  shares of the corporation would qualify as excluded shares in 2018.
+In this example, the income from deck  construction and deck repair involve both a service and non-service component. The  non-service component (i.e. sale of materials) must be removed from the gross  business income in order to identify the income derived from services when applying  the gross business income test. 
+The deck design is considered to be a service. 
+Page details
+	2019-07-10

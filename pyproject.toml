@@ -17,8 +17,10 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "build>=1.2",
+    "mypy>=1.11",
     "pytest>=8.3",
     "ruff>=0.6",
+    "types-PyYAML",
 ]
 
 [project.urls]
@@ -40,3 +42,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true

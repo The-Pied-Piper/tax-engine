@@ -1,0 +1,405 @@
+﻿5000-S3 (Page 1 of 4) 
+ 
+Protected B when completed 
+ 
+T1-2025 
+ 
+Schedule 3 
+ 
+Capital Gains or Losses 
+ 
+Complete this schedule to calculate your taxable capital gains to report on 
+line 12700 of your return. If you realized a capital gain on a disposition, 
+you may be able to claim a capital gains deduction for a qualifying business 
+transfer (line 25395) or capital gains deduction (line 25400). 
+ 
+Also complete this schedule if you disposed of property in 2025 that you are 
+claiming the principal residence exemption for or disposed of a housing unit 
+located in Canada (including a rental property) that you owned for less than 
+365 consecutive days. See parts 1 and 2 for more information. 
+ 
+For more information about capital gains or losses, including business 
+investment losses, go to canada.ca/taxes-capital-gains. For definitions or 
+help completing this schedule, see Chapter 2 of Guide T4037, Capital Gains. 
+ 
+How to complete this schedule 
+ 
+Complete Part 1 if both of the following apply: 
+ 
+- You disposed of a housing unit, or a right to acquire a housing unit, 
+located in Canada (including a rental property) that was not considered 
+inventory before the disposition 
+ 
+- The housing unit (or right to acquire a housing unit) was owned for less 
+than 365 consecutive days before the disposition 
+ 
+Complete Part 2 if both of the following apply: 
+ 
+- You disposed of property in 2025 that is not considered a flipped property 
+(see Part 1) 
+ 
+- You are claiming the property as your principal residence 
+ 
+Complete Part 3 to report the disposition of different types of property. 
+ 
+Complete Part 4 to calculate your total capital gains or losses. 
+ 
+Complete Part 5 to calculate your total taxable capital gains or net capital 
+losses. 
+ 
+If you need more space, attach a separate sheet. Attach a copy of this 
+schedule to your paper return. 
+ 
+Part 1 - Flipped property 
+ 
+A flipped property is a housing unit (including a rental property) located in 
+Canada or a right to acquire a housing unit located in Canada that you owned 
+or held for less than 365 consecutive days before its disposition (12-month 
+holding period). 
+ 
+A property is not considered a flipped property if, before the disposition, 
+it was considered to be inventory or was owned or held for 365 or more 
+consecutive days, or if the disposition occurred due to, or in anticipation 
+of, certain life events as listed at line 17906 on page 2. 
+ 
+If you disposed of a flipped property, the resulting gain on the disposition 
+is taxable as business income and not as a capital gain. To report this 
+transaction, complete Form T2125, Statement of Business or Professional 
+Activities. 
+ 
+For more information about property flipping, go to canada.ca/cra-property-
+flipping. 
+ 
+Line 17905: Did you dispose of a housing unit, or a right to acquire a 
+housing unit, located in Canada (including a rental property) that was not 
+considered inventory and was owned for less than 365 consecutive days before 
+the disposition? Yes or No ^
+ 
+If you ticked "no", the housing unit is not considered a flipped property. If 
+the property is capital property (such as a cottage or rental property) and 
+you held it for investment or personal use, any gain from the disposition of 
+the property is taxable as a capital gain. Complete Part 3 on the next page 
+to report the disposition. 
+ 
+If you ticked "yes", continue at line 17906 on the next page. 
+ 
+ 
+5000-S3 (Page 2 of 4) 
+ 
+Part 1 - Flipped property (continued) 
+ 
+Was the disposition due to, or in anticipation of, any of the following life 
+events? (Tick the boxes that apply, if any.) 
+ 
+Line 17906: 
+Box 1: the death of the taxpayer or a related person ^
+ 
+Box 2: a related person joining the taxpayer's household or the taxpayer 
+joining a related person's household (for example, birth of a child, 
+adoption, or care of an elderly parent) ^
+ 
+Box 3: the breakdown of a marriage or common-law partnership where the 
+taxpayer had been living separate and apart from their spouse or common-law 
+partner for at least 90 days before the disposition ^
+ 
+Box 4: a threat to the personal safety of the taxpayer or a related person 
+(for example, domestic violence) ^
+ 
+Box 5: a serious disability or illness of the taxpayer or a related person ^
+ 
+Box 6: the eligible relocation of the taxpayer or their spouse or common-law 
+partner where the taxpayer's new home (including area code): is at least 40 
+kilometres closer to the new work (including area code): location or school 
+(generally, an eligible relocation allows the taxpayer to carry on business, 
+be employed, or attend full-time post-secondary education) ^
+ 
+Box 7: the involuntary termination of employment of the taxpayer or their 
+spouse or common-law partner ^
+ 
+Box 8: the insolvency of the taxpayer (for example, due to an accumulation of 
+debt) ^
+ 
+Box 9: the destruction or expropriation of the taxpayer's property (for 
+example, when the property is destroyed due to natural or man-made disaster) 
+^
+ 
+If any of the life events above apply to you, the housing unit is not 
+considered a flipped property. The disposition of this property is included 
+in income as a taxable capital gain. Complete Part 2 if you are claiming the 
+principal residence exemption. If you are not claiming the principal 
+residence exemption, complete Part 3 on the next page to report the 
+disposition. For more information, go to canada.ca/real-estate-income. 
+ 
+If none of the life events above apply to you, the housing unit is considered 
+a flipped property and the gain is taxable as business income. To report this 
+transaction, complete Form T2125. For more information, go to 
+canada.ca/taxes-business-income or see Guide T4002, Self-employed Business, 
+Professional, Commission, Farming, and Fishing Income. 
+ 
+Part 2 - Principal residence 
+ 
+Complete Form T2091(IND), Designation of a Property as a Principal Residence 
+by an Individual (Other than a Personal Trust), or Form T1255, Designation of 
+a Property as a Principal Residence by the Legal Representative of a Deceased 
+Individual, whichever applies, to designate a property as your principal 
+residence. 
+ 
+A deemed disposition occurs when you are considered to have disposed of 
+property even though you did not sell it. For example, a deemed disposition 
+may occur when you change how you use your principal residence, such as when 
+you change all or part of your principal residence to a rental or business 
+operation, or change your rental or business operation to your principal 
+residence. If this is the case, you may need to complete Form T2091(IND) or 
+Form T1255, whichever applies. For more information, see Income Tax Folio S1-
+F3-C2, Principal Residence. 
+ 
+Tick the box that applies to your designation of the property described on 
+Form T2091(IND) or Form T1255: 
+ 
+Line 17900: 
+Box 1: I designate the property as my principal residence for all of the 
+years that I owned it or for all of the years that I owned it except one 
+year. ^
+ 
+Box 2: I designate the property as my principal residence for some but not 
+all of the years that I owned it. ^
+ 
+Box 3: I designate the properties as my principal residences for some or all 
+of the years that I owned them. ^
+ 
+If either of the following conditions apply to you, see Income Tax Folio S1-
+F3-C2, Principal Residence: 
+ 
+- You were not a resident of Canada for the entire time you owned the 
+designated property. Your period of non-residence may reduce or eliminate the 
+amount of the principal residence exemption 
+ 
+- There is no gain because you have transferred a housing unit to your spouse 
+or common-law partner, or to a spousal trust 
+ 
+ 
+5000-S3 (Page 3 of 4) 
+ 
+Part 3 – Total gains or losses on despositions 
+ 
+Report all negative amounts (losses) using brackets. If you need more space, 
+attach a separate sheet. 
+ 
+*** Transcriber's Note: For each Gain or loss enter as many lines as 
+necessary. The print version is reproduced with one or two narrative columns 
+followed by numbered columns 1 to 5. *** 
+ 
+Property type 
+ 
+Qualified small business corporation shares (QSBCS) 
+ 
+Number ^
+Name of corporation and class of shares ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 10699: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 1 and line 10700: Total gain or loss (add all the amounts under column 
+5) ^
+ 
+Qualified farm or fishing property (QFFP) 
+ 
+Address or legal description ^
+Province/Territory ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 10999: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 2 and line 11000: Total gain or loss (add all the amounts under column 
+5) ^
+ 
+QFFP: Mortgage foreclosures and conditional sales repossessions 
+ 
+Address or legal description ^
+Province/Territory ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 12399: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 3 and line 12400: Total gain or loss (add all the amounts under column 
+5) ^
+ 
+Publicly traded shares, mutual fund units, deferral of eligible small 
+business corporation shares and other shares 
+ 
+Number ^
+Name of fund/corporation and class of shares ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 13199: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 4 and line 13200: Total gain or loss (add all the amounts under column 
+5) ^
+ 
+Real estate, depreciable property, and other properties (see parts 1 and 2) 
+ 
+Address or legal description ^
+Province/Territory ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 13599: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 5 and line 13800: Total gain or loss (add all the amounts under column 
+5) ^
+ 
+Bonds, debentures, promissory notes, and other similar properties 
+ 
+Face value ^
+Maturity date ^
+Name of issuer ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 15199: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 6 and line 15300: Total gain or loss (add all the amounts under column 
+5) ^
+ 
+Crypto-assets 
+ 
+Description of crypto-assets ^
+Number of units sold  ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 15200: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 7 and line 15301: Total gain or loss (add all the amounts under column 
+5) ^
+ 
+Other mortgage foreclosures and conditional sales repossessions 
+ 
+Address or legal description ^
+Province/Territory ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 15499: Total proceeds of disposition (add all the amounts under column 
+2) ^
+Line 8 and line 15500: Total gain (or loss) (add all the amounts under column 
+5) ^
+ 
+Personal-use property (see parts 1 and 2) 
+ 
+(provide a full description) ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+Line 9 and line 15800: Total gain only (add all the amounts under column 5) ^
+ 
+Listed personal property (LPP) (LPP losses can only be applied against LPP 
+gains) 
+ 
+(provide a full description) ^
+(Column 1): Year acquired ^
+(Column 2): Proceeds of disposition ^
+(Column 3): Adjusted cost base ^
+(Column 4): Outlays and expenses ^
+(Column 5): Gain or loss (column 2 minus columns 3 and 4) ^
+ 
+Subtract: unapplied LPP losses from other years ^
+ 
+Line 10 and line 15900: Net gain only ^
+ 
+Line 11: Add lines 1 to 10. Total gains or losses of qualified properties and 
+other properties = ^
+ 
+ 
+5000-S3 (Page 4 of 4) 
+ 
+Part 4 - Total capital gains or losses 
+ 
+Report all negative amounts (losses) using brackets. 
+ 
+Line 12: Amount from line 11 of the previous page ^
+ 
+Line 13 and line 16100: Capital gains deferral from qualifying dispositions 
+of eligible small business corporation shares included on line 4 ^
+ 
+Line 14:  Line 12 minus line 13 = ^
+ 
+Line 15 and line 17400: Capital gains or losses from your T5, T5013, and T4PS 
+slips ^
+ 
+Line 16 and line 17600: Capital gains or losses from your T3 slips ^
+ 
+Line 17: Add lines 14 to 16. = ^
+ 
+Line 18 and line 17800: Capital loss from a reduction in your business 
+investment loss ^
+ 
+Line 19 and line 19100: Total gains or losses before reserves: line 17 minus 
+line 18 = ^
+ 
+Line 20 and line 19200: Reserves to be included in (or deducted from) income 
+from Form T2017 ^
+ 
+Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses = 
+^
+ 
+Part 5 – Total taxable capital gains or net capital losses 
+ 
+Line 22: Amount from line 21 above ^
+ 
+Line 23: Inclusion rate 50% 
+ 
+Line 24: Line 22 multiplied by the percentage from line 23 = ^
+ 
+Line 25 and line 19890: Capital gains from certain dispositions of an 
+interest in a partnership subject to 100% inclusion rate (if negative, enter 
+"0") ^
+ 
+Line 26 and line 19900: Line 24 plus line 25 If positive, enter the result on 
+line 12700 of your return. If negative, see "If you have a net capital loss" 
+below. Total taxable capital gains or net capital losses for 2025 = ^
+ 
+If you have a net capital loss 
+ 
+Do not report your net capital loss for 2025 on line 12700 of your return. 
+You can carry it forward indefinitely and apply it against a taxable capital 
+gain in the future. Your net capital loss, if any, will appear on your 2025 
+notice of assessment or reassessment. 
+ 
+If you would like to apply the net capital loss you incurred in 2025 against 
+taxable capital gains you reported on your 2022, 2023, or 2024 return, 
+complete Form T1A, Request for Loss Carryback. 
+ 
+Note: 
+If you are completing this schedule for a deceased person, go to 
+canada.ca/taxes-deceased-net-capital-loss. 
+ 
+See the privacy notice on your return.
+
+ 
+
+
+
+
