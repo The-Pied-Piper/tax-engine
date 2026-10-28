@@ -3,8 +3,6 @@
 A jurisdiction-agnostic personal income tax computation engine. Canada and Ontario
 are the bundled pilot jurisdictions. Requires Python 3.12 or newer.
 
-The engine has no HTTP-server or database dependencies.
-
 ## Development with uv
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
