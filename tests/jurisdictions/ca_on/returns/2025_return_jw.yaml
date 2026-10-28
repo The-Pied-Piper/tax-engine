@@ -1,0 +1,139 @@
+# Return JW: Form T2017 (2025), "Summary of Reserves on Dispositions of Capital Property", Part 1,
+# built as its own forms: one row form for each reserve line that takes a list (lines 2, 8, 17 and
+# 27 are used here), each run once for each disposition of its list, and the summary form, which adds
+# the lines of Part 1. The 2024 figures are starting inputs. The return's own lines are all blank,
+# the T2017 lines not being read by any T1 line yet (a later change) but for Schedule 3 line 26.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return JW: a 2025 filer with four dispositions that carry a reserve, one on each of four reserve
+  lines of Part 1, and the 2024 figures of lines 1, 7, 16, 26 and 30. Every figure is a chosen figure.
+  Line 1, the 2024 reserve for dispositions of QFFP, is 10,000.00; line 7, the 2024 reserve for
+  dispositions of QSBCS, is 20,000.00; line 16, the 2024 reserve for dispositions of family farm or
+  fishing property to a child, is 4,000.00; line 26, the 2024 reserve for other dispositions, is
+  1,000.00; line 30, the 2024 reserve before November 13, 1981, is 2,000.00.
+  Line 2 (the 2025 reserve for dispositions of QFFP to a child, the nine-year kind, so the nine_year
+  answer is 1): capital gain 100,000.00, amount payable after the end of the year 60,000.00, proceeds
+  of disposition 200,000.00, 0 years after the disposition, reserve claimed 30,000.00. Calculation
+  (i) is 100,000.00 x 60,000.00 / 200,000.00 = 30,000.00; calculation (ii) is 100,000.00 x 90% =
+  90,000.00 (the nine-year table, year of disposition). The maximum is the lesser, 30,000.00, and the
+  claim of 30,000.00 is the maximum.
+  Line 8 (the 2025 reserve for dispositions of QSBCS that are not to a child and not under a QBT
+  or QCC, so the nine_year answer is 0 and the four-year table applies): capital gain 50,000.00, amount payable 20,000.00,
+  proceeds 100,000.00, 2 years after the disposition, reserve claimed 5,000.00. Calculation (i) is
+  50,000.00 x 20,000.00 / 100,000.00 = 10,000.00; calculation (ii) is 50,000.00 x 40% = 20,000.00 (the
+  four-year table, 2nd year). The maximum is 10,000.00, and the claim of 5,000.00 is below it, so
+  5,000.00 is taken as entered.
+  Line 17 (the 2025 reserve for dispositions of family farm or fishing property to a child, the
+  nine-year table): capital gain 20,000.00, amount payable 10,000.00, proceeds 40,000.00, 3 years
+  after the disposition, reserve claimed 4,000.00. Calculation (i) is 20,000.00 x 10,000.00 /
+  40,000.00 = 5,000.00; calculation (ii) is 20,000.00 x 60% = 12,000.00 (the nine-year table, 3rd
+  year). The maximum is 5,000.00, and the claim of 4,000.00 is below it, so 4,000.00 is taken as
+  entered.
+  Line 27 (the 2025 reserve for other dispositions, the four-year table): capital gain 10,000.00,
+  amount payable 10,000.00, proceeds 10,000.00, 1 year after the disposition, reserve claimed
+  6,000.00. Calculation (i) is 10,000.00 x 10,000.00 / 10,000.00 = 10,000.00; calculation (ii) is
+  10,000.00 x 60% = 6,000.00 (the four-year table, 1st year). The maximum is 6,000.00, and the claim
+  of 6,000.00 is the maximum.
+  The later-year rows (lines 8, 17 and 27) each carry the reserve claimed for the property in the previous
+  year, at least the claim: 10,000.00 (line 8), 5,000.00 (line 17) and 6,000.00 (line 27), each equal to
+  the maximum, so the maximum still bounds the claim. Line 2 is in its year of disposition, so its previous
+  claim is not read, and is 0.00.
+  The summary: line 5 is 30,000.00 (lines 2 to 4); line 6 is 10,000.00 less 30,000.00 = (20,000.00);
+  line 11 is 5,000.00 (lines 8 to 10); line 12 is 20,000.00 less 5,000.00 = 15,000.00; line 13 is
+  (20,000.00) + 15,000.00 = (5,000.00); line 18 is 4,000.00 less 4,000.00 = 0.00; line 19 is (5,000.00)
+  + 0.00 = (5,000.00); line 28 is 1,000.00 less 6,000.00 = (5,000.00); line 29 is (5,000.00) + 0.00 +
+  0.00 + (5,000.00) = (10,000.00); line 31 is (10,000.00) + 2,000.00 = (8,000.00), a negative amount
+  shown in brackets. The lines of the form that are not on this return (3, 4, 9, 10, 21 and 24) have
+  no dispositions, so they are 0.00.
+  The return's other figures are blank, the CPP months being 12 (the Form T2017 lines are not read
+  by any T1 line yet, but for the reserves of Schedule 3 line 20, which are the total of line 31 and so
+  feed Schedule 3 line 26): the CPP second additional earnings maximum is the 2025 dataset figure
+  9,900.00, and Schedule 3 line 26 (box 19900) is line 31 multiplied by the 50% inclusion rate, -4,000.00
+  (a net capital loss), the two return lines computed on a blank return.
+sources:
+  - >-
+    CRA, Form T2017 (2025), Summary of Reserves on Dispositions of Capital Property
+    (docs/cra-forms-2025/t2017-25e.pdf, confirmed from the PDF, which is the only published copy; no
+    .txt is published; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2017/t2017-25e.pdf),
+    page 1, "Amount of 2024 reserve for dispositions of QFFP to your child after 2015, under a
+    qualifying" (line 1); "Amount of 2025 reserve for dispositions of QFFP to your child after 2016,"
+    (line 2); "Add lines 2 to 4." (line 5); "Line 1 minus line 5 (if negative, show in brackets)"
+    (line 6); "Add lines 8 to 10." (line 11); "Line 7 minus line 11 (if negative, show in brackets)"
+    (line 12); "Line 6 plus line 12 (if negative, show in brackets)" (line 13).
+  - >-
+    CRA, Form T2017 (2025), page 2: "Line 16 minus line 17 (if negative, show in brackets)" (line 18);
+    "Line 15 plus line 18 (if negative, show in brackets)" (line 19); "Line 26 minus line 27 (if
+    negative, show in brackets)" (line 28); "Add lines 19, 22, 25, and 28 (if negative, show in
+    brackets)." (line 29); "Enter this amount on line 19200 of Schedule 3" (line 31).
+  - >-
+    CRA, Form T2017 (2025), page 3, "How do you calculate a reserve": "You can claim a reserve up to a
+    maximum of nine years. Your reserve for the year cannot be more than the lesser of the" (family
+    farm or fishing property and small business corporation shares disposed of to your child, or
+    disposition under a QBT or QCC); "claim a reserve up to a maximum of four years. Your reserve for
+    the year cannot be more than the lesser of the following" (the other kinds); "Amount payable to
+    you after the end of the year" and "Proceeds of disposition" (calculation (i)); "Enter the
+    applicable" and "percentage from the table" (calculation (ii)); "1st year: 60% 3rd year: 20%" and
+    "2nd year: 40% 4th year: zero" (four-year table); "1st year: 80% 4th year: 50% 7th year: 20%",
+    "2nd year: 70% 5th year: 40% 8th year: 10%" and "3rd year: 60% 6th year: 30% 9th year: zero"
+    (nine-year table).
+inputs:
+  ca/cpp_months: "12"
+  ca/t2017_line_1: "10000"
+  ca/t2017_line_7: "20000"
+  ca/t2017_line_16: "4000"
+  ca/t2017_lines_66990_and_67058_for_2024: "1000"
+  ca/t2017_line_30: "2000"
+  ca/t2017_line_2_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "100000"
+      ca/t2017_reserve_amount_payable_after_year_end: "60000"
+      ca/t2017_reserve_proceeds: "200000"
+      ca/t2017_reserve_years_after_disposition: "0"
+      ca/t2017_reserve_claimed: "30000"
+      ca/t2017_reserve_previous_year_claim: "0"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+  ca/t2017_line_8_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "50000"
+      ca/t2017_reserve_amount_payable_after_year_end: "20000"
+      ca/t2017_reserve_proceeds: "100000"
+      ca/t2017_reserve_years_after_disposition: "2"
+      ca/t2017_reserve_claimed: "5000"
+      ca/t2017_reserve_previous_year_claim: "10000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "0"
+  ca/t2017_line_17_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "20000"
+      ca/t2017_reserve_amount_payable_after_year_end: "10000"
+      ca/t2017_reserve_proceeds: "40000"
+      ca/t2017_reserve_years_after_disposition: "3"
+      ca/t2017_reserve_claimed: "4000"
+      ca/t2017_reserve_previous_year_claim: "5000"
+  ca/t2017_line_27_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "10000"
+      ca/t2017_reserve_amount_payable_after_year_end: "10000"
+      ca/t2017_reserve_proceeds: "10000"
+      ca/t2017_reserve_years_after_disposition: "1"
+      ca/t2017_reserve_claimed: "6000"
+      ca/t2017_reserve_previous_year_claim: "6000"
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/schedule_3_line_19900: "-4000.00"
+  ca/t2017_line_2_reserve:
+    - ca/t2017_row_reserve: "30000.00"
+  ca/t2017_line_8_reserve:
+    - ca/t2017_row_reserve: "5000.00"
+  ca/t2017_line_17_reserve:
+    - ca/t2017_row_reserve: "4000.00"
+  ca/t2017_line_27_reserve:
+    - ca/t2017_row_reserve: "6000.00"
+  ca/t2017:
+    - ca/t2017_line_6: "-20000.00"
+      ca/t2017_line_12: "15000.00"
+      ca/t2017_line_13: "-5000.00"
+      ca/t2017_line_31: "-8000.00"

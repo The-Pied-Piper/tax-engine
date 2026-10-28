@@ -1,0 +1,168 @@
+# Return KA: a partner who received no T5013 slip fills in the whole of Form T776 and takes line 7
+# (amount 7) as "your share of amount 6", their percentage of the partnership times amount 6. The
+# statement has other income (line 8230) of 2,000.00, advertising (line 8521) of 500.00 and a CCA
+# claim (line 9936) of 400.00, so amount 5 is 1,500.00 and amount 6 is 1,100.00. The percentage of
+# the partnership is 50, so amount 7 is 550.00. Line 9974 (GST/HST rebate for partners) is 20.00 and
+# line 9943 (other expenses of the partner) is 5.00, so line 9946 is 550.00 + 20.00 - 5.00 = 565.00,
+# and T1 line 12600 is 565.00. Guide T4036: "If you are in a partnership and you do not receive a
+# T5013 slip ... fill in all of the parts in Form T776 that apply to you", and "Amount 7 -
+# Partnerships: If you are a member of a partnership, enter your share of amount 6 or the amount
+# from box 107 or 110 from your T5013 slip"; Form T776 Part 1 "Your percentage of the partnership %".
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the share of a rental partnership
+  that sent no T5013 slip. The one T776 statement has other income (line 8230) of a chosen
+  $2,000.00, advertising (line 8521) of a chosen $500.00 and a CCA claim (line 9936) of a chosen
+  $400.00 on Class 1 (below 4% of the UCC), so amount 5 is $1,500.00 and amount 6 is $1,100.00.
+  The partner answer is yes, the T5013 slip answer is no and the percentage of the partnership is
+  50, so amount 7 is $550.00. Line 9974 is a chosen $20.00 and line 9943 a chosen $5.00, so line
+  9946 is $565.00 and T1 line 12600 is $565.00.
+sources:
+  - >-
+    CRA, Guide T4036 (Rental Income, 2025 edition, docs/cra-forms-2025/t4036-25e.pdf, a PDF
+    quote accepted 2026-10-19): "If you are in a partnership and you do not receive a T5013 slip,
+    or if you are a co-owner, fill in all of the parts in Form T776 that apply to you."; "Amount 7
+    - Partnerships: If you are a member of a partnership, enter your share of amount 6 or the
+    amount from box 107 or 110 from your T5013 slip."
+  - >-
+    CRA, Form T776 (2025), Statement of Real Estate Rentals (docs/cra-forms-2025/t776-25e.txt,
+    confirmed 2026-10-19). Part 1: "Your percentage of the partnership %"; "Line 6: Net income
+    (loss) (amount 5 minus line 9936)"; "Line 7: Partners: your share of amount 6, or the amount
+    from your T5013 slip, Statement of Partnership Income"; "Line 9974: Partners: GST/HST rebate
+    for partners received in the year"; "Line 9943: Partners: other expenses of the partner";
+    "Line 9946: Your net income (loss): For sole proprietors or co-owners, enter the result from
+    amount 6. For partnerships, enter the result from amount 7 plus line 9974 minus line 9943.
+    Enter this amount on line 12600 of your income tax and benefit return".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt
+inputs:
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "2000"
+      ca/rental_advertising: "500"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_start: "100000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "400"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "10000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "1"
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "50"
+      ca/rental_partner_gst_hst_rebate: "20"
+      ca/rental_partner_other_expenses: "5"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/net_rental_income: "565.00"
+      ca/gross_rental_income: "2000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/total_income: "565.00"
+      ca/net_income_before_adjustments: "565.00"
+      ca/net_income: "565.00"
+      ca/other_payments_limit_income: "565.00"
+      ca/rental_cca_total_claim: "0"
+  ca/t776:
+    - ca/net_rental_income: "565.00"
+      ca/rental_net_income_before_adjustments: "1500.00"
+      ca/rental_cca_claim: "400.00"
+      ca/rental_net_income_after_cca: "1100.00"

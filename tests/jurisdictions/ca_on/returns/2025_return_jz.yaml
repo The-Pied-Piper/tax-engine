@@ -1,0 +1,57 @@
+# Return JZ: Form T2017 (2025), "Summary of Reserves on Dispositions of Capital Property", Part 1,
+# built as its own forms: the summary form, which adds the lines of Part 1. Line 26 is computed here:
+# the 2024 figure of line 26 (lines 66990 and 67058 of Form T2017 for 2024) less line 23 (66937 of
+# Form T2017 for 2025). Line 14 is entered, and no line of the form reads it.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return JZ: a 2025 filer with one disposition with a reserve on line 27, the 2024 figure of line 26
+  of 5,000.00, line 23 of 1,200.00 and line 14 entered as 7,500.00. Every figure is a chosen figure.
+  Line 26 is 5,000.00 less 1,200.00 = 3,800.00. The form prints no floor on line 26, so the figure
+  is signed. The line 27 disposition: capital gain 10,000.00, amount payable after the end of the
+  year 10,000.00, proceeds of disposition 10,000.00, 0 years after the disposition, reserve claimed
+  5,000.00, so (i) is 10,000.00 x 10,000.00 / 10,000.00 = 10,000.00 and (ii) is 10,000.00 x 80% =
+  8,000.00 (four-year table, year of disposition), the maximum is 8,000.00 and the claim of 5,000.00
+  is below it, so line 27 is 5,000.00. Line 25 is 1,200.00 less 0.00 (line 24 is not entered) =
+  1,200.00; line 28 is 3,800.00 less 5,000.00 = (1,200.00); line 29 is 0.00 + 0.00 + 1,200.00 +
+  (1,200.00) = 0.00; line 31 is 0.00 + 0.00 (line 30 is not entered) = 0.00, so the return reads a
+  reserve of 0.00. Lines 1, 5, 6, 7, 11, 12, 13, 18 and 19 are 0.00 (their figures are not entered).
+  Line 14 changes no figure of the form: nothing on it reads line 14.
+sources:
+  - >-
+    CRA, Form T2017 (2025), Summary of Reserves on Dispositions of Capital Property
+    (docs/cra-forms-2025/t2017-25e.pdf, confirmed from the PDF, which is the only published copy; no
+    .txt is published; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2017/t2017-25e.pdf),
+    page 1, "Enter the amount of the most recent reserves claimed on line 66850." (line 14); page 2, "Amount of
+    2024 reserve for dispositions of property under a QCC (other than QFFP and QSBCS) after 2023" (line
+    23); "Line 23 minus line 24 (if negative, show in brackets)" (line 25).
+  - >-
+    CRA, Form T2017 (2025), page 2, "Amount of 2024 reserve for dispositions of property after 2020, other
+    than dispositions listed on lines 66843, 66883, 66910, and 66930 (lines 66990 and 67058 of Form T2017
+    for 2024 minus amounts reported at line 66937 of Form T2017 for 2025)" (line 26); "Line 26 minus line
+    27 (if negative, show in brackets)" (line 28); "Add lines 19, 22, 25, and 28 (if negative, show in
+    brackets)." (line 29); "Line 29 plus line 30" (line 31); "Enter this amount on line 19200 of
+    Schedule 3" (line 31).
+inputs:
+  ca/cpp_months: "12"
+  ca/t2017_lines_66990_and_67058_for_2024: "5000"
+  ca/t2017_line_23: "1200"
+  ca/t2017_line_14: "7500"
+  ca/t2017_line_27_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "10000"
+      ca/t2017_reserve_amount_payable_after_year_end: "10000"
+      ca/t2017_reserve_proceeds: "10000"
+      ca/t2017_reserve_years_after_disposition: "0"
+      ca/t2017_reserve_claimed: "5000"
+      ca/t2017_reserve_previous_year_claim: "0"
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+  ca/t2017_line_27_reserve:
+    - ca/t2017_row_reserve: "5000.00"
+  ca/t2017:
+    - ca/t2017_line_6: "0.00"
+      ca/t2017_line_12: "0.00"
+      ca/t2017_line_13: "0.00"
+      ca/t2017_line_31: "0.00"
+      ca/t2017_line_14: "7500.00"

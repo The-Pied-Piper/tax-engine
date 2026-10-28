@@ -1,0 +1,296 @@
+# Return GF: a single 2025 Ontario resident with employment income of $400,000 and other deductions
+# of $500,000 (T1 line 23200), which are the resource expenditures of Form T691 Part 9 line 1 (for
+# the alternative minimum tax). Net income before adjustments is negative (line 23400), so net
+# income (line 23600) and taxable income (line 26000) are $0, while Form T691 Part 1 line 1 carries
+# the signed figure (`ca/taxable_income_signed`) and the minimum tax starts from it.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return GF: a single 2025 Ontario resident with employment income of $400,000 and other
+  deductions of $500,000 (T1 line 23200, a chosen figure), which are the resource expenditures of
+  Form T691 Part 9 line 1 (a chosen figure, for the alternative minimum tax: they are included on
+  line 23200 and Part 1 line 14 adds them back in full). The return has no security options: line
+  24900 is the total of Form T691 lines 28, 29, 31, 35, 36 and 37, all $0, and a benefit large
+  enough to give the minimum tax would have to be part of the income, which would then no longer
+  be negative. The T4 CPP and EI
+  figures are the maximum contributions and premiums, as $400,000 is above the maximum pensionable
+  and insurable earnings: base and first additional $4,034.10, second additional $396.00 and EI
+  $1,077.48. Total income is $400,000 and the deductions from total income are $506,074.00, the
+  other deductions of $500,000, the child care expenses deduction of $5,000 and the CPP enhanced
+  contributions of $1,074.00, so net income before adjustments (line 23400) is -$106,074.00.
+  Net income (line 23600, "Line 54 minus line 55 (if negative, enter "0")") is $0, and so is
+  taxable income (line 26000, "Line 57 minus line 68 (if negative, enter "0")"). Form T691 Part 1
+  line 1, "Taxable income from line 26000 of your return (or the amount you would have entered on
+  line 26000 if the instructions for lines 23600 and 26000 said "if negative, show in
+  brackets")", is the signed -$106,074.00, and Part 1 line 12, "Add lines 1, 4, 7, and 11.", is
+  -$106,074.00 as well, the other lines being $0. Part 1 line 14, "Resource property and
+  flow-through shares from line 6 of Part 9", is $500,000 (Part 9 line 1 of $500,000 less lines 2
+  to 4, each $0), so line 27 is -$106,074.00 + $500,000 = $393,926.00, line 33 and line 44 are the
+  same, line 80 is 50% of the $6,074.00 of line 78 (the child care expenses of $5,000 on line 52
+  and the enhanced CPP contributions of $1,074.00 on line 58), $3,037.00, and the adjusted taxable
+  income (line 93) is $396,963.00. Line 95 is $396,963.00 less the basic exemption of $177,882.00,
+  $219,081.00, line 97 is 20.5% of it, $44,911.61 ($44,911.605, half-up), line 102 is 50% of the
+  $5,533.57 of line 33800, $2,766.79 (a tie, half-up), so the minimum amount (line 103) is
+  $42,144.82. The basic federal tax is negative, so the regular net federal tax payable is $0 and
+  Part 5 line 11 and Part 6 line 14 are $42,144.82, the net federal tax. The Ontario additional
+  tax for minimum tax purposes (Worksheet ON428 line 1, 24.63% of $42,144.82) is $10,380.27;
+  line 3 is the same and over $7,307, so line 4 is 20% x ($10,380.27 - $5,710) = $934.05, line 5
+  is 36% x ($10,380.27 - $7,307) = $1,106.38 and line 6 is $2,040.43; with no Ontario tax (line 7
+  is $0) line 8 is $2,040.43 and line 72 is $10,380.27 + $2,040.43 = $12,420.70, which is line 73
+  (no tax reduction, as line 72 has an amount). The LIFT credit of $875 leaves $11,545.70, and
+  with no health premium on a taxable income of $0 that is the Ontario tax. The total payable is
+  $42,144.82 + $11,545.70 = $53,690.52 and the balance owing is that less the $14,163.00 of
+  credits, $39,527.52. Every line that is not triggered is $0.
+sources:
+  - >-
+    CRA, "CPP contribution rates, maximums and exemptions", 2025 row: maximum annual
+    pensionable earnings $71,300; basic exemption $3,500; employee rate 5.95%; maximum
+    annual employee contribution $4,034.10. CRA, "Second additional CPP contribution rates
+    and maximums", 2025 row: additional maximum annual pensionable earnings $81,200;
+    employee rate 4%; maximum $396. Employment income of 400,000 is above both ceilings, so
+    the contributions are the maximums: base 3,356.10 and first additional 678.00 (4,034.10
+    together) and second additional 396.00; the enhanced contributions deducted are 678.00 +
+    396.00 = 1,074.00.
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/calculating-deductions/making-deductions/second-additional-cpp-contribution-rates-maximums.html
+  - >-
+    CRA, "EI premium rates and maximums", 2025 federal row: maximum annual insurable
+    earnings $65,700; rate 1.64%; maximum annual employee premium $1,077.48. Employment
+    income of 400,000 is above the maximum insurable earnings, so the premiums are the
+    maximum, 1,077.48.
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html
+  - >-
+    CRA, Form T691 "Alternative Minimum Tax" (2025), docs/cra-forms-2025/t691-25e.pdf (no text
+    file is published): Part 1 line 1 "Taxable income from line 26000 of your return (or the
+    amount you would have entered on line 26000 if the instructions for lines 23600 and 26000
+    said "if negative, show in brackets")"; line 12 "Add lines 1, 4, 7, and 11."; line 93 "Line
+    83 minus line 92 (if negative, enter "0") Adjusted taxable income".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "5"
+  ca/employment_income: "400000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "400000"
+  # T4 box 18 and the insurable earnings the premium is required on: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "400000"
+  ca/t2204_premiums_deducted: "1077.48"
+  ca/rrsp_deduction_limit: "10800"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "4034.10"
+  ca/cpp_t4_second_additional_contributions: "396.00"
+  ca-on/dependent_children: "1"
+  ca/eligible_dependants: "1"
+  ca/child_care_expenses_paid: "6000"
+  ca/children_seven_to_sixteen: "1"
+  ca/cwb_eligible_dependants: "1"
+  ca/income_tax_deducted: "8000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca-on/care_supporting_persons_adjusted_income: "30000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/other_deductions: "500000"
+  ca/amt_resource_expenditures: "500000"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_capital_gains: "0"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "400000.00"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/total_income: "400000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "1077.48"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0"
+      ca/child_care_limit_for_children_with_disability: "0"
+      ca/child_care_limit_for_children_seven_to_sixteen: "5000"
+      ca/child_care_basic_limit: "5000"
+      ca/child_care_earned_income: "400000"
+      ca/child_care_earned_income_limit: "266666.67"
+      ca/child_care_expenses: "5000"
+      ca/deductions_from_total_income: "506074.00"
+      ca/net_income: "0"
+      ca/net_income_signed: "-106074.00"
+      ca/net_income_before_adjustments: "-106074.00"
+      ca/other_payments_limit_income: "0"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/deductions_from_net_income: "0"
+      ca/taxable_income_signed: "-106074.00"
+      ca/taxable_income: "0"
+      ca/federal_basic_tax: "0.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "16129.00"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0"
+      ca/canada_employment_amount: "1471"
+      ca/non_refundable_credit_amounts: "38162.58"
+      ca/non_refundable_tax_credits: "5533.57"
+      ca/federal_tax_after_credits: "0"
+      ca-on/ontario_basic_tax: "0.00"
+      ca-on/basic_personal_amount: "12747"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "0"
+      ca-on/age_reduction: "0.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823"
+      ca-on/eligible_dependant_amount: "10823"
+      ca-on/non_refundable_credit_amounts: "28003.58"
+      ca-on/non_refundable_tax_credits: "1414.18"
+      ca-on/ontario_tax_after_credits: "0"
+      ca-on/ontario_surtax: "0"
+      ca-on/ontario_tax_with_surtax: "0.00"
+      ca-on/dividends_amount_a: "0"
+      ca-on/dividends_amount_b: "0"
+      ca-on/other_dividends_credit: "0"
+      ca-on/dividends_amount_a_less_b: "0"
+      ca-on/eligible_dividends_credit: "0"
+      ca-on/dividend_tax_credit: "0"
+      ca-on/ontario_tax_before_dividend_credit: "0"
+      ca-on/ontario_tax_less_dividend_credit: "0"
+      ca-on/dividend_credit_from_line_57: "0"
+      ca-on/ontario_tax_after_dividend_credit: "0"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "544"
+      ca-on/tax_reduction_for_dependants: "0"
+      ca-on/tax_reduction_amounts: "838.00"
+      ca-on/ontario_tax_reduction: "0"
+      ca-on/ontario_tax_after_reduction: "12420.70"
+      ca-on/lift_credit_before_maximum: "20200.00"
+      ca-on/lift_maximum_credit: "875"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit: "875.00"
+      ca-on/ontario_tax_after_lift_credit: "11545.70"
+      ca-on/community_food_program_credit: "0"
+      ca-on/ontario_tax_after_food_credit: "11545.70"
+      ca-on/ontario_health_premium: "0.00"
+      ca-on/ontario_tax: "11545.70"
+      ca/itc_recapture_at_15_percent: "0"
+      ca/itc_recapture_at_20_percent: "0"
+      ca/itc_recapture: "0"
+      ca/federal_tax_with_itc_recapture: "0.00"
+      ca/political_credit_before_maximum: "0"
+      ca/political_credit: "0"
+      ca/labour_sponsored_funds_credit_before_maximum: "0"
+      ca/labour_sponsored_funds_credit: "0"
+      ca/credits_against_federal_tax: "0"
+      ca/federal_tax_less_credits: "0"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000"
+      ca/resp_aips_limit_remaining: "50000"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0"
+      ca/resp_aips_part_b_tax: "0"
+      ca/resp_aips_additional_tax: "0"
+      ca/special_taxes: "0"
+      ca/net_federal_tax: "42144.82"
+      ca/total_payable: "53690.52"
+      ca/working_income: "400000"
+      ca/adjusted_family_net_income: "0"
+      ca/cwb_before_reduction_without_dependant: "1633"
+      ca/cwb_reduction_without_dependant: "0.00"
+      ca/canada_workers_benefit_without_dependant: "1633.00"
+      ca/cwb_before_reduction_with_dependant: "2813"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "2813.00"
+      ca/canada_workers_benefit: "2813.00"
+      ca-on/fertility_credit_before_maximum: "0"
+      ca-on/fertility_credit: "0"
+      ca-on/care_adjusted_income: "0"
+      ca-on/care_family_adjusted_income: "30000"
+      ca-on/care_credit_percentage: "0.67"
+      ca-on/care_credit: "3350.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "0"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0"
+      ca-on/seniors_transit_credit: "0"
+      ca-on/political_credit_before_maximum: "0"
+      ca-on/political_credit: "0"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0"
+      ca-on/ontario_credits_subtotal: "3350.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "3350.00"
+      ca/provincial_credits: "3350.00"
+      ca/medical_supplement_working_income: "400000"
+      ca/medical_supplement_line_6: "0"
+      ca/medical_supplement_line_8: "0"
+      ca/medical_supplement_line_16: "0"
+      ca/refundable_medical_expense_supplement: "0"
+      ca/total_credits: "14163.00"
+      ca/refund_or_balance_owing: "39527.52"
+      ca/educator_supplies_expenses_at_most_maximum: "0"
+      ca/educator_school_supply_credit: "0"
+      ca/refund: "0"
+      ca-on/refund_before_donation: "0"
+      ca-on/net_refund: "0"
+      ca/amt_part_1_subtotal: "-106074.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "500000"
+      ca/amt_applicable_rate_amount: "3037.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "393926.00"
+      ca/amt_minimum_amount: "42144.82"
+      ca/amt_basic_federal_tax: "-5533.57"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "42144.82"
+      ca/amt_federal_tax_payable_under_minimum_tax: "42144.82"
+      ca/amt_carryover_available_for_2026: "47678.39"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "3356.10"
+      ca/cpp_first_additional_contributions: "678.00"
+      ca/cpp_required_base_and_first_additional_contributions: "4034.10"
+      ca/cpp_second_additional_contributions: "396.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "3356.10"
+      ca/cpp_part_5_line_69: "1074.00"
+      ca/cpp_enhanced_contributions: "1074.00"

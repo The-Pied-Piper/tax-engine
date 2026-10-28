@@ -1,0 +1,175 @@
+# Return FB: the T1 slip and investment income lines that no other worked return sets (T3, T4PS and
+# T5013 dividends and their credits, investment income, a partnership share, a listed personal
+# property gain, the pension chart of line 31400 and an RRSP annuity), each one non-zero, with the
+# hand derivation of every line in the description. No CRA example exists for these lines, so every
+# figure is a chosen figure, worked out by hand from the form text.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the form names no province of
+  residence), resident in Canada throughout 2025, aged 18 or older at the end of 2025, with no
+  spouse (chosen figures). The filer's other income is a chosen $40,000.00 (line 13000), and the filer has a
+  chosen $9,000.00 of other pensions and superannuation (line 11500), a chosen $1,200.00 of RRSP
+  income (line 12900, the T4RSP box 16 annuity payments). The foreign pension income (1,000.00) and the U.S. IRA income (500.00) are chart inputs only, taken as
+  parts of line 11500, and the RRIF amount transferred (700.00) is likewise a chart input; the
+  deduction on line 25600 is set for the foreign pension income (1,000.00, see below); the transfers
+  and the U.S. IRA income are not deducted, a chosen simplification. Every figure below is a chosen figure: no
+  CRA example exists, so the arithmetic is shown line by line here, and the lines the return does
+  not reach are not triggered. No employment income and no spouse are set, and the only deduction is line 25600 of 1,000.00.
+  Dividends, line 12000 and line 12010: a T3 slip with a chosen 1,500.00 of taxable dividends,
+  400.00 of them other than eligible; a T4PS slip with 1,000.00, 250.00 other than eligible; a
+  T5013 slip with 800.00, 300.00 other than eligible. Line 12000 is 1,500 + 1,000 + 800 = 3,300.00
+  and line 12010 is 400 + 250 + 300 = 950.00. The dividend tax credit on the slips, line 40425, is
+  the boxes as entered: 201.34 (T3), 135.23 (T4PS) and 102.19 (T5013), a total of 438.76. Box
+  check, from the form's rates (the eligible part times 15.0198% plus the other-than-eligible part
+  times 9.0301%): T3 1,100 x 15.0198% = 165.22 plus 400 x 9.0301% = 36.12 gives 201.34; T4PS 750 x
+  15.0198% = 112.65 plus 250 x 9.0301% = 22.58 gives 135.23; T5013 500 x 15.0198% = 75.10 plus 300
+  x 9.0301% = 27.09 gives 102.19. Ontario dividend tax credit (Worksheet ON428, line 61520, in
+  5006-d-25e.txt): amount A is line 12000 (3,300.00),
+  amount B is line 12010 (950.00); other than eligible 950 x 2.9863% = 28.37; amount A less B
+  3,300 - 950 = 2,350.00; eligible credit 2,350 x 10% = 235.00; the Ontario dividend tax credit is
+  235.00 + 28.37 = 263.37. Investment income, line 12100: a chosen 600.00 of T3 investment income,
+  450.00 of T5013 investment income, 200.00 credited and not received, 150.00 of tax refund
+  interest and 350.00 of royalties, so 600 + 450 + 200 + 150 + 350 = 1,750.00. Partnership income,
+  line 12200: a chosen net partnership income of 2,500.00 (a limited partner). Capital gains, line
+  12700: a listed personal property disposition of proceeds 5,000.00 with adjusted cost base
+  3,200.00 and no outlays, a gain of 5,000 - 3,200 = 1,800.00; the unapplied listed personal
+  property losses of 300.00 leave a net gain of 1,800 - 300 = 1,500.00; the taxable capital gain is
+  1,500 x 1/2 (the inclusion rate of 50%) = 750.00. Pension income amount, line 31400, the chart:
+  line 5 is the foreign pension income 1,000.00, the U.S. IRA income 500.00 and the RRIF transferred
+  700.00, so 1,000 + 500 + 700 = 2,200.00; line 6 is 9,000 - 2,200 = 6,800.00; line 7 is the
+  annuity payments 1,200.00 times 1 (the payments were received because of the death of the
+  spouse, so the condition is met) = 1,200.00; line 8 is 6,800 + 1,200 = 8,000.00; line 31400 is
+  the lesser of line 8 (8,000.00) and 2,000.00, that is 2,000.00. Total income: 40,000 (line 13000)
+  + 9,000 (line 11500) + 3,300 (line 12000) + 1,750 (line 12100) + 2,500 (line 12200) + 750 (line
+  12700) + 1,200 (line 12900) = 58,500.00. Line 25600 "Additional deductions" is 1,000.00, the foreign
+  pension income deducted there (Federal Worksheet line 31400, line 2, at most line 25600), taken
+  after net income: net income is 58,500.00, and taxable income is 58,500.00 less 1,000.00, 57,500.00. The engine-only lines are the engine's figures, not hand figures, and are labelled
+  engine only in the expected section: the Ontario tax less the dividend credit (2,096.85), the net
+  income before adjustments and the other payments limit income (both 58,500.00, as no adjustment
+  applies), the second additional CPP maximum (9,900.00, a full year of CPP at a chosen 12 months),
+  and the refund or balance owing (7,974.39, engine only). Lines not reached, such as the capital
+  gains deduction, the RRSP deduction and line 25000, are not triggered.
+sources:
+  - >-
+    CRA, T1 guide 2025, line 12000 and line 12010: "Enter on line 12000 of your return the total of
+    the amounts shown on the following slips:" "Boxes 32 and 50 of all T3 slips" "Boxes 25 and 31 of
+    all T4PS slips" "Boxes 11 and 25 of all T5 slips" "Boxes 130 and 133 of all T5013 slips"; "Enter
+    on line 12010 of your return the total of the amounts shown on the following slips:"
+    (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 12100: "Complete the chart for line 12100 using your Federal Worksheet
+    and enter the result on line 12100 of your return." (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 12200: "Report, on line 12200 of your return, your share of the net
+    income (or loss) from a partnership (other than from rental or farming operations) if you were
+    one of the following:" "- a limited partner" (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 12700: "Usually, you have a capital gain or loss when you sell or
+    dispose of capital property." (docs/cra-forms-2025/5000-g-25e.txt); CRA, Schedule 3 2025, Part 5:
+    "Line 23: Inclusion rate 50%" and "Line 24: Line 22 multiplied by the percentage from line 23 ="
+    (docs/cra-forms-2025/5000-s3-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 12900: "Regardless of your age, if you received income upon the death of
+    your spouse or common-law partner, as shown on a T4RSP slip, report it on line 12900 of your
+    return even if the amount was transferred to an RRSP, a pooled registered pension plan (PRPP), a
+    specified pension plan (SPP), a registered retirement income fund (RRIF), or an annuity."
+    (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 13000: "Report any taxable income that has not been or should not be
+    reported anywhere else on the return." (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 11500: "Report any other pensions and superannuation you received as
+    shown on the back of your information slips." (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 40425: "If you reported dividends on line 12000 of your return, claim on
+    line 40425 of your return the total of the dividend tax credits from taxable Canadian corporations
+    shown on your information slips." "Amount of eligible dividends: Multiply the amount from line
+    12000 of your return by 15.0198%." "Amount of dividends other than eligible dividends: Multiply
+    the amount from line 12010 of your return by 9.0301%." (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 guide 2025, line 31400: "You may be able to claim up to $2,000 if you reported eligible
+    pension, superannuation or annuity payments on line 11500, line 11600 or line 12900 of your
+    return." "- annuity payments on line 12900 (box 16 of your T4RSP slips) if either:" "-- You
+    received payments due to the death of your spouse or common-law partner" "Eligible pension income
+    does not include any of the following income amounts:" "- income from a United States individual
+    retirement arrangement (IRA) account" (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, T1 2025 Ontario edition, "Line 9 and line 12000: Amount of dividends (eligible and other than
+    eligible)" "Line 12010: Amount of dividends (other than eligible)" "Line 10 and line 12100: Interest
+    and other investment income (use Federal Worksheet)" (docs/cra-forms-2025/5006-r-25e.txt)
+  - >-
+    CRA, Form ON428 2025, "Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet
+    ON428)" (docs/cra-forms-2025/5006-c-25e.txt); Worksheet ON428, "Line 61520 - Ontario dividend tax
+    credit": "Line 1: Amount from line 12010 of your return Line B" "multiplied by 2.9863%" and "Line 2: Amount A
+    minus amount B Line C" "multiplied by 10%" (the form prints each rate on the line after its label) (docs/cra-forms-2025/5006-d-25e.txt).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_income: "40000"
+  ca/other_pensions_and_superannuation: "9000"
+  ca/rrsp_income: "1200"
+  ca/pension_foreign_income: "1000"
+  ca/pension_us_ira_income: "500"
+  ca/pension_rrif_transferred: "700"
+  ca/additional_deductions: "1000"
+  ca/pension_annuity_payments: "1200"
+  ca/pension_annuity_conditions_met: "1"
+  ca/t3_taxable_dividends: "1500"
+  ca/t3_taxable_dividends_other_than_eligible: "400"
+  ca/t3_dividend_tax_credit: "201.34"
+  ca/t4ps_taxable_dividends: "1000"
+  ca/t4ps_taxable_dividends_other_than_eligible: "250"
+  ca/t4ps_dividend_tax_credit: "135.23"
+  ca/t5013_taxable_dividends: "800"
+  ca/t5013_taxable_dividends_other_than_eligible: "300"
+  ca/t5013_dividend_tax_credit: "102.19"
+  ca/t3_investment_income: "600"
+  ca/t5013_investment_income: "450"
+  ca/investment_income_credited_not_received: "200"
+  ca/tax_refund_interest: "150"
+  ca/investment_royalties: "350"
+  ca/net_partnership_income: "2500"
+  ca/listed_personal_property_dispositions:
+    - ca/disposition_proceeds: "5000"
+      ca/disposition_adjusted_cost_base: "3200"
+      ca/disposition_outlays: "0"
+  ca/unapplied_listed_personal_property_losses: "300"
+expected:
+  ca-on/return:
+    - ca/slip_taxable_dividends: "3300.00"
+      ca/taxable_dividends: "3300.00"
+      ca/slip_taxable_dividends_other_than_eligible: "950.00"
+      ca/taxable_dividends_other_than_eligible: "950.00"
+      ca/slip_dividend_tax_credit: "438.76"
+      ca/dividend_tax_credit: "438.76"
+      ca-on/dividends_amount_a: "3300.00"
+      ca-on/dividends_amount_b: "950.00"
+      ca-on/other_dividends_credit: "28.37"
+      ca-on/dividends_amount_a_less_b: "2350.00"
+      ca-on/eligible_dividends_credit: "235.00"
+      ca-on/dividend_tax_credit: "263.37"
+      ca/investment_income_before_prior_years: "1750.00"
+      ca/interest_and_other_investment_income: "1750.00"
+      ca/net_partnership_income: "2500.00"
+      ca/listed_personal_property_gain_or_loss: "1800.00"
+      ca/listed_personal_property_net_gain: "1500.00"
+      ca/taxable_capital_gains: "750.00"
+      ca/schedule_3_line_19900: "750.00"
+      ca/pension_chart_line_5: "2200.00"
+      ca/pension_chart_line_6: "6800.00"
+      ca/pension_chart_line_7: "1200.00"
+      ca/pension_chart_line_8: "8000.00"
+      ca/pension_worksheet_amount: "2000.00"
+      ca/total_income: "58500.00"
+      ca/net_income: "58500.00"
+      ca/taxable_income: "57500.00"
+      # Engine only (not a hand figure): the lines below are the engine's, labelled in the description.
+      ca/net_income_before_adjustments: "58500.00"
+      ca/other_payments_limit_income: "58500.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "2096.85"
+      ca/refund_or_balance_owing: "7974.39"

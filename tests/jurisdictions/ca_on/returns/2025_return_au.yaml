@@ -1,0 +1,134 @@
+# Return AU: Uma, a single 2025 Ontario resident with employment income of $60,000 and
+# Schedule 3 (Capital Gains or Losses) Part 3 dispositions of shares, real estate,
+# crypto-assets and other foreclosures, showing the "Total proceeds of disposition" of each
+# line (column 2 added over its rows), including a row that is a loss and still adds its
+# proceeds, and lines with no rows, which total 0. The proceeds totals feed no later line:
+# the capital gains are the column 5 totals. The other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of
+  $60,000 (a chosen figure) and the dispositions below, every figure a chosen figure. Line 4
+  (shares), column 2 added: 12,000 + 3,000 = 15,000 (line 13199); column 5 = column 2 minus
+  columns 3 and 4: 12,000 - 8,000 - 100 = 3,900 and 3,000 - 4,000 - 50 = -1,050, total 2,850
+  (line 13200). The second row is a loss and its proceeds of 3,000 are still added. Line 5
+  (real estate): proceeds 90,000 (line 13599); 90,000 - 60,000 - 2,000 = 28,000 (line 13800).
+  Line 7 (crypto-assets): proceeds 5,000 (line 15200); 5,000 - 7,000 - 0 = -2,000 (line
+  15301). Line 8 (other foreclosures): proceeds 1,000 (line 15499); 1,000 - 1,500 - 0 = -500
+  (line 15500). Lines 1, 2, 3 and 6 have no rows, so their proceeds totals (10699, 10999,
+  12399 and 15199) are 0. Line 11 = 2,850 + 28,000 - 2,000 - 500 = 28,350, which is line 21
+  (19700) and line 22, and line 24 = 28,350 x 50% = 14,175.00, positive, so line 12700
+  (taxable capital gains) is 14,175.00. Total income (line 15000) = 60,000 + 14,175.00 =
+  74,175.00. The income tax deducted is a chosen 14,000. The net income, taxable income,
+  total payable and refund or balance owing are the engine's figures (to be confirmed against
+  CRA's calculator). Not triggered: the lines of Schedule 3 Part 4 other than line 12, line 25
+  (19890) and every other credit and deduction not named here.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19),
+    Part 3: "For each Gain or loss enter as many lines as necessary."; "(Column 2): Proceeds
+    of disposition", "(Column 3): Adjusted cost base", "(Column 4): Outlays and expenses",
+    "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; lines 1 to 8 (10699, 10999,
+    12399, 13199, 13599, 15199, 15200, 15499) "Total proceeds of disposition (add all the
+    amounts under column 2)"; lines 1 to 8 (10700, 11000, 12400, 13200, 13800, 15300, 15301,
+    15500) "Total gain or loss (add all the amounts under column 5)"; "Line 11: Add lines 1 to
+    10. Total gains or losses of qualified properties and other properties =". Part 5: "Line
+    24: Line 22 multiplied by the percentage from line 23 =" (50%); line 26 (line 19900) "If
+    positive, enter the result on line 12700 of your return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "12000"
+      ca/disposition_adjusted_cost_base: "8000"
+      ca/disposition_outlays: "100"
+    - ca/disposition_proceeds: "3000"
+      ca/disposition_adjusted_cost_base: "4000"
+      ca/disposition_outlays: "50"
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "90000"
+      ca/disposition_adjusted_cost_base: "60000"
+      ca/disposition_outlays: "2000"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/crypto_asset_dispositions:
+    - ca/disposition_proceeds: "5000"
+      ca/disposition_adjusted_cost_base: "7000"
+      ca/disposition_outlays: "0"
+  ca/other_foreclosure_dispositions:
+    - ca/disposition_proceeds: "1000"
+      ca/disposition_adjusted_cost_base: "1500"
+      ca/disposition_outlays: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "14000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/qsbcs_proceeds: "0"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/qffp_proceeds: "0"
+      ca/qffp_foreclosure_proceeds: "0"
+      ca/share_proceeds: "15000"
+      ca/real_estate_proceeds: "90000"
+      ca/bond_proceeds: "0"
+      ca/crypto_asset_proceeds: "5000"
+      ca/other_foreclosure_proceeds: "1000"
+      ca/share_gain_or_loss: "2850"
+      ca/real_estate_gain_or_loss: "28000"
+      ca/crypto_asset_gain_or_loss: "-2000"
+      ca/other_foreclosure_gain_or_loss: "-500"
+      ca/capital_gain: "28350"
+      ca/included_capital_gain: "14175.00"
+      ca/taxable_capital_gains: "14175.00"
+      ca/schedule_3_line_19900: "14175.00"
+      ca/total_income: "74175.00"
+      ca/net_income: "73610.00"
+      ca/net_income_signed: "73610.00"
+      ca/taxable_income: "73610.00"
+      ca/total_payable: "13029.69"
+      ca/refund_or_balance_owing: "-970.31"
+      ca-on/net_refund: "970.31"
+      ca-on/ontario_tax_less_dividend_credit: "3732.34"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "73610.00"
+      ca/other_payments_limit_income: "73610.00"
+      ca/amt_part_1_subtotal: "73610.00"
+      ca/amt_net_capital_gains_after_adjustments: "28850"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "282.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "88285.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "8547.35"
+      ca/amt_regular_net_federal_tax_payable: "8547.35"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "3361.75"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2796.75"
+      ca/cpp_part_5_line_69: "565.00"

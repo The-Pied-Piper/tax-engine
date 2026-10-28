@@ -1,0 +1,747 @@
+# Return EY: a 2025 Ontario resident with two Form T2042 (farming) statements and two Form T2121
+# (fishing) statements that reach the branches no earlier return does: for each form a sole
+# proprietor with a recapture and a terminal loss of capital cost allowance, a motor vehicle (Chart
+# A), a minister's allocation of the immediate expensing limit and, on the T2042, the previous
+# year's inventory adjustments and the non-arm's length expenses of the T2043 Chart A, on the T2121
+# the repairs (the three amounts, the insurance recovery and the cost); and for each form a partner
+# whose business-use-of-home expenses exceed the income that limits them. Farming income $45,350.00,
+# fishing income $29,900.00, total income $75,250.00, a balance owing of $14,468.38. Every figure is
+# derived from the form lines by a calculation of its own (not the engine's) and the engine agrees
+# on every listed line; Return EX takes the same branches through the Form T2125 and Form T776
+# statements. Amounts are quoted decimal strings, never floats; counts are quoted digit strings. A
+# line that is not listed under `expected` computes to 0 where the form is the return's, and is
+# not checked where it is not.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older
+  at the end of 2025, with 12 months of CPP (Schedule 8 box A), Schedule 8 Part 4 not completed and
+  no agreement for EI (as Return BB), so no CPP contributions or EI premiums are computed; every
+  figure is a chosen one (the meals and entertainment entered are the allowable part). The second
+  additional CPP earnings maximum on the return, 9,900.00, is 81,200.00 - 71,300.00 and the immediate
+  expensing limit without a minister's allocation is the $1.5 million of Area A endnote 5. Four statements; the farm designated province is 0 (none), so no Form
+  T2043 credit is computed.
+  T2042 statement 1, a sole proprietor's farm. Part 3: wheat 80,000 and
+  cattle 20,000; line 9600 (other income) is the other income 400 plus the
+  recapture 3,000 (Area A endnote 3), 3,400; gross income (line 9659, amount 4A) is 80,000 + 20,000
+  + 3,400 = 103,400. Area A (the rates are Guide T4002's: Class 6 10%, Class 8 20%, Class 10 30%).
+  Class 8: column 2 1,500, column 5 4,500, column 7 is 1,500 - 4,500 = (3,000), negative: a
+  recapture of 3,000, no claim, 0 at the end of the year. Class 10: column 2 2,000, column 5 600,
+  column 7 1,400, positive with no property left in the class: a terminal loss of 1,400, no claim,
+  0 at the end of the year. Class 6: column 2 30,000, column 7 30,000, the maximum 30,000 x 10% =
+  3,000.00, claimed in full; column 22 is 27,000. Line 9936 is 3,000. Chart A (motor vehicle
+  expenses): amounts 3, 5, 6 and 7 are 3,000 + 1,200 + 300 + 1,500 = amount 12 6,000; amount 13 is
+  6,000 x 8,000 (kilometres driven for the business) / 10,000 (total) = 4,800.00; business parking
+  fees (amount 14) 100 and supplementary insurance (amount 15) 0, so amount 16 (line 9819) is
+  4,900.00. Part 4: seeds and plants 15,000, fertilizers and lime 6,000, veterinary fees 1,200,
+  machinery repairs, licences and insurance 2,500, gasoline, diesel fuel and oil 3,500,
+  electricity 1,800, interest and bank charges 2,000, property taxes 1,500, rent 5,000 and
+  salaries 8,000 (46,500); motor vehicle expenses 4,900.00; the previous year's mandatory (line
+  9937) 1,500 and optional (line 9938) 500 inventory adjustments, 2,000; the other expenses 250
+  plus the terminal loss 1,400, 1,650; subtotal 4B is 46,500 + 4,900 + 2,000 + 1,650 = 55,050.00.
+  Line 9898 is 55,050.00 + 3,000 = 58,050.00 and line 9899 is 103,400 - 58,050.00 = 45,350.00; with
+  no current-year inventory adjustment (lines 9941 and 9942 are 0) amount 4C is 45,350.00. Part 5:
+  no partner, so amounts 5A, 5C are 45,350.00 and, with no business-use-of-home claim, line 9946
+  is 45,350.00 (T1 line 14100; gross income on line 14099 is 103,400). T2043 Chart A: amount 2
+  (line 9937) 1,500 + amount 3 (line 9938) 500 + amount 4 (non-arm's length expenses) 2,000 is
+  amount 5, 4,000; amount 6 is 58,050.00 - 4,000 = 54,050.00. The minister allocated a chosen
+  1,250,000 (count 1), the immediate expensing limit; no class has DIEP additions.
+  T2042 statement 2, a farm partner: amount 5A is the T5013 slip amount 15,000 (count 1); line
+  9951 is 0 and line 9974 (GST/HST rebate for partners) 200, so amount 5B is 15,200. Part 6:
+  amounts 6A to 6E 500 + 300 + 200 + 150 + 50 = 1,200 (line 9943), so amount 5C is 14,000. Part 7:
+  amounts 7A to 7G 2,000 + 1,500 + 400 + 800 + 3,000 + 2,200 + 600 = 10,500 (7H); amount 7I 1,500,
+  so 7J is 9,000; amount 7L 6,000, so 7M is 15,000; amount 7N is 14,000; 7O (carried forward) is
+  15,000 - 14,000 = 1,000; 7P is the lesser of 15,000 and 14,000, 14,000 (line 9945); line 9946
+  is 14,000 - 14,000 = 0.
+  T2121 statement 1, a sole proprietor's fishing business. Part 3: fish products 60,000,
+  sharesperson income (amount 3F) 5,000, subsidies 2,000 and line 9600 (other income) 300 plus
+  the recapture 2,500, 2,800; gross income (line 8299) is 60,000 + 5,000 + 2,000 + 2,800 = 69,800
+  (T1 line 14299). Area A (the rate of Class 7 is Guide T4002's: "In most cases, a fishing boat
+  belongs to Class 7. Therefore, you can claim CCA at a maximum rate of 15%."). Class 8: column 2
+  1,800, column 5 4,300, column 7 (2,500), a recapture of 2,500. Class 10: column 2 2,200, column
+  5 700, column 7 1,500, positive with no property left: a terminal loss of 1,500. Class 7: column 2
+  40,000, the maximum 40,000 x 15% = 6,000.00, claimed in full; column 22 is 34,000. Line 9936 is
+  6,000. Chart A: amounts 3, 5, 6 and 7 are 2,000 + 800 + 200 + 1,000 = amount 12 4,000; amount 13
+  is 4,000 x 6,000 / 12,000 = 2,000.00; with no parking or supplementary insurance, amount 16
+  (line 9281, amount 4J) is 2,000.00. Part 4: salt, bait, and ice 2,000, crew shares 8,000, fuel
+  costs 6,000, fishing gear 2,000, insurance 1,500, interest and bank charges 800, meals and
+  entertainment 400, business taxes, licences, and memberships 200, office expenses 300, nets and
+  traps 1,000, professional fees 600 and salaries 3,000 (25,800); the repairs and maintenance
+  amounts 1 to 3 are 3,000 (fishing boat) + 1,200 (engine) + 800 (electrical equipment), amount 4
+  5,000; the insurance recovery (amount 5) 600, so your cost (line 8963) is 4,400; the other
+  expenses 200 plus the terminal loss 1,500, 1,700; subtotal 4Q is 25,800 + 2,000.00 + 4,400 +
+  1,700 = 33,900.00. Line 9368 is 33,900.00 + 6,000 = 39,900.00 and line 9369 is 69,800 -
+  39,900.00 = 29,900.00. Part 5: no partner, so line 9946 is 29,900.00 (T1 line 14300). The
+  minister allocated a chosen 1,000,000 (count 1).
+  T2121 statement 2, a fishing partner: amount 5A is the T5013 slip amount 12,000 (count 1) and
+  line 9974 150, so amount 5B is 12,150. Part 6: amounts 6A to 6E 400 + 250 + 150 + 100 + 50 = 950
+  (line 9943), so amount 5C is 11,200. Part 7: amounts 7A to 7G 1,500 + 1,000 + 300 + 500 + 2,500
+  + 1,200 + 400 = 7,400 (7H); amount 7I 1,000, so 7J is 6,400; amount 7L 6,000, so 7M is 12,400;
+  amount 7N is 11,200; 7O is 12,400 - 11,200 = 1,200; 7P is the lesser of 12,400 and 11,200,
+  11,200 (line 9945); line 9946 is 0.
+  T1 (5006-R): line 14100 is 45,350.00 + 0 and line 14300 is 29,900.00 + 0; lines 13500, 13700
+  and 13900 are 0, so line 27 is 0 + 0 + 0 + 45,350.00 + 29,900.00 = 75,250.00, which is total
+  income (line 15000), net income and taxable income, there being no deduction. Federal tax (Part
+  A, column 2): 75,250.00 - 57,375.00 = 17,875.00 x 20.5% = 3,664.375, rounded half-up to the
+  cent 3,664.38, plus 8,319.38 is 11,983.76. The basic personal amount 16,129.00 x 14.5% =
+  2,338.705, rounded 2,338.71; the federal tax after credits is 11,983.76 - 2,338.71 = 9,645.05.
+  Ontario (ON428 Part A, column 2): 75,250.00 - 52,886.00 = 22,364.00 x 9.15% = 2,046.306,
+  rounded 2,046.31, plus 2,670.74 is 4,717.05; the basic personal amount 12,747.00 x 5.05% =
+  643.7235, rounded 643.72, so the Ontario tax after credits is 4,073.33, below the first surtax
+  threshold of 5,710 (no surtax) and with no Ontario tax reduction (twice the basic reduction,
+  588.00, less 4,073.33 is below 0) and no LIFT credit (no employment income). The Ontario health
+  premium (row 9, more than 72,600 and not more than 200,000) is 750, so the Ontario tax is
+  4,073.33 + 750 = 4,823.33. The total payable (balance owing) is 9,645.05 + 4,823.33 = 14,468.38.
+sources:
+  - >-
+    CRA, Form T2042 (2025), Statement of Farming Activities (docs/cra-forms-2025/t2042-25e.pdf, a
+    PDF quote accepted 2026-10-19;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2042/t2042-25e.pdf). Part 3: "Other
+    income (specify)", "Gross income: Total of the income lines (enter this amount on line 14099 of
+    your income tax and benefit return)". Part 4: "Mandatory inventory adjustment included in the
+    previous year" (9937), "Optional inventory adjustment included in the previous year" (9938),
+    "Subtotal of expenses" (4B), "Total farm expenses: Amount 4B plus line 9936" (9898), "Net income
+    (loss) before inventory adjustments: Amount 4A minus line 9898" (9899), "Net income (loss) after
+    inventory adjustments: Total of lines 9899, 9941, and 9942". Part 5: "Total: Amount 5A plus line
+    9951 plus line 9974", "Net income (loss) after adjustments: Amount 5B minus line 9943", "Your
+    net income (loss): Amount 5C minus line 9945 (enter this amount on line 14100 of your income tax
+    and benefit return)". Part 7: "Subtotal: Add amounts 7J to 7L.", "Business-use-of-home expenses
+    available to carry forward: Amount 7M minus amount 7N (if negative, enter "0")", "Allowable
+    claim: Amount 7M or 7N above, whichever is less (enter your share of this amount on line 9945 of
+    Part 5)". Area A endnote 3: "If you have a negative amount in column 7, add it to income as a
+    recapture ... If no property is left in the class and there is a positive amount in this column,
+    deduct the amount from income as a terminal loss".
+  - >-
+    CRA, Form T2121 (2025), Statement of Fishing Activities (docs/cra-forms-2025/t2121-25e.pdf, a
+    PDF quote accepted 2026-10-19;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2121/t2121-25e.pdf). Part 3:
+    "Sharesperson income (specify name of fishing boat and captain below)", "Gross income: Total of
+    amounts 3A to 3F and line 9600 (enter this amount on line 14299 of your income tax and benefit
+    return)". Part 4: "Repairs and maintenance: Fishing boat", "Engine", "Electrical equipment",
+    "Total of amounts 1 to 3", "Insurance recovery", "Your cost (amount 4 minus amount 5)" (8963),
+    "Subtotal: Add amounts 4B to 4P.", "Total expenses: Amount 4Q plus line 9936", "Net income
+    (loss) before adjustments: Amount 4A minus line 9368". Part 5: "Total: Amount 5A plus line
+    9974", "Net income (loss) after adjustments: Amount 5B minus line 9943", "Your net income
+    (loss): Amount 5C minus line 9945 (enter this amount on line 14300 of your income tax and
+    benefit return)". Part 7: as Form T2125 Part 7.
+  - >-
+    CRA, Form T2043 (2025), Return of Fuel Charge Proceeds to Farmers Tax Credit
+    (docs/cra-forms-2025/t2043-25e.pdf), Chart A: amount 2 and amount 3 are the mandatory and
+    optional inventory adjustments included in the previous year (lines 9937 and 9938 of Form
+    T2042), amount 4 the non-arm's length expenses, "Subtotal: Add amounts 2 to 4", "Gross farming
+    expenses: Amount 1 minus amount 5". Forms T2042 and T2121 Chart A: "Business use part: amount 1
+    ÷ amount 2 × amount 12" and "Allowable motor vehicle expenses: Add amounts 13 to 15 (enter this
+    total on line 9281 of Part 4)". Guide T4002 (docs/cra-forms-2025/t4002-25e.pdf), the classes:
+    "Class 6 (10%)", "Class 8 (20%)", "Class 10 (30%)"; and, for Class 7: "In most cases, a fishing
+    boat belongs to Class 7. Therefore, you can claim CCA at a maximum rate of 15%.".
+  - >-
+    CRA, "T1-2025 Ontario edition" return (form 5006-R, docs/cra-forms-2025/5006-r-25e.txt,
+    confirmed 2026-10-19), Part A "Federal tax on taxable income", Column 2 "Line 26000 is more than
+    $57,375 but not more than $114,750": "Line 70: Amount from line 26000"; "Line 71: 57,375.00";
+    "Line 72: Line 70 minus line 71 (cannot be negative)"; "Line 73: Rate 20.5%"; "Line 74: Line 72
+    multiplied by the percentage from line 73"; "Line 75: 8,319.38"; "Line 76: Line 74 plus line 75
+    Federal tax on taxable income". Column 1 "Rate 14.5%" gives the rate of the non-refundable
+    credits (Return BB).
+  - >-
+    CRA, Form 5006-C (Ontario Form ON428, 2025; docs/cra-forms-2025/5006-c-25e.txt), Part A "Ontario
+    tax on taxable income": column "Line 1 is more than $52,886 but not more than $105,775", "Line
+    5: Rate 9.15%", "Line 7: 2,670.74", "Line 8: Line 6 plus line 7 Ontario tax on taxable income";
+    "Complete lines 66 to 68 if the amount on line 65 is more than $5,710. If the amount is less
+    than $5,710, enter "0" on line 68"; "Line 74: Basic reduction 294.00", "Line 78: Amount from
+    line 77 above multiplied by 2", "Line 80: Line 78 minus line 79 (if negative, enter "0") Ontario
+    tax reduction"; and "Line 89 - Ontario health premium", "Row 9: Taxable Income more than $72,600
+    but not more than $200,000 Ontario health premium: $750".
+inputs:
+  ca/t2042_statements:
+    - ca/farm_wheat: "80000"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "20000"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "400"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "6000"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "15000"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "1200"
+      ca/farm_machinery_repairs_licences_and_insurance: "2500"
+      ca/farm_gasoline_diesel_and_oil: "3500"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "1800"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "2000"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "1500"
+      ca/farm_rent: "5000"
+      ca/farm_salaries_wages_and_benefits: "8000"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "8000"
+          ca/business_vehicle_total_kilometres: "10000"
+          ca/business_vehicle_fuel_and_oil: "3000"
+          ca/business_vehicle_insurance: "1200"
+          ca/business_vehicle_licence_and_registration: "300"
+          ca/business_vehicle_maintenance_and_repairs: "1500"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "0"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "100"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "0"
+          ca/business_vehicle_interest_days: "0"
+          ca/business_vehicle_lease_charges: "0"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "0"
+          ca/business_vehicle_list_price: "0"
+          ca/business_vehicle_passenger_vehicle: "1"
+          ca/business_vehicle_purchase_year: "0"
+          ca/business_vehicle_lease_year: "0"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+      ca/farm_vehicle_sales_tax_rate: "13"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "1500"
+      ca/farm_optional_inventory_adjustment_previous_year: "500"
+      ca/farm_other_expenses: "250"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "2000"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "1500"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "4500"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "10"
+          ca/cca_ucc_at_start: "2000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "600"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "6"
+          ca/cca_ucc_at_start: "30000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "3000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "1"
+      ca/farm_minister_allocation: "1250000"
+    - ca/farm_wheat: "0"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "0"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "0"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "1"
+      ca/farm_partner_share: "15000"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "200"
+      ca/farm_partner_other_amount_a: "500"
+      ca/farm_partner_other_amount_b: "300"
+      ca/farm_partner_other_amount_c: "200"
+      ca/farm_partner_other_amount_d: "150"
+      ca/farm_partner_other_amount_e: "50"
+      ca/farm_home_heat: "2000"
+      ca/farm_home_electricity: "1500"
+      ca/farm_home_insurance: "400"
+      ca/farm_home_maintenance: "800"
+      ca/farm_home_mortgage_interest: "3000"
+      ca/farm_home_property_taxes: "2200"
+      ca/farm_home_other_expenses: "600"
+      ca/farm_home_personal_use_part: "1500"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "6000"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+  ca/t2121_statements:
+    - ca/fish_fish_products: "60000"
+      ca/fish_other_marine_products: "0"
+      ca/fish_grants_credits_and_rebates: "0"
+      ca/fish_subsidies: "2000"
+      ca/fish_compensation_for_loss: "0"
+      ca/fish_sharesperson_income: "5000"
+      ca/fish_other_income: "300"
+      ca/fish_salt_bait_and_ice: "2000"
+      ca/fish_crew_shares: "8000"
+      ca/fish_fuel_costs: "6000"
+      ca/fish_fishing_gear: "2000"
+      ca/fish_insurance: "1500"
+      ca/fish_interest_and_bank_charges: "800"
+      ca/fish_meals_and_entertainment: "400"
+      ca/fish_business_taxes_licences_and_memberships: "200"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "6000"
+          ca/business_vehicle_total_kilometres: "12000"
+          ca/business_vehicle_fuel_and_oil: "2000"
+          ca/business_vehicle_insurance: "800"
+          ca/business_vehicle_licence_and_registration: "200"
+          ca/business_vehicle_maintenance_and_repairs: "1000"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "0"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "0"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "0"
+          ca/business_vehicle_interest_days: "0"
+          ca/business_vehicle_lease_charges: "0"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "0"
+          ca/business_vehicle_list_price: "0"
+          ca/business_vehicle_passenger_vehicle: "1"
+          ca/business_vehicle_purchase_year: "0"
+          ca/business_vehicle_lease_year: "0"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+      ca/fish_vehicle_sales_tax_rate: "13"
+      ca/fish_office_expenses: "300"
+      ca/fish_nets_and_traps: "1000"
+      ca/fish_professional_fees: "600"
+      ca/fish_salaries_wages_and_benefits: "3000"
+      ca/fish_repairs_fishing_boat: "3000"
+      ca/fish_repairs_engine: "1200"
+      ca/fish_repairs_electrical_equipment: "800"
+      ca/fish_insurance_recovery: "600"
+      ca/fish_other_expenses: "200"
+      ca/fish_cca_personal_part: "0"
+      ca/fish_fiscal_period_days_entered: "0"
+      ca/fish_land_additions: "0"
+      ca/fish_land_dispositions: "0"
+      ca/fish_liabilities: "0"
+      ca/fish_drawings: "0"
+      ca/fish_capital_contributions: "0"
+      ca/fish_boat_mainly_personal: "0"
+      ca/fish_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "1800"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "4300"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "10"
+          ca/cca_ucc_at_start: "2200"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "700"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "7"
+          ca/cca_ucc_at_start: "40000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "6000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/fish_partner: "0"
+      ca/fish_partner_share: "0"
+      ca/fish_partner_gst_hst_rebate: "0"
+      ca/fish_partner_other_amount_a: "0"
+      ca/fish_partner_other_amount_b: "0"
+      ca/fish_partner_other_amount_c: "0"
+      ca/fish_partner_other_amount_d: "0"
+      ca/fish_partner_other_amount_e: "0"
+      ca/fish_home_heat: "0"
+      ca/fish_home_electricity: "0"
+      ca/fish_home_insurance: "0"
+      ca/fish_home_maintenance: "0"
+      ca/fish_home_mortgage_interest: "0"
+      ca/fish_home_property_taxes: "0"
+      ca/fish_home_other_expenses: "0"
+      ca/fish_home_personal_use_part: "0"
+      ca/fish_home_cca: "0"
+      ca/fish_home_carried_forward: "0"
+      ca/fish_epop_associated: "0"
+      ca/fish_epop_agreement_filed: "0"
+      ca/fish_epop_percentage: "0"
+      ca/fish_epop_percentage_total: "0"
+      ca/fish_minister_allocation_given: "1"
+      ca/fish_minister_allocation: "1000000"
+    - ca/fish_fish_products: "0"
+      ca/fish_other_marine_products: "0"
+      ca/fish_grants_credits_and_rebates: "0"
+      ca/fish_subsidies: "0"
+      ca/fish_compensation_for_loss: "0"
+      ca/fish_sharesperson_income: "0"
+      ca/fish_other_income: "0"
+      ca/fish_salt_bait_and_ice: "0"
+      ca/fish_crew_shares: "0"
+      ca/fish_fuel_costs: "0"
+      ca/fish_fishing_gear: "0"
+      ca/fish_insurance: "0"
+      ca/fish_interest_and_bank_charges: "0"
+      ca/fish_meals_and_entertainment: "0"
+      ca/fish_business_taxes_licences_and_memberships: "0"
+      ca/business_vehicles: []
+      ca/fish_vehicle_sales_tax_rate: "0"
+      ca/fish_office_expenses: "0"
+      ca/fish_nets_and_traps: "0"
+      ca/fish_professional_fees: "0"
+      ca/fish_salaries_wages_and_benefits: "0"
+      ca/fish_repairs_fishing_boat: "0"
+      ca/fish_repairs_engine: "0"
+      ca/fish_repairs_electrical_equipment: "0"
+      ca/fish_insurance_recovery: "0"
+      ca/fish_other_expenses: "0"
+      ca/fish_cca_personal_part: "0"
+      ca/fish_fiscal_period_days_entered: "0"
+      ca/fish_land_additions: "0"
+      ca/fish_land_dispositions: "0"
+      ca/fish_liabilities: "0"
+      ca/fish_drawings: "0"
+      ca/fish_capital_contributions: "0"
+      ca/fish_boat_mainly_personal: "0"
+      ca/fish_cca_classes: []
+      ca/fish_partner: "1"
+      ca/fish_partner_share: "12000"
+      ca/fish_partner_gst_hst_rebate: "150"
+      ca/fish_partner_other_amount_a: "400"
+      ca/fish_partner_other_amount_b: "250"
+      ca/fish_partner_other_amount_c: "150"
+      ca/fish_partner_other_amount_d: "100"
+      ca/fish_partner_other_amount_e: "50"
+      ca/fish_home_heat: "1500"
+      ca/fish_home_electricity: "1000"
+      ca/fish_home_insurance: "300"
+      ca/fish_home_maintenance: "500"
+      ca/fish_home_mortgage_interest: "2500"
+      ca/fish_home_property_taxes: "1200"
+      ca/fish_home_other_expenses: "400"
+      ca/fish_home_personal_use_part: "1000"
+      ca/fish_home_cca: "0"
+      ca/fish_home_carried_forward: "6000"
+      ca/fish_epop_associated: "0"
+      ca/fish_epop_agreement_filed: "0"
+      ca/fish_epop_percentage: "0"
+      ca/fish_epop_percentage_total: "0"
+      ca/fish_minister_allocation_given: "0"
+      ca/fish_minister_allocation: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "4073.33"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_farming_income: "45350.00"
+      ca/net_fishing_income: "29900.00"
+      ca/net_self_employment_income: "75250.00"
+      ca/total_income: "75250.00"
+      ca/net_income_before_adjustments: "75250.00"
+      ca/other_payments_limit_income: "75250.00"
+      ca/net_income: "75250.00"
+      ca/taxable_income: "75250.00"
+      ca/federal_basic_tax: "11983.76"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "9645.05"
+      ca-on/ontario_basic_tax: "4717.05"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "4073.33"
+      ca-on/ontario_health_premium: "750"
+      ca-on/ontario_tax: "4823.33"
+      ca/total_payable: "14468.38"
+      ca/refund_or_balance_owing: "14468.38"
+  ca/t2042:
+    - ca/farm_recaptured_cca: "3000"
+      ca/farm_other_income_with_recapture: "3400"
+      ca/farm_gross_income: "103400"
+      ca/farm_terminal_loss: "1400"
+      ca/farm_other_expenses_with_terminal_loss: "1650"
+      ca/farm_motor_vehicle_expenses: "4900.00"
+      ca/farm_expenses_subtotal: "55050.00"
+      ca/farm_cca_claim: "3000"
+      ca/farm_total_expenses: "58050.00"
+      ca/farm_net_income_before_adjustments: "45350.00"
+      ca/farm_net_income_after_inventory_adjustments: "45350.00"
+      ca/farm_net_income_after_adjustments: "45350.00"
+      ca/farming_income: "45350.00"
+      ca/farm_chart_a_subtotal: "4000"
+      ca/farm_chart_a_gross_expenses: "54050.00"
+      ca/farm_immediate_expensing_limit_unprorated: "1250000"
+      ca/farm_minister_allocation_given_checked: "1"
+      ca/farm_gross_income_before_expenses: "103400"
+      ca/farm_cca_table_claim: "3000"
+      ca/farm_cca_claim_less_personal_part: "3000"
+      ca/farm_share_of_net_income: "45350.00"
+      ca/farm_partnership_total: "45350.00"
+      ca/farm_closing_ucc:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "0"
+        - ca/cca_class_number: "10"
+          ca/cca_ucc_at_end: "0"
+        - ca/cca_class_number: "6"
+          ca/cca_ucc_at_end: "27000"
+    - ca/farm_partner_other_amounts_total: "1200"
+      ca/farm_partner_other_amounts: "1200"
+      ca/farm_partnership_total: "15200"
+      ca/farm_net_income_after_adjustments: "14000"
+      ca/farm_home_expenses_subtotal: "10500"
+      ca/farm_home_expenses_business_part: "9000"
+      ca/farm_home_expenses_available: "15000"
+      ca/farm_home_income_limit: "14000"
+      ca/farm_home_carry_forward: "1000"
+      ca/farm_home_expenses: "14000"
+      ca/farm_immediate_expensing_limit_unprorated: "1500000"
+      ca/farm_share_of_net_income: "15000"
+  ca/t2121:
+    - ca/fish_recaptured_cca: "2500"
+      ca/fish_other_income_with_recapture: "2800"
+      ca/fish_gross_income: "69800"
+      ca/fish_terminal_loss: "1500"
+      ca/fish_other_expenses_with_terminal_loss: "1700"
+      ca/fish_motor_vehicle_expenses: "2000.00"
+      ca/fish_repairs_total: "5000"
+      ca/fish_repairs_your_cost: "4400"
+      ca/fish_expenses_subtotal: "33900.00"
+      ca/fish_cca_claim: "6000"
+      ca/fish_total_expenses: "39900.00"
+      ca/fish_net_income_before_adjustments: "29900.00"
+      ca/fish_net_income_after_adjustments: "29900.00"
+      ca/fishing_income: "29900.00"
+      ca/fish_immediate_expensing_limit_unprorated: "1000000"
+      ca/fish_minister_allocation_given_checked: "1"
+      ca/fish_gross_income_before_expenses: "69800"
+      ca/fish_cca_table_claim: "6000"
+      ca/fish_cca_claim_less_personal_part: "6000"
+      ca/fish_share_of_net_income: "29900.00"
+      ca/fish_partnership_total: "29900.00"
+      ca/fish_closing_ucc:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "0"
+        - ca/cca_class_number: "10"
+          ca/cca_ucc_at_end: "0"
+        - ca/cca_class_number: "7"
+          ca/cca_ucc_at_end: "34000"
+    - ca/fish_partner_other_amounts_total: "950"
+      ca/fish_partner_other_amounts: "950"
+      ca/fish_partnership_total: "12150"
+      ca/fish_net_income_after_adjustments: "11200"
+      ca/fish_home_expenses_subtotal: "7400"
+      ca/fish_home_expenses_business_part: "6400"
+      ca/fish_home_expenses_available: "12400"
+      ca/fish_home_income_limit: "11200"
+      ca/fish_home_carry_forward: "1200"
+      ca/fish_home_expenses: "11200"
+      ca/fish_immediate_expensing_limit_unprorated: "1500000"
+      ca/fish_share_of_net_income: "12000"

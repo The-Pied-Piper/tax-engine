@@ -1,0 +1,118 @@
+# Return JS: Form T1206 page 6, "Dispositions of certain capital property - shares subject to TOSI", for
+# a filer 18 or older at the end of the year: the form says to enter line G "on the applicable line(s)
+# of Schedule 3" and names none, so the engine adds nothing and the filer reports the sales on the
+# Schedule 3 rows; 50% of line G goes on Part 1 line 3 of Form T1206; nothing is deemed to be a
+# dividend.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return JS: the section of Return JN (lines A, B and F of 20,000.00, 5,000.00 and 1,000.00 and two
+  dispositions with a reserve of 5,000.00 and 300.00, so line G is 20,700.00) for a filer 18 or
+  older (the age answer is 1), who reports the sales on the Schedule 3 lines for what was sold, as T1206
+  names no line for line G: three share rows on line 4 (gains of 10,000.00, 10,000.00 and 2,000.00,
+  22,000.00 in all: line A of 20,000.00 and 2,000.00 of another sale), the T3 box 21 gains (line F) of
+  1,000.00 on line 16, and the reserves through Form T2017 (two line 27 rows of 5,000.00 and 300.00 for
+  2025 against the 2024 reserve of 5,000.00 on its line 26, Line 26 minus line 27) on line 20 as
+  (300.00). Nothing is deemed to be a dividend (the
+  under-18 amount is 0.00), so lines 12000 and 12010 are 0. Schedule 3 line 21 is 22,000.00 +
+  1,000.00 - 300.00 = 22,700.00, whose taxable half (50%) is 11,350.00 on line 12700 and is the
+  total income. Part 1 line 3 of Form T1206 is 50% of
+  line G, 20,700.00 x 50% = 10,350.00, which is not bounded by the income before losses (11,350.00); with
+  line 1 of 0, the total split income (line 4) is 10,350.00, which is deducted on line 23200, so the
+  net income is 11,350.00 - 10,350.00 = 1,000.00 and the taxable income is 1,000.00. The federal
+  tax on split income is 10,350.00 x 33% = 3,415.50 and the Ontario tax on split income is
+  10,350.00 x 20.53% = 2,124.86 (half-up to the cent); the balance owing is 3,415.50 + 2,124.86 =
+  5,540.36 (the Ontario health premium on a taxable income of 1,000.00 plus the 10,350.00 of line 4 of
+  Form T1206, 11,350.00, is 0 and the tax on split income is the larger of it and the tax after
+  credits); the Ontario TOSI-adjusted
+  taxable income is 2,124.86 / 5.05% = 42,076.44; the CPP second additional
+  earnings maximum is the 2025 dataset figure 9,900.00.
+sources:
+  - >-
+    CRA, Form T1206 (2025), Tax on Split Income (docs/cra-forms-2025/t1206-25e.pdf, confirmed from
+    the PDF, which is the only published copy; no .txt is published;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf), page 6,
+    "Dispositions of certain capital property - shares subject to TOSI": "Capital gain on
+    dispositions in 2025" (A); "Amount of 2024 reserve (from line C of Form T1206 for 2024)" (B);
+    "Amount of 2025 reserve (calculated below)" (C); "Line B minus line C (if negative, show in
+    brackets)" (D); "Line A plus line D Net capital gain" (E); "Capital gains from box 21 of your
+    T3 slip(s) (relating to dispositions in 2025)" (F); "Line E plus line F" (G).
+  - >-
+    CRA, Form T1206 (2025), page 6: "If you were under 18 years of age at the end of the year, the
+    amount at line G is deemed to be a dividend (other than eligible dividend). Multiply the amount
+    from line G by 1.15 and include this amount under "Taxable amount of dividends (eligible and
+    other than eligible)" on the Federal Worksheet, and on lines 12000 and 12010 of your return."
+  - >-
+    CRA, Form T1206 (2025), page 6: "If you were 18 years of age or older at the end of the year,
+    enter the amount from line G on the applicable line(s) of Schedule 3. In addition, multiply the
+    capital gain for each disposition reported on lines A, B, C and F by 50% and enter the total on
+    line 3 in Part 1 on page 7."
+  - >-
+    CRA, Form T1206 (2025), page 6, "Calculation of reserve": "You can claim a reserve up to a
+    maximum of four years for each disposition. Your reserve in each year cannot be more than
+    whichever of the following two calculations is less"; "(i) Capital gain x Amount payable after
+    the end of the year / Proceeds of disposition"; "(ii) Capital gain x Applicable percentage for
+    year of sale or year after sale (1)", with "Year of sale 80%", "1st year: 60%", "2nd year: 40%",
+    "3rd year: 20%", "4th year: 0%".
+inputs:
+  ca/cpp_months: "12"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "12000"
+      ca/disposition_adjusted_cost_base: "2000"
+      ca/disposition_outlays: "0"
+    - ca/disposition_proceeds: "11000"
+      ca/disposition_adjusted_cost_base: "1000"
+      ca/disposition_outlays: "0"
+    - ca/disposition_proceeds: "2000"
+      ca/disposition_adjusted_cost_base: "0"
+      ca/disposition_outlays: "0"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  # The filer reports the sales on the Schedule 3 rows for what was sold: the T3 box 21 gains
+  # (line F) on line 16, and the 2024 reserve less the 2025 reserves (5,000.00 less 5,300.00)
+  # through Form T2017 on line 20.
+  ca/t3_capital_gains_or_losses: "1000"
+  ca/t2017_line_27_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "10000"
+      ca/t2017_reserve_amount_payable_after_year_end: "6000"
+      ca/t2017_reserve_proceeds: "12000"
+      ca/t2017_reserve_years_after_disposition: "0"
+      ca/t2017_reserve_claimed: "5000"
+      ca/t2017_reserve_previous_year_claim: "0"
+    - ca/t2017_reserve_capital_gain: "4000"
+      ca/t2017_reserve_amount_payable_after_year_end: "1000"
+      ca/t2017_reserve_proceeds: "8000"
+      ca/t2017_reserve_years_after_disposition: "2"
+      ca/t2017_reserve_claimed: "300"
+      ca/t2017_reserve_previous_year_claim: "1000"
+  ca/t2017_lines_66990_and_67058_for_2024: "5000"
+  ca/t1206_capital_gain_on_dispositions: "20000"
+  ca/t1206_reserve_2024: "5000"
+  ca/t1206_t3_box_21_capital_gains: "1000"
+  ca/t1206_share_reserve_rows:
+    - ca/t1206_reserve_capital_gain: "10000"
+      ca/t1206_reserve_amount_payable_after_year_end: "6000"
+      ca/t1206_reserve_proceeds: "12000"
+      ca/t1206_reserve_years_after_sale: "0"
+      ca/t1206_reserve_claimed: "5000"
+    - ca/t1206_reserve_capital_gain: "4000"
+      ca/t1206_reserve_amount_payable_after_year_end: "1000"
+      ca/t1206_reserve_proceeds: "8000"
+      ca/t1206_reserve_years_after_sale: "2"
+      ca/t1206_reserve_claimed: "300"
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/share_proceeds: "25000"
+      ca/schedule_3_line_19900: "11350.00"
+      ca/net_income_before_adjustments: "1000.00"
+      ca/other_payments_limit_income: "1000.00"
+      ca/refund_or_balance_owing: "5540.36"
+      ca-on/tosi_adjusted_taxable_income: "42076.44"
+  ca/t1206_share_reserve:
+    - ca/t1206_row_reserve: "5000.00"
+    - ca/t1206_row_reserve: "300.00"
+  ca/t1206_share_dispositions:
+    - ca/t1206_line_c: "5300.00"
+      ca/t1206_line_g: "20700.00"
+      ca/t1206_under_18_dividend_amount: "0.00"
+      ca/t1206_part_1_line_3_amount: "10350.00"

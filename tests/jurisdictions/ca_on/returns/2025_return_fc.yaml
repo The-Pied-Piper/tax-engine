@@ -1,0 +1,262 @@
+# Return FC: the T1 benefit and income-support lines that no other worked return sets (elected
+# split-pension amount, UCCB, EI and other benefits, RDSP income, support payments, scholarships,
+# social assistance and net federal supplements), with a spouse or common-law partner on
+# December 31, 2025, so that the Federal Worksheet's line 25000 and medical supplement charts and
+# Schedule ON428-A Part B are reached. Every figure is a chosen figure worked out by hand from the
+# form text; no CRA example exists for these lines, so no figure is taken from one.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the form names no province of
+  residence), resident in Canada throughout 2025, aged 18 or older at the end of 2025 (chosen
+  figures), with a spouse or common-law partner on December 31, 2025 (a chosen count of 1). The
+  filer is not 19 or older, so Schedule 6's conditions are met by residing with the spouse at the
+  end of 2025 (`ca/resided_with_spouse_or_child_at_end_of_2025`, a chosen 1, lived together). The
+  filer has no employment income on line 10100 and a chosen $14,000.00 of other employment income
+  on line 10400, which includes a chosen $12,000.00 received from a wage-loss replacement plan.
+  The other income lines are chosen figures: the elected split-pension amount (line 11600)
+  $6,000.00, UCCB (line 11700) $2,400.00, EI and other benefits (line 11900) $3,000.00, RDSP income
+  (line 12500) $1,500.00, taxable support payments (line 12800) $4,800.00, taxable scholarships
+  (line 13010) $2,000.00, social assistance payments (line 14500) $3,000.00 and net federal
+  supplements paid (line 14600) $5,000.00. Line 14700 is 0 + 3,000 + 5,000 = 8,000.00 (no workers'
+  compensation, line 14400). Total income (line 15000) is 14,000 + 6,000 + 2,400 + 3,000 + 1,500 +
+  4,800 + 2,000 + 8,000 = 41,700.00. There are no deductions from income, so net income before
+  adjustments (line 23400) and net income (line 23600) are 41,700.00. The social benefits repayment
+  (line 23500) is 0: the EI amount is entered but line 23400 is not more than $82,125, and the net
+  federal supplements are entered but line 23400 is not more than $93,454, so the chart is not
+  completed and line 23500 is "0" (T1 line 55). Taxable income (line 26000) is 41,700 - 8,000 =
+  33,700.00, as line 25000 deducts the whole of line 14700 (below).
+  The UCCB and RDSP income of the filer is 2,400 + 1,500 = 3,900.00. The Federal Worksheet's line 25000
+  calculation, which applies because net federal supplements are entered on line 14600: line 1 is
+  line 23400, 41,700.00; line 2 is UCCB, 2,400.00; line 3 is RDSP income, 1,500.00; line 4 is 2,400
+  + 1,500 = 3,900.00; line 5 is 41,700 - 3,900 = 37,800.00; line 6 is the UCCB repayment (line
+  21300), 0; line 7 is the RDSP income repayment, 0; line 8 is 0; line 9 is 37,800 + 0 = 37,800.00.
+  Line 9 is not more than $93,454, so line 25000 is the amount of line 14700, 8,000.00. Net income
+  less UCCB and RDSP income is 37,800.00 (the other payments limit income).
+  Social benefits repayment chart, not applying (line 23500 is 0, see above; its lines are shown as
+  the engine computes them): line 6 is net income before adjustments, 41,700.00; line 7 is the EI
+  benefits repayment, 0; line 8 is UCCB, 2,400.00; line 9 is RDSP income, 1,500.00; line 10 is 0 +
+  2,400 + 1,500 = 3,900.00; line 11 is 41,700 - 3,900 = 37,800.00; line 15 is 37,800.00 with no
+  repayments, below the OAS base amount of $93,343, so line 21 is 0.
+  Federal Worksheet, medical expense supplement (line 45200), for the filer: line 1 is net income,
+  41,700.00; line 2 is 0 (no repayments); line 3 is 41,700.00; line 4 is UCCB plus RDSP income,
+  3,900.00; line 5 is 41,700 - 3,900 = 37,800.00. The spouse (column 2): line 1 is the spouse's net
+  income, 15,000.00 (a chosen figure); line 2 is the spouse's UCCB repayment 200.00 and RDSP income
+  repayment 100.00, a total of 300.00; line 3 is 15,000 + 300 = 15,300.00; line 4 is the spouse's
+  UCCB 1,800.00 plus RDSP income 1,200.00, a total of 3,000.00; line 5 is 15,300 - 3,000 =
+  12,300.00. Line 6 is 37,800 + 12,300 = 50,100.00; line 7 is the income threshold 33,294.00, so line
+  8 is 50,100 - 33,294 = 16,806.00. The medical expenses on lines 21500 and 33200 are 0, so line 11
+  is 0 and line 13 is 0 (25% of 0), and line 14 is the lesser of 0 and $1,504, 0. Line 15 is 16,806
+  x 5% = 840.30. Line 16 is 0 - 840.30, negative, so 0 (entered on line 45200). The supplement is
+  nil on two grounds, both of which the form states: no medical expense is claimed, and the
+  employment income test is not met, as the employment income from lines 10100 and 10400 other
+  than amounts received from a wage-loss replacement plan is 14,000 - 12,000 = 2,000.00, less than
+  the $4,390 the form requires, and the net self-employment income is 0.
+  Ontario LIFT credit (Schedule ON428-A): Part A and Part B use the filer's net income (line 6, 41,700.00),
+  the UCCB (line 10, 2,400.00) and the RDSP income (line 11, 1,500.00). Line 1 is line 10100, 0; line 2
+  is line 10400, 14,000.00; line 3 is 14,000.00; line 4 is 5.05%; line 5 is 14,000 x 5.05% =
+  707.00, under the $875 maximum, so line 14 is 707.00. Line 9 is 41,700 + 0 + 0 = 41,700.00 and
+  line 12 is 2,400 + 1,500 = 3,900.00, so line 13 (the adjusted net income) is 41,700 - 3,900 =
+  37,800.00. Part B (there is a spouse at year end): line 21 is the spouse's net income, 15,000.00;
+  line 22 is the spouse's UCCB repayment (line 21300) 200.00 and line 23 the spouse's RDSP income
+  repayment 100.00; line 24 is 15,000 + 200 + 100 = 15,300.00. Line 25 is the spouse's UCCB 1,800.00,
+  line 26 the spouse's RDSP income 1,200.00, and line 27 is 3,000.00; line 28 is 15,300 - 3,000 =
+  12,300.00, the spouse's adjusted net income. Line 29 is 707.00, line 30 is 37,800.00, and line 31
+  is the individual income threshold 32,500.00. Line 32 is 37,800 - 32,500 = 5,300.00. Line 35 is
+  37,800 + 12,300 = 50,100.00, and line 37 is 50,100 less the family threshold of 65,000.00, which
+  is less than 0, so 0. Line 38 is the larger of 5,300.00 and 0, 5,300.00. Line 40 is 5,300 x 5% =
+  265.00, and line 41 is 707 - 265 = 442.00 (entered on line 62140 of Form ON428). Part A, which the filer does not complete (a spouse is on the return),
+  would give the same 707 - 265 = 442.00 from the same net income. The printed family
+  threshold on ON428-A line 36 reads "65,0000.00", a typo; it is read as 65,000.00.
+  Canada workers benefit (Schedule 6, with the eligible spouse, line 38101, 1): the working income
+  (line 5) is 14,000.00 + 2,000.00 = 16,000.00 (other employment income and taxable scholarships);
+  the spouse's is 15,000.00, so the family working income (line 6) is 31,000.00. Line 16 less the
+  base amount of 3,000 is 28,000.00, 27% of which is 7,560.00, so line 22 is the spouse's maximum,
+  $2,813.00. Column 1 line 12 is 37,800.00 and column 2 line 12 is the spouse's 15,300.00 less
+  3,000.00 (line 11), 12,300.00, so line 13 is 50,100.00. The filer's working income (16,000.00) is
+  more than the spouse's (15,000.00), so line 14 is the less of the spouse's line 5 and line 12,
+  15,000.00 and 12,300.00, 12,300.00, under the $16,386 maximum. Line 15 is 50,100.00 - 12,300.00
+  = 37,800.00. Line 25 is 37,800.00 - 30,639 = 7,161.00, 15% of which is 1,074.15, so line 28 is
+  2,813.00 - 1,074.15 = 1,738.85 (the eligible spouse's line 24 threshold applies). With no income
+  tax deducted, the total credits are the benefit, 1,738.85. The 6,000.00 on line 11600 is the
+  split-pension amount of Form T1032 (this is the receiving spouse's return): line 32 is 0 (no
+  pension of the filer's own), line 33 is line 30, 6,000.00 (line 29 is 0, no RCA), so line 34 is
+  6,000.00 and line 31400 is the lesser of $2,000 and 6,000.00, 2,000.00. That adds 14.5% x
+  2,000.00 = 290.00 to the federal credits and makes the Ontario pension income amount (ON428
+  line 58360) the lesser of 1,762 and 2,000.00, 1,762.00, a credit of 5.05% x 1,762.00 = 88.98, so
+  the Ontario tax less the dividend credit is 969.15 and the total payable before the Canada
+  workers benefit is 2,871.65 (3,250.63 less 290.00 + 88.98 of the pension credits). The balance
+  owing is 2,871.65 - 1,738.85 = 1,132.80.
+  With no income tax deducted, form T1032 lines 37 and 40 are 0, line 42 is 0 + line 36 (0), 0.00,
+  and T1 line 43700 is 0.
+  Chosen figures, none of which is from a CRA example: the spouse's net income (15,000.00) and the
+  spouse's UCCB and RDSP lines (1,800, 1,200, and repayments 200 and 100). The tax lines are the
+  engine's figures, not form figures (engine-only, not derived by hand): the Ontario tax less the
+  dividend credit (969.15), the second additional CPP maximum (9,900.00, a full year of CPP at a
+  chosen 12 months) and the total payable before the Canada workers benefit (2,871.65). They are
+  labelled "engine-only" in the expected section below.
+sources:
+  - >-
+    CRA, T1 2025 Ontario edition (docs/cra-forms-2025/5006-r-25e.txt), Step 2, "Line 2 and line
+    10400: Other employment income", "Line 6 and line 11600: Elected split-pension amount (complete
+    Form T1032)", "Line 7 and line 11700: Universal child care benefit (UCCB) (see the RC62 slip)",
+    "Line 8 and line 11900: Employment insurance (EI) and other benefits (box 14 of the T4E slip)",
+    "Line 12 and line 12500: Registered disability savings plan (RDSP) income (box 131 of the T4A
+    slip)", "Line 15: Support payments received", "Line 12800: Taxable amount", "Line 20 and line
+    13010: Taxable scholarships, fellowships, bursaries and artists' project grants", "Line 30 and
+    line 14500: Social assistance payments", "Line 31 and line 14600: Net federal supplements paid
+    (box 21 of the T4A(OAS) slip)", "Line 32 and line 14700: Add lines 29 to 31 (see line 25000 in
+    Step 4).", and "Line 33 and line 15000: Line 28 plus line 32 Total income"
+  - >-
+    CRA, T1 2025 Ontario edition (docs/cra-forms-2025/5006-r-25e.txt), Step 3, "Line 54 and line
+    23400: Line 34 minus line 53 (if negative, show in brackets) Net income before adjustments",
+    "Complete the chart for line 23500 using your Federal Worksheet if one or more of the following
+    apply", and "Line 55 and line 23500: If not, enter "0" on line 23500.", and "Line 56 and line
+    23600: Line 54 minus line 55 (if negative, enter "0")"
+  - >-
+    CRA, T1 2025 Ontario edition (docs/cra-forms-2025/5006-r-25e.txt), Step 4, "Line 60 and line
+    25000: Other payments deduction (enter the amount from line 14700 if you did not enter an amount
+    on line 14600; otherwise, use Federal Worksheet)"
+  - >-
+    CRA, Federal Worksheet 2025, "Line 23500 - Social benefits repayment" (docs/cra-forms-2025/5000-d1-25e.txt):
+    "You entered an amount on line 11900 of your return and the amount on line 23400 is more than
+    $82,125" and "You entered an amount on line 11300 or line 14600 of your return and the amount on
+    line 23400 is more than $93,454"
+  - >-
+    CRA, Federal Worksheet 2025, "Line 25000 - Other payments deduction" (docs/cra-forms-2025/5000-d1-25e.txt):
+    "Complete the following calculation if you reported net federal supplements on line 14600 of your
+    return." and "If the amount on line 9 is more than $93,454, go to canada.ca/line-25000 to find out
+    how much you can deduct. Otherwise, enter the amount from line 14700 of your return on line 25000
+    of your return."
+  - >-
+    CRA, Guide 5000-G 2025, "Line 25000 - Other payments deduction" (docs/cra-forms-2025/5000-g-25e.txt):
+    "If you reported net federal supplements on line 14600 of your return, you may not be entitled to
+    claim the full amount from line 14700 of your return."
+  - >-
+    CRA, Federal Worksheet 2025, "Line 45200 - Refundable medical expense supplement"
+    (docs/cra-forms-2025/5000-d1-25e.txt): "In addition, the total of the following two amounts must be
+    $4,390 or more:", "Line 7: Income threshold 33,294.00", "Line 8: Line 6 minus line 7 (if negative,
+    enter "0")", "Line 14: Enter whichever is less: amount from line 13 or $1,504", "Line 15: Amount from
+    line 8 multiplied by 5% =", and "Line 16: Line 14 minus line 15 (if negative, enter "0") Enter this
+    amount on line 45200 of your return."
+  - >-
+    CRA, Guide 5000-G 2025, "Line 45200 - Refundable medical expense supplement" (docs/cra-forms-2025/5000-g-25e.txt):
+    "Complete the chart for line 45200 using the Federal Worksheet to calculate your claim."
+  - >-
+    CRA, Schedule ON428-A 2025 (docs/cra-forms-2025/5006-a-25e.txt), "Line 1: Amount from line 10100
+    of your return", "Line 2: Amount from line 10400 of your return", "Line 4: Applicable rate 5.05%",
+    "Line 5: Line 3 multiplied by the percentage from line 4 (maximum $875) =", "Line 13: Line 9 minus
+    line 12 (if negative, enter "0") Your adjusted net income =", "Line 21: Net income from line 23600
+    of your spouse's or common-law partner's return", "Line 28: Line 24 minus line 27 (if negative, enter
+    "0") Your spouse's or common-law partner's adjusted net income =", "Line 31: Individual income
+    threshold 32,500.00", "Line 32: Line 30 minus line 31 (if negative, enter "0") =", "Line 35: Line 33
+    plus line 34 Adjusted family net income =", "Line 38: Enter whichever is more: amount from line 32 or
+    line 37.", and "Line 41: Line 29 minus line 40 (if negative, enter "0") Enter this amount on line
+    62140 of your Form ON428."
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_employment_income: "14000"
+  ca/wage_loss_replacement_plan_income: "12000"
+  # Form T1032 starting figures, entered on this (receiving) return so that the form's bound is met:
+  # line 1, the transferring spouse's eligible pension, 20,000.00 (a chosen figure, line 8 of the
+  # transferring spouse's own Federal Worksheet, so not checked against this return's), so line 21
+  # is 20,000.00 x 50% = 10,000.00, not less than the 6,000.00 elected on line 11600; the answer
+  # "this return is the transferring spouse's" is 0, so line 22 is the line 11600 amount (line 21000 is 0, as a
+  # return carries one of the two); the
+  # other lines are 0 (no box 128, no RCA payment, no change in marital status, 12 of 12
+  # months, no tax).
+  ca/t1032_eligible_pension_income: "20000"
+  ca/t1032_t4a_box_128: "0"
+  ca/t1032_t4a_rca_box_17: "0"
+  ca/t1032_rca_payments_qualify: "0"
+  ca/t1032_marital_status_changed: "0"
+  ca/t1032_filer_is_transferring_spouse: "0"
+  ca/t1032_line_22: "6000"
+  ca/t1032_months_married: "12"
+  ca/t1032_not_separated_90_days: "1"
+  ca/t1032_residents_of_canada: "1"
+  ca/t1032_months_in_tax_year: "12"
+  ca/t1032_transferring_spouse_died: "0"
+  ca/t1032_receiving_spouse_pension_amount: "0"
+  ca/t1032_income_tax_deducted_on_pension: "0"
+  ca/t1032_receiving_spouse_under_65: "0"
+  ca/t1032_transferring_spouse_65_or_older: "0"
+  ca/t1032_note_1_payments_a_to_d: "0"
+  ca/t1032_note_1_payments_due_to_death: "0"
+  # Lines 37 and 40 of the form are this return's own income tax deducted (T1 line 43700), none here.
+  ca/income_tax_deducted: "0"
+  ca/universal_child_care_benefit: "2400"
+  ca/ei_and_other_benefits: "3000"
+  ca/rdsp_income: "1500"
+  ca/taxable_support_payments: "4800"
+  ca/taxable_scholarships: "2000"
+  ca/social_assistance_payments: "3000"
+  ca/net_federal_supplements: "5000"
+  ca/other_payments_deduction_above_limit: "0"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/cwb_eligible_spouses: "1"
+  ca/cwb_spouse_employment_income: "15000"
+  ca/resided_with_spouse_or_child_at_end_of_2025: "1"
+  ca/spouse_net_income: "15000"
+  ca/spouse_net_income_before_adjustments: "15000"
+  ca/spouse_universal_child_care_benefit: "1800"
+  ca/spouse_rdsp_income: "1200"
+  ca/spouse_uccb_repayment: "200"
+  ca/spouse_rdsp_income_repayment: "100"
+expected:
+  ca-on/return:
+    - ca/income_support_benefits: "8000.00"
+      ca/t1032_line_1_of_transferring_spouse_checked: "0.00"
+      ca/t1032_worksheet_line_8_of_transferring_spouse_checked: "0.00"
+      ca/total_income: "41700.00"
+      ca/net_income_before_adjustments: "41700.00"
+      ca/net_income: "41700.00"
+      ca/social_benefits_line_10: "3900.00"
+      ca/social_benefits_repayment: "0.00"
+      ca/uccb_and_rdsp_income: "3900.00"
+      ca/net_income_less_uccb_and_rdsp_income: "37800.00"
+      ca/other_payments_limit_income: "37800.00"
+      ca/other_payments_deduction: "8000.00"
+      ca/taxable_income: "33700.00"
+      ca/medical_supplement_employment_income: "14000.00"
+      ca/medical_supplement_employment_income_less_wage_loss: "2000.00"
+      ca/medical_supplement_column_1_line_3: "41700.00"
+      ca/medical_supplement_column_1_line_5: "37800.00"
+      ca/medical_supplement_column_2_line_2: "300.00"
+      ca/medical_supplement_column_2_line_3: "15300.00"
+      ca/medical_supplement_column_2_line_4: "3000.00"
+      ca/medical_supplement_column_2_line_5: "12300.00"
+      ca/medical_supplement_line_6: "50100.00"
+      ca/medical_supplement_line_8: "16806.00"
+      ca/medical_supplement_line_15: "840.30"
+      ca/medical_supplement_line_16: "0.00"
+      ca-on/lift_employment_income: "14000.00"
+      ca-on/lift_credit_before_maximum: "707.00"
+      ca-on/lift_maximum_credit: "707.00"
+      ca-on/lift_net_income_and_repayments: "41700.00"
+      ca-on/lift_uccb_and_rdsp_income: "3900.00"
+      ca-on/lift_adjusted_net_income: "37800.00"
+      ca-on/lift_reduction: "265.00"
+      ca-on/lift_credit_single: "442.00"
+      ca-on/lift_credit_with_spouse: "442.00"
+      ca-on/lift_credit: "442.00"
+      ca-on/lift_spouse_net_income_and_repayments: "15300.00"
+      ca-on/lift_spouse_uccb_and_rdsp_income: "3000.00"
+      ca-on/lift_spouse_adjusted_net_income: "12300.00"
+      # Engine-only (not hand-derived; see the description): the Ontario tax less the dividend credit,
+      # the second additional CPP maximum for a full year at 12 months, and the balance owing.
+      ca-on/ontario_tax_less_dividend_credit: "969.15"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cwb_family_working_income: "31000.00"
+      ca/cwb_secondary_earner_exemption: "12300.00"
+      ca/canada_workers_benefit: "1738.85"
+      ca/total_credits: "1738.85"
+      ca/refund_or_balance_owing: "1132.80"
+      ca/pension_income_credit: "2000.00"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"
+      ca-on/spouse_for_separate_residences_checked: "1"

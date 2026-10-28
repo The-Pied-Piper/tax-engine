@@ -1,0 +1,264 @@
+# Return FE: the T1 deductions from total income and from net income that no other return sets: the
+# RRSP unused contributions and their carry-forward, the elected split-pension deduction, other
+# expenses, the Canadian Armed Forces and police deduction, the other payments deduction on its
+# branch at or below $93,454, limited partnership losses, net capital losses from 1985 to 1987,
+# the northern residents residency deduction with special work site benefits and additional
+# deductions that are exempt income; the social benefits repayment chart is completed through the
+# EI condition with an adjusted net income below the base amount. No CRA example exists for these
+# lines, so every figure is a chosen figure, worked out by hand from the form text before the
+# engine ran.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the forms name no province of
+  residence), resident in Canada throughout 2025 and aged 18 or older at the end of 2025 (chosen
+  figures). Her income (chosen figures) is employment income of $50,000.00 (line 10100; her T4
+  shows box 43 of $4,000.00), other pensions and superannuation of $32,000.00 (line 11500: a
+  private pension of $12,000.00 and $20,000.00 of U.S. Social Security benefits), EI benefits of
+  $6,000.00 (line 11900), net federal supplements of $2,000.00 (line 14600; lines 14400 and 14500
+  are 0, so line 14700 is 2,000.00), and one capital gain: shares with proceeds of 12,000, an
+  adjusted cost base of 6,000 and outlays of 0, a gain of 6,000.00, of which 50% is taxable
+  (Schedule 3): taxable capital gains (line 12700) of 3,000.00. Total income (line 15000) is
+  50,000 + 32,000 + 6,000 + 3,000 + 2,000 = 93,000.00.
+  Deductions from total income. The CPP contributions and EI premiums are Return S's for the same
+  $50,000.00: base and first additional CPP 4.95% x (50,000 - 3,500) + 1% x (50,000 - 3,500) =
+  2,301.75 + 465.00 = 2,766.75, no second additional, so the enhanced contributions (line 22215)
+  are 465.00; EI premiums 1.64% x 50,000 = 820.00. RRSP (Schedule 7, which is not among the
+  files in docs/cra-forms-2025, so its lines are named as the engine's manifest names them):
+  unused contributions from earlier years 5,000 (line 1) and contributions 2,000 (line 4) make
+  contributions available to deduct 7,000.00 (lines 5 and 10); the deduction limit is a chosen
+  6,000, so the most that may be deducted (line 17) is the lesser, 6,000.00; the amount deducted
+  (line 18) is a chosen 3,000.00, at most line 17, so the RRSP deduction (line 20800) is 3,000.00
+  and the unused contributions carried forward (line 23) are 7,000 - 3,000 = 4,000.00. The
+  deduction for the elected split-pension amount (line 21000) is a chosen 4,000.00 (at most line
+  21 of Form T1032, 16,000.00). Line 22100 "Carrying charges, interest expenses and other
+  expenses": total other expenses (line 3) 800.00, carrying charges and interest 0, so 800.00.
+  Line 23300 "Add lines 35 to 52": 3,000 (line 20800) + 4,000 (line 21000) + 800 (line 22100) +
+  465 (line 22215) = 8,265.00. Net income before adjustments (line 23400) is 93,000 - 8,265 = 84,735.00; there is no
+  social benefits repayment, so net income (line 23600) is 84,735.00.
+  Federal Worksheet, Line 23500 - Social benefits repayment. The chart is completed because "You
+  entered an amount on line 11900 of your return and the amount on line 23400 is more than
+  $82,125" (6,000 and 84,735.00); the second condition does not hold (line 23400 is not more than
+  $93,454). Line 1 (line 11300) is 0 and line 2 (line 14600) is 2,000.00, so line 3 is 2,000.00;
+  line 4 is 0 and line 5 is 2,000.00. Line 6 is 84,735.00 and lines 7 to 10 and lines 12 to 14 are
+  0 (no EI repayment, UCCB or RDSP), so line 11 and line 15 are 84,735.00. Line 16 is 93,343.00 and
+  line 15 minus line 16 is -8,608.00, negative, so line 17 is 0.00; line 18 is 0.00 and line 19,
+  the lesser of line 5 (2,000.00) and line 18 (0.00), is 0.00. With line 20 (0), line 21 is 0.00:
+  no social benefits repayment.
+  Federal Worksheet, Line 25000 - Other payments deduction, completed because net federal
+  supplements are reported on line 14600. Line 1 is 84,735.00, lines 2 to 8 are 0 (no UCCB, RDSP
+  or repayments) and line 9 is 84,735.00, not more than $93,454, so "enter the amount from line
+  14700 of your return on line 25000": 2,000.00.
+  Deductions from net income. Line 24400, the Canadian Armed Forces personnel and police deduction
+  (box 43 of the T4), a chosen 4,000.00. Line 25000:
+  2,000.00. Line 25100, limited partnership losses of other years (box 109 of the T5013), a
+  chosen 1,500.00. Line 25300, net capital losses of other years: unapplied net capital losses
+  after May 22, 1985 and before 1988 of 5,000 (Chart A column A of Form T1436), factor 1, so
+  column C is 5,000.00 and line 4 is 5,000.00; line 5 is the taxable capital gains, 3,000.00; line
+  6 is the lesser, 3,000.00; the amount claimed (line 7) is a chosen 3,000.00; with no pre-1986
+  balance line 3 is 0 and line 9, the lesser of line 3, line 8 (5,000 - 3,000 = 2,000.00) and
+  $2,000, is 0.00; line 10, the line 25300 deduction, is 3,000 + 0 = 3,000.00 (the page 2
+  calculation for filers with no pre-1986 balance gives the same: the lesser of 5,000.00 and
+  3,000.00 claimed in full). Chart A, row "After May 22, 1985, and before 1988": column D is the
+  lesser of 5,000.00 and the 3,000.00 applied, 3,000.00, column E is 2,000.00 and column G, at
+  factor 1, 2,000.00. Line 25500, northern residents deductions (Form T2222): Zone A basic
+  residency amount, 200 days x $11.00 = 2,200.00; additional residency amount, 100 days x $11.00 =
+  1,100.00; line 3 is 3,300.00; line 4, the special work site benefits (box 31 of the T4), a chosen
+  600.00; line 5 is 3,300 - 600 = 2,700.00; Zone B is 0, so line 11 is 2,700.00; line 12 is 20% x
+  84,735.00 = 16,947.00; line 13, the lesser, is 2,700.00. There are no trips, so the travel
+  deduction is 0 and line 25500 is 2,700.00. Line 25600, additional deductions, 3,000.00: the
+  deduction for exempt foreign income of 15% x 20,000 = 3,000.00 (Guide 5000-G, line 25600: "you
+  can claim a deduction equal to 15% of the U.S. Social Security benefits"), all of which is
+  exempt income deductions for Form T2209 note (3). Line 25700 "Add lines 58 to 67": 4,000 +
+  2,000 + 1,500 + 3,000 + 2,700 + 3,000 = 16,200.00, and taxable income (line 26000) is 84,735 -
+  16,200 = 68,535.00. The Form T2209 net income deductions are lines 24400, 25000, 25300 and the
+  exempt income: 4,000 + 2,000 + 3,000 + 3,000 = 12,000.00. The tax lines are the engine's
+  figures, not form figures: the Ontario tax less the dividend credit, the second additional CPP
+  maximum (9,900.00, a full year of CPP at a chosen 12 months) and the refund after a chosen
+  $12,000.00 of income tax deducted.
+sources:
+  - >-
+    CRA, T1 2025 Ontario edition, "Line 38 and line 21000: Deduction for elected split-pension
+    amount (complete Form T1032)", "Line 46 and line 22100: Carrying charges, interest expenses and
+    other expenses (use Federal Worksheet)", "Line 53 and line 23300: Add lines 35 to 52.", "Line
+    58 and line 24400: Canadian Armed Forces personnel and police deduction (box 43 of all T4
+    slips)", "Line 60 and line 25000: Other payments deduction (enter the amount from line 14700
+    if you did not enter an amount on line 14600; otherwise, use Federal Worksheet)", "Line 61 and
+    line 25100: Limited partnership losses of other years", "Line 63 and line 25300: Net capital
+    losses of other years", "Line 66 and line 25500: Northern residents deductions (complete Form
+    T2222)", "Line 67 and line 25600: Additional deductions" and "Line 68 and line 25700: Add
+    lines 58 to 67." (docs/cra-forms-2025/5006-r-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, Guide 5000-G 2025, "Line 24400 - Canadian Armed Forces personnel and
+    police deduction": "If this applies to you, an amount will be shown in box 43 of your T4 slip."
+    and "Line 25600 - Additional deductions": "Under the Convention Between Canada and the United
+    States of America with Respect to Taxes on Income and on Capital (commonly known as the
+    Canada-United States (U.S.) tax treaty), you can claim a deduction equal to 15% of the U.S.
+    Social Security benefits, including U.S. Medicare premiums paid on your behalf, that you
+    reported as income on line 11500 of your return." (docs/cra-forms-2025/5000-g-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+  - >-
+    CRA, Guide 5000-G 2025, "Line 25100 - Limited partnership losses of other years": "Box 109 of
+    your T5013 slip shows the amount of limited partnership losses from previous years that may be
+    entered on line 25100 of your 2025 tax return. You can only deduct this loss if there is an
+    amount in box 105." The 1,500.00 is a chosen figure; box 105 is not an input of the engine.
+    (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1), "Line 23500 - Social benefits repayment": "You entered
+    an amount on line 11900 of your return and the amount on line 23400 is more than $82,125",
+    "Line 17: Line 15 minus line 16 (if negative, enter "0")" and "Line 19: Enter whichever is
+    less: amount from line 5 or line 18."; "Line 25000 - Other payments deduction": "If the amount
+    on line 9 is more than $93,454, go to canada.ca/line-25000 to find out how much you can
+    deduct. Otherwise, enter the amount from line 14700 of your return on line 25000 of your
+    return." (docs/cra-forms-2025/5000-d1-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, Form T2222 2025, Step 2: "Line 1: Enter the number of days you lived in a prescribed
+    northern zone in 2025. multiplied by $11.00", "Line 2: Enter the number of days you qualify for
+    the additional residency amount in 2025. multiplied by $11.00", "Line 3 and line 67490: Line 1
+    plus line 2", "Line 4 and line 67507: If you worked at a special work site, enter the amount
+    from box 31 of your T4 slip or box 124 of your T4A slip that represents the non-taxable
+    benefits for board and lodging at the special work site.", "Line 5: Line 3 minus line 4 (if
+    negative, enter "0")", "Line 12: Enter your net income from line 23600 of your return.
+    multiplied by 20%" and "Line 13: Enter whichever is less: amount from line 11 or line 12.
+    Residency deduction" (docs/cra-forms-2025/t2222-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2222/t2222-25e.txt
+  - >-
+    CRA, Form T1436 2025 (Capital Gains Worksheet), "Line 25300 - Net capital loss of other years
+    (if you have pre-1986 capital loss balance)": "Total of column C from Chart A", "Taxable
+    capital gains from line 12700 of your 2025 return", "Enter whichever is less: amount from line
+    4 or line 5.", "Enter the amount of losses you want to claim (3).", "Balance of unapplied
+    adjusted net capital losses of other years not used to reduce taxable capital gains: line 4
+    minus line 7", "Enter whichever is less: amount from line 3, line 8, or $2,000." and "Line 7
+    plus line 9", and Chart A row "After May 22, 1985, and before 1988" with adjustment factors 1
+    and 1; the page 2 calculation "Enter whichever is less: the amount from line 3 or line 4."
+    (confirmed from the PDF; no .txt published) (docs/cra-forms-2025/t1436-25e.pdf)
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/employment_income: "50000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "50000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "50000"
+  ca/t2204_premiums_deducted: "820.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2766.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/other_pensions_and_superannuation: "32000"
+  ca/ei_and_other_benefits: "6000"
+  ca/net_federal_supplements: "2000"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "12000"
+      ca/disposition_adjusted_cost_base: "6000"
+      ca/disposition_outlays: "0"
+  ca/unused_rrsp_contributions: "5000"
+  ca/rrsp_contributions: "2000"
+  ca/rrsp_deduction_limit: "6000"
+  ca/rrsp_amount_deducted: "3000"
+  # Form T1032 starting figures, entered on this (transferring) return so that the form's bound is
+  # met: the answer "this return is the transferring spouse's" is 1 (line 22 is the 4,000.00 on
+  # line 21000, and line 11600 is 0, as a return carries one of the two), and line 1 is line 8 of
+  # this return's Federal Worksheet for line 31400, which the
+  # return checks: line 11500 of 32,000.00 with nothing entered as foreign pension income, U.S. IRA
+  # income or RRIF amounts and no annuity payments, so 32,000.00 (the return does not enter the
+  # $20,000.00 of U.S. Social Security benefits as foreign pension income). Line 21 is 32,000.00 x
+  # 50% = 16,000.00, not less than the 4,000.00 deducted on line 21000; the other lines are 0 (no
+  # box 128, no RCA payment, no change in marital status, 12 of 12 months, no tax deducted on the
+  # pension: line 35 is 0). Lines 37 and 40 are this return's own income tax deducted, 12,000.00;
+  # line 36 is 0, so line 39 is 12,000.00 - 0 = 12,000.00, which is line 43700 (unchanged).
+  ca/t1032_eligible_pension_income: "32000"
+  ca/t1032_t4a_box_128: "0"
+  ca/t1032_t4a_rca_box_17: "0"
+  ca/t1032_rca_payments_qualify: "0"
+  ca/t1032_marital_status_changed: "0"
+  ca/t1032_filer_is_transferring_spouse: "1"
+  ca/t1032_line_22: "4000"
+  ca/t1032_months_married: "12"
+  ca/t1032_not_separated_90_days: "1"
+  ca/t1032_residents_of_canada: "1"
+  ca/t1032_months_in_tax_year: "12"
+  ca/t1032_transferring_spouse_died: "0"
+  ca/t1032_receiving_spouse_pension_amount: "0"
+  ca/t1032_income_tax_deducted_on_pension: "0"
+  ca/t1032_receiving_spouse_under_65: "0"
+  ca/t1032_transferring_spouse_65_or_older: "0"
+  ca/t1032_note_1_payments_a_to_d: "0"
+  ca/t1032_note_1_payments_due_to_death: "0"
+  ca/total_other_expenses: "800"
+  ca/canadian_armed_forces_and_police_deduction: "4000"
+  ca/limited_partnership_losses_of_other_years: "1500"
+  # T5013 box 105: the claim on line 25100 is at most the at-risk amount.
+  ca/limited_partnership_at_risk_amount: "1500"
+  ca/unapplied_net_capital_losses_1985_to_1987: "5000"
+  ca/net_capital_losses_claimed: "3000"
+  ca/zone_a_days_lived: "200"
+  ca/zone_a_additional_residency_days: "100"
+  ca/zone_a_special_work_site_benefits: "600"
+  ca/additional_deductions: "3000"
+  ca/exempt_income_deductions: "3000"
+  ca/income_tax_deducted: "12000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "93000.00"
+      ca/t1032_line_1_of_transferring_spouse_checked: "32000.00"
+      ca/t1032_worksheet_line_8_of_transferring_spouse_checked: "32000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "50000.00"
+      ca/share_proceeds: "12000"
+      ca/taxable_capital_gains: "3000.00"
+      ca/schedule_3_line_19900: "3000.00"
+      ca/income_support_benefits: "2000"
+      ca/rrsp_contributions_available: "7000"
+      ca/rrsp_deduction_maximum: "6000"
+      ca/rrsp_deduction: "3000"
+      ca/unused_rrsp_contributions_carried_forward: "4000"
+      ca/carrying_charges_interest_expenses_and_other_expenses: "800"
+      ca/cpp_enhanced_contributions_on_return: "465.00"
+      ca/deductions_from_total_income: "8265.00"
+      ca/net_income_before_adjustments: "84735.00"
+      ca/social_benefits_repayment_applies: "1"
+      ca/oas_and_federal_supplements: "2000"
+      ca/social_benefits_line_5: "2000"
+      ca/social_benefits_line_6: "84735.00"
+      ca/social_benefits_line_10: "0"
+      ca/social_benefits_line_11: "84735.00"
+      ca/social_benefits_line_14: "0"
+      ca/social_benefits_line_15: "84735.00"
+      ca/social_benefits_line_17: "0.00"
+      ca/social_benefits_line_18: "0.00"
+      ca/social_benefits_line_19: "0.00"
+      ca/social_benefits_line_21: "0.00"
+      ca/social_benefits_repayment: "0.00"
+      ca/net_income: "84735.00"
+      ca/other_payments_limit_income: "84735.00"
+      ca/other_payments_deduction_after_limit: "2000"
+      ca/other_payments_deduction: "2000"
+      ca/adjusted_gross_capital_losses_1985_to_1987: "5000.00"
+      ca/total_adjusted_net_capital_losses: "5000.00"
+      ca/net_capital_losses_available_to_claim: "3000.00"
+      ca/adjusted_net_capital_losses_applied: "3000"
+      ca/unapplied_adjusted_net_capital_losses: "2000.00"
+      ca/net_capital_losses_additional_deduction: "0.00"
+      ca/net_capital_losses_of_other_years: "3000.00"
+      ca/adjusted_losses_applied_1985_to_1987: "3000.00"
+      ca/remaining_adjusted_losses_1985_to_1987: "2000.00"
+      ca/net_capital_loss_balance_1985_to_1987: "2000.00"
+      ca/zone_a_basic_residency_amount: "2200.00"
+      ca/zone_a_additional_residency_amount: "1100.00"
+      ca/zone_a_residency_amount: "3300.00"
+      ca/zone_a_residency_after_work_site: "2700.00"
+      ca/residency_net_income_limit: "16947.00"
+      ca/residency_deduction: "2700.00"
+      ca/northern_residents_deductions: "2700.00"
+      ca/deductions_from_net_income: "16200.00"
+      ca/taxable_income: "68535.00"
+      ca/foreign_tax_credit_net_income_deductions: "12000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "3212.27"
+      ca/refund_or_balance_owing: "-875.20"
+      ca-on/net_refund: "875.20"

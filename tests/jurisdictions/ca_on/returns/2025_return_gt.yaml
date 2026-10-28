@@ -1,0 +1,229 @@
+# Return GT: a self-employed filer whose only activity is one Form T2042 (farming) statement of a
+# sole proprietor with one Area A row (Class 6, capital cost allowance $3,000) of which a personal
+# part ($400) comes off line 9936 and a business-use-of-home part (amount 7K, $600) is entered
+# on Part 7, with home expenses of $10,500 less a personal-use part of $1,500. Gross income
+# $102,850.00, expenses $18,000.00 (4B $16,000.00 + line 9936 $2,000.00), net income $84,850.00,
+# the home claim (line 9945) $9,600.00, so net farming income (line 9946) is $75,250.00 and the
+# T1 and tax figures are the ones of Return EY, a balance owing of $14,468.38. Each figure is
+# worked by hand from the form lines (see the description). Amounts are quoted decimal strings,
+# never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025, with 12 months of CPP (Schedule 8 box A), Schedule 8 Part 4 not completed and no
+  agreement for EI, as Return EY; every figure is a chosen one. One T2042 statement, no partner.
+  Part 3: wheat 9371 82,850 and cattle 9471 20,000, so line 9659 and amount 4A are 102,850. Part 4:
+  fertilizers and lime 9662 6,000 and seeds and plants 9664 10,000, so amount 4B is 16,000. Area A,
+  one row, Class 6 (10%, Guide T4002): undepreciated capital cost at the start 30,000, no
+  additions, no disposals, CCA claimed 3,000 (the maximum is 10% of 30,000 = 3,000), so amount ii
+  of Area A is 3,000. Line 9936 is amount ii minus any personal part and any CCA for
+  business-use-of-home expenses: the personal part (a chosen 400) gives 3,000 - 400 = 2,600, and
+  amount 7K (a chosen 600, business part only) gives 2,600 - 600 = 2,000. Line 9898 = 16,000 +
+  2,000 = 18,000; line 9899 = 102,850 - 18,000 = 84,850; there are no inventory adjustments, so 4C =
+  84,850; 5A = 84,850 (no partner); lines 9951 and 9974 are 0, so 5B = 84,850; line 9943 is 0, so
+  5C = 84,850. Part 7: heat 2,000, electricity 1,500, insurance 400, maintenance 800, mortgage
+  interest 3,000, property taxes 2,200 and other expenses 600, so amount 7H = 10,500; amount 7I,
+  the personal-use part, is 1,500, so 7J = 10,500 - 1,500 = 9,000; amount 7K is 600 and the
+  amount carried forward (7L) is 0, so 7M = 9,000 + 600 + 0 = 9,600; amount 7N is 5C, 84,850; 7O =
+  9,600 - 84,850 is below 0, so 0 is carried forward; 7P, the lesser of 9,600 and 84,850, is
+  9,600, which is line 9945. Line 9946 = 84,850 - 9,600 = 75,250. T1 line 14100 is 75,250.00 and the
+  federal and Ontario figures are Return EY's (federal tax after credits 9,645.05, Ontario tax
+  after credits 4,073.33, health premium 750, total payable 14,468.38, a balance owing).
+sources:
+  - >-
+    CRA, Form T2042 (2025), Statement of Farming Activities (docs/cra-forms-2025/t2042-25e.pdf;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2042/t2042-25e.pdf). Part 3: the
+    income lines 9371 to 9605 and "Other income (specify)" (9600), "Gross income: Total of the
+    income lines (enter this amount on line 14099 of your income tax and benefit return)" (9659).
+    Part 4: "Gross income (line 9659 of Part 3)" (4A), the expense lines 9661 to 9820 and 9790,
+    "Subtotal of expenses" (4B), "Capital cost allowance (CCA). Enter amount ii of Area A minus any
+    personal part and any CCA for business-use-of-home expenses" (9936), "Total farm expenses:
+    Amount 4B plus line 9936" (9898), "Net income (loss) before inventory adjustments: Amount 4A
+    minus line 9898" (9899), "Optional inventory adjustment included in the current year" (9941),
+    "Mandatory inventory adjustment included in the current year" (9942), "Net income (loss) after
+    inventory adjustments: Total of lines 9899, 9941, and 9942" (4C). Part 5: "Your share of amount
+    4C or the amount from your T5013 slip" (5A), "Return of fuel charge proceeds to farmers tax
+    credit allocated to you in the year (amount 5C of Form T2043)" (9951), "Total: Amount 5A plus
+    line 9951 plus line 9974" (5B), "Net income (loss) after adjustments: Amount 5B minus line 9943"
+    (5C), "Your net income (loss): Amount 5C minus line 9945" (9946). Part 7: "Subtotal: Add
+    amounts 7A to 7G." (7H), "Subtotal: Amount 7H minus amount 7I" (7J), "Capital cost allowance
+    (business part only), which means amount ii of Area A minus any portion of capital cost
+    allowance that is for personal use or entered on line 9936 of Part 4" (7K), "Subtotal: Add
+    amounts 7J to 7L." (7M), "Allowable claim: Amount 7M or 7N above, whichever is less (enter your
+    share of this amount on line 9945 of Part 5)" (7P).
+  - >-
+    CRA, Guide T4002 (2025), "Class 6 (10%)" (docs/cra-forms-2025/t4002-25e.pdf): the rate of the
+    class is 10%; the maximum claim of 3,000 (10% of the 30,000 undepreciated capital cost) is this
+    return's own calculation.
+
+inputs:
+  ca/t2042_statements:
+    - ca/farm_wheat: "82850"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "20000"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "6000"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "10000"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "400"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "2000"
+      ca/farm_home_electricity: "1500"
+      ca/farm_home_insurance: "400"
+      ca/farm_home_maintenance: "800"
+      ca/farm_home_mortgage_interest: "3000"
+      ca/farm_home_property_taxes: "2200"
+      ca/farm_home_other_expenses: "600"
+      ca/farm_home_personal_use_part: "1500"
+      ca/farm_home_cca: "600"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes:
+        - ca/cca_class_number: "6"
+          ca/cca_ucc_at_start: "30000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "3000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "4073.33"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_farming_income: "75250.00"
+      ca/net_fishing_income: "0"
+      ca/net_self_employment_income: "75250.00"
+      ca/total_income: "75250.00"
+      ca/net_income_before_adjustments: "75250.00"
+      ca/other_payments_limit_income: "75250.00"
+      ca/net_income: "75250.00"
+      ca/taxable_income: "75250.00"
+      ca/federal_basic_tax: "11983.76"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "9645.05"
+      ca-on/ontario_basic_tax: "4717.05"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "4073.33"
+      ca-on/ontario_health_premium: "750"
+      ca-on/ontario_tax: "4823.33"
+      ca/total_payable: "14468.38"
+      ca/refund_or_balance_owing: "14468.38"
+  ca/t2042:
+    - ca/farm_gross_income: "102850"
+      ca/farm_gross_income_before_expenses: "102850"
+      ca/farm_expenses_subtotal: "16000.00"
+      ca/farm_cca_table_claim: "3000"
+      ca/farm_cca_claim_less_personal_part: "2600"
+      ca/farm_cca_claim: "2000"
+      ca/farm_total_expenses: "18000.00"
+      ca/farm_net_income_before_adjustments: "84850.00"
+      ca/farm_net_income_after_inventory_adjustments: "84850.00"
+      ca/farm_net_income_after_adjustments: "84850.00"
+      ca/farm_home_expenses_subtotal: "10500"
+      ca/farm_home_expenses_business_part: "9000"
+      ca/farm_home_expenses_available: "9600"
+      ca/farm_home_income_limit: "84850.00"
+      ca/farm_home_carry_forward: "0"
+      ca/farm_home_allowable_claim: "9600"
+      ca/farm_home_expenses: "9600"
+      ca/farming_income: "75250.00"

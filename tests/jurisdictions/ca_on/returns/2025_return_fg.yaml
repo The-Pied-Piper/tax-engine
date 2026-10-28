@@ -1,0 +1,120 @@
+# Return FG: a filer with a spouse who has unused amounts to transfer. The spouse's own return
+# designates tuition to the filer and shows a federal tuition amount and an Ontario unused tuition
+# amount claimed, so Schedule 2 lines 5 and 10 and Schedule ON(S2) line 8 are non-zero. No CRA
+# example exists (5000-S2 and 5006-S2 print none), so every figure is a chosen figure, worked out
+# by hand from the form text.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A filer, a 2025 Ontario resident, with employment income of 40000 (a chosen figure) and income
+  tax deducted of 5000 (a chosen figure); not separated from the spouse for 90 days or more
+  including December 31, 2025 (the count is 1). The CPP base contributions are 4.95% x (40000 -
+  3500) = 1806.75, the first additional 1% x 36500 = 365.00 (deducted: total deductions 365.00),
+  the EI premiums 1.64% x 40000 = 656.00. Net income and taxable income are 40000 - 365.00 =
+  39635.00; the federal tax on it is 39635.00 x 14.5% = 5747.075, rounded half-up to the cent:
+  5747.08. The federal basic personal amount is 16129.00 and the Canada employment amount 1471.00,
+  so T1 line 101 is 16129.00 + 1806.75 + 656.00 + 1471.00 = 20062.75. The filer has no tuition.
+  Schedule 2, the spouse's amounts, all figures from another person's return and chosen figures:
+  line 1 (their line 30100) 9028, line 2 (their line 30500) 0, line 3 (their line 31400) 0, line
+  4 (their line 31600) 0, line 5 (the federal amount designated to the filer from their T2202)
+  4000, so line 6 is 9028 + 0 + 0 + 0 + 4000 = 13028.00. Their taxable income (their line 26000)
+  of 18000 is at or below 57375, so line 7 is 18000.00; line 8 (their line 30000) 16129, line 9
+  (their line 96) 0 and line 10 (their line 32300, their federal tuition amount) 800 add to
+  16929.00 on line 11, so line 12 is 18000.00 - 16929.00 = 1071.00 and line 13 is 13028.00 -
+  1071.00 = 11957.00. The count of 1 makes line 32600 11957.00 x 1 = 11957.00.
+  Schedule ON(S2), the spouse's Ontario amounts, all figures from another person's Form ON428 and
+  chosen figures: line 1 (their line 58080) 6223, line 2 (their line 58360) 0 and line 3 (their
+  line 58440) 0 add to 6223.00 on line 4. Their taxable income of 18000, the federal Schedule 2's
+  input again, is at or below 52886, so line 5 is 18000.00; line 6 (their line 58040) 12747, line
+  7 (their line 24) 0 and line 8 (their line 58560, the unused tuition and education amounts they
+  claimed) 600 add to 13347.00 on line 9, so line 10 is 18000.00 - 13347.00 = 4653.00 and line 11
+  is 6223.00 - 4653.00 = 1570.00. The count of 1 makes ON428 line 34 and line 58640 1570.00 x 1 =
+  1570.00.
+  The total of the credit amounts (line 33500) is 20062.75 + 11957.00 = 32019.75 and line 33800
+  is 32019.75 x 14.5% = 4642.86375, rounded half-up to the cent: 4642.86, so
+  the federal tax after credits is 5747.08 - 4642.86 = 1104.22. Ontario: the tax on taxable income
+  is 39635.00 x 5.05% = 2001.5675, rounded half-up to the cent: 2001.57; the total of the credit
+  amounts (ON428 line 44) is 12747 + 1806.75 + 656.00 + 1570.00 = 16779.75 and the credits (line
+  61500) are 16779.75 x 5.05% = 847.377375, rounded half-up to the cent: 847.38, so the Ontario
+  tax after credits, which is also the Ontario tax less the dividend credit (no dividends), is
+  2001.57 - 847.38 = 1154.19; the basic reduction (2 x 294.00 = 588.00) is less than that tax, so
+  there is no reduction; the LIFT credit (5.05% of 40000, 2020.00, at most 875, less 5% of net
+  income over 32500, 356.75) is 518.25, leaving 635.94; the health premium is 300 + 150 = 450
+  (6% of 3635 is 218.10, at most 150 in the 36000 tier); the Ontario tax is 1085.94 and the total
+  payable 1104.22 + 1085.94 = 2190.16. The Canada workers benefit is 0 (1633 less 15% of the
+  net income over 26855, 1917.00, below zero; zero under the spouse figures too, and the spouse's
+  income is not added), so the total credits are the income
+  tax deducted of 5000, and the refund or balance owing is 2190.16 - 5000 = -2809.84, a refund
+  (the net refund, 2809.84). The lines labelled engine only in the expected section (the second
+  additional CPP maximum of 9900.00 for 12 months, and the net income before adjustments and the
+  other payments limit income, both 39635.00, as no adjustment applies) are the engine's
+  figures, not hand figures.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 2 Federal Amounts Transferred from your Spouse or Common-Law Partner"
+    (form 5000-S2): "Line 5 and line 36000: Enter the federal amount designated to you from
+    their forms T2202, TL11A, or TL11C."; "Line 6: Add lines 1 to 5. ="; "Line 7: Enter the
+    amount from line 26000 of their return on line 7 if it is $57,375 or less."; "Line 10: Amount
+    from line 32300 of their return"; "Line 11: Add lines 8 to 10. ="; "Line 12 and line 36100:
+    Line 7 minus line 11 (if negative, enter "0") ="; "Line 13: Line 6 minus line 12 (if
+    negative, enter "0") Enter this amount on line 32600 of your return."
+    (docs/cra-forms-2025/5000-s2-25e.txt)
+  - >-
+    CRA, "Schedule ON(S2) Provincial Amounts Transferred from your Spouse or Common-Law Partner"
+    (form 5006-S2): "Line 4: Add lines 1 to 3. ="; "Line 8: Amount from line 58560 of their Form
+    ON428"; "Line 9: Add lines 6 to 8. ="; "Line 10 and line 59120: Line 5 minus line 9 (if
+    negative, enter "0") ="; "Line 11: Line 4 minus line 10 (if negative, enter "0")"
+    (docs/cra-forms-2025/5006-s2-25e.txt)
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "40000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "40000"
+  ca/t2204_insurable_earnings: "40000"
+  ca/t2204_premiums_deducted: "656.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2171.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "5000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/spouse_return_age_amount: "9028"
+  ca/spouse_designated_tuition: "4000"
+  ca/spouse_return_taxable_income: "18000"
+  ca/spouse_return_basic_personal_amount: "16129"
+  ca/spouse_return_federal_tuition_amount: "800"
+  ca/spouse_not_separated_90_days: "1"
+  ca-on/spouse_return_ontario_age_amount: "6223"
+  ca-on/spouse_return_ontario_basic_personal_amount: "12747"
+  ca-on/spouse_return_ontario_unused_tuition_amount: "600"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_income: "39635.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "40000.00"
+      ca/credit_amounts_subtotal: "20062.75"
+      ca/spouse_transferable_amounts: "13028.00"
+      ca/spouse_income_for_transfer: "18000.00"
+      ca/spouse_credits_used: "16929.00"
+      ca/spouse_adjusted_taxable_income: "1071.00"
+      ca/spouse_unused_amounts: "11957.00"
+      ca/amounts_transferred_from_spouse: "11957.00"
+      ca-on/spouse_transferable_amounts: "6223.00"
+      ca-on/spouse_income_for_transfer: "18000.00"
+      ca-on/spouse_credits_used: "13347.00"
+      ca-on/spouse_adjusted_taxable_income: "4653.00"
+      ca-on/spouse_unused_amounts: "1570.00"
+      ca-on/amounts_transferred_from_spouse: "1570.00"
+      ca/non_refundable_credit_amounts: "32019.75"
+      ca/credit_amounts_at_credit_rate: "4642.86"
+      ca/federal_basic_tax: "5747.08"
+      ca/federal_tax_after_credits: "1104.22"
+      ca-on/ontario_tax_less_dividend_credit: "1154.19"
+      ca-on/net_refund: "2809.84"
+      ca/refund_or_balance_owing: "-2809.84"
+      # Engine only (not a hand figure): see the description.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "39635.00"
+      ca/other_payments_limit_income: "39635.00"

@@ -1,0 +1,590 @@
+# Return FK: the clergy residence deduction with an employer-provided residence and other
+# accommodation claims (Form T1223 Part C), the EI premiums on self-employment and other eligible
+# earnings with earnings from a controlled corporation and tax-exempt self-employment income
+# (Schedule 13), the federal refundable First Nations abatement in the limit of the foreign tax
+# credit (Form T2209), and the Schedule 2 amounts transferred from a spouse whose taxable income is
+# above 57,375 (line 7 from their line 76). No CRA example exists for these lines, so every figure
+# is a chosen figure, worked out by hand from the form text.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A 2025 Ontario resident (chosen: the form names no province of residence), resident in Canada
+  throughout 2025, aged 18 or older at the end of 2025. The filer is a member of the clergy with
+  church employment income of 45,000.00 (chosen), a corporation they control (more than 40% of its
+  voting shares) that pays them T4 earnings of 4,000.00 (chosen), so the T4 slips show 49,000.00 in
+  box 14 (line 10100), the church's residence benefit of 6,000.00 (T4 box 30, reported on line
+  10400, chosen) and a net partnership income of 10,000.00 (line 12200, a limited partner, chosen).
+  The T4 box 24 EI insurable earnings are 45,000.00 (the corporation's earnings are EI-exempt, box
+  28). Total income is 49,000 + 6,000 + 10,000 = 65,000.00. The CPP base contributions on the T4
+  earnings are 4.95% x (49,000 - 3,500) = 2,252.25 and the first additional 1% x 45,500 = 455.00
+  (the T4 total 2,707.25); the EI premiums on the church earnings are 1.64% x 45,000 = 738.00.
+  The Schedule 8 Part 4 contributions on the partnership income are not completed (lines 22200 and
+  31000 are not claimed), a chosen simplification.
+  Form T1223 Part C. The residence was provided by the employer (A) for part of the year (the
+  6,000.00 benefit, within the 6,000 of line 10400) and rented by the filer (B) for 8 months. Line
+  1, income from qualifying employment, is the church earnings and benefit, 45,000 + 6,000 =
+  51,000.00 (chosen). Line 2 is 51,000 x 1/3 = 17,000.00. Line 3 is 8 months and line 4 is 8 x
+  1,000 = 8,000.00 (at most 10,000). Line 5 is the more of line 2 and line 4: 17,000.00. Line 6,
+  the rent and eligible utilities, is 14,000 (chosen) and line 7, the amounts claimed by any person
+  for the accommodation, is 2,000 (chosen), so line 8 is 14,000 - 2,000 = 12,000.00. Line 9 is the
+  lesser of line 5 and line 8: 12,000.00, and line 10 the lesser of line 1 (51,000) and line 9:
+  12,000.00. Part C (C), (A) and (B) added: 6,000 + 12,000 = 18,000.00, which is not more than
+  line 1, so line 23100 is 18,000.00.
+  Total deductions from total income (line 23300) are 18,000.00 + 455.00 (the enhanced CPP
+  contributions) = 18,455.00, so net income and taxable income are 65,000 - 18,455 = 46,545.00.
+  Schedule 13. Line 1, read as line 12200 plus line 27 (the text file prints "line 1 1 plus line
+  27"), less the net income of T4 slips that carry EI premiums (none),, is 10,000.00. Line 2 and line
+  54493, the box 14 earnings from the corporation the filer controls, is 4,000 and line 3 and
+  line 54494, the tax-exempt self-employment income earned on a reserve by a person registered
+  under the Indian Act, is 2,000 (both chosen), so line 4 is 10,000 + 4,000 + 2,000 = 16,000.00.
+  Line 5 is 65,700.00, line 6 and line 54780 is 45,000 (box 24), line 7 is 65,700 - 45,000 =
+  20,700.00 and line 8 is the lesser of line 4 (16,000.00) and line 7 (20,700.00): 16,000.00. The
+  filer has an agreement to pay EI premiums on self-employment and other eligible earnings (chosen,
+  as Return AX), so line 9 is 16,000 x 1.64% = 262.40 (at most 1,077.48).
+  Federal tax on 46,545.00 (T1 lines 70 to 76, column 1) is 46,545 x 14.5% = 6,749.025, rounded
+  half-up to the cent: 6,749.03. The federal credit amounts are 16,129.00 (basic personal amount) +
+  2,252.25 (CPP base) + 738.00 (EI) + 262.40 (EI on self-employment, line 31217) + 1,471.00
+  (Canada employment amount) = 20,852.65 and line 33800 is 14.5% of it = 3,023.63425, rounded
+  half-up to the cent: 3,023.63. The federal tax after credits is 6,749.03 - 3,023.63 = 3,725.40.
+  Schedule 2. The spouse's line 30100 is 2,356.30 (the age amount of 9,028 less 15% x (90,000 -
+  45,522) = 6,671.70), line 31400 is 2,000 and the other lines are 0 (all chosen figures from
+  another person's return), so line 6 is 2,356.30 + 2,000 = 4,356.30. Their taxable income (their
+  line 26000) of 90,000 is above 57,375, so line 7 is their line 76, 12,300 (chosen), divided by
+  14.5% = 84,827.586..., rounded half-up to the cent: 84,827.59. Line 8 (their line 30000) is
+  16,129, lines 9 and 10 are 0, so line 11 is 16,129.00 and line 12 is 84,827.59 - 16,129.00 =
+  68,698.59; line 13 is 4,356.30 - 68,698.59, not below zero: 0.00, so line 32600 is 0 and the
+  filer was not separated for 90 days or more (the count is 1).
+  Foreign tax credit (Form T2209). The filer has 3,000.00 of net foreign non-business income, part
+  of the partnership's 10,000 (chosen), on which 600.00 of foreign tax was paid (chosen). The
+  federal refundable First Nations abatement (line 44100) is 500.00 (chosen). Basic federal tax
+  (T2209 note (4)) is line 42900, 3,725.40, less the abatement: 3,725.40 - 500.00 = 3,225.40. Line
+  2 is 3,000 x 3,225.40 / 46,545.00 = 207.8890..., rounded half-up to the cent: 207.89, and line 3
+  is the lesser of line 1 (600) and line 2: 207.89, so the federal foreign tax credit is 207.89 and
+  the federal tax less it is 3,725.40 - 207.89 = 3,517.51.
+  Form T691 Part 4 reads the same record, with no T691 figure entered: line 2 is 3,000.00 (the net
+  foreign non-business income), line 7 is 600 x 66.6666% = 399.9996, rounded to 400.00, and line 8 is
+  0. Line 4 is 3,000.00 (no business income, no capital gains claim) and line 6 is 3,000 x 20.5% =
+  615.00, so line 10 is the lesser of 615.00 and line 9 (400.00), 400.00, and line 11 is the greater
+  of the federal foreign tax credit, 207.89, and line 10: 400.00. Part 7 line 11 is 400.00 - 207.89
+  = 192.11, and line 12 is 192.11 x 400.00 / 600.00 = 128.0733, rounded to 128.07, so line 13 is
+  3,725.40 + 128.07 = 3,853.47. The minimum tax is not payable (Part 5 line 11 is 0), so the
+  special credit does not reduce the tax.
+  Ontario. The tax on 46,545.00 is 46,545 x 5.05% = 2,350.5225, rounded half-up to the cent:
+  2,350.52. The Ontario credit amounts are 12,747 + 2,252.25 + 738.00 + 262.40 = 15,999.65, times
+  5.05% = 807.982325, rounded half-up to the cent: 807.98, leaving 2,350.52 - 807.98 = 1,542.54.
+  The Ontario foreign tax credit is 1,542.54 x 3,000 / 46,545.00 = 99.4233..., rounded half-up to
+  the cent: 99.42 (less than the 600 - 207.89 = 392.11 of foreign tax not yet credited), which
+  leaves 1,443.12. The LIFT credit is 875 less 5% x (46,545 - 32,500) = 702.25, that is 172.75,
+  which leaves 1,270.37; the health premium on a taxable income of 46,545.00 (more than 38,500
+  but not more than 48,000) is 450, so the Ontario tax is 1,270.37 + 450 = 1,720.37.
+  The total payable is 3,517.51 + 1,720.37 + 262.40 (EI premiums payable on self-employment, line
+  42120) = 5,500.28. The income tax deducted is a chosen 6,000.00, so the refund (line 48400) is
+  6,000.00 - 5,500.28 = 499.72.
+  The spouse of Schedule 2 is a separate chosen scenario: the filer is treated as having no spouse at
+  the end of the year for the LIFT credit (Schedule ON428-A Part A, single), the spouse's figures
+  serving only Schedule 2, a chosen simplification as in Return AT.
+  Every line below the "Engine only" comment, other than unchanged carries of the figures above, is the
+  engine's and not a hand figure; the groups are: the Ontario CARE
+  credit rate, the Canada workers benefit lines, the Schedule 8 Part 4 and Part 5 lines for the
+  partnership income, the alternative minimum tax lines, the T778 earned income lines (no child
+  care) and the lines that carry a dataset's printed figure unchanged.
+sources:
+  - >-
+    CRA, Form T1223 2025, Part C (confirmed from the PDF; no .txt published): "(A) ... If the
+    residence you occupied was provided by your employer (you did not rent or own the residence),
+    the value of this benefit ... is shown as a taxable benefit in box 30 of your T4 slip. Claim
+    this amount as a deduction on line 23100 of your return and do not complete (B) below."; "(B)
+    If you owned or rented the residence that you occupied, complete the following:"; "Income from
+    qualifying employment from all eligible employers"; "Amount from line 1 multiplied by 1/3";
+    "Number of months in qualifying employment"; "Line 3 multiplied by $1,000 (maximum $10,000)";
+    "Enter whichever is more: line 2 or line 4."; "All amounts claimed by you, or any person, for
+    the accommodation"; "Line 6 minus line 7"; "Enter whichever is less: Line 5 or line 8.";
+    "Enter whichever is less: Line 1 or line 9. Enter this amount on line 23100 of your return.";
+    "(C) If the residence that you occupied was provided by your employer (A) for part of the year
+    and was owned or rented by you (B) for a different part of the year, add amounts (A) and (B)
+    and claim the total amount on line 23100 of your return. The amount claimed for the clergy
+    residence deduction cannot be more than the income from qualifying employment on line 1."
+    (docs/cra-forms-2025/t1223-25e.pdf)
+  - >-
+    CRA, Schedule 13 2025: "Line 2 and line 54493: If you are not eligible to participate in the EI
+    program as an employee of a corporation because you control more than 40% of the voting shares
+    of that corporation, enter the amount from box 14 of all your T4 slips from that corporation.";
+    "Line 3 and line 54494: If you are registered or entitled to be registered under the Indian Act
+    and you earned tax-exempt self-employment income on a reserve in Canada, enter your total
+    tax-exempt self-employment income."; "Line 4: Add lines 1 to 3. Net self-employment income =";
+    "Line 5: Maximum insurable earnings 65,700.00"; "Line 6 and line 54780: Total EI insurable
+    earnings (amount from box 24 of all your T4 slips; ...)"; "Line 7: Line 5 minus line 6 (if
+    negative, enter "0") ="; "Line 8: Enter whichever is less: amount from line 4 or line 7.";
+    "Line 9: Amount from line 8 multiplied by 1.64% (maximum $1,077.48) =" (docs/cra-forms-2025/
+    5000-s13-25e.txt)
+  - >-
+    CRA, Form T2209 2025, note (4) "Basic federal tax": "Line 42900 of your return plus any:"
+    "federal dividend tax credit (line 40425 of your return)" ... "minus any:" "federal refundable
+    First Nations abatement (line 44100 of your return)" (docs/cra-forms-2025/t2209-25e.pdf, text
+    layer read with pdftotext). Line 44100 itself is not modelled in the engine; here the abatement only lowers the basic
+    federal tax in the credit's limit.
+  - >-
+    CRA, Schedule 2 (5000-S2, 2025): "Line 1 and line 35200: Enter the amount from line 30100 of
+    their return."; "Line 3 and line 35500: Enter the amount from line 31400 of their return.
+    (maximum $2,000)"; "Line 6: Add lines 1 to 5. ="; "Line 7: Enter the amount from line 26000
+    of their return on line 7 if it is $57,375 or less. If it is more than $57,375, enter the
+    result of the following calculation: amount from line 76 of their return divided by 14.5% =";
+    "Line 8: Amount from line 30000 of their return"; "Line 11: Add lines 8 to 10. ="; "Line 12 and
+    line 36100: Line 7 minus line 11 (if negative, enter "0") ="; "Line 13: Line 6 minus line 12
+    (if negative, enter "0") Enter this amount on line 32600 of your return." (docs/cra-forms-2025/
+    5000-s2-25e.txt)
+  - >-
+    CRA, T1 General 2025 (5006-R) lines 70 to 76 (federal tax on taxable income, column 1: "Line
+    73: Rate 14.5%"), lines 101 to 118, and Form ON428 2025 (5006-C), the Ontario tax columns,
+    credits, LIFT credit (Schedule ON428-A) and the health premium chart (row 5: more than 38,500
+    but not more than 48,000, $450) (docs/cra-forms-2025/5006-r-25e.txt, 5006-c-25e.txt,
+    5006-a-25e.txt)
+  - >-
+    CRA, Form T2036 2025 (confirmed from the PDF; no .txt published): "Enter the amount from line 1
+    of Form T2209."; "Enter the amount from line 3 of Form T2209, unless you have to pay minimum
+    tax."; "Line 1 minus line 2"; net foreign non-business income over net income times the
+    provincial or territorial tax otherwise payable (line 4); "Enter whichever amount is less: line
+    3 or line 4." (docs/cra-forms-2025/t2036-25e.pdf)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s13/5000-s13-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s2/5000-s2-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "49000"
+  ca/other_employment_income: "6000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "49000"
+  ca/t2204_insurable_earnings: "45000"
+  ca/t2204_premiums_deducted: "738.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2707.25"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/clergy_qualifying_employment_income: "51000"
+  ca/clergy_months_in_qualifying_employment: "8"
+  ca/clergy_accommodation_cost: "14000"
+  ca/clergy_other_accommodation_claims: "2000"
+  ca/clergy_employer_residence_benefit: "6000"
+  ca/net_partnership_income: "10000"
+  ca/ei_special_benefits_agreement: "1"
+  ca/ei_insurable_earnings: "45000"
+  ca/ei_controlled_corporation_earnings: "4000"
+  ca/ei_exempt_self_employment_income: "2000"
+  ca/first_nations_abatement: "500"
+  ca/foreign_tax_countries:
+    - ca/foreign_non_business_tax_paid: "600"
+      ca/net_foreign_non_business_income: "3000"
+      ca/foreign_business_tax_paid: "0"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "0"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+  ca/spouse_return_taxable_income: "90000"
+  ca/spouse_return_federal_basic_tax: "12300"
+  ca/spouse_return_basic_personal_amount: "16129"
+  ca/spouse_return_age_amount: "2356.30"
+  ca/spouse_return_pension_income_amount: "2000"
+  ca/spouse_not_separated_90_days: "1"
+  ca/income_tax_deducted: "6000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/spouse_income_for_transfer: "84827.59"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "49000.00"
+      ca/clergy_residence_line_2: "17000.00"
+      ca/clergy_employer_residence_benefit_checked: "6000"
+      ca/ei_maximum_insurable_earnings: "65700.00"
+      ca/clergy_residence_months_amount: "8000.00"
+      ca/clergy_residence_line_4: "8000.00"
+      ca/clergy_residence_line_5: "17000.00"
+      ca/clergy_residence_line_8: "12000"
+      ca/clergy_residence_line_9: "12000"
+      ca/clergy_residence_line_10: "12000"
+      ca/ei_insurable_earnings_remaining: "20700.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/clergy_residence_total: "18000"
+      ca/clergy_residence_total_limited: "18000"
+      ca/clergy_residence_deduction: "18000"
+      ca/cpp_base_contributions_on_return: "2252.25"
+      ca/cpp_enhanced_contributions_on_return: "455.00"
+      ca/ei_self_employment_before_slips: "10000"
+      ca/ei_self_employment_earnings: "10000"
+      ca/ei_net_self_employment_income: "16000"
+      ca/ei_earnings_subject_to_premium: "16000"
+      ca/self_employed_ei_premiums: "262.40"
+      ca/spouse_credits_used: "16129"
+      ca/spouse_adjusted_taxable_income: "68698.59"
+      ca/spouse_transferable_amounts: "4356.30"
+      ca/total_income: "65000.00"
+      ca/deductions_from_total_income: "18455.00"
+      ca/ei_payable_on_self_employment: "262.40"
+      ca/ei_premiums_on_self_employment: "262.40"
+      ca/net_income: "46545.00"
+      ca/taxable_income: "46545.00"
+      ca-on/ontario_basic_tax: "2350.52"
+      ca/federal_basic_tax: "6749.03"
+      ca/basic_personal_amount: "16129.00"
+      ca-on/lift_credit: "172.75"
+      ca-on/ontario_health_premium: "450.00"
+      ca/ei_premiums: "738.00"
+      ca-on/non_refundable_credit_amounts: "15999.65"
+      ca-on/credit_amounts_at_credit_rate: "807.98"
+      ca-on/non_refundable_tax_credits: "807.98"
+      ca-on/ontario_tax_after_credits: "1542.54"
+      ca/credit_amounts_subtotal: "20852.65"
+      ca/non_refundable_credit_amounts: "20852.65"
+      ca/credit_amounts_at_credit_rate: "3023.63"
+      ca/non_refundable_tax_credits: "3023.63"
+      ca/federal_tax_after_credits: "3725.40"
+      ca/foreign_tax_credit_basic_federal_tax: "3225.40"
+      ca/federal_non_business_foreign_tax_credit: "207.89"
+      ca/federal_foreign_tax_credit_before_limit: "207.89"
+      ca/federal_foreign_tax_credit: "207.89"
+      ca/federal_tax_less_foreign_tax_credit: "3517.51"
+      ca-on/provincial_foreign_tax_credit_before_limit: "99.42"
+      ca-on/provincial_foreign_tax_credit: "99.42"
+      ca-on/ontario_tax_after_foreign_tax_credit: "1443.12"
+      ca-on/ontario_tax_after_lift_credit: "1270.37"
+      ca-on/ontario_tax: "1720.37"
+      ca/total_payable: "5500.28"
+      ca/total_credits: "6000.00"
+      ca/refund_or_balance_owing: "-499.72"
+      ca/refund: "499.72"
+      ca-on/net_refund: "499.72"
+      # Engine only (not a hand figure): the lines below are the engine's, described in the description.
+      ca-on/flow_through_share_claimable: "1"
+      ca-on/tax_otherwise_payable_reduction_claimable: "1"
+      ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/disability_self_base_amount: "10298.00"
+      ca-on/disability_self_care_threshold: "3518.00"
+      ca-on/disability_self_supplement_maximum: "6007.00"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/lift_family_income_threshold: "65000.00"
+      ca-on/lift_individual_income_threshold: "32500.00"
+      ca-on/political_credit_column_2_line_2: "500.05"
+      ca-on/political_credit_column_2_line_6: "375.03"
+      ca-on/political_credit_column_3_line_2: "1666.82"
+      ca-on/political_credit_column_3_line_6: "958.41"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_return_ontario_disability_amount_maximum: "16305.00"
+      ca-on/spouse_return_ontario_pension_income_amount_maximum: "1762.00"
+      ca-on/tax_reduction_basic: "294.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_maximum: "9028.00"
+      ca/amt_basic_exemption: "177882.00"
+      ca/chart_2016_part_1_amount_a: "412088.00"
+      ca/chart_2016_part_2_amount_a: "500000.00"
+      ca/chart_2017_part_1_amount_a: "417858.00"
+      ca/chart_2017_part_2_amount_a: "500000.00"
+      ca/chart_2018_part_1_amount_a: "424126.00"
+      ca/chart_2018_part_2_amount_a: "500000.00"
+      ca/chart_2019_part_1_amount_a: "433456.00"
+      ca/chart_2019_part_2_amount_a: "500000.00"
+      ca/chart_2020_part_1_amount_a: "441692.00"
+      ca/chart_2020_part_2_amount_a: "500000.00"
+      ca/chart_2021_part_1_amount_a: "446109.00"
+      ca/chart_2021_part_2_amount_a: "500000.00"
+      ca/chart_2022_part_1_amount_a: "456815.00"
+      ca/chart_2022_part_2_amount_a: "500000.00"
+      ca/chart_2023_part_1_amount_a: "485595.00"
+      ca/chart_2023_part_2_amount_a: "500000.00"
+      ca/chart_2024_period_1_amount_a: "508418.00"
+      ca/chart_2024_period_2_amount_a: "625000.00"
+      ca/chart_2025_part_1_amount_a: "522145.00"
+      ca/chart_2025_part_2_amount_a: "625000.00"
+      ca/chart_2_numerator_one: "1.00"
+      ca/disability_self_base_amount: "10138.00"
+      ca/disability_self_care_threshold: "3464.00"
+      ca/disability_self_supplement_maximum: "5914.00"
+      ca/donation_first_tier_maximum: "200.00"
+      ca/donation_high_income_threshold: "253414.00"
+      ca/fhsa_annual_amount: "8000.00"
+      ca/fhsa_annual_amount_for_2024: "8000.00"
+      ca/fhsa_lifetime_limit: "40000.00"
+      ca/home_buyers_maximum: "10000.00"
+      ca/medical_supplement_income_threshold: "33294.00"
+      ca/net_capital_loss_numerator_one_2000: "1.00"
+      ca/oas_benefits_base_amount: "93343.00"
+      ca/political_credit_column_2_line_2: "400.00"
+      ca/political_credit_column_2_line_6: "300.00"
+      ca/political_credit_column_3_line_2: "750.00"
+      ca/political_credit_column_3_line_6: "475.00"
+      ca/political_credit_shortcut_amount: "650.00"
+      ca/political_credit_shortcut_threshold: "1275.00"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_return_age_amount_maximum: "9028.00"
+      ca/spouse_return_age_amount_checked: "2356.30"
+      ca/spouse_return_basic_personal_amount_maximum: "16129.00"
+      ca/spouse_return_basic_personal_amount_checked: "16129"
+      ca/spouse_return_pension_income_amount_maximum: "2000.00"
+      ca/spouse_return_pension_income_amount_checked: "2000"
+      ca/t2204_exemption: "2000.00"
+      ca/t2204_line_1_count: "1"
+      ca/top_up_threshold: "8319.38"
+      ca/volunteer_amount_maximum: "6000.00"
+      ca/cpp_part_5_line_49: "1190.00"
+      ca/cpp_part_5_line_70: "495.00"
+      ca/cpp_part_5_line_88: "695.00"
+      ca/schedule_8_cpp_base_contributions_on_return: "2252.25"
+      ca/schedule_8_cpp_enhanced_contributions_on_return: "455.00"
+      ca/fhsa_lifetime_limit_less_deductions: "40000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/disability_self_supplement: "6007.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca/cpp_part_5_line_49_if_positive: "1190.00"
+      ca/dependant_caregiver_before_maximum: "28798.00"
+      ca/dependant_caregiver_limit: "8601.00"
+      ca/disability_self_supplement: "5914.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca-on/disability_self_worksheet_amount: "16305.00"
+      ca-on/disability_amount_for_self_if_eligible: "10298.00"
+      ca-on/lift_employment_income: "55000"
+      ca-on/lift_credit_before_maximum: "2777.50"
+      ca-on/lift_maximum_credit: "875.00"
+      ca-on/political_credit_column_2_line_7: "375.03"
+      ca-on/political_credit_column_3_line_7: "958.41"
+      ca/canada_employment_amount_income: "55000"
+      ca/child_care_earned_income: "49000"
+      ca/child_care_earned_income_limit: "32666.67"
+      ca/disability_self_worksheet_amount: "16052.00"
+      ca/disability_amount_for_self_if_eligible: "10138.00"
+      ca/fhsa_annual_amount_for_2024_with_carryforward: "8000.00"
+      ca/fhsa_annual_amount_with_carryforward: "8000.00"
+      ca/fhsa_lifetime_limit_less_deductions_and_transfers: "40000.00"
+      ca/fhsa_annual_amount_after_transfers: "8000.00"
+      ca/medical_supplement_employment_deductions: "18000"
+      ca/medical_supplement_employment_income: "55000"
+      ca/medical_supplement_employment_income_less_wage_loss: "55000"
+      ca/medical_supplement_employment_working_income: "37000"
+      ca/pensionable_net_self_employment_earnings: "10000"
+      ca/political_credit_column_2_line_7: "300.00"
+      ca/political_credit_column_3_line_7: "475.00"
+      ca/t2204_line_9: "738.00"
+      # Schedule 6 line 5 by hand: 49,000.00 (line 10100) + 6,000.00 (line 10400) = 55,000.00, with
+      # no scholarships (line 2) and no self-employment profit on lines 13500 to 14300 (line 3).
+      ca/working_income: "55000.00"
+      ca/chart_2016_part_1_amount_c: "412088.00"
+      ca/chart_2016_part_2_amount_c: "500000.00"
+      ca/chart_2016_part_2_amount_e: "500000.00"
+      ca/cpp_pensionable_earnings: "10000"
+      ca/cpp_pensionable_earnings_up_to_additional_maximum: "10000"
+      ca/cpp_earnings_up_to_maximum: "10000"
+      ca/cpp_earnings_subject_to_base_and_first_additional: "6500.00"
+      ca/self_employed_cpp_base_contributions: "643.50"
+      ca/self_employed_cpp_base_credit: "321.75"
+      ca/self_employed_cpp_first_additional_contributions: "130.00"
+      ca/self_employed_cpp_enhanced_contributions: "130.00"
+      ca/self_employed_cpp_contributions_payable: "773.50"
+      ca/self_employed_cpp_deduction: "451.75"
+      ca/medical_supplement_working_income: "37000"
+      ca/chart_2017_part_1_amount_c: "417858.00"
+      ca/chart_2017_part_1_amount_e: "417858.00"
+      ca/chart_2017_part_2_amount_c: "500000.00"
+      ca/chart_2017_part_2_amount_e: "500000.00"
+      ca/chart_2018_part_1_amount_c: "424126.00"
+      ca/chart_2018_part_1_amount_e: "424126.00"
+      ca/chart_2018_part_2_amount_c: "500000.00"
+      ca/chart_2018_part_2_amount_e: "500000.00"
+      ca/chart_2019_part_1_amount_c: "433456.00"
+      ca/chart_2019_part_1_amount_e: "433456.00"
+      ca/chart_2019_part_2_amount_c: "500000.00"
+      ca/chart_2019_part_2_amount_e: "500000.00"
+      ca/chart_2020_part_1_amount_c: "441692.00"
+      ca/chart_2020_part_1_amount_e: "441692.00"
+      ca/chart_2020_part_2_amount_c: "500000.00"
+      ca/chart_2020_part_2_amount_e: "500000.00"
+      ca/chart_2021_part_1_amount_c: "446109.00"
+      ca/chart_2021_part_1_amount_e: "446109.00"
+      ca/chart_2021_part_2_amount_c: "500000.00"
+      ca/chart_2021_part_2_amount_e: "500000.00"
+      ca/chart_2022_part_1_amount_c: "456815.00"
+      ca/chart_2022_part_1_amount_e: "456815.00"
+      ca/chart_2022_part_2_amount_c: "500000.00"
+      ca/chart_2022_part_2_amount_e: "500000.00"
+      ca/chart_2023_part_1_amount_c: "485595.00"
+      ca/chart_2023_part_1_amount_e: "485595.00"
+      ca/chart_2023_part_2_amount_c: "500000.00"
+      ca/chart_2023_part_2_amount_e: "500000.00"
+      ca/chart_2024_period_1_amount_c: "508418.00"
+      ca/chart_2024_period_1_amount_e: "508418.00"
+      ca/chart_2024_period_2_amount_c: "625000.00"
+      ca/chart_2024_period_2_amount_e: "625000.00"
+      ca/chart_2025_part_1_amount_c: "522145.00"
+      ca/chart_2025_part_1_amount_e: "522145.00"
+      ca/chart_2025_part_2_amount_c: "625000.00"
+      ca/chart_2025_part_2_amount_e: "625000.00"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/net_income_before_adjustments: "46545.00"
+      ca/social_benefits_line_6: "46545.00"
+      ca/social_benefits_line_11: "46545.00"
+      ca/social_benefits_line_15: "46545.00"
+      ca/net_income_before_adjustments_not_below_zero: "46545.00"
+      ca/net_income_less_uccb_and_rdsp_income: "46545.00"
+      ca/other_payments_limit_income: "46545.00"
+      ca/t2204_line_6: "1000.40"
+      ca/foreign_tax_credit_net_income_before_split_income: "46545.00"
+      ca/net_income_signed: "46545.00"
+      ca-on/tax_reduction_amounts_claimable: "1"
+      ca-on/medical_net_income_share: "1396.35"
+      ca/donation_limit_on_net_income: "34908.75"
+      ca/medical_net_income_share: "1396.35"
+      ca/residency_net_income_limit: "9309.00"
+      ca-on/medical_threshold: "1396.35"
+      ca/medical_threshold: "1396.35"
+      ca/donation_limit_with_capital_gifts: "34908.75"
+      ca/charitable_donations_limit: "34908.75"
+      ca/foreign_tax_credit_net_income_with_split_income: "46545.00"
+      ca/foreign_tax_credit_net_income: "46545.00"
+      ca/amt_deductions_total: "18455.00"
+      ca/amt_adjustments_before_rate_total: "18455.00"
+      ca/amt_applicable_rate_amount: "9227.50"
+      ca-on/unused_tuition_income_cap: "46545.00"
+      ca/tuition_income_base: "46545.00"
+      ca-on/health_premium_income: "46545.00"
+      ca/amt_part_1_subtotal: "46545.00"
+      ca/amt_adjusted_income_with_gains: "46545.00"
+      ca/amt_adjusted_income_with_security_options: "46545.00"
+      ca/amt_security_options_and_losses_total: "46545.00"
+      ca/amt_adjustments_after_rate_total: "55772.50"
+      ca/amt_adjusted_taxable_income: "55772.50"
+      ca/federal_tax_with_split_income: "6749.03"
+      ca/logging_credit_base: "46545.00"
+      ca/logging_credit_cap: "3103.02"
+      ca/tosi_adjusted_net_income: "46545.00"
+      ca-on/lift_net_income_and_repayments: "46545.00"
+      ca-on/lift_adjusted_net_income: "46545.00"
+      ca-on/lift_excess_over_individual_threshold: "14045.00"
+      ca-on/lift_family_net_income: "46545.00"
+      ca-on/lift_greater_excess: "14045.00"
+      ca-on/lift_family_reduction: "702.25"
+      ca-on/lift_credit_with_spouse: "172.75"
+      ca/medical_supplement_column_1_line_3: "46545.00"
+      ca/medical_supplement_column_1_line_5: "46545.00"
+      ca/medical_supplement_line_6: "46545.00"
+      ca/medical_supplement_line_8: "13251.00"
+      ca/medical_supplement_line_15: "662.55"
+      ca/tuition_income_with_tosi: "46545.00"
+      ca-on/care_adjusted_income: "46545.00"
+      ca-on/care_family_adjusted_income: "46545.00"
+      ca-on/care_credit_percentage: "0.55"
+      ca/tosi_adjusted_net_income_not_below_zero: "46545.00"
+      ca-on/age_income_over_threshold: "215.00"
+      ca-on/age_reduction: "32.25"
+      ca-on/age_amount_before_count: "6190.75"
+      ca/age_income_over_threshold: "1023.00"
+      ca/age_reduction: "153.45"
+      ca/age_amount_before_count: "8874.55"
+      ca-on/seniors_care_family_net_income: "46545.00"
+      ca-on/seniors_care_income_over_base: "11545.00"
+      ca-on/seniors_care_reduction: "577.25"
+      ca/adjusted_family_net_income: "46545.00"
+      ca/eligible_dependant_amount_basis: "16129.00"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca-on/lift_reduction: "702.25"
+      ca-on/lift_credit_single: "172.75"
+      ca/cwb_reduction_with_dependant: "2385.90"
+      ca/canada_workers_benefit_with_dependant: "427.10"
+      ca/cwb_reduction_without_dependant: "2953.50"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca/dependant_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/t2204_line_1: "45000"
+      ca/t2204_line_10: "738.00"
+      ca/t2204_line_12: "738.00"
+      ca/t2204_line_1_plus_2: "45000"
+      ca/t2204_line_3: "45000.00"
+      ca/t2204_line_7: "43000.00"
+      ca/t2204_line_16: "738.00"
+      ca-on/credit_amounts_through_disability_transfer: "15999.65"
+      ca-on/unused_tuition_room: "30545.35"
+      ca-on/ontario_tax_before_dividend_credit: "1542.54"
+      ca-on/ontario_tax_less_dividend_credit: "1542.54"
+      ca-on/ontario_tax_with_split_income: "1542.54"
+      ca-on/ontario_tax_after_minimum_tax_carryover: "1542.54"
+      ca-on/ontario_surtax_base: "1542.54"
+      ca-on/worksheet_on428_line_2: "1542.54"
+      ca/tuition_income_less_credits: "25692.35"
+      ca/tuition_income_remaining: "25692.35"
+      ca/amt_non_refundable_credits_adjustment: "1511.82"
+      ca/amt_credits_adjustments_total: "1511.82"
+      ca/top_up_credits_base: "3023.63"
+      ca/amt_credits_total: "3023.63"
+      ca/amt_tax_payable_before_minimum_tax_carryover: "3725.40"
+      ca/amt_basic_federal_tax: "3725.40"
+      ca/amt_federal_surtax_at_48_percent: "1788.19"
+      ca/amt_basic_federal_tax_less_split_income_tax: "3725.40"
+      ca/amt_greater_of_basic_tax_and_minimum_amount: "3725.40"
+      ca/amt_federal_tax_under_minimum_tax: "3725.40"
+      ca/amt_part_6_surtax_at_48_percent: "1788.19"
+      ca/amt_part_7_basic_tax_with_recapture: "3725.40"
+      ca/amt_tax_payable_with_itc_recapture: "3725.40"
+      ca/credits_against_basic_federal_tax: "3023.63"
+      ca/t2203_line_6: "3725.40"
+      ca/basic_federal_tax_with_dividend_credit: "3725.40"
+      ca-on/ontario_tax_with_surtax: "1542.54"
+      ca-on/ontario_tax_after_dividend_credit: "1542.54"
+      ca-on/tax_otherwise_payable_line_71: "1542.54"
+      ca-on/tax_otherwise_payable_line_73: "1542.54"
+      ca-on/tax_otherwise_payable: "1542.54"
+      ca/amt_federal_tax_with_surtax_and_recapture: "3725.40"
+      ca/basic_federal_tax_with_dividend_credit_and_surtax: "3725.40"
+      ca/foreign_tax_credit_sheets:
+        - ca/foreign_non_business_tax_paid: "600"
+          ca/net_foreign_non_business_income: "3000"
+          ca/foreign_tax_credit_sheet_line_3: "207.89"
+          ca/foreign_business_tax_paid: "0"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "0"
+          ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_business_tax_credit_line_10: "3517.51"
+      ca/foreign_business_tax_credit_line_8: "3725.40"
+      ca/federal_tax_with_surtax: "3725.40"
+      ca/amt_special_foreign_tax_credit: "400.00"
+      ca/amt_foreign_and_logging_credits_total: "207.89"
+      ca/amt_federal_tax_payable: "3517.51"
+      ca/federal_tax_with_itc_recapture: "3517.51"
+      ca/federal_tax: "3517.51"
+      ca/itc_part_d_amount_9: "3517.51"
+      ca/itc_amount_h: "3517.51"
+      ca/amt_regular_net_federal_tax_payable: "3517.51"
+      ca/amt_regular_net_tax_less_surtax: "3517.51"
+      ca/itc_part_d_amount_13: "3725.40"
+      ca/itc_amount_j: "3725.40"
+      ca-on/worksheet_on428_line_3: "1542.54"
+      ca/federal_tax_less_credits: "3517.51"
+      ca/amt_part_7_tax_less_credits: "3725.40"
+      ca/amt_part_7_tax_less_credits_plus_share: "3853.47"
+      ca/amt_tax_payable_after_credits: "3725.40"
+      ca/amt_maximum_carryover_applied: "3725.40"
+      ca-on/tax_reduction_claimable: "1"
+      ca-on/ontario_tax_before_reduction: "1542.54"
+      ca-on/ontario_tax_after_reduction: "1542.54"
+      ca-on/ontario_tax_after_food_credit: "1270.37"
+      ca-on/split_income_line_52: "1270.37"
+      ca/federal_tax_line_41700: "3517.51"
+      ca/split_income_line_29: "3517.51"
+      ca/split_income_line_30: "3517.51"
+      ca/net_federal_tax: "3517.51"
+      ca-on/refund_before_donation: "499.72"

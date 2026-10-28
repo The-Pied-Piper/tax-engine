@@ -1,0 +1,84 @@
+# Return MQ: Guide T4044, Part A column 3, the cost of a Class 10 vehicle that changed use (the Guide's
+# own example: bought in 2018, worth $11,000 when it started being used for employment). Amounts are
+# quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MQ: Guide T4044 (2025), Part A "Column 3 - Cost of additions in the year", for one Class 10
+  vehicle, on the salaried employee of Return MJ (employment income $50,000, other expenses of $6,000,
+  all kilometres driven for employment). The car was owned for personal use, bought in 2018 for
+  $19,000, and started being used for employment in 2025 ("a change in use"): "the amount you will
+  enter in this column is the fair market value of the property at the time you start using the
+  property for employment"; it is worth $11,000 then, so column 3 is $11,000, as the Guide's example
+  gives. The Part A row holds the change in use answer and that fair market value; Part A prints no
+  year or cost of the vehicle, so those are 0. The Guide gives the Class 10 maximum CCA rate as 30%;
+  the claim is a chosen $1,650, which is 30% of half of the $11,000 of additions in the year (the
+  half-year rule), the most the form allows, so line 25 is 1,650, line 3 is 1,650.00 and line 15 is
+  7,650.00 (other expenses of $6,000 plus line 3), and T777 line 17 and T1 line 22900 are 7,650.00.
+  Not pinned: the 2018 purchase price, which Part A does not use. Every other line is the engine's
+  figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Part A - Classes 8,
+    10, 54, and 55 property", "Column 3 - Cost of additions in the year": "If you owned property for personal use
+    and then started using it for employment in 2025, there is a change in use. In most cases when
+    this happens, the amount you will enter in this column is the fair market value of the property at
+    the time you start using the property for employment." and "For example, you bought a car in 2018
+    for $19,000. In 2025, you started using it for employment. By checking car dealerships and the
+    newspapers, you determine its fair market value is $11,000. Therefore, you enter $11,000 in column
+    3." The Class 10 rate: "The maximum CCA rate for this class is 30%."
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    "Add lines 1 to 14. = 15"; "Line 15 plus line 16. Enter this amount on line 22900 of your return.
+    Total expenses = 17".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "50000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "50000"
+  ca/t2204_insurable_earnings: "50000"
+  ca/t2204_premiums_deducted: "820.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "2766.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_other_expenses: "6000"
+  ca/t777_employment_kilometres: "10000"
+  ca/t777_total_kilometres: "10000"
+  ca/t777_vehicle_sales_tax_rate: "13"
+  ca/t777_vehicle_rows:
+    - ca/cca_class_number: "10"
+      ca/cca_ucc_at_start: "0"
+      ca/cca_additions: "11000"
+      ca/cca_aiip_additions: "0"
+      ca/cca_riip_additions: "0"
+      ca/cca_proceeds: "0"
+      ca/cca_diep_proceeds: "0"
+      ca/cca_claimed: "1650"
+      ca/cca_no_property_left: "0"
+      ca/cca_change_in_use: "1"
+      ca/cca_change_in_use_fair_market_value: "11000"
+      ca/cca_vehicle_acquired_year: "0"
+      ca/cca_vehicle_cost: "0"
+      ca/cca_vehicle_government_assistance: "0"
+      ca/cca_sold_zepvs: []
+expected:
+  ca/t777:
+    - ca/t777_line_25: "1650"
+      ca/t777_line_3: "1650.00"
+      ca/t777_line_15: "7650.00"
+      ca/t777_line_17: "7650.00"
+  ca-on/return:
+    - ca/total_income: "50000.00"
+      ca/other_employment_expenses: "7650.00"
+      ca-on/ontario_tax_less_dividend_credit: "1313.82"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "41885.00"
+      ca/other_payments_limit_income: "41885.00"
+      ca/refund_or_balance_owing: "4426.75"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "50000"

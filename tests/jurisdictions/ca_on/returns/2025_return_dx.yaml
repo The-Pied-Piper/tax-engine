@@ -1,0 +1,137 @@
+# Return DX: a single Ontario employee with one T4 whose box 26 (CPP pensionable earnings) of
+# 56,500 is less than its box 14 employment income of 60,000, and one Schedule 8 (not Form RC381).
+# Schedule 8 Part 3 line 1 (line 50339) is the box 26 total, not the employment income, so the
+# required base and first additional contributions are on 56,500 (2,623.50 and 530.00), not on
+# 60,000 (2,796.75 and 565.00). The employer's box 16 of 3,361.75 is what it deducted on the 60,000
+# (the contributions on 60,000), so the 208.25 difference is an overpayment, on T1 line 44800.
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings. Every output
+# the CA-ON manifest declares must appear under `expected`, or be left out to be 0 (or no
+# records). The other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of
+  $60,000.00 (a chosen figure, T4 box 14) on one T4 and no other income. The T4's box 26 (CPP
+  pensionable earnings) is $56,500 (a chosen figure) and its box 16 (CPP contributions
+  deducted) is $3,361.75 (a chosen figure: the contributions on the 60,000 of box 14 pay, 2,796.75
+  base and 565.00 first additional, which the employer deducted instead of the contributions on
+  the 56,500 of box 26; box 16 is exactly 5.95% of box 26). Because the province of employment is Ontario, Schedule 8 is completed
+  (the return carries one copy of Schedule 8 and no Form RC381). Part 2: line A (box A, the months
+  that CPP applied) is 12 (a chosen figure), so the table's row for 12 months gives line B
+  71,300.00 (maximum pensionable earnings), line C 9,900.00 (maximum subject to second additional
+  contributions), line D 81,200.00 (additional maximum pensionable earnings) and line E 3,500.00
+  (basic exemption). Part 3: line 1 (50339) is the box 26 total, 56,500.00; line 2 is the lesser
+  of line D (81,200.00) and line 1, so 56,500.00. Line 3 is 71,300.00, so line 4 (second
+  additional earnings) is 0 (56,500.00 less 71,300.00 is negative) and line 5 is 56,500.00. Line 6
+  is 3,500.00, so line 7 (earnings subject to base and first additional contributions) is
+  56,500.00 less 3,500.00 = 53,000.00, under the 67,800.00 maximum. Line 8 (50340) is the box 16
+  total, 3,361.75; line 9 is 3,361.75 x 83.1933% = 2,796.75 and line 10 is 3,361.75 less 2,796.75
+  = 565.00. Line 11 (required base contributions) is 53,000.00 x 4.95% = 2,623.50, line 12
+  (required first additional contributions) is 53,000.00 x 1% = 530.00, and line 13 is 2,623.50 +
+  530.00 = 3,153.50. Line 14 is line 9, 2,796.75; line 15 is line 11, 2,623.50;
+  line 16 is 173.25. Line 17 is line 10, 565.00; line 18 is line 12, 530.00; line 19 is 35.00.
+  Line 20 is 173.25 + 35.00 = 208.25. Line 21 (50341) is 0 (no box 16A), so line 22 (4% of line
+  4) is 0 and line 23 is 0. Line 24 is 208.25, positive, so Part 3a applies: line 25 (T1 line
+  30800 and ON428 line 58240) is line 15, 2,623.50; line 26 is line 18, 530.00; line 27 is 0; line
+  28 (T1 line 22215) is 530.00; and line 29 (T1 line 44800) is line 24, 208.25. Part 4 and Part 5
+  are not completed (no self-employment income, no election). The EI premiums are 1.64% x 60,000
+  = 984.00 (T4 box 18, Form T2204 line 16), below the maximum of 1,077.48. Total
+  income (line 15000) is 60,000.00; the deduction of line 22215 (530.00) gives net income and
+  taxable income of 59,470.00. Net federal tax is 5,673.77 (the 2025 brackets on 59,470.00, less
+  the credits on 21,207.50 at 14.5%: the basic personal amount of 16,129.00, the CPP base
+  contributions of 2,623.50, the EI premiums of 984.00 and the Canada employment amount of
+  1,471.00), the engine's figure. The Ontario tax is 3,047.28 (the Ontario basic tax of 3,273.18 on
+  59,470.00, then the surtax, the tax reduction and the 600.00 health premium), the engine's
+  figure. Total payable is 5,673.77 + 3,047.28 = 8,721.05. The income tax
+  deducted is a chosen 12,000.00, and the overpayment of line 44800 (208.25) is a credit, so the
+  total credits are 12,208.25 and the refund is 12,208.25 less 8,721.05 = 3,487.20 (to be confirmed
+  against CRA's calculator). Not triggered: Part 3b (line 24 is positive), Part 4, Part 5, Form
+  RC381, the second additional contributions (line 22 is 0), and every other credit and deduction
+  not named here.
+sources:
+  - >-
+    CRA, Schedule 8 (2025), Canada Pension Plan Contributions and Overpayment (5000-S8), Part 3:
+    "Line 1 and line 50339: Total CPP pensionable earnings from box 26 of all of your T4 slips (if
+    box 26 is blank, enter the amount from box 14) (maximum $81,200 per slip)"; "Line 2: Enter
+    whichever is less: amount from line D of Part 2 or line 1."; "Line 7: Line 5 minus line 6 (if
+    negative, enter "0") (maximum $67,800) ="; "Line 8 and line 50340: Total actual base and first
+    additional contributions on CPP pensionable earnings from box 16 of all of your T4 slips";
+    "Line 9: amount from line 8 multiplied by 83.1933% ="; "Line 11: amount from line 7 multiplied
+    by 4.95% (maximum $3,356.10) ="; "Line 12: amount from line 7 multiplied by 1% (maximum
+    $678.00) ="; "Line 13: Line 11 plus line 12 ="; "Line 14: Amount from line 9"; "Line 15: Amount
+    from line 11"; "Line 16: Line 14 minus line 15 (if negative, show in brackets) ="; "Line 17:
+    Amount from line 10"; "Line 18: Amount from line 12"; "Line 19: Line 17 minus line 18 (if
+    negative, show in brackets) ="; "Line 20: Line 16 plus line 19 (if negative, show in brackets)
+    ="; "Line 24: Line 20 plus line 23 (if negative, show in brackets) ="; Part 3a: "Line 25: Enter
+    the amount from line 15. Enter this amount (in dollars and cents) on line 30800 of your return
+    and line 58240 of your Form 428."; "Line 28: Line 26 plus line 27 Enter this amount (in dollars
+    and cents) on line 22215 of your return."; "Line 29: Enter the amount from line 24. Enter this
+    amount (in dollars and cents) on line 44800 of your return.". Form text: docs/cra-forms-2025/5000-s8-25e.txt.
+  - >-
+    CRA, T1 return, Ontario edition (5006-R, 2025): "Line 48 and line 22215: Deduction for CPP or
+    QPP enhanced contributions on employment income (complete Schedule 8 or Form RC381, whichever
+    applies)"; "Line 152 and line 44800: CPP or QPP overpayment".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  # T4 box 26 (CPP pensionable earnings outside Quebec): Schedule 8 line 1 (line 50339).
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "56500"
+  # T4 box 16: the CPP base and first additional contributions the employer deducted.
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "12000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "60000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "56500.00"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/ei_premiums: "984.00"
+      ca/cpp_base_contributions_on_return: "2623.50"
+      ca/cpp_enhanced_contributions_on_return: "530.00"
+      ca/cpp_overpayment: "208.25"
+      ca/cpp_payable_on_self_employment_and_other_earnings: "0"
+      ca/cpp_base_contributions_on_self_employment_and_other_earnings: "0"
+      ca/cpp_deduction_on_self_employment_and_other_earnings: "0"
+      ca/net_income_before_adjustments: "59470.00"
+      ca/other_payments_limit_income: "59470.00"
+      ca/net_income: "59470.00"
+      ca/taxable_income: "59470.00"
+      ca/net_federal_tax: "5673.77"
+      ca-on/ontario_tax_less_dividend_credit: "2447.28"
+      ca-on/ontario_tax: "3047.28"
+      ca/total_payable: "8721.05"
+      ca/total_credits: "12208.25"
+      ca/refund_or_balance_owing: "-3487.20"
+      ca-on/net_refund: "3487.20"
+      ca/amt_part_1_subtotal: "59470.00"
+      ca/amt_applicable_rate_amount: "265.00"
+      ca/amt_regular_net_federal_tax_payable: "5673.77"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_part_3_line_2: "56500"
+      ca/cpp_base_contributions: "2623.50"
+      ca/cpp_first_additional_contributions: "530.00"
+      ca/cpp_second_additional_contributions: "0"
+      ca/cpp_required_base_and_first_additional_contributions: "3153.50"
+      ca/cpp_actual_base_contributions: "2796.75"
+      ca/cpp_actual_first_additional_contributions: "565.00"
+      ca/cpp_line_24_positive: "1"
+      ca/cpp_part_3_base_contributions_on_return: "2623.50"
+      ca/cpp_part_3_enhanced_contributions_on_return: "530.00"
+      ca/cpp_part_3_overpayment: "208.25"

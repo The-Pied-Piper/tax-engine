@@ -1,0 +1,161 @@
+# Return FV: the social benefits repayment chart (Federal Worksheet, line 23500) where line
+# 19 takes line 5, and the northern residents deduction over two zones: Zone A line 5
+# floored at 0 by a special work site benefit above line 3 (unfloored, -1,987), and Zone B
+# lines 6 to 11 with the additional residency amount and no special work site benefit. No
+# CRA example exists for either chart, so every income figure is a chosen figure, worked out
+# by hand from the form text before the engine ran.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the forms name no
+  province of residence), resident in Canada throughout 2025 and aged 18 or older at the end
+  of 2025 (chosen figures), with no employment income, no CPP or EI contributions and 12 CPP
+  and 12 QPP months (chosen). Her income (chosen figures) is other income of 143,000.00
+  (line 13000) and old age security of 7,000.00 (line 11300). No net federal supplements are
+  reported (line 14600 is blank, so line 14700 is 0). Total income (line 15000) is 143,000 +
+  7,000 = 150,000.00. There are no deductions from total income (line 23300 is 0), so net
+  income before adjustments (line 23400) is 150,000.00. She has no EI benefits, UCCB, RDSP
+  income, UCCB or RDSP repayments, capital gains or capital losses. Income tax deducted is a
+  chosen 30,000.00.
+  Federal Worksheet, Line 23500 - Social benefits repayment. The chart is completed because
+  "You entered an amount on line 11300 or line 14600 of your return and the amount on line
+  23400 is more than $93,454" (7,000.00 and 150,000.00). The first condition does not apply,
+  since no amount is entered on line 11900. Line 1, the OAS pension from line 11300:
+  7,000.00. Line 2, the net federal supplements: 0. Line 3: 7,000 + 0 = 7,000.00. Line 4,
+  the overpayment of OAS benefits recovered: 0 (none entered). Line 5: 7,000 - 0 = 7,000.00,
+  not negative, so not floored. Line 6, the net income before adjustments from line 23400
+  (plus the total split income, 0): 150,000.00. Lines 7 to 9 are 0 (no EI repayment, no
+  UCCB, no RDSP income). Line 10: 0. Line 11: 150,000 - 0 = 150,000.00. Lines 12 and 13 (the
+  UCCB and RDSP income repayments) are 0, so line 14 is 0. Line 15, the adjusted net income:
+  150,000 + 0 = 150,000.00. Line 16, the OAS benefits base amount: 93,343.00. Line 17:
+  150,000 - 93,343 = 56,657.00 (positive, so not set to 0). Line 18: 56,657 x 15% =
+  8,498.55. Line 19, whichever is less of line 5 (7,000.00) and line 18 (8,498.55):
+  7,000.00. Line 5 is the lesser, so line 19 takes line 5, a branch that the other chart
+  returns do not reach (there line 18 is below line 5). Line 20, the amount from line 7: 0.
+  Line 21: 7,000 + 0 = 7,000.00, entered on line 23500 and line 42200. Net income (line
+  23600) is 150,000 - 7,000 = 143,000.00.
+  Federal Worksheet, Line 25000 - Other payments deduction, is not completed because no net
+  federal supplements are reported, so line 25000 is 0. The worksheet's line 9 formula (line
+  5 plus line 8, 150,000 - 0 + 0 = 150,000.00) is not carried to the return; the engine
+  exports that signed figure.
+  Form T2222, Step 2. Zone A: 183 days lived (a chosen figure) and no days for the
+  additional residency amount (line 2 is 0). The special work site benefit on line 4 is
+  4,000.00, a chosen figure standing for box 124 of a T4A slip (the return has no employment
+  income). Zone B: 182 days lived and 120 days for the additional residency amount (both
+  chosen figures), with no special work site benefit (line 9 is 0). The two periods are
+  consecutive, and they are one period of residency because a move from one prescribed zone
+  directly to another does not affect it ("Moving - Your period of residency is not affected
+  if you moved from one place in a prescribed zone directly to another place in a prescribed
+  zone."). Zone A line 1: 183 x 11.00 = 2,013.00. Line 2: 0 x 11.00 = 0.00. Line 3: 2,013 +
+  0 = 2,013.00. Line 4: 4,000.00. Line 5: 2,013 - 4,000 = -1,987.00, entered as 0 ("if
+  negative, enter 0"); the unfloored -1,987.00 would make line 11 -326.00. Zone B line 6:
+  182 x 5.50 = 1,001.00. Line 7: 120 x 5.50 = 660.00. Line 8: 1,001 + 660 = 1,661.00. Line
+  9: 0. Line 10: 1,661 - 0 = 1,661.00. Line 11: 0 + 1,661 = 1,661.00. Line 12: net income
+  from line 23600, 143,000.00 x 20% = 28,600.00. Line 13, the lesser of line 11 (1,661.00)
+  and line 12 (28,600.00): 1,661.00, the residency deduction. No travel deduction is
+  claimed, so the northern residents deductions are 1,661.00. Taxable income (line 26000) is
+  143,000 - 1,661 = 141,339.00. Whether the site is within 30 kilometres of a population
+  centre of at least 40,000 is the filer's to confirm; the chosen figure assumes it is.
+  The lines that are the engine's figures, not hand figures: the CPP second additional
+  earnings maximum (9,900.00, a CPP parameter for 12 months, with no contributions), the
+  Ontario tax less the dividend credit (10,835.31), the federal tax after credits
+  (24,655.68), the Ontario tax (13,880.56, which includes the health premium of 750.00), the
+  total payable (45,536.24: the federal tax, the Ontario tax and the social benefits
+  repayment of 7,000.00 on line 42200), the total credits (30,000.00, the income tax
+  deducted) and the balance owing (45,536.24 - 30,000.00 = 15,536.24).
+sources:
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1), "Line 23500 - Social benefits repayment":
+    "Complete the chart below if one or both of the following applies:" "You entered an
+    amount on line 11900 of your return and the amount on line 23400 is more than $82,125";
+    "You entered an amount on line 11300 or line 14600 of your return and the amount on line
+    23400 is more than $93,454"; "Line 3: Line 1 plus line 2 ="; "Line 5: Line 3 minus line
+    4 (if negative, enter "0") ="; "Line 11: Line 6 minus line 10"; "Line 15: Line 11 plus
+    line 14 Adjusted net income ="; "Line 16: OAS benefits base amount 93,343.00"; "Line 17:
+    Line 15 minus line 16 (if negative, enter "0") ="; "Line 18: Amount from line 17
+    multiplied by 15% ="; "Line 19: Enter whichever is less: amount from line 5 or line
+    18."; "Line 21: Line 19 plus line 20. Enter this amount on line 23500 and line 42200 of
+    your return. =" (docs/cra-forms-2025/5000-d1-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, Form T2222 2025, Northern Residents Deductions, Step 2: "You qualify if you lived,
+    on a permanent basis, for a continuous period of at least six consecutive months in one
+    or more of the following:" "a prescribed northern zone (Zone A)" "prescribed
+    intermediate zone (Zone B)"; "Moving - Your period of residency is not affected if you
+    moved from one place in a prescribed zone directly to another place in a prescribed
+    zone."; "Line 1: Enter the number of days you lived in a prescribed northern zone in
+    2025. multiplied by $11.00 ="; "Line 2: Enter the number of days you qualify for the
+    additional residency amount in 2025. multiplied by $11.00 ="; "Line 3 and line 67490:
+    Line 1 plus line 2 ="; "Line 4 and line 67507: If you worked at a special work site,
+    enter the amount from box 31 of your T4 slip or box 124 of your T4A slip that represents
+    the non-taxable benefits for board and lodging at the special work site. The special
+    work site must be located within 30 kilometres from the nearest point on the boundary of
+    any population centre that has a population of at least 40,000 individuals."; "Line 5:
+    Line 3 minus line 4 (if negative, enter "0") ="; "Line 6: Enter the number of days you
+    lived in an intermediate zone in 2025. multiplied by $5.50 ="; "Line 7: Enter the number
+    of days you qualify for the additional residency amount in 2025. multiplied by $5.50 =";
+    "Line 8 and line 67520: Line 6 plus line 7 ="; "Line 9 and line 67529: If you worked at
+    a special work site, enter the amount from box 31 of your T4 slip or box 124 of your T4A
+    slip that represents the non-taxable benefits for board and lodging at the special work
+    site."; "Line 10: Line 8 minus line 9 (if negative, enter "0") ="; "Line 11: Line 5 plus
+    line 10 ="; "Line 12: Enter your net income from line 23600 of your return. multiplied
+    by 20% ="; "Line 13: Enter whichever is less: amount from line 11 or line 12. Residency
+    deduction" (docs/cra-forms-2025/t2222-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2222/t2222-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_income: "143000"
+  ca/old_age_security: "7000"
+  ca/income_tax_deducted: "30000"
+  ca/zone_a_days_lived: "183"
+  ca/zone_a_special_work_site_benefits: "4000"
+  ca/zone_b_days_lived: "182"
+  ca/zone_b_additional_residency_days: "120"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "150000.00"
+      ca/deductions_from_total_income: "0"
+      ca/net_income_before_adjustments: "150000.00"
+      ca/oas_and_federal_supplements: "7000"
+      ca/social_benefits_line_5: "7000"
+      ca/social_benefits_line_6: "150000.00"
+      ca/social_benefits_line_10: "0"
+      ca/social_benefits_line_11: "150000.00"
+      ca/social_benefits_line_14: "0"
+      ca/social_benefits_line_15: "150000.00"
+      ca/oas_benefits_base_amount: "93343.00"
+      ca/social_benefits_line_17: "56657.00"
+      ca/social_benefits_line_18: "8498.55"
+      ca/social_benefits_line_19: "7000"
+      ca/social_benefits_line_21: "7000"
+      ca/social_benefits_repayment_applies: "1"
+      ca/social_benefits_repayment: "7000"
+      ca/other_payments_limit_income: "150000.00"
+      ca/zone_a_basic_residency_amount: "2013.00"
+      ca/zone_a_additional_residency_amount: "0"
+      ca/zone_a_residency_amount: "2013.00"
+      ca/zone_a_residency_after_work_site: "0"
+      ca/zone_b_basic_residency_amount: "1001.00"
+      ca/zone_b_additional_residency_amount: "660.00"
+      ca/zone_b_residency_amount: "1661.00"
+      ca/zone_b_residency_after_work_site: "1661.00"
+      ca/residency_amount: "1661.00"
+      ca/residency_net_income_limit: "28600.00"
+      ca/residency_deduction: "1661.00"
+      ca/northern_residents_deductions: "1661.00"
+      ca/net_income: "143000.00"
+      ca/deductions_from_net_income: "1661.00"
+      ca/taxable_income: "141339.00"
+      # Engine only (not hand figures): the tax lines, see the description.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "10835.31"
+      ca/federal_tax_after_credits: "24655.68"
+      ca-on/ontario_tax: "13880.56"
+      ca/total_payable: "45536.24"
+      ca/total_credits: "30000.00"
+      ca/refund_or_balance_owing: "15536.24"

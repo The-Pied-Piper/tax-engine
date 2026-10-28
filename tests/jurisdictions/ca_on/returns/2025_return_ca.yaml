@@ -1,0 +1,466 @@
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return CA: Return AL's filer, a single 2025 Ontario resident aged 20 (a chosen figure)
+  and resident in Canada throughout 2025, whose $10,000 of dividends other than eligible
+  dividends from a private corporation controlled by a relative (no information slip, so
+  grossed up by the Federal Worksheet's line 15 "Applicable rate 115%" to $11,500.00) are
+  all split income (Form T1206 Part 1 lines 1 and 2, $11,500), now with foreign income:
+  $40,000 of other income, all of it split income from foreign sources (T1206 line 3, a
+  chosen figure), and $10,000 of foreign investment income that is not split income, each
+  paying foreign tax to one country, $15,000 in all (Form T2209 line 1, a chosen figure),
+  the whole $50,000 being net foreign non-business income (T2209 line 2). The filer has no
+  employment income, so the tax on the foreign split income is the point of the return.
+  Total income (line 15000) is $11,500.00 + $40,000.00 + $10,000.00 = $61,500.00; T1206
+  line 4 is $11,500 + $40,000 = $51,500, which joins line 23200 as a deduction, so net
+  income (line 23600) and taxable income (line 26000) are $61,500.00 - $51,500.00 =
+  $10,000.00. T1206 Part 2: line 8 is 33% x $51,500 = $16,995.00 (line 40424); the
+  disability amounts (lines 31600 and 31800, a chosen 0 each) give a line 14 of 0.00, so
+  line 15 is $16,995.00; line 19 is 9.0301% x $11,500 = $1,038.4615, rounded half-up to
+  the cent, $1,038.46, line 18 and line 20 are 0.00, so line 22 is $16,995.00 - $1,038.46
+  = $15,956.54. T2209: the net income of note (3) is $10,000.00 plus the split income of
+  line 68360, $61,500.00, the basic federal tax of note (4) is $16,106.29 ($18,445.00, the
+  tax on taxable income of $1,450.00 plus line 40424, less the non-refundable tax credits
+  of $2,338.71, before the dividend tax credit), so line 2 is $50,000 x $16,106.29 /
+  $61,500.00 = $13,094.5447, rounded half-up to the cent, $13,094.54, less than the
+  $15,000 paid, and the federal foreign tax credit (line 40500) is $13,094.54, within the
+  $15,067.83 of line 42900. T1206 line 23 is the part of line 3 from foreign sources over
+  the total income from foreign sources (lines 68370 and 68380, $40,000 and $50,000,
+  chosen figures) times line 40500: $13,094.54 x $40,000 / $50,000 = $10,475.632, rounded
+  half-up to the cent, $10,475.63. Line 24 is $15,956.54 - $10,475.63 = $5,480.91. Line 29
+  is the federal tax less credits of the T1 (line 41700, $1,973.29) plus line 41500 (0),
+  and line 30 is the more of lines 24 and 29, $5,480.91, which, with the special taxes
+  (line 41800, 0), is the net federal tax (line 42000). T1206 Part 3: line 33 (ON428 line
+  54, line 61510) is 20.53% x $51,500 = $10,572.95; lines 34 to 38 are 0.00, so line 39 is
+  $10,572.95; line 42 is 10% of the 0.00 of line 18 and line 45 is 2.9863% x $11,500 =
+  $343.4245, rounded half-up to the cent, $343.42, so line 47 is $10,572.95 - $343.42 =
+  $10,229.53. The provincial foreign tax credit (Form T2036 line 5, ON428 line 82) is the
+  less of line 3, $15,000 less the federal credit, $1,905.46, and line 4, $50,000 x
+  $10,572.95 / $61,500.00 = $8,595.89, so $1,905.46, within the Ontario tax otherwise
+  payable of $10,572.95. T1206 line 49 is the non-business part of line 68370 over the
+  non-business part of line 68380 ($40,000 and $50,000, chosen figures, all the foreign
+  income being non-business) times ON428 line 82: $1,905.46 x $40,000 / $50,000 =
+  $1,524.368, rounded half-up to the cent, $1,524.37, and line 50 is $10,229.53 -
+  $1,524.37 = $8,705.16. Line 51 is ON428 line 88, $8,324.07 ($10,229.53 less the
+  $1,905.46 of line 82), and line 52 is the more of lines 50 and 51, $8,705.16, to which
+  the health premium of $600.00 (taxable income of $10,000.00 plus line 68360, $61,500.00,
+  above $48,000 and at most $72,000, so the first three tiers at their $300, $150 and $150
+  maximums) is added: the Ontario tax, $9,305.16. The total payable is the net federal tax
+  plus the Ontario tax, $5,480.91 + $9,305.16 = $14,786.07; with no income tax deducted (a
+  chosen $0), no Canada workers benefit and no provincial credits, the balance owing is
+  $14,786.07. Not yet computed, so not in this file: line 33C, line 8A and the other lines
+  of T1206 that Return AL notes. Amounts are quoted decimal strings, never floats; counts
+  are quoted digit strings. A line or input this return leaves out is blank, 0, and is
+  checked to compute to 0; intermediate lines that are listed are checked too.
+sources:
+  - >-
+    CRA, Form T1206 "Tax on Split Income" 2025 (docs/cra-forms-2025/t1206-25e.pdf,
+    confirmed 2026-10-19 from the PDF; no .txt published), Part 2 "Federal foreign tax
+    credit on split income": "Part of the amount on line 3 that is from foreign sources"
+    (68370) over "Total income from foreign sources" (68380), "× Amount from line 40500
+    of your return" (line 23); "Line 22 minus line 23 (if negative, enter "0")" (line
+    24); "Enter whichever is more: the amount from line 24 or line 29." (line 30). Line
+    23 is a dollars-and-cents box, so $13,094.54 x $40,000 / $50,000 = $10,475.632
+    rounds half-up to the cent (the owner's decision, the form stating no rounding
+    rule), $10,475.63; line 24 is $15,956.54 - $10,475.63 = $5,480.91; line 29 is
+    $1,973.29 + $0.00; line 30 is $5,480.91.
+  - >-
+    CRA, Form T1206 2025, Part 3 "Provincial or territorial foreign tax credit on split
+    income": "Amount from line 47 on the previous page" (line 48); "Part of the amount
+    from line 68370 on page 8 that is non-business income" over "Part of the amount from
+    line 68380 on page 8 that is non-business income", "× Amount from line number of
+    your Form 428 shown in column 7 in Chart C on page 5" (line 49, Ontario: ON428 line
+    82); "Line 48 minus line 49" (line 50); "Amount from the line number of your Form
+    428 shown in column 8 of Chart C on page 5" (line 51, Ontario: ON428 line 88);
+    "Enter whichever is more: the amount from line 50 or line 51." (line 52). Line 49 is
+    $1,905.46 x $40,000 / $50,000 = $1,524.368, $1,524.37 half-up to the cent; line 50
+    is $10,229.53 - $1,524.37 = $8,705.16; line 51 is $8,324.07; line 52 is $8,705.16,
+    the Ontario tax before the health premium.
+  - >-
+    CRA, Form T2209 "Federal Foreign Tax Credits" 2025, line 1 "Non-business income tax
+    paid to a foreign country" ($15,000), line 2 "Net foreign non-business income" "×
+    Basic federal tax" over "Net income" ($50,000 x $16,106.29 / $61,500.00 =
+    $13,094.5447, $13,094.54), line 3 "Enter whichever is less: the amount from line 1
+    or line 2." ($13,094.54), "Federal foreign tax credit" (line 40500, $13,094.54, not
+    more than line 42900, $15,067.83). Form T2036 "Provincial or Territorial Foreign Tax
+    Credit" 2025, line 3 "Line 1 minus line 2" ($15,000.00 - $13,094.54 = $1,905.46),
+    line 4 "Net foreign non-business income" "× Provincial or territorial tax otherwise
+    payable" over "Net income" ($50,000 x $10,572.95 / $61,500.00 = $8,595.8943,
+    $8,595.89) and line 5 "Enter whichever amount is less: line 3 or line 4."
+    ($1,905.46, entered on ON428 line 82). These two forms are as Return AW takes them.
+  - >-
+    CRA, T1 General 2025 and Form ON428: line 40424, 40500, 41700, 41800, 42000 and
+    42800; ON428 lines 54 (61510), 82, 88, 89 (the health premium chart, $600 for
+    taxable income above $48,000 and at most $72,000) and 90 "Line 88 plus line 89 Enter
+    this amount on line 42800 of your return. Ontario tax", line 88 being line 52 of
+    Form T1206. The Federal Worksheet for line 40425, as in Return AL.
+inputs:
+  ca/other_dividends_received_without_a_slip: "10000"
+  ca/other_income: "40000"
+  ca/foreign_investment_income: "10000"
+  ca/foreign_tax_countries:
+    - ca/foreign_non_business_tax_paid: "15000"
+      ca/net_foreign_non_business_income: "50000"
+      ca/foreign_business_tax_paid: "0"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "0"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/split_income_dividends: "11500"
+  ca/split_income_dividends_other_than_eligible: "11500"
+  ca/other_split_income: "40000"
+  ca/split_income_from_foreign_sources: "40000"
+  ca/total_income_from_foreign_sources: "50000"
+  ca/split_income_non_business_from_foreign_sources: "40000"
+  ca/total_non_business_income_from_foreign_sources: "50000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca/schedule_8:
+    - ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cpp_line_16_not_negative: "1"
+      ca/cpp_line_19_not_negative: "1"
+      ca/cpp_line_23_not_negative: "1"
+      ca/cpp_part_5_line_19: "67800.00"
+      ca/cpp_part_5_line_25: "3500.00"
+      ca/cpp_part_5_line_21: "67800.00"
+      ca/cpp_part_5_line_36: "9900.00"
+      ca/cpp_part_5_line_39: "-3500.00"
+      ca/cpp_part_5_line_29: "3500.00"
+      ca/cpp_part_5_line_41: "-3500.00"
+      ca/cpp_part_5_line_42_lesser: "-3500.00"
+  ca-on/return:
+    - ca-on/flow_through_share_claimable: "1"
+      ca-on/tax_otherwise_payable_reduction_claimable: "1"
+      ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_dividends_grossed_up: "11500.00"
+      ca-on/split_income_line_45: "343.42"
+      ca/split_income_line_19: "1038.46"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/disability_self_base_amount: "10298.00"
+      ca-on/disability_self_care_threshold: "3518.00"
+      ca-on/disability_self_supplement_maximum: "6007.00"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/lift_family_income_threshold: "65000.00"
+      ca-on/lift_individual_income_threshold: "32500.00"
+      ca-on/political_credit_column_2_line_2: "500.05"
+      ca-on/political_credit_column_2_line_6: "375.03"
+      ca-on/political_credit_column_3_line_2: "1666.82"
+      ca-on/political_credit_column_3_line_6: "958.41"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/spouse_base: "11905.00"
+      ca-on/tax_reduction_basic: "294.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_maximum: "9028.00"
+      ca/amt_basic_exemption: "177882.00"
+      ca/chart_2016_part_1_amount_a: "412088.00"
+      ca/chart_2016_part_2_amount_a: "500000.00"
+      ca/chart_2017_part_1_amount_a: "417858.00"
+      ca/chart_2017_part_2_amount_a: "500000.00"
+      ca/chart_2018_part_1_amount_a: "424126.00"
+      ca/chart_2018_part_2_amount_a: "500000.00"
+      ca/chart_2019_part_1_amount_a: "433456.00"
+      ca/chart_2019_part_2_amount_a: "500000.00"
+      ca/chart_2020_part_1_amount_a: "441692.00"
+      ca/chart_2020_part_2_amount_a: "500000.00"
+      ca/chart_2021_part_1_amount_a: "446109.00"
+      ca/chart_2021_part_2_amount_a: "500000.00"
+      ca/chart_2022_part_1_amount_a: "456815.00"
+      ca/chart_2022_part_2_amount_a: "500000.00"
+      ca/chart_2023_part_1_amount_a: "485595.00"
+      ca/chart_2023_part_2_amount_a: "500000.00"
+      ca/chart_2024_period_1_amount_a: "508418.00"
+      ca/chart_2024_period_2_amount_a: "625000.00"
+      ca/chart_2025_part_1_amount_a: "522145.00"
+      ca/chart_2025_part_2_amount_a: "625000.00"
+      ca/chart_2_numerator_one: "1.00"
+      ca/disability_self_base_amount: "10138.00"
+      ca/disability_self_care_threshold: "3464.00"
+      ca/disability_self_supplement_maximum: "5914.00"
+      ca/donation_first_tier_maximum: "200.00"
+      ca/donation_high_income_threshold: "253414.00"
+      ca/ei_maximum_insurable_earnings: "65700.00"
+      ca/fhsa_annual_amount: "8000.00"
+      ca/fhsa_annual_amount_for_2024: "8000.00"
+      ca/fhsa_lifetime_limit: "40000.00"
+      ca/medical_supplement_income_threshold: "33294.00"
+      ca/net_capital_loss_numerator_one_2000: "1.00"
+      ca/oas_benefits_base_amount: "93343.00"
+      ca/political_credit_column_2_line_2: "400.00"
+      ca/political_credit_column_2_line_6: "300.00"
+      ca/political_credit_column_3_line_2: "750.00"
+      ca/political_credit_column_3_line_6: "475.00"
+      ca/political_credit_shortcut_amount: "650.00"
+      ca/political_credit_shortcut_threshold: "1275.00"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/top_up_threshold: "8319.38"
+      ca/fhsa_lifetime_limit_less_deductions: "40000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/disability_self_supplement: "6007.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca/disability_self_supplement: "5914.00"
+      ca/ei_insurable_earnings_remaining: "65700.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca-on/disability_self_worksheet_amount: "16305.00"
+      ca-on/disability_amount_for_self_if_eligible: "10298.00"
+      ca-on/political_credit_column_2_line_7: "375.03"
+      ca-on/political_credit_column_3_line_7: "958.41"
+      ca-on/split_income_line_46: "343.42"
+      ca/disability_self_worksheet_amount: "16052.00"
+      ca/disability_amount_for_self_if_eligible: "10138.00"
+      ca/dividends_amount_b: "11500.00"
+      ca/other_dividends_credit: "1038.46"
+      ca/dividends_without_a_slip_grossed_up: "11500.00"
+      ca/dividends_amount_a: "11500.00"
+      ca/fhsa_annual_amount_for_2024_with_carryforward: "8000.00"
+      ca/fhsa_annual_amount_with_carryforward: "8000.00"
+      ca/fhsa_lifetime_limit_less_deductions_and_transfers: "40000.00"
+      ca/fhsa_annual_amount_after_transfers: "8000.00"
+      ca/investment_income_before_prior_years: "10000"
+      ca/interest_and_other_investment_income: "10000"
+      ca/no_slip_dividend_tax_credit: "1038.46"
+      ca/political_credit_column_2_line_7: "300.00"
+      ca/political_credit_column_3_line_7: "475.00"
+      ca/dividend_tax_credit: "1038.46"
+      ca/split_income_line_21: "1038.46"
+      ca/taxable_dividends: "11500.00"
+      ca-on/dividends_amount_a: "11500.00"
+      ca/taxable_dividends_other_than_eligible: "11500.00"
+      ca/amt_dividends_other_than_eligible_adjustment: "1500.00"
+      ca-on/dividends_amount_b: "11500.00"
+      ca-on/other_dividends_credit: "343.42"
+      ca-on/dividend_tax_credit: "343.42"
+      ca-on/dividend_credit_from_line_57: "343.42"
+      ca/amt_dividends_adjustments_total: "1500.00"
+      ca/total_split_income: "51500"
+      ca-on/ontario_tax_on_split_income: "10572.95"
+      ca-on/tosi_adjusted_taxable_income: "209365.35"
+      ca/federal_tax_on_split_income: "16995.00"
+      ca/tosi_adjusted_taxable_income: "117206.90"
+      ca-on/ontario_tax_on_split_income_for_surtax: "10572.95"
+      ca/split_income_line_10: "16995.00"
+      ca/chart_2016_part_1_amount_c: "412088.00"
+      ca/chart_2016_part_2_amount_c: "500000.00"
+      ca/chart_2016_part_2_amount_e: "500000.00"
+      ca/total_income: "61500.00"
+      ca/chart_2017_part_1_amount_c: "417858.00"
+      ca/chart_2017_part_1_amount_e: "417858.00"
+      ca/chart_2017_part_2_amount_c: "500000.00"
+      ca/chart_2017_part_2_amount_e: "500000.00"
+      ca/chart_2018_part_1_amount_c: "424126.00"
+      ca/chart_2018_part_1_amount_e: "424126.00"
+      ca/chart_2018_part_2_amount_c: "500000.00"
+      ca/chart_2018_part_2_amount_e: "500000.00"
+      ca/chart_2019_part_1_amount_c: "433456.00"
+      ca/chart_2019_part_1_amount_e: "433456.00"
+      ca/chart_2019_part_2_amount_c: "500000.00"
+      ca/chart_2019_part_2_amount_e: "500000.00"
+      ca/chart_2020_part_1_amount_c: "441692.00"
+      ca/chart_2020_part_1_amount_e: "441692.00"
+      ca/chart_2020_part_2_amount_c: "500000.00"
+      ca/chart_2020_part_2_amount_e: "500000.00"
+      ca/chart_2021_part_1_amount_c: "446109.00"
+      ca/chart_2021_part_1_amount_e: "446109.00"
+      ca/chart_2021_part_2_amount_c: "500000.00"
+      ca/chart_2021_part_2_amount_e: "500000.00"
+      ca/chart_2022_part_1_amount_c: "456815.00"
+      ca/chart_2022_part_1_amount_e: "456815.00"
+      ca/chart_2022_part_2_amount_c: "500000.00"
+      ca/chart_2022_part_2_amount_e: "500000.00"
+      ca/chart_2023_part_1_amount_c: "485595.00"
+      ca/chart_2023_part_1_amount_e: "485595.00"
+      ca/chart_2023_part_2_amount_c: "500000.00"
+      ca/chart_2023_part_2_amount_e: "500000.00"
+      ca/chart_2024_period_1_amount_c: "508418.00"
+      ca/chart_2024_period_1_amount_e: "508418.00"
+      ca/chart_2024_period_2_amount_c: "625000.00"
+      ca/chart_2024_period_2_amount_e: "625000.00"
+      ca/chart_2025_part_1_amount_c: "522145.00"
+      ca/chart_2025_part_1_amount_e: "522145.00"
+      ca/chart_2025_part_2_amount_c: "625000.00"
+      ca/chart_2025_part_2_amount_e: "625000.00"
+      ca/amt_adjustments_with_lifetime_exemption_total: "1500.00"
+      ca/amt_capital_gains_deductions_total: "1500.00"
+      ca-on/split_income_line_39: "10572.95"
+      ca-on/split_income_line_47: "10229.53"
+      ca/deductions_from_total_income: "51500.00"
+      ca/net_income_before_adjustments: "10000.00"
+      ca/social_benefits_line_6: "61500.00"
+      ca/social_benefits_line_11: "61500.00"
+      ca/social_benefits_line_15: "61500.00"
+      ca/net_income_before_adjustments_not_below_zero: "10000.00"
+      ca/net_income_less_uccb_and_rdsp_income: "10000.00"
+      ca/other_payments_limit_income: "10000.00"
+      ca/split_income_line_15: "16995.00"
+      ca/split_income_line_22: "15956.54"
+      ca/foreign_tax_credit_net_income_before_split_income: "10000.00"
+      ca/net_income_signed: "10000.00"
+      ca/net_income: "10000.00"
+      ca-on/tax_reduction_amounts_claimable: "1"
+      ca-on/medical_net_income_share: "300.00"
+      ca/donation_limit_on_net_income: "7500.00"
+      ca/medical_net_income_share: "300.00"
+      ca/residency_net_income_limit: "2000.00"
+      ca-on/medical_threshold: "300.00"
+      ca/medical_threshold: "300.00"
+      ca/donation_limit_with_capital_gifts: "7500.00"
+      ca/charitable_donations_limit: "7500.00"
+      ca/foreign_tax_credit_net_income_with_split_income: "61500.00"
+      ca/foreign_tax_credit_net_income: "61500.00"
+      ca/taxable_income: "10000.00"
+      ca-on/ontario_basic_tax: "505.00"
+      ca-on/unused_tuition_income_cap: "10000.00"
+      ca/federal_basic_tax: "1450.00"
+      ca/tuition_income_base: "10000.00"
+      ca-on/health_premium_income: "61500.00"
+      ca/amt_part_1_subtotal: "10000.00"
+      ca/amt_adjusted_income_with_gains: "10000.00"
+      ca/amt_adjusted_income_with_security_options: "10000.00"
+      ca/amt_security_options_and_losses_total: "10000.00"
+      ca/amt_adjustments_after_rate_total: "10000.00"
+      ca/amt_adjusted_taxable_income: "8500.00"
+      ca/federal_tax_with_split_income: "18445.00"
+      ca/tosi_adjusted_net_income: "61500.00"
+      ca-on/lift_net_income_and_repayments: "61500.00"
+      ca-on/lift_adjusted_net_income: "61500.00"
+      ca-on/lift_excess_over_individual_threshold: "29000.00"
+      ca-on/lift_family_net_income: "61500.00"
+      ca-on/lift_greater_excess: "29000.00"
+      ca-on/lift_family_reduction: "1450.00"
+      ca/medical_supplement_column_1_line_3: "61500.00"
+      ca/medical_supplement_column_1_line_5: "61500.00"
+      ca/medical_supplement_line_6: "61500.00"
+      ca/medical_supplement_line_8: "28206.00"
+      ca/medical_supplement_line_15: "1410.30"
+      ca/tuition_income_with_tosi: "127206.90"
+      ca-on/care_adjusted_income: "61500.00"
+      ca-on/care_family_adjusted_income: "61500.00"
+      ca/tosi_adjusted_net_income_not_below_zero: "61500.00"
+      ca-on/age_income_over_threshold: "15170.00"
+      ca-on/age_reduction: "2275.50"
+      ca-on/age_amount_before_count: "3947.50"
+      ca/age_income_over_threshold: "15978.00"
+      ca/age_reduction: "2396.70"
+      ca/age_amount_before_count: "6631.30"
+      ca-on/seniors_care_family_net_income: "61500.00"
+      ca-on/seniors_care_income_over_base: "26500.00"
+      ca-on/seniors_care_reduction: "1325.00"
+      ca/adjusted_family_net_income: "61500.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca-on/lift_reduction: "1450.00"
+      ca-on/ontario_health_premium: "600.00"
+      ca/cwb_reduction_with_dependant: "4629.15"
+      ca/cwb_reduction_without_dependant: "5196.75"
+      ca-on/credit_amounts_through_disability_transfer: "12747.00"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/credit_amounts_at_credit_rate: "643.72"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_with_split_income: "10572.95"
+      ca-on/ontario_tax_after_minimum_tax_carryover: "10572.95"
+      ca-on/ontario_tax_with_surtax: "10572.95"
+      ca-on/ontario_tax_after_dividend_credit: "10229.53"
+      ca-on/tax_otherwise_payable_line_71: "10572.95"
+      ca-on/tax_otherwise_payable_line_73: "10572.95"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/tax_otherwise_payable: "10572.95"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/credit_amounts_subtotal: "16129.00"
+      ca/tuition_income_less_credits: "111077.90"
+      ca/tuition_income_remaining: "111077.90"
+      ca/non_refundable_credit_amounts: "16129.00"
+      ca/credit_amounts_at_credit_rate: "2338.71"
+      ca/amt_non_refundable_credits_adjustment: "1169.36"
+      ca/amt_credits_adjustments_total: "1169.36"
+      ca/top_up_credits_base: "2338.71"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/amt_credits_total: "3377.17"
+      ca/amt_tax_payable_before_minimum_tax_carryover: "15067.83"
+      ca/amt_basic_federal_tax: "15067.83"
+      ca/amt_federal_surtax_at_48_percent: "7232.56"
+      ca/amt_federal_tax_under_minimum_tax: "15956.54"
+      ca/amt_part_6_surtax_at_48_percent: "7659.14"
+      ca/amt_part_7_basic_tax_with_recapture: "15067.83"
+      ca/amt_tax_payable_with_itc_recapture: "15067.83"
+      ca/credits_against_basic_federal_tax: "3377.17"
+      ca/federal_tax_after_credits: "15067.83"
+      ca/basic_federal_tax_with_dividend_credit: "16106.29"
+      ca/foreign_tax_credit_basic_federal_tax: "16106.29"
+      ca/federal_non_business_foreign_tax_credit: "13094.54"
+      ca/foreign_tax_credit_sheets:
+        - ca/foreign_non_business_tax_paid: "15000"
+          ca/net_foreign_non_business_income: "50000"
+          ca/foreign_tax_credit_sheet_line_3: "13094.54"
+          ca/foreign_business_tax_paid: "0"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "0"
+          ca/foreign_surtax_outside_canada: "0"
+      ca-on/provincial_foreign_tax_credit_before_limit: "1905.46"
+      ca/foreign_business_tax_credit_line_10: "3011.75"
+      ca/foreign_business_tax_credit_line_8: "16106.29"
+      ca-on/provincial_foreign_tax_credit: "1905.46"
+      ca-on/split_income_line_49: "1524.37"
+      ca-on/split_income_line_50: "8705.16"
+      ca/federal_foreign_tax_credit_before_limit: "13094.54"
+      ca/federal_foreign_tax_credit: "13094.54"
+      ca/split_income_line_23: "10475.63"
+      ca/amt_special_foreign_tax_credit: "13094.54"
+      ca/federal_tax_less_foreign_tax_credit: "1973.29"
+      ca/split_income_line_24: "5480.91"
+      ca/amt_foreign_and_logging_credits_total: "13094.54"
+      ca/federal_tax_with_itc_recapture: "1973.29"
+      ca/itc_part_d_amount_9: "1973.29"
+      ca/itc_amount_h: "1973.29"
+      ca/itc_part_d_amount_13: "15067.83"
+      ca/itc_amount_j: "15067.83"
+      ca/amt_federal_tax_with_surtax_and_recapture: "15067.83"
+      ca/amt_federal_tax_payable: "1973.29"
+      ca/amt_regular_net_federal_tax_payable: "1973.29"
+      ca/amt_regular_net_tax_less_surtax: "1973.29"
+      ca/federal_tax_less_credits: "1973.29"
+      ca/amt_part_7_tax_less_credits: "15067.83"
+      ca/amt_part_7_tax_less_credits_plus_share: "15067.83"
+      ca/amt_split_income_and_credits_total: "16995.00"
+      ca/amt_tax_payable_after_credits: "-1927.17"
+      ca-on/tax_reduction_claimable: "1"
+      ca-on/ontario_tax_before_reduction: "10229.53"
+      ca-on/ontario_tax_after_reduction: "10229.53"
+      ca-on/ontario_tax_after_foreign_tax_credit: "8324.07"
+      ca-on/ontario_tax_after_lift_credit: "8324.07"
+      ca-on/ontario_tax_after_food_credit: "8324.07"
+      ca-on/split_income_line_52: "8705.16"
+      ca-on/ontario_tax: "9305.16"
+      ca/amt_federal_tax_payable_under_minimum_tax: "5480.91"
+      ca/federal_tax_line_41700: "1973.29"
+      ca/split_income_line_29: "1973.29"
+      ca/split_income_line_30: "5480.91"
+      ca/net_federal_tax: "5480.91"
+      ca/total_payable: "14786.07"
+      ca/refund_or_balance_owing: "14786.07"

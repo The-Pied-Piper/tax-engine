@@ -1,0 +1,16 @@
+# A made-up jurisdiction's manifest, for tests only.
+jurisdiction: EX-ON
+version: 1
+valid_from_tax_year: 2025
+inputs:
+  - ex-on/levy_base
+outputs:
+  - ex-on/levy
+capabilities:
+  - name: core/progressive_tax
+    params:
+      schedule: ex-on/brackets
+    consumes:
+      base: ex-on/levy_base
+    produces:
+      output: ex-on/levy

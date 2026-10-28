@@ -1,0 +1,80 @@
+# Return MO: Mia, as in Return MM, a 2025 Ontario resident eligible for the disability tax credit who is
+# not claiming the basic CWB because her eligible spouse is, and who received advance Canada workers
+# benefit payments. Amounts are quoted decimal strings; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MO: Return MM's filer (Ontario resident, aged 40, employment income of $20,000, DTC approved so
+  Schedule 6 line 38103 is yes, "No" to line 38102) with a cohabiting eligible spouse with no income who is
+  claiming the basic CWB for her, and RC210 box 10 of $600.00 (line 44) and box 11 of $100.00 (line 47).
+  Step 4 says "If you have an eligible spouse who is claiming the basic CWB for you, but you are claiming
+  your CWB disability supplement, enter "0" on line 46 and continue on line 47.", so line 46 is $0.00 and not
+  $600.00 + $0.00, line 48 is $0.00 + $100.00 = $100.00, line 43 is line 42, $843.00 (line 28 is not entered:
+  line 41 is $0), and line 49, the lesser of lines 43 and 48, is $100.00, entered on line 41500. Had line 46
+  been $600.00, line 48 would be $700.00 and line 49 $700.00. Line 28 is $2,813.00 (27% x $17,000.00 =
+  $4,590.00, at most the $2,813.00 of a filer with an eligible spouse) but is not entered; line 45300 is
+  line 42, $843.00, of which the $100.00 advanced on line 41500 is already paid, so the refund (line 48400)
+  is $743.00. Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Schedule 6, Canada Workers Benefit (5000-S6, docs/cra-forms-2025/5000-s6-25e.txt): Step 4 "Line
+    43: Enter whichever is more: amount from line 28 or line 42. If you are not claiming the basic CWB or the
+    CWB disability supplement, enter "0"."; "If you have an eligible spouse who is claiming the basic CWB for
+    you, but you are claiming your CWB disability supplement, enter "0" on line 46 and continue on line 47.";
+    "Line 44 and line 38120: Total basic ACWB paid to you (box 10 of your RC210 slip)"; "Line 46: Line 44 plus
+    line 45"; "Line 47 and line 38122: Total ACWB disability supplement paid to you (box 11 of your RC210
+    slip)"; "Line 48: Line 46 plus line 47"; "Line 49: Enter whichever is less: amount from line 43 or line 48.
+    Enter this amount on line 41500 of your return."
+inputs:
+  # Schedule 6 line 38102, 0 no: the basic CWB is not claimed (line 41 is 0).
+  ca/cwb_claiming_basic: "0"
+  # Schedule 6 Step 4, 1 yes: the eligible spouse is claiming the basic CWB for the filer.
+  ca/cwb_spouse_claiming_basic: "1"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/cwb_eligible_spouses: "1"
+  ca/spouse_net_income: "0"
+  ca/spouse_net_income_before_adjustments: "0"
+  ca/acwb_paid_to_you: "600"
+  ca/acwb_disability_supplement_paid: "100"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "20000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "20000"
+  ca/t2204_insurable_earnings: "20000"
+  ca/t2204_premiums_deducted: "328.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "981.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/eligible_for_disability_amount: "1"
+expected:
+  ca-on/return:
+    - ca/total_income: "20000.00"
+      ca/working_income: "20000"
+      ca/adjusted_family_net_income: "19835.00"
+      ca/canada_workers_benefit_line_28: "2813.00"
+      ca/cwb_disability_supplement_before_reduction: "843.00"
+      ca/cwb_disability_reduction: "0.00"
+      ca/cwb_disability_supplement: "843.00"
+      ca/canada_workers_benefit_line_41: "0.00"
+      ca/canada_workers_benefit_line_42: "843.00"
+      ca/canada_workers_benefit_before_conditions: "843.00"
+      ca/cwb_claimed: "843.00"
+      ca/canada_workers_benefit: "843.00"
+      ca-on/net_refund: "743.00"
+      ca/refund_or_balance_owing: "-743.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "19835.00"
+      ca/other_payments_limit_income: "19835.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "20000"
+      ca/acwb_lines_44_and_45: "600"
+      ca/acwb_line_46_applies: "0"
+      ca/acwb_basic_paid: "0"
+      ca/acwb_paid: "100"
+      ca/advanced_canada_workers_benefit: "100"
+      ca-on/spouse_for_separate_residences_checked: "1"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"

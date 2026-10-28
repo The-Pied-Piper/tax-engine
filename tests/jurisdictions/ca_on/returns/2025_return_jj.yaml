@@ -1,0 +1,74 @@
+# Return JJ: Form T2204 line 4 with a T4 from a Quebec employer, whose box 18 is at the Quebec EI
+# rate and whose box 55 is the Quebec parental insurance plan (PPIP) premium. Line 4 reads "Total
+# premiums deducted: Residents of other than Quebec (box 18 and box 55 of your T4 slips)", so a
+# filer outside Quebec enters both, and the total is above 1.64% of the insurable earnings (line
+# 10) although the slips are right. The file checks the T2204 lines and the refund they give.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (a chosen figure; the form names no province of residence)
+  who worked in Quebec for a Quebec employer, with employment income and EI insurable earnings
+  (T4 boxes 14 and 24) of $50,000.00, a chosen figure. Her T4 shows box 18 (EI premium) of $655.00,
+  the Quebec rate of 1.31% (the "Residents of Quebec" rate printed on T2204 line 11) x 50,000, and
+  box 55 (Quebec parental insurance plan premium) of $247.00, a chosen figure near the PPIP rate
+  of 0.494% x 50,000 (the rate is not printed on the form and is not checked here). Line 4 is
+  655.00 + 247.00 = $902.00, taken as entered (the form prints no limit on line 4). Line 1
+  is $50,000.00 (no self-employment earnings and the earnings are not under $2,000), line 3 is
+  50,000.00 (under the $65,700 maximum), line 7 is 50,000 - 2,000 = $48,000.00, line 6 is
+  902.00 + 0 (no Schedule 13 premiums payable) = $902.00 and line 8 is 902.00 - 48,000.00,
+  negative, so $0.00. Line 9 is 902.00, line 10 is 50,000.00 x 1.64% = $820.00 and line 12 is
+  820.00 (she is not a Quebec resident, so line 11 is not used). Line 13 is 902.00 - 820.00 =
+  $82.00, line 14, the more of line 8 (0.00) and line 13 (82.00), is 82.00, and line 15, the less
+  of line 9 and line 14, is $82.00: more than $1, so line 45000 is $82.00. Line 16, the least of
+  line 7 (48,000.00), line 9 (902.00) and line 12 (820.00), is $820.00, the T1 line 31200.
+  The box 55 premium is claimed here because she has no EI-exempt pay (box 28), so note (2) does
+  not apply to her. No CPP or QPP contributions and no income tax are entered (chosen $0), so net
+  income before adjustments (line 23400) and the line 25000 worksheet's line 9 are 50,000.00; the
+  Ontario tax less the dividend credit, the second additional CPP maximum (9,900.00, a full year of
+  CPP at 12 months) and the refund or balance owing are the engine's figures, not form figures.
+sources:
+  - >-
+    CRA, Form T2204 2025 (Employee Overpayment of Employment Insurance Premiums), line 4 "Total
+    premiums deducted: Residents of other than Quebec (box 18 and box 55 of your T4 slips) (2)
+    Quebec residents (box 18 of your T4 slips)", line 10 "Residents of other than Quebec Amount
+    from line 1 x 1.64% = (maximum $1,077.48)", line 11 "Residents of Quebec Amount from line 1 x
+    1.31% = (maximum $860.67)" and note (2) "If you received EI-exempt employment income (box 28 of
+    your T4 slip) and there is an amount in box 55 of your T4 slip, do not claim the amount in box
+    55 on this line." (confirmed from the PDF; no .txt published)
+    (docs/cra-forms-2025/t2204-25e.pdf)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/employment_income: "50000"
+  ca/cpp_months: "12"
+  ca/t2204_insurable_earnings: "50000"
+  ca/t2204_self_employment_earnings: "0"
+  ca/t2204_premiums_deducted: "902.00"
+  ca/t2204_ppip_premiums: "247.00"
+expected:
+  ca-on/return:
+    - ca/t2204_ppip_premiums_checked: "247.00"
+      ca/t2204_exemption: "2000.00"
+      ca/t2204_line_1_count: "1"
+      ca/t2204_line_1: "50000.00"
+      ca/t2204_line_1_plus_2: "50000.00"
+      ca/t2204_line_3: "50000.00"
+      ca/t2204_line_6: "902.00"
+      ca/t2204_line_7: "48000.00"
+      ca/t2204_line_8: "0.00"
+      ca/t2204_line_9: "902.00"
+      ca/t2204_line_10: "820.00"
+      ca/t2204_line_12: "820.00"
+      ca/t2204_line_13: "82.00"
+      ca/t2204_line_14: "82.00"
+      ca/t2204_line_15: "82.00"
+      ca/t2204_line_15_count: "1"
+      ca/t2204_line_16: "820.00"
+      ca/ei_overpayment: "82.00"
+      ca/ei_premiums: "820.00"
+      ca/net_income_before_adjustments: "50000.00"
+      ca/other_payments_limit_income: "50000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "1839.87"
+      ca/refund_or_balance_owing: "6936.97"

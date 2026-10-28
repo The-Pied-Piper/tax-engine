@@ -1,0 +1,86 @@
+# Return MN: the pension income amount (T1 line 31400) reading line 11500 of the return with the Form
+# T2205 amount on it: return MG's Form T2205 amounts for a filer born in 1960 or earlier, so the SPP
+# part of line 11 and line 22 go on T1 line 11500 and the worksheet's line 1 is 5,000.00.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MN: a single 2025 Ontario resident in Canada throughout 2025, born in 1960 or earlier (65 or
+  older at the end of 2025), with no spouse, no dependants and no income other than what Form T2205
+  reports (the amounts of Return MG). Form T2205 gives the RRSP part of line 11 (2,000.00) for T1
+  line 12900, and the SPP part of line 11 (1,000.00) and line 22 (4,000.00) for T1 line 11500, as
+  the filer is 65 or older. Line 11500 of the return is 0.00 typed + 5,000.00 = 5,000.00. Federal
+  Worksheet 5000-D1 for line 31400: line 1 (the amount from line 11500 of the return) is 5,000.00;
+  lines 2 to 4 are 0.00, so line 5 is 0.00 and line 6 = 5,000.00 - 0.00 = 5,000.00; line 7 (the
+  T4RSP box 16 annuity payments) is 0.00, so line 8 = 5,000.00 + 0.00 = 5,000.00; the amount for
+  line 31400 is whichever is less of line 8 and 2,000.00, 2,000.00. Total income (line 15000) =
+  2,000.00 + 5,000.00 = 7,000.00. The other lines of the return are not triggered.
+sources:
+  - >-
+    CRA, Form T2205 (2025), "Line 10: Enter the amount from line 5 or line 8, whichever is less."
+    "Line 11: Line 9 minus line 10. If part of this amount relates to withdrawals from an RRSP
+    (including transfers from an RRSP that are considered to be taxable withdrawals), you must
+    report it on line 12900 of your own income tax and benefit return ... If part of this amount
+    relates to withdrawals from an SPP, you must report it on line 11500 of your own income tax and
+    benefit return if you are 65 or older at the end of the year, or on line 13000 otherwise"
+    (docs/cra-forms-2025/t2205-25e.pdf)
+  - >-
+    CRA, Form T2205 (2025), "Line 17: ... If you filled in Part 1 above, enter the amount from line
+    6." "Line 18: ... If you filled in Part 1 above, add the amounts from line 7 and line 10 and
+    enter the result." "Line 21: Enter the amount from line 16 or line 19, whichever is less."
+    "Line 22: Line 20 minus line 21. If you were 65 or older at the end of the year you indicated
+    above, report this amount on line 11500 of your own income tax and benefit return for that year.
+    Otherwise, report it on line 13000." (docs/cra-forms-2025/t2205-25e.pdf)
+  - >-
+    CRA, Federal Worksheet 5000-D1 (2025), "Line 31400 - Pension income amount": "Line 1: Amount from
+    line 11500 of your return" ... "Line 6: Line 1 minus line 5" ... "Enter on line 31400 of your
+    return whichever amount is less: line 8 or $2,000." (docs/cra-forms-2025/5000-d1-25e.txt)
+inputs:
+  ca/born_in_1960_or_earlier: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  # Form T2205 (2025), the amounts the filer enters; every other line is 0.
+  ca/t2205_line_1: "5000"
+  ca/t2205_line_6: "2000"
+  # The part of line 11 that relates to withdrawals from an SPP.
+  ca/t2205_line_11_spp_part: "1000"
+  ca/t2205_line_12: "4000"
+  ca/t2205_line_20: "4000"
+expected:
+  ca-on/return:
+    - ca/t2205_on_line_12900: "2000.00"
+      ca/t2205_spp_part_total: "1000.00"
+      ca/t2205_line_22_total: "4000.00"
+      ca/t2205_spp_part_on_line_11500: "1000.00"
+      ca/t2205_spp_part_on_line_13000: "0.00"
+      ca/t2205_line_22_on_line_11500: "4000.00"
+      ca/t2205_line_22_on_line_13000: "0.00"
+      ca/t2205_on_line_11500: "5000.00"
+      ca/t2205_on_line_13000: "0.00"
+      ca/pension_chart_line_1: "5000.00"
+      ca/pension_income_credit: "2000.00"
+      ca/total_income: "7000.00"
+      ca/net_income: "7000.00"
+      ca/taxable_income: "7000.00"
+      ca/net_income_before_adjustments: "7000.00"
+      ca/other_payments_limit_income: "7000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+  ca/t2205:
+    - ca/t2205_line_3: "5000.00"
+      ca/t2205_line_4_checked: "0.00"
+      ca/t2205_line_5: "5000.00"
+      ca/t2205_line_7_checked: "0.00"
+      ca/t2205_line_8: "2000.00"
+      ca/t2205_line_10: "2000.00"
+      ca/t2205_line_11: "3000.00"
+      ca/t2205_line_11_spp_part_checked: "1000.00"
+      ca/t2205_line_11_rrsp_part: "2000.00"
+      ca/t2205_line_14_checked: "0.00"
+      ca/t2205_line_15: "0.00"
+      ca/t2205_line_16: "4000.00"
+      ca/t2205_line_17_used: "2000.00"
+      ca/t2205_line_18_from_part_1: "2000.00"
+      ca/t2205_line_18_used: "2000.00"
+      ca/t2205_line_18_checked: "2000.00"
+      ca/t2205_line_19: "0.00"
+      ca/t2205_line_21: "0.00"
+      ca/t2205_line_22: "4000.00"

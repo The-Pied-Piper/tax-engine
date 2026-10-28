@@ -1,0 +1,103 @@
+# Return LA: Guide T4002's Helena (capital gains for farmers, printed page 98), a single Ontario
+# resident who on February 1, 2025 sold her 32-acre farm, which included her principal residence (one
+# acre of land and the house). Farm properties: land proceeds $175,000, adjusted cost base (ACB)
+# $105,000; barn $20,000 and $16,000; silo $5,000 and $4,000: total $200,000 and $125,000, a gain of
+# $75,000. Principal residence: land $25,000 and $15,000 plus house $75,000 and $60,000: proceeds
+# $100,000, ACB $75,000, a gain of $25,000, not taxable because "Helena's home was her principal
+# residence during all the years she owned it". Capital gain $75,000, taxable capital gain (1/2 x
+# $75,000) $37,500.
+#
+# CRA's printed figures are the $75,000 farm gain (Schedule 3, the capital gain, line 19900) and the
+# $37,500 taxable capital gain (T1 line 12700). The three farm properties are three rows of the real
+# estate list (the barn and silo are depreciable); the residence is one Form T2091(IND) property whose
+# years owned and designated the guide does not give, so 12 and 12 (every year, so the whole gain is
+# exempt) are chosen figures; with all years designated the taxable part is $0 for any number of years.
+# No other income is entered.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the capital gain on selling a farm and
+  her principal residence together, Guide T4002's Helena: three farm properties on Schedule 3's real estate
+  list (land $175,000 proceeds and $105,000 cost, barn $20,000 and $16,000, silo $5,000 and $4,000) and
+  one principal residence (proceeds $100,000, cost $75,000, owned 12 years and designated 12, chosen),
+  so the real estate gain is $75,000.00, the capital gain is $75,000.00 and the taxable capital gain (T1
+  line 12700) is $37,500.00.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed page 98,
+    "Capital gains for farmers", the example of Helena: "On February 1, 2025, Helena sold her 32-acre
+    farm, which included her principal residence. One acre of land is part of her principal residence.";
+    proceeds of disposition: land $200,000, house $75,000, barn $20,000, silo $5,000, total $300,000;
+    adjusted cost base: land $120,000, house $60,000, barn $16,000, silo $4,000, total $200,000; "Gain
+    on sale $ 25,000 [principal residence] $ 75,000 [farm properties] $ 100,000"; "Gain on principal residence**
+    $ 25,000"; "Capital gain $ 0 $ 75,000 $ 75,000"; "Taxable capital gain (1/2 × $75,000) $ 37,500";
+    "** Because Helena’s home was her principal residence during all the years she owned it, the capital
+    gain is not taxable."
+inputs:
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "175000"
+      ca/disposition_adjusted_cost_base: "105000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+    - ca/disposition_proceeds: "20000"
+      ca/disposition_adjusted_cost_base: "16000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "1"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+    - ca/disposition_proceeds: "5000"
+      ca/disposition_adjusted_cost_base: "4000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "1"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/principal_residence_properties:
+    - ca/residence_years_designated_after_1981: "12"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "12"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "100000"
+      ca/residence_outlays: "0"
+      ca/residence_adjusted_cost_base: "75000"
+      ca/residence_plus_one_year: "1"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0"
+      ca/residence_fmv_dec_31_1981: "0"
+      ca/residence_cost_base_adjustments_after_1981: "0"
+      ca/residence_t664_filed: "0"
+      ca/residence_ws_years_designated_after_1981: "0"
+      ca/residence_ws_years_owned_after_1981: "0"
+      ca/residence_ws_designated_proceeds: "0"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "0"
+      ca/residence_ws_fmv_feb_22_1994: "0"
+      ca/residence_ws_elected_capital_gain: "0"
+      ca/residence_ws_months_owned_after_feb_1992: "0"
+      ca/residence_ws_months_owned_after_1971: "0"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/schedule_8_instances:
+    - {}
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+expected:
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "1250.03"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "37500.00"
+      ca/other_payments_limit_income: "37500.00"
+      ca/real_estate_proceeds: "200000"
+      ca/refund_or_balance_owing: "4738.82"
+      ca/real_estate_gain_or_loss: "75000"
+      ca/capital_gain: "75000.00"
+      ca/taxable_capital_gains: "37500.00"
+      ca/schedule_3_line_19900: "37500.00"

@@ -1,0 +1,94 @@
+# Return HW: a single 2025 Ontario resident with employment income of $60,000 and one eligible
+# dependant (T1 line 30400) who is 18 years of age or older and infirm, with the Canada caregiver
+# amount for that dependant entered on line 51100 of Schedule 5, and no spouse or common-law partner
+# amount (T1 line 30300, nil). The dependant amount with its caregiver amount is claimed alone, so
+# it is not refused; the caregiver amount without the dependant amount is refused (see
+# `end_to_end/test_return_hw.py`).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single 2025 Ontario resident with employment income of $60,000, a chosen figure, and one
+  eligible dependant, a chosen figure, 18 years of age or older and infirm, claimed for the amount
+  for an eligible dependant (T1 line 30400, complete Schedule 5) with the Canada caregiver amount
+  for that dependant entered on line 51100 of Schedule 5, and not for the spouse or common-law
+  partner amount (T1 line 30300, nil). Schedule 5 line 51100 reads "If you are eligible for the
+  Canada caregiver amount for your dependant (other than your infirm child under 18 years of age),
+  enter $2,687 (Note 2) (see line 30425 below)", and line 30400 adds it: line 1 the basic personal
+  amount $16,129.00 plus line 2 $2,687.00 is $18,816.00, less the dependant's net income of nil,
+  so line 30400 is $18,816.00 (the federal amount for an eligible dependant). The dependant is 18
+  years of age or older, so line 30425 is asked for, but it is complete only "if you entered $2,687
+  on line 51090 or line 51100 of this schedule for a person whose net income is between $8,624 and
+  $28,798"; the dependant's net income is nil, so line 30425 is nil. The eligible dependant amount
+  is claimed alone (line 30300 is nil), so `ca/spouse_and_dependant_both` counts 0. The T4 CPP box
+  16 is the base and first additional contributions on the employment income: base 4.95% x (60,000
+  - 3,500) = 2,796.75 and first additional 1% x 56,500 = 565.00, 3,361.75 together, with nil
+  second additional contributions (below the 71,300 ceiling). The first additional contributions of
+  565.00 are deducted (the enhanced contributions), so total income (`ca/total_income`) is
+  $60,000.00, deductions from total income are $565.00, and net income (line 23600) and taxable
+  income (line 26000) are $59,435.00. The Ontario amount for an eligible dependant is $10,823.00 and
+  Ontario tax after credits is $1,888.76, the Ontario health premium is $600.00, so Ontario tax is
+  $2,488.76 (the same as Return HV, where the caregiver amount is not claimed). The caregiver amount
+  adds $2,687.00 to the federal non-refundable credits at the federal rate of 14.5%, $389.62 less
+  tax than Return HV: the balance owing is $5,791.53 less $389.62, $5,401.91 (`ca/refund_or_balance_owing`,
+  no tax deducted at source), and every other line of the return is blank.
+sources:
+  - >-
+    CRA, Schedule 5 (5000-S5, 2025), docs/cra-forms-2025/5000-s5-25e.txt: "Line 2 and line 51090:
+    If you are eligible for the Canada caregiver amount for your spouse or common-law partner,
+    enter $2,687 (see line 30425 on page 4)." and "If you are eligible for the Canada caregiver
+    amount for your dependant (other than your infirm child under 18 years of age), enter $2,687
+    (Note 2) (see line 30425 below)." (lines 109 and 217), and "Complete this calculation only if you
+    entered $2,687 on line 51090 or line 51100 of this schedule for a person whose net income is
+    between $8,624 and $28,798." (line 235).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+  - >-
+    CRA, Form 5006-R (2025), docs/cra-forms-2025/5006-r-25e.txt: "Line 114: Federal non-refundable
+    tax credit rate 14.5%" (line 593).
+  - >-
+    CRA, "CPP contribution rates, maximums and exemptions", 2025 row: basic exemption $3,500;
+    employee base rate 4.95% and first additional rate 1% (5.95% together, as in Return GF).
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 box 18 and the insurable earnings the premium is required on: the required premium, Form T2204
+  # line 16 (T1 line 31200), 1.64% of 60000.00 = 984.00.
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  # T4 box 16 (base and first additional, 4.95% of 56500.00 plus 1% of 56500.00) and box 16A
+  # (second additional, nil below the 71300.00 ceiling).
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/eligible_dependants: "1"
+  # Schedule 5 line 51100 (the caregiver amount for the dependant, 18 years of age or older, who is
+  # infirm), and the age flag for line 30425.
+  ca/dependant_caregiver_eligible: "1"
+  ca/dependant_caregiver_aged_18_or_older: "1"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "60000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/deductions_from_total_income: "565.00"
+      ca/net_income: "59435.00"
+      ca/net_income_before_adjustments: "59435.00"
+      ca/other_payments_limit_income: "59435.00"
+      ca/taxable_income: "59435.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/eligible_dependant_amount: "18816.00"
+      ca/dependant_caregiver_amount: "0.00"
+      ca/refund_or_balance_owing: "5401.91"
+      ca-on/eligible_dependant_amount: "10823.00"
+      ca-on/ontario_tax_after_credits: "1888.76"
+      ca-on/ontario_tax_less_dividend_credit: "1888.76"
+      ca-on/ontario_health_premium: "600.00"
+      ca-on/ontario_tax: "2488.76"
+      # The checked counts: nothing is refused on this return (the spouse amount is nil, and the
+      # dependant amount is claimed with its caregiver amount).
+      ca/spouse_caregiver_without_spouse_amount_checked: "0"
+      ca/dependant_caregiver_without_dependant_amount_checked: "0"

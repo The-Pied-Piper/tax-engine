@@ -1,0 +1,97 @@
+# Return GC: Return AF's filer with no net capital losses of other years, a share gain and a
+# real estate gain, and a capital gains deferral exactly equal to the share gain on line 4: a
+# 2025 Ontario resident whose employment income is 48,000 (a chosen figure), with one share row
+# of proceeds 5,000 (a chosen figure) and one real estate row of proceeds 7,000 and cost 5,000.
+# The deferral of 5,000 is at most line 4 and is accepted, so line 14 is line 12 less it. The
+# other lines are blank, and no net capital loss is claimed or carried forward.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of
+  $48,000 (a chosen figure) and the dispositions below, every figure a chosen figure. Line 4
+  (shares), column 5 = column 2 minus columns 3 and 4: 5,000 - 0 - 0 = 5,000. Line 5 (real
+  estate): 7,000 - 5,000 - 0 = 2,000. Lines 1, 2, 3, 6 to 10 and 15800 to 15900 have no rows,
+  so 0. Line 11 = 5,000 + 2,000 = 7,000, and line 12 is the same figure. Line 13 and line
+  16100 (capital gains deferral) is 5,000, equal to line 4, so it is accepted, and line 14 =
+  7,000 - 5,000 = 2,000. Lines 15 to 19 and line 20 have no amounts, so line 17 = 2,000, line
+  19 = 2,000 and line 21 = 2,000, and line 22 is the same figure. Line 24 = 2,000 x 50% =
+  1,000.00, positive, so line 12700 (taxable capital gains) is 1,000.00. Total income (line
+  15000) = 48,000 + 1,000.00 = 49,000.00. The net capital losses of other years are not
+  claimed (no carryover), and the enhanced CPP deduction is 445.00, as on Return AF. The
+  income tax deducted is a chosen 4,800. The net income, taxable income, total payable and
+  refund or balance owing are the engine's figures (to be confirmed against CRA's
+  calculator). Not triggered: the deferral above line 4 (refused, see the end-to-end test),
+  the net capital loss carry-forward (T1436), the business investment loss, reserves, and
+  every other credit and deduction not named here.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19),
+    Part 3: "Line 4 and line 13200: Total gain or loss (add all the amounts under column 5)";
+    "Line 5 and line 13800: Total gain or loss (add all the amounts under column 5)";
+    "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; "Report all negative amounts
+    (losses) using brackets." Part 4: "Line 12: Amount from line 11 of the previous page";
+    "Line 13 and line 16100: Capital gains deferral from qualifying dispositions of eligible
+    small business corporation shares included on line 4"; "Line 14:  Line 12 minus line 13 =";
+    "Line 17: Add lines 14 to 16. ="; "Line 19 and line 19100: Total gains or losses before
+    reserves: line 17 minus line 18 ="; "Line 21 and line 19700: Line 19 plus line 20 Total
+    capital gains or losses ="; line 24 "Line 22 multiplied by the percentage from line 23"
+    (50%); line 26 (line 19900) "If positive, enter the result on line 12700 of your return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "48000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "48000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "48000"
+  ca/t2204_premiums_deducted: "787.20"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2647.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "5000"
+      ca/disposition_adjusted_cost_base: "0"
+      ca/disposition_outlays: "0"
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "7000"
+      ca/disposition_adjusted_cost_base: "5000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/capital_gains_deferral: "5000"
+  ca/rrsp_deduction_limit: "8640"
+  ca/income_tax_deducted: "4800"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/share_proceeds: "5000"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "48000.00"
+      ca/real_estate_proceeds: "7000"
+      ca/share_gain_or_loss: "5000"
+      ca/share_gain_not_below_zero: "5000"
+      ca/real_estate_gain_or_loss: "2000"
+      ca/capital_gains_of_qualified_and_other_properties: "7000"
+      ca/capital_gains_deferral_checked: "5000"
+      ca/capital_gains_after_deferral: "2000"
+      ca/capital_gains_before_reserves: "2000"
+      ca/capital_gain: "2000"
+      ca/included_capital_gain: "1000.00"
+      ca/taxable_capital_gains: "1000.00"
+      ca/schedule_3_line_19900: "1000.00"
+      ca/total_income: "49000.00"
+      ca/net_income_before_adjustments: "48555.00"
+      ca/other_payments_limit_income: "48555.00"
+      ca/net_income: "48555.00"
+      ca/taxable_income: "48555.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/total_payable: "6228.75"
+      ca/total_credits: "4800.00"
+      ca/refund_or_balance_owing: "1428.75"
+      ca-on/ontario_tax_less_dividend_credit: "1657.31"

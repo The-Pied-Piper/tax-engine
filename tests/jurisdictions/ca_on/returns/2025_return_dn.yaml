@@ -1,0 +1,66 @@
+# Return DN: the federal logging tax credit (T1 line 133) over two provinces with a logging
+# operation, each its own record, and line 134 (40600) as line 132 less line 133. The return's only income is
+# other income, so its taxable income (line 26000) is the 50,000.00 given, and the cap of line 133
+# (6.6667% of that) is above the provinces' total, so the total is the credit.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DN: a 2025 Ontario filer who logged in two provinces and reports no other income. The
+  only income is other income of 50,000.00 (line 13000, a chosen figure), so taxable income
+  (line 26000) is 50,000.00, with nothing deducted and no amount added back to it for the cap.
+  Province 1 (a chosen figure): logging tax paid 300.00 and net logging income 6,000.00. 66.6667%
+  of 300.00 is 200.00 (the tax side) and 6.6667% of 6,000.00 is 400.00 (the income side), so the
+  lesser is 200.00. Province 2 (a chosen figure): logging tax paid 900.00 and net logging income
+  3,000.00. 66.6667% of 900.00 is 600.00 and 6.6667% of 3,000.00 is 200.00, so the lesser is
+  200.00, the income side. The provinces' total is 200.00 + 200.00 = 400.00. The cap is 6.6667% of
+  taxable income with the seven lines added back, 50,000.00 plus 0.00: 3,333.35, which is above
+  400.00, so line 133 is 400.00. Line 132, the federal tax, is worked out from the 50,000.00: the
+  federal tax on it is 14.5% (the 2025 rate on the first bracket, 15% for half the year and 14%
+  for the rest) of 50,000.00, 7,250.00, less the basic personal amount credit of 16,129.00 at
+  14.5%, 2,338.71, which is 4,911.29; no surtax, dividend credit or investment tax credit
+  recapture applies, so line 132 is 4,911.29. Line 134 (40600) is line 132 less line 133,
+  4,911.29 less 400.00, 4,511.29, and no credit of lines 135 to 137 is claimed, so line 139 is
+  4,511.29 too. The Ontario tax is 5.05% of 50,000.00, 2,525.00, less the basic personal amount
+  credit of 12,747.00 at 5.05%, 643.72, which is 1,881.28, with no tax reduction (it needs the tax
+  to be under twice the basic amount of 294.00, 588.00), no surtax or LIFT credit; with the
+  Ontario health premium of 600.00 for income of 50,000.00 the Ontario tax is 2,481.28. The total
+  payable is the federal 4,511.29 plus the Ontario 2,481.28, 6,992.57, and with nothing paid in
+  the year that is the balance owing. Lines 20800, 20805, 21000, 21400, 21500, 21900 and 22000
+  are not triggered, so each adds nothing to the base.
+sources:
+  - >-
+    CRA, General Income Tax and Benefit Guide 2025, "Federal logging tax credit": "To calculate your
+    credit for each province where you operated, use the lower of the following amounts for each
+    province you had a logging operation in: 66.6667% of the logging tax that you paid to that
+    province for the year; 6.6667% of your net logging income in that province for the year. Add up
+    the amounts for all provinces for the year, up to 6.6667% of your taxable income from line 26000
+    of your return, not including any amounts on lines 20800, 20805, 21000, 21400, 21500, 21900, and
+    22000 of your return."
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+  - >-
+    CRA, T1-2025 Ontario edition (form 5006-R): "Line 133: Federal logging tax credit" and "Line 134
+    and line 40600: Line 132 minus line 133 (if negative, enter "0") Federal tax ="
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/cpp_months: "12"
+  ca/other_income: "50000"
+  ca/logging_operations:
+    - ca/logging_tax_paid: "300"
+      ca/net_logging_income: "6000"
+    - ca/logging_tax_paid: "900"
+      ca/net_logging_income: "3000"
+expected:
+  ca-on/return:
+    - ca/logging_credit_base: "50000.00"
+      ca/logging_credit_cap: "3333.35"
+      ca/provinces_logging_tax_credit: "400.00"
+      ca/federal_logging_tax_credit: "400.00"
+      ca/federal_tax_with_itc_recapture: "4911.29"
+      ca/federal_tax: "4511.29"
+      ca/federal_tax_less_credits: "4511.29"
+      ca-on/ontario_tax_less_dividend_credit: "1881.28"
+      ca/total_payable: "6992.57"
+      ca/refund_or_balance_owing: "6992.57"
+      ca/net_income_before_adjustments: "50000.00"
+      ca/other_payments_limit_income: "50000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"

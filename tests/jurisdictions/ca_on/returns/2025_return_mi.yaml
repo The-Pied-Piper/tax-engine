@@ -1,0 +1,65 @@
+# Return MI: Form T1043 "Deduction for Excess Registered Pension Plan Transfers You Withdrew from an
+# RRSP, a PRPP, an SPP, or a RRIF" as its own form, the deduction on T1 line 23200: a filer who
+# withdrew 17,000.00 from an RRSP and who has 6,500.00 of excess RPP transfers not yet claimed,
+# deducts the lesser of that and the 5,000.00 left after line 7, on line 23200.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MI: a single 2025 Ontario resident in Canada throughout 2025, aged 19 or older at the end
+  of 2025, with no spouse and no dependants and no other income (chosen figures, as in Return GG).
+  The filer withdrew 17,000.00 from an RRSP in 2025, reported on T1 line 12900 (RRSP income), so
+  Form T1043 line 6 = 17,000.00. Line 1: the excess transfer shown on the T4A slip is 8,000.00 and
+  the excess amount shown on the RRSP receipt is 9,000.00, so line 1 is the lesser, 8,000.00. Line
+  2 = 1,000.00 (claimed as an RRSP deduction for a previous year), line 3 = 500.00 (deducted using
+  the form for a previous year), line 4 = 1,000.00 + 500.00 = 1,500.00 and line 5 = 8,000.00 -
+  1,500.00 = 6,500.00. Line 7 = 12,000.00 (deductible elsewhere) and line 8 = 17,000.00 -
+  12,000.00 = 5,000.00. Line 9 is the lesser of line 5 (6,500.00) and line 8 (5,000.00) =
+  5,000.00, the deduction on T1 line 23200 (Form T1043: "You can deduct this amount on line
+  23200") because the filer answers yes to both of the form's conditions ("you have to meet both
+  of the following conditions": the excess amount was included in income for the year it was
+  transferred, and the plan amounts are included in income for the year of the claim). Total income (line 15000) is 17,000.00, total deductions (line 23300) are 5,000.00 and
+  net income (line 23600) is 17,000.00 - 5,000.00 = 12,000.00, below the basic personal amounts, so
+  no tax is payable.
+sources:
+  - >-
+    CRA, Form T1043 (2025), "Enter the amount of the excess transfer shown on your T4A slip(s) and
+    included in your income for the above year(s) or the excess amount shown on your RRSP, PRPP, or
+    SPP receipt, whichever is less." (line 1); "Line 2 plus line 3" (line 4); "Line 1 minus line
+    4" (line 5); "Line 6 minus line 7" (line 8); "Enter the amount from line 5 or line 8, whichever
+    is less. You can deduct this amount on line 23200 of your income tax and benefit return."
+    (line 9) (docs/cra-forms-2025/t1043-25e.pdf)
+inputs:
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  # T1 line 12900, the RRSP withdrawal (Form T1043 line 6).
+  ca/rrsp_income: "17000"
+  # Form T1043 (2025), lines 1, 2, 3, 6 and 7.
+  ca/t1043_excess_transfer_on_t4a: "8000"
+  ca/t1043_excess_amount_on_receipt: "9000"
+  ca/t1043_claimed_as_rrsp_deduction: "1000"
+  ca/t1043_deducted_using_form: "500"
+  ca/t1043_plan_amounts_in_income: "17000"
+  ca/t1043_part_deductible_elsewhere: "12000"
+  # Form T1043 "you have to meet both of the following conditions": both answered yes.
+  ca/t1043_included_excess_in_income_for_year_transferred: "1"
+  ca/t1043_including_plan_amounts_in_income_for_year_claimed: "1"
+expected:
+  ca-on/return:
+    - ca/total_income: "17000.00"
+      ca/t1043_deduction_on_return: "5000.00"
+      ca/deductions_from_total_income: "5000.00"
+      ca/net_income: "12000.00"
+      ca/taxable_income: "12000.00"
+      ca/tosi_adjusted_net_income: "12000.00"
+      ca/net_income_before_adjustments: "12000.00"
+      ca/other_payments_limit_income: "12000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+  ca/t1043:
+    - ca/t1043_excess_transferred: "8000.00"
+      ca/t1043_previously_claimed_checked: "1500.00"
+      ca/t1043_not_yet_claimed: "6500.00"
+      ca/t1043_plan_amounts_remaining: "5000.00"
+      ca/t1043_deduction: "5000.00"

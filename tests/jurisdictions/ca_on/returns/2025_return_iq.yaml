@@ -1,0 +1,219 @@
+# Return IQ: Guide T4002's Sharon (restricted farm loss, "Restricted farm losses (partly
+# deductible)", pp. 95-96). An Ontario resident with employment income of $30,000 and one Form
+# T2042 (farming) statement with a net farm loss of $9,200 on line 9946, farming being neither her
+# main source of income nor her main source of income in addition to a subordinate one (the
+# return's answer is 1). She deducts the lesser of A $9,200 and B $2,500 + 50% x ($9,200 -
+# $2,500) = $5,850, so T1 line 14100 is -$5,850.00 and her restricted farm loss is $3,350.00.
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025, with 12 months of CPP (Schedule 8 box A), Schedule 8 Part 4 not completed and no
+  agreement for EI, as Return B; every figure is a chosen one. Employment income 30,000 with the
+  CPP and EI inputs of Return B (enhanced CPP contributions 1% x (30,000 - 3,500) = 265.00). One
+  T2042 statement, no partner, no Area A row and no business-use-of-home claim. Part 4: fertilizers
+  and lime 9662 of 9,200 and no income, so lines 9898 and 9899 are 9,200 and -9,200, and line 9946
+  is -9,200 (net farm loss A). The answer to "farming was neither your main source of income nor
+  your main source of income in addition to some other subordinate source of income" is yes (1).
+  The net farm loss is 9,200, which is less than 32,500, so the amount deductible from other income
+  is the lesser of A 9,200 and B = 2,500 + 50% x (9,200 - 2,500) = 2,500 + 3,350 = 5,850: 5,850.
+  The restricted farm loss is 9,200 - 5,850 = 3,350. The deductible amount, as a loss, is T1 line
+  14100: -5,850.00. Total income is 30,000 - 5,850 = 24,150.00 and net income is 24,150.00 - 265.00
+  (enhanced CPP contributions) = 23,885.00. The carry-forward of the restricted farm loss (T1 line
+  25200) is not modelled.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), "Restricted farm losses (partly deductible)", pages 95 and 96
+    (docs/cra-forms-2025/t4002-25e.pdf; confirmed from the PDF, no .txt published): "For tax years
+    that end after March 20, 2013, the annual maximum deduction used in the calculation for
+    restricted farm losses is $17,500. When your net farm loss is $32,500 or more, you can deduct
+    $17,500 from your other income. The rest of your net farm loss is your restricted farm loss.
+    When your net farm loss is less than $32,500, the amount you can deduct from your other income
+    is the lesser of: A) your net farm loss for the year B) $2,500 plus 50% × (your net farm loss
+    minus $2,500) The amount remaining is your restricted farm loss."; the example of Sharon: "In
+    2025, she had employment income and a net farm loss of $9,200, which she calculated on line
+    9946 of Form T2042."; "Therefore, B = ($2,500 + $3,350) = $5,850."; "she enters $5,850 on line
+    14100 of her income tax return and deducts this amount from her other income in 2025. Her
+    restricted farm loss is the amount that remains, which is $3,350 ($9,200 minus $5,850)."
+  - >-
+    CRA, Form T2042 (2025), Statement of Farming Activities (docs/cra-forms-2025/t2042-25e.pdf):
+    "Your net income (loss): Amount 5C minus line 9945 (enter this amount on line 14100 of your
+    income tax and benefit return)" (9946).
+
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "30000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "30000"
+  # T4 boxes 24 (= 14) and 18: the premium required on it, Form T2204 line 16 (line 31200).
+  ca/t2204_insurable_earnings: "30000"
+  ca/t2204_premiums_deducted: "492.00"
+  ca/cpp_t4_base_and_first_additional_contributions: "1576.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/t2042_statements:
+    - ca/farm_wheat: "0"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "9200"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "0"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+  # Guide T4002: farming was neither her main source of income nor her main source of income in
+  # addition to some other subordinate source (answer 1, a yes), asked once for the return.
+  ca/farm_not_main_source_of_income: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  # Hand derivation of the tax figures below from net income 23,885.00 (checked against the
+  # engine's trace, step by step):
+  #   Federal: 23,885 x 14.5% = 3,463.33, less the non-refundable credits on 19,403.75 (credit
+  #     amounts at 15%, 2,813.54) = 649.79 federal tax.
+  #   Ontario: 23,885 x 5.05% = 1,206.19, less the non-refundable credits on 14,550.75 (734.81) =
+  #     471.38, which is `ca-on/ontario_tax_less_dividend_credit` (tax before the reduction).
+  #     The trace then takes the Ontario tax reduction 2 x 294 - 471.38 = 116.62 off it (354.76),
+  #     and the LIFT credit 875.00 (5.05% x 30,000 = 1,515, at most 875, no reduction below
+  #     32,500 of income) off that: 354.76 - 875.00 is below 0, so the Ontario tax after the
+  #     credits is 0.00. The 471.38 is therefore not payable as such; what Ontario adds to the
+  #     total payable is the Ontario Health Premium alone.
+  #   Ontario Health Premium: 6% x (23,885 - 20,000) = 233.10 (the 36,000 and higher steps do not
+  #     apply).
+  #   Total payable: 649.79 + 233.10 = 882.89.
+  #   Canada Workers Benefit: 1,633.00 (single, no reduction at this income), a refundable credit.
+  #   Refund: 1,633.00 - 882.89 = 750.11, so `ca/refund_or_balance_owing` is -750.11.
+  ca-on/return:
+    # Net farming income (T1 lines 14100 and 13900 as income) is a non-negative kind, a loss counts
+    # 0; the loss of -5,850.00 is in the total income and in ca/farming_income below.
+    - ca/net_farming_income: "0.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "30000.00"
+      ca/total_income: "24150.00"
+      ca/net_income: "23885.00"
+      ca/net_income_before_adjustments: "23885.00"
+      ca/other_payments_limit_income: "23885.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "471.38"
+      ca/refund_or_balance_owing: "-750.11"
+      ca-on/net_refund: "750.11"
+  ca/t2042:
+    # Line 9946 of the one statement, before any restriction.
+    - ca/farming_income: "-9200.00"
+  # The restricted farm loss, worked once on the net of the statements' line 9946.
+  ca/farm_loss:
+    - ca/farm_net_income_line_9946: "-9200.00"
+      ca/farm_not_main_source_of_income_checked: "1"
+      ca/farm_net_loss: "9200.00"
+      ca/farm_restricted_loss_base_amount: "2500"
+      ca/farm_restricted_loss_full_threshold: "32500"
+      ca/farm_restricted_loss_annual_maximum: "17500"
+      ca/farm_restricted_loss_percentage: "50"
+      ca/farm_net_loss_less_base_amount: "6700.00"
+      ca/farm_restricted_loss_half_of_excess: "3350.00"
+      ca/farm_restricted_loss_amount_b: "5850.00"
+      ca/farm_restricted_loss_lesser_of_a_and_b: "5850.00"
+      ca/farm_net_loss_less_full_threshold: "-23300.00"
+      ca/farm_loss_deductible: "5850.00"
+      ca/farm_restricted_loss: "3350.00"
+      ca/farm_restricted_loss_added_back: "3350.00"
+      ca/farming_income: "-5850.00"

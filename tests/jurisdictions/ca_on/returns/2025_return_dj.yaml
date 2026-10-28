@@ -1,0 +1,116 @@
+# Return DJ: Form RC359, Tax on Excess Employees Profit Sharing Plan Amounts, one copy for each of
+# four employers' EPSP amounts (employers A and B as the chosen figures, then a Manitoba and an
+# Other (non-resident) copy of employer A's figures), with no other income on the return. Each
+# copy's line 9 is added into T1 line 41800 "Special taxes", so the tax on the return is the sum of
+# the four copies' line 9 and the balance owing is that sum.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DJ: a 2025 filer whose only entries are four Form RC359 copies, one for each employer
+  (chosen figures, the caller's decision that the filer is a specified employee for each), with
+  no other income, so the RC359 amounts are the only inputs of the return's special taxes. The
+  copies are entered as the form asks: line 1 "contributions from box 41 of your T4PS slip",
+  line 2 "employment income reported on your T4 slip(s)", line 3 "security options benefits ...
+  and other employment income", and line 8 the province code of the filer's residence at the
+  end of the year (a chosen figure on each copy, 6 for Ontario, 7 for Manitoba and 14 for "Other
+  (non-resident)", so one filer's four copies carry three codes to exercise the chart; a real
+  filer has one). Copy 1, employer A: line 1 10,000.00, line 2 20,000.00, line 3 0.00, code 6.
+  Line 4 is 20,000.00 less 0.00 = 20,000.00; line 6 is 20,000.00 x 20% = 4,000.00; line 7 is
+  10,000.00 less 4,000.00 = 6,000.00 (not below zero); line 8 is Ontario's 53.53%; line 9 is
+  6,000.00 x 53.53% = 3,211.80. Copy 2, employer B: line 1 1,000.00, line 2 20,000.00, line 3
+  0.00, code 6. Line 4 is 20,000.00 and line 6 is 4,000.00; line 7 is 1,000.00 less 4,000.00 =
+  -3,000.00, which is below zero, so line 7 is 0.00 (the form's "if negative, enter 0"); line 9
+  is 0.00 x 53.53% = 0.00. Copy 3, the figures of employer A with code 7: line 8 is Manitoba's 50.4%, and
+  line 9 is 6,000.00 x 50.4% = 3,024.00. Copy 4, the figures of employer A with code 14: line 8
+  is "Other (non-resident)" 49%, and line 9 is 6,000.00 x 49% = 2,940.00. Line 41800 "Special
+  taxes" is the total of the four line 9s: 3,211.80 + 0.00 + 3,024.00 + 2,940.00 = 9,175.80; the
+  return has no other special tax (the T1172 and RL-10 amounts are 0). Line 22900 is the
+  total of the line 7 amounts, 6,000.00 + 0.00 + 6,000.00 + 6,000.00 = 18,000.00, deducted at
+  line 23300, so net income (line 23600) is 0.00 - 18,000.00 = -18,000.00 and taxable income is
+  nil. The deduction does not change the tax, which is still the sum of the line 9s. With no other tax, the
+  federal net tax (line 42000) is 9,175.80, and with no payments or refundable credits the
+  refund or balance owing (line 167) is 9,175.80, a balance owing. The employers' employment
+  income is entered on the copies only, as the form's own inputs, and not on the return's T4
+  lines (a fixture of the form, not a filer's whole return). The return's other figures are as
+  for a filer with no income: the alternative minimum tax carry-over of 2,338.71 (the basic
+  personal amount credit, as Return DF), and the CPP second additional earnings maximum of
+  9,900.00, a dataset figure.
+sources:
+  - >-
+    CRA, Form RC359 (2025), Tax on Excess Employees Profit Sharing Plan Amounts (docs/cra-forms-2025/
+    rc359-25e.pdf, confirmed from the PDF, which is the only published copy; no .txt is published;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc359/rc359-25e.pdf): "If you are a
+    specified employee and employer contributions made to an employees profit sharing plan (EPSP)
+    are allocated to you, you may have to pay a special tax on the portion of the EPSP amount that
+    is more than 20% of your employment income from this employer for the year."
+  - >-
+    CRA, Form RC359 (2025), Excess EPSP amount, lines 1 to 7 (the same PDF): "Line 1: If you are a
+    specified employee, enter the amount of contributions from box 41 of your T4PS slip."; line 2
+    "Enter the employment income reported on your T4 slip(s) from the employer who made the EPSP
+    contributions."; line 3 "Enter the security options benefits (boxes 38 and 90 of your T4 slip)
+    and other employment income (box 35 of your T4PS slip) related to the employment income
+    reported on line 2."; line 4 "Line 2 minus line 3"; line 5 "Rate × 20%"; line 6 "Line 4
+    multiplied by the percentage from line 5"; line 7 "Line 1 minus line 6 (if negative, enter
+    "0")". "Include this amount on line 22900 of your return."
+  - >-
+    CRA, Form RC359 (2025), Tax on excess EPSP amount, lines 8 and 9 (the same PDF): "Enter the
+    rate for your province or territory of residence at the end of the year using the charts
+    below. (If you were not a resident of a province or territory in Canada, enter the rate for
+    "Other".)"; line 9 "Line 7 multiplied by the percentage from line 8"; "Include this amount on
+    line 41800 of your return." The chart: Manitoba 50.4%, Ontario 53.53%, Other (non-resident)
+    49%.
+  - >-
+    CRA, Form RC359 (2025), Multiple EPSPs (the same PDF): "If you have EPSPs from different
+    employers, complete a separate form for each employer. Add the amount from line 7 of each form
+    and include the total on line 22900 of your return, and add the amount from line 10 of each
+    form and include the total on line 41800 of your return." (The form prints "line 10"; the tax
+    is its line 9, as the form's own lines show.)
+inputs:
+  ca/cpp_months: "12"
+  ca/rc359_employers:
+    - ca/rc359_epsp_contributions: "10000"
+      ca/rc359_employment_income: "20000"
+      ca/rc359_other_employment_income: "0"
+      ca/rc359_province: "6"
+    - ca/rc359_epsp_contributions: "1000"
+      ca/rc359_employment_income: "20000"
+      ca/rc359_other_employment_income: "0"
+      ca/rc359_province: "6"
+    - ca/rc359_epsp_contributions: "10000"
+      ca/rc359_employment_income: "20000"
+      ca/rc359_other_employment_income: "0"
+      ca/rc359_province: "7"
+    - ca/rc359_epsp_contributions: "10000"
+      ca/rc359_employment_income: "20000"
+      ca/rc359_other_employment_income: "0"
+      ca/rc359_province: "14"
+expected:
+  ca/rc359:
+    - ca/rc359_line_4: "20000.00"
+      ca/rc359_line_6: "4000.00"
+      ca/rc359_excess_epsp_amount: "6000.00"
+      ca/rc359_line_8: "53.53"
+      ca/rc359_tax_on_excess_epsp: "3211.80"
+    - ca/rc359_line_4: "20000.00"
+      ca/rc359_line_6: "4000.00"
+      ca/rc359_excess_epsp_amount: "0.00"
+      ca/rc359_line_8: "53.53"
+      ca/rc359_tax_on_excess_epsp: "0.00"
+    - ca/rc359_line_4: "20000.00"
+      ca/rc359_line_6: "4000.00"
+      ca/rc359_excess_epsp_amount: "6000.00"
+      ca/rc359_line_8: "50.40"
+      ca/rc359_tax_on_excess_epsp: "3024.00"
+    - ca/rc359_line_4: "20000.00"
+      ca/rc359_line_6: "4000.00"
+      ca/rc359_excess_epsp_amount: "6000.00"
+      ca/rc359_line_8: "49.00"
+      ca/rc359_tax_on_excess_epsp: "2940.00"
+  ca-on/return:
+    - ca/net_income_before_adjustments: "-18000.00"
+      ca/rc359_tax_total: "9175.80"
+      ca/special_taxes: "9175.80"
+      ca/net_federal_tax: "9175.80"
+      ca/refund_or_balance_owing: "9175.80"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"

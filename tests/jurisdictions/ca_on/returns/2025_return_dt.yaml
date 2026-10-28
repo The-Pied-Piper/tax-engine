@@ -1,0 +1,46 @@
+# Return DT: a single Ontario resident who sold a condominium she owned for less than 365
+# consecutive days, with no life event of line 17906 ticked, so the housing unit is a flipped
+# property and Schedule 3 Part 1 gives the flag 1. The flag is the one figure this file checks.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, aged 35, a chosen figure (18 or older at the
+  end of 2025), resident in Canada throughout 2025, with no spouse or common-law partner and
+  no dependants. She disposed of a condominium in Canada in 2025, a chosen figure, that was
+  not considered inventory and that she owned for 200 consecutive days before its
+  disposition, a chosen figure, so fewer than 365 days. Line 17905 of Schedule 3 Part 1 is
+  therefore "Yes", a count of 1. Line 17906 asks whether the disposition was due to, or in
+  anticipation of, a life event: none applies, so the nine boxes are not ticked, each a
+  count of 0 (a tick box left blank). With line 17905 "Yes" and no box ticked, no condition
+  applies, and the count when none applies is 1: the housing unit is a flipped property,
+  and the flag is 1. The gain on the disposition is taxable as business income and is
+  reported on Form T2125, not as a capital gain; the proceeds, the adjusted cost base and
+  the gain are not entered here and are not checked. Her employment income, other income
+  and every other return figure are chosen $0 (no income of any kind), so the return's own
+  lines are nil and are not checked in this file, except two that a return with no income still
+  computes: with Schedule 8 box A at 12 months (a chosen figure, a full year of CPP) the
+  second additional maximum amount is $9,900.00 for 12 months, and the alternative minimum
+  tax carryover available for 2026 is the existing behaviour of the engine for a return with
+  no income, $2,338.71, not new to this file.
+sources:
+  - >-
+    CRA, Schedule 3 Capital Gains or Losses (2025), Part 1 "Flipped property", page 1, "Line
+    17905: Did you dispose of a housing unit, or a right to acquire a housing unit, located in
+    Canada (including a rental property) that was not considered inventory and was owned for
+    less than 365 consecutive days before the disposition? Yes or No"; page 2, "Was the
+    disposition due to, or in anticipation of, any of the following life events? (Tick the
+    boxes that apply, if any.)" "Line 17906:"; and "If none of the life events above apply to
+    you, the housing unit is considered a flipped property and the gain is taxable as business
+    income. To report this transaction, complete Form T2125." (docs/cra-forms-2025/5000-s3-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/flipped_property_disposed: "1"
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_3:
+    - ca/flipped_property: "1"

@@ -1,0 +1,69 @@
+# Return LM: Guide T4044, Labour mobility deduction example, the following year's chart on the
+# 2025 form. Amounts are quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LM: Guide T4044 (2025), "Labour mobility deduction", the Guide's second chart, for the year
+  after the relocation of Return LL: the relocation has $7,000 of employment income at the temporary
+  work location, no transportation (the round trip was paid the year before), meals of $100,
+  temporary lodging of $650 and $1,500 carried forward (the Guide prints line 33 as "1,5000", a
+  misprint of 1,500.00). The Guide prints this chart for 2026 (the next year's form, with the same
+  lines); this return enters its figures in the 2025 form's lines, because the engine computes the
+  2025 year and the lines are the same: line 33 1,500.00; line 34 0.00; line 35 100.00; line 36
+  650.00; line 37 2,250.00; line 38 7,000.00 times 50% = 3,500.00; line 39 2,250.00 (the least of
+  2,250, 3,500 and the claim of 2,250); line 40 0.00; line 41 2,250.00. T777 line 11 and line 17 are
+  2,250.00 and T1 line 22900 is 2,250.00. The $7,000 is the employment income (T1 line 10100, a
+  chosen T4). Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Labour mobility
+    deduction", the second chart: "In 2026, you earn $7,000 of employment income at the temporary
+    work relocation. For this temporary relocation, you have no additional transportation expenses
+    as your round trip was paid for in 2025. However, you have incurred $100 for meals consumed
+    during the return flight between your temporary lodging and ordinary residence, and $650 in
+    temporary lodging expenses totalling $750, plus the carry forward from 2025 of $1,500. Your
+    total eligible temporary relocation expenses would be $2,250." "Line 38 ... 7,000.00 multiplied
+    by 50% = 3,500.00 ... Line 39 ... 2,250.00 ... Line 40 ... 0.00 ... Line 41 ... 2,250.00".
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    the line 11 chart, lines 33 to 41.
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "7000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "7000"
+  ca/t2204_insurable_earnings: "7000"
+  ca/t2204_premiums_deducted: "114.80"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "208.25"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_relocations:
+    - ca/t777_relocation_carried_forward: "1500"
+      ca/t777_relocation_transportation: "0"
+      ca/t777_relocation_meals: "100"
+      ca/t777_relocation_lodging: "650"
+      ca/t777_relocation_tradesperson_income: "7000"
+      ca/t777_relocation_claim: "2250"
+expected:
+  ca/t777:
+    - ca/t777_line_11: "2250.00"
+      ca/t777_line_15: "2250.00"
+      ca/t777_line_17: "2250.00"
+  ca/t777_relocation:
+    - ca/t777_relocation_total: "2250"
+      ca/t777_relocation_income_limit: "3500.00"
+      ca/t777_relocation_deduction: "2250.00"
+      ca/t777_relocation_carried_forward_out: "0.00"
+  ca-on/return:
+    - ca/total_income: "7000.00"
+      ca/other_employment_expenses: "2250.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "4715.00"
+      ca/other_payments_limit_income: "4715.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "7000"

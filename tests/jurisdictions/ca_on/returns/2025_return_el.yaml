@@ -1,0 +1,60 @@
+# Return EL: a single Ontario resident with one disposition of publicly traded shares, the example of
+# Guide T4037 (Capital Gains, 2025), "XYZ Public Corporation of Canada" (pages 11 and 12): 400 shares sold for
+# $6,500 with a commission of $60 and an adjusted cost base of $4,000, a capital gain of $2,440 and a
+# taxable capital gain of $1,220 on line 12700. Every input is the guide's figure; the guide's
+# calculation is the expected one.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 (chosen figures), with no income other than the share disposition below (every
+  other amount is a chosen $0). The disposition is one row of Schedule 3 Part 3 "Publicly traded
+  shares": the guide's 400 shares of XYZ Public Corporation of Canada, sold on March 13, 2025, with
+  proceeds of disposition of $6,500 (the guide's line A), an adjusted cost base of $4,000 (the
+  guide's line B) and outlays and expenses of $60 (the commission, the guide's line C). Column 5 is
+  column 2 minus columns 3 and 4: 6,500 - 4,000 - 60 = 2,440, the guide's capital gain of $2,440
+  (its line E, "Capital gain (line A minus line D)", where line D is 4,060). Line 4 (shares) is
+  2,440, and line 13199 "Total proceeds of disposition" is 6,500, the one row's proceeds. With no
+  other gain or loss, line 21 and line 19700 (total capital gains) are 2,440, and line 24 is 50% of
+  it, 1,220.00 (the included capital gain): the guide's "$1,220 as your taxable capital gain on line
+  12700", which is the taxable capital gains. With no other income or deduction, net income and
+  taxable income are 1,220.00 (the taxable capital gains, arithmetic and not printed by the guide).
+  The cpp months (Schedule 8 box A) are a chosen 12 with no employment income: the second additional
+  maximum of 9900.00 is the engine's figure for a full year of CPP, not a guide figure. The
+  alternative minimum tax carryover for 2026, 2,161.81, is the engine's figure: the guide has no
+  alternative minimum tax example, so it is not checked against the guide here.
+sources:
+  - >-
+    CRA, Guide T4037, Capital Gains (2025), pages 11 and 12, the example of 400 shares of XYZ Public
+    Corporation of Canada: "Proceeds of disposition $ 6,500 A", "Adjusted cost base $ 4,000 B",
+    "Outlays and expenses on disposition + $ 60 C", "Capital gain (line A minus line D) = $ 2,440 E";
+    "Fifty percent of the capital gain would be taxable and you would report $1,220 as your taxable
+    capital gain on line 12700 of your 2025 Income Tax and Benefit Return."
+    (docs/cra-forms-2025/t4037-25e.pdf, text extracted with pdftotext)
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19), Part 3:
+    "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; "Line 13199: Total proceeds of
+    disposition (add all the amounts under column 5)" (docs/cra-forms-2025/5000-s3-25e.txt); line 21
+    and line 19700 "Total capital gains or losses", line 24 "Line 22 multiplied by the percentage
+    from line 23", line 26 "If positive, enter the result on line 12700 of your return".
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "6500"
+      ca/disposition_adjusted_cost_base: "4000"
+      ca/disposition_outlays: "60"
+expected:
+  ca-on/return:
+    - ca/share_proceeds: "6500"
+      ca/share_gain_or_loss: "2440"
+      ca/capital_gains_before_reserves: "2440"
+      ca/capital_gain: "2440"
+      ca/included_capital_gain: "1220.00"
+      ca/taxable_capital_gains: "1220.00"
+      ca/schedule_3_line_19900: "1220.00"
+      ca/net_income_before_adjustments: "1220.00"
+      ca/other_payments_limit_income: "1220.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"

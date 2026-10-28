@@ -1,0 +1,107 @@
+# Return AZ: a filer under 18 on December 31, 2025 who qualifies for the disability amount, with
+# child care and attendant care expenses of $5,000 claimed for them. Nothing else is claimed: no
+# income, so the figures show the disability amount for self alone, computed on the Federal
+# Worksheet for line 31600 and on Worksheet ON428 for line 58440 (the under-18 calculation, lines 1
+# to 7 of each), from the same three inputs.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single filer, a 2025 Ontario resident, under 18 years of age on December 31, 2025, who
+  qualifies for the disability amount (the CRA approved the Form T2201): "qualifies" is a chosen
+  figure, 1. Child care and attendant care expenses for the filer that the filer or another
+  person claimed are 5000.00, a chosen figure. No income, no CPP, no EI and no other amount is
+  claimed, so the net income and taxable income are 0.
+  Federal Worksheet, line 31600: line 1 base amount 10138.00; line 2 maximum supplement 5914.00;
+  line 3 the expenses 5000.00; line 4 threshold 3464.00; line 5 is 5000.00 - 3464.00 = 1536.00;
+  line 6 is 5914.00 - 1536.00 = 4378.00; line 7 is 10138.00 + 4378.00 = 14516.00, which is below
+  the maximum of 16052.00, so the disability amount for self on line 31600 is 14516.00. The
+  line 31600 choice is the under-18 calculation, because the filer is under 18 on December 31,
+  2025 (a chosen figure, 1), so the 18-or-older amount of 10138.00 is not claimed.
+  Credit amounts: the basic personal amount on line 30000 is 16129.00 (net income is at or below
+  177882). T1 line 101 (the credit amounts subtotal) is 16129.00 + 14516.00 = 30645.00, and the
+  total of the credit amounts (line 33500) is the same 30645.00. Not triggered: the Canada
+  employment amount, CPP and EI, the dependants, the medical expenses, the tuition, the
+  donations and the disability amount transferred from a dependant (line 31800, nothing claimed).
+  Ontario half, Worksheet ON428 line 58440 (ON428 line 29), from the same inputs: line 1 base
+  amount 10298.00; line 2 maximum amount 6007.00; line 3 the same expenses 5000.00; line 4
+  threshold 3518.00; line 5 is 5000.00 - 3518.00 = 1482.00; line 6 is 6007.00 - 1482.00 =
+  4525.00; line 7 is 10298.00 + 4525.00 = 14823.00, below the maximum of 16305.00, so line 58440
+  is 14823.00. The Ontario basic personal amount is 12747.00, so the Ontario credit amounts
+  through the disability amount (ON428 line 31) are 12747.00 + 14823.00 = 27570.00, and the total
+  of the non-refundable credit amounts (ON428 line 44) is the same 27570.00. Not triggered: the
+  Ontario age, spouse, dependant, caregiver, medical, tuition and donation amounts.
+  Amounts are quoted decimals and counts quoted digit strings.
+sources:
+  - >-
+    CRA, Federal Worksheet (form 5000-D1, 2025), docs/cra-forms-2025/5000-d1-25e.txt: "Line
+    31600 - Disability amount for self" "If you qualify for the disability amount and, on
+    December 31, 2025, you were: 18 years of age or older, enter $10,138 on line 31600 of your
+    return; under 18 years of age, complete the calculation below"; "Line 1: Base amount 10,138.00";
+    "Line 2: Maximum supplement 5,914.00"; "Line 3: Total of child care and attendant care expenses
+    for you that you or another person claimed"; "Line 4: Threshold for child care and attendant
+    care expenses 3,464.00"; "Line 5: Line 3 minus line 4 (if negative, enter "0") ="; "Line 6:
+    Line 2 minus line 5 (if negative, enter "0") ="; "Line 7: Line 1 plus line 6 Enter this amount
+    on line 31600 of your return. (maximum $16,052) =".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, Worksheet ON428 (form 5006-D, 2025), docs/cra-forms-2025/5006-d-25e.txt: "Line 58440 -
+    Disability amount for self" "Complete the following calculation if you were under 18 years of
+    age on December 31, 2025"; "Line 1: Base amount 10,298.00"; "Line 2: Maximum amount 6,007.00";
+    "Line 4: Threshold for child and attendant care expenses 3,518.00"; "Line 5: Line 3 minus line 4
+    (if negative, enter "0") ="; "Line 6: Line 2 minus line 5 (if negative, enter "0") ="; "Line
+    7: Line 1 plus line 6 Enter this amount on line 58440 of your Form ON428. (maximum $16,305) =".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+inputs:
+  ca/eligible_for_disability_amount: "1"
+  ca/under_18_on_december_31: "1"
+  ca/disability_self_care_expenses: "5000.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/disability_self_base_amount: "10138.00"
+      ca/disability_self_supplement_maximum: "5914.00"
+      ca/disability_self_care_threshold: "3464.00"
+      ca/disability_self_care_over_threshold: "1536.00"
+      ca/disability_self_supplement: "4378.00"
+      ca/disability_self_worksheet_amount: "14516.00"
+      ca/disability_amount_for_self_if_eligible: "14516.00"
+      ca/disability_amount_for_self: "14516.00"
+      ca/credit_amounts_subtotal: "30645.00"
+      ca/non_refundable_credit_amounts: "30645.00"
+      ca-on/disability_self_base_amount: "10298.00"
+      ca-on/disability_self_supplement_maximum: "6007.00"
+      ca-on/disability_self_care_threshold: "3518.00"
+      ca-on/disability_self_care_over_threshold: "1482.00"
+      ca-on/disability_self_supplement: "4525.00"
+      ca-on/disability_self_worksheet_amount: "14823.00"
+      ca-on/disability_amount_for_self_if_eligible: "14823.00"
+      ca-on/disability_amount_for_self: "14823.00"
+      ca-on/credit_amounts_through_disability_transfer: "27570.00"
+      ca-on/non_refundable_credit_amounts: "27570.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_part_1_subtotal: "0"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "0.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "-4443.53"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"

@@ -1,0 +1,148 @@
+# Return GG: the three income lines of the Canada workers benefit's working income (Schedule 6
+# lines 1 to 3) together: other employment income (T1 line 10400), taxable scholarships (T1 line
+# 13010) and a T2125 profit (line 13500), with no employment income. Each one alone gives a CWB of
+# 0 under the working income of the old reading; together they make working income of 8,000.00.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return GG: a 2025 Ontario resident in Canada throughout 2025, aged 18 or older, with no spouse
+  and no dependants. Three income lines, chosen figures, and nothing else: other employment income
+  of $3,000.00 (T1 line 10400, Schedule 6 line 1), taxable scholarships, fellowships, bursaries and
+  artists' project grants of $2,000.00 (T1 line 13010, Schedule 6 line 2) and one Form T2125
+  statement with a net profit of $3,000.00 (gross sales of $3,000.00 and no expenses, so line
+  9369, line 9946 and T1 line 13500 are 3,000.00; Schedule 6 line 3, the net self-employment income
+  of the statement). Employment income (T1 line 10100) is 0, with no CPP or EI deducted at source,
+  and the self-employment CPP is not computed (Schedule 8 Part 5 is not completed, a chosen 0).
+  Total income (line 15000) is 3,000.00 + 2,000.00 + 3,000.00 = 8,000.00, with no deductions, so
+  net income (line 23600) and the adjusted family net income (Schedule 6 line 15) are 8,000.00.
+  Schedule 6 Part A: line 1 is 0 + 3,000.00 = 3,000.00; line 2 is 2,000.00; line 3 is 3,000.00; line
+  5 is 3,000.00 + 2,000.00 + 3,000.00 = 8,000.00, the working income, and line 6 (family working
+  income, no eligible spouse) is also 8,000.00. Line 18 is 8,000.00 - 3,000.00 = 5,000.00 and line
+  20 is 27% of it, 1,350.00, under the maximum of 1,633 (line 21, no eligible dependant), so line 22
+  is 1,350.00. Line 25 is 8,000.00 - 26,855.00, below zero, so 0 and line 27 is 0, so line 28 and
+  T1 line 45300 are 1,350.00 (the eligible dependant count is 0, so the line with no dependant is
+  the one entered). The old reading counted none of the three, so it gave a CWB of 0; this return
+  carries all three. Schedule 6 line 2 is 2,000.00 and line 3 is the
+  statement's 3,000.00, neither under a loss.
+  The other expected lines are not pinned here: the Ontario lines and the federal tax lines are
+  the engine's, and the tests of this return check the CWB chain.
+sources:
+  - >-
+    CRA, Schedule 6 (5000-S6) 2025, Part A, from the copy on PR #499 (docs/cra-forms-2025/5000-s6-25e.txt,
+    not yet on main; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt):
+    "Line 1: Employment income and other employment income from line 10100 and line 10400 of the
+    return"; "Line 2: Taxable scholarships, fellowships, bursaries, and artists' project grants from
+    line 13010 of the return"; "Line 3: Total self-employment income from lines 13500, 13700, 13900,
+    14100, and 14300 of the return (excluding losses) (Note 2)"; "Line 5: Add lines 1 to 4. Enter the
+    result, even if it is "0". Working income".
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities (docs/cra-forms-2025/t2125-25e.pdf),
+    as quoted in Return BB: "Gross sales, commissions, or fees (include GST/HST collected or collectible)"
+    (3A) and the net income of line 9946 "report the net income amount ... business income on line 13500".
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/other_employment_income: "3000"
+  ca/taxable_scholarships: "2000"
+  ca/t2125_statements:
+    - ca/business_gross_sales: "3000"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/net_income: "8000.00"
+      ca/cwb_employment_income: "3000.00"
+      ca/medical_supplement_self_employment_income: "3000.00"
+      ca/working_income: "8000.00"
+      ca/adjusted_family_net_income: "8000.00"
+      ca/cwb_before_reduction_without_dependant: "1350.00"
+      ca/cwb_reduction_without_dependant: "0.00"
+      ca/canada_workers_benefit_without_dependant: "1350.00"
+      ca/cwb_before_reduction_with_dependant: "1350.00"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "1350.00"
+      ca/canada_workers_benefit: "1350.00"
+      ca/total_credits: "1350.00"
+      ca/gross_business_income: "3000.00"
+      ca/net_income_before_adjustments: "8000.00"
+      ca/other_payments_limit_income: "8000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/refund_or_balance_owing: "-1350.00"
+      ca-on/net_refund: "1350.00"
+      # ca/amt_carryover_available_for_2026: no AMT is payable on 8,000.00 of income (T691 Part 5
+      # line 11 is 0), so Part 7 is not completed and the carryover is 0. Part 7 line 13 alone would
+      # be -1392.00 (federal tax 1160.00 less credits 2552.00).
+      ca/amt_carryover_available_for_2026: "0.00"

@@ -1,0 +1,83 @@
+# Return JP: Form T2209 page 1 note, the 15% limit on the foreign tax credit for income from
+# property. A single Ontario resident with employment income of $300,000 and $20,000
+# of foreign dividends from one country, which withheld 30% ($6,000). All of the dividends are
+# income from property, so the credit for that income cannot be more than 15% of $20,000 = $3,000,
+# and the $3,000 of tax over 15% is deducted on line 23200 instead. Amounts are quoted decimal
+# strings, never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single employee, an Ontario resident for all of 2025, with employment income (T1 line 10100)
+  of a chosen $300,000 and foreign investment income (line 12100) of a chosen $20,000 in
+  Canadian dollars: the foreign dividends of one country, all of them income from property, on
+  which a chosen $6,000 of tax (30%) was paid. The country is one record of Form T2209 with line
+  1 (43100) $6,000, line 2 income (43300) $20,000, and, as the parts of them that are on income
+  from property, $6,000 of tax and $20,000 of income. The page 1 note limits the credit for that
+  income to 15% x $20,000 = $3,000.00, so $6,000 - $3,000.00 = $3,000.00 is over 15% and is
+  deducted on T1 line 23200, and line 1 of the credit is the $3,000.00 left. Total income is
+  $300,000 + $20,000 = $320,000.00 and the CPP contributions (enhanced $678.00 + $396.00) take
+  net income before the foreign tax to $318,926.00; the $3,000.00 on line 23200 makes the line
+  23300 deductions $4,074.00 and net income (note 3) $315,926.00. Line 2 is $20,000 x the basic
+  federal tax over that net income, above the $3,000.00 of line 1, so line 3, and the credit on
+  T1 line 129, is $3,000.00. Form T2036 (Ontario) starts from line 1 of the T2209, $3,000.00,
+  less line 3, $3,000.00: no Ontario credit. The tax figures not derived above are the engine's.
+sources:
+  - >-
+    CRA, Form T2209 (2025), page 1 note (confirmed 2026-10-25 from the PDF; no .txt published,
+    docs/cra-forms-2025/t2209-25e.pdf): "If you paid tax on income from property sourced
+    outside of Canada (other than real or immovable property), your non-business foreign tax
+    credit for that income cannot be more than 15% of your net income from that property.
+    However, you may be able to deduct the part of the foreign taxes you paid over 15% on line
+    23200 of your return."
+inputs:
+  ca/employment_income: "300000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "81200"
+  ca/t4_cpp_slip_count: "1"
+  ca/t2204_insurable_earnings: "65700"
+  ca/t2204_premiums_deducted: "1077.48"
+  ca/foreign_investment_income: "20000"
+  ca/foreign_tax_countries:
+    - ca/foreign_non_business_tax_paid: "6000"
+      ca/net_foreign_non_business_income: "20000"
+      ca/foreign_business_tax_paid: "0"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "0"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "6000"
+      ca/net_foreign_property_income: "20000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "4034.10"
+  ca/cpp_t4_second_additional_contributions: "396.00"
+  ca/income_tax_deducted: "100000"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  ca-on/return:
+    - ca/foreign_tax_credit_sheets:
+        - ca/foreign_non_business_tax_paid: "3000.00"
+          ca/net_foreign_non_business_income: "20000"
+          ca/foreign_tax_credit_sheet_line_3: "3000.00"
+          ca/foreign_business_tax_paid: "0"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "0"
+          ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_over_limit: "3000.00"
+      ca/total_income: "320000.00"
+      ca/deductions_from_total_income: "4074.00"
+      ca/net_income_before_adjustments: "315926.00"
+      ca/other_payments_limit_income: "315926.00"
+      ca/foreign_tax_credit_net_income: "315926.00"
+      ca/federal_non_business_foreign_tax_credit: "3000.00"
+      ca/federal_foreign_tax_credit_before_limit: "3000.00"
+      ca/federal_foreign_tax_credit: "3000.00"
+      ca-on/provincial_foreign_tax_credit_before_limit: "0.00"
+      ca-on/provincial_foreign_tax_credit: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "81200.00"
+      ca/foreign_business_tax_credit_line_8: "76064.64"
+      ca/foreign_business_tax_credit_line_10: "73064.64"
+      ca-on/ontario_tax_less_dividend_credit: "32713.84"
+      ca/refund_or_balance_owing: "21225.71"

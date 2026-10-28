@@ -1,0 +1,160 @@
+# Return DD: the worked example of Form T2204, the EI overpayment on T1 line 45000
+# carried into total credits (line 48200). A single 2025 Ontario resident with employment income
+# only, insurable earnings of 70,000 and EI premiums of 1,148.00 (more than the 1,077.48
+# maximum, so a 70.52 overpayment), no self-employment income and no agreement. Every amount
+# is a quoted decimal string and every count a quoted digit string. Every output the CA-ON
+# manifest declares for the return must appear under `expected`, or be left out to be 0; the
+# other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single 2025 Ontario resident for all of 2025, resident in Canada throughout 2025 and aged 18
+  or older at the end of 2025, with no spouse, no dependants and no self-employment income. Its
+  only income is employment income (T1 line 10100) of $70,000.00 (a chosen figure) on one T4 slip:
+  box 14 and box 24 (the insurable earnings) of 70,000.00, box 18 (the EI premiums deducted) of
+  1,148.00 (a chosen figure, 1.64% of the 70,000.00 insurable earnings and more than the maximum
+  premium of 1,077.48, so there is an overpayment), box 16 (the CPP base and first additional
+  contributions) of 3,956.75 (the required amount, so no CPP overpayment), and box 22 (income tax deducted) of 11,000.00 (a chosen figure). The filer has no
+  agreement with the Canada Employment Insurance Commission, so Schedule 13 is not completed, and
+  no RRSP, union dues or other deduction. The CPP contributions are computed from employment
+  income by Schedule 8. Lines, in order:
+  CPP. Base contributions: 4.95% x (70,000.00 - 3,500.00) = 3,291.75 (Schedule 8 line 11; T1 line
+  30800 and ON428 line 58240). First additional contributions: 1% x (70,000.00 - 3,500.00) =
+  665.00 (line 22215). Box 16 is 3,956.75, the required 3,291.75 + 665.00, so the CPP overpayment
+  (line 44800) is 0.00 and there are no second additional contributions.
+  EI premiums. Line 31200 is Form T2204 line 16 ("Enter this amount on line 31200 of your
+  return"), 1,077.48 (the maximum), not the 1,148.00 deducted.
+  Total income (line 15000) is 70,000.00. The deduction of line 22215 (665.00) gives net income
+  (line 23600) and taxable income (line 26000) of 69,335.00.
+  Federal. Basic federal tax is 14.5% x 57,375.00 + 20.5% x (69,335.00 - 57,375.00) = 8,319.375
+  + 2,451.80 = 10,771.175, rounded half-up to 10,771.18. The non-refundable credit amounts are the
+  basic personal amount (16,129.00, net income not above 177,882), the base CPP contributions
+  (3,291.75), the EI premiums (1,077.48) and the Canada employment amount (1,471.00, the lesser of
+  1,471 and the employment income): 21,969.23, at 14.5% = 3,185.538, rounded half-up to 3,185.54.
+  The federal tax after credits (line 42000) is 10,771.18 - 3,185.54 = 7,585.64.
+  Ontario. The tax on taxable income (ON428 line 8) is 2,670.74 + 9.15% x (69,335.00 - 52,886.00)
+  = 2,670.74 + 1,505.0835 = 4,175.8235, rounded half-up to 4,175.82. The Ontario non-refundable
+  credit amounts are the basic personal amount (12,747.00), the base CPP contributions (3,291.75)
+  and the EI premiums (1,077.48): 17,116.23, at 5.05% = 864.3697, rounded half-up to 864.37. The
+  Ontario tax after credits is 4,175.82 - 864.37 = 3,311.45. The tax reduction (ON428 line 80) is
+  2 x 294.00 = 588.00 less the tax of 3,311.45, which is below zero, so it is 0. The surtax is 0,
+  as 3,311.45 is not above 5,710. The Ontario health premium is 600.00: taxable income of
+  69,335.00 is more than $48,600 but not more than $72,000. The Ontario tax is 3,311.45 + 600.00 =
+  3,911.45.
+  Total payable (line 43500) is 7,585.64 + 3,911.45 = 11,497.09.
+  Total credits (line 48200) are the income tax deducted (line 43700, 11,000.00), the CPP
+  overpayment (0.00) and the EI overpayment (line 45000, 70.52): 11,070.52. Refund or balance
+  owing (line 167) is 11,497.09 - 11,070.52 = 426.57, a balance owing, so the refund (line
+  48400) is 0.00.
+  Form T2204, with insurable earnings 70,000.00 (line 1, not below $2,000, so note (1) does not
+  apply) and line 2 of 0.00. Line 3 is 70,000.00, capped at 65,700.00. Line 4 is the premiums
+  deducted, 1,148.00, and line 5 is 0.00 (no agreement). Line 6 is 1,148.00 and line 7 is 65,700.00
+  - 2,000.00 = 63,700.00. Line 8 is 1,148.00 - 63,700.00, not below zero, so 0.00. Line 9 is
+  1,148.00. Line 10 is 70,000.00 x 1.64% = 1,148.00, capped at the maximum of 1,077.48. Line 11
+  (the Quebec variant) is not on an Ontario resident's return. Line 12 is 1,077.48, and line 13 is
+  1,148.00 - 1,077.48 = 70.52. Line 14 is the greater of 0.00 and 70.52: 70.52. Line 15 is the
+  lesser of 1,148.00 and 70.52: 70.52, which is more than $1, so line 45000 is 70.52. Line 16
+  is the least of 63,700.00, 1,148.00 and 1,077.48: 1,077.48, entered on line 31200.
+  Not triggered: the Quebec abatement and the Quebec lines of the T2204 (lines 11, 4 and 5 for a
+  Quebec resident); Schedule 13 (no agreement); the Canada workers benefit (the adjusted family net
+  income is above its phase-out); the Canada employment amount is claimed in full; the Ontario
+  LIFT credit (its 875 maximum less 1,841.75 is below zero), the Ontario age amount and every other
+  credit and deduction not named here, none of which this return claims.
+sources:
+  - >-
+    CRA, Form T1 Guide 5006-R 2025, Part 1 lines 153 and 166 (docs/cra-forms-2025/5006-r-25e.txt,
+    confirmed text): "Line 153 and line 45000: Employment insurance (EI) overpayment";
+    "Line 166 and line 48200: Add lines 150 to 165. Total credits =".
+  - >-
+    CRA, Form T1 Guide 5006-R 2025, the credit lines for employment insurance premiums
+    (docs/cra-forms-2025/5006-r-25e.txt, confirmed text): "Line 88 and line 31200: through employment (boxes 18 and 55 of all T4 slips)"
+    (maximum $1,077.48).
+  - >-
+    CRA, Form 5000-G 2025 (docs/cra-forms-2025/5000-g-25e.txt, confirmed text), line 45000:
+    "Line 45000 - Employment insurance overpayment"; "If you contributed more to your employment
+    insurance (EI) premiums than you had to (see line 31200 on page 36), claim the difference on
+    line 45000 of your return."
+  - >-
+    CRA, Form T2204 2025, Employee Overpayment of Employment Insurance Premiums
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf, confirmed
+    text from the PDF on 2026-10-19 and re-read from docs/cra-forms-2025/t2204-25e.pdf): "Total
+    EI insurable earnings (box 24 or, if blank, box 14 of your T4 slips) (1)"; "Line 1 plus line 2
+    (maximum $65,700)"; "Amount from line 3 – $2,000 = (if negative, enter "0")"; "Line 6 minus
+    line 7 (if negative, enter "0")"; "Total premiums deducted from line 4 above"; "Amount from
+    line 1 × 1.64% = (maximum $1,077.48)"; "Line 9 minus line 12 (if negative, enter "0")";
+    "Enter whichever is more: amount from line 8 or line 13."; "Enter whichever is less: amount
+    from line 9 or line 14."; "If this amount is more than $1, enter it on line 45000 of your
+    return."; "Enter whichever amount is the least: line 7, line 9 or line 12."; note (1) "If you
+    have no self-employment earnings and your total EI insurable earnings on your T4 slips are
+    less than $2,000, enter "0"."
+  - >-
+    CRA, Form 5006-C 2025 (docs/cra-forms-2025/5006-c-25e.txt, confirmed text), the Ontario health
+    premium chart, row 7: "Taxable Income more than $48,600 but not more than $72,000" "Ontario
+    health premium: $600".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "70000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "70000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3956.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "11000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t2204_insurable_earnings: "70000"
+  ca/t2204_self_employment_earnings: "0"
+  ca/t2204_premiums_deducted: "1148.00"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "70000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "70000.00"
+      ca/deductions_from_total_income: "665.00"
+      ca/net_income: "69335.00"
+      ca/net_income_before_adjustments: "69335.00"
+      ca/other_payments_limit_income: "69335.00"
+      ca/taxable_income: "69335.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cpp_overpayment: "0.00"
+      ca/ei_premiums: "1077.48"
+      ca/basic_personal_amount: "16129.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/federal_basic_tax: "10771.18"
+      ca/non_refundable_credit_amounts: "21969.23"
+      ca/non_refundable_tax_credits: "3185.54"
+      ca/federal_tax_after_credits: "7585.64"
+      ca/net_federal_tax: "7585.64"
+      ca-on/ontario_basic_tax: "4175.82"
+      ca-on/non_refundable_tax_credits: "864.37"
+      ca-on/ontario_tax_after_credits: "3311.45"
+      ca-on/ontario_tax_less_dividend_credit: "3311.45"
+      ca-on/ontario_health_premium: "600.00"
+      ca-on/ontario_tax: "3911.45"
+      ca/total_payable: "11497.09"
+      ca/total_credits: "11070.52"
+      ca/ei_overpayment: "70.52"
+      ca/refund: "0"
+      ca/refund_or_balance_owing: "426.57"
+      ca/t2204_exemption: "2000.00"
+      ca/t2204_line_1_count: "1"
+      ca/t2204_line_1: "70000.00"
+      ca/t2204_line_1_plus_2: "70000.00"
+      ca/t2204_line_3: "65700.00"
+      ca/t2204_line_6: "1148.00"
+      ca/t2204_line_7: "63700.00"
+      ca/t2204_line_8: "0.00"
+      ca/t2204_line_9: "1148.00"
+      ca/t2204_line_10: "1077.48"
+      ca/t2204_line_12: "1077.48"
+      ca/t2204_line_13: "70.52"
+      ca/t2204_line_14: "70.52"
+      ca/t2204_line_15: "70.52"
+      ca/t2204_line_15_count: "1"
+      ca/t2204_line_16: "1077.48"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "3956.75"
+      ca/schedule_8_cpp_base_contributions_on_return: "3291.75"
+      ca/schedule_8_cpp_enhanced_contributions_on_return: "665.00"

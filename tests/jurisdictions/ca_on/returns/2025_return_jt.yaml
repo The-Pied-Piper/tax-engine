@@ -1,0 +1,162 @@
+# Return JT: a 2025 Ontario resident with an eligible spouse on December 31, 2025, whose income is
+# other employment income only (T1 line 10400), so there is no T4 employment and no CPP or EI
+# premium, and the Canada workers benefit is worked out with the spouse's column of Schedule 6.
+# The filer's working income of $20,000.00 and the spouse's of $12,000.00 are both below the $32,500
+# and the family's below the $65,000 LIFT thresholds, so the LIFT credit is the $875 maximum and
+# takes the Ontario tax to zero. The family working income is $32,000.00, so line 22 is the eligible
+# spouse's $2,813 maximum, and the adjusted family net income, $20,000.00 after the secondary earner
+# exemption of $12,000.00 (line 14, the spouse's column, as the filer's working income is the more),
+# is below the $30,639 threshold of line 24, so the Canada workers benefit is $2,813.00. The federal
+# tax after credits is $348.00 and the income tax deducted is nothing, so the refund is the $2,465.00
+# by which the benefit exceeds the tax payable. The spouse's figures are chosen, to be confirmed
+# against the spouse's own return, and the eligible spouse's conditions (cohabiting on December 31,
+# resident all year, no full-time student or prison period, not an exempt foreign officer) are the
+# filer's answer to line 38101, 1, to be confirmed. The filer is chosen to be 19 or older at the end
+# of 2025 (`ca/aged_19_or_older_at_end_of_2025`, 1), which meets the age condition of Schedule 6.
+#
+# Figures are computed from the Federal Worksheet's line 9, the sources of line 12100 added, and the
+# T1 lines: other employment income (line 10400) of $20,000.00 is the whole of total income
+# (line 15000), with no deduction from net income (line 23600 $20,000.00), no taxable income
+# deduction (line 26000, $20,000.00), so the basic federal tax is 14.5% of $20,000.00 = $2,900.00,
+# and the non-refundable credits are the basic personal amount $16,129 (line 30000) and the Canada
+# employment amount (line 31260) of $1,471, the lesser of $1,471 and the amounts of lines 10100 and
+# 10400, $20,000.00, a total of $17,600.00 x 14.5% = $2,552.00, leaving $348.00 (line 42000). Ontario: 5.05% of $20,000.00 is $1,010.00, less the basic personal
+# amount $12,747 x 5.05% = $643.72, which is $366.28 (ON428 line 58040); the tax reduction is line 78,
+# $294 x 2 = $588.00, less line 79, $366.28, which is $221.72 (line 80), so the tax after the
+# reduction is $366.28 - $221.72 = $144.56; the LIFT credit (ON428-A line 41) is $875 as 5.05% of
+# the employment income, $1,010.00, is more than the maximum, and the family
+# net income of $32,000.00 is below the $65,000 threshold of Part B, so the credit takes the Ontario
+# tax to $0, and the health premium is $0 as the taxable income is $20,000 or less (chart row 1).
+# The Canada workers benefit: Schedule 6 Part A, column 1 line 1, the employment income: $20,000.00
+# (other employment income only, line 10400); line 5, $20,000.00. Column 2 line 1, the spouse's
+# employment income, $12,000.00; line 5, $12,000.00; line 6, $32,000.00. Part B, column 1: line 7,
+# the net income $20,000.00, lines 8 and 9 0, line 10 $20,000.00, line 12 $20,000.00; column 2:
+# line 7 the spouse's net income $12,000.00, line 12 $12,000.00; line 13 $32,000.00. Line 14: the
+# filer's working income is more than the spouse's, so column 2 counts: the less of $12,000.00 and
+# $12,000.00, $12,000.00, under the $16,386 maximum. Line 15 is $32,000.00 - $12,000.00 = $20,000.00.
+# Step 2: line 16 $32,000.00; line 18 $29,000.00; line 20 is 27% of it, $7,830.00; line 21 $2,813
+# (an eligible spouse); line 22 $2,813.00. Line 23 $20,000.00; line 24 $30,639; line 25 $0; line 27
+# $0; line 28 $2,813.00, which is the Canada workers benefit on line 45300. Step 3 is not triggered
+# and no RC210 slip is on the return.
+#
+# Rounding: every dollars-and-cents line is in cents, and the only product that is not a whole
+# number of cents, 27% of $29,000.00 ($7,830.00), is already exact.
+
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A 2025 Ontario resident, 19 or older, with an eligible spouse on December 31, 2025 (the one
+  shared spouse answer, ca/spouse_or_common_law_partner_on_december_31, is 1), and no dependants, no
+  capital gains and no RRSP, CPP or EI, the only income being other employment income (T1 line
+  10400) of $20,000.00, a chosen figure, the total income (line 15000) and net income (line 23600).
+  The spouse's net income (line 23600 of the spouse's return) is a chosen $12,000.00, and so is the
+  spouse's employment income, $12,000.00, the spouse's Schedule 6 column 2 line 1 (the spouse's
+  working income equal to the spouse's net income). The filer answers that the spouse is an eligible
+  spouse, Schedule 6 line 38101, 1, and the income tax deducted (line 43700) is nothing. No Canada
+  caregiver, disability, tuition, donation or Ontario medical amount is claimed, so each is 0 and not
+  triggered. The federal basic personal amount (line 30000) is $16,129, since net income is $177,882
+  or less, and the Canada employment amount (line 31260) is $1,471, the lesser of $1,471 and
+  $20,000.00. The federal tax on taxable income of $20,000.00 at 14.5% is $2,900.00, less the
+  non-refundable credits of $17,600.00 at 14.5%, $2,552.00, so the federal tax after credits (line
+  42000) is $348.00. The Ontario tax on $20,000.00 at 5.05% is $1,010.00, less the Ontario basic
+  personal amount of $12,747 at 5.05%, $643.72, so the Ontario tax after credits is $366.28; the tax
+  reduction is line 78, $294 x 2 = $588.00, less line 79, $366.28, which is $221.72 (line 80), so
+  the Ontario tax after the reduction is $366.28 - $221.72 = $144.56. The LIFT credit (ON428-A line 41) is $875.00, the maximum, since 5.05% of the
+  employment income, $1,010.00, is more than $875 and the family net income of $32,000.00 is not
+  above the $65,000 Part B threshold, so the Ontario tax after the LIFT credit is $0 and the health
+  premium (ON428 line 89) is $0, the taxable income being $20,000 or less. The total payable (line
+  43500) is $348.00. The Canada workers benefit (line 45300, Schedule 6) is $2,813.00: line 28 of
+  Schedule 6, the eligible spouse's line 21 maximum $2,813 less 15% of the adjusted family net income
+  over $30,639, nothing as $20,000.00 is below it. The total credits (line 48200) are $0 + $2,813.00 =
+  $2,813.00, and the refund (line 167) is $348.00 - $2,813.00 = -$2,465.00, negative, so a refund
+  (line 48400).
+sources:
+  - >-
+    CRA, the 2025 Schedule 6 (form 5000-S6). Part A: line 1 "Employment income and other employment
+    income from line 10100 and line 10400 of the return"; column 2 "Your eligible spouse"; line 5
+    "Add lines 1 to 4. Enter the result, even if it is "0". Working income"; line 6 "Add the amounts
+    from line 5 in columns 1 and 2. Enter this amount on line 16. Family working income". Part B:
+    line 7 "Net income from line 23600 of the return"; line 10 "Add lines 7 to 9."; line 12 "Line 10
+    minus line 11 (if negative, enter "0")"; line 13 "Add the amounts from line 12 in columns 1
+    and 2. If you had an eligible spouse, continue at line 14; if not, continue at line 15."; line
+    14 "Secondary earner exemption: If your working income (line 5) is equal to or more than your
+    eligible spouse's working income, enter whichever is less from column 2: amount from line 5 or
+    line 12. (maximum $16,386)"; line 15 "Line 13 minus line 14 Enter this amount on line 23 and
+    line 35. Adjusted family net income". Line 38101 "Do you have an eligible spouse? 1 Yes or 2
+    No". Step 2: line 16 "Family working income from line 6"; line 17 "Base amount 3,000.00"; line
+    18 "Line 16 minus line 17 (if negative, enter "0")"; line 19 "Rate 27%"; line 20 "Line 18
+    multiplied by the percentage from line 19"; line 21 "If you had an eligible spouse or an
+    eligible dependant, enter $2,813. If not, enter $1,633."; line 22 "Enter whichever is less:
+    amount from line 20 or line 21."; line 23 "Adjusted family net income from line 15"; line 24
+    "If you had an eligible spouse or an eligible dependant, enter $30,639. If not, enter $26,855.";
+    line 25 "Line 23 minus line 24 (if negative, enter "0")"; line 26 "Rate 15%"; line 27 "Line 25
+    multiplied by the percentage from line 26"; line 28 "Line 22 minus line 27 (if negative, enter
+    "0") If you are not completing Step 3, enter this amount on line 45300 of your return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+  - >-
+    CRA, the 2025 T1 general (form 5000-G): "Line 31260 - Canada employment amount": "All income
+    reported on lines 10100 and 10400 is eligible for the Canada employment amount", "If you
+    reported employment income in 2025, you can claim whichever amount is less on line 31260 of your
+    return: $1,471; the total of the amounts from lines 10100 and 10400 of your return"; and the
+    2025 lowest marginal rate of 14.5% and the basic personal amount "$177,882 or less, enter $16,129
+    on line 30000".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+  - >-
+    CRA, the 2025 Ontario Form ON428 (form 5006-C): line 5 "Rate 5.05%"; line 9 and line 58040 "Basic
+    personal amount Claim $12,747"; line 89 "Ontario health premium (complete the chart below)", the
+    chart's row 1 "Taxable Income $20,000 or less: Ontario health premium: $0".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_employment_income: "20000"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/spouse_net_income: "12000"
+  ca/spouse_net_income_before_adjustments: "12000"
+  ca/cwb_eligible_spouses: "1"
+  ca/cwb_spouse_employment_income: "12000"
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "20000.00"
+      ca/other_payments_limit_income: "20000.00"
+      ca-on/ontario_tax_less_dividend_credit: "366.28"
+      ca-on/spouse_for_separate_residences_checked: "1"
+      ca/net_income: "20000.00"
+      ca/working_income: "20000.00"
+      ca/cwb_eligible_spouses_checked: "1"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"
+      ca/cwb_spouse_working_income_before_eligibility: "12000.00"
+      ca/cwb_spouse_working_income: "12000.00"
+      ca/cwb_family_working_income: "32000.00"
+      ca/cwb_spouse_family_net_income_line_10: "12000.00"
+      ca/cwb_spouse_uccb_and_rdsp_income: "0.00"
+      ca/cwb_spouse_family_net_income_line_12_before_eligibility: "12000.00"
+      ca/cwb_spouse_family_net_income_line_12: "12000.00"
+      ca/cwb_family_net_income_line_13: "32000.00"
+      ca/cwb_working_income_less_spouse: "8000.00"
+      ca/cwb_secondary_earner_yours: "20000.00"
+      ca/cwb_secondary_earner_spouses: "12000.00"
+      ca/cwb_secondary_earner_exemption_before_maximum: "12000.00"
+      ca/cwb_secondary_earner_exemption: "12000.00"
+      ca/adjusted_family_net_income: "20000.00"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/cwb_reduction_without_dependant: "0.00"
+      ca/canada_workers_benefit_without_dependant: "1633.00"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "2813.00"
+      ca/canada_workers_benefit: "2813.00"
+      ca/federal_basic_tax: "2900.00"
+      ca/credit_amounts_subtotal: "17600.00"
+      ca/federal_tax_less_credits: "348.00"
+      ca/net_federal_tax: "348.00"
+      ca/total_payable: "348.00"
+      ca/total_credits: "2813.00"
+      ca/refund_or_balance_owing: "-2465.00"
+      ca-on/net_refund: "2465.00"

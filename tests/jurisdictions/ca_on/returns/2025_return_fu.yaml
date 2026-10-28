@@ -1,0 +1,50 @@
+# Return FU: Return DT's condominium sold within 365 days, but with line 17905 answered "No" (a
+# disposition of a housing unit owned for 365 days or more is not asked), so the housing unit is
+# not a flipped property and the flag is 0 without line 17906 being asked. The flag and the
+# answer checked are what this file checks.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DT's filer: a single Ontario resident for all of 2025, aged 35, a chosen figure (18 or
+  older at the end of 2025), resident in Canada throughout 2025, with no spouse or common-law
+  partner and no dependants, and no income of any kind, every figure a chosen $0. She disposed of
+  a condominium in Canada in 2025, a chosen figure, that she owned for 400 consecutive days before
+  its disposition, a chosen figure, so 365 days or more. Line 17905 of Schedule 3 Part 1 asks
+  about a housing unit "owned for less than 365 consecutive days before the disposition", so her
+  answer is "No", a count of 0, and the answer checked is 0. The form says "If you ticked "no",
+  the housing unit is not considered a flipped property", so the flag is 0 and line 17906 need not
+  be completed: its nine boxes are left blank, each a count of 0. Her other return figures are
+  chosen $0, so the return's own lines are nil and are not checked in this file, except the two
+  that a return with no income still computes, as in Return DT: with Schedule 8 box A at 12 months
+  (a chosen figure) the second additional maximum amount is $9,900.00, and the alternative minimum
+  tax carryover available for 2026 is $2,338.71.
+sources:
+  - >-
+    CRA, Schedule 3 Capital Gains or Losses (2025), Part 1 "Flipped property", page 1, "Line
+    17905: Did you dispose of a housing unit, or a right to acquire a housing unit, located in
+    Canada (including a rental property) that was not considered inventory and was owned for
+    less than 365 consecutive days before the disposition? Yes or No"; and "If you ticked "no",
+    the housing unit is not considered a flipped property. ... If you ticked "yes", continue at
+    line 17906 on the next page." (docs/cra-forms-2025/5000-s3-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/flipped_property_disposed: "0"
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_3:
+    - ca/flipped_property_disposed_checked: "0"
+      ca/flipped_property_life_event_1_checked: "0"
+      ca/flipped_property_life_event_2_checked: "0"
+      ca/flipped_property_life_event_3_checked: "0"
+      ca/flipped_property_life_event_4_checked: "0"
+      ca/flipped_property_life_event_5_checked: "0"
+      ca/flipped_property_life_event_6_checked: "0"
+      ca/flipped_property_life_event_7_checked: "0"
+      ca/flipped_property_life_event_8_checked: "0"
+      ca/flipped_property_life_event_9_checked: "0"
+      ca/flipped_property: "0"

@@ -1,0 +1,220 @@
+# Return JA: a 2025 Ontario resident whose only income is the business income of two Form T2125
+# statements, each a partnership (line code 1) that gives nothing but amount 5B, the Canadian
+# journalism labour tax credit allocated to the filer in the year (box 236 of the T5013 slip):
+# $1,000 on statement 1 and $500 on statement 2. The T1 guide's line 47555 note says that amount is
+# included in business income (line 13500), so the statements' 5B adds $1,500 to net income, and
+# line 47555 (Canadian journalism labour tax credit) shows the total of the two, $1,500, computed
+# from the statements; the return has no input for it. Nothing else is entered, so the tax is nil
+# and the credit is the whole refund.
+#
+# The description below is the file's own. Amounts are quoted decimal strings, counts are quoted
+# digit strings. Every output the CA-ON manifest declares must appear under `expected`.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A 2025 Ontario resident (residency and age 18 or older at the end of 2025 are chosen: 1) with
+  two Form T2125 statements of business income from partnerships (line code 1), each with no
+  gross income and no expenses of its own. Statement 1 has amount 5B of $1,000.00 and statement 2
+  amount 5B of $500.00. Amount 5B is the Canadian journalism labour tax credit allocated to the
+  filer in the year (box 236 of the T5013 slip), and it is included in business income. Each
+  statement's business income (line 9946) is therefore its 5B: 1,000.00 and 500.00, so the
+  business income on line 13500 is 1,500.00, and total income, net income and taxable income are
+  each 1,500.00. Nothing else is entered: no employment income, no CPP or EI contributions (the
+  self-employment earnings of 1,500.00 are below the $3,500 of Schedule 8 that is not pensionable),
+  no Canada workers benefit (working income of 1,500.00 is below the $3,000 that the benefit
+  starts above) and no other credit.
+  Federal tax: 14.5% x 1,500.00 = 217.50. The basic personal amount 16,129.00 at 14.5% is
+  2,338.71, more than the tax, so the federal tax after credits is 0.00 and the unused credits,
+  2,338.71 less 217.50 = 2,121.21, are the AMT carryover to 2026 (`ca/amt_carryover_available_for_2026`,
+  an engine line, not a hand figure). Ontario tax: 5.05% x 1,500.00 = 75.75, less the basic
+  personal amount 12,747.00 at 5.05% (643.72) and no other credit, so the Ontario tax after credits
+  is 0.00. Taxable income is at or below the Ontario health premium's first threshold of 20,000, so
+  the premium is 0.00.
+  The Ontario tax reduction (ON428 line 80) is 2 x 294.00 less a tax of 0.00, which leaves the
+  Ontario tax after reduction at 0.00, not a refund. The LIFT credit is 0.00 (there is no
+  employment income). With no tax payable, total payable is 0.00, and the
+  total credits (line 48200) are the journalism labour tax credit of 1,500.00 alone, so the refund
+  (line 48400) is 1,500.00 and the net refund after no donation is 1,500.00. The chosen donation
+  to the Ontario opportunities fund is 0.00. The caps `ca/cpp_second_additional_earnings_maximum`
+  (9,900.00) and `ca/other_payments_limit_income` (1,500.00 here) are the engine's, not hand figures.
+sources:
+  - >-
+    CRA, T1 guide 2025, Line 47555 "Canadian journalism labour tax credit" (docs/cra-forms-2025/
+    5000-g-25e.txt): "Include the amount allocated to you by the partnership (box 236 of your
+    T5013 slip) in your business income (line 13500 of the return) in the same tax year."
+  - >-
+    CRA, Form T2125 2025, amount 5B "Canadian journalism labour tax credit allocated to you in the
+    year (box 236 of your T5013 slip)" and "Total: Amount 5A plus amount 5B plus line 9974"
+    (docs/cra-forms-2025/t2125-25e.pdf)
+  - >-
+    CRA, Form 5006-R 2025, "Line 162 and line 47555: Canadian journalism labour tax credit (box 236
+    of all T5013 slips)" (docs/cra-forms-2025/5006-r-25e.txt)
+  - >-
+    CRA, Form ON428 2025, "Line 80: Line 78 minus line 79 (if negative, enter "0") Ontario tax
+    reduction" (docs/cra-forms-2025/5006-c-25e.txt)
+inputs:
+  ca/t2125_statements:
+    - ca/business_gross_sales: "0"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "1000"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "1"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+    - ca/business_gross_sales: "0"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "500"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "1"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "1500.00"
+      ca/net_income: "1500.00"
+      ca/taxable_income: "1500.00"
+      ca/journalism_labour_tax_credit: "1500.00"
+      ca/total_credits: "1500.00"
+      ca/total_payable: "0.00"
+      ca/refund_or_balance_owing: "-1500.00"
+      ca/refund: "1500.00"
+      ca-on/refund_before_donation: "1500.00"
+      ca-on/net_refund: "1500.00"
+      ca/net_income_before_adjustments: "1500.00"
+      ca/other_payments_limit_income: "1500.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+      # Engine only (not a hand figure): the cap on the second additional CPP earnings.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+  ca/t2125:
+    - ca/business_partnership_total: "1000.00"
+      ca/business_income: "1000.00"
+    - ca/business_partnership_total: "500.00"
+      ca/business_income: "500.00"

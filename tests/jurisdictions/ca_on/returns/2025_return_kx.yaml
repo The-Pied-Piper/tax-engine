@@ -1,0 +1,137 @@
+# Return KX: Guide T4002's Cathy (convention expenses for business and professional, printed page 58),
+# a single Ontario resident whose only income is the net business income of one business reported on
+# one Form T2125 for a full fiscal period (0 days entered). Cathy attended a two-day convention in May
+# 2025 that cost her $600 and whose organizer did not say what part was for food and entertainment.
+# The guide: her convention expense is "$600 - ($50 x 2) = $500", and "Cathy can also claim the $50
+# for meal and entertainment expense for two days at the 50% limit": 50% of 2 x $50 = $50.
+#
+# CRA's printed figures are the $500 convention expense (entered on line 9270 "Other expenses", where
+# the guide lists convention expenses) and the $50 meal and entertainment claim (line 8523, which the
+# form takes as the allowable amount: Guide, "the maximum amount you can claim ... is 50%"). The
+# total expenses (line 9368) are $550.00. The guide prints no sales figure: the gross sales of $20,000
+# (line 8299) are a chosen one, so the net business income (line 9946, T1 line 13500) is $19,450.00,
+# the engine's figure from those.
+#
+# Schedule 8 Part 4 ("Complete this part if you are reporting only self-employment income") is completed (ca/cpp_part_4_completed 1), as the form directs for a return whose only income is self-employment, so lines 42100, 22200 and 31000 are computed; the CPP-dependent lines of the return are the engine's, not CRA's.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the net business income of one sole proprietorship
+  reported on one Form T2125 for a full fiscal period (0 days entered): chosen gross sales of $20,000
+  (line 8299), other expenses of $500 (line 9270, Guide T4002's Cathy: the $600 convention fee less $50
+  for each of two days) and meals and entertainment of $50 (line 8523, the $50 x 2 days at the 50% limit),
+  so the total expenses (line 9368) are $550.00 and the net business income (line 9946, T1 line 13500)
+  is $19,450.00.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed page 58,
+    "Convention expenses for business and professional", the example of Cathy: "Cathy attended a two-day
+    convention in May 2025 that cost her $600. The organizer did not indicate what part of the $600 fee
+    was for food and entertainment. Her convention expense is $600 minus the two days at $50 each $600
+    – ($50 × 2) = $500. Cathy can also claim the $50 for meal and entertainment expense for two days at
+    the 50% limit."; the rule: "subtract $50 from the total convention fee for each day the organizer
+    provides food, beverages, or entertainment. You can deduct this daily $50 amount as a meal and entertainment
+    expense. The 50% limit applies to the daily $50 amount."
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed pages
+    56 and 57, "Line 8523 – Meals and entertainment": "The maximum amount you can claim for food, beverages,
+    and entertainment expenses is 50% of the lesser of the following amounts: the amount incurred for
+    these expenses; an amount that is reasonable in the circumstances"; and "Line 9790 or 9270 – Other
+    expenses": "For business and professional expenses, use line 9270 on Form T2125."
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/t2125_statements:
+    - ca/business_income_line: "1"
+      ca/business_gross_sales: "20000"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "50"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "500"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_vehicles: []
+  ca/schedule_8_instances:
+    - {}
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_part_4_completed: "1"
+expected:
+  ca/t2125:
+    - ca/business_other_expenses: "500"
+      ca/business_meals_and_entertainment: "50"
+      ca/business_total_expenses: "550"
+      ca/business_net_income_before_adjustments: "19450"
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "242.65"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/gross_business_income: "20000"
+      ca/net_income_before_adjustments: "18341.47"
+      ca/other_payments_limit_income: "18341.47"
+      ca/refund_or_balance_owing: "471.37"

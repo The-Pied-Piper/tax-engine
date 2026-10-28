@@ -1,0 +1,540 @@
+# Return BA: Return AF's filer with a capital gain of $20,000 and net capital losses of other years
+# that include a balance from before May 23, 1985. Computed as Return AF, and in addition: from the
+# balance of unapplied net capital losses before May 23, 1985 (Form T1436 line 1) and the capital
+# gains deductions claimed (amounts A to E, the 1988 and 1989 amount at 3/4, the 1990 to 1999
+# amount at 2/3 and the 2000 amount at 1/(IR x 2) for the 2000 inclusion rate IR), to the total
+# capital gains deductions after adjustment (line 2) and the pre-1986 capital loss balance
+# available for 2025 (line 3); from that balance, as column A of the row "Before May 23, 1985" of
+# Chart A (factor 1), to its column C, summed with the other rows' to line 4; from the amount
+# claimed (line 7), at most line 6, and line 4, to line 8; from the lesser of line 3, line 8 and
+# $2,000 to line 9; from lines 7 and 9, summed, to line 10 (T1 line 25300) and line 13; and from
+# line 13, applied to the oldest row first, to columns D, E and G of every row. Every other line
+# is Return AF's.
+# The facts are Guide T4037's Example 2 (confirmed from the PDF). The guide's own prose results
+# ($6,000 applied from before May 23, 1985, and $2,000 carried forward) are not reproduced: the
+# form's lines 1 to 3 reduce that balance by the capital gains deductions, so only the total
+# applied, 12,000 on lines 10 and 13, agrees with the guide. Its chart is an image and is not quoted.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return AF's filer: an Ontario resident with 2025 employment income (T1 line 10100) of $48,000
+  and income tax deducted of $4,800, with one capital gain of $20,000 (Schedule 3 line 21; one
+  share row, proceeds 20,000, adjusted cost base 0 and outlays 0, a chosen figure), of which 50%
+  is taxable: taxable capital gains (line 12700) are 20,000 x 50% = 10,000.00 and total income
+  (line 15000) is 48,000 + 10,000.00 = 58,000.00. The CPP contributions, EI premiums, RRSP
+  lines, child care expenses deduction and the other lines that depend on employment income
+  alone are Return AF's: base CPP contributions $2,202.75, enhanced CPP contributions $445.00,
+  EI premiums $787.20, no other deduction from total income, so net income (line 23600) is
+  58,000.00 - 445.00 = 57,555.00. The only deduction from net income is the net capital losses
+  of other years (T1 line 25300), 12,000, worked out below, so taxable income (line 26000) is
+  57,555.00 - 12,000 = 45,555.00. Net capital losses of other years (Form T1436 "Line 25300 -
+  Net capital loss of other years (if you have pre-1986 capital loss balance)"). The filer has
+  unapplied net capital losses of $6,000 from before May 23, 1985 (line 1), claimed a capital
+  gains deduction of $500 before 1988 (amount A; Guide T4037's $500 claimed in 1986), none in
+  1988 and 1989 (B), from 1990 to 1999 (C) or from 2001 to 2024 (E), and $300 in 2000 (amount D;
+  Guide T4037's $300 claimed in 2000), when the inclusion rate was 2/3 (66.6666%, entered as
+  0.666666): D is 300 x 1/(0.666666 x 2) = 300 x 1/1.333332 = 225.000225..., 225.00. Line 2 is
+  500 + 0.00 + 0.00 + 225.00 + 0 = 725.00 and line 3, "Pre-1986 capital loss balance available
+  for 2025: line 1 minus line 2", is 6,000 - 725.00 = 5,275.00. The unapplied
+  net capital losses of the other periods (Chart A column A, figures from Guide
+  T4037's Example 2) are 4,000 from 1988 and 6,000 from 1990, in the periods "In
+  1988 and 1989" and "After 1989 and before 2000", and none from "After May 22, 1985, and before
+  1988" or "After 2000 and before 2025". Column A of the row "Before May 23, 1985" is line 3,
+  5,275.00, and that of the row "In 2000" is 0. Column B, the adjustment factor for the
+  inclusion rate, is 1, 1, 3/4 (printed 0.75), 2/3 (printed 0.6667), 1/(IR x 2) and 1, so column
+  C is 5,275.00 x 1 = 5,275.00, 0.00, 4,000 x 3/4 = 3,000.00, 6,000 x 2/3 = 4,000.00, 0.00 and
+  0.00. Line 4, "Total of column C from Chart A", is 5,275.00 + 0.00 + 3,000.00 + 4,000.00 +
+  0.00 + 0.00 = 12,275.00; line 5, the taxable capital gains,
+  is 10,000.00; line 6, the lesser of line 4 and line 5, is 10,000.00; line 7, the amount of
+  losses to claim, is a chosen 10,000, not above line 6. Line 8, "Balance of unapplied adjusted
+  net capital losses of other years not used to reduce taxable capital gains: line 4 minus line
+  7", is 12,275.00 - 10,000 = 2,275.00. Line 9, "Enter whichever is less: amount from line 3,
+  line 8, or $2,000.", is the least of 5,275.00, 2,275.00 and 2,000.00: 2,000.00. Line 10, "Line 7
+  plus line 9", the deduction in 2025, is 10,000 + 2,000.00 = 12,000.00, entered on line 25300;
+  lines 11 and 12 copy lines 7 and 9, and line 13, "Line 11 plus line 12", is 12,000.00. Line 13 is
+  applied to the oldest row first (Guide T4037: "You have to apply your older losses first."):
+  column D is the lesser of column C and what is left of line 13, so 5,275.00 for "Before May
+  23, 1985" (6,725.00 left), 0.00 for "After May 22, 1985, and before 1988" (6,725.00 left),
+  3,000.00 for "In 1988 and 1989" (3,725.00 left), 3,725.00 for "After 1989 and before 2000" (0.00
+  left), 0.00 for "In 2000" and 0.00 for "After 2000 and before 2025"; their total, 12,000.00,
+  equals line 13 (note (4)). Column E, column C less column D, is 0.00, 0.00, 0.00, 275.00, 0.00
+  and 0.00 and column G, column E multiplied by column F (1, 1, 4/3, 3/2, 2 x IR and 1), is
+  0.00, 0.00, 0.00, 275.00 x 3/2 = 412.50, 0.00 and 0.00, the balance available to carry
+  forward to 2026. The Canada workers
+  benefit is $0, as 15% of the adjusted family net income, the net income, over $26,855 is
+  4,605.00, more than the $1,633 maximum. The federal tax is 14.5% of the taxable income,
+  45,555.00 x 14.5% = 6,605.475, 6,605.48, less the non-refundable tax credits of $2,985.54
+  (the same as Return AF's: 20,589.95 x 14.5%), 3,619.94. The Ontario tax before credits is
+  45,555.00 x 5.05% = 2,300.53, less the non-refundable tax credits of $794.72, 1,505.81, with no
+  surtax and no Ontario tax reduction (twice the $294.00 basic reduction, $588.00, is less than
+  it); the LIFT credit is $0, as 5% of net income over $32,500, $1,252.75, is more than the $875
+  maximum; the Ontario health premium, on taxable income of $45,555.00 (more than $38,500 but
+  not more than $48,000), is $450, so the Ontario tax is 1,505.81 + 450 = 1,955.81 and the total
+  payable is 3,619.94 + 1,955.81 = 5,575.75, against total credits of $4,800.00 (the tax
+  deducted, as the Canada workers benefit is $0): 775.75 owing. Every other line is as in Return
+  AF, with no refundable medical expense supplement, no rental income and none of the other
+  credits and deductions Return AF leaves out.
+sources:
+  - >-
+    CRA, Form T1436 "Capital Gains Worksheet" 2025 (docs/cra-forms-2025/t1436-25e.pdf; confirmed
+    from the PDF; no .txt published), "Line 25300 - Net capital loss of other years (if you have
+    pre-1986 capital loss balance)", "Calculating your pre-1986 capital loss balance available
+    for 2025, if any": "Complete lines 1 to 3 only if you have a balance of unapplied net capital
+    losses from before May 23, 1985. Otherwise, enter "0" on line 3 and continue at line 4."
+    Line 1 "Balance of unapplied net capital losses you had before May 23, 1985"; "Capital gains
+    deductions you claimed:" "Before 1988" (A), "In 1988 and 1989" "x 0.75" (B), "From 1990 to
+    1999" "x 0.6667" (C), "In 2000" "x 1/(IR x 2)" (D), "From 2001 to 2024" (E); "Total capital
+    gains deductions after adjustment: add amounts A to E." (line 2); "Pre-1986 capital loss
+    balance available for 2025: line 1 minus line 2" (line 3). The form prints 0.75 and 0.6667
+    for 3/4 and 2/3 rounded for print; the datasets hold the exact fractions, rounded half-up to
+    the cent (the owner's decision, as the form states no rounding rule). The row D is the amount
+    divided by 2 x IR, where IR is the 2000 inclusion rate that Chart A's row "In 2000" reads.
+  - >-
+    The same page, "Applying net capital losses of other years to 2025": "Total unapplied
+    adjusted net capital losses of other years: Total of column C from Chart A" (line 4);
+    "Taxable capital gains from line 12700 of your 2025 return" (line 5); "Enter whichever is
+    less: amount from line 4 or line 5." (line 6); "Enter the amount of losses you want to
+    claim (3)." (line 7); "If you completed lines 1 to 3, complete lines 8 to 13 and columns D
+    to G of Chart A to calculate the net balance of unapplied capital losses available to carry
+    forward to future years." "Balance of unapplied adjusted net capital losses of other years
+    not used to reduce taxable capital gains: line 4 minus line 7" (line 8); "Enter whichever
+    is less: amount from line 3, line 8, or $2,000." (line 9); "Line 7 plus line 9" "Deduction in
+    2025 for net capital losses of other years" (line 10); "Enter the amount from line 10 on line
+    25300 of your 2025 return and continue at line 11"; "Amount from line 7" (line 11); "Amount
+    from line 9" (line 12); "Line 11 plus line 12" "Total adjusted net capital losses of other
+    years applied in 2025" (line 13). Note (3): "You can apply all or part of the amount from
+    line 6 against your taxable capital gains in 2025."
+  - >-
+    The next page, "Chart A - Adjustment calculation for carry-forward losses", columns (A)
+    "Amount of your unapplied net capital losses", (B) "Adjustment factor (for the inclusion
+    rate)", (C) "Adjusted gross capital losses (column A multiplied by column B)", (D) "Total
+    adjusted net capital losses applied against taxable capital gains in 2025", (E) "Remaining
+    adjusted net capital losses (column C minus column D)", (F) "Adjustment factor (for
+    carry-forward losses)", (G) "Net capital loss balance available to carry forward (column E
+    multiplied by column F)"; rows and factors (column B, column F): "Before May 23, 1985" 1, 1;
+    "After May 22, 1985, and before 1988" 1, 1; "In 1988 and 1989" 0.75, 1.33; "After 1989 and
+    before 2000" 0.6667, 1.5; "In 2000" 1/(IR x 2), 2 x IR; "After 2000 and before 2025" 1, 1.
+    Note (4): "The total for column D must equal the amount from line 13."
+  - >-
+    CRA, Guide T4037 "Capital Gains" 2025 (PDF; confirmed from the PDF; no .txt published),
+    Example 2: "You have unapplied net capital losses of $6,000 you incurred before May 23, 1985.
+    You claimed a capital gains deduction of $500 in 1986 and of $300 in 2000 (your inclusion rate
+    in 2000 was 2/3 or 66.6666%). You also have the following unapplied net capital losses: $4,000 from 1988 and $6,000 from 1990. You
+    reported a taxable capital gain of $10,000 on line 12700 of your 2025 Income Tax and Benefit
+    Return." and "You have to apply your older losses first." This return uses those facts
+    including the deduction claimed in 2000.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.pdf
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/calculating-deductions/making-deductions/second-additional-cpp-contribution-rates-maximums.html
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s7/5000-s7-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t778/t778-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/payroll-deductions-t4127-payroll-deductions-formulas/t4127-jan-120th-edition-effective-january-1-2025/t4127-jan-payroll-deductions-formulas-computer-programs.html
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/last-year.html
+  - https://www.canada.ca/en/department-finance/news/2025/05/delivering-a-middle-class-tax-cut.html
+  - https://data.ontario.ca/en/dataset/personal-income-tax-rates-and-credits/resource/60f84727-7e12-4fd4-ba06-30955d31b2ae
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tca/5006-tca-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d1/5006-d1-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4037/t4037-25e.pdf
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "48000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "48000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "48000"
+  ca/t2204_premiums_deducted: "787.20"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "20000"
+      ca/disposition_adjusted_cost_base: "0"
+      ca/disposition_outlays: "0"
+  ca/unapplied_net_capital_losses_1990_to_1999: "6000"
+  ca/net_capital_losses_claimed: "10000"
+  ca/rrsp_deduction_limit: "8640"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2647.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "4800"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/net_capital_losses_before_may_23_1985: "6000"
+  ca/pre_1986_deductions_before_1988: "500"
+  ca/pre_1986_deductions_2000: "300"
+  ca/t657_inclusion_rate_2000: "0.666666"
+  ca/unapplied_net_capital_losses_1988_and_1989: "4000"
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes: []
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/share_proceeds: "20000"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "48000.00"
+      ca/taxable_capital_gains: "10000.00"
+      ca/schedule_3_line_19900: "10000.00"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/net_rental_income: "0"
+      ca/total_income: "58000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "787.20"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "48000"
+      ca/child_care_earned_income_limit: "32000.00"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "445.00"
+      ca/net_income: "57555.00"
+      ca/net_income_signed: "57555.00"
+      ca/net_income_before_adjustments: "57555.00"
+      ca/other_payments_limit_income: "57555.00"
+      ca/adjusted_gross_capital_losses_1985_to_1987: "0.00"
+      ca/adjusted_gross_capital_losses_1988_and_1989: "3000.00"
+      ca/adjusted_gross_capital_losses_1990_to_1999: "4000.00"
+      ca/adjusted_gross_capital_losses_2001_to_2024: "0.00"
+      ca/total_adjusted_net_capital_losses: "12275.00"
+      ca/net_capital_losses_available_to_claim: "10000.00"
+      ca/net_capital_losses_of_other_years: "12000.00"
+      ca/adjusted_losses_applied_1985_to_1987: "0.00"
+      ca/adjusted_losses_left_after_1985_to_1987: "6725.00"
+      ca/remaining_adjusted_losses_1985_to_1987: "0.00"
+      ca/adjusted_losses_applied_1988_and_1989: "3000.00"
+      ca/adjusted_losses_left_after_1988_and_1989: "3725.00"
+      ca/remaining_adjusted_losses_1988_and_1989: "0.00"
+      ca/adjusted_losses_applied_1990_to_1999: "3725.00"
+      ca/adjusted_losses_left_after_1990_to_1999: "0.00"
+      ca/remaining_adjusted_losses_1990_to_1999: "275.00"
+      ca/adjusted_losses_applied_2001_to_2024: "0.00"
+      ca/remaining_adjusted_losses_2001_to_2024: "0.00"
+      ca/net_capital_loss_balance_2001_to_2024: "0.00"
+      ca/deductions_from_net_income: "12000.00"
+      ca/taxable_income: "45555.00"
+      ca/federal_basic_tax: "6605.48"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "12033.00"
+      ca/age_reduction: "1804.95"
+      ca/age_amount_before_count: "7223.05"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/non_refundable_credit_amounts: "20589.95"
+      ca/non_refundable_tax_credits: "2985.54"
+      ca/federal_tax_after_credits: "3619.94"
+      ca-on/ontario_basic_tax: "2300.53"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "11225.00"
+      ca-on/age_reduction: "1683.75"
+      ca-on/age_amount_before_count: "4539.25"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/non_refundable_credit_amounts: "15736.95"
+      ca-on/non_refundable_tax_credits: "794.72"
+      ca-on/ontario_tax_after_credits: "1505.81"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "1505.81"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/ontario_tax_before_dividend_credit: "1505.81"
+      ca-on/ontario_tax_less_dividend_credit: "1505.81"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/ontario_tax_after_dividend_credit: "1505.81"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "0.00"
+      ca-on/ontario_tax_after_reduction: "1505.81"
+      ca-on/lift_credit_before_maximum: "2424.00"
+      ca-on/lift_maximum_credit: "875.00"
+      ca-on/lift_reduction: "1252.75"
+      ca-on/lift_credit: "0"
+      ca-on/ontario_tax_after_lift_credit: "1505.81"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "1505.81"
+      ca-on/ontario_health_premium: "450.00"
+      ca-on/ontario_tax: "1955.81"
+      ca/itc_recapture_at_15_percent: "0.00"
+      ca/itc_recapture_at_20_percent: "0.00"
+      ca/itc_recapture: "0.00"
+      ca/federal_tax_with_itc_recapture: "3619.94"
+      ca/political_credit_column_1_line_2: "0.00"
+      ca/political_credit_column_1_line_3: "0"
+      ca/political_credit_column_1_line_5: "0.00"
+      ca/political_credit_column_1_line_6: "0.00"
+      ca/political_credit_column_1_line_7: "0.00"
+      ca/political_credit_column_2_line_2: "400.00"
+      ca/political_credit_column_2_line_3: "0"
+      ca/political_credit_column_2_line_5: "0.00"
+      ca/political_credit_column_2_line_6: "300.00"
+      ca/political_credit_column_2_line_7: "300.00"
+      ca/political_credit_column_3_line_2: "750.00"
+      ca/political_credit_column_3_line_3: "0"
+      ca/political_credit_column_3_line_5: "0.00"
+      ca/political_credit_column_3_line_6: "475.00"
+      ca/political_credit_column_3_line_7: "475.00"
+      ca/political_credit_chosen_column: "0.00"
+      ca/political_credit_shortcut_threshold: "1275.00"
+      ca/political_credit_shortcut_amount: "650.00"
+      ca/political_credit_before_maximum: "0.00"
+      ca/political_credit: "0.00"
+      ca/labour_sponsored_funds_credit_before_maximum: "0.00"
+      ca/labour_sponsored_funds_credit: "0.00"
+      ca/credits_against_federal_tax: "0.00"
+      ca/federal_tax_less_credits: "3619.94"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0.00"
+      ca/resp_aips_part_b_tax: "0.00"
+      ca/resp_aips_additional_tax: "0.00"
+      ca/special_taxes: "0.00"
+      ca/net_federal_tax: "3619.94"
+      ca/total_payable: "5575.75"
+      ca/working_income: "48000"
+      ca/adjusted_family_net_income: "57555.00"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/cwb_reduction_without_dependant: "4605.00"
+      ca/canada_workers_benefit_without_dependant: "0"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_reduction_with_dependant: "4037.40"
+      ca/canada_workers_benefit_with_dependant: "0"
+      ca/canada_workers_benefit: "0"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/care_adjusted_income: "57555.00"
+      ca-on/care_family_adjusted_income: "57555.00"
+      ca-on/care_credit_percentage: "0.51"
+      ca-on/care_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "57555.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "22555.00"
+      ca-on/seniors_care_reduction: "1127.75"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_column_1_line_2: "0.00"
+      ca-on/political_credit_column_1_line_3: "0"
+      ca-on/political_credit_column_1_line_5: "0.00"
+      ca-on/political_credit_column_1_line_6: "0.00"
+      ca-on/political_credit_column_1_line_7: "0.00"
+      ca-on/political_credit_column_2_line_2: "500.05"
+      ca-on/political_credit_column_2_line_3: "0"
+      ca-on/political_credit_column_2_line_5: "0.00"
+      ca-on/political_credit_column_2_line_6: "375.03"
+      ca-on/political_credit_column_2_line_7: "375.03"
+      ca-on/political_credit_column_3_line_2: "1666.82"
+      ca-on/political_credit_column_3_line_3: "0"
+      ca-on/political_credit_column_3_line_5: "0.00"
+      ca-on/political_credit_column_3_line_6: "958.41"
+      ca-on/political_credit_column_3_line_7: "958.41"
+      ca-on/political_credit_before_maximum: "0.00"
+      ca-on/political_credit: "0.00"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/medical_supplement_working_income: "48000"
+      ca/medical_supplement_line_6: "57555.00"
+      ca/medical_supplement_line_8: "24261.00"
+      ca/medical_supplement_line_16: "0"
+      ca/refundable_medical_expense_supplement: "0.00"
+      ca/total_credits: "4800.00"
+      ca/refund_or_balance_owing: "775.75"
+      ca/educator_supplies_expenses_at_most_maximum: "0.00"
+      ca/educator_school_supply_credit: "0.00"
+      ca/refund: "0"
+      ca-on/refund_before_donation: "0"
+      ca/amt_part_1_subtotal: "45555.00"
+      ca/amt_net_capital_gains_after_adjustments: "20000"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "222.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/non_capital_losses_of_other_years: "0"
+      ca/pre_1986_deductions_adjusted_1988_and_1989: "0.00"
+      ca/pre_1986_deductions_adjusted_1990_to_1999: "0.00"
+      ca/pre_1986_deductions_total: "725.00"
+      ca/pre_1986_capital_loss_balance: "5275.00"
+      ca/adjusted_gross_capital_losses_before_may_23_1985: "5275.00"
+      ca/adjusted_net_capital_losses_applied: "10000"
+      ca/unapplied_adjusted_net_capital_losses: "2275.00"
+      ca/net_capital_losses_additional_deduction: "2000.00"
+      ca/total_adjusted_net_capital_losses_applied: "12000.00"
+      ca/adjusted_losses_applied_before_may_23_1985: "5275.00"
+      ca/adjusted_losses_left_after_before_may_23_1985: "6725.00"
+      ca/remaining_adjusted_losses_before_may_23_1985: "0.00"
+      ca/net_capital_loss_balance_before_may_23_1985: "0.00"
+      ca/net_capital_loss_balance_1985_to_1987: "0.00"
+      ca/net_capital_loss_balance_1988_and_1989: "0.00"
+      ca/net_capital_loss_balance_1990_to_1999: "412.50"
+      ca/pre_1986_deductions_adjusted_2000: "225.00"
+      ca/net_capital_loss_twice_ir_2000: "1.333332"
+      ca/net_capital_loss_numerator_one_2000: "1.00"
+      ca/amt_basic_federal_tax: "3619.94"
+      ca/amt_regular_net_federal_tax_payable: "3619.94"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "2202.75"
+      ca/cpp_first_additional_contributions: "445.00"
+      ca/cpp_required_base_and_first_additional_contributions: "2647.75"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2202.75"
+      ca/cpp_part_5_line_69: "445.00"
+      ca/cpp_enhanced_contributions: "445.00"
+
+  ca/t776:
+    - ca/rental_gross_rents: "0"
+      ca/gross_rental_income: "0"
+      ca/rental_total_expenses: "0"
+      ca/rental_personal_portion: "0"
+      ca/rental_non_compliant_expenses: "0"
+      ca/rental_expenses_less_personal_portion: "0"
+      ca/rental_deductible_expenses: "0"
+      ca/rental_net_income_before_adjustments: "0"
+      ca/rental_net_income_share: "0"
+      ca/rental_net_income_after_coowner_expenses: "0"
+      ca/rental_net_income_with_recapture: "0"
+      ca/rental_net_income_after_terminal_loss: "0"
+      ca/rental_net_income_after_cca: "0"
+      ca/rental_partner_share_with_rebate: "0"
+      ca/rental_partnership_net_income: "0"
+      ca/short_term_rental_gross_rents: "0"
+      ca/rental_short_term_portion: "0"
+      ca/rental_closing_ucc: []
+      ca/rental_non_compliant_cca: "0"
+      ca/short_term_rental_non_compliant_cca_by_class: []

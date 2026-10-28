@@ -1,0 +1,540 @@
+# Return DA: Return BX's single sole proprietor, a 2025 Ontario resident whose only activity
+# is a farming business, one Form T2042 (Statement of Farming Activities), with a Class 10.1
+# passenger vehicle bought and sold in 2025 whose cost is above the prescribed amount, so that
+# the proceeds of disposition (Area A column 5) and the proceeds of dispositions of DIEP (column
+# 6) are adjusted by the prescribed amount as a proportion of the actual cost of the vehicle
+# (Area A endnote 2). The vehicle cost $50,000 before the HST of 13%, $56,500.00 in all (the
+# actual cost, no government assistance); its capital cost is limited to the prescribed amount
+# for 2025, $38,000 + 13% = $42,940.00 (columns 3 and 4), and it was sold at arm's length for
+# $40,000 (column 5, all of it a DIEP's, column 6), so the factor is $42,940.00 / $56,500.00 =
+# 0.76 and the proceeds become $40,000 x 0.76 = $30,400.00 in both columns. Column 7 is $0 +
+# $42,940 - $30,400.00 = $12,540.00 and column 8 is $42,940 - $30,400.00 = $12,540.00, so the
+# immediate expensing amount (column 9) can be the whole $12,540 (it would be refused above the
+# unadjusted column 8, $2,940). No property is left in the class, so the maximum is $0 and
+# column 21 is $0 + $12,540 = $12,540.00, which is claimed, with a column 22 of $0 and no
+# terminal loss. The farm is Return BX's with the wheat raised by $7,340 to a chosen $62,540, so
+# that line 9899 stays Return BX's $30,000.00: income lines of $92,540 (wheat, line 9371,
+# $62,540, and cattle, line 9471, $30,000) and expenses of $50,000 on two lines (fertilizers and
+# lime, line 9662, $20,000, and seeds and plants, line 9664, $30,000), with line 9936 of
+# $12,540.00, so line 9898 is $62,540.00 and line 9899 is $30,000.00. The farm is associated
+# with one other EPOP under a filed agreement (Return BX's Area G), so the immediate expensing
+# limit is $750,000.00 and line i, $12,540, is within the least of endnote 5's three amounts
+# ($750,000.00, the UCC of DIEPs in column 8, $12,540.00, and the income before CCA,
+# $42,540.00). Every figure that depends on income is Return BX's. Amounts are quoted decimal
+# strings, never floats; counts are quoted digit strings. Every output the CA-ON manifest
+# declares must appear under `expected`, or be left out to be 0 (or no records).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only activity is a farming business, reported
+  on one Form T2042: income lines of $92,540 (wheat, line 9371, $62,540, a chosen figure
+  $7,340 above Return BX's so that line 9899 is Return BX's $30,000.00, and cattle, line 9471,
+  $30,000), so line 9659 and T1 line 14099 are $92,540.00; expenses of $50,000 on two lines
+  (fertilizers and lime, line 9662, $20,000, and seeds and plants, line 9664, $30,000) and
+  capital cost allowance of $12,540.00 on Class 10.1 (Area A, line 9936), so line 9898 is
+  $62,540.00 and line 9899 is $30,000.00; and, with no inventory adjustments, no partner and no
+  business-use-of-home expenses, line 9946 and T1 line 14100 are $30,000.00. The motor vehicle
+  expenses (line 9819) are Charts A to C for a leased passenger vehicle used for no farming
+  (business kilometres 0), so line 9819 is $0 and changes no total. Area A has one class,
+  Class 10.1, one passenger vehicle designated for immediate expensing, bought in 2025 for
+  $50,000 plus the HST of 13% ($56,500.00, no government assistance) and sold in 2025 for
+  $40,000: its capital cost is limited to the prescribed amount for 2025 with tax, $42,940.00
+  (columns 3 and 4), and because its actual cost is more than that, the proceeds of $40,000
+  (columns 5 and 6) are adjusted by $42,940.00 / $56,500.00 = 0.76 to $30,400.00. Column 7 and
+  column 8 are $12,540.00; the immediate expensing amount (column 9) is the whole $12,540, so
+  column 21 is $12,540.00, claimed, and the UCC at the end of the year is $0. Line i is
+  $12,540, and line ii and line 9936 are $12,540.00. The farm is associated with one other EPOP
+  under a filed agreement that assigns the farm 50% of a total of 100%, so the immediate
+  expensing limit is $750,000.00; the income before CCA (endnote 5) is $42,540.00, line 9899
+  plus line 9936, a chosen reading (see the sources). The net self-employment income (T1 line
+  27, "Add lines 22 to 26") is 0 + 0 + 0 + 30,000 + 0 = $30,000; line 28 is line 21 (0) plus
+  line 27 and total income (line 15000) adds line 27 to the other income lines, which are all
+  0, so total income is $30,000.00. Every figure from line 27 on is the same as Return BX's,
+  whose net farming income is the same $30,000. The CPP months (Schedule 8 box A) are the 12 of
+  a full year, Schedule 8 Part 4 is not completed (count 0) and there is no agreement with the
+  Canada Employment Insurance Commission (count 0), so the CPP contributions payable (line
+  42100), the base CPP contributions (line 31000) and the deduction (line 22200) on
+  self-employment income, and the EI premiums on it (lines 31217 and 42120), are $0 and change
+  no total.
+sources:
+  - >-
+    CRA, Form T2042 (2025), Statement of Farming Activities (docs/cra-forms-2025/t2042-25e.pdf,
+    confirmed from the PDF with pdftotext; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2042/t2042-25e.pdf),
+    Part 3: "Gross income: Total of the income lines (enter this amount on line 14099 of your
+    income tax and benefit return)" (9659); Part 4: "Gross income (line 9659 of Part 3)" (4A);
+    "Subtotal of expenses" (4B); "Capital cost allowance (CCA). Enter amount ii of Area A minus
+    any personal part and any CCA for business-use-of-home expenses." (9936); "Total farm
+    expenses: Amount 4B plus line 9936" (9898); "Net income (loss) before inventory
+    adjustments: Amount 4A minus line 9898" (9899); "Net income (loss) after inventory
+    adjustments: Total of lines 9899, 9941, and 9942" (4C). Part 5: "Your net income (loss):
+    Amount 5C minus line 9945 (enter this amount on line 14100 of your income tax and benefit
+    return)" (9946). The lines not listed are not entered and are 0. The income lines are
+    chosen figures: wheat (line 9371) 62,540 and cattle (line 9471) 30,000, so line 9659, and
+    so amount 4A, is 92,540; the expenses (4B) are 20,000 + 30,000 = 50,000, line 9898 is
+    50,000 + 12,540.00 = 62,540.00 and line 9899 is 92,540 - 62,540.00 = 30,000.00; amounts 4C
+    and 5A are 30,000.00 (no inventory adjustments, no partner), and line 9946 is 30,000.00 -
+    0 = 30,000.00.
+  - >-
+    CRA, Form T2042 (2025), Area A endnote 2 (docs/cra-forms-2025/t2042-25e.pdf, confirmed from
+    the PDF with pdftotext): "The proceeds of disposition of a zero-emission passenger vehicle
+    (ZEPV) that has been included in Class 54, or a passenger vehicle bought after April 18,
+    2021, that has been included in Class 10.1, and whose cost is more than the prescribed
+    amount will be adjusted based on a factor equal to its prescribed amount as a proportion of
+    the actual cost of the vehicle. For dispositions after July 29, 2019, you will have to adjust
+    the actual cost of the vehicle for any payments or repayments of government assistance that
+    you may have received or repaid for the vehicle. If the passenger vehicle in Class 10.1 is
+    not designated for immediate expensing treatment, this special rule does not apply." Guide
+    T4002 (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF), "Class 10.1 (30%)": "The
+    capital cost limits of a Class 10.1 passenger vehicle are the following prescribed amounts:
+    $30,000 for vehicles acquired before 2022, plus the GST/HST or PST; ... $38,000 for vehicles
+    acquired in 2025, plus the GST/HST or PST".
+  - >-
+    CRA, Form T2042 (2025), Area A (page 5), "Calculation of capital cost allowance (CCA)
+    claim", as in Return BX: "Column 3: Cost of additions in the year (see Areas B and C
+    below)", "Column 4: Cost of additions from column 3 that are DIEPs (property must be
+    available for use before 2025)", "Column 5: Proceeds of dispositions in the year (see Areas
+    D and E below)", "Column 6: Proceeds of dispositions of DIEP (enter amount from col. 5 that
+    relates to DIEP from col. 4)", "Column 7: UCC after additions and dispositions (col. 2 plus
+    col. 3 minus col. 5)", "Column 8: UCC of DIEP (col. 4 minus col. 6)", "Column 9: Immediate
+    expensing amount for DIEPs", "Column 10: Cost of remaining additions after immediate
+    expensing (col. 3 minus col. 9)", "Column 13: Remaining UCC after immediate expensing (col.
+    7 minus col. 9)", "Column 18: Adjustment for current-year additions subject to the half-year
+    rule. 1/2 multiplied by (col. 10 minus col. 11 minus col. 12 minus col. 5). If negative,
+    enter "0"", "Column 21: CCA for the year (col. 19 multiplied by col. 20, or a lower amount,
+    plus col. 9)", "Column 22: UCC at the end of the year (col. 7 minus col. 21)", endnote 3: "If
+    you have a negative amount in column 7, add it to income as a recapture in Part 3 on line
+    9600. If no property is left in the class and there is a positive amount in this column,
+    deduct the amount from income as a terminal loss in Part 4 on line 9790."; endnote 4: "The
+    amount you enter in column 8 must not be more than the amount from column 7."
+    Class 10.1 (a chosen vehicle, "Class 10.1 (30%)" in Guide T4002): the actual cost is 50,000
+    + 6,500 = 56,500.00 (the cost entered, with no government assistance, a chosen 0); it was
+    acquired in 2025, so its prescribed amount is 38,000 + 4,940 = 42,940.00; column 2 is a
+    chosen 0, column 3 is the capital cost, limited to the prescribed amount with tax, 42,940 (a
+    chosen reading, to be confirmed), column 4 is 42,940 (the vehicle is a DIEP) and columns 5
+    and 6 are the chosen price of 40,000 as entered. The actual cost, 56,500.00, is more than
+    42,940.00, so the proceeds are adjusted by the factor 42,940.00 / 56,500.00 = 0.76: column 5
+    is 40,000 x 0.76 = 30,400.00 and column 6 is the same 30,400.00. Column 7 is 0 + 42,940 -
+    30,400.00 = 12,540.00; column 8 is 42,940 - 30,400.00 = 12,540.00, not more than column 7;
+    column 9 is a chosen 12,540, not more than column 8; column 10 is 42,940 - 12,540 =
+    30,400.00; column 13 is 12,540 - 12,540 = 0; column 18 is one half x (30,400.00 - 0 - 0 -
+    30,400.00) = 0; column 19 is 0; no property is left in the class (a chosen 1), so the
+    maximum is 0 and column 21 is 0 + 12,540 = 12,540.00, the claim, claimed in full; column 22
+    is 12,540 - 12,540.00 = 0.00. The terminal loss (endnote 3, column 7 less column 9, a reading
+    of the endnote, to be confirmed) is 12,540.00 - 12,540 = 0 and the recapture is 0.
+  - >-
+    CRA, Form T2042 (2025), Area G and endnote 5 (docs/cra-forms-2025/t2042-25e.pdf): the farm
+    is associated with one other EPOP under a filed agreement, the percentage assigned to the
+    farm is a chosen 50 and the total of column 3 a chosen 100, so amount iv is 1,500,000 x 50% =
+    750,000.00 and the immediate expensing limit is 750,000.00 (as in Return BX). The three
+    amounts of endnote 5 are 750,000.00, the UCC of DIEPs in column 8, 12,540.00, and the income
+    before CCA, 42,540.00 (line 9899 of 30,000.00 plus line 9936 of 12,540.00, as in Return BX);
+    the lesser is 12,540.00. Line i, the total of column 9, is 12,540, within the lesser, so it
+    is claimed in full.
+  - >-
+    CRA, "T1-2025 Ontario edition" return (form 5006-R, docs/cra-forms-2025/5006-r-25e.txt,
+    confirmed 2026-10-19): "Line 14099: Gross"; "Line 14100: Net"; "Line 27: Add lines 22 to 26.
+    Net self-employment income ="; "Line 33 and line 15000: Line 28 plus line 32 Total income".
+    Line 14099 is T2042 line 9659, $92,540, and line 14100 is T2042 line 9946, $30,000; line 27
+    is 0 + 0 + 0 + 30,000 + 0 = 30,000, and total income is $30,000.00. The figures that depend
+    on income (the federal tax of 30,000.00 x 14.5% = 4,350.00, the Ontario tax of 1,515.00 and
+    the total payable of 3,182.57), are Return BX's, as its net income is the same.
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t2042_statements:
+    - ca/farm_wheat: "62540"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "30000"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "20000"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "30000"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "0"
+          ca/business_vehicle_total_kilometres: "10000"
+          ca/business_vehicle_fuel_and_oil: "1000"
+          ca/business_vehicle_insurance: "600"
+          ca/business_vehicle_licence_and_registration: "0"
+          ca/business_vehicle_maintenance_and_repairs: "200"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "653"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "0"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "400"
+          ca/business_vehicle_interest_days: "183"
+          ca/business_vehicle_lease_charges: "2550"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "183"
+          ca/business_vehicle_list_price: "60000"
+          ca/business_vehicle_passenger_vehicle: "1"
+          ca/business_vehicle_purchase_year: "2025"
+          ca/business_vehicle_lease_year: "2025"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+      ca/farm_vehicle_sales_tax_rate: "13"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_cca_classes:
+        - ca/cca_class_number: "10.1"
+          ca/cca_ucc_at_start: "0"
+          ca/cca_additions: "42940"
+          ca/cca_diep_additions: "42940"
+          ca/cca_proceeds: "40000"
+          ca/cca_diep_proceeds: "40000"
+          ca/cca_immediate_expensing: "12540"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "12540.00"
+          ca/cca_no_property_left: "1"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "2025"
+          ca/cca_vehicle_cost: "56500.00"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/farm_epop_associated: "1"
+      ca/farm_epop_agreement_filed: "1"
+      ca/farm_epop_percentage: "50"
+      ca/farm_epop_percentage_total: "100"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca/t2042:
+    - ca/farm_recaptured_cca: "0"
+      ca/farm_other_income_with_recapture: "0"
+      ca/farm_gross_income: "92540"
+      ca/farm_gross_income_before_expenses: "92540"
+      ca/farm_terminal_loss: "0"
+      ca/farm_other_expenses_with_terminal_loss: "0"
+      ca/farm_expenses_subtotal: "50000"
+      ca/farm_cca_table_claim: "12540.00"
+      ca/farm_cca_claim_less_personal_part: "12540.00"
+      ca/farm_cca_claim: "12540.00"
+      ca/farm_total_expenses: "62540.00"
+      ca/farm_net_income_before_adjustments: "30000.00"
+      ca/farm_net_income_after_inventory_adjustments: "30000.00"
+      ca/farm_immediate_expensing_cap: "1500000"
+      ca/farm_epop_percentage_maximum: "100"
+      ca/farm_immediate_expensing_share: "750000.00"
+      ca/farm_epop_percentage_room: "0"
+      ca/farm_immediate_expensing_allocated: "750000.00"
+      ca/farm_immediate_expensing_associated_limit: "750000.00"
+      ca/farm_immediate_expensing_limit_before_minister: "750000.00"
+      ca/farm_immediate_expensing_limit: "750000.00"
+      ca/farm_income_before_cca: "42540.00"
+      ca/farm_immediate_expensing_claim: "12540"
+      ca/farm_share_of_net_income: "30000.00"
+      ca/farm_partnership_total: "30000.00"
+      ca/farm_partner_other_amounts_total: "0"
+      ca/farm_partner_other_amounts: "0"
+      ca/farm_net_income_after_adjustments: "30000.00"
+      ca/farm_home_expenses_subtotal: "0"
+      ca/farm_home_expenses_business_part: "0"
+      ca/farm_home_expenses_available: "0"
+      ca/farm_home_income_limit: "30000.00"
+      ca/farm_home_allowable_claim: "0"
+      ca/farm_home_expenses: "0"
+      ca/farm_motor_vehicle_expenses: "0.00"
+      ca/farm_closing_ucc:
+        - ca/cca_class_number: "10.1"
+          ca/cca_ucc_at_end: "0"
+      ca/farm_home_carry_forward: "0"
+  ca-on/return:
+    - ca/farming_income: "30000"
+      ca/immediate_expensing_total_claim: "12540"
+      ca/net_self_employment_income: "30000"
+      ca/taxable_capital_gains: "0"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/total_income: "30000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cpp_part_5_line_49: "3153.50"
+      ca/ei_premiums: "0.00"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "0"
+      ca/child_care_earned_income_limit: "0.00"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "0.00"
+      ca/net_income: "30000.00"
+      ca/net_income_signed: "30000.00"
+      ca/net_income_before_adjustments: "30000.00"
+      ca/other_payments_limit_income: "30000.00"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/deductions_from_net_income: "0.00"
+      ca/other_payments_deduction_after_limit: "0"
+      ca/other_payments_deduction: "0"
+      ca/taxable_income: "30000.00"
+      ca/federal_basic_tax: "4350.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "0.00"
+      ca/medical_net_income_share: "900.00"
+      ca/medical_threshold: "900.00"
+      ca/medical_expenses_over_threshold: "0"
+      ca/other_dependants_medical: "0"
+      ca/medical_claim: "0"
+      ca/non_refundable_credit_amounts: "16129.00"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "2011.29"
+      ca-on/ontario_basic_tax: "1515.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "0"
+      ca-on/age_reduction: "0.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/medical_net_income_share: "900.00"
+      ca-on/medical_threshold: "900.00"
+      ca-on/medical_expenses_over_threshold: "0"
+      ca-on/other_dependants_medical: "0"
+      ca-on/medical_claim: "0"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "871.28"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "871.28"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/ontario_tax_before_dividend_credit: "871.28"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/ontario_tax_after_dividend_credit: "871.28"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "0.00"
+      ca-on/ontario_tax_after_reduction: "871.28"
+      ca-on/lift_credit_before_maximum: "0.00"
+      ca-on/lift_maximum_credit: "0.00"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit: "0"
+      ca-on/ontario_tax_after_lift_credit: "871.28"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "871.28"
+      ca-on/ontario_health_premium: "300.00"
+      ca-on/ontario_tax: "1171.28"
+      ca/itc_recapture_at_15_percent: "0.00"
+      ca/itc_recapture_at_20_percent: "0.00"
+      ca/itc_recapture: "0.00"
+      ca/federal_tax_with_itc_recapture: "2011.29"
+      ca/political_credit_before_maximum: "0.00"
+      ca/political_credit: "0.00"
+      ca/labour_sponsored_funds_credit_before_maximum: "0.00"
+      ca/labour_sponsored_funds_credit: "0.00"
+      ca/credits_against_federal_tax: "0.00"
+      ca/federal_tax_less_credits: "2011.29"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0.00"
+      ca/resp_aips_part_b_tax: "0.00"
+      ca/resp_aips_additional_tax: "0.00"
+      ca/special_taxes: "0.00"
+      ca/net_federal_tax: "2011.29"
+      ca/total_payable: "3182.57"
+      ca/working_income: "30000.00"
+      ca/adjusted_family_net_income: "30000.00"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/cwb_reduction_without_dependant: "471.75"
+      ca/canada_workers_benefit_without_dependant: "1161.25"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "2813.00"
+      ca/canada_workers_benefit: "1161.25"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "30000.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_before_maximum: "0.00"
+      ca-on/political_credit: "0.00"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/total_credits: "1161.25"
+      ca/educator_supplies_expenses_at_most_maximum: "0.00"
+      ca/educator_school_supply_credit: "0.00"
+      ca/refund: "0"
+      ca-on/refund_before_donation: "0"
+      ca-on/ontario_tax_less_dividend_credit: "871.28"
+      ca/refund_or_balance_owing: "2021.32"
+      ca/amt_part_1_subtotal: "30000.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "30000.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "2011.29"
+      ca/amt_regular_net_federal_tax_payable: "2011.29"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "0.00"
+      ca/cpp_first_additional_contributions: "0.00"
+      ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_30: "26500.00"
+      ca/cpp_enhanced_contributions: "0.00"

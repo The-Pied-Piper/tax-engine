@@ -1,0 +1,174 @@
+# Return AI: Noor, a single 2025 Ontario resident with employment income of $60,000 who sold
+# two properties and designates each as a principal residence for some of the years she owned
+# it (Form T2091(IND) Parts 1 and 3, one form for each property): the first the worked
+# example, a $300,000 gain with 6 of 10 years designated, the second a gain whose exempt part
+# does not divide evenly and rounds half up to the cent. The taxable gains are Schedule 3 line
+# 9 and line 15800, then the total capital gains or losses (line 21, 19700) and the taxable
+# capital gains (T1 line 12700) of 50% of it. The other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of
+  $60,000 (a chosen figure) and two properties sold, every figure a chosen figure; no year
+  designated for one property is designated for the other. Property 1: years designated
+  after 1981 (line 1) 6 and from 1972 to 1981 (line 2) 0, so line 3 and line 4 are 6; years
+  owned after 1981 (line 5) 10 and from 1972 to 1981 (line 6) 0, so line 7 is 10; proceeds
+  (line 8) 400,000.00, outlays (line 9) 5,000.00 and adjusted cost base (line 10) 95,000.00,
+  so line 14 is 400,000.00, line 17 = 95,000.00 + 5,000.00 = 100,000.00 and line 18 =
+  400,000.00 - 100,000.00 = 300,000.00; the "plus one" rule applies (line 20 = 6 + 1 = 7),
+  line 21 = 300,000.00 x 7 = 2,100,000.00, line 23 = 2,100,000.00 / 10 = 210,000.00 and line
+  24 = 300,000.00 - 210,000.00 = 90,000.00, which is line 54. Property 2: line 1 is 1 and
+  line 2 is 0, so line 4 is 1; line 5 is 6 and line 6 is 0, so line 7 is 6; proceeds
+  250,000.00, outlays 0.00 and adjusted cost base 180,000.00, so line 18 = 250,000.00 -
+  180,000.00 = 70,000.00; the "plus one" rule applies (line 20 = 1 + 1 = 2), line 21 =
+  70,000.00 x 2 = 140,000.00, line 23 = 140,000.00 / 6 = 23,333.333..., rounded half up to
+  the cent: 23,333.33, and line 24 = 70,000.00 - 23,333.33 = 46,666.67, which is line 54.
+  The total of the two line 54 amounts, 90,000.00 + 46,666.67 = 136,666.67, is entered on
+  line 15800 of Schedule 3, so line 9 (personal-use property, "Total gain only") is 0.00
+  from the rows plus 136,666.67 and the total capital gains or losses (line 21, 19700) are
+  136,666.67. Line 24 of Schedule 3 = 136,666.67 x 50% = 68,333.335, rounded half up to the
+  cent: 68,333.34, positive, so line 12700 (taxable capital gains) is 68,333.34. Total
+  income (line 15000) = 60,000 + 68,333.34 = 128,333.34. The income tax deducted is a chosen
+  25,000. The net income, taxable income, total payable and refund or balance owing are the
+  engine's figures (to be confirmed against CRA's calculator). Not triggered: Part 2 of Form
+  T2091(IND) (properties a family member owned on December 31, 1981), Part 4 (the capital
+  gains election, Form T664), the rows of Schedule 3 Part 3 and every other credit and
+  deduction not named here.
+sources:
+  - >-
+    CRA, "T2091(IND)-25e" (2025), Designation of a Property as a Principal Residence by an
+    Individual (Other than a Personal Trust) (docs/cra-forms-2025/t2091ind-25e.pdf, confirmed
+    2026-10-19), Section 1: "After 1981" (line 1), "After 1971 and before 1982" (line 2),
+    "Total number of years designated (line 1 plus line 2)" (line 3); Section 2: "Number of
+    tax years ending after the acquisition date in which you owned the property" "After
+    1981" (line 5), "After 1971 and before 1982" (line 6), "Total number of years owned
+    (line 5 plus line 6)" (line 7); "Proceeds of disposition or deemed disposition" (line 8),
+    "Outlays and expenses made or incurred related to the disposition" (line 9), "Adjusted
+    cost base at the time of disposition" (line 10); Part 1: "Line 15 plus line 16" (line
+    17), "Line 14 minus line 17" "Capital gain before principal residence exemption" (line
+    18), "Amount from line 18" (line 19), "Line 4 plus 1 (see note on page 4)" (line 20),
+    "Multiply line 19 by line 20." (line 21), "Total number of years from line 7" (line 22),
+    "Divide line 21 by line 22." (line 23), "Line 18 minus line 23 (if negative, enter "0")"
+    "Net capital gain" (line 24); the note "One year is granted by law."; Part 3: "If you
+    completed Part 2, enter whichever amount is less: line 53 above or line 24 of Part 1.
+    Otherwise, enter the amount from line 24." "Total capital gain" (line 54); Part 4: "In all
+    other cases, enter the amount from line 54 above on line 15800 of Schedule 3, Capital
+    Gains or Losses, for dispositions or deemed dispositions."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2091ind/t2091ind-25e.pdf
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19),
+    Part 3: "Line 9 and line 15800: Total gain only (add all the amounts under column 5)";
+    Part 4: "Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses =";
+    line 24 "Line 22 multiplied by the percentage from line 23" (50%); line 26 (line 19900)
+    "If positive, enter the result on line 12700 of your return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/principal_residence_properties:
+    - ca/residence_years_designated_after_1981: "6"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "10"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "400000.00"
+      ca/residence_outlays: "5000.00"
+      ca/residence_adjusted_cost_base: "95000.00"
+      ca/residence_plus_one_year: "1"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "0"
+      ca/residence_ws_years_designated_after_1981: "0"
+      ca/residence_ws_years_owned_after_1981: "0"
+      ca/residence_ws_designated_proceeds: "0.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "0.00"
+      ca/residence_ws_fmv_feb_22_1994: "0.00"
+      ca/residence_ws_elected_capital_gain: "0.00"
+      ca/residence_ws_months_owned_after_feb_1992: "0"
+      ca/residence_ws_months_owned_after_1971: "0"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+    - ca/residence_years_designated_after_1981: "1"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "6"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "250000.00"
+      ca/residence_outlays: "0.00"
+      ca/residence_adjusted_cost_base: "180000.00"
+      ca/residence_plus_one_year: "1"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "0"
+      ca/residence_ws_years_designated_after_1981: "0"
+      ca/residence_ws_years_owned_after_1981: "0"
+      ca/residence_ws_designated_proceeds: "0.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "0.00"
+      ca/residence_ws_fmv_feb_22_1994: "0.00"
+      ca/residence_ws_elected_capital_gain: "0.00"
+      ca/residence_ws_months_owned_after_feb_1992: "0"
+      ca/residence_ws_months_owned_after_1971: "0"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+  ca/income_tax_deducted: "25000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/principal_residence_gain: "136666.67"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/personal_use_property_gain_rows: "0"
+      ca/personal_use_property_gain: "136666.67"
+      ca/capital_gains_of_qualified_and_other_properties: "136666.67"
+      ca/capital_gains_after_deferral: "136666.67"
+      ca/capital_gains_before_investment_loss_reduction: "136666.67"
+      ca/capital_gains_before_reserves: "136666.67"
+      ca/capital_gain: "136666.67"
+      ca/included_capital_gain: "68333.34"
+      ca/taxable_capital_gains: "68333.34"
+      ca/schedule_3_line_19900: "68333.34"
+      ca/total_income: "128333.34"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "127768.34"
+      ca/other_payments_limit_income: "127768.34"
+      ca/net_income: "127768.34"
+      ca/net_income_signed: "127768.34"
+      ca/taxable_income: "127768.34"
+      ca/total_payable: "31585.93"
+      ca/total_credits: "25000.00"
+      ca/refund_or_balance_owing: "6585.93"
+      ca-on/ontario_tax_less_dividend_credit: "9129.90"
+      ca/amt_part_1_subtotal: "127768.34"
+      ca/amt_net_capital_gains_after_adjustments: "136666.67"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "282.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "196101.67"
+      ca/amt_minimum_amount: "2242.83"
+      ca/amt_basic_federal_tax: "20365.81"
+      ca/amt_regular_net_federal_tax_payable: "20365.81"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "2242.83"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "3361.75"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2796.75"
+      ca/cpp_part_5_line_69: "565.00"

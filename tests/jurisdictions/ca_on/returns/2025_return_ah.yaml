@@ -1,0 +1,720 @@
+# Return AH: Lina, a single 2025 Ontario resident, 30, resident in Canada throughout 2025,
+# whose employment income is exactly $4,390, the working income the refundable medical
+# expense supplement (T1 line 45200) asks "must be $4,390 or more", and whose medical
+# expenses give a medical claim (line 33200) of $6,000.00, so 25% of it, $1,500.00, is under
+# the $1,504 maximum, and her adjusted family net income, $20,000.00, is under the
+# $33,294.00 income threshold, so the supplement is the whole $1,500.00. The employment
+# income is below the EI maximum insurable earnings ($65,700) and the CPP first earnings
+# ceiling ($71,300), so the CPP contributions and EI premiums are the rates' arithmetic, not
+# the printed maximums, and there is no second additional CPP contribution. 5.05% of the
+# employment income is below the LIFT credit's $875 maximum and net income is below its
+# $32,500 threshold, so the credit is that 5.05%, unreduced. 27% of the working income over
+# $3,000 is below the Canada workers benefit's $1,633 maximum and the adjusted family net
+# income is below its $26,855 threshold, so the benefit is that 27%, unreduced. Computed
+# from the Federal Worksheet's line 9, the eight sources of line 12100 added, and its line
+# 11, that less the part reported in previous years, to the interest and other investment
+# income (T1 line 12100); lines 14400, 14500 and 14600 added to line 14700; and, in line
+# order, employment income (line 10100), the other employment income, the pension and
+# benefit lines, the taxable dividends, the investment lines, the taxable capital gains, the
+# taxable support payments, the RRSP, FHSA, other and scholarship income and line 14700 to
+# total income (line 15000); from employment income, by Schedule 8's three contribution
+# tiers, to the base, first additional and second additional CPP contributions, the last two
+# together the enhanced CPP contributions; from employment income, up to the EI maximum
+# insurable earnings, to the EI premiums; from the unused RRSP contributions from earlier
+# years and the RRSP contributions, their sum, to the contributions available to deduct
+# (Schedule 7 line 10), from those and the deduction limit, the lesser of them, to the most
+# that may be deducted (Schedule 7 line 17), from the amount deducted (line 18), at most
+# that, to the RRSP deduction (line 20), and from the contributions available to deduct less
+# the RRSP deduction to the unused contributions carried forward (line 23); from the numbers
+# of eligible children (T778 Part B lines 1 to 3), $8,000, $11,000 and $5,000 for each,
+# summed to the basic limit (line 4), from employment income, the earned income (line 6), to
+# two-thirds of it, and from those and the child care expenses paid (line 5), the least of
+# them, to the child care expenses deduction (lines 7 and 9, T1 line 21400), here, with no
+# eligible child and no expenses paid, zero; less the child care expenses deduction and the
+# enhanced CPP contributions to net income, less the (empty) deductions from net income to
+# taxable income; from net income, by the Federal Worksheet, to the federal basic personal
+# amount; from it less the dependant's net income, not below zero, for each eligible
+# dependant, to the amount for an eligible dependant (T1 line 30400), and from the ON428
+# base less the dependant's net income, not below zero, at most its maximum, for each
+# eligible dependant, to the Ontario amount (ON428 line 58160); from the number of infirm
+# children, $2,687 for each, to the amount for infirm children (line 30500), here, with no
+# eligible dependant and no infirm child, all three zero; and through each form's total of
+# non-refundable credit amounts (its basic personal amount, its amount for an eligible
+# dependant, the base CPP contributions and the EI premiums, and on the T1 alone the amount
+# for infirm children and the Canada employment amount), credited once at the form's credit
+# rate to the form's non-refundable tax credits (T1 line 35000, ON428 line 61500), taken off
+# its basic tax, not below zero, to the tax after credits, and on ON428 the surtax on the
+# Ontario tax after credits, added to it to the Ontario tax with surtax, less the Ontario
+# dividend tax credit (Worksheet ON428's line 61520, from lines 12000 and 12010, ON428 lines
+# 56 to 58, 70 and 71), not below zero, to the Ontario tax after the dividend credit; and,
+# with no dependent children or dependants, the Ontario tax reduction amounts (the basic
+# reduction alone), twice them less the Ontario tax after the dividend credit, not below
+# zero, to the Ontario tax reduction, taken off the Ontario tax after the dividend credit,
+# not below zero, to the Ontario tax after the reduction; from employment income, by
+# Schedule ON428-A, 5.05% of it at most $875, less 5% of net income over $32,500, not below
+# zero, to the LIFT credit (ON428 line 85), taken off the Ontario tax after the reduction,
+# not below zero, to the Ontario tax after the LIFT credit (line 86), less 25% of the
+# qualifying donations (line 87), not below zero, to the Ontario tax after the food credit
+# (line 88); and from taxable income, by the health premium chart's tiers, each capped at
+# the next plateau, to the Ontario health premium, added to the Ontario tax after the food
+# credit to the Ontario tax; from employment income, by Schedule 6, 27% of the working
+# income over $3,000 at most $1,633, less 15% of the adjusted family net income, here net
+# income, over $26,855, not below zero, for a filer with no eligible spouse and no eligible
+# dependant, and the same at most $2,813 and over $30,639 for a filer with one, and from
+# those, by the number of Schedule 6 eligible dependants (line 38100), the first when it is
+# zero and the second otherwise, to the Canada workers benefit (T1 line 45300); and on the
+# T1, the federal tax after credits, carried to the net federal tax, plus the Ontario tax to
+# the total payable, less the total credits, here the chosen income tax deducted plus the
+# refundable medical expense supplement (line 45200) plus the Canada workers benefit, to the
+# refund or balance owing, negative for a refund and positive for a balance owing. There is
+# no capital gain, unused or new RRSP contribution or union dues. Not yet computed, so not
+# in this file: any deduction from net income and capital losses (the social benefits repayment, line 23500, is 0, as the chart does not apply). Line 82 (the provincial foreign tax credit) is not triggered by this return, and
+# the qualifying donations for line 87 (the community food program donation tax credit for
+# farmers) are a chosen $0, so line 87 is $0 and line 88 is line 86. Schedule 9's inputs are
+# all a chosen $0, so lines 116 (34900) and 117 (34990) are $0 and line 35000 is line 33800.
+# Nor are Schedule 5 line 2, T1 lines 30425 and 30450, the Ontario caregiver amount (ON428
+# line 58185), Form T778 line 8 and Parts C and D, and Schedule 6's disability supplement
+# (Step 3) and advance payments (Step 4); with no Schedule 6 eligible dependant (line
+# 38100), the Schedule 6 amounts for a filer with no eligible spouse and no eligible
+# dependant are the ones chosen. The age amount (line 30100), the spouse or common-law
+# partner amount (line 30300) and the Canada caregiver amount for a spouse or common-law
+# partner (line 30425) are not triggered by this return, so each is 0 and its part of the
+# T1's total of credit amounts is 0: the filer is taken as born in 1961 or later, with no
+# spouse or common-law partner (to be confirmed), so the counts of filers born in 1960 or
+# earlier, of spouse amounts claimed and of spouses eligible for the Canada caregiver amount
+# (line 51090) are 0 and the spouse's net income is entered as 0. They are computed all the
+# same, in the order of the form's lines, from net income less the $45,522 income threshold,
+# not below zero, at 15%, taken off $9,028, not below zero (line 30100), from the basic
+# personal amount, the $2,687 for a spouse eligible for the Canada caregiver amount and the
+# spouse's net income, not below zero (line 30300), and from $28,798 less the spouse's net
+# income, at most $8,601, less the line 30300 amount, not below zero (line 30425), each
+# claimed for its count. Amounts are quoted decimal strings, never floats; counts are quoted
+# digit strings. Every output the CA-ON manifest declares must appear under `expected`;
+# intermediate lines may be listed and are then checked too. ON428's age amount (line 58080,
+# from Worksheet ON428) and spouse or common-law partner amount (lines 11 to 13, line 58120)
+# are not triggered either, for the same counts of 0, so each is 0 and its part of ON428's
+# total of credit amounts is 0. They are computed all the same, in the order of the forms'
+# lines, from net income less the $46,330 income threshold, not below zero, at 15%, taken
+# off $6,223, not below zero (line 58080), and from $11,905.00 less the spouse's net income,
+# not below zero, at most $10,823 (line 58120), each claimed for its count. Ontario
+# political contributions (ON479 line 15, line 63100) are a chosen $0, so Worksheet ON479's
+# line 16 is $0 (column 1 applies). Federal political contributions (T1 line 135 and line
+# 40900) are a chosen $0, so the Federal Worksheet's line 41000 is $0 (column 1 applies).
+# The refundable medical expense supplement (T1 line 154 and line 45200, Federal Worksheet
+# "Line 45200 - Refundable medical expense supplement") is computed one worksheet line per
+# step: the working income (lines 10100 and 10400 less the wage-loss replacement plan
+# amounts and less lines 20700, 21200, 22900 and 23100, not below zero, plus the net
+# self-employment income of lines 13500, 13700, 13900, 14100 and 14300), the net income and
+# repayments and UCCB and RDSP income of the two columns (lines 1 to 5, the spouse's column
+# being a caller input), line 6 their sum, line 7 the printed $33,294.00, line 8 line 6 less
+# it, line 11 the sum of lines 9 (line 21500) and 10 (line 33200), line 13 25% of it, line
+# 14 the lesser of that and $1,504, line 15 5% of line 8 and line 16 line 14 less line 15;
+# line 16 is then passed through only when the working income is $4,390 or more, and through
+# the residence and age counts. Lines 22900 and 23100, the five self-employment lines, the
+# wage-loss replacement plan amounts and the whole of the spouse's column are a chosen $0 (the
+# self-employment lines and lines 22900 and 23100 are not yet computed from their own forms).
+# Line 21500 is computed from Form T929, and this return carries no copy of that form, so the
+# line is 0. The counts of residence in Canada throughout 2025 and of 18
+# years of age or older at the end of 2025 are both 1.
+# The Ontario seniors care at home tax credit (ON479 line 13, line 63095) is not claimed (a
+# chosen count of 0): its line 3 is the 6,000.00 of line 58769, line 5 is 25% of it,
+# 1,500.00, line 8 is the 20,000.00 of family net income, under the 35,000.00 base, so line
+# 12 is 0.00 and line 13 is 1,500.00, but the credit claimed is $0.
+# Form ON-BEN (lines 61020 to 61230) is not applied for (a chosen 0 for each tick box and a
+# chosen $0 for each Part A amount), so its ten lines are carried as entered, all 0.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 30, a
+  chosen figure (18 or older at the end of 2025), with no spouse or common-law partner and
+  no dependants, with 2025 employment income (T1 line 10100) of $4,390.00 and other income
+  (line 13000) of $15,618.90, a chosen figure, and a chosen $6,600 of medical expenses (line
+  33099). No capital gain, so taxable capital gains (line 12700) of $0 and total income
+  (line 15000) of $4,390 + $15,618.90 = $20,008.90. The CPP contributions are computed from
+  employment income, which is entered as the T4 box 26 pensionable earnings (the slip's box 26 being
+  blank, the form's "enter the amount from box 14"). The EI premiums are computed from employment income, taken as the insurable
+  earnings. Employment income is below the EI maximum insurable earnings ($65,700) and the
+  CPP first earnings ceiling ($71,300), so EI premiums (line 31200, ON428 line 58300) are
+  1.64% x 4,390 = 71.996, rounded half-up to the cent: $72.00, base CPP contributions
+  (Schedule 8 line 11, T1 line 30800, ON428 line 58240) are 4.95% x (4,390 - 3,500) =
+  44.055, rounded half-up to the cent: $44.06, and enhanced CPP contributions (line 22215)
+  are the first additional (Schedule 8 line 12) 1% x 890 = $8.90 with no second additional
+  contribution (line 22, $0). No unused or new RRSP contributions, no union dues (line
+  21200) and no child care expenses deduction (line 21400), so total deductions (line 23300)
+  are the enhanced CPP contributions of $8.90, the net income before adjustments (line
+  23400) is $20,008.90 - $8.90 = $20,000.00 and net income (line 23600) is $20,000.00. There
+  are no deductions from net income, so taxable income (line 26000) is $20,000.00, inside
+  the lowest federal and Ontario brackets. The medical claim: 3% of net income (line 108 of
+  the T1, ON428 line 39) is $600.00, below the $2,834 and $2,885 maximums (lines 109 and
+  40), and $6,600 less it is $6,000.00 (line 110, ON428 line 41); there are no other
+  dependants (line 33199, ON428 line 58729), so the claim (line 33200, ON428 line 58769) is
+  $6,000.00. The non-refundable credit amounts are the basic personal amount (federal line
+  30000 $16,129, since net income is $177,882 or less; Ontario ON428 line 58040 $12,747),
+  the base CPP contributions, the EI premiums and the medical claim, and on the T1 alone the
+  Canada employment amount (line 31260) of $1,471, the lesser of $1,471 and employment
+  income of $4,390 (ON428 has no such line): line 33500 of $16,129 + $44.06 + $72.00 +
+  $1,471 + $6,000.00 = $23,716.06 and ON428 line 58800 of $12,747 + $44.06 + $72.00 +
+  $6,000.00 = $18,863.06. Each total includes $0 for an eligible dependant (line 30400,
+  ON428 line 58160) and, on the T1, $0 for infirm children (line 30500), as there is no
+  eligible dependant and no infirm child (to be confirmed). The rate is applied once to each
+  total: 14.5% federally (line 33800) and 5.05% for Ontario (ON428 line 58840). Each
+  product, rounded half-up to the cent, is its form's non-refundable tax credits: $3,438.83
+  federally (line 35000) and $952.58 for Ontario (ON428 line 61500), each taken off its
+  form's basic tax, not below zero: the federal basic tax is 14.5% x $20,000.00 = $2,900.00,
+  so the federal tax after credits is $0, and the Ontario basic tax is 5.05% x $20,000.00 =
+  $1,010.00, so the Ontario tax after credits (ON428 line 52) is $1,010.00 - $952.58 =
+  $57.42. The Ontario surtax (ON428 line 68) is $0, as that tax is below $5,710, so the
+  Ontario tax with surtax (line 69) is $57.42. With no dependent children and no dependants,
+  the Ontario tax reduction amounts (line 77) are the basic reduction of $294.00 (line 74);
+  twice them, $588.00 (line 78), less the Ontario tax with surtax of $57.42 (line 79) is
+  $530.58, so the Ontario tax reduction (line 80) is $530.58 and the Ontario tax after the
+  reduction (line 81) is $0. The LIFT credit (ON428 line 85, Schedule ON428-A) is 5.05% of
+  employment income, $221.70, at most $875, less 5% of net income over $32,500, nothing:
+  $221.70, and the Ontario tax after it (line 86) is $0, not below zero. With chosen
+  qualifying donations of $0, the community food program donation tax credit for farmers
+  (line 87) is $0 and the Ontario tax after it (line 88) is $0. The Ontario health premium
+  (ON428 line 89) is read from its chart on taxable income: $20,000.00 is not more than
+  $20,000, so the premium is $0 and the Ontario tax (line 90) is $0. On the T1, the net
+  federal tax (line 42000) is $0 and the total payable (line 43500) is $0. The refundable
+  medical expense supplement (line 45200, Federal Worksheet) is $1,500.00: the filer was
+  resident in Canada throughout 2025 and 18 or older at the end of 2025 (counts of 1, chosen
+  facts); the working income is the employment income of $4,390 less the registered pension
+  plan deduction, union dues, other employment expenses and clergy residence deduction (each
+  $0), with no wage-loss replacement plan amounts and no net self-employment income (each a
+  chosen $0), so $4,390, which is "$4,390 or more"; the adjusted family net income (line 6)
+  is the net income before adjustments of $20,000.00 (column 1 lines 3 and 5, with the
+  repayments and the UCCB and RDSP income $0) and the spouse's column $0, so line 8 is
+  $20,000.00 - $33,294.00, negative, so $0; line 9 (line 21500, computed on Form T929, which
+  this return does not carry, so $0) and line 10
+  (line 33200, $6,000.00) give line 11 of $6,000.00, line 13 is 25% of it, $1,500.00, line
+  14 is the lesser of that and $1,504: $1,500.00, line 15 is 5% of $0, $0.00, and line 16 is
+  $1,500.00 - $0.00 = $1,500.00. The Canada workers benefit (line 45300, Schedule 6) is 27%
+  of the working income, the employment income, over $3,000, $1,390, $375.30, at most
+  $1,633, less 15% of the adjusted family net income, the net income, over $26,855, nothing
+  as $20,000.00 is below it: $375.30 (with an eligible dependant the same, at most $2,813,
+  less nothing over $30,639). The income tax deducted (line 43700) is a chosen $500, so the
+  total credits (line 48200) are it plus the supplement plus the benefit plus the provincial
+  credits (line 47900, $0 with no fertility treatment expenses, no seniors' transit amount
+  paid and no political contributions), $500 + $1,500.00 + $375.30 = $2,375.30, and the
+  refund or balance owing (line 167) is the total payable less the total credits, $0 -
+  $2,375.30 = -$2,375.30: negative, so a refund (line 48400) of $2,375.30, and with no
+  donation to the Ontario opportunities fund (line 46500, $0) the net refund (line 46600) is
+  $2,375.30 too. Every amount computed from a rate, fraction, amount or chart on the forms
+  is rounded half-up to the cent, each line being a dollars-and-cents box; here that changes
+  the EI premiums, the base CPP contributions, both forms' non-refundable tax credits and
+  the lines that follow from them. The lines that only add, subtract, compare or choose take
+  amounts already in cents, so the refund or balance owing is in cents too. The age amount
+  (line 30100), the spouse or common-law partner amount (line 30300) and the Canada
+  caregiver amount for a spouse or common-law partner (line 30425) are each $0: the filer is
+  taken as born in 1961 or later, claims no spouse amount (count 0) and has no spouse
+  eligible for the Canada caregiver amount (line 51090, count 0), and the spouse's net
+  income entered is $0 (to be confirmed).
+  No self-employment income: the net business, professional, commission, farming and fishing
+  income (T1 lines 13500, 13700, 13900, 14100 and 14300) are $0, so their sum (line 27) is
+  $0, and it is a $0 term of total income (line 15000). The CPP months (Schedule
+  8 box A) are the 12 of a full year, Schedule 8 Part 4 is not completed (count 0) and there
+  is no agreement with the Canada Employment Insurance Commission (count 0), so the CPP
+  contributions payable (line 42100), the base CPP contributions (line 31000) and the
+  deduction (line 22200) on self-employment income, and the EI premiums on it (lines 31217
+  and 42120), are $0 and change no total.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3): line 23 "Inclusion
+    rate 50%"; line 24 "Line 22 multiplied by the percentage from line 23"; line 26 (line
+    19900) "If positive, enter the result on line 12700 of your return". There is no capital
+    gain, so taxable capital gains are 0 times 50% = 0, rounded half-up to the cent, which
+    changes nothing.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.pdf
+  - >-
+    CRA, the 2025 Federal Worksheet (form 5000-D1, docs/cra-forms-2025/5000-d1-25e.txt),
+    "Line 12100 - Interest and other investment income": "Line 9: Add lines 1 to 8."; "Line
+    10: Interest and other investment income, included on line 9, received and reported in
+    previous years"; "Line 11: Line 9 minus line 10. Enter this amount on line 12100 of your
+    return."; and the T1-2025 Ontario edition return (form 5006-R,
+    docs/cra-forms-2025/5006-r-25e.txt), "Step 2 - Total income": "Line 32 and line 14700:
+    Add lines 29 to 31 (see line 25000 in Step 4)."; "Line 33 and line 15000: Line 28 plus
+    line 32 Total income". Lines 1 to 8 and 10 of the worksheet are 0, so line 9 is 0, line
+    11 is 0 - 0 = 0 and so is line 12100; lines 29 to 31 are 0, so line 14700 is 0 + 0 + 0 =
+    0. These lines take amounts already in cents.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, "CPP contribution rates, maximums and exemptions", 2025 row: maximum annual
+    pensionable earnings $71,300; basic exemption $3,500; employee rate 5.95%; maximum
+    annual employee contribution $4,034.10. CRA, "Second additional CPP contribution rates
+    and maximums", 2025 row: additional maximum annual pensionable earnings $81,200;
+    employee rate 4%; maximum $396.
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/calculating-deductions/making-deductions/second-additional-cpp-contribution-rates-maximums.html
+  - >-
+    CRA, the 2025 T1 return (form 5000-R): line 80 (line 30400) "Amount for an eligible
+    dependant (complete Schedule 5)"; line 81 (line 30425) "Canada caregiver amount for
+    spouse or common-law partner, or eligible dependant age 18 or older (complete Schedule
+    5)"; line 82 (line 30450) "Canada caregiver amount for other infirm dependants age 18 or
+    older (complete Schedule 5)"; line 83 (line 30500) "Canada caregiver amount for infirm
+    children under 18 years of age (see Schedule 5) Number of children you are claiming this
+    amount for Line 30499" "multiplied by $2,687". CRA, the 2025 Schedule 5 (form 5000-S5),
+    "Line 30400 - Amount for an eligible dependant": "Claim this amount if, at any time in
+    the year, you supported an eligible dependant and their net income from line 23600 of
+    their return (or the amount that it would be if they filed a return) was less than your
+    basic personal amount (plus $2,687 if the eligible dependant was dependent on you
+    because of a mental or physical infirmity)."; "Each household is allowed only one claim
+    for this amount"; line 1 "Basic personal amount from line 30000 of your return"; line 2
+    "If you are eligible for the Canada caregiver amount for your dependant (other than your
+    infirm child under 18 years of age), enter $2,687"; line 3 "Line 1 plus line 2"; line 4
+    (51106) "Dependant's net income from line 23600 of their return"; line 5 "Line 3 minus
+    line 4 (if negative, enter "0") Enter this amount on line 30400 of your return." CRA,
+    the 2025 ON428 (form 5006-C): line 14 "Base amount 11,905.00"; line 15 "Your eligible
+    dependant's net income from line 23600 of their return"; line 16 (line 58160) "Line 14
+    minus line 15 (if negative, enter "0") (maximum $10,823)". The taxpayer has no spouse or
+    common-law partner and no dependants, so the number of eligible dependants claimed for
+    (line 30400, at most one per household) is 0, the dependant's net income (Schedule 5
+    line 4, ON428 line 15) is entered as 0 and the number of infirm children (line 30499) is
+    0. Schedule 5 is computed as for one eligible dependant and claimed for none: line 1 is
+    16,129, the basic personal amount of line 30000; line 2 is not triggered, so line 3 is
+    16,129 + 0 = 16,129; line 5 is 16,129 - 0 = 16,129, claimed for 0 eligible dependants,
+    so line 30400 is 0. Line 30500 is 0 x 2,687 = 0. On ON428, line 16 is 11,905.00 - 0 =
+    11,905.00, at most 10,823: 10,823, claimed for 0 eligible dependants, so line 58160 is
+    0. Lines 30500, 14 and 16 are rounded half-up to the cent, which changes none of them;
+    lines 5, 30400 and 58160 take amounts already in cents. Not triggered by this return:
+    Schedule 5 line 2, lines 30425 and 30450, and the Ontario caregiver amount (ON428 line
+    58185).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - >-
+    CRA, the 2025 ON428 (form 5006-C): line 53 "Line 51 minus line 52 (if negative, enter
+    "0")", with line 52 "Ontario non-refundable tax credits from line 50"; line 61 "Line 55
+    minus line 60 (if negative, enter "0")"; line 62 "Amount from line 61 of the previous
+    page"; line 63 "Amount from line 62"; line 64 "Ontario tax on split income from line
+    54"; line 65 "Line 63 minus line 64 (if negative, enter "0")"; line 66 "(Line 65 minus
+    $5,710) multiplied by 20% (if negative, enter "0")"; line 67 "(Line 65 minus $7,307)
+    multiplied by 36% (if negative, enter "0")"; line 68 "Line 66 plus line 67"; line 69
+    "Line 62 plus line 68". Tax on split income (line 54, line 61510) and the minimum tax
+    carryover (lines 59 and 60, line 61540) are not modelled, so lines 61, 62 and 63 carry
+    line 53, the Ontario tax after credits, unchanged (line 55 "Line 53 plus line 54", line
+    54 being 0), line 64 is 0 and the surtax base, line 65, is the Ontario tax after credits
+    itself. The Ontario tax after credits of 57.42 is below 5,710 and 7,307, so lines 66 and
+    67 are negative and enter 0, each rounded half-up to the cent, which changes neither;
+    the surtax, line 68, is 0 + 0 = 0, and line 69 is 57.42 + 0 = 57.42; lines 68 and 69
+    take amounts already in cents.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - >-
+    CRA, the 2025 Worksheet ON428 (form 5006-D, docs/cra-forms-2025/5006-d-25e.txt), "Line
+    61520 - Ontario dividend tax credit": "Line A: Amount from line 12000 of your return";
+    "Line 1: Amount from line 12010 of your return Line B" "multiplied by 2.9863%"; "Line 2:
+    Amount A minus amount B Line C" "multiplied by 10%"; "Line 3: Line 1 plus line 2 Enter
+    this amount on line 61520 of your Form ON428." Lines A and B are the whole lines 12000
+    and 12010, both 0 with no dividends, so line 1 is 0 x 2.9863% = 0, line C is 0 - 0 = 0,
+    line 2 is 0 x 10% = 0 and line 3, and so line 61520, is 0 + 0 = 0; lines 1 and 2 are
+    rounded half-up to the cent, which changes neither.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+  - >-
+    CRA, the 2025 ON428 (form 5006-C): line 56 "Enter the amount from line 53 above."; line
+    57 (printed "Line 57 and line and line 61520") "Ontario dividend tax credit (use
+    Worksheet ON428)"; line 58 "Line 56 minus line 57 (if negative, enter "0")"; line 70
+    "Ontario dividend tax credit from line 57"; line 71 "Line 69 minus line 70 (if negative,
+    enter "0")"; line 73 "Line 71 plus line 72", with line 72 the minimum tax; line 74
+    "Basic reduction 294.00"; line 75 (line 60969) "Number of dependent children multiplied
+    by $544"; line 76 (line 60970) "Number of dependants multiplied by $544"; line 77 "Add
+    lines 74 to 76."; line 78 "Amount from line 77 above multiplied by 2"; line 79 "Amount
+    from line 73 above"; line 80 "Line 78 minus line 79 (if negative, enter "0") Ontario tax
+    reduction"; line 81 "Line 73 minus line 80 (if negative, enter "0")". With no dividends,
+    line 57 is 0 (Worksheet ON428 above), so line 56, which is line 53, 57.42, and line 58,
+    57.42 - 0 = 57.42, are the same; line 70 is 0 and line 71 is 57.42 - 0 = 57.42, which
+    takes amounts already in cents; the minimum tax (line 72) is not triggered, so line 73
+    is line 71, 57.42. The taxpayer has no dependent children and no dependants, so lines 75
+    and 76 are 0 x 544 = 0 and line 77 is 294.00 + 0 + 0 = 294.00; line 78 is 294.00 x 2 =
+    588.00; line 79 is 57.42; line 80 is 588.00 - 57.42 = 530.58; lines 74 to 76 and 80 are
+    rounded half-up to the cent, which changes none of them, and line 81 is 57.42 - 530.58,
+    negative, so 0; lines 77, 79 and 81 take amounts already in cents. Not modelled: "Enter
+    "0" on line 80 if any of the following applies to you: You were not a resident of Canada
+    at the beginning of the year; You were not a resident of Ontario on December 31, 2025;
+    There is an amount on line 72; You were bankrupt at any time in 2025; Your return is
+    filed for you by a trustee in bankruptcy; You are choosing not to claim an Ontario tax
+    reduction", none of which applies to this taxpayer, a resident of Ontario for all of
+    2025, on the facts given (the bankruptcy and trustee conditions to be confirmed); and
+    "If you had a spouse or common-law partner on December 31, 2025, only the individual
+    with the higher net income can claim the amounts on lines 75 and 76.", which does not
+    apply, as the taxpayer has no spouse or common-law partner.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - >-
+    CRA, Form ON479 (form 5006-TC), "Ontario Credits": "Line 1 and line 61268: Eligible
+    medical expenses for fertility treatment multiplied by 25% (maximum $5,000) ="; "Line
+    2 and line 63050: Complete Schedule ON479-A to calculate this amount."; "Line 14:
+    Amount paid in the year for eligible seniors' use of Ontario public transit services
+    (maximum $3,000) Line 63100 multiplied by 15% ="; "Line 17 and line 63220: Enter your
+    total expenses from your Form T1221. multiplied by 5% ="; "Line 18: Add lines 1, 2,
+    13, 14, 16, and 17. ="; "Line 19: Amount from line 18 of the previous page"; "Line 21:
+    Line 19 plus line 20 Enter this amount online 47900 of your return. Ontario credits
+    =". This return has no eligible medical expenses for fertility treatment and no amount
+    paid for seniors' use of Ontario public transit services, so line 1 is 0 x 25% = 0, at
+    most $5,000: 0, and line 14 is 0, at most $3,000, x 15% = 0; line 17 is the total
+    expenses of Form T1221 line 4, 0 as this return has no T1221 slips, x 5% = 0; line 2
+    is the CARE credit of Schedule ON479-A line 8, 0 (see the ON479-A source below); lines
+    13 and 16 are not triggered, so line 18 is 0 + 0 + 0 + 0 = 0, line 19 carries it, line
+    20 is 0 (no placements) and line 21 is 0. The T1 (form 5000-R) line 165 and line
+    47900: "Provincial or territorial credits (complete Form 479, if it applies)" is that
+    0. These lines are dollars-and-cents boxes, rounded half-up to the cent, which changes
+    nothing here.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+  - >-
+    CRA, Schedule ON479-A (form 5006-TCA), "Ontario Childcare Access and Relief from
+    Expenses (CARE) Tax Credit", "Family adjusted income calculation for the tax credit":
+    line 1 "Net income from line 23600 of the return (or the amount you would have entered
+    if the instructions on line 23600 said "if negative, show in brackets")"; line 2
+    "Child care expenses deduction from line 21400 of the return"; line 3 "Social benefits
+    repayment from line 23500 of the return"; line 4 "Add lines 1 to 3 (if negative, enter
+    "0"). Adjusted income"; line 5 "Add the amounts from line 4 of columns 1 and 2. Family
+    adjusted income"; line 6 "Enter your child care expenses deduction from line 21400 of
+    your return."; line 7 "If your family adjusted income on line 5 is "0", enter 75%. If
+    not, enter the tax credit rate that applies to your family adjusted income from the
+    table below." under "Family adjusted income and Tax credit rate"; line 8 "Line 6
+    multiplied by the percentage from line 7 Enter this amount on line 63050 of your Form
+    ON479." Form ON479 (form 5006-TC): "Line 2 and line 63050: Complete Schedule ON479-A
+    to calculate this amount." Under "No supporting person for any eligible children": "If
+    none of the eligible children has a supporting person, calculate your adjusted income
+    and enter it on line 4 of column 1". Line 23600 before the floor at 0 is line 23400
+    less line 23500, and line 23500 is 0 (the chart does not apply), so line 1 is line 23600 before the floor, equal to line 23400, 20,000.00, which is not negative; line 2 is the child
+    care expenses deduction (line 21400), 0; line 3 (the social benefits repayment from line 23500) is 0; so
+    line 4 is 20,000.00 + 0 = 20,000.00. No eligible child has a supporting person (to be
+    confirmed), so only column 1 is completed, column 2 line 4 (line 63047) is 0 and line
+    5 is 20,000.00 + 0 = 20,000.00. Line 7: 20,000.00 is in the table row "more than $0
+    but not more than $20,000: 75%", so the rate is 75%. Line 6 is the child care expenses
+    deduction, 0, and line 8 is 0 x 75% = 0.00, rounded half-up to the cent, entered on
+    line 63050 of Form ON479, so ON479 line 2 is 0.00.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tca/5006-tca-25e.txt
+  - >-
+    CRA, Form T1221, "Ontario Focused Flow-Through Share Resource Expenses (Individuals)"
+    (confirmed 2026-10-19 from the PDF; no .txt published): line 4 "Add lines 1 to 3. Enter
+    this amount on line 63220 of your Form ON479." This return has no T1221 slips, so there
+    is no amount of qualifying expenses on lines 1 to 3 and line 4 is 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1221/t1221-25e.pdf
+  - >-
+    CRA, Form ON479 (form 5006-TC), "Ontario co-operative education tax credit": "Line
+    63260: Number of eligible work placements your business or partnership is claiming under
+    the Ontario co-operative education tax credit program"; "Line 20 and line 63300: Enter
+    the total amount claimed for all qualifying work placements. (maximum $3,000 per
+    student)"; "Line 21: Line 19 plus line 20 Enter this amount online 47900 of your return.
+    Ontario credits =" (confirmed 2026-10-19). This return claims no work placements, so its
+    list of placements is empty, line 63260 is 0 and line 20 is the total of no placements,
+    0, which line 21 adds to line 19. Line 63265 (the answer on a partnership claim) and
+    line 63270 (the business number) are carried as entered, blank.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+  - >-
+    CRA, Worksheet ON479 (form 5006-D1), "Line 20 - Ontario co-operative education tax
+    credit" (confirmed 2026-10-19): "Line 4: Total salaries and wages paid in the 2024
+    taxation year"; "Line 5: 400,000.00"; "Line 6: Line 4 minus line 5 (if negative, enter
+    "0") ="; "Line 7: 200,000.00"; "Line 8: Line 6 divided by line 7 ="; "Line 9: 1.00";
+    "Line 11: Line 9 minus line 10 (if negative, enter "0") =". The total salaries and wages
+    paid in the 2024 taxation year is a chosen 0, which nothing on this return determines:
+    line 6 is 0, line 8 is 0 divided by 200,000.00, 0, and line 11 is 1.00 less 0, 1.00.
+    With no work placements there is no chart to complete (lines 1, 3, 12 and 13), so line
+    20 is 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d1/5006-d1-25e.txt
+  - >-
+    CRA, the 2025 Federal Worksheet (form 5000-D1), "Line 45200 - Refundable medical expense
+    supplement": "You may be able to claim this supplement if all of the following apply:"
+    "You entered an amount on line 21500 or line 33200 of your return" "You were resident in
+    Canada throughout 2025" "You were 18 years of age or older at the end of 2025" "Your
+    adjusted family net income is less than $63,374"; "In addition, the total of the
+    following two amounts must be $4,390 or more:" "your employment income from lines 10100
+    and 10400 of your return (other than amounts received from a wage-loss replacement plan)
+    minus the amounts from lines 20700, 21200, 22900, and 23100 of your return (if the
+    result is negative, consider it as "0")" "your net self-employment income (not including
+    losses) from lines 13500, 13700, 13900, 14100, and 14300 of your return"; "If you were
+    separated because of a breakdown in your relationship for a period of 90 days or more
+    that included December 31, 2025, do not include your spouse's or common-law partner's
+    income when you calculate this supplement." "If your spouse or common-law partner died
+    on or before December 31, 2025, do not include their income when you calculate this
+    supplement." The table has "Column 1: You" and "Column 2: Your spouse or common-law
+    partner": "Line 1: Net income amount from line 23600 of the return (or the amount you
+    would have entered if the instructions on line 23600 said "if negative, show in
+    brackets")"; "Line 2: Total of the universal child care benefit (UCCB) repayment (line
+    21300 of the return) and the registered disability savings plan (RDSP) income repayment
+    (included in the amount on line 23200 of the return)"; "Line 3: Line 1 plus line 2";
+    "Line 4: Total of the UCCB income (line 11700 of the return) and the RDSP income (line
+    12500 of the return)"; "Line 5: Line 3 minus line 4 (if negative, enter "0")"; then
+    "Line 6: Add the amounts from line 5 of columns 1 and 2. Adjusted family net income";
+    "Line 7: Income threshold 33,294.00"; "Line 8: Line 6 minus line 7 (if negative, enter
+    "0") ="; "Line 9: Amount from line 21500 of your return"; "Line 10: Amount from line
+    33200 of your return"; "Line 11: Line 9 plus line 10"; "Line 12: Applicable rate 25%";
+    "Line 13: Line 11 multiplied by the percentage from line 12 ="; "Line 14: Enter
+    whichever is less: amount from line 13 or $1,504"; "Line 15: Amount from line 8"
+    "multiplied by 5% ="; "Line 16: Line 14 minus line 15 (if negative, enter "0") Enter
+    this amount on line 45200 of your return. =". T1 for Ontario (form 5006-R): "Line 154
+    and line 45200: Refundable medical expense supplement (use Federal Worksheet)"; "Line
+    166 and line 48200: Add lines 150 to 165. Total credits ="; "Line 54 and line 23400:
+    Line 34 minus line 53 (if negative, show in brackets) Net income before adjustments =".
+    Employment income of 4,390 less the registered pension plan deduction, union dues, other
+    employment expenses and clergy residence deduction (each 0) is 4,390, with no wage-loss
+    replacement plan amounts and no net self-employment income, so the working income is
+    4,390, which is $4,390 or more (an inclusive condition: "or more"). Column 1 line 1 is
+    the net income before adjustments, 20,000.00 (line 23500 is 0, the chart not applying), lines 2 and
+    4 are 0, so lines 3 and 5 are 20,000.00; column 2 is 0 (no spouse or common-law
+    partner). Line 6 is 20,000.00; line 8 is 20,000.00 - 33,294.00, negative, so 0; line 9
+    is 0 and line 10 is the medical claim, 6,000.00, so line 11 is 6,000.00; line 13 is
+    6,000.00 x 25% = 1,500.00; line 14 is the lesser of 1,500.00 and 1,504: 1,500.00; line
+    15 is 0 x 5% = 0.00; line 16 is 1,500.00 - 0.00 = 1,500.00, and with the residence and
+    age counts both 1, line 45200 is 1,500.00. At working income of 4,389.99 it would be 0.
+    The adjusted family net income of 20,000.00 is under 63,374 and an amount is entered on
+    line 33200, so the other conditions hold.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    The arithmetic on the 2025 rates for employment income of 4,390 and net income of
+    20,000.00: CPP base contributions 4.95% x (4,390 - 3,500) = 44.055, rounded half-up to
+    the cent, 44.06; first additional 1% x 890 = 8.90; EI premiums 1.64% x 4,390 = 71.996,
+    rounded to 72.00; federal credit amounts 16,129 + 44.06 + 72.00 + 1,471 + 6,000.00 =
+    23,716.06 at 14.5% = 3,438.83; Ontario credit amounts 12,747 + 44.06 + 72.00 + 6,000.00
+    = 18,863.06 at 5.05% = 952.58; Ontario tax after credits 1,010.00 - 952.58 = 57.42;
+    Ontario tax reduction 588.00 - 57.42 = 530.58; LIFT credit 5.05% x 4,390 = 221.695,
+    rounded to 221.70; Canada workers benefit 27% x (4,390 - 3,000) = 375.30.
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "4390"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "4390"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "4390"
+  ca/t2204_premiums_deducted: "72.00"
+  ca/other_income: "15618.90"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "52.96"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/medical_expenses: "6600"
+  ca/income_tax_deducted: "500"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_capital_gains: "0.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "4390.00"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/total_income: "20008.90"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "72.00"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "4390"
+      ca/child_care_earned_income_limit: "2926.67"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "8.90"
+      ca/net_income: "20000.00"
+      ca/net_income_signed: "20000.00"
+      ca/net_income_before_adjustments: "20000.00"
+      ca/other_payments_limit_income: "20000.00"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/deductions_from_net_income: "0"
+      ca/taxable_income: "20000.00"
+      ca/federal_basic_tax: "2900.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/medical_net_income_share: "600.00"
+      ca/medical_threshold: "600.00"
+      ca/medical_expenses_over_threshold: "6000.00"
+      ca/other_dependants_medical: "0"
+      ca/medical_claim: "6000.00"
+      ca/non_refundable_credit_amounts: "23716.06"
+      ca/non_refundable_tax_credits: "3438.83"
+      ca/federal_tax_after_credits: "0"
+      ca-on/ontario_basic_tax: "1010.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "0"
+      ca-on/age_reduction: "0.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/medical_net_income_share: "600.00"
+      ca-on/medical_threshold: "600.00"
+      ca-on/medical_expenses_over_threshold: "6000.00"
+      ca-on/other_dependants_medical: "0"
+      ca-on/medical_claim: "6000.00"
+      ca-on/non_refundable_credit_amounts: "18863.06"
+      ca-on/non_refundable_tax_credits: "952.58"
+      ca-on/ontario_tax_after_credits: "57.42"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "57.42"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/ontario_tax_before_dividend_credit: "57.42"
+      ca-on/ontario_tax_less_dividend_credit: "57.42"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/ontario_tax_after_dividend_credit: "57.42"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "530.58"
+      ca-on/ontario_tax_after_reduction: "0"
+      ca-on/lift_credit_before_maximum: "221.70"
+      ca-on/lift_maximum_credit: "221.70"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit: "221.70"
+      ca-on/ontario_tax_after_lift_credit: "0"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "0"
+      ca-on/ontario_health_premium: "0.00"
+      ca-on/ontario_tax: "0.00"
+      ca/itc_recapture_at_15_percent: "0.00"
+      ca/itc_recapture_at_20_percent: "0.00"
+      ca/itc_recapture: "0.00"
+      ca/federal_tax_with_itc_recapture: "0.00"
+      ca/political_credit_before_maximum: "0.00"
+      ca/political_credit: "0.00"
+      ca/labour_sponsored_funds_credit_before_maximum: "0.00"
+      ca/labour_sponsored_funds_credit: "0.00"
+      ca/credits_against_federal_tax: "0.00"
+      ca/federal_tax_less_credits: "0"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0.00"
+      ca/resp_aips_part_b_tax: "0.00"
+      ca/resp_aips_additional_tax: "0.00"
+      ca/special_taxes: "0.00"
+      ca/net_federal_tax: "0.00"
+      ca/total_payable: "0.00"
+      ca/working_income: "4390"
+      ca/adjusted_family_net_income: "20000.00"
+      ca/cwb_before_reduction_without_dependant: "375.30"
+      ca/cwb_reduction_without_dependant: "0.00"
+      ca/canada_workers_benefit_without_dependant: "375.30"
+      ca/cwb_before_reduction_with_dependant: "375.30"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "375.30"
+      ca/canada_workers_benefit: "375.30"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/care_adjusted_income: "20000.00"
+      ca-on/care_family_adjusted_income: "20000.00"
+      ca-on/care_credit_percentage: "0.75"
+      ca-on/care_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "1500.00"
+      ca-on/seniors_care_amount: "1500.00"
+      ca-on/seniors_care_family_net_income: "20000.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "1500.00"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_before_maximum: "0.00"
+      ca-on/political_credit: "0.00"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/medical_supplement_employment_income: "4390"
+      ca/medical_supplement_employment_income_less_wage_loss: "4390"
+      ca/medical_supplement_employment_deductions: "0"
+      ca/medical_supplement_employment_working_income: "4390"
+      ca/medical_supplement_self_employment_income: "0"
+      ca/medical_supplement_working_income: "4390"
+      ca/medical_supplement_column_1_line_3: "20000.00"
+      ca/medical_supplement_column_1_line_5: "20000.00"
+      ca/medical_supplement_column_2_line_2: "0"
+      ca/medical_supplement_column_2_line_3: "0"
+      ca/medical_supplement_column_2_line_4: "0"
+      ca/medical_supplement_column_2_line_5: "0"
+      ca/medical_supplement_line_6: "20000.00"
+      ca/medical_supplement_income_threshold: "33294.00"
+      ca/medical_supplement_line_8: "0"
+      ca/medical_supplement_line_11: "6000.00"
+      ca/medical_supplement_line_13: "1500.00"
+      ca/medical_supplement_line_14: "1500.00"
+      ca/medical_supplement_line_15: "0.00"
+      ca/medical_supplement_line_16: "1500.00"
+      ca/medical_supplement_if_working_income_met: "1500.00"
+      ca/medical_supplement_if_resident: "1500.00"
+      ca/refundable_medical_expense_supplement: "1500.00"
+      ca/total_credits: "2375.30"
+      ca/refund_or_balance_owing: "-2375.30"
+      ca/educator_supplies_expenses_at_most_maximum: "0.00"
+      ca/educator_school_supply_credit: "0.00"
+      ca/refund: "2375.30"
+      ca-on/refund_before_donation: "2375.30"
+      ca-on/net_refund: "2375.30"
+      ca/amt_part_1_subtotal: "20000.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "4.45"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "20000.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "-538.83"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "44.06"
+      ca/cpp_first_additional_contributions: "8.90"
+      ca/cpp_required_base_and_first_additional_contributions: "52.96"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "44.06"
+      ca/cpp_part_5_line_69: "8.90"
+      ca/cpp_enhanced_contributions: "8.90"

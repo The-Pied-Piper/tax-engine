@@ -1,0 +1,400 @@
+# Return GA: Gwen, a single 2025 Ontario resident with two T4 slips, one for Ontario employment (box
+# 26 of $50,000, box 16 of $2,245.51 and box 16A of $210.00) and one for Quebec employment (box 26
+# of $30,000, box 17 of $1,900.00 and box 17A of $140.00), with no CPT20 election and no self-
+# employment income: the worked example of Form RC381 with Part 4 not completed and Part 3b as the
+# path (chosen figures). Part 3 line 53 is +0.73 (the base contributions are over) and line 60 is
+# -3.73 (the first additional contributions are short), so line 61 is -3.00 and line 68 is +2.00;
+# line 69 is -1.00, which is negative, so Part 3b is the path. Line 84 is reached (line 53 positive,
+# line 60 negative), which Return FZ does not reach. The return carries one Form RC381 and no
+# Schedule 8. Amounts are quoted decimal strings, never floats; counts are quoted digit strings.
+# Every output the CA-ON manifest declares must appear under `expected`, or be left out to be 0 (or
+# no records). The other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Gwen, a single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of $80,000 (a
+  chosen figure) on two T4 slips and no other income: a T4 for Ontario employment with box 26 of
+  $50,000, box 16 of $2,245.51 and box 16A of $210.00, and a T4 for Quebec employment with box 26 of
+  $30,000, box 17 of $1,900.00 and box 17A of $140.00 (chosen figures), with CPP and QPP for 12
+  months each (chosen figures) and income tax deducted of $13,000 (a chosen figure). Gwen makes no
+  election on Form CPT20 and has no self-employment or other net partnership income, so Part 4 of
+  Form RC381 is not completed. Because a T4 slip has Quebec as its province of employment, Form
+  RC381 is completed in place of Schedule 8 (the return carries one copy of the form and no Schedule
+  8). This return reaches Part 3 line 53 is positive (+0.73, the
+  base contributions are over) while line 60 is negative (-3.73, the first additional contributions
+  are short), so Part 3b line 84 (0.73) is non-zero, and lines 82 to 88 and 89 to 93 follow from it,
+  with T1 line 22215 (1,025.00) the result of line 93 and T1 line 30800 (3,470.51) the result of
+  line 81. A separate return is needed because line 84 needs line 60 negative and line 53 positive,
+  while line 77 needs line 53 negative and line 60 positive, so the two cannot both be non-zero in
+  one return (line 77 is Return FZ). Each needs a CPP shortfall against a QPP surplus or the
+  reverse: the CPP and QPP contributions are split differently (the CPP base share is 83.1933% of
+  box 16 at line 20, the QPP base share 84.375% of box 17 at line 40), so here the CPP total is
+  under-contributed by 275.80 (box 16 of 2,245.51 is below the 2,521.31 required at line 24) while
+  the QPP total is over-contributed by 272.80 (box 17 of 1,900.00 is above the 1,627.20 required at
+  line 44). Part 4 lines 65, 68 and 69 need self-employment earnings under the $3,500 exemption and
+  are in Return GB. Part 2: line A (the months that CPP applied, maximum 12) and line B (the months
+  that QPP applied, maximum 12) are 12 and 12 (chosen figures), so lines C to F (the CPP) and G to J
+  (the QPP) are the table's row for 12 months: line C 71,300.00 (your maximum pensionable earnings
+  for 2025), line D 9,900.00 (the maximum amount subject to second additional contributions), line E
+  81,200.00 (the additional maximum pensionable earnings) and line F 3,500.00 (the maximum basic
+  exemption); lines G to J are the same figures, 71,300.00, 9,900.00, 81,200.00 and 3,500.00. Part 3
+  lines 1 to 69 (the CPP side, the QPP side, the totals). Line 1 (50339), the CPP pensionable
+  earnings of the slips outside Quebec, is 50,000; line 2 (50329), the QPP pensionable earnings of
+  the slips in Quebec, is 30,000; line 3 (total pensionable earnings) = 50,000 + 30,000 = 80,000.00,
+  more than line C (71,300.00), so lines 12 to 15 are completed. Line 4 = line 1 = 50,000.00; line 5
+  = line 3 = 80,000.00. Line 6 = 50,000.00 divided by 80,000.00 = 0.625 exactly, which is 0.62500 to
+  the fifth decimal place without rounding. Line 7 = line E (81,200.00) x 0.62500 = 50,750.00; line
+  8 = line C (71,300.00) x 0.625 = 44,562.50; line 9 = line F (3,500.00) x 0.625 = 2,187.50; line 10
+  = line D (9,900.00) x 0.625 = 6,187.50. Line 11 is the lesser of line 1 (50,000.00) and line 7
+  (50,750.00): 50,000.00. Line 12 = line 11 = 50,000.00; line 13 = line 8 = 44,562.50; line 14 =
+  50,000.00 less 44,562.50 = 5,437.50; line 15 is the lesser of line 10 (6,187.50) and line 14
+  (5,437.50): 5,437.50. Line 16 = line 11 less line 15 = 50,000.00 less 5,437.50 = 44,562.50. Line
+  17 = line 9 = 2,187.50. Line 18 = 44,562.50 less 2,187.50 = 42,375.00. Line 19 (50340), the total
+  of box 16 of the T4 slips, is 2,245.51; line 20 = 2,245.51 x 83.1933% = 1,868.1148..., 1,868.11;
+  line 21 = 2,245.51 less 1,868.11 = 377.40. Line 22 = 42,375.00 x 4.95% = 2,097.5625, 2,097.56 (not
+  above 3,356.10); line 23 = 42,375.00 x 1% = 423.75 (not above 678.00); line 24 = 2,097.56 + 423.75
+  = 2,521.31. Line 25 (50341, box 16A) is 210.00. Line 26 = line 15 (5,437.50) x 4% = 217.50 (not
+  above 396.00). The QPP side: line 27 = line I (81,200.00) less line 7 (50,750.00) = 30,450.00;
+  line 28 = line G (71,300.00) less line 8 (44,562.50) = 26,737.50; line 29 = line J (3,500.00) less
+  line 9 (2,187.50) = 1,312.50; line 30 = line H (9,900.00) less line 10 (6,187.50) = 3,712.50. Line
+  31 is the lesser of line 2 (30,000.00) and line 27 (30,450.00): 30,000.00. Line 3 (80,000.00) is
+  more than line G (71,300.00), so lines 32 to 35 are completed: line 32 = line 31 = 30,000.00; line
+  33 = line 28 = 26,737.50; line 34 = 30,000.00 less 26,737.50 = 3,262.50; line 35 is the lesser of
+  line 30 (3,712.50) and line 34 (3,262.50): 3,262.50. Line 36 = line 31 less line 35 = 26,737.50.
+  Line 37 = line 29 = 1,312.50. Line 38 = 26,737.50 less 1,312.50 = 25,425.00. Line 39 (50330), the
+  total of box 17 of the T4 slips, is 1,900.00; line 40 = 1,900.00 x 84.375% = 1,603.125, 1,603.13;
+  line 41 = 1,900.00 less 1,603.13 = 296.87. Line 42 = 25,425.00 x 5.4% = 1,372.95 (not above
+  3,661.20); line 43 = 25,425.00 x 1% = 254.25 (not above 678.00); line 44 = 1,372.95 + 254.25 =
+  1,627.20. Line 45 (50331, box 17A) is 140.00. Line 46 = line 35 (3,262.50) x 4% = 130.50 (not
+  above 396.00). The totals: line 47 = line 20 = 1,868.11; line 48 = line 40 = 1,603.13; line 49 =
+  1,868.11 + 1,603.13 = 3,471.24; line 50 = line 22 = 2,097.56; line 51 = line 42 = 1,372.95; line
+  52 = 2,097.56 + 1,372.95 = 3,470.51; line 53 = 3,471.24 less 3,470.51 = 0.73 (positive, so no
+  brackets). Line 54 = line 21 = 377.40; line 55 = line 41 = 296.87; line 56 = 377.40 + 296.87 =
+  674.27; line 57 = line 23 = 423.75; line 58 = line 43 = 254.25; line 59 = 423.75 + 254.25 =
+  678.00; line 60 = 674.27 less 678.00 = -3.73 (in brackets). Line 61 = line 53 plus line 60 = 0.73
+  + -3.73 = -3.00 (negative). Line 62 = line 25 = 210.00; line 63 = line 45 = 140.00; line 64 =
+  210.00 + 140.00 = 350.00. Line 65 = line 26 = 217.50; line 66 = line 46 = 130.50; line 67 = 217.50
+  + 130.50 = 348.00. Line 68 = line 64 less line 67 = 350.00 less 348.00 = 2.00 (positive). Line 69
+  = line 61 plus line 68 = -3.00 + 2.00 = -1.00 (negative). Line 69 is negative, so the form's
+  "negative" branch applies: the return may pay additional contributions (CPT20), and the form
+  continues at Part 4 for that election. Gwen makes no election, so the form's "complete Part 3b"
+  applies: Part 3a (lines 70 to 74, for a positive line 69) is not the path. Its lines are shown
+  only as the table's copies: line 70 = line 52 = 3,470.51; line 71 = line 59 = 678.00; line 72 =
+  line 67 = 348.00; line 73 = 678.00 + 348.00 = 1,026.00; line 74 = line 69 = -1.00. Part 3b (the
+  path). Line 75: line 53 is positive (0.73), so line 75 = line 52 = 3,470.51, which the form also
+  enters at line 81, and the form continues at line 82 (the printed rule does not complete lines 76
+  to 80 on this branch). Line 76 (line 53 as a positive amount) is not triggered, as line 53 is not
+  negative: 0. Line 77 (line 53 negative and line 60 positive) is 0, as line 53 is not negative.
+  Line 78 = line 76 less line 77 = 0. Line 79 = line 75 plus line 77 = 3,470.51 (shown by the sheet;
+  the printed rule does not complete it on this branch, and line 81 is 3,470.51 either way). Line 80
+  = the lesser of line 68 (2.00) and line 78 (0), only if both are positive: 0. Line 81 = line 79
+  plus line 80 = 3,470.51, the base contributions through employment income: "Enter this amount (in
+  dollars and cents) on line 30800 of your return." Line 82: line 60 is negative, so line 82 = the
+  amount from line 56 = 674.27, and the form continues at line 83. Line 83 = line 60 as a positive
+  amount = 3.73. Line 84: line 53 is positive, so line 84 = the lesser of line 53 (0.73) and line
+  83 (3.73) = 0.73. Line 85 = line 83 less line 84 = 3.73 - 0.73 = 3.00. Line 86 = line 82 plus
+  line 84 = 674.27 + 0.73 = 675.00. Line 87: line 68 (2.00) and line 85 (3.00) are both positive,
+  so line 87 is the lesser of line 85 (3.00) and the result of line 68 less line 80 (2.00 - 0 =
+  2.00): 2.00. Line 88 = line 86 plus line 87 = 675.00 + 2.00 = 677.00. Line 89: line 68 is
+  positive, so line 89 is the amount from line 67 = 348.00, entered also at line 92, and the form
+  continues at line 93; lines 90 and 91 are not completed on this branch (0). Line 92 = 348.00. Line
+  93 = line 88 plus line 92 = 677.00 + 348.00 = 1,025.00, the deduction for enhanced contributions
+  on employment income: "Enter this amount (in dollars and cents) on line 22215 of your return."
+  Part 4 (lines 1 to 129) is not completed: Gwen has no self-employment income and no CPT20
+  election. The engine computes Part 4 lines anyway, and those values are computed, not used: for
+  example line 13 (2,245.51), line 14 (3.00), line 17 (-275.80), line 100 (3.73), line 101
+  (0.73), line 102 (3.00), line 104 (2.00) and line 105 (677.00). Lines 8, 11 and 12 are negative
+  in the engine's output (-229.45, -46.35 and -275.80) although the form does not complete lines
+  6 to 12 when line 61 of Part 3 is negative and the sheet shows 0 there: computed, not used. Part 4
+  lines 65, 68 and 69 are in Return GB. The T1 results and the branch that feeds each: line 30800 is
+  3,470.51, the Part 3b line 81 result; line 22215 is 1,025.00, the Part 3b line 93 result; line
+  44800 is 0, as the overpayment is entered at Part 3a line 74 (line 69 is not positive) and at Part
+  4 line 91 (Part 4 is not completed); line 42100 is 0 (Part 4 line 90, not completed); line 31000
+  is 0 (Part 4 line 111, not completed); and line 22200 is 0 (Part 4 line 129, not completed). Net
+  income is 80,000.00 less the 1,025.00 of line 22215 and the 0.00 of line 22200, 78,975.00. The tax
+  figures on the return (net federal tax 9,535.92, Ontario tax 4,934.48, total payable 14,470.40
+  against the 13,000.00 of income tax deducted, a balance owing of 1,470.40) are the engine's, and are not hand-checked. Not triggered: Schedule 8 (no copy); Part 4
+  (lines 1 to 129); Part 5 (Quebec self-employment, and no optional QPP contributions); Part 3a
+  (line 69 is negative); Part 3b line 76 (line 53 is not negative) and line 78 (0); lines 90 and 91
+  of Part 3b (line 68 is positive); and the CPT20 election (none).
+sources:
+  - >-
+    CRA, "Form RC381 (2025), Inter-Provincial Calculation for CPP and QPP Contributions and
+    Overpayments", "Find out if this form is for you": "You earned employment income in the province
+    of Quebec in 2025 and you were a resident of a province or territory other than Quebec on
+    December 31, 2025"; "Otherwise, complete Schedule 8, Canada Pension Plan Contributions and
+    Overpayment (5000-S8) or Schedule 8, Quebec Pension Plan Contributions (5005-S8), whichever
+    applies.".
+  - >-
+    CRA, Form RC381 (2025), Part 2: "Enter the number of months that CPP applied in 2025.", "Enter
+    the number of months that QPP applied in 2025.", "The number you enter on line A cannot be more
+    than the number you enter on line B." and "Enter the corresponding amounts from the monthly
+    proration table above using the number of months from lines A and B.", where line G is "Your
+    maximum pensionable earnings for 2025 (maximum $71,300)", line H "Your maximum amount subject to
+    second additional contributions for 2025 (maximum $9,900)", line I "Your additional maximum
+    pensionable earnings for 2025 (maximum $81,200)" and line J "Your maximum basic exemption for
+    2025 (maximum $3,500)".
+  - >-
+    CRA, Form RC381 (2025), Part 3: "Total CPP pensionable earnings from box 26 of all of your T4
+    slips where the province of employment is not Quebec (if box 26 is blank, enter the amount from
+    box 14)" (50339, line 1); "Total QPP pensionable earnings from box 26 of all of your T4 slips
+    where the province of employment is Quebec (if box 26 is blank, enter the amount from box 14)"
+    (50329, line 2); "Line 1 plus line 2 Total pensionable earnings" (line 3); "Line 4 divided by
+    line 5 (calculated to the fifth decimal place without rounding)" (line 6); "Amount from line E
+    of Part 2 multiplied by the rate at line 6" (line 7); "Amount from line C of Part 2 multiplied
+    by the rate at line 6" (line 8); "Enter whichever is less: amount from line 1 or line 7." (line
+    11); "If the amount from line 3 is more than the amount from line C of Part 2, complete lines 12
+    to 15. If not, enter the amount from line 11 on line 16 and continue at line 17." (lines 12 to
+    16); "Line 12 minus line 13 (if negative, enter "0")" (line 14); "Enter whichever is less:
+    amount from line 10 or line 14." (line 15); "Line 16 minus line 17 (if negative, enter "0")"
+    (line 18); "Total actual base and first additional contributions on CPP pensionable earnings
+    from box 16 of all of your T4 slips" (50340, line 19); "amount from line 19 x 83.1933%" (line
+    20); "amount from line 18 x 4.95% = (maximum $3,356.10)" (line 22); "amount from line 18 x 1% =
+    (maximum $678.00)" (line 23); "Total actual second additional contributions on CPP pensionable
+    earnings from box 16A of all of your T4 slips" (50341, line 25); "amount from line 15 x 4% =
+    (maximum $396.00)" (line 26); "Amount from line I of Part 2 minus the amount from line 7" (line
+    27); "Enter whichever is less: amount from line 2 or line 27." (line 31); "Total actual base and
+    first additional contributions on QPP pensionable earnings from box 17 of all of your T4 slips"
+    (50330, line 39); "amount from line 39 x 84.375%" (line 40); "amount from line 38 x 5.4% =
+    (maximum $3,661.20)" (line 42); "Total actual second additional contributions on QPP pensionable
+    earnings from box 17A of all of your T4 slips" (50331, line 45); "amount from line 35 x 4% =
+    (maximum $396.00)" (line 46); "Line 49 minus line 52 (if negative, show in brackets)" (line 53);
+    "Line 56 minus line 59 (if negative, show in brackets)" (line 60); "Line 53 plus line 60 (if
+    negative, show in brackets)" (line 61); "Line 64 minus line 67 (if negative, show in brackets)"
+    (line 68); "Line 61 plus line 68 (if negative, show in brackets)" (line 69).
+  - >-
+    CRA, Form RC381 (2025), Part 3 (page 7): "If your earnings subject to contributions are from
+    employment income only and line 69 is: positive, complete Part 3a on the next page; "0",
+    complete Part 3b on the next page; negative, you may be able to pay additional CPP or QPP
+    contributions. For residents of a province or territory other than Quebec, see Form CPT20,
+    Election to Pay Canada Pension Plan Contributions. ... If you choose to make additional
+    contributions, continue at Part 4 or 5, whichever applies. If not, complete Part 3b on the next
+    page."; "If you are a resident of a province or territory other than Quebec and are
+    self-employed or electing to pay additional CPP contributions on other earnings, continue at
+    Part 4." (Part 4 is not completed on this return).
+  - >-
+    CRA, Form RC381 (2025), Part 3a (page 7): "Overpayment: Enter the amount from line 69. Enter
+    this amount (in dollars and cents) on line 44800 of your return." (line 74; not the path, as
+    line 69 is negative).
+  - >-
+    CRA, Form RC381 (2025), Part 3b (page 8): "If line 53 is positive or "0", enter the amount from
+    line 52 at line 75 and line 81, and continue at line 82. If not, enter the amount from line 49
+    and continue at line 76." (line 75); "If line 53 is negative: Enter the amount from line 53 as a
+    positive amount." (line 76); "If line 53 is negative and line 60 is positive, enter whichever is
+    less: amount from line 60 or line 76. If not, enter "0"." (line 77); "Line 76 minus line 77 =
+    78" (line 78); "Line 75 plus line 77 = 79" (line 79); "If line 68 and line 78 are both positive,
+    enter whichever is less. If not, enter "0"" (line 80); "Base contributions through employment
+    income: Line 79 plus line 80 Enter this amount (in dollars and cents) on line 30800 of your
+    return. (2)" (line 81); "If line 60 is positive or "0", enter the amount from line 59 at line 82
+    and line 88, and continue at line 89. If not, enter the amount from line 56 and continue at line
+    83." (line 82); "If line 60 is negative: Enter the amount from line 60 as a positive amount."
+    (line 83); "If line 53 is positive, enter whichever is less: amount from line 53 or line 83. If
+    not, enter "0"." (line 84); "Line 83 minus line 84 = 85" (line 85); "Line 82 plus line 84 = 86"
+    (line 86); "If line 68 and line 85 are both positive, enter whichever is less: amount from line
+    85 or the result of line 68 minus line 80. If not, enter "0"." (line 87); "Line 86 plus line 87
+    = 88" (line 88); "If line 68 is positive or "0", enter the amount from line 67 at line 89 and
+    line 92, and continue at line 93. If not, enter the amount from line 64 and continue at line
+    90." (line 89); "If line 68 is negative: Enter the amount from line 68 as a positive amount."
+    (line 90); "If line 61 is positive, enter whichever is less: amount from line 61 or line 90. If
+    not, enter "0"." (line 91); "Line 88 plus line 92" (line 93); "Enter this amount (in dollars and
+    cents) on line 22215 of your return.".
+  - >-
+    CRA, Form RC381 (2025), Part 4 (for the lines the return does not complete): "CPP contributions
+    payable on self-employment income and other earnings: Line 88 minus 89. If positive, enter the
+    amount (in dollars and cents) on line 42100 of your return and continue at line 92. If negative,
+    show in brackets and continue at line 91." (line 90); "CPP overpayment: Enter the result of the
+    following calculation (in dollars and cents) on line 44800 of your return: amount from line 90
+    entered as a positive amount x 50%" (line 91); "Enter the result of the following calculation
+    (in dollars and cents) on line 31000 of your return: amount from line 84 x 50%" (line 111);
+    "Enter this amount (in dollar and cents) on line 22200 of your return." (line 129).
+  - >-
+    CRA, Form ON428 (2025), Ontario Tax: "Line 19 and line 58240: Amount from line 30800 of your
+    return" (5006-c-25e.txt).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/t4_qpp_slip_count: "1"
+  ca/employment_income: "80000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "80000"
+  ca/t2204_premiums_deducted: "1077.48"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "50000"
+  ca/t4_qpp_pensionable_earnings_in_quebec: "30000"
+  # T4 box 16 (the Ontario slip's base and first additional contributions) and box 16A.
+  ca/cpp_t4_base_and_first_additional_contributions: "2245.51"
+  ca/t4_cpp_second_additional_box_16a: "210.00"
+  # T4 box 17 (the Quebec slip's QPP contributions) and box 17A.
+  ca/t4_qpp_contributions_box_17: "1900.00"
+  ca/t4_qpp_second_additional_box_17a: "140.00"
+  ca/income_tax_deducted: "13000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances: []
+  ca/rc381_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "80000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "50000.00"
+      ca/t4_qpp_pensionable_earnings_slip_checked: "30000.00"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/ei_premiums: "1077.48"
+      ca/cpp_base_contributions_on_return: "3470.51"
+      ca/cpp_enhanced_contributions_on_return: "1025.00"
+      ca/cpp_overpayment: "0"
+      ca/cpp_payable_on_self_employment_and_other_earnings: "0"
+      ca/cpp_base_contributions_on_self_employment_and_other_earnings: "0"
+      ca/cpp_deduction_on_self_employment_and_other_earnings: "0"
+      ca/net_income_before_adjustments: "78975.00"
+      ca/other_payments_limit_income: "78975.00"
+      ca/net_income: "78975.00"
+      ca/taxable_income: "78975.00"
+      ca/net_federal_tax: "9535.92"
+      ca-on/ontario_tax_less_dividend_credit: "4184.48"
+      ca-on/ontario_tax: "4934.48"
+      ca/total_payable: "14470.40"
+      ca/total_credits: "13000.00"
+      ca/refund_or_balance_owing: "1470.40"
+      ca-on/net_refund: "0"
+      ca/amt_part_1_subtotal: "78975.00"
+      ca/amt_applicable_rate_amount: "512.50"
+      ca/amt_regular_net_federal_tax_payable: "9535.92"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/rc381:
+    - ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+      ca/rc381_part_3_line_20: "1868.11"
+      ca/rc381_part_3_line_40: "1603.13"
+      ca/rc381_part_3_line_21: "377.40"
+      ca/rc381_part_3_line_41: "296.87"
+      ca/rc381_part_4_line_59: "67800.00"
+      ca/rc381_part_3_line_3: "80000"
+      ca/rc381_part_3_line_10: "6187.50"
+      ca/rc381_part_3_line_7: "50750.00"
+      ca/rc381_part_3_line_8: "44562.50"
+      ca/rc381_part_3_line_9: "2187.50"
+      ca/rc381_part_3_line_11: "50000"
+      ca/rc381_part_3_line_27: "30450.00"
+      ca/rc381_part_3_line_31: "30000"
+      ca/rc381_part_3_line_28: "26737.50"
+      ca/rc381_part_3_line_29: "1312.50"
+      ca/rc381_part_3_line_30: "3712.50"
+      ca/rc381_part_3_line_14: "5437.50"
+      ca/rc381_part_3_line_15_lesser: "5437.50"
+      ca/rc381_part_3_line_15: "5437.50"
+      ca/rc381_part_3_line_26: "217.50"
+      ca/rc381_part_3_line_16: "44562.50"
+      ca/rc381_part_4_line_46_difference: "-7.50"
+      ca/rc381_part_3_line_18: "42375.00"
+      ca/rc381_part_3_line_22: "2097.56"
+      ca/rc381_part_3_line_23: "423.75"
+      ca/rc381_part_4_line_11: "-46.35"
+      ca/rc381_part_4_line_8: "-229.45"
+      ca/rc381_part_3_line_34: "3262.50"
+      ca/rc381_part_3_line_35_lesser: "3262.50"
+      ca/rc381_part_3_line_35: "3262.50"
+      ca/rc381_part_3_line_46: "130.50"
+      ca/rc381_part_3_line_36: "26737.50"
+      ca/rc381_part_3_line_38: "25425.00"
+      ca/rc381_part_3_line_42: "1372.95"
+      ca/rc381_part_3_line_43: "254.25"
+      ca/rc381_part_3_line_24: "2521.31"
+      ca/rc381_part_4_line_17: "-275.80"
+      ca/rc381_part_4_line_17a: "275.80"
+      ca/rc381_part_3_line_44: "1627.20"
+      ca/rc381_part_4_line_20: "272.80"
+      ca/rc381_part_4_line_21_lesser: "272.80"
+      ca/rc381_part_4_line_21: "272.80"
+      ca/rc381_part_4_line_35ab_from_line_20: "-272.80"
+      ca/rc381_part_3_line_49: "3471.24"
+      ca/rc381_part_3_line_52: "3470.51"
+      ca/rc381_part_3_line_53: "0.73"
+      ca/rc381_part_3_line_75: "3470.51"
+      ca/rc381_part_4_line_92: "3470.51"
+      ca/rc381_part_3_line_56: "674.27"
+      ca/rc381_part_3_line_59: "678.00"
+      ca/rc381_part_3_line_60: "-3.73"
+      ca/rc381_part_3_line_82: "674.27"
+      ca/rc381_part_4_line_99: "674.27"
+      ca/rc381_part_3_line_83: "3.73"
+      ca/rc381_part_3_line_84: "0.73"
+      ca/rc381_part_4_line_100: "3.73"
+      ca/rc381_part_4_line_101: "0.73"
+      ca/rc381_part_3_line_85: "3.00"
+      ca/rc381_part_4_line_102: "3.00"
+      ca/rc381_part_3_line_61: "-3.00"
+      ca/rc381_part_4_line_25a: "272.80"
+      ca/rc381_part_4_line_14: "3.00"
+      ca/rc381_part_4_line_33: "3.00"
+      ca/rc381_part_4_line_34: "3.00"
+      ca/rc381_part_4_line_35ab_when_line_35_zero: "-272.80"
+      ca/rc381_part_4_line_35ab: "-272.80"
+      ca/rc381_part_3_line_64: "350.00"
+      ca/rc381_part_3_line_67: "348.00"
+      ca/rc381_part_3_line_68: "2.00"
+      ca/rc381_part_4_line_23_multiplied: "2.00"
+      ca/rc381_part_3_line_89: "348.00"
+      ca/rc381_part_4_line_106: "348.00"
+      ca/rc381_part_4_line_46: "-7.50"
+      ca/rc381_part_4_line_23_lesser: "2.00"
+      ca/rc381_part_3_line_87_difference: "2.00"
+      ca/rc381_part_3_line_87: "2.00"
+      ca/rc381_part_4_line_104_difference: "2.00"
+      ca/rc381_part_4_line_104: "2.00"
+      ca/rc381_part_4_line_47: "217.50"
+      ca/rc381_part_4_line_51_difference: "9.50"
+      ca/rc381_part_4_line_51: "9.50"
+      ca/rc381_part_4_line_52: "130.50"
+      ca/rc381_part_3_line_69: "-1.00"
+      ca/rc381_part_4_line_23: "2.00"
+      ca/rc381_part_4_line_24_lesser: "2.00"
+      ca/rc381_part_4_line_24: "2.00"
+      ca/rc381_part_3_line_73: "1026.00"
+      ca/rc381_part_3_line_79: "3470.51"
+      ca/rc381_part_3_line_81: "3470.51"
+      ca/rc381_employment_cpp_base_contributions: "3470.51"
+      ca/rc381_part_3_line_86: "675.00"
+      ca/rc381_part_3_line_88: "677.00"
+      ca/rc381_part_3_line_92: "348.00"
+      ca/rc381_part_3_line_93: "1025.00"
+      ca/rc381_employment_cpp_enhanced_contributions: "1025.00"
+      ca/rc381_part_4_line_103: "675.00"
+      ca/rc381_part_4_line_105: "677.00"
+      ca/rc381_part_4_line_109: "348.00"
+      ca/rc381_part_4_line_110: "1025.00"
+      ca/rc381_part_4_line_12: "-275.80"
+      ca/rc381_part_4_line_13_difference: "2521.31"
+      ca/rc381_part_4_line_13: "2245.51"
+      ca/rc381_part_4_line_31_difference: "272.80"
+      ca/rc381_part_4_line_32: "1900.00"
+      ca/rc381_part_4_line_26: "2520.31"
+      ca/rc381_part_4_line_27: "42358.14"
+      ca/rc381_part_4_line_35a: "-272.80"
+      ca/rc381_part_4_line_53: "348.00"
+      ca/rc381_part_4_line_56: "348.00"
+      ca/rc381_part_4_line_76: "8700.00"
+      ca/rc381_part_4_line_77: "1200.00"
+      ca/rc381_part_4_line_74: "80000"
+      ca/rc381_part_4_line_96: "3470.51"
+      ca/rc381_part_4_line_98: "3470.51"
+      ca/rc381_part_4_line_36: "2.00"
+      ca/rc381_part_4_line_40: "1627.20"
+      ca/rc381_part_4_line_41: "25425.00"
+      ca/rc381_part_4_line_42: "67783.14"
+      ca/rc381_part_4_line_61: "16.86"
+      ca/rc381_cpp_base_contributions_on_return: "3470.51"
+      ca/rc381_cpp_enhanced_contributions_on_return: "1025.00"

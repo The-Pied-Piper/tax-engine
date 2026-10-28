@@ -1,0 +1,410 @@
+# Return HK: Guide T4002's chapter 3 example (D'Arcy), a single Ontario resident whose only income
+# is the net business income of one business bought a building in 2025, reported on one Form T2125
+# (Statement of Business or Professional Activities), with a full fiscal period (0 days entered, a
+# full year), Area A with one row, Class 1 (the building, 4%), with no UCC at the start of the year
+# (D'Arcy did not own property before) and the half-year rule applying to the addition, and with
+# the land of the purchase on Area F, lines 9923 and 9924. The total cost of the building is
+# $75,000 + $75,000 / $90,000 x $5,000 = $75,000 + $4,166.67 = $79,166.67 (column 3, the building
+# additions of Area C, which the guide's example enters; a filer's input, as the form leaves the
+# split of the fees to the filer). The land is $15,000 + $833.33 = $15,833.33, entered on line 9923
+# of Area F (Guide T4002: "$15,833.33 ($15,000 + $833.33) on line 9923 of Area F as the capital
+# cost of the land"); line 9924 is $0. Nothing earlier on the form computes either land line, so
+# both are inputs taken as entered (`ca/business_land_additions` and `ca/business_land_dispositions`)
+# and carried to the form's printed lines, read by nothing on the return.
+#
+# The guide's example has income of $6,000 and expenses of $4,900. Here the income (gross sales,
+# line 8299) is a chosen $6,483.33, so that the expenses (rent, line 8910, $4,900) and the CCA
+# claimed (line 9936) are met and the net business income (line 9946) is $0.00: the claim is the
+# full maximum of Class 1, as the guide's example says D'Arcy "wants to deduct as much CCA as he
+# can" (the guide's figures give a net of -$483.33 at $6,000 of income; the chosen income only
+# makes the net $0.00).
+# Column 7 is $79,166.67; column 18 is 50% of it, $39,583.34 (the half-year rule); column 19 is
+# $79,166.67 - $39,583.34 = $39,583.33; the maximum is $39,583.33 x 4% = $1,583.33, which is the
+# claim (column 21 and line 9936). Column 22 is the UCC carried to the next year: $79,166.67 -
+# $1,583.33 = $77,583.34. Total expenses (line 9368) are $4,900 + $1,583.33 = $6,483.33, and line
+# 9369 is $6,483.33 - $6,483.33 = $0.00, which is line 9946 and T1 line 13500. The gross business
+# income (T1 line 13499) is line 8299, $6,483.33. The immediate expensing limit is the whole
+# $1,500,000 (0 days entered: a full year, and no associated business), with no immediate
+# expensing claimed. With net business income of $0.00 the T1 lines are Return EC's, with the
+# gross business income (line 13499) of $6,483.33 in place of the rental lines.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the net business income of one
+  sole proprietorship, reported on one Form T2125 (Statement of Business or Professional
+  Activities) for a full fiscal period (0 days entered): gross sales of a chosen $6,483.33 (line
+  8299, T1 line 13499), rent of $4,900 (line 8910) and capital cost allowance of $1,583.33 on
+  Class 1 (Area A, line 9936), so total expenses (line 9368) are $6,483.33, line 9369 is $0.00 and
+  line 9946 and T1 line 13500 are $0.00. Area A has one class, Class 1 (4%), bought in the year:
+  the capital cost of the building of $79,166.67 (column 3, the building additions of Area C: $75,000
+  building value plus $4,166.67 of the $5,000 of legal fees and land transfer taxes, the filer's
+  split), with no UCC at the start of the year, no proceeds and no immediate expensing. The
+  half-year rule gives column 18 $39,583.34 and column 19 $39,583.33, so the maximum is $39,583.33
+  x 4% = $1,583.33, claimed in full; the UCC at the end of the year (column 22) is $79,166.67 -
+  $1,583.33 = $77,583.34. The land on Area F is $15,833.33 on line 9923 (the input
+  `ca/business_land_additions`, taken as entered and carried unread) and $0.00 on line 9924 (the
+  input `ca/business_land_dispositions`). The business is not associated with any other EPOP, so
+  the immediate expensing limit is the whole $1,500,000 (Area G), and no immediate expensing is
+  claimed. With a net income of $0.00 there is no net self-employment income, no CPP or EI on it,
+  and the other return lines are Return EC's.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing
+    Income, chapter 3 (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext
+    -layout, around line 5461 of its text), "The following example summarizes this chapter on CCA.
+    Example: During the current tax year, D'Arcy bought a building to use for his business. The
+    total cost was $95,000"; the table "Building value $75,000", "Land value $15,000", "Total
+    purchase price $90,000", "Legal fees $3,000", "Land transfer taxes $2,000", "Total fees $5,000";
+    "($75,000 ÷ $90,000) × $5,000 = $4,166.67"; "Capital cost of the building $79,166.67";
+    "D'Arcy enters $79,166.67 in column 3 of Area C and $15,833.33 ($15,000 + $833.33) on line 9923
+    of Area F as the capital cost of the land."; "D'Arcy did not own property before the current
+    year. Therefore, he has no UCC to enter in column 2 of Area A."; "D'Arcy acquired his property
+    during the current year. Therefore, he is subject to the half-year rule"; "D'Arcy wants to
+    deduct as much CCA as he can."
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities
+    (docs/cra-forms-2025/t2125-25e.pdf, read with pdftotext -layout): Area C "Building additions in
+    the year"; Area F "Land additions and dispositions in the year": "Line 9923: Total cost of all
+    land additions in the year" and "Line 9924: Total proceeds from all land dispositions in the
+    year", with the note "You cannot claim capital cost allowance on land. For more information,
+    see Chapter 3 of Guide T4002."; Part 4 "Rent" (line 8910, an input of $4,900); line 9936 "Total
+    CCA claim for the year (enter on line 9936 of Part 4 amount ii)"; line 9946 "Net income (loss)";
+    line 8299 "Gross business or professional income"; line 9369 "Net income (loss) before
+    adjustments: Amount 4A minus line 9368".
+  - >-
+    CRA, "T1-2025 Ontario edition" return (form 5006-R, docs/cra-forms-2025/5006-r-25e.txt,
+    confirmed 2026-10-19): T1 line 13500 is line 9946, $0.00, so the total income and net income
+    are $0.00 and the tax payable is $0.00.
+inputs:
+  ca/t2125_statements:
+    - ca/business_gross_sales: "6483.33"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "4900"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_start: "0"
+          ca/cca_additions: "79166.67"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "1583.33"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "15833.33"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca/t2125:
+    - ca/business_sales_subtotal: "6483.33"
+      ca/business_adjusted_gross_sales: "6483.33"
+      ca/business_gross_income: "6483.33"
+      ca/business_gross_income_for_gross_profit: "6483.33"
+      ca/business_gross_profit: "6483.33"
+      ca/business_gross_income_before_expenses: "6483.33"
+      ca/business_cca_table_claim: "1583.33"
+      ca/business_cca_claim_less_personal_part: "1583.33"
+      ca/business_cca_claim: "1583.33"
+      ca/business_total_expenses: "6483.33"
+      ca/business_net_income_before_adjustments: "0.00"
+      ca/business_immediate_expensing_cap: "1500000"
+      ca/business_epop_percentage_maximum: "100"
+      ca/business_immediate_expensing_share: "0.00"
+      ca/business_epop_percentage_room: "100"
+      ca/business_immediate_expensing_allocated: "0.00"
+      ca/business_immediate_expensing_associated_limit: "0"
+      ca/business_immediate_expensing_limit_before_minister: "1500000"
+      ca/business_immediate_expensing_limit_before_proration: "1500000"
+      ca/business_immediate_expensing_limit: "1500000"
+      ca/business_fiscal_period_days: "365"
+      ca/business_income_before_cca: "1583.33"
+      ca/business_immediate_expensing_claim: "0"
+      ca/business_share_of_net_income: "0.00"
+      ca/business_partnership_total: "0.00"
+      ca/business_net_income_after_adjustments: "0.00"
+      ca/business_closing_ucc:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_end: "77583.34"
+      ca/business_land_additions: "15833.33"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca-on/return:
+    - ca/taxable_capital_gains: "0"
+      ca/immediate_expensing_total_claim: "0"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/business_income: "0.00"
+      ca/gross_business_income: "6483.33"
+      ca/net_self_employment_income: "0.00"
+      ca/total_income: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "0"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "0"
+      ca/child_care_earned_income_limit: "0.00"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "0.00"
+      ca/net_income: "0"
+      ca/net_income_signed: "0.00"
+      ca/net_income_before_adjustments: "0.00"
+      ca/other_payments_limit_income: "0"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0.00"
+      ca/deductions_from_net_income: "0.00"
+      ca/other_payments_deduction_after_limit: "0"
+      ca/other_payments_deduction: "0"
+      ca/taxable_income: "0"
+      ca/federal_basic_tax: "0.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "0.00"
+      ca/medical_net_income_share: "0.00"
+      ca/medical_threshold: "0.00"
+      ca/medical_expenses_over_threshold: "0"
+      ca/other_dependants_medical: "0"
+      ca/medical_claim: "0"
+      ca/non_refundable_credit_amounts: "16129.00"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "0"
+      ca-on/ontario_basic_tax: "0.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "0"
+      ca-on/age_reduction: "0.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/medical_net_income_share: "0.00"
+      ca-on/medical_threshold: "0.00"
+      ca-on/medical_expenses_over_threshold: "0"
+      ca-on/other_dependants_medical: "0"
+      ca-on/medical_claim: "0"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "0"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "0.00"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/ontario_tax_before_dividend_credit: "0"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/ontario_tax_after_dividend_credit: "0"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "588.00"
+      ca-on/ontario_tax_after_reduction: "0"
+      ca-on/lift_credit_before_maximum: "0.00"
+      ca-on/lift_maximum_credit: "0.00"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit: "0"
+      ca-on/ontario_tax_after_lift_credit: "0"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "0"
+      ca-on/ontario_health_premium: "0.00"
+      ca-on/ontario_tax: "0.00"
+      ca/itc_recapture_at_15_percent: "0.00"
+      ca/itc_recapture_at_20_percent: "0.00"
+      ca/itc_recapture: "0.00"
+      ca/federal_tax_with_itc_recapture: "0.00"
+      ca/political_credit_before_maximum: "0.00"
+      ca/political_credit: "0.00"
+      ca/labour_sponsored_funds_credit_before_maximum: "0.00"
+      ca/labour_sponsored_funds_credit: "0.00"
+      ca/credits_against_federal_tax: "0.00"
+      ca/federal_tax_less_credits: "0"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0.00"
+      ca/resp_aips_part_b_tax: "0.00"
+      ca/resp_aips_additional_tax: "0.00"
+      ca/special_taxes: "0.00"
+      ca/net_federal_tax: "0.00"
+      ca/total_payable: "0.00"
+      ca/working_income: "0"
+      ca/adjusted_family_net_income: "0"
+      ca/cwb_before_reduction_without_dependant: "0.00"
+      ca/cwb_reduction_without_dependant: "0.00"
+      ca/canada_workers_benefit_without_dependant: "0"
+      ca/cwb_before_reduction_with_dependant: "0.00"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "0"
+      ca/canada_workers_benefit: "0"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/care_adjusted_income: "0"
+      ca-on/care_family_adjusted_income: "0"
+      ca-on/care_credit_percentage: "0.75"
+      ca-on/care_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "0"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_before_maximum: "0.00"
+      ca-on/political_credit: "0.00"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/total_credits: "0.00"
+      ca/educator_supplies_expenses_at_most_maximum: "0.00"
+      ca/educator_school_supply_credit: "0.00"
+      ca/refund: "0"
+      ca-on/refund_before_donation: "0"
+      ca/amt_part_1_subtotal: "0"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "0.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "-2338.71"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "0.00"
+      ca/cpp_first_additional_contributions: "0.00"
+      ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_enhanced_contributions: "0.00"

@@ -1,0 +1,73 @@
+# Return MM: Mia, as in Return MC, a 2025 Ontario resident eligible for the disability tax credit, who
+# is not claiming the basic CWB: her spouse is. Amounts are quoted decimal strings; counts are quoted
+# digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MM: the filer of Return MC (single Ontario resident, aged 40, employment income of $20,000, DTC
+  approved so Schedule 6 line 38103 is yes) answering "No" to Schedule 6 line 38102 "Are you claiming
+  the basic CWB?", as when only one spouse of a couple can claim it (Step 2: "If you had an eligible
+  spouse, only one of you can claim the basic CWB"). The eligible spouse is left out of this return;
+  the engine reads the answer as it is typed. Step 1 and Step 2 are worked as in Return MC, so line 28
+  is $1,633.00 and Step 3's line 40 is $843.00, but line 41 "If you completed Step 2, enter the amount
+  from line 28. If not, enter "0"." is $0, since Step 2 is not completed, so line 42 is $843.00 + $0 =
+  $843.00, entered on line 45300. With the basic CWB claimed, as in Return MC, it would be $2,476.00.
+  Step 4's line 43 "Enter whichever is more: amount from line 28 or line 42" takes line 28 only when Step 2
+  is completed (as line 41 does), so it is line 42, $843.00. The total payable (line 43500) is $0, the total credits (line 48200) are the $843.00 and the refund
+  (line 48400) is $843.00. Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Schedule 6, Canada Workers Benefit (5000-S6, docs/cra-forms-2025/5000-s6-25e.txt): Step 1
+    "Line 38103: Are you eligible for the disability tax credit (DTC)? If yes, complete parts A and B,
+    then, if applicable, complete Step 3."; Step 3 "Line 29: Amount from line 5 in column 1"; "Line
+    30: Base amount 1,150.00"; "Line 31: Line 29 minus line 30 (if negative, enter "0")"; "Line 32:
+    Rate 27%"; "Line 33: Line 31 multiplied by the percentage from line 32"; "Line 34: Enter
+    whichever is less: amount from line 33 or $843."; "Line 36: If you had an eligible spouse or an
+    eligible dependant, enter $49,389. If not, enter $37,740."; "Line 38: Rate: If you had an
+    eligible spouse who is also eligible for the DTC, enter 7.5%. If not, enter 15%."; "Line 40:
+    Line 34 minus line 39 (if negative, enter "0")"; "Line 38102: Are you claiming the basic CWB? If yes, complete parts A and B,
+    then, if applicable, complete Step 2."; "Line 41: If you completed Step 2, enter the
+    amount from line 28. If not, enter "0"."; "Line 42: Line 40 plus line 41 Enter this amount on
+    line 45300 of your return."
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1, docs/cra-forms-2025/5000-d1-25e.txt), "Line 31600 -
+    Disability amount for self": "If you qualify for the disability amount", the CRA's approval of
+    Form T2201.
+inputs:
+  # Schedule 6 line 38102, 0 no: the basic CWB is not claimed (line 41 is 0).
+  ca/cwb_claiming_basic: "0"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "20000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "20000"
+  ca/t2204_insurable_earnings: "20000"
+  ca/t2204_premiums_deducted: "328.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "981.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/eligible_for_disability_amount: "1"
+expected:
+  ca-on/return:
+    - ca/total_income: "20000.00"
+      ca/working_income: "20000"
+      ca/adjusted_family_net_income: "19835.00"
+      ca/canada_workers_benefit_line_28: "1633.00"
+      ca/cwb_disability_supplement_before_reduction: "843.00"
+      ca/cwb_disability_reduction: "0.00"
+      ca/cwb_disability_supplement: "843.00"
+      ca/canada_workers_benefit_line_41: "0.00"
+      ca/canada_workers_benefit_line_42: "843.00"
+      ca/canada_workers_benefit_before_conditions: "843.00"
+      ca/cwb_claimed: "843.00"
+      ca/canada_workers_benefit: "843.00"
+      ca-on/net_refund: "843.00"
+      ca/refund_or_balance_owing: "-843.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "19835.00"
+      ca/other_payments_limit_income: "19835.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "20000"

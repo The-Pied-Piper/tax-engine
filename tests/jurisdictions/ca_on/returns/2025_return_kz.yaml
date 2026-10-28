@@ -1,0 +1,46 @@
+# Return KZ: Guide T4002's Patrick (GST/HST rebate for partners, printed page 22), a single Ontario
+# resident, a member of an Alberta partnership, who personally pays his motor vehicle expenses under the
+# partnership agreement. His 2025 eligible expenses other than CCA are $3,150.84 and his CCA is
+# $5,100.00, $8,250.84 in all; his GST/HST fraction is 5 / 105, so "$8,250.84 x (5 / 105) = $392.90"
+# is his partner GST/HST rebate amount, and "He files Form GST370, Employee and Partner GST/HST
+# Rebate Application, and includes $392.90 at line 45700 on his 2025 tax return."
+#
+# CRA's printed figure is the $392.90 on T1 line 45700, a refundable credit the filer enters (Form
+# GST370 is not computed by the engine, so $392.90 is the input). With no other figure on the return
+# the refund is that $392.90 (T1 line 48400). The guide's other two figures, the $150.04 for line 9974
+# and the $242.86 for the UCC, belong to the 2026 return and are not on this one. The guide gives no
+# income; none is entered.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 with no income, whose only entry is the employee and partner
+  GST/HST rebate of $392.90 on T1 line 45700 (Guide T4002's Patrick: $8,250.84 x 5 / 105), so the total
+  credits and the refund are $392.90.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed page 22,
+    "GST/HST rebate for partners", the example of Patrick: "Patrick is a member of an Alberta partnership
+    called ABC Contracting. The partnership is registered for GST/HST and has a December 31 year-end.
+    Under the partnership agreement, Patrick is required to personally pay his motor vehicle expenses.
+    Patrick’s GST/HST fraction is (5 ÷ 105)."; "Total eligible expenses other than CCA $ 3,150.84", "CCA
+    $ 5,100.00", "Total eligible expenses including CCA $ 8,250.84"; "$8,250.84 × (5 ÷ 105) = $392.90";
+    "The amount $392.90 is Patrick’s partner GST/HST rebate amount. He files Form GST370, Employee and
+    Partner GST/HST Rebate Application, and includes $392.90 at line 45700 on his 2025 tax return."
+inputs:
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/schedule_8_instances:
+    - {}
+  ca/employee_and_partner_gst_hst_rebate: "392.90"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+expected:
+  ca-on/return:
+    - ca-on/net_refund: "392.90"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/refund_or_balance_owing: "-392.90"
+      ca/total_credits: "392.90"

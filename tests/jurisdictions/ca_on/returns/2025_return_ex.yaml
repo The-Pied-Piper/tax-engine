@@ -1,0 +1,681 @@
+# Return EX: a 2025 Ontario resident with two Form T2125 statements and two Form T776 statements that
+# reach the branches no earlier return does: a business with the GST/HST quick method, reserves,
+# other income, a recapture and a terminal loss of capital cost allowance, a cost of goods sold, a
+# minister's allocation of the immediate expensing limit and a business-use-of-home claim; a
+# professional partnership with other amounts deductible and a business-use-of-home claim above the
+# income that limits it (an amount carried forward); a rental property with a personal portion and a
+# terminal loss; and a rental partnership. Net business income $48,528.00, net rental income
+# $25,900.00, total income $74,428.00, a balance owing of $13,824.65 (the total payable of $14,224.65
+# less the journalism labour tax credit of $400 on line 162, the amount 5B of statement 2).
+# Every figure is derived from the form lines by a calculation of its own (not the engine's) and the engine agrees on every
+# listed line; Return EY takes the same branches through the Form T2042 and Form T2121 statements.
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings. A line that is
+# not listed under `expected` computes to 0 where the form is the return's, and is not checked where
+# it is not.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older
+  at the end of 2025, with 12 months of CPP (Schedule 8 box A), Schedule 8 Part 4 not completed and
+  no agreement for EI (as Return BB), so no CPP contributions or EI premiums are computed; every
+  figure is a chosen one (the meals and entertainment entered are the allowable part). The second
+  additional CPP earnings maximum on the return, 9,900.00, is 81,200.00 - 71,300.00 and the immediate
+  expensing limit without a minister's allocation is the $1.5 million of Area A endnote 5. Four statements.
+  T2125 statement 1, a business (line code 1) of a sole proprietor. Part 3A: amount 3A (gross sales
+  with HST) 113,000 less amount 3B (the HST in it) 13,000 is amount 3C 100,000. Quick method: amount
+  3D (HST collected on eligible sales) 13,000 less amount 3E (HST remitted, (100,000 + 13,000) x
+  4.4% = 4,972.00, a chosen rate entered as the form takes it) 4,972 is amount 3F 8,028, so amount
+  3G, line 8000, is 100,000 + 8,028 = 108,028. Area A (the classes below): the recapture of Class 8
+  and the terminal loss of Class 10 are worked after the CCA claim. Part 3C: line 8290 (reserves
+  deducted last year) 2,000; line 8230 is the other income 500 plus the recapture 4,000 (endnote 3),
+  4,500; amount 3O is 2,000 + 4,500 = 6,500 and line 8299 is 108,028 + 6,500 = 114,528 (T1 line
+  13499). Part 3D: amount 3P 114,528; amounts 3Q to 3U 8,000 + 30,000 + 6,000 + 4,000 + 1,000 =
+  amount 3V 49,000; line 8500 (closing inventory) 9,000; line 8518 (cost of goods sold) 49,000 -
+  9,000 = 40,000; line 8519 (gross profit) 114,528 - 40,000 = 74,528 (amount 4A). Area A, per class
+  (the rates are Guide T4002's: Class 8 20%, Class 10 30%, Class 14.1 5%, Class 50 55%). Class 8:
+  column 2 3,000, column 5 7,000, so column 7 is 3,000 + 0 - 7,000 = (4,000), negative: a
+  recapture of 4,000, no claim and 0 at the end of the year. Class 10: column 2 3,500, column 5
+  1,000, column 7 2,500, positive with no property left in the class: a terminal loss of 2,500
+  (line 9270), no claim and 0 at the end of the year. Class 14.1: column 2 20,000, column 7
+  20,000, column 18 0, column 19 20,000; the maximum is 20,000 x 5% = 1,000.00 and 1,000 is
+  claimed; column 22 is 19,000. Class 50: column 2 5,000, column 3 2,000, column 7 7,000; column
+  18 is one half of 2,000, 1,000.00; column 19 is 7,000 - 1,000 = 6,000.00; the maximum is 6,000 x
+  55% = 3,300.00 and 3,300 is claimed; column 22 is 7,000 - 3,300 = 3,700. Amount ii is 1,000 +
+  3,300 = 4,300, and with a personal part and a business-use-of-home CCA of a chosen 0 each, line
+  9936 is 4,300. Part 4: advertising 1,500, meals and entertainment 900, insurance 1,200, office
+  expenses 800, professional fees 2,500, rent 6,000 and utilities 1,500 (14,400); line 9270 is
+  the other expenses 300 plus the terminal loss 2,500, 2,800; line 9936 is 4,300; line 9368 is
+  14,400 + 4,300 + 2,800 = 21,500 and line 9369 is 74,528 - 21,500 = 53,028. Part 5: no partner
+  (count 0), so amount 5A is 53,028, amounts 5B, 9974 and 6A to 6E are 0 and amount 5D is 53,028.
+  Part 7: amounts 7A to 7G 900 + 700 + 300 + 400 + 1,800 + 1,200 + 200 = 5,500 (7H); amount 7I
+  1,500, so 7J is 4,000; amount 7K 0 and 7L (carried forward from the previous year) 500, so 7M
+  is 4,500; amount 7N is 53,028; 7O is 0 and 7P is the lesser of 4,500 and 53,028, 4,500 (line
+  9945). Line 9946 is 53,028 - 4,500 = 48,528 (T1 line 13500). Area G: the minister allocated a
+  chosen 1,100,000 (count 1), so the immediate expensing limit is that and not 1,500,000; no
+  class has DIEP additions, so nothing is expensed immediately.
+  T2125 statement 2, a professional partnership (line code 2): no gross income and no expenses of
+  its own (the partner enters the amount from the T5013 slip). Part 5: amount 5A is the T5013 slip
+  amount 18,000 (count 1); amount 5B (journalism labour tax credit) 400 and line 9974 (GST/HST
+  rebate for partners) 350; amount 5C is 18,000 + 400 + 350 = 18,750. Part 6: amounts 6A to 6E 600 +
+  450 + 300 + 200 + 100 = 1,650 (amount 6F, line 9943); amount 5D is 18,750 - 1,650 = 17,100. Part
+  7: amounts 7A to 7G 3,000 + 2,500 + 600 + 1,200 + 4,000 + 3,000 + 700 = 15,000 (7H); amount 7I
+  2,000, so 7J is 13,000; amount 7L 5,000, so 7M is 18,000; amount 7N is 17,100; amount 7O (the
+  amount carried forward) is 18,000 - 17,100 = 900; amount 7P is the lesser of 18,000 and
+  17,100, 17,100 (line 9945). Line 9946 is 17,100 - 17,100 = 0 (T1 line 13700).
+  T776 statement 1, a sole owner's rental: three units with gross rents of 36,000 (line 8141, none
+  short-term) and other income (line 8230) 600, so line 8299 is 36,600. Expenses: advertising 400,
+  insurance 1,800, interest and bank charges 5,000, office expenses 200, professional fees 700,
+  repairs and maintenance 1,500, property taxes 3,200 and utilities 2,400, amount A 15,200. The
+  personal portion (line 9949) is 300 of the insurance, 400 of the property taxes and 600 of the
+  utilities, 1,300. Amount 1 is 15,200 - 1,300 - 0 = 13,900 (no short-term portion) and line 9369
+  is 36,600 - 13,900 = 22,700. No co-owner (count 0): amount 2 is 22,700, line 9945 is 0, amount
+  3 is 22,700; line 9947 (recapture) is 0 and amount 4 is 22,700. Area A (the rates are Guide
+  T4036's: Class 1 4%, Class 8 20%): Class 1, column 2 100,000, column 7 100,000, maximum 100,000 x
+  4% = 4,000.00, claim 4,000, column 22 96,000; Class 8, column 2 2,400, column 5 1,500, column 7
+  900, positive with no property left in the class: a terminal loss (line 9948) of 900, no claim,
+  0 at the end of the year. Amount 5 is 22,700 - 900 = 21,800. Line 9936 is 4,000 (a chosen 0 of
+  personal part and business-use-of-home CCA), which is less than the 21,800 that limits it, so
+  amount 6, line 9946, is 21,800 - 4,000 = 17,800 (T1 line 12600). The minister allocated a chosen
+  800,000 (count 1), the immediate expensing limit.
+  T776 statement 2, a rental partnership: no rents or expenses of its own; amount 7 is the T5013
+  slip amount 9,000 (count 1), line 9974 250 and line 9943 1,150, so line 9946 is 9,000 + 250 -
+  1,150 = 8,100 (T1 line 12600). The two statements add to 17,800 + 8,100 = 25,900.
+  T1 (5006-R): line 13499 is 114,528 (statement 1 line 8299; statement 2 has no gross); lines 13500
+  and 13700 are 48,528 and 0, so line 27 is 48,528 + 0 + 0 + 0 + 0 = 48,528; line 12600 is
+  25,900. Total income (line 15000) is 48,528 + 25,900 = 74,428.00, which is net income and
+  taxable income, there being no deduction. Federal tax (Part A, column 2): line 72 is 74,428.00 -
+  57,375.00 = 17,053.00, times 20.5% is 3,495.865, rounded half-up to the cent 3,495.87, plus
+  8,319.38 is 11,815.25. The basic personal amount is 16,129.00 (net income is at or below
+  177,882) and 16,129.00 x 14.5% = 2,338.705, rounded half-up 2,338.71; the federal tax after
+  credits is 11,815.25 - 2,338.71 = 9,476.54. Ontario (ON428 Part A, column 2): 74,428.00 -
+  52,886.00 = 21,542.00 x 9.15% = 1,971.093, rounded 1,971.09, plus 2,670.74 is 4,641.83; the
+  basic personal amount 12,747.00 x 5.05% = 643.7235, rounded 643.72; the Ontario tax after
+  credits is 3,998.11, below the first surtax threshold of 5,710 (no surtax); twice the basic
+  reduction, 588.00, less 3,998.11 is below 0, so there is no tax reduction; there is no
+  employment income, so no LIFT credit. The Ontario health premium (row 9, more than 72,600 and not more
+  than 200,000) is 750, so the Ontario tax (line 42800) is 3,998.11 + 750 = 4,748.11. The total
+  payable is 9,476.54 + 4,748.11 = 14,224.65. Line 162 (47555) is the journalism labour tax credit
+  of $400, the amount 5B of T2125 statement 2, a credit against it, so the balance owing (line
+  48500) is 14,224.65 - 400.00 = 13,824.65.
+sources:
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities
+    (docs/cra-forms-2025/t2125-25e.pdf, a PDF quote accepted 2026-10-19;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf). Part 3A: "Gross
+    sales, commissions, or fees (include GST/HST collected or collectible)", "GST/HST, provincial
+    sales tax, returns, allowances, discounts, and GST/HST adjustments (included in amount 3A)",
+    "Subtotal: Amount 3A minus amount 3B", "GST/HST collected or collectible on sales, commissions,
+    and fees eligible for the quick method", "Subtotal: Amount 3D minus amount 3E", "Adjusted gross
+    sales: Amount 3C plus amount 3F (enter on line 8000 of Part 3C)". Part 3C: "Reserves deducted
+    last year", "Other income (specify)", "Subtotal: Line 8290 plus line 8230", "Gross business or
+    professional income: Line 8000 plus amount 3O". Part 3D: "Subtotal: Add amounts 3Q to 3U.",
+    "Cost of goods sold: Amount 3V minus line 8500", "Gross profit (or loss): Amount 3P minus line
+    8518". Part 4: "Total expenses: Total of amounts 4B to 4V", "Net income (loss) before
+    adjustments: Amount 4A minus line 9368". Part 5: "Total: Amount 5A plus amount 5B plus line
+    9974", "Net income (loss) after adjustments: Amount 5C minus line 9943", "Your net income
+    (loss): Amount 5D minus line 9945". Part 6: "Total other amounts deductible from your share of
+    the net partnership income (loss): Add amounts 6A to 6E". Part 7: "Subtotal: Add amounts 7A to
+    7G.", "Subtotal: Amount 7H minus amount 7I", "Subtotal: Add amounts 7J to 7L.",
+    "Business-use-of-home expenses available to carry forward: Amount 7M minus amount 7N (if
+    negative, enter "0")", "Allowable claim: Amount 7M or 7N above, whichever is less (enter your
+    share of this amount on line 9945 of Part 5)".
+  - >-
+    CRA, Form T2125 (2025), Area A endnote 3 (same file): "If you have a negative amount in column
+    7, add it to income as a recapture in Part 3C on line 8230. If no property is left in the class
+    and there is a positive amount in this column, deduct the amount from income as a terminal loss
+    in Part 4 on line 9270. Recapture and terminal loss do not apply to a Class 10.1 property unless
+    it is a DIEP." Endnote 5: "the immediate expensing limit, which is equal to one of the
+    following, whichever is applicable: $1.5 million, if you are not associated with any other
+    eligible person or partnership (EPOP) in the tax year ... any amount allocated by the minister
+    under subsection 1104(3.4) of the Regulations".
+  - >-
+    CRA, Form T776 (2025), Statement of Real Estate Rentals (docs/cra-forms-2025/t776-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt): "Line 8230: Other
+    income (for example, premiums and leases, sharecropping)"; "Line 8299: Total gross rental income
+    ... (line 8141 plus line 8230)"; "Line 9949: Total for personal portion"; "Line 1: Deductible
+    expenses (amount A minus line 9949 minus line 9366)"; "Line 9369: Net income (loss) before
+    adjustments (total gross rental income from line 8299 minus deductible expenses from amount 1)";
+    "Line 4: Subtotal (amount 3 plus line 9947)"; "Line 9948: Terminal loss"; "Line 5: Subtotal
+    (amount 4 minus line 9948)"; "Line 6: Net income (loss) (amount 5 minus line 9936)"; "Line 7:
+    Partners: your share of amount 6, or the amount from your T5013 slip, Statement of Partnership
+    Income"; "Line 9974: Partners: GST/HST rebate for partners received in the year"; "Line 9943:
+    Partners: other expenses of the partner"; "Line 9946: Your net income (loss): For sole
+    proprietors or co-owners, enter the result from amount 6. For partnerships, enter the result
+    from amount 7 plus line 9974 minus line 9943. Enter this amount on line 12600 of your income tax
+    and benefit return". Note 3: "If you have a negative amount in column 7, add it to income as a
+    recapture under "Recaptured capital cost allowance" on line 9947. If no property is left in the
+    class and there is a positive amount in this column, deduct the amount from your income as a
+    terminal loss under "Terminal loss" on line 9948."; Note 5: "any amount allocated by the
+    minister under subsection 1104(3.4) of the Regulations".
+  - >-
+    CRA, Guide T4002, Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (2025; docs/cra-forms-2025/t4002-25e.pdf), the class headings and rates: "Class 8 (20%)", "Class
+    10 (30%)", "Class 14.1 (5%)" and "Class 50 (55%)": "Include in Class 50 with a CCA rate of 55%
+    property acquired after March 18, 2007, that is general-purpose electronic data processing
+    equipment and systems software for that equipment". "Column 18 – Adjustment for current-year
+    additions subject to the half-year rule": the net first-year additions are halved. CRA, Guide
+    T4036, Rental Income (2025; docs/cra-forms-2025/t4036-25e.pdf), "Class 1 (4%)" and "Class 8
+    (20%)".
+  - >-
+    CRA, "T1-2025 Ontario edition" return (form 5006-R, docs/cra-forms-2025/5006-r-25e.txt,
+    confirmed 2026-10-19), Part A "Federal tax on taxable income", Column 2 "Line 26000 is more than
+    $57,375 but not more than $114,750": "Line 70: Amount from line 26000"; "Line 71: 57,375.00";
+    "Line 72: Line 70 minus line 71 (cannot be negative)"; "Line 73: Rate 20.5%"; "Line 74: Line 72
+    multiplied by the percentage from line 73"; "Line 75: 8,319.38"; "Line 76: Line 74 plus line 75
+    Federal tax on taxable income". Column 1 "Rate 14.5%" gives the rate of the non-refundable
+    credits (Return BB).
+  - >-
+    CRA, Form 5006-C (Ontario Form ON428, 2025; docs/cra-forms-2025/5006-c-25e.txt), Part A "Ontario
+    tax on taxable income": column "Line 1 is more than $52,886 but not more than $105,775", "Line
+    5: Rate 9.15%", "Line 7: 2,670.74", "Line 8: Line 6 plus line 7 Ontario tax on taxable income";
+    "Complete lines 66 to 68 if the amount on line 65 is more than $5,710. If the amount is less
+    than $5,710, enter "0" on line 68"; "Line 74: Basic reduction 294.00", "Line 78: Amount from
+    line 77 above multiplied by 2", "Line 80: Line 78 minus line 79 (if negative, enter "0") Ontario
+    tax reduction"; and "Line 89 - Ontario health premium", "Row 9: Taxable Income more than $72,600
+    but not more than $200,000 Ontario health premium: $750".
+inputs:
+  ca/t2125_statements:
+    - ca/business_income_line: "1"
+      ca/business_gross_sales: "113000"
+      ca/business_sales_adjustments: "13000"
+      ca/business_quick_method_gst_hst: "13000"
+      ca/business_quick_method_remitted: "4972"
+      ca/business_reserves_deducted_last_year: "2000"
+      ca/business_other_income: "500"
+      ca/business_opening_inventory: "8000"
+      ca/business_purchases: "30000"
+      ca/business_direct_wage_costs: "6000"
+      ca/business_subcontracts: "4000"
+      ca/business_other_costs: "1000"
+      ca/business_closing_inventory: "9000"
+      ca/business_advertising: "1500"
+      ca/business_meals_and_entertainment: "900"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "1200"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "800"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "2500"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "6000"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "1500"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "300"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "900"
+      ca/business_home_electricity: "700"
+      ca/business_home_insurance: "300"
+      ca/business_home_maintenance: "400"
+      ca/business_home_mortgage_interest: "1800"
+      ca/business_home_property_taxes: "1200"
+      ca/business_home_other_expenses: "200"
+      ca/business_home_personal_use_part: "1500"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "500"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+      ca/business_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "3000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "7000"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "10"
+          ca/cca_ucc_at_start: "3500"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "1000"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "14.1"
+          ca/cca_ucc_at_start: "20000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "1000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "50"
+          ca/cca_ucc_at_start: "5000"
+          ca/cca_additions: "2000"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "3300"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "1"
+      ca/business_minister_allocation: "1100000"
+      ca/business_vehicles: []
+    - ca/business_income_line: "2"
+      ca/business_gross_sales: "0"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "400"
+      ca/business_partner_gst_hst_rebate: "350"
+      ca/business_partner_other_amount_a: "600"
+      ca/business_partner_other_amount_b: "450"
+      ca/business_partner_other_amount_c: "300"
+      ca/business_partner_other_amount_d: "200"
+      ca/business_partner_other_amount_e: "100"
+      ca/business_home_heat: "3000"
+      ca/business_home_electricity: "2500"
+      ca/business_home_insurance: "600"
+      ca/business_home_maintenance: "1200"
+      ca/business_home_mortgage_interest: "4000"
+      ca/business_home_property_taxes: "3000"
+      ca/business_home_other_expenses: "700"
+      ca/business_home_personal_use_part: "2000"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "5000"
+      ca/business_partner_share: "18000"
+      ca/business_partner: "1"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_vehicles: []
+  ca/t776_statements:
+    - ca/rental_properties:
+        - ca/rental_property_units: "3"
+          ca/rental_property_short_term_rents: "0"
+          ca/rental_property_gross_rents: "36000"
+      ca/rental_other_income: "600"
+      ca/rental_advertising: "400"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "1800"
+      ca/rental_insurance_personal_portion: "300"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "5000"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "200"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "700"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "1500"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "3200"
+      ca/rental_property_taxes_personal_portion: "400"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "2400"
+      ca/rental_utilities_personal_portion: "600"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_start: "100000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "4000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "2400"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "1500"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "1"
+      ca/rental_minister_allocation: "800000"
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes: []
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "1"
+      ca/rental_partner_t5013_slip: "1"
+      ca/rental_partner_share: "9000"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "250"
+      ca/rental_partner_other_expenses: "1150"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "3998.11"
+      ca/rental_cca_total_claim: "4000"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/gross_business_income: "114528"
+      ca/business_income: "48528"
+      ca/net_rental_income: "25900"
+      ca/gross_rental_income: "36600"
+      ca/net_self_employment_income: "48528"
+      ca/total_income: "74428"
+      ca/net_income_before_adjustments: "74428"
+      ca/other_payments_limit_income: "74428"
+      ca/net_income: "74428"
+      ca/taxable_income: "74428"
+      ca/federal_basic_tax: "11815.25"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "9476.54"
+      ca-on/ontario_basic_tax: "4641.83"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "3998.11"
+      ca-on/ontario_health_premium: "750"
+      ca-on/ontario_tax: "4748.11"
+      ca/total_payable: "14224.65"
+      ca/refund_or_balance_owing: "13824.65"
+  ca/t2125:
+    - ca/business_sales_subtotal: "100000"
+      ca/business_quick_method_assistance: "8028"
+      ca/business_adjusted_gross_sales: "108028"
+      ca/business_recaptured_cca: "4000"
+      ca/business_other_income_with_recapture: "4500"
+      ca/business_reserves_and_other_income: "6500"
+      ca/business_gross_income: "114528"
+      ca/business_cost_of_goods_subtotal: "49000"
+      ca/business_cost_of_goods_sold: "40000"
+      ca/business_gross_profit: "74528"
+      ca/business_terminal_loss: "2500"
+      ca/business_other_expenses_with_terminal_loss: "2800"
+      ca/business_cca_claim: "4300"
+      ca/business_total_expenses: "21500"
+      ca/business_net_income_before_adjustments: "53028"
+      ca/business_net_income_after_adjustments: "53028"
+      ca/business_home_expenses: "4500"
+      ca/business_income: "48528"
+      ca/business_home_expenses_subtotal: "5500"
+      ca/business_home_expenses_business_part: "4000"
+      ca/business_home_expenses_available: "4500"
+      ca/business_home_income_limit: "53028"
+      ca/business_immediate_expensing_limit_unprorated: "1100000"
+      ca/business_minister_allocation_given_checked: "1"
+      ca/business_gross_income_for_gross_profit: "114528"
+      ca/business_gross_income_before_expenses: "74528"
+      ca/business_cca_table_claim: "4300"
+      ca/business_cca_claim_less_personal_part: "4300"
+      ca/business_share_of_net_income: "53028"
+      ca/business_partnership_total: "53028"
+      ca/business_closing_ucc:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "0"
+        - ca/cca_class_number: "10"
+          ca/cca_ucc_at_end: "0"
+        - ca/cca_class_number: "14.1"
+          ca/cca_ucc_at_end: "19000"
+        - ca/cca_class_number: "50"
+          ca/cca_ucc_at_end: "3700"
+      ca/gross_on_business_line: "114528"
+      ca/net_on_business_line: "48528"
+    - ca/business_partner_other_amounts_total: "1650"
+      ca/business_partner_other_amounts: "1650"
+      ca/business_partnership_total: "18750"
+      ca/business_net_income_after_adjustments: "17100"
+      ca/business_home_expenses_subtotal: "15000"
+      ca/business_home_expenses_business_part: "13000"
+      ca/business_home_expenses_available: "18000"
+      ca/business_home_income_limit: "17100"
+      ca/business_home_carry_forward: "900"
+      ca/business_home_expenses: "17100"
+      ca/business_immediate_expensing_limit_unprorated: "1500000"
+      ca/business_share_of_net_income: "18000"
+  ca/t776:
+    - ca/gross_rental_income: "36600"
+      ca/rental_total_expenses: "15200"
+      ca/rental_personal_portion: "1300"
+      ca/rental_deductible_expenses: "13900"
+      ca/rental_net_income_before_adjustments: "22700"
+      ca/rental_cca_table_terminal_loss: "900"
+      ca/rental_terminal_loss: "900"
+      ca/rental_net_income_after_terminal_loss: "21800"
+      ca/rental_cca_claim: "4000"
+      ca/rental_net_income_after_cca: "17800"
+      ca/net_rental_income: "17800"
+      ca/rental_immediate_expensing_limit_unprorated: "800000"
+      ca/rental_minister_allocation_given_checked: "1"
+      ca/rental_gross_rents: "36000"
+      ca/rental_net_income_share: "22700"
+      ca/rental_net_income_after_coowner_expenses: "22700"
+      ca/rental_net_income_with_recapture: "22700"
+      ca/rental_cca_table_claim: "4000"
+      ca/rental_cca_claim_share: "4000"
+      ca/rental_cca_limit: "21800"
+      ca/rental_expenses_less_personal_portion: "13900"
+      ca/rental_closing_ucc:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_end: "96000"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "0"
+    - ca/rental_partner_share_with_rebate: "9250"
+      ca/rental_partnership_net_income: "8100"
+      ca/net_rental_income: "8100"
+      ca/rental_immediate_expensing_limit_unprorated: "1500000"

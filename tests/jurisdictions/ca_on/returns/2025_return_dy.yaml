@@ -1,0 +1,117 @@
+# Return DY: Return DT with the printed memo lines of the T1, Schedule 11 and Schedule 15
+# entered. Each memo line is a caller's input that no step reads, so it is carried to the
+# return as entered and changes no total: the totals are Return DT's, nil, and the flipped
+# property of Return DT is unchanged. The file checks each memo line as entered and the
+# totals as Return DT's.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, aged 35, a chosen figure (18 or older at the
+  end of 2025), resident in Canada throughout 2025, with no spouse or common-law partner and
+  no dependants. She disposed of a condominium in Canada in 2025, a chosen figure, that was
+  not considered inventory and that she owned for 200 consecutive days before its
+  disposition, a chosen figure, so fewer than 365 days. Line 17905 of Schedule 3 Part 1 is
+  therefore "Yes", a count of 1, and no life event of line 17906 applies, so the housing
+  unit is a flipped property and the flag is 1, as in Return DT. The gain is not entered
+  here. Her employment income and every other income and deduction figure is a chosen $0, so
+  the return's total income, net income, taxable income and refund are nil as in Return DT,
+  and the second additional maximum amount of $9,900.00 for 12 months (Schedule 8 box A at
+  12 months, a chosen figure) and the alternative minimum tax carryover of $2,338.71 are
+  Return DT's. The memo lines, each a chosen figure entered as the form prints it. Line
+  10105 (tax-exempt income for emergency services volunteers) 1500.00. Line 10120
+  (commissions included on line 10100) 5000.00: the General Guide says this is already in
+  line 10100, so total income stays nil. Line 10130 (wage-loss replacement contributions)
+  2000.00. Line 11410 (disability benefits included on line 11400) 3000.00, already in line
+  11400 and so not added. Line 11701 (UCCB amount designated to a dependant) 1200.00. Line
+  11905 (EI maternity and parental benefits and PPIP benefits) 4000.00, already in line
+  11900 and so not added. Line 12799 (total under line 15, support payments received)
+  6000.00. Line 20600 (pension adjustment) 7000.00. Line 21999 (total under line 45, support
+  payments made) 9000.00. Line 26600 (specified foreign property over CAN$100,000) 1, Yes.
+  Schedule 15 line 68930 (first FHSA opened in 2025) 1, a tick. Line 59 and line 68960
+  (qualifying withdrawals) 8000.00. Line 68965 (home address is the same) 1, a tick.
+  Schedule 11 line 32005 (tick, cannot be a full-time student) 1, a tick, with no full-time
+  months (line 32020, 0, a chosen figure). Line 32010 (months enrolled as a part-time
+  student) 6, a chosen figure, below the form's maximum of 12. None of these lines is added
+  to any total, so the totals are the same as in Return DT.
+sources:
+  - >-
+    CRA, T1 2025 Ontario edition, page 1 and page 2, "Line 10105: Tax-exempt income for emergency
+    services volunteers", "Line 10120: Commissions included on line 10100 (box 42 of all T4
+    slips)", "Line 10130: Wage-loss replacement contributions", "Line 11410: Disability benefits
+    included on line 11400 (box 16 of the T4A(P) slip)", "Line 11701: UCCB amount designated to a
+    dependant", "Line 11905: EI maternity and parental benefits, and provincial parental insurance
+    plan (PPIP) benefits", "Line 12799: Total", "Line 20600: Pension adjustment (box 52 of all T4
+    slips and box 034 of all T4A slips)", "Line 21999: Total", and "Line 26600: Did you own or hold
+    specified foreign property where the total cost amount of all such property, at any time in
+    2025, was more than CAN$100,000? 1 Yes or 2 No" (docs/cra-forms-2025/5006-r-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, Schedule 11 2025, "Line 32005: Tick this box if you were eligible for the disability tax
+    credit in 2025 ..." and "Line 32010: Number of months you were enrolled as a part-time
+    student(box 24 of your Form T2202 and column B of your forms TL11A and TL11C) (maximum 12)"
+    (docs/cra-forms-2025/5000-s11-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s11/5000-s11-25e.txt
+  - >-
+    CRA, Schedule 15 2025, "Line 68930: Tick this box if you opened your first FHSA in 2025 or
+    became a successor holder in 2025 ...", "Line 59 and line 68960: Total amount of qualifying
+    withdrawals made in 2025 (box 20 of your 2025 T4FHSA slips)", and "Line 68965: Tick this box
+    if the address on page 1 of your return is the same as the address of the home that you
+    bought or built under the FHSA." (docs/cra-forms-2025/5000-s15-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s15/5000-s15-25e.txt
+  - >-
+    CRA, General Income Tax and Benefit Guide 2025, "Line 10120 - Commissions included on line
+    10100": "This amount is already included in your income on line 10100 of your return. Do not
+    add it again when you calculate your total income on line 15000 of your return."; line 11410:
+    "This amount is already included in box 20. Do not add it to your income on your return.";
+    line 11905: "These amounts are already included on line 11900 of your return so do not add
+    them again when you calculate your total income on line 15000 of your return."
+    (docs/cra-forms-2025/5000-g-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/flipped_property_disposed: "1"
+  ca/emergency_services_volunteer_exempt_income: "1500.00"
+  ca/t4_commissions: "5000.00"
+  ca/wage_loss_replacement_contributions: "2000.00"
+  ca/t4ap_disability_benefits: "3000.00"
+  ca/uccb_designated_to_dependant: "1200.00"
+  ca/ei_maternity_parental_benefits: "4000.00"
+  ca/support_payments_received_total: "6000.00"
+  ca/pension_adjustment: "7000.00"
+  ca/fhsa_first_opened_in_year: "1"
+  ca/fhsa_qualifying_withdrawals: "8000.00"
+  ca/fhsa_home_address_same: "1"
+  ca/support_payments_made_total: "9000.00"
+  ca/specified_foreign_property_over_100k: "1"
+  ca/tuition_cannot_be_full_time_student: "1"
+  ca/tuition_part_time_months: "6"
+  ca/tuition_full_time_months: "0"
+expected:
+  ca-on/return:
+    - ca/total_income: "0.00"
+      ca/net_income: "0"
+      ca/taxable_income: "0"
+      ca/total_credits: "0.00"
+      ca/refund_or_balance_owing: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/emergency_services_volunteer_exempt_income: "1500.00"
+      ca/t4_commissions: "5000.00"
+      ca/wage_loss_replacement_contributions: "2000.00"
+      ca/t4ap_disability_benefits: "3000.00"
+      ca/uccb_designated_to_dependant: "1200.00"
+      ca/ei_maternity_parental_benefits: "4000.00"
+      ca/support_payments_received_total: "6000.00"
+      ca/pension_adjustment: "7000.00"
+      ca/fhsa_first_opened_in_year: "1"
+      ca/fhsa_qualifying_withdrawals: "8000.00"
+      ca/fhsa_home_address_same: "1"
+      ca/support_payments_made_total: "9000.00"
+      ca/specified_foreign_property_over_100k: "1"
+      ca/tuition_cannot_be_full_time_student: "1"
+      ca/tuition_part_time_months: "6"
+      ca/tuition_full_time_months: "0"
+  ca/schedule_3:
+    - ca/flipped_property: "1"

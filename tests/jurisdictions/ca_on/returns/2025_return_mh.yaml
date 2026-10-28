@@ -1,0 +1,253 @@
+# Return MH: Form T936 "Calculation of Cumulative Net Investment Loss (CNIL) to December 31, 2025"
+# as its own form, with every line of Parts 1 to 3 and Chart A non-zero. The form's two exports,
+# Chart A line 14 (2,500.00) and Part 3 line C (350.00), are what Form T657 Step 1 line 15 and
+# Step 2 line 16 read.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MH: a single 2025 Ontario resident in Canada throughout 2025, aged 18 or older at the end
+  of 2025 (chosen figures), with no Form T2048 (so T2048 lines 17215, 17216 and the 2025 part of
+  line 17218 are 0) and no capital gains deduction claimed. Form T936 Chart A. Line 1 (line 19900
+  of Schedule 3) is the included capital gain 3,850.00 (50% of the capital gain 7,700.00 = shares
+  3,000.00 + qualified small business corporation shares 2,000.00 + qualified farm or fishing
+  property 1,000.00 + its foreclosure 400.00 + T3 gains 800.00 + the reserve on line 19200 of
+  500.00) plus the partnership gains at full inclusion 600.00 = 4,450.00; line 2 = 0.00; line 3 =
+  4,450.00 - 0.00 = 4,450.00; lines 4, 5 and 6 = 2,000.00, 1,000.00 and 400.00, so line 7 =
+  3,400.00; line 8 (line 19200 of Schedule 3 is reported, 500.00; line 13 of Form T2017) = 500.00;
+  line 9 = 3,900.00; line 10 = 50%; line 11 = 3,900.00 x 50% = 1,950.00; line 12 = 0.00; line 13 =
+  1,950.00 - 0.00 = 1,950.00; line 14 = 4,450.00 - 1,950.00 = 2,500.00. Lines 15 and 16 (box 21 and
+  box 30 of the T3 slips) are 800.00 and 300.00, so line 17 = 500.00; line 18 = 50%; line 19 =
+  500.00 x 50% = 250.00; line 20 = 2,500.00 - 250.00 = 2,250.00. Part 1: line 1 (line 22100,
+  1,000.00 carrying charges + 200.00 interest) = 1,200.00; line 2 (net rental loss, the T776 net
+  rental income being -900.00) = 900.00; line 3 (non-active partnership losses) = 700.00; line 4
+  (line 25100) = 300.00; line 5 = 50% x 2,000.00 = 1,000.00; line 6 (68080) = 150.00; line 7 =
+  the lesser of line 20 of Chart A, 2,250.00, and line 25300 of the return, 1,800.00 = 1,800.00;
+  line A = 1,200 + 900 + 700 + 300 + 1,000 + 150 + 1,800 = 6,050.00. Part 2: line 8 (lines 12000
+  and 12100) = 0.00 + 3,000.00 = 3,000.00; line 9 (net rental income, a loss) = 0.00; line 10
+  (partnership net income 1,000.00 less its taxable capital gains 400.00) = 600.00; line 11
+  (68100) = 250.00; line 12 (68110) = 50% x 800.00 (the recovery of exploration and development
+  expenses, all of line 13000) = 400.00; line 13 = 2,250.00; line B
+  = 3,000 + 0 + 600 + 250 + 400 + 2,250 = 6,500.00. Part 3: line 14 = 6,050.00; line 15 =
+  4,000.00; line 16 = 10,050.00; line 17 (line 17218 of Form T2048 for 2024 to 2025) = 700.00 +
+  0.00 = 700.00; line 18 = 10,050.00 - 700.00 = 9,350.00; line 19 = 6,500.00; line 20 = 2,500.00;
+  line 21 = 9,000.00; line C = 9,350.00 - 9,000.00 = 350.00. Form T657 Step 1 line 15 is 2,500.00
+  and Step 2 line 16 is 350.00. The rest of the return does not change with Form T936: total
+  income = 3,000.00 - 900.00 + 800.00 + 1,000.00 + 4,450.00 = 8,350.00; net income = 8,350.00 -
+  1,200.00 (line 22100) - 2,000.00 (line 22400) = 5,150.00; taxable income = 5,150.00 - 1,800.00
+  (line 25300) - 300.00 (line 25100) = 3,050.00.
+sources:
+  - >-
+    CRA, Form T936 (2025), Chart A: "Enter the amount from line 19900 of Schedule 3, Capital Gains
+    or Losses (if negative, show the amount in brackets). If the amount is "0", do not complete
+    lines 2 to 17, and enter "0" on line 20." (line 1); "Line 1 minus line 2" (line 3); "Add lines 4
+    to 6 (if negative, show in brackets)." (line 7); "If you reported an amount on line 19200 of
+    Schedule 3, enter the amount from line 13 of Form T2017" (line 8); "Inclusion rate x 50%" (line
+    10); "Line 9 multiplied by the percentage on line 10 (if negative, enter "0")" (line 11); "Line
+    3 minus line 13 (if negative, enter "0")" (line 14); "Line 15 minus line 16" (line 17); "Line 14
+    minus line 19 (if negative, enter "0") Additional investment income" (line 20)
+    (docs/cra-forms-2025/t936-25e.pdf)
+  - >-
+    CRA, Form T936 (2025), Part 1 "Add lines 1 to 7. Total investment expenses claimed in 2025";
+    "50% of exploration and development expenses (line 22400)" (line 5); "Additional investment
+    expenses: ... enter whichever is less: line 20 in Chart A or line 25300 of your return."
+    (line 7); Part 2 "Net income from limited or non-active partnership (line 12200) other than
+    taxable capital gains" (line 10); "50% of income from the recovery of exploration and
+    development expenses (line 13000)" (line 12); "Add lines 8 to 13. Total investment income
+    reported in 2025" (line B) (docs/cra-forms-2025/t936-25e.pdf)
+  - >-
+    CRA, Form T936 (2025), Part 3: "Line 14 plus line 15" (line 16); "Cumulative investment
+    expenses (line 16 minus line 17)" (line 18); "Cumulative investment income (total of lines 19
+    and 20)" (line 21); "Line 18 minus line 21 (if negative, enter "0") CNIL to December 31, 2025"
+    (line C); "report the amount from line C on line 16 of Step 2 of Form T657"
+    (docs/cra-forms-2025/t936-25e.pdf)
+inputs:
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "900"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes: []
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/total_carrying_charges: "1000"
+  ca/total_interest_expenses: "200"
+  ca/limited_partnership_at_risk_amount: "1000"
+  ca/limited_partnership_losses_of_other_years: "300"
+  ca/exploration_and_development_expenses: "2000"
+  ca/t5_investment_income: "3000"
+  ca/other_income: "800"
+  ca/qbt_exploration_recovery_income: "800"
+  ca/net_partnership_income: "1000"
+  ca/partnership_taxable_capital_gains: "400"
+  ca/non_active_partnership_losses: "700"
+  ca/other_investment_expenses: "150"
+  ca/other_property_income: "250"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "10000"
+      ca/disposition_adjusted_cost_base: "7000"
+      ca/disposition_outlays: "0"
+  ca/qsbcs_dispositions:
+    - ca/disposition_proceeds: "5000"
+      ca/disposition_adjusted_cost_base: "3000"
+      ca/disposition_outlays: "0"
+  ca/qffp_dispositions:
+    - ca/disposition_proceeds: "2400"
+      ca/disposition_adjusted_cost_base: "1400"
+      ca/disposition_outlays: "0"
+      ca/disposition_farm_loss_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+  ca/qffp_foreclosure_dispositions:
+    - ca/disposition_proceeds: "1000"
+      ca/disposition_adjusted_cost_base: "600"
+      ca/disposition_outlays: "0"
+      ca/disposition_farm_loss_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+  ca/t3_capital_gains_or_losses: "800"
+  ca/partnership_gains_at_full_inclusion: "600"
+  ca/t2017_line_1: "500"
+  ca/unapplied_net_capital_losses_2001_to_2024: "5000"
+  ca/net_capital_losses_claimed: "1800"
+  ca/t936_investment_expenses_previous_years: "4000"
+  ca/t936_investment_income_previous_years: "2500"
+  ca/t936_t2048_line_17218_for_2024: "700"
+  ca/t936_t3_box_21_capital_gains: "800"
+  ca/t936_t3_box_30_capital_gains: "300"
+expected:
+  ca-on/return:
+    - ca/total_income: "8350.00"
+      ca/net_income: "5150.00"
+      ca/taxable_income: "3050.00"
+      ca/schedule_3_line_19200: "500.00"
+      ca/schedule_3_line_19900: "4450.00"
+      ca/capital_gain: "7700.00"
+      ca/included_capital_gain: "3850.00"
+      ca/taxable_capital_gains: "4450.00"
+      ca/net_capital_losses_of_other_years: "1800.00"
+      ca/t657_net_non_eligible_taxable_capital_gains: "2500.00"
+      ca/t657_cumulative_net_investment_loss: "350.00"
+      ca/annual_gains_limit_2025: "1950.00"
+      ca/cumulative_gains_limit_2025: "1600.00"
+      ca/net_income_before_adjustments: "5150.00"
+      ca/other_payments_limit_income: "5150.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_capital_loss_balance_2001_to_2024: "3200.00"
+      ca/share_proceeds: "10000"
+      ca/qsbcs_proceeds: "5000"
+      ca/qffp_proceeds: "2400"
+      ca/qffp_foreclosure_proceeds: "1000"
+  ca/t936:
+    - ca/t936_net_rental_loss: "900.00"
+      ca/t936_partnership_losses: "700.00"
+      ca/t936_other_investment_expenses: "150.00"
+      ca/t936_exploration_expenses_at_half: "1000.00"
+      ca/t936_additional_investment_expenses: "1800.00"
+      ca/t936_total_investment_expenses: "6050.00"
+      ca/t936_investment_income: "3000.00"
+      ca/t936_net_rental_income: "0.00"
+      ca/t936_partnership_taxable_capital_gains: "400.00"
+      ca/t936_partnership_income_other_than_gains: "600.00"
+      ca/t936_other_property_income: "250.00"
+      ca/t936_recovery_of_exploration_expenses: "400.00"
+      ca/t936_additional_investment_income: "2250.00"
+      ca/t936_total_investment_income: "6500.00"
+      ca/t936_line_16: "10050.00"
+      ca/t936_t2048_line_17218_for_2025: "0.00"
+      ca/t936_t2048_line_17218: "700.00"
+      ca/t936_cumulative_investment_expenses: "9350.00"
+      ca/t936_cumulative_investment_income: "9000.00"
+      ca/t936_cnil: "350.00"
+      ca/t936_t2048_line_17215: "0.00"
+      ca/t936_chart_a_line_3: "4450.00"
+      ca/t936_chart_a_line_7: "3400.00"
+      ca/t936_t2017_line_13: "500.00"
+      ca/t936_chart_a_line_8: "500.00"
+      ca/t936_chart_a_line_9: "3900.00"
+      ca/t936_chart_a_line_9_at_inclusion_rate: "1950.00"
+      ca/t936_chart_a_line_11: "1950.00"
+      ca/t936_t2048_line_17216: "0.00"
+      ca/t936_chart_a_line_13: "1950.00"
+      ca/t936_chart_a_line_14_before_gate: "2500.00"
+      ca/t936_chart_a_line_14: "2500.00"
+      ca/t936_chart_a_line_17: "500.00"
+      ca/t936_chart_a_line_19_before_gate: "250.00"
+      ca/t936_chart_a_line_19: "250.00"
+      ca/schedule_3_line_19900: "4450.00"
+      ca/net_rental_income: "-900"
+      ca/carrying_charges_interest_expenses_and_other_expenses: "1200"
+      ca/taxable_dividends: "0.00"
+      ca/interest_and_other_investment_income: "3000"
+      ca/qsbcs_gain_or_loss: "2000"
+      ca/qffp_gain_or_loss: "1000"
+      ca/qffp_foreclosure_gain_or_loss: "400"
+      ca/schedule_3_line_19200: "500.00"
+      ca/capital_gain: "7700.00"
+      ca/included_capital_gain: "3850.00"

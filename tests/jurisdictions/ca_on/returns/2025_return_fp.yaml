@@ -1,0 +1,171 @@
+# Return FP: Form T1-M, the moving expenses deduction (T1 line 21900), for two moves, each on its own
+# copy of the form. The return reports employment income of 20,000.00 (T4), so each move's line 28,
+# at most that income, is within the income lines it is taken from (the larger, 20,000.00, is at the
+# bound). Move 1
+# reaches every subtotal of Part 4 (lines 8, 11, 15, 20 and 23), the old home maintenance cap, the
+# carry-forward of line 30 and the reimbursement; move 2 reaches the "if negative, enter 0" branch of
+# line 26 and the zero branch of line 29 and line 30.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return FP: a 2025 Ontario filer who moved twice to work and reports employment income of 20,000.00
+  on this return (T4 box 14). The net eligible income at the new work location of each move is that
+  move's line 28: a chosen figure, at most the employment income of the return, so it is not refused. Figures are chosen, as CRA prints no worked example of Form T1-M; each line is
+  worked out by hand from the form text below.
+
+  Move 1 (chosen figures): old home 150 kilometres from the new work location, new home 60
+  kilometres from it, so line 3 is 150 minus 60 = 90, at least 40, so the move claims.
+  Transportation and storage costs 3,200.00 (line 4). Travel 600.50 (line 5), accommodation 400.25
+  (line 6) and meals 250.75 (line 7): line 8 is 600.50 + 400.25 + 250.75 = 1,251.50. Temporary
+  lodging 300.00 (line 9) and temporary meals 150.40 (line 10): line 11 is 300.00 + 150.40 = 450.40.
+  Lease cancellation 1,200.00 (line 12), incidental costs 380.60 (line 13), and old home maintenance
+  of 5,000.00 entered on line 14, the most the form takes ("maximum $5,000"; a larger amount is
+  refused, not capped); line 15 is 1,200.00 + 380.60 + 5,000.00 = 6,580.60. Selling commission
+  12,000.00 (line 16), legal fees 1,500.00 (line 17), advertising 800.00 (line 18) and other selling
+  costs 350.00 (line 19): line 20 is 12,000.00 + 1,500.00 + 800.00 + 350.00 = 14,650.00. Buying legal
+  fees 1,800.00 (line 21) and taxes 2,200.00 (line 22): line 23 is 4,000.00. Line 24 "Add lines 4, 8,
+  11, 15, 20 and 23" is 3,200.00 + 1,251.50 + 450.40 + 6,580.60 + 14,650.00 + 4,000.00 = 30,132.50.
+  A reimbursement of 2,500.00 (line 25), so line 26 "Line 24 minus line 25" is 30,132.50 - 2,500.00
+  = 27,632.50. Line 27 is 27,632.50. Net eligible income 18,000.00 (line 28). Line 29 "Enter
+  whichever is less: amount from line 27 or line 28" is the lesser of 27,632.50 and 18,000.00, which
+  is 18,000.00, the amount entered on line 21900. Line 30 "Line 27 minus line 28" is 27,632.50 -
+  18,000.00 = 9,632.50, carried forward; it is not negative, so the "if negative, enter 0" rule does
+  not apply.
+
+  Move 2 (chosen figures): old home 80 kilometres from the new work location, new home 30
+  kilometres from it, so line 3 is 80 minus 30 = 50, at least 40, so the move claims. Transportation
+  and storage costs 1,000.00 (line 4) and nothing else (lines 5 to 23 are 0.00), so line 24 is
+  1,000.00. Reimbursement 1,500.00 (line 25) exceeds line 24, so line 26 is 1,000.00 - 1,500.00 =
+  -500.00, which the form says to enter as "0" (the "if negative, enter 0" branch), so line 26 and
+  line 27 are 0.00. Net eligible income 20,000.00 (line 28). Line 29 is the lesser of 0.00 and
+  20,000.00, 0.00. Line 30 is 0.00 - 20,000.00, below zero, so 0.00.
+
+  Line 21900 is the total of the line 29 amounts of the two moves: 18,000.00 + 0.00 = 18,000.00.
+  Line 23300 "Add lines 35 to 52" takes line 21900 and the enhanced CPP contributions of line 22215,
+  165.00 (1% of 16,500.00, Schedule 8 on the employment income, one copy), so the deductions are
+  18,000.00 + 165.00 = 18,165.00 and line 23400 "Line 34 minus line 53" is 20,000.00 - 18,165.00 =
+  1,835.00 (net income before adjustments). The alternative minimum tax carryover available for 2026
+  is 2,451.91 and the largest amount subject to second additional CPP contributions is 9,900.00. The
+  carryover is the engine's figure for the 20,000.00 of employment income, not hand-traced here: to
+  be confirmed against the T1 and Form T691 lines. The other payments limit income is line 23400
+  (1,835.00). The net refund of 1,633.00 (refund or balance owing -1,633.00) is also the
+  engine's figure, not hand-traced here: to be confirmed against the T1 lines.
+sources:
+  - >-
+    CRA, Form T1-M, Moving Expenses Deduction (2025, Protected B when completed), page 1: "You must
+    complete a separate Form T1-M for each eligible move. Enter the total from line 29 in Part 4 of
+    each form on line 21900 of your Income Tax and Benefit Return." and "Complete a separate form
+    for each move to calculate your eligible moving expenses deduction."
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1-m/t1-m-25e.pdf
+  - >-
+    CRA, Form T1-M, Part 2 "Calculation of distance in kilometres": "Line 1 minus line 2" (line 3)
+    and "If the amount on line 3 is less than 40 kilometres, you cannot deduct your moving expenses."
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1-m/t1-m-25e.pdf
+  - >-
+    CRA, Form T1-M, Part 4 "Allowable moving expenses": "Add lines 5 to 7." (line 8), "Line 9 plus
+    line 10" (line 11), "Add lines 12 to 14." (line 15), "Costs to maintain your old home when vacant
+    (maximum $5,000)" (line 14), "Add lines 16 to 19." (line 20), "Line 21 plus line 22" (line 23),
+    "Add lines 4, 8, 11, 15, 20 and 23." (line 24), "Line 24 minus line 25 (if negative, enter "0")"
+    (line 26), "Amount from line 26 of the previous page" (line 27), "Enter whichever is less: amount from
+    line 27 or line 28." (line 29, "Enter this amount on line 21900 of your return.") and "Line 27
+    minus line 28 (if negative, enter "0")" (line 30).
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1-m/t1-m-25e.pdf
+  - >-
+    CRA, T1-2025 Ontario edition (form 5006-R): "Line 44 and line 21900: Moving expenses (complete
+    Form T1-M)"; "Line 53 and line 23300: Add lines 35 to 52."
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "20000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "20000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "20000"
+  ca/t2204_premiums_deducted: "328.00"
+  ca/cpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "981.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/schedule_8_instances:
+    - {}
+  ca/t1_m_moves:
+    - ca/moving_old_home_distance: "150"
+      ca/moving_new_home_distance: "60"
+      ca/moving_transportation_and_storage: "3200"
+      ca/moving_travel_expenses: "600.50"
+      ca/moving_accommodation_expenses: "400.25"
+      ca/moving_meal_expenses: "250.75"
+      ca/moving_temporary_lodging: "300"
+      ca/moving_temporary_meals: "150.40"
+      ca/moving_lease_cancellation: "1200"
+      ca/moving_incidental_costs: "380.60"
+      ca/moving_old_home_maintenance: "5000"
+      ca/moving_selling_commission: "12000"
+      ca/moving_selling_legal_fees: "1500"
+      ca/moving_selling_advertising: "800"
+      ca/moving_selling_other_costs: "350"
+      ca/moving_buying_legal_fees: "1800"
+      ca/moving_buying_taxes: "2200"
+      ca/moving_reimbursement: "2500"
+      ca/moving_net_eligible_income: "18000"
+    - ca/moving_old_home_distance: "80"
+      ca/moving_new_home_distance: "30"
+      ca/moving_transportation_and_storage: "1000"
+      ca/moving_travel_expenses: "0"
+      ca/moving_accommodation_expenses: "0"
+      ca/moving_meal_expenses: "0"
+      ca/moving_temporary_lodging: "0"
+      ca/moving_temporary_meals: "0"
+      ca/moving_lease_cancellation: "0"
+      ca/moving_incidental_costs: "0"
+      ca/moving_old_home_maintenance: "0"
+      ca/moving_selling_commission: "0"
+      ca/moving_selling_legal_fees: "0"
+      ca/moving_selling_advertising: "0"
+      ca/moving_selling_other_costs: "0"
+      ca/moving_buying_legal_fees: "0"
+      ca/moving_buying_taxes: "0"
+      ca/moving_reimbursement: "1500"
+      ca/moving_net_eligible_income: "20000"
+expected:
+  ca/t1_m:
+    - ca/moving_distance_difference: "90"
+      ca/moving_travel_expenses_subtotal: "1251.50"
+      ca/moving_temporary_living_subtotal: "450.40"
+      ca/moving_old_home_maintenance_checked: "5000.00"
+      ca/moving_lease_and_incidental_subtotal: "6580.60"
+      ca/moving_selling_subtotal: "14650.00"
+      ca/moving_buying_subtotal: "4000.00"
+      ca/moving_total_expenses: "30132.50"
+      ca/moving_net_expenses: "27632.50"
+      ca/moving_net_expenses_carried: "27632.50"
+      ca/moving_lesser_of_expenses_and_income: "18000.00"
+      ca/moving_expenses_claim: "18000.00"
+      ca/moving_unused_expenses_before_test: "9632.50"
+      ca/moving_unused_expenses: "9632.50"
+    - ca/moving_distance_difference: "50"
+      ca/moving_travel_expenses_subtotal: "0.00"
+      ca/moving_temporary_living_subtotal: "0.00"
+      ca/moving_old_home_maintenance_checked: "0.00"
+      ca/moving_lease_and_incidental_subtotal: "0.00"
+      ca/moving_selling_subtotal: "0.00"
+      ca/moving_buying_subtotal: "0.00"
+      ca/moving_total_expenses: "1000.00"
+      ca/moving_net_expenses: "0.00"
+      ca/moving_net_expenses_carried: "0.00"
+      ca/moving_lesser_of_expenses_and_income: "0.00"
+      ca/moving_expenses_claim: "0.00"
+      ca/moving_unused_expenses_before_test: "0.00"
+      ca/moving_unused_expenses: "0.00"
+  ca-on/return:
+    - ca/moving_expenses_deduction: "18000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "20000.00"
+      ca/deductions_from_total_income: "18165.00"
+      ca/net_income_before_adjustments: "1835.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_payments_limit_income: "1835.00"
+      ca-on/net_refund: "1633.00"
+      ca/refund_or_balance_owing: "-1633.00"

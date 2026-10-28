@@ -1,0 +1,427 @@
+# Return AL: a single 2025 Ontario resident, aged 20 (a chosen figure) and resident in
+# Canada throughout 2025, with no employment income, whose only income is $10,000 of
+# dividends other than eligible dividends from a private corporation controlled by a
+# relative, all of it split income subject to the tax on split income (Form T1206). The
+# dividends are received with no information slip (a chosen figure), so they are grossed
+# up by the Federal Worksheet's line 15 "Applicable rate 115%" to 11,500.00, the amount on
+# lines 12000 and 12010 of the T1 and in total income (line 15000). T1206 Part 1 takes
+# lines 1 and 2 as 11,500 (the filer's classification under the form's pages 1 to 4, the
+# caller's), line 3 as 0, and line 4 is 11,500; it joins T1 line 23200 as a part of the
+# deductions (line 23300), so net income before adjustments (line 23400), net income (line
+# 23600) and taxable income (line 26000) are 0.00 and the federal basic tax is 0.00. The
+# TOSI-adjusted net income (line 6) is line 4 plus line 5, 11,500 + 0.00 = 11,500.00,
+# which stands in for the net income in the basic personal amount (line 30000, 16,129.00
+# as 11,500.00 is at or below 177,882), the age amount (line 30100), the adjusted family
+# net income of Schedule 6 (line 7) and column 1 line 1 of the refundable medical expense
+# supplement (line 45200). T1206 Part 2: line 8 is 33% of line 4, 3,795.00 (T1 lines
+# 40424, 120 and 121); line 10 adds line 9 (line 41500, 0), line 14 is 14.5% of the
+# disability amounts of lines 31600 and 31800 (a chosen 0 each), 0.00, so line 15 is
+# 3,795.00; line 16 is the 11,500 of Part 1 line 1 and line 17 the 11,500 of line 2, so
+# line 18 is 0.00, line 19 is 9.0301% x 11,500 = 1,038.4615, rounded half-up to the cent,
+# 1,038.46, line 20 is 15.0198% of 0.00, 0.00 and line 21 is 1,038.46; line 22 is 3,795.00
+# - 1,038.46 = 2,756.54 and line 24 the same (line 23, the foreign tax credit, is 0.00:
+# no income from foreign sources). Line 29 is the federal tax less credits of the T1 (line 41700, 417.83) plus
+# line 41500 (0), and line 30 is the greater of line 24 and line 29, 2,756.54, which, with
+# the special taxes (line 41800, 0), is the net federal tax (line 42000). T1206 Part 3 is
+# the Ontario side: line 33 (ON428 line 54, line 61510) is 20.53% x 11,500 = 2,360.95;
+# lines 34 and 35 (the disability amounts of ON428 lines 58440 and 58480, a chosen 0 each)
+# make line 36 0.00 and line 38 0.00, so line 39 is 2,360.95; line 42 is 10% of the 0.00 of
+# line 18, and line 45 is 2.9863% of the 11,500 of line 2 = 343.4245, rounded half-up to
+# the cent, 343.42, so line 46 is 343.42 and line 47 is 2,360.95 - 343.42 = 2,017.53,
+# which is line 50 (line 49 is 0.00, no income from foreign sources). Line 51 is ON428 line 88, and line 52 the more
+# of lines 50 and 51, 2,017.53, which is the Ontario tax before the health premium. The
+# chart of line 23500
+# does not apply (no old age security, EI benefits or net federal supplements), so line 23500 is 0 and
+# line 23600 equals line 23400. T1206 line 33C is 2,360.95 / 5.05% = 46,751.49 (a declared
+# output: nothing reads it). T1206 line 8A is 3,795.00 / 14.5% = 26,172.41, added to the taxable income
+# on line 11 of Schedule 11. Amounts are quoted decimal strings, never
+# floats; counts are quoted digit strings. A line or input this return leaves out
+# is blank, 0, and is checked to compute to 0; intermediate lines that are listed are checked
+# too.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 20, a
+  chosen figure (18 or older at the end of 2025, born in 1961 or later, so the age amount is
+  not claimed), with no spouse or common-law partner and no dependants, with no employment
+  income and dividends of $10,000.00 from a private corporation controlled by a relative,
+  dividends other than eligible dividends received with no information slip (chosen
+  figures), all of them split income. The grossed-up amount (Federal Worksheet line 16) is
+  $10,000 x 115% = $11,500.00, on lines 12000 and 12010, so the taxable dividends and the
+  total income (line 15000) are $11,500.00 and the taxable dividends other than eligible are
+  $11,500.00. T1206 Part 1 lines 1 (68330), 2 (68340) and 4 (68360) are $11,500, a chosen
+  classification, and line 3 is $0; line 4 is part of line 23200, so total deductions (line
+  23300) are $11,500.00, the net income before adjustments (line 23400) is $11,500.00 -
+  $11,500.00 = $0.00 and so are net income (line 23600) and taxable income (line 26000). The
+  TOSI-adjusted net income (T1206 line 6) is $11,500 + $0.00 = $11,500.00. The CPP
+  contributions and EI premiums are $0.00 with no employment income, as are the Canada
+  employment amount and the working income. The basic personal amount (line 30000) is
+  $16,129.00: $11,500.00 is $177,882 or less. The non-refundable credit amounts are that
+  alone, $16,129.00; at 14.5% (line 33800) they are $2,338.705, rounded half-up to the cent:
+  $2,338.71 (line 35000). The federal dividend tax credit (line 40425, Federal Worksheet)
+  counts the dividends with no slip: line A is $11,500.00 and line B (line 12010) is
+  $11,500.00, so line 6 is $11,500.00 x 9.0301% = $1,038.4615, rounded half-up to the cent:
+  $1,038.46, line C is $11,500.00 - $11,500.00 = $0.00, line 7 is $0.00 x 15.0198% = $0.00,
+  and line 40425 is $1,038.46 (no slip, so line 5 is $0). Line 125 is $2,338.71 + $1,038.46
+  = $3,377.17. The federal tax on split income (T1206 line 8, T1 line 40424) is 33% x
+  $11,500 = $3,795.00, so line 121 is the federal basic tax of $0.00 plus it, $3,795.00, and
+  the basic federal tax (line 126, line 42900) is $3,795.00 - $3,377.17 = $417.83, as are
+  lines 132 and 134 (no investment tax credit recapture, no logging tax credit) and the
+  federal tax less credits (line 139, line 41700, with credits against the federal tax of
+  $0.00). T1206 Part 2: line 7 is the $11,500; line 8 is $3,795.00; line 9 (line 41500) is
+  $0, line 10 is $3,795.00; lines 11 (line 31600) and 12 (line 31800) are $0 (chosen: not
+  disabled), line 13 is $0, line 14 is 14.5% x $0 = $0.00 and line 15 is $3,795.00 - $0.00 =
+  $3,795.00; line 16 is $11,500 and line 17 is $11,500, line 18 is $0.00, line 19 is $11,500
+  x 9.0301% = $1,038.4615, rounded half-up to the cent: $1,038.46, line 20 is $0.00 x
+  15.0198% = $0.00 and line 21 is $1,038.46; line 22 is $3,795.00 - $1,038.46 = $2,756.54;
+  line 8A is line 8 divided by 14.5%: $3,795.00 / 0.145 = $26,172.4137, rounded half-up to
+  the cent: $26,172.41, which Schedule 11 adds to the amount on its line 11 (the taxable
+  income of $0.00, at or below $57,375): $0.00 + $26,172.41 = $26,172.41, and line 13 is
+  that less the credit amounts of line 101 (the basic personal amount, $16,129.00) =
+  $10,043.41, line 14 (unused tuition from 2024, $0) is $0 and line 15 is $10,043.41;
+  line 24 is line 22, $2,756.54 (line 23 is $0.00, no income from foreign sources); line 25 (line 40600) is $417.83,
+  line 26 (line 41600) is $0.00, line 27 is $417.83, line 28 (line 41500) is $0 and line 29
+  is $417.83; line 30 is the greater of $2,756.54 and $417.83: $2,756.54, and line 42000 is
+  line 30 plus line 41800 ($0.00): $2,756.54, so the floor of line 24 applies here, because
+  the dividend tax credit and the basic personal amount reduce the T1 tax below it. The
+  Ontario side: the basic personal amount is $12,747 alone, at 5.05% (ON428 line 58840)
+  $643.7235, rounded half-up to the cent: $643.72, off the Ontario basic tax of $0.00, so
+  the Ontario tax on taxable income less the credits (ON428 line 53) is $0. The Ontario tax
+  on split income (T1206 Part 3 line 33, ON428 line 54, line 61510) is 20.53% x the total
+  split income of $11,500.00 = $2,360.95; the Ontario disability amounts of lines 34 and 35
+  (ON428 lines 58440 and 58480) are a chosen $0 each, so line 36 and line 38 (5.05% of it)
+  are $0.00 and line 39 is $2,360.95 - $0.00 = $2,360.95; line 42 is 10% of the $0.00 of
+  line 18, $0.00, and line 45 is 2.9863% x the $11,500 of line 2 = $343.4245, rounded
+  half-up to the cent: $343.42, so line 46 is $343.42 and line 47 is $2,360.95 - $343.42 =
+  $2,017.53, as is line 50 (line 49 is $0.00, no income from foreign sources). Line 33C is line 33A (line 33, $2,360.95)
+  divided by the 5.05% of line 33B (Chart C column 3): $2,360.95 / 0.0505 = $46,751.4851,
+  rounded half-up to the cent: $46,751.49, a declared output that nothing on the return
+  reads. The Ontario tax with the tax on split
+  income (ON428 line 55) is $0.00 + $2,360.95 = $2,360.95. The surtax base (line 65) is
+  line 63 (that $2,360.95) less line 64, the tax on split income (line 54, $2,360.95), not
+  below zero: $0.00, so the surtax (lines 66 to 68) is $0.00 and the Ontario tax with
+  surtax (line 69) is $2,360.95. The Ontario dividend tax credit (Worksheet ON428, line
+  61520) reads the whole lines 12000 and 12010, $11,500.00 each: line 1 is $11,500.00 x
+  2.9863% = $343.4245, rounded half-up to the cent: $343.42, line C is $0.00 and line 2 is
+  $0.00, so line 61520 is $343.42, which comes off the Ontario tax with surtax, not below
+  zero: $2,360.95 - $343.42 = $2,017.53. The Ontario tax reduction amounts (line 77) are
+  the basic reduction of $294.00; twice them, $588.00, less $2,017.53 (line 79) is below
+  zero, so the reduction (line 80) is $0.00 and the Ontario tax after it (line 81) is
+  $2,017.53. The LIFT credit (ON428 line 85) is 5.05% of the employment income of $0,
+  $0.00, and the qualifying donations for line 87 are a chosen $0.00, so lines 86 and 88
+  are $2,017.53. T1206 line 51 is that line 88, and line 52 is the more of line 50
+  ($2,017.53) and line 51 ($2,017.53): $2,017.53. The Ontario health premium (line 89) is
+  read from its chart on the taxable income plus the total split income (T1206 line 4),
+  $0.00 + $11,500.00 = $11,500.00, which is at or below $20,000: $0.00, so the Ontario tax
+  (line 90) is line 52 plus it, $2,017.53. On the T1, the net
+  federal tax (line 42000) is $2,756.54 and the total payable (line 43500) is $2,756.54 +
+  $2,017.53 = $4,774.07. The refundable medical expense supplement (line 45200) is $0: the
+  working income is $0 (employment income less lines 20700, 21200, 22900 and 23100 and the
+  net self-employment income, each a chosen $0), under the $4,390 the worksheet asks for,
+  and there is no amount on line 21500 or line 33200; its column 1 line 1 is the
+  TOSI-adjusted net income, so lines 3, 5 and 6 are $11,500.00, under the $33,294.00 of line
+  7 (line 8 is $0). The Canada workers benefit (line 45300, Schedule 6) is $0 with a working
+  income of $0, and the adjusted family net income (line 15) is the TOSI-adjusted net
+  income, $11,500.00, under $26,855. The income tax deducted (line 43700) is a chosen $0:
+  the corporation withholds nothing from the dividends. The total credits (line 48200) are
+  $0, and the refund or balance owing (line 167) is the total payable less them, $4,774.07 -
+  $0 = $4,774.07: positive, so a balance owing, and the refund (line 48400) and the net
+  refund (line 46600) are $0. Every amount computed from a rate, fraction, amount or chart
+  on the forms is rounded half-up to the cent, each line being a dollars-and-cents box; here
+  that changes the federal non-refundable tax credits, the federal and Ontario dividend tax
+  credits, the Ontario non-refundable tax credits and the lines that follow from them. The
+  lines that only add, subtract, compare or choose take amounts already in cents, so the
+  refund or balance owing is in cents too. No capital gain, unused or new RRSP contribution,
+  union dues, child care expenses, medical expenses, donations, political contributions,
+  flow-through shares or work placements (each a chosen $0 or empty), so the other credits
+  and the Ontario credits are $0.00. The age amount (line 30100), the spouse or common-law
+  partner amount (line 30300) and the Canada caregiver amount for a spouse or common-law
+  partner (line 30425) are each $0: the filer is taken as born in 1961 or later, claims no
+  spouse amount (count 0) and has no spouse eligible for the Canada caregiver amount (line
+  51090, count 0), and the spouse's net income entered is $0 (to be confirmed).
+sources:
+  - >-
+    CRA, Form T1206 "Tax on Split Income" 2025 (docs/cra-forms-2025/t1206-25e.pdf, confirmed
+    2026-10-19 from the PDF; no .txt published), Part 1 - TOSI-adjusted net income: "Part of
+    the taxable amount of dividends (eligible and other than eligible) described in the
+    information section received from taxable Canadian corporations" (68330, line 1); "Part
+    of the taxable amount of dividends other than eligible dividends, included on line 1,
+    from taxable Canadian corporations" (68340, line 2); "All other split income (see "Split
+    income" on page 1)" (line 3); "Total split income: line 1 plus line 3 Enter this amount
+    on line 23200 of your return." (68360, line 4); "Net income from line 23600 of your tax
+    return (or the amount you would have entered if the instructions on line 23600 read "if
+    negative, show in brackets")" (line 5); "TOSI-adjusted net income: line 4 plus line 5"
+    (line 6); "Use the TOSI-adjusted net income from line 6 of this form in place of your
+    net income from line 23600 to calculate the federal amounts you can claim, if
+    applicable, for the following amounts: (If the TOSI–adjusted net income at line 6 is
+    negative, use the negative value when it is part of an adjusted net income calculation,
+    otherwise use zero.)", with the basic personal amount on line 30000 (line 6 "at line 3
+    of your Federal Worksheet for line 30000"), the age amount on line 30100 (line 2), the
+    refundable medical expenses supplement on line 45200 (line 1 of column 1) and the Canada
+    workers benefit on line 45300 (line 7 of column 1 of Schedule 6). Line 1 is 11,500 and
+    line 2 is 11,500 (the amount of line 1 that is dividends other than eligible dividends),
+    a chosen classification, line 3 is 0, so line 4 is 11,500 + 0 = 11,500, line 5 is the
+    net income before adjustments, 0.00, and line 6 is 11,500 + 0.00 = 11,500.00. These
+    lines take amounts already in cents.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+  - >-
+    CRA, Form T1206 2025, Part 2 - Federal tax on split income: "Total split income from
+    line 4" (line 7); "Amount from line 7 multiplied by 33% Enter this amount on line 40424
+    of your return. Federal tax on split income" (line 8); "Amount from line 41500 of your
+    return" (line 9); "Line 8 plus line 9" (line 10); "Amount from line 31600 of your
+    return" (line 11); "Amount from line 31800 of your return" (line 12); "Line 11 plus line
+    12" (line 13), multiplied by "14.5%" (line 14); "Line 10 minus line 14" (line 15);
+    "Amount from line 1 of Part 1" (line 16); "Amount from line 2 of Part 1" (line 17),
+    multiplied by "9.0301%" (line 19); "Line 16 minus line 17 (if negative, enter "0")"
+    (line 18), multiplied by "15.0198%" (line 20); "Line 19 plus line 20" (line 21); "Line
+    15 minus line 21" (line 22); "Line 22 minus line 23 (if negative, enter "0")" (line 24);
+    "Amount from line 40600 of your return" (line 25); "Amount from line 41600 of your
+    return" (line 26); "Line 25 minus line 26 (if negative, enter "0")" (line 27); "Amount
+    from line 41500 of your return" (line 28); "Line 27 plus line 28" (line 29); "Enter
+    whichever is more: the amount from line 24 or line 29." (line 30); "Add the amount from
+    line 30 to the amount from line 41800 of your return, and enter the result on line 42000
+    of your return." Line 7 is 11,500; line 8 is 11,500 x 33% = 3,795.00; lines 9, 11, 12,
+    13 and 14 are 0, so line 10 is 3,795.00 + 0 and line 15 is 3,795.00 - 0.00 = 3,795.00;
+    line 16 is 11,500 and line 17 is 11,500, so line 18 is 11,500 - 11,500 = 0.00; line 19
+    is 11,500 x 9.0301% = 1,038.4615, rounded half-up to the cent, 1,038.46; line 20 is 0.00
+    x 15.0198% = 0.00; line 21 is 1,038.46 + 0.00; line 22 is 3,795.00 - 1,038.46 =
+    2,756.54; line 23 is 0.00 (no income from foreign sources), so line 24 is line 22 (not negative):
+    2,756.54. Line 25
+    is 417.83, line 26 is 0.00, line 27 is 417.83, line 28 is 0, line 29 is 417.83; line 30
+    is the more of 2,756.54 and 417.83: 2,756.54, and line 42000 is 2,756.54 + 0.00 =
+    2,756.54. Lines 14, 19 and 20 are dollars-and-cents boxes, rounded half-up to the cent;
+    the others take amounts already in cents.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+  - >-
+    CRA, the T1-2025 Ontario edition return (form 5006-R,
+    docs/cra-forms-2025/5006-r-25e.txt, confirmed 2026-10-19): "Line 52 and line 23200:
+    Other deductions"; "Line 53 and line 23300: Add lines 35 to 52."; "Line 54 and line
+    23400: Line 34 minus line 53 (if negative, show in brackets) Net income before
+    adjustments"; "Line 99 and line 31600: Disability amount for self (if you were under 18
+    years of age, use Federal Worksheet; if not, claim $10,138)"; "Line 100 and line 31800:
+    Disability amount transferred from a dependant (use Federal Worksheet)"; "Line 119:
+    Enter the amount from line 76."; "Line 120 and line 40424: Federal tax on split income
+    (TOSI) (complete Form T1206)"; "Line 121 and line 40400: Line 119 plus line 120 =";
+    "Line 125: Add lines 122 to 124. ="; "Line 126 and line 42900: Line 121 minus line 125
+    (if negative, enter "0")"; "Line 132: Line 130 plus line 131 ="; "Line 134 and line
+    40600: Line 132 minus line 133 (if negative, enter "0") Federal tax ="; "Line 138 and
+    line 41600: Add lines 135 to 137. ="; "Line 139 and line 41700: Line 134 minus line 138
+    (if negative, enter "0") ="; "Line 140 and line 41500: Advanced Canada workers benefit
+    (ACWB) (complete Schedule 6)"; "Line 141 and line 41800: Special taxes"; "Line 142 and
+    line 42000: Add lines 139 to 141. Net federal tax =". Line 52 (line 23200) takes the
+    T1206 line 4 of 11,500 (the form: "Enter this amount on line 23200 of your return.") and
+    no other deduction, so line 53 is 11,500.00 and line 54 is 11,500.00 - 11,500.00 = 0.00.
+    Line 119 is 0.00 and line 120 is 3,795.00, so line 121 is 3,795.00; line 126 is 3,795.00
+    - 3,377.17 = 417.83 (line 125 is the line 122 of 2,338.71 plus the line 123 of 1,038.46,
+    line 124 not triggered); lines 132 and 134 are 417.83 (lines 131 and 133 are 0), line
+    138 is 0.00 and line 139 is 417.83. Lines 140 and 141 are 0. The disability amount for
+    self (line 31600) is a chosen 0 and is not part of the T1's total of credit amounts
+    while it is not wired; line 142 is not read here, T1206 line 42000 replacing it (the
+    more of T1206 lines 24 and 29, plus line 41800).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, the 2025 Federal Worksheet (form 5000-D1, docs/cra-forms-2025/5000-d1-25e.txt,
+    confirmed 2026-10-19), "Line 30000 - Basic personal amount": "If the amount from line
+    23600 of your return is:" "$177,882 or less, enter $16,129 on line 30000 of your
+    return"; "Lines 12000 and 12010 - Taxable amount of dividends from taxable Canadian
+    corporations": "Taxable amount of dividends if you did not receive an information slip";
+    "Line 14: Actual amount of dividends other than eligible dividends received"; "Line 15:
+    Applicable rate 115%"; "Line 16: Line 14 multiplied by the percentage from line 15
+    Include this amount on line 12010 of your return."; "Line 17: Line 13 plus line 16.
+    Include this amount on line 12000 of your return."; "Line 40425 - Federal dividend tax
+    credit": "Line A: Amount from line 12000 of your return (Note 1)"; "Line 6: Amount from
+    line 12010 of your return (Note 1) Line B Multiplied by 9.0301%"; "Line 2: Amount A
+    minus amount B Line C multiplied by 15.0198%"; "Line 8: Line 6 plus line 7"; "Line 9:
+    Line 5 plus line 8 Enter this amount on line 40425 of your return." Line 14 is 10,000,
+    line 16 is 10,000 x 115% = 11,500.00 and, with no eligible dividends (line 13 is 0.00),
+    line 17 is 11,500.00: lines 12010 and 12000 are 11,500.00 each. No slips, so line 5 is
+    0; line A is 11,500.00 and line B is 11,500.00, line 6 is 11,500.00 x 9.0301% =
+    1,038.4615, rounded half-up to the cent, 1,038.46, line C is 11,500.00 - 11,500.00 =
+    0.00, line 7 is 0.00 x 15.0198% = 0.00, line 8 is 1,038.46 and line 9, and so line
+    40425, is 0 + 1,038.46 = 1,038.46. The basic personal amount is 16,129 as the
+    TOSI-adjusted net income of 11,500.00 is 177,882 or less (T1206: line 6 stands in for
+    the net income at line 3 of this worksheet), rounded half-up to the cent: 16,129.00.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    The arithmetic on the 2025 rates for dividends received of 10,000 and a TOSI-adjusted
+    net income of 11,500.00: grossed-up dividends 10,000 x 115% = 11,500.00; federal tax on
+    split income 33% x 11,500 = 3,795.00; federal credit amounts 16,129.00 at 14.5% =
+    2,338.705, rounded to 2,338.71; federal dividend tax credit 11,500.00 x 9.0301% =
+    1,038.4615, rounded to 1,038.46; tax after credits 3,795.00 - (2,338.71 + 1,038.46) =
+    417.83; T1206 line 22 3,795.00 - 1,038.46 = 2,756.54; Ontario credit amounts 12,747.00
+    at 5.05% = 643.7235, rounded to 643.72; Ontario dividend tax credit 11,500.00 x 2.9863%
+    = 343.4245, rounded to 343.42.
+  - >-
+    CRA, Form T1206 2025, Part 3 - Provincial or territorial tax payable by an individual with
+    split income, Ontario, and Form ON428 (docs/cra-forms-2025/5006-c-25e.txt): "Line 54 and
+    line 61510: Ontario tax on split income (complete Form T1206)"; "Line 55: Line 53 plus
+    line 54"; "Line 64: Ontario tax on split income from line 54"; "Line 65: Line 63 minus
+    line 64 (if negative, enter "0")"; "Line 69: Line 62 plus line 68"; "Line 90: Line 88
+    plus line 89 ... Ontario tax"; and the health premium chart's "Line 1: Enter your taxable
+    income from line 26000 of your return", with the total split income (line 4) added to it.
+    Chart C gives Ontario 20.53% (tax on split income), 5.05% (disability amount), 10%
+    (eligible dividends) and 2.9863% (other than eligible dividends). Line 33 is 11,500 x
+    20.53% = 2,360.95; line 36 is 0 + 0 and line 38 is 5.05% x 0 = 0.00; line 39 is 2,360.95
+    - 0.00; line 42 is 10% x 0.00 = 0.00; line 45 is 2.9863% x 11,500 = 343.4245, rounded
+    half-up to the cent, 343.42; line 46 is 0.00 + 343.42; line 47 is 2,360.95 - 343.42 =
+    2,017.53; line 50 is line 47 (line 49 is 0.00, no income from foreign sources); line 52 is the more of line 50
+    (2,017.53) and line 51 (ON428 line 88, 2,017.53). ON428 line 55 is 0.00 + 2,360.95,
+    line 65 is 2,360.95 - 2,360.95 = 0.00, line 69 is 2,360.95 + 0.00, line 71 is 2,360.95 -
+    343.42 = 2,017.53 and the Ontario tax reduction is 588.00 less 2,017.53, not below
+    zero: 0.00. The health premium income is 0.00 + 11,500.00. Lines 33, 38, 42 and 45 are
+    dollars-and-cents boxes, rounded half-up to the cent; the others take amounts already in
+    cents.
+  - >-
+    CRA, Form T1206 2025, Part 2 and "TOSI-adjusted taxable income" on page 5, and Schedule 11
+    (docs/cra-forms-2025/5000-s11-25e.txt): "TOSI-adjusted taxable income Amount from line 8 ÷
+    14.5% = 8A"; "If you are completing a federal Schedule 11, calculate line 8A and add it to
+    the amount on line 11 of Schedule 11"; Schedule 11 "Line 11: Amount from line 76 of your
+    return divided by 14.5% =" (or the line 26000 amount if it is $57,375 or less); "Line 12:
+    Enter the amount from line 101 of your return"; "Line 13: Line 11 minus line 12 (if
+    negative, enter "0") =". Line 8A is 3,795.00 / 14.5% = 26,172.4137, rounded half-up to the
+    cent (a dollars-and-cents box, the owner's decision), 26,172.41; line 11 plus line 8A is
+    0.00 + 26,172.41; line 13 is 26,172.41 - 16,129.00 = 10,043.41.
+  - >-
+    CRA, Form T1206 2025, Part 3 "TOSI-adjusted taxable income": "Amount from line 33 ... 33A";
+    "Tax rate that applies to your province or territory from column 3 in Chart C on page 5 ÷ %
+    33B" (Ontario's row: "ON 20.53% 5.05% 10% 2.9863%"); "Amount from line 33A divided by the
+    tax rate you entered on line 33B = 33C". Line 33C is 2,360.95 / 0.0505 = 46,751.4851,
+    rounded half-up to the cent (a dollars-and-cents box, the owner's decision), 46,751.49.
+inputs:
+  ca/other_dividends_received_without_a_slip: "10000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/split_income_dividends: "11500"
+  ca/split_income_dividends_other_than_eligible: "11500"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_dividends_grossed_up: "11500.00"
+      ca/dividends_without_a_slip_grossed_up: "11500.00"
+      ca/taxable_dividends_other_than_eligible: "11500.00"
+      ca/taxable_dividends: "11500.00"
+      ca/total_income: "11500.00"
+      ca/total_split_income: "11500.00"
+      ca/deductions_from_total_income: "11500.00"
+      ca/tosi_adjusted_net_income: "11500.00"
+      ca/tosi_adjusted_net_income_not_below_zero: "11500.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/non_refundable_credit_amounts: "16129.00"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/dividends_amount_a: "11500.00"
+      ca/dividends_amount_b: "11500.00"
+      ca/other_dividends_credit: "1038.46"
+      ca/no_slip_dividend_tax_credit: "1038.46"
+      ca/dividend_tax_credit: "1038.46"
+      ca/credits_against_basic_federal_tax: "3377.17"
+      ca/federal_tax_on_split_income: "3795.00"
+      ca/tosi_adjusted_taxable_income: "26172.41"
+      ca/tuition_income_base: "0.00"
+      ca/tuition_income_with_tosi: "26172.41"
+      ca/credit_amounts_subtotal: "16129.00"
+      ca/tuition_income_less_credits: "10043.41"
+      ca/tuition_income_remaining: "10043.41"
+      ca/federal_tax_with_split_income: "3795.00"
+      ca/federal_tax_after_credits: "417.83"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/dividends_amount_a: "11500.00"
+      ca-on/dividends_amount_b: "11500.00"
+      ca-on/other_dividends_credit: "343.42"
+      ca-on/dividend_tax_credit: "343.42"
+      ca-on/dividend_credit_from_line_57: "343.42"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_on_split_income: "2360.95"
+      ca-on/tosi_adjusted_taxable_income: "46751.49"
+      ca-on/split_income_line_36: "0.00"
+      ca-on/split_income_line_38: "0.00"
+      ca-on/split_income_line_39: "2360.95"
+      ca-on/split_income_line_42: "0.00"
+      ca-on/split_income_line_45: "343.42"
+      ca-on/split_income_line_46: "343.42"
+      ca-on/split_income_line_47: "2017.53"
+      ca-on/split_income_line_50: "2017.53"
+      ca-on/ontario_tax_with_split_income: "2360.95"
+      ca-on/ontario_tax_on_split_income_for_surtax: "2360.95"
+      ca-on/ontario_surtax_base: "0.00"
+      ca-on/ontario_tax_with_surtax: "2360.95"
+      ca-on/ontario_tax_after_dividend_credit: "2017.53"
+      ca-on/ontario_tax_reduction: "0.00"
+      ca-on/ontario_tax_after_reduction: "2017.53"
+      ca-on/ontario_tax_after_lift_credit: "2017.53"
+      ca-on/ontario_tax_after_food_credit: "2017.53"
+      ca-on/split_income_line_52: "2017.53"
+      ca-on/health_premium_income: "11500.00"
+      ca-on/ontario_health_premium: "0"
+      ca-on/ontario_tax: "2017.53"
+      ca-on/seniors_care_family_net_income: "11500.00"
+      ca/federal_tax_with_itc_recapture: "417.83"
+      ca/federal_tax_less_credits: "417.83"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/split_income_line_10: "3795.00"
+      ca/split_income_line_15: "3795.00"
+      ca/split_income_line_19: "1038.46"
+      ca/split_income_line_21: "1038.46"
+      ca/split_income_line_22: "2756.54"
+      ca/split_income_line_24: "2756.54"
+      ca/split_income_line_29: "417.83"
+      ca/split_income_line_30: "2756.54"
+      ca/net_federal_tax: "2756.54"
+      ca/total_payable: "4774.07"
+      ca/adjusted_family_net_income: "11500.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca/medical_supplement_line_6: "11500.00"
+      ca/refund_or_balance_owing: "4774.07"
+      ca/amt_part_1_subtotal: "0"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "0.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "417.83"
+      ca/amt_regular_net_federal_tax_payable: "417.83"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "2756.54"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"

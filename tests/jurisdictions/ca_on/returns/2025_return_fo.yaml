@@ -1,0 +1,403 @@
+# Return FO: an Ontario resident with employment income of 250,000 who is not subject to
+# alternative minimum tax in 2025 and applies a minimum tax carryover from earlier years. It
+# computes Form T691 (alternative minimum tax) Parts 1 to 8 line by line, Part 8 being the
+# carryover claim against the 2025 tax (the maximum, the amount applied, the balance and the
+# amount for 2026), Form T2038(IND) (investment tax credit) Parts A to E with the claim limited
+# by amount I (the minimum tax does not apply), a refund of the credit, and Form ON428 lines
+# 56 to 61 (the Ontario carryover credit). Amounts are quoted decimal strings, never floats; counts
+# are quoted digit strings. The figures are chosen (no CRA example exists) and worked out by hand
+# from the form text, as the description shows.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single filer, an Ontario resident for all of 2025, with no spouse or common-law partner and no
+  dependant, aged 18 or older at the end of 2025 and resident in Canada throughout 2025, with
+  employment income (T4 box 14) of 250,000.00, Canada Pension Plan contributions at the 2025
+  maximums (4,034.10 base and first additional, 396.00 second additional) and employment
+  insurance premiums at the maximum 1,077.48 on 65,700.00. All figures are chosen. There is no
+  other income and no capital gain, so total income (line 15000) is 250,000.00. The enhanced CPP
+  contributions (line 22215) are 1% x 67,800.00 = 678.00 plus 396.00 = 1,074.00, so net income
+  (line 23600) and taxable income (line 26000) are 250,000.00 - 1,074.00 = 248,926.00. Federal tax on
+  taxable income (5006-R Part A, column 4) is 29% x (248,926.00 - 177,882.00) + 36,495.57 =
+  20,602.76 + 36,495.57 = 57,098.33. The basic personal amount (Federal Worksheet, net income between
+  177,882.00 and 253,414.00) is 14,538.00 + (1,591.00 - 71,044.00 / 75,532.00 x 1,591.00) =
+  14,538.00 + 94.53 = 14,632.53. The credit amounts are that, the base CPP contributions 3,356.10
+  (4.95% x 67,800.00), 1,077.48 and the Canada employment amount 1,471.00, 20,537.11 x 14.5% =
+  2,977.88095, rounded half-up to 2,977.88 (lines 33800 and 35000).
+  The filer has a minimum tax carryover from earlier years of 12,000.00 (Part 8 line 1) and an
+  unapplied 2018 carryover of 3,000.00, and claims 8,000.00 against 2025 tax (T1 line 40427, a
+  chosen amount not above line 12 of Part 8). Basic federal tax (line 42900) is 57,098.33 - 2,977.88 -
+  8,000.00 = 46,120.45.
+  Form T691 Part 1: line 1 is 248,926.00. Rental and leasing property: the filer claimed 7,000.00 of
+  capital cost allowance and carrying charges (line 5) on income before them of 2,000.00 (line 6),
+  so line 7 is 5,000.00 and line 12 is 253,926.00. With no capital gains, security options,
+  limited partnership or other losses of other years, lines 27, 33, 34 and 44 are 253,926.00. Line 58
+  is the enhanced CPP deduction of 1,074.00, so line 63 and line 78 are 1,074.00, line 80 is 50%
+  of it, 537.00, and line 82 is 253,926.00 + 537.00 = 254,463.00. With no dividends, lifetime capital
+  gains exemption or qualifying business transfer deduction, line 93 is 254,463.00 and line 95 is
+  254,463.00 - 177,882.00 = 76,581.00. Line 97 is 20.5% x 76,581.00 = 15,699.105, rounded half-up to
+  15,699.11. Line 98 is 50% x 2,977.88 = 1,488.94, there is no donation, logging or section 119
+  credit, so line 102 is 1,488.94 and the minimum amount (line 103) is 15,699.11 - 1,488.94 =
+  14,210.17.
+  Part 2: line 5 is 57,098.33 - 2,977.88 = 54,120.45, line 6 is the carryover applied, 8,000.00, and
+  line 7 is 46,120.45. Part 3: line 2 is 48% x 46,120.45 = 22,137.816, rounded half-up to 22,137.82;
+  with no Form T2203 percentage and a resident of Canada, lines 3 and 4 are 0. Line 6 is 46,120.45, line
+  7 (the foreign tax credit) and line 8 are 0, so line 10 is 46,120.45. The federal political
+  contribution tax credit for contributions of 1,275.00 is the maximum 650.00, the labour-sponsored
+  funds credit for a net cost of 2,000.00 is 15% x 2,000.00 = 300.00, and the investment tax credit
+  on Part 3 line 12 is the whole claim of 10,000.00 (a chosen claim not above amount I), so line 14
+  is 10,950.00 and line 15 is 46,120.45 - 10,950.00 = 35,170.45.
+  Part 4 has no foreign income or tax. Part 5: line 3 is 14,210.17, line 6 is 35,170.45 and line 7
+  is 0.00, so line 11 is 0.00 and the filer is not subject to alternative minimum tax. Part 6 (not
+  used) gives 14,210.17 on line 14. Part 7: line 7 is 10,950.00, line 8 is 46,120.45 - 10,950.00 =
+  35,170.45 and line 14 is 14,210.17 less 35,170.45, 0.00. Part 8: line 4 is 54,120.45 (line 2 plus the
+  recapture of 0.00), line 8 is 10,950.00 (no tax on split income, no logging credit, line 41600 of
+  10,950.00), line 9 is 43,170.45, line 10 is 14,210.17 and line 11, the maximum that can be applied in
+  2025, is 28,960.28. Line 12, the lesser of line 1 (12,000.00) and line 11, is 12,000.00 as the
+  maximum claim; the filer applies 8,000.00. Line 13 is 12,000.00 - 8,000.00 = 4,000.00, line 14 is 0.00,
+  line 15 is 4,000.00 and line 17, less the unapplied 2018 carryover of 3,000.00, is 1,000.00 for 2026.
+  Form T2038(IND): the filer has SR&ED expenditures of 40,000.00 (x 0.15 = 6,000.00) and qualified
+  property of 30,000.00 (x 0.10 = 3,000.00), so amount A is 9,000.00, and flow-through critical mineral
+  mining expenditures of 20,000.00 (x 0.30 = 6,000.00), so amount F is 6,000.00. Part D: amount 1 (the
+  opening balance) is 15,000.00, amount 4 is 15,000.00, amount 5 is 30,000.00 and, less 2,000.00
+  allocated to graduated rate estate beneficiaries, amount G is 28,000.00. Amount 9 is the federal tax
+  (line 40600, 46,120.45) less the political credit, 45,470.45, and amount H is that less the
+  labour-sponsored credit, 45,170.45, so amount I is the lesser of G and H, 28,000.00. The line 7 amount
+  of Form T691 Part 5 is 0.00, so the filer continues at amount 15 and claims 10,000.00 (at most I, the
+  claim limit; T1 line 41200); amount J (H + the foreign tax credit 0.00 - the minimum amount 14,210.17 =
+  30,960.28) and amount K (the lesser of G and J, 28,000.00) are worked out but not used. Part E: amount
+  3 is 28,000.00 - 15,000.00 = 13,000.00 and amount 6 is I less the opening balance, 13,000.00, so amount
+  L, the credit available for carryback, is 0.00 and no carryback is requested. Amount 9 is 9,000.00 -
+  2,000.00 = 7,000.00, amount 12 is 10,000.00 - 15,000.00 = -5,000.00, amount 14 is -5,000.00, amount 16
+  is 0.00 (amount 14 less F, floored at 0) and amount N is 7,000.00; the filer designates 5,000.00 as a
+  refund, which is 5,000.00 x 0.40 = 2,000.00 (T1 line 45400).
+  Form ON428: the Ontario tax on taxable income (Part A, column 5) is 13.16% x (248,926.00 -
+  220,000.00) + 20,957.60 = 3,806.6616, rounded half-up to 3,806.66, plus 20,957.60 = 24,764.26; the
+  credits are 5.05% x (12,747.00 + 3,356.10 + 1,077.48) = 867.61929, rounded half-up to 867.62, so line 53
+  (and lines 56 and 58, with no Ontario dividend tax credit) is 23,896.64. Line 59 is 24.63% x 8,000.00 =
+  1,970.40, line 60 is the lesser of line 58 and line 59, 1,970.40, and line 61 is 23,896.64 - 1,970.40 =
+  21,926.24. Worksheet ON428, with no minimum tax payable, has line 1 of 0.00, line 3 (line 2, the amount
+  of ON428 line 65, 21,926.24) of 21,926.24, line 4 of 20% x (21,926.24 - 5,710.00) = 3,243.248, rounded
+  half-up to 3,243.25 and line 5 of 36% x (21,926.24 - 7,307.00) = 5,262.9264, rounded half-up to 5,262.93,
+  so line 6 is 8,506.18, which is also ON428 line 68 (line 7), and lines 8 and 9 are 0.00.
+  The rest of Form ON428: line 62 is 21,926.24, line 69 is 21,926.24 + 8,506.18 = 30,432.42 and, with
+  no dividend credit and no minimum tax (line 72 is 0.00), lines 71 and 73 are 30,432.42. The Ontario
+  tax reduction (line 78, 2 x 294.00 = 588.00, less line 79) is 0.00, there is no provincial foreign tax
+  credit, so lines 81 and 83 are 30,432.42. The LIFT credit (Schedule ON428-A Part A) is 5.05% x
+  250,000.00 = 12,625.00, at most 875.00, less 5% x (248,926.00 - 32,500.00) = 10,821.30: 0.00, so lines
+  86 and 88 are 30,432.42. The Ontario health premium (taxable income above 200,600.00) is 900.00, so the
+  Ontario tax (line 90, T1 line 42800) is 31,332.42. Net federal tax (T1 line 42000) is line 41700,
+  46,120.45 - 10,950.00 = 35,170.45, and the total payable (line 148) is 35,170.45 + 31,332.42 =
+  66,502.87. The only credit among lines 150 to 165 is the refund of investment tax credit (line
+  45400, 2,000.00): no tax was deducted, and there is no CPP or EI overpayment, medical expense
+  supplement, Canada workers benefit (working income far above its limit) or provincial credit. The
+  balance owing (line 167) is 66,502.87 - 2,000.00 = 64,502.87.
+sources:
+  - >-
+    CRA, Form T691 (2025), docs/cra-forms-2025/t691-25e.pdf (confirmed from the PDF; no .txt
+    published): "Taxable income from line 26000 of your return"; "CCA and carrying charges (2)
+    claimed on rental and leasing property (included on line 12600 of your return)"; "Net income
+    from rental and leasing property before CCA and carrying charges (if negative, enter "0")";
+    "Line 5 minus line 6 (if negative, enter "0")" "67830 ="; "Add lines 1, 4, 7, and 11."; "Add
+    lines 54 to 62."; "Add lines 63, 68, and 77."; "Applicable Rate" "× 50%"; "Line 78 multiply by
+    the percentage from line 79"; "Line 80 plus line 81"; "Line 83 minus line 92 (if negative,
+    enter "0")"; "Basic exemption" "177,882.00"; "Line 93 minus line 94 (if negative, enter "0")";
+    "Federal tax rate" "× 20.5%"; "Net non-refundable tax credits (line 33800 of your return)" "×
+    50% ="; "Add lines 98 to 101."; "Line 97 minus line 102 (if negative, enter "0")" "Minimum
+    amount"; "Minimum tax carryover applied in 2025 from line 12 of Part 8"; "Line 5 minus line 6"
+    "Basic federal tax"; "Multiply the amount from line 1 by 48%."; "Add lines 1, 4, and 5.";
+    "Investment tax credit amount up to, but not more than the amount I of Form T2038(IND)"; "Add
+    lines 11 to 13."; "Line 10 minus line 14 (if negative, enter "0")" "Regular net federal tax
+    payable"; "Line 1 minus line 2 (if negative, enter "0")" "Net minimum tax payable"; "Line 4
+    minus line 5 (if negative, enter "0")"; "Line 3 minus line 6 (if negative, enter "0")"; "If
+    line 11 is "0", you are not subject to alternative minimum tax."; "Enter whichever is more:
+    amount from line 3 or line 4."; "Enter whichever is more: amount from line 12 or line 13.
+    Enter this amount on line 41700 of your return."; "Line 4 minus line 7"; "Line 1 minus line 13
+    (if negative, enter "0")" "Additional taxes paid for minimum tax carryover"; "Minimum tax
+    carryover from previous years (2018 to 2024)"; "Tax payable before minimum tax carryover from
+    line 5 of Part 2"; "Recapture of investment tax credit from line 3 of Part C of Form
+    T2038(IND)"; "Line 2 plus line 3"; "Add lines 5 to 7"; "Line 4 minus line 8"; "Minimum amount
+    from line 103 of Part 1"; "Maximum carryover that can be applied in 2025: line 9 minus line 10
+    (if negative, enter "0")"; "Claim an amount that is not more than line 1 or 11, whichever is
+    less."; "Enter this amount on line 40427 of your return."; "Balance of minimum tax carryover
+    available for later years, if any: line 1 minus line 12"; "Additional 2025 taxes for carryover
+    to later years from line 14 of Part 7"; "Line 13 plus line 14"; "Unapplied 2018 minimum tax
+    carryover"; "Total minimum tax carryover available for 2026: line 15 minus line 16".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+  - >-
+    CRA, Form T2038(IND) (25E), docs/cra-forms-2025/t2038-ind-25e.pdf (confirmed from the PDF; no
+    .txt published): "ITC for qualified expenditures for SR&ED (amount from line 559 of Form T661
+    plus applicable amount from box 40* of your T3 slip, minus amounts from lines 67130 and
+    67135)" "× 0.15 ="; "ITC for total investments in qualified property (include applicable
+    amount from box 40* of your T3 slip)" "× 0.10 ="; "Total current-year refundable credits (add
+    amounts 1 to 4)"; "Critical mineral exploration tax credit (CMETC)" "× 0.30 ="; "Total
+    current-year non-refundable tax credits (add amounts B, C, D and E)"; "ITC opening balance and
+    carry forward from prior years (net of expired amounts)"; "Amount 1 plus amount 4";
+    "Adjustment for a graduated rate estate, enter the amount of ITC allocated to beneficiaries
+    from box 40 of your T3 slip"; "Total available investment tax credit (amount 5 minus amount
+    6)"; "Subtotal (amount 7 minus amount 8, if negative, enter "0")"; "Subtotal (amount 9 minus
+    amount 10, if negative, enter "0")"; "Enter the lesser of amount G or H"; "If alternative
+    minimum tax (AMT) does not apply to you, continue at amount 15."; "Subtotal (add amounts 11
+    and 12)"; "Subtotal (amount 13 minus amount 14, if negative, enter "0")"; "Enter the lesser of
+    amount G or J"; "You can claim an ITC up to, but not more than I or K, whichever applies";
+    "Subtotal (amount 1 minus amount 2)"; "Subtotal (amount 4 minus amount 5, if negative enter
+    "0")"; "Total credit available for carryback (amount 3 minus amount 6)"; "Total current-year
+    refundable credit available (amount 7 minus amount 8)"; "Subtotal (amount 10 minus amount
+    11)"; "Total (amount 14 minus amount 15, if negative, enter "0")"; "Total credit available for
+    refund (amount 9 minus amount 16)"; "Amount you designate as a refund of ITC (cannot be more
+    than amount N)"; "The refundable rate" "0.40".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2038-ind/t2038-ind-25e.pdf
+  - >-
+    CRA, T1 (2025), docs/cra-forms-2025/5006-r-25e.txt: "Column 4: Line 26000 is more than
+    $177,882 but not more than $253,414" "Line 73: Rate 29%" "Line 75: 36,495.57"; "Line 77 and
+    line 30000"; "Line 92 and line 31260: Canada employment amount: Enter whichever is less:
+    $1,471 or line 1 plus line 2."; "Line 114: Federal non-refundable tax credit rate 14.5%";
+    "Line 124 and line 40427: Minimum tax carryover (complete Form T691)"; "Line 126 and line
+    42900: Line 121 minus line 125 (if negative, enter "0") Basic federal tax"; "Line 134 and line
+    40600: Line 132 minus line 133 (if negative, enter "0") Federal tax"; "Line 136 and line
+    41200: Investment tax credit (complete Form T2038(IND))"; "Line 138 and line 41600: Add lines
+    135 to 137."; "Line 139 and line 41700: Line 134 minus line 138 (if negative, enter "0")";
+    "Line 158 and line 45400: Refund of investment tax credit (complete Form T2038(IND))"; "Line
+    142 and line 42000"; "Add lines 139 to 141. Net federal tax"; "Line 148 and line 43500: Add
+    lines 143 to 147. Total payable"; "Line 166 and line 48200: Add lines 150 to 165. Total
+    credits"; "Line 167: Line 149 minus line 166".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, Federal Worksheet (form 5000-D1, 2025), docs/cra-forms-2025/5000-d1-25e.txt: "Line 30000
+    - Basic personal amount"; "Line 1: Base amount 14,538.00"; "Line 2: Supplement amount
+    1,591.00"; "Line 5: Line 3 minus line 4"; "Line 6: 75,532.00"; "Line 7: Line 5 divided by line
+    6"; "Line 8: 1,591.00"; "Line 9: Line 7 multiplied by line 8"; "Line 10: Line 2 minus line 9
+    (if negative, enter "0")"; "Line 11: Line 1 plus line 10".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, Form ON428 (form 5006-C, 2025), docs/cra-forms-2025/5006-c-25e.txt: "Column 5: Line 1 is
+    more than $220,000" "Line 5: Rate 13.16%" "Line 7: 20,957.60"; "Line 9 and line 58040: Basic
+    personal amount Claim $12,747"; "Line 45: Ontario non-refundable tax credit rate 5.05%"; "Line
+    53: Line 51 minus line 52 (if negative, enter "0")"; "Line 56: Enter the amount from line 53
+    above."; "Line 58: Line 56 minus line 57 (if negative, enter "0")"; "Line 59: Amount from line
+    40427 of your return"; "multiplied by 24.63%"; "Line 60 and line 61540: Enter whichever is
+    less: amount from line 58 or line 59."; "Line 61: Line 55 minus line 60 (if negative, enter
+    "0")"; "Line 66: (Line 65"; "minus $5,710) multiplied by 20% (if negative, enter "0")"; "minus
+    $7,307) multiplied by 36% (if negative, enter "0")"; "Line 68: Line 66 plus line 67"; "Line
+    69: Line 62 plus line 68"; "Line 71: Line 69 minus line 70 (if negative, enter "0")"; "Line
+    73: Line 71 plus line 72"; "There is an amount on line 72"; "Line 74: Basic reduction 294.00";
+    "Line 81: Line 73 minus line 80 (if negative, enter "0")"; "Line 82: Provincial foreign tax
+    credit (complete Form T2036)"; "Line 83: Line 81 minus line 82 (if negative, enter "0")";
+    "Line 85 and line 62140: Low-income individuals and families tax (LIFT) credit (complete
+    Schedule ON428-A)"; "Line 86: Line 84 minus line 85 (if negative, enter "0")"; "Line 88: Line
+    86 minus line 87 (if negative, enter "0")"; "Line 89: Ontario health premium (complete the
+    chart below)"; "Line 90: Line 88 plus line 89"; "Row 11: Taxable Income more than $200,600"
+    "Ontario health premium: $900".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - >-
+    CRA, Schedule ON428-A (form 5006-A, 2025), docs/cra-forms-2025/5006-a-25e.txt: "Line 1: Amount
+    from line 10100 of your return"; "Line 3: Line 1 plus line 2"; "Line 4: Applicable rate
+    5.05%"; "Line 5: Line 3 multiplied by the percentage from line 4 (maximum $875)"; "Line 13:
+    Line 9 minus line 12 (if negative, enter "0") Your adjusted net income"; "If you were single
+    at the end of the year, complete Part A to calculate your credit."; "Line 16: Individual
+    income threshold 32,500.00"; "Line 17: Line 15 minus line 16 (if negative, enter "0")"; "Line
+    18: Applicable rate 5%"; "Line 20: Line 14 minus line 19 (if negative, enter "0")".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+  - >-
+    CRA, Worksheet ON428 (form 5006-D, 2025), docs/cra-forms-2025/5006-d-25e.txt: "Line 72 -
+    Ontario additional tax for minimum tax purposes"; "Line 1: Amount from line 11 of Part 5 of
+    your Form T691"; "multiplied by 24.63%"; "Line 2: Amount from line 65 of your Form ON428";
+    "Line 3: Line 1 plus line 2"; "Line 4: (Line 3"; "Minus $5,710) multiplied by 20% (if
+    negative, enter "0")"; "Line 5: (Line 3"; "Minus $7,307) multiplied by 36% (if negative, enter
+    "0")"; "Line 6: Line 4 plus line 5"; "Line 7: Amount from line 68 of your Form ON428"; "Line
+    8: Line 6 minus line 7"; "Line 9: Line 1 plus line 8 Enter this amount on line 72 of your Form
+    ON428."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "4"
+  ca/employment_income: "250000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "250000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200), at the
+  # 2025 maximum.
+  ca/t2204_insurable_earnings: "65700"
+  ca/t2204_premiums_deducted: "1077.48"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "4034.10"
+  ca/cpp_t4_second_additional_contributions: "396.00"
+  ca/political_contributions: "1275"
+  ca/labour_sponsored_funds_net_cost: "2000"
+  ca/amt_rental_property_cca_and_carrying_charges: "7000"
+  ca/amt_rental_property_income_before_cca: "2000"
+  ca/amt_minimum_tax_carryover_from_previous_years: "12000"
+  ca/amt_minimum_tax_carryover_applied: "8000"
+  ca/amt_unapplied_2018_carryover: "3000"
+  ca/amt_investment_tax_credit_claim: "10000"
+  ca/itc_opening_balance: "15000"
+  ca/itc_sred_expenditures: "40000"
+  ca/itc_qualified_property: "30000"
+  ca/itc_critical_mineral_expenditures: "20000"
+  ca/itc_graduated_rate_estate_allocation: "2000"
+  ca/itc_claim: "10000"
+  ca/itc_refund_designation: "5000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_capital_gains: "0.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "250000.00"
+      ca/total_income: "250000.00"
+      ca/net_income: "248926.00"
+      ca/deductions_from_net_income: "0.00"
+      ca/taxable_income: "248926.00"
+      ca/cpp_enhanced_contributions_on_return: "1074.00"
+      ca/cpp_base_contributions_on_return: "3356.10"
+      ca/federal_tax_with_split_income: "57098.33"
+      ca/non_refundable_credit_amounts: "20537.11"
+      ca/credit_amounts_at_credit_rate: "2977.88"
+      ca/non_refundable_tax_credits: "2977.88"
+      ca/amt_rental_property_adjustment: "5000.00"
+      ca/amt_tax_shelter_adjustments: "0.00"
+      ca/amt_part_1_subtotal: "253926.00"
+      ca/amt_resource_property_and_flow_through_shares: "0.00"
+      ca/amt_capital_gains_adjustments: "0.00"
+      ca/amt_net_capital_gains_after_adjustments: "0.00"
+      ca/amt_capital_gains_difference: "0.00"
+      ca/amt_capital_gains_added: "0.00"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_adjusted_income_with_gains: "253926.00"
+      ca/amt_security_options_d_total: "0.00"
+      ca/amt_security_option_gifts_deduction: "0.00"
+      ca/amt_security_options_net: "0.00"
+      ca/amt_adjusted_income_with_security_options: "253926.00"
+      ca/amt_security_options_d1_total: "0.00"
+      ca/amt_other_years_losses_total: "0.00"
+      ca/amt_security_options_and_losses_total: "253926.00"
+      ca/amt_limited_partnership_losses_adjustment: "0.00"
+      ca/amt_non_capital_losses_adjustment: "0.00"
+      ca/amt_losses_and_deductions_subtotal: "0.00"
+      ca/amt_deductions_total: "1074.00"
+      ca/amt_non_deductible_property_expenses: "0.00"
+      ca/amt_non_deductible_office_expenses: "0.00"
+      ca/amt_office_expenses_adjustment: "0.00"
+      ca/amt_adjustments_before_rate_total: "1074.00"
+      ca/amt_applicable_rate_amount: "537.00"
+      ca/amt_adjustments_after_rate_total: "254463.00"
+      ca/amt_adjusted_taxable_income: "254463.00"
+      ca/amt_net_adjusted_taxable_income: "76581.00"
+      ca/amt_gross_minimum_amount: "15699.11"
+      ca/amt_non_refundable_credits_adjustment: "1488.94"
+      ca/amt_credits_adjustments_total: "1488.94"
+      ca/amt_minimum_amount: "14210.17"
+      ca/amt_credits_total: "2977.88"
+      ca/amt_tax_payable_before_minimum_tax_carryover: "54120.45"
+      ca/amt_basic_federal_tax: "46120.45"
+      ca/amt_federal_surtax_at_48_percent: "22137.82"
+      ca/amt_federal_surtax_multiple_jurisdictions: "0.00"
+      ca/amt_line_3_has_amount: "0"
+      ca/amt_federal_surtax_if_non_resident: "0.00"
+      ca/amt_federal_surtax: "0.00"
+      ca/amt_federal_tax_with_surtax_and_recapture: "46120.45"
+      ca/amt_foreign_and_logging_credits_total: "0.00"
+      ca/amt_federal_tax_payable: "46120.45"
+      ca/amt_investment_tax_credit: "10000.00"
+      ca/amt_regular_tax_credits_total: "10950.00"
+      ca/amt_regular_net_federal_tax_payable: "35170.45"
+      ca/itc_recapture: "0.00"
+      ca/amt_capital_gains_added_not_below_zero: "0.00"
+      ca/amt_foreign_capital_gains_non_taxable: "0.00"
+      ca/amt_total_foreign_income: "0.00"
+      ca/amt_foreign_income_limit: "0.00"
+      ca/amt_foreign_non_business_tax_two_thirds: "0.00"
+      ca/amt_foreign_taxes_paid: "0.00"
+      ca/amt_foreign_tax_credit_lesser: "0.00"
+      ca/amt_special_foreign_tax_credit: "0.00"
+      ca/amt_net_minimum_tax_payable: "14210.17"
+      ca/amt_regular_net_tax_less_surtax: "35170.45"
+      ca/amt_minimum_tax_after_regular_tax: "0.00"
+      ca/amt_investment_tax_credit_less_part_d: "0.00"
+      ca/amt_alternative_minimum_tax_payable: "0.00"
+      ca/amt_basic_federal_tax_less_split_income_tax: "46120.45"
+      ca/amt_greater_of_basic_tax_and_minimum_amount: "46120.45"
+      ca/amt_federal_tax_under_minimum_tax: "46120.45"
+      ca/amt_part_6_surtax_at_48_percent: "22137.82"
+      ca/amt_part_6_surtax_multiple_jurisdictions: "0.00"
+      ca/amt_part_6_has_amount_on_line_10: "0"
+      ca/amt_part_6_surtax_if_non_resident: "0.00"
+      ca/amt_part_6_federal_surtax: "0.00"
+      ca/amt_part_6_tax_with_surtax: "14210.17"
+      ca/amt_federal_tax_payable_under_minimum_tax: "14210.17"
+      ca/amt_part_7_basic_tax_with_recapture: "46120.45"
+      ca/amt_part_7_credits_total: "10950.00"
+      ca/amt_part_7_tax_less_credits: "35170.45"
+      ca/amt_part_7_foreign_credit_difference: "0.00"
+      ca/amt_part_7_foreign_taxes_paid: "0.00"
+      ca/amt_part_7_foreign_credit_share: "0.00"
+      ca/amt_part_7_tax_less_credits_plus_share: "35170.45"
+      ca/amt_additional_taxes_for_carryover: "0.00"
+      ca/amt_tax_payable_with_itc_recapture: "54120.45"
+      ca/amt_split_income_and_credits_total: "10950.00"
+      ca/amt_tax_payable_after_credits: "43170.45"
+      ca/amt_maximum_carryover_applied: "28960.28"
+      ca/amt_maximum_carryover_claim: "12000.00"
+      ca/amt_minimum_tax_carryover_within_maximum: "8000.00"
+      ca/amt_carryover_balance: "4000.00"
+      ca/amt_carryover_balance_with_additional_taxes: "4000.00"
+      ca/amt_carryover_available_for_2026: "1000.00"
+      ca/itc_sred_credit: "6000.00"
+      ca/itc_agricultural_sred_credit: "0.00"
+      ca/itc_qualified_property_credit: "3000.00"
+      ca/itc_refundable_credits: "9000.00"
+      ca/itc_mineral_exploration_credit: "0.00"
+      ca/itc_critical_mineral_credit: "6000.00"
+      ca/itc_nonrefundable_credits: "6000.00"
+      ca/itc_part_d_subtotal: "15000.00"
+      ca/itc_part_d_amount_5: "30000.00"
+      ca/itc_available: "28000.00"
+      ca/itc_part_d_amount_9: "45470.45"
+      ca/itc_amount_h: "45170.45"
+      ca/itc_amount_i: "28000.00"
+      ca/itc_part_d_amount_13: "45170.45"
+      ca/itc_amount_j: "30960.28"
+      ca/itc_amount_k: "28000.00"
+      ca/itc_part_d_amount_11_applies: "0"
+      ca/itc_claim_limit: "28000.00"
+      ca/investment_tax_credit: "10000.00"
+      ca/itc_part_e_amount_3: "13000.00"
+      ca/itc_part_e_amount_6: "13000.00"
+      ca/itc_amount_l: "0.00"
+      ca/itc_amount_m: "0.00"
+      ca/itc_part_e_amount_9: "7000.00"
+      ca/itc_part_e_amount_12: "-5000.00"
+      ca/itc_part_e_amount_14: "-5000.00"
+      ca/itc_part_e_amount_16: "0.00"
+      ca/itc_amount_n: "7000.00"
+      ca/itc_part_e_amount_17: "5000.00"
+      ca/investment_tax_credit_refund: "2000.00"
+      ca/federal_tax_with_surtax: "46120.45"
+      ca/federal_tax: "46120.45"
+      ca/credits_against_federal_tax: "10950.00"
+      ca/federal_tax_less_credits: "35170.45"
+      ca/federal_tax_line_41700: "35170.45"
+      ca/political_credit: "650.00"
+      ca/labour_sponsored_funds_credit: "300.00"
+      ca-on/ontario_tax_less_dividend_credit: "23896.64"
+      ca-on/minimum_tax_carryover_credit: "1970.40"
+      ca-on/ontario_minimum_tax_carryover_applied: "1970.40"
+      ca-on/ontario_tax_after_minimum_tax_carryover: "21926.24"
+      ca-on/worksheet_on428_line_1: "0.00"
+      ca-on/worksheet_on428_line_2: "21926.24"
+      ca-on/worksheet_on428_line_3: "21926.24"
+      ca-on/worksheet_on428_line_6: "8506.18"
+      ca-on/worksheet_on428_line_7: "8506.18"
+      ca-on/worksheet_on428_line_8: "0.00"
+      ca-on/ontario_minimum_tax: "0.00"
+      ca-on/provincial_foreign_tax_credit: "0.00"
+      ca-on/ontario_tax_with_surtax: "30432.42"
+      ca-on/ontario_tax_before_reduction: "30432.42"
+      ca-on/ontario_tax_after_reduction: "30432.42"
+      ca-on/ontario_health_premium: "900.00"
+      ca-on/ontario_tax: "31332.42"
+      ca/refund_or_balance_owing: "64502.87"
+      ca/net_income_before_adjustments: "248926.00"
+      ca/other_payments_limit_income: "248926.00"
+      ca/share_proceeds: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"

@@ -1,0 +1,130 @@
+# Return DM: T1 line 31400 when the filer elects to split pension income. The same filer as
+# Return DG (employment income, a pension, the volunteer firefighters' amount, the home buyers'
+# amount, home accessibility expenses, one adoption and student loan interest), who is the
+# transferring spouse of a joint election to split the pension with a spouse or common-law
+# partner, so line 31400 is the amount of Form T1032 and the elected amount is deducted on line
+# 21000. The form ca/t1032 computes it, and every figure below is worked by hand from the form
+# text and from Return DG's figures.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DM: Return DG with an election to split pension income. Employment income is $100,000
+  (T1 line 10100, a chosen figure) and other pension income is $20,000 (T1 line 11500, a chosen
+  figure). The Federal Worksheet for line 31400 gives 2,000.00 (line 8 is 20,000.00, the lesser of
+  that and $2,000), as in Return DG. The filer is the transferring spouse (a chosen count of 1) of
+  a joint election of $2,000 (a chosen figure), entered on line 21000. Form T1032: line 1 is the
+  20,000.00 of line 8 of the worksheet, lines 2 and 4 to 8 are 0 (no box 128, no RCA payment), line
+  17 is 20,000.00, line 19 is line 17 (no change of marital status), line 21 is 20,000.00 x 50% =
+  10,000.00 and line 22, the 2,000.00 elected, is not more than line 21. Line 29 is 0 (line 8 is 0),
+  line 30 is 2,000.00 - 0 = 2,000.00 and line 31 is 20,000.00 - 2,000.00 = 18,000.00, so line
+  31400 is the lesser of $2,000 and 18,000.00, 2,000.00, the same as the worksheet, and the federal
+  total of credit amounts (line 33500) is Return DG's 68,633.58. At 14.5% that is 9,951.87, the
+  top-up tax credit is 56.32 and the non-refundable tax credits are 10,008.19, all as in Return DG.
+  The election lowers net income and taxable income by the 2,000.00 deducted on line 21000, from
+  118,926.00 to 116,926.00. The federal tax on 116,926.00 is 14.5% x 57,375 + 20.5% x (114,750 -
+  57,375) + 26% x (116,926 - 114,750) = 8,319.38 + 11,761.88 + 565.76 = 20,647.01 (Return DG's
+  21,167.01 less 26% x 2,000 = 520.00), so the federal tax after credits is 20,647.01 - 10,008.19 =
+  10,638.82. The Ontario credit amounts (ON428 line 58800) are as in Return DG, with the pension
+  income amount 1,762.00 (line 58360, the lesser of 1,762 and the 2,000.00 on line 31400), so the
+  Ontario credit is Return DG's 1,390.90. The Ontario tax on 116,926.00 is Return DG's 8,977.74
+  less 11.16% x 2,000 = 223.20, 8,754.54, less 1,390.90 is 7,363.64 on
+  ontario_tax_less_dividend_credit. The Ontario surtax is 20% x (7,363.64 - 5,710) + 36% x
+  (7,363.64 - 7,307) = 330.73 + 20.39 = 351.12, so ontario_tax is 7,363.64 + 351.12 + 750.00 (the
+  Ontario health premium, as in Return DG) = 8,464.76, and the balance owing is 10,638.82 + 8,464.76
+  = 19,103.58. No income tax was deducted, so form T1032 lines 37 and 40 are 0, line 39 is 0 and
+  T1 line 43700 is 0.
+sources:
+  - >-
+    CRA, Federal Worksheet 2025, Line 31400 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt,
+    confirmed text, docs/cra-forms-2025/5000-d1-25e.txt): "Enter on line 31400 of your return
+    whichever amount is less: line 8 or $2,000. However, if you are electing to split your
+    eligible pension with your spouse or common-law partner, complete Form T1032, Joint Election
+    to Split Pension Income, to calculate the amount to enter on line 31400 of your return
+    instead."
+inputs:
+  ca/t4_cpp_slip_count: "2"
+  ca/employment_income: "100000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "100000"
+  ca/other_pensions_and_superannuation: "20000"
+  ca/volunteer_firefighters_conditions_met: "1"
+  ca/search_and_rescue_conditions_met: "0"
+  ca/home_buyers_claim: "10000"
+  ca/home_accessibility_expenses: "25000"
+  ca/home_accessibility_claimed_by_others: "0"
+  ca/adoption_expense_children:
+    - ca/adoption_child_expenses: "8000"
+  ca/pension_foreign_income: "0"
+  ca/pension_us_ira_income: "0"
+  ca/pension_rrif_transferred: "0"
+  ca/pension_annuity_payments: "0"
+  ca/pension_annuity_conditions_met: "0"
+  # Form T1032: line 1 is line 8 of this return's Federal Worksheet for line 31400 (20,000.00),
+  # this return is the transferring spouse's (answer 1; line 21000 holds the elected amount), and
+  # every other starting figure is 0 (months 12 of 12, no tax deducted on the pension).
+  ca/t1032_eligible_pension_income: "20000"
+  ca/t1032_t4a_box_128: "0"
+  ca/t1032_t4a_rca_box_17: "0"
+  ca/t1032_rca_payments_qualify: "0"
+  ca/t1032_marital_status_changed: "0"
+  ca/t1032_filer_is_transferring_spouse: "1"
+  ca/t1032_line_22: "2000"
+  ca/t1032_months_married: "12"
+  ca/t1032_not_separated_90_days: "1"
+  ca/t1032_residents_of_canada: "1"
+  ca/t1032_months_in_tax_year: "12"
+  ca/t1032_transferring_spouse_died: "0"
+  ca/t1032_receiving_spouse_pension_amount: "0"
+  ca/t1032_income_tax_deducted_on_pension: "0"
+  ca/t1032_receiving_spouse_under_65: "0"
+  ca/t1032_transferring_spouse_65_or_older: "0"
+  ca/t1032_note_1_payments_a_to_d: "0"
+  ca/t1032_note_1_payments_due_to_death: "0"
+  ca/income_tax_deducted: "0"
+  ca/student_loan_interest: "600"
+  ca/t2204_insurable_earnings: "65700"
+  ca/t2204_premiums_deducted: "1077.48"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "4034.10"
+  ca/cpp_t4_second_additional_contributions: "396.00"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/volunteer_firefighters_credit: "6000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "100000.00"
+      ca/volunteer_credits_claimed: "6000.00"
+      ca/volunteer_amount_maximum: "6000.00"
+      ca/volunteer_credits_checked: "6000.00"
+      ca/home_buyers_maximum: "10000.00"
+      ca/home_buyers_credit: "10000.00"
+      ca/home_accessibility_line_2: "20000.00"
+      ca/home_accessibility_credit: "20000.00"
+      ca/adoption_credit: "8000.00"
+      ca/pension_chart_line_5: "0.00"
+      ca/pension_chart_line_6: "20000.00"
+      ca/pension_chart_line_7: "0.00"
+      ca/pension_chart_line_8: "20000.00"
+      ca/pension_worksheet_amount: "2000.00"
+      ca/pension_income_credit: "2000.00"
+      ca/non_refundable_credit_amounts: "68633.58"
+      ca/credit_amounts_at_credit_rate: "9951.87"
+      ca/top_up_tax_credit: "56.32"
+      ca/non_refundable_tax_credits: "10008.19"
+      ca/federal_tax_after_credits: "10638.82"
+      ca-on/ontario_tax_less_dividend_credit: "7363.64"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "116926.00"
+      ca/other_payments_limit_income: "116926.00"
+      ca/refund_or_balance_owing: "19103.58"
+      ca/t1032_line_1_of_transferring_spouse_checked: "20000.00"
+      ca/t1032_worksheet_line_8_of_transferring_spouse_checked: "20000.00"
+      ca/income_tax_deducted_after_election: "0.00"
+  ca/t1032:
+    - ca/t1032_line_17: "20000.00"
+      ca/t1032_line_21: "10000.00"
+      ca/t1032_line_22_checked: "2000.00"
+      ca/t1032_line_29: "0.00"
+      ca/t1032_line_30: "2000.00"
+      ca/t1032_line_31: "18000.00"
+      ca/t1032_line_31400_transferring: "2000.00"

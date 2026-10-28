@@ -1,0 +1,184 @@
+# Return EK: CRA Guide T4037 (Capital Gains, 2025), the machinery example (page 20, under "Recapture of CCA and terminal losses"), situation C: machinery
+# bought in 2022 for $10,000 with $6,000 of UCC at the start of 2025, sold in 2025 for $12,000. A
+# recapture of CCA of $4,000 is income and the capital gain is $2,000 (taxable $1,000). Situations A
+# and B are not built (a terminal loss and a recapture of $2,000 each with no capital gain; the
+# engine's capital side of a sale below the capital cost is a known gap in the engine). Amounts are quoted
+# decimal strings, never floats; counts are quoted digit strings. A line that is not listed under
+# `expected` computes to 0 (or no records).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 and with 12 months of CPP (Schedule 8 box A), all chosen figures, with no
+  employment income and no other income. Guide T4037's machinery example, situation C: "In 2022,
+  you bought a piece of machinery at a cost of $10,000 for your business. It is the only property
+  in its class at the beginning of 2025. The class has a UCC of $6,000." It was sold in 2025 for
+  $12,000, with no other property bought in that class. The guide's machinery is a business
+  property (Form T2125); this return models the depreciable property on a Form T776 statement,
+  because the same Area A arithmetic applies to the CCA part, and that is a modelling choice. The
+  statement has one Area A row, Class 8 (a chosen class: the guide does not name it, and machinery
+  is usually Class 8), UCC at the start $6,000.00 (the guide's figure, the $10,000 cost less
+  $4,000 of CCA for 2022 to 2024), no additions and column 5 proceeds of $10,000.00 with no
+  property left in the class. The $10,000.00 is the lesser of the capital cost ($10,000) and the
+  proceeds ($12,000), the filer's figure, chosen by the filer and not computed. Column 7 is
+  $6,000.00 - $10,000.00 = ($4,000.00), a negative amount, so a recapture of CCA of $4,000.00
+  goes to line 9947, as the guide says: $6,000 - lesser of $10,000 and $12,000 = ($4,000). The
+  statement has no rents or expenses (a chosen simplification), so no CCA is claimed and the Class
+  8 closing UCC is $0.00, net rental income (T1 line 12600) is $4,000.00. Schedule 3 Part 3 has
+  one real estate, depreciable property and other properties row: proceeds $12,000, adjusted cost
+  base $10,000 (the capital cost), outlays $0, a gain of $2,000 (proceeds of disposition $12,000
+  minus capital cost $10,000 = capital gain $2,000), so line 13800 is $2,000 and the taxable
+  capital gain (T1 line 12700, one half) is $1,000.00. Total income (line 15000) is $4,000.00 +
+  $1,000.00 = $5,000.00, which is the net income before adjustments, net income and taxable income,
+  with no deductions. The alternative minimum tax carryover available for 2026, $1,613.71, and
+  the second additional CPP earnings maximum, $9,900.00, are existing behaviour of the engine for
+  this income, not new to this file.
+sources:
+  - >-
+    CRA, Guide T4037, Capital Gains (2025), the machinery example on page 20 (under "Real estate" /
+    "Recapture of CCA and terminal losses"): "In 2022, you bought a piece of machinery at a cost
+    of $10,000 for your business. It is the only property in its class at the beginning of 2025.
+    The class has a UCC of $6,000. You sold the piece of machinery in 2025 and did not buy any
+    other property in that class." Situation C: proceeds of disposition 12,000 minus capital cost
+    10,000 = capital gain 2,000; capital cost 10,000 minus CCA 2022 - 2024 4,000 = UCC at the
+    beginning of 2025 6,000; minus whichever is less, the capital cost of $10,000 or the proceeds
+    of disposition, 10,000; terminal loss (or recapture of CCA) (4,000). "In situation C, you have
+    a capital gain of $2,000. You also have a recapture of CCA of $4,000 that you must include in
+    your business income." (docs/cra-forms-2025/t4037-25e.pdf, text extracted with pdftotext)
+  - >-
+    CRA, Form T776 (2025), Statement of Real Estate Rentals (docs/cra-forms-2025/t776-25e.txt), Area
+    A: "Column 5: Proceeds of dispositions in the year (see Areas D and E below)"; Note 3: "If you
+    have a negative amount in column 7, add it to income as a recapture under "Recaptured capital
+    cost allowance" on line 9947."
+  - >-
+    CRA, Schedule 3 Capital Gains or Losses (2025) (docs/cra-forms-2025/5000-s3-25e.txt), Part 3
+    "Real estate, depreciable property, and other properties": "(Column 5): Gain or loss (column 2
+    minus columns 3 and 4)"; "Line 13599: Total proceeds of disposition"; "Line 5 and line 13800:
+    Total gain or loss". T1 (docs/cra-forms-2025/5006-r-25e.txt): "Line 14 and line 12700: Taxable
+    capital gains (complete Schedule 3)".
+inputs:
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "6000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "10000.00"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "12000"
+      ca/disposition_adjusted_cost_base: "10000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+expected:
+  ca-on/return:
+    - ca/net_rental_income: "4000.00"
+      ca/real_estate_proceeds: "12000"
+      ca/real_estate_gain_or_loss: "2000"
+      ca/capital_gain: "2000"
+      ca/included_capital_gain: "1000.00"
+      ca/taxable_capital_gains: "1000.00"
+      ca/schedule_3_line_19900: "1000.00"
+      ca/total_income: "5000.00"
+      ca/net_income_before_adjustments: "5000.00"
+      ca/other_payments_limit_income: "5000.00"
+      ca/net_income: "5000.00"
+      ca/taxable_income: "5000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/t776:
+    - ca/rental_cca_table_recapture: "4000.00"
+      ca/rental_recaptured_cca: "4000.00"
+      ca/rental_net_income_with_recapture: "4000.00"
+      ca/rental_net_income_after_cca: "4000.00"
+      ca/net_rental_income: "4000.00"
+      ca/rental_closing_ucc:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "0.00"

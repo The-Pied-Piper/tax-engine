@@ -1,0 +1,77 @@
+# Return HI: Form T777, Statement of Employment Expenses, page 1 lines 4, 15 and 17 (food at 50%,
+# and the office supplies), with Form RC359 line 7 for one employer's EPSP amount, so that T1 line
+# 22900 "Other employment expenses" is the total of the two: T777 line 17 plus the RC359 line 7
+# total. The return has no other income. Every other figure of the return is as for Return DJ.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return HI: a 2025 filer with employment expenses on Form T777 and one Form RC359 copy, and no
+  other income on the return (no T4 employment income; the copy's employment income is the form's
+  own input, as in Return DJ). The T777 entries are chosen figures: food, beverages and
+  entertainment of 400.00 (line 4 is 50% of it, 200.00) and office supplies of 300.00 (line 7). Line
+  15 "Add lines 1 to 14" is 200.00 + 300.00 = 500.00; line 16 (work-space-in-the-home) is not
+  claimed, so it is 0.00 and line 17 "Line 15 plus line 16. Enter this amount on line 22900 of your
+  return. Total expenses" is 500.00. The RC359 copy (employer A, a chosen figure): line 1
+  contributions 10,000.00, line 2 employment income 20,000.00, line 3 other employment income 0.00,
+  province code 6 (Ontario). Line 4 is 20,000.00; line 6 is 20,000.00 x 20% = 4,000.00; line 7 is
+  10,000.00 less 4,000.00 = 6,000.00. Line 22900 is the total of T777 line 17 and the RC359 line 7
+  total: 500.00 + 6,000.00 = 6,500.00. Line 8 is Ontario's 53.53%, and line 9 is 6,000.00 x 53.53%
+  = 3,211.80, which the return adds to line 41800 "Special taxes", so the federal net tax is
+  3,211.80 and, with no payments, the balance owing (line 167) is 3,211.80. The other T777 lines
+  (the vehicle chart, the tradesperson's tools, the labour mobility deduction and the work-space
+  chart) are not claimed on this return: their examples are computed by `test_return_hi.py`. The
+  return's other figures are as for Return DJ. Line 22900 of 6,500.00 is deducted at line 23300
+  against no income, so net income (line 23600) is -6,500.00 and taxable income is nil; the
+  alternative minimum tax carry-over of 2,338.71 is the same figure as Return DJ: there is no federal
+  tax before credits, so the credits of Part 2 (the basic personal amount, 16,129.00 x 14.5% =
+  2,338.71) give a negative basic federal tax, which the form does not floor and which becomes the
+  carry-over; the loss does not change it. The CPP
+  second additional earnings maximum is the 2025 dataset figure 9,900.00.
+sources:
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf,
+    confirmed from the PDF, which is the only published copy; no .txt is published;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf): "Use this form to
+    calculate your total employment expenses on line 22900 of your income tax and benefit return";
+    line 4 "Food, beverages, and entertainment expenses × 50% = 8523"; line 7 "Office supplies
+    (postage, stationery, ink cartridge, etc.) 8810"; "Add lines 1 to 14. = 15"; "Work-space-in-the-
+    home expenses (see chart for line 16 on page 3) 9945 (16)"; "Line 15 plus line 16. Enter this
+    amount on line 22900 of your return. Total expenses 9368 = 17".
+  - >-
+    CRA, Form RC359 (2025), Tax on Excess Employees Profit Sharing Plan Amounts (docs/cra-forms-2025/
+    rc359-25e.pdf; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc359/rc359-25e.pdf): "If
+    you are a specified employee and employer contributions made to an employees profit sharing plan
+    (EPSP) are allocated to you, you may have to pay a special tax on the portion of the EPSP amount
+    that is more than 20% of your employment income from this employer for the year."; line 7 "Line 1
+    minus line 6 (if negative, enter "0")"; "Include this amount on line 22900 of your return."
+    "Multiple EPSPs: If you have EPSPs from different employers, complete a separate form for each
+    employer. Add the amount from line 7 of each form and include the total on line 22900 of your
+    return."
+inputs:
+  ca/cpp_months: "12"
+  ca/t777_food_beverages_entertainment: "400"
+  ca/t777_office_supplies: "300"
+  ca/rc359_employers:
+    - ca/rc359_epsp_contributions: "10000"
+      ca/rc359_employment_income: "20000"
+      ca/rc359_other_employment_income: "0"
+      ca/rc359_province: "6"
+expected:
+  ca/t777:
+    - ca/t777_line_4: "200.00"
+      ca/t777_line_15: "500.00"
+      ca/t777_line_17: "500.00"
+  ca/rc359:
+    - ca/rc359_line_4: "20000.00"
+      ca/rc359_line_6: "4000.00"
+      ca/rc359_excess_epsp_amount: "6000.00"
+      ca/rc359_line_8: "53.53"
+      ca/rc359_tax_on_excess_epsp: "3211.80"
+  ca-on/return:
+    - ca/net_income_before_adjustments: "-6500.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/rc359_excess_epsp_total: "6000.00"
+      ca/other_employment_expenses: "6500.00"
+      ca/special_taxes: "3211.80"
+      ca/refund_or_balance_owing: "3211.80"

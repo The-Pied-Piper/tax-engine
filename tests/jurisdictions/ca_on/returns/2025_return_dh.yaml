@@ -1,0 +1,615 @@
+# Return DH: Return BT's single sole proprietor, a 2025 Ontario resident whose only activity
+# is a business, one Form T2125 (Statement of Business or Professional Activities), with a
+# Class 54 row (zero-emission vehicles) of the capital cost allowance table that sells two
+# zero-emission passenger vehicles in 2025, each scaled on its own by the prescribed amount
+# as a proportion of the actual cost of the vehicle (Area A endnote 2) and summed into the
+# proceeds of dispositions (column 5). Car A was acquired in 2024 for $65,000 and sold at arm's
+# length for $30,000: its cost is more than the prescribed amount for 2024, $61,000 (plus the
+# sales tax, a chosen 0%), so its proceeds become $30,000 x ($61,000 / $65,000) = $28,153.85
+# to the cent (Guide T4036's example prints $28,154, to the dollar). Car B was acquired in 2022
+# for $50,000 and sold for $20,000: its cost is not more than the prescribed amount for 2022,
+# $59,000, so its proceeds stay $20,000. Column 5 is $28,153.85 + $20,000 = $48,153.85 and
+# column 7 is $100,000 + $0 - $48,153.85 = $51,846.15, with property left in the class, so the
+# maximum CCA is 30% of column 19, $15,553.845, and the filer claims a chosen $15,000.00
+# (column 21), which leaves a UCC of $36,846.15 at the end of the year. The business is Return
+# BT's with no Charts A to C and the gross sales raised to a chosen $60,500, so that line 9946
+# stays Return BB's $30,000.00 after the CCA of $15,000.00: expenses of $13,500 on six lines,
+# line 9936 of $15,000.00, so line 9368 is $13,500 + $15,000.00 = $28,500.00 and line 9369 is
+# $60,500 - $28,500.00 = $32,000.00. Every figure that depends on income is Return BB's. Amounts
+# are quoted decimal strings, never floats; counts are quoted digit strings. Every output the
+# CA-ON manifest declares must appear under `expected`, or be left out to be 0 (or no records).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only activity is a business, reported on
+  one Form T2125: gross sales of $60,500 (amount 3A, a chosen figure, $10,500 above Return
+  BB's so that line 9946 is Return BB's $30,000.00), expenses of $13,500 on six lines and
+  capital cost allowance of $15,000.00 on Class 54 (Area A, line 9936), so line 8299 and T1
+  line 13499 are $60,500.00, line 9369 is $32,000.00, and, after $2,000 of
+  business-use-of-home expenses, line 9946 and T1 line 13500 are $30,000.00. A chosen set of
+  figures; there are no Charts A to C. Area A has one class, Class 54, with a UCC of
+  $100,000 at the start of the year (a chosen figure) and no additions, that sells two
+  zero-emission passenger vehicles at arm's length: car A, acquired in 2024 for $65,000 and
+  sold for $30,000, whose proceeds are scaled by the prescribed amount for 2024, $61,000
+  (the sales tax rate is a chosen 0%), over its actual cost, $61,000 / $65,000, to
+  $28,153.85; and car B, acquired in 2022 for $50,000 and sold for $20,000, whose cost is
+  below the prescribed amount for 2022, $59,000, so its proceeds stay $20,000. Column 5 is
+  $48,153.85 and column 7 is $51,846.15; the filer claims a chosen $15,000.00 (column 21) of
+  the maximum $15,553.845, and the UCC at the end of the year (column 22) is $36,846.15. No
+  property is DIEP: line i is $0, and the immediate expensing limit is $1,500,000; the
+  income before CCA (endnote 5) is $47,000.00, line 9369 plus line 9936, a chosen reading
+  (see the sources). The net self-employment income (T1 line 27, "Add lines 22 to 26") is
+  30,000 + 0 + 0 + 0 + 0 = $30,000; line 28 is line 21 (0) plus line 27 and total income
+  (line 15000) adds line 27 to the other income lines, which are all 0, so total income is
+  $30,000.00. The CPP months (Schedule 8 box A) are the 12 of a full year, Schedule 8 Part 4
+  is not completed (count 0) and there is no agreement with the Canada Employment Insurance
+  Commission (count 0), so the CPP contributions payable (line 42100), the base CPP
+  contributions (line 31000) and the deduction (line 22200) on self-employment income, and
+  the EI premiums on it (lines 31217 and 42120), are $0 and change no total.
+sources:
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities
+    (docs/cra-forms-2025/t2125-25e.pdf, a PDF quote accepted 2026-10-19;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf), Part 3A:
+    "Gross sales, commissions, or fees (include GST/HST collected or collectible)" (3A);
+    "GST/HST, provincial sales tax, returns, allowances, discounts, and GST/HST adjustments
+    (included in amount 3A)" (3B); "Subtotal: Amount 3A minus amount 3B" (3C); "Subtotal:
+    Amount 3D minus amount 3E" (3F); "Adjusted gross sales: Amount 3C plus amount 3F (enter
+    on line 8000 of Part 3C)" (3G). Part 3C: "Reserves deducted last year" (8290); "Other
+    income (specify)" (8230); "Subtotal: Line 8290 plus line 8230" (3O); "Gross business or
+    professional income: Line 8000 plus amount 3O" (8299); "Report the gross business or
+    professional income from line 8299 on the applicable line of your income tax and benefit
+    return as indicated below: business income on line 13499". Part 3D: "Gross business
+    income (line 8299 of Part 3C)" (3P); "Subtotal: Add amounts 3Q to 3U." (3V); "Cost of
+    goods sold: Amount 3V minus line 8500" (8518); "Gross profit (or loss): Amount 3P minus
+    line 8518." (8519). Part 4: "Gross business or professional income (line 8299 of Part
+    3C) or Gross profit (line 8519 of Part 3D)." (4A); the expenses (enter only the business
+    part) 4B "Advertising", 4E "Insurance", 4H "Office expenses", 4J "Professional fees
+    (includes legal and accounting fees)", 4L "Rent", 4Q "Utilities" and 4T "Motor vehicle
+    expenses (not including CCA) (amount 16 of Chart A)"; "Capital cost allowance (CCA).
+    Enter amount ii of Area A minus any personal part and any CCA for business-use-of-home
+    expenses" (9936, 4U); "Other expenses (specify)" (9270, 4V); "Total expenses: Total of
+    amounts 4B to 4V" (9368); "Net income (loss) before adjustments: Amount 4A minus line
+    9368" (9369). Part 5: "Your share of line 9369 or the amount from your T5013 slip,
+    Statement of Partnership Income." (5A); "Canadian journalism labour tax credit allocated
+    to you in the year (box 236 of your T5013 slip)" (5B); "GST/HST rebate for partners
+    received in the year" (9974); "Total: Amount 5A plus amount 5B plus line 9974" (5C);
+    "Other amounts deductible from your share of net partnership income (loss) (amount 6F)"
+    (9943); "Net income (loss) after adjustments: Amount 5C minus line 9943" (5D);
+    "Business-use-of-home expenses (amount 7P)" (9945); "Your net income (loss): Amount 5D
+    minus line 9945" (9946); "Report the net income amount from line 9946 on the applicable
+    line of your income tax and benefit return as indicated below: business income on line
+    13500". Part 6: "Total other amounts deductible from your share of the net partnership
+    income (loss): Add amounts 6A to 6E (enter this on line 9943 of Part 5)." (6F). Part 7:
+    "Heat" (7A), "Electricity" (7B), "Insurance" (7C), "Maintenance" (7D), "Property taxes"
+    (7F), "Subtotal: Add amounts 7A to 7G." (7H), "Personal-use part of the
+    business-use-of-home expenses" (7I), "Subtotal: Amount 7H minus amount 7I" (7J),
+    "Subtotal: Add amounts 7J to 7L." (7M), "Net income (loss) after adjustments (amount 5D)
+    (if negative, enter "0")." (7N), "Business-use-of-home expenses available to carry
+    forward: Amount 7M minus amount 7N (if negative, enter "0")" (7O) and "Allowable claim:
+    Amount 7M or 7N above, whichever is less (enter your share of this amount on line 9945
+    of Part 5)" (7P). Area A, "Calculation of capital cost allowance (CCA) claim": "Column
+    2: Undepreciated capital cost (UCC) at the start of the year", "Column 3: Cost of
+    additions in the year (see Areas B and C below)", "Column 4: Cost of additions from
+    column 3 that are DIEPs (property must be available for use before 2025)", "Column 5:
+    Proceeds of dispositions in the year (see Areas D and E below)", "Column 6: Proceeds of
+    dispositions of DIEP (enter amount from col. 5 that relates to DIEP from col. 4)",
+    "Column 7: UCC after additions and dispositions (col. 2 plus col. 3 minus col. 5)",
+    "Column 8: UCC of DIEP (col. 4 minus col. 6)", "Column 9: Immediate expensing amount for
+    DIEPs", "Column 10: Cost of remaining additions after immediate expensing (col. 3 minus
+    col. 9)", "Column 13: Remaining UCC after immediate expensing (col. 7 minus col. 9)",
+    "Column 18: Adjustment for current-year additions subject to the half-year rule. 1/2
+    multiplied by (col. 10 minus col. 11 minus col. 12 minus col. 5). If negative, enter
+    "0"", "Column 19: Base amount for CCA (col. 13 plus col. 15 plus col. 17 minus col.
+    18)", "Column 20: CCA rate %", "Column 21: CCA for the year (col. 19 multiplied by col.
+    20, or a lower amount, plus col. 9)", "Column 22: UCC at the end of the year (col. 7
+    minus col. 21)", "Total CCA claim for the year: Total of column 21 (enter on line 9936
+    of Part 4 amount ii minus any personal part and any CCA for business-use-of-home
+    expenses)" (amount ii) and "Total immediate expensing claim for the year: Total of
+    column 9" (line i); endnote 3: "If you have a negative amount in column 7, add it to
+    income as a recapture in Part 3C on line 8230. If no property is left in the class and
+    there is a positive amount in this column, deduct the amount from income as a terminal
+    loss in Part 4 on line 9270."; endnote 4: "The amount you enter in column 8 must not be
+    more than the amount from column 7. If the amount from column 7 is negative, enter
+    "0."".
+    Endnote 2: "The proceeds of disposition of a zero-emission passenger vehicle (ZEPV) that
+    has been included in Class 54, or a passenger vehicle bought after April 18, 2021, that
+    has been included in Class 10.1, and whose cost is more than the prescribed amount will
+    be adjusted based on a factor equal to its prescribed amount as a proportion of the
+    actual cost of the vehicle. For dispositions after July 29, 2019, you will have to
+    adjust the actual cost of the vehicle for any payments or repayments of government
+    assistance that you may have received or repaid for the vehicle. If the passenger
+    vehicle in Class 10.1 is not designated for immediate expensing treatment, this special
+    rule does not apply." Guide T4036 (Rental Income, 2025,
+    docs/cra-forms-2025/t4036-25e.pdf, confirmed from the PDF; the Guide T4002 prints the
+    same), "Class 54 (30%)": "There is a limit of $61,000 (plus federal and provincial sales
+    taxes) on the capital cost for each zero-emission passenger vehicle in Class 54. Class
+    54 may include both zero-emission passenger vehicles that do and do not exceed the
+    prescribed threshold. However, unlike Class 10.1, Class 54 does not establish a separate
+    class for each vehicle whose cost exceeds the threshold." and "If a zero-emission
+    passenger vehicle is disposed of to a person or partnership with whom you deal at arm's
+    length, and its cost exceeds the prescribed amount ($55,000 for vehicles acquired after
+    March 18, 2019, and before January 1, 2022; $59,000 for vehicles acquired after December
+    31, 2021, and before January 1, 2023; or $61,000 for vehicles acquired after December
+    31, 2022), the proceeds of disposition will be adjusted based on a factor equal to the
+    prescribed amount as a proportion of the actual cost of the vehicle." Its example:
+    "Proceeds of disposition $30,000" and "$30,000 × ($61,000 ÷ $65,000) = $28,154" (to the
+    dollar; the dataset rounds half-up to the cent, as it states no rounding rule, so the
+    figure here is $28,153.85). The sales are a chosen $60,500 (Return BB's $50,000 plus
+    $10,500, so that line 9946 is Return BB's) and the adjustments (3B), the quick method
+    amounts, the reserves, the other income, the cost of goods sold lines and every other
+    expense line are a chosen $0: amount 3C is 60,500 - 0 = 60,500, 3F is 0 - 0 = 0, 3G, and
+    so line 8000, is 60,500 + 0 = 60,500. With no recapture (column 7 is positive) line 8230
+    is 0 + 0 = 0, amount 3O is 0 + 0 = 0 and line 8299, and so T1 line 13499, is 60,500 + 0
+    = 60,500. Amount 3P is 60,500; amount 3V is 0, line 8518 is 0 and line 8519, and so
+    amount 4A, is 60,500 - 0 = 60,500. The six expense lines are Return BT's: advertising
+    (line 8521) 1,500, insurance (line 8690) 1,200, office expenses (line 8810) 800,
+    professional fees (line 8860) 2,500, rent (line 8910) 6,000 and utilities (line 9220)
+    1,500, 13,500 in all, and no motor vehicle expenses (no vehicles in Charts A to C, a
+    chosen 0, so line 9281 is 0). Area A has one class (below): amount ii is 15,000.00; the
+    personal part of CCA and the CCA for business-use-of-home expenses (amount 7K) are a
+    chosen $0 each, so line 9936 is 15,000.00 - 0 - 0 = 15,000.00; no property is left to
+    give a terminal loss (a chosen 0 for the question of endnote 3), so line 9270 is 0 + 0 =
+    0. Line 9368, in line order, is 13,500 + 15,000.00 + 0 = 28,500.00 and line 9369 is
+    60,500 - 28,500.00 = 32,000.00. There is no partnership (a count of 0): amount 5A is
+    line 9369, 32,000.00, amounts 5B and 9974 are 0 and amount 5C is 32,000.00; amounts 6A
+    to 6E are 0, so amount 5D is 32,000.00. Part 7 is Return BT's: amount 7H is 600 + 500 +
+    300 + 200 + 0 + 400 + 0 = 2,000, amount 7M is 2,000, amount 7N is 32,000.00, amount 7P
+    is the lesser of 2,000 and 32,000.00, 2,000, which is line 9945. Line 9946 is 32,000.00
+    - 2,000 = 30,000.00, T1 line 22 and line 13500. Area A, Class 54 (a chosen row): column
+    2 is a chosen 100,000; column 3 and column 4 are a chosen 0 (no additions, no DIEP); the
+    two cars sold are listed on the row, each with the year it was acquired, its cost, the
+    government assistance for it (a chosen 0) and its proceeds (a chosen 0 of them a
+    DIEP's); the row's own column 5 and 6 are a chosen 0 (the sale prices are listed per car).
+    The sales tax rate of the Guide's "plus federal and provincial sales taxes" is a chosen
+    0%, so the prescribed amount with tax is the printed amount: car A, acquired in 2024
+    ("after December 31, 2022"), 61,000; car B, acquired in 2022 ("after December 31, 2021,
+    and before January 1, 2023"), 59,000. Car A: the actual cost 65,000 - 0 = 65,000 is more
+    than 61,000, so the factor is 61,000 / 65,000 and the proceeds are 30,000 x 61,000 /
+    65,000 = 28,153.846..., rounded half-up to the cent once: 28,153.85. Car B: the actual
+    cost 50,000 is not more than 59,000, so the proceeds stay 20,000. Column 5 is
+    28,153.85 + 20,000 = 48,153.85 and column 6 is 0. Column 7 is 100,000 + 0 - 48,153.85 =
+    51,846.15; column 8 is 0 - 0 = 0, column 9 is a chosen 0, column 10 is 0 - 0 = 0,
+    columns 11 and 12 are a chosen 0, column 13 is 51,846.15 - 0 = 51,846.15, column 18 is
+    one half x (0 - 0 - 0 - 48,153.85), not below 0, 0, and columns 14 to 17 are 0, so
+    column 19 is 51,846.15 + 0 - 0 = 51,846.15. Property remains in the class (a chosen 0
+    for no property left); the rate of Class 54 is 30%, so the most of column 21 is
+    51,846.15 x 30% = 15,553.845 and the claim is a chosen 15,000.00 ("or a lower amount"),
+    plus column 9, 0: column 21 is 15,000.00. Column 22 is 51,846.15 - 15,000.00 =
+    36,846.15. The class has a positive column 7 and property left, so there is no recapture
+    and no terminal loss. Not modelled: Part 2 (the Internet business activities), Part 8
+    (the other partners), Part 9 (the equity) and Areas B to F.
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities
+    (docs/cra-forms-2025/t2125-25e.pdf, confirmed from the PDF; no .txt published), Area A
+    endnote 5 "The immediate expensing applies to DIEPs included in column 8. The total
+    immediate expensing amount for the tax year (total of column 9) is limited to the lesser
+    of: - the immediate expensing limit, which is equal to one of the following, whichever
+    is applicable: -- $1.5 million, if you are not associated with any other eligible person
+    or partnership (EPOP) in the tax year [...] - the UCC of DIEPs in column 8 - the amount
+    of income, if any, earned from the source of income that is a business (before any CCA
+    deductions) in which the relevant DIEP is used for the tax year"; "Total immediate
+    expensing claim for the year: Total of column 9" (line i). The business is not
+    associated with any other EPOP (the count of associated, a chosen 0, and the other Area
+    G answers a chosen 0), so the immediate expensing limit is $1.5 million, 1,500,000, and
+    no amount is allocated by the minister (a chosen 0). The income before CCA is a chosen
+    reading of "the amount of income, if any, earned from the source of income that is a
+    business (before any CCA deductions)", to be confirmed: line 9369, the net income before
+    adjustments, plus line 9936, the CCA that line 9369 deducted, not below zero: 32,000.00
+    + 15,000.00 = 47,000.00. No class has a DIEP (column 4 and column 9 are 0), so line i is
+    0.
+  - >-
+    CRA, "T1-2025 Ontario edition" return (form 5006-R,
+    docs/cra-forms-2025/5006-r-25e.txt, confirmed 2026-10-19), "Step 2 - Total income":
+    "Line 22: Business income"; "Line 13499: Gross"; "Line 13500: Net"; "Line 27: Add
+    lines 22 to 26. Net self-employment income ="; "Line 33 and line 15000: Line 28 plus
+    line 32 Total income". Line 13499 is T2125 line 8299, 60,500, and line 13500 (line
+    22) is T2125 line 9946, 30,000; lines 23 to 26 (professional, commission, farming
+    and fishing income) are $0, a chosen figure, so line 27 is 30,000 + 0 + 0 + 0 + 0 =
+    30,000. Line 28 is line 21 (the sum of lines 1 to 20, every one a chosen $0) plus
+    line 27, 0 + 30,000 = 30,000, and total income (line 15000), which takes amounts
+    already in cents, is the sum of the income lines in line order, line 27 coming after
+    line 20: 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 +
+    0 + 0 + 30,000 + 0 = 30,000.00. Total deductions are 0 (no CPP deduction, RRSP,
+    union dues or child care expenses), so net income before adjustments (line 23400) is
+    30,000.00 - 0 = 30,000.00; net income (line 23600) is that, not below zero (line
+    23500 is 0, the chart not applying), 30,000.00, and taxable income (line 26000) is 30,000.00 - 0
+    = 30,000.00.
+  - >-
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    The figures that depend on income, with the forms quoted in Return AP: T1 (form
+    5000-R) line 77 (line 30000) is $16,129 for net income of $177,882 or less, so the
+    federal credit amounts (line 33500) are 16,129.00 and line 33800 is 16,129.00 x
+    14.5% = 2,338.705, rounded half-up to the cent: 2,338.71 (line 35000, no Schedule 9
+    amounts). Part A "Federal tax on taxable income": taxable income of 30,000.00 is in
+    column 1 "Line 26000 is $57,375 or less": line 74 is 30,000.00 x 14.5% = 4,350.00,
+    so the federal tax is 4,350.00 and, less 2,338.71, the federal tax after credits is
+    2,011.29. The medical share, 3% of net income, is 900.00 and the threshold, the
+    lesser of that and $2,834, is 900.00, above the medical expenses of 0. ON428 Part A:
+    30,000.00 x 5.05% = 1,515.00; the Ontario credit amounts are the basic personal
+    amount 12,747.00, and 12,747.00 x 5.05% = 643.7235, rounded half-up to the cent:
+    643.72, so the Ontario tax after credits is 1,515.00 - 643.72 = 871.28. The basic
+    reduction is 294.00, twice it, 588.00, less the tax of 871.28 is negative, so the
+    Ontario tax reduction is 0 and the tax after it 871.28. Schedule ON428-A: the LIFT
+    credit is 5.05% of employment income, 0, less 5% of the net income over $32,500,
+    30,000.00 is not over it, so 0. The Ontario health premium chart, taxable income
+    30,000.00, is in "Row 3: Taxable Income more than $25,000 but not more than
+    $36,000": "Ontario health premium: $300", so the Ontario tax (line 42800) is 871.28
+    + 300.00 = 1,171.28. Schedule 6: the working income is the self-employment profit of 30,000.00 (line 3; lines 1
+    and 2 are 0), so 27% of the 27,000.00 over 3,000 is 7,290.00, capped at 1,633.00, and the
+    Canada workers benefit is that less the reduction (15% of the adjusted family net income,
+    30,000.00, over $26,855, 471.75 for a filer with no eligible spouse or dependant, 0.00 with
+    one, over $30,639): 1,161.25 with no eligible spouse or dependant, 2,813.00 with one. T1 line 148 (line 43500) is the
+    net federal tax 2,011.29 plus the Ontario tax 1,171.28 = 3,182.57, with no CPP or EI
+    payable, no tax deducted and the Canada workers benefit as the only credit (line 150, 1,161.25, and the lines to 166 being 0), so
+    line 167, the refund or balance owing, is 3,182.57 - 1,161.25 = 2,021.32, a balance
+    owing. These lines add and subtract amounts already in cents. The other credits and
+    lines (the age, spouse, dependant and caregiver amounts, the Ontario credits and the
+    refundable credits) are 0 for the same chosen counts and amounts as Return AP.
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t2125_statements:
+    - ca/business_gross_sales: "60500"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "1500"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "1200"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "800"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "2500"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "6000"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "1500"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "600"
+      ca/business_home_electricity: "500"
+      ca/business_home_insurance: "300"
+      ca/business_home_maintenance: "200"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "400"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes:
+        - ca/cca_class_number: "54"
+          ca/cca_ucc_at_start: "100000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "15000.00"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs:
+            - ca/cca_vehicle_acquired_year: "2024"
+              ca/cca_vehicle_cost: "65000"
+              ca/cca_vehicle_government_assistance: "0"
+              ca/cca_zepv_proceeds: "30000"
+              ca/cca_zepv_diep_proceeds: "0"
+            - ca/cca_vehicle_acquired_year: "2022"
+              ca/cca_vehicle_cost: "50000"
+              ca/cca_vehicle_government_assistance: "0"
+              ca/cca_zepv_proceeds: "20000"
+              ca/cca_zepv_diep_proceeds: "0"
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca/t2125:
+    - ca/business_sales_subtotal: "60500"
+      ca/business_quick_method_assistance: "0"
+      ca/business_adjusted_gross_sales: "60500"
+      ca/business_recaptured_cca: "0"
+      ca/business_other_income_with_recapture: "0"
+      ca/business_reserves_and_other_income: "0"
+      ca/business_gross_income: "60500"
+      ca/business_gross_income_for_gross_profit: "60500"
+      ca/business_cost_of_goods_subtotal: "0"
+      ca/business_cost_of_goods_sold: "0"
+      ca/business_gross_profit: "60500"
+      ca/business_gross_income_before_expenses: "60500"
+      ca/business_cca_table_claim: "15000.00"
+      ca/business_cca_claim_less_personal_part: "15000.00"
+      ca/business_cca_claim: "15000.00"
+      ca/business_terminal_loss: "0"
+      ca/business_other_expenses_with_terminal_loss: "0"
+      ca/business_motor_vehicle_expenses: "0"
+      ca/business_total_expenses: "28500.00"
+      ca/business_net_income_before_adjustments: "32000.00"
+      ca/business_immediate_expensing_cap: "1500000"
+      ca/business_immediate_expensing_limit: "1500000"
+      ca/business_income_before_cca: "47000.00"
+      ca/business_immediate_expensing_claim: "0"
+      ca/business_share_of_net_income: "32000.00"
+      ca/business_partner_other_amounts_total: "0"
+      ca/business_partner_other_amounts: "0"
+      ca/business_partnership_total: "32000.00"
+      ca/business_net_income_after_adjustments: "32000.00"
+      ca/business_home_expenses_subtotal: "2000"
+      ca/business_home_expenses_business_part: "2000"
+      ca/business_home_expenses_available: "2000"
+      ca/business_home_income_limit: "32000.00"
+      ca/business_home_allowable_claim: "2000"
+      ca/business_home_expenses: "2000"
+      ca/business_cca_classes_adjusted:
+        - ca/cca_class_number: "54"
+          ca/cca_ucc_at_start: "100000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "48153.85"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "15000.00"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+      ca/business_closing_ucc:
+        - ca/cca_class_number: "54"
+          ca/cca_ucc_at_end: "36846.15"
+      ca/business_home_carry_forward: "0"
+  ca-on/return:
+    - ca/business_income: "30000.00"
+      ca/gross_business_income: "60500.00"
+      ca/net_self_employment_income: "30000.00"
+      ca/taxable_capital_gains: "0"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/total_income: "30000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cpp_part_5_line_49: "3153.50"
+      ca/ei_premiums: "0.00"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "0"
+      ca/child_care_earned_income_limit: "0.00"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "0.00"
+      ca/net_income: "30000.00"
+      ca/net_income_signed: "30000.00"
+      ca/net_income_before_adjustments: "30000.00"
+      ca/other_payments_limit_income: "30000.00"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/deductions_from_net_income: "0.00"
+      ca/other_payments_deduction_after_limit: "0"
+      ca/other_payments_deduction: "0"
+      ca/taxable_income: "30000.00"
+      ca/federal_basic_tax: "4350.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "0.00"
+      ca/medical_net_income_share: "900.00"
+      ca/medical_threshold: "900.00"
+      ca/medical_expenses_over_threshold: "0"
+      ca/other_dependants_medical: "0"
+      ca/medical_claim: "0"
+      ca/non_refundable_credit_amounts: "16129.00"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "2011.29"
+      ca-on/ontario_basic_tax: "1515.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "0"
+      ca-on/age_reduction: "0.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/medical_net_income_share: "900.00"
+      ca-on/medical_threshold: "900.00"
+      ca-on/medical_expenses_over_threshold: "0"
+      ca-on/other_dependants_medical: "0"
+      ca-on/medical_claim: "0"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "871.28"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "871.28"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/ontario_tax_before_dividend_credit: "871.28"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/ontario_tax_after_dividend_credit: "871.28"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "0.00"
+      ca-on/ontario_tax_after_reduction: "871.28"
+      ca-on/lift_credit_before_maximum: "0.00"
+      ca-on/lift_maximum_credit: "0.00"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit: "0"
+      ca-on/ontario_tax_after_lift_credit: "871.28"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "871.28"
+      ca-on/ontario_health_premium: "300.00"
+      ca-on/ontario_tax: "1171.28"
+      ca/itc_recapture_at_15_percent: "0.00"
+      ca/itc_recapture_at_20_percent: "0.00"
+      ca/itc_recapture: "0.00"
+      ca/federal_tax_with_itc_recapture: "2011.29"
+      ca/political_credit_before_maximum: "0.00"
+      ca/political_credit: "0.00"
+      ca/labour_sponsored_funds_credit_before_maximum: "0.00"
+      ca/labour_sponsored_funds_credit: "0.00"
+      ca/credits_against_federal_tax: "0.00"
+      ca/federal_tax_less_credits: "2011.29"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0.00"
+      ca/resp_aips_part_b_tax: "0.00"
+      ca/resp_aips_additional_tax: "0.00"
+      ca/special_taxes: "0.00"
+      ca/net_federal_tax: "2011.29"
+      ca/total_payable: "3182.57"
+      ca/working_income: "30000.00"
+      ca/adjusted_family_net_income: "30000.00"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/cwb_reduction_without_dependant: "471.75"
+      ca/canada_workers_benefit_without_dependant: "1161.25"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "2813.00"
+      ca/canada_workers_benefit: "1161.25"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "30000.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_before_maximum: "0.00"
+      ca-on/political_credit: "0.00"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/total_credits: "1161.25"
+      ca/educator_supplies_expenses_at_most_maximum: "0.00"
+      ca/educator_school_supply_credit: "0.00"
+      ca/refund: "0"
+      ca-on/refund_before_donation: "0"
+      ca-on/ontario_tax_less_dividend_credit: "871.28"
+      ca/refund_or_balance_owing: "2021.32"
+      ca/amt_part_1_subtotal: "30000.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "30000.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "2011.29"
+      ca/amt_regular_net_federal_tax_payable: "2011.29"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "0.00"
+      ca/cpp_first_additional_contributions: "0.00"
+      ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_30: "26500.00"
+      ca/cpp_enhanced_contributions: "0.00"

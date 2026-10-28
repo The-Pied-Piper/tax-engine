@@ -1,0 +1,214 @@
+# Return CG: a single 2025 Ontario resident with employment income of $60,000 who sold two
+# properties, each under a capital gains election (Form T664, filed for the 1994 tax
+# year), so Part 4 of Form T2091(IND) applies to both and the Form T2091(IND)-WS Chart 1,
+# Parts 1 and 3 are worked for each. Neither property is one of two or more principal
+# residences a family member owned on December 31, 1981, so Part 2 of Form
+# T2091(IND) is not completed. The first property has no Chart 1 and the election
+# reduction is the smaller of the two amounts; the second has Chart 1 and its reduction is
+# capped by the elected capital gain. Line 57 of each form is entered on line 15800 of
+# Schedule 3, with the taxable capital gains (T1 line 12700) at 50% of it. The net income,
+# taxable income, total payable and refund are the engine's figures, to be confirmed against
+# CRA's calculator.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of
+  $60,000 (a chosen figure) and two properties sold in 2025, every figure a chosen figure
+  except where a line is computed. Each property was owned from its acquisition in 1983 or
+  1985, and each was under a capital gains election, so Form T664 was filed (a chosen
+  figure), and Part 4 of Form T2091(IND) and the Chart 1 and Parts 1 and 3 of Form
+  T2091(IND)-WS apply. Part 2 of Form T2091(IND) does not apply to either property (a chosen
+  figure). Property 1: years designated after 1981 (line 1) 5, from 1972 to 1981 (line 2) 0,
+  so line 3 and line 4 are 5; years owned after 1981 (line 5) 43 (1983 to 2025), from 1972
+  to 1981 (line 6) 0, so line 7 is 43; proceeds (line 8) 535,000.00, outlays (line 9)
+  5,000.00 and adjusted cost base (line 10) 100,000.00, so line 17 = 100,000.00 + 5,000.00 =
+  105,000.00 and line 18 = 535,000.00 - 105,000.00 = 430,000.00; the "plus one" rule
+  applies, so line 20 = 5 + 1 = 6, line 21 = 430,000.00 x 6 = 2,580,000.00, line 22 = 43,
+  line 23 = 2,580,000.00 / 43 = 60,000.00 (exact), and line 24 = 430,000.00 - 60,000.00 =
+  370,000.00, which is line 54 (Part 2 not completed). Election worksheet for property 1:
+  line 1 5 and line 4 12 (the years owned in 1983 to 1994), line 2 0 and line 5 0 (from
+  T2091 lines 2 and 6), line 7 200,000.00, line 8 100,000.00, line 10 200,000.00 and line 13
+  100,000.00, months owned after February 1992 and before March 1994 (line 60) 24 and months
+  owned after 1971 and before March 1994 (line 62) 74 (January 1983 to February 1994, 134
+  months, less the 60 months designated from 1983 to 1987). Line 7 is not more than line 10,
+  so there is no Chart 1 and line 19 = 200,000.00. Line 21 = 200,000.00 - 100,000.00 =
+  100,000.00; line 3 plus 1 = 5 + 1 = 6 (line 23); line 24 = 100,000.00 x 6 = 600,000.00;
+  line 25 = 12 (line 6 = 12 + 0); line 26 = 600,000.00 / 12 = 50,000.00; line 27 =
+  100,000.00 - 50,000.00 = 50,000.00. Part 3: line 59 = 50,000.00, line 61 = 50,000.00 x 24
+  = 1,200,000.00, line 63 = 1,200,000.00 / 74 = 16,216.216..., rounded half up to the cent:
+  16,216.22, line 64 = 50,000.00 - 16,216.22 = 33,783.78, line 65 = 100,000.00 and line 66 =
+  the lesser of 33,783.78 and 100,000.00, so 33,783.78. T2091 line 55 = 370,000.00, line 56
+  = 33,783.78 and line 57 = 370,000.00 - 33,783.78 = 336,216.22. Property 2: years
+  designated after 1981 (line 1) 3, from 1972 to 1981 (line 2) 0, so line 3 and line 4 are
+  3; years owned after 1981 (line 5) 41 (1985 to 2025), from 1972 to 1981 (line 6) 0, so
+  line 7 is 41; proceeds (line 8) 294,000.00, outlays (line 9) 10,000.00 and adjusted cost
+  base (line 10) 120,000.00, so line 17 = 130,000.00 and line 18 = 164,000.00; the "plus
+  one" rule applies, so line 20 = 3 + 1 = 4, line 21 = 164,000.00 x 4 = 656,000.00, line 22
+  = 41, line 23 = 656,000.00 / 41 = 16,000.00 (exact), and line 24 = 164,000.00 - 16,000.00
+  = 148,000.00, which is line 54. Election worksheet for property 2: line 1 3 and line 4 10
+  (1985 to 1994), line 2 0 and line 5 0; line 7 230,000.00, line 8 120,000.00, line 10
+  200,000.00 and line 13 20,000.00; line 60 24 and line 62 74 (January 1985 to February
+  1994, 110 months, less the 36 months designated from 1985 to 1987). Chart 1 applies, since
+  line 7 (230,000.00) is more than line 10 (200,000.00): line 14 = 200,000.00, line 15 =
+  230,000.00, line 16 = 200,000.00 x 1.1 = 220,000.00, line 17 = 230,000.00 - 220,000.00 =
+  10,000.00 and line 18 = 200,000.00 - 10,000.00 = 190,000.00, so line 19 = 190,000.00. Line
+  21 = 190,000.00 - 120,000.00 = 70,000.00; line 23 = 3 + 1 = 4; line 24 = 70,000.00 x 4 =
+  280,000.00; line 25 = 10; line 26 = 280,000.00 / 10 = 28,000.00; line 27 = 70,000.00 -
+  28,000.00 = 42,000.00. Part 3: line 59 = 42,000.00, line 61 = 42,000.00 x 24 =
+  1,008,000.00, line 63 = 1,008,000.00 / 74 = 13,621.621..., rounded half up to 13,621.62,
+  line 64 = 42,000.00 - 13,621.62 = 28,378.38, line 65 = 20,000.00 and line 66 = the lesser
+  of 28,378.38 and 20,000.00, so 20,000.00. T2091 line 55 = 148,000.00, line 56 = 20,000.00
+  and line 57 = 148,000.00 - 20,000.00 = 128,000.00. Each worksheet line is the total over
+  the two properties: line 3 = 8, line 6 = 22, line 16 = 220,000.00 (property 1 has none),
+  line 17 = 10,000.00, line 18 = 190,000.00, line 19 = 390,000.00, line 21 = 170,000.00,
+  line 23 = 10, line 24 = 880,000.00, line 26 = 78,000.00, line 27 = 92,000.00, line 59 =
+  92,000.00, line 61 = 2,208,000.00, line 63 = 29,837.84, line 64 = 62,162.16 and line 66 =
+  53,783.78. Line 54 total = 370,000.00 + 148,000.00 = 518,000.00. Line 56 total = 53,783.78
+  and line 57 total = 336,216.22 + 128,000.00 = 464,216.22, which is entered on line 15800
+  of Schedule 3 (the personal-use property rows add 0, so line 9 is 464,216.22, and the
+  total capital gains or losses (line 21, 19700) are 464,216.22). Line 24 of Schedule 3 =
+  464,216.22 x 50% = 232,108.11 exactly, positive, so line 12700 (taxable capital gains) is
+  232,108.11. Total income (line 15000) = 60,000.00 + 232,108.11 = 292,108.11. The income
+  tax deducted is a chosen 25,000.00. The net income, taxable income, total payable, total
+  credits and refund are the engine's figures (to be confirmed against CRA's calculator);
+  the Ontario tax, the AMT lines and the net capital loss balance are the engine's figures
+  too. Not triggered: Part 2 of Form T2091(IND) and Form T2091(IND)-WS Part 2 (lines 28 to
+  58), since no property is one of two or more principal residences a family member owned on
+  December 31, 1981, and every other credit and deduction not named here.
+sources:
+  - >-
+    CRA, "T2091(IND)-25e" (2025), Designation of a Property as a Principal Residence by an
+    Individual (Other than a Personal Trust) (docs/cra-forms-2025/t2091ind-25e.pdf), Section
+    2: "Number of tax years for which the property is designated as a principal residence
+    (from line 3 of page 2)" (line 4); "Line 15 plus line 16" (line 17); "Line 14 minus line
+    17" "Capital gain before principal residence exemption" (line 18); "Line 4 plus 1 (see
+    note on page 4)" (line 20); "Multiply line 19 by line 20." (line 21); "Total number of
+    years from line 7" (line 22); "Divide line 21 by line 22." (line 23); "Line 18 minus
+    line 23 (if negative, enter "0")" "Net capital gain" (line 24). Part 2: "In all other
+    cases, do not complete Part 2 and enter the amount from line 24 above on line 54 in Part
+    3 on the next page." Part 3: "If you completed Part 2, enter whichever amount is less:
+    line 53 above or line 24 of Part 1. Otherwise, enter the amount from line 24." "Total
+    capital gain" (line 54). Part 4: "Complete Part 4 if you or your spouse or common-law
+    partner filed Form T664 or T664(Seniors) for this property."; "Total capital gain before
+    reduction (line 54)" (line 55); "Reduction as a result of the capital gains election
+    (line 66 of Form T2091(IND)-WS)" (line 56); "Line 55 minus line 56 (if negative, enter
+    "0")" "Capital gain" (line 57); "Enter the amount from line 57 on line 15800 of Schedule
+    3, Capital Gains or Losses, for dispositions or deemed dispositions."
+  - >-
+    CRA, "T2091(IND)-WS E (23)", Principal Residence Worksheet (docs/cra-forms-2025/
+    t2091ind-ws-23e.pdf, the 2023 edition, the form's only published PDF), Part 1 and Part
+    3: "Complete this chart if the amount on line 7 is more than the amount on line 10.
+    Otherwise, enter the amount from line 10 on line 19."; "Multiply line 14 by 1.1." (line
+    16); "Line 15 minus line 16 (if negative, enter "0")" (line 17); "Line 14 minus line 17"
+    (line 18); "Line 3 plus 1 (see note below)" (line 23); "Multiply line 22 by line 23."
+    (line 24); "Total number of years from line 6" (line 25); "Divide line 24 by line 25."
+    (line 26); "Line 21 minus line 26" "Net adjusted gain" (line 27); "If you completed Part
+    2, enter the amount from line 58. Otherwise, enter the amount from line 27." (line 59);
+    "Multiply line 59 by line 60." (line 61); "Divide line 61 by line 62." (line 63); "Line
+    59 minus line 63" "Total adjusted gain" (line 64); "Elected capital gain (line 13)"
+    (line 65); "Enter whichever amount is less: line 64 or line 65." "Reduction as a result
+    of the capital gains election" (line 66).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2091ind/t2091ind-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2091ind-ws/t2091ind-ws-23e.pdf
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/principal_residence_properties:
+    - ca/residence_years_designated_after_1981: "5"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "43"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "535000.00"
+      ca/residence_outlays: "5000.00"
+      ca/residence_adjusted_cost_base: "100000.00"
+      ca/residence_plus_one_year: "1"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "1"
+      ca/residence_ws_years_designated_after_1981: "5"
+      ca/residence_ws_years_owned_after_1981: "12"
+      ca/residence_ws_designated_proceeds: "200000.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "100000.00"
+      ca/residence_ws_fmv_feb_22_1994: "200000.00"
+      ca/residence_ws_elected_capital_gain: "100000.00"
+      ca/residence_ws_months_owned_after_feb_1992: "24"
+      ca/residence_ws_months_owned_after_1971: "74"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+    - ca/residence_years_designated_after_1981: "3"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "41"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "294000.00"
+      ca/residence_outlays: "10000.00"
+      ca/residence_adjusted_cost_base: "120000.00"
+      ca/residence_plus_one_year: "1"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "1"
+      ca/residence_ws_years_designated_after_1981: "3"
+      ca/residence_ws_years_owned_after_1981: "10"
+      ca/residence_ws_designated_proceeds: "230000.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "120000.00"
+      ca/residence_ws_fmv_feb_22_1994: "200000.00"
+      ca/residence_ws_elected_capital_gain: "20000.00"
+      ca/residence_ws_months_owned_after_feb_1992: "24"
+      ca/residence_ws_months_owned_after_1971: "74"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+  ca/income_tax_deducted: "25000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/principal_residence_worksheet_line_3: "8"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/principal_residence_worksheet_line_6: "22"
+      ca/principal_residence_worksheet_line_16: "220000.00"
+      ca/principal_residence_worksheet_line_17: "10000.00"
+      ca/principal_residence_worksheet_line_18: "190000.00"
+      ca/principal_residence_worksheet_line_19: "390000.00"
+      ca/principal_residence_worksheet_line_21: "170000.00"
+      ca/principal_residence_worksheet_line_23: "10"
+      ca/principal_residence_worksheet_line_24: "880000.00"
+      ca/principal_residence_worksheet_line_26: "78000.00"
+      ca/principal_residence_worksheet_line_27: "92000.00"
+      ca/principal_residence_worksheet_line_59: "92000.00"
+      ca/principal_residence_worksheet_line_61: "2208000.00"
+      ca/principal_residence_worksheet_line_63: "29837.84"
+      ca/principal_residence_worksheet_line_64: "62162.16"
+      ca/principal_residence_worksheet_line_66: "53783.78"
+      ca/principal_residence_line_56: "53783.78"
+      ca/principal_residence_line_57: "464216.22"
+      ca/principal_residence_gain: "518000.00"
+      ca/personal_use_property_gain_rows: "0"
+      ca/personal_use_property_gain: "464216.22"
+      ca/capital_gains_of_qualified_and_other_properties: "464216.22"
+      ca/capital_gains_after_deferral: "464216.22"
+      ca/capital_gains_before_investment_loss_reduction: "464216.22"
+      ca/capital_gains_before_reserves: "464216.22"
+      ca/capital_gain: "464216.22"
+      ca/included_capital_gain: "232108.11"
+      ca/taxable_capital_gains: "232108.11"
+      ca/schedule_3_line_19900: "232108.11"
+      ca/total_income: "292108.11"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "291543.11"
+      ca/other_payments_limit_income: "291543.11"
+      ca/refund_or_balance_owing: "88247.82"
+      ca-on/ontario_tax_less_dividend_credit: "29538.02"
+      ca/amt_carryover_available_for_2026: "1392.89"

@@ -1,0 +1,188 @@
+# Return JU: Form T1032, "Joint Election to Split Pension Income", as its own form, for a
+# transferring spouse who is a retired 2025 Ontario resident. The transferring spouse has a
+# registered pension of $30,000 (line 11500, all eligible pension income, a chosen figure) and
+# elects to split $10,000 of it with the receiving spouse: the amount goes on line 21000 of this
+# return and the receiving spouse's return carries nothing on line 11600 (a chosen $0). The
+# receiving spouse has no pension of their own. Every T1032 line is worked out by hand from the
+# form text (docs/cra-forms-2025/t1032-25e.txt) below; the end-to-end module checks them.
+#
+# Step 2, the maximum split-pension amount:
+# Line 1 (eligible pension income, line 8 of the Federal Worksheet for line 31400): $30,000.00,
+#   a chosen figure equal to line 11500, so it is 30,000.00. This is the transferring spouse's
+#   return (the answer is 1), so the return checks that line 1 equals line 8 of its own
+#   Federal Worksheet for line 31400 (line 11500, 30,000.00, with no foreign pension, U.S. IRA
+#   or RRIF amounts and no annuity payments on line 12900): it does, so the return accepts it.
+# Line 2 (box 128 of the T4A): a chosen $0.00. Line 3 = 30,000.00 - 0.00 = 30,000.00.
+# Line 4 (box 17 of the T4A-RCA): a chosen $0.00, and no life annuity from an RCA is paid, so line
+#   4 is not a qualifying RCA amount: the count on the form's "qualifying RCA payments" is 0 and
+#   line 8 is "0" (the form's "Otherwise, enter "0" on line 8").
+# Line 5: 131,483.45 (printed). Line 6: line 3, 30,000.00. Line 7 = 131,483.45 - 30,000.00 =
+#   101,483.45 (not negative, so no floor applies).
+# Line 8 = 0.00 (the RCA count is 0, so line 8 is "0" whatever the lesser of line 4 and line 7).
+# Line 9: line 2, 0.00. Line 10: line 3, 30,000.00. Line 11: line 8, 0.00.
+# Line 12 = 30,000.00 + 0.00 = 30,000.00. Line 13: 131,483.45 (printed). Line 14: line 12,
+#   30,000.00. Line 15 = 131,483.45 - 30,000.00 = 101,483.45 (not negative).
+# Line 16 = lesser of line 9 (0.00) and line 15 (101,483.45) = 0.00 (no veterans benefits).
+# Line 17 = line 3 + line 8 + line 16 = 30,000.00 + 0.00 + 0.00 = 30,000.00.
+# Line 18: the marital status did not change in the year (count 0), so line 18 is not used for
+#   line 19; for the record, 12 months married / 12 months in the tax year x 30,000.00 =
+#   30,000.00 (12 is the printed "(12)" and the spouses were married all year).
+# Line 19 = line 17, 30,000.00 (no change in marital status).
+# Line 20: 50%. Line 21 = 30,000.00 x 50% = 15,000.00, the maximum split-pension amount.
+#
+# Step 3, the elected split-pension amount:
+# Line 22: the amount jointly elected, $10,000.00 (the return's line 21000, a chosen figure,
+#   since this is the transferring spouse's return; the receiving spouse's return carries it on
+#   line 11600; a return carries one of the two, so line 11600 here is 0, or the return is
+#   refused). It is not more than line 21 (15,000.00), so it is entered as it is, not
+#   refused.
+#
+# Step 4, the adjustment to the pension income amount:
+# Part A. Line 23: line 1, 30,000.00. Line 24: line 22, 10,000.00. Line 25: line 8, 0.00.
+#   Line 26: line 17, 30,000.00. Line 27: 0.00 / 30,000.00 = 0. Line 28: line 24, 10,000.00.
+#   Line 29 = 0 x 10,000.00 = 0.00. Line 30 = 10,000.00 - 0.00 = 10,000.00.
+#   Line 31 = 30,000.00 - 10,000.00 = 20,000.00. Enter on line 31400 of the transferring spouse's
+#   return, whichever is less: $2,000 or 20,000.00, so 2,000.00.
+# Part B. Line 32 (the receiving spouse's Federal Worksheet line 8): $0.00, a chosen figure
+#   (no pension). Line 33: line 32 of 0.00 is less than $2,000, so that Note 1 condition is met;
+#   Note 1 does not apply only because the transferring spouse received none of the listed
+#   payments (a RRIF, RRSP or other annuity, money purchase provision of an RPP or SPP, PRPP,
+#   advanced life deferred annuity or eligible veterans benefits; the pension is a life
+#   annuity), which is a chosen figure, so line 33 is line 30, 10,000.00. Line 34 = 0.00 + 10,000.00 = 10,000.00.
+#   Enter on line 31400 of the receiving spouse's return, whichever is less: $2,000 or
+#   10,000.00, so 2,000.00.
+#
+# Step 5, the income tax deducted:
+# Line 35: the total tax deducted from the transferring spouse's pension income on line 17, a
+#   chosen $3,000.00 (the only tax slip, all eligible pension income). It is not more than line
+#   37 (3,000.00), so it is entered as it is.
+# Line 36 = line 35 x line 22 / line 17 = 3,000.00 x 10,000.00 / 30,000.00 = 1,000.00.
+# Line 37: the total tax deducted from all the transferring spouse's slips, 3,000.00: the
+#   amount this return would have entered on line 43700 if it did not choose to split, the
+#   return's own `ca/income_tax_deducted` (a chosen 3,000.00, the same slip). A fact entered
+#   once, so the form has no input of its own for lines 37 and 40.
+# Line 38: line 36, 1,000.00. Line 39 = 3,000.00 - 1,000.00 = 2,000.00 (line 43700 of the
+#   transferring spouse's return).
+# Line 40: the same figure for the receiving spouse's return (this return's 3,000.00 here, as
+#   the form is run on this return). Line 41: line 36, 1,000.00. Line 42 = 3,000.00 + 1,000.00 =
+#   4,000.00 (line 43700 of the receiving spouse's return; this return is the transferring
+#   spouse's, so it takes line 39 and this line is not used).
+#
+# T1 line 31400 is the form's Part A amount, 2,000.00 (the lesser of $2,000 and line 31, 20,000.00),
+# in place of the worksheet's, because line 22 is above 0; it is the same figure as the worksheet's
+# own (line 8, 30,000.00, capped at $2,000).
+#
+# T1 line 43700 (the total credits' first part) is the election's line 39, 2,000.00, because
+# line 22 (10,000.00) is above 0 (the election applies) and this is the transferring spouse's
+# return. The only credit is that 2,000.00, so total credits are 2,000.00 and the balance
+# owing of 271.29 without the credit is 271.29 - 2,000.00 = -1,728.71, a refund of 1,728.71.
+#
+# The return's own lines: total income (line 15000) is the $30,000.00 of line 11500 with no other
+# income, so total income is 30,000.00; the elected amount of $10,000.00 is deducted on line 21000,
+# so net income (line 23600) is 30,000.00 - 10,000.00 = 20,000.00, and taxable income (line 26000)
+# is 20,000.00, with no other deduction from net income (no CPP contributions: no employment
+# income). `expected` also lists refund_or_balance_owing (-1,728.71) and
+# ontario_tax_less_dividend_credit (277.30), and some guard and loader-required lines: those follow
+# from the engine's other forms, are not derived here and are not part of the T1032 worked example.
+# No other line is checked.
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A retired 2025 Ontario resident who is 18 or older at the end of 2025 and has a spouse or
+  common-law partner on December 31, 2025 (a chosen count of 1), the transferring spouse of a
+  joint election to split pension income. The transferring spouse's other pensions and
+  superannuation (line 11500) are 30000, all of it eligible pension income (the registered
+  pension is a life annuity, not from an RCA: the RCA count is 0). The elected split-pension
+  amount is 10000 on line 21000 of this return and 0 on line 11600 (the receiving spouse's
+  return carries no election). Form T1032, Step 2: line 1 is 30000.00, line 3 is 30000.00, line
+  17 is 30000.00, line 21 (the maximum split-pension amount, 50%) is 15000.00. Step 3: line 22
+  is 10000.00, not more than line 21. Step 4: line 31400 for the transferring spouse is
+  min(2000.00, 20000.00) = 2000.00; for the receiving spouse, line 34 is 10000.00, so line
+  31400 is min(2000.00, 10000.00) = 2000.00. Step 5: line 36 is 3000.00 x 10000.00 / 30000.00 =
+  1000.00 (income tax deducted 3000.00), line 39 is 3000.00 - 1000.00 = 2000.00, which is
+  line 43700, so the balance is 271.29 - 2000.00 = -1728.71 (a refund). The return's total income is 30000.00, net income (after the 10000.00 deduction on line 21000)
+  is 20000.00, and taxable income is 20000.00. Every other figure is blank.
+sources:
+  - >-
+    CRA, Form T1032 E (25), Joint Election to Split Pension Income, page 2 (Step 2), "Line 1 and
+    line 68020: Enter the amount of eligible pension income that was calculated on line 8 of the
+    transferring spouse's or common-law partner's Federal Worksheet for line 31400."; "Line 5:
+    131,483.45"; "Line 13: 131,483.45"; "Line 18: Number of months married or living common-law
+    ... Divided by Number of months in the tax year (12) ..."; "Line 20: Maximum rate 50%"; "Line
+    21: Line 19 multiplied by line 20 Maximum split-pension amount ="; and "Line 22: ... The
+    split-pension amount cannot be more than the amount from line 21."
+  - >-
+    CRA, Form T1032 E (25), page 3 (Step 4): "Enter on line 31400 of the transferring spouse's or
+    common-law partner's return, whichever is less: $2,000 or the amount from line 31." and "Enter
+    on line 31400 of the receiving spouse's or common-law partner's return, whichever is less:
+    $2,000 or the amount from line 34."
+  - >-
+    CRA, Form T1032 E (25), page 4 (Step 5): "Line 36: Amount from line 35 multiplied by Amount
+    from line 22 divided by Amount from line 17"; "Line 39: Line 37 minus line 38 Enter the result
+    on line 43700 of the transferring spouse's or common-law partner's return."
+inputs:
+  ca/cpp_months: "12"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/other_pensions_and_superannuation: "30000"
+  ca/t1032_eligible_pension_income: "30000"
+  ca/t1032_t4a_box_128: "0"
+  ca/t1032_t4a_rca_box_17: "0"
+  ca/t1032_rca_payments_qualify: "0"
+  ca/t1032_marital_status_changed: "0"
+  ca/t1032_filer_is_transferring_spouse: "1"
+  ca/t1032_line_22: "10000"
+  ca/t1032_months_married: "12"
+  ca/t1032_not_separated_90_days: "1"
+  ca/t1032_residents_of_canada: "1"
+  ca/t1032_months_in_tax_year: "12"
+  ca/t1032_transferring_spouse_died: "0"
+  ca/t1032_receiving_spouse_pension_amount: "0"
+  ca/t1032_income_tax_deducted_on_pension: "3000"
+  ca/t1032_receiving_spouse_under_65: "0"
+  ca/t1032_transferring_spouse_65_or_older: "0"
+  ca/t1032_note_1_payments_a_to_d: "0"
+  ca/t1032_note_1_payments_due_to_death: "0"
+  ca/income_tax_deducted: "3000"
+expected:
+  ca-on/return:
+    - ca/total_income: "30000.00"
+      ca/net_income: "20000.00"
+      ca/taxable_income: "20000.00"
+      ca-on/ontario_tax_less_dividend_credit: "277.30"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "20000.00"
+      ca/other_payments_limit_income: "20000.00"
+      ca/refund_or_balance_owing: "-1728.71"
+      ca/income_tax_deducted_after_election: "2000.00"
+      ca/total_credits: "2000.00"
+      ca/pension_income_credit: "2000.00"
+      ca-on/net_refund: "1728.71"
+      ca-on/spouse_for_separate_residences_checked: "1"
+      ca/t1032_line_1_of_transferring_spouse_checked: "30000.00"
+      ca/t1032_worksheet_line_8_of_transferring_spouse_checked: "30000.00"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"
+  ca/t1032:
+    - ca/t1032_line_3: "30000.00"
+      ca/t1032_line_22: "10000.00"
+      ca/t1032_line_5: "131483.45"
+      ca/t1032_line_7: "101483.45"
+      ca/t1032_line_8: "0.00"
+      ca/t1032_line_12: "30000.00"
+      ca/t1032_line_15: "101483.45"
+      ca/t1032_line_16: "0.00"
+      ca/t1032_line_17: "30000.00"
+      ca/t1032_line_18: "30000.00"
+      ca/t1032_line_19: "30000.00"
+      ca/t1032_line_21: "15000.00"
+      ca/t1032_line_22_checked: "10000.00"
+      ca/t1032_line_29: "0.00"
+      ca/t1032_line_30: "10000.00"
+      ca/t1032_line_31: "20000.00"
+      ca/t1032_line_31400_transferring: "2000.00"
+      ca/t1032_line_34: "10000.00"
+      ca/t1032_line_31400_receiving: "2000.00"
+      ca/t1032_line_35_checked: "3000.00"
+      ca/t1032_line_36: "1000.00"
+      ca/t1032_line_39: "2000.00"
+      ca/t1032_line_42: "4000.00"

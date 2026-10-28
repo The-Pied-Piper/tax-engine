@@ -1,0 +1,280 @@
+# Return AS: a 2025 Ontario resident with employment income of $92,074 (a chosen figure) and
+# an old age security pension of $9,000 (line 11300), whose net income before adjustments
+# (line 23400) is exactly $100,000.00 once the enhanced CPP contributions of $1,074.00 (line
+# 22215) are deducted. It is a worked example of the social benefits repayment: the
+# Federal Worksheet chart for line 23500 applies (an amount on line 11300 and line 23400 more
+# than $93,454), line 17 is 100,000.00 - 93,343.00 = 6,657.00, line 18 is 15% of it, 998.55,
+# line 19 is the lesser of that and line 5 (9,000.00), 998.55, and lines 23500 and 42200 are
+# 998.55. Line 23600 (net income) is 100,000.00 - 998.55 = 99,001.45, which the taxable income
+# (line 26000) and everything the forms take "from line 23600" read, among them Form T1206 Part
+# 1 line 5 (the TOSI-adjusted net income, 99,001.45) and Schedule ON479-A column 1 line 1; line
+# 42200 is added into the total payable (line 43500). The Federal Worksheet for line 25000 still
+# reads line 23400 (100,000.00). The employment income of 92,074 is chosen so that, with the
+# enhanced CPP contributions of 1,074.00 deducted, line 23400 is exactly 100,000.00. The
+# end-to-end test holds further cases (line 23400 of 93,400.00 gives 0; OAS of 3,000 with line
+# 23400 of 150,000.00 gives 3,000.00, and with 200,000.00 it lowers the basic personal amount to
+# 15,726.30). The figures that read line 23600 where the form says so (the TOSI-adjusted net
+# income, Schedule 6, the LIFT credit, the medical supplement and Schedule ON479-A) take
+# 99,001.45, line 23400 less line 23500, signed. Amounts are quoted decimal strings, never
+# floats; counts are quoted digit strings. A line or input this return leaves out is blank, 0,
+# and is checked to compute to 0;
+# intermediate lines that are listed are checked too.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025, aged 18 or older (chosen figures), with no spouse or
+  common-law partner and no dependants, employment income of $92,074.00 and an old age
+  security pension of $9,000.00 (line 11300), no net federal supplements, EI benefits,
+  T4A(OAS) overpayment recovered (box 20), T4E repayment, universal child care benefit, RDSP
+  income, split income or other deductions (each a chosen $0). The age amount (line 30100) is
+  not claimed (a chosen figure; this return does not depend on the filer's age). Total income
+  (line 15000) is $92,074.00 + $9,000.00 = $101,074.00. Schedule 8 and the CPP contributions:
+  the pensionable earnings are over the $81,200 second ceiling, so the base contributions are
+  4.95% x (71,300 - 3,500) = $3,356.10, the first additional 1% x 67,800 = $678.00 and the
+  second additional 4% x 9,900 = $396.00; the enhanced contributions (line 22215) are $678.00
+  + $396.00 = $1,074.00, the only deduction (line 23300). The EI premiums are 1.64% x 65,700
+  = $1,077.48 (the maximum). Net income before adjustments (line 23400) is $101,074.00 -
+  $1,074.00 = $100,000.00. Federal Worksheet "Line 23500 - Social benefits repayment": the
+  chart applies because an amount is entered on line 11300 and $100,000.00 is more than
+  $93,454 (the count is 1; nothing is on line 11900, so the first condition does not hold).
+  Line 1 is $9,000.00 and line 2 is $0, so line 3 is $9,000.00; line 4 is $0, so line 5 is
+  $9,000.00. Line 6 is the $100,000.00 of line 23400 (plus the Form T1206 line 4 of $0). Line 7
+  is $0, line 8 (line 11700) $0 and line 9 (line 12500) $0, so line 10 is $0.00 and line 11 is
+  $100,000.00. Lines 12 and 13 are $0, so line 14 is $0.00 and line 15 is $100,000.00. Line 16
+  is $93,343.00, so line 17 is $6,657.00 and line 18 is $6,657.00 x 15% = $998.55. Line 19 is
+  the lesser of line 5 ($9,000.00) and line 18 ($998.55): $998.55. Line 20 is $0, so line 21,
+  and so line 23500 and line 42200, is $998.55. Line 23600 is $100,000.00 - $998.55 =
+  $99,001.45, and so is the taxable income (line 26000), with no deductions from net income.
+  Form T1206 Part 1 line 5 reads that line 23600, $99,001.45, so line 4 ($0) plus line 5, line 6,
+  the TOSI-adjusted net income, is $99,001.45; Schedule ON479-A column 1 line 1 is $99,001.45,
+  line 2 $0 and line 3 $998.55, so line 4, the adjusted income, is $100,000.00.
+  Line 108 of the T1 and line 37 of ON428 take 3% of the net income, $2,970.0435, rounded
+  half-up to the cent: $2,970.04; Schedule 9 line 6 takes 75% of it, $74,251.0875: $74,251.09,
+  which is below the net income, so line 9 is $74,251.09; the northern residents worksheet's
+  line 12 would take 20% of it, $19,800.29. The Federal Worksheet for line 25000 reads line
+  23400 floored at 0, $100,000.00, so its line 9 is $100,000.00 - $0 + $0 = $100,000.00, not
+  the $99,001.45 of line 23600. The federal tax on $99,001.45 is 14.5% x 57,375 = $8,319.375,
+  rounded half-up to the cent, $8,319.38, plus 20.5% x (99,001.45 - 57,375) = 20.5% x
+  $41,626.45 = $8,533.42225, $8,533.42: $16,852.80. The basic personal amount (line 30000) is
+  $16,129.00 as the TOSI-adjusted net income (Form T1206 Part 1 line 6, 0 + $99,001.45) is
+  $177,882 or less; the Canada employment amount (line 31260) is
+  $1,471.00; the CPP base contributions (line 30800) are $3,356.10 and the EI premiums (line
+  31200) $1,077.48, so the federal credit amounts (line 35000 base) are $16,129.00 + $1,471.00
+  + $3,356.10 + $1,077.48 = $22,033.58, at 14.5% (line 33800) $3,194.8691, rounded half-up to
+  the cent: $3,194.87. The federal tax after credits (line 41700) and the net federal tax (line
+  42000) are $16,852.80 - $3,194.87 = $13,657.93. The Ontario tax: 5.05% x 52,886 = $2,670.743,
+  $2,670.74, plus 9.15% x (99,001.45 - 52,886) = 9.15% x $46,115.45 = $4,219.563675, $4,219.56:
+  $6,890.30. The Ontario credit amounts are $12,747.00 + $3,356.10 + $1,077.48 = $17,180.58, at
+  5.05% $867.619, rounded half-up to the cent: $867.62, so the Ontario tax after the credits is
+  $6,890.30 - $867.62 = $6,022.68. The surtax (ON428 lines 66 to 68) is 20% x ($6,022.68 -
+  $5,710) = $62.536, rounded half-up to the cent: $62.54 (the second threshold of $7,307 is not
+  reached), so the Ontario tax with surtax is $6,085.22. The Ontario tax reduction is $588.00
+  less $6,085.22, not below zero: $0.00; the LIFT credit is $0 and the Ontario health premium,
+  for a taxable income of $99,001.45 (more than $72,600 but not more than $200,000), is $750.00, so the
+  Ontario tax (line 90, T1 line 147) is $6,085.22 + $750.00 = $6,835.22. T1 line 148 (line
+  43500) "Add lines 143 to 147. Total payable": $13,657.93 + $0 + $0 + $998.55 (line 146, line
+  42200) + $6,835.22 = $21,491.70, and the refund or balance owing (line 167) is that, less no
+  income tax deducted (a chosen $0) and no credits: a balance owing of $21,491.70. Every amount
+  computed from a rate, fraction, amount or chart on the forms is rounded half-up to the cent,
+  each line being a dollars-and-cents box; the lines that only add, subtract, compare or choose
+  take amounts already in cents.
+sources:
+  - >-
+    CRA, the 2025 Federal Worksheet (form 5000-D1, docs/cra-forms-2025/5000-d1-25e.txt),
+    "Line 23500 - Social benefits repayment": "Complete the chart below if one or both of the
+    following applies: - You entered an amount on line 11900 of your return and the amount on
+    line 23400 is more than $82,125 - You entered an amount on line 11300 or line 14600 of your
+    return and the amount on line 23400 is more than $93,454"; "Line 1: Old age security (OAS)
+    pension from line 11300 of your return"; "Line 2: Net federal supplements paid from line
+    14600 of your return"; "Line 3: Line 1 plus line 2 ="; "Line 4: Overpayment of OAS benefits
+    recovered (box 20 of your T4A(OAS) slip)"; "Line 5: Line 3 minus line 4 (if negative, enter
+    "0") ="; "Line 6: Net income before adjustments from line 23400 of your return"; "Line 7: EI
+    benefits repayment from line 4 of the repayment chart on your T4E slip, if any"; "Line 8:
+    Universal child care benefit (UCCB) from line 11700 of your return"; "Line 9: Registered
+    disability savings plan (RDSP) income from line 12500 of your return"; "Line 10: Add lines
+    7 to 9. ="; "Line 11: Line 6 minus line 10 ="; "Line 12: UCCB repayment from line 21300 of
+    your return"; "Line 13: RDSP income repayment (included in the amount on line 23200 of your
+    return)"; "Line 14: Line 12 plus line 13 ="; "Line 15: Line 11 plus line 14 Adjusted net
+    income ="; "Line 16: OAS benefits base amount 93,343.00"; "Line 17: Line 15 minus line 16 (if
+    negative, enter "0") ="; "Line 18: Amount from line 17 multiplied by 15% ="; "Line 19:
+    Enter whichever is less: amount from line 5 or line 18."; "Line 20: Amount from line 7, if
+    any"; "Line 21: Line 19 plus line 20. Enter this amount on line 23500 and line 42200 of
+    your return. =". Lines 1 and 3 are 9,000.00, line 5 is 9,000.00 - 0, line 6 is 100,000.00,
+    line 10 is 0 + 0 + 0 and line 11 is 100,000.00 - 0, line 14 is 0 + 0 and line 15 is
+    100,000.00 + 0, line 17 is 100,000.00 - 93,343.00 = 6,657.00, line 18 is 6,657.00 x 15% =
+    998.55, line 19 is the less of 9,000.00 and 998.55: 998.55, and line 21 is 998.55 + 0 =
+    998.55. Line 18 is a dollars-and-cents box, rounded half-up to the cent; the others take
+    amounts already in cents. The Federal Worksheet "Line 25000 - Other payments deduction"
+    line 1 reads "Amount from line 23400 of your return (if negative, enter "0")".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, the T1-2025 Ontario edition return (form 5006-R,
+    docs/cra-forms-2025/5006-r-25e.txt, confirmed 2026-10-19): "Line 54 and line 23400: Line 34
+    minus line 53 (if negative, show in brackets) Net income before adjustments"; "Line 55 and
+    line 23500: If not, enter "0" on line 23500."; "Line 56 and line 23600: Line 54 minus line
+    55 (if negative, enter "0") If negative, you may have a non-capital loss (see Form T1A) and
+    the negative amount is to be used for certain calculations (go to canada.ca/line-23600) Net
+    income ="; "Line 146 and line 42200: Social benefits repayment (amount from line 23500)";
+    "Line 148 and line 43500: Add lines 143 to 147. Total payable". Line 54 is 101,074.00 -
+    1,074.00 = 100,000.00, line 55 is 998.55, line 56 is 100,000.00 - 998.55 = 99,001.45, line
+    146 is 998.55 and line 148 is 13,657.93 + 0.00 + 0.00 + 998.55 + 6,835.22 = 21,491.70.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, Form T1206 (Tax on Split Income, docs/cra-forms-2025/t1206-25e.pdf), Part 1: line 5
+    "Net income from line 23600 of your tax return (or the amount you would have entered if the
+    instructions on line 23600 read "if negative, show in brackets")"; line 6 "TOSI-adjusted net
+    income: line 4 plus line 5 If negative, enter the result in brackets"; and the note "Use the
+    TOSI-adjusted net income from line 6 of this form in place of your net income from line
+    23600 to calculate the federal amounts you can claim". CRA, Schedule ON479-A (docs/cra-forms-2025/5006-tca-25e.txt):
+    "Line 2: Child care expenses deduction from line 21400 of the return"; "Line 3: Social
+    benefits repayment from line 23500 of the return"; "Line 4: Add lines 1 to 3 (if negative,
+    enter "0"). Adjusted income". Line 5 of T1206 is 99,001.45, so line 6 is 0 + 99,001.45 =
+    99,001.45; ON479-A lines 1 to 3 are 99,001.45, 0 and 998.55, and line 4 is 100,000.00.
+  - >-
+    CRA, "CPP contribution rates, maximums and exemptions", 2025 row: maximum annual
+    pensionable earnings $71,300; basic exemption $3,500; employee rate 5.95%. CRA, the 2025
+    Schedule 8 (form 5000-S8), Part 3: line 7 "Line 5 minus line 6 (if negative, enter "0")
+    (maximum $67,800)"; line 11 "amount from line 7 multiplied by 4.95% (maximum $3,356.10)";
+    line 12 "amount from line 7 multiplied by 1% (maximum $678.00)"; line 22 "amount from line 4
+    multiplied by 4% (maximum $396.00)"; line 48 "Enter this amount (in dollars and cents) on
+    line 22215 of your return." The contributions are 3,356.10, 678.00 and 396.00, and line
+    22215 is 678.00 + 396.00 = 1,074.00. CRA, "EI premium rates and maximums", 2025 federal
+    row: maximum annual insurable earnings $65,700; rate 1.64%; maximum annual employee premium
+    $1,077.48.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - >-
+    https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html
+  - >-
+    The arithmetic on the 2025 rates for a taxable income of 99,001.45 (the bracket limits
+    are those of the T1 and ON428 text in the datasets): federal 14.5% to 57,375 and 20.5% above it; Ontario 5.05% to
+    52,886 and 9.15% to 105,775; the Ontario surtax 20% over 5,710; the Ontario health premium
+    750.00 for a taxable income of more than 72,600 but not more than 200,000.
+inputs:
+  ca/t4_cpp_slip_count: "2"
+  ca/employment_income: "92074"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "92074"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "92074"
+  ca/t2204_premiums_deducted: "1077.48"
+  ca/old_age_security: "9000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "4034.10"
+  ca/cpp_t4_second_additional_contributions: "396.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "92074.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/ei_premiums: "1077.48"
+      ca/total_income: "101074.00"
+      ca/deductions_from_total_income: "1074.00"
+      ca/net_income_before_adjustments: "100000.00"
+      ca/net_income_before_adjustments_not_below_zero: "100000.00"
+      ca/social_benefits_repayment_applies: "1"
+      ca/oas_and_federal_supplements: "9000"
+      ca/social_benefits_line_5: "9000"
+      ca/social_benefits_line_6: "100000.00"
+      ca/social_benefits_line_10: "0"
+      ca/social_benefits_line_11: "100000.00"
+      ca/social_benefits_line_14: "0"
+      ca/social_benefits_line_15: "100000.00"
+      ca/oas_benefits_base_amount: "93343.00"
+      ca/social_benefits_line_17: "6657.00"
+      ca/social_benefits_line_18: "998.55"
+      ca/social_benefits_line_19: "998.55"
+      ca/social_benefits_line_21: "998.55"
+      ca/social_benefits_repayment: "998.55"
+      ca/net_income: "99001.45"
+      ca/net_income_signed: "99001.45"
+      ca/tosi_adjusted_net_income: "99001.45"
+      ca/tosi_adjusted_net_income_not_below_zero: "99001.45"
+      ca-on/care_adjusted_income: "100000.00"
+      ca/net_income_less_uccb_and_rdsp_income: "100000.00"
+      ca/other_payments_limit_income: "100000.00"
+      ca/taxable_income: "99001.45"
+      ca/medical_net_income_share: "2970.04"
+      ca/donation_limit_on_net_income: "74251.09"
+      ca/donation_limit_with_capital_gifts: "74251.09"
+      ca/charitable_donations_limit: "74251.09"
+      ca/residency_net_income_limit: "19800.29"
+      ca/basic_personal_amount: "16129.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/non_refundable_credit_amounts: "22033.58"
+      ca/non_refundable_tax_credits: "3194.87"
+      ca/credits_against_basic_federal_tax: "3194.87"
+      ca/federal_basic_tax: "16852.80"
+      ca/federal_tax_with_split_income: "16852.80"
+      ca/federal_tax_after_credits: "13657.93"
+      ca/federal_tax_with_itc_recapture: "13657.93"
+      ca/federal_tax_less_credits: "13657.93"
+      ca/split_income_line_29: "13657.93"
+      ca/split_income_line_30: "13657.93"
+      ca/net_federal_tax: "13657.93"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/medical_net_income_share: "2970.04"
+      ca-on/non_refundable_credit_amounts: "17180.58"
+      ca-on/non_refundable_tax_credits: "867.62"
+      ca-on/ontario_basic_tax: "6890.30"
+      ca-on/ontario_tax_after_credits: "6022.68"
+      ca-on/ontario_tax_before_dividend_credit: "6022.68"
+      ca-on/ontario_tax_less_dividend_credit: "6022.68"
+      ca-on/ontario_tax_with_split_income: "6022.68"
+      ca-on/ontario_surtax_base: "6022.68"
+      ca-on/ontario_surtax: "62.54"
+      ca-on/ontario_tax_with_surtax: "6085.22"
+      ca-on/ontario_tax_after_dividend_credit: "6085.22"
+      ca-on/ontario_tax_before_reduction: "6085.22"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_after_reduction: "6085.22"
+      ca-on/ontario_tax_after_lift_credit: "6085.22"
+      ca-on/ontario_tax_after_food_credit: "6085.22"
+      ca-on/split_income_line_52: "6085.22"
+      ca-on/health_premium_income: "99001.45"
+      ca-on/ontario_health_premium: "750.00"
+      ca-on/ontario_tax: "6835.22"
+      ca/social_benefits_repayment_payable: "998.55"
+      ca/total_payable: "21491.70"
+      ca/refund_or_balance_owing: "21491.70"
+      ca/amt_part_1_subtotal: "99001.45"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "537.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "99001.45"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "13657.93"
+      ca/amt_regular_net_federal_tax_payable: "13657.93"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "3356.10"
+      ca/cpp_first_additional_contributions: "678.00"
+      ca/cpp_required_base_and_first_additional_contributions: "4034.10"
+      ca/cpp_second_additional_contributions: "396.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "3356.10"
+      ca/cpp_part_5_line_69: "1074.00"
+      ca/cpp_enhanced_contributions: "1074.00"

@@ -1,0 +1,138 @@
+# Return JD: the security options boxes of the T4 entered ONCE. The T4 boxes 39 and 91 (30,000.00)
+# and boxes 41 and 92 (10,000.00) are the same facts on two forms, T1 line 24900 (Guide 5000-G:
+# "the total of the amounts shown in boxes 39, 41, 91, and 92 of your T4 slips") and Form T691
+# Part 1 lines 28 and 35. Each is entered once, through the forms ca/security_options_boxes_39_and_91
+# and ca/security_options_boxes_41_and_92, and both the T1 line 24900 and the T691 lines read that
+# one input. Line 24900 is not an input of the return: it is the total of the T691 amounts
+# "included on line 24900 of your return" (lines 28, 29, 31, 35, 36 and 37).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A 2025 Ontario resident for all of 2025, resident in Canada throughout 2025 and aged 18 or older
+  at the end of 2025, with employment income (line 10100) of a chosen 42,000.00, which includes the
+  security option benefits of the T4: boxes 39 and 91 of 30,000.00 (Form T691 Part 1 line 28) and
+  boxes 41 and 92 of 10,000.00 (line 35), both chosen. The filer gave 2,000.00 of publicly listed
+  securities acquired under the security option plan to a charity (T691 line 31, a chosen figure)
+  and has no Form T1212 amount (line 29 is 0.00), no prospector or grubstaker deduction (line 36)
+  and no deferred profit-sharing plan deduction (line 37). The T4 shows the whole 42,000.00 as
+  pensionable and insurable earnings (a chosen simplification), so CPP contributions by Schedule 8
+  are: base 4.95% x (42,000.00 - 3,500.00) = 1,905.75 and first additional 1% x 38,500.00 = 385.00,
+  2,290.75 in all (the T4 box total; the enhanced 385.00 is deducted on line 22215) and no second
+  additional contribution below 71,300.00; EI premiums are 1.64% x 42,000.00 = 688.80.
+  Total income (line 15000) is 42,000.00 and net income (line 23600) is 42,000.00 - 385.00 =
+  41,615.00. Line 24900, the security options deduction, is the total of Form T691 lines 28, 29, 31,
+  35, 36 and 37, each "included on line 24900 of your return": 30,000.00 + 0.00 + 2,000.00 +
+  10,000.00 + 0.00 + 0.00 = 42,000.00, which is the total income and is entered as it comes.
+  Taxable income (line 26000) is 41,615.00 - 42,000.00 = -385.00, entered as 0.00 ("if
+  negative, enter 0"), and Form T691 Part 1 line 1 is the signed -385.00.
+  Form T691 Part 1: line 12 is -385.00 + 0.00 + 0.00 + 0.00 = -385.00, and lines 13 and 27 are the
+  same, as lines 14, 23 and 26 are 0.00. Line 28 is 30,000.00, line 29 is 0.00 and line 30 is
+  30,000.00; line 31 is 40% x 2,000.00 = 800.00 and line 32 is 30,000.00 - 800.00 = 29,200.00, so
+  line 33 and line 34 are -385.00 + 29,200.00 = 28,815.00. Line 35 is 10,000.00, lines 36 and 37
+  are 0.00 and line 38 is 10,000.00; lines 39 to 43 are 0.00, so line 44 is 28,815.00 + 10,000.00 +
+  0.00 = 38,815.00. Line 58 is the enhanced CPP contributions of 385.00, so lines 63 and 78 are
+  385.00, line 79 is 50% and line 80 is 192.50; line 82 is 192.50 + 38,815.00 = 39,007.50 and,
+  with no dividends and no capital gains deduction (lines 84 to 92 are 0.00), line 93, the
+  adjusted taxable income, is 39,007.50. It is below the basic exemption of 177,882.00, so line 95
+  is 0.00 and the filer owes no alternative minimum tax. Line 98 is 50% of line 33800 of the
+  return: the credit amounts are the basic personal amount 16,129.00 (net income below 177,882.00),
+  the CPP base contributions 1,905.75, the EI premiums 688.80 and the Canada employment amount
+  1,471.00, 20,194.55 in all, at 14.5% 2,928.21 (2,928.20975, rounded half-up), and 50% of it is
+  1,464.105, rounded half-up to 1,464.11, so line 102 is 1,464.11 and line 103 is 0.00.
+  The federal tax on taxable income of 0.00 is 0.00 and the credits are more than it, so Form T691
+  Part 2 line 5, which has no floor of 0, is 0.00 - 2,928.21 = -2,928.21, the basic federal tax
+  (line 7). Part 3 line 2 is 48% of it, -1,405.5408, rounded half-up to -1,405.54. Part 7 line 14
+  is line 1 (0.00) less line 13 (-2,928.21), 2,928.21; Part 8 reads it only when Part 5 line 11 is
+  positive, and it is 0 here (no minimum tax is owing), so the carryover available for 2026 (Part 8
+  line 17) is 0; Part 2 line 5 has no 0 floor, as the form prints it. The Ontario non-refundable credits
+  (ON428) are 5.05% x (12,747.00 + 1,905.75 + 688.80) = 774.75 (774.7480, rounded half-up). No tax
+  is payable, so the refund or balance owing is 0.00. The cap
+  ca/cpp_second_additional_earnings_maximum (9,900.00) and the limit income for the other
+  payments (the net income before adjustments, 41,615.00) are the engine's, not hand figures.
+sources:
+  - >-
+    CRA, T1 guide 2025, Line 24900 - Security options deductions: "Claim on line 24900 of your
+    return the total of the amounts shown in boxes 39, 41, 91, and 92 of your T4 slips."
+    (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, Form T691 2025, Part 1: "Security options deduction under paragraph 110(1)(d) included on
+    line 24900 of your return: Total of all amounts in boxes 39 and 91 of your T4 slips" (line 28);
+    "Amount from line 2 of Form T1212" (line 29); "Gifts of publicly listed securities acquired
+    under a security option plan included on line 24900 of your return" "x 40% =" (line 31); "Line 30
+    minus line 31 (if negative, enter "0")" (line 32); "Security options deduction under paragraph
+    110(1)(d.1) included on line 24900 of your return: total of all amounts in boxes 41 and 92 of
+    your T4 slips" (line 35); "Add lines 35 to 37." (line 38); "Add lines 34, 38, and 43." (line 44);
+    "Deduction for CPP or QPP enhanced contributions on employment income from line 22215 of your
+    return" (line 58); "Applicable Rate" "x 50%" (line 79); "Line 83 minus line 92 (if negative,
+    enter "0") Adjusted taxable income" (line 93) (docs/cra-forms-2025/t691-25e.pdf)
+  - >-
+    CRA, T1 guide 2025, Schedule 8 (CPP) and Form T2204 (EI) as in Return Y
+    (docs/cra-forms-2025/5000-g-25e.txt)
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "42000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "42000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "42000"
+  ca/t2204_premiums_deducted: "688.80"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2290.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  # The two T4 totals, each entered once: the T1 line 24900 and the T691 lines 28 and 35 read them.
+  ca/t4_security_options_boxes_39_and_91: "30000"
+  ca/t4_security_options_boxes_41_and_92: "10000"
+  ca/amt_security_option_publicly_listed_gifts: "2000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "42000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "42000.00"
+      ca/cpp_enhanced_contributions_on_return: "385.00"
+      ca/net_income: "41615.00"
+      ca/net_income_signed: "41615.00"
+      ca/net_income_before_adjustments: "41615.00"
+      ca/security_options_deductions: "42000.00"
+      ca/taxable_income_signed: "-385.00"
+      ca/taxable_income: "0"
+      ca/amt_part_1_subtotal: "-385.00"
+      ca/amt_adjusted_income_with_gains: "-385.00"
+      ca/amt_security_options_d_total: "30000.00"
+      ca/amt_security_option_gifts_deduction: "800.00"
+      ca/amt_security_options_net: "29200.00"
+      ca/amt_adjusted_income_with_security_options: "28815.00"
+      ca/amt_security_options_d1_total: "10000.00"
+      ca/amt_security_options_and_losses_total: "38815.00"
+      ca/amt_deductions_total: "385.00"
+      ca/amt_adjustments_before_rate_total: "385.00"
+      ca/amt_applicable_rate_amount: "192.50"
+      ca/amt_adjustments_after_rate_total: "39007.50"
+      ca/amt_adjusted_taxable_income: "39007.50"
+      ca/amt_basic_exemption: "177882.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/canada_employment_amount: "1471"
+      ca/non_refundable_credit_amounts: "20194.55"
+      ca/non_refundable_tax_credits: "2928.21"
+      ca/amt_non_refundable_credits_adjustment: "1464.11"
+      ca/amt_credits_adjustments_total: "1464.11"
+      ca/federal_tax_after_credits: "0"
+      ca/amt_credits_total: "2928.21"
+      ca/amt_tax_payable_before_minimum_tax_carryover: "-2928.21"
+      ca/amt_basic_federal_tax: "-2928.21"
+      ca/amt_federal_surtax_at_48_percent: "-1405.54"
+      ca/amt_additional_taxes_for_carryover: "2928.21"
+      ca/amt_carryover_available_for_2026: "0"
+      ca-on/non_refundable_tax_credits: "774.75"
+      ca/refund_or_balance_owing: "0"
+      # Engine only (not a hand figure): the lines below are the engine's, labelled in the description.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_payments_limit_income: "41615.00"
+  # The two shared facts, each read from the form's export: the one answer entered once.
+  ca/security_options_boxes_39_and_91:
+    - ca/t4_security_options_boxes_39_and_91: "30000"
+  ca/security_options_boxes_41_and_92:
+    - ca/t4_security_options_boxes_41_and_92: "10000"

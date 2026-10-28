@@ -1,0 +1,102 @@
+# Return FI: the Schedule 9 branches that return FH does not reach, with a filer whose gifts of
+# capital property are larger than the net income, so the net income (amount A) is the total
+# charitable donations limit (line 9), whose gift of depreciable property is limited by its
+# proceeds, and whose small donations leave nothing over the first tier (line 16 is 0, below the
+# income over the threshold, line 19). No CRA
+# example exists for Schedule 9, so every figure is a chosen figure, worked out by hand from the
+# form text, with the hand derivation of every line in the description.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the form names no province of
+  residence), resident in Canada throughout 2025, aged 18 or older at the end of 2025, with no
+  spouse (chosen figures). The filer's income is a chosen $300,000.00 of other income (line 13000)
+  and nothing else, so total income, net income (line 23600) and taxable income (line 26000) are
+  all 300,000.00. The gains of the donated property are not entered on Schedule 3 and the donations
+  are not deducted anywhere else (a chosen simplification: the donation inputs are separate inputs
+  of the engine, so the schedule is exercised alone). Line 1 charitable donations 50.00; no
+  other donation, so line 5 is 50.00. Chart for line 33700: line 1 recaptured depreciation
+  7,000.00, line 2 net proceeds 6,500.00, line 3 capital cost 9,000.00; line 4 is the lesser of
+  line 2 and line 3, 6,500.00; line 5 is the lesser of line 1 (7,000.00) and line 4 (6,500.00) =
+  6,500.00, which is line B. Chart for line 33900: line 1 taxable capital gains 400,000.00, line 2
+  capital gains deduction 1,000.00, line 3 is 400,000 - 1,000 = 399,000.00, which is line C. Line 6:
+  net income 300,000.00 (amount A) multiplied by 75% = 225,000.00. Line 7: amount B plus amount
+  C, 6,500 + 399,000 = 405,500.00 (line D), times 25% = 101,375.00. Line 8: 225,000 + 101,375 =
+  326,375.00. Line 9: the lesser of amount A (300,000.00) and line 8 (326,375.00) = 300,000.00, so
+  the net income is the limit. Line 10: the lesser of line 5 (50.00) and line 9 (300,000.00) =
+  50.00. Line
+  11: ecological and cultural gifts 100.00, all of them ecological gifts made after February 10,
+  2014 and before 2016 (line 15 is 100.00). Line 12: 50 + 100 = 150.00. Line 13: the lesser of
+  line 12 (150.00) and $200 = 150.00. Line 14: 150 - 150 = 0.00. Line 16: line 14 minus line 15,
+  0 - 100 is negative, so 0. Line 17: taxable income 300,000.00. Line 18: 253,414.00. Line 19:
+  300,000 - 253,414 = 46,586.00. Allowable donations: line 20 (line F) is the lesser of line 16
+  (0) and line 19 (46,586.00) = 0, times 33% = 0.00. Line 21: amount E (line 14, 0.00) minus amount F (0) =
+  0.00 (line G), times 29% = 0.00. Line 22: amount H (line 13, 150.00) times 14.5% = 21.75. Line 23
+  (line 34900): 0 + 0 + 21.75 = 21.75. The figures below that come from the rest of the return
+  are the engine's, not hand figures, and are labelled engine only in the expected section. The
+  lines this return does not reach are not triggered.
+sources:
+  - >-
+    CRA, Schedule 9 2025, lines 5 to 10: "Line 7: Amount B plus amount C Line D = multiplied by
+    25%", "Line 8: Line 6 plus line 7", "Line 9: Enter whichever is less: amount A or line 8.
+    Total charitable donations limit", "Line 10 and line 34000: Enter whichever is less: amount
+    from line 5 or line 9." (docs/cra-forms-2025/5000-s9-25e.txt)
+  - >-
+    CRA, Schedule 9 2025, lines 13 to 19: "Line 13: Enter whichever is less: amount from line 12 or
+    $200.", "Line 14: Line 12 minus line 13", "Line 19: Line 17 minus line 18 (if negative, enter
+    "0")" (docs/cra-forms-2025/5000-s9-25e.txt)
+  - >-
+    CRA, Schedule 9 2025, allowable donations: "Line 20: Enter whichever is less: amount from line
+    16 or line 19. Line F multiplied by 33%", "Line 21: Amount E minus amount F Line G multiplied by
+    29%", "Line 23: Add lines 20 to 22. Enter this amount on line 34900 of your return."
+    (docs/cra-forms-2025/5000-s9-25e.txt)
+  - >-
+    CRA, Schedule 9 2025, charts: "Line 4: Enter whichever is less: amount from line 2 or line 3.",
+    "Line 5: Enter whichever is less: amount from line 1 or line 4." (docs/cra-forms-2025/5000-s9-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s9/5000-s9-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_income: "300000"
+  ca/charitable_donations: "50"
+  ca/ecological_and_cultural_gifts: "100"
+  ca/ecological_gifts_before_2016: "100"
+  ca/depreciable_gift_recaptured_depreciation: "7000"
+  ca/depreciable_gift_net_proceeds: "6500"
+  ca/depreciable_gift_capital_cost: "9000"
+  ca/capital_gift_taxable_gains: "400000"
+  ca/capital_gift_gains_deduction: "1000"
+expected:
+  ca-on/return:
+    - ca/depreciable_gift_proceeds_or_cost: "6500"
+      ca/depreciable_gifts: "6500"
+      ca/capital_property_gifts: "399000"
+      ca/total_charitable_donations: "50"
+      ca/donation_limit_on_net_income: "225000.00"
+      ca/capital_gifts_total: "405500"
+      ca/capital_gifts_limit_addition: "101375.00"
+      ca/donation_limit_with_capital_gifts: "326375.00"
+      ca/charitable_donations_limit: "300000.00"
+      ca/charitable_donations_claimed: "50.00"
+      ca/donations_and_gifts_total: "150.00"
+      ca/donation_first_tier_maximum: "200.00"
+      ca/donations_first_tier: "150.00"
+      ca/donations_over_first_tier: "0.00"
+      ca/donations_over_first_tier_after_2016_gifts: "0.00"
+      ca/donation_high_income_threshold: "253414.00"
+      ca/taxable_income_over_donation_threshold: "46586.00"
+      ca/regular_rate_donations: "0.00"
+      ca/regular_rate_donation_credit: "0.00"
+      ca/first_tier_donation_credit: "21.75"
+      ca/donations_and_gifts_credit: "21.75"
+      ca/total_income: "300000.00"
+      ca/net_income: "300000.00"
+      ca/taxable_income: "300000.00"
+      # Engine only (not a hand figure): the lines below are the engine's, labelled in the description.
+      ca/net_income_before_adjustments: "300000.00"
+      ca/other_payments_limit_income: "300000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "30834.30"
+      ca/refund_or_balance_owing: "116872.46"

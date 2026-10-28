@@ -1,0 +1,108 @@
+# Return AR: Ruth, a single 2025 Ontario resident with employment income of $60,000 who sold
+# shares at a gain and also received capital gains from a partnership disposition that is
+# subject to the 100% inclusion rate (Schedule 3 line 25, 19890): the share gain is halved on
+# line 24, the partnership gains are not, and line 26 adds them. The taxable capital gains
+# (T1 line 12700) are line 26, so this return is the one that enters a non-zero line 25. The
+# other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of
+  $60,000 (a chosen figure), a share sale with proceeds of $40,000.00 (a chosen figure), an
+  adjusted cost base of $0.00 and outlays of $0.00 (chosen figures), so the gain on Schedule 3
+  line 4 (line 13200) is 40,000.00, which is line 21 (19700) and line 22; line 24 is 50% of it,
+  20,000.00. Partnership gains at full inclusion of $10,000.00 (a chosen figure) on Schedule 3
+  line 25 (19890), which is not multiplied by the inclusion rate: line 26 (19900) = line 24 plus
+  line 25 = 20,000.00 + 10,000.00 = 30,000.00, positive, so line 12700 (taxable capital gains)
+  is 30,000.00. Total income (line 15000) = 60,000.00 + 30,000.00 = 90,000.00. The enhanced CPP
+  contributions of 565.00 (1% of the employment income of 60,000.00 less the 3,500.00 basic
+  exemption) are deducted, so net income and taxable income are 89,435.00. The income tax
+  deducted is a chosen 22,000.00. The federal tax and the Ontario tax are the engine's figures from the
+  2025 brackets and credits in the repository (federal tax 11,791.47, Ontario tax 5,930.32),
+  giving a total payable of 17,721.79 and a refund of 4,278.21 (to be confirmed against CRA's
+  calculator). Without line 25 the total payable would be 14,756.79. Not triggered: the
+  personal-use property and listed personal property rows, the other lines of Schedule 3 and
+  every other credit and deduction not named here.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19),
+    Part 3: "Line 4 and line 13200: Total gain or loss (add all the amounts under column 5)";
+    Part 5: "Line 22: Amount from line 21 above", "Line 23: Inclusion rate 50%", "Line 24: Line
+    22 multiplied by the percentage from line 23 =", "Line 25 and line 19890: Capital gains
+    from certain dispositions of an interest in a partnership subject to 100% inclusion rate
+    (if negative, enter "0")", "Line 26 and line 19900: Line 24 plus line 25 If positive, enter
+    the result on line 12700 of your return. If negative, see "If you have a net capital loss"
+    below."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "40000.00"
+      ca/disposition_adjusted_cost_base: "0.00"
+      ca/disposition_outlays: "0.00"
+  ca/partnership_gains_at_full_inclusion: "10000.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "22000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/share_proceeds: "40000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/share_gain_or_loss: "40000.00"
+      ca/capital_gains_of_qualified_and_other_properties: "40000.00"
+      ca/capital_gains_after_deferral: "40000.00"
+      ca/capital_gains_before_investment_loss_reduction: "40000.00"
+      ca/capital_gains_before_reserves: "40000.00"
+      ca/capital_gain: "40000.00"
+      ca/included_capital_gain: "20000.00"
+      ca/taxable_capital_gains: "30000.00"
+      ca/schedule_3_line_19900: "30000.00"
+      ca/total_income: "90000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "89435.00"
+      ca/other_payments_limit_income: "89435.00"
+      ca/net_income: "89435.00"
+      ca/net_income_signed: "89435.00"
+      ca/taxable_income: "89435.00"
+      ca/net_federal_tax: "11791.47"
+      ca-on/ontario_tax_less_dividend_credit: "5180.32"
+      ca-on/ontario_tax: "5930.32"
+      ca/total_payable: "17721.79"
+      ca/total_credits: "22000.00"
+      ca/refund_or_balance_owing: "-4278.21"
+      ca-on/net_refund: "4278.21"
+      ca/amt_part_1_subtotal: "89435.00"
+      ca/amt_net_capital_gains_after_adjustments: "40000.00"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "282.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "99435.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "11791.47"
+      ca/amt_regular_net_federal_tax_payable: "11791.47"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "3361.75"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2796.75"
+      ca/cpp_part_5_line_69: "565.00"

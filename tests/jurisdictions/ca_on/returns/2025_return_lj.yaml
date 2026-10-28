@@ -1,0 +1,65 @@
+# Return LJ: Guide T4044, Tradesperson's tools example (electrician). Amounts are quoted decimal
+# strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LJ: Guide T4044 (2025), "Tradesperson's tools deduction", Example: an electrician who paid
+  $2,500 for tools and earned $45,000 of employment income in 2025. The Guide's maximum deduction is
+  the lesser of $1,000 and ($2,500 minus $1,471) = $1,029, so the claim is $1,000 "on line 22900".
+  The worksheet computes it: A is the lesser of the $2,500 cost and the $45,000 income, so
+  2,500; A minus $1,471 is 1,029 (the Guide's $1,029); the lesser of $1,000 and 1,029 is the
+  maximum deduction of 1,000.00. The claim of $1,000 is the filer's entry on line 9, which is
+  refused above the maximum, so line 9, lines 15 and 17 are 1,000 and T1 line 22900 is 1,000.00.
+  The electrician answers yes to "If you were a tradesperson in 2025" and to the employer's T2200
+  certification, and is not an apprentice mechanic, so no apprentice mechanic amount is carried
+  forward. Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Deduction for
+    tools", Example: "You paid $2,500 for the tools you needed, and you earned $45,000 in employment
+    income in 2025 as an electrician." "Your maximum deduction for 2025 is the lesser of $1,000 and
+    $1,029 ($2,500 minus $1,471). You claim a deduction of $1,000 on line 22900 of your 2025 income
+    tax and benefit return."
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    line 9 "Tradesperson's tools expenses (maximum $1,000)".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "45000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "45000"
+  ca/t2204_insurable_earnings: "45000"
+  ca/t2204_premiums_deducted: "738.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "2469.25"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_eligible_tools_cost: "2500"
+  ca/t777_were_a_tradesperson_in_2025: "1"
+  ca/t777_tradesperson_tools_certified_on_t2200_question_12: "1"
+  ca/t777_tradesperson_employment_income: "45000"
+  ca/t777_tradespersons_tools: "1000"
+expected:
+  ca/t777:
+    - ca/t777_tools_formula_b: "1029"
+      ca/t777_tradespersons_tools_maximum_deduction: "1000.00"
+      ca/t777_line_9: "1000"
+      ca/t777_line_15: "1000.00"
+      ca/t777_line_17: "1000.00"
+  ca-on/return:
+    - ca/total_income: "45000.00"
+      ca/other_employment_expenses: "1000.00"
+      # The electrician answers nothing to the apprentice mechanic conditions (0 by default), so
+      # (A minus B) of 29 is not available and nothing is carried forward.
+      ca/t777_apprentice_mechanic_tools_carried_forward_out: "0.00"
+      ca-on/ontario_tax_less_dividend_credit: "1416.31"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "43585.00"
+      ca/other_payments_limit_income: "43585.00"
+      ca/refund_or_balance_owing: "4908.51"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "45000"

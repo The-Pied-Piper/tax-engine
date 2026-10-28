@@ -1,0 +1,163 @@
+# Return DV: an infirm eligible dependant under 18 who is not the filer's child, Schedule 5 line
+# 30400 and line 30425. The filer is Return DS's filer (employed, no child, one dependant); the
+# dependant is under 18 at the end of 2025 and not the filer's child (a chosen figure: a niece not
+# under the filer's custody and control), with a mental or physical infirmity, net income 20,000.
+# The amount for an eligible dependant (line 30400) is the basic personal amount plus the $2,687
+# infirmity supplement less the dependant's net income, so it is 0 here, as in Return DS. The Canada
+# caregiver amount (line 30425) is for an eligible dependant 18 or older, so the dependant gets
+# none: the amount before the age count is 8,601.00 (the infirm count is 1) and the age count is 0.
+# ON428 has no infirmity line, so the Ontario side is Return DS's, unchanged.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DV: a 2025 Ontario resident who is employed at 60,000.00 (a chosen figure, T4 box 14)
+  and supports one eligible dependant who is under 18 at the end of the year, not the filer's
+  child, and dependent on the filer because of a mental or physical infirmity (a chosen figure: a
+  niece who is not under the filer's custody and control, so no child care expenses, no child for
+  the Ontario tax reduction and no amount for infirm children on line 30500). The dependant's net
+  income from line 23600 of their return is 20,000.00 (a chosen figure). The return has no RRSP
+  contribution, no other income and no deduction but the enhanced CPP contribution, so net income
+  is taxable income. The CPP contributions are 4.95% x (60,000 - 3,500) = 2,796.75 base (line
+  31000) and 1% x 56,500 = 565.00 first additional, 3,361.75 in all, and there is no second
+  additional contribution (60,000 is under the 71,300 ceiling); Schedule 8 (the one instance,
+  `ca/schedule_8_instances`) gives those figures as lines 57 and 69. The EI premiums are 1.64% x
+  60,000 = 984.00 (line 31200). The first additional contribution of 565.00 is the deduction on
+  line 22200, so total income of 60,000.00 less 565.00 is net income and taxable income, 59,435.00
+  (line 23600 and line 26000). The federal tax is 8,741.68, as in Return DS (14.5% of 57,375.00,
+  8,319.38 half-up, plus 20.5% of 2,060.00, 422.30). Line 30000, the basic personal amount, is
+  16,129.00 (taxable income is under 177,882). Line 30400, the amount for an eligible dependant, is
+  line 3 (16,129.00 + 2,687.00 = 18,816.00, the basic personal amount plus the infirmity
+  supplement) less the dependant's 20,000.00, -1,184.00, negative, so 0 on line 5. Line 30425, the
+  Canada caregiver amount: the dependant is under 18, so the age count is 0 and the amount on line
+  30425 is 0; before the age count, 28,798.00 - 20,000.00 = 8,798.00, at most 8,601.00, less the 0
+  claimed on line 30400, is 8,601.00. The Canada employment amount (line 31260) is 1,471.00. The
+  credit amounts subtotal (line 101) is 16,129.00 + 0 + 0 + 1,471.00 + 2,796.75 + 984.00 =
+  21,380.75, and the total of the credit amounts (line 33500) is the same, as the other lines it
+  adds (the spouse amount, the caregiver amount for infirm children, and so on) are 0. At 14.5%,
+  21,380.75 x 14.5% = 3,100.20875, 3,100.21 (half-up), so the federal tax after credits is
+  8,741.68 - 3,100.21 = 5,641.47 (line 41700). No alternative minimum tax applies (the taxable
+  income is under the basic exemption of 177,882). The Ontario tax is as in Return DS: 5.05% of
+  52,886.00 = 2,670.74, plus 9.15% of 59,435.00 - 52,886.00 = 6,549.00 = 599.23, so 3,269.97. The
+  Ontario credit amounts are the basic personal amount 12,747.00 (ON428 line 58040), the CPP and EI
+  amounts of 2,796.75 and 984.00 (ON428 lines 58240 and 58280), and the eligible dependant amount,
+  11,905.00 - 20,000.00 = 0 (line 58160); 16,527.75 x 5.05% = 834.65, so line 73 is 3,269.97 -
+  834.65 = 2,435.32. The Ontario tax reduction is 294.00 (line 78) less line 73 (line 79),
+  negative, so 0 (line 80). The health premium on taxable income of 59,435.00, in the 48,600 to
+  72,000 row, is 600.00, so the Ontario tax is 2,435.32 + 600.00 = 3,035.32. Total payable is
+  5,641.47 + 3,035.32 = 8,676.79. Income tax deducted is 8,000.00, so the balance owing is
+  8,676.79 - 8,000.00 = 676.79, a balance owing, so the refund before donation is 0 (as in
+  Return N, which also owes).
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 5 Amounts for Spouse and Dependants" (form 5000-S5), "Line 30400 -
+    Amount for an eligible dependant": "Claim this amount if, at any time in the year, you
+    supported an eligible dependant and their net income from line 23600 of their return ...
+    was less than your basic personal amount (plus $2,687 if the eligible dependant was
+    dependent on you because of a mental or physical infirmity)." Its "Line 1: Basic personal
+    amount from line 30000 of your return", "Does this dependant have a mental or physical
+    infirmity? Yes or No", "If you are eligible for the Canada caregiver amount for your
+    dependant (other than your infirm child under 18 years of age), enter $2,687 (Note 2) (see
+    line 30425 below)." with "Note 2: If the dependant is your (or your spouse's or
+    common-law partner's) infirm child under 18 years of age, you must claim the Canada
+    caregiver amount on line 30500 instead of line 51100."; "Line 3: Line 1 plus line 2 =";
+    "Line 4 and line 51106: Dependant's net income from line 23600 of their return"; "Line 5:
+    Line 3 minus line 4 (if negative, enter "0") Enter this amount on line 30400 of your
+    return.".
+  - >-
+    CRA, Schedule 5, "Eligible dependant with a mental or physical infirmity": "If the eligible
+    dependant is under 18 years of age at the end of the year, you may claim one of the following
+    amounts: ... $2,687 in the calculation of line 30400 if the eligible dependant does not meet
+    the definition of child below"; the definition of child: "under your custody and control, and
+    wholly dependent on you for support".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+  - >-
+    CRA, Schedule 5, "Line 30425 - Canada caregiver amount for spouse or common-law partner, or
+    eligible dependant age 18 or older": "You may be able to claim this amount if ... or for an
+    eligible dependant 18 years of age or older on line 30400 of your return."; "Complete this
+    calculation only if you entered $2,687 on line 51090 or line 51100 of this schedule for a
+    person whose net income is between $8,624 and $28,798."; "Line 1: Base amount 28,798.00";
+    "Line 2: Net income for this person from line 23600 of their return"; "Line 3: Line 1 minus
+    line 2 (if negative, enter "0") (maximum $8,601)"; "Line 4: Amount claimed on line 30300 or
+    line 30400 of your return, if applicable"; "Line 5: Line 3 minus line 4 (if negative, enter
+    "0") Enter this amount on line 30425 of your return.".
+  - >-
+    CRA, Form ON428 (form 5006-C), "Line 9 and line 58040: Basic personal amount Claim $12,747";
+    "Line 16 and line 58160: Line 14 minus line 15 (if negative, enter "0") (maximum $10,823)";
+    "Line 79: Amount from line 73 above"; "Line 80: Line 78 minus line 79 (if negative, enter
+    "0") Ontario tax reduction"; the health premium chart's row "Taxable Income more than $48,600
+    but not more than $72,000", "Ontario health premium: $600".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - >-
+    The federal and Ontario rates and brackets of 2025 (14.5% and 20.5%, 5.05% and 9.15%),
+    the CPP and EI rates (4.95% base, 1% first additional, 1.64% EI), the basic personal amount
+    of 16,129.00, the Canada employment amount of 1,471.00 and the Ontario amounts above are as
+    Return DS's and Return F's sources give them.
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/eligible_dependants: "1"
+  ca/dependant_net_income: "20000"
+  ca/dependant_caregiver_eligible: "1"
+  # Schedule 5 line 30425 is for an eligible dependant 18 or older: this dependant is under 18.
+  ca/dependant_caregiver_aged_18_or_older: "0"
+  ca/income_tax_deducted: "8000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/total_income: "60000.00"
+      ca/deductions_from_total_income: "565.00"
+      ca/net_income: "59435.00"
+      ca/net_income_before_adjustments: "59435.00"
+      ca/other_payments_limit_income: "59435.00"
+      ca/taxable_income: "59435.00"
+      ca/federal_basic_tax: "8741.68"
+      ca/basic_personal_amount: "16129.00"
+      ca/eligible_dependant_amount_basis: "18816.00"
+      ca/dependant_infirmity_supplement: "2687.00"
+      ca/eligible_dependant_amount_before_count: "0"
+      ca/eligible_dependant_amount: "0"
+      ca/dependant_caregiver_before_maximum: "8798.00"
+      ca/dependant_caregiver_limit: "8601.00"
+      ca/dependant_caregiver_amount_before_count: "8601.00"
+      ca/dependant_caregiver_amount_before_age_count: "8601.00"
+      ca/dependant_caregiver_amount: "0"
+      ca/spouse_caregiver_amount: "0"
+      ca/caregiver_amount_for_spouse_or_dependant: "0"
+      ca/cpp_base_contributions_on_return: "2796.75"
+      ca/ei_premiums: "984.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/credit_amounts_subtotal: "21380.75"
+      ca/non_refundable_credit_amounts: "21380.75"
+      ca/credit_amounts_at_credit_rate: "3100.21"
+      ca/federal_tax_after_credits: "5641.47"
+      ca/federal_tax_line_41700: "5641.47"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/non_refundable_credit_amounts: "16527.75"
+      ca-on/ontario_tax_less_dividend_credit: "2435.32"
+      ca-on/ontario_tax: "3035.32"
+      ca-on/refund_before_donation: "0"
+      ca/total_payable: "8676.79"
+      ca/total_credits: "8000.00"
+      ca/refund_or_balance_owing: "676.79"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "2796.75"
+      ca/cpp_first_additional_contributions: "565.00"
+      ca/cpp_required_base_and_first_additional_contributions: "3361.75"
+      ca/cpp_second_additional_contributions: "0"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2796.75"
+      ca/cpp_part_5_line_69: "565.00"
+      ca/cpp_enhanced_contributions: "565.00"

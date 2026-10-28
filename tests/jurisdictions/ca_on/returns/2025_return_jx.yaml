@@ -1,0 +1,100 @@
+# Return JX: Schedule 6 with the tax-exempt income election (line 38105 is yes), Form T90 "Income
+# Exempt from Tax under the Indian Act" as its own form: a low-income filer whose Canada workers
+# benefit is 1,633.00 only because the T90 figures are included. The same filer with the election
+# at 0 has a benefit of 0, pinned in `end_to_end/test_return_jx.py`.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return JX: a single 2025 Ontario resident in Canada throughout 2025, aged 19 or older at the end
+  of 2025, with no spouse and no dependants (chosen figures, as in Return GG). Employment income
+  (T1 line 10100, T4 box 14, taxable) is 3,000.00, with no other income, no deductions and no
+  CPP or EI deducted above the exemption: the T4 pensionable earnings of 3,000.00 are under the
+  basic exemption, so the base contributions are 0.00, and the EI premium is 1.64% x 3,000.00 =
+  49.20. Net income (line 23600) and taxable income are 3,000.00. The T90 figures are exempt income
+  on reserve, which the T90 says "Since net exempt income is not reported on an Income Tax and
+  Benefit Return": Form T90 line 1 (box 71 of the T4 slip(s)) is 6,000.00 and line 3 (net
+  self-employment income, excluding losses) is 4,000.00, so T90 line 4 (exempt working income) is
+  6,000.00 + 0.00 + 4,000.00 = 10,000.00, and T90 line 20 (net exempt income) is the same 10,000.00,
+  every other T90 line being 0. The emergency volunteer amount (T1 line 10105) is 0.00. The election
+  on Schedule 6 line 38105 is 1 (yes). Schedule 6 Part A, column 1: line 1 = 3,000.00; line 2 = 0;
+  line 3 = 0; line 4 = 10,000.00 + 0.00 = 10,000.00; line 5 (working income) = 3,000 + 10,000 =
+  13,000.00; line 6 (family working income, no eligible spouse) = 13,000.00. Part B, column 1: line 7
+  = 3,000.00; line 8 = 10,000.00 + 0.00 = 10,000.00; line 9 = 0; line 10 = 13,000.00; line 11 = 0;
+  line 12 = 13,000.00; with no eligible spouse, line 13 = 13,000.00 and line 15, the adjusted family
+  net income, is 13,000.00, below 26,855.00 (line 24, no eligible spouse or dependant). Step 2: line 18
+  = 13,000 - 3,000 = 10,000.00; line 20 = 27% x 10,000.00 = 2,700.00; line 21 (no eligible spouse
+  or dependant) is 1,633.00, so line 22 = 1,633.00; line 25 = 13,000 - 26,855 is negative, so 0;
+  line 27 = 0; line 28 = 1,633.00 - 0 = 1,633.00, the Canada workers benefit. Step 3 is not
+  completed (no disability tax credit). The other lines of the return are blank. With the election
+  at 0 (line 38105 is no, entered as 0), line 4 and line 8 are 0, working income is 3,000.00, line 18 is 0 and
+  the benefit is 0.00.
+sources:
+  - >-
+    CRA, Schedule 6 Canada Workers Benefit (2025), "Line 38105: Are you choosing to include
+    tax-exempt income to calculate the CWB? (Note 1) 1 Yes or 2 No"; "Line 4: Tax-exempt working
+    income earned on a reserve (from line 10000 of Form T90, Income Exempt from Tax under the Indian
+    Act) (Note 1) and the tax-exempt portion of any allowance received as an emergency volunteer
+    (from line 10105 of the return)"; "Line 8: Total of net exempt income earned on a reserve (line
+    10026 of Form T90) and the tax-exempt portion of any allowance received as an emergency
+    volunteer (line 10105 of the return)" (docs/cra-forms-2025/5000-s6-25e.txt)
+  - >-
+    CRA, Schedule 6 (2025), Step 2 "Line 17: Base amount 3,000.00"; "Line 19: Rate 27%"; "Line 21:
+    If you had an eligible spouse or an eligible dependant, enter $2,813. If not, enter $1,633.";
+    "Line 24: If you had an eligible spouse or an eligible dependant, enter $30,639. If not, enter
+    $26,855."; "Line 26: Rate 15%"; "Line 28: Line 22 minus line 27 (if negative, enter "0")"
+    (docs/cra-forms-2025/5000-s6-25e.txt)
+  - >-
+    CRA, Form T90 (2025), "Employment income (box 71 of your T4 slip(s))" (line 1); "Net
+    self-employment income (excluding losses)" (line 3); "Add lines 1 to 3." "Total exempt working
+    income 10000" (line 4); "Line 18 minus line 19 (if negative, show in brackets)" "Net exempt
+    income 10026" (line 20); "Since net exempt income is not reported on an Income Tax and Benefit
+    Return" (docs/cra-forms-2025/t90-25e.pdf)
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/employment_income: "3000"
+  ca/t4_cpp_slip_count: "1"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "3000"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  # T4 box 18 and the required premium, Form T2204 line 16 (1.64% of 3,000.00).
+  ca/t2204_insurable_earnings: "3000"
+  ca/t2204_premiums_deducted: "49.20"
+  # Form T90 (2025), the amounts the filer enters on lines 1 and 3; every other line is 0.
+  ca/t90_t4_box_71_employment_income: "6000"
+  ca/t90_net_self_employment_income: "4000"
+  # Schedule 6 line 38105, 1 yes.
+  ca/cwb_include_tax_exempt_income: "1"
+expected:
+  ca-on/return:
+    - ca/total_income: "3000.00"
+      ca/net_income: "3000.00"
+      ca/taxable_income: "3000.00"
+      ca/tosi_adjusted_net_income: "3000.00"
+      ca/cwb_employment_income: "3000.00"
+      ca/cwb_tax_exempt_working_income: "10000.00"
+      ca/working_income: "13000.00"
+      ca/cwb_tax_exempt_net_income: "10000.00"
+      ca/cwb_family_net_income_line_10: "13000.00"
+      ca/cwb_family_net_income_line_12: "13000.00"
+      ca/adjusted_family_net_income: "13000.00"
+      ca/cwb_family_working_income: "13000.00"
+      ca/canada_workers_benefit: "1633.00"
+      ca-on/net_refund: "1633.00"
+      ca/refund_or_balance_owing: "-1633.00"
+      ca/net_income_before_adjustments: "3000.00"
+      ca/other_payments_limit_income: "3000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "3000"
+  ca/t90:
+    - ca/t90_exempt_working_income: "10000.00"
+      ca/t90_line_14: "10000.00"
+      ca/t90_line_16: "10000.00"
+      ca/t90_total_exempt_income: "10000.00"
+      ca/t90_net_exempt_income: "10000.00"
+      ca/t90_ei_maternity_parental_ppip_benefits_checked: "0.00"

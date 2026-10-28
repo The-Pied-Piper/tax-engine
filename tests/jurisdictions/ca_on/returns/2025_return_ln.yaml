@@ -1,0 +1,68 @@
+# Return LN: Guide T4044, Employees working at home example (designated room, 20%). Amounts are
+# quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LN: Guide T4044 (2025), "Employees working at home", Example: a salaried employee who
+  worked from home all of 2025 in a designated room that is 20% of the total square footage of a
+  rented apartment and paid supplies $75, cell phone and long distance calls $180, electricity
+  $1,500, heat $800, water $1,000, internet $400, maintenance $60 and rent $7,500, and earned $4,000
+  from the employment. The Guide's T777: line 7 75.00; line 8 180.00 (cell phone); line 15 255.00;
+  line 42 3,700.00; line 43 60.00; line 46 7,500.00 (rent); line 47 11,260.00; line 48 2,300.00 (the
+  employment-use amount the Guide works out as 20% of 11,200 = 2,240 plus the maintenance of 60);
+  line 49 blank; line 50 2,300.00; line 51 4,000.00; line 52 255.00; line 53 3,745.00; line 54
+  2,300.00; line 55 0.00; line 16 2,300.00; line 17 2,555.00, the total to enter on line 22900. (The
+  Guide prints line 47 as "11,260,00", a misprint of 11,260.00.) The employment income is the T4 of
+  $4,000. Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Employees working
+    at home", Example: "You are a salaried employee who worked from home from January 1 until
+    December 31, 2025. You used a designated room that was 20% of the total square footage of your
+    rented two bedroom apartment." "During that period you earned $4,000 from your employment."
+    "$2,240 + $60 = $2,300 (employment-use amount)." The T777: "Line 15: Add lines 1 to 14. =
+    255.00"; "Line 53: Line 51 minus line 52 ... = 3,745.00"; "Line 54: ... 2,300.00"; "Line 55: ...
+    = 0.00"; "Line 17 and line 9368: ... Total expenses = 2,555.00".
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    the line 16 chart, lines 42 to 55.
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "4000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "4000"
+  ca/t2204_insurable_earnings: "4000"
+  ca/t2204_premiums_deducted: "65.60"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "29.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_office_supplies: "75"
+  ca/t777_other_expenses: "180"
+  ca/t777_work_space_electricity_heat_water_internet: "3700"
+  ca/t777_work_space_maintenance: "60"
+  ca/t777_work_space_other_expenses: "7500"
+  ca/t777_work_space_employment_use_amount: "2300"
+expected:
+  ca/t777:
+    - ca/t777_line_15: "255.00"
+      ca/t777_work_space_total_amount: "2300"
+      ca/t777_work_space_employment_income: "4000"
+      ca/t777_work_space_employment_offsets: "255.00"
+      ca/t777_work_space_income_limit: "3745.00"
+      ca/t777_work_space_expenses: "11260"
+      ca/t777_work_space_carried_forward_out: "0"
+      ca/t777_line_16: "2300"
+      ca/t777_line_17: "2555.00"
+  ca-on/return:
+    - ca/total_income: "4000.00"
+      ca/other_employment_expenses: "2555.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "1440.00"
+      ca/other_payments_limit_income: "1440.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "4000"

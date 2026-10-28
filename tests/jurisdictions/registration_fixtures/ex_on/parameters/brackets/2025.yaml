@@ -1,0 +1,11 @@
+# Made-up rates, for tests only.
+family: ex-on/brackets
+tax_year: 2025
+kind: brackets
+sources:
+  - https://example.org/ex-on/rates-2025
+rounding: none
+tax_at_start_rounding: none
+brackets:
+  - {from: "0", rate: "0.10"}
+  - {from: "100", rate: "0.20"}

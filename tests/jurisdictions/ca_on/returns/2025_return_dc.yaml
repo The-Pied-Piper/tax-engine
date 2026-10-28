@@ -1,0 +1,461 @@
+# Return DC: Return BS's single filer, a 2025 Ontario resident whose only income is rental income
+# from two units of one property (T1 line 13, Form T776 Parts 3 and 4), without Chart B, with the
+# capital cost allowance of Area A on three classes: Class 1 and Class 8 as in Return BS, and a
+# Class 10.1 passenger vehicle bought and sold in 2025 whose cost is above the prescribed amount, so
+# that its proceeds of disposition (Area A column 5) and the proceeds of dispositions of DIEP
+# (column 6) are adjusted by the prescribed amount as a proportion of the actual cost of the vehicle
+# (Area A Note 2). The vehicle cost $50,000 before the HST of 13%, $56,500.00 in all (the actual
+# cost, no government assistance); its capital cost is limited to the prescribed amount for 2025,
+# $38,000 + 13% = $42,940.00 (columns 3 and 4), and it was sold at arm's length for $40,000 (column
+# 5, all of it a DIEP's, column 6), so the factor is $42,940.00 / $56,500.00 = 0.76 and the proceeds
+# become $40,000 x 0.76 = $30,400.00 in both columns. Column 7 is $0 + $42,940 - $30,400.00 =
+# $12,540.00 and column 8 is $42,940 - $30,400.00 = $12,540.00, so the immediate expensing amount
+# (column 9) can be the whole $12,540. No property is left in the class, so the maximum is $0 and
+# column 23 is $0 + $12,540 = $12,540.00, claimed, with a column 24 of $0 and no terminal loss. The
+# rent is Return BS's $24,000 raised by the vehicle's $12,540 to a chosen $36,540 (line 8141), so the
+# income before CCA (amount 5) is $36,540 - $12,000 = $24,540.00 and the net rental income is
+# Return BS's $8,000.00 (line 12600), so every T1 figure is Return BS's.
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings. Every output
+# the CA-ON manifest declares must appear under `expected`, or be left out to be 0 (or no records).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is rental income from two units of
+  one property, reported on Form T776 (Statement of Rental Activities): gross rents of $36,540
+  (line 8141, a chosen figure), expenses of $12,000 (insurance, interest, repairs and property
+  taxes) and so an income before CCA (amount 5) of $24,540.00. Area A has three classes: Class 1
+  ($400.00 claimed, the maximum of its $10,000 UCC), Class 8 ($3,600.00 claimed, with a $3,000
+  immediate expensing amount on its DIEP additions, as in Return BS) and Class 10.1, one passenger
+  vehicle designated for immediate expensing, bought in 2025 for $50,000 plus the HST of 13%
+  ($56,500.00, no government assistance) and sold in 2025 for $40,000: its capital cost is limited
+  to the prescribed amount for 2025 with tax, $42,940.00 (columns 3 and 4), and because its actual
+  cost is more than that, the proceeds of $40,000 (columns 5 and 6) are adjusted by
+  $42,940.00 / $56,500.00 = 0.76 to $30,400.00. Column 7 and column 8 are $12,540.00; the immediate
+  expensing amount (column 9) is the whole $12,540, so column 23 is $12,540.00, claimed, and the
+  UCC at the end of the year is $0. Line i is $3,000 + $12,540 = $15,540, within the least of Note
+  5's three amounts ($600,000.00, the UCC of DIEPs in column 8, $17,540, and the income before CCA,
+  $24,540.00). Line ii, and so line 9936, is $400.00 + $3,600.00 + $12,540.00 = $16,540.00, within
+  amount 5, so amount 6 and line 9946, and so T1 line 12600, are $24,540.00 - $16,540.00 =
+  $8,000.00, which is the whole of total income (line 15000), as in Return BS. The filer is
+  associated with one other EPOP under a filed agreement that assigns the filer 40% of a total of
+  100%, so the immediate expensing limit is $600,000.00, as in Return BS. The tax figures are
+  Return BS's, since the net income is the same.
+sources:
+  - >-
+    CRA, Form T776 (2025), Statement of Rental Activities (docs/cra-forms-2025/t776-25e.pdf,
+    confirmed from the PDF with pdftotext): "Line 8141: Gross rents" (24000 in Return BS, 36540
+    here, a chosen figure); "Amount 5: Income before CCA" is gross rents less the expenses, 36540 -
+    12000 = 24540.00; "Line ii: Total CCA claim for the year *: Total of column 23" (16540.00);
+    "Amount 6: Amount 5 less line ii" (8000.00), the net rental income on T1 line 12600. The lines
+    not listed are not entered and are 0.
+  - >-
+    CRA, Form T776 (2025), Area A Note 2 (docs/cra-forms-2025/t776-25e.pdf, confirmed from the
+    PDF with pdftotext): "The proceeds of disposition of a zero-emission passenger vehicle (ZEPV)
+    that has been included in Class 54, or a passenger vehicle bought after April 18, 2021, that has
+    been included in Class 10.1, and whose cost is more than the prescribed amount will be adjusted
+    based on a factor equal to its prescribed amount as a proportion of the actual cost of the
+    vehicle. For dispositions after July 29, 2019, you will have to adjust the actual cost of the
+    vehicle for any payments or repayments of government assistance that you may have received or
+    repaid for the vehicle. If the passenger vehicle in Class 10.1 is not designated for immediate
+    expensing treatment, this special rule does not apply." Guide T4036 (docs/cra-forms-2025/t4036-
+    25e.pdf, confirmed from the PDF), "Class 10.1 (30%)": "$38,000 for vehicles acquired in 2025,
+    plus the GST/HST or PST".
+  - >-
+    CRA, Form T776 (2025), Area A and Notes 3 and 5 (docs/cra-forms-2025/t776-25e.pdf): the Class
+    10.1 vehicle is a chosen row with column 2 0, column 3 and column 4 42940 (the capital cost
+    limited to the prescribed amount with tax, 38000 + 4940), columns 5 and 6 of 40000 as entered
+    (adjusted to 30400.00 by the factor 42940.00 / 56500.00 = 0.76), column 7 0 + 42940 - 30400.00
+    = 12540.00, column 8 42940 - 30400.00 = 12540.00, not more than column 7, column 9 a chosen
+    12540, not more than column 8, column 13 12540 - 12540 = 0, column 18 one half x (30400.00 -
+    30400.00) = 0, no property left in the class (a chosen 1), so the maximum is 0 and column 23 is
+    12540.00, claimed, and column 24 is 12540 - 12540.00 = 0.00; the terminal loss (Note 3, column
+    7 less column 9) and the recapture are 0. Class 1 and Class 8 are as in Return BS: column 23 of
+    400.00 and 3600.00, so column 24 is 9600.00 and 3400.00. Note 5: the EPOP limit is 1500000 x 40%
+    = 600000.00 (as in Return BS), and the three amounts are 600000.00, the UCC of DIEPs in column 8
+    (5000 + 12540 = 17540) and the income before CCA, 24540.00; the least is 17540, and line i,
+    15540, is within it.
+  - >-
+    CRA, "T1-2025 Ontario edition" return (form 5006-R, docs/cra-forms-2025/5006-r-25e.txt,
+    confirmed 2026-10-19): line 12600 is T776 amount 6, $8,000.00, so the total income and net
+    income are $8,000.00, and the federal tax, Ontario tax and the total payable are as in Return BS.
+inputs:
+  ca/t776_statements:
+    - ca/rental_properties:
+        - ca/rental_property_units: "2"
+          ca/rental_property_short_term_rents: "0"
+          ca/rental_property_gross_rents: "36540"
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "1200"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "6000"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "1300"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "3500"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+      ca/rental_vehicle_sales_tax_rate: "13"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_start: "10000"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "400.00"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "2000"
+          ca/cca_additions: "5000"
+          ca/cca_diep_additions: "5000"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "3000"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "3600.00"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+        - ca/cca_class_number: "10.1"
+          ca/cca_ucc_at_start: "0"
+          ca/cca_additions: "42940"
+          ca/cca_diep_additions: "42940"
+          ca/cca_proceeds: "40000"
+          ca/cca_diep_proceeds: "40000"
+          ca/cca_immediate_expensing: "12540"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "12540.00"
+          ca/cca_no_property_left: "1"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "2025"
+          ca/cca_vehicle_cost: "56500.00"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "1"
+      ca/rental_epop_agreement_filed: "1"
+      ca/rental_epop_percentage: "40"
+      ca/rental_epop_percentage_total: "100"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_capital_gains: "0.00"
+      ca/rental_cca_total_claim: "16540.00"
+      ca/immediate_expensing_total_claim: "15540"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/net_rental_income: "8000.00"
+      ca/gross_rental_income: "36540"
+      ca/total_income: "8000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "0.00"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "0"
+      ca/child_care_earned_income_limit: "0.00"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "0.00"
+      ca/net_income: "8000.00"
+      ca/net_income_signed: "8000.00"
+      ca/net_income_before_adjustments: "8000.00"
+      ca/other_payments_limit_income: "8000.00"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/deductions_from_net_income: "0"
+      ca/other_payments_deduction_after_limit: "0"
+      ca/other_payments_deduction: "0"
+      ca/taxable_income: "8000.00"
+      ca/federal_basic_tax: "1160.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "0.00"
+      ca/medical_net_income_share: "240.00"
+      ca/medical_threshold: "240.00"
+      ca/medical_expenses_over_threshold: "0"
+      ca/other_dependants_medical: "0"
+      ca/medical_claim: "0"
+      ca/non_refundable_credit_amounts: "16129.00"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "0"
+      ca-on/ontario_basic_tax: "404.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "0"
+      ca-on/age_reduction: "0.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/medical_net_income_share: "240.00"
+      ca-on/medical_threshold: "240.00"
+      ca-on/medical_expenses_over_threshold: "0"
+      ca-on/other_dependants_medical: "0"
+      ca-on/medical_claim: "0"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "0"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "0.00"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/ontario_tax_before_dividend_credit: "0"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/ontario_tax_after_dividend_credit: "0"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "588.00"
+      ca-on/ontario_tax_after_reduction: "0"
+      ca-on/lift_credit_before_maximum: "0.00"
+      ca-on/lift_maximum_credit: "0.00"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit: "0"
+      ca-on/ontario_tax_after_lift_credit: "0"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "0"
+      ca-on/ontario_health_premium: "0.00"
+      ca-on/ontario_tax: "0.00"
+      ca/itc_recapture_at_15_percent: "0.00"
+      ca/itc_recapture_at_20_percent: "0.00"
+      ca/itc_recapture: "0.00"
+      ca/federal_tax_with_itc_recapture: "0.00"
+      ca/political_credit_before_maximum: "0.00"
+      ca/political_credit: "0.00"
+      ca/labour_sponsored_funds_credit_before_maximum: "0.00"
+      ca/labour_sponsored_funds_credit: "0.00"
+      ca/credits_against_federal_tax: "0.00"
+      ca/federal_tax_less_credits: "0"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0.00"
+      ca/resp_aips_part_b_tax: "0.00"
+      ca/resp_aips_additional_tax: "0.00"
+      ca/special_taxes: "0.00"
+      ca/net_federal_tax: "0.00"
+      ca/total_payable: "0.00"
+      ca/working_income: "0"
+      ca/adjusted_family_net_income: "8000.00"
+      ca/cwb_before_reduction_without_dependant: "0.00"
+      ca/cwb_reduction_without_dependant: "0.00"
+      ca/canada_workers_benefit_without_dependant: "0"
+      ca/cwb_before_reduction_with_dependant: "0.00"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca/canada_workers_benefit_with_dependant: "0"
+      ca/canada_workers_benefit: "0"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/care_adjusted_income: "8000.00"
+      ca-on/care_family_adjusted_income: "8000.00"
+      ca-on/care_credit_percentage: "0.75"
+      ca-on/care_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "8000.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_before_maximum: "0.00"
+      ca-on/political_credit: "0.00"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/total_credits: "0.00"
+      ca/educator_supplies_expenses_at_most_maximum: "0.00"
+      ca/educator_school_supply_credit: "0.00"
+      ca/refund: "0"
+      ca-on/refund_before_donation: "0"
+      ca/amt_part_1_subtotal: "8000.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "8000.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "-1178.71"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "0.00"
+      ca/cpp_first_additional_contributions: "0.00"
+      ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_enhanced_contributions: "0.00"
+
+  ca/t776:
+    - ca/rental_gross_rents: "36540"
+      ca/gross_rental_income: "36540"
+      ca/rental_total_expenses: "12000"
+      ca/rental_personal_portion: "0"
+      ca/rental_non_compliant_expenses: "0"
+      ca/rental_non_compliant_cca: "0"
+      ca/short_term_rental_non_compliant_cca_by_class: []
+      ca/rental_expenses_less_personal_portion: "12000"
+      ca/rental_deductible_expenses: "12000"
+      ca/rental_net_income_before_adjustments: "24540"
+      ca/rental_net_income_share: "24540"
+      ca/rental_net_income_after_coowner_expenses: "24540"
+      ca/rental_net_income_with_recapture: "24540"
+      ca/rental_net_income_after_terminal_loss: "24540"
+      ca/rental_immediate_expensing_cap: "1500000"
+      ca/rental_epop_percentage_maximum: "100"
+      ca/rental_immediate_expensing_share: "600000.00"
+      ca/rental_epop_percentage_room: "0"
+      ca/rental_immediate_expensing_allocated: "600000.00"
+      ca/rental_immediate_expensing_associated_limit: "600000.00"
+      ca/rental_immediate_expensing_limit_before_minister: "600000.00"
+      ca/rental_immediate_expensing_limit: "600000.00"
+      ca/rental_immediate_expensing_claim: "15540"
+      ca/rental_cca_table_claim: "16540.00"
+      ca/rental_cca_claim_share: "16540.00"
+      ca/rental_cca_claim_less_personal_part: "16540.00"
+      ca/rental_cca_limit: "24540"
+      ca/rental_cca_claim: "16540.00"
+      ca/rental_net_income_after_cca: "8000.00"
+      ca/rental_partner_share_with_rebate: "0"
+      ca/rental_partnership_net_income: "0"
+      ca/short_term_rental_gross_rents: "0"
+      ca/rental_short_term_portion: "0"
+      ca/rental_closing_ucc:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_end: "9600.00"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "3400.00"
+        - ca/cca_class_number: "10.1"
+          ca/cca_ucc_at_end: "0"

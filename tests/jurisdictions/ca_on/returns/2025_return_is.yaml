@@ -1,0 +1,82 @@
+# Return IS: a 2025 Ontario resident with no other income and three personal-use property rows,
+# the figures of CRA's Guide T4037 example (Schedule 3 Part 3, "Total gain only"). The $1,000
+# minimum of the Guide applies: a row's proceeds and adjusted cost base are each raised to $1,000
+# when lower. The China cabinet gives 0, the boat 150 and the personal computer a loss counting 0,
+# so line 9 and line 15800 are 150, the only gain, and the taxable capital gain (T1 line 12700) is
+# half of it. The other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025, resident in Canada throughout 2025 and aged 18 or
+  older at the end of 2025, with no income other than the dispositions below (no employment
+  income is entered). The three rows are the figures of CRA's Guide T4037 example, not chosen
+  figures: Line 9 and line 15800 (personal-use property, "Total gain only"): china cabinet
+  proceeds 900 and ACB 500 with outlays 0, both raised to $1,000, so 1,000 - 1,000 - 0 = 0;
+  boat proceeds 1,200 and ACB 850 (raised to 1,000) with outlays 50, so 1,200 - 1,000 - 50 = 150;
+  personal computer proceeds 1,500 and ACB 3,200 with outlays 30, so 1,500 - 3,200 - 30 = -1,730,
+  a loss counting 0. Line 9 = 0 + 150 + 0 = 150, and line 15800 is the same figure. Line 10 and
+  line 15900 (listed personal property), line 1 to 8 and the other rows of Part 3 have no rows,
+  so 0. Line 11 = 150, and line 12 is the same figure. Line 13 and line 16100 (capital gains
+  deferral) is 0, so line 14 = 150. Line 15 and line 17400 and line 16 and line 17600 (slips) are
+  0, so line 17 = 150. Line 18 and line 17800 (business investment loss reduction) is 0, so
+  line 19 and line 19100 = 150. Line 20 and line 19200 (reserves) is 0, so line 21 and line
+  19700 = 150, and line 22 is the same figure. Line 24 = 150 x 50% = 75.00, positive, so line
+  12700 (taxable capital gains) is 75.00. Not triggered: the other capital gains and losses
+  (every other line of Schedule 3 is blank), the net capital loss carry-forward (T1436), and the
+  credits and deductions not named here; taxable income and tax are not pinned.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19),
+    Part 3: "For each Gain or loss enter as many lines as necessary."; "(Column 2): Proceeds
+    of disposition", "(Column 3): Adjusted cost base", "(Column 4): Outlays and expenses",
+    "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; "Line 9 and line 15800: Total
+    gain only (add all the amounts under column 5)"; "Line 11: Add lines 1 to 10. Total gains
+    or losses of qualified properties and other properties ="; Part 4: "Line 12: Amount from
+    line 11 of the previous page"; "Line 14: Line 12 minus line 13 ="; "Line 17: Add lines 14 to
+    16. ="; "Line 19 and line 19100: Total gains or losses before reserves: line 17 minus line 18
+    ="; "Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses ="; line 24
+    "Line 22 multiplied by the percentage from line 23" (50%); line 26 (line 19900) "If positive,
+    enter the result on line 12700 of your return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+  - >-
+    CRA, Guide T4037 (Capital Gains) 2025, p.24, the "Personal-use property" example
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4037/t4037-25e.pdf; confirmed 2026-10-25
+    from the PDF; no .txt published): "Proceeds of disposition (whichever is more: selling price
+    or $1,000)"; "Minus: ACB (whichever is more: cost or $1,000) plus outlays and expenses";
+    "Because the ACB of the boat is less than $1,000, it is considered to be $1,000. You report
+    $150 as a capital gain."; "Your capital loss is not deductible."
+inputs:
+  # A full year of CPP and QPP months with no pensionable earnings (the engine needs the count).
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/personal_use_property_dispositions:
+    - ca/disposition_proceeds: "900"
+      ca/disposition_adjusted_cost_base: "500"
+      ca/disposition_outlays: "0"
+    - ca/disposition_proceeds: "1200"
+      ca/disposition_adjusted_cost_base: "850"
+      ca/disposition_outlays: "50"
+    - ca/disposition_proceeds: "1500"
+      ca/disposition_adjusted_cost_base: "3200"
+      ca/disposition_outlays: "30"
+expected:
+  ca-on/return:
+    - ca/personal_use_property_gain_rows: "150"
+      ca/personal_use_property_gain: "150"
+      ca/capital_gains_of_qualified_and_other_properties: "150"
+      ca/capital_gains_after_deferral: "150"
+      ca/capital_gains_before_investment_loss_reduction: "150"
+      ca/capital_gains_before_reserves: "150"
+      ca/capital_gain: "150"
+      ca/included_capital_gain: "75.00"
+      ca/taxable_capital_gains: "75.00"
+      ca/schedule_3_line_19900: "75.00"
+      # Not lines of the Schedule 3 chain: engine figures that follow from the 75.00 income and
+      # the basic credits (CPP second additional maximum, net income before adjustments, the
+      # other payments income limit, and the AMT carryover with basic federal tax -2,327.83).
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "75.00"
+      ca/other_payments_limit_income: "75.00"
+      ca/amt_carryover_available_for_2026: "0.00"

@@ -1,0 +1,61 @@
+# Return EO: a single Ontario resident with a treasury bill (T-bill) bought and sold within 2025, the
+# example of Guide T4037 (Capital Gains, 2025), pages 20 and 21: bought May 1, 2025 for $49,500, sold June
+# 13, 2025 for $49,750, with interest to be included in income of $241.67 and a capital gain of $8.33.
+# The interest is the filer's figure on the T-bill and is the investment income without a slip.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 (chosen figures), with no income other than the T-bill below (every other amount is a
+  chosen $0). The guide's T-bill: bought on May 1, 2025 for $49,500, sold on June 13, 2025 for $49,750,
+  with an effective yield of 4.05%. The interest to be included in income is 49,500 x 4.05% x 44 / 365 =
+  241.67, the guide's figure, and it is the filer's own interest figure, entered as the investment
+  income without a slip (T1 Federal Worksheet for line 12100, line 7: "treasury bills ... not reported on
+  any information slip"). That input flows through Federal Worksheet lines 9 to 11 (no prior-year
+  amount, line 10 is 0) to line 12100 (interest and other investment income), 241.67, the guide's
+  interest. The T-bill's row in Schedule 3 Part 3 "Bonds, debentures, promissory notes, and other
+  similar properties" takes the net proceeds of disposition, not the sale price: 49,750.00 - 241.67 =
+  49,508.33 (the guide's "Net proceeds of disposition", after "Minus: Interest"), so the row's proceeds
+  are 49,508.33, the adjusted cost base is 49,500 (the guide's figure, its purchase price), and the
+  outlays are 0. Column 5 is 49,508.33 - 49,500 - 0 = 8.33, the guide's capital gain of $8.33, which is
+  line 6 and line 15300 (bond gain or loss) and the total capital gains (line 21, 19700). The guide prints
+  no taxable amount for this sale. Line 24 is 50% of 8.33, which is 4.165 and rounds half up to 4.17, so
+  the taxable capital gains (T1 line 12700) are 4.17: the engine's rounding, not a guide figure. Net
+  income and taxable income are 241.67 + 4.17 = 245.84 (arithmetic, not printed by the guide). The cpp
+  months (Schedule 8 box A) are a chosen 12 with no employment income: the second additional maximum of
+  9900.00 is the engine's figure for a full year of CPP, not a guide figure. The alternative minimum tax
+  carryover for 2026, 2,303.06, is the engine's figure, not from the guide, not checked here.
+sources:
+  - >-
+    CRA, Guide T4037, Capital Gains (2025), pages 20 and 21, the example of the T-bill bought on May 1,
+    2025 for $49,500 and sold on June 13, 2025 for $49,750, with the calculation "Proceeds of
+    disposition $ 49,750.00", "Minus: Interest – $ 241.67", "Net proceeds of disposition = $ 49,508.33",
+    "Minus: Adjusted cost base – $ 49,500.00", "Capital gain = $ 8.33"
+    (docs/cra-forms-2025/t4037-25e.pdf, text extracted with pdftotext)
+  - >-
+    CRA, Federal Worksheet for line 12100 (T1, 2025), line 7 "Interest or income earned from bank
+    accounts, term deposits, guaranteed investment certificates (GICs), and other similar investments,
+    treasury bills or life insurance policies not reported on any information slip"; line 11 "Line 9
+    minus line 10. Enter this amount on line 12100 of your return." (docs/cra-forms-2025/5000-d1-25e.txt)
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/investment_income_without_a_slip: "241.67"
+  ca/bond_dispositions:
+    - ca/disposition_proceeds: "49508.33"
+      ca/disposition_adjusted_cost_base: "49500"
+      ca/disposition_outlays: "0"
+expected:
+  ca-on/return:
+    - ca/interest_and_other_investment_income: "241.67"
+      ca/bond_gain_or_loss: "8.33"
+      ca/capital_gain: "8.33"
+      ca/included_capital_gain: "4.17"
+      ca/taxable_capital_gains: "4.17"
+      ca/schedule_3_line_19900: "4.17"
+      ca/bond_proceeds: "49508.33"
+      ca/net_income_before_adjustments: "245.84"
+      ca/other_payments_limit_income: "245.84"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
