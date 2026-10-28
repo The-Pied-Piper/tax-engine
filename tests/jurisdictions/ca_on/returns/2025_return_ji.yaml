@@ -1,0 +1,169 @@
+# Return JI: the foreign tax countries entered once. The filer's two countries are entered as
+# two records of the foreign tax countries (Form T2209); Form T691 Part 4 lines 2, 7 and 8 are
+# their totals, and no T691 figure is entered for them. Not subject to minimum tax, so the
+# Form T2036 credit of each country is its line 3 of Form T2209 (not the T691 special credit).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return JI: a 2025 Ontario resident in Canada throughout 2025, aged 18 or older, with no spouse
+  and no employment income (so no CPP or EI contributions), whose only income is $40,000 of other
+  income (T1 line 13000, a chosen figure). With no deductions, net income (line 23600) and taxable
+  income (line 26000) are 40,000.00. The filer paid non-business income tax to two foreign
+  countries and enters each country once, as a record of Form T2209: country A, $1,500 of tax paid
+  (T2209 line 1, a chosen figure) on $10,000 of net foreign non-business income (line 2, a chosen
+  figure); country B, $500 of tax paid on $5,000 of net foreign non-business income, and $300 of
+  business income tax paid to it (line 4, a chosen figure), with no net foreign business income
+  (line 5 is 0 for both). Form T691 Part 4 takes the totals of the records and is not entered.
+  Line 2, the net foreign non-business income, is 10,000 + 5,000 = 15,000.00. Line 7, the total
+  non-business income tax paid, is 2,000.00 x 66.6666% = 1,333.332, rounded half-up to 1,333.33.
+  Line 8, the total business income tax paid, is 300.00. Line 4 is 15,000.00 (no business income,
+  no capital gains claim), and line 6 is 15,000.00 x 20.5% = 3,075.00. Line 9 is 1,333.33 + 300.00
+  = 1,633.33, and line 10 is the lesser of 3,075.00 and 1,633.33, 1,633.33. Line 11 is the greater
+  of the federal foreign tax credit of Part 3 line 7, 1,297.98 (below), and line 10: 1,633.33.
+  The adjusted income of 40,000.00 is below the basic exemption of 177,882.00, so Form T691 Part 5
+  line 11 is 0 and the filer is not subject to alternative minimum tax; the special credit is not
+  used on the return.
+  Federal tax on taxable income is 14.5% x 40,000.00 = 5,800.00, all in the first bracket (not
+  above 57,375). The basic personal amount is 16,129.00 (net income not above 177,882), and its
+  credit is 14.5% x 16,129.00 = 2,338.705, rounded half-up to 2,338.71. Basic federal tax (line
+  42900) is 5,800.00 - 2,338.71 = 3,461.29, with no surtax (no amount on T2203 line 7). Form T2203
+  Part 2 line 6 is 3,461.29.
+  Form T2209, federal non-business foreign tax credit, sheet by sheet, with the basic federal tax
+  of note (4), 3,461.29, and net income of note (3), 40,000.00: country A, line 2 is 10,000.00 x
+  3,461.29 / 40,000.00 = 865.3225, rounded half-up to 865.32; line 3 is the lesser of 1,500.00 and
+  865.32, 865.32. Country B, line 2 is 5,000.00 x 3,461.29 / 40,000.00 = 432.66125, rounded to
+  432.66; line 3 is the lesser of 500.00 and 432.66, 432.66. The non-business credit, line 3 of
+  the sheets together, is 865.32 + 432.66 = 1,297.98. Federal business foreign tax credit, per sheet: line 4 is 0 on country A and 300.00 on country
+  B; line 5 is 0 on both (the net foreign business income is 0); line 7 is 0; line 8 is 3,461.29 on
+  each sheet (note (8): 42,900 with no surtax and no dividend tax credit), 6,922.58 in all. Line 9
+  is the sheet's line 3: 865.32 on A and 432.66 on B. Line 10 is 3,461.29 - 865.32 = 2,595.97 on A
+  and 3,461.29 - 432.66 = 3,028.63 on B, 5,624.60 in all. Line 11 is the lesser of line 4, line 7
+  and line 10 of each sheet: 0 on both. Line 13, the federal foreign tax credit, is 0 + 1,297.98 =
+  1,297.98 (line 12 is the non-business total), not more than the basic federal tax of 3,461.29,
+  and it is T1 line 40500. T1 line 130 is 3,461.29 - 1,297.98 = 2,163.31.
+  Ontario (ON428): tax on taxable income is 5.05% x 40,000.00 = 2,020.00. The Ontario basic
+  personal amount is 12,747, and its credit is 5.05% x 12,747 = 643.7235, rounded half-up to
+  643.72; the Ontario tax before credits is 2,020.00 - 643.72 = 1,376.28. The Ontario tax
+  reduction is 2 x 294.00 = 588.00 (ON428 line 78), less 1,376.28 is below zero, so the reduction is
+  0 (ON428 line 80). The Ontario surtax is 0. The Ontario health premium is 6% x (40,000 - 20,000)
+  = 1,200.00, capped at 300.00, plus 6% x (40,000 - 36,000) = 240.00, capped at 150.00: 450.00.
+  Form T2036 is worked for each country, the total of the non-business taxes being more than
+  $200. Line 1 is the country's line 1 of Form T2209; line 2 is its line 3 of Form T2209 (the filer
+  is not subject to minimum tax); line 3 is line 1 less line 2; line 4 is the tax otherwise payable
+  of 1,376.28 times the country's net foreign non-business income over net income of 40,000.00.
+  Country A: line 1 1,500.00, line 2 865.32, line 3 634.68; line 4 is 1,376.28 x 10,000 / 40,000
+  = 344.07, and line 5, the lesser of 634.68 and 344.07, is 344.07. Country B: line 1 500.00, line
+  2 432.66, line 3 67.34; line 4 is 1,376.28 x 5,000 / 40,000 = 172.035, rounded half-up to 172.04,
+  and line 5, the lesser of 67.34 and 172.04, is 67.34. The provincial foreign tax credit is 344.07
+  + 67.34 = 411.41, less than the 1,376.28 of tax otherwise payable. Ontario tax after the foreign
+  tax credit is 1,376.28 - 411.41 = 964.87; with the health premium, Ontario tax payable is 964.87
+  + 450.00 = 1,414.87.
+  Total payable is the federal tax after the foreign tax credit, 2,163.31, plus the Ontario tax
+  payable, 1,414.87, which is 3,578.18, with no tax deducted at source, so the balance owing is
+  3,578.18.
+  Schedule 8 line C, the CPP second additional maximum for 12 months, is 9,900.00 (the 12-month row
+  of the table of maximums), shown though no contribution is made, as there is no employment or
+  self-employment income.
+  Not triggered: CPP and EI contributions (no employment income), the Canada employment amount, the
+  Ontario tax reduction (line 80 is 0), the Ontario surtax and LIFT, the alternative minimum tax and
+  the other credits, none of which this return claims.
+sources:
+  - >-
+    CRA, Form T691 2025, Part 4 lines 1 to 11 and notes (12) and (13)
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf, confirmed text,
+    pdftotext -layout): "Foreign business income (total business income earned in the foreign
+    country, minus allowable expenses and deductions for the foreign income)"; "Foreign
+    non-business income (on which non-business income tax was paid to a foreign country (12))";
+    "Total non-business income tax paid to a foreign country (12) × 66.6666% ="; "Total business
+    income tax paid to a foreign country (13)"; "Enter whichever is less: amount from line 6 or
+    line 9."
+  - >-
+    CRA, Form T2209 2025, lines 1 to 13 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf,
+    confirmed text): "Non-business income tax paid to a foreign country (1) 43100"; "Net foreign
+    non-business income (2) 43300"; "Enter whichever is less: the amount from line 1 or line 2.";
+    "Business income tax paid to a foreign country (5) for the year, plus any unused foreign tax
+    credits for that country for the 10 years (6) before, and the 3 years after this year";
+    "Enter the amount from line 13 on line 40500 of your return."
+  - >-
+    CRA, Form T2036 2025, Provincial or Territorial Foreign Tax Credit
+    (docs/cra-forms-2025/t2036-25e.pdf, confirmed text): "Enter the amount from line 1 of Form
+    T2209." (line 1); "Enter the amount from line 3 of Form T2209, unless you have to pay minimum
+    tax." (line 2); "Line 1 minus line 2" (line 3); "× Provincial or territorial tax otherwise
+    payable (4)" over "Net income (3)" (line 4); "Enter whichever amount is less: line 3 or line
+    4." (line 5); "If you paid tax to more than one foreign country, and the total of the
+    non-business income taxes that you paid to all foreign countries was more than $200, do the
+    calculation on a separate form for each country in Canadian dollars."
+  - >-
+    CRA, Form T1 Guide 5006-R 2025, Part 1 lines 126 to 130 ("Line 126 and line 42900: Line 121
+    minus line 125 (if negative, enter "0") Basic federal tax"; "Line 129 and line 40500: Federal
+    foreign tax credit (complete Form T2209)"; "Line 130: Line 128 minus line 129 =")
+    (docs/cra-forms-2025/5006-r-25e.txt, confirmed text).
+  - >-
+    CRA, Form 5006-C 2025 (ON428 lines 78 to 84 and the health premium chart)
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt).
+inputs:
+  ca/other_income: "40000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/schedule_8_instances:
+    - {}
+  ca/amt_subject_to_minimum_tax: "0"
+  ca/foreign_tax_countries:
+    - ca/foreign_non_business_tax_paid: "1500"
+      ca/net_foreign_non_business_income: "10000"
+      ca/foreign_business_tax_paid: "0"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "0"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+    - ca/foreign_non_business_tax_paid: "500"
+      ca/net_foreign_non_business_income: "5000"
+      ca/foreign_business_tax_paid: "300"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "0"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+expected:
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "1376.28"
+      ca-on/ontario_health_premium: "450.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "40000.00"
+      ca/other_payments_limit_income: "40000.00"
+      ca/net_income: "40000.00"
+      ca/taxable_income: "40000.00"
+      ca/federal_tax_after_credits: "3461.29"
+      ca/t2203_line_6: "3461.29"
+      ca/federal_tax_with_surtax: "3461.29"
+      ca/foreign_business_tax_credit_line_4: "300.00"
+      ca/foreign_business_tax_credit_line_8: "6922.58"
+      ca/foreign_business_tax_credit_line_10: "5624.60"
+      ca/federal_foreign_tax_credit_before_limit: "1297.98"
+      ca/federal_foreign_tax_credit: "1297.98"
+      ca/federal_tax_less_foreign_tax_credit: "2163.31"
+      ca/foreign_tax_credit_sheets:
+        - ca/foreign_non_business_tax_paid: "1500"
+          ca/net_foreign_non_business_income: "10000"
+          ca/foreign_tax_credit_sheet_line_3: "865.32"
+          ca/foreign_business_tax_paid: "0"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "0"
+          ca/foreign_surtax_outside_canada: "0"
+        - ca/foreign_non_business_tax_paid: "500"
+          ca/net_foreign_non_business_income: "5000"
+          ca/foreign_tax_credit_sheet_line_3: "432.66"
+          ca/foreign_business_tax_paid: "300"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "0"
+          ca/foreign_surtax_outside_canada: "0"
+      ca-on/provincial_foreign_tax_credit: "411.41"
+      ca-on/ontario_tax_after_foreign_tax_credit: "964.87"
+      ca-on/ontario_tax: "1414.87"
+      ca/total_payable: "3578.18"
+      ca/refund_or_balance_owing: "3578.18"

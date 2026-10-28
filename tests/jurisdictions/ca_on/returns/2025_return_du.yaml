@@ -1,0 +1,283 @@
+# Return DU: Dwayne, a 2025 Ontario resident with no employment income and three T2125
+# statements, one for each of his self-employed lines: a business (code 1), a professional
+# (code 2) and a commission (code 3) statement. Each statement's net and gross go to its own T1
+# lines (13500 and 13499, 13700 and 13699, 13900 and 13899), and line 27 totals the three nets
+# to $8,500.00. The worked figures are the lines listed under expected; the file pins no tax.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, a chosen figure (18 or older at the end of 2025),
+  with no employment, rental, farming or fishing income, and no spouse or common-law partner
+  (not triggered). He has three T2125 statements, each with a chosen code: 1 business, 2
+  professional and 3 commission. The code is a chosen figure, and the form names no codes, so
+  the code sends the statement's net and gross to one T1 line each. Business (code 1): gross
+  sales of $3,000.00 (a chosen figure) and no expenses, so the net on line 9946 is $3,000.00 on
+  line 13500 and the gross on line 8299 is $3,000.00 on line 13499. Professional (code 2): gross
+  sales of $6,000.00 and office expenses of $2,000.00 (chosen figures), so the net on line 9946
+  is $6,000.00 minus $2,000.00, which is $4,000.00, on line 13700 and the gross of $6,000.00 on
+  line 13699. Commission (code 3): gross sales of $1,500.00 and no expenses, so the net and the
+  gross are each $1,500.00, on lines 13900 and 13899. Line 27 "Add lines 22 to 26. Net
+  self-employment income" is $3,000.00 plus $4,000.00 plus $1,500.00, which is $8,500.00. Line
+  15000 "Total income" is line 28 plus line 32, and line 28 is line 21 plus line 27, with no
+  amounts on lines 1 to 20 or 29 to 31, so it is $8,500.00. The self-employment CPP of $595.00
+  (base 9.9% plus first additional 2%, 11.9%) is 11.9% of $5,000.00 (the income above the
+  $3,500.00 exemption), and that figure is derived by hand. The net income before adjustments
+  ($8,500.00 less the $347.50 CPP deduction) and the other payments limit are pinned from the
+  engine's trace and were not hand-checked. No minimum tax is payable (T691 Part 5 line 11 is 0),
+  so Part 7 is not completed and the AMT carryover for 2026 is 0.00. The tax and the credits
+  are not asserted. The refund is hand-checked: the total payable of 595.00 (the CPP above) less
+  the Canada workers benefit of 1,485.00 (working income 8,500.00; 27% of the 5,500.00 over 3,000
+  is 1,485.00, under the 1,633.00 maximum, and the adjusted family net income of 8,152.50 is under
+  26,855.00, so no reduction) is -890.00, a refund of 890.00.
+sources:
+  - >-
+    CRA, Form T2125 2025 (docs/cra-forms-2025/t2125-25e.pdf, text confirmed): "Gross
+    business or professional income: Line 8000 plus amount 3O"; "Report the gross business
+    or professional income from line 8299 on the applicable line of your income tax and
+    benefit return as indicated below:" "business income on line 13499"; "professional
+    income on line 13699"; "commission income on line 13899"; "Your net income (loss):
+    Amount 5D minus line 9945" (line 9946); "Report the net income amount from line 9946 on
+    the applicable line of your income tax and benefit return as indicated below:" "business
+    income on line 13500"; "professional income on line 13700"; "commission income on line
+    13900"; "For each business or profession, fill in a separate Form T2125."
+  - >-
+    CRA, T1 Ontario edition 2025 (docs/cra-forms-2025/5006-r-25e.txt): "Line 22: Business
+    income", "Line 13499: Gross", "Line 13500: Net"; "Line 23: Professional income", "Line
+    13699: Gross", "Line 13700: Net"; "Line 24: Commission income", "Line 13899: Gross",
+    "Line 13900: Net"; "Line 27: Add lines 22 to 26. Net self-employment income ="; "Line 33
+    and line 15000: Line 28 plus line 32 Total income =".
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/cpp_part_5_completed: "1"
+  ca/t2125_statements:
+    - ca/business_income_line: "1"
+      ca/business_gross_sales: "3000"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+    - ca/business_income_line: "2"
+      ca/business_gross_sales: "6000"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "2000"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+    - ca/business_income_line: "3"
+      ca/business_gross_sales: "1500"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/business_income: "3000.00"
+      ca-on/net_refund: "890.00"
+      ca/professional_income: "4000.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "8152.50"
+      ca/other_payments_limit_income: "8152.50"
+      ca/canada_workers_benefit: "1485.00"
+      ca/refund_or_balance_owing: "-890.00"
+      ca/commission_income: "1500.00"
+      ca/gross_business_income: "3000.00"
+      ca/gross_professional_income: "6000.00"
+      ca/gross_commission_income: "1500.00"
+      ca/net_self_employment_income: "8500.00"
+      ca/total_income: "8500.00"

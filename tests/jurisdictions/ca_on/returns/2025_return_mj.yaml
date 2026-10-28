@@ -1,0 +1,108 @@
+# Return MJ: Guide T4044, Part B column 3, the cost of a passenger vehicle that changed use and of one
+# bought from a non-arm's-length person. Amounts are quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MJ: Guide T4044 (2025), Part B "Column 3 - Cost of additions in the year", for two Class 10.1
+  vehicles, on the salaried employee of Return LH (employment income $50,000, other expenses of
+  $6,000, interest of $500 on line 26, all kilometres driven for employment). Vehicle 1 was owned for
+  personal use and started being used for employment in 2025 ("a change in use"): "the amount you
+  will enter in column 3 is the fair market value of the property at the time you start using the
+  property for employment"; a car bought in 2018 for $45,000 that is worth $40,000 in 2025 has
+  $40,000 in column 3. It is Class 10.1 whether the 2018 purchase sets the class (after December 31,
+  2000 and before January 1, 2022, it cost more than $30,000) or the $40,000 value in 2025 does
+  (more than $38,000); the Guide does not say which applies. Vehicle 2 was bought in 2025 for
+  $40,000 before tax from a relative: "the capital cost is
+  the least of the following three amounts": the fair market value when acquired ($35,000), "$38,000
+  plus the GST and PST or HST that you would have paid on $38,000" (at the 13% HST of Ontario,
+  $38,000 + $4,940 = $42,940) and the seller's cost just before ($30,000), so column 3 is $30,000.
+  The Guide gives no claim for them: the claims are a chosen $500 for vehicle 1 and $1,000 for vehicle
+  2 (each within 30% of its column 5), so the CCA is $1,500, as in Return LH, and every other line is
+  the same as Return LH: line 25 is 1,500, line 3 is 1,500 + 500 = 2,000, line 15 is 8,000.00 and T777
+  line 17 and T1 line 22900 are 8,000.00. Not pinned: the Guide's "in most cases" for a change in
+  use, because the Guide names no other case.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Part B - Class
+    10.1 property", "Column 3 - Cost of additions in the year": "If you owned a passenger vehicle for
+    personal use and then started using it for employment in 2025, there is a change in use. In most
+    cases when this happens, the amount you will enter in column 3 is the fair market value of the
+    property at the time you start using the property for employment." and "There is a limit on the
+    capital cost of a Class 10.1 vehicle you buy from a person with whom you have a non-arm's length
+    relationship. [...] In this case, the capital cost is the least of the following three amounts:
+    - the fair market value of the vehicle when you acquired it - $38,000 plus the GST and PST or HST
+    that you would have paid on $38,000 if you had acquired the vehicle in 2025 - the seller's cost
+    of the vehicle just before you acquired it."
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    "Add lines 1 to 14. = 15"; "Line 15 plus line 16. Enter this amount on line 22900 of your return.
+    Total expenses = 17".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "50000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "50000"
+  ca/t2204_insurable_earnings: "50000"
+  ca/t2204_premiums_deducted: "820.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "2766.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_other_expenses: "6000"
+  ca/t777_employment_kilometres: "10000"
+  ca/t777_total_kilometres: "10000"
+  ca/t777_vehicle_interest: "500"
+  ca/t777_passenger_vehicle: "1"
+  ca/t777_interest_days: "365"
+  ca/t777_vehicle_sales_tax_rate: "13"
+  ca/t777_part_b_rows:
+    - ca/cca_vehicle_acquired_year: "2018"
+      ca/cca_vehicle_cost: "45000"
+      ca/cca_vehicle_from_non_arms_length: "0"
+      ca/cca_vehicle_non_arms_length_fair_market_value: "0"
+      ca/cca_vehicle_seller_cost: "0"
+      ca/cca_vehicle_change_in_use: "1"
+      ca/cca_vehicle_change_in_use_fair_market_value: "40000"
+      ca/cca_class_number: "10.1"
+      ca/cca_ucc_at_start: "0"
+      ca/cca_additions: "40000"
+      ca/cca_aiip_additions: "0"
+      ca/cca_riip_additions: "0"
+      ca/cca_proceeds: "0"
+      ca/cca_claimed: "500"
+      ca/cca_no_property_left: "0"
+    - ca/cca_vehicle_acquired_year: "2025"
+      ca/cca_vehicle_cost: "40000"
+      ca/cca_vehicle_from_non_arms_length: "1"
+      ca/cca_vehicle_non_arms_length_fair_market_value: "35000"
+      ca/cca_vehicle_seller_cost: "30000"
+      ca/cca_vehicle_change_in_use: "0"
+      ca/cca_vehicle_change_in_use_fair_market_value: "0"
+      ca/cca_class_number: "10.1"
+      ca/cca_ucc_at_start: "0"
+      ca/cca_additions: "30000"
+      ca/cca_aiip_additions: "0"
+      ca/cca_riip_additions: "0"
+      ca/cca_proceeds: "0"
+      ca/cca_claimed: "1000"
+      ca/cca_no_property_left: "0"
+expected:
+  ca/t777:
+    - ca/t777_line_25: "1500"
+      ca/t777_line_3: "2000.00"
+      ca/t777_line_15: "8000.00"
+      ca/t777_line_17: "8000.00"
+  ca-on/return:
+    - ca/total_income: "50000.00"
+      ca/other_employment_expenses: "8000.00"
+      ca-on/ontario_tax_less_dividend_credit: "1296.15"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "41535.00"
+      ca/other_payments_limit_income: "41535.00"
+      ca/refund_or_balance_owing: "4340.83"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "50000"

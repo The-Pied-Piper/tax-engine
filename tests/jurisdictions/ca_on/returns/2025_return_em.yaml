@@ -1,0 +1,66 @@
+# Return EM: a single Ontario resident with three dispositions of listed personal property (LPP), the
+# example of Guide T4037 (Capital Gains, 2025), page 33: a jewellery gain of $200, a coin collection gain
+# of $300 and a painting loss of $4,000, a net LPP loss of $3,500 that cannot offset other gains or
+# income. Every input is the guide's figure; the guide's figures are the expected ones.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 (chosen figures), with no income other than the three dispositions below (every
+  other amount is a chosen $0, including the unapplied LPP losses from other years, which are 0). The
+  guide's three LPP dispositions, with no outlays and expenses (outlays 0, the guide's "no outlays and
+  expenses for these three transactions"), each a row of Schedule 3 Part 3 "Listed personal property":
+  jewellery, proceeds $6,000 and adjusted cost base $5,800, a gain of 200; a coin collection, proceeds
+  $2,000 and adjusted cost base $1,700, a gain of 300; a painting, proceeds $8,000 and adjusted cost
+  base $12,000, a loss of 4,000. The rows' column 5 (column 2 minus columns 3 and 4) add to 200 + 300 -
+  4,000 = -3,500, the guide's net loss of $3,500 ("your loss was $4,000; your total gain was $500
+  ($200 + $300). As a result, your net loss was $3,500 ($4,000 - $500)"). That gain or loss is line 10
+  (listed_personal_property_gain_or_loss), -3,500. Line 10 and line 15900 "Net gain only" is the net
+  gain: the gain or loss less the unapplied LPP losses from other years (0), not below 0, so 0. The
+  LPP loss does not offset the other gains or income, so line 11 and line 19700 (total capital gains)
+  are 0, the included capital gain (line 24) is 0, the taxable capital gains are 0, and the net
+  income and taxable income are 0. The engine computes no LPP loss carry-forward: the loss is shown
+  on the LPP line and no amount is carried to another year, so the guide's "you can apply your LPP
+  loss against your gains from dispositions of LPP in any of the three preceding years or the seven
+  years following 2025" has no line in this return. The cpp months (Schedule 8 box A) are a chosen 12
+  with no employment income: the second additional maximum of 9900.00 is the engine's figure for a
+  full year of CPP, not a guide figure. The alternative minimum tax carryover for 2026, 2,338.71, is the
+  engine's figure for a return with no income (the same as return EI); it is not checked against the
+  guide, which has no alternative minimum tax example.
+sources:
+  - >-
+    CRA, Guide T4037, Capital Gains (2025), page 33, the example of the jewellery bought in 1997 for
+    $5,800 and sold for $6,000, the coin collection and the painting bought in 2000 for $12,000 and
+    sold for $8,000: "Your loss from selling LPP in 2025 was more than your gain: your loss was $4,000;
+    your total gain was $500 ($200 + $300). As a result, your net loss was $3,500 ($4,000 - $500). You
+    cannot use the difference to offset your capital gain on the sale of a property other than on LPP
+    in the year. In addition, you cannot offset any income you had from other sources."
+    (docs/cra-forms-2025/t4037-25e.pdf, text extracted with pdftotext)
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19), Part 3:
+    "Listed personal property (LPP) (LPP losses can only be applied against LPP gains)"; "Line 10 and
+    line 15900: Net gain only" (docs/cra-forms-2025/5000-s3-25e.txt).
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/listed_personal_property_dispositions:
+    - ca/disposition_proceeds: "6000"
+      ca/disposition_adjusted_cost_base: "5800"
+      ca/disposition_outlays: "0"
+    - ca/disposition_proceeds: "2000"
+      ca/disposition_adjusted_cost_base: "1700"
+      ca/disposition_outlays: "0"
+    - ca/disposition_proceeds: "8000"
+      ca/disposition_adjusted_cost_base: "12000"
+      ca/disposition_outlays: "0"
+expected:
+  ca-on/return:
+    - ca/listed_personal_property_gain_or_loss: "-3500"
+      ca/listed_personal_property_net_gain: "0"
+      ca/capital_gain: "0"
+      ca/included_capital_gain: "0"
+      ca/taxable_capital_gains: "0"
+      ca/taxable_income: "0"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"

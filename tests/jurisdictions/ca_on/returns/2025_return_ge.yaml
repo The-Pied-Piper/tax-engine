@@ -1,0 +1,149 @@
+# Return GE (a spouse or common-law partner on December 31, 2025, who ticks Form ON-BEN line 61080,
+# separate principal residences for medical reasons): the one worked return with a spouse that
+# ticks line 61080, so that the spouse check (the tick may not be 1 without a spouse) and the
+# check's output are non-zero, and the Ontario tax reduction and LIFT are worked with a spouse at
+# year end. Employment income and the other figures are those of Return AJ (Return B's filer),
+# with the spouse's net income of 48,000 (a chosen figure, above the filer's, so the filer claims
+# no amount on lines 75 and 76). The figures are chosen and worked out by hand from the form text;
+# the engine's own figures are labelled as such in the description.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the forms name no province of
+  residence), resident in Canada throughout 2025 and aged 18 or older at the end of 2025 (chosen
+  figures), with a spouse or common-law partner on December 31, 2025 (the T1's "Marital status on
+  December 31, 2025" Box 1 Married or Box 2 Living common-law, a chosen count of 1), and no
+  dependent children and no dependants (ON428 lines 75 and 76 are 0). Employment income (T1 line
+  10100) is a chosen 30,000.00 and there is no other income: total income (line 15000) is
+  30,000.00. CPP contributions by Schedule 8: base 4.95% x (30,000 - 3,500) = 1,311.75, first
+  additional 1% x 26,500 = 265.00 (deducted on line 22215), and no second additional contribution
+  (the earnings are below the ceiling); EI premiums 1.64% x 30,000 = 492.00. There is no RRSP
+  deduction (no contribution is made; the deduction limit of 5,400.00 is a chosen figure), so
+  net income (line 23600) and taxable income are 30,000 - 265 = 29,735.00. Income tax deducted is
+  a chosen 3,000.00. The spouse's net income (line 23600 of the spouse's return, and ON428-A
+  line 21) is a chosen 48,000.00, so the filer has the lower net income and claims nothing on
+  lines 75 and 76. The Ontario LIFT is answered for a spouse at year end (ON428-A Part B, a
+  chosen input of 1).
+  Form ON-BEN line 61080 is ticked (a chosen 1: "If, on December 31, 2025, you and your spouse or
+  common-law partner occupied separate principal residences for medical reasons and you are
+  choosing to apply individually for the OEPTC, NOEC, or OSHPTG, tick this box"). The spouse
+  check passes: the spouse fact is 1, so the tick is at most the spouse count, and the output
+  carried on the return for line 61080 with a spouse is 1. The other ON-BEN lines are not ticked
+  and no rent or property tax is entered (each a chosen 0).
+  Ontario tax (ON428): 5.05% x 29,735 = 1,501.62 (ON428-A line 4 applicable rate 5.05%). The
+  credit amounts at 5.05% are the basic personal amount 12,747.00, the CPP base contributions
+  1,311.75 and the EI premiums 492.00, 14,550.75 in all, 734.81 at 5.05% (the engine's), so the
+  Ontario tax after credits is 1,501.62 - 734.81 = 766.81. The basic reduction is 294.00 (line
+  74); with no dependants, line 77 is 294.00 and line 78 is 294.00 x 2 = 588.00, which is below
+  line 79 (the Ontario tax of 766.81), so line 80 is 0 ("Line 80: Line 78 minus line 79 (if
+  negative, enter "0")"), and the Ontario tax after the reduction is 766.81.
+  LIFT (Schedule ON428-A), Part A: line 3 is 30,000.00, line 5 is 5.05% x 30,000 = 1,515.00, at
+  most 875, so 875.00 (line 14, and line 29 for Part B). Line 13, the filer's adjusted net income
+  (line 9 minus line 12), is 29,735.00, below the 32,500 threshold, so Part A gives 0 (line 32).
+  Part B (a spouse at year end): line 30 is 29,735.00 and line 28, the spouse's adjusted net
+  income, is 48,000.00 (no UCCB or RDSP income on either return). Line 35, the adjusted family
+  net income, is 29,735 + 48,000 = 77,735.00 ("Line 35: Line 33 plus line 34 Adjusted family
+  net income ="). Line 36 is the family income threshold of 65,000 (the e-text prints
+  "65,0000.00"; read as 65,000.00, as in Return FL). Line 37 is 77,735 - 65,000 = 12,735.00. Line
+  38 is the more of line 32 (0) and line 37, so 12,735.00; line 40 is 5% x 12,735 = 636.75; line
+  41 is 875.00 - 636.75 = 238.25, "Line 41: Line 29 minus line 40 (if negative, enter "0")". The
+  LIFT credit is 238.25, so the Ontario tax after the LIFT credit is 766.81 - 238.25 = 528.56.
+  The Ontario health premium is 300.00 (the engine's figure for taxable income of 29,735). The
+  Ontario tax is 528.56 + 300.00 = 828.56.
+  Federal: the federal tax after credits (1,498.04) is the engine's, not a hand figure. The
+  Canada workers benefit (Schedule 6, with the eligible spouse, line 38101, 1) is nothing: the family
+  working income (line 6) is 30,000.00 + 48,000.00 = 78,000.00, 27% of the part over $3,000 is
+  20,250.00, so line 22 is the eligible spouse's $2,813. Part B: line 13 is 29,735.00 + 48,000.00 =
+  77,735.00. Line 14: the filer's working income, 30,000.00, is less than the spouse's, 48,000.00,
+  so column 1 counts: the less of line 5 and line 12, 29,735.00, above the $16,386 maximum, so
+  16,386.00. Line 15 is 77,735.00 - 16,386.00 = 61,349.00. Line 25 is 61,349.00 - 30,639 =
+  30,710.00, line 27 is 15% of it, 4,606.50, and line 28 is 2,813.00 - 4,606.50, negative, so 0.
+  The total payable is 1,498.04 + 828.56 = 2,326.60, the total credits are 3,000.00 + 0 = 3,000.00,
+  and the refund is 3,000.00 - 2,326.60 = 673.40, a refund of 673.40 (ON428 net refund 673.40).
+  The lines the return does not reach are not triggered: no dividend, no foreign tax credit, no
+  minimum tax and no net capital loss. The refusals of the tick (1 with no spouse, and 2) are
+  pinned in `end_to_end/test_return_ge.py`, not in this file.
+sources:
+  - >-
+    CRA, Form ON-BEN 2025 (5006-TG), line 61080: "Line 61080: If, on December 31, 2025, you and
+    your spouse or common-law partner occupied separate principal residences for medical reasons
+    and you are choosing to apply individually for the OEPTC, NOEC, or OSHPTG, tick this box and
+    enter your spouse's or common-law partner's address in Part C of this form." (the
+    docs/cra-forms-2025/5006-tg-25e.txt text)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tg/5006-tg-25e.txt
+  - >-
+    CRA, the T1 Ontario edition 2025 (5006-R), "Marital status on December 31, 2025:" "Box 1:
+    Married" "Box 2: Living common-law" (docs/cra-forms-2025/5006-r-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, Schedule ON428-A 2025 (5006-A), LIFT credit: "Line 4: Applicable rate 5.05%"; "Line 5:
+    Line 3 multiplied by the percentage from line 4 (maximum $875) ="; "Line 13: Line 9 minus line
+    12 (if negative, enter "0") Your adjusted net income ="; "Line 35: Line 33 plus line 34 Adjusted
+    family net income ="; "Line 36: Family income threshold 65,0000.00"; "Line 37: Line 35 minus
+    line 36 (if negative, enter "0") ="; "Line 38: Enter whichever is more: amount from line 32 or
+    line 37."; "Line 40: Line 38 multiplied by the percentage from line 39 ="; "Line 41: Line 29
+    minus line 40 (if negative, enter "0") Enter this amount on line 62140 of your Form ON428. ="
+    (docs/cra-forms-2025/5006-a-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+  - >-
+    CRA, Form ON428 2025 (5006-C), "Line 74: Basic reduction 294.00"; "Line 80: Line 78 minus
+    line 79 (if negative, enter "0") Ontario tax reduction =" (docs/cra-forms-2025/5006-c-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - >-
+    CPP and EI rates as in Return AJ (Schedule 8 and Form T2204; docs/cra-forms-2025/5000-g-25e.txt)
+inputs:
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "30000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "30000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "30000"
+  ca/t2204_premiums_deducted: "492.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "1576.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/rrsp_deduction_limit: "5400"
+  ca/income_tax_deducted: "3000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/cwb_eligible_spouses: "1"
+  ca/cwb_spouse_employment_income: "48000"
+  ca/spouse_net_income: "48000"
+  ca/spouse_net_income_before_adjustments: "48000"
+  ca-on/separate_residences_for_medical_reasons: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "30000"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "30000.00"
+      ca/deductions_from_total_income: "265.00"
+      ca/net_income: "29735.00"
+      ca/net_income_before_adjustments: "29735.00"
+      ca/taxable_income: "29735.00"
+      ca/ei_premiums: "492.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_payments_limit_income: "29735.00"
+      ca/total_credits: "3000.00"
+      ca/adjusted_family_net_income: "61349.00"
+      ca/cwb_family_working_income: "78000.00"
+      ca/cwb_secondary_earner_exemption: "16386.00"
+      ca/canada_workers_benefit: "0.00"
+      ca/net_federal_tax: "1498.04"
+      ca/total_payable: "2326.60"
+      ca/refund_or_balance_owing: "-673.40"
+      ca-on/ontario_basic_tax: "1501.62"
+      ca-on/ontario_tax_less_dividend_credit: "766.81"
+      ca-on/ontario_tax_after_reduction: "766.81"
+      ca-on/lift_family_net_income: "77735.00"
+      ca-on/lift_family_reduction: "636.75"
+      ca-on/lift_credit: "238.25"
+      ca-on/ontario_health_premium: "300.00"
+      ca-on/ontario_tax: "828.56"
+      ca-on/net_refund: "673.40"
+      ca-on/separate_residences_for_medical_reasons: "1"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"
+      ca-on/spouse_for_separate_residences_checked: "1"

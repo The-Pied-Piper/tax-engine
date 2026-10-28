@@ -1,0 +1,129 @@
+# Return IT: a 2025 Ontario resident with no other income, selling the machine of CRA's Guide T4037
+# depreciable property example in each of its three situations (A, B and C) as real estate,
+# depreciable property and other properties rows (Schedule 3 Part 3 line 5), each answered
+# "depreciable property" 1, plus one row of ordinary property sold at a loss (answered 0) and one
+# share row. A loss on depreciable property is not a capital loss, so rows A and B count 0, row C
+# counts its gain of 2,000 and the ordinary loss of 500 still offsets: line 5 is 1,500, line 3
+# (shares) 10,000, line 11 11,500, and the taxable capital gain (T1 line 12700) 5,750.00. The
+# other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025, resident in Canada throughout 2025 and aged 18 or
+  older at the end of 2025, with no income other than the dispositions below (no employment
+  income is entered). The machine of Guide T4037's depreciable property example cost $10,000
+  and has a UCC of $6,000; it is sold alone for $4,000 (situation A), $8,000 (situation B) or
+  $12,000 (situation C), so each is a real estate, depreciable property and other properties row
+  (line 5) answered "depreciable property" 1: A proceeds 4,000, ACB 10,000, outlays 0, so column
+  5 is -6,000, a loss on depreciable property counting 0; B proceeds 8,000, so -2,000, counting
+  0; C proceeds 12,000, so 2,000, a gain counting 2,000. A fourth row of ordinary property (not
+  depreciable, answered 0) has proceeds 9,500, ACB 10,000 and outlays 0, so -500, a capital loss
+  that still offsets: line 5 = 0 + 0 + 2,000 - 500 = 1,500. Without the answer the engine would
+  give line 5 = -6,000 - 2,000 + 2,000 - 500 = -6,500. A share row with proceeds 20,000, ACB
+  10,000 and outlays 0 gives line 3 = 10,000. Line 11 = 10,000 + 1,500 = 11,500, and line 12 is
+  the same figure. Line 13 and line 16100 (capital gains deferral) is 0, so line 14 = 11,500.
+  Line 15 and line 17400 and line 16 and line 17600 (slips) are 0, so line 17 = 11,500. Line 18
+  and line 17800 (business investment loss reduction) is 0, so line 19 and line 19100 = 11,500.
+  Line 20 and line 19200 (reserves) is 0, so line 21 and line 19700 = 11,500, and line 22 is the
+  same figure. Line 24 = 11,500 x 50% = 5,750.00, positive, so line 12700 (taxable capital gains)
+  is 5,750.00. What the Guide states about the same example: A, terminal loss $2,000 and no
+  capital gain; B, recapture $2,000 and no capital gain; C, recapture $4,000 and capital gain
+  $2,000. The terminal loss and the recapture side of the example (Form T776 or T2125 capital
+  cost allowance, the class row with no property left) are covered by existing worked returns
+  and are not repeated here; this return pins the Schedule 3 side, where the Guide says a loss
+  on depreciable property is not a capital loss. Not triggered: the other capital gains and
+  losses (every other line of Schedule 3 is blank), the net capital loss carry-forward (T1436),
+  and the credits and deductions not named here; taxable income and tax are not pinned.
+sources:
+  - >-
+    CRA, Guide T4037 (Capital Gains) 2025, Chapter 2, "Depreciable property", p.19
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4037/t4037-25e.pdf; confirmed
+    2026-10-25 from the PDF; no .txt published): "Usually, you will have a capital gain on
+    depreciable property if you sell it for more than its adjusted cost base plus the outlays
+    and expenses incurred to sell the property. Note: A loss from the sale of depreciable
+    property is not considered to be a capital loss. However, you may be able to claim a
+    terminal loss." The same guide, p.20, the example of a machine bought for $10,000 with a UCC
+    of $6,000 and sold for $4,000 (A), $8,000 (B) or $12,000 (C): A terminal loss $2,000, no
+    capital gain; B recapture $2,000, no capital gain; C recapture $4,000 and capital gain
+    $2,000 (confirmed 2026-10-25 from the PDF; no .txt published).
+  - >-
+    CRA, Guide T4036 (Rental Income) 2025, p.44 (confirmed 2026-10-25 from the PDF; no .txt
+    published): "You cannot have a capital loss when you sell depreciable property".
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19),
+    Part 3: "For each Gain or loss enter as many lines as necessary."; "(Column 2): Proceeds
+    of disposition", "(Column 3): Adjusted cost base", "(Column 4): Outlays and expenses",
+    "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; Lines 1 to 8 "Total gain or
+    loss (add all the amounts under column 5)"; "Line 11: Add lines 1 to 10. Total gains or
+    losses of qualified properties and other properties ="; Part 4: "Line 12: Amount from
+    line 11 of the previous page"; "Line 14: Line 12 minus line 13 ="; "Line 17: Add lines 14 to
+    16. ="; "Line 19 and line 19100: Total gains or losses before reserves: line 17 minus line 18
+    ="; "Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses ="; line 24
+    "Line 22 multiplied by the percentage from line 23" (50%); line 26 (line 19900) "If positive,
+    enter the result on line 12700 of your return." The form prints no line for a loss on
+    depreciable property; the 0 or 1 "depreciable property" answer on each row is the engine's
+    way of applying the Guide's rule.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  # A full year of CPP and QPP months with no pensionable earnings (the engine needs the count).
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "20000"
+      ca/disposition_adjusted_cost_base: "10000"
+      ca/disposition_outlays: "0"
+  ca/real_estate_dispositions:
+    # Guide T4037 p.20, situation A: sold for 4,000.
+    - ca/disposition_proceeds: "4000"
+      ca/disposition_adjusted_cost_base: "10000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "1"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+    # Situation B: sold for 8,000.
+    - ca/disposition_proceeds: "8000"
+      ca/disposition_adjusted_cost_base: "10000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "1"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+    # Situation C: sold for 12,000.
+    - ca/disposition_proceeds: "12000"
+      ca/disposition_adjusted_cost_base: "10000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "1"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+    # Ordinary property (not depreciable): a loss of 500 that still offsets.
+    - ca/disposition_proceeds: "9500"
+      ca/disposition_adjusted_cost_base: "10000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+expected:
+  ca-on/return:
+    - ca/share_gain_or_loss: "10000"
+      ca/real_estate_gain_or_loss: "1500"
+      ca/capital_gains_of_qualified_and_other_properties: "11500"
+      ca/capital_gains_after_deferral: "11500"
+      ca/capital_gains_before_investment_loss_reduction: "11500"
+      ca/capital_gains_before_reserves: "11500"
+      ca/capital_gain: "11500"
+      ca/included_capital_gain: "5750.00"
+      ca/taxable_capital_gains: "5750.00"
+      ca/schedule_3_line_19900: "5750.00"
+      # Not lines of the Schedule 3 chain under test: engine figures that follow from the income
+      # and the basic credits, and the total proceeds of lines 4 and 5 the rows also give.
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "5750.00"
+      ca/other_payments_limit_income: "5750.00"
+      ca/real_estate_proceeds: "33500"
+      ca/share_proceeds: "20000"

@@ -1,0 +1,512 @@
+# Form RC381 on the worked returns: the lines of the form `ca/rc381` that each return of `returns/`
+# used to expect of its own worksheet, before RC381 became a form of its own. Each entry is a
+# return's file stem and the lines expected of its one copy of the form, checked by
+# `test_rc381_on_worked_returns.py` on the return's inputs with Schedule 8 left out and one copy of
+# Form RC381 carried instead (the return carries one of the two, never both). The figures are the
+# form's own on the return's inputs, box 26 total included (the overpayment lines are 0 where the
+# box 16 total is the contribution required on it). Returns BO and BP carry Form RC381 themselves
+# and expect its lines in their own files.
+2025_return_a:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "3356.10"
+      ca/rc381_part_3_line_21: "678.00"
+      ca/rc381_part_3_line_69: "-396.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_aa:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "1075.00"
+      ca/rc381_part_3_line_21: "217.17"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ab:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ae:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_af:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ah:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "44.06"
+      ca/rc381_part_3_line_21: "8.90"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ai:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_aj:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "1311.75"
+      ca/rc381_part_3_line_21: "265.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ak:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_am:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ao:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "922.67"
+      ca/rc381_part_3_line_21: "186.40"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_aq:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ar:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_as:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "3356.10"
+      ca/rc381_part_3_line_21: "678.00"
+      ca/rc381_part_3_line_69: "-396.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_at:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "1806.75"
+      ca/rc381_part_3_line_21: "365.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_au:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_aw:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+      ca/rc381_part_3_line_20: "2301.75"
+      ca/rc381_part_3_line_21: "465.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ax:
+  ca/rc381:
+    - ca/rc381_part_4_line_4: "50000"
+      ca/rc381_self_employment_cpp_contributions: "5533.50"
+      ca/rc381_cpp_payable_on_self_employment: "5533.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "2301.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "3231.75"
+
+2025_return_ay:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_b:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "1311.75"
+      ca/rc381_part_3_line_21: "265.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_ba:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+      ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_bb:
+  ca/rc381:
+    - ca/rc381_part_4_line_4: "30000"
+      ca/rc381_self_employment_cpp_contributions: "3153.50"
+      ca/rc381_cpp_payable_on_self_employment: "3153.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "1311.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "1841.75"
+
+2025_return_bc:
+  ca/rc381:
+    - ca/rc381_part_4_line_4: "30000"
+      ca/rc381_self_employment_cpp_contributions: "3153.50"
+      ca/rc381_cpp_payable_on_self_employment: "3153.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "1311.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "1841.75"
+
+2025_return_bd:
+  ca/rc381:
+    - ca/rc381_part_4_line_4: "15000"
+      ca/rc381_self_employment_cpp_contributions: "1368.50"
+      ca/rc381_cpp_payable_on_self_employment: "1368.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "569.25"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "799.25"
+
+2025_return_be:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_bg:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_bi:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+
+2025_return_bj:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+      ca/rc381_part_4_line_4: "10000.00"
+      ca/rc381_self_employment_cpp_contributions: "773.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "321.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "451.75"
+      ca/rc381_cpp_payable_on_self_employment: "773.50"
+
+2025_return_bk:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+      ca/rc381_part_4_line_4: "10000.00"
+      ca/rc381_self_employment_cpp_contributions: "773.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "321.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "451.75"
+      ca/rc381_cpp_payable_on_self_employment: "773.50"
+
+2025_return_bl:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+      ca/rc381_part_4_line_4: "10000.00"
+      ca/rc381_self_employment_cpp_contributions: "773.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "321.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "451.75"
+      ca/rc381_cpp_payable_on_self_employment: "773.50"
+
+2025_return_bm:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+
+2025_return_bn:
+  ca/rc381:
+    - ca/rc381_part_2_line_g: "71300.00"
+      ca/rc381_part_2_line_h: "9900.00"
+      ca/rc381_part_2_line_i: "81200.00"
+      ca/rc381_part_2_line_j: "3500.00"
+      ca/rc381_part_3_line_20: "2911.77"
+      ca/rc381_part_3_line_21: "588.23"
+      ca/rc381_part_3_line_69: "138.25"
+      ca/rc381_cpp_overpayment: "138.25"
+      ca/rc381_part_4_line_91: "138.25"
+      ca/rc381_cpp_overpayment_on_return: "138.25"
+
+2025_return_bq:
+  ca/rc381:
+    - ca/rc381_part_4_line_4: "30000"
+      ca/rc381_self_employment_cpp_contributions: "3153.50"
+      ca/rc381_cpp_payable_on_self_employment: "3153.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "1311.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "1841.75"
+
+2025_return_br:
+  ca/rc381:
+    - ca/rc381_part_4_line_4: "30000"
+      ca/rc381_self_employment_cpp_contributions: "3153.50"
+      ca/rc381_cpp_payable_on_self_employment: "3153.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "1311.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "1841.75"
+
+2025_return_c:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2301.75"
+      ca/rc381_part_3_line_21: "465.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_d:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "3356.10"
+      ca/rc381_part_3_line_21: "678.00"
+      ca/rc381_part_3_line_69: "-148.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_e:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "3356.10"
+      ca/rc381_part_3_line_21: "678.00"
+      ca/rc381_part_3_line_69: "-396.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_f:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_g:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_i:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_j:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2301.75"
+      ca/rc381_part_3_line_21: "465.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_k:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2301.75"
+      ca/rc381_part_3_line_21: "465.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_l:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "1806.75"
+      ca/rc381_part_3_line_21: "365.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_m:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_n:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_p:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_q:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_r:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_s:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2301.75"
+      ca/rc381_part_3_line_21: "465.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_t:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2301.75"
+      ca/rc381_part_3_line_21: "465.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_u:
+  ca/rc381:
+    - ca/rc381_part_4_line_4: "50000"
+      ca/rc381_self_employment_cpp_contributions: "5533.50"
+      ca/rc381_cpp_payable_on_self_employment: "5533.50"
+      ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings: "2301.75"
+      ca/rc381_cpp_deduction_on_self_employment_and_other_earnings: "3231.75"
+
+2025_return_v:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2301.75"
+      ca/rc381_part_3_line_21: "465.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_w:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_x:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2202.75"
+      ca/rc381_part_3_line_21: "445.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"
+
+2025_return_y:
+  ca/rc381:
+    - ca/rc381_part_3_line_20: "2796.75"
+      ca/rc381_part_3_line_21: "565.00"
+      ca/rc381_part_3_line_69: "0.00"
+      ca/rc381_cpp_overpayment: "0"
+      ca/rc381_part_4_line_91: "0.00"
+      ca/rc381_cpp_overpayment_on_return: "0"

@@ -1,0 +1,209 @@
+# Return FM: the split-income dividend credits of Form T1206 (the eligible part, line 18), the
+# minimum tax carryover applied on ON428 line 59, the Ontario amounts transferred from a spouse
+# (Schedule ON(S2) disability and unused tuition) and the four conditions that make ON428 line 80
+# zero that no other worked return sets, each one non-zero, with the hand derivation of every
+# line in the description. No CRA example exists for these lines, so every figure is a chosen
+# figure, worked out by hand from the form text.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Schedule 6 is answered with an eligible spouse (line 38101, 1) whose working income is a chosen
+  $20,000; the family income is far above the Canada workers benefit's cut-off, so it is $0.
+  A 2025 Ontario resident at the end of 2025, aged 18 or older, not resident in Canada throughout
+  2025 and not resident of Canada at the beginning of the year (chosen only to set that condition),
+  with a spouse or common-law partner on December 31, 2025 who was not separated for 90 days
+  (chosen), whose net income is a chosen 20,000.00 (also their line 26000). The filer was bankrupt
+  in 2025, the return is filed for the filer by a trustee in bankruptcy, and the filer chooses not
+  to claim an Ontario tax reduction (all chosen). Each of these four conditions makes ON428 line 80
+  zero ("Enter "0" on line 80 if any of the following applies to you"); this return sets all four,
+  so its reduction is 0 (the reduction before the conditions is already 0.00 because twice the
+  basic reduction, 588.00, is below the tax), and the tests of Return FL show each condition
+  alone. The sixth condition, an amount on line 72, is set by another return.
+  Income: employment income (line 10100) of a chosen 60,000.00, CPP base contributions 4.95% x
+  (60,000 - 3,500) = 2,796.75 and first additional 1% x 56,500 = 565.00 (the T4 total 3,361.75),
+  EI premiums 1.64% x 60,000 = 984.00. Dividends received from a private corporation with no
+  slip, all of it split income (Form T1206): actual eligible dividends of a chosen 5,000.00,
+  taxable amount 5,000 x 138% = 6,900.00, and actual other dividends of a chosen 4,000.00, taxable
+  amount 4,000 x 115% = 4,600.00; line 12000 is 11,500.00 and line 12010 is 4,600.00. Total income
+  is 60,000 + 11,500 = 71,500.00. The deductions are the enhanced CPP 565.00 and the split income
+  11,500.00 (T1206 Part 1 line 4, line 23200): net income and taxable income are 71,500 - 565.00
+  - 11,500.00 = 59,435.00, and the TOSI-adjusted net income 59,435.00 + 11,500.00 = 70,935.00.
+  Form T1206, split income dividends: line 1 and line 16 11,500.00, line 2 and line 17 4,600.00,
+  line 18 = 11,500 - 4,600 = 6,900.00 (the eligible part), line 19 = 4,600 x 9.0301% = 415.38
+  (415.3846), line 20 = 6,900 x 15.0198% = 1,036.37 (1,036.3662), line 21 = 415.38 + 1,036.37 =
+  1,451.75. Ontario (Chart C columns 5 and 6): line 42 = 6,900 x 10% = 690.00, line 45 = 4,600 x
+  2.9863% = 137.37 (137.3698), line 46 = 690.00 + 137.37 = 827.37, which is the Ontario dividend
+  tax credit of ON428 line 57 (Worksheet ON428 on the same dividends). The T1206 line 8A,
+  TOSI-adjusted taxable income, is 3,795.00 / 14.5% = 26,172.41 and line 33C is 2,360.95 / 5.05% =
+  46,751.49.
+  The spouse (one person, one return): taxable income 20,000.00 (line 26000), basic personal
+  amount 16,129.00 on the federal return and 12,747.00 on ON428, CPP and EI of 1,500.00 (federal
+  line 96, ON428 line 24) and unused tuition of 1,000.00 (federal Schedule 11 amount, ON428 line
+  58560), and a disability amount of 10,138.00 federal (line 31600) and 10,298.00 on ON428 (line
+  58440), chosen.
+  Federal Schedule 2: line 4 10,138.00; line 6 10,138.00; line 7, taxable income, 20,000.00; lines 8
+  to 10 16,129.00, 1,500.00 and 1,000.00; line 11 = 18,629.00; line 12 = 20,000 - 18,629 = 1,371.00;
+  line 13 = 10,138 - 1,371 = 8,767.00.
+  Federal tax: the basic tax on 59,435 is 14.5% x 57,375 = 8,319.375 plus 20.5% x (59,435 -
+  57,375) = 422.30, 8,741.68 (rounded half up); the credit amounts are the basic personal amount
+  16,129.00, the CPP base contributions 2,796.75, the EI premiums 984.00 and the Canada
+  employment amount 1,471.00, 21,380.75, plus the 8,767.00 transferred from the spouse,
+  30,147.75 x 14.5% = 4,371.42 (4,371.42375); the tax after the credits and the dividend tax credit
+  1,451.75 is 8,741.68 - 4,371.42 - 1,451.75 = 2,918.51, and the federal tax on split income
+  (T1206 line 8) is 11,500 x 33% = 3,795.00.
+  Minimum tax carryover (Form T691 Part 2 and Part 8, ON428 line 59): Part 2 line 1 (line 40400,
+  the federal tax with the tax on split income) is 8,741.68 + 3,795.00 = 12,536.68; line 4 (the
+  credits 4,371.42 and the dividend tax credit 1,451.75) is 5,823.17; line 5 is 6,713.51. Part 8:
+  line 1, the carryover from 2018 to 2024, is a chosen 1,000.00; line 2 6,713.51 (line 3 0), line 4
+  6,713.51; line 5, the federal tax on split income, 3,795.00 (lines 6 and 7 0), line 8 3,795.00;
+  line 9 = 6,713.51 - 3,795.00 = 2,918.51; line 10, the minimum amount of Part 1, 0.00 (the
+  adjusted taxable income is below the 177,882 exemption); line 11 = 2,918.51 - 0.00 = 2,918.51.
+  The claim (line 12, a chosen election) is 800.00, at most line 1 and line 11; the balance for
+  later years (line 13) is 1,000.00 - 800.00 = 200.00, with no additional taxes (line 14) and no
+  unapplied 2018 carryover (line 16), so line 17 is 200.00. ON428 line 59 = 800 x 24.63% = 197.04;
+  line 58 is the Ontario tax after credits 2,155.30 less the dividend credit 827.37 = 1,327.93;
+  line 60 is the lesser of line 58 and line 59: 197.04; line 55 = 2,155.30 + 2,360.95 (the Ontario
+  tax on split income, 11,500 x 20.53%) = 4,516.25, and line 61 = 4,516.25 - 197.04 = 4,319.21.
+  Ontario (ON428): tax 5.05% x 52,886 = 2,670.74 plus 9.15% x (59,435 - 52,886) = 599.23,
+  3,269.97. The credit amounts are the basic personal amount 12,747.00, the CPP base
+  contributions 2,796.75, the EI premiums 984.00 and the 5,545.00 transferred from the spouse
+  (Schedule ON(S2), below), 22,072.75, at 5.05% = 1,114.67 (1,114.6739); the tax after credits is
+  3,269.97 - 1,114.67 = 2,155.30. The spouse amount is 0 because the spouse's net income is above
+  the amount.
+  Schedule ON(S2): lines 1 and 2 0 (not claimed); line 3, the spouse's disability amount, 10,298.00
+  (at most the 16,305 printed on Worksheet ON428 line 7); line 4 = 10,298.00; line 5, their taxable
+  income, 20,000.00 (at most 52,886); line 6 12,747.00 (at most the basic personal amount), line 7
+  1,500.00, line 8 their unused tuition and education amount 1,000.00; line 9 = 12,747 + 1,500 +
+  1,000 = 15,247.00; line 10 = 20,000 - 15,247 = 4,753.00; line 11 = 10,298 - 4,753 = 5,545.00,
+  claimed once (the spouse was not separated for 90 days).
+  The lines the return does not reach are not triggered. The refund, the Ontario health premium,
+  the caps ca/cpp_second_additional_earnings_maximum and ca/other_payments_limit_income and the
+  net income before adjustments are the engine's, not hand figures.
+sources:
+  - >-
+    CRA, Form ON428 2025, "Ontario tax reduction": "Enter "0" on line 80 if any of the following
+    applies to you:" "- You were not a resident of Canada at the beginning of the year" "- You were
+    bankrupt at any time in 2025" "- Your return is filed for you by a trustee in bankruptcy" "- You
+    are choosing not to claim an Ontario tax reduction"; "Line 59: Amount from line 40427 of your
+    return" "multiplied by 24.63%"; "Line 60 and line 61540: Enter whichever is less: amount from
+    line 58 or line 59."; "Line 61: Line 55 minus line 60 (if negative, enter "0")" (docs/cra-forms-2025/5006-c-25e.txt)
+  - >-
+    CRA, Form ON428 2025, Worksheet ON428 (docs/cra-forms-2025/5006-d-25e.txt) "Line 61520 - Ontario
+    dividend tax credit" and the T1 2025 Ontario edition (docs/cra-forms-2025/5006-r-25e.txt);
+    federal Schedule 2 (docs/cra-forms-2025/5000-s2-25e.txt)
+  - >-
+    CRA, Schedule ON(S2) 2025, lines 1 to 11: "Line 3 and line 59070: Enter the amount from line
+    58440 of their Form ON428.", "Line 5: Enter the amount from line 26000 of their return on line 5
+    if it is $52,886 or less.", "Line 8: Amount from line 58560 of their Form ON428", "Line 10 and
+    line 59120: Line 5 minus line 9 (if negative, enter "0")", "Line 11: Line 4 minus line 10 (if
+    negative, enter "0")" (docs/cra-forms-2025/5006-s2-25e.txt)
+  - >-
+    CRA, Form T1206 2025 (confirmed from the PDF; no .txt published), Part 1 lines 1 and 2, Part 2
+    lines 16 to 21 and Chart C columns 2, 3, 5 and 6 (docs/cra-forms-2025/t1206-25e.pdf); Form T691 2025 (confirmed
+    from the PDF; no .txt published), Part 8 lines 1, 11, 12 and 13 (docs/cra-forms-2025/t691-25e.pdf)
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "8000"
+  ca/resident_in_canada_throughout_2025: "0"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/eligible_dividends_received_without_a_slip: "5000"
+  ca/other_dividends_received_without_a_slip: "4000"
+  ca/split_income_dividends: "11500"
+  ca/split_income_dividends_other_than_eligible: "4600"
+  ca/amt_minimum_tax_carryover_from_previous_years: "1000"
+  ca/amt_minimum_tax_carryover_applied: "800"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/cwb_eligible_spouses: "1"
+  ca/cwb_spouse_employment_income: "20000"
+  ca/spouse_not_separated_90_days: "1"
+  ca/spouse_net_income: "20000"
+  ca/spouse_net_income_before_adjustments: "20000"
+  ca/spouse_return_taxable_income: "20000"
+  ca/spouse_return_disability_amount: "10138"
+  ca/spouse_return_line_96: "1500"
+  ca/spouse_return_federal_tuition_amount: "1000"
+  ca/spouse_return_basic_personal_amount: "16129"
+  ca-on/spouse_return_ontario_disability_amount: "10298"
+  ca-on/spouse_return_ontario_basic_personal_amount: "12747"
+  ca-on/spouse_return_ontario_line_24: "1500"
+  ca-on/spouse_return_ontario_unused_tuition_amount: "1000"
+  ca-on/not_resident_of_canada_at_start_of_year: "1"
+  ca-on/bankrupt_in_year: "1"
+  ca-on/return_filed_by_trustee_in_bankruptcy: "1"
+  ca-on/not_claiming_ontario_tax_reduction: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "71500.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/taxable_dividends: "11500.00"
+      ca/taxable_dividends_other_than_eligible: "4600.00"
+      ca/total_split_income: "11500.00"
+      ca/deductions_from_total_income: "12065.00"
+      ca/net_income: "59435.00"
+      ca/taxable_income: "59435.00"
+      ca/tosi_adjusted_net_income: "70935.00"
+      ca/federal_basic_tax: "8741.68"
+      ca/federal_tax_on_split_income: "3795.00"
+      ca/split_income_line_18: "6900.00"
+      ca/split_income_line_19: "415.38"
+      ca/split_income_line_20: "1036.37"
+      ca/split_income_line_21: "1451.75"
+      ca-on/split_income_line_42: "690.00"
+      ca-on/split_income_line_45: "137.37"
+      ca-on/split_income_line_46: "827.37"
+      ca-on/dividend_tax_credit: "827.37"
+      ca/amt_tax_payable_before_minimum_tax_carryover: "6713.51"
+      ca/amt_split_income_and_credits_total: "3795.00"
+      ca/amt_tax_payable_after_credits: "2918.51"
+      ca/amt_minimum_amount: "0"
+      ca/amt_maximum_carryover_applied: "2918.51"
+      ca/amt_maximum_carryover_claim: "1000.00"
+      ca/amt_minimum_tax_carryover_within_maximum: "800.00"
+      ca/amt_carryover_balance: "200.00"
+      ca/amt_carryover_available_for_2026: "200.00"
+      ca-on/minimum_tax_carryover_credit: "197.04"
+      ca-on/ontario_minimum_tax_carryover_applied: "197.04"
+      ca-on/ontario_basic_tax: "3269.97"
+      ca-on/non_refundable_credit_amounts: "22072.75"
+      ca-on/credit_amounts_at_credit_rate: "1114.67"
+      ca-on/ontario_tax_after_credits: "2155.30"
+      ca-on/ontario_tax_on_split_income: "2360.95"
+      ca-on/ontario_tax_with_split_income: "4516.25"
+      ca-on/ontario_tax_after_minimum_tax_carryover: "4319.21"
+      ca-on/spouse_return_ontario_disability_amount_checked: "10298.00"
+      ca-on/spouse_transferable_amounts: "10298.00"
+      ca-on/spouse_income_for_transfer: "20000.00"
+      ca-on/spouse_credits_used: "15247.00"
+      ca-on/spouse_adjusted_taxable_income: "4753.00"
+      ca-on/spouse_unused_amounts: "5545.00"
+      ca-on/amounts_transferred_from_spouse: "5545.00"
+      ca/amounts_transferred_from_spouse: "8767.00"
+      ca-on/not_resident_of_canada_at_start_of_year_checked: "1"
+      ca-on/bankrupt_in_year_checked: "1"
+      ca-on/return_filed_by_trustee_in_bankruptcy_checked: "1"
+      ca-on/not_claiming_ontario_tax_reduction_checked: "1"
+      ca-on/tax_reduction_claimable: "0"
+      ca-on/ontario_tax_reduction_before_conditions: "0.00"
+      ca-on/ontario_tax_reduction: "0"
+      ca-on/ontario_tax_less_dividend_credit: "1327.93"
+      ca/tosi_adjusted_taxable_income: "26172.41"
+      ca-on/tosi_adjusted_taxable_income: "46751.49"
+      # Engine only (not a hand figure): the lines below are the engine's, labelled in the description.
+      ca/net_income_before_adjustments: "59435.00"
+      ca/other_payments_limit_income: "59435.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/canada_workers_benefit: "0.00"
+      ca/refund_or_balance_owing: "2005.35"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"
+      ca-on/spouse_for_separate_residences_checked: "1"

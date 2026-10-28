@@ -1,0 +1,118 @@
+# Return EI: a single Ontario resident who designates three properties as principal residences
+# (Form T2091(IND) Part 1, one form for each property), the example of Form T4037 (Capital Gains):
+# property 1 from 2000 to 2005, property 2 from 2006 to 2010 and property 3 from 2011 to 2025, each
+# designated for every year it was owned. Schedule 3 line 17900 is box 3, so the box is 3. The box
+# is the figure this file is for; the two other figures checked are explained in the description.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older
+  at the end of 2025 (chosen figures), with no income. Three
+  properties are on the return, each given by its years only, and every money figure of each is
+  0.00, a chosen figure. Property 1 was owned from 2000 to 2005, 6 years, and designated for all 6
+  (line 1 "After 1981" is 6 and line 5 is 6, so lines 3 and 7 are 6 of 6). Property 2 was owned
+  from 2006 to 2010, 5 years, designated for all 5 (5 of 5). Property 3 was owned from 2011 to 2025,
+  15 years, designated for all 15 (15 of 15). No year is before 1982, so every line from 1972 to
+  1981 is 0. With no money, no gain is reported and no amount of Form T2091(IND) Part 1 or Part 2 is
+  checked here. With more than one property, Schedule 3 Part 1 line 17900 is box 3, "I designate
+  the properties as my principal residences for some or all of the years that I owned them": the
+  value is 3. The line 17905 flipped property answer is left blank (a count of 0, "No"), so the flipped
+  property flag is 0 and is not checked. Every other return figure is chosen $0 and is not checked
+  in this file, except two that a return with no income still computes: with Schedule 8 box A at 12
+  months (a chosen figure, a full year of CPP) the second additional maximum amount is $9,900.00
+  for 12 months, and the alternative minimum tax carryover available for 2026 is the existing
+  behaviour of the engine for a return with no income, $2,338.71, not new to this file.
+sources:
+  - >-
+    CRA, Schedule 3 Capital Gains or Losses (2025), Part 1, "Line 17900: Box 1: I designate the
+    property as my principal residence for all of the years that I owned it or for all of the years
+    that I owned it except one year. Box 2: I designate the property as my principal residence for
+    some but not all of the years that I owned it. Box 3: I designate the properties as my principal
+    residences for some or all of the years that I owned them." (docs/cra-forms-2025/5000-s3-25e.txt)
+  - >-
+    CRA, Guide T4037, Capital Gains (2025), the example of three properties owned and designated
+    from 2000 to 2005, 2006 to 2010 and 2011 to 2025: "You must tick box 3 at line 17900 of Part 1 of
+    Schedule 3, complete a separate Form T2091(IND) for each property, and report the capital gains
+    (if any) on Schedule 3." (docs/cra-forms-2025/t4037-25e.pdf, text extracted with pdftotext)
+  - >-
+    CRA, "T2091(IND)-25e" (2025), Designation of a Property as a Principal Residence by an Individual
+    (Other than a Personal Trust), Section 1: "After 1981" (line 1), "Total number of years
+    designated (line 1 plus line 2)" (line 3); Section 2: "After 1981" (line 5), "Total number of
+    years owned (line 5 plus line 6)" (line 7) (docs/cra-forms-2025/t2091ind-25e.pdf).
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/principal_residence_properties:
+    - ca/residence_years_designated_after_1981: "6"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "6"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "0.00"
+      ca/residence_outlays: "0.00"
+      ca/residence_adjusted_cost_base: "0.00"
+      ca/residence_plus_one_year: "0"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "0"
+      ca/residence_ws_years_designated_after_1981: "0"
+      ca/residence_ws_years_owned_after_1981: "0"
+      ca/residence_ws_designated_proceeds: "0.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "0.00"
+      ca/residence_ws_fmv_feb_22_1994: "0.00"
+      ca/residence_ws_elected_capital_gain: "0.00"
+      ca/residence_ws_months_owned_after_feb_1992: "0"
+      ca/residence_ws_months_owned_after_1971: "0"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+    - ca/residence_years_designated_after_1981: "5"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "5"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "0.00"
+      ca/residence_outlays: "0.00"
+      ca/residence_adjusted_cost_base: "0.00"
+      ca/residence_plus_one_year: "0"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "0"
+      ca/residence_ws_years_designated_after_1981: "0"
+      ca/residence_ws_years_owned_after_1981: "0"
+      ca/residence_ws_designated_proceeds: "0.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "0.00"
+      ca/residence_ws_fmv_feb_22_1994: "0.00"
+      ca/residence_ws_elected_capital_gain: "0.00"
+      ca/residence_ws_months_owned_after_feb_1992: "0"
+      ca/residence_ws_months_owned_after_1971: "0"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+    - ca/residence_years_designated_after_1981: "15"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "15"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "0.00"
+      ca/residence_outlays: "0.00"
+      ca/residence_adjusted_cost_base: "0.00"
+      ca/residence_plus_one_year: "0"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "0"
+      ca/residence_ws_years_designated_after_1981: "0"
+      ca/residence_ws_years_owned_after_1981: "0"
+      ca/residence_ws_designated_proceeds: "0.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "0.00"
+      ca/residence_ws_fmv_feb_22_1994: "0.00"
+      ca/residence_ws_elected_capital_gain: "0.00"
+      ca/residence_ws_months_owned_after_feb_1992: "0"
+      ca/residence_ws_months_owned_after_1971: "0"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+expected:
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_3:
+    - ca/principal_residence_designation_box: "3"

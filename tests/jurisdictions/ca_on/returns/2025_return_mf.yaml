@@ -1,0 +1,73 @@
+# Return MF: Form T746 "Calculating Your Deduction for Refund of Unused RRSP, PRPP, and SPP
+# Contributions" as its own form, the deduction on T1 line 23200: a filer who withdrew 3,000.00 of
+# unused RRSP contributions (T4RSP box 20), reported as income on T1 line 12900, deducts the same
+# amount on line 23200, so net income is the employment income alone.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MF: a single 2025 Ontario resident in Canada throughout 2025, aged 19 or older at the end
+  of 2025, with no spouse and no dependants (chosen figures, as in Return GG). Employment income
+  (T1 line 10100, T4 box 14, taxable) is 3,000.00, with no CPP or EI deducted above the exemption
+  (as in Return JX). In 2024 the filer made RRSP contributions of 10,000.00 and deducted 6,000.00 of
+  them, so Form T746 line 2 = 10,000.00, line 3 = 6,000.00 and line 4 = 10,000.00 - 6,000.00 =
+  4,000.00. In 2025 the filer withdrew 3,000.00 of the unused contributions, shown in box 20 of the
+  T4RSP slip: T746 line 6 = 3,000.00 and lines 7 to 10 are 0, so line 12 = 3,000.00. Line 13 is the
+  lesser of line 4 (4,000.00) and line 12 (3,000.00) = 3,000.00, the deduction on T1 line 23200
+  (Form T746: "Enter this amount on line 23200"). The refund is also reported on T1 line 12900 (RRSP
+  income) as the form says, so total income (line 15000) is 3,000.00 + 3,000.00 = 6,000.00, total
+  deductions (line 23300) are 3,000.00 and net income (line 23600) is 6,000.00 - 3,000.00 =
+  3,000.00. Form T746 line 11 (the amount from Form T2205) is not built yet and is 0 here.
+sources:
+  - >-
+    CRA, Form T746 (2025), "Line 2: Enter the total contributions you made to your RRSPs, PRPPs, or
+    SPP ..."; "Line 3: Enter the part of the amount from line 2 that you deducted or will be
+    deducting ..."; "Line 4: Line 2 minus line 3."; "Line 6: Enter the amount shown in box 20 of your
+    T4RSP slips. This is the amount of unused RRSP contributions you withdrew as a refund. Report
+    this amount on line 12900 of your income tax and benefit return."; "Line 12: Add lines 6 to
+    11."; "Line 13: Enter the amount from line 4 or the amount from line 12, whichever is less. This
+    is your deduction. Enter this amount on line 23200 of your income tax and benefit return."
+    (docs/cra-forms-2025/t746-25e.pdf)
+inputs:
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/employment_income: "3000"
+  ca/t4_cpp_slip_count: "1"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "3000"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  # T4 box 18 and the required premium, Form T2204 line 16 (1.64% of 3,000.00).
+  ca/t2204_insurable_earnings: "3000"
+  ca/t2204_premiums_deducted: "49.20"
+  # T1 line 12900, the T4RSP refund of unused contributions (box 20).
+  ca/rrsp_income: "3000"
+  # Form T746 (2025), lines 1 to 3 for the year 2024; line 5 and lines 6 to 10 for the withdrawal.
+  ca/t746_years:
+    - ca/t746_contribution_year: "2024"
+      ca/t746_contributions: "10000"
+      ca/t746_contributions_deducted: "6000"
+  ca/t746_withdrawal_year: "2025"
+  ca/t746_t4rsp_box_20: "3000"
+  # Form T746 "it has to be reasonable for the CRA to consider that one or both of the following
+  # conditions apply": the filer expected to fully deduct the contributions in the year made or the
+  # year before (yes); the second condition is no.
+  ca/t746_expected_to_fully_deduct_contributions: "1"
+  ca/t746_did_not_make_contributions_intending_to_withdraw: "0"
+expected:
+  ca-on/return:
+    - ca/total_income: "6000.00"
+      ca/t746_deduction_on_return: "3000.00"
+      ca/deductions_from_total_income: "3000.00"
+      ca/net_income: "3000.00"
+      ca/taxable_income: "3000.00"
+      ca/tosi_adjusted_net_income: "3000.00"
+      ca/net_income_before_adjustments: "3000.00"
+      ca/other_payments_limit_income: "3000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "3000"
+  ca/t746_year:
+    - ca/t746_unused_contributions_of_year: "4000.00"
+  ca/t746:
+    - ca/t746_deduction: "3000.00"

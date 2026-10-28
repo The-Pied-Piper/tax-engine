@@ -1,0 +1,416 @@
+# Return CW: one filer, one immediate expensing limit across three forms. A 2025 Ontario resident
+# with a rental (one Form T776), a shop (one Form T2125) and a farm (one Form T2042), each
+# statement writing off a designated immediate expensing property (DIEP) in full: $600,000 on
+# the rental, $500,000 on the shop and $400,000 on the farm. Each statement is under the $1.5
+# million limit by itself; together they are $1,500,000.00, exactly the limit, so the return
+# passes (the same filer with $1,500,000.01 or more is refused, see test_return_cw.py). No one
+# is associated with another eligible person or partnership (EPOP), so every statement's limit is
+# $1,500,000.00 and the person's one limit is that. Amounts are quoted decimal strings, never
+# floats; counts are quoted digit strings. Every output the CA-ON manifest declares must appear
+# under `expected`, or be left out to be 0 (or no records).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 with three activities, each reported on one
+  statement and each a chosen set of figures: a rental (Form T776) with gross rents of $700,000
+  (one property, one unit, line 8141), a shop (Form T2125) with gross sales of $600,000 (amount
+  3A) and a farm (Form T2042) with wheat sales of $500,000 (amount 3A); there are no other
+  income or expense lines. Each statement has one Area A class, Class 8 (20%), bought in the
+  year: additions (column 3) and DIEP additions (column 4) equal, with all of them expensed at
+  once (column 9): $600,000 on the rental, $500,000 on the shop and $400,000 on the farm. Column
+  7 is the additions, column 13 (column 7 minus column 9) is 0, column 10 is column 3 minus
+  column 4, 0, so the half-year rule's column 18 and the base for CCA (column 19) are 0 and the
+  CCA of the class (column 21) is the column 9 amount alone, claimed in full: line 9936 is
+  $600,000 on the rental, $500,000 on the shop and $400,000 on the farm, and the UCC at the end
+  of the year (column 22) is 0. Each claim is at most the income before CCA of its source
+  ($700,000, $600,000 and $500,000), the UCC of its DIEPs (column 8) and the statement's limit.
+  Nobody is associated with another EPOP, so each statement's limit is the $1.5 million of
+  endnote 5, $1,500,000.00. Net income before adjustments is $100,000 on each statement
+  ($700,000 - $600,000, $600,000 - $500,000 and $500,000 - $400,000), so T1 line 12600 (net
+  rental income) is $100,000, line 13500 (business income) is $100,000 and line 14100 (farming
+  income) is $100,000, and the net self-employment income is $200,000.00 (business plus farm) and total income is $300,000.00.
+  The return adds the three claims, $600,000 + $500,000 + $400,000 + $0 (no fishing statement)
+  = $1,500,000, and the person's one limit is the common limit of the statements that claim
+  above 0, $1,500,000.00; the total is not more than the limit, so it passes. The CPP months
+  (Schedule 8 box A) are the 12 of a full year, Schedule 8 Part 4 is not completed (count 0)
+  and there is no agreement with the Canada Employment Insurance Commission (count 0); the CPP
+  and EI lines depend on figures this return does not enter and are the engine's own.
+sources:
+  - >-
+    CRA, Form T776 (2025), Statement of Real Estate Rentals (docs/cra-forms-2025/t776-25e.txt),
+    Area A, Column 9 Note 5: "The total immediate expensing amount for the tax year (total of
+    column 9) is limited to the lesser of: - the immediate expensing limit, which is equal to
+    one of the following, whichever is applicable: -- $1.5 million, if you are not associated
+    with any other eligible person or partnership (EPOP) in the tax year"; "Line i: Total
+    immediate expensing claim for the year: Total of column 9". The same endnote 5 is printed in
+    Area A of Form T2125 (docs/cra-forms-2025/t2125-25e.pdf) and Form T2042
+    (docs/cra-forms-2025/t2042-25e.pdf), confirmed from the PDFs.
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and
+    Fishing Income (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4002/t4002-25e.pdf), and Guide
+    T4036 (2025), Rental Income (docs/cra-forms-2025/t4036-25e.pdf, confirmed from the PDF):
+    "The deduction is limited to $1.5 million per tax year". The forms print the limit for each
+    statement and are silent on a person who files several statements; the Guides' "per tax
+    year" is the only statement of the rule across statements, and this return applies the rule that the limit is the person's and that the
+    total of every statement's column 9 over the forms T776, T2125, T2042 and T2121 may not be
+    more than it.
+  - >-
+    The income, expense and CCA lines of the three statements, the T1 lines they feed and the
+    CPP, EI and tax lines that follow are the engine's own, as in Returns BS, BT and BX, whose
+    figures were each checked against their forms; the figures of this return are chosen.
+inputs:
+  ca/t776_statements:
+    - ca/rental_properties:
+        - ca/rental_property_units: "1"
+          ca/rental_property_short_term_rents: "0"
+          ca/rental_property_gross_rents: "700000"
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "0"
+          ca/cca_additions: "600000"
+          ca/cca_diep_additions: "600000"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "600000"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "600000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/t2125_statements:
+    - ca/business_gross_sales: "600000"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "0"
+          ca/cca_additions: "500000"
+          ca/cca_diep_additions: "500000"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "500000"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "500000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+      ca/business_vehicles: []
+  ca/t2042_statements:
+    - ca/farm_wheat: "500000"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "0"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "0"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_partner: "0"
+      ca/farm_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "0"
+          ca/cca_additions: "400000"
+          ca/cca_diep_additions: "400000"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "400000"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "400000"
+          ca/cca_no_property_left: "0"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/business_vehicles: []
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca/t776:
+    - ca/rental_gross_rents: "700000"
+      ca/rental_immediate_expensing_cap: "1500000.00"
+      ca/rental_immediate_expensing_limit: "1500000.00"
+      ca/rental_immediate_expensing_claim: "600000"
+      ca/rental_cca_claim: "600000"
+      ca/net_rental_income: "100000"
+  ca/t2125:
+    - ca/business_gross_income_before_expenses: "600000"
+      ca/business_immediate_expensing_limit: "1500000.00"
+      ca/business_income_before_cca: "600000"
+      ca/business_immediate_expensing_claim: "500000"
+      ca/business_cca_claim: "500000"
+      ca/business_total_expenses: "500000"
+      ca/business_income: "100000"
+  ca/t2042:
+    - ca/farm_immediate_expensing_limit: "1500000.00"
+      ca/farm_income_before_cca: "500000"
+      ca/farm_immediate_expensing_claim: "400000"
+      ca/farm_cca_claim: "400000"
+      ca/farming_income: "100000"
+  ca-on/return:
+    - ca/net_rental_income: "100000"
+      ca/rental_cca_total_claim: "600000"
+      ca/gross_rental_income: "700000"
+      ca/gross_business_income: "600000.00"
+      ca/business_income: "100000"
+      ca/farming_income: "100000"
+      ca/net_self_employment_income: "200000"
+      ca/total_income: "300000.00"
+      ca/net_income: "300000.00"
+      ca/taxable_income: "300000.00"
+      ca-on/coop_partnership_business_number: ""
+      ca-on/ontario_tax_less_dividend_credit: "30841.88"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "300000.00"
+      ca/other_payments_limit_income: "300000.00"
+      ca/refund_or_balance_owing: "116906.04"
+      ca/rental_immediate_expensing_claims_total: "600000"
+      ca/business_immediate_expensing_claims_total: "500000"
+      ca/farm_immediate_expensing_claims_total: "400000"
+      ca/fish_immediate_expensing_claims_total: "0"
+      ca/immediate_expensing_claims_total: "1500000"
+      ca/immediate_expensing_agreed_limit: "1500000.00"
+      ca/immediate_expensing_total_claim: "1500000"

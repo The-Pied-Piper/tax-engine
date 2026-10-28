@@ -1,0 +1,629 @@
+﻿*** Transcriber's Note: Please set your voice synthesizer to read most 
+punctuation. When you encounter the caret sign at the end of a line, please 
+enter the applicable information, if necessary. *** 
+ 
+Canada Revenue Agency 
+ 
+Protected B when completed 
+ 
+T776 E (25) (Page 1 of 6) 
+ 
+Statement of Real Estate Rentals 
+ 
+- Use this form if you own and rent out real estate or other property 
+including residential property that is a short-term rental. It relates mainly 
+to renting real estate but also covers some other types of rental property 
+such as farmland. This form will help you determine your gross rental income, 
+the expenses you can deduct, and your net rental income or loss for the year. 
+ 
+- To determine whether your rental income is from property or a business, 
+consider the number and types of services you provide for your tenants: 
+ 
+-- If you rent space and only provide basic services such as heating, 
+lighting, parking, and laundry facilities, you are earning an income from 
+renting property. 
+ 
+-- If you provide additional services such as cleaning, security, and meals, 
+you may be conducting a business. 
+ 
+- For more information about how to determine if your rental income comes 
+from property or a business, see Interpretation Bulletin IT-434, Rental of 
+Real Property by Individual, and its Special Release. 
+ 
+- If you are a co-owner of a property, you have to determine if a partnership 
+exists before filling in Part 1 below. To determine if you are in a 
+partnership, see Income Tax Folio S4-F 16-C 1, What is a Partnership? 
+ 
+- For information on how to fill out this form, see Guide T4036, Rental 
+Income. 
+ 
+Part 1 - Identification 
+ 
+Your name ^
+Your social insurance number (enter 9 digits) ^
+Your address ^
+City ^
+Province/Territory ^
+Postal code ^
+ 
+Fiscal period 
+from Date (Year/Month/Day) ^
+to (Year/12/31) ^
+ 
+Was this the final year of your rental operation? Yes or No ^
+ 
+Your percentage of the partnership % ^
+Industry code 531111 
+Tax shelter identification number (8 characters) ^
+Partnership business number (enter 9 digits) ^
+Name of the person or firm preparing this form ^
+Business number/Account number (enter 15 digits) ^
+ 
+Address of the person or firm preparing this form ^
+City ^
+Province/Territory ^
+Postal code ^
+ 
+Part 2 - Details of other co-owners and partners 
+ 
+Co-owner or partner's name and address ^
+Share of net income (loss) $^
+Percentage of ownership % ^
+ 
+Co-owner or partner's name and address ^
+Share of net income (loss) $^
+Percentage of ownership % ^
+ 
+Co-owner or partner's name and address ^
+Share of net income (loss) $^
+Percentage of ownership % ^
+ 
+Part 3 - Income 
+ 
+In most cases, you calculate your rental income using the accrual method. If 
+you have no amounts receivable and no expenses outstanding at the end of the 
+year, you can use the cash method. 
+ 
+*** Transcriber's Note: Enter as many lines as necessary for the following. 
+*** 
+ 
+List the addresses of your rental properties. ^
+Number of units ^
+Gross rents for short-term rentals ^
+Gross rents for all units ^
+ 
+Line 8140: Total of your gross rents for short-term rentals in the year you 
+receive them (add amounts under "Gross rents for short-term rentals") ^
+ 
+Line 8141: Total of all your gross rents in the year you receive them (add 
+lines under "Gross rents for all units"). ^
+ 
+Line 8230: Other income (for example, premiums and leases, sharecropping) ^
+ 
+Line 8299: Total gross rental income: Enter this amount on your income tax 
+and benefit return on line 12599 (line 8141 plus line 8230) ^
+ 
+ 
+T776 E (25) (Page 2 of 6) 
+ 
+Part 4 - Expenses 
+ 
+Line 8521: Advertising 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 8690: Insurance 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 8710: Interest and bank charges 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 8810: Office expenses 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 8860: Professional fees (including legal and accounting fees) 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 8871: Management and administration fees 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 8960: Repairs and maintenance 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 9060: Salaries, wages and benefits (including employer's contributions) 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 9180: Property taxes 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 9200: Travel 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 9220: Utilities 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 9281: Motor vehicle expenses (not including capital cost allowance) 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line 9270: Other expenses 
+Total expenses ^
+Personal portion of total expenses ^
+Short-term rental portion of total expenses ^
+ 
+Line A: Total expenses (add amounts listed under "Total expenses") ^
+ 
+Line 9949: Total for personal portion (add amounts listed under "Personal 
+portion of total expenses") ^
+ 
+Line 9365: Total for short-term rental portion (add amounts listed under 
+"Short-term rental portion of total expenses") ^
+ 
+Line 9366: Non-compliant amount for short-term rentals (amount B from Chart 
+A) ^
+ 
+Line 1: Deductible expenses (amount A minus line 9949 minus line 9366) ^
+ 
+Line 9369: Net income (loss) before adjustments (total gross rental income 
+from line 8299 minus deductible expenses from amount 1) ^
+ 
+Line 2: Co-owners: calculate your share of net income from line 9369. Enter 
+your result on amount 2 ^
+ 
+Line 9945: Other expenses of the co-owner: other deductible expenses you have 
+as a co-owner which you did not deduct elsewhere ^
+ 
+Line 3: Subtotal (amount 2 minus line 9945) ^
+ 
+Line 9947: Recaptured capital cost allowance (co-owners: enter your share of 
+the amount) ^
+ 
+Line 4: Subtotal (amount 3 plus line 9947) ^
+ 
+Line 9948: Terminal loss (co-owners: enter your share of the amount) ^
+ 
+Line 5: Subtotal (amount 4 minus line 9948) ^
+ 
+Line 9367: Non-compliant amount of capital cost allowance (CCA) for short-
+term rentals (amount C from Chart B) ^
+ 
+Line 9936: Total CCA claim for the year (amount ii from Area A minus any 
+personal part of CCA, and any CCA for business-use-of home expenses) ^
+ 
+Line 6: Net income (loss) (amount 5 minus line 9936) ^
+ 
+If you are a sole proprietor or a co-owner, enter this amount on line 9946. 
+ 
+Partnerships 
+ 
+Line 7: Partners: your share of amount 6, or the amount from your T5013 slip, 
+Statement of Partnership Income ^
+ 
+Line 9974: Partners: GST/HST rebate for partners received in the year ^
+ 
+Line 9943: Partners: other expenses of the partner ^
+ 
+Line 9946: Your net income (loss): For sole proprietors or co-owners, enter 
+the result from amount 6. For partnerships, enter the result from amount 7 
+plus line 9974 minus line 9943. Enter this amount on line 12600 of your 
+income tax and benefit return ^
+ 
+ 
+T776 E (25) (Page 3 of 6) 
+ 
+*** Transcriber's note: In print Areas A to G are set up in a columnar 
+format. Applicable titles are listed in each Area. Enter as many lines as 
+required for the following. *** 
+ 
+Area A - Calculation of capital cost allowance (CCA) claim 
+ 
+Column 1: Class number ^
+ 
+Column 2: Undepreciated capital cost (UCC) at the start of the year ^
+ 
+Column 3: Cost of additions in the year (see Areas B and C below) ^
+ 
+Column 4: Cost of additions from column 3 that are DIEPs (property must be 
+available for use before 2025) (Note 1) ^
+ 
+Note 1: 
+Columns 4, 6, 8, and 9 apply only to designated immediate expensing 
+properties (DIEPs). See subsection 1104(3.1) of the Income Tax Regulations 
+for definitions. A DIEP is a property that you acquired after December 31, 
+2021, and that became available for use before 2025. For more information, 
+see Guide T4036. 
+ 
+Column 5: Proceeds of dispositions in the year (see Areas D and E below) 
+(Note 2) ^
+ 
+Note 2: 
+The proceeds of disposition of a zero-emission passenger vehicle (ZEPV) that 
+has been included in Class 54, or a passenger vehicle bought after April 18, 
+2021, that has been included in Class 10.1, and whose cost is more than the 
+prescribed amount will be adjusted based on a factor equal to its prescribed 
+amount as a proportion of the actual cost of the vehicle. For dispositions 
+after July 29, 2019, you will have to adjust the actual cost of the vehicle 
+for any payments or repayments of government assistance that you may have 
+received or repaid for the vehicle. If the passenger vehicle in Class 10.1 is 
+not designated for immediate expensing treatment, this special rule does not 
+apply. For more information on proceeds of disposition and the prescribed 
+amounts, read "Class 10.1 (30%)" and "Class 54 (30%)" in Guide T4036. 
+ 
+Column 6: Proceeds of dispositions of DIEP (enter amount from column 5 that 
+relates to DIEP from column 4) ^
+ 
+Column 7: UCC after additions and dispositions (column 2 plus column 3 minus 
+column 5) (Note 3) ^
+ 
+Note 3: 
+If you have a negative amount in column 7, add it to income as a recapture 
+under "Recaptured capital cost allowance" on line 9947. If no property is 
+left in the class and there is a positive amount in this column, deduct the 
+amount from your income as a terminal loss under "Terminal loss" on line 
+9948. Recapture and terminal loss do not apply to a Class 10.1 property 
+unless it is a DIEP. For more information, read Chapter 3 of Guide T4036. 
+ 
+Column 8: UCC of DIEP (column 4 minus column 6) (Note 4) ^
+ 
+Note 4: 
+The amount you enter in column 8 must not be more than the amount from column 
+7. If the amount from column 7 is negative, enter "0." 
+ 
+Column 9: Immediate expensing amount for DIEPs (Note 5) ^
+ 
+Note 5: 
+The immediate expensing applies to DIEPs included in column 8. The total 
+immediate expensing amount for the tax year (total of column 9) is limited to 
+the lesser of: 
+ 
+- the immediate expensing limit, which is equal to one of the following, 
+whichever is applicable: 
+ 
+-- $1.5 million, if you are not associated with any other eligible person or 
+partnership (EPOP) in the tax year 
+ 
+-- amount iii of Area G, if you are associated with one or more EPOPs in the 
+tax year 
+ 
+-- zero, if you are associated with one or more EPOPs and an agreement that 
+assigns a percentage to one or more of the associated EPOPs was not filed 
+with the minister in a prescribed form 
+ 
+-- any amount allocated by the minister under subsection 1104(3.4) of the 
+Regulations 
+ 
+- the UCC of DIEPs in column 8 
+ 
+- the amount of income, if any, earned from the source of income that is a 
+property (before any CCA deductions) in which the relevant DIEP is used for 
+the tax year 
+ 
+For more information, see Guide T4036. 
+ 
+Line i: Total immediate expensing claim for the year: Total of column 9 ^
+ 
+Column 10: Cost of remaining additions after immediate expensing (column 3 
+minus column 9) ^
+ 
+Column 11: Cost of remaining additions from column 10 that are AIIPs or ZEVs 
+acquired before 2025 (Note 6) ^
+ 
+Column 12: Cost of remaining additions from column 10 that are RIIPs or ZEVs 
+acquired after 2024 (Note 6) ^
+ 
+Note 6: 
+Columns 11, 12, 14, 15, 16, and 17 apply only to accelerated investment 
+incentive properties (AIIPs) (see Guide T4036 for the definition), zero-
+emission vehicles (ZEVs), ZEPVs, and other eligible zero-emission automotive 
+equipment and vehicles that become available for use in the year. Under 
+proposed changes, these columns may also apply to reaccelerated investment 
+incentive properties (RIIPs) (see Guide T4036 for the proposed definition). 
+In this chart, ZEVs represent ZEVs, ZEPVs, and other eligible zero-emission 
+automotive equipment and vehicles. An AIIP is a property (other than a ZEV) 
+that you acquired after November 20, 2018, (and, under proposed changes, 
+before 2025) and that became available for use before 2028. A ZEV is a motor 
+vehicle included in Class 54 or 55 that you acquired after March 18, 2019, 
+and that became available for use before 2028 (or, under proposed changes, 
+before 2034), or eligible zero-emission automotive equipment and vehicles 
+included in Class 56 acquired after March 1, 2020, and that became available 
+for use before 2028 (or, under proposed changes, before 2034). Under proposed 
+changes, a RIIP is a property (other than a ZEV) that you acquired after 
+2024, and that became available for use before 2034. For more information, 
+see Guide T4036. 
+ 
+Column 13: Remaining UCC after immediate expensing (column 7 minus column 9) 
+^
+ 
+Column 14: Proceeds of dispositions available to reduce additions of AIIPs, 
+RIIPs, and ZEVs (column 5 minus column 10 plus column 11 plus column 12). If 
+negative, enter "0" ^
+ 
+Column 15: UCC adjustment for current-year additions of AIIPs and ZEVs 
+acquired before 2025 (column 11 minus column 14) multiplied by the relevant 
+factor. If negative, enter "0" (Note 7) ^
+ 
+Note 7: 
+For ZEVs (under proposed changes, acquired before 2025) and AIIPs that became 
+available for use in 2025, the relevant factors are one and one half (Classes 
+43.1, 54, and 56), 7 divided by 8 (Class 55), and one half (Classes 43.2 and 
+53). Under proposed changes, for properties included in Class 44, 46, or 50 
+acquired after April 15, 2024, and that became available for use in 2025, the 
+relevant factors are 3 (Class 44), two and one third (Class 46), and 9 
+divided by 11 (Class 50). The factor is 0 for any remaining AIIPs not listed 
+in this note. 
+ 
+Column 16: Proceeds of dispositions available to reduce additions of RIIPs 
+and ZEVs acquired after 2024 (column 14 minus column 11).If negative, enter 
+"0" ^
+ 
+Column 17: UCC adjustment for current-year additions of RIIPs and ZEVs 
+acquired after 2024 (column 12 minus column 16) multiplied by the relevant 
+factor. If negative, enter "0" (Note 8) ^
+ 
+Note 8: 
+Under proposed changes, for ZEVs acquired after 2024 and RIIPs that became 
+available for use in 2025, the relevant factors are 3 (Class 44), two and one 
+third (Classes 43.1, 46, 54, and 56), one and one half (Class 55), 1 (Class 
+53), 9 divided by 11 (Class 50), and 0 (Classes 12, 13, 14, 15, and 59). The 
+factor is one half for any remaining RIIPs not listed in this note. 
+ 
+Column 18: Adjustment for current-year additions subject to the half-year 
+rule. one half multiplied by (column 10 minus column 11 minus column 12 minus 
+column 5). If negative, enter "0" ^
+ 
+Column 19: Base amount for CCA (column 13 plus column 15 plus column 17 minus 
+column 18) ^
+ 
+Column 20: CCA rate % ^
+ 
+Column 21: Available CCA for the year (column 19 multiplied by column 20, or 
+a lower amount, plus column 9) ^
+ 
+Column 22: Non-compliant amount of CCA (see Chart B below) ^
+ 
+Column 23: CCA claim for the year (column 21minus column 22) ^
+ 
+Column 24: UCC at the end of the year (column 7 minus column 23) (Note 9) ^
+ 
+Note 9: 
+If, in the year, you disposed of a property that you used for both personal 
+and rental use, and your rental use of that property changed from year to 
+year, you must subtract any remaining personal part of this property's cost 
+from the UCC at the end of the year. For more information, see "Special 
+situations" in Chapter 4 of Guide T4002. 
+ 
+Line ii: Total CCA claim for the year *: Total of column 23 (enter on line 
+9936 of Part 4 amount ii minus any personal part and any CCA for business-
+use-of-home expenses **) ^
+ 
+* Sole proprietors and partnerships: Enter the total CCA claim for the year 
+from amount ii on line 9936. Co-owners: Enter only your share of the total 
+CCA claim for the year from amount ii on line 9936. 
+ 
+** For information on CCA for calculating business-use-of-home expenses, see 
+"Special situations" in Chapter 4 of Guide T4002, Self-employed Business, 
+Professional, Commission, Farming, and Fishing Income. To help you calculate 
+the CCA, see the calculation charts in Areas B to G. 
+ 
+ 
+T776 E (25) (Page 4 of 6) 
+ 
+For more information on AIIPs, RIIPs, CCA, ZEVs, and ZEPVs, see Guide T4036 
+or go to canada.ca/taxes-accelerated-investment-income. 
+ 
+Area B - Equipment additions in the year 
+ 
+Column 1: Class number ^
+ 
+Column 2: Property details ^
+ 
+Column 3: Total cost ^
+ 
+Column 4: Personal portion (if applicable) ^
+ 
+Column 5: Rental portion (column 3 minus column 4) ^
+ 
+Line 9925: Total equipment additions in the year: Total of column 5 ^
+ 
+Area C - Building additions in the year 
+ 
+Column 1: Class number ^
+ 
+Column 2: Property details ^
+ 
+Column 3: Total cost ^
+ 
+Column 4: Personal portion (if applicable) ^
+ 
+Column 5: Rental portion (column 3 minus column 4) ^
+ 
+Line 9927: Total building additions in the year: Total of column 5 ^
+ 
+ 
+T776 E (25) (Page 5 of 6) 
+ 
+Area D - Equipment dispositions in the year 
+ 
+Column 1: Class number ^
+ 
+Column 2: Property details ^
+ 
+Column 3: Proceeds of disposition (should not be more than the capital cost) 
+^
+ 
+Column 4: Personal portion (if applicable) ^
+ 
+Column 5: Rental portion (column 3 minus column 4) ^
+ 
+Line 9926: Total equipment dispositions in the year: Total of column 5 ^
+ 
+Area E - Building dispositions in the year 
+ 
+Column 1: Class number ^
+ 
+Column 2: Property details ^
+ 
+Column 3: Proceeds of disposition (should not be more than the capital cost) 
+^
+ 
+Column 4: Personal portion (if applicable) ^
+ 
+Column 5: Rental portion (column 3 minus column 4) ^
+ 
+Line 9928: Total building dispositions in the year: Total of column 5 ^
+ 
+Area F – Land additions and dispositions in the year 
+ 
+Line 9923: Total cost of all land additions in the year ^
+ 
+Line 9924: Total proceeds from all land dispositions in the year ^
+ 
+Note: 
+You cannot claim capital cost allowance on land. For more information, see 
+Chapter 4 of Guide T4036. 
+ 
+Area G - Agreement between associated eligible persons or partnerships 
+(EPOPs) 
+ 
+Are you associated in the fiscal period with one or more EPOPs that you have 
+entered into an agreement with under subsection 1104(3.3) of the Regulations? 
+Yes or No ^
+ 
+If you answered yes, fill in the table below. 
+ 
+Enter the percentage assigned to each associated EPOP (including yourself) as 
+determined in the agreement. 
+ 
+This percentage will be used to allocate the immediate expensing limit. The 
+total of all percentages assigned under the agreement should not be more than 
+100%. If the total is more than 100%, then the associated group has an 
+immediate expensing limit of zero. For more information about the immediate 
+expensing limit, see Guide T4036. 
+ 
+*** Transcriber's Note: In print, the following table is set-up as 3 columns, 
+labelled as: Column 1: Name of the EPOP; Column 2: Identification number 
+(Note 10); Column 3: Percentage assigned under the agreement. Enter as many 
+lines as necessary for the following. *** 
+ 
+Column 1: Name of the EPOP ^
+ 
+Column 2: Identification number (Note 10) ^
+ 
+Column 3: Percentage assigned under the agreement ^
+ 
+Note 10: 
+The identification number is the EPOP's social insurance number, business 
+number, or partnership account number. 
+ 
+Total of percentage assigned: Total of column 3 ^
+ 
+Line iii: Immediate expensing limit allocated to you: Multiply $1.5 million 
+by the percentage assigned to you in column 3 (see note 11) ^
+ 
+Note 11: 
+If the total of column 3 is more than 100%, enter "0." 
+ 
+ 
+T776 E (25) (Page 6 of 6) 
+ 
+*** Transcriber's note: In print Charts A and B are set up in a columnar 
+format. Applicable titles are listed in each Area. Enter as many lines as 
+required for the following. *** 
+ 
+Chart A - Non-compliant amount of expenses for short-term rentals 
+ 
+If you incurred an expense to earn rental income from a rental property with 
+multiple rental units, where some rental units were used for short-term 
+rentals, long-term rentals, or both short-term and long-term rentals (mixed 
+rentals), exclude the portion of the expense which is related to long-term 
+rentals. You must divide expenses, on a reasonable basis, between each short-
+term rental or mixed rental. 
+ 
+Enter each short-term rental or mixed rental property on a separate row. If 
+your rental property has several units which include long-term, short-term, 
+and mixed rentals, enter each short-term rental or mixed rental on a separate 
+row instead of the rental property they are part of. 
+ 
+For more information on short-term rentals, see Guide T4036. 
+ 
+Column 1: Rental property address ^
+ 
+Column 2: Unit number ^
+ 
+Column 3: Related portion of the total from line 9365 of Part 4 ^
+ 
+Column 4: Number of days the residential property was a non compliant short-
+term rental ^
+ 
+Column 5: Number of days the residential property was a short-term rental ^
+ 
+Column 6: Non-compliant amount (column 3 multiplied by column 4 divided by 
+column 5) ^
+ 
+Line B: Total non-compliant amount of expenses for short-term rentals: Total 
+of column 6 (enter on line 9366 of Part 4) ^
+ 
+Chart B - Non-compliant amount of CCA for short-term rentals 
+ 
+If you used a depreciable property to earn rental income from a rental 
+property with multiple rental units, where some rental units were used for 
+short-term rentals, long-term rentals, or both short-term and long-term 
+rentals (mixed rentals), exclude the portion of the CCA which is related to 
+long-term rentals. You must divide CCA, on a reasonable basis, between each 
+short-term rental or mixed rental. 
+ 
+Enter each short-term rental or mixed rental property on a separate row. If 
+your rental property has several units which include long-term, short-term, 
+and mixed rentals, enter each short-term rental or mixed rental on a separate 
+row instead of the rental property they are part of. 
+ 
+For more information on short-term rentals, see Guide T4036. 
+ 
+Column 1: Class number ^
+ 
+Column 2: Rental property address ^
+ 
+Column 3: Unit number ^
+ 
+Column 4: Related portion of the available CCA from column 21 in Area A ^
+ 
+Column 5: Number of days the residential property was a non-compliant short-
+term rental ^
+ 
+Column 6: Number of days the residential property was a short-term rental ^
+ 
+Column 7 ***: Non-compliant amount (column 4 multiplied by column 5 divided 
+by column 6) ^
+ 
+*** For each class, add the amounts from column 7 of Chart B and enter each 
+total in column 22 of Area A, in the respective row. 
+ 
+Line C: Total non-compliant amount of CCA for short-term rentals: Total of 
+column 7 (enter on line 9367 of Part 4) ^
+ 
+See the privacy notice on your return.
+
+
+

@@ -1,0 +1,144 @@
+# Return LS: Form T1032 Note 1 when the amounts a) to e) received are more than line 1 but the part
+# received as a consequence of a death brings the result back above 0. The form prints no limit on
+# the amounts a) to e) against line 1, so the figures are worked as printed. Every T1032 line is
+# worked out by hand from the form text (docs/cra-forms-2025/t1032-25e.txt, with Note 1 read from the
+# CRA PDF of the form, page 3, because the .txt garbles its second bullet). The figures are chosen.
+#
+# This is the receiving spouse's return (the answer is 0), under 65 on December 31, 2025. The
+# transferring spouse is 66. The transferring spouse's figures are the form's inputs: line 1 (eligible
+# pension income) $8,000.00; line 2 (box 128, eligible veterans benefits, Note 1 e)) $2,000.00; line 4
+# (box 17 of the T4A-RCA slips) $200.00 from an RCA life annuity (the count is 1: the transferring
+# spouse is 66); payments a) to d) of $7,000.00, of which $1,500.00 were received as a consequence of
+# the death of a spouse in the year; line 35 (tax deducted on the pension) $800.00. Line 32 is $0.00.
+# The elected split-pension amount is $2,000.00 on line 11600 of this return.
+#
+# Step 2: Line 1: 8,000.00. Line 2: 2,000.00. Line 3 = 6,000.00. Line 4: 200.00. Line 5: 131,483.45.
+#   Line 6: 6,000.00. Line 7 = 125,483.45. Line 8 = the lesser of line 4 and line 7 = 200.00. Line 9:
+#   2,000.00. Line 10: 6,000.00. Line 11: 200.00. Line 12 = 6,200.00. Line 13: 131,483.45. Line 14:
+#   6,200.00. Line 15 = 125,283.45. Line 16 = the lesser of 2,000.00 and line 15 = 2,000.00. Line 17 =
+#   6,000.00 + 200.00 + 2,000.00 = 8,200.00. Line 19 = line 17. Line 20: 50%. Line 21 = 4,100.00.
+# Step 3: line 22 = 2,000.00, not more than line 21.
+#
+# Step 4, Part A: Line 23: 8,000.00. Line 24: 2,000.00. Line 25: line 8, 200.00. Line 26: line 17,
+#   8,200.00. Line 29 = 2,000.00 x 200.00 / 8,200.00 = 48.78. Line 30 = 2,000.00 - 48.78 = 1,951.22.
+#   Line 31 = 8,000.00 - 1,951.22 = 6,048.78. Line 31400 of the transferring spouse is the lesser of
+#   $2,000 and 6,048.78 = 2,000.00.
+# Part B: line 32 = 0.00. The conditions above line 33 all apply (line 32 under $2,000, receiving
+#   spouse under 65, transferring spouse 65 or older and received amounts a) to e): 7,000.00 and the
+#   box 128 amount of 2,000.00 already on line 2, 9,000.00 in all). Note 1: subtract from line 1 the
+#   amounts a) to e) received, except the 1,500.00 received as a consequence of a death: 9,000.00 -
+#   1,500.00 = 7,500.00 (more than line 1; the form prints no limit); 8,000.00 - 7,500.00 = 500.00.
+#   The result, 500.00, is less than $4,000, so it is the amount for line 17 to recalculate lines 18
+#   to 31: Line 17 = 500.00. Line 22 = 2,000.00. Line 29 = 2,000.00 x 200.00 / 500.00 = 800.00.
+#   Line 30 = 2,000.00 - 800.00 = 1,200.00. Line 33 is the lesser of line 22 (2,000.00) and line 30 =
+#   1,200.00. Line 34 = 0.00 + 1,200.00 = 1,200.00. Enter on line 31400 of the receiving spouse's
+#   return the lesser of $2,000 and 1,200.00 = 1,200.00.
+#
+# Step 5: Line 35: 800.00. Line 36 = 800.00 x 2,000.00 / 8,200.00 = 195.12 (line 17 of Step 2). Line
+#   40: 0.00. Line 42 = 195.12, entered on line 43700 of this return.
+#
+# This return's lines: total income (line 15000) is the 2,000.00 of line 11600, net income 2,000.00
+# and taxable income 2,000.00. Line 31400 is the form's 1,200.00. The other lines `expected` lists
+# follow from the engine's other forms and are not part of the T1032 worked example. Amounts are
+# quoted decimal strings, never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 who is 18 or older at the end of 2025, with a spouse or
+  common-law partner on December 31, 2025, the receiving spouse of a joint election to split
+  pension income, under age 65 on December 31, 2025. The transferring spouse is 66, with eligible
+  pension income of 8000.00 (line 1) that includes eligible veterans benefits of 2000.00 (box 128,
+  line 2), payments a) to d) of 7000.00 of which 1500.00 were received as a consequence of a death
+  (9000.00 in all with box 128, more than line 1), and an RCA life annuity of 200.00 (line 4). The
+  elected split-pension amount is 2000.00 on line 11600. Form T1032: line 17 is 8200.00 and line 21
+  is 4100.00; Note 1 applies: line 1 less the amounts a) to e) not received on a death is 500.00,
+  less than 4000.00, so lines 18 to 31 are recalculated with 500.00 as line 17: line 29 is 800.00,
+  line 30 is 1200.00 and line 33 is the lesser of line 22 (2000.00) and line 30, 1200.00. The tax
+  deducted: line 36 is 800.00 x 2000.00 / 8200.00 = 195.12. Total income is 2000.00. Every other
+  figure is blank.
+sources:
+  - >-
+    CRA, Form T1032 E (25), Joint Election to Split Pension Income, page 3 (Step 4 Part B): "If all
+    of the following conditions apply, calculate line 33 according to the instructions in note 1:
+    the amount on line 32 is less than $2,000 ... the receiving spouse or common-law partner was
+    under age 65 on December 31, 2025 ... the transferring spouse or common-law partner was age 65
+    or older and received any of the following amounts in the year: a) registered retirement income
+    fund (RRIF), registered retirement savings plan (RRSP), or other annuity payments ..."
+  - >-
+    CRA, Form T1032 E (25), page 3, "Note 1: If all the above conditions apply, calculate the
+    amount to enter on line 33 as follows: Subtract from line 1 any of the above amounts noted in
+    a) through e) received by the transferring spouse or common-law partner in the year. ... If the
+    result is $4,000 or more, enter on line 33 the amount from line 30. If the result is less than
+    $4,000, use that result as the amount for line 17 to recalculate lines 18 to 31. Enter on line
+    33 whichever is less: the amount from line 22 or line 30." (confirmed 2026-10-27 from the PDF;
+    the .txt garbles the second bullet)
+  - >-
+    CRA, Form T1032 E (25), page 3: "Line 34: Line 32 plus line 33" and "Enter on line 31400 of the
+    receiving spouse's or common-law partner's return, whichever is less: $2,000 or the amount from
+    line 34."
+inputs:
+  ca/cpp_months: "12"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/t1032_eligible_pension_income: "8000"
+  ca/t1032_t4a_box_128: "2000"
+  ca/t1032_t4a_rca_box_17: "200"
+  ca/t1032_rca_payments_qualify: "1"
+  ca/t1032_marital_status_changed: "0"
+  ca/t1032_filer_is_transferring_spouse: "0"
+  ca/t1032_line_22: "2000"
+  ca/t1032_months_married: "12"
+  ca/t1032_months_in_tax_year: "12"
+  ca/t1032_not_separated_90_days: "1"
+  ca/t1032_residents_of_canada: "1"
+  ca/t1032_transferring_spouse_died: "0"
+  ca/t1032_receiving_spouse_pension_amount: "0"
+  ca/t1032_income_tax_deducted_on_pension: "800"
+  ca/t1032_receiving_spouse_under_65: "1"
+  ca/t1032_transferring_spouse_65_or_older: "1"
+  ca/t1032_note_1_payments_a_to_d: "7000"
+  ca/t1032_note_1_payments_due_to_death: "1500"
+  ca/income_tax_deducted: "0"
+expected:
+  ca/t1032:
+    - ca/t1032_line_3: "6000.00"
+      ca/t1032_line_8: "200.00"
+      ca/t1032_line_12: "6200.00"
+      ca/t1032_line_16: "2000.00"
+      ca/t1032_line_17: "8200.00"
+      ca/t1032_line_21: "4100.00"
+      ca/t1032_line_22: "2000.00"
+      ca/t1032_line_29: "48.78"
+      ca/t1032_line_30: "1951.22"
+      ca/t1032_line_31: "6048.78"
+      ca/t1032_line_31400_transferring: "2000.00"
+      ca/t1032_note_1_applies: "1"
+      ca/t1032_note_1_payments_total: "9000.00"
+      ca/t1032_note_1_payments_total_if_applies: "9000.00"
+      ca/t1032_note_1_payments_due_to_death_checked: "1500.00"
+      ca/t1032_note_1_payments_to_remove: "7500.00"
+      ca/t1032_note_1_result: "500.00"
+      ca/t1032_note_1_recalculation: "1"
+      ca/t1032_note_1_line_17: "500.00"
+      ca/t1032_note_1_line_29: "800.00"
+      ca/t1032_note_1_line_30: "1200.00"
+      ca/t1032_note_1_line_33: "1200.00"
+      ca/t1032_line_33: "1200.00"
+      ca/t1032_line_34: "1200.00"
+      ca/t1032_line_31400_receiving: "1200.00"
+      ca/t1032_line_36: "195.12"
+      ca/t1032_line_42: "195.12"
+  ca-on/return:
+    - ca-on/net_refund: "195.12"
+      ca/income_tax_deducted_after_election: "195.12"
+      ca/net_income: "2000.00"
+      ca/net_income_before_adjustments: "2000.00"
+      ca/pension_income_credit: "1200.00"
+      ca/refund: "195.12"
+      ca/refund_or_balance_owing: "-195.12"
+      ca/taxable_income: "2000.00"
+      ca/total_credits: "195.12"
+      ca/total_income: "2000.00"
+      ca-on/spouse_for_separate_residences_checked: "1"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"
+      ca/other_payments_limit_income: "2000.00"

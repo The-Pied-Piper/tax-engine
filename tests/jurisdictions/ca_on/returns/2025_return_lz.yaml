@@ -1,0 +1,168 @@
+# Return LZ: Guide T4002's Meadow example for a leased passenger vehicle, Chart C of the Form T2125, pinned
+# to the cent (a CRA example). Meadow leased a passenger car from July 1, 2025 for business income, with a
+# December 31 fiscal year-end (a full fiscal period, 0 days entered), a PST of 8% and a GST of 5% (the
+# 13% sales tax rate): monthly payment $500, lease payments for 2025 $3,000, manufacturer's list price
+# $33,000, 184 days leased, nothing deducted before 2025. The Guide prints no gross sales, kilometres or
+# other expense for her, so those are chosen: gross sales $40,000 (line 8299), and the car used only for
+# business (10,000 of 10,000 kilometres, so Chart A amount 13 is the whole of amount 12, which is only
+# the lease charges of Chart A amount 8).
+#
+# Chart C beside the Guide's printed figures (Guide T4002 (2025) printed page 55, "Example"; the Guide
+# rounds each line to a whole dollar, the engine keeps cents, as Umar ruled on 26 Oct 2026 in #528):
+#   line 20 lease charges $3,000 (Guide $3,000); line 21 $0 (Guide $0); line 22 184 days (Guide 184);
+#   line 23 list price $33,000 (Guide $33,000);
+#   line 24 = the greater of $33,000 and ($44,706 + $5,811.78 of tax at 13%) = $50,517.78, x 85% =
+#     $42,940.11 (Guide $42,940, from tax of $5,812);
+#   line 25 = ($1,100 + $143) x 184 / 30 = $7,623.73 (Guide $7,624);
+#   line 26 = line 25 - line 21 = $7,623.73 (Guide: amount 6, $7,624);
+#   line 27 = ($38,000 + $4,940) x $3,000 / $42,940.11 = $2,999.99 (Guide $3,000: the Guide's line 7
+#     is "($42,940 x $3,000) / $42,940" with the line 24 it rounded to the dollar);
+#   line 28 = the lesser of line 26 and line 27 = $2,999.99 (Guide: "her allowable claim is $3,000").
+# The one cent difference is the Guide's whole-dollar illustration, not an instruction of the form.
+# So Chart A amount 8 is $2,999.99, line 9281 is $2,999.99, the total expenses (line 9368) are
+# $2,999.99 and the net business income (line 9946, T1 line 13500) is $37,000.01; the other expected
+# lines are the engine's, computed from those.
+#
+# Schedule 8 Part 4 is completed (ca/cpp_part_4_completed 1), as in Return LT; the CPP-dependent lines of
+# the return are the engine's, not CRA's.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the net business income of one sole proprietorship
+  reported on one Form T2125 for a full fiscal period (0 days entered): chosen gross sales of $40,000
+  (line 8299) and Guide T4002's Meadow example, one passenger car leased for 184 days (list price $33,000, lease
+  charges $3,000, a sales tax rate of 13%) used only for business, so Chart C's eligible leasing cost
+  is $2,999.99 where the Guide, rounding each line to the dollar, prints $3,000, the allowable motor vehicle
+  expenses (line 9281) and the total expenses (line 9368) are $2,999.99 and the net business income
+  (line 9946, T1 line 13500) is $37,000.01. No capital cost allowance is claimed.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed page 55,
+    "Leasing costs for a passenger vehicle", Example: "On July 1, 2025, Meadow started leasing a car that is a
+    passenger vehicle."; "($42,940 × $3,000) ÷ $42,940 $ 3,000 7"; "Meadow's eligible leasing cost is either amount 6
+    or 7, whichever amount is less. In this case, her allowable claim is $3,000."
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities (docs/cra-forms-2025/t2125-25e.pdf,
+    confirmed from the PDF with pdftotext -layout), Chart C "Eligible leasing cost for passenger vehicles" lines
+    20 to 28, "Eligible leasing cost: Amount 26 or 27, whichever is less (enter in amount 8 of Chart A above)"; Chart A
+    "Allowable motor vehicle expenses: Add amounts 13 to 15 (enter this total on line 9281 of Part 4)".
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/t2125_statements:
+    - ca/business_income_line: "1"
+      ca/business_gross_sales: "40000"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "10000"
+          ca/business_vehicle_total_kilometres: "10000"
+          ca/business_vehicle_fuel_and_oil: "0"
+          ca/business_vehicle_insurance: "0"
+          ca/business_vehicle_licence_and_registration: "0"
+          ca/business_vehicle_maintenance_and_repairs: "0"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "0"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "0"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "0"
+          ca/business_vehicle_interest_days: "0"
+          ca/business_vehicle_lease_charges: "3000"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "184"
+          ca/business_vehicle_list_price: "33000"
+          ca/business_vehicle_passenger_vehicle: "1"
+          ca/business_vehicle_purchase_year: "2025"
+          ca/business_vehicle_lease_year: "2025"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+  ca/schedule_8_instances:
+    - {}
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_part_4_completed: "1"
+expected:
+  ca/t2125:
+    - ca/business_motor_vehicle_expenses: "2999.99"
+      ca/business_total_expenses: "2999.99"
+      ca/business_net_income_before_adjustments: "37000.01"
+  ca-on/return:
+    - ca-on/net_refund: "0"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/gross_business_income: "40000"
+      ca/net_income_before_adjustments: "34671.76"
+      ca/other_payments_limit_income: "34671.76"
+      ca-on/ontario_tax_less_dividend_credit: "1023.45"
+      ca/refund_or_balance_owing: "7297.72"

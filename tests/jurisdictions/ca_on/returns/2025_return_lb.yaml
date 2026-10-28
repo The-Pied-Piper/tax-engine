@@ -1,0 +1,189 @@
+# Return LB: Guide T4002's Wade (the example for farmers, printed page 102, intergenerational transfer
+# of farm properties to his daughter Vicky), a single Ontario resident who transfers his land (ACB
+# $85,000, FMV $100,000) and his combine (FMV $9,000, UCC $7,840). "If Wade transfers the land at a
+# price equal to its ACB and the combine at a price equal to its UCC, he postpones any taxable capital
+# gain and any recapture of capital cost allowance (CCA)", and his proceeds of disposition are
+# $85,000 for the land and $7,840 for the combine.
+#
+# CRA's printed figures are those two proceeds and the postponed gain and recapture, so on Wade's
+# return: Schedule 3's real estate gain $0.00, the Class 8 recapture $0.00 and the terminal loss $0.00
+# (the UCC less the proceeds is $0, nothing left to recapture or write off). The combine is Class 8 (the guide lists drawn combines in Class 8 and self-propelled ones in Class 10;
+# Class 8 is chosen, it changes no figure) (Area A, column 2 opening UCC $7,840, column 5 proceeds $7,840, no property left). The guide gives
+# no farm income: the farm sales of $10,000 (wheat, line 9419) are chosen so the statement is not
+# blank, and every other expected line is the engine's.
+#
+# Schedule 8 Part 4 ("Complete this part if you are reporting only self-employment income") is completed (ca/cpp_part_4_completed 1), as the form directs for a return whose only income is self-employment, so lines 42100, 22200 and 31000 are computed; the CPP-dependent lines of the return are the engine's, not CRA's.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 with one Form T2042 (wheat sales of $10,000, chosen) whose
+  Class 8 row is Guide T4002's Wade's combine transferred to his daughter at its UCC (opening UCC $7,840,
+  proceeds $7,840, no property left), and the transfer of his land at its ACB on Schedule 3's real estate
+  list (proceeds $85,000, cost $85,000): the real estate gain is $0.00, the capital gain is $0.00 and
+  the recapture of CCA and the terminal loss of the farm are both $0.00.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed page 102,
+    "Example for farmers": "Wade wants to transfer these farm properties to Vicky, his 19-year-old daughter.
+    Land ACB $ 85,000 FMV at the time of transfer $ 100,000 Combine FMV $ 9,000 UCC at the time of transfer
+    $ 7,840"; "If Wade transfers the land at a price equal to its ACB and the combine at a price equal
+    to its UCC, he postpones any taxable capital gain and any recapture of capital cost allowance (CCA).
+    Also, if he does this, we consider that Wade’s proceeds of disposition and the amounts Vicky paid
+    to acquire the properties are $85,000 for the land and $7,840 for the combine."
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "85000"
+      ca/disposition_adjusted_cost_base: "85000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/t2042_statements:
+    - ca/farm_wheat: "10000"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "0"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "0"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0"
+      ca/farm_land_dispositions: "0"
+      ca/farm_quota_additions: "0"
+      ca/farm_quota_dispositions: "0"
+      ca/farm_liabilities: "0"
+      ca/farm_drawings: "0"
+      ca/farm_capital_contributions: "0"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes:
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "7840"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "7840"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+  ca/schedule_8_instances:
+    - {}
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_part_4_completed: "1"
+expected:
+  ca/t2042:
+    - ca/farm_recaptured_cca: "0"
+      ca/farm_terminal_loss: "0"
+  ca-on/return:
+    - ca-on/net_refund: "859.50"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "9548.25"
+      ca/other_payments_limit_income: "9548.25"
+      ca/real_estate_proceeds: "85000"
+      ca/refund_or_balance_owing: "-859.50"
+      ca/real_estate_gain_or_loss: "0"
+      ca/capital_gain: "0.00"

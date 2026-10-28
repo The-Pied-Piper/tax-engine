@@ -1,0 +1,214 @@
+# Return GS: a self-employed filer whose only activity is one Form T2042 (farming) statement of a
+# sole proprietor that fills in every income line and every expense line of Parts 3 and 4 that no
+# earlier return sets (29 income lines and 14 expense lines, among others), the current year's
+# optional and mandatory inventory adjustments (lines 9941 and 9942) and line 9951 of Part 5. Gross income
+# $122,250.00, expenses $51,800.00, net farming income $75,250.00, all of total income, so the T1
+# and tax figures are the ones of Return EY (net self-employment income $75,250.00), a balance
+# owing of $14,468.38 before the refundable fuel charge credit of $800.00, $13,668.38 with it. Each
+# figure is worked by hand from the form lines (see the description); the engine agrees on every
+# listed line. Lines 9941, 9942 and 9951 are entered as the plain inputs they are today; line 9951
+# is the same fact as Form T2043 amount 5C, so the Ontario partnership credit of 800.00 on Form
+# T2043 line 67079 is entered too (line 9951 may not be above amount 5C). The designated province
+# is 0, so no Form T2043 Part 2 credit is computed. Amounts are quoted decimal strings, never
+# floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025, with 12 months of CPP (Schedule 8 box A), Schedule 8 Part 4 not completed and no
+  agreement for EI, as Return EY; every figure is a chosen one. One T2042 statement, no partner, no
+  Area A rows, no vehicle. Part 3 by the form's lines, in order: Grains and oilseeds: wheat 9371
+  24,950, oats 9372 1,100, barley 9373 1,200, mixed grains 9374 1,300, corn 9375 1,400, canola 9376
+  1,500, flaxseed 9377 1,600, soybeans 9378 1,700 and 9370 1,800, 36,550. Other crops: fruit 9421
+  2,100, potatoes 9422 2,200, vegetables 9423 2,300, tobacco 9424 2,400, other crops 9420 2,000, greenhouse and nursery 9425 2,500, forage crops or seeds
+  9426 2,600, 16,100. Livestock: cattle 9471 3,100, swine
+  9472 3,200, poultry 9473 3,300, sheep and lambs 9474 3,400 and 9470 3,000, 16,000; milk and cream
+  9476 4,100, eggs 9477 4,200, other commodities 9520 4,300, 12,600. Program payments: dairy
+  subsidies 9541 5,100, crop insurance 9542 5,200, other 9540 5,000, 15,300. Rebates 9570 6,100,
+  custom work 9601 6,200, insurance proceeds 9604 6,300, patronage dividends 9605 6,400 and other
+  income 9600 700 (no recapture), 25,700. Line 9659 = 36,550 + 16,100 + 16,000 + 12,600 + 15,300 +
+  25,700 = 122,250, and amount 4A is the same. Part 4: containers and twine 9661 100, fertilizers
+  and lime 9662 6,000, pesticides 9663 700, seeds and plants 9664 8,000, feed 9711 900, livestock
+  purchased 9712 1,000, veterinary fees 9713 1,100 (17,800); machinery repairs 9760 1,200,
+  gasoline 9764 1,300, building repairs 9795 1,400, clearing 9796 1,500, crop insurance premiums
+  9797 1,600, custom work 9798 1,700, electricity 9799 1,800, heating fuel 9802 1,900, insurance
+  program overpayment recapture 9803 2,000, insurance 9804 2,100 (16,500); interest 9805 2,200,
+  office 9808 2,300, professional fees 9809 2,400, property taxes 9810 2,500, rent 9811 2,600,
+  salaries 9814 2,700, small tools 9820 2,800 (17,500). Lines 9819, 9937, 9938 and 9790 are 0. Amount
+  4B = 17,800 + 16,500 + 17,500 = 51,800; line 9936 is 0 (no Area A row); line 9898 = 51,800; line
+  9899 = 122,250 - 51,800 = 70,450. Line 9941 1,500 and line 9942 2,500: 4C = 70,450 + 1,500 + 2,500
+  = 74,450. Part 5: 5A is 4C (no partner) 74,450; line 9951 is 800; line 9974 is 0; 5B = 74,450 +
+  800 = 75,250; line 9943 is 0, so 5C = 75,250; no home expenses, so line 9945 is 0 and line 9946 =
+  75,250. T1 line 14100 is 75,250.00, net self-employment income, total income, net income and
+  taxable income are the same, so the federal and Ontario figures are Return EY's (federal tax
+  11,983.76 less the basic personal credit 2,338.71 is 9,645.05; Ontario tax 4,717.05 less 643.72
+  is 4,073.33; health premium 750; total payable 14,468.38, as no tax was deducted). Line 9951 of
+  800 is the credit allocated from a partnership, so Form T2043 line 67079 (Ontario) is 800.00 as
+  well and amount 5C and 5D are 800.00, which is line 47556, a refundable credit: the refund or
+  balance owing is 14,468.38 - 800.00 = 13,668.38, a balance owing.
+sources:
+  - >-
+    CRA, Form T2042 (2025), Statement of Farming Activities (docs/cra-forms-2025/t2042-25e.pdf;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2042/t2042-25e.pdf). Part 3: the
+    income lines 9371 to 9605 and "Other income (specify)" (9600), "Gross income: Total of the
+    income lines (enter this amount on line 14099 of your income tax and benefit return)" (9659).
+    Part 4: "Gross income (line 9659 of Part 3)" (4A), the expense lines 9661 to 9820 and 9790,
+    "Subtotal of expenses" (4B), "Capital cost allowance (CCA). Enter amount ii of Area A minus any
+    personal part and any CCA for business-use-of-home expenses" (9936), "Total farm expenses:
+    Amount 4B plus line 9936" (9898), "Net income (loss) before inventory adjustments: Amount 4A
+    minus line 9898" (9899), "Optional inventory adjustment included in the current year" (9941),
+    "Mandatory inventory adjustment included in the current year" (9942), "Net income (loss) after
+    inventory adjustments: Total of lines 9899, 9941, and 9942" (4C). Part 5: "Your share of amount
+    4C or the amount from your T5013 slip" (5A), "Return of fuel charge proceeds to farmers tax
+    credit allocated to you in the year (amount 5C of Form T2043)" (9951), "Total: Amount 5A plus
+    line 9951 plus line 9974" (5B), "Net income (loss) after adjustments: Amount 5B minus line 9943"
+    (5C), "Your net income (loss): Amount 5C minus line 9945" (9946).
+inputs:
+  ca/t2042_statements:
+    - ca/farm_wheat: "24950"
+      ca/farm_oats: "1100"
+      ca/farm_barley: "1200"
+      ca/farm_mixed_grains: "1300"
+      ca/farm_corn: "1400"
+      ca/farm_canola: "1500"
+      ca/farm_flaxseed: "1600"
+      ca/farm_soybeans: "1700"
+      ca/farm_grains_and_oilseeds: "1800"
+      ca/farm_fruit: "2100"
+      ca/farm_potatoes: "2200"
+      ca/farm_vegetables: "2300"
+      ca/farm_tobacco: "2400"
+      ca/farm_greenhouse_and_nursery: "2500"
+      ca/farm_forage_crops_or_seeds: "2600"
+      ca/farm_other_crops: "2000"
+      ca/farm_cattle: "3100"
+      ca/farm_swine: "3200"
+      ca/farm_poultry: "3300"
+      ca/farm_sheep_and_lambs: "3400"
+      ca/farm_livestock_and_animal_products_revenue: "3000"
+      ca/farm_milk_and_cream: "4100"
+      ca/farm_eggs: "4200"
+      ca/farm_other_commodities: "4300"
+      ca/farm_dairy_subsidies: "5100"
+      ca/farm_crop_insurance: "5200"
+      ca/farm_other_program_payments: "5000"
+      ca/farm_rebates: "6100"
+      ca/farm_custom_work: "6200"
+      ca/farm_insurance_proceeds: "6300"
+      ca/farm_patronage_dividends: "6400"
+      ca/farm_other_income: "700"
+      ca/farm_containers_and_twine: "100"
+      ca/farm_fertilizers_and_lime: "6000"
+      ca/farm_pesticides: "700"
+      ca/farm_seeds_and_plants: "8000"
+      ca/farm_feed_supplements_straw_and_bedding: "900"
+      ca/farm_livestock_purchased: "1000"
+      ca/farm_veterinary_fees: "1100"
+      ca/farm_machinery_repairs_licences_and_insurance: "1200"
+      ca/farm_gasoline_diesel_and_oil: "1300"
+      ca/farm_building_repairs_and_maintenance: "1400"
+      ca/farm_clearing_levelling_and_draining: "1500"
+      ca/farm_crop_insurance_premiums: "1600"
+      ca/farm_custom_work_expenses: "1700"
+      ca/farm_electricity: "1800"
+      ca/farm_heating_and_curing_fuel: "1900"
+      ca/farm_insurance_program_overpayment_recapture: "2000"
+      ca/farm_insurance: "2100"
+      ca/farm_interest_and_bank_charges: "2200"
+      ca/farm_office_expenses: "2300"
+      ca/farm_professional_fees: "2400"
+      ca/farm_property_taxes: "2500"
+      ca/farm_rent: "2600"
+      ca/farm_salaries_wages_and_benefits: "2700"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "2800"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "1500"
+      ca/farm_mandatory_inventory_adjustment_current_year: "2500"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "800"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/fuel_charge_partnership_credit_on: "800"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "4073.33"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_farming_income: "75250.00"
+      ca/net_fishing_income: "0"
+      ca/net_self_employment_income: "75250.00"
+      ca/total_income: "75250.00"
+      ca/net_income_before_adjustments: "75250.00"
+      ca/other_payments_limit_income: "75250.00"
+      ca/net_income: "75250.00"
+      ca/taxable_income: "75250.00"
+      ca/federal_basic_tax: "11983.76"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "9645.05"
+      ca-on/ontario_basic_tax: "4717.05"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "4073.33"
+      ca-on/ontario_health_premium: "750"
+      ca-on/ontario_tax: "4823.33"
+      ca/total_payable: "14468.38"
+      ca/refund_or_balance_owing: "13668.38"
+  ca/t2042:
+    - ca/farm_other_income_with_recapture: "700"
+      ca/farm_gross_income: "122250"
+      ca/farm_gross_income_before_expenses: "122250"
+      ca/farm_expenses_subtotal: "51800.00"
+      ca/farm_cca_claim: "0"
+      ca/farm_total_expenses: "51800.00"
+      ca/farm_net_income_before_adjustments: "70450.00"
+      ca/farm_net_income_after_inventory_adjustments: "74450.00"
+      ca/farm_share_of_net_income: "74450.00"
+      ca/farm_partnership_total: "75250.00"
+      ca/farm_net_income_after_adjustments: "75250.00"
+      ca/farm_home_expenses: "0"
+      ca/farming_income: "75250.00"
+      ca/farm_motor_vehicle_expenses: "0.00"

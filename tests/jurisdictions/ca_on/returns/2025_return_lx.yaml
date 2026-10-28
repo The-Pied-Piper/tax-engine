@@ -1,0 +1,321 @@
+# Return LX: a leased farm truck on a Form T2042 and a leased fishing truck on a Form T2121, neither a
+# passenger vehicle, whose lease charges are above what Chart C would allow a passenger vehicle (chosen
+# figures, not a CRA example: Guide T4002 and the T2042 and T2121 print no dollar example for a leased
+# vehicle; derived by hand from the printed lines below). A single Ontario resident whose only income
+# is the net farming income of one T2042 (sole proprietor, full fiscal period) and the net fishing
+# income of one T2121 (sole proprietor, full fiscal period).
+#
+# T2042: wheat $50,000 (line 9600 total, gross income $50,000). Chart A, one truck leased for the whole
+# 365 days with passenger vehicle answered no: kilometres 16,000 of 20,000 total; amount 3 fuel and oil
+# 2,000; amount 5 insurance 1,200; amount 6 licence and registration 150; amount 7 maintenance and
+# repairs 450; amount 8 leasing 20,000 (Chart C is not used, on the reading of the Guide below, for a vehicle that is not a passenger
+# vehicle); amount 12 = 23,800; amount 13 = 16,000 / 20,000 x 23,800 = 19,040.00; amount 16 (line 9819) =
+# 19,040.00. Total farm expenses 19,040.00, net income 30,960.00 (line 14100 of the T1).
+#
+# T2121: fish products $40,000 (gross income $40,000). Chart A, one truck leased for 365 days, not a
+# passenger vehicle: kilometres 9,000 of 12,000; amount 3 1,600; amount 5 800; amount 6 100; amount 7
+# 500; amount 8 leasing 18,000; amount 12 = 21,000; amount 13 = 9,000 / 12,000 x 21,000 = 15,750.00;
+# amount 16 (line 9281) = 15,750.00. Total expenses 15,750.00, net income 24,250.00 (line 14300 of
+# the T1).
+#
+# Chart C is headed "Eligible leasing cost for passenger vehicles" on each form, and Guide T4002 (printed
+# page 55) says "When you use a passenger vehicle to earn farming or fishing income, there is a limit on
+# the amount of the leasing costs you can deduct. To calculate your eligible leasing costs, fill in
+# 'Chart C'". No printed sentence says in so many words that a vehicle that is not a passenger vehicle
+# skips Chart C: that is read from the heading and the Guide by negation (Amount 8 of Chart A prints only
+# "Leasing (use Chart C below)"), so these two trucks enter the whole lease charge in amount 8 on that
+# reading. The trucks are chosen as pick-up trucks used to transport goods (a motor vehicle, not a
+# passenger vehicle, in the Guide's vehicle definitions chart) and are not zero-emission vehicles. (For a
+# passenger vehicle with a list price of
+# $60,000 and a 13% sales tax rate Chart C would give, on the T2042, the lesser of line 26,
+# ($1,100 + $143) x 365 / 30 = $15,123.17, and line 27, ($38,000 + $4,940) x $20,000 / $51,000 =
+# $16,839.22, so $15,123.17; on the T2121 the lesser of $15,123.17 and ($38,000 + $4,940) x $18,000 /
+# $51,000 = $15,155.29, so $15,123.17.) The lines under `expected` are the forms' lines derived by
+# hand above and the totals that add them; the other figures of the return are the engine's, not
+# CRA's. Schedule 8 Part 4 is not completed (as Return EY), so no CPP is computed.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the net farming income of one sole-proprietor
+  Form T2042 (wheat $50,000) and the net fishing income of one sole-proprietor Form T2121 (fish products
+  $40,000), each for a full fiscal period (0 days entered), each with one truck leased for 365 days that is not
+  a passenger vehicle in Chart A (T2042: 16,000 of 20,000 kilometres, fuel and oil 2,000, insurance 1,200,
+  licence and registration 150, maintenance and repairs 450, lease charges 20,000; T2121: 9,000 of 12,000
+  kilometres, fuel and oil 1,600, insurance 800, licence and registration 100, maintenance and repairs 500,
+  lease charges 18,000, with no Chart C limit), so the allowable motor vehicle expenses are $19,040.00 (line
+  9819) and $15,750.00 (line 9281), the net farming income is $30,960.00, the net fishing income is $24,250.00
+  and the total income is $55,210.00. No capital cost allowance is claimed.
+sources:
+  - >-
+    CRA, Form T2042 (2025), Statement of Farming Activities (docs/cra-forms-2025/t2042-25e.pdf, confirmed from the
+    PDF with pdftotext -layout), Chart A "Motor vehicle expenses": "Leasing (use Chart C below)", "Business use
+    part: amount 1 ÷ amount 2 × amount 12" and "Allowable motor vehicle expenses: Add amounts 13 to 15 (enter this
+    total on line 9819 of Part 4)"; Chart C "Eligible leasing cost for passenger vehicles".
+  - >-
+    CRA, Form T2121 (2025), Statement of Fishing Activities (docs/cra-forms-2025/t2121-25e.pdf, confirmed from the
+    PDF with pdftotext -layout), Chart A "Motor vehicle expenses": "Leasing (use Chart C below)", "Business use
+    part: amount 1 ÷ amount 2 × amount 12" and "Allowable motor vehicle expenses: Add amounts 13 to 15 (enter this
+    total on line 9281 of Part 4)"; Chart C "Eligible leasing cost for passenger vehicles".
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf), printed page 55: "You can deduct costs you incur to lease a passenger
+    vehicle you use to earn income."; printed page 55: "When you use a passenger vehicle to earn farming or
+    fishing income, there is a limit on the amount of the leasing costs you can deduct."; printed page 53: "If
+    you ... lease a passenger vehicle ... there may be a limit on the amounts you can deduct for ... leasing
+    costs."
+inputs:
+  ca/t2042_statements:
+    - ca/farm_wheat: "50000"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "0"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "0"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "16000"
+          ca/business_vehicle_total_kilometres: "20000"
+          ca/business_vehicle_fuel_and_oil: "2000"
+          ca/business_vehicle_insurance: "1200"
+          ca/business_vehicle_licence_and_registration: "150"
+          ca/business_vehicle_maintenance_and_repairs: "450"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "0"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "0"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "0"
+          ca/business_vehicle_interest_days: "0"
+          ca/business_vehicle_lease_charges: "20000"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "365"
+          ca/business_vehicle_list_price: "60000"
+          ca/business_vehicle_passenger_vehicle: "0"
+          ca/business_vehicle_purchase_year: "2025"
+          ca/business_vehicle_lease_year: "2025"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+      ca/farm_vehicle_sales_tax_rate: "13"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0"
+      ca/farm_land_dispositions: "0"
+      ca/farm_quota_additions: "0"
+      ca/farm_quota_dispositions: "0"
+      ca/farm_liabilities: "0"
+      ca/farm_drawings: "0"
+      ca/farm_capital_contributions: "0"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+  ca/t2121_statements:
+    - ca/fish_fish_products: "40000"
+      ca/fish_other_marine_products: "0"
+      ca/fish_grants_credits_and_rebates: "0"
+      ca/fish_subsidies: "0"
+      ca/fish_compensation_for_loss: "0"
+      ca/fish_sharesperson_income: "0"
+      ca/fish_other_income: "0"
+      ca/fish_salt_bait_and_ice: "0"
+      ca/fish_crew_shares: "0"
+      ca/fish_fuel_costs: "0"
+      ca/fish_fishing_gear: "0"
+      ca/fish_insurance: "0"
+      ca/fish_interest_and_bank_charges: "0"
+      ca/fish_meals_and_entertainment: "0"
+      ca/fish_business_taxes_licences_and_memberships: "0"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "9000"
+          ca/business_vehicle_total_kilometres: "12000"
+          ca/business_vehicle_fuel_and_oil: "1600"
+          ca/business_vehicle_insurance: "800"
+          ca/business_vehicle_licence_and_registration: "100"
+          ca/business_vehicle_maintenance_and_repairs: "500"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "0"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "0"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "0"
+          ca/business_vehicle_interest_days: "0"
+          ca/business_vehicle_lease_charges: "18000"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "365"
+          ca/business_vehicle_list_price: "60000"
+          ca/business_vehicle_passenger_vehicle: "0"
+          ca/business_vehicle_purchase_year: "2025"
+          ca/business_vehicle_lease_year: "2025"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+      ca/fish_vehicle_sales_tax_rate: "13"
+      ca/fish_office_expenses: "0"
+      ca/fish_nets_and_traps: "0"
+      ca/fish_professional_fees: "0"
+      ca/fish_salaries_wages_and_benefits: "0"
+      ca/fish_repairs_fishing_boat: "0"
+      ca/fish_repairs_engine: "0"
+      ca/fish_repairs_electrical_equipment: "0"
+      ca/fish_insurance_recovery: "0"
+      ca/fish_other_expenses: "0"
+      ca/fish_cca_personal_part: "0"
+      ca/fish_fiscal_period_days_entered: "0"
+      ca/fish_land_additions: "0"
+      ca/fish_land_dispositions: "0"
+      ca/fish_liabilities: "0"
+      ca/fish_drawings: "0"
+      ca/fish_capital_contributions: "0"
+      ca/fish_boat_mainly_personal: "0"
+      ca/fish_cca_classes: []
+      ca/fish_partner: "0"
+      ca/fish_partner_share: "0"
+      ca/fish_partner_gst_hst_rebate: "0"
+      ca/fish_partner_other_amount_a: "0"
+      ca/fish_partner_other_amount_b: "0"
+      ca/fish_partner_other_amount_c: "0"
+      ca/fish_partner_other_amount_d: "0"
+      ca/fish_partner_other_amount_e: "0"
+      ca/fish_home_heat: "0"
+      ca/fish_home_electricity: "0"
+      ca/fish_home_insurance: "0"
+      ca/fish_home_maintenance: "0"
+      ca/fish_home_mortgage_interest: "0"
+      ca/fish_home_property_taxes: "0"
+      ca/fish_home_other_expenses: "0"
+      ca/fish_home_personal_use_part: "0"
+      ca/fish_home_cca: "0"
+      ca/fish_home_carried_forward: "0"
+      ca/fish_epop_associated: "0"
+      ca/fish_epop_agreement_filed: "0"
+      ca/fish_epop_percentage: "0"
+      ca/fish_epop_percentage_total: "0"
+      ca/fish_minister_allocation_given: "0"
+      ca/fish_minister_allocation: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  ca/t2042:
+    - ca/farm_gross_income: "50000"
+      ca/farm_motor_vehicle_expenses: "19040.00"
+      ca/farm_expenses_subtotal: "19040.00"
+      ca/farm_total_expenses: "19040.00"
+      ca/farm_net_income_before_adjustments: "30960.00"
+      ca/farm_net_income_after_adjustments: "30960.00"
+      ca/farming_income: "30960.00"
+  ca/t2121:
+    - ca/fish_gross_income: "40000"
+      ca/fish_motor_vehicle_expenses: "15750.00"
+      ca/fish_expenses_subtotal: "15750.00"
+      ca/fish_total_expenses: "15750.00"
+      ca/fish_net_income_before_adjustments: "24250.00"
+      ca/fish_net_income_after_adjustments: "24250.00"
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_farming_income: "30960.00"
+      ca/net_fishing_income: "24250.00"
+      ca/net_self_employment_income: "55210.00"
+      ca/total_income: "55210.00"
+      ca/net_income_before_adjustments: "55210.00"
+      ca/other_payments_limit_income: "55210.00"
+      ca/net_income: "55210.00"
+      ca/taxable_income: "55210.00"
+      ca/federal_basic_tax: "8005.45"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "5666.74"
+      ca-on/ontario_basic_tax: "2883.39"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "2239.67"
+      ca-on/ontario_tax_less_dividend_credit: "2239.67"
+      ca-on/ontario_health_premium: "600.00"
+      ca-on/ontario_tax: "2839.67"
+      ca/total_payable: "8506.41"
+      ca/refund_or_balance_owing: "8506.41"

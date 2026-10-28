@@ -1,0 +1,141 @@
+# Return DL: the Ontario adoption, pension income and student loan amounts of ON428 lines 23
+# (58330), 27 (58360) and 32 (58520), with the federal lines 31300, 31400 and 31900 they follow.
+# An adult filer with employment income and a small pension, two adopted children and student loan
+# interest, with no spouse.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DL: a 2025 Ontario resident in Canada throughout 2025, aged 18 or older, with no
+  spouse. Employment income is $100,000 (T1 line 10100, a chosen figure) and other pension
+  income is $1,500 (T1 line 11500, "Other pensions and superannuation", a chosen figure), with
+  nothing excluded from the pension and no foreign pension, U.S. IRA or RRIF amounts (all 0,
+  chosen). Total income is 101,500.00. The enhanced CPP contributions deduction is 1,074.00
+  (678.00 first additional + 396.00 second additional), so net income before adjustments (T1 line
+  23400) and taxable income (line 26000) are 100,426.00, which is also the income for the other
+  payments deduction limit (Federal Worksheet line 9, no UCCB or RDSP repayments). The CPP second
+  additional earnings maximum for 12 months is 9,900.00 (the Schedule 8 table row).
+  Adoption expenses: two children, with eligible expenses of 10,000 and 20,000 (chosen figures),
+  so the list holds two records. Federal line 31300 takes the list as entered, 30,000.00, as
+  neither the T1 nor the guide prints a federal maximum. ON428 line 23 and line 58330 take each
+  child's expenses at most $15,551, the amount of T2203 note (5) for a resident of Ontario ("you
+  can claim up to $15,551 of eligible expenses for each child"): the first child 10,000 is below
+  it, so 10,000.00; the second child 20,000 is above it, so 15,551.00; line 23 is
+  10,000.00 + 15,551.00 = 25,551.00.
+  Pension income amount: line 1 of the Federal Worksheet is 1,500.00 (line 11500); line 2 to line
+  4 are 0, so line 5 is 0.00 and line 6 is 1,500.00. The filer is under 65 and the payments are
+  not because of a spouse's death (a chosen 0), so line 7 is 0.00 and line 8 is 1,500.00. Line
+  31400 is the lesser of 1,500.00 and $2,000, which is 1,500.00. ON428 line 27 and line 58360 is the
+  pension income amount (maximum $1,762), the lesser of $1,762 and the line 31400 amount 1,500.00,
+  which is 1,500.00.
+  Student loan interest: 600 (a chosen figure), entered as the eligible amount on line 31900.
+  ON428 line 32 and line 58520 is "amount from line 31900 of your return", 600.00.
+  Federal: line 33500 is the base of 22,033.58 (16,129.00 basic personal amount + 3,356.10 CPP +
+  1,077.48 EI + 1,471.00 Canada employment amount) plus 30,000.00 + 1,500.00 + 600.00 = 32,100.00,
+  so 54,133.58. At 14.5% that is 7,849.37 (7,849.3691 rounded half-up). The federal tax on taxable
+  income 100,426.00 (Schedule 1 line 75, 8,319.38 + 20.5% x (100,426.00 - 57,375) = 8,319.38 +
+  8,825.455) is 17,144.835, so 17,144.84, and the federal tax after credits (T1 line 41700, with
+  no top-up tax credit as 7,849.37 is under 8,319.38, no surtax on income earned outside Canada,
+  no foreign tax credit and no alternative minimum tax) is 17,144.84 - 7,849.37 = 9,295.47, the
+  net federal tax.
+  Ontario (ON428): line 18 is 12,747.00 (the basic personal amount; no age, spouse, dependant or
+  caregiver amounts). Line 19 is the CPP base contributions 3,356.10 (line 30800), line 20 is 0.00,
+  line 21 is the EI premiums 1,077.48 (line 31200) and line 22 is 0.00. Line 23 is 25,551.00, so
+  line 24 is 3,356.10 + 0.00 + 1,077.48 + 0.00 + 25,551.00 = 29,984.58 and line 25 is 12,747.00 +
+  29,984.58 = 42,731.58. Line 26 is 42,731.58, line 27 is 1,500.00 and line 28 is 44,231.58. With no
+  disability amounts (lines 29 and 30 are 0), line 31 is 44,231.58. Line 32 is 600.00, with no
+  unused tuition and education amounts (Schedule ON(S11), line 33) and no amounts transferred from
+  a spouse (line 34), so line 35 is "Add lines 31 to 34", 44,831.58. With no medical expenses
+  (line 43 is 0) line 44 and line 58800 "Line 35 plus line 43" is 44,831.58. Line 46 and line
+  58840 is 5.05% of 44,831.58 = 2,263.9948, rounded half-up to 2,263.99, so the Ontario
+  non-refundable tax credits (line 50, no Schedule 9 donations credit) are 2,263.99. The Ontario
+  tax on taxable income 100,426.00 by the 2025 brackets (5.05% to 52,886; 9.15% to 105,775) is
+  2,670.743 + 4,349.91 = 7,020.653, so 7,020.65, less 2,263.99, which is 4,756.66 (no tax on split
+  income and no dividend credit here). That is below the first surtax threshold of 5,710, so the
+  Ontario surtax is 0.00. The Ontario tax reduction is 0.00 (the basic reduction 294.00, twice it
+  588.00, is below the tax). The LIFT credit (Schedule ON428-A) is the lesser of 5.05% of the
+  employment income, 5,050.00, and 875.00, less 5% of net income over 32,500, 5% x 67,926.00 =
+  3,396.30, not below zero, which is 0.00. The Ontario health premium is 750.00 (300 + 150 + 150 +
+  150, the tiers at 20,000, 36,000, 48,000 and 72,000; the tier at 200,000 is above this income),
+  so the Ontario tax on the return (ca-on/ontario_tax) is 4,756.66 + 750.00 = 5,506.66.
+  Total payable is the net federal tax 9,295.47 plus the Ontario tax 5,506.66, 14,802.13 (no
+  self-employment CPP or EI, no social benefits repayment), and with no tax deducted or
+  instalments paid the balance owing is 14,802.13.
+sources:
+  - >-
+    CRA, Form ON428 2025 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt,
+    confirmed text, docs/cra-forms-2025/5006-c-25e.txt): "Line 23 and line 58330: Adoption
+    expenses"; "Line 24: Add lines 19 to 23."; "Line 27 and line 58360: Pension income amount
+    (maximum $1,762)"; "Line 28: Line 26 plus line 27"; "Line 31: Add lines 28 to 30."; "Line 32
+    and line 58520: Interest paid on your student loans (amount from line 31900 of your
+    return)"; "Line 35: Add lines 31 to 34."; "Line 44 and line 58800: Line 35 plus line 43";
+    "Line 46 and line 58840: Line 44 multiplied by the percentage from line 45".
+  - >-
+    CRA, Form T2203 2025 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2203/t2203-25e.pdf,
+    confirmed text, docs/cra-forms-2025/t2203-25e.pdf), note (5): "If you were a resident of
+    Ontario, you can claim up to $15,551 of eligible expenses for each child in the year the
+    adoption is finalized or recognized under Ontario law."
+  - >-
+    CRA, Form T1 Guide 5006-R 2025 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt,
+    confirmed text, docs/cra-forms-2025/5006-r-25e.txt): "Line 95 and line 31300: Adoption
+    expenses"; "Line 97 and line 31400: Pension income amount (use Federal Worksheet) (maximum
+    $2,000)"; "Line 102 and line 31900: Interest paid on your student loans (go to
+    canada.ca/taxes-students)".
+  - >-
+    CRA, Federal Worksheet 2025, Line 31400 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt,
+    confirmed text, docs/cra-forms-2025/5000-d1-25e.txt): "Line 6: Line 1 minus line 5"; "Enter
+    on line 31400 of your return whichever amount is less: line 8 or $2,000."
+inputs:
+  ca/t4_cpp_slip_count: "2"
+  ca/employment_income: "100000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "100000"
+  ca/other_pensions_and_superannuation: "1500"
+  ca/adoption_expense_children:
+    - ca/adoption_child_expenses: "10000"
+    - ca/adoption_child_expenses: "20000"
+  ca/pension_foreign_income: "0"
+  ca/pension_us_ira_income: "0"
+  ca/pension_rrif_transferred: "0"
+  ca/pension_annuity_payments: "0"
+  ca/pension_annuity_conditions_met: "0"
+  ca/student_loan_interest: "600"
+  ca/t2204_insurable_earnings: "65700"
+  ca/t2204_premiums_deducted: "1077.48"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "4034.10"
+  ca/cpp_t4_second_additional_contributions: "396.00"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/adoption_credit: "30000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "100000.00"
+      ca/pension_chart_line_5: "0.00"
+      ca/pension_chart_line_6: "1500.00"
+      ca/pension_chart_line_7: "0.00"
+      ca/pension_chart_line_8: "1500.00"
+      ca/pension_income_credit: "1500.00"
+      ca/non_refundable_credit_amounts: "54133.58"
+      ca/credit_amounts_at_credit_rate: "7849.37"
+      ca/top_up_tax_credit: "0.00"
+      ca/non_refundable_tax_credits: "7849.37"
+      ca/federal_basic_tax: "17144.84"
+      ca/federal_tax_after_credits: "9295.47"
+      ca/net_federal_tax: "9295.47"
+      ca-on/adoption_credit: "25551.00"
+      ca-on/pension_income_credit: "1500.00"
+      ca-on/credit_amounts_through_disability_transfer: "44231.58"
+      ca-on/non_refundable_credit_amounts: "44831.58"
+      ca-on/non_refundable_tax_credits: "2263.99"
+      ca-on/ontario_basic_tax: "7020.65"
+      ca-on/ontario_tax_after_credits: "4756.66"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_less_dividend_credit: "4756.66"
+      ca-on/lift_credit: "0.00"
+      ca-on/ontario_health_premium: "750.00"
+      ca-on/ontario_tax: "5506.66"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "100426.00"
+      ca/other_payments_limit_income: "100426.00"
+      ca/total_payable: "14802.13"
+      ca/refund_or_balance_owing: "14802.13"

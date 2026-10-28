@@ -1,0 +1,213 @@
+# Return BF: a 2025 Ontario resident with one qualified small business corporation share (QSBCS)
+# disposition in 2025, a gain of $350,000 (Schedule 3 line 10700), so Form T657 limits the capital
+# gains deduction on line 25400 to $155,000.00, the annual gains limit (Step 1 line 21) binding.
+# Net capital losses of other years of $20,000 are claimed (line 25300). A 2000 loss of $1,000 at
+# an inclusion rate of 0.6 is entered on Chart A of Form T1436 (row "In 2000"): it is adjusted
+# to $833.33 and is in line 4, but line 25300 stays $20,000.00. Every other T657 line is blank,
+# and the lines that depend on them are zero. The worked derivation is in the description.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older
+  at the end of 2025, with other income (T1 line 13000) of $10,000, a chosen figure, and one
+  disposition of qualified small business corporation shares (QSBCS) in 2025 after June 24, 2024,
+  proceeds $500,000, a chosen figure, adjusted cost base $150,000, a chosen figure, and outlays
+  nil, so the gain is 350,000.00 (Schedule 3 line 10700, column 5, "gain or loss" = column 2 minus
+  columns 3 and 4). Schedule 3 line 19700 is 350,000.00 and line 21 is 350,000.00, so line 24 is
+  175,000.00 (the inclusion rate on line 23 is 50%) and line 26 (line 19900) is 175,000.00, the
+  taxable capital gains on line 12700 (no partnership gains at full inclusion, no T3 slip, no
+  reserve). Net capital losses of other years: Chart A of Form T1436 has two rows with a loss. The row "In
+  2000" has 1,000 (a chosen figure) at an inclusion rate of 0.6 (a chosen figure): column F is 2
+  × 0.6 = 1.20 and column C is 1,000 ÷ 1.20 = 833.33, column D is 833.33, and columns E and G
+  are 0.00. The row "After 2000 and before 2025" has 20,000 (a chosen figure): column C is
+  20,000.00, column D is 19,166.67 (the 833.33 of 2000 taken off the 20,000 first, as Guide
+  T4037 applies the older loss first), column E is 833.33 and column G is 833.33. Line 4 is
+  20,833.33 and line 6 is 20,833.33 (line 5 is 175,000.00); 20,000 are claimed (a chosen
+  figure), so line 7 and line 25300 are 20,000.00, and line 13 is 20,000.00, the total of column
+  D (833.33 + 19,166.67). Net income
+  (line 23600) is 175,000.00 + 10,000.00 = 185,000.00. Form T657: Step 1 line 1 is 350,000.00
+  (lines 10700, 11000 and 12400 of Schedule 3: 350,000.00 + 0 + 0); line 2 (Form T2017 line 13)
+  is 0; line 3 is 350,000.00; line 4 is 1/2, so line 5 is 350,000.00 x 1/2 = 175,000.00; line 6
+  (Form T2048 line 17216) is 0; line 7 is 175,000.00; line 8 (line 19900 of Schedule 3) is
+  175,000.00; line 9 (line 17600 of Schedule 3, a T3 gain, 0) x 1/2 is 0; line 10 is 175,000.00;
+  line 11 (Form T2048 line 17215) is 0; line 12 is 175,000.00; line 13 is the lesser of line 7
+  and line 12, 175,000.00 (eligible taxable capital gains for 2025). Step 1 line 14 is 20,000.00
+  (line 25300); line 15 (Form T936, Chart A line 14: line 3 175,000.00 less line 13 175,000.00) is
+  0; line 16 is 20,000.00; line 17 (line 21700 ABIL) is 0; line 18 (Form T2048 line 17217) is 0;
+  line 19 is 0; line 20 is 20,000.00 + 0 =
+  20,000.00; line 21 is 175,000.00 - 20,000.00 = 155,000.00, the annual gains limit for 2025.
+  Step 2: line 8 is 100,000 (eligible taxable capital gains for 2002 to 2024, a chosen figure) +
+  175,000.00 (Step 1 line 13) = 275,000.00; line 9 is 275,000.00 (lines 1 to 7 are 0); lines 10,
+  11, 12 and 13 are 0 (no 1985 capital losses, no business investment losses claimed); line 14 is
+  0 (Chart 1, no claims of other years' net capital losses, rows left out); line 15 is 20,000.00
+  (Step 1 line 20); line 16 is 0 (Form T936 Part 3 line C: A is 0 and B is 0: line 12 (68110)
+  is 50% of the recovery of exploration and development expenses, an input left blank, not of the
+  10,000 on line 13000, which is other income; so C is 0); line 17 is 0 (no
+  deductions claimed in earlier years); line 18 is 0 + 0 + 0 + 20,000.00 + 0 + 0 = 20,000.00; line
+  19 is 275,000.00 - 20,000.00 = 255,000.00, the cumulative gains limit for 2025. Chart 2 is all
+  zeros (no deductions claimed from 2016 to 2024). Chart 2025 Part 1 (Period 1 of 2024): no slip
+  amounts, so amounts F to J are 0, K is 0, and N, P and Q are 0.00. Part 2: amount A is 625,000.00
+  (the maximum for a disposition after June 24, 2024); B is 0 (Part 1's P); C is 625,000.00; D is 0
+  (Chart 2 line 19); E is 625,000.00; F is line 10700 less the excluded slip amounts (none):
+  350,000.00; G, H, I and J are 0; K is 350,000.00 x 1/2 = 175,000.00; L (the portion of Form
+  T2048 line 17216 for a 2025 disposition) is 0; M is 175,000.00; N is the lesser of E and M,
+  175,000.00; O is B, 0; P is 175,000.00; Q is the lesser of line 21 of Step 1 (155,000.00), line
+  19 of Step 2 (255,000.00) and P (175,000.00): 155,000.00, the maximum for line 25400. The filer
+  claims all of it, 155,000, a chosen figure, so line 25400 is 155,000.00 and line 25700 is
+  20,000.00 (line 25300) + 155,000.00 (line 25400) = 175,000.00. Line 26000 is 185,000.00 -
+  175,000.00 = 10,000.00, the taxable income. The other lines are blank and are the engine's
+  figures (to be confirmed against CRA's calculator).
+sources:
+  - >-
+    CRA, Form T657, Calculation of Capital Gains Deduction, 2025 edition (confirmed 2026-10-19
+    from the PDF; no .txt is published), Step 1 lines 1 to 21: line 1 "Total of lines 10700,
+    11000, and 12400 of Schedule 3 (if negative, show in brackets)"; line 4 "Inclusion rate × 1/2";
+    line 5 "Line 3 multiplied by the inclusion rate on line 4 (if negative, enter "0")"; line 6
+    "Amount from line 17216 of Form T2048"; line 7 "Line 5 minus line 6"; line 8 "Total taxable
+    capital gains (or net capital losses) from line 19900 of Schedule 3 (if negative, show in
+    brackets)"; line 9 "Amount from line 17600 of Schedule 3 (if negative, enter "0") × 1/2"; line
+    11 "Amount from line 17215 of Form T2048"; line 13 "Enter whichever is less: amount from line 7
+    or line 12."; line 14 "Net capital losses of other years deducted in 2025 (line 25300 of your
+    2025 return)"; line 17 "Allowable business investment losses from line 21700 of your 2025
+    return."; line 18 "Amount from line 17217 of Form T2048"; line 20 "Line 16 plus line 19 Total
+    losses for annual gains limit"; line 21 "Line 13 minus line 20 (if negative, enter "0")
+    Annual gains limit for 2025".
+  - >-
+    CRA, Form T657, Step 2 lines 8, 9, 15, 18 and 19: line 8 "2002 to 2025 eligible taxable capital
+    gains ... line 13 in Step 1 of Form T657 for 2025"; line 9 "Add lines 1 to 8. Cumulative
+    eligible taxable capital gains"; line 15 "Total losses used to calculate your annual gains
+    limit for 2025: Amount from line 20 in Step 1"; line 18 "Add lines 10 and 13 to 17."; line 19
+    "Line 9 minus line 18 (if negative, enter "0") ... Cumulative gains limit for 2025".
+  - >-
+    CRA, Form T657, Chart 2025 Part 1 and Part 2, amounts A to Q: "Maximum capital gains deduction
+    for QFFP and/or QSBCS reported in 2025 but disposed of in Period 1 of 2024 522,145.00 A" and
+    "Maximum capital gains deduction for QFFP and/or QSBCS disposed of in 2025 or disposed of after
+    June 24, 2024 and reported in 2025 625,000.00 A"; K "Add amounts F to J (if negative, enter
+    "0") = × 1/2 = K"; N "Enter whichever is less: amount E or amount M."; P "Amount N plus amount
+    O"; Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount P above. This is
+    the maximum amount you can claim on line 25400 of your 2025 return. However, you can choose to
+    claim less."
+  - >-
+    CRA, Form T657, Part 2 amount F "Amount from line 10700 of Schedule 3 (do not include capital
+    gains reported in box 30 of a T3 slip relating to a disposition of QSBCS unless ...)".
+  - >-
+    CRA, T1 General 2025, Ontario edition (form 5006-r), "Step 4 - Taxable income" (confirmed
+    2026-10-19): "Line 65 and line 25400: Capital gains deduction (complete Form T657)"; "Line 68
+    and line 25700: Add lines 58 to 67."; "Line 69 and line 26000: Line 57 minus line 68 (if
+    negative, enter "0") Taxable income".
+  - >-
+    CRA, Form T1436, Capital Gains Worksheet, 2025 edition (confirmed 2026-10-19 from the PDF; no
+    .txt is published), Chart A "Adjustment calculation for carry-forward losses", row "In
+    2000": column (B) "1/(IR × 2)" and column (F) "2 × IR"; the footnote "When you complete
+    this table, replace "IR" with your inclusion rate for 2000. This rate is from line 16 in
+    Part 4 of Schedule 3 for 2000, or from your notice of assessment or latest notice of
+    reassessment for 2000."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/other_income: "10000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/qsbcs_dispositions:
+    - ca/disposition_proceeds: "500000"
+      ca/disposition_adjusted_cost_base: "150000"
+      ca/disposition_outlays: "0"
+  ca/unapplied_net_capital_losses_2000: "1000"
+  ca/unapplied_net_capital_losses_2001_to_2024: "20000"
+  ca/net_capital_losses_claimed: "20000"
+  ca/t657_inclusion_rate_2000: "0.6"
+  ca/t657_gains_2002_to_2024: "100000"
+  ca/capital_gains_deduction_claimed: "155000"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/capital_gain: "350000.00"
+      ca/included_capital_gain: "175000.00"
+      ca/schedule_3_line_19900: "175000.00"
+      ca/taxable_capital_gains: "175000.00"
+      ca/annual_gains_schedule_3_total: "350000.00"
+      ca/annual_gains_line_3: "350000.00"
+      ca/annual_gains_line_3_at_inclusion_rate: "175000.00"
+      ca/annual_gains_line_5: "175000.00"
+      ca/annual_gains_line_7: "175000.00"
+      ca/schedule_3_line_17600_not_below_zero: "0.00"
+      ca/annual_gains_line_9: "0.00"
+      ca/annual_gains_line_10: "175000.00"
+      ca/annual_gains_line_12: "175000.00"
+      ca/eligible_taxable_capital_gains_2025: "175000.00"
+      ca/net_capital_losses_of_other_years: "20000.00"
+      ca/adjusted_net_capital_losses_of_other_years: "20000.00"
+      ca/net_capital_loss_twice_ir_2000: "1.20"
+      ca/net_capital_loss_numerator_one_2000: "1.00"
+      ca/adjusted_gross_capital_losses_2000: "833.33"
+      ca/adjusted_losses_applied_2000: "833.33"
+      ca/adjusted_losses_left_after_1990_to_1999: "20000.00"
+      ca/adjusted_losses_left_after_2000: "19166.67"
+      ca/remaining_adjusted_losses_2000: "0.00"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/adjusted_gross_capital_losses_2001_to_2024: "20000.00"
+      ca/adjusted_losses_applied_2001_to_2024: "19166.67"
+      ca/remaining_adjusted_losses_2001_to_2024: "833.33"
+      ca/net_capital_loss_balance_2001_to_2024: "833.33"
+      ca/total_adjusted_net_capital_losses: "20833.33"
+      ca/abil_after_qbt_reduction: "0.00"
+      ca/total_losses_for_annual_gains_limit: "20000.00"
+      ca/annual_gains_limit_2025: "155000.00"
+      ca/eligible_taxable_capital_gains_2002_to_2025: "275000.00"
+      ca/cumulative_eligible_taxable_capital_gains: "275000.00"
+      ca/abil_claimed_after_1984_and_before_2025: "0.00"
+      ca/chart_1_column_g_total: "0.00"
+      ca/cumulative_losses_and_deductions: "20000.00"
+      ca/cumulative_gains_limit_2025: "255000.00"
+      ca/chart_2_line_16: "0.00"
+      ca/chart_2_line_19: "0.00"
+      ca/chart_2025_part_1_amount_a: "522145.00"
+      ca/chart_2025_part_1_amount_e: "522145.00"
+      ca/chart_2025_part_1_amount_k: "0.00"
+      ca/chart_2025_part_1_amount_n: "0.00"
+      ca/chart_2025_part_1_amount_p: "0.00"
+      ca/chart_2025_part_1_amount_q: "0.00"
+      ca/chart_2025_part_2_amount_a: "625000.00"
+      ca/chart_2025_part_2_amount_c: "625000.00"
+      ca/chart_2025_part_2_amount_e: "625000.00"
+      ca/chart_2025_part_2_amount_f: "350000.00"
+      ca/chart_2025_part_2_amounts_f_to_j: "350000.00"
+      ca/chart_2025_part_2_amount_k: "175000.00"
+      ca/chart_2025_part_2_amount_m: "175000.00"
+      ca/chart_2025_part_2_amount_n: "175000.00"
+      ca/chart_2025_part_2_amount_p: "175000.00"
+      ca/chart_2025_part_2_amount_q: "155000.00"
+      ca/capital_gains_deduction: "155000.00"
+      ca/deductions_from_net_income: "175000.00"
+      ca/net_income: "185000.00"
+      ca/net_income_signed: "185000.00"
+      ca/net_income_before_adjustments: "185000.00"
+      ca/other_payments_limit_income: "185000.00"
+      ca/qsbcs_proceeds: "500000"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_part_1_subtotal: "10000.00"
+      ca/amt_net_capital_gains_after_adjustments: "350000"
+      ca/taxable_income: "10000.00"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/amt_adjusted_income_with_gains: "185000.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "-866.97"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"

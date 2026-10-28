@@ -1,0 +1,54 @@
+# Return EQ: an Ontario resident who moved to Vanrena, Alberta on March 15, 2025 and lived in a
+# prescribed intermediate zone for 292 days, Example 2 of Form T2222 (Northern Residents Deductions,
+# 2025): the basic residency amount of $5.50 a day and the additional residency amount of $5.50 a
+# day, as the only person in the household claiming the basic residency amount, $3,212.00 in all. The
+# form gives no income, so the income is a chosen $100,000 of other income.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the form names no province of
+  residence), resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 (chosen figures), whose only income is a chosen $100,000 of other income (line
+  13000; the form states no income, so the figure is chosen so that the residency limit of 20% of
+  net income, 20,000.00, is not reached). The form's example has the spouse or common-law partner
+  not claiming the deductions (no taxable income), so the filer is the only person in the household
+  claiming the basic residency amount and also claims the additional residency amount. Step 2, the
+  "Zone B" section: 292 days (March 15, 2025 to December 31, 2025) lived in the zone, and the same
+  292 days qualify for the additional residency amount. Line 6: 292 x 5.50 = 1,606.00 (basic); line
+  7: 292 x 5.50 = 1,606.00 (additional); the zone's residency amount is 1,606.00 + 1,606.00 = 3,212.00,
+  with no non-taxable board and lodging benefits at a special work site. Line 12 (20% of net income)
+  is 20,000.00, so the residency deduction is 3,212.00; there are no trips, so no travel deduction;
+  the northern residents deductions (T1 line 66 and line 25500) are 3,212.00, which line 25700 carries
+  as the only deduction from net income, so taxable income (line 26000) is 100,000 - 3,212.00 =
+  96,788.00. The cpp months (Schedule 8 box A) are a chosen 12 with no employment income: the
+  second additional maximum of 9900.00 is the engine's figure for a full year of CPP, not a form
+  figure. The tax lines (the Ontario tax less the dividend credit, the net income before adjustments
+  and the limit on the other payments deduction, both the same $100,000, and the refund or balance
+  owing) are the engine's figures from the other income, not form figures.
+sources:
+  - >-
+    CRA, Form T2222, Northern Residents Deductions (2025), page 2, Example 2: "You can claim $5.50 for each day that you lived in Vanrena (292 days) and an additional residency amount of $5.50 per day as you maintained and lived in a house (which is considered a dwelling) during the 9.5 months and you are the only person in your household claiming the basic residency amount."
+    (docs/cra-forms-2025/t2222-25e.txt)
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/other_income: "100000"
+  ca/zone_b_days_lived: "292"
+  ca/zone_b_additional_residency_days: "292"
+expected:
+  ca-on/return:
+    - ca/net_income: "100000.00"
+      ca/zone_b_basic_residency_amount: "1606.00"
+      ca/zone_b_additional_residency_amount: "1606.00"
+      ca/zone_b_residency_amount: "3212.00"
+      ca/residency_amount: "3212.00"
+      ca/residency_net_income_limit: "20000.00"
+      ca/residency_deduction: "3212.00"
+      ca/northern_residents_deductions: "3212.00"
+      ca/taxable_income: "96788.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "6044.05"
+      ca/net_income_before_adjustments: "100000.00"
+      ca/other_payments_limit_income: "100000.00"
+      ca/refund_or_balance_owing: "20921.20"

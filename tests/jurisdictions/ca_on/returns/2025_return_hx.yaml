@@ -1,0 +1,91 @@
+# Return HX: a single 2025 Ontario resident under 18 years of age on December 31, 2025, with
+# employment income of $60,000, who qualifies for the disability amount. Under 18 alone is accepted;
+# the same return also entered as born in 1960 or earlier, or as 18 or older at the end of 2025, is
+# refused (see `end_to_end/test_return_hx.py`).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single 2025 Ontario resident with employment income of $60,000, a chosen figure, who is under
+  18 years of age on December 31, 2025 (a chosen figure, 1) and qualifies for the disability amount
+  (the CRA approved the Form T2201, a chosen figure, 1), with no child care or attendant care
+  expenses. Worksheet ON428 line 58440 reads "Complete the following calculation if you were under
+  18 years of age on December 31, 2025" and Form ON428 line 10 reads "Age amount (if you were born
+  in 1960 or earlier)"; a filer born in 1960 or earlier is 65 or older, and the federal worksheet
+  for line 45200 reads "You were 18 years of age or older at the end of 2025", so under 18 entered
+  together with either is refused and the checks of `ca/under_18_and_born_in_1960_or_earlier` and
+  `ca/under_18_and_aged_18_or_older` count 0. The T4 CPP box 16 is the base and first additional
+  contributions on the employment income: base 4.95% x (60,000 - 3,500) = 2,796.75 and first
+  additional 1% x 56,500 = 565.00, 3,361.75 together, with nil second additional contributions
+  (below the 71,300 ceiling). The first additional contributions of 565.00 are deducted, so total
+  income is $60,000.00, deductions from total income are $565.00, and net income (line 23600) and
+  taxable income (line 26000) are $59,435.00. Federal disability amount for self (under 18, nil
+  expenses): base 10,138.00 plus the maximum supplement 5,914.00 is 16,052.00, equal to the maximum.
+  Ontario disability amount (ON428 line 29): 10,298.00 plus 6,007.00 is 16,305.00, equal to the
+  maximum. Ontario tax on 59,435.00: 5.05% x 52,886.00 = 2,670.74 plus 9.15% x 6,549.00 = 599.23,
+  3,269.98 (3,269.9765). Ontario credits: the basic personal amount 12,747.00 + CPP base
+  contributions 2,796.75 + EI premium 984.00 + disability 16,305.00 = 32,832.75 x 5.05% = 1,658.05,
+  so Ontario tax after credits is $1,611.92, the Ontario health premium is $600.00 and Ontario tax
+  is $2,211.92. Federal tax on 59,435.00: 14.5% x 57,375.00 = 8,319.38 plus 20.5% x 2,060.00 =
+  422.30, 8,741.68 (8,741.675); credits (basic personal amount 16,129.00 + CPP base 2,796.75 + EI
+  984.00 + Canada employment amount 1,471.00 + disability 16,052.00 = 37,432.75) x 14.5% = 5,427.75,
+  so federal tax is 3,313.93 (3,313.926). The balance owing is 3,313.93 + 2,211.92 = $5,525.85
+  (`ca/refund_or_balance_owing`, no tax deducted at source), and every other line is blank.
+sources:
+  - >-
+    CRA, Worksheet ON428 (5006-D, 2025), docs/cra-forms-2025/5006-d-25e.txt: "Complete the
+    following calculation if you were under 18 years of age on December 31, 2025." (line 58440).
+  - >-
+    CRA, Form ON428 (5006-C, 2025), docs/cra-forms-2025/5006-c-25e.txt: "Age amount (if you were
+    born in 1960 or earlier)" (line 10) and "Disability amount for self (claim $10,298 or, if you
+    were under 18 years of age, use Worksheet ON428)" (line 29).
+  - >-
+    CRA, Guide 5000-G (2025), docs/cra-forms-2025/5000-g-25e.txt: "You were 18 years of age or
+    older at the end of 2025" (line 3954).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+  - >-
+    CRA, "CPP contribution rates, maximums and exemptions", 2025 row: basic exemption $3,500;
+    employee base rate 4.95% and first additional rate 1% (5.95% together, as in Return GF).
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 box 18 and the insurable earnings the premium is required on: the required premium, Form T2204
+  # line 16 (T1 line 31200), 1.64% of 60000.00 = 984.00.
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  # T4 box 16 (base and first additional, 4.95% of 56500.00 plus 1% of 56500.00) and box 16A
+  # (second additional, nil below the 71300.00 ceiling).
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  # Worksheet ON428 line 58440 and the Federal Worksheet for line 31600: the CRA approved the Form
+  # T2201 and the filer is under 18 on December 31, 2025. Not born in 1960 or earlier, and not 18 or
+  # older at the end of 2025 (both left blank, 0).
+  ca/eligible_for_disability_amount: "1"
+  ca/under_18_on_december_31: "1"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "60000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/deductions_from_total_income: "565.00"
+      ca/net_income: "59435.00"
+      ca/net_income_before_adjustments: "59435.00"
+      ca/other_payments_limit_income: "59435.00"
+      ca/taxable_income: "59435.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/disability_amount_for_self: "16052.00"
+      ca/refund_or_balance_owing: "5525.85"
+      ca-on/ontario_tax_after_credits: "1611.92"
+      ca-on/ontario_tax_less_dividend_credit: "1611.92"
+      ca-on/ontario_health_premium: "600.00"
+      ca-on/ontario_tax: "2211.92"
+      # The checked counts: under 18 is entered alone, so nothing is refused.
+      ca/under_18_and_born_in_1960_or_earlier_checked: "0"
+      ca/under_18_and_aged_18_or_older_checked: "0"

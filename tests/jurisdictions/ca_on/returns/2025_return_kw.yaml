@@ -1,0 +1,140 @@
+# Return KW: Guide T4002's James (line 9945 business-use-of-home expenses, printed page 67), a single
+# Ontario resident whose only income is the net business income of one business reported on one Form
+# T2125 for a full fiscal period (0 days entered). James runs a daycare from his home weekdays from
+# 7 am to 5 pm (10 of 24 hours) in an area of 35 of the house's 100 square metres; the annual
+# household expenses are $5,800. The guide: (10 / 24) x (35 / 100) x $5,800 = $845.83, and as the
+# business operates five days a week $845.83 x 5 / 7 = $604.16, "James can deduct $604.16 for his
+# household expenses".
+#
+# CRA's printed figure is the $604.16 deductible (Part 7 amount 7M and its allowable claim, line 9945).
+# The form has no hours, area or days boxes: Part 7 takes the expenses (7A to 7G) and the "personal-use
+# part of the business-use-of-home expenses" (7I) as dollars, so the filer works the guide's fractions
+# out of the form and enters the personal part: $5,800 - $604.16 = $5,195.84 (the exact product is
+# $604.1666..., which the guide prints truncated). The $5,800 is entered on "Other expenses" (7G), the
+# guide not naming a line. The guide prints no sales figure: the gross sales of $20,000 (line 8299)
+# are a chosen one, well above the claim, so the net business income (line 9946 before the claim,
+# T1 line 13500 after it) is $19,395.84, the engine's figure from those.
+#
+# Schedule 8 Part 4 ("Complete this part if you are reporting only self-employment income") is completed (ca/cpp_part_4_completed 1), as the form directs for a return whose only income is self-employment, so lines 42100, 22200 and 31000 are computed; the CPP-dependent lines of the return are the engine's, not CRA's.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the net business income of one sole proprietorship
+  reported on one Form T2125 for a full fiscal period (0 days entered): chosen gross sales of $20,000
+  (line 8299) and, in Part 7, the annual household expenses of Guide T4002's James, $5,800 on other expenses
+  (7G), of which $5,195.84 is the personal-use part (7I), so the subtotal (7J) is $604.16, the business-use-of-home
+  claim (line 9945) is $604.16 and the net business income (line 9946 less the claim, T1 line 13500) is
+  $19,395.84.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed page 67,
+    "Line 9945 – Business-use-of-home expenses", the example of James: "James runs a business, for example
+    a daycare, from his home weekdays from 7 am to 5 pm (10 hours out of a 24-hour day). The business
+    uses an area of 35 square metres. The house is 100 square metres, and the annual household expenses
+    are $5,800."; "(10 ÷ 24 hours) × (35 ÷ 100 metres) × $5,800 expenses = $845.83"; "$845.83 × 5 ÷ 7
+    days = $604.16"; "James can deduct $604.16 for his household expenses."; "The amount you can deduct
+    for business-use-of-home expenses cannot be more than your net income from the business before you
+    deduct these expenses."
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities (docs/cra-forms-2025/t2125-25e.pdf,
+    confirmed from the PDF with pdftotext -layout), Part 7 "Calculating business-use-of-home expenses":
+    "Other expenses (specify):", "Subtotal: Add amounts 7A to 7G.", "Personal-use part of the business-use-of-home
+    expenses", "Subtotal: Amount 7H minus amount 7I" and "Allowable claim: Amount 7M or 7N above, whichever
+    is less (enter your share of this amount on line 9945 of Part 5)".
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/t2125_statements:
+    - ca/business_income_line: "1"
+      ca/business_gross_sales: "20000"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "5800"
+      ca/business_home_personal_use_part: "5195.84"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_vehicles: []
+  ca/schedule_8_instances:
+    - {}
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_part_4_completed: "1"
+expected:
+  ca/t2125:
+    - ca/business_home_expenses_subtotal: "5800"
+      ca/business_home_allowable_claim: "604.16"
+      ca/business_home_expenses: "604.16"
+      ca/business_net_income_after_adjustments: "20000"
+      ca/business_income: "19395.84"
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "240.24"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/gross_business_income: "20000"
+      ca/net_income_before_adjustments: "18291.07"
+      ca/other_payments_limit_income: "18291.07"
+      ca/refund_or_balance_owing: "458.02"

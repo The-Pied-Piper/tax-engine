@@ -1,0 +1,620 @@
+# Return JK (the advanced Canada workers benefit, T1 line 41500, from Schedule 6 Step 4): a single
+# 2025 Ontario resident with employment income of $10,000 who received $2,000 of advance Canada
+# workers benefit payments (box 10 of the RC210 slip, Schedule 6 line 44 and line 38120). The
+# benefit (line 28 and T1 line 45300) is $1,633.00: 27% of the $7,000 over $3,000 is $1,890.00,
+# capped at $1,633.00, with no reduction as the net income is under $26,855. Schedule 6 line 43 is
+# that $1,633.00, line 46 is $2,000 (line 44 plus the spouse's line 45 of $0), line 48 is $2,000
+# (plus the disability supplement of line 47, $0) and line 49 is the lesser of lines 43 and 48,
+# $1,633.00, so the advanced Canada workers benefit (line 41500) is $1,633.00, not the $2,000
+# received. It is added to the net federal tax
+# (line 42000) of $0, so the total payable is $1,633.00; the credits are the $500 of tax deducted
+# and the benefit of $1,633.00, $2,133.00, so the balance (line 167) is $1,633.00 - $2,133.00 =
+# -$500.00, a refund of $500.00. Without the advance payments the refund is $2,133.00. Schedule 6's
+# conditions are all met (resident in Canada throughout 2025, 19 or older, no full-time student
+# bar, no prison and no officer of another country), so the benefit is not withheld.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident who received 2000 of advance Canada workers benefit payments (box 10 of
+  the RC210 slip, a chosen figure), so line 41500 is the lesser of the benefit of 1633.00 and
+  the 2000 received, 1633.00. Employment income of 10000, no capital gain, no unused or new RRSP contributions, no union
+  dues and no deductions from net income, among them no net capital losses of other years
+  (T1 line 25300). The CPP contributions are computed from employment
+  income by Schedule 8's tiers: base contributions 4.95% x (10000 - 3500) = 321.75, first
+  additional 1% x 6500 = 65.00, no second additional below the 71300 ceiling, so enhanced
+  contributions of 65.00. The EI premiums are Form T2204 line 16, from T4 insurable earnings of
+  10000 and premiums deducted of 164.00 (= 1.64% x 10000): 164.00. The contributions available to
+  deduct (Schedule 7 line 10) are the unused
+  contributions (line 1) of 0 plus the contributions (line 4) of 0: 0. The most that may be
+  deducted (line 17) is the lesser of them and the deduction limit (line 11) of 1800, a
+  chosen limit: 0. The amount deducted (line 18) is that 0, so the RRSP deduction (line 20)
+  is 0, the unused contributions carried forward (line 23) are 0 - 0 = 0. With no eligible
+  child and no child care expenses paid, the child care expenses deduction (T778 line 7) is
+  the least of the basic limit 0 x 8000 + 0 x 11000 + 0 x 5000 = 0, the 0 paid and
+  two-thirds of the earned income of 10000, 6666.666..., rounded half-up to the cent:
+  6666.67: 0. So the enhanced contributions are the only deduction from total income that
+  is not zero.
+  Net income and taxable income are 9935.00. The Canada employment amount is the
+  lesser of 1471 and the employment income of 10000: 1471. The federal basic personal
+  amount is computed from net income by the Federal Worksheet: 9935.00 is at or below
+  its 177882 threshold, so it is the base amount 14538 plus the whole supplement
+  amount 1591, 16129, rounded half-up to the cent. With no eligible dependant and
+  no infirm child, the amount for an eligible dependant (16129 less a dependant's
+  net income of 0 federally, 11905.00 less it at most 10823 for Ontario) is claimed
+  for 0 eligible dependants and the amount for infirm children is 0 x 2687: each 0. Born
+  in 1961 or later, the age amount (9028 less 15% of net income over 45522, nothing) is
+  claimed for 0 filers born in 1960 or earlier: 0. With a spouse's net income of 0 and no
+  spouse amount claimed, the spouse amount (16129 less 0) and the Canada caregiver amount
+  for the spouse (28798 less 0, at most 8601, less the spouse amount) are each claimed
+  for 0: 0.
+  The federal total of credit amounts is its basic personal amount plus those two zeros,
+  321.75, 164.00 and 1471; the Ontario total is its basic personal amount plus its zero,
+  321.75 and 164.00 (ON428 has no Canada employment amount). Each form's non-refundable tax
+  credits are its total times its rate (14.5% of 18085.75 = 2622.43375, rounded half-up to
+  the cent: 2622.43; 5.05% of 13232.75 = 668.253875, rounded half-up to the cent: 668.25);
+  each exceeds its tax (14.5% of 9935.00 = 1440.575, rounded half-up to the cent: 1440.58;
+  5.05% of it = 501.7175, rounded half-up to the cent: 501.72), leaving zero. An Ontario tax
+  of zero is below the first surtax threshold, so the surtax is zero and the Ontario tax
+  with surtax is zero. With no dependent children and no dependants, the Ontario tax
+  reduction amounts are the basic reduction of 294.00, and the reduction is twice them less
+  the tax of zero: 588.00, which leaves an Ontario tax after the reduction of zero, not a
+  refund. The LIFT credit (Schedule ON428-A) is 5.05% of the employment income,
+  505, below its 875 maximum, less 5% of net income over 32500, nothing as 9935.00 is below
+  it: 505, more than the Ontario tax after the reduction of zero, so the Ontario tax after
+  the LIFT credit is zero. With chosen qualifying donations of 0, the community food program
+  donation tax credit for farmers (line 87) is 25% x 0 = 0 and the Ontario tax after it (line
+  88) is 0 less 0, zero. A taxable income of 9935.00 is at or below the health premium chart's
+  first threshold of 20000, so the premium is zero and the Ontario tax is zero. The net
+  federal tax is the federal tax after credits, zero, and the total payable is it plus the
+  Ontario tax, zero. The Canada workers benefit (Schedule 6) with no eligible spouse or
+  dependant is 27% of the working income, the employment income of 10000, over 3000: 1890,
+  at most 1633, less 15% of the adjusted family net income, the net income, over 26855,
+  nothing as 9935.00 is below it: 1633; with one it would be 1890, at most 2813, less
+  nothing over 30639: 1890. With 0 Schedule 6 eligible dependants the first applies: 1633.
+  With no fertility treatment expenses, no child care expenses deduction (so the Ontario CARE
+  credit, Schedule ON479-A, has a family adjusted income of 9935.00 + 0 + 0 = 9935.00, which
+  is at most 20000 and gives a rate of 75%, and line 8 is 0 x 75% = 0), no seniors' transit
+  amount paid, no political contributions (federal or Ontario), no Form T1221 slips and no
+  co-operative education work placements (a chosen payroll of 0), the Ontario credits (ON479
+  lines 1, 2, 14, 16, 17, 18, 20 and 21) and the provincial credits (T1 line 47900) are 0, as
+  is the federal political contribution tax credit (T1 line 41000). With no amount on line
+  21500 and no medical claim (line 33200), the refundable medical expense supplement (T1 line
+  45200, Federal Worksheet) is 0: its line 11 is 0, so its line 16 is 0, for a filer resident
+  in Canada throughout 2025 and 18 or older at the end of 2025 (counts of 1) with working
+  income of 10000, $4,390 or more.
+  With no net business, professional, commission, farming or fishing income (T1 lines
+  13500 to 14300), line 27 is 0; the CPP months (Schedule 8 box A) are 12, so Part 2's
+  line C is 9900.00, and with Schedule 8 Part 4 not completed and no agreement for EI special
+  benefits, lines 22200, 31000, 31217, 42100 and 42120 are 0, whatever Part 4 and Schedule 13
+  work out.
+  The income tax deducted is a chosen 500, so the total credits are 500 plus the benefit
+  plus the provincial credits, 2133, and the refund or balance owing is 0 less 2133: -2133,
+  a refund. Every amount computed from a rate, fraction, amount or chart on the forms is
+  rounded half-up to the cent, each line being a dollars-and-cents box; here that changes
+  Form T778 line 6, the federal and Ontario tax on taxable income and both forms'
+  non-refundable tax credits. The lines that only add, subtract, compare or choose take
+  amounts already in cents, so the refund or balance owing is in cents too.
+sources:
+  - >-
+    T1, Federal Worksheet, Schedule 3, Schedule 5, Schedule 6, Schedule 7, Schedule 8, ON428,
+    Schedule ON428-A, T778 and EI table arithmetic on the 2025 figures.
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "10000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "10000"
+  # T4 boxes 24 (= 14) and 18: the premium required on it, Form T2204 line 16 (line 31200).
+  ca/t2204_insurable_earnings: "10000"
+  ca/t2204_premiums_deducted: "164.00"
+  ca/cpp_t4_base_and_first_additional_contributions: "386.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/qsbcs_dispositions: []
+  ca/qffp_dispositions: []
+  ca/qffp_foreclosure_dispositions: []
+  ca/share_dispositions: []
+  ca/real_estate_dispositions: []
+  ca/bond_dispositions: []
+  ca/crypto_asset_dispositions: []
+  ca/other_foreclosure_dispositions: []
+  ca/personal_use_property_dispositions: []
+  ca/listed_personal_property_dispositions: []
+  ca/unapplied_listed_personal_property_losses: "0"
+  ca/capital_gains_deferral: "0"
+  ca/slip_capital_gains_or_losses: "0"
+  ca/t3_capital_gains_or_losses: "0"
+  ca/other_employment_income: "0"
+  ca/old_age_security: "0"
+  ca/cpp_or_qpp_benefits: "0"
+  ca/other_pensions_and_superannuation: "0"
+  ca/universal_child_care_benefit: "0"
+  ca/ei_and_other_benefits: "0"
+  ca/t3_taxable_dividends_other_than_eligible: "0"
+  ca/t4ps_taxable_dividends_other_than_eligible: "0"
+  ca/t5_taxable_dividends_other_than_eligible: "0"
+  ca/t5013_taxable_dividends_other_than_eligible: "0"
+  ca/t3_taxable_dividends: "0"
+  ca/t4ps_taxable_dividends: "0"
+  ca/t5_taxable_dividends: "0"
+  ca/t5013_taxable_dividends: "0"
+  ca/eligible_dividends_received_without_a_slip: "0"
+  ca/other_dividends_received_without_a_slip: "0"
+  ca/t3_dividend_tax_credit: "0"
+  ca/t4ps_dividend_tax_credit: "0"
+  ca/t5_dividend_tax_credit: "0"
+  ca/t5013_dividend_tax_credit: "0"
+  ca/t3_investment_income: "0"
+  ca/t5_investment_income: "0"
+  ca/t5013_investment_income: "0"
+  ca/investment_income_credited_not_received: "0"
+  ca/tax_refund_interest: "0"
+  ca/foreign_investment_income: "0"
+  ca/investment_income_without_a_slip: "0"
+  ca/investment_royalties: "0"
+  ca/investment_income_reported_in_previous_years: "0"
+  ca/net_partnership_income: "0"
+  ca/rdsp_income: "0"
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes: []
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/taxable_support_payments: "0"
+  ca/rrsp_income: "0"
+  ca/fhsa_income: "0"
+  ca/other_fhsa_income: "0"
+  ca/other_income: "0"
+  ca/taxable_scholarships: "0"
+  ca/workers_compensation_benefits: "0"
+  ca/social_assistance_payments: "0"
+  ca/net_federal_supplements: "0"
+  ca/uccb_repayment: "0"
+  ca/rdsp_income_repayment: "0"
+  ca/canadian_armed_forces_and_police_deduction: "0"
+  ca/limited_partnership_losses_of_other_years: "0"
+  ca/non_capital_losses_of_other_years: "0"
+  ca/net_capital_losses_before_may_23_1985: "0"
+  ca/pre_1986_deductions_before_1988: "0"
+  ca/pre_1986_deductions_1988_and_1989: "0"
+  ca/pre_1986_deductions_1990_to_1999: "0"
+  ca/pre_1986_deductions_2000: "0"
+  ca/pre_1986_deductions_2001_to_2024: "0"
+  ca/unapplied_net_capital_losses_1985_to_1987: "0"
+  ca/unapplied_net_capital_losses_1988_and_1989: "0"
+  ca/unapplied_net_capital_losses_1990_to_1999: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/unapplied_net_capital_losses_2001_to_2024: "0"
+  ca/net_capital_losses_claimed: "0"
+  ca/additional_deductions: "0"
+  ca/other_payments_deduction_above_limit: "0"
+  ca/unused_rrsp_contributions: "0"
+  ca/rrsp_contributions: "0"
+  ca/rrsp_deduction_limit: "1800"
+  ca/rrsp_amount_deducted: "0"
+  ca/union_dues: "0"
+  ca/rpp_deduction: "0"
+  ca/support_payments_deduction: "0"
+  ca/exploration_and_development_expenses: "0"
+  ca/other_deductions: "0"
+  ca/total_carrying_charges: "0"
+  ca/total_interest_expenses: "0"
+  ca/total_other_expenses: "0"
+  ca/capital_gains_deductions_1985_to_1987: "0"
+  ca/capital_gains_deductions_1988_and_1989_other_than_eligible_capital_property: "0"
+  ca/capital_gains_deductions_1988_and_1989_eligible_capital_property: "0"
+  ca/capital_gains_deductions_1990_to_1999: "0"
+  ca/capital_gains_deductions_2000: "0"
+  ca/capital_gains_deductions_2001_to_2024: "0"
+  ca/other_business_investment_loss_reductions_1986_to_1994: "0"
+  ca/other_business_investment_loss_reductions_1994_to_1996: "0"
+  ca/other_business_investment_loss_reductions_1997_to_1999: "0"
+  ca/other_business_investment_loss_reductions_2000: "0"
+  ca/other_business_investment_loss_reductions_2001_to_2023: "0"
+  ca/other_business_investment_loss_reductions_2024: "0"
+  ca/business_investment_loss: "0"
+  ca/fhsa_contributions_in_2025: "0"
+  ca/fhsa_contributions_in_2025_after_first_qualifying_withdrawal: "0"
+  ca/fhsa_variable_b_amount: "0"
+  ca/fhsa_designated_withdrawals_in_2025: "0"
+  ca/fhsa_contributions_in_2024: "0"
+  ca/fhsa_contributions_in_2024_before_first_qualifying_withdrawal: "0"
+  ca/fhsa_carryforward_for_2025: "0"
+  ca/fhsa_rrsp_transfers_in_2024_and_prior_years: "0"
+  ca/fhsa_rrsp_transfers_in_2025: "0"
+  ca/fhsa_designated_transfers_in_2024_and_prior_years: "0"
+  ca/fhsa_designated_transfers_in_2025: "0"
+  ca/fhsa_variable_h_amount: "0"
+  ca/fhsa_carryforward_for_2024: "0"
+  ca/fhsa_variable_f_amount: "0"
+  ca/fhsa_annual_limits_for_2024_and_prior_years: "0"
+  ca/fhsa_deductions_for_2024_and_prior_years: "0"
+  ca/fhsa_unused_contributions_brought_forward: "0"
+  ca/fhsa_contributions_deducted: "0"
+  ca/fhsa_maximum_participation_period_ended: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpt20_earnings: "0"
+  ca/cpp_part_4_completed: "0"
+  ca/ei_controlled_corporation_earnings: "0"
+  ca/ei_exempt_self_employment_income: "0"
+  ca/ei_insurable_earnings: "0"
+  ca/ei_special_benefits_agreement: "0"
+  ca-on/dependent_children: "0"
+  ca-on/dependants: "0"
+  ca/eligible_dependants: "0"
+  ca/dependant_net_income: "0"
+  ca/infirm_dependants: []
+  ca/medical_expenses: "0"
+  ca/other_dependants: []
+  ca-on/caregiver_dependants: []
+  ca/disability_dependants: []
+  ca/infirm_children: "0"
+  ca/born_in_1960_or_earlier: "0"
+  ca/spouse_net_income: "0"
+  ca/spouses_claimed: "0"
+  ca/spouse_caregiver_eligible: "0"
+  ca/child_care_expenses_paid: "0"
+  ca/children_under_seven: "0"
+  ca/children_with_disability: "0"
+  ca/children_seven_to_sixteen: "0"
+  ca/cwb_eligible_dependants: "0"
+  ca/income_tax_deducted: "500"
+  ca/part_xii_2_tax_credit: "0"
+  ca/employee_and_partner_gst_hst_rebate: "0"
+  ca/educator_supplies_expenses: "0"
+  ca/tax_paid_by_instalments: "0"
+  ca/itc_recapture_expenditure_at_15_percent: "0"
+  ca/itc_recapture_expenditure_at_20_percent: "0"
+  ca/labour_sponsored_funds_net_cost: "0"
+  ca/acwb_paid_to_you: "2000"
+  ca/acwb_paid_to_spouse: "0"
+  ca/acwb_disability_supplement_paid: "0"
+  ca/resp_aips_received_part_a: "0"
+  ca/resp_aips_rrsp_contributions: "0"
+  ca/resp_aips_reduction_used_in_previous_years: "0"
+  ca/resp_aips_received_part_b: "0"
+  ca/resp_aips_part_a_applies: "0"
+  ca/rl_10_labour_sponsored_fund_amount: "0"
+  ca-on/opportunities_fund_donation: "0"
+  ca-on/fertility_expenses: "0"
+  ca-on/claims_seniors_care_credit: "0"
+  ca-on/applies_for_energy_and_property_tax_credit: "0"
+  ca-on/applies_for_northern_energy_credit: "0"
+  ca-on/chooses_single_benefit_payment: "0"
+  ca-on/applies_for_senior_homeowners_grant: "0"
+  ca-on/separate_residences_for_medical_reasons: "0"
+  ca-on/lived_in_student_residence: "0"
+  ca-on/rent_paid: "0"
+  ca-on/property_tax_paid: "0"
+  ca-on/reserve_home_energy_costs: "0"
+  ca-on/public_long_term_care_paid: "0"
+  ca-on/seniors_transit_paid: "0"
+  ca-on/flow_through_share_slips: []
+  ca-on/coop_education_payroll: "0"
+  ca-on/coop_education_placements: []
+  ca-on/community_food_program_donations: "0"
+  ca/charitable_donations: "0"
+  ca/government_donations: "0"
+  ca/university_donations_outside_canada: "0"
+  ca/foreign_charity_donations: "0"
+  ca/ecological_and_cultural_gifts: "0"
+  ca/ecological_gifts_before_2016: "0"
+  ca/depreciable_gift_recaptured_depreciation: "0"
+  ca/depreciable_gift_net_proceeds: "0"
+  ca/depreciable_gift_capital_cost: "0"
+  ca/capital_gift_taxable_gains: "0"
+  ca/capital_gift_gains_deduction: "0"
+  ca-on/political_contributions: "0"
+  ca-on/care_supporting_persons_adjusted_income: "0"
+  ca/political_contributions: "0"
+  ca/t777_other_expenses: "0"
+  ca/wage_loss_replacement_plan_income: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/spouse_net_income_before_adjustments: "0"
+  ca/spouse_uccb_repayment: "0"
+  ca/spouse_rdsp_income_repayment: "0"
+  ca/spouse_universal_child_care_benefit: "0"
+  ca/spouse_rdsp_income: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_capital_gains: "0"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "10000.00"
+      ca/taxable_dividends_other_than_eligible: "0"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/net_rental_income: "0"
+      ca/total_income: "10000"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_self_employment_income: "0"
+      ca/cpp_payable_on_self_employment: "0"
+      ca/cpp_base_contributions_on_self_employment: "0"
+      ca/cpp_deduction_on_self_employment: "0"
+      ca/ei_premiums_on_self_employment: "0"
+      ca/ei_payable_on_self_employment: "0"
+      ca/ei_premiums: "164.00"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/unused_rrsp_contributions_carried_forward: "0"
+      ca/child_care_limit_for_children_under_seven: "0"
+      ca/child_care_limit_for_children_with_disability: "0"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0"
+      ca/child_care_basic_limit: "0"
+      ca/child_care_earned_income: "10000"
+      ca/child_care_earned_income_limit: "6666.67"
+      ca/child_care_expenses: "0"
+      ca/deductions_from_total_income: "65.00"
+      ca/net_income: "9935.00"
+      ca/amt_part_1_subtotal: "9935.00"
+      ca/amt_applicable_rate_amount: "32.50"
+      ca/amt_adjusted_income_with_gains: "9935.00"
+      ca/net_income_before_adjustments: "9935.00"
+      ca/fhsa_unused_contributions_carried_forward: "0"
+      ca/other_payments_limit_income: "9935.00"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/net_capital_loss_balance_before_may_23_1985: "0.00"
+      ca/net_capital_loss_balance_1985_to_1987: "0.00"
+      ca/net_capital_loss_balance_1988_and_1989: "0.00"
+      ca/net_capital_loss_balance_1990_to_1999: "0.00"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/net_capital_loss_balance_2001_to_2024: "0.00"
+      ca/deductions_from_net_income: "0"
+      ca/taxable_income: "9935.00"
+      ca/federal_basic_tax: "1440.58"
+      ca/basic_personal_amount: "16129"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0"
+      ca/spouse_amount_basis: "16129"
+      ca/spouse_amount_before_count: "16129"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0"
+      ca/canada_employment_amount: "1471"
+      ca/non_refundable_credit_amounts: "18085.75"
+      ca/non_refundable_tax_credits: "2622.43"
+      ca/federal_tax_after_credits: "0"
+      ca-on/ontario_basic_tax: "501.72"
+      ca-on/basic_personal_amount: "12747"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/non_refundable_credit_amounts: "13232.75"
+      ca-on/non_refundable_tax_credits: "668.25"
+      ca-on/ontario_tax_after_credits: "0"
+      ca-on/ontario_surtax: "0"
+      ca-on/ontario_tax_with_surtax: "0"
+      ca-on/dividends_amount_a: "0"
+      ca-on/dividends_amount_b: "0"
+      ca-on/other_dividends_credit: "0"
+      ca-on/dividends_amount_a_less_b: "0"
+      ca-on/eligible_dividends_credit: "0"
+      ca-on/dividend_tax_credit: "0"
+      ca-on/ontario_tax_before_dividend_credit: "0"
+      ca-on/ontario_tax_less_dividend_credit: "0"
+      ca-on/dividend_credit_from_line_57: "0"
+      ca-on/ontario_tax_after_dividend_credit: "0"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0"
+      ca-on/tax_reduction_for_dependants: "0"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "588.00"
+      ca-on/ontario_tax_after_reduction: "0"
+      ca-on/lift_credit_before_maximum: "505"
+      ca-on/lift_maximum_credit: "505"
+      ca-on/lift_reduction: "0"
+      ca-on/lift_credit: "505"
+      ca-on/ontario_tax_after_lift_credit: "0"
+      ca-on/community_food_program_credit: "0"
+      ca-on/ontario_tax_after_food_credit: "0"
+      ca-on/ontario_health_premium: "0"
+      ca-on/ontario_tax: "0"
+      ca/itc_recapture_at_15_percent: "0"
+      ca/itc_recapture_at_20_percent: "0"
+      ca/itc_recapture: "0"
+      ca/federal_tax_with_itc_recapture: "0"
+      ca/political_credit_before_maximum: "0"
+      ca/political_credit: "0"
+      ca/labour_sponsored_funds_credit_before_maximum: "0"
+      ca/labour_sponsored_funds_credit: "0"
+      ca/credits_against_federal_tax: "0"
+      ca/federal_tax_less_credits: "0"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000"
+      ca/resp_aips_limit_remaining: "50000"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0"
+      ca/resp_aips_part_b_tax: "0"
+      ca/resp_aips_additional_tax: "0"
+      ca/special_taxes: "0"
+      ca/net_federal_tax: "1633.00"
+      ca/total_payable: "1633.00"
+      ca/working_income: "10000"
+      ca/adjusted_family_net_income: "9935.00"
+      ca/cwb_before_reduction_without_dependant: "1633"
+      ca/cwb_reduction_without_dependant: "0"
+      ca/canada_workers_benefit_without_dependant: "1633"
+      ca/cwb_before_reduction_with_dependant: "1890.00"
+      ca/cwb_reduction_with_dependant: "0"
+      ca/canada_workers_benefit_with_dependant: "1890.00"
+      ca/canada_workers_benefit_line_28: "1633"
+      ca/cwb_eligible: "1"
+      ca/canada_workers_benefit: "1633"
+      ca/cwb_claimed: "1633"
+      ca/acwb_basic_paid: "2000"
+      ca/acwb_paid: "2000"
+      ca/advanced_canada_workers_benefit: "1633.00"
+      ca-on/fertility_credit_before_maximum: "0"
+      ca-on/fertility_credit: "0"
+      ca-on/care_adjusted_income: "9935.00"
+      ca-on/care_family_adjusted_income: "9935.00"
+      ca-on/care_credit_percentage: "0.75"
+      ca-on/care_credit: "0"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "9935.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/applies_for_energy_and_property_tax_credit: "0"
+      ca-on/applies_for_northern_energy_credit: "0"
+      ca-on/chooses_single_benefit_payment: "0"
+      ca-on/applies_for_senior_homeowners_grant: "0"
+      ca-on/separate_residences_for_medical_reasons: "0"
+      ca-on/lived_in_student_residence: "0"
+      ca-on/rent_paid: "0"
+      ca-on/property_tax_paid: "0"
+      ca-on/reserve_home_energy_costs: "0"
+      ca-on/public_long_term_care_paid: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0"
+      ca-on/seniors_transit_credit: "0"
+      ca-on/political_credit_before_maximum: "0"
+      ca-on/political_credit: "0"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0"
+      ca-on/ontario_credits_subtotal: "0"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_placement_count: "0"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0"
+      ca/provincial_credits: "0"
+      ca/medical_supplement_working_income: "10000"
+      ca/medical_supplement_line_6: "9935.00"
+      ca/medical_supplement_line_8: "0"
+      ca/medical_supplement_line_16: "0"
+      ca/refundable_medical_expense_supplement: "0"
+      ca/total_credits: "2133"
+      ca/refund_or_balance_owing: "-500.00"
+      ca/educator_supplies_expenses_at_most_maximum: "0"
+      ca/educator_school_supply_credit: "0"
+      ca/refund: "500.00"
+      ca-on/refund_before_donation: "500.00"
+      ca-on/net_refund: "500.00"
+      ca/amt_basic_federal_tax: "-1181.85"
+      ca/amt_federal_surtax_at_48_percent: "-567.29"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "1633.00"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "321.75"
+      ca/cpp_first_additional_contributions: "65.00"
+      ca/cpp_second_additional_contributions: "0"
+      ca/cpp_enhanced_contributions: "65.00"
+      ca/cpp_required_base_and_first_additional_contributions: "386.75"
+      ca/cpp_part_5_line_57: "321.75"
+      ca/cpp_part_5_line_69: "65.00"
+  ca/t776:
+    - ca/short_term_rental_gross_rents: "0"
+      ca/rental_gross_rents: "0"
+      ca/gross_rental_income: "0"
+      ca/rental_total_expenses: "0"
+      ca/rental_personal_portion: "0"
+      ca/rental_short_term_portion: "0"
+      ca/rental_non_compliant_expenses: "0"
+      ca/rental_expenses_less_personal_portion: "0"
+      ca/rental_deductible_expenses: "0"
+      ca/rental_net_income_before_adjustments: "0"
+      ca/rental_net_income_share: "0"
+      ca/rental_net_income_after_coowner_expenses: "0"
+      ca/rental_net_income_with_recapture: "0"
+      ca/rental_net_income_after_terminal_loss: "0"
+      ca/rental_net_income_after_cca: "0"
+      ca/rental_partner_share_with_rebate: "0"
+      ca/rental_partnership_net_income: "0"
+      ca/rental_closing_ucc: []
+      ca/rental_non_compliant_cca: "0"
+      ca/short_term_rental_non_compliant_cca_by_class: []

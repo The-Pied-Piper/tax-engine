@@ -1,0 +1,416 @@
+# Return BV: a single filer, a 2025 Ontario resident, with no employment income, a capital
+# gain of a chosen $360,000 on shares and a chosen $3,300 of foreign investment income (the
+# foreign dividends of two countries: $3,000 from the United States, on which a chosen $300
+# of tax was paid, and $300 from the United Kingdom, on which a chosen $150 was paid). The
+# capital gain makes Form T691 (alternative minimum tax) Part 5 line 11, "minimum tax
+# payable", positive: $1,104.98, because the minimum tax counts the whole gain while the
+# regular tax counts half of it, which no other worked return does. The total foreign tax,
+# $450, is more than $200, so Form T2036 line 2 is not the amount from line 3 of Form T2209
+# but, by note (1), for each country its line 1 divided by the total foreign taxes paid
+# (Form T691 Part 4 line 7, $300.00, divided by 66.6666%) plus line 8, times the special
+# foreign tax credit (Part 4 line 11, $358.50): the United States' line 2 is $239.00 and the
+# United Kingdom's $119.50, so line 3 is $61.00 and $30.50, each below its line 4, and the
+# total of line 5, and ON428 line 82, is $91.50 (the sheets' lines 3 of Form T2209 would
+# give a total of $34.30). Amounts are quoted decimal strings, never floats; counts are
+# quoted digit strings. A line or input this return leaves out is blank, 0; the lines this
+# return lists are checked, and the lines after Form T691 Part 5 (Part 6 onward, the Ontario
+# minimum tax of ON428 line 72, the net federal tax and the total payable) are not claimed.
+# The other variants (a total of foreign tax at or under $200 on one sheet and on two,
+# minimum tax not payable, and a zero divisor) are pinned in `end_to_end/test_return_bv.py`.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single filer, an Ontario resident for all of 2025, with no spouse or common-law partner
+  at any time in 2025 and no dependant, with no employment income (T1 line 10100, a chosen
+  $0), a capital gain and foreign investment income, and no deduction, credit or tax
+  deducted at source. The filer disposes of shares (Schedule 3, publicly traded shares and
+  other shares) for proceeds of disposition of a chosen $360,000.00 with an adjusted cost
+  base of $0.00 and no outlays and expenses, both chosen figures. Column 5, "Gain or loss
+  (column 2 minus columns 3 and 4)", is 360,000.00 - 0.00 - 0.00 = 360,000.00, which is the
+  "Line 4 and line 13200: Total gain or loss", and with no other property and no reserves
+  Part 3's "Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses" is
+  360,000.00. Part 5: "Line 23: Inclusion rate 50%", so "Line 24: Line 22 multiplied by the
+  percentage from line 23" is 360,000.00 x 50% = 180,000.00, and "Line 26 and line 19900:
+  Line 24 plus line 25" is 180,000.00 + 0.00 (no partnership interest at 100% inclusion),
+  which is entered on line 12700 of the return: the taxable capital gains, 180,000.00.
+  The foreign investment income is a chosen $3,300 in Canadian dollars: the dividends of the
+  United States, $3,000, and of the United Kingdom, $300. The Federal Worksheet for line
+  12100 has it on line 6 "Income from foreign sources, including foreign dividends, in
+  Canadian dollars"; the other lines are 0, so line 9 "Add lines 1 to 8." is 3,300, line 10
+  (reported in previous years) is 0 and line 11, and so line 12100, is 3,300 - 0 = 3,300. It
+  is not a dividend from a taxable Canadian corporation, so it has no gross-up and no
+  dividend tax credit. Total income (line 15000) is the sum of the income lines: 3,300 (line
+  12100) + 180,000.00 (line 12700) = 183,300.00. With no deduction (no CPP or EI, as there
+  is no employment income; no RRSP deduction, union dues or child care expenses) total
+  deductions are 0 and net income (line 23600) is 183,300.00, as is taxable income (line
+  26000), there being no deduction from net income.
+  Federal tax (T1 Step 5, Part A), taxable income in the column "Line 26000 is more than
+  $177,882 but not more than $253,414": line 70 is 183,300.00, line 71 is 177,882.00, line
+  72 is 183,300.00 - 177,882.00 = 5,418.00, line 74 is 5,418.00 x 29% = 1,571.22, line 75 is
+  36,495.57 and line 76, which line 119 enters and line 121 (line 40400, with a Form T1206
+  tax on split income of 0) carries, is 1,571.22 + 36,495.57 = 38,066.79. The basic personal
+  amount (line 30000, Federal Worksheet): line 23600 of 183,300.00 is more than $177,882 and
+  less than $253,414, so the calculation applies: line 1 is 14,538.00, line 2 is 1,591.00,
+  line 3 is 183,300.00, line 4 is 177,882.00, line 5 is 5,418.00, line 6 is 75,532.00, line
+  7 is 5,418.00 / 75,532.00, kept exact, line 8 is 1,591.00 and line 9 is 5,418.00 x
+  1,591.00 / 75,532.00 = 8,620,038.00 / 75,532.00 = 114.1243...; line 10 is 1,591.00 -
+  114.1243... and line 11 is 14,538.00 + 1,591.00 - 114.1243... = 16,014.8756..., rounded
+  half-up to the cent once: 16,014.88. The other credit amounts are 0 (no age amount, spouse
+  or dependant amounts, CPP, EI or Canada employment amount, as there is no employment
+  income), so line 33500 is 16,014.88 and line 33800 is 16,014.88 x 14.5% = 2,322.1576,
+  rounded half-up to the cent: 2,322.16. The top-up tax credit (Federal Worksheet for line
+  34990) is 0: line 3 is 2,322.16 + 0.00 (no donations, Schedule 9 line 22), line 4 is
+  8,319.38 and line 5 is 2,322.16 - 8,319.38, negative, so 0, as are lines 7 and 34990. Line
+  35000 is 2,322.16 + 0.00 + 0.00 = 2,322.16. There is no dividend tax credit (line 40425 is
+  0) and no minimum tax carryover (line 40427 is 0), so line 125 is 2,322.16 and line 126
+  (line 42900), the basic federal tax, is 38,066.79 - 2,322.16 = 35,744.63.
+  Form T2209, "Federal non-business foreign tax credit". Net income (note 3) is the amount
+  of line 23600 (line 23400, 183,300.00, less line 23500, 0, the social benefits repayment,
+  without the floor at 0) plus line 68360 of Form T1206, the total split income, 0, less the
+  deductions the note lists, which this return has none of: 183,300.00 - 0 = 183,300.00.
+  Basic federal tax (note 4) is "Line 42900 of your return plus any" "federal dividend tax
+  credit (line 40425 of your return)" "minus any" "federal refundable First Nations
+  abatement (line 44100 of your return)": 35,744.63 + 0.00 - 0.00 = 35,744.63. The form's
+  total foreign tax is 300 + 150 = 450, "more than $200", with more than one country, so the
+  calculation is worked "for each country on a separate sheet" and the total entered. United
+  States: line 1 (43100) is 300; line 2 is line 43300, 3,000, at most the net income of
+  183,300.00 (note 2), x 35,744.63 / 183,300.00 = 107,233,890.00 / 183,300.00 = 585.0185...,
+  rounded half-up to the cent: 585.02; line 3 is "whichever is less: the amount from line 1
+  or line 2": 300. United Kingdom: line 1 is 150; line 2 is 300 x 35,744.63 / 183,300.00 =
+  10,723,389.00 / 183,300.00 = 58.5018..., rounded: 58.50; line 3 is 58.50. The total of
+  line 3 is 300 + 58.50 = 358.50, which is less than the 35,744.63 of line 42900 and, the
+  business lines (4 to 12) not being wired, is line 13 "Federal foreign tax credit" (T1 line
+  129, line 40500), 358.50.
+  Form T691, alternative minimum tax. Part 1: line 1 is the taxable income of 183,300.00;
+  the film property (lines 2 to 4), rental and leasing property (5 to 7) and tax shelter (8
+  to 11) lines are 0, so line 12 "Add lines 1, 4, 7, and 11." is 183,300.00, which line 13
+  takes, and line 14 (resource property and flow-through shares) is 0. Line 15, "Amount from
+  line 19700 of Schedule 3", is 360,000.00; lines 16 to 18 are 0, so line 19 is 0 and line
+  20 is 360,000.00; line 21, "Amount from line 12700 of your return", is 180,000.00 and line
+  22 is 360,000.00 - 180,000.00 = 180,000.00. Line 20 is positive, so line 23 is the amount
+  from line 22, 180,000.00 (the non-taxable part of the gain). Lines 24 to 26 (gifts of
+  publicly listed securities) are 0, so line 27 "Add lines 13, 14, 23, and 26." is
+  183,300.00 + 0.00 + 180,000.00 + 0.00 = 363,300.00. Lines 28 to 32 (security options) are
+  0, so line 33, and line 34, are 363,300.00; lines 35 to 43 (further security options
+  deductions and the losses of other years) are 0, so line 44 "Add lines 34, 38, and 43." is
+  363,300.00; lines 45 to 78 (losses of other years, union dues, child care, the deductions
+  of lines 55 to 62, non-deductible expenses) are 0, so line 80 is 0.00 x 50% = 0.00 and
+  line 82, "Line 80 plus line 81", with line 81 "Enter the amount from line 44.", is
+  363,300.00, which line 83 takes. Lines 84 to 92 are 0: no dividends (lines 12000 and 12010
+  are 0, so lines 84 and 85 are 0.00), no lifetime capital gains exemption (line 25400 is 0)
+  and no capital gains deduction on a qualifying business transfer (line 25395 is 0). Line
+  93, "Adjusted taxable income", is 363,300.00 - 0.00 = 363,300.00; line 94, the basic
+  exemption, is 177,882.00 and line 95, "Net adjusted taxable income", is 363,300.00 -
+  177,882.00 = 185,418.00. Line 96 is 20.5% and line 97, "Gross minimum amount", is
+  185,418.00 x 20.5% = 38,010.69. Line 98 is "Net non-refundable tax credits (line 33800 of
+  your return)" x 50%: 2,322.16 x 50% = 1,161.08; lines 99 to 101 (donations and gifts, the
+  federal logging tax credit, the section 119 former resident credit) are 0, so line 102 is
+  1,161.08 and line 103, "Minimum amount", is 38,010.69 - 1,161.08 = 36,849.61.
+  Part 2: line 1, "Enter the amount from line 40400 of your return", is 38,066.79; line 2 is
+  the 2,322.16 of line 35000 and line 3 the dividend tax credit, 0.00, so line 4 is 2,322.16
+  and line 5, "Tax payable before minimum tax carryover", is 38,066.79 - 2,322.16 =
+  35,744.63. With no minimum tax carryover applied (line 6, from line 12 of Part 8, 0.00)
+  line 7, "Basic federal tax", is 35,744.63. Part 3: line 1 is 35,744.63; the federal surtax
+  on business income earned outside Canada (lines 2 to 4) is 0.00 as the filer is neither a
+  non-resident nor a deemed resident and has no amount on line 3, and there is no recapture
+  of investment tax credit (line 5), so line 6 is 35,744.63. Line 7, the federal foreign tax
+  credit from Form T2209, is 358.50 and line 8, the federal logging tax credit, 0.00, so
+  line 9 is 358.50 and line 10, the federal tax payable, is 35,744.63 - 358.50 = 35,386.13.
+  The political contribution, investment and labour-sponsored funds credits (lines 11 to 13)
+  are 0, so line 15, the regular net federal tax payable, is 35,386.13.
+  Part 4, the special foreign tax credit, with the chosen inputs of lines 2, 7 and 8 set to
+  the sheets of Form T2209: line 1 (foreign business income) is 0.00; line 2, "Foreign
+  non-business income (on which non-business income tax was paid to a foreign country)", is
+  the 3,000 + 300 = 3,300 of the two sheets' net foreign non-business income (line 43300);
+  line 3 (the non-taxable part of foreign capital gains) is 0.00, as the gain is not
+  foreign, so line 4, "Total foreign income", is 3,300; line 5 is 20.5% and line 6, "Foreign
+  income limit for special foreign tax credit", is 3,300 x 20.5% = 676.50. Line 7 is the
+  "Total non-business income tax paid to a foreign country", the 300 + 150 = 450 of the two
+  sheets' line 1, "x 66.6666%": 450 x 0.666666 = 299.9997, rounded half-up to the cent:
+  300.00; line 8, the "Total business income tax paid to a foreign country", is 0.00 (the
+  sheets of Form T2209 are non-business), so line 9, "line 7 plus line 8", is 300.00. Line
+  10, "whichever is less: amount from line 6 or line 9", is 300.00 and line 11, "whichever
+  is more: amount from line 7 of Part 3 or line 10", is the more of 358.50 and 300.00:
+  358.50, the special foreign tax credit. Part 5: line 1 is the minimum amount of 36,849.61,
+  line 2 the 358.50 of Part 4 line 11, so line 3, "Net minimum tax payable", is 36,849.61 -
+  358.50 = 36,491.11. Line 4 is the 35,386.13 of Part 3 line 15 and line 5 the federal
+  surtax of Part 3 line 4, 0.00, so line 6 is 35,386.13 and line 7 is 36,491.11 - 35,386.13
+  = 1,104.98. Lines 8 to 10 (the investment tax credit of Part 3 line 12 and its Part D
+  amount) are 0.00, so line 11, "Line 7 minus line 10 (if negative, enter "0")", is
+  1,104.98: positive, so "If line 11 is positive, complete parts 6 and 7" and the filer has
+  to pay minimum tax, which is the condition of Form T2036 line 2.
+  Ontario (Form ON428), the column "Line 1 is more than $150,000 but not more than
+  $220,000": line 1 is 183,300.00, line 3 is 150,000.00, line 4 is 183,300.00 - 150,000.00 =
+  33,300.00, line 6 is 33,300.00 x 12.16% = 4,049.28, line 7 is 12,445.60 and line 8 is
+  4,049.28 + 12,445.60 = 16,494.88. The only credit amount is the basic personal amount of
+  12,747 (line 9, so lines 18, 25, 35 and 44 are 12,747, line 41, the medical expenses of 0
+  less the lesser of $2,885 and 3% of net income, being 0), line 46 is 12,747 x 5.05% =
+  643.7235, rounded half-up to the cent: 643.72 (lines 47 to 49, the donations, are 0), so
+  line 50, and line 52, are 643.72 and line 53 is 16,494.88 - 643.72 = 15,851.16. With no
+  tax on split income and no dividend tax credit, line 62 is 15,851.16, line 65 is
+  15,851.16, line 66 is (15,851.16 - 5,710) x 20% = 2,028.232, rounded half-up to the cent:
+  2,028.23, line 67 is (15,851.16 - 7,307) x 36% = 3,075.8976, rounded: 3,075.90, line 68 is
+  2,028.23 + 3,075.90 = 5,104.13 and line 69 is 15,851.16 + 5,104.13 = 20,955.29. Line 70 is
+  0.00, so line 71 is 20,955.29. Form T2036 note (4): "If you were a resident of Ontario,
+  calculate this amount by entering "0" on lines 70 and 72 of Form ON428 and continue the
+  calculation. The result from line 81 is your provincial or territorial tax otherwise
+  payable." With "0" on line 72 line 73 is 20,955.29 + 0 = 20,955.29, line 77 is 294.00 and
+  line 78 is 588.00, less than line 79 (20,955.29), so line 80 is 0 and line 81 is 20,955.29
+  - 0 = 20,955.29, the tax otherwise payable.
+  Form T2036, "Provincial or Territorial Foreign Tax Credit", on the same two sheets, with
+  the net income of note (3), 183,300.00, and the tax otherwise payable of note (4),
+  20,955.29. Line 2 is not the sheet's line 3 of Form T2209 because the filer has to pay
+  minimum tax (Form T691 Part 5 line 11 is positive) and was "a resident of Ontario at the
+  end of the year", and the total non-business income taxes paid to all foreign countries,
+  300 + 150 = 450, "is more than $200", so for each country: "Take the amount from line 1 of
+  this form for that country."; "Divide it by the total foreign taxes paid for 2025 (to get
+  this total, add the amount on line 7 of Part 4 of Form T691, Alternative Minimum Tax,
+  divided by 66.6666% and the amount on line 8 of Part 4 of Form T691)": 300.00 / 0.666666 +
+  0.00 = 450.00045000045...; "Multiply that result by the special foreign tax credit on line
+  11 of Part 4 of Form T691": 358.50; "Enter the result on line 2 of the sheet for that
+  country." United States: line 1 is 300; line 2 is 300 x 358.50 / 450.00045000045... =
+  107,550.00 / 450.00045000045... = 238.9997..., rounded half-up to the cent once: 239.00;
+  line 3 is 300 - 239.00 = 61.00; line 4 is net foreign non-business income 3,000 x
+  20,955.29 / 183,300.00 = 62,865,870.00 / 183,300.00 = 342.9671..., rounded: 342.97; line 5
+  is "whichever amount is less: line 3 or line 4": 61.00. United Kingdom: line 1 is 150;
+  line 2 is 150 x 358.50 / 450.00045000045... = 53,775.00 / 450.00045000045... =
+  119.4998..., rounded: 119.50; line 3 is 150 - 119.50 = 30.50; line 4 is 300 x 20,955.29 /
+  183,300.00 = 6,286,587.00 / 183,300.00 = 34.2967..., rounded: 34.30; line 5 is 30.50.
+  "Enter the total from line 5 (for each country if applicable)" on ON428 line 82: 61.00 +
+  30.50 = 91.50, which "should not be more than the amount entered on the line for
+  provincial or territorial tax otherwise payable", 20,955.29, so line 82 is 91.50. (With
+  line 2 as the lines of Form T2209 give it, 300 and 58.50, line 3 would be 0.00 and 91.50,
+  line 5 0.00 and the lesser of 91.50 and 34.30, 34.30, and the total 34.30.) Every amount
+  computed from a rate, fraction, amount or chart on the forms is rounded half-up to the
+  cent, each line being a dollars-and-cents box; the lines that only add, subtract, compare
+  or choose take amounts already in cents.
+sources:
+  - >-
+    CRA, Form T2036 2025, Provincial or Territorial Foreign Tax Credit
+    (docs/cra-forms-2025/t2036-25e.pdf, confirmed 2026-10-23 from the PDF; no .txt
+    published): "If you paid tax to more than one foreign country, and the total of the
+    non-business income taxes that you paid to all foreign countries was more than $200, do
+    the calculation on a separate form for each country in Canadian dollars."; "Enter the
+    amount from line 1 of Form T2209."; "Enter the amount from line 3 of Form T2209, unless
+    you have to pay minimum tax.(1)"; "Line 1 minus line 2"; "Enter whichever amount is
+    less: line 3 or line 4."; "The amount on line 5 should not be more than the amount
+    entered on the line for provincial or territorial tax otherwise payable."; "Enter the
+    total from line 5 (for each country if applicable) on the line for the provincial or
+    territorial foreign tax credit of Form 428."; "If you were a resident of Ontario at the
+    end of the year, follow the instructions that apply to your situation:"; "If the total
+    non-business income taxes you paid to all foreign countries is more than $200, you must
+    calculate for each country:"; "Take the amount from line 1 of this form for that
+    country."; "Divide it by the total foreign taxes paid for 2025 (to get this total, add
+    the amount on line 7 of Part 4 of Form T691, Alternative Minimum Tax, divided by
+    66.6666% and the amount on line 8 of Part 4 of Form T691)."; "Multiply that result by
+    the special foreign tax credit on line 11 of Part 4 of Form T691."; "Enter the result on
+    line 2 of the sheet for that country."; "Enter the amount reported as net foreign
+    non-business income from line 2 of Form T2209."; "Enter the amount reported as net
+    income from line 2 of Form T2209."; "If you were a resident of Ontario, calculate this
+    amount by entering "0" on lines 70 and 72 of Form ON428 and continue the calculation.
+    The result from line 81 is your provincial or territorial tax otherwise payable.". The
+    two countries are the chosen United States (line 1 of 300, line 43300 income of 3,000)
+    and United Kingdom (150 and 300). Lines 1, 3 and 5 take amounts already in cents; lines
+    2 and 4 are dollars-and-cents boxes, rounded half-up to the cent once, from the exact
+    fraction.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2036/t2036-25e.pdf
+  - >-
+    CRA, Form T2209 2025, Federal Foreign Tax Credits (docs/cra-forms-2025/t2209-25e.pdf,
+    confirmed 2026-10-23 from the PDF; no .txt published): "If you paid tax to more than one
+    foreign country, and the total foreign taxes paid to all foreign countries was more than
+    $200, do the applicable calculation shown on this form for non-business and business
+    taxes paid to each country on a separate sheet in Canadian dollars. Enter the total
+    amount on this form."; "Non-business income tax paid to a foreign country (1)"; "Net
+    foreign non-business income (2)"; "Federal non-business foreign tax credit"; "Enter
+    whichever is less: the amount from line 1 or line 2."; "The amount on line 3 should not
+    be more than the total of the amount on line 42900 of your return plus any federal
+    surtax on income earned outside of Canada."; "Add lines 11 and 12."; "Enter the amount
+    from line 13 on line 40500 of your return.". The countries are those of Form T2036
+    above; line 44100 and the six deductions of note (3) are 0, and the business lines (4 to
+    12) are not wired.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf
+  - >-
+    CRA, Form T691 2025, Alternative Minimum Tax (docs/cra-forms-2025/t691-25e.pdf,
+    confirmed 2026-10-23 from the PDF; no .txt published): "Add lines 1, 4, 7, and 11.";
+    "Amount from line 19700 of Schedule 3"; "Amount from line 12700 of your return"; "If
+    line 20 is positive, enter the amount from line 22."; "Add lines 13, 14, 23, and 26.";
+    "Add lines 34, 38, and 43."; "Enter the amount from line 44."; "Line 80 plus line 81";
+    "Adjusted taxable income"; "Basic exemption"; "Net adjusted taxable income"; "Gross
+    minimum amount: line 95 multiplied by the percentage on line 96."; "Net non-refundable
+    tax credits"; "Add lines 98 to 101."; "Minimum amount"; "Enter the amount from line
+    40400 of your return"; "Tax payable before minimum tax carryover"; "Basic federal tax";
+    "Federal foreign tax credit from Form T2209"; "Federal tax payable"; "Regular net
+    federal tax payable"; "Foreign non-business income"; "Total foreign income: add lines 1
+    to 3 (if negative, enter "0")"; "Foreign income limit for special foreign tax credit:
+    line 4 multiplied by the percentage on line 5 (if negative, enter "0")."; "Total
+    non-business income tax"; "66.6666%"; "Total business income tax paid to a foreign
+    country (13)"; "Foreign taxes paid for special foreign tax credit:"; "Enter whichever is
+    less: amount from line 6 or line 9."; "Enter whichever is more: amount from line 7 of
+    Part 3 or line 10."; "Special foreign tax credit"; "Net minimum tax payable"; "Line 3
+    minus line 6 (if negative, enter "0")"; "Line 7 minus line 10 (if negative, enter "0")";
+    "If line 11 is positive, complete parts 6 and 7.". Line 93 is 363,300.00 and line 103 is
+    38,010.69 - 1,161.08 = 36,849.61; the amounts that are dollars-and-cents lines (lines
+    97, 98, 7) are rounded half-up to the cent, the owner's decision, as the form states no
+    rounding rule. The chosen inputs of lines 2, 7 and 8 of Part 4 are 3,300, 450 and 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+  - >-
+    CRA, the T1-2025 Ontario edition return (form 5006-R,
+    docs/cra-forms-2025/5006-r-25e.txt, confirmed 2026-10-23): "Line 70: Amount from line
+    26000"; "Line 71: 177,882.00"; "Line 73: Rate 29%"; "Line 74: Line 72 multiplied by the
+    percentage from line 73"; "Line 75: 36,495.57"; "Line 76: Line 74 plus line 75 Federal
+    tax on taxable income"; "Line 113 and line 33500: Line 106 plus line 112"; "Line 114:
+    Federal non-refundable tax credit rate 14.5%"; "Line 115 and line 33800: Line 113
+    multiplied by the percentage from line 114"; "Line 118 and line 35000: Add lines 115 to
+    117."; "Line 121 and line 40400: Line 119 plus line 120"; "Line 125: Add lines 122 to
+    124."; "Line 126 and line 42900: Line 121 minus line 125 (if negative, enter "0")";
+    "Line 129 and line 40500: Federal foreign tax credit (complete Form T2209)". Line 76 is
+    1,571.22 + 36,495.57 = 38,066.79; these lines take amounts already in cents except lines
+    74 and 115, which are dollars-and-cents boxes rounded half-up to the cent.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, the 2025 Federal Worksheet (form 5000-D1, docs/cra-forms-2025/5000-d1-25e.txt,
+    confirmed 2026-10-23), "Line 12100 - Interest and other investment income": "Line 6:
+    Income from foreign sources, including foreign dividends, in Canadian dollars"; "Line 9:
+    Add lines 1 to 8."; "Line 11: Line 9 minus line 10."; "Line 30000 - Basic personal
+    amount"; "Line 1: Base amount 14,538.00"; "Line 2: Supplement amount 1,591.00"; "Line 4:
+    Income threshold 177,882.00"; "Line 6: 75,532.00"; "Line 7: Line 5 divided by line 6";
+    "Line 8: 1,591.00"; "Line 9: Line 7 multiplied by line 8"; "Line 10: Line 2 minus line 9
+    (if negative, enter "0")"; "Line 11: Line 1 plus line 10"; "Line 34990 - Top-up tax
+    credit"; "Line 4: 8,319.38"; "Line 5: Line 3 minus line 4 (if negative, enter "0")";
+    "Line 6: Applicable rate 3.45%". The basic personal amount's line 7 is kept exact and
+    the amount, 16,014.8756..., rounds half-up to the cent once (the dataset
+    ca/basic_personal_amount, after T4127's rule): 16,014.88. The top-up credit's lines 5
+    and 7 are 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, the 2025 Schedule 3 (form 5000-S3, docs/cra-forms-2025/5000-s3-25e.txt, confirmed
+    2026-10-23): "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; "Line 4 and
+    line 13200: Total gain or loss (add all the amounts under column 5)"; "Line 21 and line
+    19700: Line 19 plus line 20 Total capital gains or losses"; "Line 23: Inclusion rate
+    50%"; "Line 24: Line 22 multiplied by the percentage from line 23"; "Line 26 and line
+    19900: Line 24 plus line 25 If positive, enter the result on line 12700 of your
+    return.". The share is a chosen 360,000.00 of proceeds with no adjusted cost base or
+    outlays.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+  - >-
+    CRA, the 2025 ON428 (form 5006-C, docs/cra-forms-2025/5006-c-25e.txt, confirmed
+    2026-10-23): "Column 4: Line 1 is more than $150,000 but not more than $220,000"; "Line
+    3: 150,000.00"; "Line 4: Line 2 minus line 3 (cannot be negative)"; "Line 5: Rate
+    12.16%"; "Line 7: 12,445.60"; "Line 8: Line 6 plus line 7 Ontario tax on taxable
+    income"; "Line 9 and line 58040: Basic personal amount Claim $12,747"; "Line 45: Ontario
+    non-refundable tax credit rate 5.05%"; "Line 46 and line 58840: Line 44 multiplied by
+    the percentage from line 45"; "Line 50 and line 61500: Line 46 plus line 49 Enter this
+    amount on line 52. Ontario non-refundable tax credits"; "Line 53: Line 51 minus line 52
+    (if negative, enter "0")"; "Line 66: (Line 65"; "minus $5,710) multiplied by 20% (if
+    negative, enter "0")"; "minus $7,307) multiplied by 36% (if negative, enter "0")"; "Line
+    68: Line 66 plus line 67"; "Line 69: Line 62 plus line 68"; "Line 71: Line 69 minus line
+    70 (if negative, enter "0")"; "Line 72: If you entered an amount on line 11 of Part 5 of
+    Form T691, use Worksheet ON428 to calculate your additional tax for minimum tax
+    purposes."; "Line 73: Line 71 plus line 72"; "Line 80: Line 78 minus line 79 (if
+    negative, enter "0") Ontario tax reduction"; "Line 81: Line 73 minus line 80 (if
+    negative, enter "0")"; "Line 82: Provincial foreign tax credit (complete Form T2036)".
+    Line 6 is 4,049.28, line 46 is 643.7235, rounded half-up to 643.72, and lines 66 and 67
+    are 2,028.232 and 3,075.8976, rounded to 2,028.23 and 3,075.90; the other lines take
+    amounts already in cents.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+inputs:
+  ca/employment_income: "0"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "360000"
+      ca/disposition_adjusted_cost_base: "0"
+      ca/disposition_outlays: "0"
+  ca/foreign_investment_income: "3300"
+  ca/foreign_tax_countries:
+    - ca/foreign_non_business_tax_paid: "300"
+      ca/net_foreign_non_business_income: "3000"
+      ca/foreign_business_tax_paid: "0"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "0"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+    - ca/foreign_non_business_tax_paid: "150"
+      ca/net_foreign_non_business_income: "300"
+      ca/foreign_business_tax_paid: "0"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "0"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  ca-on/return:
+    - ca/capital_gain: "360000"
+      ca/taxable_capital_gains: "180000.00"
+      ca/schedule_3_line_19900: "180000.00"
+      ca/investment_income_before_prior_years: "3300"
+      ca/interest_and_other_investment_income: "3300"
+      ca/total_income: "183300.00"
+      ca/net_income: "183300.00"
+      ca/taxable_income: "183300.00"
+      ca/federal_basic_tax: "38066.79"
+      ca/basic_personal_amount: "16014.88"
+      ca/non_refundable_credit_amounts: "16014.88"
+      ca/non_refundable_tax_credits: "2322.16"
+      ca/credits_against_basic_federal_tax: "2322.16"
+      ca/federal_tax_after_credits: "35744.63"
+      ca/foreign_tax_credit_net_income: "183300.00"
+      ca/foreign_tax_credit_basic_federal_tax: "35744.63"
+      ca/foreign_tax_credit_sheets:
+        - ca/foreign_non_business_tax_paid: "300"
+          ca/net_foreign_non_business_income: "3000"
+          ca/foreign_tax_credit_sheet_line_3: "300"
+          ca/foreign_business_tax_paid: "0"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "0"
+          ca/foreign_surtax_outside_canada: "0"
+        - ca/foreign_non_business_tax_paid: "150"
+          ca/net_foreign_non_business_income: "300"
+          ca/foreign_tax_credit_sheet_line_3: "58.50"
+          ca/foreign_business_tax_paid: "0"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "0"
+          ca/foreign_surtax_outside_canada: "0"
+      ca/federal_non_business_foreign_tax_credit: "358.50"
+      ca/federal_foreign_tax_credit: "358.50"
+      ca/amt_adjusted_taxable_income: "363300.00"
+      ca/amt_net_adjusted_taxable_income: "185418.00"
+      ca/amt_gross_minimum_amount: "38010.69"
+      ca/amt_non_refundable_credits_adjustment: "1161.08"
+      ca/amt_minimum_amount: "36849.61"
+      ca/amt_basic_federal_tax: "35744.63"
+      ca/amt_total_foreign_income: "3300"
+      ca/amt_foreign_income_limit: "676.50"
+      ca/amt_foreign_non_business_tax_two_thirds: "300.00"
+      ca/amt_foreign_taxes_paid: "300.00"
+      ca/amt_foreign_tax_credit_lesser: "300.00"
+      ca/amt_special_foreign_tax_credit: "358.50"
+      ca/amt_net_minimum_tax_payable: "36491.11"
+      ca/amt_regular_net_federal_tax_payable: "35386.13"
+      ca/amt_regular_net_tax_less_surtax: "35386.13"
+      ca/amt_minimum_tax_after_regular_tax: "1104.98"
+      ca/amt_alternative_minimum_tax_payable: "1104.98"
+      ca/amt_part_5_line_11_is_positive: "1"
+      ca-on/ontario_basic_tax: "16494.88"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_tax_after_credits: "15851.16"
+      ca-on/ontario_surtax: "5104.13"
+      ca-on/ontario_tax_with_surtax: "20955.29"
+      ca-on/tax_otherwise_payable_line_71: "20955.29"
+      ca-on/tax_otherwise_payable_line_73: "20955.29"
+      ca-on/tax_otherwise_payable: "20955.29"
+      ca-on/provincial_foreign_tax_credit_before_limit: "91.50"
+      ca-on/provincial_foreign_tax_credit: "91.50"
+      ca-on/ontario_tax_less_dividend_credit: "15851.16"
+      ca/amt_carryover_available_for_2026: "1104.98"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "183300.00"
+      ca/other_payments_limit_income: "183300.00"
+      ca/share_proceeds: "360000"
+      ca/refund_or_balance_owing: "58529.47"
+      ca/foreign_business_tax_credit_line_8: "71489.26"
+      ca/foreign_business_tax_credit_line_10: "71130.76"

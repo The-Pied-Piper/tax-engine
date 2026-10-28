@@ -1,0 +1,94 @@
+# Return GD: a simple Ontario filer who was not a resident of Ontario on December 31, 2025 (the
+# count of 1 is a chosen input) and who has two flow-through share slips, of 8,000.00 and
+# 3,500.00 (chosen figures). Form T1221 says "You must be a resident of Ontario on the last day of
+# the tax year to claim this credit.", so the T1221 line 4 total of 11,500.00 is not entered on
+# ON479 line 17 and line 63220: line 17 is 0.00, so the Ontario credits (line 21) are 0.00. The
+# test file also runs the resident variant (the same return with the count at 0), where the line 4
+# total is claimed and line 17 is 11,500.00 x 5% = 575.00. Return BU covers the same not-resident
+# rule with the slips 6,000.00 and 4,000.00 on a larger return, so GD adds the unequal slips
+# (8,000.00 and 3,500.00) on a simple filer and the resident variant's 5% on the sum of them. The
+# income figures are chosen and worked out by hand; the tax lines are the engine's, from a run.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario filer for all of 2025 who was not a resident of Ontario on December 31, 2025
+  (a chosen input: the count is 1), resident in Canada throughout 2025 and aged 18 or older at the
+  end of 2025 (chosen figures), with no spouse or common-law partner, no employment income and 12
+  CPP and 12 QPP months (chosen). Her only income is other income (line 13000) of 40,000.00, a
+  chosen figure. Total income (line 15000) is 40,000.00, with no deductions from total income
+  (line 23300 is 0), so net income before adjustments (line 23400) is 40,000.00. There are no
+  deductions from net income (line 23600 is 40,000.00 and taxable income, line 26000, is
+  40,000.00). Income tax deducted is a chosen 6,000.00. Two flow-through share slips (chosen
+  figures) carry qualifying expenses of 8,000.00 and 3,500.00.
+  Form T1221, Ontario Focused Flow-Through Share Resource Expenses (Individuals): lines 1 to 3 are
+  the qualifying expenses of each slip, 8,000.00 and 3,500.00, and line 4, the total, is 8,000 +
+  3,500 = 11,500.00 (entered on ON479 line 17 and line 63220 only by a resident of Ontario on the
+  last day of the tax year). The filer was not one, so T1221 line 4 is not claimed: the number of
+  expenses claimed is 0 (the count of "not a resident" is 1, so the claimable count is 0). ON479
+  line 17 is 0 x 5% = 0.00, and line 18 (the total of the ON479 credits) and line 21 (the Ontario
+  credits, ca-on/ontario_credits_subtotal) are 0.00.
+  The resident variant, in the test file only (the same inputs with the count at 0): the claimable
+  count is 1, the expenses claimed are 11,500.00, and ON479 line 17 is 11,500 x 5% = 575.00, so the
+  Ontario credits subtotal is 575.00.
+  No net federal supplement is reported, so the other payments deduction (Federal Worksheet line
+  25000) is not completed. The worksheet's line 9 formula (40,000 - 0 + 0 = 40,000.00) is not
+  carried to the return; the engine exports that signed figure as the other payments limit income.
+  Engine-only figures (not hand figures): the CPP second additional earnings maximum (9,900.00, a
+  CPP parameter for 12 months, with no contributions), the Ontario tax less the dividend credit
+  (1,376.28), the federal tax after credits (3,461.29), the Ontario tax (1,826.28, which includes
+  the health premium of 450.00), the total payable (5,287.57), the total credits (6,000.00, the
+  income tax deducted, since the not-resident filer claims no flow-through credit), and the refund
+  (6,000.00 - 5,287.57 = 712.43, carried as -712.43), and the Ontario net refund (712.43).
+sources:
+  - >-
+    CRA, Form T1221 2025, "Ontario Focused Flow-Through Share Resource Expenses (Individuals)"
+    (confirmed from the PDF, docs/cra-forms-2025/t1221-25e.pdf): "You must be a resident of
+    Ontario on the last day of the tax year to claim this credit."; "Enter the amount of
+    qualifying expenses." (lines 1 to 3); "Add lines 1 to 3. Enter this amount on line 63220 of
+    your Form ON479." (line 4)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1221/t1221-25e.pdf
+  - >-
+    CRA, Form ON479 (5006-TC), "Ontario focused flow-through share tax credit": "Line 17 and line
+    63220: Enter your total expenses from your Form T1221. multiplied by 5% ="; "Line 18: Add
+    lines 1, 2, 13, 14, 16, and 17. =" (docs/cra-forms-2025/5006-tc-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+  - >-
+    CRA, Form ON428 (5006-C), the count of residence on the last day of the year: "You were not
+    a resident of Ontario on December 31, 2025" (docs/cra-forms-2025/5006-c-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_income: "40000"
+  ca/income_tax_deducted: "6000"
+  ca-on/not_resident_of_ontario_at_year_end: "1"
+  ca-on/flow_through_share_slips:
+    - ca-on/flow_through_share_slip_expenses: "8000"
+    - ca-on/flow_through_share_slip_expenses: "3500"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "40000.00"
+      ca/deductions_from_total_income: "0"
+      ca/net_income_before_adjustments: "40000.00"
+      ca/net_income: "40000.00"
+      ca/deductions_from_net_income: "0"
+      ca/taxable_income: "40000.00"
+      ca/other_payments_limit_income: "40000.00"
+      ca-on/flow_through_share_expenses: "11500.00"
+      ca-on/flow_through_share_claimable: "0"
+      ca-on/flow_through_share_expenses_claimed: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      # Engine only (not hand figures): the tax lines, see the description.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "1376.28"
+      ca/federal_tax_after_credits: "3461.29"
+      ca-on/ontario_tax: "1826.28"
+      ca/total_payable: "5287.57"
+      ca/total_credits: "6000.00"
+      ca/refund_or_balance_owing: "-712.43"
+      ca-on/net_refund: "712.43"

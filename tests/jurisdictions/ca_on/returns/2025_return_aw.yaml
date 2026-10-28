@@ -1,0 +1,848 @@
+# Return AW: a single employee, a 2025 Ontario resident, with employment income of $50,000,
+# the dividends of Return K (a T5 slip and dividends with no information slip) and $15,000
+# of foreign investment income: foreign dividends of two countries, a chosen $10,000 from
+# the United States on which a chosen $1,500 of tax was paid and a chosen $5,000 from the
+# United Kingdom on which a chosen $100 was paid, and foreign business income of the same
+# two countries: a chosen $6,000 from the United States on which a chosen $400 of tax was
+# paid, with a chosen $50 of unused credits, and a chosen $3,000 from the United Kingdom on
+# which a chosen $60 was paid. The total foreign tax, $2,060, is more than $200, so Form
+# T2209 is worked for each country on its own: with a net income (note 3) of $66,990.00 and
+# a basic federal tax (note 4) of $7,285.81 the United States' line 2 is $10,000 x 7,285.81
+# / 66,990.00 = $1,087.60, below its $1,500, and the United Kingdom's is $543.80, above its
+# $100, so line 3 is $1,087.60 + $100.00 = $1,187.60. The business lines, with a basic
+# federal tax (note 8) of $7,285.81: line 4 is $450 and $60, line 5 is $652.56 and $326.28,
+# lines 7 and 8 follow, line 10 is $6,198.21 and $7,185.81, and line 11 is the least of
+# lines 4, 7 and 10, $450 and $60, $510 in all. Line 13, and so T1 line 129 (line 40500), is
+# $510 + $1,187.60 = $1,697.60, below the $6,966.62 of line 42900; T1 line 130 is $6,966.62
+# - $1,697.60 = $5,269.02, which line 132 carries to the net federal tax. Form T2036 is
+# worked on the same two sheets for Ontario, on the non-business figures only: with a
+# provincial tax otherwise payable (ON428 line 81 with "0" on lines 70 and 72) of $3,159.89
+# the United States' line 3 is $1,500 - $1,087.60 = $412.40, below its line 4 of $471.70,
+# and the United Kingdom's is $100 - $100 = $0, so the total of line 5, and ON428 line 82,
+# is $412.40, which comes off line 81 (ON428 line 83) and leaves an Ontario tax of
+# $3,156.35. Amounts are quoted decimal strings, never floats; counts are quoted digit
+# strings. A line or input this return leaves out is blank, 0, and is checked to compute to
+# 0; intermediate lines that are listed are checked too. The other variants (a total of
+# foreign tax at or under $200, a limit by line 42900 and by the tax otherwise payable,
+# deductions in net income and a First Nations abatement, and no countries) are pinned in
+# `end_to_end/test_return_aw.py`.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single employee, an Ontario resident for all of 2025, with no spouse or common-law
+  partner at any time in 2025 and no dependant, with employment income (T1 line 10100) of a
+  chosen $50,000, the dividends of Return K and foreign investment income. The dividends are
+  those of Return K, chosen figures: a T5 slip showing, in box 11 (the taxable amount of
+  dividends other than eligible dividends) $200, in boxes 11 and 25 (the taxable amount of
+  all its dividends) $500 and in boxes 12 and 26 (the dividend tax credit) $60.00, and, with
+  no information slip, actual eligible dividends received of $1,000 and actual dividends
+  other than eligible dividends received of $500. The Federal Worksheet for lines 12000 and
+  12010 gives, as for Return K, line 13 = 1,000 x 138% = 1,380.00, line 16 = 500 x 115% =
+  575.00, line 17 = 1,380.00 + 575.00 = 1,955.00, line 12010 = 200 + 575.00 = 775.00 and
+  line 12000 = 500 + 1,955.00 = 2,455.00. The foreign investment income is a chosen $15,000
+  in Canadian dollars: the dividends of the United States, $10,000, and of the United
+  Kingdom, $5,000. The Federal Worksheet for line 12100 has it on line 6 "Income from
+  foreign sources, including foreign dividends, in Canadian dollars"; the other lines are 0,
+  so line 9 "Add lines 1 to 8." is 15,000, line 10 (reported in previous years) is 0 and
+  line 11, and so line 12100, is 15,000 - 0 = 15,000. It is not a dividend from a taxable
+  Canadian corporation, so it has no gross-up and no dividend tax credit.
+  Total income (line 15000) is the sum of the income lines in line order: 50,000 + 2,455.00
+  (line 12000) + 15,000 (line 12100) = 67,455.00. The CPP contributions are computed from
+  employment income by Schedule 8's tiers, as for Return K: base 4.95% x (50,000 - 3,500) =
+  2,301.75, first additional 1% x 46,500 = 465.00 and no second additional below the 71,300
+  ceiling, so the enhanced contributions (line 22215) are 465.00; the EI premiums (line
+  31200) are 1.64% x 50,000 = 820.00. With no RRSP deduction, union dues or child care
+  expenses, total deductions (line 23300) are 465.00 and net income (line 23600) is
+  67,455.00 - 465.00 = 66,990.00, as is taxable income (line 26000), there being no
+  deduction from net income. The federal tax on taxable income (T1 Step 5, Part A) is in the
+  column "Line 26000 is more than $57,375 but not more than $114,750": line 71 is 57,375.00,
+  line 72 is 66,990.00 - 57,375.00 = 9,615.00, line 74 is 9,615.00 x 20.5% = 1,971.075, line
+  75 is 8,319.38 and line 76 is 1,971.075 + 8,319.38 = 10,290.455, rounded half-up to the
+  cent: 10,290.46. The credit amounts are as for Return K: line 33500 = 16,129 + 0 + 0 +
+  2,301.75 + 820.00 + 1,471 = 20,721.75 (the basic personal amount is 16,129 as net income
+  is 177,882 or less) and line 33800 = 20,721.75 x 14.5% = 3,004.65375, rounded half-up to
+  the cent: 3,004.65, which is line 35000. The federal dividend tax credit (line 40425) is
+  Return K's, 60.00 + 51.92 + 207.27 = 319.19, the foreign income having none. Line 125 is
+  3,004.65 + 319.19 = 3,323.84 and line 126 (line 42900), the basic federal tax, is
+  10,290.46 - 3,323.84 = 6,966.62. The age amount (T1 line 30100, Federal Worksheet) is
+  computed all the same and claimed for 0 filers born in 1960 or earlier: line 4 is
+  66,990.00 - 45,522.00 = 21,468.00, line 6 is 21,468.00 x 15% = 3,220.20 and line 7 is
+  9,028.00 - 3,220.20 = 5,807.80. The Ontario amounts are Return K's, claimed for the same
+  counts of 0; Worksheet ON428's line 4 is 66,990.00 - 46,330.00 = 20,660.00, line 6 is
+  20,660.00 x 15% = 3,099.00 and line 7 is 6,223.00 - 3,099.00 = 3,124.00.
+  Form T2209, "Federal non-business foreign tax credit". Net income (note 3) is the amount
+  of line 23600 (line 23400, 66,990.00, less line 23500, 0, the social benefits repayment,
+  without the floor at 0) plus line 68360 of Form T1206, the total split income, 0, less the
+  deductions the note lists, which this return has none
+  of: lines 24400, 24900, 25000, 25300, 25395 and 25400 and the part of line 25600 that is
+  exempt income are each 0, so they add to 0 and net income is 66,990.00 - 0 = 66,990.00.
+  Basic federal tax (note 4) is "Line 42900 of your return plus any" "federal dividend tax
+  credit (line 40425 of your return)" "minus any" "federal refundable First Nations
+  abatement (line 44100 of your return)": 6,966.62 + 319.19 = 7,285.81, less a line 44100 of
+  0, 7,285.81 (the federal surtax on income allocated outside Canada and the refundable
+  Quebec abatement are not triggered on an Ontario return). The form's total foreign tax,
+  non-business and business, is 1,500 + 100 + 400 + 60 = 2,060 (see the business lines
+  below), "more than $200", with more than one country, so "the applicable calculation shown
+  on this form" is worked "for each country on a separate sheet" and the total entered. The
+  non-business lines are worked first. United States: line 1 (43100) is 1,500; line 2 is
+  line 43300, 10,000, at most the net income of 66,990.00 (note 2), x 7,285.81 / 66,990.00 =
+  72,858,100 / 66,990.00 = 1,087.5966..., rounded half-up to the cent: 1,087.60; line 3 is
+  "whichever is less: the amount from line 1 or line 2": 1,087.60. United Kingdom: line 1 is
+  100; line 2 is 5,000 x 7,285.81 / 66,990.00 = 36,429,050 / 66,990.00 = 543.7983...,
+  rounded: 543.80; line 3 is 100. The total of line 3 is 1,087.60 + 100 = 1,187.60. Pooled
+  it would be 15,000 x 7,285.81 / 66,990.00 = 1,631.3949..., rounded: 1,631.39, and
+  lesser(1,600, 1,631.39) = 1,600, which the form does not allow (the form's test of the
+  total tax paid is the one above, 2,060, so the choice of separate sheets is not changed by
+  the pooled comparison). Business lines of the same sheets, "Federal business foreign tax
+  credit". The business figures are chosen: the United States paid 400 of business income
+  tax for the year (note 5) and carries 50 of unused business foreign tax credits (note 6)
+  on 6,000 of net foreign business income (note 7, below the net income of 66,990.00, so not
+  capped), with 0 of federal surtax on income allocated to "Other (Outside Canada)" (line
+  6); the United Kingdom paid 60 of business income tax, with 0 unused credits, on 3,000 of
+  net foreign business income and 0 of line 6. The form's total foreign tax is therefore 1,500 + 100 +
+  400 + 60 = 2,060 (the unused credits are not tax paid for the year), "more than $200", so
+  both countries stay on their own sheets. Basic federal tax for these lines is note (8),
+  "Line 42900 of your return plus any federal dividend tax credit (line 40425 of your
+  return).", 6,966.62 + 319.19 = 7,285.81, which is the same figure as note (4) here as the
+  First Nations abatement is 0. United States: line 4 is 400 + 50 = 450; line 5 is 6,000 x
+  7,285.81 / 66,990.00 = 43,714,860.00 / 66,990.00 = 652.5579..., rounded half-up to the
+  cent: 652.56; line 6 is 0; line 7 is 652.56 + 0 = 652.56; line 8 is 7,285.81 + 0 =
+  7,285.81; line 9 is the line 3 of 1,087.60; line 10 is 7,285.81 - 1,087.60 = 6,198.21;
+  line 11 is "whichever is less: the amount from line 4, 7 or 10": the least of 450, 652.56
+  and 6,198.21, 450. United Kingdom: line 4 is 60 + 0 = 60; line 5 is 3,000 x 7,285.81 /
+  66,990.00 = 21,857,430.00 / 66,990.00 = 326.2789..., rounded: 326.28; line 6 is 0; line 7
+  is 326.28; line 8 is 7,285.81; line 9 is 100; line 10 is 7,285.81 - 100 = 7,185.81; line
+  11 is the least of 60, 326.28 and 7,185.81, 60. The totals over the two sheets are line 4:
+  450 + 60 = 510; line 5: 652.56 + 326.28 = 978.84; line 7: 978.84; line 8: 7,285.81 x 2 =
+  14,571.62; line 10: 6,198.21 + 7,185.81 = 13,384.02; line 11: 450 + 60 = 510. Line 12 is
+  "the amount from line 3", the total of 1,187.60, and line 13, "Add lines 11 and 12.",
+  "Federal foreign tax credit", is 510 + 1,187.60 = 1,697.60. "The amount on line 13 should
+  not be more than the total of the amount on line 42900 of your return, plus any federal
+  surtax on income earned outside of Canada": 1,697.60 is less than 6,966.62 (the surtax,
+  T1 line 127, is not wired and not triggered), so T1 line 129 (line 40500) is 1,697.60.
+  T1 line 130 "Line 128 minus line 129 =", line 128 "Line 126 plus line 127 =" being line
+  126 as line 127 is 0: 6,966.62 - 1,697.60 = 5,269.02. Line 132 "Line 130 plus line 131 ="
+  is 5,269.02 + 0.00 (no recapture) = 5,269.02, as are lines 134 and 139 (no logging tax
+  credit, no credits against federal tax). With no split income Form T1206's line 24 is 0,
+  so its line 29 is 5,269.02 + 0 (line 41500, 0) and line 30, the more of the two, is
+  5,269.02, which with the special taxes (line 41800) of 0 is the net federal tax (line
+  42000), 5,269.02. Form T2036 reads the non-business figures only and is unchanged by the
+  business lines. The alternative minimum tax lines that read the federal foreign tax credit
+  follow it: the special foreign tax credit (Form T691 Part 4 line 11) is the more of the
+  federal foreign tax credit, 1,697.60, and its line 10, 1,526.67 (lines 2, 7 and 8 are the
+  totals over the two country records, 15,000, 1,600 and 460), so 1,697.60, and the regular net
+  federal tax payable (Part 3 line 15) is 6,966.62 - 1,697.60 = 5,269.02.
+  Ontario (Form ON428): the column "Line 1 is more than $52,886 but not more than $105,775":
+  line 4 is 66,990.00 - 52,886.00 = 14,104.00, line 6 is 14,104.00 x 9.15% = 1,290.516, line
+  7 is 2,670.74 and line 8 is 1,290.516 + 2,670.74 = 3,961.256, rounded half-up to the cent:
+  3,961.26. The credit amounts are Return K's, 15,868.75 at 5.05%: 801.37 (ON428 line
+  61500), so line 53 is 3,961.26 - 801.37 = 3,159.89, below 5,710 and 7,307, so the surtax
+  is 0 and line 69 is 3,159.89. The Ontario dividend tax credit (Worksheet ON428) is Return
+  K's, 191.14, so line 71, and line 73, are 3,159.89 - 191.14 = 2,968.75. The Ontario tax
+  reduction amounts, 294.00, twice, 588.00, are less than line 79, so the reduction is 0 and
+  line 81 is 2,968.75. Form T2036, "Provincial or Territorial Foreign Tax Credit", is worked
+  on the same sheets of Form T2209 as the federal credit ("do the calculation on a separate
+  form for each country in Canadian dollars"), with the net income of note (3), 66,990.00,
+  and the tax otherwise payable of note (4): "If you were a resident of Ontario, calculate
+  this amount by entering "0" on lines 70 and 72 of Form ON428 and continue the calculation.
+  The result from line 81 is your provincial or territorial tax otherwise payable." With "0"
+  on line 70 line 71 is line 69, 3,159.89 - 0 = 3,159.89, and with "0" on line 72 line 73 is
+  3,159.89 + 0 = 3,159.89; the reduction amounts, 588.00 twice, are less than line 79, so
+  line 80 is 0 and line 81 is 3,159.89 - 0 = 3,159.89. United States: line 1 is 1,500; line
+  2 is the T2209 line 3, 1,087.60; line 3 is 1,500 - 1,087.60 = 412.40; line 4 is net
+  foreign non-business income 10,000 x 3,159.89 / 66,990.00 = 31,598,900 / 66,990.00 =
+  471.6957..., rounded half-up to the cent: 471.70; line 5 is "whichever amount is less:
+  line 3 or line 4": 412.40. United Kingdom: line 1 is 100; line 2 is 100; line 3 is 0; line
+  4 is 5,000 x 3,159.89 / 66,990.00 = 15,799,450 / 66,990.00 = 235.8478..., rounded: 235.85;
+  line 5 is 0. "Enter the total from line 5 (for each country if applicable)" on ON428 line
+  82: 412.40 + 0 = 412.40, which "should not be more than the amount entered on the line for
+  provincial or territorial tax otherwise payable", 3,159.89, so line 82 is 412.40. Line 83
+  "Line 81 minus line 82 (if negative, enter "0")" is 2,968.75 - 412.40 = 2,556.35, which
+  line 84 carries. The LIFT credit is 5.05% x 50,000 = 2,525.00, at most 875, less 5% of
+  net income over 32,500: line 17 = 66,990.00 - 32,500.00 = 34,490.00 and line 19 =
+  34,490.00 x 5% = 1,724.50, so line 20 is 875 - 1,724.50, negative: 0, and lines 86 and 88
+  (the community food program donation tax credit for farmers of 25% of a chosen $0 is 0)
+  are 2,556.35. The health premium (line 89) for taxable income of 66,990.00, "Row 6:
+  Taxable Income more than $48,000 but not more than $72,000", is 600, so the Ontario tax
+  (line 90) is 2,556.35 + 600 = 3,156.35. The net federal tax (line 42000) is 5,269.02 and
+  the total payable (line 43500) is 5,269.02 + 3,156.35 = 8,425.37. The income tax deducted
+  (line 43700) is a chosen $9,000. The Canada workers benefit (Schedule 6) is 0: the working
+  income is 50,000, so the benefit before the reduction is 1,633, less 15% of the adjusted
+  family net income, 66,990.00, over 26,855, 15% x 40,135.00 = 6,020.25 (or 15% x 36,351.00
+  = 5,452.65 over 30,639 with an eligible dependant, of whom there are 0), not below zero:
+  0. The total credits (line 48200) are 9,000 and the refund or balance owing (line 167) is
+  8,425.37 - 9,000 = -574.63, negative, so a refund (line 48400) of 574.63 and no balance
+  owing, and, with the opportunities fund donation of 0, a net refund of 574.63. The other
+  computed lines follow from the net income and are each claimed for a
+  count of 0 or not triggered: the Ontario CARE credit rate for a family adjusted income of
+  66,990.00 (Schedule ON479-A line 7, the row "more than $63,600 but not more than $67,200")
+  is 47%, applied to a child care expenses deduction of 0; the seniors care at home credit
+  (ON479) has a family net income of 66,990.00, which is 66,990.00 - 35,000.00 = 31,990.00
+  over the base and a reduction of 5% x 31,990.00 = 1,599.50; the refundable medical expense
+  supplement (Federal Worksheet for line 45200) has an adjusted family net income of
+  66,990.00 and a line 8 of 66,990.00 - 33,294.00 = 33,696.00 and is 0 for want of an amount
+  on line 21500 and line 33200. Every amount computed from a rate, fraction, amount or chart
+  on the forms is rounded half-up to the cent, each line being a dollars-and-cents box; the
+  lines that only add, subtract, compare or choose take amounts already in cents. Not
+  triggered: the minimum tax variant of Form T2036 line 2 (note (1); no minimum tax is
+  payable here, see Return BV), the Quebec multiplication of line 4 by 55% (note (5), an
+  Ontario resident), the federal surtax on income allocated outside Canada (T1 line 127, and line 6 of Form
+  T2209, 0 on both sheets) and every other credit and deduction not named here.
+sources:
+  - >-
+    CRA, Form T2209 2025, Federal Foreign Tax Credits (docs/cra-forms-2025/t2209-25e.pdf,
+    confirmed 2026-10-19 from the PDF; no .txt published): "If you paid tax to more than one
+    foreign country, and the total foreign taxes paid to all foreign countries was more than
+    $200, do the applicable calculation shown on this form for non-business and business
+    taxes paid to each country on a separate sheet in Canadian dollars. Enter the total
+    amount on this form."; "In most cases, the foreign tax credit amount you can claim for
+    each foreign country is whichever is less:" "the foreign income tax you actually paid"
+    "the tax otherwise payable in Canada on your net income from that country";
+    "Non-business income tax paid to a foreign country (1) 43100" (line 1); "Net foreign
+    non-business income (2) 43300" "× Basic federal tax (4) =" over "Net income (3)" (line
+    2); "Enter whichever is less: the amount from line 1 or line 2." "Federal non-business
+    foreign tax credit" (line 3); "The amount on line 3 should not be more than the total of
+    the amount on line 42900 of your return plus any federal surtax on income earned outside
+    of Canada."; "Business income tax paid to a foreign country (5) for the year, plus any
+    unused foreign tax credits for that country for the 10 years (6) before, and the 3 years
+    after this year" (line 4, 43400); "Net foreign business income (7)" "43900" "× Basic
+    federal tax (8)" over "Net income (3)" (line 5); "Federal surtax on income allocated to
+    "Other (Outside Canada)":" "Amount from line 10 of Part 2 of Form T2203, Provincial and
+    Territorial Taxes for Multiple Jurisdictions, or 48% of the amount from line 42900 of
+    your return. Enter the amount that applies to the country or countries you identified at
+    the top of this page." (line 6); "Add lines 5 and 6." (line 7); "Add basic federal tax
+    (8) and the amount from line 6." (line 8); "Enter the amount from line 3, if any." (line
+    9); "Line 8 minus line 9" (line 10); "Enter whichever is less: the amount from line 4, 7
+    or 10." "Federal business foreign tax credit" (line 11); "Enter the amount from line 3,
+    if any." (line 12); "Add lines 11 and 12." "Federal foreign tax credit" (line 13);
+    "Enter the amount from line 13 on line 40500 of your return."; note (2): "If your net
+    foreign non-business income is more than your net income, use your net income in the
+    calculation."; note (5): "Total of business income or profits tax you paid to a country
+    or a political subdivision of a country for the year."; note (6): "Unused business
+    foreign tax credits can be carried forward 10 years and carried back 3 years."; note
+    (7): "Net amount by which the business income you earned in a foreign country is more
+    than the business losses you incurred in that country." "If your net foreign business
+    income is more than your net income, use your net income in the calculation."; note (8),
+    basic federal tax: "Line 42900 of your return plus any federal dividend tax credit (line
+    40425 of your return)."; note (3), net income: "Amount from line 23600 of your return
+    (or the amount you would have entered if the instructions said "if negative, show in
+    brackets") plus the amount on line 68360 of Form T1206, Total split income, minus any:"
+    the amounts deductible on lines 24400, 24900, 25000, 25300, 25395 and 25400 and "amounts
+    deductible as net employment income from a prescribed international organization, as
+    foreign income exempt under a tax treaty, or as adult basic education tuition assistance
+    (included on line 25600 of your return)"; note (4), basic federal tax: "Line 42900 of
+    your return plus any:" "federal dividend tax credit (line 40425 of your return)" "minus
+    any:" "federal refundable First Nations abatement (line 44100 of your return)". The
+    countries are the chosen United States (line 1 of 1,500, line 2 of 10,000, business tax
+    paid of 400, unused credits of 50, net foreign business income of 6,000, line 6 of 0)
+    and United Kingdom (100 and 5,000, business tax paid of 60, unused credits of 0,
+    business income of 3,000, line 6 of 0); line 44100 and the six deductions of note (3)
+    are 0. Lines 1 and 3 take amounts already in cents; lines 2 and 5 are dollars-and-cents
+    boxes, rounded half-up to the cent.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf
+  - >-
+    CRA, the T1-2025 Ontario edition return (form 5006-R,
+    docs/cra-forms-2025/5006-r-25e.txt, confirmed 2026-10-19): "Line 125: Add lines 122 to
+    124. ="; "Line 126 and line 42900: Line 121 minus line 125 (if negative, enter "0")
+    Basic federal tax ="; "Line 127: Federal surtax on income earned outside Canada
+    (complete Form T2203)"; "Line 128: Line 126 plus line 127 ="; "Line 129 and line 40500:
+    Federal foreign tax credit (complete Form T2209)"; "Line 130: Line 128 minus line 129
+    ="; "Line 131: Recapture of investment tax credit (complete Form T2038(IND))"; "Line
+    132: Line 130 plus line 131 ="; "Line 133: Federal logging tax credit"; "Line 134 and
+    line 40600: Line 132 minus line 133 (if negative, enter "0") Federal tax ="; "Line 10
+    and line 12100: Interest and other investment income (use Federal Worksheet)"; "Line 33
+    and line 15000: Line 28 plus line 32 Total income". Line 130 prints no "(if negative,
+    enter "0")"; line 129 is at most line 126, so it is not negative. Line 126 is 10,290.46
+    - 3,323.84 = 6,966.62 (line 125 is the line 122 of 3,004.65 plus the line 123 of
+    319.19), line 127 is not triggered (0.00), line 128 is 6,966.62, line 129 is 1,697.60,
+    line 130 is 6,966.62 - 1,697.60 = 5,269.02, line 131 is 0.00 and lines 132 and 134 are
+    5,269.02. These lines take amounts already in cents.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, the 2025 Federal Worksheet (form 5000-D1, docs/cra-forms-2025/5000-d1-25e.txt,
+    confirmed 2026-10-19), "Line 12100 - Interest and other investment income": "Line 6:
+    Income from foreign sources, including foreign dividends, in Canadian dollars"; "Line 9:
+    Add lines 1 to 8. ="; "Line 10: Interest and other investment income, included on line
+    9, received and reported in previous years"; "Line 11: Line 9 minus line 10. Enter this
+    amount on line 12100 of your return. ="; "Lines 12000 and 12010 - Taxable amount of
+    dividends from taxable Canadian corporations" ("Line 3: Box 11 of all T5 slips"; "Line
+    8: Boxes 11 and 25 of all T5 slips"; "Line 11: Actual amount of eligible dividends
+    received"; "Line 12: Applicable rate 138%"; "Line 13: Line 11 multiplied by the
+    percentage from line 12"; "Line 14: Actual amount of dividends other than eligible
+    dividends received"; "Line 15: Applicable rate 115%"; "Line 16: Line 14 multiplied by
+    the percentage from line 15 Include this amount on line 12010 of your return."; "Line
+    17: Line 13 plus line 16. Include this amount on line 12000 of your return."); "Line
+    40425 - Federal dividend tax credit": "Line A: Amount from line 12000 of your return
+    (Note 1)"; "Line 6: Amount from line 12010 of your return (Note 1) Line B, multiplied by
+    9.0301%"; "Line 2: Amount A minus amount B Line C" "multiplied by 15.0198%" (printed
+    "Line 2" where line 7 is meant); "Line 9: Line 5 plus line 8 Enter this amount on line
+    40425 of your return."; "Line 30100 - Age amount": "Line 1: Maximum amount 9,028.00",
+    "Line 3: Income threshold 45,522.00", "Line 4: Line 2 minus line 3 (if negative, enter
+    "0")", "Line 5: Applicable rate 15%", "Line 7: Line 1 minus line 6 (if negative, enter
+    "0")". Line 6 of the line 12100 chart is a chosen 15,000, the other lines 0, so line 9
+    is 15,000, line 10 is 0 and line 11 is 15,000 - 0 = 15,000. The dividends and the
+    dividend tax credit are Return K's: line 12010 is 200 + 575.00 = 775.00, line 12000 is
+    500 + 1,955.00 = 2,455.00, and the credit is 60.00 + 51.92 + 207.27 = 319.19 (line 6 is
+    575.00 x 9.0301% = 51.923075, rounded 51.92; line 7 is 1,380.00 x 15.0198% = 207.27324,
+    rounded 207.27). The age amount's line 4 is 66,990.00 - 45,522.00 = 21,468.00, line 6 is
+    21,468.00 x 15% = 3,220.20 and line 7 is 9,028.00 - 3,220.20 = 5,807.80, claimed for 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, "CPP contribution rates, maximums and exemptions", 2025 row: maximum annual
+    pensionable earnings $71,300; basic exemption $3,500; employee rate 5.95%. CRA, the 2025
+    Schedule 8 (form 5000-S8), Part 3: line 7 "Line 5 minus line 6 (if negative, enter "0")
+    (maximum $67,800)"; line 11 "amount from line 7 multiplied by 4.95% (maximum
+    $3,356.10)"; line 12 "amount from line 7 multiplied by 1% (maximum $678.00)"; line 22
+    "amount from line 4 multiplied by 4% (maximum $396.00)"; line 48 "Enter this amount (in
+    dollars and cents) on line 22215 of your return." The contributions are computed from
+    employment income, taken as the pensionable earnings: line 7 is 50,000 - 3,500 = 46,500,
+    line 11 is 46,500 x 4.95% = 2,301.75, line 12 is 46,500 x 1% = 465.00 and line 22 is 0 x
+    4% = 0 (earnings are below the $71,300 ceiling), each rounded half-up to the cent; line
+    48, and so line 22215, is 465.00 + 0 = 465.00. CRA, "EI premium rates and maximums",
+    2025 federal row: maximum annual insurable earnings $65,700; rate 1.64%; maximum annual
+    employee premium $1,077.48. The premiums are 1.64% of employment income, 50,000 x 1.64%
+    = 820.00.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html
+  - >-
+    CRA, the 2025 T1 return (form 5000-R): line 48 (line 22215) "Deduction for CPP or QPP
+    enhanced contributions on employment income"; line 53 (line 23300) "Add lines 35 to 52";
+    line 54 (line 23400) "Line 34 minus line 53 (if negative, show in brackets) Net income
+    before adjustments"; line 56 (line 23600) "Line 54 minus line 55 (if negative, enter
+    "0") Net income"; line 69 "Line 57 minus line 68 (if negative, enter "0") Taxable
+    income" (line 26000); line 77 (line 30000) "If the amount on line 23600 is $177,882 or
+    less, enter $16,129."; line 92 (line 31260) "Enter whichever is less: $1,471 or line 1
+    plus line 2."; line 113 (line 33500) "Line 106 plus line 112"; line 114 "Federal
+    non-refundable tax credit rate 14.5%"; line 115 (line 33800) "Line 113 multiplied by the
+    percentage from line 114"; line 118 (line 35000) "Add lines 115 to 117. Total federal
+    non-refundable tax credits". Total deductions are 465.00 (the enhanced CPP contributions
+    alone), so net income is 67,455.00 - 465.00 = 66,990.00 (line 55, line 23500, is not
+    wired yet), as is taxable income. Line 33500 is 16,129 + 0 + 0 + 2,301.75 + 820.00 +
+    1,471 = 20,721.75 and line 33800 is 20,721.75 x 14.5% = 3,004.65375, rounded half-up to
+    the cent: 3,004.65, which is line 35000 as lines 116 and 117 are 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - >-
+    The federal brackets are those of the 2025 T1 return (form 5000-R), Step 5, Part A
+    "Federal tax on taxable income", lines 70 to 76, as CRA publishes them; the lowest rate
+    of 14.5% is the full-year blend of the cut from 15% to 14% on July 1, 2025, per Finance
+    Canada's announcement. Taxable income of 66,990.00 falls in column 2 "Line 26000 is more
+    than $57,375 but not more than $114,750": line 70 "Amount from line 26000", 66,990.00;
+    line 71 "57,375.00"; line 72 "Line 70 minus line 71 (cannot be negative)", 9,615.00;
+    line 73 "Rate 20.5%"; line 74 "Line 72 multiplied by the percentage from line 73",
+    1,971.075; line 75 "8,319.38"; line 76 "Line 74 plus line 75 Federal tax on taxable
+    income", 1,971.075 + 8,319.38 = 10,290.455, rounded half-up to the cent: 10,290.46. Less
+    the 3,323.84 of credits against it (T1 line 125), not below zero, it is 6,966.62, the
+    basic federal tax (line 126). The Ontario brackets are those of the 2025 ON428 (form
+    5006-C), Part A "Ontario tax on taxable income", lines 1 to 8: line 1 "Enter your
+    taxable income from line 26000 of your return.", 66,990.00, in column 2 "Line 1 is more
+    than $52,886 but not more than $105,775": line 2 "Amount from line 1"; line 3
+    "52,886.00"; line 4 "Line 2 minus line 3 (cannot be negative)", 14,104.00; line 5 "Rate
+    9.15%"; line 6 "Line 4 multiplied by the percentage from line 5", 1,290.516; line 7
+    "2,670.74"; line 8 "Line 6 plus line 7 Ontario tax on taxable income", 1,290.516 +
+    2,670.74 = 3,961.256, rounded half-up to the cent: 3,961.26.
+  - https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/last-year.html
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - https://www.canada.ca/en/department-finance/news/2025/05/delivering-a-middle-class-tax-cut.html
+  - https://data.ontario.ca/en/dataset/personal-income-tax-rates-and-credits/resource/60f84727-7e12-4fd4-ba06-30955d31b2ae
+  - >-
+    CRA, the 2025 ON428 (form 5006-C): line 9 (line 58040) "Basic personal amount Claim
+    $12,747"; line 44 (line 58800) "Line 35 plus line 43"; line 45 "Ontario non-refundable
+    tax credit rate 5.05%"; line 46 (line 58840) "Line 44 multiplied by the percentage from
+    line 45"; line 50 (line 61500) "Line 46 plus line 49 Enter this amount on line 52.
+    Ontario non-refundable tax credits"; line 53 "Line 51 minus line 52 (if negative, enter
+    "0")"; line 66 "(Line 65 minus $5,710) multiplied by 20% (if negative, enter "0")"; line
+    67 "(Line 65 minus $7,307) multiplied by 36% (if negative, enter "0")"; line 68 "Line 66
+    plus line 67"; line 69 "Line 62 plus line 68"; line 70 "Ontario dividend tax credit from
+    line 57"; line 71 "Line 69 minus line 70 (if negative, enter "0")"; line 73 "Line 71
+    plus line 72"; line 74 "Basic reduction 294.00"; line 78 "Amount from line 77 above
+    multiplied by 2"; line 79 "Amount from line 73 above"; line 80 "Line 78 minus line 79
+    (if negative, enter "0") Ontario tax reduction"; line 81 "Line 73 minus line 80 (if
+    negative, enter "0")"; line 85 (line 62140) "Low-income individuals and families tax
+    (LIFT) credit (complete Schedule ON428-A)"; line 86 "Line 84 minus line 85 (if negative,
+    enter "0")"; line 87 and line 62150 "Enter the amount of qualifying donations that have
+    also been claimed as a charitable donation." "multiplied by 25%"; line 88 "Line 86 minus
+    line 87 (if negative, enter "0")"; line 89 "Ontario health premium (complete the chart
+    below)"; line 90 "Line 88 plus line 89 Enter this amount on line 42800 of your return.
+    Ontario tax". Line 58800 is 12,747 + 0 + 2,301.75 + 820.00 = 15,868.75 and line 58840 is
+    15,868.75 x 5.05% = 801.371875, rounded half-up to the cent: 801.37; line 61500 is
+    801.37 + 0 = 801.37. Line 53 is 3,961.26 - 801.37 = 3,159.89, below 5,710 and 7,307, so
+    lines 66 and 67 enter 0, the surtax (line 68) is 0 and line 69 is 3,159.89. Line 57, the
+    Ontario dividend tax credit, is 191.14 (Worksheet ON428, as for Return K: line 1 is
+    775.00 x 2.9863% = 23.143825, rounded 23.14; line C is 2,455.00 - 775.00 = 1,680.00;
+    line 2 is 1,680.00 x 10% = 168.00; line 3 is 23.14 + 168.00 = 191.14), so line 71, and
+    line 73, are 3,159.89 - 191.14 = 2,968.75. Line 77 is 294.00, line 78 is 588.00, below
+    line 79 (2,968.75), so line 80 is 0 and line 81 is 2,968.75. Schedule ON428-A (form
+    5006-A): line 5 "Line 3 multiplied by the percentage from line 4 (maximum $875)"; line
+    16 "Individual income threshold 32,500.00"; line 17 "Line 15 minus line 16 (if negative,
+    enter "0")"; line 18 "Applicable rate 5%"; line 19 "Line 17 multiplied by the percentage
+    from line 18"; line 20 "Line 14 minus line 19 (if negative, enter "0") Enter this amount
+    on line 62140 of your Form ON428." Line 5 is 50,000 x 5.05% = 2,525.00, at most 875;
+    line 17 is 66,990.00 - 32,500.00 = 34,490.00; line 19 is 34,490.00 x 5% = 1,724.50; line
+    20 is 875 - 1,724.50, negative, so 0, the LIFT credit; line 86 is 2,556.35, and line 88
+    too, as line 87 is 25% x 0 = 0. The health premium chart: line 1 "Enter your taxable
+    income from line 26000 of your return", 66,990.00, "Row 6: Taxable Income more than
+    $48,000 but not more than $72,000", so line 89 is 600 and line 90 is 2,556.35 + 600 =
+    3,156.35. The Ontario age amount (Worksheet ON428 "Line 58080 - Age amount"): line 4 is
+    66,990.00 - 46,330.00 = 20,660.00, line 6 is 20,660.00 x 15% = 3,099.00 and line 7 is
+    6,223.00 - 3,099.00 = 3,124.00, claimed for 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+  - >-
+    CRA, the 2025 Schedule 6 (form 5000-S6): line 5 "Add lines 1 to 4. Enter the result,
+    even if it is "0". Working income"; line 15 "Line 13 minus line 14 Enter this amount on
+    line 23 and line 35. Adjusted family net income"; line 17 "Base amount 3,000.00"; line
+    19 "Rate 27%"; line 21 "If you had an eligible spouse or an eligible dependant, enter
+    $2,813. If not, enter $1,633."; line 24 "If you had an eligible spouse or an eligible
+    dependant, enter $30,639. If not, enter $26,855."; line 26 "Rate 15%"; line 28 "Line 22
+    minus line 27 (if negative, enter "0") If you are not completing Step 3, enter this
+    amount on line 45300 of your return." The working income is 50,000, so line 18 is 47,000
+    and line 20 is 47,000 x 27% = 12,690.00, line 22 the lesser of that and 1,633: 1,633
+    (2,813 with an eligible dependant); line 25 is 66,990.00 - 26,855 = 40,135.00 and line
+    27 is 40,135.00 x 15% = 6,020.25 (or 36,351.00 x 15% = 5,452.65); line 28 is 1,633 -
+    6,020.25, negative, so 0, the Canada workers benefit (T1 line 45300), the same with an
+    eligible dependant, which the taxpayer has none: the number of Schedule 6 eligible
+    dependants (line 38100) is 0, choosing the first.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+  - >-
+    CRA, the 2025 T1 return (form 5000-R), Step 6: line 142 (line 42000) "Add lines 139 to
+    141. Net federal tax"; line 143 "Amount from line 42000"; line 147 (line 42800)
+    "Provincial or territorial tax (complete and attach your provincial or territorial Form
+    428, even if the result is "0")"; line 148 (line 43500) "Add lines 143 to 147. Total
+    payable"; line 150 (line 43700) "Total income tax deducted (amounts from all Canadian
+    slips)"; line 155 (line 45300) "Canada workers benefit (CWB) (complete Schedule 6)";
+    line 166 (line 48200) "Add lines 150 to 165. Total credits"; line 167 "Line 149 minus
+    line 166 If the amount is negative, enter it on line 48400 below. If the amount is
+    positive, enter it on line 48500 below. Refund or balance owing". Line 126, 6,966.62,
+    less line 129, 1,697.60, is 5,269.02, carried through lines 132 to 139 to line 142, the
+    net federal tax. Line 148 is 5,269.02 + 3,156.35 = 8,425.37. Line 150 is 9,000, a chosen
+    figure: the tax withheld on the taxpayer's slips, which nothing on this return
+    determines. Line 155 is the benefit of Schedule 6 line 28, 0, so line 166 is 9,000 + 0 =
+    9,000. Line 167 is 8,425.37 - 9,000 = -574.63, negative, so line 48400 "Refund" is
+    574.63. These lines add and subtract amounts already in cents, so each is in cents too.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - >-
+    CRA, Schedule ON479-A (form 5006-TCA), "Ontario Childcare Access and Relief from
+    Expenses (CARE) Tax Credit": line 1 "Net income from line 23600 of the return (or the
+    amount you would have entered if the instructions on line 23600 said "if negative, show
+    in brackets")"; line 4 "Add lines 1 to 3 (if negative, enter "0"). Adjusted income";
+    line 5 "Add the amounts from line 4 of columns 1 and 2. Family adjusted income"; line 7
+    "If your family adjusted income on line 5 is "0", enter 75%. If not, enter the tax
+    credit rate that applies to your family adjusted income from the table below." under
+    "Family adjusted income and Tax credit rate"; line 8 "Line 6 multiplied by the
+    percentage from line 7 Enter this amount on line 63050 of your Form ON479." Line 1 is
+    line 23600 before its floor (line 23400 less line 23500, which is 0), 66,990.00; lines 2 and 3 are 0, so line 4 is 66,990.00 and, with no supporting person (to be
+    confirmed), line 5 is 66,990.00 + 0 = 66,990.00. Line 7: 66,990.00 is in the table row
+    "more than $63,600 but not more than $67,200: 47%", so the rate is 47%; line 6 is the
+    child care expenses deduction, 0, and line 8 is 0 x 47% = 0.00. Form ON479 (form
+    5006-TC): line 9 "Base amount 35,000.00", line 11 "Applicable rate 5%", line 12 "Line 10
+    multiplied by the percentage from line 11 =": line 10 is 66,990.00 - 35,000.00 =
+    31,990.00 and line 12 is 31,990.00 x 5% = 1,599.50, for a credit not claimed (a count of
+    0).
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tca/5006-tca-25e.txt
+  - >-
+    CRA, Form T2036 2025, Provincial or Territorial Foreign Tax Credit
+    (docs/cra-forms-2025/t2036-25e.pdf, confirmed 2026-10-21 from the PDF; no .txt published):
+    "Enter the amount from line 1 of Form T2209." (line 1); "Enter the amount from line 3 of
+    Form T2209, unless you have to pay minimum tax.(1)" (line 2); "Line 1 minus line 2" (line
+    3); "Net foreign non-business income (2)" "× Provincial or territorial tax otherwise
+    payable (4)" over "Net income (3)" (line 4); "Enter whichever amount is less: line 3 or
+    line 4." "The amount on line 5 should not be more than the amount entered on the line for
+    provincial or territorial tax otherwise payable." "Provincial or territorial foreign tax
+    credit" (line 5); "Enter the total from line 5 (for each country if applicable) on the
+    line for the provincial or territorial foreign tax credit of Form 428."; "If you paid tax
+    to more than one foreign country, and the total of the non-business income taxes that you
+    paid to all foreign countries was more than $200, do the calculation on a separate form
+    for each country in Canadian dollars."; note (2) "Enter the amount reported as net foreign
+    non-business income from line 2 of Form T2209."; note (3) "Enter the amount reported as
+    net income from line 2 of Form T2209."; note (4) "If you were a resident of Ontario,
+    calculate this amount by entering "0" on lines 70 and 72 of Form ON428 and continue the
+    calculation. The result from line 81 is your provincial or territorial tax otherwise
+    payable." Form ON428 (form 5006-C), Part C: line 71 "Line 69 minus line 70 (if negative,
+    enter "0")"; line 73 "Line 71 plus line 72 ="; line 78 "Amount from line 77 above
+    multiplied by 2"; line 79 "Amount from line 73 above"; line 80 "Line 78 minus line 79 (if
+    negative, enter "0") Ontario tax reduction"; line 81 "Line 73 minus line 80 (if negative,
+    enter "0")"; line 82 "Provincial foreign tax credit (complete Form T2036)"; line 83 "Line
+    81 minus line 82 (if negative, enter "0")"; line 84 "Amount from line 83 of the previous
+    page". Line 71 and line 73 are line 69, 3,159.89, with "0" on lines 70 and 72; line 80 is
+    588.00 - 3,159.89, negative, so 0; line 81 is 3,159.89. The United States' line 4 is
+    10,000 x 3,159.89 / 66,990.00 = 471.6957..., rounded half-up to the cent: 471.70, and the
+    United Kingdom's 5,000 x 3,159.89 / 66,990.00 = 235.8478..., rounded: 235.85; line 5 is
+    412.40 and 0, line 82 is their total, 412.40, and line 83 is 2,968.75 - 412.40 = 2,556.35.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2036/t2036-25e.pdf
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "50000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "50000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "50000"
+  ca/t2204_premiums_deducted: "820.00"
+  ca/t5_taxable_dividends_other_than_eligible: "200"
+  ca/t5_taxable_dividends: "500"
+  ca/eligible_dividends_received_without_a_slip: "1000"
+  ca/other_dividends_received_without_a_slip: "500"
+  ca/t5_dividend_tax_credit: "60.00"
+  ca/foreign_investment_income: "15000"
+  ca/foreign_tax_countries:
+    - ca/foreign_non_business_tax_paid: "1500"
+      ca/net_foreign_non_business_income: "10000"
+      ca/foreign_business_tax_paid: "400"
+      ca/foreign_business_unused_tax_credits: "50"
+      ca/net_foreign_business_income: "6000"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+    - ca/foreign_non_business_tax_paid: "100"
+      ca/net_foreign_non_business_income: "5000"
+      ca/foreign_business_tax_paid: "60"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "3000"
+      ca/foreign_surtax_outside_canada: "0"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2766.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "9000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes: []
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/foreign_tax_credit_sheets:
+        - ca/foreign_non_business_tax_paid: "1500"
+          ca/net_foreign_non_business_income: "10000"
+          ca/foreign_tax_credit_sheet_line_3: "1087.60"
+          ca/foreign_business_tax_paid: "400"
+          ca/foreign_business_unused_tax_credits: "50"
+          ca/net_foreign_business_income: "6000"
+          ca/foreign_surtax_outside_canada: "0"
+        - ca/foreign_non_business_tax_paid: "100"
+          ca/net_foreign_non_business_income: "5000"
+          ca/foreign_tax_credit_sheet_line_3: "100"
+          ca/foreign_business_tax_paid: "60"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "3000"
+          ca/foreign_surtax_outside_canada: "0"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "50000.00"
+      ca/taxable_capital_gains: "0.00"
+      ca/slip_taxable_dividends_other_than_eligible: "200"
+      ca/slip_taxable_dividends: "500"
+      ca/eligible_dividends_grossed_up: "1380.00"
+      ca/other_dividends_grossed_up: "575.00"
+      ca/dividends_without_a_slip_grossed_up: "1955.00"
+      ca/taxable_dividends_other_than_eligible: "775.00"
+      ca/taxable_dividends: "2455.00"
+      ca/investment_income_before_prior_years: "15000"
+      ca/interest_and_other_investment_income: "15000"
+      ca/income_support_benefits: "0"
+      ca/net_rental_income: "0"
+      ca/total_income: "67455.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "820.00"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "50000"
+      ca/child_care_earned_income_limit: "33333.33"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "465.00"
+      ca/net_income: "66990.00"
+      ca/net_income_signed: "66990.00"
+      ca/net_income_before_adjustments: "66990.00"
+      ca/other_payments_limit_income: "66990.00"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/deductions_from_net_income: "0"
+      ca/taxable_income: "66990.00"
+      ca/federal_basic_tax: "10290.46"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "21468.00"
+      ca/age_reduction: "3220.20"
+      ca/age_amount_before_count: "5807.80"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/non_refundable_credit_amounts: "20721.75"
+      ca/non_refundable_tax_credits: "3004.65"
+      ca/slip_dividend_tax_credit: "60.00"
+      ca/dividends_amount_a: "1955.00"
+      ca/dividends_amount_b: "575.00"
+      ca/other_dividends_credit: "51.92"
+      ca/dividends_amount_a_less_b: "1380.00"
+      ca/eligible_dividends_credit: "207.27"
+      ca/no_slip_dividend_tax_credit: "259.19"
+      ca/dividend_tax_credit: "319.19"
+      ca/credits_against_basic_federal_tax: "3323.84"
+      ca/federal_tax_after_credits: "6966.62"
+      ca-on/ontario_basic_tax: "3961.26"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "20660.00"
+      ca-on/age_reduction: "3099.00"
+      ca-on/age_amount_before_count: "3124.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/non_refundable_credit_amounts: "15868.75"
+      ca-on/non_refundable_tax_credits: "801.37"
+      ca-on/ontario_tax_after_credits: "3159.89"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "3159.89"
+      ca-on/dividends_amount_a: "2455.00"
+      ca-on/dividends_amount_b: "775.00"
+      ca-on/other_dividends_credit: "23.14"
+      ca-on/dividends_amount_a_less_b: "1680.00"
+      ca-on/eligible_dividends_credit: "168.00"
+      ca-on/dividend_tax_credit: "191.14"
+      ca-on/ontario_tax_before_dividend_credit: "3159.89"
+      ca-on/ontario_tax_less_dividend_credit: "2968.75"
+      ca-on/dividend_credit_from_line_57: "191.14"
+      ca-on/ontario_tax_after_dividend_credit: "2968.75"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "0.00"
+      ca-on/ontario_tax_after_reduction: "2968.75"
+      ca-on/tax_otherwise_payable_line_71: "3159.89"
+      ca-on/tax_otherwise_payable_line_73: "3159.89"
+      ca-on/tax_otherwise_payable_reduction_before_conditions: "0.00"
+      ca-on/tax_otherwise_payable_reduction_claimable: "1"
+      ca-on/tax_otherwise_payable_reduction: "0.00"
+      ca-on/tax_otherwise_payable: "3159.89"
+      ca-on/provincial_foreign_tax_credit_before_limit: "412.40"
+      ca-on/provincial_foreign_tax_credit: "412.40"
+      ca-on/ontario_tax_after_foreign_tax_credit: "2556.35"
+      ca-on/lift_credit_before_maximum: "2525.00"
+      ca-on/lift_maximum_credit: "875.00"
+      ca-on/lift_reduction: "1724.50"
+      ca-on/lift_credit: "0"
+      ca-on/ontario_tax_after_lift_credit: "2556.35"
+      ca-on/community_food_program_credit: "0"
+      ca-on/ontario_tax_after_food_credit: "2556.35"
+      ca-on/ontario_health_premium: "600.00"
+      ca-on/ontario_tax: "3156.35"
+      ca/itc_recapture_at_15_percent: "0"
+      ca/itc_recapture_at_20_percent: "0"
+      ca/itc_recapture: "0"
+      ca/foreign_tax_credit_net_income_deductions: "0"
+      ca/foreign_tax_credit_net_income_before_split_income: "66990.00"
+      ca/foreign_tax_credit_net_income_with_split_income: "66990.00"
+      ca/foreign_tax_credit_net_income: "66990.00"
+      ca/basic_federal_tax_with_dividend_credit: "7285.81"
+      ca/foreign_tax_credit_basic_federal_tax: "7285.81"
+      ca/federal_non_business_foreign_tax_credit: "1187.60"
+      ca/foreign_business_tax_credit_line_4: "510"
+      ca/foreign_business_tax_credit_line_5: "978.84"
+      ca/foreign_business_tax_credit_line_7: "978.84"
+      ca/foreign_business_tax_credit_line_8: "14571.62"
+      ca/foreign_business_tax_credit_line_10: "13384.02"
+      ca/federal_business_foreign_tax_credit: "510"
+      ca/federal_foreign_tax_credit_before_limit: "1697.60"
+      ca/federal_foreign_tax_credit: "1697.60"
+      ca/federal_tax_less_foreign_tax_credit: "5269.02"
+      ca/federal_tax_with_itc_recapture: "5269.02"
+      ca/political_credit_before_maximum: "0"
+      ca/political_credit: "0"
+      ca/labour_sponsored_funds_credit_before_maximum: "0"
+      ca/labour_sponsored_funds_credit: "0"
+      ca/credits_against_federal_tax: "0"
+      ca/federal_tax_less_credits: "5269.02"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000"
+      ca/resp_aips_limit_remaining: "50000"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0"
+      ca/resp_aips_part_b_tax: "0"
+      ca/resp_aips_additional_tax: "0"
+      ca/special_taxes: "0"
+      ca/net_federal_tax: "5269.02"
+      ca/total_payable: "8425.37"
+      ca/working_income: "50000"
+      ca/adjusted_family_net_income: "66990.00"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/cwb_reduction_without_dependant: "6020.25"
+      ca/canada_workers_benefit_without_dependant: "0"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_reduction_with_dependant: "5452.65"
+      ca/canada_workers_benefit_with_dependant: "0"
+      ca/canada_workers_benefit: "0"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/care_adjusted_income: "66990.00"
+      ca-on/care_family_adjusted_income: "66990.00"
+      ca-on/care_credit_percentage: "0.47"
+      ca-on/care_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_family_net_income: "66990.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "31990.00"
+      ca-on/seniors_care_reduction: "1599.50"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_before_maximum: "0"
+      ca-on/political_credit: "0"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/medical_supplement_working_income: "50000"
+      ca/medical_supplement_line_6: "66990.00"
+      ca/medical_supplement_line_8: "33696.00"
+      ca/medical_supplement_line_16: "0"
+      ca/refundable_medical_expense_supplement: "0"
+      ca/total_credits: "9000.00"
+      ca/refund_or_balance_owing: "-574.63"
+      ca/educator_supplies_expenses_at_most_maximum: "0"
+      ca/educator_school_supply_credit: "0"
+      ca/refund: "574.63"
+      ca-on/refund_before_donation: "574.63"
+      ca-on/net_refund: "574.63"
+      ca/amt_part_1_subtotal: "66990.00"
+      ca/amt_basic_federal_tax: "6966.62"
+      ca/amt_regular_net_federal_tax_payable: "5269.02"
+      ca/amt_special_foreign_tax_credit: "1697.60"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "2301.75"
+      ca/cpp_first_additional_contributions: "465.00"
+      ca/cpp_required_base_and_first_additional_contributions: "2766.75"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2301.75"
+      ca/cpp_part_5_line_69: "465.00"
+      ca/cpp_enhanced_contributions: "465.00"
+
+  ca/t776:
+    - ca/rental_gross_rents: "0"
+      ca/gross_rental_income: "0"
+      ca/rental_total_expenses: "0"
+      ca/rental_personal_portion: "0"
+      ca/rental_non_compliant_expenses: "0"
+      ca/rental_expenses_less_personal_portion: "0"
+      ca/rental_deductible_expenses: "0"
+      ca/rental_net_income_before_adjustments: "0"
+      ca/rental_net_income_share: "0"
+      ca/rental_net_income_after_coowner_expenses: "0"
+      ca/rental_net_income_with_recapture: "0"
+      ca/rental_net_income_after_terminal_loss: "0"
+      ca/rental_net_income_after_cca: "0"
+      ca/rental_partner_share_with_rebate: "0"
+      ca/rental_partnership_net_income: "0"
+      ca/short_term_rental_gross_rents: "0"
+      ca/rental_short_term_portion: "0"
+      ca/rental_closing_ucc: []
+      ca/rental_non_compliant_cca: "0"
+      ca/short_term_rental_non_compliant_cca_by_class: []

@@ -1,0 +1,69 @@
+# Return LU: a passenger vehicle whose interest is above Guide T4044's limit (chosen figures, not a CRA
+# example). An employee on a salary of $50,000 who drives a car bought with a loan to earn employment
+# income, all 10,000 of 10,000 kilometres (line 20 is 1): fuel $2,000 and interest paid $5,000 over 100
+# days. The Guide's "Available interest expense for passenger vehicles or zero-emission passenger
+# vehicles chart": line A (total interest paid in the year) $5,000; line B ($10 multiplied by the
+# number of days for which interest was paid) $1,000; "The available interest expense is the lesser of
+# amount A and amount B", so $1,000.00 goes on line 26 of Form T777. Line 29 is 2,000 + 1,000 = 3,000
+# and lines 3, 15 and 17 are 3,000.00. The same car as a vehicle that is not a passenger vehicle (a
+# pick-up truck used to transport goods, say) has no limit: line 26 is the $5,000 whole and line 29 is 7,000. The other expected
+# lines are the engine's, computed from those.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LU: Guide T4044 (2025), "Interest expense", the "Available interest expense for passenger
+  vehicles or zero-emission passenger vehicles chart": a salaried employee (employment income
+  $50,000) with a passenger vehicle driven 10,000 of 10,000 kilometres for employment, fuel $2,000
+  and interest paid of $5,000 for 100 days, so line B is $1,000 and the available interest expense
+  on line 26 is $1,000.00 (chosen figures, not a CRA example). Lines 29, 3, 15 and 17 are 3,000.00,
+  and T1 line 22900 is 3,000.00.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Interest
+    expense": "If you use a passenger vehicle or a ZEPV to earn employment income, there is a limit
+    on the amount of interest you can deduct when buying it. ... Enter your available interest
+    expense amount on line 26 of Form T777." Chart: "Line A: Total interest paid in the year";
+    "Line B: $10 multiplied by the number of days for which interest was paid"; "The available
+    interest expense is the lesser of amount A and amount B."
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    line 26 "Interest expense"; line 29 "Add lines 21 to 28."; lines 3, 15 and 17.
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "50000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "50000"
+  ca/t2204_insurable_earnings: "50000"
+  ca/t2204_premiums_deducted: "820.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "2766.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_employment_kilometres: "10000"
+  ca/t777_total_kilometres: "10000"
+  ca/t777_vehicle_fuel: "2000"
+  ca/t777_vehicle_interest: "5000"
+  ca/t777_passenger_vehicle: "1"
+  ca/t777_interest_days: "100"
+expected:
+  ca/t777:
+    - ca/t777_interest_limit: "1000.00"
+      ca/t777_interest_available: "1000.00"
+      ca/t777_line_26: "1000.00"
+      ca/t777_vehicle_total_expenses: "3000.00"
+      ca/t777_line_3: "3000.00"
+      ca/t777_line_15: "3000.00"
+      ca/t777_line_17: "3000.00"
+  ca-on/return:
+    - ca/other_employment_expenses: "3000.00"
+      ca-on/ontario_tax_less_dividend_credit: "1548.65"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "46535.00"
+      ca/other_payments_limit_income: "46535.00"
+      ca/refund_or_balance_owing: "5568.33"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "50000"

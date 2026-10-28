@@ -1,0 +1,270 @@
+# Return AT: a single filer, a 2025 Ontario resident, a student with employment income of
+# $40,000 who claims the federal tuition amount (Schedule 11), the Canada training credit, a
+# tuition amount transferred from a child and the federal amounts transferred from a spouse
+# (Schedule 2) and the Ontario amounts transferred from a spouse (Schedule ON(S2)). Nothing else is
+# claimed. The figures are chosen so the ticket's results hold:
+# Schedule 11 with $6,000 of Canadian fees, $1,250 of foreign fees and $2,000 unused
+# from the 2024 notice, and Schedule 2 with the spouse's age amount $9,028, pension amount
+# $2,000 and taxable income $20,000, and Schedule ON(S2) with the spouse's ON428 lines 58080 6,223,
+# 58360 1,762, 58040 12,747, 24 1,500 and 58560 0.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single filer, a 2025 Ontario resident, with employment income of 40000 (a chosen figure) and
+  income tax deducted of 5000 (a chosen figure). The CPP base contributions are 4.95% x (40000 -
+  3500) = 1806.75, the first additional 1% x 36500 = 365.00 (deducted: total deductions 365.00),
+  the EI premiums 1.64% x 40000 = 656.00. Net income and taxable income are 40000 - 365.00 =
+  39635.00; the federal tax on it is 5747.08. The federal basic personal amount is 16129.00 (net
+  income is at or below 177882), the Canada employment amount 1471.00; T1 line 101 (the credit
+  amounts up to line 100) is 16129.00 + 1806.75 + 656.00 + 1471.00 = 20062.75. No other amount
+  of lines 30000 to 31800 is claimed.
+  Schedule 11, the student's. Canadian tuition fees (line 1, line 32000) 6000, a chosen figure,
+  and foreign tuition fees (line 7, line 32001) 1250, a chosen figure, so that the Canada
+  training credit and the federal tuition amount are both shown. The Canada training credit:
+  line 2 is 6000 x 50% = 3000.00, the limit on the notice of assessment (line 3) is 1250, a
+  chosen figure, line 4 is the lesser, 1250.00, and the credit claimed (line 5, line 45350) is
+  an election of 1250, at most line 4: 1250.00. Line 6 is 6000 - 1250.00 = 4750.00, line 8 is
+  4750.00 + 1250 = 6000.00, unused federal tuition from the 2024 notice (line 9) 2000, a chosen
+  figure, so line 10 is 8000.00. Taxable income of 39635.00 is at or below 57375, so line 11 is
+  39635.00; line 12 is T1 line 101, 20062.75; line 13 is 39635.00 - 20062.75 = 19572.25. Line
+  14 is the lesser of line 9 (2000) and line 13: 2000.00; line 15 is 19572.25 - 2000.00 =
+  17572.25; line 16 is the lesser of line 8 (6000.00) and line 15: 6000.00; line 17 and line
+  32300, the federal tuition amount, is 2000.00 + 6000.00 = 8000.00. Line 20 is 8000.00 -
+  8000.00 = 0.00. The most that can be transferred (line 21) is line 8, 6000.00, at most 5000:
+  5000.00; line 23 is 5000.00 - 6000.00, not below zero: 0.00, so no amount is transferred to a
+  designated individual (line 24 and line 32700, an election of 0) and line 25, the amount
+  carried forward, is 0.00 - 0 = 0.00.
+  Line 32400, a tuition amount transferred from a child, is 1500, a chosen figure (at most
+  5000), taken as entered.
+  Schedule 2, the spouse's amounts, all figures from another person's return and chosen figures:
+  line 1 (their line 30100) 9028, line 2 (their line 30500) 0, line 3 (their line 31400) 2000,
+  line 4 (their line 31600) 0, line 5 (designated tuition) 0, so line 6 is 11028.00. Their
+  taxable income (their line 26000) 20000 is at or below 57375, so line 7 is 20000.00; line 8
+  (their line 30000) 16129, line 9 (their line 96) 1500 and line 10 (their line 32300) 0 add to
+  17629.00 on line 11, so line 12 is 20000.00 - 17629.00 = 2371.00 and line 13 is 11028.00 -
+  2371.00 = 8657.00. The filer was not separated for 90 days or more including December 31,
+  2025 (the count is 1), so line 32600 is 8657.00 x 1 = 8657.00.
+  Schedule ON(S2), the spouse's Ontario amounts, all figures from another person's Form ON428 and
+  chosen figures: line 1 (their line 58080) 6223, line 2 (their line 58360) 1762 and line 3 (their
+  line 58440) 0 add to 7985.00 on line 4. Their taxable income (their line 26000) of 20000, the
+  federal Schedule 2's input again, is at or below 52886, so line 5 is 20000.00 (their line 8, the
+  Ontario tax of 1010.00, is not used); line 6 (their line 58040) 12747, line 7 (their line 24)
+  1500 and line 8 (their line 58560) 0 add to 14247.00 on line 9, so line 10 is 20000.00 -
+  14247.00 = 5753.00 and line 11 is 7985.00 - 5753.00 = 2232.00. The filer was not separated for
+  90 days or more including December 31, 2025 (the count is 1), so ON428 line 34 and line 58640
+  is 2232.00 x 1 = 2232.00.
+  The total of the credit amounts (line 33500) is 20062.75 + 8000.00 + 1500 + 8657.00 =
+  38219.75 and line 33800 is 38219.75 x 14.5% = 5541.86375, rounded half-up to the cent:
+  5541.86. With no donations the top-up tax credit is 0 (5541.86 is under 8319.38). The federal
+  tax after credits is 5747.08 - 5541.86 = 205.22. The Ontario tax is changed only by line
+  58640: 39635 x 5.05% = 2001.57, the credit amounts (ON428 line 44) are 12747 + 1806.75 + 656 +
+  2232.00 = 17441.75, times 5.05% = 880.808375, half-up to the cent 880.81, which leaves 2001.57 -
+  880.81 = 1120.76, the LIFT credit is 875 - 5% x (39635 - 32500) = 518.25 and the health premium
+  is 450, giving 1120.76 - 518.25 + 450 = 1052.51; so the total payable is 205.22 + 1052.51 =
+  1257.73. The total credits (line 48200) are 5000 + 1250.00 (line 45350) = 6250.00 and the
+  refund is 6250.00 - 1257.73 = 4992.27, a refund (line 48400). The Ontario net refund (line 3 of the opportunities
+  fund) with no donation is the same 4992.27. Not triggered: lines 30100 to 31800 of the
+  filer's own claims, the medical expenses, the donations, the disability amounts, the CWB.
+  Amounts are quoted decimals and counts quoted digit strings.
+sources:
+  - >-
+    CRA, Schedule 11 (5000-S11, 2025), docs/cra-forms-2025/5000-s11-25e.txt (confirmed
+    2026-10-19): "Line 1 and line 32000: Eligible tuition fees paid to Canadian educational
+    institutions for 2025 (fees for each institution must be more than $100)"; "Line 2: Amount
+    from line 1 multiplied by 50% ="; "Line 3: Your Canada training credit limit from your
+    latest notice of assessment or reassessment"; "Line 4: Enter whichever is less: amount from
+    line 2 or line 3."; "Enter the Canada training credit amount that you are claiming for 2025
+    (cannot be more than the amount on line 4)."; "Line 5: Enter this amount on line 45350 of
+    your return. Your Canada training credit"; "Line 6: Line 1 minus line 5 ="; "Line 7 and line 32001: Eligible tuition fees
+    paid to foreign educational institutions for 2025"; "Line 8: Line 6 plus line 7 ="; "Line 9:
+    Unused federal tuition from your 2024 notice of assessment or reassessment (note 1)"; "Line
+    10: Line 8 plus line 9 ="; "Enter the amount from line 26000 of your return on line 11 if it
+    is $57,375 or less. If it is more than $57,375, enter the result of the following
+    calculation:"; "Line 11: Amount from line 76 of your return divided by 14.5% ="; "Line 12:
+    Enter the amount from line 101 of your return"; "Line 13: Line 11 minus line 12 (if
+    negative, enter "0") ="; "Line 14: Enter whichever is less amount from line 9 or line 13.";
+    "Line 15: Line 13 minus line 14 ="; "Line 16: Enter whichever is less amount from line 8 or
+    line 15."; "Line 17: Line 14 plus line 16 Enter this amount on line 32300 of your return.
+    Your federal tuition amount ="; "Line 20: Line 18 minus line 19 Total unused federal tuition
+    amount ="; "Line 21: Amount from line 8 of the previous page (maximum $5,000)"; "Line 23:
+    Line 2 1 minus line 22 (if negative, enter "0") Unused federal tuition amount available to
+    transfer =" (the text file splits "21"); "Line 24 and line 32700: Enter the amount you are transferring to a designated
+    individual as shown on your Tuition and Enrolment Certificate (cannot be more than the
+    amount on line 23). Federal tuition amount transferred"; "Line 25: Line 20 minus line 24
+    Unused federal tuition amount available to carry forward to a future year =". URL:
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s11/5000-s11-25e.txt
+  - >-
+    CRA, Schedule 2 (5000-S2, 2025), docs/cra-forms-2025/5000-s2-25e.txt (confirmed
+    2026-10-19): "If you were separated because of a breakdown in your relationship for a period
+    of 90 days or more including December 31, 2025, your spouse or common-law partner cannot
+    transfer any unused amounts to you."; "Line 1 and line 35200: Enter the amount from line
+    30100 of their return."; "Line 2 and line 35300: Enter the amount from line 30500 of their
+    return."; "Line 3 and line 35500: Enter the amount from line 31400 of their return.
+    (maximum $2,000)"; "Line 4 and line 35700: Enter the amount from line 31600 of their return.
+    (Note 1)"; "Line 5 and line 36000: Enter the federal amount designated to you from their
+    forms T2202, TL11A, or TL11C. (Note 2)"; "Line 6: Add lines 1 to 5. ="; "Line 7: Enter the
+    amount from line 26000 of their return on line 7 if it is $57,375 or less. If it is more
+    than $57,375, enter the result of the following calculation: amount from line 76 of their
+    return divided by 14.5% ="; "Line 8: Amount from line 30000 of their return"; "Line 9:
+    Amount from line 96 of their return"; "Line 10: Amount from line 32300 of their return";
+    "Line 11: Add lines 8 to 10. ="; "Line 12 and line 36100: Line 7 minus line 11 (if negative,
+    enter "0") ="; "Line 13: Line 6 minus line 12 (if negative, enter "0") Enter this amount on
+    line 32600 of your return. Federal amounts transferred from your spouse or common-law
+    partner =". URL:
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s2/5000-s2-25e.txt
+  - >-
+    CRA, T1 General 2025 (5006-R), docs/cra-forms-2025/5006-r-25e.txt (confirmed 2026-10-19),
+    Part B: "Line 101: Add lines 98 to 100. ="; "Line 102 and line 31900: Interest paid on your
+    student loans"; "Line 103 and line 32300: Your federal tuition amount (complete Schedule
+    11)"; "Line 104 and line 32400: Tuition amount transferred from a child or grandchild";
+    "Line 105 and line 32600: Amounts transferred from your spouse or common-law partner
+    (complete Schedule 2)"; "Line 106: Add lines 101 to 105. ="; "Line 113 and line 33500: Line
+    106 plus line 112 ="; "Line 115 and line 33800: Line 113 multiplied by the percentage from
+    line 114"; Part D: "Line 156 and line 45350: Canada training credit (CTC) (complete
+    Schedule 11)"; "Line 166 and line 48200: Add lines 150 to 165. Total credits =".
+  - >-
+    CRA, Schedule ON(S2) (5006-S2, 2025), docs/cra-forms-2025/5006-s2-25e.txt (confirmed
+    2026-10-19): "You can claim these amounts if you are eligible to claim the equivalent federal
+    amounts on your federal Schedule 2."; "Line 1 and line 59020: Enter the amount from line 58080
+    of their Form ON428."; "Line 2 and line 59050: Enter the amount from line 58360 of their Form
+    ON428."; "Line 3 and line 59070: Enter the amount from line 58440 of their Form ON428.";
+    "Line 4: Add lines 1 to 3. ="; "Line 5: Enter the amount from line 26000 of their return on
+    line 5 if it is $52,886 or less. If it is more than $52,886, enter the result of the
+    following calculation: Amount from line 8 of their Form ON428 divided by 5.05% ="; "Line 6:
+    Amount from line 58040 of their Form ON428"; "Line 7: Amount from line 24 of their Form
+    ON428"; "Line 8: Amount from line 58560 of their Form ON428"; "Line 9: Add lines 6 to 8. =";
+    "Line 10 and line 59120: Line 5 minus line 9 (if negative, enter "0") ="; "Line 11: Line 4
+    minus line 10 (if negative, enter "0") Enter this amount on line 58640 of your Form ON428.
+    Provincial amounts transferred from your spouse or common-law partner =" (the text file
+    breaks "divided by 5.05% =" onto its own line). URL:
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s2/5006-s2-25e.txt
+  - >-
+    CRA, Form ON428 (5006-C, 2025), docs/cra-forms-2025/5006-c-25e.txt (confirmed 2026-10-19),
+    Part A: "Line 8: Line 6 plus line 7 Ontario tax on taxable income ="; Part B: "Line 34 and line
+    58640: Amounts transferred from your spouse or common-law partner (attach Schedule
+    ON(S2))"; "Line 35: Add lines 31 to 34. ="; "Line 44 and line 58800: Line 35 plus line 43 =";
+    "Line 46 and line 58840: Line 44 multiplied by the percentage from line 45".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "40000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "40000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "40000"
+  ca/t2204_premiums_deducted: "656.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2171.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "5000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/canadian_tuition_fees: "6000"
+  ca/canadian_tuition_institutions: "1"
+  ca/canada_training_credit_limit: "1250"
+  ca/canada_training_credit_claimed: "1250"
+  ca/foreign_tuition_fees: "1250"
+  ca/unused_tuition_from_2024: "2000"
+  ca/tuition_transfer_elected: "0"
+  ca/tuition_transferred_from_child: "1500"
+  ca/tuition_transfer_students: "1"
+  ca/spouse_return_age_amount: "9028"
+  ca/spouse_return_pension_income_amount: "2000"
+  ca/spouse_return_taxable_income: "20000"
+  ca/spouse_return_basic_personal_amount: "16129"
+  ca/spouse_return_line_96: "1500"
+  ca/spouse_not_separated_90_days: "1"
+  ca-on/spouse_return_ontario_age_amount: "6223"
+  ca-on/spouse_return_ontario_pension_income_amount: "1762"
+  ca-on/spouse_return_ontario_basic_tax: "1010.00"
+  ca-on/spouse_return_ontario_basic_personal_amount: "12747"
+  ca-on/spouse_return_ontario_line_24: "1500"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "40000"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "40000.00"
+      ca/ei_premiums: "656.00"
+      ca/deductions_from_total_income: "365.00"
+      ca/net_income: "39635.00"
+      ca/net_income_signed: "39635.00"
+      ca/net_income_before_adjustments: "39635.00"
+      ca/other_payments_limit_income: "39635.00"
+      ca/taxable_income: "39635.00"
+      ca/federal_basic_tax: "5747.08"
+      ca/basic_personal_amount: "16129.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/canada_training_credit_basis: "3000.00"
+      ca/canada_training_credit_maximum: "1250.00"
+      ca/canada_training_credit: "1250.00"
+      ca/canadian_tuition_available: "4750.00"
+      ca/current_year_tuition_available: "6000.00"
+      ca/total_tuition_available: "8000.00"
+      ca/tuition_income_base: "39635.00"
+      ca/credit_amounts_subtotal: "20062.75"
+      ca/tuition_income_less_credits: "19572.25"
+      ca/unused_tuition_claimed: "2000.00"
+      ca/tuition_income_remaining: "17572.25"
+      ca/current_year_tuition_claimed: "6000.00"
+      ca/federal_tuition_amount: "8000.00"
+      ca/unused_federal_tuition: "0.00"
+      ca/tuition_transfer_limit: "5000.00"
+      ca/tuition_available_to_transfer: "0.00"
+      ca/tuition_transferred: "0"
+      ca/tuition_carried_forward: "0.00"
+      ca/spouse_transferable_amounts: "11028.00"
+      ca/spouse_income_for_transfer: "20000.00"
+      ca/spouse_credits_used: "17629.00"
+      ca/spouse_adjusted_taxable_income: "2371.00"
+      ca/spouse_unused_amounts: "8657.00"
+      ca/amounts_transferred_from_spouse: "8657.00"
+      ca/non_refundable_credit_amounts: "38219.75"
+      ca/credit_amounts_at_credit_rate: "5541.86"
+      ca/top_up_credits_base: "5541.86"
+      ca/top_up_excess: "0"
+      ca/top_up_tax_credit: "0"
+      ca/non_refundable_tax_credits: "5541.86"
+      ca/credits_against_basic_federal_tax: "5541.86"
+      ca/federal_tax_after_credits: "205.22"
+      ca/federal_tax_with_itc_recapture: "205.22"
+      ca/total_payable: "1257.73"
+      ca/total_credits: "6250.00"
+      ca/refund_or_balance_owing: "-4992.27"
+      ca/refund: "4992.27"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/spouse_transferable_amounts: "7985"
+      ca-on/spouse_income_for_transfer: "20000.00"
+      ca-on/spouse_credits_used: "14247"
+      ca-on/spouse_adjusted_taxable_income: "5753.00"
+      ca-on/spouse_unused_amounts: "2232.00"
+      ca-on/amounts_transferred_from_spouse: "2232.00"
+      ca-on/non_refundable_credit_amounts: "17441.75"
+      ca-on/credit_amounts_at_credit_rate: "880.81"
+      ca-on/ontario_tax_less_dividend_credit: "1120.76"
+      ca-on/net_refund: "4992.27"
+      ca/amt_part_1_subtotal: "39635.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "182.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "39635.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "205.22"
+      ca/amt_regular_net_federal_tax_payable: "205.22"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "1806.75"
+      ca/cpp_first_additional_contributions: "365.00"
+      ca/cpp_required_base_and_first_additional_contributions: "2171.75"
+      ca/cpp_enhanced_contributions: "365.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "1806.75"
+      ca/cpp_part_5_line_69: "365.00"

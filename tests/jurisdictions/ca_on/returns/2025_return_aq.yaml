@@ -1,0 +1,208 @@
+# Return AQ (the Ontario unused tuition and education amounts, Schedule ON(S11)): a 2025 Ontario
+# resident, single, with employment income and an unused Ontario tuition and education balance
+# from the 2024 notice of assessment. The balance of $60,000 (a chosen figure) is more than the
+# room the form allows, so line 5 is line 4, not line 1: the taxable income, $59,435.00, is over
+# $52,886, so line 2 divides the Ontario tax on taxable income by 5.05%, and line 4 is that
+# figure less the credit amounts before the claim. The claim, $48,224.13, is added to the
+# Ontario non-refundable credit amounts (ON428 line 33 and line 58560), which takes the Ontario tax
+# on taxable income to exactly zero after credits; the $11,775.87 that is left of the balance is
+# carried forward (Schedule ON(S11) line 8). A balance of $5,000 (line 5 is $5,000 and line 8 is $0) is pinned in
+# `end_to_end/test_return_aq.py`; the taxable income at or below $52,886 case is pinned in
+# `test_unused_tuition_limit_2025.py`.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A 2025 Ontario resident for all of 2025, over 18 and single (no spouse or common-law partner
+  on December 31, 2025, and no dependent children or dependants), with 2025 employment income
+  (T1 line 10100) of $60,000.00, a chosen figure, and no other income: total income (line 15000)
+  is $60,000.00. The CPP contributions are computed from employment income, which is entered as the
+  T4 box 26 pensionable earnings (the slip's box 26 being blank, the form's "enter the amount from
+  box 14"), and the EI premiums from
+  employment income, taken as the insurable earnings. Employment income is below the maximums
+  ($71,300 for CPP, $65,700 for EI), so the EI premiums (line 31200, ON428 line 58300) are 1.64%
+  x 60,000 = $984.00, the base CPP contributions (Schedule 8 line 11, T1 line 30800, ON428 line
+  58240) are 4.95% x (60,000 - 3,500) = $2,796.75, and the enhanced CPP contributions (line
+  22215) are the first additional contributions (Schedule 8 line 12) 1% x 56,500 = $565.00, with
+  no second additional contribution (line 22, $0). There is no RRSP deduction, union dues or
+  child care expenses deduction, so total deductions (line 23300) are the enhanced CPP
+  contributions of $565.00, net income before adjustments (line 23400) and net income (line
+  23600) are $59,435.00, and taxable income (line 26000) is $59,435.00; there are no deductions
+  from net income (lines 24400 to 25600). The federal basic tax is 14.5% x 57,375 + 20.5% x (59,435
+  - 57,375) = 8,319.375 + 422.30 = $8,741.68, rounded half-up. The federal non-refundable credit
+  amounts are the basic personal amount (line 30000, $16,129 since net income is $177,882 or
+  less), the base CPP contributions, the EI premiums and the Canada employment amount (line 31260,
+  the lesser of $1,471 and employment income): 16,129 + 2,796.75 + 984.00 + 1,471 = $21,380.75,
+  at 14.5% $3,100.21 (line 35000), so the federal tax after credits (line 42000) is 8,741.68 -
+  3,100.21 = $5,641.47. The age amount (line 30100), the spouse or common-law partner amount
+  (line 30300), the amount for an eligible dependant (line 30400), the Canada caregiver amounts
+  and the amount for infirm children (line 30500) are each $0.
+
+  Ontario basic tax (ON428 line 8, Part A): line 1 is 59,435.00, in column 2 (more than $52,886
+  but not more than $105,775): line 4 is 59,435.00 - 52,886.00 = 6,549.00; line 6 is 6,549.00 x
+  9.15% = 599.2335; line 7 is the printed 2,670.74; line 8 is 2,670.74 + 599.2335 = 3,269.9735,
+  rounded half-up to $3,269.97. Ontario non-refundable credit amounts: the basic personal
+  amount (line 58040, $12,747.00), the base CPP contributions and the EI premiums are
+  12,747.00 + 2,796.75 + 984.00 = $16,527.75 (ON428 line 31, the credit amounts through the
+  disability transfer, which is also the line 3 of Schedule ON(S11)).
+
+  Schedule ON(S11), Ontario tuition and education amounts. Line 1, the unused balance on the 2024
+  notice of assessment (a chosen figure), is $60,000.00. Line 2: the taxable income of
+  $59,435.00 is more than $52,886, so line 2 is 3,269.97 / 5.05% = 3,269.97 x 2,000 / 101 =
+  64,751.8812, rounded half-up to $64,751.88. Line 3 is the ON428 line 31 figure, $16,527.75.
+  Line 4 is 64,751.88 - 16,527.75 = $48,224.13 (not below zero). Line 5 is the lesser of line 1
+  ($60,000.00) and line 4 ($48,224.13): $48,224.13, which is entered on line 58560 of Form
+  ON428 (line 33). Lines 6 and 7 are lines 1 and 5, and line 8 is 60,000.00 - 48,224.13 =
+  $11,775.87, the unused provincial tuition and education amounts carried forward to a future
+  year.
+
+  The Ontario non-refundable credit amounts (ON428 line 35 and line 58800) are the ON428 line
+  31 figure plus the claim on line 33: 16,527.75 + 48,224.13 = $64,751.88. At the 5.05% credit
+  rate (line 45, line 46 and line 58840) that is 64,751.88 x 5.05% = 3,269.96994, rounded
+  half-up to $3,269.97, the Ontario non-refundable tax credits (line 50). The Ontario tax after
+  credits (line 58) is 3,269.97 - 3,269.97 = $0.00, below $5,710, so the surtax (line 68) is $0
+  and line 69 is $0.00; with no dividends the Ontario tax after the dividend credit (ON428 line
+  71) is $0.00.
+
+  Ontario tax reduction (ON428 lines 72 to 81): there is no additional tax for minimum tax
+  purposes (line 72, a chosen $0), so line 73 is $0.00. None of the six conditions on which the
+  form enters "0" on line 80 applies (each of the five counts is a chosen 0, and line 72 is 0), so
+  the count for line 80 is 1; the filer has no spouse or common-law partner on December 31, 2025,
+  so the rule for higher net income does not arise, and the filer claims the amounts on lines 75
+  and 76 (the count is 1, and line 75 is 0 x $544 = $0 for no dependent children). Line 74 is the
+  basic reduction, $294.00; line 77 is 294.00 + 0 + 0 = $294.00; line 78 is 2 x 294.00 = $588.00;
+  line 79 is line 73, $0.00; line 80 is 588.00 - 0.00 = $588.00, and line 81 "Line 73 minus line
+  80 (if negative, enter "0")" is 0.00 - 588.00, negative, so $0.00. The LIFT credit (line 85,
+  Schedule ON428-A) cannot take line 86 below zero, so line 86 is $0.00.
+
+  The Ontario health premium (ON428 line 89) is read from its chart on taxable income: $59,435.00
+  is more than $48,600 but not more than $72,000, so the premium is $600.00, and the Ontario tax
+  (line 90) is 0.00 + 600.00 = $600.00. On the T1, the total payable (line 43500) is the net
+  federal tax $5,641.47 plus the Ontario tax $600.00, $6,241.47. The Canada workers benefit
+  (line 45300, Schedule 6) is $0: the adjusted family net income of $59,435.00 is above the
+  benefit's phase-out, so the benefit is 0. With no income tax deducted (line 43700, a chosen $0),
+  the total credits (line 48200) are $0, and the refund or balance owing (line 167) is 6,241.47
+  - 0 = $6,241.47: a balance owing, so there is no refund (line 48400 is $0). Every amount
+  computed from a rate, fraction, amount or chart on the forms is rounded half-up to the cent,
+  each line being a dollars-and-cents box. The other lines not mentioned are not triggered by
+  this return, so each is 0: no self-employment income (lines 13500, 13700, 13900, 14100 and
+  14300), no rental, no short-term rental, no net capital loss carryforward, no RRSP or FHSA
+  deduction, no Ontario credit for energy, property tax, northern energy, senior homeowners'
+  grant, seniors' care, co-operative education, political contributions or donations, and no
+  LIFT credit on the spouse or common-law partner. The CPP months are the 12 of a full year (a
+  chosen count of 12), the filer was resident in Canada throughout 2025 and is over 18.
+sources:
+  - >-
+    CRA, the 2025 Schedule ON(S11) (form 5006-S11), "Ontario Tuition and Education Amounts",
+    "Unused tuition and education amounts": "Line 1: Enter your unused Ontario tuition and
+    education amounts from your 2024 notice of assessment or reassessment."; "Enter the amount
+    from line 26000 of your return on line 2 if it is $52,886 or less. If it is more than
+    $52,886, enter the result of the following calculation:" "Line 2: Amount from line 8 of your
+    Form ON428" "divided by 5.05% ="; "Line 3: Enter the amount from line 31 of your Form
+    ON428."; "Line 4: Line 2 minus line 3 (if negative, enter "0") ="; "Line 5: Enter whichever
+    is less: amount from line 1 or line 4. Enter this amount on line 58560 of your Form ON428.";
+    "Carryforward of unused amounts" "Line 6: Amount from line 1 above"; "Line 7: Amount from line
+    5 above"; "Line 8: Line 6 minus line 7 Unused provincial tuition and education amounts
+    available to carry forward to a future year =". The form states no rounding rule for line 2:
+    the quotient is rounded half-up to the cent, as every dollars-and-cents box is.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s11/5006-s11-25e.txt
+  - >-
+    CRA, the 2025 Form ON428 (form 5006-C), Part A, "Ontario tax on taxable income": "Line 1:
+    Enter your taxable income from line 26000 of your return."; "Line 8: Line 6 plus line 7
+    Ontario tax on taxable income ="; Part B, "Line 31: Add lines 28 to 30. ="; "Line 33 and line
+    58560: Your unused tuition and education amounts (attach Schedule ON(S11))"; "Line 35: Add
+    lines 31 to 34. ="; "Line 44 and line 58800: Line 35 plus line 43 ="; "Line 46 and line
+    58840: Line 44 multiplied by the percentage from line 45 ="; "Line 50 and line 61500: Line
+    46 plus line 49 Enter this amount on line 52. Ontario non-refundable tax credits ="; the
+    surtax, the tax reduction on lines 72 to 81 and the health premium (line 89, "Ontario health
+    premium (complete the chart below)", on the chart's line 1 "Enter your taxable income from
+    line 26000 of your return") as cited for Returns AO and AP.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - >-
+    CRA, "CPP contribution rates, maximums and exemptions", 2025 row: maximum annual
+    pensionable earnings $71,300; basic exemption $3,500; employee rate 5.95%, the base 4.95%
+    and the first additional 1% of the earnings over the $3,500 exemption (Schedule 8 lines 7,
+    11 and 12); and "EI premium rates and maximums", 2025 federal row: maximum annual insurable
+    earnings $65,700; rate 1.64%. The arithmetic is in the description.
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca-on/unused_tuition_amounts_brought_forward: "60000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "60000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "984.00"
+      ca/deductions_from_total_income: "565.00"
+      ca/net_income_before_adjustments: "59435.00"
+      ca/net_income: "59435.00"
+      ca/net_income_signed: "59435.00"
+      ca/other_payments_limit_income: "59435.00"
+      ca/taxable_income: "59435.00"
+      ca/federal_basic_tax: "8741.68"
+      ca/basic_personal_amount: "16129.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/non_refundable_credit_amounts: "21380.75"
+      ca/non_refundable_tax_credits: "3100.21"
+      ca/federal_tax_after_credits: "5641.47"
+      ca/net_federal_tax: "5641.47"
+      ca/total_payable: "6241.47"
+      ca/refund_or_balance_owing: "6241.47"
+      ca-on/ontario_basic_tax: "3269.97"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/credit_amounts_through_disability_transfer: "16527.75"
+      ca-on/unused_tuition_income_cap: "64751.88"
+      ca-on/unused_tuition_room: "48224.13"
+      ca-on/unused_tuition_claimed: "48224.13"
+      ca-on/unused_tuition_carried_forward: "11775.87"
+      ca-on/non_refundable_credit_amounts: "64751.88"
+      ca-on/non_refundable_tax_credits: "3269.97"
+      ca-on/ontario_tax_after_credits: "0.00"
+      ca-on/ontario_tax_less_dividend_credit: "0.00"
+      ca-on/ontario_health_premium: "600.00"
+      ca-on/ontario_tax: "600.00"
+      ca-on/net_refund: "0"
+      ca/amt_part_1_subtotal: "59435.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "282.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "59435.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "5641.47"
+      ca/amt_regular_net_federal_tax_payable: "5641.47"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "2796.75"
+      ca/cpp_first_additional_contributions: "565.00"
+      ca/cpp_required_base_and_first_additional_contributions: "3361.75"
+      ca/cpp_enhanced_contributions: "565.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2796.75"
+      ca/cpp_part_5_line_69: "565.00"

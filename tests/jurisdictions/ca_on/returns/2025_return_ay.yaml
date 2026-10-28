@@ -1,0 +1,126 @@
+# Return AY: Return Y's single parent with one child, to which 10,000 of dividends other than
+# eligible dividends from a private corporation controlled by a relative, received with no slip,
+# are added; 11,500.00 grossed up, all of it split income (Form T1206). Schedule ON479-A line 1
+# of the Ontario childcare access and relief from expenses (CARE) tax credit is the TOSI-adjusted
+# net income of Form T1206 Part 1 line 6, so the split income is part of the family adjusted
+# income. The other lines are blank.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025, a parent of one child born in 2015, an eligible child for the child
+  care expenses deduction, with employment income (T1 line 10100) of $60,000 and child care
+  expenses of $6,000 paid in 2025 (every figure a chosen figure), as in Return Y, and 10,000 of
+  dividends other than eligible dividends received with no slip from a private corporation
+  controlled by a relative, which are split income. The grossed-up dividends are 11,500.00, so
+  the split income is a chosen classification: all 11,500 is both T1206 line 1 and the part of
+  it included on line 2, so line 4 (total split income, line 23200) is 11,500 and the total income (line 15000)
+  is 60,000 + 11,500.00 = 71,500.00. The child care expenses deduction (line 21400) is 5,000
+  as in Return Y, and the net income before adjustments (line 23400) is 54,435.00, as in
+  Return Y, as line 23200 takes the split income out again. T1206 line 5 is 54,435.00 and
+  line 6 is 11,500 + 54,435.00 = 65,935.00. Schedule ON479-A column 1: line 1 is 65,935.00
+  (the TOSI-adjusted net income, not the net income before adjustments of 54,435.00); line 2
+  is 5,000; line 4 is 65,935.00 + 5,000 = 70,935.00. A supporting person's adjusted income of
+  30,000 (column 2 line 4) is a chosen figure; line 5 is 100,935.00. Line 7: 100,935.00 is in
+  the table row "more than $99,600 but not more than $103,200: 27%", so the rate is 27%; line
+  6 is 5,000 and line 8 is 5,000 x 27% = 1,350.00. Return Y, with no split income, has a
+  family adjusted income of 89,435.00, a rate of 33% and a credit of 1,650.00. The other
+  lines are the engine's figures (to be confirmed against CRA's calculator). T1206 line 33C
+  is the Ontario tax on split income, 20.53% x 11,500 = 2,360.95, divided by 5.05% =
+  46,751.49 (a declared output).
+sources:
+  - >-
+    CRA, "T1206 Tax on split income" (confirmed 2026-10-19), Part 1: line 4 "Total split
+    income: line 1 plus line 3 Enter this amount on line 23200 of your return."; line 5 "Net
+    income from line 23600 of your tax return (or the amount you would have entered if the
+    instructions on line 23600 read "if negative, show in brackets")"; line 6 "TOSI-adjusted
+    net income: line 4 plus line 5 If negative, enter the result in brackets"; the note: "Use
+    the TOSI-adjusted net income from line 6 of this form in place of your net income from
+    line 23600 to calculate the provincial and territorial amounts you can claim, if
+    applicable, for the following amounts: (If the TOSI-adjusted net income at line 6 is
+    negative, use the negative value when it is part of an adjusted net income calculation,
+    otherwise use zero.)" including "the childcare access and relief from expenses tax credit
+    for Ontario (use line 6 of this form at column 1 of line 1 of Schedule ON479-A)".
+  - >-
+    CRA, Schedule ON479-A (form 5006-TCA), "Ontario Childcare Access and Relief from
+    Expenses (CARE) Tax Credit", "Family adjusted income calculation for the tax credit":
+    line 1 "Net income from line 23600 of the return (or the amount you would have entered
+    if the instructions on line 23600 said "if negative, show in brackets")"; line 2
+    "Child care expenses deduction from line 21400 of the return"; line 4 "Add lines 1 to 3
+    (if negative, enter "0"). Adjusted income"; line 5 "Add the amounts from line 4 of
+    columns 1 and 2. Family adjusted income"; line 6 "Enter your child care expenses
+    deduction from line 21400 of your return."; line 7 "If your family adjusted income on
+    line 5 is "0", enter 75%. If not, enter the tax credit rate that applies to your family
+    adjusted income from the table below."; line 8 "Line 6 multiplied by the percentage
+    from line 7 Enter this amount on line 63050 of your Form ON479." Line 3 "Social benefits
+    repayment from line 23500 of the return" is left out here.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tca/5006-tca-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/other_dividends_received_without_a_slip: "10000"
+  ca/split_income_dividends: "11500"
+  ca/split_income_dividends_other_than_eligible: "11500"
+  ca/rrsp_deduction_limit: "10800"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca-on/dependent_children: "1"
+  ca/eligible_dependants: "1"
+  ca/child_care_expenses_paid: "6000"
+  ca/children_seven_to_sixteen: "1"
+  ca/cwb_eligible_dependants: "1"
+  ca/income_tax_deducted: "8000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca-on/care_supporting_persons_adjusted_income: "30000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "71500.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/total_split_income: "11500"
+      ca-on/tosi_adjusted_taxable_income: "46751.49"
+      ca/child_care_expenses: "5000.00"
+      ca/net_income_before_adjustments: "54435.00"
+      ca/net_income_signed: "54435.00"
+      ca/tosi_adjusted_net_income: "65935.00"
+      ca-on/care_adjusted_income: "70935.00"
+      ca-on/care_family_adjusted_income: "100935.00"
+      ca-on/care_credit_percentage: "0.27"
+      ca-on/care_credit: "1350.00"
+      ca-on/net_refund: "90.50"
+      ca-on/ontario_tax_less_dividend_credit: "1087.84"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_payments_limit_income: "54435.00"
+      ca/refund_or_balance_owing: "-90.50"
+      ca/taxable_dividends_other_than_eligible: "11500.00"
+      ca/amt_part_1_subtotal: "54435.00"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "2782.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "54435.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "5210.71"
+      ca/amt_regular_net_federal_tax_payable: "5210.71"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "2756.54"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "3361.75"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2796.75"
+      ca/cpp_part_5_line_69: "565.00"

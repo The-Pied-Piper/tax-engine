@@ -1,0 +1,253 @@
+# Return EJ: CRA Guide T4037 (Capital Gains, 2025), Example 1 (pages 45-46), "Disposing of a principal residence
+# partly used for earning income": a duplex bought in November 1988 for $125,000, 40% rented and 60%
+# lived in, sold on July 28, 2025 for $175,000. The rented part of the building has a recapture of
+# CCA of $2,772 (T776, T1 line 12600), the rented part's building and land give a gain of $15,800
+# (Schedule 3 Part 3), and the 60% lived in is designated for every year (box 1) and not taxed.
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings. A line that is
+# not listed under `expected` computes to 0 (or no records).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 and with 12 months of CPP (Schedule 8 box A), all chosen figures, with no
+  employment income and no other income. Every figure below is from Guide T4037's Example 1
+  except the three choices named. The duplex was bought in November 1988 for $125,000; the
+  assessment just before the purchase valued the land at $25,000 and the building at $75,000
+  ($100,000 in all). The filer lived in the lower half and rented the upper half, 40% by square
+  metres. It was sold on July 28, 2025 for $175,000 with $10,500 of expenses of sale; the
+  assessment at the sale valued the land at $30,000 and the building at $120,000 ($150,000 in all).
+  The guide splits the rented 40% by the assessments. At purchase: building 40% x $75,000 /
+  $100,000 x $125,000 = $37,500 and land 40% x $25,000 / $100,000 x $125,000 = $12,500. At the
+  sale: building 40% x $120,000 / $150,000 x $175,000 = $56,000 and land 40% x $30,000 / $150,000
+  x $175,000 = $14,000. Outlays: building 40% x $120,000 / $150,000 x $10,500 = $3,360 and land
+  40% x $30,000 / $150,000 x $10,500 = $840. Those six figures are entered as the guide gives them;
+  the engine does not compute the split. The T776 statement has one Area A row (a chosen Class 1, the
+  class of a rental building; the guide does not name it) with the UCC of the rented part of the
+  building at the start of 2025, $34,728 (the guide's figure), no additions, and column 5 proceeds
+  of $37,500 with no property left in the class. The guide subtracts the lesser of the selling
+  price less outlays ($56,000 - $3,360 = $52,640) and the purchase price of the rented part of
+  the building ($37,500), that is $37,500, so $34,728 - $37,500 = ($2,772), a recapture of CCA
+  of $2,772.00. The $37,500 in column 5 is the filer's figure, the lesser, chosen by the filer
+  and not computed: the T776 form says Area D column 3, "Proceeds of disposition (should not
+  be more than the capital cost)", but the engine does not cap column 5 at the capital cost (a known
+  gap in the engine), and uncapped column 5 proceeds of $52,640 would give a recapture of $17,912.00, not the
+  guide's $2,772. The recapture is the T776 line 9947, so the statement's net income (line 9946) is
+  $2,772.00 and T1 line 12600 is $2,772.00. The statement has no rents or expenses (a chosen
+  simplification: the guide gives none), so no CCA is claimed (column 23 is 0) and the closing UCC of
+  Class 1 is $0.00. The land proceeds of $14,000 (T776 line 9924) are entered as the filer's
+  figure and carried through. Schedule 3 Part 3, Real estate, depreciable property and other
+  properties, has two rows as in the guide: the building, proceeds $56,000, adjusted cost base
+  $37,500, outlays $3,360, a gain of $15,140; and the land, proceeds $14,000, ACB $12,500, outlays
+  $840, a gain of $660. The total proceeds (line 13599) are $70,000 and the total gain (line 13800)
+  is $15,800, so the taxable capital gain (T1 line 12700, one half) is $7,900.00. Total income
+  (line 15000) is $2,772.00 + $7,900.00 = $10,672.00, which is the net income before adjustments,
+  net income and taxable income, with no deductions. The 60% lived in is one row of the principal
+  residence properties (Form T2091(IND) Section 1): 38 years owned after 1981 (1988 to 2025), all 38
+  designated (box 1 of Schedule 3 line 17900, for all of the years owned), with the real 60% figures
+  the guide implies: proceeds 60% x $175,000 = $105,000.00, outlays 60% x $10,500 = $6,300.00 and
+  adjusted cost base 60% x $125,000 = $75,000.00. Line 18 is $23,700.00 before the exemption and,
+  since 38 of the 38 years (plus one) are designated, the gain left after the exemption is 0:
+  the guide says "Any gain on the part of the property that you used as your principal residence
+  will not be taxed", so nothing is added to Schedule 3. The 1982 and Part 2 figures are 0. The
+  chosen figures are the Class 1 for the rental building, the 38 years counted for the row (the
+  guide does not number them) and the 60% money of the principal residence row. The alternative
+  minimum tax carryover available for 2026, $791.27, and the second additional CPP earnings maximum,
+  $9,900.00, are existing behaviour of the engine for this income, not new to this file.
+sources:
+  - >-
+    CRA, Guide T4037, Capital Gains (2025), Examples, Example 1 (pages 45-46) "Disposing of a principal residence
+    partly used for earning income": "In November 1988, you bought a duplex for $125,000. ... the
+    land was valued at $25,000 and the building at $75,000. ... you determined that the portion you
+    used to earn rental income was 40%." "On July 28, 2025, you sold the property for $175,000. You
+    incurred expenses of $10,500 to make the sale. ... The land was worth $30,000 and the building
+    was worth $120,000." The rented part: building $37,500 and land $12,500 at purchase, building
+    $56,000 and land $14,000 at the sale, outlays $3,360 and $840. "The undepreciated capital cost
+    (UCC) of the portion of the building used for rental purposes at the beginning of 2025 was
+    $34,728. From the UCC, you subtract whichever is less: the selling price of the rented part of
+    the building, minus the related outlays and expenses: $52,640 ($56,000 - $3,360); the purchase
+    price of the rented part of the building: $37,500. UCC at the beginning of 2025 $34,728 Minus:
+    Purchase price - 37,500 Recapture of CCA = $(2,772)". Schedule 3: building 1988 56,000.00
+    37,500.00 3,360 gain 15,140.00; land 1988 14,000.00 12,500.00 840 gain 660.00; "Total proceeds
+    of disposition 13599 70,000.00 Total gain or loss 13800 15,800.00". "Any gain on the part of the
+    property that you used as your principal residence will not be taxed because you used that part
+    of the property as your principal residence for all the years you owned it. You have to
+    designate the part of the property that was your principal residence by ticking box 1 at line
+    17900 of Part 1 of Schedule 3". (docs/cra-forms-2025/t4037-25e.pdf, text extracted with
+    pdftotext)
+  - >-
+    CRA, Form T776 (2025), Statement of Real Estate Rentals (docs/cra-forms-2025/t776-25e.txt), Area
+    A: "Column 5: Proceeds of dispositions in the year (see Areas D and E below)"; Note 3: "If you
+    have a negative amount in column 7, add it to income as a recapture under "Recaptured capital
+    cost allowance" on line 9947."; Area D "Column 3: Proceeds of disposition (should not be more
+    than the capital cost)"; "Line 9924: Total proceeds from all land dispositions in the year".
+  - >-
+    CRA, Schedule 3 Capital Gains or Losses (2025) (docs/cra-forms-2025/5000-s3-25e.txt), Part 3
+    "Real estate, depreciable property, and other properties": "(Column 5): Gain or loss (column 2
+    minus columns 3 and 4)"; "Line 13599: Total proceeds of disposition"; "Line 5 and line 13800:
+    Total gain or loss"; Part 1 "Line 17900: Box 1: I designate the property as my principal
+    residence for all of the years that I owned it or for all of the years that I owned it except
+    one year." T1 (docs/cra-forms-2025/5006-r-25e.txt): "Line 14 and line 12700: Taxable capital
+    gains (complete Schedule 3)".
+  - >-
+    CRA, "T2091(IND)-25e" (2025), Designation of a Property as a Principal Residence by an
+    Individual (Other than a Personal Trust), Section 1 (lines 1, 3, 5 and 7) and Part 1 (lines 14
+    to 24) (docs/cra-forms-2025/t2091ind-25e.pdf).
+inputs:
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_start: "34728.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "37500.00"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "14000.00"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "56000"
+      ca/disposition_adjusted_cost_base: "37500"
+      ca/disposition_outlays: "3360"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+    - ca/disposition_proceeds: "14000"
+      ca/disposition_adjusted_cost_base: "12500"
+      ca/disposition_outlays: "840"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/principal_residence_properties:
+    - ca/residence_years_designated_after_1981: "38"
+      ca/residence_years_designated_1972_to_1981: "0"
+      ca/residence_years_owned_after_1981: "38"
+      ca/residence_years_owned_1972_to_1981: "0"
+      ca/residence_proceeds: "105000.00"
+      ca/residence_outlays: "6300.00"
+      ca/residence_adjusted_cost_base: "75000.00"
+      ca/residence_plus_one_year: "0"
+      ca/residence_part_2_applies: "0"
+      ca/residence_adjusted_cost_base_dec_31_1981: "0.00"
+      ca/residence_fmv_dec_31_1981: "0.00"
+      ca/residence_cost_base_adjustments_after_1981: "0.00"
+      ca/residence_t664_filed: "0"
+      ca/residence_ws_years_designated_after_1981: "0"
+      ca/residence_ws_years_owned_after_1981: "0"
+      ca/residence_ws_designated_proceeds: "0.00"
+      ca/residence_ws_adjusted_cost_base_feb_22_1994: "0.00"
+      ca/residence_ws_fmv_feb_22_1994: "0.00"
+      ca/residence_ws_elected_capital_gain: "0.00"
+      ca/residence_ws_months_owned_after_feb_1992: "0"
+      ca/residence_ws_months_owned_after_1971: "0"
+      ca/residence_ws_cost_base_adjustments_to_feb_1994: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+expected:
+  ca-on/return:
+    - ca/net_rental_income: "2772.00"
+      ca/real_estate_proceeds: "70000"
+      ca/real_estate_gain_or_loss: "15800"
+      ca/capital_gain: "15800"
+      ca/included_capital_gain: "7900.00"
+      ca/taxable_capital_gains: "7900.00"
+      ca/schedule_3_line_19900: "7900.00"
+      ca/total_income: "10672.00"
+      ca/net_income_before_adjustments: "10672.00"
+      ca/other_payments_limit_income: "10672.00"
+      ca/net_income: "10672.00"
+      ca/taxable_income: "10672.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/t776:
+    - ca/rental_cca_table_recapture: "2772.00"
+      ca/rental_recaptured_cca: "2772.00"
+      ca/rental_net_income_with_recapture: "2772.00"
+      ca/rental_net_income_after_cca: "2772.00"
+      ca/net_rental_income: "2772.00"
+      ca/rental_land_dispositions: "14000.00"
+      ca/rental_closing_ucc:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_end: "0.00"
+  ca/schedule_3:
+    - ca/principal_residence_designation_box: "1"

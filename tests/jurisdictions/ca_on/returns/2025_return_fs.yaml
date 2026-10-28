@@ -1,0 +1,115 @@
+# Return FS: Sam, a 2025 Ontario student with a disability who attended a designated educational
+# institution for 10 weeks, whose earned income for the disability supports deduction (Form T929
+# line 4) includes each of the six items of the form's definition that no earlier return sets:
+# net research grants, earnings supplements, Part II Employment Insurance Act support, income
+# replacement support, Wage Earner Protection Program Act amounts and COVID-19 payments. Every
+# figure is derived in the description; the figures checked are the form's lines and the return's
+# lines from total income to taxable income, and the tax lines are not checked in this file.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, aged 22, a chosen figure (18 or older at the end of
+  2025), resident in Canada throughout 2025, with no spouse or common-law partner and no
+  dependants. Sam attended a designated educational institution for 10 weeks in 2025, a chosen
+  figure (Form T929 line 8). Employment income (T1 line 10100) is a chosen $1,000.00. The other
+  income (line 13000) is a chosen $12,500.00: the six amounts below, $1,000.00 + $500.00 +
+  $400.00 + $300.00 + $200.00 + $100.00 = $2,500.00, a chosen way of putting those amounts in
+  total income (the engine takes the six as separate inputs to Form T929 line 4 only), plus
+  $10,000.00 of other income that is not earned income. Total income (line 15000)
+  is $1,000.00 + $12,500.00 = $13,500.00. No self-employment, professional or commission
+  income and no scholarship income (each a chosen $0). The CPP months (Schedule 8 box A) are
+  the 12 of a full year, and the employment income of $1,000.00 is below the $3,500 basic
+  exemption, so the CPP contributions are $0, the EI premiums are a chosen $0 and deductions from total income are $0 before
+  the claim. The disability supports paid are a chosen $9,000.00 (Form T929 line 1, column 2),
+  with $0 reimbursed (line 2, a chosen figure), so line 3 is $9,000.00 - $0.00 = $9,000.00. The
+  six items of the form's earned income definition are chosen figures: net research grants
+  $1,000.00, earnings supplements $500.00, support under a program sponsored under Part II of
+  the Employment Insurance Act $400.00, income replacement support $300.00, Wage Earner
+  Protection Program Act amounts $200.00 and COVID-19 payments (with a T4A or T4E) $100.00. Form
+  T929 Step 2 then gives: line 4, earned income, is $1,000.00 of employment income plus $0 of
+  net self-employment income of each kind, plus the six items, $1,000.00 + $1,000.00 + $500.00
+  + $400.00 + $300.00 + $200.00 + $100.00 = $3,500.00. Line 5, the net income with no claim,
+  is total income of $13,500.00 less $0 of deductions from total income, $13,500.00. Line 6 is
+  line 4, $3,500.00, and line 7 is $13,500.00 - $3,500.00 = $10,000.00. Line 8 is 10 weeks, so
+  line 9 is 10 x $375 = $3,750.00. Line 10 is the lesser of line 7, $10,000.00, and line 9,
+  $3,750.00, $3,750.00 (under the $15,000 maximum). Line 11 is line 4 plus line 10: $3,500.00 +
+  $3,750.00 = $7,250.00. Line 12 is the lesser of line 3, $9,000.00, and line 11, $7,250.00:
+  $7,250.00, the disability supports deduction, entered on line 21500 of the T1. So the
+  deductions from total income (line 23300) are $7,250.00, the net income before adjustments
+  (line 23400) is $13,500.00 - $7,250.00 = $6,250.00, the net income (line 23600) is $6,250.00
+  less social benefits repayment (line 23500) of $0, and taxable income (line 26000) is
+  $6,250.00. The CPP second additional maximum amount (Schedule 8 Part 2 line C) is $9,900.00
+  for 12 months. The other payments limit income (Federal Worksheet "Line 25000 - Other
+  payments deduction" line 9) is the net income of $6,250.00 less $0 of repayments, $6,250.00.
+  The alternative minimum tax (T691): the adjusted taxable income is the taxable income,
+  $6,250.00, plus the disability supports deduction added back at the 50% applicable rate,
+  $3,625.00, $9,875.00, under the $177,882 basic exemption, so the minimum amount is $0. The
+  federal tax of Part 2 line 1 is 14.5% x $6,250.00 = $906.25. The non-refundable tax credits
+  (line 4) are 14.5% of the basic personal amount of $16,129.00 plus the Canada employment
+  amount, the lesser of $1,471 and the employment income of $1,000.00, so 14.5% x $17,129.00 =
+  $2,483.705, rounded half-up to the cent $2,483.71. Part 2 line 5 and line 7 are $906.25 -
+  $2,483.71 = -$1,577.46, unfloored. Part 7 line 14 is line 1 (the minimum amount, $0) minus
+  line 13 (the -$1,577.46 of Part 2 line 7 with no investment tax credit recapture, foreign tax
+  or logging credit): $0 - (-$1,577.46) = $1,577.46, positive, so the floor does not apply; with
+  no earlier carryover and no unapplied 2018 carryover, the total carryover available for 2026
+  (line 17) is $1,577.46.
+sources:
+  - >-
+    CRA, Form T929 Disability Supports Deduction, 2024 edition, the latest CRA publishes (no
+    2025 edition; docs/cra-forms-2025/t929-24e.pdf), "Use this form to calculate the amount
+    to enter on line 21500 of your tax return."; Step 1 line 3, "Subtract line 2 from line
+    1. This amount is your net disability supports expenses"; Step 2 line 4 "Enter your
+    earned income", whose definition is the filer's employment income, the taxable part of
+    scholarships, "net self-employment income, either alone or as an active partner (not
+    including losses)", "net research grants", "any earnings supplement received under a
+    project sponsored by a government in Canada to encourage employment", "any financial
+    support received under a program sponsored under Part II of the Employment Insurance Act,
+    or any similar program", "any financial support received under a program that provides
+    income replacement benefits similar to those provided under the Employment Insurance
+    Act", "any amounts received under the Wage Earner Protection Program Act in respect of
+    wages" and "any federal, provincial or territorial government COVID-19 payments received
+    in the year for which you have received a T4A or T4E"; line 5 "Enter your net income";
+    line 6 "Enter your earned income from line 4"; line 7 "Line 5 minus line 6 (if negative,
+    enter "0")"; line 8 "Enter the number of weeks in the year that you attended the
+    institution or secondary school"; line 9 "Line 8 multiplied by $375"; line 10 "Enter the
+    amount from line 7 or line 9, whichever is less. (maximum $15,000)"; line 11 "Add lines 4
+    and 10"; line 12 "Enter the amount from line 3 or line 11, whichever is less", and "Enter
+    the amount from line 12 on line 21500 of your tax return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t929/t929-24e.pdf
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/employment_income: "1000"
+  ca/other_income: "12500"
+  ca/cpp_months: "12"
+  ca/t929_instances:
+    - {}
+  ca/t929_expenses_paid: "9000"
+  ca/t929_expenses_reimbursed: "0"
+  ca/t929_weeks_attended: "10"
+  ca/t929_net_research_grants: "1000"
+  ca/t929_earnings_supplements: "500"
+  ca/t929_employment_insurance_part_2_support: "400"
+  ca/t929_income_replacement_support: "300"
+  ca/t929_wage_earner_protection_amounts: "200"
+  ca/t929_covid_19_payments: "100"
+expected:
+  ca-on/return:
+    - ca/total_income: "13500.00"
+      ca/deductions_from_total_income: "7250.00"
+      ca/net_income_before_adjustments: "6250.00"
+      ca/net_income: "6250.00"
+      ca/taxable_income: "6250.00"
+      ca/disability_supports_deduction: "7250.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_payments_limit_income: "6250.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/t929:
+    - ca/t929_line_3: "9000.00"
+      ca/t929_line_4: "3500.00"
+      ca/net_income: "13500.00"
+      ca/t929_line_7: "10000.00"
+      ca/t929_line_9: "3750.00"
+      ca/t929_line_10: "3750.00"
+      ca/t929_line_11: "7250.00"
+      ca/disability_supports_deduction: "7250.00"

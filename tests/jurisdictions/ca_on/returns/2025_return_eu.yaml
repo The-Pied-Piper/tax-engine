@@ -1,0 +1,632 @@
+# Return EU: a 2025 Ontario resident with QSBCS, QFFP and QFFP foreclosure dispositions in 2025 (gains of
+# $300,000, $200,000 and $100,000, Schedule 3 lines 10700, 11000 and 12400) and $600,000 of ordinary
+# share gains, and Form T657 worked through Charts 2016 to 2025 with the additional deduction
+# of Part 2 completed for 2017, 2018, 2020, 2021, 2022 and 2023, T3 box 30 amounts on Charts 2021 to 2023, Chart
+# 2024 Periods 1 and 2 and Chart 2025 Parts 1 and 2 with every amount filled in. Line 25400 is the
+# claimed 400,000.00, below the Chart 2025 Part 2 maximum of 543,500.01. The worked derivation is in
+# the description; Return ET takes Step 1, Step 2, Chart 1, Chart 2 and Charts 2016 to 2020 further.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025, with other income (T1 line 13000) of $10,000 (a chosen figure) and four
+  dispositions in 2025, all chosen figures: qualified small business corporation shares (QSBCS) for
+  proceeds $400,000 less adjusted cost base $100,000 (gain 300,000.00, Schedule 3 line 10700);
+  qualified farm or fishing property (QFFP) for $250,000 less $50,000 (gain 200,000.00, line 11000);
+  a QFFP foreclosure for $120,000 less $20,000 (gain 100,000.00, line 12400); and ordinary shares
+  for $800,000 less $200,000 (gain 600,000.00, line 13200 and not qualifying), outlays nil. The gain
+  is 1,200,000.00, less the 2,000 reserve claimed in 2025 (Form T2017 line 12, below), 1,198,000.00,
+  and the taxable capital gain 599,000.00 (inclusion rate 50%); net income (line 23600) is
+  599,000.00 + 10,000.00 = 609,000.00. No net capital losses are claimed. Every figure
+  below is derived by hand from Form T657 (2025 edition) before the engine is run; Return ET is the
+  companion that takes the same form through Chart 1, Chart 2 and the 2016 to 2020 charts.
+  Form T657 reads the reserves of earlier years and of 2025 from the rows of Form T2017 (lines 2 and
+  8), so each is a row of a disposition in that year; the T2017 amounts, T3 box 30 amounts, the
+  amounts left out of Chart 2025 Part 2 and the (x-1) calculations are chosen figures, each
+  independent of the others. Form T2017 lines 1 and 7 (the 2024 reserves, a line 66844 and 67055
+  figure of the 2024 form) are the filer's own figures and are not reconciled with the rows'
+  previous-year claims here (line 1 is 600,000 while the rows of lines 2 to 4 carry more).
+  Step 1: line 1 is 300,000.00 + 200,000.00 + 100,000.00 = 600,000.00 (lines 10700, 11000 and 12400,
+  not the ordinary shares); line 2 (Form T2017 line 13) is 598,000 (line 6, 600,000, plus line 12,
+  -2,000, the 2025 reserve of 2,000 on a QSBCS disposition), so line 3 is 1,198,000.00; line 5 is
+  599,000.00; line 6 (Form T2048 line 17216) is 0; line 7 is 599,000.00. Line 8 (Schedule 3 line
+  19900, 600,000.00 less the -2,000 of line 19200) is 599,000.00; lines 9 and 11 are 0; lines 10 and
+  12 are 599,000.00; line 13 is 599,000.00. Lines 14 to 20 are 0; line 21, the annual gains limit,
+  is 599,000.00.
+  Chart 2: only line 18 (2001 to 2024 deductions) is filed, 60,000; lines 1 to 14 are 0 and IR is
+  blank (line 14 is 0), so line 15 to line 17 are 0 and line 19 is 60,000.00. Step 2: line 8 is
+  150,000 (2002 to 2024) + 599,000.00 = 749,000.00, so line 9 is 749,000.00; line 17 is 60,000 and
+  the other lines are 0, so line 18 is 60,000.00 and line 19, the cumulative gains limit, is
+  689,000.00.
+  Chart 2016 reports nothing: B is Chart 2 line 19, 60,000.00, so C is 412,088.00 - 60,000.00 =
+  352,088.00; D, E, F, G and H are 0, the additional deduction is not claimed and the total carried
+  is G, 0.
+  Chart 2017 uses the (2017-1) calculation: D is the entered 412,858. A is 417,858.00, B is 0, so C is
+  417,858.00 and E is 5,000.00. F (line 6, QFFP) is 300,000 and G (line 12) is 0: H is 150,000.00 and
+  I, the lesser of E and H, is 5,000.00; K is 5,000.00 and L is 5,000.00. The additional deduction is
+  claimed and E (5,000.00) is equal to or less than 599,000.00, 689,000.00 and K (5,000.00), so Part
+  2 is completed: A is 500,000.00; B (Part 1's K) is 5,000.00, so C is 495,000.00; D is 412,858, so E
+  is 82,142.00, the additional $82,142 the form prints; F (line 6 x 1/2) is 150,000.00; G is the
+  lesser of E and F: 82,142.00; H is 5,000.00 and I is 87,142.00; J is the lesser of F and I:
+  87,142.00; K is 87,142.00. The total carried is Part 2's J, 87,142.00.
+  Chart 2018 uses the (2018-1) calculation: D is the entered 326,984. A is 424,126.00; B is 87,142.00,
+  so C is 336,984.00 and E is 10,000.00. F (line 6) is 300,000 and G is 0: H is 150,000.00 and I is
+  10,000.00; K is 97,142.00 and L is 97,142.00. The additional deduction is claimed and E is equal to
+  or less than 599,000.00, 689,000.00 and K, so Part 2 is completed: A is 500,000.00; B (Part 1's K)
+  is 97,142.00 and C is 402,858.00; D is 326,984, so E is 75,874.00, the additional $75,874 the form
+  prints; F is 150,000.00 (line 6 x 1/2); G is 75,874.00; H is 97,142.00 and I is 173,016.00; J is
+  the lesser of F and I: 150,000.00; K is 150,000.00. The total carried is Part 2's J, 150,000.00.
+  Chart 2019 reports nothing and takes Chart 2 line 19 (60,000.00) as D: A is 433,456.00, B is
+  150,000.00, C is 283,456.00 and E is 223,456.00; K is B, 150,000.00, and so is the total carried.
+  Chart 2020 uses the (2020-1) calculation: D is the entered 281,692. A is 441,692.00; B is 150,000.00,
+  so C is 291,692.00 and E is 10,000.00. F (line 6) is 200,000 and G is 0: H is 100,000.00 and I is
+  10,000.00; K is 160,000.00 and L is 160,000.00. The additional deduction is claimed and E is equal
+  to or less than all three amounts, so Part 2 is completed: A is 500,000.00; B (Part 1's K) is
+  160,000.00 and C is 340,000.00; D is 281,692, so E is 58,308.00, the additional $58,308 the form
+  prints; F is 100,000.00 (line 6 x 1/2); G is 58,308.00; H is 160,000.00 and I is 218,308.00; J is
+  the lesser of F and I: 100,000.00; K is 100,000.00. The total carried is Part 2's J, 100,000.00.
+  Chart 2021 uses the (2021-1) calculation: D is the entered 336,109. A is 446,109.00; B is
+  100,000.00, so C is 346,109.00 and E is 10,000.00. F (line 6, QFFP) is 500,000 and G (line 12,
+  QSBCS) is 40,000: 540,000.00 x 1/2 is H, 270,000.00; the box 30 amount of a 2025 T3 slip for a
+  2021 disposition is 100,000, so I is 50,000.00 and J (H plus I) is 320,000.00. K is the lesser of E
+  and J: 10,000.00; L (amount B) is 100,000.00 and M is 110,000.00; N is 110,000.00. The additional
+  deduction is claimed and E is equal to or less than 599,000.00, 689,000.00 and M, so Part 2 is
+  completed: A is 500,000.00; B (Part 1's M) is 110,000.00, so C is 390,000.00; D is 336,109, so E is
+  53,891.00, the additional $53,891 the form prints; F (line 6 x 1/2) is 250,000.00; G (the box 30
+  amount for the QFFP disposed of in 2021, 100,000, x 1/2) is 50,000.00; H is 300,000.00; I is the
+  lesser of E and H: 53,891.00; J (amount B) is 110,000.00 and K is 163,891.00; L is the lesser of H
+  and K: 163,891.00; M is 163,891.00. The total carried is Part 2's L, 163,891.00.
+  Chart 2022 uses the (2022-1) calculation: D is the entered 282,924. A is 456,815.00; B is
+  163,891.00, so C is 292,924.00 and E is 10,000.00. F (line 6) is 300,000 and G (line 12) is
+  20,000: H is 160,000.00; the T3 box 30 amount is 8,000, so I is 4,000.00 and J is 164,000.00. K is
+  the lesser of E and J: 10,000.00; M is 173,891.00. The additional deduction is claimed and Part 2
+  is completed: A is 500,000.00; B is 173,891.00 and C is 326,109.00; D is 282,924, so E is
+  43,185.00, the additional $43,185 the form prints; F is 150,000.00 (300,000 x 1/2); G (the box 30
+  amount for the QFFP, 140,000, x 1/2) is 70,000.00; H is 220,000.00; I is the lesser of E and H:
+  43,185.00; K (I plus B) is 217,076.00; L is the lesser of H and K: 217,076.00; M is 217,076.00. The
+  total carried is Part 2's L, 217,076.00.
+  Chart 2023 uses the (2023-1) calculation: D is the entered 258,519. A is 485,595.00; B is
+  217,076.00, so C is 268,519.00 and E is 10,000.00. F (line 6) is 300,000 and G (line 12) is 30,000:
+  H is 165,000.00; the T3 box 30 amount is 20,000, so I is 10,000.00 and J is 175,000.00. K is the
+  lesser of E and J: 10,000.00; M is 227,076.00 and N is 227,076.00. The additional deduction is
+  claimed and Part 2 is completed: A is 500,000.00; B is 227,076.00 and C is 272,924.00; D is
+  258,519, so E is 14,405.00, the additional $14,405 the form prints; F is 150,000.00 (300,000 x 1/2);
+  G (the box 30 amount for the QFFP, 100,000, x 1/2) is 50,000.00; H is 200,000.00; I is the lesser
+  of E and H: 14,405.00; K (I plus B) is 241,481.00; L is the lesser of H and K: 200,000.00; M is
+  200,000.00. The total carried is Part 2's L, 200,000.00.
+  Chart 2024 Period 1 (A 508,418.00): B is 200,000.00, so C is 308,418.00 and E is 248,418.00 (D is
+  Chart 2 line 19). Form T2017 gives F (line 6) 30,000.01 and G (line 12) 0: the reserves of
+  dispositions in Period 1 of 2024 reported on a T5013 slip by a partnership whose year began before
+  June 25, 2024 are Chart 2025 Part 1's, not this chart's (Guide T4037); H (T3 box 30) is 20,000: F
+  to H add to 50,000.01 and I is 50,000.01 x 1/2 = 25,000.005, rounded half up to the cent:
+  25,000.01. J (the T2048 line 17216 portion) is 5,000, so K is 20,000.01; L is the lesser of E and
+  K: 20,000.01; M (amount B) is 200,000.00 and N is 220,000.01; O is 220,000.01. Period 2 (A
+  625,000.00): B is Period 1's N, 220,000.01, so C is 404,999.99 and E is 344,999.99. F is 0, G is
+  50,000 and H is 10,000: 60,000.00, I is 30,000.00; J is 4,000, so K is 26,000.00; L is 26,000.00,
+  N is 246,000.01 and O is 246,000.01.
+  Chart 2025 Part 1 (A 522,145.00): B is Period 2's N, 246,000.01, so C is 276,144.99 and E is
+  216,144.99. The T3 or T5013 amounts are F 50,000 (box 57 or 153), G 20,000 (box 55 or 154), H
+  15,000 (box 155) and the Form T2017 amounts I 8,000 (line 6) and J 6,000 (line 12), the reserves
+  of Period 1 dispositions reported on a slip by a partnership whose year began before June 25,
+  2024: F to J add to 99,000.00 and K is 49,500.00. L (the T2048 line 17216 portion) is 4,000, so M
+  is 45,500.00 and N, the lesser of E and M, is 45,500.00; O (amount B) is 246,000.01 and P is
+  291,500.01; Q is 291,500.01.
+  Chart 2025 Part 2 (A 625,000.00): B is Part 1's P, 291,500.01, so C is 333,499.99 and E is
+  273,499.99. F is line 10700 less the 50,000 not to include, 250,000; G is line 11000 less 20,000,
+  180,000; H is line 12400 less 10,000, 90,000. I (Form T2017 line 6, 2025 reserves) is 0 and J
+  (line 12) is -2,000, the 2,000 reserved on the QSBCS disposed of in 2025: F to J add to 518,000.00
+  and K is 259,000.00. L is 7,000, so M is 252,000.00 and N is the lesser of E (273,499.99) and M:
+  252,000.00. O (amount B) is 291,500.01, so P is 543,500.01 and Q is the lesser of 599,000.00,
+  689,000.00 and P: 543,500.01, the maximum for line 25400.
+  The filer claims 400,000 (a chosen figure, less than the maximum), so line 25400 is 400,000.00 and
+  line 25700 is 400,000.00. Line 26000, the taxable income, is 609,000.00 - 400,000.00 =
+  209,000.00. The other lines are blank and are the engine's figures (to be confirmed against CRA's
+  calculator).
+sources:
+  - >-
+    CRA, Form T657, Calculation of Capital Gains Deduction, 2025 edition (confirmed 2026-10-19
+    from the PDF; no .txt is published), Step 1: "Total of lines 10700, 11000, and 12400 of
+    Schedule 3 (if negative, show in brackets)" (line 1); "Total amount from line 13 of Form T2017
+    (if negative, show in brackets)" (line 2); "Inclusion rate × 1/2" (line 4); "Enter whichever is
+    less: amount from line 7 or line 12." (line 13); "Line 14 minus line 15 (if negative, enter
+    "0")" (line 16); "Line 13 minus line 20 (if negative, enter "0") Annual gains limit for 2025"
+    (line 21).
+  - >-
+    CRA, Form T657, 2025 edition (same PDF), Step 2 lines 1 to 19 ("Add lines 1 to 8. Cumulative
+    eligible taxable capital gains" line 9; "Add lines 10 and 13 to 17." line 18; "Line 9 minus
+    line 18 (if negative, enter "0") ... Cumulative gains limit for 2025" line 19), Chart 1
+    ("Column E (C – D) (If negative, enter "0")", "Column F (B + E)", "Column G (A – F) (If
+    negative, enter "0")", "Add the amounts in column G and enter the result on line 14 of Step 2")
+    and Chart 2 lines 1 to 19 ("Amount from line 2 × 1/4" line 4; "Amount from line 6 × 1/3" line 8;
+    "Amount from line 10 × 1/3" line 12; "Amount from line 14 × [ 1 – ( 2 × IR )]" line 16, with
+    footnote (2) "Your "IR" is your inclusion rate for 2000").
+  - >-
+    CRA, Form T657, 2025 edition (same PDF), Charts 2016 to 2020 Part 1 and Part 2: "Maximum
+    capital gains deduction for QFFP and/or QSBCS disposed of in 2016 412,088.00 A" (417,858.00,
+    424,126.00, 433,456.00 and 441,692.00 for 2017 to 2020) and "Maximum capital gains deduction
+    for QFFP disposed of in 2016 500,000.00 A" (Part 2); "(2016-1) If you claimed a capital gains
+    deduction for other eligible capital gains from 2016 to 2024, complete the following
+    calculation instead ... Enter the result at amount B." (amount D for 2017 to 2020); "amount F
+    plus amount G (if negative, enter "0") = × 1/2 = H"; "Enter whichever is less: amount E or
+    amount H." I; "Amount I plus amount J" K; Part 2 "Enter whichever is less: amount F or amount
+    I." J, and the entry conditions "Amount E in Part 1 is equal to or less than all of the
+    following amounts: your annual gains limit for 2025 from line 21 in Step 1, your cumulative
+    gains limit for 2025 from line 19 in Step 2, the total amount of capital gains included in
+    your 2025 income that is eligible for the capital gains deduction from amount K in Part 1";
+    the notes "For 2016, there is an additional $87,912", "For 2017 ... $82,142", "For 2019 ...
+    $66,544", "For 2020 ... $58,308", "For 2021 ... $53,891" and "For 2022 ... $43,185".
+  - >-
+    CRA, Form T657, 2025 edition (same PDF), Charts 2021 to 2023 Part 1 and Part 2 (A 446,109.00,
+    456,815.00 and 485,595.00): "Amount included in box 30 of a 2025 T3 slip and the footnote area
+    indicates the property was disposed of in 2021 × 1/2 = + I"; "Amount H plus amount I = J";
+    "Enter whichever is less: amount E or amount J." K; "Amount K plus amount L" M; Part 2 "Amount
+    included in box 30 of a 2025 T3 slip and the footnote area indicates the QFFP was disposed of
+    in 2021 × 1/2 = + G"; "Amount F plus amount G = H"; "Enter whichever is less: amount H or
+    amount K." L.
+  - >-
+    CRA, Form T657, 2025 edition (same PDF), Chart 2024 Period 1 (A 508,418.00) and Period 2 (A
+    625,000.00): "Add amounts F to H (if negative, enter "0")" × 1/2 = I; "Portion of the amount
+    from line 17216 of Form T2048 in respect of a reserve for a property disposed of in Period 1
+    of 2024" J; "Amount I minus amount J" K; "Enter whichever is less: amount E or amount K." L;
+    "Amount L plus amount M" N. Chart 2025 Part 1 (A 522,145.00) and Part 2 (A 625,000.00): "Add
+    amounts F to J (if negative, enter "0")" × 1/2 = K; "Amount K minus amount L" M; "Enter
+    whichever is less: amount E or amount M." N; "Amount N plus amount O" P; "Enter whichever is
+    less: line 21 of Step 1, line 19 of Step 2 or amount P above." Q; Part 2 F "Amount from line
+    10700 of Schedule 3 (do not include ...)", G line 11000, H line 12400, I and J "Amount from
+    line 6 of Form T2017" and "Amount from line 12 of Form T2017".
+  - >-
+    CRA, T1 General 2025, Ontario edition (form 5006-r), "Step 4 - Taxable income" (confirmed
+    2026-10-19): "Line 65 and line 25400: Capital gains deduction (complete Form T657)"; "Line 68
+    and line 25700: Add lines 58 to 67."; "Line 69 and line 26000: Line 57 minus line 68 (if
+    negative, enter "0") Taxable income".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/other_income: "10000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/qsbcs_dispositions:
+    - ca/disposition_proceeds: "400000"
+      ca/disposition_adjusted_cost_base: "100000"
+      ca/disposition_outlays: "0"
+  ca/qffp_dispositions:
+    - ca/disposition_proceeds: "250000"
+      ca/disposition_adjusted_cost_base: "50000"
+      ca/disposition_outlays: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/qffp_foreclosure_dispositions:
+    - ca/disposition_proceeds: "120000"
+      ca/disposition_adjusted_cost_base: "20000"
+      ca/disposition_outlays: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "800000"
+      ca/disposition_adjusted_cost_base: "200000"
+      ca/disposition_outlays: "0"
+  ca/t657_chart_2_line_18: "60000"
+  # Form T2017 line 1 (2024 reserve for QFFP) is 600,000, so line 6 is 600,000; the one line 27 row
+  # reserves 600,000 (the maximum is 800,000, 80% of the 1,000,000 gain in the year of disposition),
+  # so line 28 is (600,000). The line 8 row below reserves 2,000 in 2025, so line 12 is (2,000), line
+  # 13 is 598,000 and line 31, the Schedule 3 line 19200 figure, is (2,000).
+  ca/t2017_line_1: "600000"
+  ca/t2017_line_27_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "1000000"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "0"
+      ca/t2017_reserve_claimed: "600000"
+      ca/t2017_reserve_previous_year_claim: "0"
+  # Form T2017 rows of the earlier dispositions and of 2025 that Form T657 reads (the amounts it takes from line 6
+  # and line 12 by year): QFFP (line 2) and QSBCS (line 8), nothing claimed in 2025 except the 2,000 on line 8.
+  ca/t2017_line_2_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "8"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "300000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "7"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "300000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "5"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "200000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "4"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "500000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "3"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "300000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "2"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "300000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "1"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "30000.01"
+      ca/t2017_reserve_period_1_of_2024: "1"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "1"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "8000"
+      ca/t2017_reserve_period_1_of_2024: "1"
+      ca/t2017_reserve_reported_on_slip: "1"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "1"
+      ca/t2017_reserve_nine_year: "1"
+  ca/t2017_line_8_reserve_rows:
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "4"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "40000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "3"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "20000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "2"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "30000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "1"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "50000"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "0"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "1"
+      ca/t2017_reserve_claimed: "0"
+      ca/t2017_reserve_previous_year_claim: "6000"
+      ca/t2017_reserve_period_1_of_2024: "1"
+      ca/t2017_reserve_reported_on_slip: "1"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "1"
+      ca/t2017_reserve_nine_year: "1"
+    - ca/t2017_reserve_capital_gain: "1000000"
+      ca/t2017_reserve_amount_payable_after_year_end: "1000000"
+      ca/t2017_reserve_proceeds: "1000000"
+      ca/t2017_reserve_years_after_disposition: "0"
+      ca/t2017_reserve_claimed: "2000"
+      ca/t2017_reserve_previous_year_claim: "0"
+      ca/t2017_reserve_period_1_of_2024: "0"
+      ca/t2017_reserve_reported_on_slip: "0"
+      ca/t2017_reserve_partnership_year_began_before_june_25_2024: "0"
+      ca/t2017_reserve_nine_year: "1"
+  ca/t657_gains_2002_to_2024: "150000"
+  ca/t657_deductions_claimed_1985_to_2024: "60000"
+  ca/t657_chart_2017_uses_d_instead: "1"
+  ca/t657_chart_2017_amount_d_instead: "412858"
+  ca/t657_chart_2017_claims_additional_deduction: "1"
+  ca/t657_chart_2018_uses_d_instead: "1"
+  ca/t657_chart_2018_amount_d_instead: "326984"
+  ca/t657_chart_2018_claims_additional_deduction: "1"
+  ca/t657_chart_2020_uses_d_instead: "1"
+  ca/t657_chart_2020_amount_d_instead: "281692"
+  ca/t657_chart_2020_claims_additional_deduction: "1"
+  ca/t657_chart_2021_uses_d_instead: "1"
+  ca/t657_chart_2021_amount_d_instead: "336109"
+  ca/t657_chart_2021_amount_i: "100000"
+  ca/t657_chart_2021_part_2_amount_g: "100000"
+  ca/t657_chart_2021_claims_additional_deduction: "1"
+  ca/t657_chart_2022_uses_d_instead: "1"
+  ca/t657_chart_2022_amount_d_instead: "282924"
+  ca/t657_chart_2022_amount_i: "8000"
+  ca/t657_chart_2022_part_2_amount_g: "140000"
+  ca/t657_chart_2022_claims_additional_deduction: "1"
+  ca/t657_chart_2023_uses_d_instead: "1"
+  ca/t657_chart_2023_amount_d_instead: "258519"
+  ca/t657_chart_2023_amount_i: "20000"
+  ca/t657_chart_2023_part_2_amount_g: "100000"
+  ca/t657_chart_2023_claims_additional_deduction: "1"
+  ca/t657_chart_2024_period_1_amount_h: "20000"
+  ca/t657_chart_2024_period_1_amount_j: "5000"
+  ca/t657_chart_2024_period_2_amount_h: "10000"
+  ca/t657_chart_2024_period_2_amount_j: "4000"
+  ca/t657_part_1_amount_f: "50000"
+  ca/t657_part_1_amount_g: "20000"
+  ca/t657_part_1_amount_h: "15000"
+  ca/t657_part_1_amount_l: "4000"
+  ca/t657_part_2_excluded_f: "50000"
+  ca/t657_part_2_excluded_g: "20000"
+  ca/t657_part_2_excluded_h: "10000"
+  ca/t657_part_2_amount_l: "7000"
+  ca/capital_gains_deduction_claimed: "400000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/capital_gain: "1198000.00"
+      ca/included_capital_gain: "599000.00"
+      ca/taxable_capital_gains: "599000.00"
+      ca/capital_gains_deduction: "400000.00"
+      ca/deductions_from_net_income: "400000.00"
+      ca/net_income: "609000.00"
+      ca/taxable_income: "209000.00"
+      ca/annual_gains_schedule_3_total: "600000.00"
+      ca/annual_gains_line_3: "1198000.00"
+      ca/annual_gains_line_3_at_inclusion_rate: "599000.00"
+      ca/annual_gains_line_5: "599000.00"
+      ca/annual_gains_line_7: "599000.00"
+      ca/schedule_3_line_19900: "599000.00"
+      ca/annual_gains_line_10: "599000.00"
+      ca/annual_gains_line_12: "599000.00"
+      ca/eligible_taxable_capital_gains_2025: "599000.00"
+      ca/annual_gains_limit_2025: "599000.00"
+      ca/eligible_taxable_capital_gains_2002_to_2025: "749000.00"
+      ca/cumulative_eligible_taxable_capital_gains: "749000.00"
+      ca/cumulative_losses_and_deductions: "60000.00"
+      ca/cumulative_gains_limit_2025: "689000.00"
+      ca/chart_2_numerator_one: "1.00"
+      ca/chart_2_line_19: "60000.00"
+      ca/chart_2016_part_1_amount_a: "412088.00"
+      ca/chart_2016_part_1_amount_c: "352088.00"
+      ca/chart_2016_amount_b: "60000.00"
+      ca/chart_2016_part_2_amount_a: "500000.00"
+      ca/chart_2016_part_2_amount_c: "500000.00"
+      ca/chart_2016_part_2_amount_e: "440000.00"
+      ca/chart_2016_part_2_applies: "0"
+      ca/chart_2016_total_carried: "0.00"
+      ca/chart_2017_part_1_amount_a: "417858.00"
+      ca/chart_2017_part_1_amount_c: "417858.00"
+      ca/chart_2017_amount_d: "412858.00"
+      ca/chart_2017_part_1_amount_e: "5000.00"
+      ca/chart_2017_part_1_amounts_f_and_g: "300000.00"
+      ca/chart_2017_part_1_amount_h: "150000.00"
+      ca/chart_2017_part_1_amount_i: "5000.00"
+      ca/chart_2017_part_1_amount_k: "5000.00"
+      ca/chart_2017_part_1_amount_l: "5000.00"
+      ca/chart_2017_part_2_amount_a: "500000.00"
+      ca/chart_2017_part_2_amount_c: "495000.00"
+      ca/chart_2017_part_2_amount_e: "82142.00"
+      ca/chart_2017_part_2_amount_f: "150000.00"
+      ca/chart_2017_part_2_amount_g: "82142.00"
+      ca/chart_2017_part_2_amount_i: "87142.00"
+      ca/chart_2017_part_2_amount_j: "87142.00"
+      ca/chart_2017_part_2_amount_k: "87142.00"
+      ca/chart_2017_part_2_applies: "1"
+      ca/chart_2017_total_carried: "87142.00"
+      ca/chart_2018_part_1_amount_a: "424126.00"
+      ca/chart_2018_part_1_amount_c: "336984.00"
+      ca/chart_2018_amount_d: "326984.00"
+      ca/chart_2018_part_1_amount_e: "10000.00"
+      ca/chart_2018_part_1_amounts_f_and_g: "300000.00"
+      ca/chart_2018_part_1_amount_h: "150000.00"
+      ca/chart_2018_part_1_amount_i: "10000.00"
+      ca/chart_2018_part_1_amount_k: "97142.00"
+      ca/chart_2018_part_1_amount_l: "97142.00"
+      ca/chart_2018_part_2_amount_a: "500000.00"
+      ca/chart_2018_part_2_amount_c: "402858.00"
+      ca/chart_2018_part_2_amount_e: "75874.00"
+      ca/chart_2018_part_2_amount_f: "150000.00"
+      ca/chart_2018_part_2_amount_g: "75874.00"
+      ca/chart_2018_part_2_amount_i: "173016.00"
+      ca/chart_2018_part_2_amount_j: "150000.00"
+      ca/chart_2018_part_2_amount_k: "150000.00"
+      ca/chart_2018_part_2_applies: "1"
+      ca/chart_2018_total_carried: "150000.00"
+      ca/chart_2019_part_1_amount_a: "433456.00"
+      ca/chart_2019_part_1_amount_c: "283456.00"
+      ca/chart_2019_amount_d: "60000.00"
+      ca/chart_2019_part_1_amount_e: "223456.00"
+      ca/chart_2019_part_1_amount_k: "150000.00"
+      ca/chart_2019_part_1_amount_l: "150000.00"
+      ca/chart_2019_part_2_amount_a: "500000.00"
+      ca/chart_2019_part_2_amount_c: "350000.00"
+      ca/chart_2019_part_2_amount_e: "290000.00"
+      ca/chart_2019_part_2_amount_i: "150000.00"
+      ca/chart_2019_part_2_applies: "0"
+      ca/chart_2019_total_carried: "150000.00"
+      ca/chart_2020_part_1_amount_a: "441692.00"
+      ca/chart_2020_part_1_amount_c: "291692.00"
+      ca/chart_2020_amount_d: "281692.00"
+      ca/chart_2020_part_1_amount_e: "10000.00"
+      ca/chart_2020_part_1_amounts_f_and_g: "200000.00"
+      ca/chart_2020_part_1_amount_h: "100000.00"
+      ca/chart_2020_part_1_amount_i: "10000.00"
+      ca/chart_2020_part_1_amount_k: "160000.00"
+      ca/chart_2020_part_1_amount_l: "160000.00"
+      ca/chart_2020_part_2_amount_a: "500000.00"
+      ca/chart_2020_part_2_amount_c: "340000.00"
+      ca/chart_2020_part_2_amount_e: "58308.00"
+      ca/chart_2020_part_2_amount_f: "100000.00"
+      ca/chart_2020_part_2_amount_g: "58308.00"
+      ca/chart_2020_part_2_amount_i: "218308.00"
+      ca/chart_2020_part_2_amount_j: "100000.00"
+      ca/chart_2020_part_2_amount_k: "100000.00"
+      ca/chart_2020_part_2_applies: "1"
+      ca/chart_2020_total_carried: "100000.00"
+      ca/chart_2021_part_1_amount_a: "446109.00"
+      ca/chart_2021_part_1_amount_c: "346109.00"
+      ca/chart_2021_amount_d: "336109.00"
+      ca/chart_2021_part_1_amount_e: "10000.00"
+      ca/chart_2021_part_1_amounts_f_and_g: "540000.00"
+      ca/chart_2021_part_1_amount_h: "270000.00"
+      ca/chart_2021_part_1_amount_i: "50000.00"
+      ca/chart_2021_part_1_amount_j: "320000.00"
+      ca/chart_2021_part_1_amount_k: "10000.00"
+      ca/chart_2021_part_1_amount_m: "110000.00"
+      ca/chart_2021_part_1_amount_n: "110000.00"
+      ca/chart_2021_part_2_amount_a: "500000.00"
+      ca/chart_2021_part_2_amount_c: "390000.00"
+      ca/chart_2021_part_2_amount_e: "53891.00"
+      ca/chart_2021_part_2_amount_f: "250000.00"
+      ca/chart_2021_part_2_amount_g: "50000.00"
+      ca/chart_2021_part_2_amount_h: "300000.00"
+      ca/chart_2021_part_2_amount_i: "53891.00"
+      ca/chart_2021_part_2_amount_k: "163891.00"
+      ca/chart_2021_part_2_amount_l: "163891.00"
+      ca/chart_2021_part_2_amount_m: "163891.00"
+      ca/chart_2021_part_2_applies: "1"
+      ca/chart_2021_total_carried: "163891.00"
+      ca/chart_2022_part_1_amount_a: "456815.00"
+      ca/chart_2022_part_1_amount_c: "292924.00"
+      ca/chart_2022_amount_d: "282924.00"
+      ca/chart_2022_part_1_amount_e: "10000.00"
+      ca/chart_2022_part_1_amounts_f_and_g: "320000.00"
+      ca/chart_2022_part_1_amount_h: "160000.00"
+      ca/chart_2022_part_1_amount_i: "4000.00"
+      ca/chart_2022_part_1_amount_j: "164000.00"
+      ca/chart_2022_part_1_amount_k: "10000.00"
+      ca/chart_2022_part_1_amount_m: "173891.00"
+      ca/chart_2022_part_1_amount_n: "173891.00"
+      ca/chart_2022_part_2_amount_a: "500000.00"
+      ca/chart_2022_part_2_amount_c: "326109.00"
+      ca/chart_2022_part_2_amount_e: "43185.00"
+      ca/chart_2022_part_2_amount_f: "150000.00"
+      ca/chart_2022_part_2_amount_g: "70000.00"
+      ca/chart_2022_part_2_amount_h: "220000.00"
+      ca/chart_2022_part_2_amount_i: "43185.00"
+      ca/chart_2022_part_2_amount_k: "217076.00"
+      ca/chart_2022_part_2_amount_l: "217076.00"
+      ca/chart_2022_part_2_amount_m: "217076.00"
+      ca/chart_2022_part_2_applies: "1"
+      ca/chart_2022_total_carried: "217076.00"
+      ca/chart_2023_part_1_amount_a: "485595.00"
+      ca/chart_2023_part_1_amount_c: "268519.00"
+      ca/chart_2023_amount_d: "258519.00"
+      ca/chart_2023_part_1_amount_e: "10000.00"
+      ca/chart_2023_part_1_amounts_f_and_g: "330000.00"
+      ca/chart_2023_part_1_amount_h: "165000.00"
+      ca/chart_2023_part_1_amount_i: "10000.00"
+      ca/chart_2023_part_1_amount_j: "175000.00"
+      ca/chart_2023_part_1_amount_k: "10000.00"
+      ca/chart_2023_part_1_amount_m: "227076.00"
+      ca/chart_2023_part_1_amount_n: "227076.00"
+      ca/chart_2023_part_2_amount_a: "500000.00"
+      ca/chart_2023_part_2_amount_c: "272924.00"
+      ca/chart_2023_part_2_amount_e: "14405.00"
+      ca/chart_2023_part_2_amount_f: "150000.00"
+      ca/chart_2023_part_2_amount_g: "50000.00"
+      ca/chart_2023_part_2_amount_h: "200000.00"
+      ca/chart_2023_part_2_amount_i: "14405.00"
+      ca/chart_2023_part_2_amount_k: "241481.00"
+      ca/chart_2023_part_2_amount_l: "200000.00"
+      ca/chart_2023_part_2_amount_m: "200000.00"
+      ca/chart_2023_part_2_applies: "1"
+      ca/chart_2023_total_carried: "200000.00"
+      ca/chart_2024_period_1_amount_a: "508418.00"
+      ca/chart_2024_period_1_amount_c: "308418.00"
+      ca/chart_2024_period_1_amount_e: "248418.00"
+      ca/chart_2024_period_1_amounts_f_to_h: "50000.01"
+      ca/chart_2024_period_1_amount_i: "25000.01"
+      ca/chart_2024_period_1_amount_k: "20000.01"
+      ca/chart_2024_period_1_amount_l: "20000.01"
+      ca/chart_2024_period_1_amount_n: "220000.01"
+      ca/chart_2024_period_1_amount_o: "220000.01"
+      ca/chart_2024_period_2_amount_a: "625000.00"
+      ca/chart_2024_period_2_amount_c: "404999.99"
+      ca/chart_2024_period_2_amount_e: "344999.99"
+      ca/chart_2024_period_2_amounts_f_to_h: "60000.00"
+      ca/chart_2024_period_2_amount_i: "30000.00"
+      ca/chart_2024_period_2_amount_k: "26000.00"
+      ca/chart_2024_period_2_amount_l: "26000.00"
+      ca/chart_2024_period_2_amount_n: "246000.01"
+      ca/chart_2024_period_2_amount_o: "246000.01"
+      ca/chart_2025_part_1_amount_a: "522145.00"
+      ca/chart_2025_part_1_amount_c: "276144.99"
+      ca/chart_2025_part_1_amount_e: "216144.99"
+      ca/chart_2025_part_1_amounts_f_to_j: "99000.00"
+      ca/chart_2025_part_1_amount_k: "49500.00"
+      ca/chart_2025_part_1_amount_m: "45500.00"
+      ca/chart_2025_part_1_amount_n: "45500.00"
+      ca/chart_2025_part_1_amount_p: "291500.01"
+      ca/chart_2025_part_1_amount_q: "291500.01"
+      ca/chart_2025_part_2_amount_a: "625000.00"
+      ca/chart_2025_part_2_amount_c: "333499.99"
+      ca/chart_2025_part_2_amount_e: "273499.99"
+      ca/chart_2025_part_2_amount_f: "250000.00"
+      ca/chart_2025_part_2_amount_g: "180000.00"
+      ca/chart_2025_part_2_amount_h: "90000.00"
+      ca/chart_2025_part_2_amounts_f_to_j: "518000.00"
+      ca/chart_2025_part_2_amount_k: "259000.00"
+      ca/chart_2025_part_2_amount_m: "252000.00"
+      ca/chart_2025_part_2_amount_n: "252000.00"
+      ca/chart_2025_part_2_amount_p: "543500.01"
+      ca/chart_2025_part_2_amount_q: "543500.01"
+      ca-on/ontario_tax_less_dividend_credit: "18976.28"
+      ca/amt_carryover_available_for_2026: "31408.40"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "609000.00"
+      ca/other_payments_limit_income: "609000.00"
+      ca/qffp_foreclosure_proceeds: "120000.00"
+      ca/qffp_proceeds: "250000.00"
+      ca/qsbcs_proceeds: "400000.00"
+      ca/refund_or_balance_owing: "113618.64"
+      ca/share_proceeds: "800000.00"

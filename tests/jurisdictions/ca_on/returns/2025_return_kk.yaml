@@ -1,0 +1,121 @@
+# Return KK: Form T1032 Note 1 when its conditions fail but the amounts a) to e) are above line 1. The
+# transferring spouse of KH's return (aged 66, line 1 of 3,500.00, an RCA life annuity of 200.00 on
+# line 4, 1,600.00 elected), but the receiving spouse is 65 or older, so the conditions above line 33
+# do not all apply and Note 1 is not followed: the amounts a) to e) the caller entered (5,000.00) are
+# never subtracted from line 1, so they are not compared with it (3,500.00). Every T1032 line is
+# worked out by hand from the form text (docs/cra-forms-2025/t1032-25e.txt). The figures are chosen.
+#
+# Step 2: line 1 3,500.00; line 3 3,500.00; line 8 200.00; line 17 = 3,500.00 + 200.00 = 3,700.00;
+#   line 19 3,700.00; line 21 = 3,700.00 x 50% = 1,850.00; line 22 = 1,600.00.
+# Step 4, Part A: line 29 = 200.00 / 3,700.00 x 1,600.00 = 86.49; line 30 = 1,600.00 - 86.49 =
+#   1,513.51; line 31 = 3,500.00 - 1,513.51 = 1,986.49, so line 31400 of this return is the lesser of
+#   2,000.00 and 1,986.49, 1,986.49.
+# Part B: the receiving spouse was not under age 65, so line 33 is line 30, 1,513.51; line 34 =
+#   0.00 + 1,513.51 and the receiving spouse's line 31400 is the lesser of 2,000.00 and 1,513.51.
+# Step 5: as in KH: line 36 = 400.00 x 1,600.00 / 3,700.00 = 172.97 and line 39 = 500.00 - 172.97 =
+#   327.03. Total income is 3,700.00 and net income 2,100.00 (1,600.00 deducted on line 21000).
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 who is 18 or older at the end of 2025, with a spouse or
+  common-law partner on December 31, 2025 (a chosen count of 1), the transferring spouse of a joint
+  election to split pension income, aged 66, whose spouse is 65 or older. Line 11500 is 3500.00 and
+  an RCA life annuity (line 4) is 200.00. The elected split-pension amount is 1600.00 on line 21000.
+  Form T1032: line 17 is 3700.00, line 21 is 1850.00; the receiving spouse is not under 65, so Note 1
+  is not followed and the 5000.00 of amounts a) to e) entered is not subtracted from line 1 or
+  compared with it: line 29 is 200.00 / 3700.00 x 1600.00 = 86.49, line 30 is 1513.51 and line 31 is
+  3500.00 - 1513.51 = 1986.49, so line 31400 is the lesser of 2000.00 and 1986.49, 1986.49. Total
+  income is 3700.00 and net income 2100.00. Every other figure is blank.
+sources:
+  - >-
+    CRA, Form T1032 E (25), Joint Election to Split Pension Income, page 3, "Note 1: ... If the
+    result is less than $4,000, use that result as the amount for line 17 to recalculate lines 18
+    to 31. Enter on line 33 whichever is less: the amount from line 22 or line 30."
+  - >-
+    CRA, Form T1032 E (25), page 3: "Line 31: Line 23 minus line 30 =" and "Enter on line 31400
+    of the transferring spouse's or common-law partner's return, whichever is less: $2,000 or the
+    amount from line 31."
+  - >-
+    CRA, Form T1032 E (25), page 4: "Line 36: Amount from line 35 multiplied by Amount from line
+    22 divided by Amount from line 17"; "Line 39: Line 37 minus line 38".
+inputs:
+  ca/cpp_months: "12"
+  ca/spouse_or_common_law_partner_on_december_31: "1"
+  ca/other_pensions_and_superannuation: "3500"
+  ca/other_income: "200"
+  ca/t1032_eligible_pension_income: "3500"
+  ca/t1032_t4a_box_128: "0"
+  ca/t1032_t4a_rca_box_17: "200"
+  ca/t1032_rca_payments_qualify: "1"
+  ca/t1032_marital_status_changed: "0"
+  ca/t1032_filer_is_transferring_spouse: "1"
+  ca/t1032_line_22: "1600"
+  ca/t1032_months_married: "12"
+  ca/t1032_not_separated_90_days: "1"
+  ca/t1032_residents_of_canada: "1"
+  ca/t1032_months_in_tax_year: "12"
+  ca/t1032_transferring_spouse_died: "0"
+  ca/t1032_receiving_spouse_pension_amount: "0"
+  ca/t1032_income_tax_deducted_on_pension: "400"
+  ca/t1032_receiving_spouse_under_65: "0"
+  ca/t1032_transferring_spouse_65_or_older: "1"
+  ca/t1032_note_1_payments_a_to_d: "5000"
+  ca/t1032_note_1_payments_due_to_death: "0"
+  ca/income_tax_deducted: "500"
+expected:
+  ca-on/return:
+    - ca/total_income: "3700.00"
+      ca/net_income: "2100.00"
+      ca/taxable_income: "2100.00"
+      ca/net_income_before_adjustments: "2100.00"
+      ca/other_payments_limit_income: "2100.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/income_tax_deducted_after_election: "327.03"
+      ca/pension_income_credit: "1986.49"
+      ca/total_credits: "327.03"
+      ca/refund_or_balance_owing: "-327.03"
+      ca-on/net_refund: "327.03"
+      ca-on/spouse_for_separate_residences_checked: "1"
+      ca/cwb_spouse_for_eligible_spouse_checked: "1"
+      ca/t1032_line_1_of_transferring_spouse_checked: "3500.00"
+      ca/t1032_line_4_of_transferring_spouse_checked: "200.00"
+      ca/t1032_worksheet_line_8_of_transferring_spouse_checked: "3500.00"
+  ca/t1032:
+    - ca/t1032_line_3: "3500.00"
+      ca/t1032_line_5: "131483.45"
+      ca/t1032_line_7: "127983.45"
+      ca/t1032_line_8: "200.00"
+      ca/t1032_line_12: "3700.00"
+      ca/t1032_line_15: "127783.45"
+      ca/t1032_line_16: "0.00"
+      ca/t1032_line_17: "3700.00"
+      ca/t1032_line_18: "3700.00"
+      ca/t1032_line_19: "3700.00"
+      ca/t1032_line_21: "1850.00"
+      ca/t1032_line_22: "1600.00"
+      ca/t1032_line_22_checked: "1600.00"
+      ca/t1032_line_29: "86.49"
+      ca/t1032_line_30: "1513.51"
+      ca/t1032_line_31: "1986.49"
+      ca/t1032_note_1_applies: "0"
+      ca/t1032_note_1_payments_total_if_applies: "0.00"
+      ca/t1032_note_1_payments_due_to_death_if_applies: "0.00"
+      ca/t1032_note_1_payments_to_remove: "0.00"
+      ca/t1032_note_1_result: "3500.00"
+      ca/t1032_note_1_recalculation: "0"
+      ca/t1032_note_1_line_17: "3700.00"
+      ca/t1032_note_1_line_8_checked: "200.00"
+      ca/t1032_note_1_line_22: "1600.00"
+      ca/t1032_note_1_line_29: "86.49"
+      ca/t1032_note_1_line_30: "1513.51"
+      ca/t1032_note_1_line_31: "1986.49"
+      ca/t1032_line_31_after_note_1: "1986.49"
+      ca/t1032_line_31400_transferring: "1986.49"
+      ca/t1032_note_1_line_33: "1513.51"
+      ca/t1032_line_33: "1513.51"
+      ca/t1032_line_34: "1513.51"
+      ca/t1032_line_31400_receiving: "1513.51"
+      ca/t1032_line_35_checked: "400.00"
+      ca/t1032_line_36: "172.97"
+      ca/t1032_line_39: "327.03"

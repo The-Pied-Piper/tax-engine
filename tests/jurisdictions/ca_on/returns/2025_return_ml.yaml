@@ -1,0 +1,210 @@
+# Return ML: Return MD with net capital losses of other years of 110,000 available and 100,000
+# claimed (T1 line 25300), instead of 40,000 and 30,000, and a claim of 0 on Form T2048 line 27.
+# The losses on line 25 (80,000.00 + 4,000.00 + 5,500.00 = 89,500.00) pass line 17 (80,000.00), so
+# line 26 is 80,000.00 - 89,500.00 = -9,500.00 as the form prints it (no floor), and line 27, the
+# lesser of line 7 (130,000.00) and line 26, is -9,500.00, against which the filer claims 0. Every
+# figure is a chosen figure; the tax lines are the engine's figures.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MD (a single Ontario resident for all of 2025, employment income of $60,000, interest of
+  $4,000, other income (line 13000) of $5,000 of which $2,000 is income from the recovery of
+  exploration and development expenses, capital gains on Schedule 3 of $200,000, of which
+  $100,000 is taxable, a business investment loss of 8,000, 4,000.00 allowable, and one QBT whose
+  Form T2048 line 7 is 130,000.00 and whose line 17 is 80,000.00) with net capital losses of other
+  years of 110,000 available, of which 100,000 is claimed (line 25300), a chosen figure. Form
+  T2048 Part 3: line 18 is 100,000, line 19 is 100,000.00 and line 20 is 80,000.00, so line 21 is
+  20,000.00 and line 22 is 100,000 - 20,000.00 = 80,000.00; line 23 is 4,000.00. Chart A: line 7
+  is 100,000 and line 8 is 80,000.00, so line 9 is 20,000.00 and line 10 is 5,000 + 0 + 2,000 + 0
+  + 3,000.00 + 1,000 + 20,000.00 = 31,000.00; line 18 is 100,000.00 - 80,000.00 = 20,000.00 and
+  line 19 is 4,000.00 + 0 + 0 + 500 + 1,000.00 + 20,000.00 = 25,500.00, so line 20, and line 24,
+  is 5,500.00. Line 25 is 80,000.00 + 4,000.00 + 5,500.00 = 89,500.00 and line 26 is 80,000.00 -
+  89,500.00 = -9,500.00: the form prints no floor, so it is negative. Line 27 is the lesser of
+  line 7 (130,000.00) and line 26, -9,500.00, and the filer claims 0, a chosen figure, so line
+  25395 is 0 (a claim above 0 is refused). Part 4: line 28 is the lesser of line 7 and line 17,
+  80,000.00; line 29 is 0, so line 30 is 80,000.00; line 31 is 0, so line 32 is 80,000.00; line 33
+  is 4,000.00 and line 34 is 5,500.00, so line 35 is 9,500.00; line 36 is the lesser of line 30
+  and line 35: 9,500.00; line 37 is 9,500.00 and line 38 is 9,500.00, so line 39 is 1, and line 40
+  is 4,000.00, so line 41 is 4,000.00; line 42 is 9,500.00 - 4,000.00 = 5,500.00. Part 5: B is
+  line 7, 130,000.00, and A is 0.00; C is line 16, 80,000.00; D (lines 31 and 36) is 0 + 9,500.00 =
+  9,500.00 and E is 9,500.00; F is 4,000.00; G is 5,500.00. Line 25700 adds line 25300 (100,000)
+  and line 25395 (0), 100,000.00, so the taxable income (line 26000) is 153,435.00 - 100,000.00 =
+  53,435.00. The other lines are the engine's figures (to be confirmed against CRA's calculator).
+sources:
+  - >-
+    CRA, Form T2048, "Capital Gains Deduction for Qualifying Business Transfers or Qualifying
+    Cooperative Conversions", 2025 edition (confirmed 2026-10-19 from the PDF; no .txt is
+    published), Part 2: line 1 "Total eligible amount for the joint election (maximum of $10
+    million per election)"; line 2 "Percentage allocated to you"; line 3 "Line 1 multiplied
+    by the percentage from line 2"; line 4 "Inclusion rate 50%"; line 5 "Line 3 multiplied by
+    the percentage from line 4"; line 6 "Capital gains deduction claimed in prior years at line
+    25395 of your return for this disposition, if any"; line 7 "Capital gains deduction
+    available from your election: line 5 minus line 6".
+  - >-
+    CRA, Form T2048, Part 3: line 8 "Taxable capital gains from line 12700 of your return";
+    line 9 "Capital gains for the QBT or QCC that occurred in the current year reported on
+    Schedule 3"; line 10 "Amount of 2024 reserve claimed for the QBT or QCC, if any"; line 11
+    "Line 9 plus line 10"; line 13 "Amount of 2025 reserve claimed for the QBT or QCC, if any";
+    line 14 "Total capital gains for the QBT or QCC: line 12 minus line 13"; line 15 "Inclusion
+    rate 50%"; line 16 "Taxable capital gains for the QBT or QCC only: line 14 multiplied by
+    the inclusion rate on line 15"; line 17 "Enter whichever is less: amount from line 8 or
+    line 16."; line 18 "Net capital losses of other years (line 25300 of your return)"; line
+    21 "Line 19 minus line 20 (if negative enter "0")"; line 22 "Line 18 minus line 21 (if
+    negative enter "0")"; line 23 "Allowable business investment loss (ABIL) for the year (line
+    21700 of your return)"; line 24 "Net investment loss for the year: If you have investment
+    expenses in 2025, complete Chart A on page 4 and enter the amount from line 20 of Chart A.
+    Otherwise, enter "0"."; line 25 "Add lines 22, 23, and 24"; line 26 "Line 17 minus line
+    25"; line 27 "Enter whichever is less: amount from line 7 or line 26. Enter all or part of
+    the amount you want to claim on line 25395 of your return."
+  - >-
+    CRA, Form T2048, Part 4: line 28 "Enter whichever is less: amount from line 7 or line 17.";
+    line 30 "Line 28 minus line 29" Reduction amount; line 31 "Amount claimed on line 25395 of
+    your return for this QBT or QCC"; line 32 "Line 30 plus line 31"; line 35 "Line 33 plus
+    line 34"; line 36 "Enter whichever is less: amount from line 30 or line 35."; line 39
+    "Line 37 divided by line 38"; line 41 "Line 39 multiplied by line 40" ABIL reduction; line
+    42 "Line 36 minus line 41" Net investment loss reduction. Part 5: A "Amount from line 7 if
+    the election is for a QCC" Total 17211; B "Amount from line 7 if the election is for a
+    QBT" Total 17212; C "Amount from line 16" Total 17213; D "Amount from lines 31 and 36"
+    Total 17215; E "Amounts from line 31 and 36 if gains are from a qualified small business
+    corporation shares (QSBCS) or qualified farm or fishing property (QFFP)" Total 17216; F
+    "Amount from line 41" Total 17217; G "Amount from line 42" Total 17218.
+  - >-
+    CRA, Form T2048, Chart A - Net investment loss of the year: line 1 "Carrying charges and
+    interest expenses (line 22100)"; line 2 "Net rental losses (line 12600)"; line 3 "Limited
+    or non-active partnership losses (line 12200) other than allowable capital losses"; line 4
+    "Limited partnership losses of other years after 1985 (line 25100)"; line 5 "50% of
+    exploration and development expenses (line 22400)"; line 6 "Any other investment expenses
+    claimed in 2025 to earn property income"; line 9 "Line 7 minus line 8 (if negative enter
+    "0")"; line 10 "Investment expenses: add lines 1 to 6, and line 9"; line 11 "Investment
+    income (lines 12000 and 12100)"; line 12 "Net rental income, including recaptured capital
+    cost allowance (line 12600)"; line 13 "Net income from limited or non-active partnership
+    (line 12200) other than taxable capital gains"; line 14 "Any other property income reported
+    in 2025"; line 15 "50% of income from the recovery of exploration and development expenses
+    (line 13000)"; line 18 "Line 16 minus line 17"; line 19 "Investment income: add lines 11
+    to 15, and line 18"; line 20 "Line 10 minus line 19 (if negative enter "0")" Net investment
+    losses for the year.
+  - >-
+    CRA, T1 General 2025, Ontario edition (form 5006-r), "Step 4 - Taxable income" (confirmed
+    2026-10-19): "Line 64 and line 25395: Capital gains deduction for qualifying business
+    transfers or qualifying cooperative conversions (complete Form T2048)"; "Line 68 and line
+    25700: Add lines 58 to 67."; "Line 69 and line 26000: Line 57 minus line 68 (if negative,
+    enter "0") Taxable income".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2048/t2048-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/slip_capital_gains_or_losses: "200000"
+  ca/unapplied_net_capital_losses_2001_to_2024: "110000"
+  ca/net_capital_losses_claimed: "100000"
+  ca/business_investment_loss: "8000"
+  ca/total_carrying_charges: "5000"
+  ca/exploration_and_development_expenses: "6000"
+  ca/t5_investment_income: "4000"
+  # Line 13000 is 5,000: the 2,000 recovery of exploration and development expenses and 3,000 of
+  # other income (for example a retiring allowance) that Chart A line 15 does not take.
+  ca/other_income: "5000"
+  ca/qbt_exploration_recovery_income: "2000"
+  ca/rrsp_deduction_limit: "10800"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "8000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/non_active_partnership_losses: "2000"
+  ca/other_investment_expenses: "1000"
+  ca/other_property_income: "500"
+  ca/has_investment_expenses: "1"
+  ca/t2048_dispositions:
+    - ca/qbt_election_eligible_amount: "600000"
+      ca/qbt_percentage_allocated: "50"
+      ca/qbt_prior_years_claims: "20000"
+      ca/qbt_capital_gains: "180000"
+      ca/qbt_2024_reserve: "20000"
+      ca/qbt_2025_reserve: "40000"
+      ca/qbt_election_is_qbt: "1"
+      ca/qbt_gains_are_qsbcs_or_qffp: "1"
+      ca/qbt_deduction_claimed: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_capital_gains: "100000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/net_capital_losses_of_other_years: "100000.00"
+      ca/allowable_business_investment_loss: "4000.00"
+      ca/qbt_taxable_capital_gains: "80000.00"
+      ca/qbt_capital_gains_deduction: "0"
+      ca/qbt_allocation_total: "80000.00"
+      ca/qbt_abil_reduction: "4000.00"
+      ca/qbt_net_investment_loss_reduction: "5500.00"
+      ca/qbt_election_deduction: "130000.00"
+      ca/qcc_election_deduction: "0.00"
+      ca/qbt_taxable_gains_related_to_deduction: "9500.00"
+      ca/qsbcs_qffp_taxable_gains_related_to_deduction: "9500.00"
+      ca/deductions_from_net_income: "100000.00"
+      ca/taxable_income: "53435.00"
+      ca/net_income_before_adjustments: "153435.00"
+      ca/other_payments_limit_income: "153435.00"
+      ca/net_capital_loss_balance_2001_to_2024: "10000.00"
+      ca/schedule_3_line_19900: "100000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "1886.32"
+      ca/refund_or_balance_owing: "-865.81"
+      ca-on/net_refund: "865.81"
+      ca/amt_part_1_subtotal: "53435.00"
+      ca/amt_net_capital_gains_after_adjustments: "200000"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "282.50"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "153435.00"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "4647.87"
+      ca/amt_regular_net_federal_tax_payable: "4647.87"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_required_base_and_first_additional_contributions: "3361.75"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_57: "2796.75"
+      ca/cpp_part_5_line_69: "565.00"
+  ca/t2048:
+    - ca/qbt_amount_allocated: "300000.00"
+      ca/qbt_taxable_amount_allocated: "150000.00"
+      ca/qbt_deduction_available: "130000.00"
+      ca/qbt_capital_gains_with_2024_reserve: "200000"
+      ca/qbt_total_capital_gains: "160000"
+      ca/qbt_taxable_gains_limit: "80000.00"
+      ca/qbt_taxable_gains_not_limited: "20000.00"
+      ca/qbt_net_capital_losses_remaining: "80000.00"
+      ca/qbt_net_rental_income: "0"
+      ca/qbt_net_rental_loss: "0"
+      ca/qbt_exploration_expenses_at_half: "3000.00"
+      ca/qbt_chart_a_net_capital_losses_used: "20000.00"
+      ca/qbt_investment_expenses: "31000.00"
+      ca/qbt_dividends_and_investment_income: "4000.00"
+      ca/qbt_exploration_recovery_income_checked: "2000"
+      ca/qbt_recovery_of_exploration_expenses: "1000.00"
+      ca/qbt_investment_income: "25500.00"
+      ca/qbt_chart_a_net_investment_loss: "5500.00"
+      ca/qbt_net_investment_loss: "5500.00"
+      ca/qbt_reductions_from_losses: "89500.00"
+      ca/qbt_deduction_limit: "-9500.00"
+      ca/qbt_maximum_deduction: "-9500.00"
+      ca/qbt_deduction_base: "80000.00"
+      ca/qbt_reduction_amount: "80000.00"
+      ca/qbt_abil_and_net_investment_loss: "9500.00"
+      ca/qbt_allocation_limit: "9500.00"

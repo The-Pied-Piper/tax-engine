@@ -1,0 +1,53 @@
+# Return LL: Guide T4044, Labour mobility deduction example (relocation begun December 28, 2025).
+# Amounts are quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LL: Guide T4044 (2025), "Labour mobility deduction", Example (2025): an eligible
+  tradesperson who begins an eligible temporary relocation on December 28, 2025 and incurs, in
+  December 2025, $1,000 for a round trip flight, $100 for meals and $400 for temporary lodging, a
+  total of $1,500, with no employment income from the temporary work location until January 2026.
+  The Guide's T777 chart: line 33 0.00; line 34 1,000.00; line 35 100.00; line 36 400.00; line 37
+  1,500.00; line 38 0.00 (income 0.00 times 50%); line 39 0.00 (claim 0); line 40 1,500.00 carried
+  forward; line 41 0.00. So the labour mobility deduction (T777 line 11) is 0.00, nothing is
+  deducted on T1 line 22900 and 1,500.00 is carried forward to 2026 (line 40). The return has no
+  other income. Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Labour mobility
+    deduction", Example: "You begin an eligible temporary relocation on December 28, 2025. You incur
+    eligible temporary relocation expenses in December 2025 of $1,000 for a round trip flight
+    between your ordinary residence and the temporary lodging, $100 for meals during your travel
+    time and $400 for temporary lodging near the temporary work location for a total amount of
+    $1,500. You do not receive any employment income related to the temporary work location until
+    January, 2026. Therefore, you would not be able to deduct your eligible temporary relocation
+    expenses in 2025" ... "Line 37: ... 1,500.00 ... Line 39: ... 0.00 ... Line 40: Line 37 minus
+    line 39 ... 1,500.00 ... Line 41: ... 0.00".
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    the line 11 chart, lines 33 to 41.
+inputs:
+  ca/cpp_months: "12"
+  ca/t777_relocations:
+    - ca/t777_relocation_carried_forward: "0"
+      ca/t777_relocation_transportation: "1000"
+      ca/t777_relocation_meals: "100"
+      ca/t777_relocation_lodging: "400"
+      ca/t777_relocation_tradesperson_income: "0"
+      ca/t777_relocation_claim: "0"
+expected:
+  ca/t777:
+    - ca/t777_line_11: "0.00"
+      ca/t777_line_15: "0.00"
+      ca/t777_line_17: "0.00"
+  ca/t777_relocation:
+    - ca/t777_relocation_total: "1500"
+      ca/t777_relocation_income_limit: "0.00"
+      ca/t777_relocation_deduction: "0.00"
+      ca/t777_relocation_carried_forward_out: "1500.00"
+  ca-on/return:
+    - ca/total_income: "0.00"
+      ca/other_employment_expenses: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"

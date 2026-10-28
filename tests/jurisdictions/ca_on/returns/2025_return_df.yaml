@@ -1,0 +1,74 @@
+# Return DF: Schedule 12, the multigenerational home renovation tax credit (T1 line 45355), with
+# two qualifying renovations listed by the caller, one that is at the $50,000 maximum and one
+# that is reimbursed in part and claimed in part by another eligible individual. A filer with no
+# income, so the renovation records are the only inputs of the return's credits.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DF: a 2025 Ontario filer with no
+  income of any kind and no spouse, so the return's only inputs are the two qualifying
+  renovations of Schedule 12, both to create a secondary unit in an eligible dwelling (chosen
+  figures, the caller's decision on who is eligible). Renovation 1: line 1 "Total amount paid
+  from all sales slips and contracts" 60,000.00, line 2 "reimbursed" 0.00 and line 5 "claimed
+  by other eligible individuals" 0.00. Renovation 2: line 1 30,000.00, line 2 5,000.00 and line
+  5 10,000.00. Schedule 12, Step 1, for each renovation: renovation 1, line 3 is 60,000.00 less
+  0.00 = 60,000.00, at most line 4 50,000.00, so 50,000.00; line 6 is 50,000.00 less 0.00 =
+  50,000.00; line 7 is the lesser of 50,000.00 and 50,000.00, 50,000.00. Renovation 2, line 3
+  is 30,000.00 less 5,000.00 = 25,000.00 (not above 50,000.00); line 6 is 50,000.00 less
+  10,000.00 = 40,000.00; line 7 is the lesser of 25,000.00 and 40,000.00, 25,000.00. The
+  totals over the renovations are line 3 75,000.00 (50,000.00 + 25,000.00) and line 6
+  90,000.00 (50,000.00 + 40,000.00). Step 2: line 8 (line 45354), the total of line 7, is
+  50,000.00 + 25,000.00 = 75,000.00; line 9 is 14.5%; line 10, which is T1 line 45355, is
+  75,000.00 x 14.5% = 10,875.00, exact to the cent, so nothing is rounded. Line 45355 is one of
+  the lines added into T1 line 48200 "Total credits", so the total credits of this return are
+  those of the same return without Schedule 12 plus 10,875.00; the other lines of line 48200
+  are not restated here. Expenses claimed for the medical expense or home accessibility credit
+  are left out of line 1 by the caller, and none is entered on this return. With no tax
+  payable, line 167 "Line 149 minus line 166" is 0.00 - 10,875.00 = -10,875.00, a refund of
+  10,875.00 (line 48400, entered as the Ontario net refund). The return also shows
+  ca/cpp_second_additional_earnings_maximum 9,900.00, a dataset figure, and an alternative
+  minimum tax carry-over of 2,338.71, which is the basic personal amount credit 14.5% x
+  16,129.00 = 2,338.705 rounded half-up, as the engine's alternative minimum tax lines carry it
+  (not part of Schedule 12).
+sources:
+  - >-
+    CRA, "Multigenerational Home Renovation Tax Credit (MHRTC)" (form 5000-S12), "How much you
+    can claim": "The MHRTC is 14.5% of whichever amount is less:" "$50,000" and "your total
+    qualifying expenditures"; "The maximum credit available for the MHRTC is $7,250."
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s12/5000-s12-25e.txt
+  - >-
+    CRA, Schedule 12 Step 1 (form 5000-S12): line 3 "Line 1 minus line 2 (maximum $50,000 per
+    qualifying renovation)"; line 4 "Maximum amount per qualifying renovation 50,000.00"; line 6
+    "Line 4 minus line 5"; line 7 "Enter whichever is less: amount from line 3 or line 6. Your
+    qualifying expenditures for the qualifying renovation".
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s12/5000-s12-25e.txt
+  - >-
+    CRA, Schedule 12 Step 2 (form 5000-S12): line 8 and line 45354 "Add the amounts from line 7
+    for each qualifying renovation. Your total qualifying expenditures"; line 9 "Applicable rate
+    14.5%"; line 10 "Line 8 multiplied by the percentage from line 9 Enter this amount on line
+    45355 of your return."
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s12/5000-s12-25e.txt
+  - >-
+    CRA, T1-2025 Ontario edition (form 5006-R), "Line 157 and line 45355: Multigenerational home
+    renovation tax credit (MHRTC) (complete Schedule 12)"; "Line 166 and line 48200: Add lines
+    150 to 165. Total credits".
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/cpp_months: "12"
+  ca/home_renovations:
+    - ca/home_renovation_expenditures: "60000"
+      ca/home_renovation_reimbursed: "0"
+      ca/home_renovation_claimed_by_others: "0"
+    - ca/home_renovation_expenditures: "30000"
+      ca/home_renovation_reimbursed: "5000"
+      ca/home_renovation_claimed_by_others: "10000"
+expected:
+  ca-on/return:
+    - ca/home_renovation_line_3: "75000.00"
+      ca/home_renovation_line_6: "90000.00"
+      ca/home_renovation_line_8: "75000.00"
+      ca/multigenerational_home_renovation_credit: "10875.00"
+      ca-on/net_refund: "10875.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/refund_or_balance_owing: "-10875.00"

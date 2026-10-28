@@ -1,0 +1,86 @@
+# Return LY: Return LO's leased passenger vehicle (the Guide T4044 "Leasing costs" example) with refundable
+# deposits of $800, so there is no imputed interest and the chart is worked (chosen figures, not a CRA
+# example). Guide T4044 (2025), "Repayments and imputed interest", says "You can only consider imputed
+# interest as leasing costs on a passenger vehicle if all the following apply: - You made one or more
+# deposits for the leased passenger vehicle - All deposits are refundable - The deposits total is more
+# than $1,000"; this filer made a deposit and all are refundable, but the total is $800 (not more than
+# $1,000), so the third condition fails. There is no repayment owing (the answer is 0), so the chart
+# is used and line 27 is the same $5,499.99 as Return LO. With a total above $1,000 the chart cannot
+# be used and the guide says to contact the CRA, so the vehicle is refused. Amounts are quoted decimal
+# strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LY: Return LO's Ontario resident who began leasing a passenger vehicle on February 1, 2025
+  (Guide T4044 (2025), "Leasing costs", Example: lease payments of $5,500 for 2025, 335 days, list
+  price $28,000), who made a deposit on the lease that is refundable, totalling $800, with no repayment
+  owing. Imputed interest needs all three conditions of the guide's "Repayments and imputed interest"
+  and the total is not more than $1,000, so the chart "Eligible leasing costs for passenger vehicles
+  leased after December 31, 2000" is worked as in Return LO: line 27 is 5,499.99, so line 29, line 30,
+  line 3, T777 line 17 and T1 line 22900 are 5,499.99. The employment income is a chosen $60,000. Every
+  other line is the engine's figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Leasing costs",
+    Example: "On February 1, 2025, you, a resident of Ontario, began leasing a car that meets the
+    definition of a passenger vehicle." "Lease payments made for 2025 $5,500" "You would enter
+    $5,500 (the lower of the amounts on line 7 and line 8) on line 27 of Form T777." Chart "Eligible
+    leasing costs for passenger vehicles leased after December 31, 2000": "Line 5: 44,706* + GST**
+    and PST** or HST**"; "Line 6: Enter the amount from line 4 or line 5, whichever is more.
+    multiplied by 85%"; "Line 7: ($1,100*** + GST** and PST** or HST**) multiplied by line 3 =
+    divided by 30 = minus line 2"; "Line 8: ($38,000**** + GST** and PST** or HST**) multiplied by
+    line 1 = divided by line 6"; "Your eligible leasing cost is the lower of the amounts on line 7
+    and line 8"; the footnotes print other amounts for a lease entered into in 2024 or earlier.
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt), "Repayments and
+    imputed interest": "When you lease a passenger vehicle, you may have either a repayment owing to
+    you, or you may have imputed interest. If this is your situation, you cannot use the leasing
+    chart below. Instead, contact the CRA." "You made one or more deposits for the leased passenger
+    vehicle" "All deposits are refundable" "The deposits total is more than $1,000".
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    line 27 "Leasing costs"; line 29 "Add lines 21 to 28."; line 30 "Line 20 multiplied by line 29.
+    Employment-use portion"; line 32 "Line 30 minus line 31 ... Allowable motor vehicle expenses".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_employment_kilometres: "10000"
+  ca/t777_total_kilometres: "10000"
+  ca/t777_lease_charges: "5500"
+  ca/t777_lease_payments_before: "0"
+  ca/t777_lease_days: "335"
+  ca/t777_lease_list_price: "28000"
+  ca/t777_lease_year: "2025"
+  ca/t777_passenger_vehicle: "1"
+  ca/t777_lease_repayment_owing: "0"
+  ca/t777_lease_deposits_made: "1"
+  ca/t777_lease_deposits_refundable: "1"
+  ca/t777_lease_deposits_total: "800"
+  ca/t777_vehicle_sales_tax_rate: "13"
+expected:
+  ca/t777:
+    - ca/t777_line_3: "5499.99"
+      ca/t777_line_15: "5499.99"
+      ca/t777_line_17: "5499.99"
+  ca-on/return:
+    - ca/total_income: "60000.00"
+      ca/other_employment_expenses: "5499.99"
+      ca-on/ontario_tax_less_dividend_credit: "1932.07"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "53935.01"
+      ca/other_payments_limit_income: "53935.01"
+      ca/refund_or_balance_owing: "7252.44"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000"

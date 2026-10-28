@@ -1,0 +1,126 @@
+# Return JF: a 2025 Ontario resident whose business loses money, so total income is below zero. The
+# filer has $30,000 of other income (line 13000), one Form T2125 statement with no sales and $40,000
+# of office expenses (a net loss of $40,000, line 13500), $5,000 of income tax deducted (line 43700)
+# and $500 of union dues (line 21200). Total income (line 15000) is 30,000.00 - 40,000.00 =
+# -10,000.00. The union dues and the tax deducted have no bound on the form, so both are taken as
+# entered; the tax deducted of 5,000.00 is added to the total credits. Nothing else is entered.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A 2025 Ontario resident (residency and age 18 or older at the end of 2025 are chosen: 1) with
+  other income of 30,000.00 and one Form T2125 statement of business income from a sole
+  proprietorship (line code 1) with no gross sales and office expenses of 40,000.00, so its net
+  loss (line 9946) is -40,000.00 and the business income on line 13500 is -40,000.00. Total income
+  is 30,000.00 - 40,000.00 = -10,000.00. The union dues of 500.00 (line 21200) are the only
+  deduction, so the net income before adjustments (line 23400) is -10,500.00, shown in brackets,
+  and net income (line 23600) and taxable income are 0.00 once floored. The union dues of
+  500.00 and the income tax deducted of 5,000.00 (line 43700) are accepted as typed (the form
+  prints no limit on either). With taxable income of 0.00 there is no federal or Ontario tax, and
+  the Canada workers benefit, the LIFT credit and the Ontario tax reduction are 0.00 (no employment
+  income). The total
+  credits (line 48200) are the income tax deducted of 5,000.00 alone, and total payable is 0.00, so
+  the refund (line 48400) is 5,000.00. The AMT carryover to 2026 is 0.00
+  (`ca/amt_carryover_available_for_2026`, an engine line: with no minimum tax owing, Part 7 is
+  skipped), and the cap `ca/cpp_second_additional_earnings_maximum` (9,900.00) is the engine's,
+  not a hand figure.
+sources:
+  - >-
+    CRA, Form 5006-R 2025, "Line 33 and line 15000: Line 28 plus line 32 Total income" and "Line 56
+    and line 23600: Line 54 minus line 55 (if negative, enter "0")" (docs/cra-forms-2025/
+    5006-r-25e.txt). The form prints no limit on lines 43700 and 21200; both are taken as typed.
+inputs:
+  ca/t2125_statements:
+    - ca/business_gross_sales: "0"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "40000"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/other_income: "30000"
+  ca/income_tax_deducted: "5000"
+  ca/union_dues: "500"
+expected:
+  ca-on/return:
+    - ca/total_income: "-10000.00"
+      ca/income_before_losses: "30000.00"
+      ca/net_income_before_adjustments: "-10500.00"
+      ca/net_income: "0"
+      ca/taxable_income: "0"
+      ca/total_credits: "5000.00"
+      ca/total_payable: "0.00"
+      ca/refund_or_balance_owing: "-5000.00"
+      ca/refund: "5000.00"
+      ca-on/refund_before_donation: "5000.00"
+      ca-on/net_refund: "5000.00"
+      ca/other_payments_limit_income: "0"
+      # Engine only (not a hand figure): the cap on the second additional CPP earnings.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0"

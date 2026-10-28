@@ -1,0 +1,163 @@
+# Return KY: Guide T4002's Rick (farm losses, printed page 94), a single Ontario resident whose main
+# source of income is his farming business, reported on one Form T2042 for a full fiscal period (0 days
+# entered). His farm loss before adjustments is $50,000; he adds back the optional inventory
+# adjustment (OIA) of $15,000, giving a farm loss after adjustments of $35,000 ($50,000 - $15,000);
+# with other income of $2,000 his farm loss for 2025 is $33,000. Farming is his main source of income,
+# so the answer to "farming was neither your main source of income nor ..." is no (0) and the loss is
+# not restricted.
+#
+# CRA's printed figures are the $50,000 loss before adjustments (T2042 line 9899, amount 4A), the
+# $35,000 after adjustments (amount 4C, "Total of lines 9899, 9941, and 9942") and the $33,000 for 2025
+# (the loss left once the other income is added: T1 total income, negative, here -$33,000.00). The loss
+# is entered as fertilizers and lime (line 9662) of $50,000, the guide not naming a line; the OIA is
+# line 9941; the other income is T1 line 13000 "Other income". The guide's "farm loss for 2025" is the
+# loss before it is carried back or forward (T1 line 25200 non-capital losses is not modelled here).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose main source of income is farming, reported on one Form
+  T2042 for a full fiscal period (0 days entered): fertilizers and lime of $50,000 and no farm income,
+  so the net farm loss before adjustments (line 9899) is -$50,000; the optional inventory adjustment (line
+  9941) is $15,000, so the loss after inventory adjustments (amount 4C) and the farming income on the
+  return are -$35,000; the other income is $2,000 (T1 line 13000), so the total income is -$33,000.00,
+  Guide T4002's Rick's farm loss for 2025.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed pages
+    94 and 95, "Farm losses", the example of Rick: "Rick’s farming business, which is his main source
+    of income, has a December 31 fiscal year-end. His farm loss before adjustments is $50,000. He wants
+    to reduce his loss by the optional inventory adjustment (OIA)."; "Net farm loss before adjustments
+    $ 50,000", "Optional inventory adjustment $ 15,000", "Other income $ 2,000"; "Farm loss before adjustments
+    ($ 50,000)", "Add optional inventory adjustment $ 15,000", "Farm loss after adjustments ($ 35,000)",
+    "Add other income $ 2,000", "Farm loss for 2025 ($ 33,000)".
+  - >-
+    CRA, Form T2042 (2025), Statement of Farming Activities (docs/cra-forms-2025/t2042-25e.pdf, confirmed
+    from the PDF with pdftotext -layout), Part 5: line 9899 "Net income (loss) before adjustments", line
+    9941 "Optional inventory adjustment included in the current year" and amount 4C "Net income (loss)
+    after inventory adjustments: Total of lines 9899, 9941, and 9942".
+inputs:
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/t2042_statements:
+    - ca/farm_wheat: "0"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "50000"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "0"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "15000"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0"
+      ca/farm_land_dispositions: "0"
+      ca/farm_quota_additions: "0"
+      ca/farm_quota_dispositions: "0"
+      ca/farm_liabilities: "0"
+      ca/farm_drawings: "0"
+      ca/farm_capital_contributions: "0"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+  ca/schedule_8_instances:
+    - {}
+  ca/other_income: "2000"
+  ca/farm_not_main_source_of_income: "0"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+expected:
+  ca/t2042:
+    - ca/farm_net_income_before_adjustments: "-50000"
+      ca/farm_net_income_after_inventory_adjustments: "-35000"
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "-33000.00"
+      ca/farming_income: "-35000"
+      ca/total_income: "-33000.00"

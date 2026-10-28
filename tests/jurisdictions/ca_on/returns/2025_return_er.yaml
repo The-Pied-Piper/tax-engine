@@ -1,0 +1,155 @@
+# Return ER: the FHSA chain of Schedule 15, Steps 2 and 3, with the maximum participation period NOT
+# ended and every comparison on its first (own) branch. Every line of Schedule 15 the return reaches
+# is non-zero, and the hand derivation of every line is in the description. No CRA example exists
+# for Schedule 15, so every figure is a chosen figure, worked out by hand from the form text.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the form names no province of
+  residence), resident in Canada throughout 2025, aged 18 or older at the end of 2025 (chosen
+  figures). Her other income is a chosen $60,000.00 (line 13000), with a chosen $700.00 of taxable
+  FHSA income (line 12905) and a chosen $300.00 of other taxable FHSA income (line 12906), so total
+  income is 60,000 + 700 + 300 = 61,000.00. Every figure of Schedule 15 is a chosen figure: no CRA
+  example exists, so the figures are chosen and the arithmetic is shown line by line here. The
+  maximum participation period (MPP) has not ended, so Step 2 is completed in full, and every
+  comparison picks its first or own branch. Schedule 15, page 2 to page 4, in order:
+  Line 3: 6,000 - 1,000 = 5,000.00. Line 5: 5,000 + 500 = 5,500.00. Line 9: 4,000 - 3,500 = 500.00.
+  Line 10 is the amount from line 2 (1,000.00). Line 11: 500 + 1,000 = 1,500.00. Line 12: 1,800 -
+  1,500 = 300.00 (positive, so not floored). Line 13: 5,500 - 300 = 5,200.00. Line 14: 8,000.00
+  (printed). Line 16: 8,000 + 2,000 = 10,000.00. Line 19: 3,000 + 1,500 = 4,500.00. Line 22: 500 +
+  400 = 900.00. Line 23: 4,500 - 900 = 3,600.00 (the net RRSP-to-FHSA transfer amount, no floor
+  printed). Line 24 is the amount from line 23, 3,600.00. Line 25 is the amount from line 17,
+  3,000.00, and line 26 the amount from line 20, 500.00. Line 27: 3,000 - 500 = 2,500.00. Line 29:
+  2,500 - 800 = 1,700.00 (positive, so not floored). Line 30: 8,000.00 (printed). Line 32: 8,000 +
+  1,000 = 9,000.00. Line 33: the lesser of 1,700 and 9,000 is 1,700.00. Line 35: 1,700 + 300 =
+  2,000.00. Line 36: 3,600 - 2,000 = 1,600.00 (no floor printed). Line 37 is the amount from line 16,
+  10,000.00, and line 38 the amount from line 36, 1,600.00. Line 39: 10,000 - 1,600 = 8,400.00.
+  Line 40: the lesser of line 13 (5,200.00) and line 39 (8,400.00) is 5,200.00, so the annual FHSA
+  limit for 2025 is 5,200.00. Line 41 is line 40, 5,200.00. Line 42 is a chosen 9,000.00 (the total
+  annual limits for 2024 and prior years). Line 43: 5,200 + 9,000 = 14,200.00. Line 44 is a chosen
+  6,000.00 (the total FHSA deductions for 2024 and prior years). Line 45: 14,200 - 6,000 = 8,200.00
+  (no floor printed). Line 46: the lifetime FHSA limit, 40,000.00 (printed). Line 47 is line 44,
+  6,000.00. Line 48: 40,000 - 6,000 = 34,000.00. Line 49 is line 24, 3,600.00. Line 50: 34,000 -
+  3,600 = 30,400.00 (positive, so not floored). Line 51: the lesser of line 45 (8,200.00) and line 50
+  (30,400.00) is 8,200.00, the maximum FHSA deduction for 2025. Line 52 is a chosen 2,500.00 (the
+  unused FHSA contributions brought forward). Line 53 is the amount from line 3, 5,000.00. Line 54:
+  2,500 + 5,000 = 7,500.00. Line 55 is the amount from line 12, 300.00. Line 56: 7,500 - 300 =
+  7,200.00 (no floor printed). Line 57: the FHSA contributions deducted for 2025 is a chosen
+  5,000.00, which is no more than line 51 (8,200.00), so it is accepted and enters line 20805 of the
+  return. Line 58: 7,200 - 5,000 = 2,200.00, the unused FHSA contributions carried forward. The FHSA
+  deduction is 5,000.00. Net income is 61,000 - 5,000 = 56,000.00, and taxable income is 56,000.00,
+  as no other deduction applies. The tax lines are the engine's figures, not form figures: the
+  Ontario tax less the dividend credit (2,311.95), the net income before adjustments and the other
+  payments limit income (both 56,000.00), the second additional CPP maximum (9,900.00, a full year
+  of CPP at a chosen 12 months), the RC381 part 2 lines g to j, and the refund (8,693.24).
+sources:
+  - >-
+    CRA, Schedule 15 2025, Step 2 and Step 3 lines: "Line 3: Line 1 minus line 2", "Line 5: Line 3
+    plus line 4", "Line 12: Line 6 minus line 11 (if negative, enter "0")", "Line 13: Line 5 minus
+    line 12 (if negative, enter "0")", "Line 14: 8,000.00", "Line 23: Line 19 minus line 22 Net
+    RRSP-to-FHSA transfer amount", "Line 27: Net RRSP-to-FHSA transfer amount for 2024 and prior
+    years: Line 25 minus line 26", "Line 29: Line 27 minus line 28 (if negative, enter "0")", "Line
+    33: Enter whichever is less: amount from line 29 or line 32", "Line 40: Enter whichever is less:
+    amount from line 13 of the previous page or line 39. Annual FHSA limit for 2025", "Line 46:
+    Lifetime FHSA limit 40,000.00", "Line 51: Enter whichever is less: amount from line 45 or line 50.
+    Maximum FHSA deduction available for 2025", "Line 57: Enter the FHSA contributions you are
+    deducting for 2025 (cannot be more than the amount on line 51 of the previous page). Enter this
+    amount on line 20805 of your return. FHSA deduction for 2025", and "Line 58: Line 56 minus line
+    57 Your unused FHSA contributions available to deduct in future years" (docs/cra-forms-2025/5000-s15-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s15/5000-s15-25e.txt
+  - >-
+    CRA, Schedule 15 2025, Step 2: "If your maximum participation period (MPP) ended in a prior year,
+    do not complete this step. Your 2025 annual FHSA limit is "0". Enter "0" on line 40 and continue
+    at Step 3." (docs/cra-forms-2025/5000-s15-25e.txt)
+  - >-
+    CRA, T1 2025 Ontario edition, "Line 17 and line 12905: Taxable first home savings account (FHSA)
+    income" and "Line 18 and line 12906: Taxable FHSA income - other" (docs/cra-forms-2025/5006-r-25e.txt)
+  - >-
+    CRA, T1 2025 Ontario edition, "Line 37 and line 20805: FHSA deduction (complete Schedule 15 and
+    attach receipts)" (docs/cra-forms-2025/5006-r-25e.txt)
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_income: "60000"
+  ca/fhsa_income: "700"
+  ca/other_fhsa_income: "300"
+  ca/fhsa_contributions_in_2025: "6000"
+  ca/fhsa_contributions_in_2025_after_first_qualifying_withdrawal: "1000"
+  ca/fhsa_variable_b_amount: "500"
+  ca/fhsa_designated_withdrawals_in_2025: "1800"
+  ca/fhsa_contributions_in_2024: "4000"
+  ca/fhsa_contributions_in_2024_before_first_qualifying_withdrawal: "3500"
+  ca/fhsa_carryforward_for_2025: "2000"
+  ca/fhsa_rrsp_transfers_in_2024_and_prior_years: "3000"
+  ca/fhsa_rrsp_transfers_in_2025: "1500"
+  ca/fhsa_designated_transfers_in_2024_and_prior_years: "500"
+  ca/fhsa_designated_transfers_in_2025: "400"
+  ca/fhsa_variable_h_amount: "800"
+  ca/fhsa_carryforward_for_2024: "1000"
+  ca/fhsa_variable_f_amount: "300"
+  ca/fhsa_annual_limits_for_2024_and_prior_years: "9000"
+  ca/fhsa_deductions_for_2024_and_prior_years: "6000"
+  ca/fhsa_unused_contributions_brought_forward: "2500"
+  ca/fhsa_contributions_deducted: "5000"
+  ca/fhsa_maximum_participation_period_ended: "0"
+expected:
+  ca-on/return:
+    - ca/total_income: "61000.00"
+      ca/net_income: "56000.00"
+      ca/taxable_income: "56000.00"
+      ca/fhsa_contributions_in_2025: "6000.00"
+      ca/fhsa_contributions_in_2025_after_first_qualifying_withdrawal: "1000.00"
+      ca/fhsa_contributions_in_2025_before_first_qualifying_withdrawal: "5000.00"
+      ca/fhsa_variable_b_amount: "500.00"
+      ca/fhsa_contributions_plus_variable_b_amount: "5500.00"
+      ca/fhsa_designated_withdrawals_in_2025: "1800.00"
+      ca/fhsa_contributions_in_2024: "4000.00"
+      ca/fhsa_contributions_in_2024_before_first_qualifying_withdrawal: "3500.00"
+      ca/fhsa_contributions_in_2024_after_first_qualifying_withdrawal: "500.00"
+      ca/fhsa_contributions_after_first_qualifying_withdrawal: "1500.00"
+      ca/fhsa_excess_designated_withdrawals: "300.00"
+      ca/fhsa_contributions_limit: "5200.00"
+      ca/fhsa_annual_amount: "8000.00"
+      ca/fhsa_carryforward_for_2025: "2000.00"
+      ca/fhsa_annual_amount_with_carryforward: "10000.00"
+      ca/fhsa_rrsp_transfers_in_2024_and_prior_years: "3000.00"
+      ca/fhsa_rrsp_transfers_in_2025: "1500.00"
+      ca/fhsa_total_rrsp_transfers: "4500.00"
+      ca/fhsa_designated_transfers_in_2024_and_prior_years: "500.00"
+      ca/fhsa_designated_transfers_in_2025: "400.00"
+      ca/fhsa_total_designated_transfers: "900.00"
+      ca/fhsa_net_rrsp_transfer_amount: "3600.00"
+      ca/fhsa_net_rrsp_transfer_amount_for_2024_and_prior_years: "2500.00"
+      ca/fhsa_variable_h_amount: "800.00"
+      ca/fhsa_net_transfer_amount_less_variable_h_amount: "1700.00"
+      ca/fhsa_annual_amount_for_2024: "8000.00"
+      ca/fhsa_carryforward_for_2024: "1000.00"
+      ca/fhsa_annual_amount_for_2024_with_carryforward: "9000.00"
+      ca/fhsa_transfer_amount_at_most_limit: "1700.00"
+      ca/fhsa_variable_f_amount: "300.00"
+      ca/fhsa_transfer_amount_plus_variable_f_amount: "2000.00"
+      ca/fhsa_net_transfer_amount_after_prior_years: "1600.00"
+      ca/fhsa_annual_amount_after_transfers: "8400.00"
+      ca/fhsa_annual_limit_from_step_2: "5200.00"
+      ca/fhsa_annual_limit: "5200.00"
+      ca/fhsa_annual_limits_for_2024_and_prior_years: "9000.00"
+      ca/fhsa_total_annual_limits: "14200.00"
+      ca/fhsa_deductions_for_2024_and_prior_years: "6000.00"
+      ca/fhsa_annual_limits_less_deductions: "8200.00"
+      ca/fhsa_lifetime_limit: "40000.00"
+      ca/fhsa_lifetime_limit_less_deductions: "34000.00"
+      ca/fhsa_lifetime_limit_less_deductions_and_transfers: "30400.00"
+      ca/fhsa_maximum_deduction: "8200.00"
+      ca/fhsa_unused_contributions_brought_forward: "2500.00"
+      ca/fhsa_unused_contributions_plus_contributions: "7500.00"
+      ca/fhsa_contributions_deducted: "5000.00"
+      ca/fhsa_contributions_available: "7200.00"
+      ca/fhsa_deduction: "5000.00"
+      ca/fhsa_unused_contributions_carried_forward: "2200.00"
+      ca/net_income_before_adjustments: "56000.00"
+      ca/other_payments_limit_income: "56000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "2311.95"
+      ca/refund_or_balance_owing: "8693.24"

@@ -1,0 +1,125 @@
+# Return FF: a student whose tax is too small to use the tuition, so Schedule 11 shows the unused
+# tuition, the amount available to transfer and the election to transfer part of it, with the
+# months enrolled full time. No CRA example exists (5000-S11 prints none), so every figure is a
+# chosen figure, worked out by hand from the form text.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single filer, a 2025 Ontario resident, resident in Canada throughout 2025 and 18 or older at
+  the end of 2025, with employment income of 20000 (a chosen figure) and income tax deducted of
+  1000 (a chosen figure). The CPP base contributions are 4.95% x (20000 - 3500) = 816.75, the
+  first additional 1% x 16500 = 165.00 (deducted: total deductions 165.00), the EI premiums
+  1.64% x 20000 = 328.00. Net income and taxable income are 20000 - 165.00 = 19835.00. The
+  federal basic personal amount is 16129.00 (net income is at or below 177882) and the Canada
+  employment amount 1471.00, so T1 line 101 (the credit amounts up to line 100) is 16129.00 +
+  816.75 + 328.00 + 1471.00 = 18744.75.
+  Schedule 11, the student's, with Canadian tuition fees (line 1, line 32000) of 9000, a chosen
+  figure, no Canada training credit claimed and no foreign fees or unused amount from the 2024
+  notice. Line 6 is 9000 - 0 = 9000.00 (line 5 is 0), line 8 is 9000.00 + 0 = 9000.00 and line 10
+  is 9000.00 + 0 = 9000.00. Taxable income of 19835.00 is at or below 57375, so line 11 is
+  19835.00; line 12 is T1 line 101, 18744.75; line 13 is 19835.00 - 18744.75 = 1090.25. Line 14
+  is the lesser of line 9 (0) and line 13: 0.00; line 15 is 1090.25 - 0.00 = 1090.25; line 16 is
+  the lesser of line 8 (9000.00) and line 15: 1090.25; line 17 and line 32300, the federal
+  tuition amount, is 0.00 + 1090.25 = 1090.25. The back: line 18 is line 10, 9000.00, line 19 is
+  line 17, 1090.25, and line 20, the total unused federal tuition amount, is 9000.00 - 1090.25 =
+  7909.75. The most that can be transferred (line 21) is line 8, 9000.00, at most 5000: 5000.00;
+  line 22 is line 16, 1090.25, so line 23, the amount available to transfer, is 5000.00 -
+  1090.25 = 3909.75. The filer elects to transfer 3000 (line 24 and line 32700, a chosen figure
+  as shown on the Tuition and Enrolment Certificate, at most line 23: 3000.00), so line 25, the
+  amount carried forward to a future year, is 7909.75 - 3000 = 4909.75. The filer was enrolled
+  full time for 2 months (line 32020, box 25 of the T2202, a chosen figure, at most 12; carried
+  as entered. The Canada workers benefit's bar on full-time students of more than 13 weeks is a
+  chosen 0 (not a student for more than 13 weeks).
+  The federal total of credit amounts (line 33500) is 18744.75 + 1090.25 = 19835.00 and line
+  33800 is 19835.00 x 14.5% = 2876.075, rounded half-up to the cent: 2876.08, which equals the
+  federal tax on taxable income, 19835.00 x 14.5% = 2876.075, rounded half-up to the cent:
+  2876.08, so the federal tax after credits is 0.00. Ontario: the tax on taxable income is
+  19835.00 x 5.05% = 1001.6675, rounded half-up to the cent: 1001.67; the total of the credit
+  amounts (ON428 line 44) is 12747 + 816.75 + 328.00 = 13891.75 and the credits (line 61500) are
+  13891.75 x 5.05% = 701.533375, rounded half-up to the cent: 701.53, so the Ontario tax after
+  credits is 1001.67 - 701.53 = 300.14 (the Ontario federal tuition amount does not enter ON428),
+  which is also the Ontario tax less the dividend credit (no dividends). The Ontario tax reduction
+  (twice the basic reduction of 294.00, 588.00, less 300.14: 287.86) and the LIFT credit (5.05% of
+  20000, at most 875, with no reduction as net income is below 32500) take it to zero, as does the
+  health premium (taxable income is at or below 20000), so the total payable is 0.00. The Canada
+  workers benefit (Schedule 6, no eligible spouse or dependant) is 27% of the working income over
+  3000, 4590.00, at most 1633, less nothing over 26855: 1633.00. The total credits are the income
+  tax deducted 1000 plus the benefit 1633.00, 2633.00, and the refund or balance owing is 0.00 -
+  2633.00 = -2633.00, a refund of 2633.00 (the net refund). The lines labelled engine only in the
+  expected section (the second additional CPP maximum of 9900.00 for 12 months, and the net income
+  before adjustments and the other payments limit income, both 19835.00, as no adjustment applies)
+  are the engine's figures, not hand figures.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 11 Federal Tuition Amount and Canada Training Credit" (form
+    5000-S11): "Line 1 and line 32000: Eligible tuition fees paid to Canadian educational
+    institutions for 2025"; "Line 6: Line 1 minus line 5 ="; "Line 8: Line 6 plus line 7 =";
+    "Line 10: Line 8 plus line 9 ="; "Enter the amount from line 26000 of your return on line 11
+    if it is $57,375 or less."; "Line 12: Enter the amount from line 101 of your return"; "Line 13: Line 11 minus
+    line 12 (if negative, enter "0") ="; "Line 14: Enter whichever is less amount from line 9 or
+    line 13."; "Line 15: Line 13 minus line 14 ="; "Line 16: Enter whichever is less amount from
+    line 8 or line 15."; "Line 17: Line 14 plus line 16 Enter this amount on line 32300 of your
+    return."; "Line 20: Line 18 minus line 19 Total unused federal tuition amount ="; "Line 21:
+    Amount from line 8 of the previous page (maximum $5,000)"; "Line 23: Line 21 minus line 22 (if
+    negative, enter "0") Unused federal tuition amount available to transfer ="; "Line 24 and
+    line 32700: Enter the amount you are transferring to a designated individual as shown on
+    your Tuition and Enrolment Certificate (cannot be more than the amount on line 23)."; "Line
+    25: Line 20 minus line 24 Unused federal tuition amount available to carry forward to a
+    future year ="; "Line 32020: Number of months you were enrolled as a full-time student (box
+    25 of your Form T2202 and column C of your forms TL11A and TL11C) (maximum 12)"
+    (docs/cra-forms-2025/5000-s11-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s11/5000-s11-25e.txt
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "20000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "20000"
+  ca/t2204_insurable_earnings: "20000"
+  ca/t2204_premiums_deducted: "328.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "981.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "1000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/canadian_tuition_fees: "9000"
+  ca/canadian_tuition_institutions: "1"
+  ca/tuition_transfer_elected: "3000"
+  ca/tuition_full_time_months: "2"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_income: "19835.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "20000.00"
+      ca/credit_amounts_subtotal: "18744.75"
+      ca/canadian_tuition_available: "9000.00"
+      ca/current_year_tuition_available: "9000.00"
+      ca/total_tuition_available: "9000.00"
+      ca/tuition_income_base: "19835.00"
+      ca/tuition_income_less_credits: "1090.25"
+      ca/unused_tuition_claimed: "0.00"
+      ca/tuition_income_remaining: "1090.25"
+      ca/current_year_tuition_claimed: "1090.25"
+      ca/federal_tuition_amount: "1090.25"
+      ca/unused_federal_tuition: "7909.75"
+      ca/tuition_transfer_limit: "5000.00"
+      ca/tuition_available_to_transfer: "3909.75"
+      ca/tuition_transferred: "3000.00"
+      ca/tuition_carried_forward: "4909.75"
+      ca/tuition_full_time_months: "2"
+      ca/non_refundable_credit_amounts: "19835.00"
+      ca/credit_amounts_at_credit_rate: "2876.08"
+      ca/federal_basic_tax: "2876.08"
+      ca/federal_tax_after_credits: "0.00"
+      ca-on/ontario_tax_less_dividend_credit: "300.14"
+      ca-on/net_refund: "2633.00"
+      ca/refund_or_balance_owing: "-2633.00"
+      # Engine only (not a hand figure): see the description.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "19835.00"
+      ca/other_payments_limit_income: "19835.00"

@@ -1,0 +1,71 @@
+# Return LI: Guide T4044, Artists' employment expenses example (salaried artist). Amounts are
+# quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LI: Guide T4044 (2025), "Artists' employment expenses", Example: a salaried employee whose
+  employment income from artistic activities was $20,000 and who paid $950 for advertising, $1,550
+  for travelling and $350 for musical instrument expenses. The Guide has the filer deduct the
+  advertising separately as artists' employment expenses of $650 (the lesser of $950 and the lesser
+  of $1,000 and 20% of $20,000, which is $4,000, minus $350), so the total to enter on line 22900 is
+  $1,550 + $650 + $350 = $2,550. The T777 takes the filer's amounts as the Guide works them out:
+  line 14 artists' employment expenses 650, line 12 musical instrument expenses 350 and, for the
+  travelling expenses of 1,550 (the Guide does not say which kind they are), line 8 "Other
+  expenses": travelling (the "specify" text is not an input). Line 15 and line 17 are 2,550.00 and
+  T1 line 22900 is 2,550.00, the figure the Guide prints.
+
+  The 650 on line 14 is the filer's claim; the engine computes the limit from the advertising paid
+  (950), the artistic income (20,000) and the musical instrument expenses (350) and gets the
+  Guide's 650, so the claim is accepted at it. The $350 for the instrument is within the limit of the
+  Guide's Part 2 (the income as a musician, taken as the same $20,000 the Guide gives, minus the other
+  expenses of $1,550 and $650, is $17,800; the Guide gives no such figure). Every other line is the
+  engine's figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Artists'
+    employment expenses", Example: "You are a salaried employee whose employment income from
+    artistic activities was $20,000 in 2025. During 2025, you paid $950 for advertising, $1,550 for
+    travelling, and $350 for musical instrument expenses to earn this income." "Travelling expenses
+    $1,550 Artists' employment expenses $650 Musical instrument expenses $350 Total to enter on line
+    22900 $2,550".
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    lines 8 "Other expenses (specify)", 12 "Musical instrument expenses", 14 "Artists' employment
+    expenses".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "20000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "20000"
+  ca/t2204_insurable_earnings: "20000"
+  ca/t2204_premiums_deducted: "328.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "981.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_other_expenses: "1550"
+  ca/t777_musical_instrument_expenses: "350"
+  ca/t777_artists_expenses_paid: "950"
+  ca/t777_artists_employment_income: "20000"
+  ca/t777_musician_employment_income: "20000"
+  ca/t777_artists_employment_expenses: "650"
+expected:
+  ca/t777:
+    - ca/t777_artists_employment_expenses_maximum_deduction: "650.00"
+      ca/t777_artists_expenses_carried_forward_out: "300.00"
+      ca/t777_line_14: "650"
+      ca/t777_line_15: "2550.00"
+      ca/t777_line_17: "2550.00"
+  ca-on/return:
+    - ca/total_income: "20000.00"
+      ca/other_employment_expenses: "2550.00"
+      ca-on/ontario_tax_less_dividend_credit: "171.36"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "17285.00"
+      ca/other_payments_limit_income: "17285.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "20000"

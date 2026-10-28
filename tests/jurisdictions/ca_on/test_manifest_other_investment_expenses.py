@@ -1,0 +1,120 @@
+"""The shared fact "other investment expenses" in the CA-ON manifest: a form of its own, with no
+instances, and what the form `ca/t2048` reads of it.
+
+The form `ca/other_investment_expenses` is run once on the one input `ca/other_investment_expenses`,
+which it exports as it is; it has no step. It is in the part `01k_other_investment_expenses.yaml`
+under the `form:` key. The entries are listed in `manifest_families/other_investment_expenses.py`.
+The form `ca/t2048` reads the derived kind `ca/other_investment_expenses.other_investment_expenses`
+as the total `ca/qbt_other_investment_expenses`, Chart A line 6, so the amount is entered once for
+every disposition and cannot disagree with itself; it is not a field of the record list
+`ca/t2048_dispositions` any more.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import yaml
+
+import tax_calculator.jurisdictions.ca_on
+
+# lists the packages; build_tax_computation registers their catalogs
+import tax_calculator.registrations
+from tax_calculator import build_tax_computation
+from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_calculator.domain.form import FormComposition
+from tax_calculator.domain.jurisdiction_code import JurisdictionCode
+from tax_calculator.domain.manifest import Form, Manifest
+from tax_calculator.jurisdictions.ca.catalog import T2048_DISPOSITIONS
+from tests.jurisdictions.ca_on.manifest_families import other_investment_expenses
+
+CA_ON = JurisdictionCode("CA-ON")
+FORM = "ca/other_investment_expenses"
+DERIVED = "ca/other_investment_expenses.other_investment_expenses"
+TOTAL = "ca/qbt_other_investment_expenses"
+PART = (
+    Path(tax_calculator.jurisdictions.ca_on.__file__).parent
+    / "manifests"
+    / "v1"
+    / "01k_other_investment_expenses.yaml"
+)
+
+
+def manifest() -> Manifest:
+    (only,) = (
+        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        .get_jurisdiction(CA_ON)
+        .manifests
+    )
+    return only
+
+
+def form() -> Form:
+    (found,) = (found for found in manifest().forms if found.name == FORM)
+    return found
+
+
+def composed() -> FormComposition:
+    return build_tax_computation().compose(CA_ON, 2025).form(FORM)
+
+
+def test_the_part_declares_the_form_with_its_export_and_no_instances() -> None:
+    declared = yaml.safe_load(PART.read_text())["form"]
+
+    assert declared == {"name": FORM, "exports": list(other_investment_expenses.FORM_EXPORTS)}
+
+
+def test_the_part_is_a_form_of_its_own_and_adds_no_step_to_the_return() -> None:
+    declared = yaml.safe_load(PART.read_text())
+
+    assert set(declared) <= {"form", "capabilities"}
+    assert not declared.get("capabilities")
+
+
+def test_the_manifest_has_the_form_with_no_instances_and_the_input_as_its_export() -> None:
+    found = form()
+
+    assert found.instances is None
+    assert found.exports == other_investment_expenses.FORM_EXPORTS
+
+
+def test_the_form_holds_no_selection_of_its_own() -> None:
+    found = form()
+
+    assert len(found.capabilities) == 0
+    assert set(found.capabilities) == other_investment_expenses.FORM_STEPS
+
+
+def test_the_one_input_is_a_manifest_input() -> None:
+    assert other_investment_expenses.INPUTS <= manifest().inputs
+    assert len(other_investment_expenses.INPUTS) == 1
+
+
+def test_the_t2048_record_list_no_longer_holds_the_amount() -> None:
+    assert "ca/qbt_other_investment_expenses" not in {
+        field.identifier for field in T2048_DISPOSITIONS.fields
+    }
+
+
+def test_the_form_runs_once_and_derives_the_kind_of_its_export() -> None:
+    found = composed()
+
+    assert found.instances is None
+    assert {kind.identifier for kind in found.imports} == set()
+    assert [kind.identifier for kind in found.derived] == [DERIVED]
+
+
+def test_the_composed_form_has_no_step() -> None:
+    assert len(composed().composition.order) == 0
+
+
+def test_the_t2048_form_imports_the_derived_kind_and_reads_it_as_a_total() -> None:
+    form_t2048 = build_tax_computation().compose(CA_ON, 2025).form("ca/t2048")
+
+    assert DERIVED in {kind.identifier for kind in form_t2048.imports}
+    (total,) = (
+        capability
+        for capability in form_t2048.composition.order
+        if {kind.identifier for kind in capability.produces} == {TOTAL}
+    )
+    assert {kind.identifier for kind in total.consumes} == {DERIVED}

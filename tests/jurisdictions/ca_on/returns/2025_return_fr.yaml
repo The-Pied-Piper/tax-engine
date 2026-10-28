@@ -1,0 +1,509 @@
+# Return FR: Chris, a 2025 Ontario resident whose only income is self-employment income of $3,000.00
+# on five statements (one T2125 for each of business, professional and commission income, one
+# T2042 and one T2121), claiming the disability supports deduction (T1 line 21500) on Form T929.
+# The five statements are the five net self-employment lines of the form's line 4 (T929 net
+# business, professional, commission, farming and fishing income) that no earlier return makes
+# non-zero, and the expenses reimbursed (line 2) are non-zero. Every figure is derived in the
+# description; the figures checked are the form's lines and the return's lines from total income
+# to taxable income, and the tax lines are not checked in this file.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, aged 26, a chosen figure (18 or older at the end of
+  2025), resident in Canada throughout 2025, with no spouse or common-law partner and no
+  dependants. Chris has no employment income and no other income. Chris files five statements,
+  each a chosen $600.00 of sales with no expense (each statement's other lines are a chosen $0):
+  one Form T2125 statement for business income (line code business, reported on T1 line 13500),
+  one for professional income (line 13700), one for commission income (line 13900), one Form
+  T2042 statement for farming income (wheat, line 9371, $600.00; reported on line 14100) and one
+  Form T2121 statement for fishing income (fish products, amount 3A, $1,000.00, less salt, bait
+  and ice, $400.00; reported on line 14300). Each statement's net income (line 9946) is its
+  income less its expenses: $600.00, $600.00, $600.00, $600.00 and $1,000.00 - $400.00 =
+  $600.00. Their sum, the net self-employment income (T1 line 27), is 5 x $600.00 = $3,000.00,
+  which is all of total income (line 15000), as line 28 is line 21 ($0) plus line 27. The CPP
+  months (Schedule 8 box A) are the 12 of a full year, and the self-employment total of
+  $3,000.00 is below the $3,500 basic exemption, so the CPP contributions on it (lines 22200,
+  31000 and 42100) are $0, there is no agreement for EI on self-employment income, and the EI
+  premiums are $0. The disability supports paid are a chosen $5,000.00 (Form T929 line 1,
+  column 2), with $1,000.00 reimbursed (line 2, column 3, a chosen figure), so line 3 is
+  $5,000.00 - $1,000.00 = $4,000.00. Chris attended no designated educational institution (line
+  8, a chosen 0 weeks). Form T929 Step 2 then gives: line 4, earned income, is the net
+  self-employment income of each kind, a loss counting $0 and here each being a gain: $600.00
+  of business, $600.00 of professional, $600.00 of commission, $600.00 of farming and $600.00 of
+  fishing income, plus $0 for each other item (employment income, scholarships, net research
+  grants, earnings supplements, Part II Employment Insurance Act support, income replacement
+  support, Wage Earner Protection Program Act amounts and COVID-19 payments), $3,000.00. Line 5,
+  the net income, is the amount line 23600 would be with no claim: total income of $3,000.00
+  less deductions from total income (line 23300) of $0 (no CPP deduction, as above, and no
+  RRSP, union dues or child care deduction), $3,000.00. Line 6 is line 4, $3,000.00, and line 7
+  is $3,000.00 - $3,000.00 = $0.00. Line 8 is 0 weeks, so line 9 is 0 x $375 = $0.00. Line 10
+  is the lesser of line 7, $0.00, and line 9, $0.00, $0.00. Line 11 is line 4 plus line 10:
+  $3,000.00 + $0.00 = $3,000.00. Line 12 is the lesser of line 3, $4,000.00, and line 11,
+  $3,000.00: $3,000.00, the disability supports deduction, entered on line 21500 of the T1. So
+  the deductions from total income (line 23300) are $3,000.00, the net income before
+  adjustments (line 23400) is $3,000.00 - $3,000.00 = $0.00, the net income (line 23600) is
+  $0.00 less social benefits repayment (line 23500) of $0, and taxable income (line 26000) is
+  $0.00. The CPP second additional maximum amount (Schedule 8 Part 2 line C, maximum $9,900) is
+  $9,900.00 for 12 months. The alternative minimum tax (T691): the adjusted taxable income is
+  the taxable income, $0.00, plus the disability supports deduction added back at the 50%
+  applicable rate, $1,500.00, under the $177,882 basic exemption, so the minimum amount is $0.
+  The federal tax of Part 2 line 1 is $0.00 on taxable income of $0.00, and the non-refundable
+  tax credits (line 4) are the basic personal amount of $16,129.00 (net income of $0.00 is
+  under $177,882) times 14.5%, $2,338.705, rounded half-up to the cent $2,338.71, so Part 2
+  line 5 and line 7 are $0.00 - $2,338.71 = -$2,338.71, unfloored. Part 7 line 14 is line 1
+  (the minimum amount, $0) minus line 13 (the -$2,338.71 of Part 2 line 7 with no investment tax
+  credit recapture, foreign tax or logging credit): $0 - (-$2,338.71) = $2,338.71, positive, so
+  the floor does not apply; with no earlier carryover (Part 8 line 13, $0) and no unapplied 2018
+  carryover, the total carryover available for 2026 (line 17) is $2,338.71. The gross income
+  lines are the sales on the statement of each kind: business $600.00 (T1 line 13499),
+  professional $600.00 (line 13699) and commission $600.00 (line 13899).
+sources:
+  - >-
+    CRA, Form T929 Disability Supports Deduction, 2024 edition, the latest CRA publishes (no
+    2025 edition; docs/cra-forms-2025/t929-24e.pdf), "Use this form to calculate the amount
+    to enter on line 21500 of your tax return."; Step 1 line 3, "Subtract line 2 from line
+    1. This amount is your net disability supports expenses"; Step 2 line 4 "Enter your
+    earned income", whose definition is the filer's employment income, the taxable part of
+    scholarships, "net self-employment income, either alone or as an active partner (not
+    including losses)", "net research grants", "any earnings supplement received under a
+    project sponsored by a government in Canada to encourage employment", "any financial
+    support received under a program sponsored under Part II of the Employment Insurance Act,
+    or any similar program", "any financial support received under a program that provides
+    income replacement benefits similar to those provided under the Employment Insurance
+    Act", "any amounts received under the Wage Earner Protection Program Act in respect of
+    wages" and "any federal, provincial or territorial government COVID-19 payments received
+    in the year for which you have received a T4A or T4E"; line 5 "Enter your net income";
+    line 6 "Enter your earned income from line 4"; line 7 "Line 5 minus line 6 (if negative,
+    enter "0")"; line 8 "Enter the number of weeks in the year that you attended the
+    institution or secondary school"; line 9 "Line 8 multiplied by $375"; line 10 "Enter the
+    amount from line 7 or line 9, whichever is less. (maximum $15,000)"; line 11 "Add lines 4
+    and 10"; line 12 "Enter the amount from line 3 or line 11, whichever is less", and "Enter
+    the amount from line 12 on line 21500 of your tax return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t929/t929-24e.pdf
+  - >-
+    CRA, Form T2125 Statement of Business or Professional Activities (2025,
+    docs/cra-forms-2025/t2125-25e.pdf): line 9946 "Your net income (loss)" is reported on the
+    line of the T1 by line code, "business income on line 13500", "professional income on line
+    13700" and "commission income on line 13900". CRA, Form T2042 Statement of Farming
+    Activities (2025, docs/cra-forms-2025/t2042-25e.pdf): "Wheat" (9371), "Gross income" (9659),
+    line 9946 "Your net income (loss) ... (enter this amount on line 14100 of your income tax
+    and benefit return)". CRA, Form T2121 Statement of Fishing Activities (2025,
+    docs/cra-forms-2025/t2121-25e.pdf): "Fish products" (3A), "Salt, bait, and ice", line 9946
+    "Your net income (loss) ... (enter this amount on line 14300 of your income tax and benefit
+    return)". The statements follow Returns AX, BK and BL, whose sources quote the lines.
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/t2125_statements:
+    - ca/business_gross_sales: "600"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles:
+      - {ca/business_vehicle_business_kilometres: "0", ca/business_vehicle_total_kilometres: "0", ca/business_vehicle_fuel_and_oil: "0", ca/business_vehicle_insurance: "0", ca/business_vehicle_licence_and_registration: "0", ca/business_vehicle_maintenance_and_repairs: "0", ca/business_vehicle_electricity_zev: "0", ca/business_vehicle_other_expenses_10: "0", ca/business_vehicle_other_expenses_11: "0", ca/business_vehicle_parking_fees: "0", ca/business_vehicle_supplementary_insurance: "0", ca/business_vehicle_interest_payable: "0", ca/business_vehicle_interest_days: "0", ca/business_vehicle_lease_charges: "0", ca/business_vehicle_lease_payments_before: "0", ca/business_vehicle_lease_days: "0", ca/business_vehicle_list_price: "0", ca/business_vehicle_passenger_vehicle: "1", ca/business_vehicle_purchase_year: "2025", ca/business_vehicle_lease_year: "2025", ca/business_vehicle_lease_repayment_owing: "0", ca/business_vehicle_lease_deposits_made: "0", ca/business_vehicle_lease_deposits_refundable: "0", ca/business_vehicle_lease_deposits_total: "0"}
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+    - ca/business_gross_sales: "600"
+      ca/business_income_line: "2"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles:
+      - {ca/business_vehicle_business_kilometres: "0", ca/business_vehicle_total_kilometres: "0", ca/business_vehicle_fuel_and_oil: "0", ca/business_vehicle_insurance: "0", ca/business_vehicle_licence_and_registration: "0", ca/business_vehicle_maintenance_and_repairs: "0", ca/business_vehicle_electricity_zev: "0", ca/business_vehicle_other_expenses_10: "0", ca/business_vehicle_other_expenses_11: "0", ca/business_vehicle_parking_fees: "0", ca/business_vehicle_supplementary_insurance: "0", ca/business_vehicle_interest_payable: "0", ca/business_vehicle_interest_days: "0", ca/business_vehicle_lease_charges: "0", ca/business_vehicle_lease_payments_before: "0", ca/business_vehicle_lease_days: "0", ca/business_vehicle_list_price: "0", ca/business_vehicle_passenger_vehicle: "1", ca/business_vehicle_purchase_year: "2025", ca/business_vehicle_lease_year: "2025", ca/business_vehicle_lease_repayment_owing: "0", ca/business_vehicle_lease_deposits_made: "0", ca/business_vehicle_lease_deposits_refundable: "0", ca/business_vehicle_lease_deposits_total: "0"}
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+    - ca/business_gross_sales: "600"
+      ca/business_income_line: "3"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles:
+      - {ca/business_vehicle_business_kilometres: "0", ca/business_vehicle_total_kilometres: "0", ca/business_vehicle_fuel_and_oil: "0", ca/business_vehicle_insurance: "0", ca/business_vehicle_licence_and_registration: "0", ca/business_vehicle_maintenance_and_repairs: "0", ca/business_vehicle_electricity_zev: "0", ca/business_vehicle_other_expenses_10: "0", ca/business_vehicle_other_expenses_11: "0", ca/business_vehicle_parking_fees: "0", ca/business_vehicle_supplementary_insurance: "0", ca/business_vehicle_interest_payable: "0", ca/business_vehicle_interest_days: "0", ca/business_vehicle_lease_charges: "0", ca/business_vehicle_lease_payments_before: "0", ca/business_vehicle_lease_days: "0", ca/business_vehicle_list_price: "0", ca/business_vehicle_passenger_vehicle: "1", ca/business_vehicle_purchase_year: "2025", ca/business_vehicle_lease_year: "2025", ca/business_vehicle_lease_repayment_owing: "0", ca/business_vehicle_lease_deposits_made: "0", ca/business_vehicle_lease_deposits_refundable: "0", ca/business_vehicle_lease_deposits_total: "0"}
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/t2042_statements:
+    - ca/farm_wheat: "600"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "0"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "0"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles:
+      - {ca/business_vehicle_business_kilometres: "0", ca/business_vehicle_total_kilometres: "0", ca/business_vehicle_fuel_and_oil: "0", ca/business_vehicle_insurance: "0", ca/business_vehicle_licence_and_registration: "0", ca/business_vehicle_maintenance_and_repairs: "0", ca/business_vehicle_electricity_zev: "0", ca/business_vehicle_other_expenses_10: "0", ca/business_vehicle_other_expenses_11: "0", ca/business_vehicle_parking_fees: "0", ca/business_vehicle_supplementary_insurance: "0", ca/business_vehicle_interest_payable: "0", ca/business_vehicle_interest_days: "0", ca/business_vehicle_lease_charges: "0", ca/business_vehicle_lease_payments_before: "0", ca/business_vehicle_lease_days: "0", ca/business_vehicle_list_price: "0", ca/business_vehicle_passenger_vehicle: "1", ca/business_vehicle_purchase_year: "2025", ca/business_vehicle_lease_year: "2025", ca/business_vehicle_lease_repayment_owing: "0", ca/business_vehicle_lease_deposits_made: "0", ca/business_vehicle_lease_deposits_refundable: "0", ca/business_vehicle_lease_deposits_total: "0"}
+      ca/farm_vehicle_sales_tax_rate: "0"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+      ca/farm_fiscal_period_days_entered: "0"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "0"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "0"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+  ca/t2121_statements:
+    - ca/fish_fish_products: "1000"
+      ca/fish_other_marine_products: "0"
+      ca/fish_grants_credits_and_rebates: "0"
+      ca/fish_subsidies: "0"
+      ca/fish_compensation_for_loss: "0"
+      ca/fish_sharesperson_income: "0"
+      ca/fish_other_income: "0"
+      ca/fish_salt_bait_and_ice: "400"
+      ca/fish_crew_shares: "0"
+      ca/fish_fuel_costs: "0"
+      ca/fish_fishing_gear: "0"
+      ca/fish_insurance: "0"
+      ca/fish_interest_and_bank_charges: "0"
+      ca/fish_meals_and_entertainment: "0"
+      ca/fish_business_taxes_licences_and_memberships: "0"
+      ca/business_vehicles:
+      - {ca/business_vehicle_business_kilometres: "0", ca/business_vehicle_total_kilometres: "0", ca/business_vehicle_fuel_and_oil: "0", ca/business_vehicle_insurance: "0", ca/business_vehicle_licence_and_registration: "0", ca/business_vehicle_maintenance_and_repairs: "0", ca/business_vehicle_electricity_zev: "0", ca/business_vehicle_other_expenses_10: "0", ca/business_vehicle_other_expenses_11: "0", ca/business_vehicle_parking_fees: "0", ca/business_vehicle_supplementary_insurance: "0", ca/business_vehicle_interest_payable: "0", ca/business_vehicle_interest_days: "0", ca/business_vehicle_lease_charges: "0", ca/business_vehicle_lease_payments_before: "0", ca/business_vehicle_lease_days: "0", ca/business_vehicle_list_price: "0", ca/business_vehicle_passenger_vehicle: "1", ca/business_vehicle_purchase_year: "2025", ca/business_vehicle_lease_year: "2025", ca/business_vehicle_lease_repayment_owing: "0", ca/business_vehicle_lease_deposits_made: "0", ca/business_vehicle_lease_deposits_refundable: "0", ca/business_vehicle_lease_deposits_total: "0"}
+      ca/fish_vehicle_sales_tax_rate: "0"
+      ca/fish_office_expenses: "0"
+      ca/fish_nets_and_traps: "0"
+      ca/fish_professional_fees: "0"
+      ca/fish_salaries_wages_and_benefits: "0"
+      ca/fish_repairs_fishing_boat: "0"
+      ca/fish_repairs_engine: "0"
+      ca/fish_repairs_electrical_equipment: "0"
+      ca/fish_insurance_recovery: "0"
+      ca/fish_other_expenses: "0"
+      ca/fish_cca_personal_part: "0"
+      ca/fish_cca_classes: []
+      ca/fish_partner: "0"
+      ca/fish_partner_share: "0"
+      ca/fish_partner_gst_hst_rebate: "0"
+      ca/fish_partner_other_amount_a: "0"
+      ca/fish_partner_other_amount_b: "0"
+      ca/fish_partner_other_amount_c: "0"
+      ca/fish_partner_other_amount_d: "0"
+      ca/fish_partner_other_amount_e: "0"
+      ca/fish_home_heat: "0"
+      ca/fish_home_electricity: "0"
+      ca/fish_home_insurance: "0"
+      ca/fish_home_maintenance: "0"
+      ca/fish_home_mortgage_interest: "0"
+      ca/fish_home_property_taxes: "0"
+      ca/fish_home_other_expenses: "0"
+      ca/fish_home_personal_use_part: "0"
+      ca/fish_home_cca: "0"
+      ca/fish_home_carried_forward: "0"
+      ca/fish_epop_associated: "0"
+      ca/fish_epop_agreement_filed: "0"
+      ca/fish_epop_percentage: "0"
+      ca/fish_epop_percentage_total: "0"
+      ca/fish_minister_allocation_given: "0"
+      ca/fish_minister_allocation: "0"
+      ca/fish_fiscal_period_days_entered: "0"
+      ca/fish_land_additions: "0"
+      ca/fish_land_dispositions: "0"
+      ca/fish_liabilities: "0"
+      ca/fish_drawings: "0"
+      ca/fish_capital_contributions: "0"
+      ca/fish_boat_mainly_personal: "0"
+  ca/t929_instances:
+    - {}
+  ca/t929_expenses_paid: "5000"
+  ca/t929_expenses_reimbursed: "1000"
+  ca/t929_weeks_attended: "0"
+expected:
+  ca-on/return:
+    - ca/business_income: "600"
+      ca/professional_income: "600"
+      ca/commission_income: "600"
+      ca/farming_income: "600"
+      ca/fishing_income: "600"
+      ca/gross_business_income: "600.00"
+      ca/gross_professional_income: "600.00"
+      ca/gross_commission_income: "600.00"
+      ca/net_self_employment_income: "3000"
+      ca/total_income: "3000.00"
+      ca/deductions_from_total_income: "3000.00"
+      ca/net_income_before_adjustments: "0.00"
+      ca/net_income: "0.00"
+      ca/taxable_income: "0.00"
+      ca/disability_supports_deduction: "3000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/t929:
+    - ca/t929_line_3: "4000.00"
+      ca/t929_net_business_income: "600.00"
+      ca/t929_net_professional_income: "600.00"
+      ca/t929_net_commission_income: "600.00"
+      ca/t929_net_farming_income: "600.00"
+      ca/t929_net_fishing_income: "600.00"
+      ca/t929_line_4: "3000.00"
+      ca/net_income: "3000.00"
+      ca/t929_line_7: "0.00"
+      ca/t929_line_9: "0.00"
+      ca/t929_line_10: "0.00"
+      ca/t929_line_11: "3000.00"
+      ca/disability_supports_deduction: "3000.00"

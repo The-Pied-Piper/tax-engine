@@ -1,0 +1,154 @@
+# Return CX: wiring of T1 line 127 (the federal surtax on income earned outside Canada, from
+# Form T2203 Part 2) and of the limit on Form T2209 line 13, which is line 42900 plus line
+# 127. A filer with other income only, a foreign business credit above line 42900 and a
+# non-zero T2209 line 6 (the surtax on income allocated to "Other (Outside Canada)"), not
+# subject to minimum tax.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return CX: a 2025 Ontario resident in Canada throughout 2025, aged 18 or older, with no
+  spouse and no employment income (so no CPP or EI contributions and no employment amount),
+  whose only income is $40,000 of other income (T1 line 13000, a chosen figure). With no
+  deductions, net income (line 23600) and taxable income (line 26000) are 40,000.00. The
+  filer has foreign business income of $40,000 (Form T2209 line 5 "Net foreign business
+  income (7)", a chosen figure, equal to net income, so note (7) does not reduce it) and
+  business income tax paid to one foreign country of $3,600 (T2209 line 4, a chosen figure),
+  with no non-business foreign tax. The percentage of income allocated to "Other (Outside
+  Canada)" (T2203 line 7, from line 52220 of column 5 in Part 1) is 25, a chosen figure.
+  There is no tax on split income (T2203 line 5 is "0"), and the filer is not subject to
+  minimum tax (a chosen 0).
+  Federal tax on taxable income is 14.5% x 40,000.00 = 5,800.00, all in the first bracket
+  (not above 57,375). The basic personal amount is 16,129.00 (net income not above 177,882),
+  and its credit is 14.5% x 16,129.00 = 2,338.705, rounded half-up to 2,338.71. Basic
+  federal tax (line 126, line 42900) is 5,800.00 - 2,338.71 = 3,461.29.
+  T2203 Part 2: line 4 "Enter your basic federal tax from line 42900 of your return." is
+  3,461.29; line 5 "If you have to pay tax on split income, enter the amount from line 22 of
+  your Form T1206. If not, enter "0"." is 0.00; line 6 "Enter whichever is more: amount from
+  line 4 or line 5." is 3,461.29; line 8 "Line 6 multiplied by the percentage from line 7"
+  is 3,461.29 x 25% = 865.3225, rounded half-up to 865.32; line 10 "Line 8 multiplied by the
+  percentage from line 9" is 865.32 x 48% = 415.3536, rounded half-up to 415.35.
+  T1 line 127 "Federal surtax on income earned outside Canada (complete Form T2203)" is line
+  10 of Part 2, 415.35, as the caller is not subject to minimum tax (0). T1 line 128 "Line
+  126 plus line 127 =" is 3,461.29 + 415.35 = 3,876.64.
+  Form T2209: line 6 "Federal surtax on income allocated to "Other (Outside Canada)"" is
+  415.35, the amount of T2203 line 10 entered for the country. Line 5 is 40,000.00 /
+  40,000.00 x 3,461.29 = 3,461.29, the net foreign business income being the net income so
+  its ratio is 1. Line 7 is 3,461.29 + 415.35 = 3,876.64; line 8 "Add basic federal tax (8)
+  and the amount from line 6" is 3,461.29 + 415.35 = 3,876.64; line 10 is 3,876.64, less
+  line 9 (0.00). Line 11 "Enter whichever is less: the amount from line 4, 7 or 10." is
+  3,600.00, the line 4 amount. Line 3 is 0.00 (no non-business tax), so line 13 "Add lines
+  11 and 12." is 3,600.00. Line 13 "should not be more than the total of the amount on line
+  42900 of your return, plus any federal surtax on income earned outside of Canada":
+  3,461.29 + 415.35 = 3,876.64, so 3,600.00 is not limited. It is the federal foreign tax
+  credit (T1 line 129, line 40500).
+  The non-business sheet has no tax (T2209 line 1 is 0), so its credit is 0 whatever its line 2
+  base is. Note (4), the basic federal tax for line 2 of that sheet, is 42,900 plus the surtax on
+  income allocated to Other (Outside Canada): 3,461.29 + 415.35 = 3,876.64. The business lines
+  use note (8), 42,900 plus the dividend tax credit only, which is 3,461.29 here.
+  The limit is not line 42900 alone (3,461.29), because line 127 is part of it.
+  T1 line 130 "Line 128 minus line 129 =": 3,876.64 - 3,600.00 = 276.64.
+  Alternative minimum tax: the adjusted income of 40,000.00 is below the basic exemption of
+  177,882.00, so Form T691 Part 5 line 11 is 0, and "If line 11 is "0", you are not subject
+  to alternative minimum tax." The surtax of Form T691 Part 3 line 4 is computed as 415.36 (48%
+  of 3,461.29 is 1,661.42, times 25% is 415.355, rounded half-up) but is not used on T1 line
+  127, as the caller is not subject to minimum tax.
+  Ontario (ON428): tax on taxable income is 5.05% x 40,000.00 = 2,020.00 (the first bracket,
+  up to 52,886). The Ontario basic personal amount is 12,747, and its credit is 5.05% x
+  12,747 = 643.7235, rounded half-up to 643.72; the Ontario tax after credits is 2,020.00 -
+  643.72 = 1,376.28. The Ontario tax reduction is 2 x 294.00 = 588.00 (ON428 line 78), less
+  1,376.28 is below zero, so the reduction is 0 (ON428 line 80). The Ontario surtax is 0, as
+  1,376.28 is not above 5,710. The Ontario health premium is 6% x (40,000 - 20,000) =
+  1,200.00, capped at 300.00, plus 6% x (40,000 - 36,000) = 240.00, capped at 150.00:
+  450.00.
+  Ontario tax payable is 1,376.28 + 450.00 = 1,826.28. Total payable is 1,826.28 + 276.64 =
+  2,102.92, with no tax deducted at source, so the balance owing is 2,102.92.
+  Not triggered: CPP and EI contributions (no employment income), the Canada employment
+  amount, the Ontario tax reduction (line 80 is 0), the Ontario surtax, the alternative
+  minimum tax and the other credits, none of which this return claims.
+sources:
+  - >-
+    CRA, Form T1 Guide 5006-R 2025, Part 1 lines 126 to 130 ("Line 126 and line 42900:
+    Line 121 minus line 125 (if negative, enter "0") Basic federal tax"; "Line 127:
+    Federal surtax on income earned outside Canada (complete Form T2203)"; "Line 128: Line
+    126 plus line 127 ="; "Line 129 and line 40500: Federal foreign tax credit (complete
+    Form T2209)"; "Line 130: Line 128 minus line 129 =")
+    (docs/cra-forms-2025/5006-r-25e.txt, confirmed text).
+  - >-
+    CRA, Form T2203 2025, Part 2 "Federal surtax and refundable Quebec abatement" lines 4
+    to 10 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2203/t2203-25e.pdf,
+    confirmed text, pdftotext -layout): "Enter your basic federal tax from line 42900 of
+    your return."; "Enter whichever is more: amount from line 4 or line 5."; "Line 6
+    multiplied by the percentage from line 7"; "Federal surtax rate" 48%; "Line 8
+    multiplied by the percentage from line 9"; note (1) "For every province and territory,
+    other than Quebec, enter this amount on line 127 of your return."
+  - >-
+    CRA, Form T2209 2025, lines 4 to 13 and note (4)
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf,
+    confirmed text): line 13 "The amount on line 13 should not be more than the total of
+    the amount on line 42900 of your return, plus any federal surtax on income earned
+    outside of Canada."; line 6 "Federal surtax on income allocated to "Other (Outside
+    Canada)":".
+  - >-
+    CRA, Form T691 2025, Part 3 lines 1 to 4 and Part 5 line 11
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf, confirmed
+    text): "If line 11 is "0", you are not subject to alternative minimum tax."
+  - >-
+    CRA, Form 5006-C 2025 (ON428 lines 78 to 80 and the health premium chart)
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt).
+inputs:
+  ca/other_income: "40000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/schedule_8_instances:
+    - {}
+  ca/amt_t2203_column_5_percentage: "25"
+  ca/amt_subject_to_minimum_tax: "0"
+  ca/foreign_tax_countries:
+    - ca/foreign_non_business_tax_paid: "0"
+      ca/net_foreign_non_business_income: "0"
+      ca/foreign_business_tax_paid: "3600"
+      ca/foreign_business_unused_tax_credits: "0"
+      ca/net_foreign_business_income: "40000"
+      ca/foreign_surtax_outside_canada: "415.35"
+      ca/foreign_property_tax_paid: "0"
+      ca/net_foreign_property_income: "0"
+expected:
+  ca-on/return:
+    - ca-on/ontario_tax_less_dividend_credit: "1376.28"
+      ca-on/ontario_health_premium: "450.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "40000.00"
+      ca/other_payments_limit_income: "40000.00"
+      ca/net_income: "40000.00"
+      ca/taxable_income: "40000.00"
+      ca/federal_tax_after_credits: "3461.29"
+      ca/t2203_has_tax_on_split_income: "0"
+      ca/t2203_line_5: "0.00"
+      ca/t2203_line_6: "3461.29"
+      ca/t2203_line_8: "865.32"
+      ca/t2203_federal_surtax_outside_canada: "415.35"
+      ca/federal_surtax_outside_canada: "415.35"
+      ca/federal_tax_with_surtax: "3876.64"
+      ca/foreign_surtax_allocated_total_checked: "415.35"
+      ca/foreign_business_tax_credit_line_4: "3600.00"
+      ca/foreign_business_tax_credit_line_5: "3461.29"
+      ca/foreign_business_tax_credit_line_7: "3876.64"
+      ca/foreign_business_tax_credit_line_8: "3876.64"
+      ca/foreign_business_tax_credit_line_10: "3876.64"
+      ca/federal_foreign_tax_credit_before_limit: "3600.00"
+      ca/federal_foreign_tax_credit: "3600.00"
+      ca/federal_tax_less_foreign_tax_credit: "276.64"
+      ca/foreign_tax_credit_sheets:
+        - ca/foreign_non_business_tax_paid: "0"
+          ca/net_foreign_non_business_income: "0"
+          ca/foreign_tax_credit_sheet_line_3: "0"
+          ca/foreign_business_tax_paid: "3600"
+          ca/foreign_business_unused_tax_credits: "0"
+          ca/net_foreign_business_income: "40000"
+          ca/foreign_surtax_outside_canada: "415.35"
+      ca/total_payable: "2102.92"
+      ca/refund_or_balance_owing: "2102.92"

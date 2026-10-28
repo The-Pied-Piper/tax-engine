@@ -1,0 +1,108 @@
+# Return DE: a filer with a qualified property and no income, whose investment tax credit is refunded
+# in part under Form T2038(IND) Part E: a carryback of 500.00 of the credit to the third previous
+# year (line 67200), and a refund of 1500.00 designated from what is left (amount 17), which is
+# refunded at 0.40 to line 45400 of the return. Parts A, B and D give the credit, and Part E gives the
+# carryback, the refund and line 45400. The carryback to the second and first previous years, the
+# carryforward (Part F) and the previous years' federal tax are not part of this return. The caller's
+# lines are chosen figures, entered as the form takes them; each amount is computed from them.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single filer, a 2025 Ontario resident, with a qualified property and no other income, deduction
+  or credit. Every caller's line below is a chosen figure. Part A amount 4 is the qualified property
+  on line 67140, a chosen figure of 20000.00, times 0.10 = 2000.00, which is amount A, "Total
+  current-year refundable credits (add amounts 1 to 4)", the only current-year refundable credit.
+  Part B, Part C and the other Part A lines are 0.00. Part D has no opening balance (amount 1) and no
+  graduated rate estate allocation (amount 6), so amount 2 is the amount A of 2000.00, amount 3 is
+  the amount F of 0.00, amount 4 is 2000.00, amount 5 is 2000.00, and amount G, "Total available
+  investment tax credit (amount 5 minus amount 6)", is 2000.00. The filer has no income, so the
+  federal tax of line 40600 is 0.00, amount H is 0.00 and I, "Enter the lesser of amount G or H", is
+  0.00; no alternative minimum tax applies (Form T691 Part 5 line 7 is 0.00), so the claim is limited
+  by I, and the limit is 0.00. No claim is entered, so amount 15 is 0.00, which line 41200 takes.
+  Part E: amount 3, "Subtotal (amount 1 minus amount 2)", is G less the opening balance, 2000.00.
+  Amount 6, "Subtotal (amount 4 minus amount 5, if negative enter "0")", is the limit of 0.00 less
+  the opening balance of 0.00, 0.00. Amount L, "Total credit available for carryback (amount 3
+  minus amount 6)", is 2000.00. The filer designates a chosen figure of 500.00 to carry back for the
+  third previous year, line 67200; the second and first previous years, lines 67210 and 67220, are
+  not designated, so they are 0.00 and not entered. Amount M, "Total credit designated for carryback
+  (Add lines 67200, 67210, and 67220. The total cannot be more than amount L)", is 500.00, which is
+  not more than L. Amount 9, "Total current-year refundable credit available (amount 7 minus amount
+  8)", is amount A of 2000.00 less amount 8, "Adjustment (amount 6 in Part D)", 0.00, so 2000.00.
+  Amount 12, "Subtotal (amount 10 minus amount 11)", is amount 10, "Amount 15 from Part D", 0.00,
+  less amount 11, the opening balance, 0.00, so 0.00. Amount 14, "Subtotal (amount 12 plus amount
+  13)", is 0.00 plus amount 13, the amount M of 500.00, so 500.00. Amount 16, "Total (amount 14 minus
+  amount 15, if negative, enter "0")", is 500.00 less amount 15, the amount F of 0.00, so 500.00.
+  Amount N, "Total credit available for refund (amount 9 minus amount 16)", is 2000.00 minus 500.00,
+  1500.00. The filer designates a chosen figure of 1500.00 as the refund, amount 17, "Amount you
+  designate as a refund of ITC (cannot be more than amount N)", which is not more than N. Amount 18,
+  "The refundable rate", is 0.40 as the form prints it, so amount O, "Refund of ITC (multiply amount
+  17 by amount 18)", is 1500.00 times 0.40 = 600.00, which the form says to enter on line 45400. The
+  500.00 carried back is not refunded, as the form's note says, and is not entered on the return.
+  The form also says the carryback to a previous year cannot be more than that year's federal tax;
+  the previous years' tax is not entered here, so that limit is not checked by this return. The rest
+  of the return computes to zero except the printed constants of Form RC381 Part 2 (lines G to J),
+  the CPP second additional earnings maximum of 9900.00, and Form T691 Part 8 line 17, "Total minimum
+  tax carryover available for 2026", which is 2338.71 as the form prints it (no floor) for a filer
+  with no income; each is stated in the expected values. The lines of the return that depend on line
+  45400 (line 48200 and after) are not stated here; the end-to-end tests check them.
+sources:
+  - >-
+    CRA, T1 2025 Ontario edition (5006-r-25e.txt, docs/cra-forms-2025/5006-r-25e.txt, confirmed): "Line
+    158 and line 45400: Refund of investment tax credit (complete Form T2038(IND))"; "Line 166 and line
+    48200: Add lines 150 to 165."
+  - >-
+    CRA, Form T2038(IND) (25E), docs/cra-forms-2025/t2038-ind-25e.pdf (confirmed from the PDF; no .txt
+    published), Part E: "Total available ITC (amount G in Part D)"; "ITC opening balance and carry-forward
+    from prior years (amount 1 in Part D)"; "Subtotal (amount 1 minus amount 2)"; "Maximum ITC you could
+    have claimed in Part D (amount I or K, whichever applies)"; "Subtotal (amount 4 minus amount 5, if
+    negative enter "0")"; "Total credit available for carryback (amount 3 minus amount 6)"; "The credit
+    you apply to a previous year cannot be more than the total of your federal tax for that year."; "The
+    CRA will not refund an amount you designate as a carryback in the current year. Do not enter the
+    amount on your income tax and benefit return."; "The part of amount L to carryback for one or more
+    of the following:"; "Third previous year" 67200; "Total credit designated for carryback (Add lines
+    67200, 67210, and 67220. The total cannot be more than amount L)"; "Current year refundable credit
+    (amount A in Part A)"; "Adjustment (amount 6 in Part D)"; "Total current-year refundable credit
+    available (amount 7 minus amount 8)"; "Amount 15 from Part D"; "Subtotal (amount 10 minus amount
+    11)"; "Total credit designated for carryback (amount M in Part E)"; "Subtotal (amount 12 plus amount
+    13)"; "Current-year non-refundable tax credit (amount F in Part B)"; "Total (amount 14 minus amount 15,
+    if negative, enter "0")"; "Total credit available for refund (amount 9 minus amount 16)"; "Amount you
+    designate as a refund of ITC (cannot be more than amount N)"; "The refundable rate" 0.40; "Refund of
+    ITC (multiply amount 17 by amount 18)"; "Enter amount O on line 45400 of your income tax and benefit
+    return or on line 88 of a Form T3RET".
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2038-ind/t2038-ind-25e.pdf
+inputs:
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/itc_qualified_property: "20000"
+  ca/itc_carryback_third_previous_year: "500"
+  ca/itc_refund_designation: "1500"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/itc_qualified_property_credit: "2000.00"
+      ca/itc_refundable_credits: "2000.00"
+      ca/itc_part_d_subtotal: "2000.00"
+      ca/itc_part_d_amount_5: "2000.00"
+      ca/itc_available: "2000.00"
+      ca/itc_amount_h: "0.00"
+      ca/itc_amount_i: "0.00"
+      ca/itc_claim_limit: "0.00"
+      ca/investment_tax_credit: "0.00"
+      ca/itc_part_e_amount_3: "2000.00"
+      ca/itc_part_e_amount_6: "0.00"
+      ca/itc_amount_l: "2000.00"
+      ca/itc_carryback_requested: "500.00"
+      ca/itc_amount_m: "500.00"
+      ca/itc_part_e_amount_9: "2000.00"
+      ca/itc_part_e_amount_12: "0.00"
+      ca/itc_part_e_amount_14: "500.00"
+      ca/itc_part_e_amount_16: "500.00"
+      ca/itc_amount_n: "1500.00"
+      ca/itc_part_e_amount_17: "1500.00"
+      ca/investment_tax_credit_refund: "600.00"
+      ca/total_credits: "600.00"
+      ca/refund_or_balance_owing: "-600.00"
+      ca-on/net_refund: "600.00"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"

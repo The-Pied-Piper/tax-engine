@@ -1,0 +1,312 @@
+# Return AX: Return U's self-employed filer (net business income, T1 line 13500, of
+# $50,000) with one T4 slip for self-employment income with EI premiums in box 18 that
+# reports $20,000 of that net business income. Schedule 13 line 1 leaves the slip's net
+# income out, so it is 50,000 - 20,000 = 30,000 and the EI premiums on self-employment
+# (line 9) are 30,000 x 1.64% = 492.00, not Return U's 820.00. The slip does not change
+# Schedule 8 Part 4, which reads line 27 of 50,000. Every other figure is Return U's,
+# except the lines that read the premiums: the credit amounts (lines 33500 of the T1 and
+# ON428) and so the non-refundable credits, the tax after credits, the total payable and
+# the refund or balance owing.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025, with no spouse or common-law partner and no
+  dependant, whose only income is self-employment income: net business income (T1 line
+  13500, from T2125 line 9946) of $50,000, entered as a T2125 with gross sales (amount 3A)
+  of $50,000 and no expenses, so the net self-employment income (line 27) is 50,000 and
+  total income (line 15000) is $50,000.00. Part of it, $20,000 (a chosen figure), was
+  reported on a T4 slip for self-employment income with EI premiums in box 18 (for example
+  a taxi driver not hired as an employee). Schedule 13 line 1 is the total of line 12200
+  (0) and line 27 (50,000), 50,000, less the net income reported for that slip, 20,000,
+  not below 0: 30,000. Lines 2 and 3 are 0, so line 4 is 30,000; line 5 is 65,700.00; line
+  6 is 0, so line 7 is 65,700.00; line 8 is the lesser of 30,000 and 65,700.00, 30,000;
+  line 9 is 30,000 x 1.64% = 492.00 (below 1,077.48), lines 31217 and 42120, each entered
+  once for the one agreement with the Commission. Schedule 8 Part 4 does not exclude the
+  slip (line 1 is 50,000), so the CPP figures are Return U's. The taxable income is
+  50,000.00 - 3,231.75 = 46,768.25. The federal basic tax is 46,768.25 x 14.5% = 6,781.40.
+  The credit amounts of the T1 (line 33500) are 16,129.00 + 2,301.75 + 492.00 = 18,922.75,
+  times 14.5% = 2,743.80, so the federal tax after credits is 4,037.60. ON428's credit
+  amounts are 12,747.00 + 2,301.75 + 492.00 = 15,540.75, times 5.05% = 784.81; the Ontario
+  basic tax is 46,768.25 x 5.05% = 2,361.80, so the Ontario tax after credits is 1,576.99
+  (no reduction, as it is above 588.00). The health premium row "more than $38,500 but not
+  more than $48,000" is $450.00, so the Ontario tax is 2,026.99. The total payable is the
+  net federal tax 4,037.60 + the Ontario tax 2,026.99 + the CPP contributions payable
+  5,533.50 + the EI premiums payable 492.00 = 12,090.09, with no income tax deducted, so
+  the balance owing is 12,090.09. The other lines are Return U's. The agreement with the
+  Commission and the slip are to be confirmed.
+sources:
+  - >-
+    CRA, "T1-2025 Schedule 13 Employment Insurance Premiums on Self-Employment and Other
+    Eligible Earnings" (form 5000-S13, confirmed 2026-10-19): "Line 1: Enter the total amount
+    from line 1 1 plus line 27 of your return. If you received a T4 slip for self-employment
+    income with EI premiums in box 18, do not include any net income (or net loss) reported on
+    lines 13500, 13700, 13900, 14100, and 14300 of your return for that slip (Note 1) (if
+    negative, enter "0")."; "Line 4: Add lines 1 to 3. Net self-employment income ="; "Line 5:
+    Maximum insurable earnings 65,700.00"; "Line 7: Line 5 minus line 6 (if negative, enter
+    "0") ="; "Line 8: Enter whichever is less: amount from line 4 or line 7."; "Residents of a
+    province or territory other than Quebec: Line 9: Amount from line 8 multiplied by 1.64%
+    (maximum $1,077.48) =". Line 1 is read as line 12200 plus line 27, as in Return U.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s13/5000-s13-25e.txt
+  - >-
+    The other lines are those of Return U (see 2025_return_u.yaml for the CRA forms and
+    quotes each follows); only the EI premiums and the lines that read them differ.
+inputs:
+  ca/t2125_statements:
+    - ca/business_gross_sales: "50000"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "0"
+          ca/business_vehicle_total_kilometres: "0"
+          ca/business_vehicle_fuel_and_oil: "0"
+          ca/business_vehicle_insurance: "0"
+          ca/business_vehicle_licence_and_registration: "0"
+          ca/business_vehicle_maintenance_and_repairs: "0"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "0"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "0"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "0"
+          ca/business_vehicle_interest_days: "0"
+          ca/business_vehicle_lease_charges: "0"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "0"
+          ca/business_vehicle_list_price: "0"
+          ca/business_vehicle_passenger_vehicle: "1"
+          ca/business_vehicle_purchase_year: "2025"
+          ca/business_vehicle_lease_year: "2025"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_part_4_completed: "1"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/ei_special_benefits_agreement: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/ei_excluded_slips:
+    - ca/ei_excluded_slip_net_income: "20000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/taxable_capital_gains: "0.00"
+      ca/gross_business_income: "50000.00"
+      ca/taxable_dividends_other_than_eligible: "0.00"
+      ca/total_income: "50000.00"
+      ca/net_self_employment_income: "50000"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/cpp_part_5_line_49: "5533.50"
+      ca/ei_premiums: "0.00"
+      ca/pensionable_net_self_employment_earnings: "50000"
+      ca/cpp_pensionable_earnings: "50000"
+      ca/cpp_pensionable_earnings_up_to_additional_maximum: "50000"
+      ca/cpp_earnings_up_to_maximum: "50000"
+      ca/cpp_earnings_subject_to_base_and_first_additional: "46500.00"
+      ca/self_employed_cpp_base_contributions: "4603.50"
+      ca/self_employed_cpp_first_additional_contributions: "930.00"
+      ca/self_employed_cpp_second_additional_contributions: "0.00"
+      ca/self_employed_cpp_enhanced_contributions: "930.00"
+      ca/self_employed_cpp_contributions_payable: "5533.50"
+      ca/self_employed_cpp_base_credit: "2301.75"
+      ca/self_employed_cpp_deduction: "3231.75"
+      ca/cpp_payable_on_self_employment: "5533.50"
+      ca/cpp_base_contributions_on_self_employment: "2301.75"
+      ca/cpp_deduction_on_self_employment: "3231.75"
+      ca/ei_self_employment_before_slips: "50000"
+      ca/ei_excluded_slips_net_income: "20000"
+      ca/ei_self_employment_earnings: "30000"
+      ca/ei_net_self_employment_income: "30000"
+      ca/ei_maximum_insurable_earnings: "65700.00"
+      ca/ei_insurable_earnings_remaining: "65700.00"
+      ca/ei_earnings_subject_to_premium: "30000"
+      ca/self_employed_ei_premiums: "492.00"
+      ca/ei_premiums_on_self_employment: "492.00"
+      ca/ei_payable_on_self_employment: "492.00"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income_limit: "0.00"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "3231.75"
+      ca/net_income: "46768.25"
+      ca/net_income_signed: "46768.25"
+      ca/net_income_before_adjustments: "46768.25"
+      ca/other_payments_limit_income: "46768.25"
+      ca/taxable_income: "46768.25"
+      ca/federal_basic_tax: "6781.40"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_reduction: "186.94"
+      ca/age_amount_before_count: "8841.06"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "0.00"
+      ca/non_refundable_credit_amounts: "18922.75"
+      ca/non_refundable_tax_credits: "2743.80"
+      ca/federal_tax_after_credits: "4037.60"
+      ca-on/ontario_basic_tax: "2361.80"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/non_refundable_credit_amounts: "15540.75"
+      ca-on/non_refundable_tax_credits: "784.81"
+      ca-on/ontario_tax_after_credits: "1576.99"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/ontario_tax_with_surtax: "1576.99"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/ontario_tax_before_dividend_credit: "1576.99"
+      ca-on/ontario_tax_less_dividend_credit: "1576.99"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/ontario_tax_after_dividend_credit: "1576.99"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "0.00"
+      ca-on/ontario_tax_after_reduction: "1576.99"
+      ca-on/lift_credit_before_maximum: "0.00"
+      ca-on/lift_maximum_credit: "0.00"
+      ca-on/lift_reduction: "713.41"
+      ca-on/ontario_tax_after_lift_credit: "1576.99"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "1576.99"
+      ca-on/ontario_health_premium: "450.00"
+      ca-on/ontario_tax: "2026.99"
+      ca/net_federal_tax: "4037.60"
+      ca/total_payable: "12090.09"
+      ca/adjusted_family_net_income: "46768.25"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/cwb_reduction_without_dependant: "2986.99"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_reduction_with_dependant: "2419.39"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/care_adjusted_income: "46768.25"
+      ca-on/care_family_adjusted_income: "46768.25"
+      ca-on/care_credit_percentage: "0.55"
+      ca-on/care_credit: "0.00"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/total_credits: "0.00"
+      ca/refund_or_balance_owing: "12090.09"
+      ca/net_capital_loss_balance_1985_to_1987: "0.00"
+      ca/net_capital_loss_balance_1988_and_1989: "0.00"
+      ca/net_capital_loss_balance_1990_to_1999: "0.00"
+      ca/net_capital_loss_balance_2001_to_2024: "0.00"
+      ca/amt_part_1_subtotal: "46768.25"
+      ca/amt_net_capital_gains_after_adjustments: "0"
+      ca/amt_publicly_listed_gifts_adjustment: "0.00"
+      ca/amt_resource_property_and_flow_through_shares: "0"
+      ca/amt_applicable_rate_amount: "1615.88"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_adjusted_income_with_gains: "46768.25"
+      ca/amt_minimum_amount: "0"
+      ca/amt_basic_federal_tax: "4037.60"
+      ca/amt_regular_net_federal_tax_payable: "4037.60"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "0.00"
+      ca/cpp_first_additional_contributions: "0.00"
+      ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_part_5_line_30: "46500.00"
+      ca/cpp_enhanced_contributions: "0.00"

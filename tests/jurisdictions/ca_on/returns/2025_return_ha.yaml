@@ -1,0 +1,92 @@
+# Return HA: Schedule 6 Part B (adjusted family net income) with the UCCB, RDSP income, the UCCB
+# repayment and the RDSP income repayment all non-zero together. A single filer with employment
+# income of 30,000 (a chosen figure, Return GE's filer), so that every Part B line the UCCB and RDSP
+# change is worked by hand; the figures are chosen, and the lines no other worked return sets
+# (line 9, line 10, line 11 and line 12 of Part B) are non-zero. The same filer with each of the four
+# alone is pinned in `end_to_end/test_return_ha.py`.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 (a chosen figure), with employment income (line 10100) of 30,000, the universal
+  child care benefit (line 11700) of 5,000 and RDSP income (line 12500) of 2,000, a UCCB
+  repayment (line 21300) of 1,000 and an RDSP income repayment of 500 that is part of the 500 on
+  line 23200 (every figure chosen). Total income is 30,000 + 5,000 + 2,000 = 37,000.00. The
+  enhanced CPP deduction is 265.00 (as on Return GE), the UCCB repayment is a deduction of 1,000.00
+  (line 21300) and the line 23200 amount is 500.00, so the deductions are 265 + 1,000 + 500 =
+  1,765.00 and net income (line 23600) and taxable income are 37,000 - 1,765 = 35,235.00. There is no
+  split income, so the TOSI-adjusted net income (Form T1206 Part 1 line 6) is 35,235.00. Schedule 6
+  Part B, column 1: line 7 = 35,235.00; line 8 (tax-exempt income) is optional and not triggered;
+  line 9 = the UCCB repayment 1,000.00 + the RDSP income repayment 500.00 = 1,500.00; line 10 = line 7
+  + line 9 = 36,735.00; line 11 = the UCCB 5,000.00 + the RDSP income 2,000.00 = 7,000.00; line 12 =
+  36,735 - 7,000 = 29,735.00, which is line 13 and, with no eligible spouse (line 14 not triggered),
+  line 15, the adjusted family net income. That is the figure of the same filer with employment
+  income alone, so the Canada workers benefit is the same: working income (line 5) is 30,000.00,
+  line 18 = 30,000 - 3,000 = 27,000.00, line 20 = 27% x 27,000 = 7,290.00 and line 22 is the lesser
+  of that and 1,633.00, so 1,633.00; line 25 = 29,735 - 26,855 = 2,880.00, line 27 = 15% x 2,880 =
+  432.00 and line 28 = 1,633 - 432 = 1,201.00. Read as the net income alone (35,235.00), line 25
+  would be 8,380.00, line 27 1,257.00 and the benefit 376.00, 825.00 less. The other payments
+  limit income (Federal Worksheet for line 25000, line 9) is 35,235 - 7,000 + 1,500 = 29,735.00.
+  The Ontario tax after the dividend credit, the refund and the CPP cap are the engine's figures,
+  not hand figures. Not triggered: no dividend, no foreign tax credit, no minimum tax, no net capital loss, and every
+  other credit and deduction not named here.
+sources:
+  - >-
+    CRA, Schedule 6 Canada Workers Benefit (2025), Part B "Adjusted family net income": "Line 7:
+    Net income from line 23600 of the return (or the amount you would have entered if the
+    instructions on line 23600 said "if negative, show in brackets")"; "Line 9: Total of universal
+    child care benefit (UCCB) repayment (line 21300 of the return) and registered disability
+    savings plan (RDSP) income repayment (included on line 23200 of the return)"; "Line 10: Add
+    lines 7 to 9."; "Line 11: Total of UCCB (line 11700 of the return) and RDSP income (line 12500
+    of the return)"; "Line 12: Line 10 minus line 11 (if negative, enter "0")"; "Line 13: Add the
+    amounts from line 12 in columns 1 and 2."; "Line 15: Line 13 minus line 14 ... Adjusted family
+    net income" (docs/cra-forms-2025/5000-s6-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "30000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "30000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "30000"
+  ca/t2204_premiums_deducted: "492.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "1576.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/universal_child_care_benefit: "5000"
+  ca/rdsp_income: "2000"
+  ca/uccb_repayment: "1000"
+  ca/rdsp_income_repayment: "500"
+  ca/other_deductions: "500"
+  ca/rrsp_deduction_limit: "5400"
+  ca/income_tax_deducted: "3000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "37000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "30000.00"
+      ca/deductions_from_total_income: "1765.00"
+      ca/net_income: "35235.00"
+      ca/net_income_before_adjustments: "35235.00"
+      ca/taxable_income: "35235.00"
+      ca/tosi_adjusted_net_income: "35235.00"
+      ca/uccb_and_rdsp_income: "7000"
+      ca/uccb_and_rdsp_income_repayments: "1500"
+      ca/cwb_family_net_income_line_10: "36735.00"
+      ca/cwb_family_net_income_line_12: "29735.00"
+      ca/adjusted_family_net_income: "29735.00"
+      ca/working_income: "30000"
+      ca/canada_workers_benefit: "1201.00"
+      # Engine only (not a hand figure): the lines below are labelled in the description.
+      ca-on/net_refund: "1435.90"
+      ca-on/ontario_tax_less_dividend_credit: "1044.56"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/other_payments_limit_income: "29735.00"
+      ca/refund_or_balance_owing: "-1435.90"

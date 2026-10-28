@@ -1,0 +1,463 @@
+# Return ED: Guide T4036's Salvador, a 2025 Ontario resident with three rental properties and no
+# other income (T1 line 13, one Form T776 statement per property). Two buildings are Class 1 and
+# one is Class 3, and every building has Class 8 appliances. The net income before capital cost
+# allowance (line 9369) is 1,500, 2,000 and -4,000, a total of -500: Guide T4036 says that because
+# he may not increase a rental loss by claiming CCA, he cannot claim any CCA on his buildings or
+# appliances. Each statement's net income before CCA is a chosen figure, through other income
+# (line 8230) on the first two and an advertising expense (line 8521) on the third. The UCC at the
+# start of each class (column 2) is a chosen figure, labelled so; there are no additions and no
+# proceeds, so the UCC at the end is the UCC at the start, since no CCA is claimed. Every CCA claim
+# (column 23) is 0, so every line 9936 is 0 and each line 9946 is its line 9369. T1 line 12600 is
+# 1,500 + 2,000 + (-4,000) = -500.00, the whole of total income (line 15000), which is negative
+# and so shown in brackets on line 23400; net income (line 23600) is 0 because a negative amount
+# is entered as 0. Amounts are quoted decimal strings, never floats; counts are quoted digit
+# strings. Every output the CA-ON manifest declares must appear under `expected`, or be left out
+# to be 0 (or no records).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is rental income from three rental
+  properties (Guide T4036, "Example", Salvador), each on its own T776 statement: building 1, a
+  Class 1 building; building 2, a Class 1 building; building 3, a Class 3 building; each with
+  Class 8 appliances. A chosen set of figures. Building 1 has other income (T776 line 8230) of a
+  chosen $1,500.00 and no expenses, so its line 9369 is $1,500.00; building 2 has other income of
+  a chosen $2,000.00 and no expenses, so its line 9369 is $2,000.00; building 3 has advertising
+  (line 8521) of a chosen $4,000.00 and no income, so its line 9369 is -$4,000.00. No statement
+  has gross rents (line 8141 is 0), so line 8299 is the other income, and no statement has a
+  short-term rental, a co-owner, a partner or a personal part of any expense, so those lines are
+  0 or not triggered. The UCC at the start of each class (column 2) is a chosen figure, labelled
+  so: building 1, Class 1 (4%) $100,000.00 and Class 8 (20%) $10,000.00; building 2, Class 1
+  $80,000.00 and Class 8 $5,000.00; building 3, Class 3 (5%) $60,000.00 and Class 8 $8,000.00.
+  There are no additions and no proceeds of dispositions, and no property is disposed of, so
+  column 7 is the UCC at the start and column 24 is the same amount. No CCA is claimed on any
+  class (column 23 is a chosen 0, below the maximum of 4%, 5% or 20% of column 19), so every
+  line ii, and so every line 9936, is $0.00, and each line 9946 is its line 9369: $1,500.00,
+  $2,000.00 and -$4,000.00. T1 line 12600 is their sum, -$500.00, which is the whole of total
+  income (line 15000). A negative total income is shown as it is, and net income (line 23600) is
+  $0.00 because a negative net income is entered as 0 (T1 line 56). The CPP months (Schedule 8
+  box A) are the 12 of a full year, Schedule 8 Part 4 is not completed (count 0) and there is no
+  agreement with the Canada Employment Insurance Commission (count 0), so the CPP contributions
+  payable (line 42100), the base CPP contributions (line 31000) and the deduction (line 22200) on
+  self-employment income, and the EI premiums on it (lines 31217 and 42120), are $0 and change no
+  total. The net business, professional, commission, farming and fishing income (T1 lines 13500,
+  13700, 13900, 14100 and 14300) are $0, so their sum (line 27) is $0, and it is a $0 term of
+  total income (line 15000). With no tax on $0 of taxable income, the basic federal tax is $0 and
+  the non-refundable credits (the basic personal amount, $16,129.00 x 14.5% = $2,338.71) are more
+  than it: the amount by which they exceed the tax, $2,338.71 - $0 = $2,338.71, is the minimum tax
+  carryover for 2026, carried on the same lines as in Return BI and Return CI (to be confirmed against Form
+  T691 for a filer with no tax). The second additional CPP earnings maximum, $9,900.00, is a
+  parameter of Schedule 8 that the return carries, as in Return BI.
+sources:
+  - >-
+    CRA, Guide T4036 (Rental Income, 2025 edition, docs/cra-forms-2025/t4036-25e.pdf, a PDF
+    quote accepted 2026-10-19), "Limits on CCA": "If you own more than one rental property, you
+    have to calculate your overall net income or loss for the year from all your rental
+    properties before you can claim CCA. ... Combine the rental income and loss from all your
+    properties, even if they belong to different classes. This also applies to furniture,
+    fixtures, and appliances that you use in your rental building."; "You cannot use CCA to create
+    or increase a rental loss."; "Example": "Salvador owns three rental properties. Two of these
+    properties are Class 1 buildings and one is a Class 3 building. All the buildings contain
+    Class 8 appliances." The table, building 1 (Class 1) $1,500; building 2 (Class 1) $2,000;
+    building 3 (Class 3) ($4,000); total ($500). "Salvador has an overall net loss of $500. Since
+    he is not allowed to increase his rental loss by claiming CCA, he cannot claim any CCA on his
+    rental buildings or appliances." The rates are "Class 1 (4%)", "Class 3 (5%)" and "Class 8 with
+    a CCA rate of 20%" in the same guide.
+  - >-
+    CRA, Form T776 (2025), Statement of Real Estate Rentals (docs/cra-forms-2025/t776-25e.txt,
+    confirmed 2026-10-19). Part 3: "Line 8230: Other income (for example, premiums and leases,
+    sharecropping)"; "Line 8299: Total gross rental income: Enter this amount on your income tax
+    and benefit return on line 12599 (line 8141 plus line 8230)". Part 4: "Line 8521:
+    Advertising"; "Line 9369: Net income (loss) before adjustments (total gross rental income
+    from line 8299 minus deductible expenses from amount 1)"; "Line 9936: Total CCA claim for the
+    year (amount ii from Area A minus any personal part of CCA, and any CCA for
+    business-use-of home expenses)"; "Line 9946: Your net income (loss): For sole proprietors or
+    co-owners, enter the result from amount 6. For partnerships, enter the result from amount 7
+    plus line 9974 minus line 9943. Enter this amount on line 12600 of your income tax and
+    benefit return". Each statement has no co-owner (a count of 0) and no partnership, so amounts
+    2 to 5 are line 9369, and amount 6 is amount 5 less line 9936, 0: line 9946 is line 9369.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt
+  - >-
+    CRA, "T1-2025 Ontario edition" return (form 5006-R, docs/cra-forms-2025/5006-r-25e.txt,
+    confirmed 2026-10-19), "Step 2 - Total income": "Line 13: Rental income (complete Form
+    T776)"; "Line 33 and line 15000: Line 28 plus line 32 Total income". "Step 3 - Net income":
+    "Line 54 and line 23400: Line 34 minus line 53 (if negative, show in brackets) Net income
+    before adjustments"; "Line 56 and line 23600: Line 54 minus line 55 (if negative, enter "0")
+    If negative, you may have a non-capital loss (see Form T1A) and the negative amount is to be
+    used for certain calculations". Line 13 is the sum of the statements' lines 9946 (1,500 +
+    2,000 + (-4,000) = -500.00); every other income line is 0, so total income (line 15000) is
+    -500.00 + 0 = -500.00. Line 23400 is -500.00 (shown in brackets), and line 23600 is 0 because
+    the negative amount is entered as 0. The non-capital loss that the negative amount may be is
+    for Form T1A, and this return does not compute it.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+  - >-
+    CRA, the 2025 Schedule 8 (form 5000-S8, docs/cra-forms-2025/5000-s8-25e.txt, confirmed
+    2026-10-19): "Enter this amount (in dollars and cents) on line 30800 of your return and line
+    58240 of your Form 428." There is no employment income, so the CPP pensionable earnings are 0
+    and the contributions are 0 x 4.95%, 0 x 1% and 0 x 4%, each rounded half-up to the cent: 0.
+    The EI premiums are 0 x 1.64%, also 0.
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+inputs:
+  ca/t776_statements:
+    - ca/rental_properties: []
+      ca/rental_other_income: "1500"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_start: "100000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "10000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+    - ca/rental_properties: []
+      ca/rental_other_income: "2000"
+      ca/rental_advertising: "0"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_start: "80000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "5000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+    - ca/rental_properties: []
+      ca/rental_other_income: "0"
+      ca/rental_advertising: "4000"
+      ca/rental_advertising_personal_portion: "0"
+      ca/rental_advertising_short_term_portion: "0"
+      ca/rental_insurance: "0"
+      ca/rental_insurance_personal_portion: "0"
+      ca/rental_insurance_short_term_portion: "0"
+      ca/rental_interest_and_bank_charges: "0"
+      ca/rental_interest_and_bank_charges_personal_portion: "0"
+      ca/rental_interest_and_bank_charges_short_term_portion: "0"
+      ca/rental_office_expenses: "0"
+      ca/rental_office_expenses_personal_portion: "0"
+      ca/rental_office_expenses_short_term_portion: "0"
+      ca/rental_professional_fees: "0"
+      ca/rental_professional_fees_personal_portion: "0"
+      ca/rental_professional_fees_short_term_portion: "0"
+      ca/rental_management_and_administration_fees: "0"
+      ca/rental_management_and_administration_fees_personal_portion: "0"
+      ca/rental_management_and_administration_fees_short_term_portion: "0"
+      ca/rental_repairs_and_maintenance: "0"
+      ca/rental_repairs_and_maintenance_personal_portion: "0"
+      ca/rental_repairs_and_maintenance_short_term_portion: "0"
+      ca/rental_salaries_wages_and_benefits: "0"
+      ca/rental_salaries_wages_and_benefits_personal_portion: "0"
+      ca/rental_salaries_wages_and_benefits_short_term_portion: "0"
+      ca/rental_property_taxes: "0"
+      ca/rental_property_taxes_personal_portion: "0"
+      ca/rental_property_taxes_short_term_portion: "0"
+      ca/rental_travel: "0"
+      ca/rental_travel_personal_portion: "0"
+      ca/rental_travel_short_term_portion: "0"
+      ca/rental_utilities: "0"
+      ca/rental_utilities_personal_portion: "0"
+      ca/rental_utilities_short_term_portion: "0"
+      ca/rental_motor_vehicle_expenses: "0"
+      ca/rental_motor_vehicle_expenses_personal_portion: "0"
+      ca/rental_motor_vehicle_expenses_short_term_portion: "0"
+      ca/rental_other_expenses: "0"
+      ca/rental_other_expenses_personal_portion: "0"
+      ca/rental_other_expenses_short_term_portion: "0"
+      ca/short_term_rental_units: []
+      ca/short_term_rental_cca_units: []
+      ca/rental_coowner: "0"
+      ca/rental_coowner_share: "0"
+      ca/rental_coowner_other_expenses: "0"
+      ca/rental_vehicle_sales_tax_rate: "0"
+      ca/rental_cca_classes:
+        - ca/cca_class_number: "3"
+          ca/cca_ucc_at_start: "60000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_start: "8000.00"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "0"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+          ca/cca_personal_part_remaining: "0"
+      ca/rental_equipment_additions: []
+      ca/rental_building_additions: []
+      ca/rental_coowner_recaptured_cca: "0"
+      ca/rental_coowner_terminal_loss: "0"
+      ca/rental_coowner_cca_claim: "0"
+      ca/rental_cca_personal_part: "0"
+      ca/rental_cca_business_use_of_home: "0"
+      ca/rental_partner: "0"
+      ca/rental_partner_t5013_slip: "0"
+      ca/rental_partner_share: "0"
+      ca/rental_partner_percentage: "0"
+      ca/rental_partner_gst_hst_rebate: "0"
+      ca/rental_partner_other_expenses: "0"
+      ca/rental_epop_associated: "0"
+      ca/rental_epop_agreement_filed: "0"
+      ca/rental_epop_percentage: "0"
+      ca/rental_epop_percentage_total: "0"
+      ca/rental_minister_allocation_given: "0"
+      ca/rental_minister_allocation: "0"
+      ca/rental_land_additions: "0"
+      ca/rental_land_dispositions: "0"
+      ca/rental_fiscal_period_days_entered: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/net_rental_income: "-500.00"
+      ca/gross_rental_income: "3500"
+      ca/total_income: "-500.00"
+      ca/net_income_before_adjustments: "-500.00"
+      ca/net_income: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_basic_federal_tax: "-2338.71"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/t776:
+    - ca/net_rental_income: "1500.00"
+      ca/rental_net_income_before_adjustments: "1500.00"
+      ca/rental_cca_claim: "0"
+      ca/rental_net_income_after_cca: "1500.00"
+      ca/rental_closing_ucc:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_end: "100000.00"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "10000.00"
+    - ca/net_rental_income: "2000.00"
+      ca/rental_net_income_before_adjustments: "2000.00"
+      ca/rental_cca_claim: "0"
+      ca/rental_net_income_after_cca: "2000.00"
+      ca/rental_closing_ucc:
+        - ca/cca_class_number: "1"
+          ca/cca_ucc_at_end: "80000.00"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "5000.00"
+    - ca/net_rental_income: "-4000.00"
+      ca/rental_net_income_before_adjustments: "-4000.00"
+      ca/rental_cca_claim: "0"
+      ca/rental_net_income_after_cca: "-4000.00"
+      ca/rental_closing_ucc:
+        - ca/cca_class_number: "3"
+          ca/cca_ucc_at_end: "60000.00"
+        - ca/cca_class_number: "8"
+          ca/cca_ucc_at_end: "8000.00"

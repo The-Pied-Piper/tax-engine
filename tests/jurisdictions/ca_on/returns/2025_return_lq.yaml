@@ -1,0 +1,55 @@
+# Return LQ: Form T777 employment-use example for the work-space-in-the-home chart ($417.60).
+# Amounts are quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LQ: Form T777 (2025), line 48 note (4), "You must calculate your employment-use amount",
+  with the form's example ($2,400 + $12,000) x 2.9% = $417.60 entered on line 48. The expenses are
+  entered on line 46 "Other expenses (rent, etc.)" as 12,000 and on line 42 (electricity, heat,
+  water, internet; one input for lines 42 to 45) as 2,400, which total 14,400.00 on line 47. The
+  form's example gives no employment income: this return takes a chosen T4 of $50,000, so line 51 is
+  50,000.00, line 52 is line 15 (0.00) plus lines 20700 and 21200 (0.00), line 53 is 50,000.00, line
+  54 is 417.60, line 55 is 0.00, line 16 and line 17 are 417.60 and T1 line 22900 is 417.60. Every
+  other line is the engine's figure.
+sources:
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    note (4) "You must calculate your employment-use amount." Example: "($2,400 + $12,000) x 2.9% =
+    $417.60" entered on line 48; line 47 "Add lines 42 to 46."; line 54 "Enter whichever is less:
+    Amount from line 50 or line 53. Work-space-in-the-home expenses."
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "50000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "50000"
+  ca/t2204_insurable_earnings: "50000"
+  ca/t2204_premiums_deducted: "820.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "2766.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_work_space_electricity_heat_water_internet: "2400"
+  ca/t777_work_space_other_expenses: "12000"
+  ca/t777_work_space_employment_use_amount: "417.60"
+expected:
+  ca/t777:
+    - ca/t777_work_space_total_amount: "417.60"
+      ca/t777_work_space_employment_income: "50000"
+      ca/t777_work_space_income_limit: "50000.00"
+      ca/t777_work_space_expenses: "14400"
+      ca/t777_work_space_carried_forward_out: "0"
+      ca/t777_line_16: "417.60"
+      ca/t777_line_17: "417.60"
+  ca-on/return:
+    - ca/total_income: "50000.00"
+      ca/other_employment_expenses: "417.60"
+      ca-on/ontario_tax_less_dividend_credit: "1679.06"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "49117.40"
+      ca/other_payments_limit_income: "49117.40"
+      ca/refund_or_balance_owing: "6352.30"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "50000"

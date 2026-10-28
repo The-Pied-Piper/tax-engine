@@ -1,0 +1,113 @@
+# Return GJ: Return GC's filer with no capital gains deferral, and a valid pairing of Schedule 3
+# Part 1 answers: line 17905 "Yes" with box 3 of line 17906 ticked (the breakdown of a marriage).
+# The box is asked only after a "Yes", so it is accepted; a life event applies, so the housing
+# unit is not a flipped property and the flag is 0. A 2025 Ontario resident whose employment
+# income is 48,000 (a chosen figure), with one share row of proceeds 5,000 (a chosen figure) and
+# one real estate row of proceeds 7,000 and cost 5,000.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or
+  older at the end of 2025 (a chosen figure), with employment income (T1 line 10100) of
+  $48,000 (a chosen figure) and the dispositions below, every figure a chosen figure. Line 4
+  (shares), column 5 = column 2 minus columns 3 and 4: 5,000 - 0 - 0 = 5,000. Line 5 (real
+  estate): 7,000 - 5,000 - 0 = 2,000. Lines 1, 2, 3, 6 to 10 and 15800 to 15900 have no rows,
+  so 0. Line 11 = 5,000 + 2,000 = 7,000, and line 12 is the same figure. Line 13 and line
+  16100 (capital gains deferral) is blank, so 0, and line 14 = 7,000 - 0 = 7,000. Lines 15 to
+  19 and line 20 have no amounts, so line 17 = 7,000, line 19 = 7,000 and line 21 = 7,000,
+  and line 22 is the same figure. Line 24 = 7,000 x 50% = 3,500.00, positive, so line 12700
+  (taxable capital gains) is 3,500.00. Total income (line 15000) = 48,000 + 3,500.00 =
+  51,500.00. The enhanced CPP deduction is 445.00, as on Return GC, so the net income and the
+  taxable income are 51,055.00. The income tax deducted is a chosen 4,800. Schedule 3 Part 1:
+  line 17905 is "Yes", a count of 1; box 3 of line 17906 is ticked, a count of 1 (a chosen
+  figure), and the other boxes are blank, a count of 0 each. No box is ticked without a "Yes",
+  so the check on the boxes passes and nothing is refused. A life event applies, so the
+  housing unit is not a flipped property and the flag is 0. The total payable (6,801.00), the
+  refund (2,001.00 on 4,800.00 deducted) and the Ontario tax are the engine's figures (to be
+  confirmed against CRA's calculator). Not triggered: the capital gains deferral (no amount),
+  the net capital loss carry-forward (T1436), the business investment loss, reserves, and
+  every other credit and deduction not named here.
+sources:
+  - >-
+    CRA, Schedule 3 Capital Gains or Losses (2025), Part 1 "Flipped property", page 1, "Line
+    17905: Did you dispose of a housing unit, or a right to acquire a housing unit, located in
+    Canada (including a rental property) that was not considered inventory and was owned for
+    less than 365 consecutive days before the disposition? Yes or No"; "If you ticked "yes",
+    continue at line 17906 on the next page."; page 2, "Line 17906:" "Box 3: the breakdown of a
+    marriage or common-law partnership where the taxpayer had been living separate and apart
+    from their spouse or common-law partner for at least 90 days before the disposition"; "If
+    any of the life events above apply to you, the housing unit is not considered a flipped
+    property." (docs/cra-forms-2025/5000-s3-25e.txt)
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19),
+    Part 3: "Line 4 and line 13200: Total gain or loss (add all the amounts under column 5)";
+    "Line 5 and line 13800: Total gain or loss (add all the amounts under column 5)";
+    "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; "Report all negative amounts
+    (losses) using brackets." Part 4: "Line 12: Amount from line 11 of the previous page";
+    "Line 13 and line 16100: Capital gains deferral from qualifying dispositions of eligible
+    small business corporation shares included on line 4"; "Line 14:  Line 12 minus line 13 =";
+    "Line 17: Add lines 14 to 16. ="; "Line 19 and line 19100: Total gains or losses before
+    reserves: line 17 minus line 18 ="; "Line 21 and line 19700: Line 19 plus line 20 Total
+    capital gains or losses ="; line 24 "Line 22 multiplied by the percentage from line 23"
+    (50%); line 26 (line 19900) "If positive, enter the result on line 12700 of your return."
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "48000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "48000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "48000"
+  ca/t2204_premiums_deducted: "787.20"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2647.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "5000"
+      ca/disposition_adjusted_cost_base: "0"
+      ca/disposition_outlays: "0"
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "7000"
+      ca/disposition_adjusted_cost_base: "5000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "0"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/flipped_property_disposed: "1"
+  ca/flipped_property_life_event_3: "1"
+  ca/rrsp_deduction_limit: "8640"
+  ca/income_tax_deducted: "4800"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/share_proceeds: "5000"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "48000.00"
+      ca/real_estate_proceeds: "7000"
+      ca/share_gain_or_loss: "5000"
+      ca/share_gain_not_below_zero: "5000"
+      ca/real_estate_gain_or_loss: "2000"
+      ca/capital_gains_of_qualified_and_other_properties: "7000"
+      ca/capital_gains_after_deferral: "7000"
+      ca/capital_gains_before_reserves: "7000"
+      ca/capital_gain: "7000"
+      ca/included_capital_gain: "3500.00"
+      ca/taxable_capital_gains: "3500.00"
+      ca/schedule_3_line_19900: "3500.00"
+      ca/total_income: "51500.00"
+      ca/net_income_before_adjustments: "51055.00"
+      ca/other_payments_limit_income: "51055.00"
+      ca/net_income: "51055.00"
+      ca/taxable_income: "51055.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/total_payable: "6801.00"
+      ca/total_credits: "4800.00"
+      ca/refund_or_balance_owing: "2001.00"
+      ca-on/ontario_tax_less_dividend_credit: "1783.56"
+  ca/schedule_3:
+    - ca/flipped_property: "0"
+      ca/flipped_property_life_event_without_yes_checked: "0"

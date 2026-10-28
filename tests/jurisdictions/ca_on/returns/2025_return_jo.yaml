@@ -1,0 +1,67 @@
+# Return JO: Guide 5000-G line 25100 "Limited partnership losses of other years" and T5013 box 105.
+# An Ontario resident with employment income of $30,000 and limited partnership losses from earlier
+# years (T5013 box 109) of $9,000, a limited partner's at-risk amount (T5013 box 105) of $6,000 and
+# a claim of $4,000 on line 25100.
+# Amounts are quoted decimal strings, never floats; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, as Return IQ (Schedule 8 Part 4 and Part 5 not
+  completed). Employment income 30,000, so total income is 30,000.00 and net income is
+  30,000.00 - 265.00 (enhanced CPP contributions, as Return IQ) = 29,735.00. Of 9,000 of limited
+  partnership losses from earlier years she claims 4,000 on line 25100: "You can only deduct this
+  loss if there is an amount in box 105", and her box 105 at-risk amount is 6,000, so 4,000 is
+  accepted. Deductions from net income are 4,000.00 and taxable income is 29,735.00 - 4,000.00 =
+  25,735.00.
+sources:
+  - >-
+    CRA, Guide 5000-G (2025), line 25100 (docs/cra-forms-2025/5000-g-25e.txt): "you can only deduct
+    them if you have a positive at-risk amount (ARA) for the partnership" and "Box 109 of your
+    T5013 slip shows the amount of limited partnership losses from previous years that may be
+    entered on line 25100 of your 2025 tax return. You can only deduct this loss if there is an
+    amount in box 105." The guide prints no cap by the amount of box 105 itself; that bound is ours.
+
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/employment_income: "30000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "30000"
+  # T4 boxes 24 (= 14) and 18: the premium required on it, Form T2204 line 16 (line 31200).
+  ca/t2204_insurable_earnings: "30000"
+  ca/t2204_premiums_deducted: "492.00"
+  ca/cpp_t4_base_and_first_additional_contributions: "1576.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/t4_cpp_slip_count: "1"
+  # T5013 box 109 shows 9,000 of losses from earlier years; 4,000 is claimed on line 25100.
+  ca/limited_partnership_losses_of_other_years: "4000"
+  # T5013 box 105, the limited partner's at-risk amount.
+  ca/limited_partnership_at_risk_amount: "6000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+expected:
+  # Hand derivation of the tax figures below from net income 29,735.00 and taxable income 25,735.00:
+  #   Federal: 25,735 x 14.5% = 3,731.58, less the non-refundable credits as Return IQ (2,813.54)
+  #     = 918.04.
+  #   Ontario: 25,735 x 5.05% = 1,299.62, less the non-refundable credits as Return IQ (734.81) =
+  #     564.81; the LIFT credit is 875.00 (net income is below 32,500), so nothing is left.
+  #   Ontario Health Premium: 6% x (25,735 - 20,000) = 344.10, at most 300.00 in that step.
+  #   Total payable: 918.04 + 0 + 300.00 = 1,218.04.
+  #   Canada Workers Benefit: 1,633.00 - 15% x (29,735 - 26,855) = 1,201.00, a refundable credit.
+  #   Balance owing: 1,218.04 - 1,201.00 = 17.04.
+  ca-on/return:
+    - ca/limited_partnership_losses_of_other_years_checked: "4000.00"
+      ca/deductions_from_net_income: "4000.00"
+      ca/total_income: "30000.00"
+      ca/net_income: "29735.00"
+      ca/taxable_income: "25735.00"
+      ca/refund_or_balance_owing: "17.04"
+      ca/other_payments_limit_income: "29735.00"
+      ca/net_income_before_adjustments: "29735.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "564.81"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "30000.00"

@@ -1,0 +1,83 @@
+# Return LK: Guide T4044, Apprentice mechanic tools Example 1. Amounts are quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return LK: Guide T4044 (2025), "Employed apprentice mechanics", Example 1: a second-year
+  apprentice mechanic with $18,000 of employment income from the job and $4,000 of income from other
+  sources in 2025 (and the $1,000 Apprenticeship Incentive Grant, reported on T1 line 13000 like
+  other income), who bought two tools for $4,500 in September 2025, had already claimed a
+  tradesperson's tools deduction of $1,000 for 2025 and a Canada employment amount of $1,471, and
+  carried $2,000 over from 2024. The Guide's maximum deduction is (A minus B) plus C: A is 4,500; B
+  is the lesser of 4,500 and the greater of $1,000 + 1,471 = 2,471 and 5% of (18,000 + 1,000 minus
+  1,000) = 900, so 2,471; C is 2,000; so 4,029.00 ("You claim your deduction of $4,029 on line
+  22900"). The claim on line 10 is the filer's 4,029, the maximum. The tradesperson's tools claim of
+  line 9 is the Guide's 1,000, and the Guide gives no figures for the tradesperson's tools formula,
+  so the example's own are used (chosen): the $4,500 cost, the $18,000 of income from the job and
+  the $1,000 grant, so that formula b is 3,029 and the maximum of line 9 is 1,000. Line 15 and line
+  17 are 5,029.00 and T1 line 22900 is 5,029.00; the Guide prints the $4,029 and the $1,000 but no
+  total of the two. The grant of $1,000 and the $4,000 from other sources are entered together as
+  other income of 5,000 (T1 line 13000), so total income is 23,000.00; the Guide's net income of
+  $22,000 is that less the $1,000 tradesperson's tools claim. Every other line is the engine's
+  figure. The yes answers (a tradesperson, registered and employed as an apprentice mechanic, tools
+  certified on the T2200) are the Guide's conditions for both claims.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Employed
+    apprentice mechanics", Example 1: "In 2025, you received $18,000 in income from your job as an
+    eligible apprentice mechanic. Also, in 2025, you received $1,000 under the Apprenticeship
+    Incentive Grant program, and you received income of $4,000 from other sources." "Therefore, your
+    maximum deduction in 2025 is $4,029 ([$4,500 minus $2,471] + $2,000) since it is less than your
+    net income of $22,000 ([$18,000 + $1,000 minus $1,000] + $4,000). You claim your deduction of
+    $4,029 on line 22900 of your income tax and benefit return."
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    line 9 "Tradesperson's tools expenses (maximum $1,000)"; line 10 "Apprentice mechanic tools
+    expenses".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "18000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "18000"
+  ca/t2204_insurable_earnings: "18000"
+  ca/t2204_premiums_deducted: "295.20"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "862.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/other_income: "5000"
+  ca/t777_eligible_tools_cost: "4500"
+  ca/t777_were_a_tradesperson_in_2025: "1"
+  ca/t777_tradesperson_tools_certified_on_t2200_question_12: "1"
+  ca/t777_tradesperson_employment_income: "18000"
+  ca/t777_apprenticeship_grants_received: "1000"
+  ca/t777_tradespersons_tools: "1000"
+  ca/t777_registered_in_a_mechanic_designation_program: "1"
+  ca/t777_employed_as_an_apprentice_mechanic: "1"
+  ca/t777_apprentice_mechanic_tools_certified_on_t2200_question_13: "1"
+  ca/t777_apprentice_mechanic_employment_income: "18000"
+  ca/t777_apprentice_mechanic_tools_carry_forward: "2000"
+  ca/t777_apprentice_mechanic_tools: "4029"
+expected:
+  ca/t777:
+    - ca/t777_tools_formula_b: "3029"
+      ca/t777_tradespersons_tools_maximum_deduction: "1000.00"
+      ca/t777_line_9: "1000"
+      ca/t777_apprentice_mechanic_tools_maximum_deduction: "4029.00"
+      ca/t777_line_10: "4029"
+      ca/t777_line_15: "5029.00"
+      ca/t777_line_17: "5029.00"
+  ca-on/return:
+    - ca/total_income: "23000.00"
+      ca/other_employment_expenses: "5029.00"
+      ca/t777_line_10_checked: "4029"
+      ca/t777_apprentice_mechanic_tools_carried_forward_out: "0.00"
+      ca-on/ontario_tax_less_dividend_credit: "205.33"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "17826.00"
+      ca/other_payments_limit_income: "17826.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "18000"

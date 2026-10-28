@@ -1,0 +1,140 @@
+# Return FD: the social benefits repayment chart (Federal Worksheet, line 23500) with every line
+# non-zero, the line 25000 worksheet on its branch above $93,454, and the UCCB, RDSP income and EI
+# repayments. No CRA example exists for either chart, so every figure is a chosen figure, worked out
+# by hand from the form text before the engine ran.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the forms name no province of
+  residence), resident in Canada throughout 2025 and aged 18 or older at the end of 2025 (chosen
+  figures), with no employment income. Her income (chosen figures) is $100,000.00 of other income
+  (line 13000), old age security of $8,000.00 (line 11300), EI benefits of $12,000.00 (line
+  11900), a universal child care benefit of $1,500.00 (line 11700), RDSP income of $3,000.00 (line
+  12500) and net federal supplements of $2,000.00 (line 14600; lines 14400 and 14500 are 0, so line
+  14700, "Add lines 29 to 31", is 2,000.00). Total income (line 15000) is 100,000 + 8,000 + 12,000 +
+  1,500 + 3,000 + 2,000 = 126,500.00. Her deductions are the UCCB repayment of $500.00 (line 21300)
+  and other deductions of $4,000.00 (line 23200), a chosen figure that includes the RDSP income
+  repayment of $1,000.00 (the form says "included in the amount on line 23200 of your return") and
+  $3,000.00 of other deductible amounts (legal fees); there are no other deductions from total
+  income. Line 23300 "Add lines 35 to 52" is 500 + 4,000 = 4,500.00 and net income before
+  adjustments (line 23400) is 126,500 - 4,500 = 122,000.00.
+  Federal Worksheet, Line 23500 - Social benefits repayment. The chart is completed because "You
+  entered an amount on line 11900 of your return and the amount on line 23400 is more than
+  $82,125" (12,000 and 122,000.00; the second condition also holds: line 11300 is entered and line
+  23400 is more than $93,454). Line 1, the OAS pension from line 11300: 8,000.00. Line 2, the net
+  federal supplements from line 14600: 2,000.00. Line 3: 8,000 + 2,000 = 10,000.00. Line 4, the
+  overpayment of OAS benefits recovered (box 20 of the T4A(OAS) slip), a chosen $400.00. Line 5:
+  10,000 - 400 = 9,600.00. Line 6, the net income before adjustments from line 23400 (plus the
+  total split income, 0): 122,000.00. Line 7, the EI benefits repayment from the T4E repayment
+  chart, a chosen $600.00 (at most the 12,000.00 of EI benefits). Line 8, the UCCB from line 11700:
+  1,500.00. Line 9, the RDSP income from line 12500: 3,000.00. Line 10: 600 + 1,500 + 3,000 =
+  5,100.00. Line 11: 122,000 - 5,100 = 116,900.00. Line 12, the UCCB repayment from line 21300:
+  500.00. Line 13, the RDSP income repayment: 1,000.00. Line 14: 500 + 1,000 = 1,500.00. Line 15,
+  the adjusted net income: 116,900 + 1,500 = 118,400.00. Line 16, the OAS benefits base amount:
+  93,343.00 (printed). Line 17: 118,400 - 93,343 = 25,057.00 (positive, so not set to 0). Line 18:
+  25,057 x 15% = 3,758.55. Line 19, whichever is less of line 5 (9,600.00) and line 18 (3,758.55):
+  3,758.55, line 18 being the lesser. Line 20, the amount from line 7: 600.00. Line 21: 3,758.55 +
+  600 = 4,358.55, entered on line 23500 (and line 42200). Net income (line 23600) is 122,000 -
+  4,358.55 = 117,641.45.
+  Federal Worksheet, Line 25000 - Other payments deduction, completed because net federal
+  supplements are reported on line 14600. Line 1, the amount from line 23400: 122,000.00. Line 2,
+  the amount from line 11700: 1,500.00. Line 3, the amount from line 12500: 3,000.00. Line 4:
+  1,500 + 3,000 = 4,500.00. Line 5: 122,000 - 4,500 = 117,500.00. Line 6, the amount from line
+  21300: 500.00. Line 7, the RDSP income repayment: 1,000.00. Line 8: 500 + 1,000 = 1,500.00. Line
+  9: 117,500 + 1,500 = 119,000.00, which is more than $93,454, so the amount comes from
+  canada.ca/line-25000 and not from line 14700. That page is not an accepted source and is not in
+  the repo, so its result is a chosen $1,200.00, at most the 2,000.00 on line 14700. The other
+  payments deduction (line 25000) is 1,200.00 and is the only deduction from net income, so taxable
+  income (line 26000) is 117,641.45 - 1,200 = 116,441.45.
+  Her spouse's return figures are chosen: net income $40,000.00, a UCCB repayment of $300.00 and an
+  RDSP income repayment of $200.00, and no UCCB or RDSP income of their own. Federal Worksheet for
+  line 45200, column 2: line 2 is 300 + 200 = 500.00, line 3 is 40,000 + 500 = 40,500.00, line 4
+  is 0, and line 5 is 40,500.00. Schedule ON428-A (LIFT) Part B, line 24: 40,000 + 300 + 200 =
+  40,500.00. The tax lines are the engine's figures, not form figures: the Ontario tax less the
+  dividend credit, the second additional CPP maximum (9,900.00, a full year of CPP at a chosen 12
+  months), and the balance owing after a chosen $20,000.00 of income tax deducted.
+sources:
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1), "Line 23500 - Social benefits repayment": "Complete the
+    chart below if one or both of the following applies:" "You entered an amount on line 11900 of
+    your return and the amount on line 23400 is more than $82,125"; "You entered an amount on line
+    11300 or line 14600 of your return and the amount on line 23400 is more than $93,454"; "Line 3:
+    Line 1 plus line 2", "Line 5: Line 3 minus line 4 (if negative, enter "0")", "Line 10: Add
+    lines 7 to 9.", "Line 11: Line 6 minus line 10", "Line 14: Line 12 plus line 13", "Line 15:
+    Line 11 plus line 14 Adjusted net income", "Line 16: OAS benefits base amount 93,343.00",
+    "Line 17: Line 15 minus line 16 (if negative, enter "0")", "Line 18: Amount from line 17
+    multiplied by 15%", "Line 19: Enter whichever is less: amount from line 5 or line 18.", "Line
+    20: Amount from line 7, if any" and "Line 21: Line 19 plus line 20. Enter this amount on line
+    23500 and line 42200 of your return." (docs/cra-forms-2025/5000-d1-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1), "Line 25000 - Other payments deduction": "Complete the
+    following calculation if you reported net federal supplements on line 14600 of your return.",
+    "Line 4: Line 2 plus line 3", "Line 5: Line 1 minus line 4", "Line 8: Line 6 plus line 7",
+    "Line 9: Line 5 plus line 8" and "If the amount on line 9 is more than $93,454, go to
+    canada.ca/line-25000 to find out how much you can deduct. Otherwise, enter the amount from line
+    14700 of your return on line 25000 of your return." (docs/cra-forms-2025/5000-d1-25e.txt). The
+    canada.ca page is not read: its result is a chosen figure.
+  - >-
+    CRA, T1 2025 Ontario edition, "Line 40 and line 21300: Universal child care benefit (UCCB)
+    repayment (box 12 of all RC62 slips)", "Line 52 and line 23200: Other deductions", "Line 53 and
+    line 23300: Add lines 35 to 52." and "Line 54 and line 23400: Line 34 minus line 53 (if
+    negative, show in brackets) Net income before adjustments" (docs/cra-forms-2025/5006-r-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_income: "100000"
+  ca/old_age_security: "8000"
+  ca/ei_and_other_benefits: "12000"
+  ca/universal_child_care_benefit: "1500"
+  ca/rdsp_income: "3000"
+  ca/net_federal_supplements: "2000"
+  ca/uccb_repayment: "500"
+  ca/rdsp_income_repayment: "1000"
+  ca/other_deductions: "4000"
+  ca/oas_overpayment_recovered: "400"
+  ca/ei_benefits_repayment: "600"
+  ca/other_payments_deduction_above_limit: "1200"
+  ca/spouse_net_income_before_adjustments: "40000"
+  ca/spouse_uccb_repayment: "300"
+  ca/spouse_rdsp_income_repayment: "200"
+  ca/income_tax_deducted: "20000"
+expected:
+  ca-on/return:
+    - ca/total_income: "126500.00"
+      ca/income_support_benefits: "2000"
+      ca/deductions_from_total_income: "4500.00"
+      ca/net_income_before_adjustments: "122000.00"
+      ca/social_benefits_repayment_applies: "1"
+      ca/oas_and_federal_supplements: "10000"
+      ca/social_benefits_line_5: "9600"
+      ca/social_benefits_line_6: "122000.00"
+      ca/social_benefits_line_10: "5100"
+      ca/social_benefits_line_11: "116900.00"
+      ca/social_benefits_line_14: "1500"
+      ca/social_benefits_line_15: "118400.00"
+      ca/oas_benefits_base_amount: "93343.00"
+      ca/social_benefits_line_17: "25057.00"
+      ca/social_benefits_line_18: "3758.55"
+      ca/social_benefits_line_19: "3758.55"
+      ca/social_benefits_line_21: "4358.55"
+      ca/social_benefits_repayment: "4358.55"
+      ca/net_income: "117641.45"
+      ca/net_income_less_uccb_and_rdsp_income: "117500.00"
+      ca/uccb_and_rdsp_income: "4500"
+      ca/uccb_and_rdsp_income_repayments: "1500"
+      ca/other_payments_limit_income: "119000.00"
+      ca/other_payments_deduction_after_limit: "1200"
+      ca/other_payments_deduction: "1200"
+      ca/deductions_from_net_income: "1200.00"
+      ca/taxable_income: "116441.45"
+      ca/medical_supplement_column_2_line_2: "500"
+      ca/medical_supplement_column_2_line_3: "40500"
+      ca/medical_supplement_column_2_line_5: "40500"
+      ca-on/lift_spouse_net_income_and_repayments: "40500"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "8056.75"
+      ca/refund_or_balance_owing: "12086.88"

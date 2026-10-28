@@ -1,0 +1,394 @@
+# Return IR: Return BD with the fishing boat used mainly for personal use. A single sole proprietor
+# (a 2025 Ontario resident) whose only activity is a fishing business, one Form T2121 (Statement of
+# Fishing Activities): fish products of $4,000 (amount 3A), so the gross income (line 8299, T1 line
+# 14299) is $4,000.00; expenses of $25,000 on two lines (salt, bait and ice, line 9138, $10,000, and
+# fishing gear, line 9136, $15,000), so amount 4Q and line 9368 are $25,000.00; no capital cost
+# allowance, no repairs, no partner and no business-use-of-home amounts. The filer answers 1 to
+# "the fishing boat was used mainly for personal use". Guide T4002 (page 51): "However, the amount
+# you deduct cannot be more than your income from the catch." The income from the catch is the gross
+# income of Part 3 (line 8299, $4,000.00), so the amount deducted is the lesser of $25,000.00 and
+# $4,000.00, $4,000.00, and the net income before adjustments (line 9369) is 4,000.00 - 4,000.00 =
+# $0.00 (without the answer it would be 4,000.00 - 25,000.00 = -$21,000.00). So the net fishing
+# income (line 9946, T1 line 14300), the net self-employment income (T1 line 27), total income
+# (line 15000), net income and taxable income are all $0.00. With no income the federal and Ontario
+# basic tax are 0, the non-refundable credits are the amounts of Return BD (the credit amounts do
+# not depend on the net income, 16,129.00 federal and 12,747.00 Ontario, so 2,338.71 and 643.72),
+# the Ontario tax reduction is twice the basic reduction less the Ontario tax of 0: 588.00 - 0 =
+# 588.00 (Return BD: 588.00 - 113.78 = 474.22), the working income of the Canada workers benefit
+# (Schedule 6 line 3) is the self-employment profit, $0.00, so the benefit and the refund are 0, and the CPP
+# line 49 and Schedule 8 Part 5 line 30 (the net self-employment earnings of 0.00 less the $3,500
+# exemption, not below 0) are 0.00 where Return BD has 1,368.50 and 11,500.00. The
+# minimum tax (Form T691) basic federal tax is the tax of 0 less the credits of 2,338.71, the same
+# arithmetic as Return BD (2,175.00 less 2,338.71 = -163.71): -2,338.71, and the carryover for 2026
+# is 2,338.71. Amounts are quoted decimal strings, never floats; counts are quoted digit strings.
+# Every output the CA-ON manifest declares must appear under `expected`, or be left out to be 0 (or
+# no records). The farming lines (Form T2042) are not triggered and are not listed here.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only activity is a fishing business, reported on
+  one Form T2121, Return BD's with fish products of $4,000 (amount 3A) in place of $40,000 and the
+  answer 1 to the fishing boat used mainly for personal use: line 8299 and T1 line 14299 are
+  $4,000.00; expenses of $25,000 (salt, bait and ice, line 9138, $10,000, and fishing gear, line
+  9136, $15,000) make amount 4Q and line 9368 $25,000.00. By Guide T4002 the amount deducted
+  cannot be more than the income from the catch, the gross income of Part 3, $4,000.00, so it is
+  the lesser of $25,000.00 and $4,000.00, $4,000.00, and line 9369 is 4,000.00 - 4,000.00 =
+  $0.00, not a loss of $21,000.00. With no capital cost allowance, no repairs, no partner and no
+  business-use-of-home amounts, line 9946 and T1 line 14300 are $0.00, the net self-employment
+  income (T1 line 27) is $0.00 and so are total income (line 15000), net income and taxable
+  income. The motor vehicle expenses (line 9281) are Charts A to C for a leased passenger vehicle
+  used for no fishing (business kilometres 0), so line 9281 is $0 and changes no total. A chosen
+  set of figures. The farming income (Form T2042, T1 line 25) is not triggered and is 0. The CPP
+  months (Schedule 8 box A) are the 12 of a full year, Schedule 8 Part 4 is not completed (count
+  0) and there is no agreement with the Canada Employment Insurance Commission (count 0), so the
+  CPP contributions payable (line 42100), the base CPP contributions (line 31000) and the
+  deduction (line 22200) on self-employment income, and the EI premiums on it (lines 31217 and
+  42120), are $0 and change no total.
+sources:
+  - >-
+    CRA, Guide T4002 2025, Self-employed business, professional, commission, farming, and fishing
+    income (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf, page 51,
+    confirmed 2026-10-25 from the PDF; CRA publishes no .txt), "Use of a fishing boat mainly for
+    personal use": "You may have used a fishing boat mainly for personal use, but sometimes caught
+    a small amount of fish to sell. In this case, you can deduct expenses and CCA. However, the
+    amount you deduct cannot be more than your income from the catch." Form T2121 prints no line for
+    the limit; the figures here are hand-derived from that one sentence, the income from the catch
+    being the gross income of Part 3 (line 8299, amount 4A) and the expenses and CCA being line 9368
+    (Part 4 "Total expenses: Amount 4Q plus line 9936").
+  - >-
+    CRA, Form T2121 (2025), Statement of Fishing Activities (docs/cra-forms-2025/t2121-25e.pdf,
+    confirmed 2026-10-19 from the PDF; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2121/t2121-25e.pdf),
+    Part 3: "Gross income: Total of amounts 3A to 3F and line 9600 (enter this amount on line
+    14299 of your income tax and benefit return)" (8299); Part 4: "Gross income (line 8299 of
+    Part 3)" (4A); "Subtotal: Add amounts 4B to 4P." (4Q); "Total expenses: Amount 4Q plus line
+    9936" (9368); "Net income (loss) before adjustments: Amount 4A minus line 9368." (9369); Part
+    5: "Your net income (loss): Amount 5C minus line 9945 (enter this amount on line 14300 of your
+    income tax and benefit return)" (9946).
+  - >-
+    CRA, Form T2121 (2025), Charts A to C (docs/cra-forms-2025/t2121-25e.pdf, the PDF text): Chart A
+    "Total motor vehicle expenses: Add amounts 3 to 11." (12); "Business use part: amount 1 ÷ amount 2
+    × amount 12 = 13" (13); "Business parking fees" (14); "Supplementary business insurance" (15);
+    "Allowable motor vehicle expenses: Add amounts 13 to 15 (enter this total on line 9281 of Part 4)"
+    (16). Chart B: "Total interest payable (accrual method) or paid (cash method) in the fiscal period" (17);
+    "($350*** ÷ 30) × the number of days in the fiscal period for which interest was payable (accrual
+    method) or paid (cash method)" (18); "Available interest expense: Amount 17 or 18, whichever is
+    less (include this in amount 4 of Chart A above)" (19). Chart C: "Total lease charges incurred in
+    your current fiscal period for the vehicle." (20); "Total lease payments deducted before your
+    current fiscal period for the vehicle" (21); "Total number of days the vehicle was leased in your
+    current and previous fiscal periods" (22); "Manufacturer's list price" (23); "Use a GST rate of 5%
+    or HST rate applicable to your province."; "Amount 23 or ($44,706 + GST and PST, or $44,706 + HST),
+    whichever is more" and "× 85%" (24); "[($1,100 + GST and PST, or $1,100 + HST) × amount 22] ÷ 30"
+    (25); "Amount 25: amount 21" (26); "[($38,000 + GST and PST, or $38,000 + HST) × amount 20] ÷ amount
+    24" (27); "Eligible leasing cost: Amount 26 or 27, whichever is less (enter in amount 8 of Chart A
+    above)" (28). The charts are the figures of Return BB's leased vehicle with business kilometres 0
+    (amount 1), a chosen figure, so amount 13 and line 9281 are 0 and the other lines are the same.
+  - >-
+    CRA, Form T2121 (2025), Charts A to C: the chosen figures are amount 2 (total kilometres) 10,000;
+    amount 3 (fuel and oil) 1,000, amount 5 (insurance) 600, amount 7 (maintenance and repairs) 200
+    and amount 10 (other expenses) 653; amounts 6, 9, 11, 14 and 15 are 0; amount 17 (total interest
+    payable) 400 and the number of days 183, so line 18 is 350 ÷ 30 × 183 = 2,135.00 and amount 19 is
+    the lesser, 400.00; amount 20 (total lease charges) 2,550, amount 21 (payments before the year) 0,
+    amount 22 (days leased) 183, amount 23 (manufacturer's list price) 60,000 and the GST or HST rate
+    13%: 44,706 + 13% = 50,517.78, 1,100 + 13% = 1,243.00 and 38,000 + 13% = 42,940.00; amount 23 or
+    44,706 plus tax, whichever is more, is 60,000.00; amount 24 is 60,000.00 × 85% = 51,000.00; amount
+    25 is 1,243.00 × 183 ÷ 30 = 7,582.30; amount 26 is 7,582.30 - 0 = 7,582.30; amount 27 is 42,940.00
+    × 2,550 ÷ 51,000.00 = 2,147.00; and amount 28 is the lesser, 2,147.00. Chart A: amount 12 is 1,000
+    + 400 + 600 + 200 + 2,147 + 653 = 5,000.00; amount 13 is 0 × 5,000 ÷ 10,000 = 0.00; and line 9281
+    (amount 16) is 0.00 + 0 + 0 = 0.00. Every product and quotient here is exact to the cent, so no
+    line is rounded; line 9281 is $0, so the fishing expenses do not change.
+  - >-
+    The figures that depend on the net income, with the forms quoted in Return BD (the same
+    lines, taxes and credits, here on a net income of 0.00): the federal tax on taxable income and
+    the Ontario basic tax are 0.00 x 14.5% and 0.00 x 5.05%, 0; the credit amounts are the basic
+    personal amounts, which do not depend on the net income at or below $177,882 (16,129.00 and
+    12,747.00), so the non-refundable tax credits are 2,338.71 and 643.72, more than the tax of 0;
+    the medical threshold, the lesser of 3% of net income (0.00) and $2,834, is 0.00; the Ontario
+    tax reduction is twice the basic reduction, 588.00, less the Ontario tax of 0, 588.00, which is
+    more than the tax, so the tax after the reduction is 0. Schedule 6: the working income is the
+    self-employment profit of 0.00, so the Canada workers benefit is 0 and so is the refund.
+inputs:
+  ca/t2121_statements:
+    - ca/fish_fish_products: "4000"
+      ca/fish_other_marine_products: "0"
+      ca/fish_grants_credits_and_rebates: "0"
+      ca/fish_subsidies: "0"
+      ca/fish_compensation_for_loss: "0"
+      ca/fish_sharesperson_income: "0"
+      ca/fish_other_income: "0"
+      ca/fish_salt_bait_and_ice: "10000"
+      ca/fish_crew_shares: "0"
+      ca/fish_fuel_costs: "0"
+      ca/fish_fishing_gear: "15000"
+      ca/fish_insurance: "0"
+      ca/fish_interest_and_bank_charges: "0"
+      ca/fish_meals_and_entertainment: "0"
+      ca/fish_business_taxes_licences_and_memberships: "0"
+      ca/business_vehicles:
+        - ca/business_vehicle_business_kilometres: "0"
+          ca/business_vehicle_total_kilometres: "10000"
+          ca/business_vehicle_fuel_and_oil: "1000"
+          ca/business_vehicle_insurance: "600"
+          ca/business_vehicle_licence_and_registration: "0"
+          ca/business_vehicle_maintenance_and_repairs: "200"
+          ca/business_vehicle_electricity_zev: "0"
+          ca/business_vehicle_other_expenses_10: "653"
+          ca/business_vehicle_other_expenses_11: "0"
+          ca/business_vehicle_parking_fees: "0"
+          ca/business_vehicle_supplementary_insurance: "0"
+          ca/business_vehicle_interest_payable: "400"
+          ca/business_vehicle_interest_days: "183"
+          ca/business_vehicle_lease_charges: "2550"
+          ca/business_vehicle_lease_payments_before: "0"
+          ca/business_vehicle_lease_days: "183"
+          ca/business_vehicle_list_price: "60000"
+          ca/business_vehicle_passenger_vehicle: "1"
+          ca/business_vehicle_purchase_year: "2025"
+          ca/business_vehicle_lease_year: "2025"
+          ca/business_vehicle_lease_repayment_owing: "0"
+          ca/business_vehicle_lease_deposits_made: "0"
+          ca/business_vehicle_lease_deposits_refundable: "0"
+          ca/business_vehicle_lease_deposits_total: "0"
+      ca/fish_vehicle_sales_tax_rate: "13"
+      ca/fish_office_expenses: "0"
+      ca/fish_nets_and_traps: "0"
+      ca/fish_professional_fees: "0"
+      ca/fish_salaries_wages_and_benefits: "0"
+      ca/fish_repairs_fishing_boat: "0"
+      ca/fish_repairs_engine: "0"
+      ca/fish_repairs_electrical_equipment: "0"
+      ca/fish_insurance_recovery: "0"
+      ca/fish_other_expenses: "0"
+      ca/fish_cca_personal_part: "0"
+      ca/fish_cca_classes: []
+      ca/fish_partner: "0"
+      ca/fish_partner_share: "0"
+      ca/fish_partner_gst_hst_rebate: "0"
+      ca/fish_partner_other_amount_a: "0"
+      ca/fish_partner_other_amount_b: "0"
+      ca/fish_partner_other_amount_c: "0"
+      ca/fish_partner_other_amount_d: "0"
+      ca/fish_partner_other_amount_e: "0"
+      ca/fish_home_heat: "0"
+      ca/fish_home_electricity: "0"
+      ca/fish_home_insurance: "0"
+      ca/fish_home_maintenance: "0"
+      ca/fish_home_mortgage_interest: "0"
+      ca/fish_home_property_taxes: "0"
+      ca/fish_home_other_expenses: "0"
+      ca/fish_home_personal_use_part: "0"
+      ca/fish_home_cca: "0"
+      ca/fish_home_carried_forward: "0"
+      ca/fish_epop_associated: "0"
+      ca/fish_epop_agreement_filed: "0"
+      ca/fish_epop_percentage: "0"
+      ca/fish_epop_percentage_total: "0"
+      ca/fish_minister_allocation_given: "0"
+      ca/fish_minister_allocation: "0"
+      ca/fish_fiscal_period_days_entered: "0"
+      ca/fish_land_additions: "0"
+      ca/fish_land_dispositions: "0"
+      ca/fish_liabilities: "0"
+      ca/fish_drawings: "0"
+      ca/fish_capital_contributions: "0"
+      ca/fish_boat_mainly_personal: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca/t2121:
+    - ca/fish_recaptured_cca: "0"
+      ca/fish_other_income_with_recapture: "0"
+      ca/fish_gross_income: "4000"
+      ca/fish_gross_income_before_expenses: "4000"
+      ca/fish_terminal_loss: "0"
+      ca/fish_other_expenses_with_terminal_loss: "0"
+      ca/fish_repairs_total: "0"
+      ca/fish_repairs_your_cost: "0"
+      ca/fish_expenses_subtotal: "25000"
+      ca/fish_cca_table_claim: "0"
+      ca/fish_cca_claim_less_personal_part: "0"
+      ca/fish_cca_claim: "0"
+      ca/fish_total_expenses: "25000"
+      ca/fish_expenses_limited_to_catch_income: "4000"
+      ca/fish_total_expenses_deductible: "4000"
+      ca/fish_net_income_before_adjustments: "0"
+      ca/fish_share_of_net_income: "0"
+      ca/fish_partnership_total: "0"
+      ca/fish_partner_other_amounts_total: "0"
+      ca/fish_partner_other_amounts: "0"
+      ca/fish_net_income_after_adjustments: "0"
+      ca/fish_home_expenses_subtotal: "0"
+      ca/fish_home_expenses_business_part: "0"
+      ca/fish_home_expenses_available: "0"
+      ca/fish_home_income_limit: "0"
+      ca/fish_home_allowable_claim: "0"
+      ca/fish_home_expenses: "0"
+      ca/fish_motor_vehicle_expenses: "0.00"
+      ca/fish_closing_ucc: []
+      ca/fish_home_carry_forward: "0"
+  ca-on/return:
+    - ca/farming_income: "0"
+      ca/taxable_capital_gains: "0"
+      ca/investment_income_before_prior_years: "0"
+      ca/interest_and_other_investment_income: "0"
+      ca/income_support_benefits: "0"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "0.00"
+      ca/rrsp_contributions_available: "0"
+      ca/rrsp_deduction_maximum: "0"
+      ca/rrsp_deduction: "0"
+      ca/child_care_limit_for_children_under_seven: "0.00"
+      ca/child_care_limit_for_children_with_disability: "0.00"
+      ca/child_care_limit_for_children_seven_to_sixteen: "0.00"
+      ca/child_care_basic_limit: "0.00"
+      ca/child_care_earned_income: "0"
+      ca/child_care_earned_income_limit: "0.00"
+      ca/child_care_expenses: "0.00"
+      ca/deductions_from_total_income: "0.00"
+      ca/total_adjusted_net_capital_losses: "0.00"
+      ca/net_capital_losses_available_to_claim: "0.00"
+      ca/net_capital_losses_of_other_years: "0"
+      ca/deductions_from_net_income: "0.00"
+      ca/other_payments_deduction_after_limit: "0"
+      ca/other_payments_deduction: "0"
+      ca/basic_personal_amount: "16129.00"
+      ca/age_maximum: "9028.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_income_over_threshold: "0"
+      ca/age_reduction: "0.00"
+      ca/age_amount_before_count: "9028.00"
+      ca/age_amount: "0"
+      ca/spouse_infirmity_supplement: "0.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca/spouse_amount: "0"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/eligible_dependant_amount: "0"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount: "0"
+      ca/infirm_children_amount: "0.00"
+      ca/canada_employment_amount: "0.00"
+      ca/medical_expenses_over_threshold: "0"
+      ca/other_dependants_medical: "0"
+      ca/medical_claim: "0"
+      ca/non_refundable_credit_amounts: "16129.00"
+      ca/non_refundable_tax_credits: "2338.71"
+      ca/federal_tax_after_credits: "0"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_income_over_threshold: "0"
+      ca-on/age_reduction: "0.00"
+      ca-on/age_amount_before_count: "6223.00"
+      ca-on/age_amount: "0"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca-on/spouse_amount: "0"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/eligible_dependant_amount: "0"
+      ca-on/medical_expenses_over_threshold: "0"
+      ca-on/other_dependants_medical: "0"
+      ca-on/medical_claim: "0"
+      ca-on/non_refundable_credit_amounts: "12747.00"
+      ca-on/non_refundable_tax_credits: "643.72"
+      ca-on/ontario_surtax: "0.00"
+      ca-on/dividends_amount_a: "0.00"
+      ca-on/dividends_amount_b: "0.00"
+      ca-on/other_dividends_credit: "0.00"
+      ca-on/dividends_amount_a_less_b: "0.00"
+      ca-on/eligible_dividends_credit: "0.00"
+      ca-on/dividend_tax_credit: "0.00"
+      ca-on/dividend_credit_from_line_57: "0.00"
+      ca-on/tax_reduction_basic: "294.00"
+      ca-on/tax_reduction_for_children: "0.00"
+      ca-on/tax_reduction_for_dependants: "0.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca-on/ontario_tax_reduction: "588.00"
+      ca-on/ontario_tax_after_reduction: "0"
+      ca-on/lift_credit_before_maximum: "0.00"
+      ca-on/lift_maximum_credit: "0.00"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit: "0"
+      ca-on/ontario_tax_after_lift_credit: "0"
+      ca-on/community_food_program_credit: "0.00"
+      ca-on/ontario_tax_after_food_credit: "0"
+      ca-on/ontario_health_premium: "0.00"
+      ca-on/ontario_tax: "0.00"
+      ca/itc_recapture_at_15_percent: "0.00"
+      ca/itc_recapture_at_20_percent: "0.00"
+      ca/itc_recapture: "0.00"
+      ca/federal_tax_with_itc_recapture: "0.00"
+      ca/political_credit_before_maximum: "0.00"
+      ca/political_credit: "0.00"
+      ca/labour_sponsored_funds_credit_before_maximum: "0.00"
+      ca/labour_sponsored_funds_credit: "0.00"
+      ca/credits_against_federal_tax: "0.00"
+      ca/federal_tax_less_credits: "0"
+      ca/resp_aips_contributions_counted: "0"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca/resp_aips_reduction: "0"
+      ca/resp_aips_subject_to_tax: "0"
+      ca/resp_aips_part_a_tax: "0.00"
+      ca/resp_aips_part_b_tax: "0.00"
+      ca/resp_aips_additional_tax: "0.00"
+      ca/special_taxes: "0.00"
+      ca/net_federal_tax: "0.00"
+      ca/total_payable: "0.00"
+      ca/cwb_reduction_without_dependant: "0.00"
+      ca/cwb_reduction_with_dependant: "0.00"
+      ca-on/fertility_credit_before_maximum: "0.00"
+      ca-on/fertility_credit: "0.00"
+      ca-on/seniors_care_before_maximum: "0.00"
+      ca-on/seniors_care_amount: "0.00"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/seniors_care_income_over_base: "0"
+      ca-on/seniors_care_reduction: "0.00"
+      ca-on/seniors_care_before_claim: "0"
+      ca-on/seniors_care_credit: "0"
+      ca-on/seniors_transit_amount_paid_checked: "0.00"
+      ca-on/seniors_transit_credit: "0.00"
+      ca-on/political_credit_before_maximum: "0.00"
+      ca-on/political_credit: "0.00"
+      ca-on/flow_through_share_expenses: "0"
+      ca-on/flow_through_share_credit: "0.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/coop_education_payroll_over_threshold: "0"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_phase_out_share: "0"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/coop_education_credit: "0"
+      ca-on/ontario_credits: "0.00"
+      ca/provincial_credits: "0.00"
+      ca/educator_supplies_expenses_at_most_maximum: "0.00"
+      ca/educator_school_supply_credit: "0.00"
+      ca/net_capital_loss_balance_2000: "0.00"
+      ca/amt_applicable_rate_amount: "0.00"
+      ca/amt_other_years_losses_total: "0"
+      ca/amt_security_options_d1_total: "0"
+      ca/amt_security_options_net: "0"
+      ca/amt_basic_federal_tax: "-2338.71"
+      ca/amt_regular_net_federal_tax_payable: "0"
+      ca/amt_special_foreign_tax_credit: "0"
+      ca/amt_alternative_minimum_tax_payable: "0"
+      ca/amt_federal_tax_payable_under_minimum_tax: "0"
+      ca/amt_carryover_available_for_2026: "0.00"
+  ca/schedule_8:
+    - ca/cpp_base_contributions: "0.00"
+      ca/cpp_first_additional_contributions: "0.00"
+      ca/cpp_required_base_and_first_additional_contributions: "0.00"
+      ca/cpp_second_additional_contributions: "0.00"
+      ca/cpp_contributions_difference: "0.00"
+      ca/cpp_enhanced_contributions: "0.00"

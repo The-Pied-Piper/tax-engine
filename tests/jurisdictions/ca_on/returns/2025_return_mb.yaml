@@ -1,0 +1,78 @@
+# Return MB: a salaried musician whose musical instrument expenses (Form T777 lines 12 and 13) are at the
+# limit of Guide T4044 "Part 2 - Musical instrument expenses" (chosen figures, not a CRA example). The
+# Guide says "the amount of musical instrument expenses you can deduct cannot be more than your income
+# for the year from your employment as a musician after deducting all other employment expenses": the
+# musician's income is $12,000 and the other employment expenses $9,000, so the limit is $3,000 and the
+# instrument's maintenance and insurance of $1,200 (line 12) plus the capital cost allowance of $1,800
+# (line 13, Class 8 at 20% of a $9,000 undepreciated capital cost) are exactly $3,000. One cent more is
+# refused, never capped. Amounts are quoted decimal strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MB: an Ontario resident employed as a musician, with $12,000 of employment income as a
+  musician (T4 box 14), who pays $9,000 of other employment expenses (T777 line 8, travelling, which
+  the Guide does not name a line for), $1,200 for the maintenance and insurance of the instrument her
+  employer requires her to provide (line 12) and owns the instrument, a Class 8 property with an
+  undepreciated capital cost of $9,000 at the start of the year, on which she claims the capital cost
+  allowance of $1,800, 20% (line 13). The limit of the Guide's Part 2 is her income of $12,000 minus
+  all her other employment expenses of $9,000, which is $3,000, and lines 12 and 13 together are
+  $3,000, so both are accepted. Line 15 and line 17 are 12,000.00 and T1 line 22900 is 12,000.00.
+  Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Guide T4044 (2025), Employment Expenses (docs/cra-forms-2025/t4044-25e.txt;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt), "Part 2 - Musical
+    instrument expenses": "If you are an employed musician, your employer may require you to provide
+    your own musical instrument. If this is the case, you can deduct expenses you paid that relate
+    to the musical instrument." "the amounts you can deduct for your musical instrument are: -
+    maintenance costs - rental fees - insurance costs - capital cost allowance (if you own the
+    instrument)" "Enter the amount you can deduct on the "Musical instrument expenses" line and the
+    "Capital cost allowance for musical instruments" line of Form T777 as appropriate. However, the
+    amount of musical instrument expenses you can deduct cannot be more than your income for the
+    year from your employment as a musician after deducting all other employment expenses."
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses (docs/cra-forms-2025/t777-25e.pdf, the
+    only published copy; https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf):
+    lines 8 "Other expenses (specify)", 12 "Musical instrument expenses", 13 "Capital cost allowance
+    for musical instruments (see Part A on page 4)", Part A Class 8 ("Class 8 includes musical
+    instruments", note (5)), line 17 "Total expenses".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "12000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "12000"
+  ca/t2204_insurable_earnings: "12000"
+  ca/t2204_premiums_deducted: "196.80"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "505.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/t777_other_expenses: "9000"
+  ca/t777_musical_instrument_expenses: "1200"
+  ca/t777_musician_employment_income: "12000"
+  ca/t777_class_8_rows:
+    - ca/cca_class_number: "8"
+      ca/cca_ucc_at_start: "9000"
+      ca/cca_additions: "0"
+      ca/cca_aiip_additions: "0"
+      ca/cca_riip_additions: "0"
+      ca/cca_proceeds: "0"
+      ca/cca_diep_proceeds: "0"
+      ca/cca_claimed: "1800"
+      ca/cca_no_property_left: "0"
+      ca/cca_change_in_use: "0"
+      ca/cca_change_in_use_fair_market_value: "0"
+expected:
+  ca/t777:
+    - ca/t777_line_13: "1800"
+      ca/t777_musical_instrument_expenses_maximum_deduction: "3000.00"
+      ca/t777_musical_instrument_expenses_checked: "3000"
+      ca/t777_line_15: "12000.00"
+      ca/t777_line_17: "12000.00"
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "-85.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "12000"

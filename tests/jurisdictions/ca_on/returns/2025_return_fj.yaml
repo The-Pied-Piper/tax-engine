@@ -1,0 +1,524 @@
+# Return FJ: the credit and deduction lines for children and the people a filer supports that no
+# other worked return sets: the child care limits for children under 7 and with a disability (Form
+# T778), the Canada caregiver amount for infirm children (line 30500, Schedule 5), the search and
+# rescue volunteers' amount (line 31240), the home accessibility expenses claimed by others (line
+# 31285, Federal Worksheet D1), the spouse's infirm children and disability amounts transferred on
+# Schedule 2, and the top-up tax credit (Federal Worksheet D1, line 34990). No CRA example exists
+# for these lines, so every figure is a chosen figure, worked out by hand from the form text.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A 2025 Ontario resident (chosen: the form names no province of residence), resident in Canada
+  throughout 2025, aged 18 or older at the end of 2025, with employment income of 60,000.00
+  (line 10100) and other income of 40,000.00 (line 13000), chosen figures, and income tax deducted
+  of 8,000.00 (chosen). The CPP base contributions are 4.95% x (60,000 - 3,500) = 2,796.75 and the
+  first additional 1% x 56,500 = 565.00 (the T4 total 3,361.75), the EI premiums 1.64% x 60,000 =
+  984.00. Total income is 60,000 + 40,000 = 100,000.00.
+  Form T778 (child care expenses, line 21400): the filer has 2 children born in 2019 or later whom
+  the disability amount cannot be claimed for (chosen), and 1 child whom the disability amount can
+  be claimed for (chosen), with child care expenses paid of 30,000.00 (chosen). Line 1 is 2 x
+  8,000 = 16,000.00 (the limit for children under 7), line 2 is 1 x 11,000 = 11,000.00 (the limit
+  for children with a disability), line 3 is 0 x 5,000 = 0 and line 4 is 16,000 + 11,000 + 0 =
+  27,000.00. Line 5 is the 30,000.00 paid and line 6 is the earned income, the employment income
+  of 60,000, times two-thirds = 40,000.00. Line 7 is the least of line 4 (27,000.00), line 5
+  (30,000.00) and line 6 (40,000.00): 27,000.00, the allowable deduction (line 21400).
+  Total deductions from total income are 27,000.00 + 565.00 (the enhanced CPP contributions, the
+  first additional) = 27,565.00, so net income and taxable income are 100,000 - 27,565 =
+  72,435.00. The federal tax on it (T1 lines 70 to 76, column 2, since it is above 57,375) is line
+  72, 72,435 - 57,375 = 15,060.00, line 74, 15,060 x 20.5% = 3,087.30, and line 75, the printed
+  8,319.38, so line 76 is 3,087.30 + 8,319.38 = 11,406.68.
+  Federal credit amounts. Line 30500, the Canada caregiver amount for infirm children under 18:
+  the filer claims 1 infirm child (chosen, the child with the disability), 1 x 2,687 = 2,687.00.
+  Line 31240, the search and rescue volunteers' amount: the 200 hours condition is met (chosen),
+  1 x 6,000 = 6,000.00; no volunteer firefighters' amount is claimed ("but not both"), so the
+  volunteers' total is 6,000.00. Line 31285, Federal Worksheet D1: line 1, eligible expenses,
+  25,000 (chosen); line 2 is the lesser of 25,000 and 20,000 = 20,000.00; line 3, the amount
+  claimed by other qualifying individuals living in the same dwelling, 5,000 (chosen); line 4 is
+  20,000 - 5,000 = 15,000.00.
+  Schedule 2 (amounts transferred from the spouse, all figures from another person's return and
+  chosen): the spouse's line 30100 is 0, line 30500 is 2,687 (an infirm child), line 31400 is 0,
+  line 31600 (disability amount) is 10,138 and the designated tuition is 0, so line 6 is
+  2,687 + 10,138 = 12,825.00. Their taxable income (their line 26000) 15,000 is at or below 57,375,
+  so line 7 is 15,000.00; line 8 (their line 30000) is 16,129, line 9 (their line 96) 0 and line 10
+  (their line 32300) 0, so line 11 is 16,129.00 and line 12 is 15,000 - 16,129, not below zero:
+  0.00. Line 13 is 12,825 - 0 = 12,825.00, and as the filer was not separated for 90 days or more
+  including December 31, 2025 (the count is 1), line 32600 is 12,825.00.
+  The federal credit amounts up to T1 line 100 (line 101) are 16,129.00 (basic personal amount,
+  net income at or below 177,882) + 2,796.75 (CPP base) + 984.00 (EI) + 1,471.00 (Canada
+  employment amount) + 2,687.00 + 6,000.00 + 15,000.00 = 45,067.75; with line 32600 the total of
+  the credit amounts (line 33500) is 45,067.75 + 12,825.00 = 57,892.75, and line 33800 is 14.5% of
+  it = 8,394.44875, rounded half-up to the cent: 8,394.45.
+  Top-up tax credit (Federal Worksheet D1, line 34990): line 1 is 8,394.45, line 2 (Schedule 9
+  line 22) 0, line 3 is 8,394.45, line 4 is 8,319.38, line 5 is 8,394.45 - 8,319.38 = 75.07,
+  line 6 is 3.45% and line 7 is 75.07 x 3.45% = 2.589915, rounded half-up to the cent: 2.59.
+  The federal non-refundable tax credits (line 35000) are 8,394.45 + 0 + 2.59 = 8,397.04 and
+  the federal tax after credits is 11,406.68 - 8,397.04 = 3,009.64.
+  Ontario (ON428): the tax on 72,435.00 is the printed 2,670.74 on the first 52,886 plus 9.15% x
+  (72,435 - 52,886) = 1,788.7335, 4,459.4735, rounded half-up to the cent: 4,459.47. The Ontario
+  credit amounts are 12,747 (basic personal amount) + 2,796.75 + 984.00 = 16,527.75, times 5.05% =
+  834.651375, rounded half-up to the cent: 834.65, which leaves 4,459.47 - 834.65 = 3,624.82. The
+  Ontario amounts transferred from the spouse (Schedule ON(S2)) are 0, and the Ontario tax is
+  below the surtax threshold. The health premium on a taxable income of 72,435.00 (ON428 chart, row 8:
+  more than 72,000 but not more than 72,600, minus 72,000, times 25%, plus 600) is
+  (72,435 - 72,000) x 25% + 600 = 708.75, and the LIFT credit is 0 (875 less 5% x (72,435 - 32,500) is below
+  zero), so the Ontario tax is 3,624.82 + 708.75 = 4,333.57. The total payable is 3,009.64 +
+  4,333.57 = 7,343.21. The total credits (line 48200) are the 8,000.00 of tax deducted plus the
+  Ontario CARE credit of 7,830.00, 15,830.00 (the CARE credit is the engine's figure: 29% x
+  27,000, labelled engine only below), so the refund is 15,830.00 - 7,343.21 = 8,486.79.
+  The spouse of Schedule 2 is a separate chosen scenario: the spouse's infirm child is a different
+  child from the filer's, the filer claims the child care (T778 line 8 not triggered), the Ontario CARE
+  family income and the Ontario S2 transfer (0) ignore the spouse, a chosen simplification as in
+  Return AT.
+  Every line below the "Engine only" comment, other than unchanged carries of the figures above, is the
+  engine's and not a hand figure; the groups are: the Ontario CARE
+  credit and its rate, the alternative minimum tax lines (Form T691 and Schedule 1 of ON428), the
+  Canada workers benefit, the refundable medical expense supplement, the other payments worksheet,
+  the 2000-2025 net capital loss chart and the lines that carry a dataset's printed figure
+  unchanged. Not triggered: the filer's own disability amount, the volunteer firefighters' amount,
+  the medical expenses, the donations, the CWB and the Ontario spouse amounts.
+sources:
+  - >-
+    CRA, Schedule 5 2025, "Line 30500 - Canada caregiver amount for infirm children under 18 years
+    of age": "You can claim $2,687 for each of your (or your spouse's or common-law partner's)
+    children who meet all of the following conditions. The child:" "- was under 18 years of age at
+    the end of the year" "- had a mental or physical infirmity and will likely continue to be
+    dependent on others for a long and continuous period of indefinite duration"; T1 2025
+    (5006-R) line 83 and line 30500 "Number of children you are claiming this amount for Line
+    30499" "multiplied by $2,687" (docs/cra-forms-2025/5000-s5-25e.txt, 5006-r-25e.txt)
+  - >-
+    CRA, T1 guide 2025, "Line 31240 - Search and rescue volunteers' amount": "You can claim $6,000
+    for the volunteer firefighters' amount (VFA) or search and rescue volunteers' amount (SRVA),
+    but not both, if you meet all of the following conditions:" "- You were a volunteer
+    firefighter or a search and rescue volunteer during the year." "- You completed at least 200
+    hours of eligible volunteer firefighting services or eligible search and rescue volunteer
+    services in the year." (docs/cra-forms-2025/5000-g-25e.txt)
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1), "Line 31285 - Home accessibility expenses": "Line 1:
+    Total eligible expenses ="; "Line 2: Enter whichever is less: amount from line 1 or $20,000.";
+    "Line 3: Enter the amount claimed by other qualifying individuals and eligible individuals
+    living in the same eligible dwelling from line 31285 of their return."; "Line 4: Line 2 minus
+    line 3 Enter this amount on line 31285 of your return. Home accessibility expenses ="
+    (docs/cra-forms-2025/5000-d1-25e.txt). The worksheet prints no "if negative, enter 0" on line
+    4; the amount here is not negative.
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1), "Line 34990 - Top-up tax credit": "Line 1: Amount from
+    line 33800 of your return"; "Line 2: Amount from line 22 of your Schedule 9"; "Line 3: Line 1
+    plus line 2 ="; "Line 4: 8,319.38"; "Line 5: Line 3 minus line 4 (if negative, enter "0") =";
+    "Line 6: Applicable rate 3.45%"; "Line 7: Line 5 multiplied by the percentage from line 6 Enter
+    this amount on line 34990 of your return. =" (docs/cra-forms-2025/5000-d1-25e.txt)
+  - >-
+    CRA, Schedule 2 (5000-S2, 2025): "Line 2 and line 35300: Enter the amount from line 30500 of
+    their return."; "Line 4 and line 35700: Enter the amount from line 31600 of their return.
+    (Note 1)"; "Line 6: Add lines 1 to 5. ="; "Line 7: Enter the amount from line 26000 of their
+    return on line 7 if it is $57,375 or less. If it is more than $57,375, enter the result of the
+    following calculation: amount from line 76 of their return divided by 14.5% ="; "Line 8:
+    Amount from line 30000 of their return"; "Line 9: Amount from line 96 of their return"; "Line
+    10: Amount from line 32300 of their return"; "Line 11: Add lines 8 to 10. ="; "Line 12 and line
+    36100: Line 7 minus line 11 (if negative, enter "0") ="; "Line 13: Line 6 minus line 12 (if
+    negative, enter "0") Enter this amount on line 32600 of your return." (docs/cra-forms-2025/
+    5000-s2-25e.txt)
+  - >-
+    CRA, Form T778 2025 (not in docs/cra-forms-2025; the lines are quoted as Return Y and the
+    manifest quote them): Part B line 1 "Number of eligible children born in 2019 or later whom
+    the disability amount cannot be claimed for" "multiplied by $8,000"; line 2 (line 67960)
+    "Number of eligible children born in 2025 or earlier whom the disability amount can be
+    claimed for" "multiplied by $11,000"; line 3 "multiplied by $5,000"; line 4 "Add lines 1 to
+    3."; line 5 "Enter the amount from line 67950."; line 6 "Enter your earned income."
+    "multiplied by two-thirds"; line 7 "Enter whichever amount is the least: line 4, line 5 or
+    line 6."; line 9 "Line 7 minus line 8. ... enter this amount on line 21400 of your return.
+    Allowable deduction". To be confirmed from the form when it is added to the repository.
+  - >-
+    CRA, T1 General 2025 (5006-R) and Form ON428 2025 (5006-C), as Returns Y and AT cite them for
+    the lines 101 to 118 and ON428 lines of this return (docs/cra-forms-2025/5006-r-25e.txt,
+    5006-c-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/other_income: "40000"
+  ca/income_tax_deducted: "8000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/children_under_seven: "2"
+  ca/children_with_disability: "1"
+  ca/child_care_expenses_paid: "30000"
+  ca/infirm_children: "1"
+  ca/search_and_rescue_conditions_met: "1"
+  ca/home_accessibility_expenses: "25000"
+  ca/home_accessibility_claimed_by_others: "5000"
+  ca/spouse_return_taxable_income: "15000"
+  ca/spouse_return_basic_personal_amount: "16129"
+  ca/spouse_return_infirm_children_amount: "2687"
+  ca/spouse_return_disability_amount: "10138"
+  ca/spouse_not_separated_90_days: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/spouse_income_for_transfer: "15000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/home_accessibility_line_2: "20000.00"
+      ca/top_up_threshold: "8319.38"
+      ca/child_care_limit_for_children_under_seven: "16000.00"
+      ca/child_care_limit_for_children_with_disability: "11000.00"
+      ca/infirm_children_amount: "2687.00"
+      ca/search_and_rescue_credit: "6000.00"
+      ca/home_accessibility_credit: "15000.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/child_care_basic_limit: "27000.00"
+      ca/child_care_earned_income: "60000"
+      ca/child_care_earned_income_limit: "40000.00"
+      ca/child_care_expenses: "27000.00"
+      ca/cpp_base_contributions_on_return: "2796.75"
+      ca/cpp_enhanced_contributions_on_return: "565.00"
+      ca/spouse_credits_used: "16129"
+      ca/spouse_transferable_amounts: "12825"
+      ca/spouse_unused_amounts: "12825"
+      ca/volunteer_credits_claimed: "6000.00"
+      ca/volunteer_credits_checked: "6000.00"
+      ca/total_income: "100000.00"
+      ca/amounts_transferred_from_spouse: "12825"
+      ca/deductions_from_total_income: "27565.00"
+      ca/net_income: "72435.00"
+      ca/taxable_income: "72435.00"
+      ca-on/ontario_basic_tax: "4459.47"
+      ca/federal_basic_tax: "11406.68"
+      ca/basic_personal_amount: "16129.00"
+      ca-on/ontario_health_premium: "708.75"
+      ca/ei_premiums: "984.00"
+      ca-on/non_refundable_credit_amounts: "16527.75"
+      ca-on/credit_amounts_at_credit_rate: "834.65"
+      ca-on/non_refundable_tax_credits: "834.65"
+      ca-on/ontario_tax_after_credits: "3624.82"
+      ca/credit_amounts_subtotal: "45067.75"
+      ca/non_refundable_credit_amounts: "57892.75"
+      ca/credit_amounts_at_credit_rate: "8394.45"
+      ca/top_up_credits_base: "8394.45"
+      ca/top_up_excess: "75.07"
+      ca/top_up_tax_credit: "2.59"
+      ca/non_refundable_tax_credits: "8397.04"
+      ca/federal_tax_after_credits: "3009.64"
+      ca-on/ontario_tax: "4333.57"
+      ca/total_payable: "7343.21"
+      ca/total_credits: "15830.00"
+      ca/refund_or_balance_owing: "-8486.79"
+      ca/refund: "8486.79"
+      ca-on/net_refund: "8486.79"
+      # Engine only (not a hand figure): the lines below are the engine's, described in the description.
+      ca-on/spouse_income_for_transfer: "15000.00"
+      ca-on/flow_through_share_claimable: "1"
+      ca-on/tax_otherwise_payable_reduction_claimable: "1"
+      ca/cpp_additional_maximum_pensionable_earnings: "81200.00"
+      ca/cpp_basic_exemption: "3500.00"
+      ca/cpp_maximum_pensionable_earnings: "71300.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/age_income_threshold: "46330.00"
+      ca-on/age_maximum: "6223.00"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/coop_education_full_share: "1.00"
+      ca-on/coop_education_payroll_range: "200000.00"
+      ca-on/coop_education_payroll_threshold: "400000.00"
+      ca-on/disability_self_base_amount: "10298.00"
+      ca-on/disability_self_care_threshold: "3518.00"
+      ca-on/disability_self_supplement_maximum: "6007.00"
+      ca-on/eligible_dependant_base: "11905.00"
+      ca-on/lift_family_income_threshold: "65000.00"
+      ca-on/lift_individual_income_threshold: "32500.00"
+      ca-on/political_credit_column_2_line_2: "500.05"
+      ca-on/political_credit_column_2_line_6: "375.03"
+      ca-on/political_credit_column_3_line_2: "1666.82"
+      ca-on/political_credit_column_3_line_6: "958.41"
+      ca-on/seniors_care_base_amount: "35000.00"
+      ca-on/spouse_base: "11905.00"
+      ca-on/spouse_return_ontario_disability_amount_maximum: "16305.00"
+      ca-on/spouse_return_ontario_pension_income_amount_maximum: "1762.00"
+      ca-on/tax_reduction_basic: "294.00"
+      ca/age_income_threshold: "45522.00"
+      ca/age_maximum: "9028.00"
+      ca/amt_basic_exemption: "177882.00"
+      ca/chart_2016_part_1_amount_a: "412088.00"
+      ca/chart_2016_part_2_amount_a: "500000.00"
+      ca/chart_2017_part_1_amount_a: "417858.00"
+      ca/chart_2017_part_2_amount_a: "500000.00"
+      ca/chart_2018_part_1_amount_a: "424126.00"
+      ca/chart_2018_part_2_amount_a: "500000.00"
+      ca/chart_2019_part_1_amount_a: "433456.00"
+      ca/chart_2019_part_2_amount_a: "500000.00"
+      ca/chart_2020_part_1_amount_a: "441692.00"
+      ca/chart_2020_part_2_amount_a: "500000.00"
+      ca/chart_2021_part_1_amount_a: "446109.00"
+      ca/chart_2021_part_2_amount_a: "500000.00"
+      ca/chart_2022_part_1_amount_a: "456815.00"
+      ca/chart_2022_part_2_amount_a: "500000.00"
+      ca/chart_2023_part_1_amount_a: "485595.00"
+      ca/chart_2023_part_2_amount_a: "500000.00"
+      ca/chart_2024_period_1_amount_a: "508418.00"
+      ca/chart_2024_period_2_amount_a: "625000.00"
+      ca/chart_2025_part_1_amount_a: "522145.00"
+      ca/chart_2025_part_2_amount_a: "625000.00"
+      ca/chart_2_numerator_one: "1.00"
+      ca/disability_self_base_amount: "10138.00"
+      ca/disability_self_care_threshold: "3464.00"
+      ca/disability_self_supplement_maximum: "5914.00"
+      ca/donation_first_tier_maximum: "200.00"
+      ca/donation_high_income_threshold: "253414.00"
+      ca/ei_maximum_insurable_earnings: "65700.00"
+      ca/fhsa_annual_amount: "8000.00"
+      ca/fhsa_annual_amount_for_2024: "8000.00"
+      ca/fhsa_lifetime_limit: "40000.00"
+      ca/home_buyers_maximum: "10000.00"
+      ca/medical_supplement_income_threshold: "33294.00"
+      ca/net_capital_loss_numerator_one_2000: "1.00"
+      ca/oas_benefits_base_amount: "93343.00"
+      ca/political_credit_column_2_line_2: "400.00"
+      ca/political_credit_column_2_line_6: "300.00"
+      ca/political_credit_column_3_line_2: "750.00"
+      ca/political_credit_column_3_line_6: "475.00"
+      ca/political_credit_shortcut_amount: "650.00"
+      ca/political_credit_shortcut_threshold: "1275.00"
+      ca/resp_aips_lifetime_limit: "50000.00"
+      ca/spouse_caregiver_base: "28798.00"
+      ca/spouse_return_age_amount_maximum: "9028.00"
+      ca/spouse_return_basic_personal_amount_maximum: "16129.00"
+      ca/spouse_return_basic_personal_amount_checked: "16129"
+      ca/spouse_return_pension_income_amount_maximum: "2000.00"
+      ca/t2204_exemption: "2000.00"
+      ca/t2204_line_1_count: "1"
+      ca/volunteer_amount_maximum: "6000.00"
+      ca/schedule_8_cpp_base_contributions_on_return: "2796.75"
+      ca/schedule_8_cpp_enhanced_contributions_on_return: "565.00"
+      ca/fhsa_lifetime_limit_less_deductions: "40000.00"
+      ca/resp_aips_limit_remaining: "50000.00"
+      ca-on/coop_education_remaining_share: "1.00"
+      ca-on/disability_self_supplement: "6007.00"
+      ca-on/eligible_dependant_amount_before_maximum: "11905.00"
+      ca-on/eligible_dependant_amount_before_count: "10823.00"
+      ca-on/spouse_amount_before_maximum: "11905.00"
+      ca-on/spouse_amount_before_count: "10823.00"
+      ca/dependant_caregiver_before_maximum: "28798.00"
+      ca/dependant_caregiver_limit: "8601.00"
+      ca/disability_self_supplement: "5914.00"
+      ca/ei_insurable_earnings_remaining: "65700.00"
+      ca/spouse_caregiver_before_maximum: "28798.00"
+      ca/spouse_caregiver_limit: "8601.00"
+      ca-on/disability_self_worksheet_amount: "16305.00"
+      ca-on/disability_amount_for_self_if_eligible: "10298.00"
+      ca-on/lift_employment_income: "60000"
+      ca-on/lift_credit_before_maximum: "3030.00"
+      ca-on/lift_maximum_credit: "875.00"
+      ca-on/political_credit_column_2_line_7: "375.03"
+      ca-on/political_credit_column_3_line_7: "958.41"
+      ca-on/spouse_adjusted_taxable_income: "15000.00"
+      ca/canada_employment_amount_income: "60000"
+      ca/amt_losses_and_deductions_subtotal: "27000.00"
+      ca/disability_self_worksheet_amount: "16052.00"
+      ca/disability_amount_for_self_if_eligible: "10138.00"
+      ca/fhsa_annual_amount_for_2024_with_carryforward: "8000.00"
+      ca/fhsa_annual_amount_with_carryforward: "8000.00"
+      ca/fhsa_lifetime_limit_less_deductions_and_transfers: "40000.00"
+      ca/fhsa_annual_amount_after_transfers: "8000.00"
+      ca/medical_supplement_employment_income: "60000"
+      ca/medical_supplement_employment_income_less_wage_loss: "60000"
+      ca/medical_supplement_employment_working_income: "60000"
+      ca/political_credit_column_2_line_7: "300.00"
+      ca/political_credit_column_3_line_7: "475.00"
+      ca/t2204_line_9: "984.00"
+      ca/working_income: "60000"
+      ca/chart_2016_part_1_amount_c: "412088.00"
+      ca/chart_2016_part_2_amount_c: "500000.00"
+      ca/chart_2016_part_2_amount_e: "500000.00"
+      ca/medical_supplement_working_income: "60000"
+      ca/chart_2017_part_1_amount_c: "417858.00"
+      ca/chart_2017_part_1_amount_e: "417858.00"
+      ca/chart_2017_part_2_amount_c: "500000.00"
+      ca/chart_2017_part_2_amount_e: "500000.00"
+      ca/chart_2018_part_1_amount_c: "424126.00"
+      ca/chart_2018_part_1_amount_e: "424126.00"
+      ca/chart_2018_part_2_amount_c: "500000.00"
+      ca/chart_2018_part_2_amount_e: "500000.00"
+      ca/chart_2019_part_1_amount_c: "433456.00"
+      ca/chart_2019_part_1_amount_e: "433456.00"
+      ca/chart_2019_part_2_amount_c: "500000.00"
+      ca/chart_2019_part_2_amount_e: "500000.00"
+      ca/chart_2020_part_1_amount_c: "441692.00"
+      ca/chart_2020_part_1_amount_e: "441692.00"
+      ca/chart_2020_part_2_amount_c: "500000.00"
+      ca/chart_2020_part_2_amount_e: "500000.00"
+      ca/chart_2021_part_1_amount_c: "446109.00"
+      ca/chart_2021_part_1_amount_e: "446109.00"
+      ca/chart_2021_part_2_amount_c: "500000.00"
+      ca/chart_2021_part_2_amount_e: "500000.00"
+      ca/chart_2022_part_1_amount_c: "456815.00"
+      ca/chart_2022_part_1_amount_e: "456815.00"
+      ca/chart_2022_part_2_amount_c: "500000.00"
+      ca/chart_2022_part_2_amount_e: "500000.00"
+      ca/chart_2023_part_1_amount_c: "485595.00"
+      ca/chart_2023_part_1_amount_e: "485595.00"
+      ca/chart_2023_part_2_amount_c: "500000.00"
+      ca/chart_2023_part_2_amount_e: "500000.00"
+      ca/chart_2024_period_1_amount_c: "508418.00"
+      ca/chart_2024_period_1_amount_e: "508418.00"
+      ca/chart_2024_period_2_amount_c: "625000.00"
+      ca/chart_2024_period_2_amount_e: "625000.00"
+      ca/chart_2025_part_1_amount_c: "522145.00"
+      ca/chart_2025_part_1_amount_e: "522145.00"
+      ca/chart_2025_part_2_amount_c: "625000.00"
+      ca/chart_2025_part_2_amount_e: "625000.00"
+      ca/cwb_before_reduction_with_dependant: "2813.00"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/net_income_before_adjustments: "72435.00"
+      ca/social_benefits_line_6: "72435.00"
+      ca/social_benefits_line_11: "72435.00"
+      ca/social_benefits_line_15: "72435.00"
+      ca/net_income_before_adjustments_not_below_zero: "72435.00"
+      ca/net_income_less_uccb_and_rdsp_income: "72435.00"
+      ca/other_payments_limit_income: "72435.00"
+      ca/t2204_line_6: "984.00"
+      ca/foreign_tax_credit_net_income_before_split_income: "72435.00"
+      ca/net_income_signed: "72435.00"
+      ca-on/tax_reduction_amounts_claimable: "1"
+      ca-on/medical_net_income_share: "2173.05"
+      ca/donation_limit_on_net_income: "54326.25"
+      ca/medical_net_income_share: "2173.05"
+      ca/residency_net_income_limit: "14487.00"
+      ca-on/medical_threshold: "2173.05"
+      ca/medical_threshold: "2173.05"
+      ca/donation_limit_with_capital_gifts: "54326.25"
+      ca/charitable_donations_limit: "54326.25"
+      ca/foreign_tax_credit_net_income_with_split_income: "72435.00"
+      ca/foreign_tax_credit_net_income: "72435.00"
+      ca/amt_deductions_total: "27565.00"
+      ca/amt_adjustments_before_rate_total: "27565.00"
+      ca/amt_applicable_rate_amount: "13782.50"
+      ca-on/unused_tuition_income_cap: "88306.34"
+      ca/tuition_income_base: "78666.76"
+      ca-on/health_premium_income: "72435.00"
+      ca/amt_part_1_subtotal: "72435.00"
+      ca/amt_adjusted_income_with_gains: "72435.00"
+      ca/amt_adjusted_income_with_security_options: "72435.00"
+      ca/amt_security_options_and_losses_total: "72435.00"
+      ca/amt_adjustments_after_rate_total: "86217.50"
+      ca/amt_adjusted_taxable_income: "86217.50"
+      ca/federal_tax_with_split_income: "11406.68"
+      ca/logging_credit_base: "99435.00"
+      ca/logging_credit_cap: "6629.03"
+      ca/tosi_adjusted_net_income: "72435.00"
+      ca-on/lift_net_income_and_repayments: "72435.00"
+      ca-on/lift_adjusted_net_income: "72435.00"
+      ca-on/lift_excess_over_individual_threshold: "39935.00"
+      ca-on/lift_family_net_income: "72435.00"
+      ca-on/lift_excess_over_family_threshold: "7435.00"
+      ca-on/lift_greater_excess: "39935.00"
+      ca-on/lift_family_reduction: "1996.75"
+      ca/medical_supplement_column_1_line_3: "72435.00"
+      ca/medical_supplement_column_1_line_5: "72435.00"
+      ca/medical_supplement_line_6: "72435.00"
+      ca/medical_supplement_line_8: "39141.00"
+      ca/medical_supplement_line_15: "1957.05"
+      ca/tuition_income_with_tosi: "78666.76"
+      ca-on/care_adjusted_income: "99435.00"
+      ca-on/care_family_adjusted_income: "99435.00"
+      ca-on/care_credit_percentage: "0.29"
+      ca-on/care_credit: "7830.00"
+      ca/tosi_adjusted_net_income_not_below_zero: "72435.00"
+      ca-on/age_income_over_threshold: "26105.00"
+      ca-on/age_reduction: "3915.75"
+      ca-on/age_amount_before_count: "2307.25"
+      ca/age_income_over_threshold: "26913.00"
+      ca/age_reduction: "4036.95"
+      ca/age_amount_before_count: "4991.05"
+      ca-on/seniors_care_family_net_income: "72435.00"
+      ca-on/seniors_care_income_over_base: "37435.00"
+      ca-on/seniors_care_reduction: "1871.75"
+      ca/adjusted_family_net_income: "72435.00"
+      ca/eligible_dependant_amount_basis: "16129.00"
+      ca/eligible_dependant_amount_before_count: "16129.00"
+      ca/spouse_amount_basis: "16129.00"
+      ca/spouse_amount_before_count: "16129.00"
+      ca-on/lift_reduction: "1996.75"
+      ca/cwb_reduction_with_dependant: "6269.40"
+      ca/cwb_reduction_without_dependant: "6837.00"
+      ca-on/ontario_credits_subtotal: "7830.00"
+      ca-on/ontario_credits: "7830.00"
+      ca/provincial_credits: "7830.00"
+      ca-on/tax_reduction_amounts: "294.00"
+      ca/dependant_caregiver_amount_before_count: "8601.00"
+      ca/spouse_caregiver_amount_before_count: "8601.00"
+      ca/t2204_line_1: "60000"
+      ca/t2204_line_10: "984.00"
+      ca/t2204_line_12: "984.00"
+      ca/t2204_line_1_plus_2: "60000"
+      ca/t2204_line_3: "60000.00"
+      ca/t2204_line_7: "58000.00"
+      ca/t2204_line_16: "984.00"
+      ca-on/credit_amounts_through_disability_transfer: "16527.75"
+      ca-on/unused_tuition_room: "71778.59"
+      ca-on/ontario_tax_before_dividend_credit: "3624.82"
+      ca-on/ontario_tax_less_dividend_credit: "3624.82"
+      ca-on/ontario_tax_with_split_income: "3624.82"
+      ca-on/ontario_tax_after_minimum_tax_carryover: "3624.82"
+      ca-on/ontario_surtax_base: "3624.82"
+      ca-on/worksheet_on428_line_2: "3624.82"
+      ca/tuition_income_less_credits: "33599.01"
+      ca/tuition_income_remaining: "33599.01"
+      ca/amt_non_refundable_credits_adjustment: "4197.23"
+      ca/amt_credits_adjustments_total: "4197.23"
+      ca/amt_credits_total: "8397.04"
+      ca/amt_tax_payable_before_minimum_tax_carryover: "3009.64"
+      ca/amt_basic_federal_tax: "3009.64"
+      ca/amt_federal_surtax_at_48_percent: "1444.63"
+      ca/amt_basic_federal_tax_less_split_income_tax: "3009.64"
+      ca/amt_greater_of_basic_tax_and_minimum_amount: "3009.64"
+      ca/amt_federal_tax_under_minimum_tax: "3009.64"
+      ca/amt_part_6_surtax_at_48_percent: "1444.63"
+      ca/amt_part_7_basic_tax_with_recapture: "3009.64"
+      ca/amt_tax_payable_with_itc_recapture: "3009.64"
+      ca/credits_against_basic_federal_tax: "8397.04"
+      ca/t2203_line_6: "3009.64"
+      ca/basic_federal_tax_with_dividend_credit: "3009.64"
+      ca-on/ontario_tax_with_surtax: "3624.82"
+      ca-on/ontario_tax_after_dividend_credit: "3624.82"
+      ca-on/tax_otherwise_payable_line_71: "3624.82"
+      ca-on/tax_otherwise_payable_line_73: "3624.82"
+      ca-on/tax_otherwise_payable: "3624.82"
+      ca/amt_federal_tax_with_surtax_and_recapture: "3009.64"
+      ca/basic_federal_tax_with_dividend_credit_and_surtax: "3009.64"
+      ca/foreign_tax_credit_basic_federal_tax: "3009.64"
+      ca/federal_tax_with_surtax: "3009.64"
+      ca/federal_tax_less_foreign_tax_credit: "3009.64"
+      ca/amt_federal_tax_payable: "3009.64"
+      ca/federal_tax_with_itc_recapture: "3009.64"
+      ca/federal_tax: "3009.64"
+      ca/itc_part_d_amount_9: "3009.64"
+      ca/itc_amount_h: "3009.64"
+      ca/amt_regular_net_federal_tax_payable: "3009.64"
+      ca/amt_regular_net_tax_less_surtax: "3009.64"
+      ca/itc_part_d_amount_13: "3009.64"
+      ca/itc_amount_j: "3009.64"
+      ca-on/worksheet_on428_line_3: "3624.82"
+      ca/federal_tax_less_credits: "3009.64"
+      ca/amt_part_7_tax_less_credits: "3009.64"
+      ca/amt_part_7_tax_less_credits_plus_share: "3009.64"
+      ca/amt_tax_payable_after_credits: "3009.64"
+      ca/amt_maximum_carryover_applied: "3009.64"
+      ca-on/tax_reduction_claimable: "1"
+      ca-on/ontario_tax_before_reduction: "3624.82"
+      ca-on/ontario_tax_after_reduction: "3624.82"
+      ca-on/ontario_tax_after_foreign_tax_credit: "3624.82"
+      ca-on/ontario_tax_after_lift_credit: "3624.82"
+      ca-on/ontario_tax_after_food_credit: "3624.82"
+      ca-on/split_income_line_52: "3624.82"
+      ca/federal_tax_line_41700: "3009.64"
+      ca/split_income_line_29: "3009.64"
+      ca/split_income_line_30: "3009.64"
+      ca/net_federal_tax: "3009.64"
+      ca-on/refund_before_donation: "8486.79"

@@ -1,0 +1,116 @@
+# Return GI: a simple Ontario filer with other income only, who applies for each Form ON-BEN
+# credit and benefit option except the separate-residences tick (five tick boxes set, lines
+# 61020, 61040, 61060, 61070 and 61140; line 61080 is left unticked because the filer has no
+# spouse) and sets four Part A amounts (lines 61100, 61120, 61210 and 61230). Form ON-BEN
+# computes nothing: its ten lines are carried as entered, and no line of the return is computed
+# from them. The tick boxes and amounts are chosen figures, not derived from the filer's
+# circumstances, and the form's conditions for some of them are not met by the inputs (see the
+# description): they are set here to exercise every line. The return's own lines are computed
+# from other income alone (no employment income, no CPP or EI contributions, no deductions), so
+# the hand figures are the income lines, and the tax lines are the engine's, from a run.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 (Ontario residency is chosen: the forms name no
+  province of residence), resident in Canada throughout 2025 and aged 18 or older at the end of
+  2025 (chosen figures), with no spouse or common-law partner, no employment income and 12 CPP
+  and 12 QPP months (chosen). Her only income is other income (line 13000) of 40,000.00, a
+  chosen figure. Total income (line 15000) is 40,000.00, with no deductions from total income
+  (line 23300 is 0), so net income before adjustments (line 23400) is 40,000.00. There is no
+  net federal supplement, no OAS, no EI benefit and no capital gain or loss, and there are no
+  deductions from net income (line 23600 is 40,000.00 and taxable income, line 26000, is
+  40,000.00). Income tax deducted is a chosen 6,000.00.
+  Form ON-BEN (Application for the 2026 Ontario Trillium Benefit and Ontario Senior
+  Homeowners' Property Tax Grant), Part A and the tick boxes, is set as follows (chosen
+  figures): line 61020 (OEPTC) 1; line 61040 (NOEC) 1; line 61060 (delayed single OTB payment)
+  1; line 61070 (OSHPTG) 1; line 61080 (separate residences for medical reasons) 0, since the filer has no
+  spouse or common-law partner; line 61140 (designated student residence) 1; line 61100 (rent
+  paid) 9,600.00; line 61120 (property tax paid) 2,400.00; line 61210 (home energy costs on a reserve) 1,800.00; line 61230 (public
+  long-term care accommodation) 4,800.00. The form computes nothing, so each line is carried as
+  entered and the return's own lines are unchanged by them: the run with the ten lines at 0
+  gives the same tax and refund figures as this return. Conditions the inputs do not establish:
+  the OSHPTG (line 61070) needs a filer 64 or older, the NOEC (line 61040) needs a residence in
+  Northern Ontario. The ticks and amounts are chosen to exercise every line, not derived from one
+  filer's circumstances, and they are mutually inconsistent (one principal residence with rent,
+  property tax, reserve energy costs and long-term care amounts all set), so they are not to be
+  read as a claim.
+  No net federal supplement is reported, so the other payments deduction (Federal Worksheet line
+  25000) is not completed. The worksheet's line 9 formula (40,000 - 0 + 0 = 40,000.00) is not
+  carried to the return; the engine exports that signed figure as the other payments limit income.
+  Engine-only figures (not hand figures): the CPP second additional earnings maximum (9,900.00,
+  a CPP parameter for 12 months, with no contributions), the Ontario tax less the dividend
+  credit (1,376.28), the federal tax after credits (3,461.29), the Ontario tax (1,826.28, which
+  includes the health premium of 450.00), the total payable (5,287.57), the total credits
+  (6,000.00, the income tax deducted, since no non-refundable or Ontario credit is claimed) and
+  the refund (6,000.00 - 5,287.57 = 712.43, carried as -712.43), and the Ontario net refund (712.43).
+sources:
+  - >-
+    CRA, Form ON-BEN (5006-TG), "Application for the Ontario energy and property tax credit
+    (OEPTC)" and "Application for the Northern Ontario energy credit (NOEC)": "Line 61020: If you met any of these conditions and are applying for
+    the 2026 OEPTC, tick this box and complete Part A and Part B of this form."; "Line 61040: If
+    you met any of these conditions and are applying for the 2026 NOEC, tick this box and
+    complete Part A and Part B of this form."; "Choice for delayed single OTB payment" "Line
+    61060: By ticking this box, you are choosing to wait until June 2027 to get your 2026 OTB
+    entitlement."; "Line 61070: If you met the conditions above and are applying for the 2026
+    OSHPTG, tick this box. Enter the total amount of property tax paid on line 61120 in Part A
+    and complete Part B of this form."; "Line 61080: If, on December 31, 2025, you and your
+    spouse or common-law partner occupied separate principal residences for medical reasons and
+    you are choosing to apply individually for the OEPTC, NOEC, or OSHPTG, tick this box and
+    enter your spouse's or common-law partner's address in Part C of this form."; "Line: 61100:
+    Enter the total amount of rent paid for your principal residence (including a private
+    long-term care home) in Ontario for 2025."; "Line 61120: Enter the total amount of property
+    tax paid for your principal residence in Ontario for 2025."; "Line 61140: If you resided in a
+    designated student residence in Ontario in 2025, tick this box."; "Line 61210: If you lived
+    on a reserve, enter the total amount of home energy costs (like electricity and heat) paid
+    for your principal residence in Ontario for 2025."; "Line 61230: Enter the total amount paid
+    for your accommodation in a public long-term care home or non-profit long-term care home in
+    Ontario for 2025." (docs/cra-forms-2025/5006-tg-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tg/5006-tg-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/other_income: "40000"
+  ca/income_tax_deducted: "6000"
+  ca-on/applies_for_energy_and_property_tax_credit: "1"
+  ca-on/applies_for_northern_energy_credit: "1"
+  ca-on/chooses_single_benefit_payment: "1"
+  ca-on/applies_for_senior_homeowners_grant: "1"
+  ca-on/separate_residences_for_medical_reasons: "0"
+  ca-on/lived_in_student_residence: "1"
+  ca-on/rent_paid: "9600"
+  ca-on/property_tax_paid: "2400"
+  ca-on/reserve_home_energy_costs: "1800"
+  ca-on/public_long_term_care_paid: "4800"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "40000.00"
+      ca/deductions_from_total_income: "0"
+      ca/net_income_before_adjustments: "40000.00"
+      ca/net_income: "40000.00"
+      ca/deductions_from_net_income: "0"
+      ca/taxable_income: "40000.00"
+      ca/other_payments_limit_income: "40000.00"
+      ca-on/applies_for_energy_and_property_tax_credit: "1"
+      ca-on/applies_for_northern_energy_credit: "1"
+      ca-on/chooses_single_benefit_payment: "1"
+      ca-on/applies_for_senior_homeowners_grant: "1"
+      ca-on/separate_residences_for_medical_reasons: "0"
+      ca-on/lived_in_student_residence: "1"
+      ca-on/rent_paid: "9600.00"
+      ca-on/property_tax_paid: "2400.00"
+      ca-on/reserve_home_energy_costs: "1800.00"
+      ca-on/public_long_term_care_paid: "4800.00"
+      ca-on/ontario_credits_subtotal: "0.00"
+      # Engine only (not hand figures): the tax lines, see the description.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "1376.28"
+      ca/federal_tax_after_credits: "3461.29"
+      ca-on/ontario_tax: "1826.28"
+      ca/total_payable: "5287.57"
+      ca/total_credits: "6000.00"
+      ca/refund_or_balance_owing: "-712.43"
+      ca-on/net_refund: "712.43"

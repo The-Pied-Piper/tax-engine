@@ -1,0 +1,72 @@
+# Return DQ: other employment income (T1 line 10400) in the Canada employment amount (line 31260)
+# and in the LIFT credit (Schedule ON428-A lines 2 and 3). A filer with a little employment income
+# and some other employment income, and nothing else.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return DQ: a 2025 Ontario resident in Canada throughout 2025, aged 18 or older, with no spouse.
+  Employment income is $500 (T1 line 10100 and Schedule ON428-A line 1, a chosen figure) and other
+  employment income is $2,000 (T1 line 10400 and Schedule ON428-A line 2, a chosen figure). Every
+  other input is blank, so every other line is 0 or not triggered. Total income (T1 line 15000) is
+  500.00 + 2,000.00 = 2,500.00.
+  Canada employment amount (T1 line 92 and line 31260): "Enter whichever is less: $1,471 or line 1
+  plus line 2." Line 1 plus line 2 is 500.00 + 2,000.00 = 2,500.00. The lesser of $1,471 and
+  2,500.00 is 1,471.00, the cap, so line 31260 is 1,471.00. The sum is the base of the cap and is
+  not the amount claimed.
+  LIFT credit (Schedule ON428-A): line 1 is 500.00 (line 10100) and line 2 is 2,000.00 (line
+  10400), so line 3 "Line 1 plus line 2" is 2,500.00. Line 4 is the applicable rate 5.05%, and
+  line 5 "Line 3 multiplied by the percentage from line 4 (maximum $875)" is 2,500.00 x 5.05% =
+  126.25, under the $875 maximum, so line 5 is 126.25 (and line 14 "Amount from line 5 above
+  (maximum $875)" is 126.25). The adjusted net income is 2,500.00: net income (line 6) is 2,500.00
+  with no deductions (the CPP contributions on 500.00 are nil, as the earnings are under the
+  basic exemption of 3,500.00, and there are no UCCB or RDSP amounts), so lines 7, 8, 10 and 11
+  are 0 and line 9 and line 13 are 2,500.00. Line 17 "Line 15 minus line 16 (if negative, enter
+  "0")" is 2,500.00 minus 32,500.00, not below zero, so it is 0.00 and line 19 is 0.00. Line 20
+  "Line 14 minus line 19 (if negative, enter "0")" is 126.25 minus 0.00, 126.25, the credit for a
+  single individual. With no spouse, Part B is not triggered.
+  The other expected lines are the ones the engine also prints for this return: net income before
+  adjustments and the income for the other payments deduction limit are 2,500.00, the CPP second
+  additional earnings maximum for 12 months is 9,900.00 (the Schedule 8 table row), and the
+  minimum tax carryover available for 2026 is 2,189.50, as the Alternative Minimum Tax lines
+  compute it from the credit amounts of this return, which include the Canada employment amount
+  1,471.00 (it is not derived from the form here).
+sources:
+  - >-
+    CRA, Form T1 Guide 5006-R 2025 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt,
+    confirmed text, docs/cra-forms-2025/5006-r-25e.txt): "Line 1 and line 10100: Employment income
+    (box 14 of all T4 slips)"; "Line 2 and line 10400: Other employment income"; "Line 92 and line
+    31260: Canada employment amount: Enter whichever is less: $1,471 or line 1 plus line 2."
+  - >-
+    CRA, General Income Tax and Benefit Guide 2025 (https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt,
+    confirmed text, docs/cra-forms-2025/5000-g-25e.txt), "Line 31260 - Canada employment amount":
+    "All income reported on lines 10100 and 10400 is eligible for the Canada employment amount."
+  - >-
+    CRA, Schedule ON428-A 2025 (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt,
+    confirmed text, docs/cra-forms-2025/5006-a-25e.txt): "Line 1: Amount from line 10100 of your
+    return"; "Line 2: Amount from line 10400 of your return"; "Line 3: Line 1 plus line 2 =";
+    "Line 4: Applicable rate 5.05%"; "Line 5: Line 3 multiplied by the percentage from line 4
+    (maximum $875) =".
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "500"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "500"
+  ca/other_employment_income: "2000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/total_income: "2500.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "500.00"
+      ca/canada_employment_amount_income: "2500.00"
+      ca/canada_employment_amount: "1471.00"
+      ca-on/lift_employment_income: "2500.00"
+      ca-on/lift_credit_before_maximum: "126.25"
+      ca-on/lift_maximum_credit: "126.25"
+      ca-on/lift_reduction: "0.00"
+      ca-on/lift_credit_single: "126.25"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "2500.00"
+      ca/other_payments_limit_income: "2500.00"

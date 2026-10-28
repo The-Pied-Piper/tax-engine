@@ -1,0 +1,82 @@
+# Return MC: Mia, a 2025 Ontario resident eligible for the disability tax credit, whose Canada workers
+# benefit (T1 line 45300) is the basic benefit of Schedule 6 Step 2 plus the CWB disability supplement of
+# Step 3. Amounts are quoted decimal strings; counts are quoted digit strings.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MC: a single Ontario resident for all of 2025, aged 40 and resident in Canada throughout 2025
+  (chosen figures), with no spouse or common-law partner and no dependants, and employment income (T1
+  line 10100) of $20,000, a chosen figure, with CPP deducted at source of $981.75 (4.95% + 1% of
+  $20,000 less $3,500, T4 box 16) and EI premiums of $328.00 (1.64%, T4 box 18). No other income,
+  deduction or tax deducted. The CRA has approved her Form T2201, so Schedule 6 line 38103 "Are you
+  eligible for the disability tax credit (DTC)?" is yes: the same fact as the disability amount of
+  line 31600, entered once (ca/eligible_for_disability_amount). Net income (line 23600) is $20,000
+  less the enhanced CPP deduction (line 22215) of 1% x $16,500 = $165.00, $19,835.00. Schedule 6,
+  Step 1: the working income (line 5) is $20,000 (employment income, no scholarships, no
+  self-employment income, no tax-exempt income) and the adjusted family net income (line 15) is
+  $19,835.00 (no eligible spouse, so column 2 and line 14 are $0). Step 2: line 18 is $20,000 -
+  $3,000 = $17,000 and line 20 is 27% of it, $4,590.00, so line 22 is the least of that and the
+  $1,633 of line 21, $1,633.00; line 25 is $19,835.00 - $26,855 below zero, so $0 and line 27 is $0;
+  line 28 is $1,633.00. Step 3: line 29 is $20,000; line 31 is $20,000 - $1,150 = $18,850; line 33 is
+  27% of it, $5,089.50; line 34 is the least of that and $843, $843.00. Line 35 is $19,835.00 and
+  line 36, with no eligible spouse and no eligible dependant, is $37,740, so line 37 is $0 and line
+  39 is $0 (line 38 is 15%, as there is no eligible spouse). Line 40 is $843.00 - $0 = $843.00, line
+  41 is the line 28 of Step 2, $1,633.00, and line 42 is $843.00 + $1,633.00 = $2,476.00, entered on
+  line 45300. Without the DTC the benefit would be the $1,633.00 of line 28; the supplement is the
+  $843.00 difference. Her federal non-refundable credits (line 35000, which include the disability
+  amount of line 31600) of $4,188.00 exceed the federal tax of $2,876.08 and the Ontario credits exceed the
+  Ontario tax, so the total payable (line 43500) is $0, the total credits (line 48200) are the $2,476.00
+  and the refund (line 48400) is $2,476.00. Every other line is the engine's figure.
+sources:
+  - >-
+    CRA, Schedule 6, Canada Workers Benefit (5000-S6, docs/cra-forms-2025/5000-s6-25e.txt): Step 1
+    "Line 38103: Are you eligible for the disability tax credit (DTC)? If yes, complete parts A and B,
+    then, if applicable, complete Step 3."; Step 3 "Line 29: Amount from line 5 in column 1"; "Line
+    30: Base amount 1,150.00"; "Line 31: Line 29 minus line 30 (if negative, enter "0")"; "Line 32:
+    Rate 27%"; "Line 33: Line 31 multiplied by the percentage from line 32"; "Line 34: Enter
+    whichever is less: amount from line 33 or $843."; "Line 36: If you had an eligible spouse or an
+    eligible dependant, enter $49,389. If not, enter $37,740."; "Line 38: Rate: If you had an
+    eligible spouse who is also eligible for the DTC, enter 7.5%. If not, enter 15%."; "Line 40:
+    Line 34 minus line 39 (if negative, enter "0")"; "Line 41: If you completed Step 2, enter the
+    amount from line 28. If not, enter "0"."; "Line 42: Line 40 plus line 41 Enter this amount on
+    line 45300 of your return."
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1, docs/cra-forms-2025/5000-d1-25e.txt), "Line 31600 -
+    Disability amount for self": "If you qualify for the disability amount", the CRA's approval of
+    Form T2201.
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "20000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "20000"
+  ca/t2204_insurable_earnings: "20000"
+  ca/t2204_premiums_deducted: "328.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "981.75"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/eligible_for_disability_amount: "1"
+expected:
+  ca-on/return:
+    - ca/total_income: "20000.00"
+      ca/working_income: "20000"
+      ca/adjusted_family_net_income: "19835.00"
+      ca/canada_workers_benefit_line_28: "1633.00"
+      ca/cwb_disability_supplement_before_reduction: "843.00"
+      ca/cwb_disability_reduction: "0.00"
+      ca/cwb_disability_supplement: "843.00"
+      ca/canada_workers_benefit_line_42: "2476.00"
+      ca/canada_workers_benefit_before_conditions: "2476.00"
+      ca/canada_workers_benefit: "2476.00"
+      ca-on/net_refund: "2476.00"
+      ca/refund_or_balance_owing: "-2476.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/net_income_before_adjustments: "19835.00"
+      ca/other_payments_limit_income: "19835.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "20000"

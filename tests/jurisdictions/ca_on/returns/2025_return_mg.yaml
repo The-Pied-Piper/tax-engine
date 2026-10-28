@@ -1,0 +1,93 @@
+# Return MG: Form T2205 "Amounts from a Spousal or Common-law Partner RRSP, RRIF, or SPP to Include in
+# Income" as its own form: a filer under 65 with no other income who received 5,000.00 from a
+# spousal RRSP and SPP and 4,000.00 from a spousal RRIF. The same filer aged 65 or older reports the
+# SPP part and line 22 on T1 line 11500 instead of line 13000, pinned in
+# `end_to_end/test_return_mg.py`.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return MG: a single 2025 Ontario resident in Canada throughout 2025, born after 1960 (under 65 at
+  the end of 2025), with no spouse, no dependants and no income other than what Form T2205 reports
+  (chosen figures, as in Return GG). Form T2205 Part 1: line 1 (T4RSP boxes 20, 22 and 26 and the SPP
+  part of T4A box 18) is 5,000.00 and line 2 is 0.00, so line 3 = 5,000.00 + 0.00 = 5,000.00; line 4
+  is 0.00, so line 5 = 5,000.00 - 0.00 = 5,000.00; line 6 (the spouse's contributions in the year and
+  the two preceding years) is 2,000.00 and line 7 is 0.00, so line 8 = 2,000.00 - 0.00 = 2,000.00;
+  line 9 is the amount from line 3, 5,000.00; line 10 is the lesser of line 5 and line 8,
+  2,000.00, which the spouse reports; line 11 = 5,000.00 - 2,000.00 = 3,000.00, of which 1,000.00
+  relates to withdrawals from an SPP (a chosen figure) and the remaining 2,000.00 to the RRSP.
+  Part 2: line 12 (T4RIF box 20) is 4,000.00, line 13 and line 14 are 0.00, so line 15 = 0.00 and
+  line 16 = 4,000.00 + 0.00 = 4,000.00; Part 1 is filled in, so line 17 is the amount from line 6,
+  2,000.00, and line 18 is line 7 plus line 10, 0.00 + 2,000.00 = 2,000.00, so line 19 = 2,000.00 -
+  2,000.00 = 0.00; line 20 (T4RIF boxes 16 and 20) is 4,000.00; line 21 is the lesser of line 16
+  and line 19, 0.00, which the spouse reports; line 22 = 4,000.00 - 0.00 = 4,000.00. The filer is
+  under 65, so the SPP part (1,000.00) and line 22 (4,000.00) go on T1 line 13000, 5,000.00 in all,
+  and the RRSP part (2,000.00) on line 12900. Total income (line 15000) = 2,000.00 + 5,000.00 =
+  7,000.00, and net income and taxable income are the same, as there are no deductions. The months
+  of CPP and QPP contributions (12 each) are chosen figures that only select the Schedule 8 table
+  row (there are no earnings); the second additional earnings maximum of 9,900.00 is that row's.
+  The basic personal amount credits exceed the tax on 7,000.00, so there is no tax, no Canada
+  workers benefit (no working income) and no refund. The other lines of the return are not
+  triggered.
+sources:
+  - >-
+    CRA, Form T2205 (2025), "Line 10: Enter the amount from line 5 or line 8, whichever is less."
+    "Line 11: Line 9 minus line 10. If part of this amount relates to withdrawals from an RRSP
+    (including transfers from an RRSP that are considered to be taxable withdrawals), you must
+    report it on line 12900 of your own income tax and benefit return ... If part of this amount
+    relates to withdrawals from an SPP, you must report it on line 11500 of your own income tax and
+    benefit return if you are 65 or older at the end of the year, or on line 13000 otherwise"
+    (docs/cra-forms-2025/t2205-25e.pdf)
+  - >-
+    CRA, Form T2205 (2025), "Line 17: ... If you filled in Part 1 above, enter the amount from line
+    6." "Line 18: ... If you filled in Part 1 above, add the amounts from line 7 and line 10 and
+    enter the result." "Line 21: Enter the amount from line 16 or line 19, whichever is less."
+    "Line 22: Line 20 minus line 21. If you were 65 or older at the end of the year you indicated
+    above, report this amount on line 11500 of your own income tax and benefit return for that year.
+    Otherwise, report it on line 13000." (docs/cra-forms-2025/t2205-25e.pdf)
+inputs:
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  # Form T2205 (2025), the amounts the filer enters; every other line is 0.
+  ca/t2205_line_1: "5000"
+  ca/t2205_line_6: "2000"
+  # The part of line 11 that relates to withdrawals from an SPP.
+  ca/t2205_line_11_spp_part: "1000"
+  ca/t2205_line_12: "4000"
+  ca/t2205_line_20: "4000"
+expected:
+  ca-on/return:
+    - ca/t2205_on_line_12900: "2000.00"
+      ca/t2205_spp_part_total: "1000.00"
+      ca/t2205_line_22_total: "4000.00"
+      ca/t2205_spp_part_on_line_11500: "0.00"
+      ca/t2205_spp_part_on_line_13000: "1000.00"
+      ca/t2205_line_22_on_line_11500: "0.00"
+      ca/t2205_line_22_on_line_13000: "4000.00"
+      ca/t2205_on_line_11500: "0.00"
+      ca/t2205_on_line_13000: "5000.00"
+      ca/total_income: "7000.00"
+      ca/net_income: "7000.00"
+      ca/taxable_income: "7000.00"
+      ca/net_income_before_adjustments: "7000.00"
+      ca/other_payments_limit_income: "7000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+  ca/t2205:
+    - ca/t2205_line_3: "5000.00"
+      ca/t2205_line_4_checked: "0.00"
+      ca/t2205_line_5: "5000.00"
+      ca/t2205_line_7_checked: "0.00"
+      ca/t2205_line_8: "2000.00"
+      ca/t2205_line_10: "2000.00"
+      ca/t2205_line_11: "3000.00"
+      ca/t2205_line_11_spp_part_checked: "1000.00"
+      ca/t2205_line_11_rrsp_part: "2000.00"
+      ca/t2205_line_14_checked: "0.00"
+      ca/t2205_line_15: "0.00"
+      ca/t2205_line_16: "4000.00"
+      ca/t2205_line_17_used: "2000.00"
+      ca/t2205_line_18_from_part_1: "2000.00"
+      ca/t2205_line_18_used: "2000.00"
+      ca/t2205_line_18_checked: "2000.00"
+      ca/t2205_line_19: "0.00"
+      ca/t2205_line_21: "0.00"
+      ca/t2205_line_22: "4000.00"

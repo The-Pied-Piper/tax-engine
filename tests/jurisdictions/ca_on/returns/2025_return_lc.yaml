@@ -1,0 +1,136 @@
+# Return LC: Guide T4002's Wade (the example for fishers, printed page 103, intergenerational transfer
+# of fishing properties to his daughter Vicky), a single Ontario resident who transfers his fishing
+# boat (ACB $85,000, FMV $100,000) and his fishing licence (FMV $9,000, UCC $7,840). "If Wade transfers
+# the fishing boat at a price equal to its ACB and the fishing licence at a price equal to its UCC, he
+# postpones any taxable capital gain and any recapture of CCA", and his proceeds of disposition are
+# $85,000 for the boat and $7,840 for the licence.
+#
+# CRA's printed figures are those two proceeds and the postponed gain and recapture, so on Wade's
+# return: Schedule 3's real estate list gain $0.00 (the boat is a depreciable row), the Class 14.1
+# recapture $0.00 and the terminal loss $0.00 (Area A, column 2 opening UCC $7,840, column 5 proceeds
+# $7,840, no property left; the licence is Class 14.1, Guide "Class 14.1"). The guide gives no fishing
+# income and the statement is left with no entries, so every other line is zero.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 with one Form T2121 whose Class 14.1 row is Guide T4002's
+  Wade's fishing licence transferred to his daughter at its UCC (opening UCC $7,840, proceeds $7,840,
+  no property left), and the transfer of his fishing boat at its ACB as a depreciable row of Schedule
+  3's real estate list (proceeds $85,000, cost $85,000): the gain is $0.00 and the recapture of CCA and
+  the terminal loss of the fishing business are both $0.00.
+sources:
+  - >-
+    CRA, Guide T4002 (2025), Self-employed Business, Professional, Commission, Farming, and Fishing Income
+    (docs/cra-forms-2025/t4002-25e.pdf, confirmed from the PDF with pdftotext -layout), printed page 103,
+    "Example for fishers": "Wade wants to transfer these fishing properties to Vicky, his 19-year-old
+    daughter. Fishing boat ACB $ 85,000 FMV at the time of transfer $ 100,000 Fishing licence FMV $ 9,000
+    UCC at the time of transfer $ 7,840"; "If Wade transfers the fishing boat at a price equal to its
+    ACB and the fishing licence at a price equal to its UCC, he postpones any taxable capital gain and
+    any recapture of CCA. Also, if he does this, we consider that Wade’s proceeds of disposition and the
+    amounts Vicky paid to acquire the properties are $85,000 for the fishing boat and $7,840 for the fishing
+    licence."
+inputs:
+  ca/real_estate_dispositions:
+    - ca/disposition_proceeds: "85000"
+      ca/disposition_adjusted_cost_base: "85000"
+      ca/disposition_outlays: "0"
+      ca/disposition_depreciable_property: "1"
+      ca/disposition_farm_loss_taxes_and_interest: "0"
+      ca/disposition_farm_loss_property_taxes: "0"
+      ca/disposition_farm_loss_interest: "0"
+  ca/cpp_t4_base_and_first_additional_contributions: "0.00"
+  ca/cpp_t4_second_additional_contributions: "0.00"
+  ca/t2121_statements:
+    - ca/fish_fish_products: "0"
+      ca/fish_other_marine_products: "0"
+      ca/fish_grants_credits_and_rebates: "0"
+      ca/fish_subsidies: "0"
+      ca/fish_compensation_for_loss: "0"
+      ca/fish_sharesperson_income: "0"
+      ca/fish_other_income: "0"
+      ca/fish_salt_bait_and_ice: "0"
+      ca/fish_crew_shares: "0"
+      ca/fish_fuel_costs: "0"
+      ca/fish_fishing_gear: "0"
+      ca/fish_insurance: "0"
+      ca/fish_interest_and_bank_charges: "0"
+      ca/fish_meals_and_entertainment: "0"
+      ca/fish_business_taxes_licences_and_memberships: "0"
+      ca/business_vehicles: []
+      ca/fish_vehicle_sales_tax_rate: "0"
+      ca/fish_office_expenses: "0"
+      ca/fish_nets_and_traps: "0"
+      ca/fish_professional_fees: "0"
+      ca/fish_salaries_wages_and_benefits: "0"
+      ca/fish_repairs_fishing_boat: "0"
+      ca/fish_repairs_engine: "0"
+      ca/fish_repairs_electrical_equipment: "0"
+      ca/fish_insurance_recovery: "0"
+      ca/fish_other_expenses: "0"
+      ca/fish_cca_personal_part: "0"
+      ca/fish_fiscal_period_days_entered: "0"
+      ca/fish_land_additions: "0"
+      ca/fish_land_dispositions: "0"
+      ca/fish_liabilities: "0"
+      ca/fish_drawings: "0"
+      ca/fish_capital_contributions: "0"
+      ca/fish_cca_classes:
+        - ca/cca_class_number: "14.1"
+          ca/cca_ucc_at_start: "7840"
+          ca/cca_additions: "0"
+          ca/cca_diep_additions: "0"
+          ca/cca_proceeds: "7840"
+          ca/cca_diep_proceeds: "0"
+          ca/cca_immediate_expensing: "0"
+          ca/cca_aiip_additions: "0"
+          ca/cca_riip_additions: "0"
+          ca/cca_claimed: "0"
+          ca/cca_no_property_left: "1"
+          ca/cca_personal_part_remaining: "0"
+          ca/cca_half_year_rule_differs: "0"
+          ca/cca_rate_election: "0"
+          ca/cca_vehicle_acquired_year: "0"
+          ca/cca_vehicle_cost: "0"
+          ca/cca_vehicle_government_assistance: "0"
+          ca/cca_sold_zepvs: []
+      ca/fish_partner: "0"
+      ca/fish_partner_share: "0"
+      ca/fish_partner_gst_hst_rebate: "0"
+      ca/fish_partner_other_amount_a: "0"
+      ca/fish_partner_other_amount_b: "0"
+      ca/fish_partner_other_amount_c: "0"
+      ca/fish_partner_other_amount_d: "0"
+      ca/fish_partner_other_amount_e: "0"
+      ca/fish_home_heat: "0"
+      ca/fish_home_electricity: "0"
+      ca/fish_home_insurance: "0"
+      ca/fish_home_maintenance: "0"
+      ca/fish_home_mortgage_interest: "0"
+      ca/fish_home_property_taxes: "0"
+      ca/fish_home_other_expenses: "0"
+      ca/fish_home_personal_use_part: "0"
+      ca/fish_home_cca: "0"
+      ca/fish_home_carried_forward: "0"
+      ca/fish_epop_associated: "0"
+      ca/fish_epop_agreement_filed: "0"
+      ca/fish_epop_percentage: "0"
+      ca/fish_epop_percentage_total: "0"
+      ca/fish_minister_allocation_given: "0"
+      ca/fish_minister_allocation: "0"
+      ca/fish_boat_mainly_personal: "0"
+  ca/schedule_8_instances:
+    - {}
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+expected:
+  ca/t2121:
+    - ca/fish_recaptured_cca: "0"
+      ca/fish_terminal_loss: "0"
+  ca-on/return:
+    - ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/real_estate_proceeds: "85000"
+      ca/real_estate_gain_or_loss: "0"
+      ca/capital_gain: "0.00"

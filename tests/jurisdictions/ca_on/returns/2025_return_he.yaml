@@ -1,0 +1,326 @@
+# Return HE: two farming businesses, one in Ontario and one in Manitoba, each on its own Form T2042
+# statement with its own designated province and no Chart B, so Part 2 (Chart A) only. Box 67062
+# ("multiple farming businesses with one or more permanent establishments in multiple provinces or
+# territories") is 1 here: the two statements are present in two places, Ontario and Manitoba.
+# Figures are by hand from the form text (see the description).
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return HE: a 2025 Ontario resident in Canada throughout 2025, aged 18 or older, with no
+  employment income and no other income (every line not named here is 0). Two farming
+  businesses, each reported on one Form T2042 (a chosen set).
+  Statement 1 is a farm in Ontario (a chosen set): wheat income (line 9659) of 50,000.00 and seeds
+  and plants of 36,500.00, so the total farm expenses (line 9898) are 36,500.00 and its net farming
+  income (line 9946) is 13,500.00. Its designated province code is 1 (Ontario). It uses no Chart B.
+  Statement 2 is a farm in Manitoba (a chosen set): wheat income of 40,000.00 and seeds and plants
+  of 18,250.00, so line 9898 is 18,250.00 and its net farming income is 21,750.00. Its designated
+  province code is 2 (Manitoba). It uses no Chart B.
+  Each fiscal period runs from July 1, 2024 to June 30, 2025, which is 365 days (entered as 365),
+  of which 184 fall in 2024 (a chosen figure: the days in 2024).
+  Chart A of each statement: amount 5 is 0.00, so amount 6, the gross farming expenses, is
+  36,500.00 for statement 1 and 18,250.00 for statement 2. Amount 7 is 184 divided by 365, and
+  amount 8 is amount 6 multiplied by amount 7: 36,500 times 184/365 is 18,400.00 for statement 1
+  (Ontario), and 18,250 times 184/365 is 9,200.00 for statement 2 (Manitoba). The other designated
+  provinces are 0 (chosen figures: no other designated province is entered).
+  Part 1 line 67061 is the total of amount 6, 54,750.00, which is 25,000 or more, so the businesses
+  are eligible. Part 2: 2A is Ontario's amount 8 of 18,400.00 at 0.229% (line 67063), which is
+  42.136, rounded half-up to 42.14; 2B is Manitoba's 9,200.00 at 0.229% (line 67064), which is
+  21.068, rounded half-up to 21.07; 2I, which is amount 5A, is 63.21. Parts 3 and 4 are 0: no
+  statement uses Chart B, so there are no rows 1 to 5 and no Chart C. Part 5: 5A is 63.21, 5B is
+  0.00 (amount 4I), 5C is 0.00 (no partnership credit), and 5D, the total credit for all businesses
+  that is line 47556, is 63.21.
+  Box 67062 is 1: the statements are present in two places (statement 1 in Ontario, statement 2 in
+  Manitoba) and there are 2 statements, so the box is ticked. Per statement, the presence amounts
+  are 1 for the place the statement is in and 0 for the others; the nine totals are 1 for Ontario,
+  1 for Manitoba and 0 for the other seven places.
+  The tax lines of the return (net income 35,250.00, the federal and Ontario tax, the refund and
+  the balance owing) are the engine's figures, not hand-worked, and are listed under
+  `ca-on/return` so that the lines the return form exports are pinned; the hand-worked figures
+  above are the ones this worked example is for.
+sources:
+  - >-
+    CRA, Form T2043 (2025), Return of Fuel Charge Proceeds to Farmers Tax Credit
+    (docs/cra-forms-2025/t2043-25e.pdf, a PDF text read; no .txt is published;
+    https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf), page 1: "Tick this
+    box if you have multiple farming businesses with one or more permanent establishments in
+    multiple provinces or territories." (box 67062), and "Fill in Part 2 for your farming businesses
+    that have one or more permanent establishments that operate in only one of the designated
+    provinces."
+  - >-
+    CRA, Form T2043 (2025), Part 1, Note 1: "If your total gross farming expenses for all businesses
+    are $25,000 or more, you are eligible to claim the credit." Line 67061 "See note 1"; "Add amount
+    6 to line 67061 of Part 1."
+  - >-
+    CRA, Form T2043 (2025), Chart A: "Total farming expenses (line 9898 of Form T2042)" (amount 1);
+    "Subtotal: Add amounts 2 to 4." (amount 5); "Gross farming expenses: Amount 1 minus amount 5"
+    (amount 6); "Total number of days in the fiscal period that fall within the 2024 calendar year
+    divided by the total number of days in the fiscal period (if the fiscal period starts and ends
+    in 2025, enter "0")" (amount 7); "Amount 6 multiplied by amount 7." (amount 8).
+  - >-
+    CRA, Form T2043 (2025), Part 2: "Add all farming expenses in ON from amount 8 of Chart A."
+    "67063" "× ON payment rate 0.229% = 2A"; "Add all farming expenses in MB from amount 8 of
+    Chart A." "67064" "× MB payment rate 0.229% = 2B"; "Total: Add amounts 2A to 2H (enter this total
+    at amount 5A)" (2I).
+  - >-
+    CRA, Form T2043 (2025), Part 5: "Enter amount 2I" (5A); "Enter amount 4I" (5B); "Total credit for
+    all businesses: Amount 5A plus amount 5B plus amount 5C (enter this amount on line 47556 of your
+    income tax and benefit return)." (5D).
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t2042_statements:
+    - ca/farm_wheat: "50000"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "0"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "36500"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "13"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+      ca/farm_fiscal_period_days_entered: "365"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "1"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "184"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+    - ca/farm_wheat: "40000"
+      ca/farm_oats: "0"
+      ca/farm_barley: "0"
+      ca/farm_mixed_grains: "0"
+      ca/farm_corn: "0"
+      ca/farm_canola: "0"
+      ca/farm_flaxseed: "0"
+      ca/farm_soybeans: "0"
+      ca/farm_grains_and_oilseeds: "0"
+      ca/farm_fruit: "0"
+      ca/farm_potatoes: "0"
+      ca/farm_vegetables: "0"
+      ca/farm_tobacco: "0"
+      ca/farm_greenhouse_and_nursery: "0"
+      ca/farm_forage_crops_or_seeds: "0"
+      ca/farm_other_crops: "0"
+      ca/farm_cattle: "0"
+      ca/farm_swine: "0"
+      ca/farm_poultry: "0"
+      ca/farm_sheep_and_lambs: "0"
+      ca/farm_livestock_and_animal_products_revenue: "0"
+      ca/farm_milk_and_cream: "0"
+      ca/farm_eggs: "0"
+      ca/farm_other_commodities: "0"
+      ca/farm_dairy_subsidies: "0"
+      ca/farm_crop_insurance: "0"
+      ca/farm_other_program_payments: "0"
+      ca/farm_rebates: "0"
+      ca/farm_custom_work: "0"
+      ca/farm_insurance_proceeds: "0"
+      ca/farm_patronage_dividends: "0"
+      ca/farm_other_income: "0"
+      ca/farm_containers_and_twine: "0"
+      ca/farm_fertilizers_and_lime: "0"
+      ca/farm_pesticides: "0"
+      ca/farm_seeds_and_plants: "18250"
+      ca/farm_feed_supplements_straw_and_bedding: "0"
+      ca/farm_livestock_purchased: "0"
+      ca/farm_veterinary_fees: "0"
+      ca/farm_machinery_repairs_licences_and_insurance: "0"
+      ca/farm_gasoline_diesel_and_oil: "0"
+      ca/farm_building_repairs_and_maintenance: "0"
+      ca/farm_clearing_levelling_and_draining: "0"
+      ca/farm_crop_insurance_premiums: "0"
+      ca/farm_custom_work_expenses: "0"
+      ca/farm_electricity: "0"
+      ca/farm_heating_and_curing_fuel: "0"
+      ca/farm_insurance_program_overpayment_recapture: "0"
+      ca/farm_insurance: "0"
+      ca/farm_interest_and_bank_charges: "0"
+      ca/farm_office_expenses: "0"
+      ca/farm_professional_fees: "0"
+      ca/farm_property_taxes: "0"
+      ca/farm_rent: "0"
+      ca/farm_salaries_wages_and_benefits: "0"
+      ca/business_vehicles: []
+      ca/farm_vehicle_sales_tax_rate: "13"
+      ca/farm_small_tools: "0"
+      ca/farm_mandatory_inventory_adjustment_previous_year: "0"
+      ca/farm_optional_inventory_adjustment_previous_year: "0"
+      ca/farm_other_expenses: "0"
+      ca/farm_optional_inventory_adjustment_current_year: "0"
+      ca/farm_mandatory_inventory_adjustment_current_year: "0"
+      ca/farm_cca_personal_part: "0"
+      ca/farm_partner: "0"
+      ca/farm_partner_share: "0"
+      ca/farm_fuel_charge_credit: "0"
+      ca/farm_partner_gst_hst_rebate: "0"
+      ca/farm_partner_other_amount_a: "0"
+      ca/farm_partner_other_amount_b: "0"
+      ca/farm_partner_other_amount_c: "0"
+      ca/farm_partner_other_amount_d: "0"
+      ca/farm_partner_other_amount_e: "0"
+      ca/farm_home_heat: "0"
+      ca/farm_home_electricity: "0"
+      ca/farm_home_insurance: "0"
+      ca/farm_home_maintenance: "0"
+      ca/farm_home_mortgage_interest: "0"
+      ca/farm_home_property_taxes: "0"
+      ca/farm_home_other_expenses: "0"
+      ca/farm_home_personal_use_part: "0"
+      ca/farm_home_cca: "0"
+      ca/farm_home_carried_forward: "0"
+      ca/farm_cca_classes: []
+      ca/farm_epop_associated: "0"
+      ca/farm_epop_agreement_filed: "0"
+      ca/farm_epop_percentage: "0"
+      ca/farm_epop_percentage_total: "0"
+      ca/farm_minister_allocation_given: "0"
+      ca/farm_minister_allocation: "0"
+      ca/farm_fiscal_period_days_entered: "365"
+      ca/farm_land_additions: "0.00"
+      ca/farm_land_dispositions: "0.00"
+      ca/farm_quota_additions: "0.00"
+      ca/farm_quota_dispositions: "0.00"
+      ca/farm_liabilities: "0.00"
+      ca/farm_drawings: "0.00"
+      ca/farm_capital_contributions: "0.00"
+      ca/farm_designated_province: "2"
+      ca/farm_non_arms_length_expenses: "0"
+      ca/farm_days_in_2024: "184"
+      ca/farm_chart_b_provinces: []
+      ca/farm_also_outside_eight: "0"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+expected:
+  ca-on/return:
+    - ca/fuel_charge_credit_farmers_total: "63.21"
+      ca/total_credits: "436.96"
+      ca/refund: "0"
+      ca-on/net_refund: "0"
+      ca/refund_or_balance_owing: "3771.99"
+      ca/net_income_before_adjustments: "35250.00"
+      ca/other_payments_limit_income: "35250.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "1136.41"
+  ca/t2042:
+    - ca/farm_total_expenses: "36500"
+      ca/farm_chart_a_gross_expenses: "36500"
+      ca/farm_amount_8_on: "18400"
+      ca/farm_amount_8_mb: "0"
+      ca/farm_net_income_after_adjustments: "13500"
+      ca/farm_present_amount_on: "1"
+      ca/farm_present_amount_mb: "0"
+      ca/farm_present_amount_outside_eight: "0"
+    - ca/farm_total_expenses: "18250"
+      ca/farm_chart_a_gross_expenses: "18250"
+      ca/farm_amount_8_on: "0"
+      ca/farm_amount_8_mb: "9200"
+      ca/farm_net_income_after_adjustments: "21750"
+      ca/farm_present_amount_on: "0"
+      ca/farm_present_amount_mb: "1"
+      ca/farm_present_amount_outside_eight: "0"
+  ca/t2043:
+    - ca/fuel_charge_gross_farming_expenses: "54750"
+      ca/fuel_charge_expenses_on: "18400"
+      ca/fuel_charge_credit_on: "42.14"
+      ca/fuel_charge_expenses_mb: "9200"
+      ca/fuel_charge_credit_mb: "21.07"
+      ca/fuel_charge_part_2_total: "63.21"
+      ca/fuel_charge_part_5a_credit: "63.21"
+      ca/fuel_charge_part_4_total: "0"
+      ca/fuel_charge_part_5b_credit: "0"
+      ca/fuel_charge_partnership_credit_total: "0"
+      ca/fuel_charge_credit_farmers: "63.21"
+      ca/fuel_charge_farms_in_province_on: "1"
+      ca/fuel_charge_farms_in_province_mb: "1"
+      ca/fuel_charge_farms_outside_eight: "0"
+      ca/fuel_charge_farm_statement_count: "2"
+      ca/fuel_charge_multiple_provinces_box: "1"

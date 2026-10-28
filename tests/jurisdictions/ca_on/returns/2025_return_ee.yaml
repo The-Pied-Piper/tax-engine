@@ -1,0 +1,126 @@
+# Return EE: Form T777 (Statement of Employment Expenses), the capital cost allowance schedule for
+# employees, Parts A and B, with one row of each kind of property: a musical instrument (Class 8),
+# a zero-emission passenger vehicle that is an AIIP (Class 54) and a passenger vehicle owned all
+# year (Class 10.1). The three rows are the examples of the T777 schedule, in one return; line 13 is the
+# Class 8 row alone and line 25 is the vehicle rows plus Part B.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return EE: a 2025 employee, an Ontario resident all year, with 2025 employment income (T1 line
+  10100) of $60,000 and no other income, who has a musical instrument, a zero-emission vehicle and
+  a passenger vehicle. The T1 figures of the employment income are those of Return F (CPP and EI on
+  $60,000, no credits claimed); the T777 schedule is read by T1 line 22900 (T777 line 17 of 250.00, deducted at line
+  23300), so the T1 lines below are the employment income's less that deduction. The $60,000 is also her income as a musician (Guide T4044 "Part 2", the limit of the musical instrument expenses, here the 250.00 of line 13). Part A, the Class 8 row (line 13):
+  a UCC at the start of the year of 1,000.00 and an addition of 500.00 in the year (not an AIIP or
+  RIIP), so column 7 is 1,500.00, column 12 (the half of the addition, 500.00 divided by 2) is
+  250.00, column 13 is 1,250.00, column 15 is 20% of it, 250.00, and column 16 is 1,250.00. Part A,
+  the Class 54 row (vehicle list): a zero-emission vehicle added for 40,000.00 that is an AIIP
+  acquired before 2025 and became available for use in 2025, so column 7 is 40,000.00, column 9 is
+  40,000.00 times the factor 1 1/2, which is 60,000.00, column 13 is 100,000.00, column 15 is 30%
+  of it, 30,000.00, and column 16 is 10,000.00. Part B, one Class 10.1 vehicle owned at the start
+  of the year (its date acquired 2024 and cost 37,000.01 are chosen figures, just above the 37,000
+  Class 10.1 minimum for 2024 of Guide T4044, which no line reads) with a UCC of 20,000.00 and nothing bought or sold, so column 5 is the amount of
+  column 2 (20,000.00), column 7 is 30% of it, 6,000.00, and column 8 is 14,000.00. Line 13 is
+  250.00, and line 25 is the Class 54 CCA of 30,000.00 plus the Part B total of 6,000.00, which is
+  36,000.00. Each amount is a chosen figure of the example, and the GST/HST rate (13) is a chosen
+  figure used only for a Class 54 vehicle sold, of which there is none here. Line 17 is 250.00 (line 13 alone: line 25
+  reaches line 3 only through the kilometres, and none are entered), and T1 line 22900 is 250.00. Net income is therefore
+  59,435.00 - 250.00 = 59,185.00 (it was 59,435.00 before line 22900 was deducted). The federal
+  tax falls by 20.5% x 250.00 = 51.25 and the Ontario tax by 22.87 (2,435.32 to 2,412.45), so the
+  balance owing falls from 676.79 to 602.67.
+sources:
+  - >-
+    CRA, Form T777 (2025), Statement of Employment Expenses, the capital cost allowance schedule
+    for employees (docs/cra-forms-2025/t777-25e.pdf, pages 4 and 5, notes (5), (8), (9), (11) and (12)):
+    note (5) "Class 8 includes musical instruments."; note (8) "For ZEVs and AIIPs (under proposed
+    changes, acquired before 2025) that became available for use in 2025, the relevant factors are
+    1 1/2 (Class 54) and 7/8 (Class 55) and 0 for the remaining AIIPs."; note (9) "Under proposed
+    changes, for ZEVs and RIIPs acquired after 2024 that became available for use in 2025, the
+    relevant factors are 2 1/3 (Class 54), 1 1/2 (Class 55), and 1/2 (Class 8 and 10)."; note (11)
+    "If you owned the vehicle in the previous year and still owned it at the end of the current
+    year, enter the amount from column 2 in column 5."; note (12) "Recapture and terminal loss rules
+    do not apply."
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf)
+  - >-
+    CRA, Form T777 (2025), pages 4 and 5, Part B: "For more information on this schedule and details about
+    Class 10.1 limits, see Guide T4044."
+inputs:
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "60000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "60000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "60000"
+  ca/t2204_premiums_deducted: "984.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/schedule_8_instances:
+    - {}
+  ca/cpp_t4_base_and_first_additional_contributions: "3361.75"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/income_tax_deducted: "8000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/t777_musician_employment_income: "60000"
+  ca/t777_class_8_rows:
+    - ca/cca_class_number: "8"
+      ca/cca_ucc_at_start: "1000"
+      ca/cca_additions: "500"
+      ca/cca_aiip_additions: "0"
+      ca/cca_riip_additions: "0"
+      ca/cca_proceeds: "0"
+      ca/cca_diep_proceeds: "0"
+      ca/cca_claimed: "250"
+      ca/cca_no_property_left: "0"
+      ca/cca_change_in_use: "0"
+      ca/cca_change_in_use_fair_market_value: "0"
+  ca/t777_vehicle_rows:
+    - ca/cca_class_number: "54"
+      ca/cca_ucc_at_start: "0"
+      ca/cca_additions: "40000"
+      ca/cca_aiip_additions: "40000"
+      ca/cca_riip_additions: "0"
+      ca/cca_proceeds: "0"
+      ca/cca_diep_proceeds: "0"
+      ca/cca_claimed: "30000"
+      ca/cca_no_property_left: "0"
+      ca/cca_change_in_use: "0"
+      ca/cca_change_in_use_fair_market_value: "0"
+      ca/cca_vehicle_acquired_year: "0"
+      ca/cca_vehicle_cost: "0"
+      ca/cca_vehicle_government_assistance: "0"
+      ca/cca_sold_zepvs: []
+  ca/t777_part_b_rows:
+    - ca/cca_vehicle_acquired_year: "2024"
+      ca/cca_vehicle_cost: "37000.01"
+      ca/cca_vehicle_from_non_arms_length: "0"
+      ca/cca_vehicle_non_arms_length_fair_market_value: "0"
+      ca/cca_vehicle_seller_cost: "0"
+      ca/cca_vehicle_change_in_use: "0"
+      ca/cca_vehicle_change_in_use_fair_market_value: "0"
+      ca/cca_class_number: "10.1"
+      ca/cca_ucc_at_start: "20000"
+      ca/cca_additions: "0"
+      ca/cca_aiip_additions: "0"
+      ca/cca_riip_additions: "0"
+      ca/cca_proceeds: "0"
+      ca/cca_claimed: "6000"
+      ca/cca_no_property_left: "0"
+  ca/t777_vehicle_sales_tax_rate: "13"
+expected:
+  ca/t777:
+    - ca/t777_line_13: "250.00"
+      ca/t777_line_25: "36000.00"
+      ca/t777_part_b_closing_ucc:
+        - ca/cca_class_number: "10.1"
+          ca/cca_ucc_at_end: "14000.00"
+  # The T1 lines are those of the employment income less the T777 line 17 deduction of 250.00
+  # (line 22900, deducted at line 23300).
+  ca-on/return:
+    - ca/total_income: "60000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "60000.00"
+      ca/net_income_before_adjustments: "59185.00"
+      ca/other_payments_limit_income: "59185.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "2412.45"
+      ca/refund_or_balance_owing: "602.67"

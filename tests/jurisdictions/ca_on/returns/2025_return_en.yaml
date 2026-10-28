@@ -1,0 +1,60 @@
+# Return EN: a single Ontario resident with a net capital loss, the example of Guide T4037 (Capital
+# Gains, 2025), page 31: two securities sold in 2025, one a gain of $450 (a taxable capital gain of $225)
+# and one a loss of $750 (an allowable capital loss of $375), leaving a net capital loss of $150 ($375
+# minus $225). Each security is one row with chosen figures that give the guide's gain and loss.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, resident in Canada throughout 2025, aged 18 or older at
+  the end of 2025 (chosen figures), with no income other than the two dispositions below (every other
+  amount is a chosen $0). The guide's example has the two securities' gain and loss, not their
+  proceeds and costs, so the rows are chosen figures that give them, with no outlays: the first row
+  has proceeds of $1,450 and an adjusted cost base of $1,000, a gain of 1,450 - 1,000 = 450 (the
+  guide's $450 gain); the second has proceeds of $250 and an adjusted cost base of $1,000, a loss of
+  250 - 1,000 = -750 (the guide's $750 loss). Both rows are chosen; only their gain and loss are the
+  guide's. Line 4 (shares), the sum of the rows' column 5, is 450 - 750 = -300, which is line 21 and
+  line 19700 (total capital gains or losses, a loss in brackets). Line 24, the included capital gain,
+  is 50% of -300, -150.00: the guide's "$150 ($375 - $225) of unapplied allowable capital losses for
+  2025", since 50% of 750 is 375 and 50% of 450 is 225. That is the net capital loss for the year, a
+  loss in brackets on line 24, and it is not a taxable capital gain, so the taxable capital gains
+  (line 26, T1 line 12700) are 0. The guide says "you cannot deduct the $150 from other sources of
+  income in 2025", so the taxable income is 0. The cpp months (Schedule 8 box A) are a chosen 12 with
+  no employment income: the second additional maximum of 9900.00 is the engine's figure for a full
+  year of CPP, not a guide figure. The alternative minimum tax carryover for 2026, 2,338.71, is the
+  engine's figure for a return with no income (the same as return EI), not checked against the guide.
+sources:
+  - >-
+    CRA, Guide T4037, Capital Gains (2025), page 31, the example of two securities sold in 2025: "In
+    2025, you sold two different securities resulting in a taxable capital gain of $225 (50% x $450)
+    and an allowable capital loss of $375 (50% x $750). After applying your allowable capital loss
+    against your taxable capital gain, you are left with $150 ($375 - $225) of unapplied allowable
+    capital losses for 2025." and "While you cannot deduct the $150 from other sources of income in
+    2025, it becomes part of the computation of your net capital loss for 2025."
+    (docs/cra-forms-2025/t4037-25e.pdf, text extracted with pdftotext)
+  - >-
+    CRA, "T1-2025 Schedule 3 Capital Gains or Losses" (form 5000-S3, confirmed 2026-10-19), Part 3:
+    "(Column 5): Gain or loss (column 2 minus columns 3 and 4)"; line 21 and line 19700 "Total capital
+    gains or losses"; line 24 "Line 22 multiplied by the percentage from line 23" (50%), with "Report
+    all negative amounts (losses) using brackets." (docs/cra-forms-2025/5000-s3-25e.txt).
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "1450"
+      ca/disposition_adjusted_cost_base: "1000"
+      ca/disposition_outlays: "0"
+    - ca/disposition_proceeds: "250"
+      ca/disposition_adjusted_cost_base: "1000"
+      ca/disposition_outlays: "0"
+expected:
+  ca-on/return:
+    - ca/share_proceeds: "1700"
+      ca/share_gain_or_loss: "-300"
+      ca/capital_gain: "-300"
+      ca/included_capital_gain: "-150.00"
+      ca/taxable_capital_gains: "0"
+      ca/schedule_3_line_19900: "-150.00"
+      ca/taxable_income: "0"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/amt_carryover_available_for_2026: "0.00"

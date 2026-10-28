@@ -1,0 +1,146 @@
+# Return CY: the clergy residence deduction, Form T1223 Part C, wired to T1 line 23100 and line
+# 23300. A clergy member who owns or rents the residence he occupies (Part C (B), not the (A)
+# employer-provided residence), 12 months in qualifying employment, with rent and utilities of
+# 14,000 and nothing else claimed for the accommodation, so the deduction is 14,000.00 and is
+# not limited by line 1. Ontario resident, no spouse, no RRSP or other deductions.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  Return CY: a 2025 Ontario resident in Canada throughout 2025, aged 18 or older, with no
+  spouse, a member of the clergy whose only income is employment income of $45,000 (T4
+  box 14, a chosen figure). The filer owns or rents the residence occupied and the employer
+  did not provide it, so Form T1223 Part C (B) is completed: income from qualifying
+  employment (T1223 line 1) is 45,000 (a chosen figure), 12 months in qualifying
+  employment (line 3, a chosen figure), actual rent and eligible utilities of 14,000 (line 6,
+  a chosen figure), and nothing claimed by the filer or any other person for the
+  accommodation (line 7 is 0, a chosen figure, no spouse claim). The employer's (A) amount
+  is 0 (not provided). Part C (B) is completed, so the choice is 1.
+  Clergy residence deduction (T1223 Part C): line 2 is 45,000 multiplied by 1/3 = 15,000.00;
+  line 4 is 12 x 1,000 = 12,000.00, capped at the maximum of 10,000.00; line 5 is the greater
+  of 15,000.00 and 10,000.00 = 15,000.00; line 8 is 14,000 - 0 = 14,000.00; line 9 is the lesser
+  of 15,000.00 and 14,000.00 = 14,000.00; line 10 is the lesser of 45,000.00 and 14,000.00 =
+  14,000.00. (A) plus (B) is 0 + 14,000.00 = 14,000.00, not more than line 1, so line 23100
+  is 14,000.00.
+  Line 23300 "Add lines 35 to 52": the clergy residence deduction 14,000.00 plus the enhanced
+  CPP contribution of 415.00 (45,000 - 3,500 = 41,500 at 1%, Schedule 8) is 14,415.00. Net
+  income (line 23600) and taxable income (line 26000) are 45,000.00 - 14,415.00 = 30,585.00.
+  The CPP base and first additional contributions required on 41,500 are 2,469.25: base
+  (4.95%) 2,054.25 and first additional (1%) 415.00; the CPP2 contribution is 0 (earnings
+  below the second additional maximum). EI premiums are 1.64% x 45,000 = 738.00.
+  Federal tax on taxable income is 14.5% x 30,585.00 = 4,434.825, rounded half-up to 4,434.83
+  (all in the first bracket, not above 57,375). The credit amounts are the basic personal amount
+  of 16,129.00, the Canada employment amount of 1,471.00, the CPP base contributions of
+  2,054.25 and the EI premiums of 738.00, a total of 20,392.25, and its credit at 14.5% is
+  2,956.88 (2,956.87625, rounded half-up). Federal tax after credits is 4,434.83 - 2,956.88 =
+  1,477.95; there is no surtax and no other credit.
+  Canada workers benefit (working income of 45,000, above the 3,000 threshold, so the basic
+  amount is the maximum of 1,633.00; reduction 15% x (30,585.00 - 26,855) = 559.50): 1,633.00 -
+  559.50 = 1,073.50.
+  Refundable medical expense supplement (line 45200): the working income of the Federal
+  Worksheet is 45,000 less the clergy deduction of 14,000 (the worksheet takes off lines 22900
+  and 23100), so 31,000; the supplement is 0.
+  Alternative minimum tax: the amount of Form T691 deductions is 14,000 (the clergy residence
+  deduction, as the form reads line 23100) plus the enhanced CPP of 415.00, 14,415.00; the
+  minimum amount is 0, so the filer is not subject to alternative minimum tax.
+  Ontario (ON428): tax on taxable income is 5.05% x 30,585.00 = 1,544.5425, rounded half-up to
+  1,544.54. The Ontario basic personal amount is 12,747, and the credits are 12,747 + 2,054.25 +
+  738.00 = 15,539.25, at 5.05% = 784.732125, rounded half-up to 784.73; the Ontario tax after
+  credits is 1,544.54 - 784.73 = 759.81. The Ontario tax reduction is 2 x 294.00 = 588.00 (ON428
+  line 78), less 759.81 is below zero, so the reduction is 0 (ON428 line 80). The Ontario surtax
+  is 0, as 759.81 is not above 5,710. The LIFT credit is the maximum of 875.00 (net income of
+  30,585.00 is not above the individual threshold of 32,500.00), more than the tax, so the tax
+  after the LIFT credit is 0. The Ontario health premium is 6% x (30,585 - 20,000) = 635.10,
+  capped at 300.00, so 300.00.
+  Ontario tax payable is 0 + 300.00 = 300.00. Total payable is 1,477.95 + 300.00 = 1,777.95.
+  Total credits are the Canada workers benefit of 1,073.50 (no tax was deducted at source), so
+  the balance owing is 1,777.95 - 1,073.50 = 704.45.
+  Not triggered: self-employment income, the CPP2 contribution (nil), the Ontario tax reduction
+  (line 80 is 0), the Ontario surtax, the alternative minimum tax (the minimum amount is 0) and
+  the other credits, none of which this return claims.
+sources:
+  - >-
+    CRA, Form T1 Guide 5006-R 2025, Part 1 lines 51, 53 and 23100, 23300 ("Line 51 and line
+    23100: Clergy residence deduction (complete Form T1223)"; "Line 53 and line 23300: Add
+    lines 35 to 52.") (docs/cra-forms-2025/5006-r-25e.txt, confirmed text).
+  - >-
+    CRA, Form T1223 2025 (Clergy Residence Deduction), Part C lines 1 to 10 and (C)
+    (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1223/t1223-25e.pdf, confirmed
+    text, pdftotext -layout, docs/cra-forms-2025/t1223-25e.pdf): "Amount from line 1
+    multiplied by 1/3"; "Line 3 multiplied by $1,000 (maximum $10,000)"; "Enter whichever is
+    more: line 2 or line 4."; "Line 6 minus line 7 ="; "Enter whichever is less: Line 5 or line
+    8."; "Enter whichever is less: Line 1 or line 9."; "Enter this amount on line 23100 of your
+    return."; (C) "add amounts (A) and (B) and claim the total amount on line 23100 of your
+    return. The amount claimed for the clergy residence deduction cannot be more than the income
+    from qualifying employment on line 1."
+  - >-
+    CRA, Federal Worksheet 2025, "Line 45200 - Refundable medical expense supplement" line 1
+    ("minus the amounts from lines 20700, 21200, 22900, and 23100 of your return (if the result is
+    negative, consider it as "0")") (docs/cra-forms-2025/5000-d1-25e.txt, confirmed text).
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "45000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "45000"
+  # T4 boxes 24 (= 14) and 18: the required premium, Form T2204 line 16 (T1 line 31200).
+  ca/t2204_insurable_earnings: "45000"
+  ca/t2204_premiums_deducted: "738.00"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "2469.25"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/clergy_qualifying_employment_income: "45000"
+  ca/clergy_months_in_qualifying_employment: "12"
+  ca/clergy_accommodation_cost: "14000"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/clergy_residence_line_2: "15000.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "45000.00"
+      ca/clergy_residence_months_amount: "12000.00"
+      ca/clergy_residence_line_4: "10000.00"
+      ca/clergy_residence_line_5: "15000.00"
+      ca/clergy_residence_line_8: "14000.00"
+      ca/clergy_residence_line_9: "14000.00"
+      ca/clergy_residence_line_10: "14000.00"
+      ca/clergy_residence_total: "14000.00"
+      ca/clergy_residence_total_limited: "14000.00"
+      ca/clergy_residence_deduction: "14000.00"
+      ca/total_income: "45000.00"
+      ca/deductions_from_total_income: "14415.00"
+      ca/net_income_before_adjustments: "30585.00"
+      ca/other_payments_limit_income: "30585.00"
+      ca/net_income: "30585.00"
+      ca/taxable_income: "30585.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/ei_premiums: "738.00"
+      ca/basic_personal_amount: "16129.00"
+      ca/canada_employment_amount: "1471.00"
+      ca/federal_basic_tax: "4434.83"
+      ca/credits_against_basic_federal_tax: "2956.88"
+      ca/federal_tax_after_credits: "1477.95"
+      ca/amt_deductions_total: "14415.00"
+      ca/medical_supplement_working_income: "31000"
+      ca/medical_supplement_employment_deductions: "14000"
+      ca/cwb_before_reduction_without_dependant: "1633.00"
+      ca/cwb_reduction_without_dependant: "559.50"
+      ca/canada_workers_benefit: "1073.50"
+      ca/total_credits: "1073.50"
+      ca/total_payable: "1777.95"
+      ca/refund_or_balance_owing: "704.45"
+      ca-on/basic_personal_amount: "12747.00"
+      ca-on/ontario_basic_tax: "1544.54"
+      ca-on/non_refundable_tax_credits: "784.73"
+      ca-on/ontario_tax_after_credits: "759.81"
+      ca-on/ontario_tax_less_dividend_credit: "759.81"
+      ca-on/lift_credit: "875.00"
+      ca-on/ontario_health_premium: "300.00"
+      ca-on/ontario_tax: "300.00"
+  ca/schedule_8:
+    - ca/schedule_8_cpp_base_contributions_on_return: "2054.25"
+      ca/schedule_8_cpp_enhanced_contributions_on_return: "415.00"
+      ca/cpp_required_base_and_first_additional_contributions: "2469.25"

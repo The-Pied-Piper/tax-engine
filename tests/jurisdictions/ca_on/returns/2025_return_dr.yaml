@@ -1,0 +1,262 @@
+# Return DR: Dana, a 2025 Ontario resident whose refundable medical expense supplement (T1 line
+# 45200) is paid only because of her self-employment profit. Her employment income of $3,000.00 is
+# below the $4,390 the worksheet asks, and her one T2125 statement, a profit of $1,500.00, lifts the
+# working income to $4,500.00. Her CPP on self-employment (Schedule 8 Part 5) lowers her net income
+# to $4,430.50, so her medical claim (line 33200) is $1,867.08 and 25% of it, $466.77, is the
+# supplement. Every figure is derived in the description. The self-employment profit is also in
+# Schedule 6 working income, so the Canada workers benefit (line 45300) is $405.00, and the refund
+# and balance owing pinned below follow from it.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025, aged 26, a chosen figure (18 or older at the end
+  of 2025), resident in Canada throughout 2025, with no spouse or common-law partner and no
+  dependants. Her employment income (T1 line 10100) is $3,000.00, a chosen figure, with no CPP
+  deducted at source (T4 box 16 a chosen $0) and no EI premiums (T4 box 18 a chosen $0). She has
+  one T2125 statement for a business with gross sales of $1,500.00, a chosen figure, and no
+  expenses or capital cost allowance, so its net income (T2125 line 9946, T1 line 13500) is
+  $1,500.00. No other income, no professional, commission, farming or fishing income, no
+  scholarship income, no RRSP or union dues (each a chosen $0). Total income (line 15000) is
+  $3,000.00 + $1,500.00 = $4,500.00. CPP (Schedule 8): Part 2 line A is 12, as no condition a) to
+  h) applies, so the 12-month row gives line B $71,300.00, line C $9,900.00, line D $81,200.00 and
+  line E $3,500.00. Part 3 line 1 is her T4 box 26, blank so box 14, $3,000.00; line 7 is $3,000.00
+  less $3,500.00, not below zero, so $0, and her employment CPP and the enhanced employment
+  deduction (Part 3 line 24, line 22215) are $0. Part 5 applies, as she has both employment and
+  self-employment income. Line 1 is her self-employment income, $1,500.00; line 4 is $1,500.00; line
+  22 is the lesser of line 4 and line 21 ($67,800.00, line 19, $71,300.00 less $3,500.00), so
+  $1,500.00. Line 23 is line 18, $3,500.00; line 24 is line 1 of Part 3, $3,000.00, less than line 18,
+  so lines 25 to 29 apply: line 25 is $3,500.00 less $3,000.00 = $500.00; line 26 is $1,500.00;
+  line 27 is $67,800.00; line 28 is $0; line 29 is $500.00. Line 30 is $1,500.00 - $500.00 =
+  $1,000.00. Line 33 is $1,500.00 + $3,000.00 = $4,500.00, not more than line 17, so line 42 is $0.
+  Line 43 is $1,000.00 x 9.9% = $99.00; line 44 is $1,000.00 x 2% = $20.00; line 45 is $0. Line 47
+  is $99.00 + $20.00 = $119.00; line 48 is Part 3 line 24 x 2, $0. Line 49 is $119.00, the CPP
+  contributions payable on self-employment (line 42100). The deduction (line 88, line 22200): line
+  70 is 50% of line 43, $49.50; line 71 is 50% of line 44, $10.00; line 72 is $59.50; line 73 is
+  $0, so line 74 is $59.50 and line 75 is $0, so lines 76 and 77 are $0. Line 80 is $49.50 - $0 =
+  $49.50; line 81 is line 71, $10.00; line 83 is $10.00 - $0 = $10.00; line 84 is 50% of line 45,
+  $0; line 87 is $0. Line 88 is $49.50 + $10.00 + $10.00 + $0 + $0 = $69.50. No CPP overpayment
+  (line 49 is positive). Deductions from total income (line 23300) are $69.50, so net income before
+  adjustments (line 23400) is $4,500.00 - $69.50 = $4,430.50, and net income (line 23600) is
+  $4,430.50, less no social benefits repayment (line 23500, a chosen $0). Taxable income (line
+  26000) is $4,430.50. Medical expenses are a chosen $2,000.00 (line 107). Line 108 is $4,430.50 x
+  3% = $132.915, rounded half-up to the cent, $132.92 (the form states no rounding rule); line 109
+  is the lesser of $2,834 and $132.92, $132.92; line 110 is $2,000.00 - $132.92 = $1,867.08; no
+  other dependants (line 111, a chosen $0), so line 112, the medical claim (line 33200), is
+  $1,867.08. No disability supports deduction (line 21500, a chosen $0, no Form T929). Federal tax:
+  Part A, column 1 (line 26000 of $57,375 or less): line 72 is $4,430.50, line 74 is 14.5% of it,
+  $642.42, so the federal tax on taxable income (line 40400) is $642.42. Non-refundable credit
+  amounts (lines 106 and 112 to 113): the basic personal amount of $16,129 (line 30000), the base
+  CPP contributions on self-employment of $49.50 (line 31000), the Canada employment amount, the
+  lesser of $3,000.00 and $1,471 (line 31260), and the medical claim of $1,867.08 (line 33200), in
+  all $19,516.58; line 115 is 14.5% of it, $2,829.90 (line 35000). The basic federal tax (line
+  42900) is line 40400 less line 35000, not below zero, so $642.42 - $2,829.90 is $0, and the net
+  federal tax (line 42000) is $0. The minimum tax (T691): the basic exemption of $177,882 is more
+  than her adjusted taxable income, so the minimum amount is $0. Part 2 line 5, the tax payable
+  before the minimum tax carryover, is $642.42 - $2,829.90 = -$2,187.48; line 6 is $0, so line 7
+  is -$2,187.48. Part 7 line 14, the additional taxes for the carryover, is the minimum amount less
+  Part 7's tax, $0 - (-$2,187.48) = $2,187.48, which Part 8 carries to line 17: no carryover from
+  earlier years (line 1 is $0), so the total minimum tax carryover available for 2026 is $2,187.48
+  (line 15, $0 + $2,187.48, less the unapplied 2018 carryover of $0). Ontario: the tax on taxable
+  income (ON428 line 8) is 5.05% of $4,430.50, $223.74. The non-refundable credits (line 50) are the
+  basic personal amount of $12,747 (line 9), the CPP base credit of $49.50 and the medical claim of
+  $1,867.08, $14,663.58, at 5.05%, $740.51 (line 46). Line 53 is $223.74 less $740.51, not below
+  zero, so $0. The Ontario tax reduction (line 80) is $588 less the tax before it, not below zero,
+  so $588 and the tax after it is $0; the LIFT credit (line 85) cannot make the tax negative, so
+  the Ontario tax is $0 (line 88). Total payable (line 43500): net federal tax $0, CPP on
+  self-employment $119.00 (line 42100), EI on self-employment $0, social benefits repayment $0 and
+  provincial tax $0, so $119.00. Refundable credits (line 48200): the refundable medical expense
+  supplement (line 45200) of $466.77 (below), and the Canada workers benefit (line 45300) of
+  $405.00, and the other credits $0, so the total credits are $871.77. Refund or balance owing
+  (line 167): $119.00 - $871.77 = -$752.77, a refund of $752.77 (line 48400). The Ontario net
+  refund is the same $752.77 (no Ontario donation). Canada workers benefit (Schedule 6, from the
+  copy on PR #499): line 1 is the employment income $3,000.00 plus the other employment income
+  $0, $3,000.00; line 2 is the taxable scholarships $0; line 3 is the self-employment income of
+  the one statement, $1,500.00 (Note 2 is not triggered, as the statement is a profit); line 5,
+  the working income, is $4,500.00 (line 6 is the same, no eligible spouse). Line 18 is $4,500.00
+  - $3,000.00 = $1,500.00 and line 20 is 27% of it, $405.00, under the $1,633 maximum (line 21), so
+  line 22 is $405.00. Line 23 is the adjusted family net income of $4,430.50, under $26,855, so
+  line 25 is $0 and line 27 is $0, and line 28 (T1 line 45300) is $405.00, the line with no eligible
+  dependant (the count of 0). Refundable medical expense supplement (Federal Worksheet, Line 45200): she
+  was resident in Canada throughout 2025 and is 18 or older at the end of 2025, and her adjusted family
+  net income is under $63,374. Line 1 is $4,430.50, line 2 is $0 (no UCCB or RDSP repayments), line 3
+  is $4,430.50, line 4 is $0, line 5 is $4,430.50; column 2 is all $0, so line 6 is $4,430.50 and line
+  7 is $33,294.00. Line 8 is $4,430.50 - $33,294.00, below zero, so $0. Line 9 is $0 (line 21500), line
+  10 is $1,867.08, and line 11 is $1,867.08. Line 13 is 25% of $1,867.08 = $466.77; line 14 is the
+  lesser of $466.77 and $1,504, $466.77; line 15 is 5% of $0, $0.00; line 16 is $466.77 - $0.00 =
+  $466.77, the supplement on line 45200. The working income test: the employment part is $3,000.00
+  (line 10100, less no amounts from lines 20700, 21200, 22900 and 23100) and the self-employment part
+  is $1,500.00, so the total is $4,500.00, which is $4,390 or more. Without the statement the employment
+  part alone, $3,000.00, is under $4,390, and the supplement would be $0. Not triggered: no spouse or
+  common-law partner (column 2 is $0), no wage-loss replacement plan amounts, no professional or
+  commission income, no farming or fishing statement, and no CPP or QPP overpayment. Ontario LIFT
+  credit amount and the Ontario tax reduction's other conditions: to be confirmed from Schedule
+  ON428 and ON428-A, which are not in docs/cra-forms-2025.
+sources:
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1, docs/cra-forms-2025/5000-d1-25e.txt), "Line 45200 -
+    Refundable medical expense supplement": "You entered an amount on line 21500 or line 33200 of
+    your return"; "Your adjusted family net income is less than $63,374"; "In addition, the total of
+    the following two amounts must be $4,390 or more:"; "your employment income from lines 10100 and
+    10400 of your return (other than amounts received from a wage-loss replacement plan) minus the
+    amounts from lines 20700, 21200, 22900, and 23100 of your return (if the result is negative,
+    consider it as "0")"; "your net self-employment income (not including losses) from lines 13500,
+    13700, 13900, 14100, and 14300 of your return"; the note on one business's profit and another's
+    loss; and lines 1, 3, 5 to 11 and 13 to 16 as printed.
+  - >-
+    CRA, Form 5006-R, T1 2025 Income Tax and Benefit Return (docs/cra-forms-2025/5006-r-25e.txt):
+    "Line 107 and line 33099: Medical expenses for self, spouse or common-law partner and your
+    dependent children under 18 years of age"; "Line 108: Amount from line 23600 multiplied by 3%";
+    "Line 109: Enter whichever is less: $2,834 or the amount from line 108"; "Line 112 and line
+    33200: Line 110 plus line 111"; "Line 73: Rate 14.5%"; "Line 114: Federal non-refundable tax
+    credit rate 14.5%"; "Line 126 and line 42900: Line 121 minus line 125 (if negative, enter "0")";
+    "Line 148 and line 43500: Add lines 143 to 147. Total payable"; "Line 166 and line 48200: Add
+    lines 150 to 165. Total credits"; "Line 167: Line 149 minus line 166"; "Line 48400: Refund".
+  - >-
+    CRA, Form T691, Alternative Minimum Tax 2025 (docs/cra-forms-2025/t691-25e.pdf): Part 1
+    "Basic exemption 177,882.00"; Part 2 "Enter the amount from line 40400 of your return",
+    "Total non-refundable tax credits (line 35000 of your return)", "Line 1 minus line 4 Tax payable
+    before minimum tax carryover"; Part 8 "Total minimum tax carryover available for 2026: line 15
+    minus line 16".
+  - >-
+    CRA, Schedule 8 2025 (docs/cra-forms-2025/5000-s8-25e.txt), Part 2 lines A to E, the 12-month row
+    (maximum pensionable earnings $71,300.00, maximum amount subject to second additional contributions
+    $9,900.00, additional maximum pensionable earnings $81,200.00, maximum basic exemption $3,500.00);
+    Part 3 line 1 "Total CPP pensionable earnings from box 26 of all of your T4 slips (if box 26 is
+    blank, enter the amount from box 14)"; Part 5 lines 1, 4, 17 to 30, 33, 42, 43 to 49, 70 to 77, 80,
+    81, 83, 84, 87 and 88 as printed, with "multiplied by 9.9%", "multiplied by 2%" and "multiplied by
+    50%".
+  - >-
+    CRA, General Income Tax and Benefit Guide 2025 (docs/cra-forms-2025/5000-g-25e.txt): "$177,882 or
+    less, enter $16,129 on line 30000"; "Line 31260 - Canada employment amount" ($1,471, the maximum);
+    "Line 31000 - Base CPP or QPP contributions on self-employment income and other earnings"; "You have
+    to contribute to the Canada Pension Plan (CPP) for 2025 since the total of your net self-employment
+    income plus pensionable employment income is more than $3,500".
+  - >-
+    CRA, Form 5006-C, Ontario Tax 2025 (docs/cra-forms-2025/5006-c-25e.txt): "Line 5: Rate 5.05%";
+    "Line 9 and line 58040: Basic personal amount Claim $12,747"; "Line 45: Ontario non-refundable tax
+    credit rate 5.05%"; "Line 51: Ontario tax on taxable income from line 8"; "Line 53: Line 51 minus
+    line 52 (if negative, enter "0")"; "Line 74: Basic reduction 294.00"; "Line 80: Line 78 minus line 79
+    (if negative, enter "0") Ontario tax reduction".
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t4_cpp_slip_count: "1"
+  ca/employment_income: "3000"
+  ca/t4_cpp_pensionable_earnings_outside_quebec: "3000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/cpp_part_5_completed: "1"
+  ca/t2125_statements:
+    - ca/business_gross_sales: "1500"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "0"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "13"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "0"
+      ca/business_drawings: "0"
+      ca/business_capital_contributions: "0"
+  ca/medical_expenses: "2000"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/net_business_income: "1500.00"
+      ca/t4_cpp_pensionable_earnings_slip_checked: "3000.00"
+      ca/gross_business_income: "1500.00"
+      ca/total_income: "4500.00"
+      ca/cpp_payable_on_self_employment_and_other_earnings: "119.00"
+      ca/cpp_deduction_on_self_employment_and_other_earnings: "69.50"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca/deductions_from_total_income: "69.50"
+      ca/net_income_before_adjustments: "4430.50"
+      ca/net_income: "4430.50"
+      ca/taxable_income: "4430.50"
+      ca/other_payments_limit_income: "4430.50"
+      ca/medical_claim: "1867.08"
+      ca/amt_carryover_available_for_2026: "0.00"
+      ca/working_income: "4500.00"
+      ca/canada_workers_benefit: "405.00"
+      ca-on/net_refund: "752.77"
+      ca/refund_or_balance_owing: "-752.77"
+      ca/medical_supplement_employment_income: "3000"
+      ca/medical_supplement_employment_working_income: "3000"
+      ca/medical_supplement_self_employment_income: "1500"
+      ca/medical_supplement_working_income: "4500"
+      ca/medical_supplement_column_1_line_3: "4430.50"
+      ca/medical_supplement_column_1_line_5: "4430.50"
+      ca/medical_supplement_line_6: "4430.50"
+      ca/medical_supplement_income_threshold: "33294.00"
+      ca/medical_supplement_line_8: "0"
+      ca/medical_supplement_line_11: "1867.08"
+      ca/medical_supplement_line_13: "466.77"
+      ca/medical_supplement_line_14: "466.77"
+      ca/medical_supplement_line_15: "0.00"
+      ca/medical_supplement_line_16: "466.77"
+      ca/medical_supplement_if_working_income_met: "466.77"
+      ca/medical_supplement_if_resident: "466.77"
+      ca/refundable_medical_expense_supplement: "466.77"

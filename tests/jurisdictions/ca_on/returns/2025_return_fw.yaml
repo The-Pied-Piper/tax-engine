@@ -1,0 +1,230 @@
+# Return FW: the social benefits repayment chart (Federal Worksheet, line 23500) with line 5
+# floored at 0 (OAS recovered above line 3), a negative line 11 (-6,000) that gives a line
+# 17 floored at 0 and a line 19 of 0; and the pre-1986 capital loss balance (Form T1436,
+# line 25300) with the capital gains deductions B, C and E non-zero and the 1985 to 1987 row
+# of Chart A non-zero. No CRA example exists for either chart or for the T1436 chart, so
+# every figure is a chosen figure or worked out by hand from the form text before the engine
+# ran.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  An Ontario resident for all of 2025 (Ontario residency is chosen: the forms name no
+  province of residence), resident in Canada throughout 2025 and aged 18 or older at the end
+  of 2025 (chosen figures), with no employment income, no CPP or EI contributions and 12 CPP
+  and 12 QPP months (chosen). Her income (chosen figures) is old age security of 4,000.00
+  (line 11300), EI benefits of 20,000.00 (line 11900), RDSP income of 100,000.00 (line
+  12500) and one capital gain: shares sold for proceeds of 20,000.00 with an adjusted cost
+  base of 0 and no outlays, so the taxable capital gain is 20,000 x 50% = 10,000.00. No net
+  federal supplements are reported (line 14600 is blank, so line 14700 is 0). Total income
+  (line 15000) is 4,000 + 20,000 + 100,000 + 10,000 = 134,000.00. Her deductions from total
+  income are other deductions of 40,000.00 (line 23200, a chosen figure): that amount
+  includes the OAS overpayment recovered of 5,000.00 (box 20 of the T4A(OAS) slip), which
+  the Guide says is claimed on line 23200, and 35,000.00 of other deductible amounts (no
+  RDSP income repayment among them, so line 13 is 0). Line 23300 is 40,000.00 and net income
+  before adjustments (line 23400) is 134,000 - 40,000 = 94,000.00. She has no UCCB or UCCB
+  repayment. Income tax deducted is a chosen 25,000.00.
+  Federal Worksheet, Line 23500 - Social benefits repayment. The chart is completed because
+  both conditions hold: "You entered an amount on line 11900 of your return and the amount
+  on line 23400 is more than $82,125" (20,000.00 and 94,000.00), and "You entered an amount
+  on line 11300 or line 14600 of your return and the amount on line 23400 is more than
+  $93,454" (4,000.00 and 94,000.00). Line 1, the OAS pension: 4,000.00. Line 2, the net
+  federal supplements: 0. Line 3: 4,000 + 0 = 4,000.00. Line 4, the overpayment of OAS
+  benefits recovered (box 20 of the T4A(OAS) slip): a chosen 5,000.00, part of the line
+  23200 deduction above. Line 5: 4,000 - 5,000 = -1,000.00, entered as 0 ("if negative,
+  enter 0"). Line 6, the net income before adjustments from line 23400: 94,000.00. Line 7,
+  the EI benefits repayment from the T4E repayment chart: 0. No EI repayment arises: the
+  Guide's EI repayment test, line 23400 less lines 11700 and 12500 plus line 21300, is
+  94,000 - 0 - 100,000 + 0 = -6,000, so there is nothing to repay. Line 8, the UCCB from
+  line 11700: 0. Line 9, the RDSP income from line 12500: 100,000.00. Line 10: 0 + 0 +
+  100,000 = 100,000.00. Line 11: 94,000 - 100,000 = -6,000.00. The form prints no floor on
+  line 11, so the negative figure is kept. Lines 12 and 13 (the UCCB and RDSP income
+  repayments) are 0, so line 14 is 0. Line 15, the adjusted net income: -6,000 + 0 =
+  -6,000.00. Line 16, the OAS benefits base amount: 93,343.00. Line 17: -6,000 - 93,343 =
+  -99,343.00, entered as 0. Line 18: 0 x 15% = 0.00. Line 19, whichever is less of line 5
+  (0.00) and line 18 (0.00): 0.00. Had line 5 not been floored (-1,000.00), line 19 would
+  have been -1,000.00 and the repayment -1,000.00 as well. Line 20, the amount from line 7:
+  0. Line 21: 0 + 0 = 0.00, so no social benefits repayment is entered on line 23500 or line
+  42200. Net income (line 23600) is 94,000 - 0 = 94,000.00.
+  Federal Worksheet, Line 25000 - Other payments deduction, is not completed because no net
+  federal supplements are reported, so line 25000 is 0. The worksheet's line 9 formula is
+  (94,000 - (0 + 100,000)) + 0 = -6,000.00. It is not carried to the return; the engine
+  exports that signed figure.
+  Form T1436, Calculating your pre-1986 capital loss balance available for 2025, line 25300
+  (chosen figures throughout). Line 1, the balance of unapplied net capital losses before
+  May 23, 1985: 9,000.00. Capital gains deductions claimed: A, before 1988, 500.00; B, in
+  1988 and 1989, 400.00 x 3/4 (printed 0.75) = 300.00; C, from 1990 to 1999, 600.00 x 2/3
+  (printed 0.6667) = 400.00; D, in 2000, 300.00 at an inclusion rate of 0.666666: 300.00 x
+  1/(0.666666 x 2) = 300 / 1.333332 = 225.000225, rounded to 225.00; E, from 2001 to 2024,
+  100.00. Line 2: 500 + 300 + 400 + 225 + 100 = 1,525.00. Line 3: 9,000 - 1,525 = 7,475.00.
+  Chart A, column A: the row "Before May 23, 1985" takes line 3, 7,475.00; the row "After
+  May 22, 1985, and before 1988" takes an unapplied net capital loss of 1,000.00 (a chosen
+  figure); the other rows are 0. Column C is column A times column B: 7,475.00 x 1 and
+  1,000.00 x 1, the other rows 0. Line 4, the total of column C: 8,475.00. Line 5, the
+  taxable capital gains from line 12700: 10,000.00. Line 6, whichever is less of line 4 and
+  line 5: 8,475.00. Line 7, the losses claimed (a chosen figure, at most line 6): 5,000.00.
+  Line 8: 8,475 - 5,000 = 3,475.00. Line 9, whichever is least of line 3 (7,475.00), line 8
+  (3,475.00) and $2,000: 2,000.00. Line 10: 5,000 + 2,000 = 7,000.00, the net capital loss
+  of other years deducted on line 25300 of the return. Line 13 is the same 7,000.00, applied
+  to the oldest row first (the Guide: "You have to apply your older losses first."): column
+  D is 7,000.00 for "Before May 23, 1985" and 0 for the other rows, the 1985 to 1987 row
+  receiving nothing. Column E is column C less column D: 475.00 and 1,000.00, the other rows
+  0. Column G is column E times column F (1, 1, 4/3 (printed 1.33), 3/2 (printed 1.5), 2 x
+  IR, 1): 475.00 and 1,000.00, the balance carried forward.
+  Line 25300 is deducted from net income: 94,000 - 7,000 = 87,000.00 is taxable income (line
+  26000), since there are no other deductions from net income (the other payments deduction
+  is 0).
+  The lines that are the engine's figures, not hand figures: the CPP second additional
+  earnings maximum (9,900.00, a CPP parameter for 12 months, with no contributions), the
+  Ontario tax less the dividend credit (5,148.45), the federal tax after credits
+  (12,053.80), the Ontario tax (5,898.45, which includes the health premium of 750.00), the
+  total payable (17,952.25: the federal tax, the Ontario tax and the social benefits
+  repayment of 0 on line 42200), the total credits (25,000.00, the income tax deducted) and
+  the refund (7,047.75, shown as a negative balance owing, with the net refund of
+  7,047.75).
+sources:
+  - >-
+    CRA, Federal Worksheet 2025 (5000-D1), "Line 23500 - Social benefits repayment":
+    "Complete the chart below if one or both of the following applies:" "You entered an
+    amount on line 11900 of your return and the amount on line 23400 is more than $82,125";
+    "You entered an amount on line 11300 or line 14600 of your return and the amount on line
+    23400 is more than $93,454"; "Line 3: Line 1 plus line 2 ="; "Line 5: Line 3 minus line
+    4 (if negative, enter "0") ="; "Line 11: Line 6 minus line 10"; "Line 15: Line 11 plus
+    line 14 Adjusted net income ="; "Line 16: OAS benefits base amount 93,343.00"; "Line 17:
+    Line 15 minus line 16 (if negative, enter "0") ="; "Line 18: Amount from line 17
+    multiplied by 15% ="; "Line 19: Enter whichever is less: amount from line 5 or line
+    18."; "Line 21: Line 19 plus line 20. Enter this amount on line 23500 and line 42200 of
+    your return. =" (docs/cra-forms-2025/5000-d1-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - >-
+    CRA, Form T1436 2025, "Line 25300 - Net capital loss of other years (if you have
+    pre-1986 capital loss balance)": "Complete lines 1 to 3 only if you have a balance of
+    unapplied net capital losses from before May 23, 1985. Otherwise, enter "0" on line 3
+    and continue at line 4."; "Balance of unapplied net capital losses you had before May
+    23, 1985" (line 1); "Capital gains deductions you claimed:" "Before 1988" (A); "In 1988
+    and 1989" "x 0.75" (B); "From 1990 to 1999" "x 0.6667" (C); "In 2000" "x 1/(IR x 2)"
+    (D); "From 2001 to 2024" (E); "Total capital gains deductions after adjustment: add
+    amounts A to E." (line 2); "Pre-1986 capital loss balance available for 2025: line 1
+    minus line 2" (line 3); "Total of column C from Chart A" (line 4); "Taxable capital
+    gains from line 12700 of your 2025 return" (line 5); "Enter whichever is less: amount
+    from line 4 or line 5." (line 6); "Enter the amount of losses you want to claim (3)."
+    (line 7); "Balance of unapplied adjusted net capital losses of other years not used to
+    reduce taxable capital gains: line 4 minus line 7" (line 8); "Enter whichever is less:
+    amount from line 3, line 8, or $2,000." (line 9); "Line 7 plus line 9" (line 10). Chart
+    A: the rows "Before May 23, 1985", "After May 22, 1985, and before 1988" and "In 1988
+    and 1989", with column (B) factors 1, 1, 0.75 and column (F) factors 1, 1, 1.33
+    (docs/cra-forms-2025/t1436-25e.pdf)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+  - >-
+    CRA, Guide T4037 "Capital Gains" 2025 (PDF; confirmed from the PDF; no .txt published),
+    "You have to apply your older losses first." (the order in which the unapplied losses of
+    Chart A are applied, oldest row first)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4037/t4037-25e.pdf
+  - >-
+    CRA, General Income Tax and Benefit Guide 2025 (5000-G), "Old age security (OAS)
+    pension": "If you had an amount recovered from your gross OAS pension in 2025 (shown in
+    a letter or box 20 of your T4A(OAS) slip) because of an overpayment you received before
+    2025, you can claim a deduction on line 23200 of your return for the amount you
+    repaid."; and "Line 23500 - Social benefits repayment", "Employment insurance (EI)
+    benefits repayment": "You have to repay part of the EI benefits (line 11900) that you
+    received in 2025 if all the following conditions apply to you:" "The result of the
+    following calculation is more than $82,125:" "line 23400, minus" "line 11700 and line
+    12500, plus" "line 21300 or repayment amount of RDSP income included on line 23200 (or
+    both)" (docs/cra-forms-2025/5000-g-25e.txt)
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+inputs:
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_18_or_older_at_end_of_2025: "1"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/share_dispositions:
+    - ca/disposition_proceeds: "20000"
+      ca/disposition_adjusted_cost_base: "0"
+      ca/disposition_outlays: "0"
+  ca/old_age_security: "4000"
+  ca/ei_and_other_benefits: "20000"
+  ca/rdsp_income: "100000"
+  ca/other_deductions: "40000"
+  ca/oas_overpayment_recovered: "5000"
+  ca/income_tax_deducted: "25000"
+  ca/unapplied_net_capital_losses_1985_to_1987: "1000"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/net_capital_losses_before_may_23_1985: "9000"
+  ca/pre_1986_deductions_before_1988: "500"
+  ca/pre_1986_deductions_1988_and_1989: "400"
+  ca/pre_1986_deductions_1990_to_1999: "600"
+  ca/pre_1986_deductions_2000: "300"
+  ca/t657_inclusion_rate_2000: "0.666666"
+  ca/pre_1986_deductions_2001_to_2024: "100"
+  ca/net_capital_losses_claimed: "5000"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca-on/return:
+    - ca/share_proceeds: "20000"
+      ca/taxable_capital_gains: "10000.00"
+      ca/schedule_3_line_19900: "10000.00"
+      ca/total_income: "134000.00"
+      ca/deductions_from_total_income: "40000.00"
+      ca/net_income_before_adjustments: "94000.00"
+      ca/oas_and_federal_supplements: "4000"
+      ca/social_benefits_line_5: "0"
+      ca/social_benefits_line_6: "94000.00"
+      ca/social_benefits_line_10: "100000.00"
+      ca/social_benefits_line_11: "-6000.00"
+      ca/social_benefits_line_14: "0"
+      ca/social_benefits_line_15: "-6000.00"
+      ca/oas_benefits_base_amount: "93343.00"
+      ca/social_benefits_line_17: "0"
+      ca/social_benefits_line_18: "0"
+      ca/social_benefits_line_19: "0"
+      ca/social_benefits_line_21: "0"
+      ca/social_benefits_repayment_applies: "1"
+      ca/social_benefits_repayment: "0"
+      ca/other_payments_limit_income: "-6000.00"
+      ca/pre_1986_deductions_total: "1525.00"
+      ca/pre_1986_deductions_adjusted_1988_and_1989: "300.00"
+      ca/pre_1986_deductions_adjusted_1990_to_1999: "400.00"
+      ca/pre_1986_deductions_adjusted_2000: "225.00"
+      ca/pre_1986_capital_loss_balance: "7475.00"
+      ca/total_adjusted_net_capital_losses: "8475.00"
+      ca/adjusted_net_capital_losses_applied: "5000"
+      ca/unapplied_adjusted_net_capital_losses: "3475.00"
+      ca/net_capital_losses_additional_deduction: "2000.00"
+      ca/net_capital_losses_of_other_years: "7000.00"
+      ca/total_adjusted_net_capital_losses_applied: "7000.00"
+      ca/adjusted_gross_capital_losses_before_may_23_1985: "7475.00"
+      ca/adjusted_gross_capital_losses_1985_to_1987: "1000.00"
+      ca/adjusted_gross_capital_losses_1988_and_1989: "0"
+      ca/adjusted_gross_capital_losses_1990_to_1999: "0"
+      ca/adjusted_gross_capital_losses_2000: "0"
+      ca/adjusted_gross_capital_losses_2001_to_2024: "0"
+      ca/adjusted_losses_applied_before_may_23_1985: "7000.00"
+      ca/adjusted_losses_applied_1985_to_1987: "0"
+      ca/adjusted_losses_applied_1988_and_1989: "0"
+      ca/adjusted_losses_applied_1990_to_1999: "0"
+      ca/adjusted_losses_applied_2000: "0"
+      ca/adjusted_losses_applied_2001_to_2024: "0"
+      ca/remaining_adjusted_losses_before_may_23_1985: "475.00"
+      ca/remaining_adjusted_losses_1985_to_1987: "1000.00"
+      ca/remaining_adjusted_losses_1988_and_1989: "0"
+      ca/remaining_adjusted_losses_1990_to_1999: "0"
+      ca/remaining_adjusted_losses_2000: "0"
+      ca/remaining_adjusted_losses_2001_to_2024: "0"
+      ca/net_capital_loss_balance_before_may_23_1985: "475.00"
+      ca/net_capital_loss_balance_1985_to_1987: "1000.00"
+      ca/net_capital_loss_balance_1988_and_1989: "0"
+      ca/net_capital_loss_balance_1990_to_1999: "0"
+      ca/net_capital_loss_balance_2000: "0"
+      ca/net_capital_loss_balance_2001_to_2024: "0"
+      ca/net_income: "94000.00"
+      ca/deductions_from_net_income: "7000.00"
+      ca/taxable_income: "87000.00"
+      # Engine only (not hand figures): the tax lines, see the description.
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "5148.45"
+      ca/federal_tax_after_credits: "12053.80"
+      ca-on/ontario_tax: "5898.45"
+      ca/total_payable: "17952.25"
+      ca/total_credits: "25000.00"
+      ca/refund_or_balance_owing: "-7047.75"
+      ca-on/net_refund: "7047.75"

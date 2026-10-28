@@ -1,0 +1,133 @@
+# Return HQ: a single Ontario resident whose only income is the net business income of one sole
+# proprietorship, reported on one Form T2125 (Statement of Business or Professional Activities) for
+# a full fiscal period (0 days entered). Gross sales are a chosen $40,000 and rent (line 8910) is
+# $12,000, so total expenses (line 9368) are $12,000 and the net business income (line 9946, T1
+# line 13500) is $28,000. No capital cost allowance is claimed and no land is entered.
+#
+# The statement also enters the three amounts of Part 9 "Details of equity": line 9931 "Total
+# business liabilities" of $18,400.50, line 9932 "Drawings in the current year" of $24,000 and line
+# 9933 "Capital contributions in the current year" of $5,000. Nothing earlier on the form computes
+# them, so each is an input taken as entered (`ca/business_liabilities`, `ca/business_drawings` and
+# `ca/business_capital_contributions`), carried to the form's printed line and read by nothing on
+# the return: they change no income line. The amounts are chosen for this return, not taken from a
+# guide example.
+jurisdiction: CA-ON
+tax_year: 2025
+description: >-
+  A single Ontario resident for all of 2025 whose only income is the net business income of one
+  sole proprietorship, reported on one Form T2125 (Statement of Business or Professional
+  Activities) for a full fiscal period (0 days entered): gross sales of $40,000 (line 8299), rent
+  of $12,000 (line 8910), so total expenses (line 9368) are $12,000 and the net business income
+  (line 9946, T1 line 13500) is $28,000. No capital cost allowance is claimed. Part 9 "Details of
+  equity" enters line 9931 "Total business liabilities" as $18,400.50, line 9932 "Drawings in the
+  current year" as $24,000 and line 9933 "Capital contributions in the current year" as $5,000,
+  each an input taken as entered and carried unread (`ca/business_liabilities`,
+  `ca/business_drawings` and `ca/business_capital_contributions`), so the three amounts change no
+  income line and the net business income is $28,000 with or without them.
+sources:
+  - >-
+    CRA, Form T2125 (2025), Statement of Business or Professional Activities
+    (docs/cra-forms-2025/t2125-25e.pdf, confirmed from the PDF with pdftotext -layout, around
+    lines 283 to 287 of its text): "Part 9 – Details of equity"; "Total business liabilities";
+    "Drawings in the current year"; "Capital contributions in the current year". The amounts of
+    the return are chosen for the test and are not quoted from the form.
+inputs:
+  # Schedule 6 line 38102, 1 yes: the basic CWB is claimed (line 41 is line 28).
+  ca/cwb_claiming_basic: "1"
+  ca/resident_in_canada_throughout_2025: "1"
+  ca/aged_19_or_older_at_end_of_2025: "1"
+  ca/t2125_statements:
+    - ca/business_gross_sales: "40000"
+      ca/business_income_line: "1"
+      ca/business_sales_adjustments: "0"
+      ca/business_quick_method_gst_hst: "0"
+      ca/business_quick_method_remitted: "0"
+      ca/business_reserves_deducted_last_year: "0"
+      ca/business_other_income: "0"
+      ca/business_opening_inventory: "0"
+      ca/business_purchases: "0"
+      ca/business_direct_wage_costs: "0"
+      ca/business_subcontracts: "0"
+      ca/business_other_costs: "0"
+      ca/business_closing_inventory: "0"
+      ca/business_advertising: "0"
+      ca/business_meals_and_entertainment: "0"
+      ca/business_bad_debts: "0"
+      ca/business_insurance: "0"
+      ca/business_interest_and_bank_charges: "0"
+      ca/business_business_taxes_licences_and_memberships: "0"
+      ca/business_office_expenses: "0"
+      ca/business_office_stationery_and_supplies: "0"
+      ca/business_professional_fees: "0"
+      ca/business_management_and_administration_fees: "0"
+      ca/business_rent: "12000"
+      ca/business_repairs_and_maintenance: "0"
+      ca/business_salaries_wages_and_benefits: "0"
+      ca/business_property_taxes: "0"
+      ca/business_travel_expenses: "0"
+      ca/business_utilities: "0"
+      ca/business_fuel_costs: "0"
+      ca/business_delivery_freight_and_express: "0"
+      ca/business_vehicles: []
+      ca/business_vehicle_sales_tax_rate: "0"
+      ca/business_cca_personal_part: "0"
+      ca/business_other_expenses: "0"
+      ca/business_journalism_labour_tax_credit: "0"
+      ca/business_partner_gst_hst_rebate: "0"
+      ca/business_partner_other_amount_a: "0"
+      ca/business_partner_other_amount_b: "0"
+      ca/business_partner_other_amount_c: "0"
+      ca/business_partner_other_amount_d: "0"
+      ca/business_partner_other_amount_e: "0"
+      ca/business_home_heat: "0"
+      ca/business_home_electricity: "0"
+      ca/business_home_insurance: "0"
+      ca/business_home_maintenance: "0"
+      ca/business_home_mortgage_interest: "0"
+      ca/business_home_property_taxes: "0"
+      ca/business_home_other_expenses: "0"
+      ca/business_home_personal_use_part: "0"
+      ca/business_home_cca: "0"
+      ca/business_home_carried_forward: "0"
+      ca/business_partner_share: "0"
+      ca/business_partner: "0"
+      ca/business_cca_classes: []
+      ca/business_epop_associated: "0"
+      ca/business_epop_agreement_filed: "0"
+      ca/business_epop_percentage: "0"
+      ca/business_epop_percentage_total: "0"
+      ca/business_minister_allocation_given: "0"
+      ca/business_minister_allocation: "0"
+      ca/business_fiscal_period_from: "0"
+      ca/business_fiscal_period_to: "0"
+      ca/business_land_additions: "0"
+      ca/business_land_dispositions: "0"
+      ca/business_liabilities: "18400.50"
+      ca/business_drawings: "24000"
+      ca/business_capital_contributions: "5000"
+  ca/cpp_months: "12"
+  ca/qpp_months: "12"
+  ca/cpp_t4_base_and_first_additional_contributions: "0"
+  ca/cpp_t4_second_additional_contributions: "0"
+  ca/unapplied_net_capital_losses_2000: "0"
+  ca/schedule_8_instances:
+    - {}
+expected:
+  ca/t2125:
+    - ca/business_sales_subtotal: "40000"
+      ca/business_adjusted_gross_sales: "40000"
+      ca/business_gross_income: "40000"
+      ca/business_total_expenses: "12000"
+      ca/business_net_income_before_adjustments: "28000.00"
+      ca/business_net_income_after_adjustments: "28000.00"
+      ca/business_liabilities: "18400.50"
+      ca/business_drawings: "24000"
+      ca/business_capital_contributions: "5000"
+  ca-on/return:
+    - ca/gross_business_income: "40000"
+      ca/business_income: "28000.00"
+      ca/net_income_before_adjustments: "28000.00"
+      ca/other_payments_limit_income: "28000.00"
+      ca/cpp_second_additional_earnings_maximum: "9900.00"
+      ca-on/ontario_tax_less_dividend_credit: "770.28"
+      ca/refund_or_balance_owing: "1330.32"
