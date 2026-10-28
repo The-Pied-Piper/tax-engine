@@ -55,12 +55,6 @@ engine = build_tax_computation()
 forms = engine.compose(JurisdictionCode("CA-ON"), 2025)
 ```
 
-## Tests
-
-The initial smoke tests check imports without HTTP dependencies and composition
-using the bundled jurisdiction data. The original service repository's full
-engine test suite has not yet been migrated.
-
 ## License
 
 Licensed under the [Apache License, Version 2.0](LICENSE).
