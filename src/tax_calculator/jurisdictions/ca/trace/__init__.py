@@ -1,7 +1,8 @@
 """The federal Canada trace lines: facts in the vocabulary of Canada's own forms.
 
 Capital cost allowance, foreign tax, gains, dependants, logging and rentals; each line's English
-text is in `tax_calculator.jurisdictions.ca.trace_english`. The generic lines are in `tax_calculator.domain.trace`.
+text is in `tax_calculator.jurisdictions.ca.trace_english`. The generic lines are in
+`tax_calculator.domain.trace`.
 """
 
 from __future__ import annotations

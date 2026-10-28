@@ -1,4 +1,5 @@
-"""English text for the trace line of `tax_calculator.domain.trace.forms`: one renderer class, registered
+"""English text for the trace line of `tax_calculator.domain.trace.forms`:
+one renderer class, registered
 with `@english_renderer`.
 """
 

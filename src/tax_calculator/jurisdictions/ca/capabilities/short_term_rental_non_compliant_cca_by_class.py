@@ -20,7 +20,9 @@ from tax_calculator.domain.capability import CapabilityResult, capability
 from tax_calculator.domain.parameters.datasets import ParameterDataset
 from tax_calculator.domain.parameters.rounding_only import RoundingOnly
 from tax_calculator.domain.record_list import RecordList
-from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_cca_rows import ShortTermRentalCcaRows
+from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_cca_rows import (
+    ShortTermRentalCcaRows,
+)
 from tax_calculator.jurisdictions.ca.catalog import CCA_CLASS_NUMBER, NON_COMPLIANT_CCA
 from tax_calculator.jurisdictions.ca.trace import ShortTermRentalNonCompliantCcaByClassLine
 

@@ -36,7 +36,9 @@ from tax_calculator.domain.parameters.kind import ParameterKind
 from tax_calculator.domain.parameters.rounding import RoundingRule
 from tax_calculator.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_calculator.domain.record_list import Record, RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.cca_vehicle_proceeds import prescribed_amount_with_tax
+from tax_calculator.jurisdictions.ca.capabilities.cca_vehicle_proceeds import (
+    prescribed_amount_with_tax,
+)
 from tax_calculator.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_CLASS_NUMBER,

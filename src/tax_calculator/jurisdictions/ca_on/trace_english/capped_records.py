@@ -1,4 +1,5 @@
-"""English text for the trace lines of `tax_calculator.jurisdictions.ca_on.trace.capped_records`: one
+"""English text for the trace lines of `tax_calculator.jurisdictions.ca_on.trace.capped_records`:
+one
 renderer class per line class, each registered with `@english_renderer`.
 """
 

@@ -23,7 +23,9 @@ from tax_calculator.domain.capability import capability
 from tax_calculator.domain.parameters.class_rates import ClassRates
 from tax_calculator.domain.parameters.datasets import ParameterDataset
 from tax_calculator.domain.record_list import RecordList
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc_after_column_22 import ClosingUccAfterColumn22
+from tax_calculator.jurisdictions.ca.capabilities.closing_ucc_after_column_22 import (
+    ClosingUccAfterColumn22,
+)
 
 
 @capability(identifier="closing_ucc_after_column_22_prorated")

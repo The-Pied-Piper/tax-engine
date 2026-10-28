@@ -24,7 +24,11 @@ from typing import Any, ClassVar
 
 from tax_calculator.domain.artifact import Artifact, ArtifactKind
 from tax_calculator.domain.capability import Capability, CapabilityResult, capability
-from tax_calculator.domain.errors import InputAboveBoundError, InputBelowBoundError, InputOutOfRangeError
+from tax_calculator.domain.errors import (
+    InputAboveBoundError,
+    InputBelowBoundError,
+    InputOutOfRangeError,
+)
 from tax_calculator.domain.parameters.class_rates import CLASS_RATES, ClassRates
 from tax_calculator.domain.parameters.datasets import ParameterDataset
 from tax_calculator.domain.parameters.kind import ParameterKind

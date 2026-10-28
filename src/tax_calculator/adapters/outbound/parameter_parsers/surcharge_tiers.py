@@ -6,7 +6,11 @@ from tax_calculator.adapters.outbound.parameter_parsers.registry import paramete
 from tax_calculator.adapters.outbound.yaml_support import YamlNode
 from tax_calculator.domain.errors import DomainError, InvalidSurchargeTiersError
 from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.surcharge_tiers import SURCHARGE_TIERS, SurchargeTier, SurchargeTiers
+from tax_calculator.domain.parameters.surcharge_tiers import (
+    SURCHARGE_TIERS,
+    SurchargeTier,
+    SurchargeTiers,
+)
 
 _TIER_KEYS = frozenset({"threshold", "rate"})
 _OPTIONAL_TIER_KEYS = frozenset({"maximum"})

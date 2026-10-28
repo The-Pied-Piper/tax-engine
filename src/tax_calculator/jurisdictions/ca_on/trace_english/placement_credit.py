@@ -1,4 +1,5 @@
-"""English text for the trace lines of `tax_calculator.jurisdictions.ca_on.trace.placement_credit`: one
+"""English text for the trace lines of `tax_calculator.jurisdictions.ca_on.trace.placement_credit`:
+one
 renderer class per line class, each registered with `@english_renderer`.
 """
 
