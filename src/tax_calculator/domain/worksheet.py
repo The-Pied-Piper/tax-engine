@@ -1,6 +1,7 @@
 """The worksheet: one filled-in copy of a form.
 
-A form (`tax_calculator.domain.form`) is the blank: which lines it has and how they connect. A worksheet is
+A form (`tax_calculator.domain.form`) is the blank: which lines it has and how they connect.
+A worksheet is
 the figures one run of it produced, so a form with several instances has one worksheet each.
 It starts with the computation's starting artifacts and records each capability's
 output artifacts as the capability is applied, holding it to its contract (design.md §3).
@@ -15,7 +16,11 @@ from typing import Any, cast
 
 from tax_calculator.domain.artifact import Artifact, ArtifactKind
 from tax_calculator.domain.capability import Capability
-from tax_calculator.domain.errors import CapabilityContractError, DuplicateArtifactError, MissingArtifactError
+from tax_calculator.domain.errors import (
+    CapabilityContractError,
+    DuplicateArtifactError,
+    MissingArtifactError,
+)
 from tax_calculator.domain.trace import TraceLine
 
 

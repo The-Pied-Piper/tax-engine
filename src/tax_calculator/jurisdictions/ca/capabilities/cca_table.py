@@ -102,7 +102,11 @@ from typing import Any, ClassVar
 
 from tax_calculator.domain.artifact import Artifact, ArtifactKind, Money
 from tax_calculator.domain.capability import Capability
-from tax_calculator.domain.errors import InputAboveBoundError, InputBelowBoundError, InvalidRecordError
+from tax_calculator.domain.errors import (
+    InputAboveBoundError,
+    InputBelowBoundError,
+    InvalidRecordError,
+)
 from tax_calculator.domain.parameters.class_rates import (
     CLASS_RATES,
     ClassRate,

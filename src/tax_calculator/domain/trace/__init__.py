@@ -5,7 +5,8 @@ A trace line holds the domain objects and amounts involved (`ArtifactKind`, `Rat
 `RoundingRule`), never text; its `amount` is the figure the line is about. A count is an `int`
 artifact kind and its `int` value; a chosen rate is a `Rate` artifact kind and its `Rate` value.
 Lines in a jurisdiction's own vocabulary live in that jurisdiction's package
-(`tax_calculator.jurisdictions.<package>.trace`). Rendering lines as human-readable text lives outside the
+(`tax_calculator.jurisdictions.<package>.trace`). Rendering lines as human-readable text lives
+outside the
 domain, in the adapters.
 """
 

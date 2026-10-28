@@ -20,7 +20,12 @@ import yaml
 from yaml.constructor import ConstructorError
 from yaml.nodes import MappingNode
 
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundingRule, RoundTo
+from tax_calculator.domain.parameters.rounding import (
+    NO_ROUNDING,
+    RoundingMode,
+    RoundingRule,
+    RoundTo,
+)
 
 # A whole number's one spelling: ASCII decimal digits, no sign, no leading zero.
 _WHOLE_NUMBER = re.compile(r"0|[1-9][0-9]*")

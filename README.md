@@ -9,6 +9,8 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
 
 ```sh
 uv sync --extra dev --locked
+uv run --extra dev --locked ruff check .
+uv run --extra dev --locked ruff format --check .
 uv run --extra dev --locked python -m pytest
 uv build
 ```
@@ -35,6 +37,8 @@ Then install, test, and build:
 
 ```sh
 python -m pip install -e ".[dev]"
+python -m ruff check .
+python -m ruff format --check .
 python -m pytest
 python -m build
 ```
@@ -44,6 +48,9 @@ the uv lockfile.
 
 Both build workflows produce a wheel and source distribution in `dist/`.
 The distributions include the jurisdiction manifests and parameter YAML files.
+
+CI runs the lint, formatting, and test checks on Python 3.12 for pull requests
+targeting `main` and pushes to `main`.
 
 ## Engine usage
 

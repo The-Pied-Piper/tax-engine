@@ -25,7 +25,10 @@ from tax_calculator.domain.parameters.datasets import ParameterDataset
 from tax_calculator.domain.parameters.kind import ParameterKind
 from tax_calculator.domain.record_list import RecordList
 from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.catalog import DEPENDANT_NET_INCOME, OTHER_DEPENDANT_MEDICAL_EXPENSES
+from tax_calculator.jurisdictions.ca.catalog import (
+    DEPENDANT_NET_INCOME,
+    OTHER_DEPENDANT_MEDICAL_EXPENSES,
+)
 from tax_calculator.jurisdictions.ca.trace import OtherDependantMedicalLine
 
 

@@ -20,7 +20,11 @@ from decimal import Decimal
 from typing import Any
 
 from tax_calculator.domain.artifact import ArtifactCatalog, ArtifactKind
-from tax_calculator.domain.errors import InvalidRecordError, InvalidRegistrationError, NegativeArtifactError
+from tax_calculator.domain.errors import (
+    InvalidRecordError,
+    InvalidRegistrationError,
+    NegativeArtifactError,
+)
 
 
 class Record(Mapping[ArtifactKind[Any], "Decimal | int | RecordList"]):

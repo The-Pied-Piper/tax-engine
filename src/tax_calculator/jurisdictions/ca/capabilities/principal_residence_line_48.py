@@ -18,7 +18,9 @@ from tax_calculator.domain.capability import CapabilityResult, capability
 from tax_calculator.domain.parameters.datasets import ParameterDataset
 from tax_calculator.domain.parameters.rounding_only import RoundingOnly
 from tax_calculator.domain.record_list import RecordList
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_rows import PrincipalResidenceRows
+from tax_calculator.jurisdictions.ca.capabilities.principal_residence_rows import (
+    PrincipalResidenceRows,
+)
 from tax_calculator.jurisdictions.ca.trace import PrincipalResidenceLine48
 
 
