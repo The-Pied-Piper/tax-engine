@@ -1,0 +1,80 @@
+capabilities:
+  # Schedule 2 line 1 and line 35200 "Enter the amount from line 30100 of their return.", the age
+  # amount on T1 line 78 and line 30100 "Age amount (if you were born in 1960 or earlier) (use
+  # Federal Worksheet) (maximum $9,028)": the maximum is a dataset of 9028 as printed, and an
+  # amount above it is an input error, not capped.
+  - name: core/credit_amount
+    params:
+      amount: ca/spouse_return_age_amount_maximum
+    produces:
+      output: ca/spouse_return_age_amount_maximum
+  # Schedule 2 line 1 against that maximum. The checked amount is the one line 6 adds.
+  - name: core/at_most
+    consumes:
+      amount: ca/spouse_return_age_amount
+      bound: ca/spouse_return_age_amount_maximum
+    produces:
+      output: ca/spouse_return_age_amount_checked
+  # Schedule 2 line 3 and line 35500 "Enter the amount from line 31400 of their return.
+  # (maximum $2,000)", the pension income amount on T1 line 97 and line 31400 "Pension income
+  # amount (use Federal Worksheet) (maximum $2,000)": the maximum is a dataset of 2000 as printed,
+  # and an amount above it is an input error, not capped.
+  - name: core/credit_amount
+    params:
+      amount: ca/spouse_return_pension_income_amount_maximum
+    produces:
+      output: ca/spouse_return_pension_income_amount_maximum
+  # Schedule 2 line 3 against that maximum. The checked amount is the one line 6 adds.
+  - name: core/at_most
+    consumes:
+      amount: ca/spouse_return_pension_income_amount
+      bound: ca/spouse_return_pension_income_amount_maximum
+    produces:
+      output: ca/spouse_return_pension_income_amount_checked
+  # Schedule 2 line 8 "Amount from line 30000 of their return", the basic personal amount on T1
+  # line 77 and line 30000 "Basic personal amount" "(maximum $16,129)": the maximum is a dataset of
+  # 16129 as printed, and an amount above it is an input error, not capped.
+  - name: core/credit_amount
+    params:
+      amount: ca/spouse_return_basic_personal_amount_maximum
+    produces:
+      output: ca/spouse_return_basic_personal_amount_maximum
+  # Schedule 2 line 8 against that maximum. The checked amount is the one line 11 adds.
+  - name: core/at_most
+    consumes:
+      amount: ca/spouse_return_basic_personal_amount
+      bound: ca/spouse_return_basic_personal_amount_maximum
+    produces:
+      output: ca/spouse_return_basic_personal_amount_checked
+  # Schedule 2 line 5 and line 36000 "Enter the federal amount designated to you from their forms
+  # T2202, TL11A, or TL11C. (Note 2)", bounded by Note 2 "$5,000 minus the current year amounts
+  # they use": the maximum is a dataset of 5000 as printed, and an amount above it is an input
+  # error, not capped.
+  - name: core/credit_amount
+    params:
+      amount: ca/spouse_designated_tuition_maximum
+    produces:
+      output: ca/spouse_designated_tuition_maximum
+  # Schedule 2 line 5 against that maximum. The checked amount is the one line 6 adds.
+  - name: core/at_most
+    consumes:
+      amount: ca/spouse_designated_tuition
+      bound: ca/spouse_designated_tuition_maximum
+    produces:
+      output: ca/spouse_designated_tuition_checked
+  # Schedule 2 line 4 and line 35700 "Enter the amount from line 31600 of their return. (Note 1)",
+  # bounded by their line 31600 "Enter this amount on line 31600 of your return. (maximum $16,052)"
+  # on Federal Worksheet 5000-D1 line 7: the maximum is a dataset of 16052 as printed, and an
+  # amount above it is an input error, not capped.
+  - name: core/credit_amount
+    params:
+      amount: ca/spouse_return_disability_amount_maximum
+    produces:
+      output: ca/spouse_return_disability_amount_maximum
+  # Schedule 2 line 4 against that maximum. The checked amount is the one line 6 adds.
+  - name: core/at_most
+    consumes:
+      amount: ca/spouse_return_disability_amount
+      bound: ca/spouse_return_disability_amount_maximum
+    produces:
+      output: ca/spouse_return_disability_amount_checked

@@ -1,0 +1,40 @@
+capabilities:
+  # Schedule 12 Step 1, line 3 "Line 1 minus line 2 (maximum $50,000 per qualifying renovation)",
+  # for each qualifying renovation (the caller's record): the total of the lines 3 over the
+  # renovations, capped at line 4's maximum dataset.
+  - name: ca/home_renovation_line_3
+    params:
+      maximum: ca/home_renovation_maximum
+    consumes:
+      renovations: ca/home_renovations
+    produces:
+      output: ca/home_renovation_line_3
+  # Schedule 12 Step 1, line 6 "Line 4 minus line 5", the maximum dataset less the amount
+  # claimed by other eligible individuals, for each qualifying renovation.
+  - name: ca/home_renovation_line_6
+    params:
+      maximum: ca/home_renovation_maximum
+    consumes:
+      renovations: ca/home_renovations
+    produces:
+      output: ca/home_renovation_line_6
+  # Schedule 12 Step 1, line 7 "Enter whichever is less: amount from line 3 or line 6. Your
+  # qualifying expenditures for the qualifying renovation", and Step 2, line 8 (line 45354)
+  # "Add the amounts from line 7 for each qualifying renovation. Your total qualifying
+  # expenditures": the total of the lesser of lines 3 and 6 over the renovations.
+  - name: ca/home_renovation_line_7
+    params:
+      maximum: ca/home_renovation_maximum
+    consumes:
+      renovations: ca/home_renovations
+    produces:
+      output: ca/home_renovation_line_8
+  # Schedule 12 Step 2, line 10 (line 45355) "Line 8 multiplied by the percentage from line 9"
+  # "Applicable rate 14.5%": line 8 at the rate of its dataset, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/home_renovation_rate
+    consumes:
+      base: ca/home_renovation_line_8
+    produces:
+      output: ca/multigenerational_home_renovation_credit

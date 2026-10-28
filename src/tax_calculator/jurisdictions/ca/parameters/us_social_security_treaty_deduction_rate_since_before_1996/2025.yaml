@@ -1,0 +1,16 @@
+# U.S. Social Security treaty deduction rate for a resident of Canada receiving the benefits
+# continuously since before January 1, 1996, 2025 tax year (Guide 5000-G, "Line 25600 - Additional
+# deductions", "Exempt foreign income"): "If you have been a resident of Canada receiving U.S.
+# Social Security benefits continuously during the period starting before January 1, 1996, and
+# ending in 2025, you can claim a deduction equal to 50% of the U.S. Social Security benefits
+# received in 2025." The same 50% applies to benefits related to a deceased spouse or common-law
+# partner on the guide's three conditions.
+# The deduction is a dollars-and-cents amount, so the product rounds half-up to the cent, the
+# owner's decision, as the guide states no rounding rule.
+family: ca/us_social_security_treaty_deduction_rate_since_before_1996
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.5"

@@ -1,0 +1,12 @@
+# Ontario co-operative education tax credit full share, 2025 tax year (Worksheet ON479 (form
+# 5006-D1), "Line 20 - Ontario co-operative education tax credit"): line 9 "1.00", from which line
+# 10, the amount from line 8, is taken off on line 11. Every figure sits in a dollars-and-cents
+# box, so the dataset carries the half-up cent rule, the owner's decision, as the form states no
+# rounding rule.
+family: ca-on/coop_education_full_share
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d1/5006-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1.00"

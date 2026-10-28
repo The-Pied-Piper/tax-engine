@@ -1,0 +1,222 @@
+# Form T2043 box 67062 (multiple farming businesses in multiple provinces), per statement: the
+# statement is present in each of the nine places, one count and one presence amount for each
+# place. A statement is present in a designated province when its Chart A designated province is
+# that province and no Chart B is in use (`ca/farm_in_province_<place>`, 03h_t2043_chart_a.yaml),
+# or when its Chart B has a row 1 or row 4 amount for it (`ca/farm_chart_b_gross_income_<place>` and
+# `ca/farm_chart_b_salaries_<place>`, 03j_t2043_chart_b.yaml and 03l_t2043_chart_b_provinces.yaml).
+# Outside eight is designated province code 0 with no Chart B in use, or the filer's answer that the
+# business also has a permanent establishment outside the eight (`ca/farm_also_outside_eight`, which
+# counts with or without Chart B). Each presence amount is the statement counted, "1"
+# (`ca/farm_statement_counted`), once for each count of 1, so it is 1 for a statement present in
+# the place and 0 otherwise. The nine amounts are exported by ca/t2042 (03c_t2042.yaml) and read by
+# Form T2043 (03p_t2043_box_67062.yaml) as one record for each statement, which totals them into
+# the places and the box.
+form:
+  name: ca/t2042
+capabilities:
+  # Form T2043 box 67062, the statement present in Ontario (Chart A code 1): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for Ontario, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_on
+      amounts:
+        - ca/farm_chart_b_gross_income_on
+        - ca/farm_chart_b_salaries_on
+    produces:
+      output: ca/farm_present_in_province_on
+  # Form T2043 box 67062, the statement present in Manitoba (Chart A code 2): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for Manitoba, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_mb
+      amounts:
+        - ca/farm_chart_b_gross_income_mb
+        - ca/farm_chart_b_salaries_mb
+    produces:
+      output: ca/farm_present_in_province_mb
+  # Form T2043 box 67062, the statement present in Saskatchewan (Chart A code 3): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for Saskatchewan, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_sk
+      amounts:
+        - ca/farm_chart_b_gross_income_sk
+        - ca/farm_chart_b_salaries_sk
+    produces:
+      output: ca/farm_present_in_province_sk
+  # Form T2043 box 67062, the statement present in Alberta (Chart A code 4): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for Alberta, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_ab
+      amounts:
+        - ca/farm_chart_b_gross_income_ab
+        - ca/farm_chart_b_salaries_ab
+    produces:
+      output: ca/farm_present_in_province_ab
+  # Form T2043 box 67062, the statement present in Nova Scotia (Chart A code 5): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for Nova Scotia, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_ns
+      amounts:
+        - ca/farm_chart_b_gross_income_ns
+        - ca/farm_chart_b_salaries_ns
+    produces:
+      output: ca/farm_present_in_province_ns
+  # Form T2043 box 67062, the statement present in Prince Edward Island (Chart A code 6): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for Prince Edward Island, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_pe
+      amounts:
+        - ca/farm_chart_b_gross_income_pe
+        - ca/farm_chart_b_salaries_pe
+    produces:
+      output: ca/farm_present_in_province_pe
+  # Form T2043 box 67062, the statement present in Newfoundland and Labrador (Chart A code 7): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for Newfoundland and Labrador, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_nl
+      amounts:
+        - ca/farm_chart_b_gross_income_nl
+        - ca/farm_chart_b_salaries_nl
+    produces:
+      output: ca/farm_present_in_province_nl
+  # Form T2043 box 67062, the statement present in New Brunswick (Chart A code 8): this statement
+  # counts 1 when its designated province is that province and no Chart B is in use, or when its
+  # Chart B has a row 1 or row 4 amount for New Brunswick, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_in_province_conditions
+    consumes:
+      counts:
+        - ca/farm_in_province_nb
+      amounts:
+        - ca/farm_chart_b_gross_income_nb
+        - ca/farm_chart_b_salaries_nb
+    produces:
+      output: ca/farm_present_in_province_nb
+  # Form T2043 box 67062, whether the statement's business also has a permanent establishment
+  # outside the eight designated provinces (Chart B lists only the eight): a yes or no answer, 1 for
+  # yes and 0 for no, checked to be 0 or 1 before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/farm_also_outside_eight
+    produces:
+      output: ca/farm_also_outside_eight_checked
+  # Form T2043 box 67062, the statement present outside the eight designated provinces: its
+  # designated province is code 0 and no Chart B is in use, or the business also has a permanent
+  # establishment outside the eight, 1 when either holds, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_present_outside_eight_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+        - ca/farm_also_outside_eight_checked
+      amounts: []
+    produces:
+      output: ca/farm_present_outside_eight
+  # The statement counted, "1", once for each count of 1 of its presence in Ontario.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_on
+    produces:
+      output: ca/farm_present_amount_on
+  # The statement counted, "1", once for each count of 1 of its presence in Manitoba.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_mb
+    produces:
+      output: ca/farm_present_amount_mb
+  # The statement counted, "1", once for each count of 1 of its presence in Saskatchewan.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_sk
+    produces:
+      output: ca/farm_present_amount_sk
+  # The statement counted, "1", once for each count of 1 of its presence in Alberta.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_ab
+    produces:
+      output: ca/farm_present_amount_ab
+  # The statement counted, "1", once for each count of 1 of its presence in Nova Scotia.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_ns
+    produces:
+      output: ca/farm_present_amount_ns
+  # The statement counted, "1", once for each count of 1 of its presence in Prince Edward Island.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_pe
+    produces:
+      output: ca/farm_present_amount_pe
+  # The statement counted, "1", once for each count of 1 of its presence in Newfoundland and Labrador.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_nl
+    produces:
+      output: ca/farm_present_amount_nl
+  # The statement counted, "1", once for each count of 1 of its presence in New Brunswick.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_in_province_nb
+    produces:
+      output: ca/farm_present_amount_nb
+  # The statement counted, "1", once for each count of 1 of its presence in outside the eight designated provinces.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/farm_statement_counted
+    consumes:
+      count: ca/farm_present_outside_eight
+    produces:
+      output: ca/farm_present_amount_outside_eight

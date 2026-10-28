@@ -1,0 +1,14 @@
+# Federal political contribution tax credit shortcut amount, 2025 tax year (Federal Worksheet,
+# form 5000-D1): "Line 41000 - Federal political contribution tax credit": "If your total federal
+# political contributions from line 40900 of your return were" "$1,275 or more, enter $650 on line
+# 41000 of your return. If not, use the amount from line 40900 of your return to decide which
+# column to complete." The $650 borrows the credit kind because it is a printed constant, claimed
+# whole. Line 41000 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/political_credit_shortcut_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "650"

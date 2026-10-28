@@ -1,0 +1,13 @@
+# Form T1032 E (25), Step 2 "Calculate the maximum split-pension amount", page 2: "Line 5: 131,483.45"
+# for the retirement compensation arrangement calculation (lines 4 to 8), and "Line 13: 131,483.45"
+# for the veterans benefits calculation (lines 9 to 16), printed the same on both lines. The form
+# states no rounding rule, so the figure rounds half-up to the cent, the owner's decision, the repo
+# convention. It is a dollars-and-cents box claimed whole, so it borrows the credit kind, as the
+# other printed maxima do.
+family: ca/t1032_rca_and_veterans_ceiling
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "131483.45"

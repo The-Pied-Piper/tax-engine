@@ -1,0 +1,207 @@
+# Form T777 line 10 "Apprentice mechanic tools expenses", the maximum deduction of Guide T4044 (2025)
+# "Deduction for tools for an eligible apprentice mechanic" (steps of the same form as
+# 03q_t777_lines.yaml): "Maximum deduction for eligible tools* = (A minus B) plus C where A = the
+# total cost of eligible tools that you bought in 2025** [** If you become employed as an eligible
+# apprentice mechanic for the first time during 2025, you will be able to increase the value of A in
+# the above calculation by the cost of eligible tools you bought during the last three months of
+# 2024.] B = the lesser of: 1. the total cost of eligible tools that you bought in 2025 as calculated
+# in A 2. the greater of: - $1,000 + the Canada employment amount claimed on line 31260 of your income
+# tax and benefit return (maximum $1,471) - 5% of: -- your employment income as an eligible apprentice
+# mechanic -- plus the amount you received in 2025 under the Apprenticeship Incentive Grant and the
+# Apprenticeship Completion Grant programs -- minus any claim you made for the tradesperson's
+# deduction for tools, and the amount of any Apprenticeship Incentive Grant and Apprenticeship
+# Completion Grant overpayments that you had to repay in 2025 C = the amount, if any, of the maximum
+# deduction for eligible tools that you calculated for 2024 that you did not claim in 2024 (your carry
+# forward amount from 2024, if any)". "Enter your claim on the "Apprentice mechanic tools expenses"
+# line of Form T777": the claim is the filer's, line 10, and a claim above the maximum is refused, not
+# capped. The "* This claim cannot be more than your net income for 2025 from all sources" is the check
+# of 05x_t777_apprentice_mechanic_tools_net_income_check.yaml. A form cannot read the return's
+# figures, so the Canada employment amount is the form's own copy of the T1 line 31260 steps.
+# "You are an eligible apprentice mechanic if you meet all of the following conditions" and the
+# employer's certification on Form T2200 are the filer's yes or no answers (a count of 1 or 0): the
+# Guide settles the conditions, the form cannot. A "no" leaves (A minus B) at 0 for 2025; C stays:
+# C carries no condition, and the Guide's carry-forward sentence says "You can deduct the unused
+# amount against any type of income in a future year even if you are no longer employed as an
+# eligible apprentice mechanic at that time".
+form:
+  name: ca/t777
+capabilities:
+  # "your employment income as an eligible apprentice mechanic" is a part of the return's employment
+  # income (line 51 of the line 16 chart, T1 lines 10100 and 10400): above it the figure is an input
+  # error (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_apprentice_mechanic_employment_income
+      bound: ca/t777_work_space_employment_income
+    produces:
+      output: ca/t777_apprentice_mechanic_employment_income_checked
+  # "You are registered in a program established under the laws of Canada or of a province or
+  # territory that leads to a designation under those laws as a mechanic licensed to repair
+  # self-propelled motorized vehicles": a yes or no answer, a count of 1 or 0, checked before the
+  # step that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_registered_in_a_mechanic_designation_program
+    produces:
+      output: ca/t777_registered_in_a_mechanic_designation_program_checked
+  # "You are employed as an apprentice mechanic": a yes or no answer, a count of 1 or 0.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_employed_as_an_apprentice_mechanic
+    produces:
+      output: ca/t777_employed_as_an_apprentice_mechanic_checked
+  # "Have your employer complete question 13 of Part C of the form to certify that you bought and
+  # provided the tools you are claiming as a condition of your employment as an eligible apprentice
+  # mechanic": a yes or no answer, a count of 1 or 0.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_apprentice_mechanic_tools_certified_on_t2200_question_13
+    produces:
+      output: ca/t777_apprentice_mechanic_tools_certified_on_t2200_question_13_checked
+  # "If you become employed as an eligible apprentice mechanic for the first time during 2025": a yes
+  # or no answer, a count of 1 or 0, checked before the step that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_first_employed_as_apprentice_mechanic_in_2025
+    produces:
+      output: ca/t777_first_employed_as_apprentice_mechanic_in_2025_checked
+  # "you will be able to increase the value of A [...] by the cost of eligible tools you bought during
+  # the last three months of 2024": the cost for a first-time apprentice mechanic, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t777_apprentice_tools_cost_last_three_months_of_2024
+      count: ca/t777_first_employed_as_apprentice_mechanic_in_2025_checked
+    produces:
+      output: ca/t777_apprentice_tools_cost_added
+  # "A = the total cost of eligible tools that you bought in 2025", plus the cost added above.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_eligible_tools_cost
+        - ca/t777_apprentice_tools_cost_added
+    produces:
+      output: ca/t777_apprentice_tools_formula_a
+  # "the Canada employment amount claimed on line 31260": the form's copy of the T1 line 31260
+  # steps, "Enter whichever is less: $1,471 or line 1 plus line 2", line 1 the employment income
+  # (line 10100) and line 2 the other employment income (line 10400).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+    produces:
+      output: ca/t777_canada_employment_amount_income
+  - name: core/capped_amount
+    params:
+      cap: ca/canada_employment_amount
+    consumes:
+      base: ca/t777_canada_employment_amount_income
+    produces:
+      output: ca/t777_canada_employment_amount
+  # "- $1,000 + the Canada employment amount claimed on line 31260".
+  - name: core/credit_amount
+    params:
+      amount: ca/t777_apprentice_mechanic_tools_base
+    produces:
+      output: ca/t777_apprentice_mechanic_tools_base
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_apprentice_mechanic_tools_base
+        - ca/t777_canada_employment_amount
+    produces:
+      output: ca/t777_apprentice_tools_base_with_employment_amount
+  # "- 5% of: -- your employment income as an eligible apprentice mechanic -- plus the amount you
+  # received in 2025 under the [grant] programs -- minus any claim you made for the tradesperson's
+  # deduction for tools, and the amount of any [grant] overpayments that you had to repay in 2025":
+  # the printed arithmetic, no floor printed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_apprentice_mechanic_employment_income_checked
+        - ca/t777_apprenticeship_grants_received
+    produces:
+      output: ca/t777_apprentice_income_with_grants
+  - name: core/subtract
+    consumes:
+      amount: ca/t777_apprentice_income_with_grants
+      less: ca/t777_line_9
+    produces:
+      output: ca/t777_apprentice_income_less_tools_claim
+  - name: core/subtract
+    consumes:
+      amount: ca/t777_apprentice_income_less_tools_claim
+      less: ca/t777_apprenticeship_grant_overpayments
+    produces:
+      output: ca/t777_apprentice_income_for_tools
+  - name: core/apply_rate
+    params:
+      rate: ca/t777_apprentice_mechanic_tools_rate
+    consumes:
+      base: ca/t777_apprentice_income_for_tools
+    produces:
+      output: ca/t777_apprentice_tools_five_percent
+  # "2. the greater of: [$1,000 + the Canada employment amount] [5% of the income]".
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/t777_apprentice_tools_base_with_employment_amount
+        - ca/t777_apprentice_tools_five_percent
+    produces:
+      output: ca/t777_apprentice_tools_formula_b2
+  # "B = the lesser of: 1. the total cost of eligible tools that you bought in 2025 as calculated in
+  # A 2. [the greater of the two]".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t777_apprentice_tools_formula_a
+        - ca/t777_apprentice_tools_formula_b2
+    produces:
+      output: ca/t777_apprentice_tools_formula_b
+  # "(A minus B)": B is at most A, so the difference is never negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/t777_apprentice_tools_formula_a
+      less: ca/t777_apprentice_tools_formula_b
+    produces:
+      output: ca/t777_apprentice_tools_formula_a_less_b
+  # "You are registered in a program [...]": (A minus B) for a registered apprentice, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t777_apprentice_tools_formula_a_less_b
+      count: ca/t777_registered_in_a_mechanic_designation_program_checked
+    produces:
+      output: ca/t777_apprentice_tools_formula_a_less_b_if_registered
+  # "You are employed as an apprentice mechanic": the amount above for an employed apprentice
+  # mechanic, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t777_apprentice_tools_formula_a_less_b_if_registered
+      count: ca/t777_employed_as_an_apprentice_mechanic_checked
+    produces:
+      output: ca/t777_apprentice_tools_formula_a_less_b_if_employed
+  # "Have your employer complete question 13 of Part C of the form to certify [...]": the amount
+  # above when the employer certified the tools, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t777_apprentice_tools_formula_a_less_b_if_employed
+      count: ca/t777_apprentice_mechanic_tools_certified_on_t2200_question_13_checked
+    produces:
+      output: ca/t777_apprentice_tools_formula_a_less_b_if_certified
+  # "plus C": the unclaimed maximum of 2024, the filer's figure.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_apprentice_tools_formula_a_less_b_if_certified
+        - ca/t777_apprentice_mechanic_tools_carry_forward
+    produces:
+      output: ca/t777_apprentice_mechanic_tools_maximum_deduction
+  # Line 10 "Apprentice mechanic tools expenses": "Enter your claim [...]"; "If you do not want to
+  # claim the maximum deduction, you can carry forward the unused amount". The claim is the filer's;
+  # above the maximum deduction it is an input error (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_apprentice_mechanic_tools
+      bound: ca/t777_apprentice_mechanic_tools_maximum_deduction
+    produces:
+      output: ca/t777_line_10

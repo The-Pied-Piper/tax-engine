@@ -1,0 +1,31 @@
+# Conditions of Schedule 3 (2025) Part 1, the life event boxes ticked without a "Yes", 2025 tax
+# year: a box of line 17906 is asked only after a "Yes" on line 17905 (line 17905 is on page 1 and
+# line 17906 on page 2). The count is 1 when line 17905 is "No" and a box of line 17906 is ticked,
+# and 0 otherwise. Line 17905 "If you ticked "no", the housing unit is not considered a flipped
+# property." is part 1 of the one condition: the count of line 17905 is 0 ("No"). Line 17906 "If
+# any of the life events above apply to you, the housing unit is not considered a flipped
+# property." is part 2: the count of any of boxes 1 to 9 is 1 (ticked). A condition applies when
+# every one of its parts holds. Each count is a checked tick box or yes or no answer (0 or 1). The
+# count is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca/schedule_3_life_event_without_yes
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: line 17905 is "No" and a box of line 17906 is ticked
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "0"}
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "1"}
+          - {reads: count, position: "3", relation: equal_to, than: "1"}
+          - {reads: count, position: "4", relation: equal_to, than: "1"}
+          - {reads: count, position: "5", relation: equal_to, than: "1"}
+          - {reads: count, position: "6", relation: equal_to, than: "1"}
+          - {reads: count, position: "7", relation: equal_to, than: "1"}
+          - {reads: count, position: "8", relation: equal_to, than: "1"}
+          - {reads: count, position: "9", relation: equal_to, than: "1"}
+          - {reads: count, position: "10", relation: equal_to, than: "1"}

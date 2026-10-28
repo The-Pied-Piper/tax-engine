@@ -1,0 +1,26 @@
+capabilities:
+  # Guide T4002 "you can only apply them up to the amount of your net farming income in 2025": T1
+  # line 14100 "Net" (`ca/farming_income`), a net farm loss counting as 0 as nothing can be applied.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/farming_income
+    produces:
+      output: ca/net_farming_income_not_below_zero
+  # The amount claimed is at most the net farming income. An amount above it is an input error, not
+  # capped, as the filer states the amount to claim.
+  - name: core/at_most
+    consumes:
+      amount: ca/restricted_farm_losses_of_other_years
+      bound: ca/net_farming_income_not_below_zero
+    produces:
+      output: ca/restricted_farm_losses_of_other_years_checked
+  # T1 line 62 and line 25200 "Non-capital losses of other years": "Claim this amount on line
+  # 25200", added to the non-capital losses of other years the filer claims there.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/non_capital_losses_of_other_years
+        - ca/restricted_farm_losses_of_other_years_checked
+    produces:
+      output: ca/non_capital_losses_on_line_25200

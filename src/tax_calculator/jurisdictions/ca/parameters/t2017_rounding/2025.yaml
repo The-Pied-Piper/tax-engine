@@ -1,0 +1,10 @@
+# Form T2017 (2025), pages 1 to 3: the calculations of Part 1 are dollars-and-cents boxes (the reserve
+# calculations (i) and (ii) of page 3, and the reserve claimed on each line). Confirmed from the PDF; no
+# .txt published. The form states no rounding rule, so each quotient or product rounds half-up to the
+# cent, once, the owner's decision (as for Form T1206).
+family: ca/t2017_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2017/t2017-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

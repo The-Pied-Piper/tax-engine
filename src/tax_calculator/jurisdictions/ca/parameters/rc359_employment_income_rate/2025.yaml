@@ -1,0 +1,11 @@
+# Form RC359 (2025), line 5 "Rate × 20%": the rate of line 6 "Line 4 multiplied by the percentage
+# from line 5", the employment income less the other employment income taken at 20 percent.
+# Confirmed from the PDF; no .txt published. Line 6 is a dollars-and-cents box, so the product rounds
+# half-up to the cent, the owner's decision, as the form states no rounding rule.
+family: ca/rc359_employment_income_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc359/rc359-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.2"

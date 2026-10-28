@@ -1,0 +1,176 @@
+# Schedule 6 column 2 ("Your eligible spouse") and the secondary earner exemption, for a filer with an
+# eligible spouse (Schedule 6 line 38101 "Do you have an eligible spouse? 1 Yes or 2 No"). Complete
+# columns 1 and 2 if you had an eligible spouse on December 31, 2025; if not, column 2 is 0, so the
+# lines of this part add nothing to column 1.
+capabilities:
+  # Schedule 6 line 38101 "Do you have an eligible spouse? 1 Yes or 2 No": the answer to a yes or no
+  # question, a count of 1 or 0, checked before the lines that read it. A count of 2 or more is
+  # refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cwb_eligible_spouses
+    produces:
+      output: ca/cwb_eligible_spouses_checked
+  # An eligible spouse is a cohabiting spouse or common-law partner on December 31, 2025 (Schedule 6,
+  # "An eligible spouse is a person who meets all of the following conditions"), so the spouse count
+  # of the shared spouse fact is at least the checked answer: a 1 with no spouse is an input error.
+  - name: ca/count_at_least
+    consumes:
+      count: ca/spouse_or_common_law_partner_on_december_31_total
+      minimum: ca/cwb_eligible_spouses_checked
+    produces:
+      output: ca/cwb_spouse_for_eligible_spouse_checked
+  # Schedule 6 column 2 line 4 "Tax-exempt working income earned on a reserve" (form number 38107), the
+  # spouse's amount as entered, counted only when the election is yes (line 38105).
+  - name: core/times_count
+    consumes:
+      amount: ca/cwb_spouse_tax_exempt_working_income
+      count: ca/cwb_include_tax_exempt_income_checked
+    produces:
+      output: ca/cwb_spouse_tax_exempt_working_income_elected
+  # Schedule 6 column 2 line 5 "Add lines 1 to 4. Enter the result, even if it is "0". Working income":
+  # lines 1 (employment income), 2 (taxable scholarships) and 3 (self-employment income, Note 2:
+  # profit only) of column 2, the spouse's amounts as entered, and line 4 (the step above).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cwb_spouse_employment_income
+        - ca/cwb_spouse_taxable_scholarships
+        - ca/cwb_spouse_self_employment_income
+        - ca/cwb_spouse_tax_exempt_working_income_elected
+    produces:
+      output: ca/cwb_spouse_working_income_before_eligibility
+  # Column 2 line 5 counts only with an eligible spouse (line 38101): the amount above times the
+  # checked answer, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/cwb_spouse_working_income_before_eligibility
+      count: ca/cwb_eligible_spouses_checked
+    produces:
+      output: ca/cwb_spouse_working_income
+  # Schedule 6 line 6 "Add the amounts from line 5 in columns 1 and 2. Enter this amount on line 16.
+  # Family working income": column 1 (ca/working_income) and column 2 (ca/cwb_spouse_working_income),
+  # which is 0 with no eligible spouse.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/working_income
+        - ca/cwb_spouse_working_income
+    produces:
+      output: ca/cwb_family_working_income
+  # Schedule 6 column 2 line 8 "Total of net exempt income earned on a reserve" (form number 38109), the
+  # spouse's signed amount as entered, counted only when the election is yes (line 38105).
+  - name: core/times_count
+    consumes:
+      amount: ca/cwb_spouse_net_exempt_income
+      count: ca/cwb_include_tax_exempt_income_checked
+    produces:
+      output: ca/cwb_spouse_tax_exempt_net_income_elected
+  # Schedule 6 column 2 line 10 "Add lines 7 to 9.": line 7 "Net income from line 23600 of the return"
+  # of the spouse (ca/spouse_net_income_before_adjustments, signed), line 8 (the step above) and line 9,
+  # the spouse's UCCB repayment and RDSP income repayment.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/spouse_net_income_before_adjustments
+        - ca/spouse_uccb_repayment
+        - ca/spouse_rdsp_income_repayment
+        - ca/cwb_spouse_tax_exempt_net_income_elected
+    produces:
+      output: ca/cwb_spouse_family_net_income_line_10
+  # Schedule 6 column 2 line 11 "Total of UCCB (line 11700 of the return) and RDSP income (line 12500
+  # of the return)": the spouse's UCCB and RDSP income.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/spouse_universal_child_care_benefit
+        - ca/spouse_rdsp_income
+    produces:
+      output: ca/cwb_spouse_uccb_and_rdsp_income
+  # Schedule 6 column 2 line 12 "Line 10 minus line 11 (if negative, enter "0")", before the eligible
+  # spouse answer is applied.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cwb_spouse_family_net_income_line_10
+      less: ca/cwb_spouse_uccb_and_rdsp_income
+    produces:
+      output: ca/cwb_spouse_family_net_income_line_12_before_eligibility
+  # Column 2 line 12 (form number 38110) counts only with an eligible spouse (line 38101), as line 5
+  # does.
+  - name: core/times_count
+    consumes:
+      amount: ca/cwb_spouse_family_net_income_line_12_before_eligibility
+      count: ca/cwb_eligible_spouses_checked
+    produces:
+      output: ca/cwb_spouse_family_net_income_line_12
+  # Schedule 6 line 13 "Add the amounts from line 12 in columns 1 and 2. If you had an eligible spouse,
+  # continue at line 14; if not, continue at line 15.": the two line 12 amounts added, column 2 being
+  # 0 with no eligible spouse.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cwb_family_net_income_line_12
+        - ca/cwb_spouse_family_net_income_line_12
+    produces:
+      output: ca/cwb_family_net_income_line_13
+  # Schedule 6 line 14 "Secondary earner exemption": "If your working income (line 5) is less than
+  # your eligible spouse's working income", the working income of column 1 less that of column 2, a
+  # signed amount; the sign picks the candidate below.
+  - name: core/subtract
+    consumes:
+      amount: ca/working_income
+      less: ca/cwb_spouse_working_income
+    produces:
+      output: ca/cwb_working_income_less_spouse
+  # Schedule 6 line 14 "...enter whichever is less from column 1: amount from line 5 or line 12": the
+  # less of the working income (line 5) and the line 12 of column 1.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/working_income
+        - ca/cwb_family_net_income_line_12
+    produces:
+      output: ca/cwb_secondary_earner_yours
+  # Schedule 6 line 14 "...equal to or more than your eligible spouse's working income, enter whichever
+  # is less from column 2: amount from line 5 or line 12": the less of the spouse's working income and
+  # the line 12 of column 2.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cwb_spouse_working_income
+        - ca/cwb_spouse_family_net_income_line_12
+    produces:
+      output: ca/cwb_secondary_earner_spouses
+  # Schedule 6 line 14: the column 1 amount when the working income is less than the spouse's (a
+  # negative difference), else the column 2 amount.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/cwb_working_income_less_spouse
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/cwb_secondary_earner_yours
+      when_non_positive: []
+      when_non_negative:
+        - ca/cwb_secondary_earner_spouses
+    produces:
+      output: ca/cwb_secondary_earner_exemption_before_maximum
+  # Schedule 6 line 14 "(maximum $16,386)": the amount capped at the maximum dataset, a line of the
+  # form. With no eligible spouse both spouse figures are 0, so the line is 0.
+  - name: core/capped_amount
+    params:
+      cap: ca/cwb_secondary_earner_exemption_maximum
+    consumes:
+      base: ca/cwb_secondary_earner_exemption_before_maximum
+    produces:
+      output: ca/cwb_secondary_earner_exemption
+  # Line 28 for the filer's spouse status, which lines 21 and 24 read ("If you had an eligible spouse
+  # or an eligible dependant ... If not ..."): the line with no eligible spouse when the count of
+  # Schedule 6 line 38101 is 0, else the line with one.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cwb_eligible_spouses_checked
+      when_none: ca/canada_workers_benefit_without_dependant
+      when_any: ca/canada_workers_benefit_with_dependant
+    produces:
+      output: ca/cwb_line_28_by_spouse

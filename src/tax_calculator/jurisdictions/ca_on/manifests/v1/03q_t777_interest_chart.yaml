@@ -1,0 +1,43 @@
+# Form T777 line 26 "Interest expense", Guide T4044 (2025) "Interest expense": "If you use a passenger
+# vehicle or a ZEPV to earn employment income, there is a limit on the amount of interest you can
+# deduct when buying it. Use the "Available interest expense for passenger vehicles or zero-emission
+# passenger vehicles chart" to calculate the amount you can deduct. Enter your available interest
+# expense amount on line 26 of Form T777." The chart: "Line A: Total interest paid in the year", "Line
+# B: $10 multiplied by the number of days for which interest was paid", "The available interest
+# expense is the lesser of amount A and amount B." (steps of the same form as 03q_t777_lines.yaml,
+# which adds line 26 to line 29). A vehicle that is not a passenger vehicle has no limit: the guide
+# says "You can deduct interest you paid on money you borrowed to buy a motor vehicle", so line 26
+# is its interest paid whole, as Chart B of Form T2125 is worked only for a passenger vehicle.
+form:
+  name: ca/t777
+capabilities:
+  # "If you use a passenger vehicle or a ZEPV": the yes or no answer is not asked again here; it is
+  # the one step ca/yes_or_no_count of 03q_t777_leasing_chart.yaml (ca/t777_passenger_vehicle_checked),
+  # as the form has one vehicle. A zero-emission vehicle leased and then bought in the same year is
+  # the one case a single answer cannot give (0 for the leasing chart, 1 for the interest chart).
+  # Line B, "$10 multiplied by the number of days for which interest was paid": the printed $10
+  # (the dataset's amount) times the days.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/t777_interest_daily_limit
+    consumes:
+      count: ca/t777_interest_days
+    produces:
+      output: ca/t777_interest_limit
+  # "The available interest expense is the lesser of amount A and amount B."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t777_vehicle_interest
+        - ca/t777_interest_limit
+    produces:
+      output: ca/t777_interest_available
+  # Line 26: the available interest expense for a passenger vehicle, the interest paid whole for
+  # any other vehicle.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t777_passenger_vehicle_checked
+      when_none: ca/t777_vehicle_interest
+      when_any: ca/t777_interest_available
+    produces:
+      output: ca/t777_line_26

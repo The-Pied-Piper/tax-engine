@@ -1,0 +1,117 @@
+# Form T691 Part 1 lines 39 and 40: "If you claimed limited partnership losses incurred in another
+# year on line 25100 of your 2025 return, complete line 39 or 40 depending on your situation: If
+# you have not filed an election (8), enter the difference [...] (39) If you have filed an election
+# (8), enter the difference [...] (40)". Lines 43 and 46 add both lines, so a filer who completes
+# both would have the second counted on top of the first. The form prints no refusal; it is the
+# guard of this check. An input of both is refused, not capped.
+capabilities:
+  # Form T691 Part 1 lines 39 and 40, the count of the two lines both above 0: 1 when line 39 (the
+  # no-election difference) and line 40 (the election difference) are each more than 0, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/amt_lines_39_and_40_both_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/amt_limited_partnership_difference_no_election
+        - ca/amt_limited_partnership_difference_election
+    produces:
+      output: ca/amt_lines_39_and_40_both
+  # The count above is refused when it is 1: an input error naming lines 39 and 40 both filled in
+  # (not capped, and not a printed line). The checked count, 0, is read by nothing on the return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/amt_lines_39_and_40_both_refused
+    consumes:
+      count: ca/amt_lines_39_and_40_both
+    produces:
+      output: ca/amt_lines_39_and_40_both_checked
+  # Part 8 line 16 "Unapplied 2018 minimum tax carryover" is part of line 13 "Balance of minimum tax
+  # carryover available for later years": line 17 "line 15 minus line 16" subtracts it from line 15,
+  # which is line 13 plus line 14, so the expiring 2018 amount comes out of the earlier carryover
+  # and is at most line 13. The form prints no such bound; it is the form's own structure. An
+  # amount above it is an input error, not capped. Line 17 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_unapplied_2018_carryover
+      bound: ca/amt_carryover_balance
+    produces:
+      output: ca/amt_unapplied_2018_carryover_checked
+  # Form T691 Part 1 line 10 "Carrying charges (2) for acquiring an interest in a partnership of which
+  # you are a limited or non-active partner, or which owns a rental or leasing property or a film
+  # property (included on line 22100 of your return) (6)" and lines 64 to 67, each "(included on line
+  # 22100 of your return)": their sum is the amount included on line 22100. Line 2 is not added here,
+  # its "usually included" on lines 22100 and 23200 does not make it a bounded amount. The sum is not
+  # a form line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_limited_partner_carrying_charges
+        - ca/amt_non_deductible_property_expenses
+    produces:
+      output: ca/amt_expenses_included_on_line_22100
+  # The sum above is at most line 22100 of the return, the Federal Worksheet's carrying charges,
+  # interest expenses and other expenses. The form prints no such bound; note (11) makes lines 64
+  # to 67 apart from lines 2, 5 and 10, so the sum is the bound. An amount above line 22100 is an
+  # input error, not capped. The checked amount is a guard of this check, read by nothing else.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_expenses_included_on_line_22100
+      bound: ca/carrying_charges_interest_expenses_and_other_expenses
+    produces:
+      output: ca/amt_expenses_included_on_line_22100_checked
+  # Form T691 Part 9 line 1 "Total of all resource expenditures, depletion allowances and carrying
+  # charges for resource property and flow-through shares (included on lines 22100, 22400, and 23200
+  # of your return)": the sum of lines 22100, 22400 and 23200 of the return, the carrying charges,
+  # interest expenses and other expenses, the exploration and development expenses, and the other
+  # deductions and total split income of line 23200. The sum is not a form line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/carrying_charges_interest_expenses_and_other_expenses
+        - ca/exploration_and_development_expenses
+        - ca/other_deductions
+        - ca/total_split_income
+    produces:
+      output: ca/amt_lines_22100_22400_and_23200
+  # Form T691 Part 9 line 1 "(included on lines 22100, 22400, and 23200 of your return)", at most the
+  # sum of those three lines above. The form prints no such bound; it is the form's own wording. An
+  # amount above those lines is an input error, not capped. Part 9 line 6 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_resource_expenditures
+      bound: ca/amt_lines_22100_22400_and_23200
+    produces:
+      output: ca/amt_resource_expenditures_checked
+  # Part 1 line 76 "Add lines 70 to 75." is at most line 69 "Other employment expenses from line 22900
+  # of your return", and line 77 "Line 69 minus line 76" subtracts it from line 69, so lines 70 to 75
+  # are parts of line 69. The form prints no such bound; it is the form's own structure. An amount
+  # above line 69 is an input error, not capped. Line 77 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_non_deductible_office_expenses
+      bound: ca/other_employment_expenses
+    produces:
+      output: ca/amt_non_deductible_office_expenses_checked
+  # Form T691 Part 1 line 59 "Deduction for PPIP premiums on self-employment income from line 22300
+  # of your return (Quebec only)": the count of line 59 above 0 for a filer who was a resident of
+  # Ontario on December 31, 2025 (the count ON428 reads, 0), else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/amt_ppip_premiums_in_ontario_conditions
+    consumes:
+      counts:
+        - ca-on/not_resident_of_ontario_at_year_end_checked
+      amounts:
+        - ca/amt_ppip_premiums_deduction
+    produces:
+      output: ca/amt_ppip_premiums_in_ontario
+  # The count above is refused when it is 1: an input error naming line 59 as Quebec only (not
+  # capped, and not a printed line). The checked count, 0, is read by nothing on the return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/amt_ppip_premiums_in_ontario_refused
+    consumes:
+      count: ca/amt_ppip_premiums_in_ontario
+    produces:
+      output: ca/amt_ppip_premiums_in_ontario_checked

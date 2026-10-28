@@ -1,0 +1,105 @@
+# Form T1206 (2025) page 6, "Dispositions of certain capital property - shares subject to TOSI": the
+# form ca/t1206_share_dispositions, run once. Its exports are its line C "Amount of 2025 reserve
+# (calculated below)", its line G, and the under-18 amount and the 18-or-older Part 1 line 3 amount.
+# Line G goes on no line of Schedule 3: the form names none. Line C is the total of the reserves of the copies of
+# ca/t1206_share_reserve (03x_t1206_share_reserve.yaml), read as
+# ca/t1206_share_reserve.t1206_row_reserve. The age answer is the return's existing input
+# ca/aged_18_or_older_at_end_of_2025.
+form:
+  name: ca/t1206_share_dispositions
+  exports:
+    - ca/t1206_line_c
+    - ca/t1206_line_g
+    - ca/t1206_under_18_dividend_amount
+    - ca/t1206_part_1_line_3_amount
+capabilities:
+  # Form T1206 "Age answer": "If you were under 18 years of age at the end of the year" and "If you were
+  # 18 years of age or older at the end of the year", a yes or no answer of 0 or 1, refused above 1.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/aged_18_or_older_at_end_of_2025
+    produces:
+      output: ca/t1206_aged_18_or_older_checked
+  # Lines A and B "Capital gain on dispositions in 2025" and "Amount of 2024 reserve": the total that
+  # line C may not exceed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1206_capital_gain_on_dispositions
+        - ca/t1206_reserve_2024
+    produces:
+      output: ca/t1206_lines_a_and_b
+  # Line C "Amount of 2025 reserve (calculated below)": the total of the reserves of the copies of the
+  # reserve form, "Complete this calculation and include the total amount of your 2025 reserve on line C
+  # above".
+  - name: core/record_total
+    consumes:
+      records: ca/t1206_share_reserve.t1206_row_reserve
+    produces:
+      output: ca/t1206_line_c
+  # Line C checked against lines A and B: the form prints no bound, so a line C above the sum is refused,
+  # not capped, as a net capital gain cannot be negative.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1206_line_c
+      bound: ca/t1206_lines_a_and_b
+    produces:
+      output: ca/t1206_line_c_checked
+  # Line D "Line B minus line C (if negative, show in brackets)": signed, no floor is printed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1206_reserve_2024
+      less: ca/t1206_line_c_checked
+    produces:
+      output: ca/t1206_line_d
+  # Line E "Line A plus line D Net capital gain".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1206_capital_gain_on_dispositions
+        - ca/t1206_line_d
+    produces:
+      output: ca/t1206_line_e
+  # Line G "Line E plus line F", where F is "Capital gains from box 21 of your T3 slip(s)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1206_line_e
+        - ca/t1206_t3_box_21_capital_gains
+    produces:
+      output: ca/t1206_line_g
+  # Under 18: "Multiply the amount from line G by 1.15", the percentage of the age answer.
+  - name: core/amount_by_count
+    params:
+      table: ca/t1206_under_18_percentage
+    consumes:
+      count: ca/t1206_aged_18_or_older_checked
+    produces:
+      output: ca/t1206_under_18_percent
+  # Under 18: line G at that percentage, the amount deemed to be a dividend, rounded half-up to the cent
+  # once.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t1206_rounding
+    consumes:
+      amount: ca/t1206_line_g
+      percentage: ca/t1206_under_18_percent
+    produces:
+      output: ca/t1206_under_18_dividend_amount
+  # 18 or older: "multiply the capital gain ... by 50%", the percentage of the age answer.
+  - name: core/amount_by_count
+    params:
+      table: ca/t1206_aged_18_or_older_percentage
+    consumes:
+      count: ca/t1206_aged_18_or_older_checked
+    produces:
+      output: ca/t1206_part_1_line_3_percent
+  # 18 or older: line G at 50% (or 0% under 18), the Part 1 line 3 amount.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t1206_rounding
+    consumes:
+      amount: ca/t1206_line_g
+      percentage: ca/t1206_part_1_line_3_percent
+    produces:
+      output: ca/t1206_part_1_line_3_amount

@@ -1,0 +1,21 @@
+# The Class 10.1 class condition check of Part B of the T777 form, the second of its checks: see
+# 03k_t777.yaml for the form's selections and for the Part B claim, which reads the checked rows.
+# The check runs after the Class 10.1 additions check (`03u_t777_vehicle_additions_check.yaml`)
+# and before the Part B claim, and passes each row on unchanged.
+# Guide T4044 2025, "Class 10.1": "Include your passenger vehicle in Class 10.1 if it meets one of
+# the following conditions: ... You acquired it after December 31, 2024, and it cost you more than
+# $38,000 ... If your passenger vehicle does not meet any of these conditions, then it belongs in
+# Class 10." and "do not include the GST and PST or HST when calculating the cost of the vehicle."
+# The "Date acquired" is printed on every row, so a row without one is refused. The "Cost of vehicle"
+# (before tax) of each Class 10.1 row is refused when it is not
+# more than the amount printed for its year: such a vehicle belongs in Class 10 (Part A), not in Part B.
+form:
+  name: ca/t777
+capabilities:
+  - name: ca/cca_vehicle_class_checks
+    params:
+      class_conditions: ca/cca_class_10_1_conditions
+    consumes:
+      classes: ca/t777_part_b_additions_checked_rows
+    produces:
+      output: ca/t777_part_b_class_checked_rows

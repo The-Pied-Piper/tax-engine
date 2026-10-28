@@ -1,0 +1,18 @@
+# Entry condition of Schedule 8 Part 3 line 24, 2025 tax year (form 5000-S8, page 5): line 24
+# "Line 20 plus line 23 (if negative, show in brackets) =", and the routing "If your earnings
+# subject to contributions are from employment income only and line 24 is: - positive, complete
+# Part 3a below". The count is 1 when line 24 is more than 0, and 0 when it is "0" or negative
+# (Part 3b). The amount is the contributions difference, not a dollars-and-cents box, so no rounding.
+family: ca/cpp_line_24_positive_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      positive, complete Part 3a below
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}

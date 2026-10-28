@@ -1,0 +1,13 @@
+# Ontario LIFT individual income threshold, 2025 tax year (Schedule ON428-A, form 5006-A),
+# Part B: line 31 "Individual income threshold 32,500.00", from which line 32 "Line 30
+# minus line 31 (if negative, enter "0")" takes line 30 "Amount from line 13 of the
+# previous page". It borrows the credit kind because it is a printed amount taken whole.
+# Line 31 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca-on/lift_individual_income_threshold
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "32500.00"

@@ -1,0 +1,10 @@
+# Form T2048 (2025), Part 4 line 41 "Line 39 multiplied by line 40" "ABIL reduction": line 39 is
+# "Line 37 divided by line 38" and line 40 is "Amount from line 33". The form prints no figure and
+# no rounding rule for line 41, so the repo convention applies: the result rounds half-up to the
+# cent, once.
+family: ca/qbt_abil_reduction_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2048/t2048-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

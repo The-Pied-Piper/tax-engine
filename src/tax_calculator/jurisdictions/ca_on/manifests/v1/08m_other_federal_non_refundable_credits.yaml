@@ -1,0 +1,214 @@
+capabilities:
+  # T1 line 31220 "Volunteer firefighters' amount (VFA)" (line 90): "You can claim $6,000 for the
+  # volunteer firefighters' amount (VFA) or search and rescue volunteers' amount (SRVA), but not
+  # both, if you meet all of the following conditions:" (T1 guide 5000-G, 2025). The amount is
+  # $6,000 times the conditions met (a caller's count, 1 or 0).
+  - name: core/per_unit_amount
+    params:
+      amount: ca/volunteer_firefighters_amount
+    consumes:
+      count: ca/volunteer_firefighters_conditions_met_checked
+    produces:
+      output: ca/volunteer_firefighters_credit
+  # T1 line 31240 "Search and rescue volunteers' amount (SRVA)" (line 91): the same $6,000
+  # amount times the conditions met for search and rescue (a caller's count, 1 or 0).
+  - name: core/per_unit_amount
+    params:
+      amount: ca/search_and_rescue_volunteers_amount
+    consumes:
+      count: ca/search_and_rescue_conditions_met_checked
+    produces:
+      output: ca/search_and_rescue_credit
+  # The VFA and the SRVA together, before the "but not both" maximum (line 31220 and line 31240).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/volunteer_firefighters_credit
+        - ca/search_and_rescue_credit
+    produces:
+      output: ca/volunteer_credits_claimed
+  # "but not both": the maximum of $6,000 for the VFA or the SRVA (T1 guide 5000-G, 2025).
+  - name: core/credit_amount
+    params:
+      amount: ca/volunteer_amount_maximum
+    produces:
+      output: ca/volunteer_amount_maximum
+  # "but not both": the VFA and the SRVA together at most the maximum. Above it the claim is an
+  # input error (`InputAboveBoundError`), not capped. The result is a checked side artifact,
+  # not summed (line 31220 and line 31240 are summed on line 33500 above).
+  - name: core/at_most
+    consumes:
+      amount: ca/volunteer_credits_claimed
+      bound: ca/volunteer_amount_maximum
+    produces:
+      output: ca/volunteer_credits_checked
+  # T1 line 31270 "Home buyers' amount (maximum $10,000)" (line 93): "Enter $10,000 on line 31270
+  # of your return if you are not splitting the amount with your spouse or common-law partner."
+  # The maximum is $10,000 (T1 guide 5000-G, 2025).
+  - name: core/credit_amount
+    params:
+      amount: ca/home_buyers_maximum
+    produces:
+      output: ca/home_buyers_maximum
+  # T1 line 31270: the filer's claim, at most the maximum ("You and your spouse or common-law
+  # partner can split the claim but the combined total cannot be more than $10,000." The split
+  # is an election, so the filer enters their share). Above it is an input error.
+  - name: core/at_most
+    consumes:
+      amount: ca/home_buyers_claim
+      bound: ca/home_buyers_maximum
+    produces:
+      output: ca/home_buyers_credit
+  # Worksheet for line 31285 "Home accessibility expenses (use Federal Worksheet) (maximum
+  # $20,000)", line 2: "Enter whichever is less: amount from line 1 or $20,000." (line 1, the
+  # total eligible expenses, is the caller's input).
+  - name: core/capped_amount
+    params:
+      cap: ca/home_accessibility_maximum
+    consumes:
+      base: ca/home_accessibility_expenses
+    produces:
+      output: ca/home_accessibility_line_2
+  # Worksheet for line 31285, line 3, checked against line 2: line 4 is "Line 2 minus line 3" and
+  # the form prints no "if negative, enter 0", so an amount claimed by others above line 2 would
+  # be a negative claim. It is refused as an input error, not floored (negatives rule).
+  - name: core/at_most
+    consumes:
+      amount: ca/home_accessibility_claimed_by_others
+      bound: ca/home_accessibility_line_2
+    produces:
+      output: ca/home_accessibility_claimed_by_others_checked
+  # Worksheet for line 31285, line 4: "Line 2 minus line 3 Enter this amount on line 31285 of
+  # your return." Line 3 is the amount claimed by other qualifying individuals in the same
+  # dwelling, read as checked above.
+  - name: core/subtract
+    consumes:
+      amount: ca/home_accessibility_line_2
+      less: ca/home_accessibility_claimed_by_others_checked
+    produces:
+      output: ca/home_accessibility_credit
+  # T1 line 31300 "Adoption expenses" (line 95): "Enter on line 31300 of your return the amount of
+  # eligible adoption expenses that you can claim for all eligible children." The list holds one
+  # record for each child, the filer's eligible expenses for that child; the form has no federal
+  # maximum for line 31300 (the guide and the T1 are silent), so the total is taken as entered.
+  - name: core/record_total
+    consumes:
+      records: ca/adoption_expense_children
+    produces:
+      output: ca/adoption_credit
+  # Federal Worksheet 5000-D1 line 31400, line 2 "Foreign pension income included in the amount on
+  # line 11500 of your return and deducted on line 25600 of your return": part of line 25600
+  # "Additional deductions" (`ca/additional_deductions_total`), so the amount is at most it. An
+  # amount
+  # above it is an input error, not capped. Line 5 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/pension_foreign_income
+      bound: ca/additional_deductions_total
+    produces:
+      output: ca/pension_foreign_income_checked
+  # Worksheet for line 31400 "Pension income amount" (line 97), line 5: "Add lines 2 to 4." (the
+  # foreign pension income, the U.S. IRA income and the RRIF or PRPP amounts transferred).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/pension_foreign_income_checked
+        - ca/pension_us_ira_income
+        - ca/pension_rrif_transferred
+    produces:
+      output: ca/pension_chart_line_5
+  # Worksheet for line 31400, line 1: "Amount from line 11500 of your return", the other pensions and
+  # superannuation the filer types plus the amount on line 11500 from Form T2205 (the SPP part and
+  # line 22 of a filer 65 or older). Line 22 of Form T2205 is signed, so a negative total is taken
+  # as 0: the worksheet has no amount to claim from a line 11500 below zero.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/other_pensions_and_superannuation
+        - ca/t2205_on_line_11500
+    produces:
+      output: ca/pension_chart_line_1
+  # Line 5 against line 1, the amount from line 11500 of the return
+  # (`ca/pension_chart_line_1`). Federal Worksheet 5000-D1, line 31400, "Line 2/3/4 ...
+  # included in the amount on line 11500": each of lines 2 to 4 is part of line 11500, so their
+  # total is at most line 1. An amount above it is an input error, not capped. The checked amount
+  # is the one line 6 reads.
+  - name: core/at_most
+    consumes:
+      amount: ca/pension_chart_line_5
+      bound: ca/pension_chart_line_1
+    produces:
+      output: ca/pension_chart_line_5_checked
+  # Worksheet for line 31400, line 6: "Line 1 minus line 5", line 1 being the amount from line
+  # 11500 of the return (`ca/pension_chart_line_1`). The form prints "minus" without
+  # "(if negative, enter "0")"; the result is taken as not below zero. Line 5 above line 11500 is
+  # refused by the check above, so the floor only meets line 5 at or below line 1.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/pension_chart_line_1
+      less: ca/pension_chart_line_5_checked
+    produces:
+      output: ca/pension_chart_line_6
+  # Worksheet for line 31400, line 7: "Annuity payments from line 12900 of your return (box 16 of
+  # all your T4RSP slips) only if you were 65 years of age or older on December 31, 2025, or you
+  # received the payments because of the death of your spouse or common-law partner". The gate is
+  # the caller's 0 or 1 count, and the payments count once when it is 1.
+  - name: core/times_count
+    consumes:
+      amount: ca/pension_annuity_payments
+      count: ca/pension_annuity_conditions_met_checked
+    produces:
+      output: ca/pension_chart_line_7
+  # Worksheet for line 31400, line 8: "Line 6 plus line 7".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/pension_chart_line_6
+        - ca/pension_chart_line_7
+    produces:
+      output: ca/pension_chart_line_8
+  # Worksheet for line 31400, the last line: "Enter on line 31400 of your return whichever amount
+  # is less: line 8 or $2,000." (maximum $2,000, T1 guide 5000-G and the T1 line 97).
+  - name: core/capped_amount
+    params:
+      cap: ca/pension_income_maximum
+    consumes:
+      base: ca/pension_chart_line_8
+    produces:
+      output: ca/pension_worksheet_amount
+  # Form T1032 Step 4 Part A "Enter on line 31400 of the transferring spouse's or common-law
+  # partner's return, whichever is less: $2,000 or the amount from line 31.", the form's export
+  # totalled (a record list of one record).
+  - name: core/record_total
+    consumes:
+      records: ca/t1032.t1032_line_31400_transferring
+    produces:
+      output: ca/t1032_line_31400_transferring_total
+  # Form T1032 Step 4 Part B "Enter on line 31400 of the receiving spouse's or common-law partner's
+  # return, whichever is less: $2,000 or the amount from line 34.", the form's export totalled.
+  - name: core/record_total
+    consumes:
+      records: ca/t1032.t1032_line_31400_receiving
+    produces:
+      output: ca/t1032_line_31400_receiving_total
+  # Form T1032: the amount for line 31400 of the transferring spouse's return when this return is the
+  # transferring spouse's (the answer 1, as the form checked it), of the receiving spouse's otherwise.
+  # The $2,000 is applied by the form's own lines (whichever is less: $2,000 or line 31 or line 34).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_filer_is_transferring_spouse_total
+      when_none: ca/t1032_line_31400_receiving_total
+      when_any: ca/t1032_line_31400_transferring_total
+    produces:
+      output: ca/t1032_line_31400
+  # The worksheet ends: "However, if you are electing to split your eligible pension with your
+  # spouse or common-law partner, complete Form T1032 ... to calculate the amount to enter on line
+  # 31400 of your return instead." The election applies when line 22 of the form is above 0
+  # (22c_t1032_income_tax_deducted.yaml); then the Form T1032 amount replaces the worksheet amount.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_election_applies
+      when_none: ca/pension_worksheet_amount
+      when_any: ca/t1032_line_31400
+    produces:
+      output: ca/pension_income_credit

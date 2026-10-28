@@ -1,0 +1,341 @@
+# Form T2043 box 67062, 2025 tax year, read from the PDF (no .txt is published): "Tick this box if
+# you have multiple farming businesses with one or more permanent establishments in multiple
+# provinces or territories." The box is 1 when there is more than one farm statement and two of the
+# nine places each have a statement present in them. The places are the eight designated provinces
+# in the form's order (ON, MB, SK, AB, NS, PE, NL, NB), then outside eight: amounts 1 to 9 are the
+# statements present in each place (`ca/fuel_charge_farms_in_province_<place>`, and outside eight).
+# There is one condition for each of the 36 pairs of places, in the order of the pairs, each with
+# three parts that all hold: the statement count (count 1) is more than 1, and the two places are each
+# more than 0. The count is 1 when any pair applies. It is a count, so nothing is rounded.
+family: ca/fuel_charge_multiple_provinces_box_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in Manitoba
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in Saskatchewan
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in Alberta
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in Nova Scotia
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in Prince Edward Island
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in Newfoundland and Labrador
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in New Brunswick
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Ontario and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Manitoba and in Saskatchewan
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Manitoba and in Alberta
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Manitoba and in Nova Scotia
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Manitoba and in Prince Edward Island
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Manitoba and in Newfoundland and Labrador
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Manitoba and in New Brunswick
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Manitoba and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Saskatchewan and in Alberta
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Saskatchewan and in Nova Scotia
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Saskatchewan and in Prince Edward Island
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Saskatchewan and in Newfoundland and Labrador
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Saskatchewan and in New Brunswick
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Saskatchewan and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Alberta and in Nova Scotia
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Alberta and in Prince Edward Island
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Alberta and in Newfoundland and Labrador
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Alberta and in New Brunswick
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Alberta and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Nova Scotia and in Prince Edward Island
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Nova Scotia and in Newfoundland and Labrador
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Nova Scotia and in New Brunswick
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Nova Scotia and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Prince Edward Island and in Newfoundland and Labrador
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Prince Edward Island and in New Brunswick
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Prince Edward Island and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Newfoundland and Labrador and in New Brunswick
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in Newfoundland and Labrador and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      there is more than one farm statement and a statement is present in New Brunswick and in outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "1"}
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}

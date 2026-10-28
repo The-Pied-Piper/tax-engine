@@ -1,0 +1,20 @@
+# Ontario health premium tiers, 2025 tax year (Form ON428, form 5006-C): line 89
+# "Ontario health premium (complete the chart below)", on the chart's line 1 "Enter
+# your taxable income from line 26000 of your return". Each sloped row of the chart is
+# the previous plateau plus a rate on the income over the row's threshold, capped at
+# the next plateau ($300, $450, $600, $750, $900), so each tier carries the difference
+# between its plateaus as its maximum.
+# Line 89 is a dollars-and-cents box, so each tier rounds half-up to the cent before
+# the tiers are added, the owner's decision, as the chart states no rounding rule.
+family: ca-on/health_premium
+tax_year: 2025
+kind: surcharge_tiers
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+tiers:
+  - {threshold: "20000", rate: "0.06", maximum: "300"}
+  - {threshold: "36000", rate: "0.06", maximum: "150"}
+  - {threshold: "48000", rate: "0.25", maximum: "150"}
+  - {threshold: "72000", rate: "0.25", maximum: "150"}
+  - {threshold: "200000", rate: "0.25", maximum: "150"}

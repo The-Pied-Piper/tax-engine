@@ -1,0 +1,14 @@
+# Form T1436 (Capital Gains Worksheet, 2025), "Line 21700 - Allowable business investment loss", line 3
+# "... (cannot be more than the amounts from lines 543 and 544 of Schedule 3) x 1.3333 = 3": the limited
+# amount is multiplied by the printed 1.3333, kept as given (13333/10000, never reduced). The exact
+# fraction 4/3 is not taken: 10000 x 1.3333 is 13333.00 as the printed figure gives it.
+# Line 3 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's decision,
+# as the form states no rounding rule.
+family: ca/t1436_line_3_multiplier
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "13333"
+denominator: "10000"

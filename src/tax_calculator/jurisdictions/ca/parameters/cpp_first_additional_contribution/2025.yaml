@@ -1,0 +1,25 @@
+# First additional CPP contribution on employment income, 2025 tax year (T1-2025
+# Schedule 8, form 5000-S8). Part 2, 12 months: line B "Your maximum pensionable
+# earnings for 2025 (maximum $71,300)"; line E "Your maximum basic exemption for 2025
+# (maximum $3,500)". Part 3: lines 2 to 7 give the same earnings as the base tier,
+# line 7 "Line 5 minus line 6 (if negative, enter "0") (maximum $67,800)"; line 12
+# "amount from line 7 multiplied by 1% (maximum $678.00)". So the tier is 1% of the
+# earnings between the $3,500 exemption and the $71,300 ceiling; the CRA rate page's
+# 2025 row gives the same ceiling and exemption. Part 2's proration for fewer than 12
+# months is not triggered by the returns modelled.
+# Line 18 is "Amount from line 12", carried to Part 3b line 43, and line 48 "Line 43
+# plus line 47 Enter this amount (in dollars and cents) on line 22215 of your return."
+# (Part 3a lines 26 and 28 when line 24 is positive), so the tier rounds half-up to the
+# cent.
+family: ca/cpp_first_additional_contribution
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/calculating-deductions/making-deductions/second-additional-cpp-contribution-rates-maximums.html
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.01"
+lower: "3500"
+upper: "71300"
+maximum: "678.00"

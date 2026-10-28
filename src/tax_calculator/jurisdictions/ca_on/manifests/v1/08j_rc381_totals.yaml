@@ -1,0 +1,51 @@
+# Totals of Form RC381 (ca/rc381) for the return: each result the form gives is the form's line
+# added over its copies, which is the line of the one copy the return carries, and 0 with no copy
+# of the form (the record list ca/rc381_instances empty).
+capabilities:
+  # T1 line 30800 and ON428 line 58240 "Base CPP contributions through employment income": Form
+  # RC381 Part 4 line 98 when Part 4 is completed, else Part 3a line 70 or Part 3b line 81, for each
+  # Form RC381 the return carries, added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_base_contributions_on_return
+    produces:
+      output: ca/rc381_cpp_base_contributions_on_return
+  # T1 line 22215 "Deduction for CPP enhanced contributions on employment income": Form RC381 Part 4
+  # line 110 when Part 4 is completed, else Part 3a line 73 or Part 3b line 93, for each Form RC381
+  # the return carries, added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/rc381_cpp_enhanced_contributions_on_return
+  # T1 line 44800 "CPP overpayment": Form RC381 Part 4 line 91 when Part 4 is completed, else Part
+  # 3a line 74, for each Form RC381 the return carries, added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_overpayment_on_return
+    produces:
+      output: ca/rc381_cpp_overpayment_on_return
+  # T1 line 42100 "CPP contributions payable on self-employment income and other earnings": Form
+  # RC381 Part 4 line 90 when Part 4 is completed, else 0, for each Form RC381 the return carries,
+  # added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_payable_on_self_employment
+    produces:
+      output: ca/rc381_cpp_payable_on_self_employment
+  # T1 line 31000 "Base CPP contributions through self-employment income and other earnings": Form
+  # RC381 Part 4 line 111 when Part 4 is completed, else 0, for each Form RC381 the return carries,
+  # added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_base_contributions_on_self_employment_and_other_earnings
+    produces:
+      output: ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings
+  # T1 line 22200 "Deduction for CPP enhanced contributions on self-employment income and other
+  # earnings": Form RC381 Part 4 line 129 when Part 4 is completed, else 0, for each Form RC381 the
+  # return carries, added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_deduction_on_self_employment_and_other_earnings
+    produces:
+      output: ca/rc381_cpp_deduction_on_self_employment_and_other_earnings

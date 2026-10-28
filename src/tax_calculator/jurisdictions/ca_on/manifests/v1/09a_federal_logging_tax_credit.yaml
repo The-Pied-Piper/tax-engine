@@ -1,0 +1,56 @@
+capabilities:
+  # Federal logging tax credit, one item per province with a logging operation: "To calculate
+  # your credit for each province where you operated, use the lower of the following amounts for
+  # each province you had a logging operation in: 66.6667% of the logging tax that you paid to
+  # that province for the year; 6.6667% of your net logging income in that province for the
+  # year." The per-item capability does the lower of the two amounts for each province, one
+  # trace line each, and gives their total.
+  - name: ca/logging_tax_credit
+    params:
+      tax_rate: ca/logging_tax_rate
+      income_rate: ca/logging_income_rate
+    consumes:
+      provinces: ca/logging_operations
+    produces:
+      output: ca/provinces_logging_tax_credit
+  # Federal logging tax credit, the base and the cap: "up to 6.6667% of your taxable income from
+  # line 26000 of your return, not including any amounts on lines 20800, 20805, 21000, 21400,
+  # 21500, 21900, and 22000 of your return." The base is line 26000 with those seven lines added
+  # back, and the cap is 6.6667% of it.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/taxable_income
+        - ca/rrsp_deduction
+        - ca/fhsa_deduction
+        - ca/elected_split_pension_deduction
+        - ca/child_care_expenses
+        - ca/disability_supports_deduction
+        - ca/moving_expenses_deduction
+        - ca/support_payments_deduction_checked
+    produces:
+      output: ca/logging_credit_base
+  - name: core/apply_rate
+    params:
+      rate: ca/logging_income_rate
+    consumes:
+      base: ca/logging_credit_base
+    produces:
+      output: ca/logging_credit_cap
+  # T1 line 133 (5006-R Ontario edition): "Line 133: Federal logging tax credit", the lesser of
+  # the provinces' total and the cap.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/provinces_logging_tax_credit
+        - ca/logging_credit_cap
+    produces:
+      output: ca/federal_logging_tax_credit
+  # T1 line 134 and line 40600 (5006-R Ontario edition): "Line 134 and line 40600: Line 132 minus
+  # line 133 (if negative, enter "0") Federal tax =", never below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/federal_tax_with_itc_recapture
+      less: ca/federal_logging_tax_credit
+    produces:
+      output: ca/federal_tax

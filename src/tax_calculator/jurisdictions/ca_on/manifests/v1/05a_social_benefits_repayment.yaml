@@ -1,0 +1,145 @@
+capabilities:
+  # Federal Worksheet "Line 23500 - Social benefits repayment": "Complete the chart below if one or
+  # both of the following applies:" "You entered an amount on line 11900 of your return and the
+  # amount on line 23400 is more than $82,125" and "You entered an amount on line 11300 or line
+  # 14600 of your return and the amount on line 23400 is more than $93,454", and T1 line 55 and line
+  # 23500 "If not, enter "0" on line 23500.": a count of 1 when either holds.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/social_benefits_repayment_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/ei_and_other_benefits
+        - ca/net_income_before_adjustments
+        - ca/old_age_security
+        - ca/net_federal_supplements
+    produces:
+      output: ca/social_benefits_repayment_applies
+  # Chart line 3 "Line 1 plus line 2 =": line 1 "Old age security (OAS) pension from line 11300 of
+  # your return" and line 2 "Net federal supplements paid from line 14600 of your return".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/old_age_security
+        - ca/net_federal_supplements
+    produces:
+      output: ca/oas_and_federal_supplements
+  # Line 4 "Overpayment of OAS benefits recovered (box 20 of your T4A(OAS) slip)" is the caller's
+  # amount; line 5 "Line 3 minus line 4 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/oas_and_federal_supplements
+      less: ca/oas_overpayment_recovered
+    produces:
+      output: ca/social_benefits_line_5
+  # Line 6 "Net income before adjustments from line 23400 of your return", plus, as Form T1206 Part
+  # 1 says, "add the amount from line 4 of this form to line 6 of your Federal Worksheet in the
+  # calculation of the social benefits repayment for the calculation of lines 23500 and 42200 of
+  # your tax return, if applicable": the total split income. It prints no "(if negative, enter
+  # "0")", so it is signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/net_income_before_adjustments
+        - ca/total_split_income
+    produces:
+      output: ca/social_benefits_line_6
+  # Line 7 "EI benefits repayment from line 4 of the repayment chart on your T4E slip, if any" is
+  # at most the EI and other benefits of line 11900; above it is an input error.
+  - name: core/at_most
+    consumes:
+      amount: ca/ei_benefits_repayment
+      bound: ca/ei_and_other_benefits
+    produces:
+      output: ca/ei_benefits_repayment_checked
+  # Line 8 "Universal child care benefit (UCCB) from line 11700 of your return"; line 9 "Registered
+  # disability savings plan (RDSP) income from line 12500 of your return"; line 10 "Add lines 7 to
+  # 9. =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/ei_benefits_repayment_checked
+        - ca/universal_child_care_benefit
+        - ca/rdsp_income
+    produces:
+      output: ca/social_benefits_line_10
+  # Line 11 "Line 6 minus line 10 =" prints no "(if negative, enter "0")", so it is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/social_benefits_line_6
+      less: ca/social_benefits_line_10
+    produces:
+      output: ca/social_benefits_line_11
+  # Line 13 "RDSP income repayment (included in the amount on line 23200 of your return)": a
+  # part of the caller's line 23200 amount (`ca/other_deductions`), so at most that amount. An
+  # amount above it is an input error, not capped. Line 14 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/rdsp_income_repayment
+      bound: ca/other_deductions
+    produces:
+      output: ca/rdsp_income_repayment_checked
+  # Line 12 "UCCB repayment from line 21300 of your return" and line 13 "RDSP income repayment
+  # (included in the amount on line 23200 of your return)"; line 14 "Line 12 plus line 13 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/uccb_repayment
+        - ca/rdsp_income_repayment_checked
+    produces:
+      output: ca/social_benefits_line_14
+  # Line 15 "Line 11 plus line 14 Adjusted net income =", signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/social_benefits_line_11
+        - ca/social_benefits_line_14
+    produces:
+      output: ca/social_benefits_line_15
+  # Line 16 "OAS benefits base amount 93,343.00", claimed whole.
+  - name: core/credit_amount
+    params:
+      amount: ca/oas_benefits_base_amount
+    produces:
+      output: ca/oas_benefits_base_amount
+  # Line 17 "Line 15 minus line 16 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/social_benefits_line_15
+      less: ca/oas_benefits_base_amount
+    produces:
+      output: ca/social_benefits_line_17
+  # Line 18 "Amount from line 17 multiplied by 15% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/social_benefits_repayment_rate
+    consumes:
+      base: ca/social_benefits_line_17
+    produces:
+      output: ca/social_benefits_line_18
+  # Line 19 "Enter whichever is less: amount from line 5 or line 18."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/social_benefits_line_5
+        - ca/social_benefits_line_18
+    produces:
+      output: ca/social_benefits_line_19
+  # Line 20 "Amount from line 7, if any" and line 21 "Line 19 plus line 20. Enter this amount on
+  # line 23500 and line 42200 of your return. =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/social_benefits_line_19
+        - ca/ei_benefits_repayment_checked
+    produces:
+      output: ca/social_benefits_line_21
+  # T1 line 55 and line 23500 (the chart's line 21, or "0" "If not"): the chart's result counted
+  # once when the chart applies, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/social_benefits_line_21
+      count: ca/social_benefits_repayment_applies
+    produces:
+      output: ca/social_benefits_repayment

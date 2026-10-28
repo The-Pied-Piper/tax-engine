@@ -1,0 +1,352 @@
+# Form Schedule 8 (ca/schedule_8), Parts 3a to 5: see 05c_schedule_8_part_3.yaml.
+form:
+  name: ca/schedule_8
+capabilities:
+  # Schedule 8 Part 5 line 43 "Required base contributions on CPP pensionable earnings: Line 43:
+  # amount from line 30 multiplied by 9.9% (maximum $6,712.20) =": the base contribution tier on
+  # line 30 (Part 5 line 30, the self-employment earnings subject to base and first additional
+  # contributions), the same tier Part 4 line 10 uses.
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_base_contribution
+    consumes:
+      earnings: ca/cpp_part_5_line_30
+    produces:
+      output: ca/cpp_part_5_line_43
+  # Schedule 8 Part 5 line 44 "Required first additional contributions on CPP pensionable
+  # earnings: Line 44: amount from line 30 multiplied by 2% (maximum $1,356.00) =": the first
+  # additional contribution tier on line 30.
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_first_additional_contribution
+    consumes:
+      earnings: ca/cpp_part_5_line_30
+    produces:
+      output: ca/cpp_part_5_line_44
+  # Schedule 8 Part 5 line 45 "Required second additional contributions on CPP pensionable
+  # earnings: Line 45: amount from line 42 multiplied by 8% (maximum $792.00) =": the second
+  # additional contribution tier on line 42. Line 42 prints no floor and is negative for a loss
+  # with a box 26 total above $71,300; the tier floors the band at 0, so line 45 is 0 then.
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_second_additional_contribution
+    consumes:
+      earnings: ca/cpp_part_5_line_42
+    produces:
+      output: ca/cpp_part_5_line_45
+  # Schedule 8 Part 5 line 46 "Line 44 plus line 45 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_44
+        - ca/cpp_part_5_line_45
+    produces:
+      output: ca/cpp_part_5_line_46
+  # Schedule 8 Part 5 line 47 "Line 43 plus line 46 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_43
+        - ca/cpp_part_5_line_46
+    produces:
+      output: ca/cpp_part_5_line_47
+  # Schedule 8 Part 5 line 48 "Amount from line 24 of Part 3 (if positive)": line 24 of Part 3
+  # less "0", not below zero, so 0 when line 24 is negative or "0".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_contributions_difference
+      less: ca/cpp_zero
+    produces:
+      output: ca/cpp_part_5_line_48_line_24_if_positive
+  # Schedule 8 Part 5 line 48 "multiplied by 2 =": 2 is more than 1, so it is a fraction
+  # dataset, 2/1, not a rate (the fraction kind takes a factor above one).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/cpp_part_5_line_48_multiplier
+    consumes:
+      base: ca/cpp_part_5_line_48_line_24_if_positive
+    produces:
+      output: ca/cpp_part_5_line_48
+  # Schedule 8 Part 5 line 49 "CPP contributions payable on self-employment income and other
+  # earnings: Line 47 minus line 48. If positive, enter the amount (in dollars and cents) on
+  # line 42100 of your return and continue at line 51. If negative, show in brackets and
+  # continue at line 50. =": signed, negative in brackets when line 48 is more than line 47.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_part_5_line_47
+      less: ca/cpp_part_5_line_48
+    produces:
+      output: ca/cpp_part_5_line_49
+  # Schedule 8 Part 5 line 50 "amount from line 49 entered as a positive amount": "0" less line
+  # 49, not below zero, so 0 when line 49 is positive or "0".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_zero
+      less: ca/cpp_part_5_line_49
+    produces:
+      output: ca/cpp_part_5_line_50_line_49_positive
+  # Schedule 8 Part 5 line 50 "CPP overpayment: Enter the result of the following calculation
+  # (in dollars and cents) on line 44800 of your return: amount from line 49 entered as a
+  # positive amount multiplied by 50% =": the rate of 0.5, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_part_5_line_50_rate
+    consumes:
+      base: ca/cpp_part_5_line_50_line_49_positive
+    produces:
+      output: ca/cpp_part_5_line_50
+  # Lines 51 to 69 repeat Part 3b lines 30 to 48 with the same formulas, one step per Part 5 line,
+  # so for the same Part 3 figures their values equal the Part 3b ones.
+  # Schedule 8 Part 5 line 51 "If line 16 of Part 3 is positive or "0", enter the amount from
+  # line 11 of Part 3 at lines 51 and 57, and continue at line 58. If not, enter the amount from
+  # line 9 of Part 3 and continue at line 52.": line 11 (the required base contributions) when
+  # line 16 is not negative, else line 9 (the actual base contributions).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_line_16_not_negative
+      when_none: ca/cpp_actual_base_contributions
+      when_any: ca/cpp_base_contributions
+    produces:
+      output: ca/cpp_part_5_line_51
+  # Schedule 8 Part 5 line 52 "If line 16 of Part 3 is negative: Line 52: Enter the amount from
+  # line 16 of Part 3 as a positive amount.": "0" less line 16 of Part 3, not below zero, so 0
+  # when line 16 is positive or "0".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_zero
+      less: ca/cpp_base_contributions_difference
+    produces:
+      output: ca/cpp_part_5_line_52
+  # Schedule 8 Part 5 line 53 "If line 16 of Part 3 is negative and line 19 of Part 3 is positive,
+  # enter whichever is less: amount from line 19 of Part 3 or line 52.": the lesser of line 19 of
+  # Part 3 and line 52, a candidate that line 53 takes only when line 16 is negative and line 19
+  # is positive.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cpp_first_additional_contributions_difference
+        - ca/cpp_part_5_line_52
+    produces:
+      output: ca/cpp_part_5_line_53_lesser
+  # Schedule 8 Part 5 line 53 "If not, enter "0".": the lesser when line 16 of Part 3 is negative
+  # and line 19 of Part 3 is positive, else "0".
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_line_16_negative_line_19_positive
+      when_none: ca/cpp_zero
+      when_any: ca/cpp_part_5_line_53_lesser
+    produces:
+      output: ca/cpp_part_5_line_53
+  # Schedule 8 Part 5 line 54 "Line 52 minus line 53 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_part_5_line_52
+      less: ca/cpp_part_5_line_53
+    produces:
+      output: ca/cpp_part_5_line_54
+  # Schedule 8 Part 5 line 55 "Line 51 plus line 53 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_51
+        - ca/cpp_part_5_line_53
+    produces:
+      output: ca/cpp_part_5_line_55
+  # Schedule 8 Part 5 line 56 "If line 23 of Part 3 and line 54 are both positive, enter whichever
+  # is less. If not, enter "0".": the count is 1 when line 23 of Part 3 and line 54 are both more
+  # than 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/cpp_part_5_line_23_and_line_54_positive_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/cpp_second_additional_contributions_difference
+        - ca/cpp_part_5_line_54
+    produces:
+      output: ca/cpp_part_5_line_23_and_line_54_positive
+  # Schedule 8 Part 5 line 56 "enter whichever is less": the lesser of line 23 of Part 3 and
+  # line 54, a candidate that line 56 takes only when both are positive.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cpp_second_additional_contributions_difference
+        - ca/cpp_part_5_line_54
+    produces:
+      output: ca/cpp_part_5_line_56_lesser
+  # Schedule 8 Part 5 line 56 "If not, enter "0".": the lesser when line 23 of Part 3 and line 54
+  # are both positive, else "0".
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_part_5_line_23_and_line_54_positive
+      when_none: ca/cpp_zero
+      when_any: ca/cpp_part_5_line_56_lesser
+    produces:
+      output: ca/cpp_part_5_line_56
+  # Schedule 8 Part 5 line 57 "Base CPP contributions through employment income: Line 55 plus
+  # line 56 Enter this amount (in dollars and cents) on line 30800 of your return. =": the
+  # 30800 choice in 05d takes it when Part 5 is completed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_55
+        - ca/cpp_part_5_line_56
+    produces:
+      output: ca/cpp_part_5_line_57
+  # Schedule 8 Part 5 line 58 "If line 19 of Part 3 is positive or "0", enter the amount from line
+  # 12 of Part 3 at line 58 and line 64, and continue at line 65. If not, enter the amount from
+  # line 10 of Part 3 and continue at line 59.": line 12 (the required first additional
+  # contributions) when line 19 is not negative, else line 10 (the actual first additional
+  # contributions).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_line_19_not_negative
+      when_none: ca/cpp_actual_first_additional_contributions
+      when_any: ca/cpp_first_additional_contributions
+    produces:
+      output: ca/cpp_part_5_line_58
+  # Schedule 8 Part 5 line 59 "If line 19 of Part 3 is negative: Line 59: Enter the amount from
+  # line 19 of Part 3 as a positive amount.": "0" less line 19 of Part 3, not below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_zero
+      less: ca/cpp_first_additional_contributions_difference
+    produces:
+      output: ca/cpp_part_5_line_59
+  # Schedule 8 Part 5 line 60 "If line 16 of Part 3 is positive, enter whichever is less: Line 60:
+  # amount from line 16 of Part 3 or line 59. If not, enter "0".": the lesser of line 16 of Part 3
+  # and line 59, a candidate that line 60 takes only when line 16 is positive.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cpp_base_contributions_difference
+        - ca/cpp_part_5_line_59
+    produces:
+      output: ca/cpp_part_5_line_60_lesser
+  # Schedule 8 Part 5 line 60 "If not, enter "0".": the lesser when line 16 of Part 3 is positive,
+  # else "0".
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_line_16_positive
+      when_none: ca/cpp_zero
+      when_any: ca/cpp_part_5_line_60_lesser
+    produces:
+      output: ca/cpp_part_5_line_60
+  # Schedule 8 Part 5 line 61 "Line 59 minus line 60 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_part_5_line_59
+      less: ca/cpp_part_5_line_60
+    produces:
+      output: ca/cpp_part_5_line_61
+  # Schedule 8 Part 5 line 62 "Line 58 plus line 60 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_58
+        - ca/cpp_part_5_line_60
+    produces:
+      output: ca/cpp_part_5_line_62
+  # Schedule 8 Part 5 line 63 "the result of line 23 of Part 3 minus line 56" (the second
+  # candidate): line 23 of Part 3 less line 56, signed, as the form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_second_additional_contributions_difference
+      less: ca/cpp_part_5_line_56
+    produces:
+      output: ca/cpp_part_5_line_23_less_line_56
+  # Schedule 8 Part 5 line 63 "If line 23 of Part 3 and line 61 are both positive, enter whichever
+  # is less": the count is 1 when line 23 of Part 3 and line 61 are both more than 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/cpp_part_5_line_23_and_line_61_positive_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/cpp_second_additional_contributions_difference
+        - ca/cpp_part_5_line_61
+    produces:
+      output: ca/cpp_part_5_line_23_and_line_61_positive
+  # Schedule 8 Part 5 line 63 "Line 63: amount from line 61 or the result of line 23 of Part 3
+  # minus line 56": the lesser of line 61 and the line 23 less line 56 candidate, which line 63
+  # takes only when both lines are positive.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cpp_part_5_line_61
+        - ca/cpp_part_5_line_23_less_line_56
+    produces:
+      output: ca/cpp_part_5_line_63_lesser
+  # Schedule 8 Part 5 line 63 "If not, enter "0".": the lesser when line 23 of Part 3 and line 61
+  # are both positive, else "0".
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_part_5_line_23_and_line_61_positive
+      when_none: ca/cpp_zero
+      when_any: ca/cpp_part_5_line_63_lesser
+    produces:
+      output: ca/cpp_part_5_line_63
+  # Schedule 8 Part 5 line 64 "Line 62 plus line 63 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_62
+        - ca/cpp_part_5_line_63
+    produces:
+      output: ca/cpp_part_5_line_64
+  # Schedule 8 Part 5 line 65 "If line 23 of Part 3 is positive or "0", enter the amount from line
+  # 22 of Part 3 on line 65 and line 68, and continue at line 69. If not, enter the amount from
+  # line 21 of Part 3 and continue at line 66.": line 22 (the required second additional
+  # contributions) when line 23 is not negative, else line 21 (the T4 box 16A total).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_line_23_not_negative
+      when_none: ca/cpp_t4_second_additional_contributions
+      when_any: ca/cpp_second_additional_contributions
+    produces:
+      output: ca/cpp_part_5_line_65
+  # Schedule 8 Part 5 line 66 "If line 23 of Part 3 is negative: Line 66: Enter the amount from
+  # line 23 of Part 3 as a positive amount.": "0" less line 23 of Part 3, not below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_zero
+      less: ca/cpp_second_additional_contributions_difference
+    produces:
+      output: ca/cpp_part_5_line_66
+  # Schedule 8 Part 5 line 67 "If line 20 of Part 3 is positive, enter whichever is less: Line 67:
+  # amount from line 20 of Part 3 or line 66. If not, enter "0".": the lesser of line 20 of Part 3
+  # and line 66, a candidate that line 67 takes only when line 20 is positive.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cpp_base_and_first_additional_contributions_difference
+        - ca/cpp_part_5_line_66
+    produces:
+      output: ca/cpp_part_5_line_67_lesser
+  # Schedule 8 Part 5 line 67 "If not, enter "0".": the lesser when line 20 of Part 3 is positive,
+  # else "0".
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cpp_line_20_positive
+      when_none: ca/cpp_zero
+      when_any: ca/cpp_part_5_line_67_lesser
+    produces:
+      output: ca/cpp_part_5_line_67
+  # Schedule 8 Part 5 line 68 "Line 65 plus line 67 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_65
+        - ca/cpp_part_5_line_67
+    produces:
+      output: ca/cpp_part_5_line_68
+  # Schedule 8 Part 5 line 69 "Deduction for CPP enhanced contributions on employment income: Line
+  # 69: Line 64 plus line 68 Enter this amount (in dollars and cents) on line 22215 of your return.
+  # =": the 22215 choice in 05d takes it when Part 5 is completed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_64
+        - ca/cpp_part_5_line_68
+    produces:
+      output: ca/cpp_part_5_line_69

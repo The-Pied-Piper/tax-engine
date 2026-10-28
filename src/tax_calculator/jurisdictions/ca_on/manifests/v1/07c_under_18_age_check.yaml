@@ -1,0 +1,50 @@
+# Worksheet ON428 line 58440 "Complete the following calculation if you were under 18 years of age on
+# December 31, 2025", Form ON428 line 10 "Age amount (if you were born in 1960 or earlier)" and the
+# Federal Worksheet for line 45200 "You were 18 years of age or older at the end of 2025": under 18
+# on December 31 excludes born in 1960 or earlier (65 or older) and 18 or older at the end of 2025.
+# The count of under 18 entered with each of the two is 1 when both are entered, else 0. The forms
+# print no refusal; the count of 1 is refused below, not capped, so a filer is never taken for two
+# ages at once.
+capabilities:
+  # Worksheet ON428 line 58440 and Form ON428 line 10, the count of the two both above 0: 1 when
+  # the under 18 count and the born in 1960 or earlier count are each more than 0, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/under_18_and_born_in_1960_or_earlier_conditions
+    consumes:
+      counts:
+        - ca/under_18_on_december_31_checked
+        - ca/born_in_1960_or_earlier_checked
+      amounts: []
+    produces:
+      output: ca/under_18_and_born_in_1960_or_earlier
+  # The count above is refused when it is 1: an input error naming under 18 and born in 1960 or
+  # earlier (not capped, and not a printed line). The checked count, 0, is read by nothing on the
+  # return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/under_18_and_born_in_1960_or_earlier_refused
+    consumes:
+      count: ca/under_18_and_born_in_1960_or_earlier
+    produces:
+      output: ca/under_18_and_born_in_1960_or_earlier_checked
+  # Worksheet ON428 line 58440 and the Federal Worksheet for line 45200, the same for under 18 with
+  # 18 or older at the end of 2025.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/under_18_and_aged_18_or_older_conditions
+    consumes:
+      counts:
+        - ca/under_18_on_december_31_checked
+        - ca/aged_18_or_older_at_end_of_2025_checked
+      amounts: []
+    produces:
+      output: ca/under_18_and_aged_18_or_older
+  # The count above is refused when it is 1: an input error naming under 18 and 18 or older.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/under_18_and_aged_18_or_older_refused
+    consumes:
+      count: ca/under_18_and_aged_18_or_older
+    produces:
+      output: ca/under_18_and_aged_18_or_older_checked

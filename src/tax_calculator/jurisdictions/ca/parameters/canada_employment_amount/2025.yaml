@@ -1,0 +1,16 @@
+# Canada employment amount cap, 2025 tax year (T1-2025, form 5000-R): line 92
+# (line 31260) "Enter whichever is less: $1,471 or line 1 plus line 2.", where
+# line 1 (line 10100) is "Employment income (box 14 of all T4 slips)" and line 2
+# (line 10400) is "Other employment income". It is a plain amount, not a credit:
+# the lesser is one part of the total of the credit amounts (line 33500), which
+# the credit rate is applied to once.
+# Line 92 is a dollars-and-cents box, so the lesser rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/canada_employment_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "1471"

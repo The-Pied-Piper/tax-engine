@@ -1,0 +1,11 @@
+# Form RC381 (2025), Part 3 line 20 "Actual base contributions on CPP pensionable earnings:
+# amount from line 19 x 83.1933%": the base share of the actual base and first additional
+# contributions from box 16. The form prints no rounding rule; line 20 is a dollars-and-cents
+# amount, so the product rounds half-up to the cent, the owner's decision.
+family: ca/rc381_cpp_base_share_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.831933"

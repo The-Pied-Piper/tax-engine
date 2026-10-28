@@ -1,0 +1,23 @@
+# Condition of Form T2043 Chart B note 9 (2025 tax year): "If either the total gross income from row
+# 2 or the total salaries and wages from row 5 is zero, do not multiply row 7 by 50%." (confirmed
+# from the PDF; no .txt published). The two totals are the amounts read in order, row 2 then row
+# 5: the count is 1 when either is zero and 0 when neither is. A count, not a dollars-and-cents
+# box, so there is no rounding.
+family: ca/farm_chart_b_note_9_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      the total gross income from row 2 is zero
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: equal_to, than: "0"}
+  - text: >-
+      the total salaries and wages from row 5 is zero
+    parts:
+      - tests:
+          - {reads: amount, position: "2", relation: equal_to, than: "0"}

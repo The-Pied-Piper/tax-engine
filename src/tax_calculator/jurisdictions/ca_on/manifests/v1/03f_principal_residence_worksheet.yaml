@@ -1,0 +1,326 @@
+capabilities:
+  # Form T2091(IND)-WS line 3 "Total number of years designated before 1995 (line 1 plus line 2)":
+  # the total over the properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_3
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_3
+  # Form T2091(IND)-WS line 6 "Total number of years owned before 1995 (line 4 plus line 5)": the
+  # total over the properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_6
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_6
+  # Form T2091(IND)-WS Chart 1 line 16 "Multiply line 14 by 1.1.": the total over the properties of
+  # that line of each one (0 where the chart is not completed, "Complete this chart if the amount on
+  # line 7 is more than the amount on line 10.").
+  - name: ca/principal_residence_worksheet_line_16
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_16
+  # Form T2091(IND)-WS Chart 1 line 17 "Line 15 minus line 16 (if negative, enter "0")": the total
+  # over the properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_17
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_17
+  # Form T2091(IND)-WS Chart 1 line 18 "Line 14 minus line 17": the total over the properties of
+  # that line of each one.
+  - name: ca/principal_residence_worksheet_line_18
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_18
+  # Form T2091(IND)-WS line 19 "Enter the amount from line 18 if you completed Chart 1. Otherwise,
+  # enter the amount from line 10.": the total over the properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_19
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_19
+  # Form T2091(IND)-WS line 21 "Line 19 minus line 20" "Adjusted gain before principal residence
+  # exemption": the total over the properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_21
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_21
+  # Form T2091(IND)-WS line 23 "Line 3 plus 1 (see note below)": the total over the properties of
+  # that line of each one.
+  - name: ca/principal_residence_worksheet_line_23
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_23
+  # Form T2091(IND)-WS line 24 "Multiply line 22 by line 23.": the total over the properties of that
+  # line of each one.
+  - name: ca/principal_residence_worksheet_line_24
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_24
+  # Form T2091(IND)-WS line 26 "Divide line 24 by line 25.": the total over the properties of that
+  # line of each one.
+  - name: ca/principal_residence_worksheet_line_26
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_26
+  # Form T2091(IND)-WS line 27 "Line 21 minus line 26" "Net adjusted gain": the total over the
+  # properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_27
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_27
+  # Form T2091(IND)-WS Part 2 line 30 "Line 28 minus line 29": the total over the properties of
+  # that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_30
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_30
+  # Form T2091(IND)-WS Part 2 line 32 "Line 2 plus 1 (see note below)": the total over the
+  # properties of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_32
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_32
+  # Form T2091(IND)-WS Part 2 line 33 "Multiply line 31 by line 32.": the total over the
+  # properties of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_33
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_33
+  # Form T2091(IND)-WS Part 2 line 35 "Divide line 33 by line 34.": the total over the properties
+  # of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_35
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_35
+  # Form T2091(IND)-WS Part 2 line 36 "Line 30 minus line 35 (if negative, enter "0")": the total
+  # over the properties of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_36
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_36
+  # Form T2091(IND)-WS Part 2 line 40 "Line 38 plus line 39": the total over the properties of
+  # that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_40
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_40
+  # Form T2091(IND)-WS Part 2 line 41 "Line 37 minus line 40": the total over the properties of
+  # that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_41
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_41
+  # Form T2091(IND)-WS Part 2 line 44 "Multiply line 42 by line 43.": the total over the
+  # properties of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_44
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_44
+  # Form T2091(IND)-WS Part 2 line 46 "Divide line 44 by line 45.": the total over the properties
+  # of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_46
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_46
+  # Form T2091(IND)-WS Part 2 line 47 "Line 41 minus line 46 (if negative, enter "0")": the total
+  # over the properties of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_47
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_47
+  # Form T2091(IND)-WS Part 2 line 50 "Line 48 minus line 49 (if negative, enter "0")": the total
+  # over the properties of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_50
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_50
+  # Form T2091(IND)-WS Part 2 line 53 "Line 51 plus line 52": the total over the properties of
+  # that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_53
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_53
+  # Form T2091(IND)-WS Part 2 line 55 "Line 53 minus line 54 (if negative, enter "0")": the total
+  # over the properties of that line of each one (0 where Part 2 or its area is not completed).
+  - name: ca/principal_residence_worksheet_line_55
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_55
+  # Form T2091(IND)-WS Part 2 line 58 "Enter whichever amount is less: line 56 or line 57.": the
+  # total over the properties of that line of each one (0 where Part 2 or its area is not
+  # completed).
+  - name: ca/principal_residence_worksheet_line_58
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_58
+  # Form T2091(IND)-WS line 59 "If you completed Part 2, enter the amount from line 58. Otherwise,
+  # enter the amount from line 27.": the total over the properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_59
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_59
+  # Form T2091(IND)-WS line 61 "Multiply line 59 by line 60.": the total over the properties of that
+  # line of each one.
+  - name: ca/principal_residence_worksheet_line_61
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_61
+  # Form T2091(IND)-WS line 63 "Divide line 61 by line 62.": the total over the properties of that
+  # line of each one.
+  - name: ca/principal_residence_worksheet_line_63
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_63
+  # Form T2091(IND)-WS line 64 "Line 59 minus line 63" "Total adjusted gain": the total over the
+  # properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_64
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_64
+  # Form T2091(IND)-WS line 66 "Enter whichever amount is less: line 64 or line 65." "Reduction as a
+  # result of the capital gains election": the total over the properties of that line of each one.
+  - name: ca/principal_residence_worksheet_line_66
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_worksheet_line_66
+  # Form T2091(IND) Part 4 line 56 "Reduction as a result of the capital gains election (line 66 of
+  # Form T2091(IND)-WS)": the total over the properties of that line of each one (0 for a property
+  # with no election).
+  - name: ca/principal_residence_line_56
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_56
+  # Form T2091(IND) Part 4 line 57 "Line 55 minus line 56 (if negative, enter "0")" "Capital gain":
+  # the total over the properties of that line of each one, entered on line 15800 of Schedule 3
+  # ("Enter the amount from line 57 on line 15800 of Schedule 3, Capital Gains or Losses, for
+  # dispositions or deemed dispositions.").
+  - name: ca/principal_residence_line_57
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_57

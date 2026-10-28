@@ -1,0 +1,10 @@
+# Form T936 (2025), Chart A line 18 "Inclusion rate × 50%", then line 19 "Line 17 multiplied by the
+# percentage on line 18". The form prints no rounding rule, so the repo convention applies: the
+# product rounds half-up to the cent.
+family: ca/t936_t3_inclusion_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t936/t936-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.5"

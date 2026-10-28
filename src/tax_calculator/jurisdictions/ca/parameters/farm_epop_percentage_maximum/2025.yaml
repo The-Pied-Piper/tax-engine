@@ -1,0 +1,15 @@
+# Largest total of the percentages assigned to the EPOPs, 2025 tax year (Form T2042): Area G "The
+# total of all percentages assigned under the agreement should not be more than 100%. If the
+# total is more than 100%, then the associated group has an immediate expensing limit of zero."
+# and "** If the total of column 3 is more than 100%, enter "0."" (confirmed from the PDF; no
+# .txt published). The percentage is kept as the form prints it (100 for 100%). It borrows the
+# credit kind because the figure is used whole, as the basic personal amount is.
+# The form states no rounding rule, so the figure rounds half-up to the cent, the owner's
+# decision, the repo convention.
+family: ca/farm_epop_percentage_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2042/t2042-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "100"

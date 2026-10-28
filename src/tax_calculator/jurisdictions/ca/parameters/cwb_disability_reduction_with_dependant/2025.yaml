@@ -1,0 +1,20 @@
+# Canada workers benefit disability supplement reduction, 2025 tax year (Schedule 6, form
+# 5000-S6), Step 3, for a filer with an eligible spouse or an eligible dependant, the rate 15%:
+# line 35 "Adjusted family net income from line 15"; line 36 "If you had an eligible spouse or an
+# eligible dependant, enter $49,389. If not, enter $37,740."; line 37 "Line 35 minus line 36 (if
+# negative, enter "0")"; line 38 "Rate: If you had an eligible spouse who is also eligible for the
+# DTC, enter 7.5%. If not, enter 15%."; line 39 "Line 37 multiplied by the percentage from line
+# 38".
+# Lines 36 to 39 are one tier over the threshold, with no maximum. The chart's limits ("CWB
+# disability supplement - You are eligible for the DTC: $43,360", "$55,009" and "$60,629") are not
+# datasets: they follow from the arithmetic.
+# Line 39 is a dollars-and-cents box, so the tier rounds half-up to the cent, as the basic
+# reduction does (`ca/cwb_reduction`); line 37 takes amounts already in cents.
+family: ca/cwb_disability_reduction_with_dependant
+tax_year: 2025
+kind: surcharge_tiers
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+tiers:
+  - {threshold: "49389", rate: "0.15"}

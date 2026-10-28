@@ -1,0 +1,27 @@
+# Guide T4036 (2025), "Class 10.1 (30%)": "The capital cost limits of a Class 10.1 passenger vehicle
+# are the following prescribed amounts: $30,000 for vehicles acquired before 2022, plus the GST/HST
+# or PST; $34,000 for vehicles acquired in 2022, plus the GST/HST or PST; $36,000 for vehicles
+# acquired in 2023, plus the GST/HST or PST; $37,000 for vehicles acquired in 2024, plus the
+# GST/HST or PST; $38,000 for vehicles acquired in 2025, plus the GST/HST or PST", and "Under the
+# immediate expensing rules, if you dispose of a passenger vehicle acquired after April 18, 2021,
+# to a person or partnership with whom you deal at arm's length, and its cost exceeds the
+# prescribed amount, the proceeds of disposition will be adjusted based on a factor equal to the
+# prescribed amount as a proportion of the actual cost of the vehicle." The printed amounts are
+# claimed whole, and the tax on each is a dollars-and-cents box, rounded half-up to the cent, as
+# the guide states no rounding rule.
+family: ca/cca_vehicle_prescribed_amounts
+tax_year: 2025
+kind: year_amounts
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - from_year: 2025
+    amounts: {prescribed_amount: "38000"}
+  - from_year: 2024
+    amounts: {prescribed_amount: "37000"}
+  - from_year: 2023
+    amounts: {prescribed_amount: "36000"}
+  - from_year: 2022
+    amounts: {prescribed_amount: "34000"}
+  - amounts: {prescribed_amount: "30000"}

@@ -1,0 +1,12 @@
+# Form RC381 (2025), Part 4 line 27 "Amount from line 26 × 16.80672 =": the CPP contributions
+# grossed up. 16.80672 is above one, which a rate refuses, so it is a fraction, 1680672/100000,
+# kept as printed. Line 27 is a dollars-and-cents box, so the product rounds half-up to the
+# cent, the owner's decision, as the form states no rounding rule.
+family: ca/rc381_cpp_gross_up_fraction
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "1680672"
+denominator: "100000"

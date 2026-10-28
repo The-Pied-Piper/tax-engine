@@ -1,0 +1,14 @@
+# Actual base share of the CPP contributions shown on the T4 slips, 2025 tax year (T1-2025
+# Schedule 8, form 5000-S8), Part 3: line 8 and line 50340 "Total actual base and first
+# additional contributions on CPP pensionable earnings from box 16 of all of your T4 slips";
+# line 9 "amount from line 8 multiplied by 83.1933% =", the actual base contributions; line 10
+# "Line 8 minus line 9 =", the actual first additional contributions. So the rate is 83.1933%.
+# Line 9 is a dollars-and-cents box, so the product rounds half-up to the cent; the form
+# states no rounding rule.
+family: ca/cpp_actual_base_share
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.831933"

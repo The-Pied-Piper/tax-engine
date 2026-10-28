@@ -1,0 +1,11 @@
+# Rounding of the alternative minimum tax foreign credit share, 2025 tax year (Form T691 Part 7
+# line 12): "Line 11 × [Foreign taxes paid for special foreign tax credit (line 9 of Part 4)] /
+# [Foreign taxes paid ...]". The form prints no figure of its own and no rounding rule; the product
+# over the denominator is a dollars-and-cents line, so it rounds half-up to the cent, the owner's
+# decision. The dataset holds no rate: the fraction's figures are the return's own amounts.
+family: ca/amt_foreign_taxes_ratio_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

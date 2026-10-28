@@ -1,0 +1,20 @@
+# The shared fact "other investment expenses": the form ca/other_investment_expenses, a form of
+# its own with no instances, run once on one input, ca/other_investment_expenses (the return's
+# inputs, in 01_inputs.yaml). Two CRA forms ask it in the same words: Form T936 Part 1 line 6
+# (68080) "Any other investment expenses claimed in 2025 to earn property income (see the list
+# "Other investment expenses" on the next page)" and Form T2048 Chart A line 6 "Any other
+# investment expenses claimed in 2025 to earn property income (see the list of "other investment
+# expenses" on the next page)". It is entered once, here, and both forms read this form's export,
+# so the two cannot differ.
+#
+# This is a targeted exception to taking inputs the way the form does: a fact gets a form of its
+# own like this only when two CRA forms ask the very same fact. It is not a way to merge inputs
+# that merely look alike, and every other input is still taken the way the form asks it.
+#
+# The form has no step and no computed line. It exports the input as entered. Each of the two
+# forms reads the export as a record list of one record, totalled by `core/record_total` into its
+# own line (the form ca/t2048 does so in 06a_capital_gains_deduction_qbt.yaml).
+form:
+  name: ca/other_investment_expenses
+  exports:
+    - ca/other_investment_expenses

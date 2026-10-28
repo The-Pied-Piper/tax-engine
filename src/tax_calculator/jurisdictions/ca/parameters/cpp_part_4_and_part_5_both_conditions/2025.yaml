@@ -1,0 +1,23 @@
+# Condition under which Schedule 8 Part 4 and Part 5 are both completed, 2025 tax year: "Part 4 -
+# Complete this part if you are reporting only self-employment income or other earnings you are
+# electing to pay CPP contributions on. If not, leave this part blank." (Schedule 8, "Parts you have
+# to complete"), and "Part 5 - Complete this part if you are reporting both:" with "employment income
+# (complete Part 3 first)" and "self-employment income or other earnings that you are electing to pay
+# CPP contributions on". The count is 1 when Part 4 completed (`ca/cpp_part_4_completed_checked`) and
+# Part 5 completed (`ca/cpp_part_5_completed_checked`) are each more than 0, and 0 otherwise. Not a
+# dollars-and-cents box, so no rounding.
+family: ca/cpp_part_4_and_part_5_both_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      Part 4 and Part 5 are both completed
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: count, position: "2", relation: more_than, than: "0"}

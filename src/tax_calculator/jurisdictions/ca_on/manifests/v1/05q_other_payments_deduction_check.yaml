@@ -1,0 +1,12 @@
+capabilities:
+  # Federal Worksheet (5000-D1) "Line 25000 - Other payments deduction": "Otherwise, enter the
+  # amount from line 14700 of your return on line 25000 of your return." Guide 5000-G: "you may
+  # not be entitled to claim the full amount from line 14700 of your return". The amount the
+  # canada.ca chart gives is part of line 14700, so an amount above it is an input error, not
+  # capped. The checked amount is the one line 9 chooses.
+  - name: core/at_most
+    consumes:
+      amount: ca/other_payments_deduction_above_limit
+      bound: ca/income_support_benefits
+    produces:
+      output: ca/other_payments_deduction_above_limit_checked

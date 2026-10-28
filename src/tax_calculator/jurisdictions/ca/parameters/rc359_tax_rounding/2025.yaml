@@ -1,0 +1,10 @@
+# Form RC359 (2025), line 9 "Line 7 multiplied by the percentage from line 8. Include this amount on
+# line 41800 of your return.": the tax on excess EPSP amount, a dollars-and-cents box. Confirmed
+# from the PDF; no .txt published. The form states no rounding rule, so the product rounds
+# half-up to the cent, once, the owner's decision.
+family: ca/rc359_tax_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc359/rc359-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

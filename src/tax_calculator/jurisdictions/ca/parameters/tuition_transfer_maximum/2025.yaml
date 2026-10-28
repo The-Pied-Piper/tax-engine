@@ -1,0 +1,12 @@
+# Federal tuition transfer maximum, 2025 tax year (T1-2025, form 5000-S11): line 21 "Amount
+# from line 8 of the previous page (maximum $5,000)", the most of the current-year tuition
+# that can be transferred to a designated individual.
+# Line 21 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/tuition_transfer_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s11/5000-s11-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "5000"

@@ -1,0 +1,14 @@
+# Labour-sponsored funds tax credit rate, 2025 tax year (T1 line 137, line 41400, "Labour-sponsored
+# funds tax credit Line 41300: Net cost of shares of a provincially registered fund Line 41300:
+# Allowable credit"; General Income Tax and Benefit Guide, "Line 41400 - Labour-sponsored funds tax
+# credit"): "Claim the amount of your allowable credit on line 41400 of your return that is equal
+# to 15% of the net cost reported on line 41300 of your return, to a maximum of $750."
+# Line 41400 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the guide states no rounding rule.
+family: ca/labour_sponsored_funds_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15"

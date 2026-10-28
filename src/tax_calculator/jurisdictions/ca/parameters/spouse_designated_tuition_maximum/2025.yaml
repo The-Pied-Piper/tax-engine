@@ -1,0 +1,15 @@
+# Largest tuition amount a spouse can designate to the filer, 2025 tax year (Schedule 2 Note 2,
+# "The maximum tuition amount your spouse or common-law partner can transfer to you
+# is $5,000 minus the current year amounts they use, even if there is still an unused part for
+# the year."), the most Schedule 2 line 5 "Enter the federal amount designated to you from their
+# forms T2202, TL11A, or TL11C. (Note 2)" can carry. It borrows the credit kind because the figure
+# is claimed whole, as the basic personal amount is.
+# The form states no rounding rule, so the figure rounds half-up to the cent, the owner's decision,
+# the repo convention.
+family: ca/spouse_designated_tuition_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s2/5000-s2-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "5000"

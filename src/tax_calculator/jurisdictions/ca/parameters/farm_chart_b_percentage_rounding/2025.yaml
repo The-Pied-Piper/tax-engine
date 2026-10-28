@@ -1,0 +1,15 @@
+# Rounding of the percentages of Form T2043 Chart B rows 3 and 6 (2025): "Percentage (%) of gross
+# income allocated to the designated province. Row 1 divided by row 2" and "Percentage (%) of
+# salaries and wages allocated to the designated province. Row 4 divided by row 5" (confirmed from
+# the PDF; no .txt published). The form states no rounding rule for a percentage, so the quotient,
+# taken as a percent (60 means 60%) and formed as one exact fraction, rounds half-up to twelve
+# decimals of a percent (0.000000000001), the owner's decision: neither the form, the Income Tax
+# Act (s. 127.42) nor Income Tax Regulations s. 2603 states a rounding rule, the law works with
+# exact proportions, and twelve decimals keep the cents of the later rows unchanged except in rare
+# ties at very large amounts.
+family: ca/farm_chart_b_percentage_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: {increment: "0.000000000001", mode: half_up}

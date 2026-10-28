@@ -1,0 +1,30 @@
+# Presence of a Form T2042 statement outside the eight designated provinces, for Form T2043 box
+# 67062 "Tick this box if you have multiple farming businesses with one or more permanent
+# establishments in multiple provinces or territories" (2025 tax year), read from the PDF (no .txt is
+# published). A statement is present outside the eight when its designated province is code 0 (none:
+# a farm elsewhere, which Part 2 of Form T2043 does not name) and no Chart B is in use: both counts
+# are 0 (count 1, `ca/farm_designated_province_checked`, is 0, and count 2, `ca/farm_chart_b_in_use`,
+# is 0). Chart B lists only the eight designated provinces, so a business's share in another province
+# is not on the form: the filer answers whether the business also has a permanent establishment
+# outside the eight (count 3, `ca/farm_also_outside_eight_checked`, is 1), and that also counts. Each
+# way is a condition, and any of them counts 1. The result is a count, so there is no rounding.
+family: ca/farm_present_outside_eight_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      the statement's designated province is code 0 and no Chart B is in use
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "0"}
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "0"}
+  - text: >-
+      the statement's business also has a permanent establishment outside the eight designated provinces
+    parts:
+      - tests:
+          - {reads: count, position: "3", relation: equal_to, than: "1"}

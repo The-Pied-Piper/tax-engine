@@ -1,0 +1,34 @@
+# Form T1223 (2025, clergy residence deduction) Part C (B) completed, 2025 tax year: "(B) If you owned
+# or rented the residence that you occupied, complete the following:" The count is 1 when any of
+# these figures of (B) is more than 0 and 0 otherwise: line 3 "Number of months in qualifying
+# employment", line 6 "Actual rent and eligible utilities paid or, if residence is owned, fair rental
+# value including eligible utilities ..." and line 7 "All amounts claimed by you, or any person, for
+# the accommodation (see note 4)". Line 1 "Income from qualifying employment from all eligible
+# employers" is not a test: (A) alone also has line 1, and the form says "do not complete (B)" then,
+# so line 1 does not show whether (B) was completed. The count is read from the same figures that
+# (B) calculates from, so it cannot contradict them. The result is a count, not a dollars-and-cents
+# box, so there is no rounding.
+family: ca/clergy_residence_part_b_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1223/t1223-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      Number of months in qualifying employment is more than 0
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+  - text: >-
+      Actual rent and eligible utilities paid or, if residence is owned, fair rental value is more
+      than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+  - text: >-
+      All amounts claimed by you, or any person, for the accommodation is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}

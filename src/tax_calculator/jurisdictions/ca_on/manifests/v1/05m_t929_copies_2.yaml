@@ -1,0 +1,654 @@
+# Form T929 (see 05k_t929.yaml), part 2 of 3 of the copies of the return's steps that compute the net
+# income of line 23600, the figure line 5 "Enter your net income" reads ("the amount you would enter
+# on line 23600 of your tax return, if you had no claim for the disability supports deduction on
+# line 21500"): total income, the deductions of line 23300 without line 21500, line 23400, the
+# Federal Worksheet for line 23500 and line 23600, with the steps each of those reads. Their
+# originals stay in the return, which the form cannot read: a form reads the manifest's inputs and
+# another form's export (here the five income lines of Form T1139's summary form,
+# ca/t776.net_rental_income, ca/t1_m.moving_expenses_claim, ca/schedule_8.* and ca/rc381.*),
+# never the return's artifacts. Each copy is its original, verbatim, so the two agree, except that
+# the line 23300 sum reads line 22000 as entered, checked against line 21999, and the Form T1206
+# line 4 sum reads line 3 as entered too: the return refuses any return that fails a check, so the
+# two agree on every return computed. The Schedule 15 checks (lines 2, 8, 44 at most lines 1, 7, 42)
+# are first.
+form:
+  name: ca/t929
+capabilities:
+  # Schedule 15 line 2 "Total contributions made to your FHSAs in 2025 after your first qualifying
+  # withdrawal" is the part of line 1 "Total contributions made to your FHSAs in 2025" made after
+  # the first qualifying withdrawal, so it is at most line 1: a line 2 above line 1 is an input
+  # error, not capped, and line 3 and line 11 read the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/fhsa_contributions_in_2025_after_first_qualifying_withdrawal
+      bound: ca/fhsa_contributions_in_2025
+    produces:
+      output: ca/fhsa_contributions_in_2025_after_first_qualifying_withdrawal_checked
+  # Schedule 15 line 8 "Contributions to your FHSAs in 2024 before your first qualifying withdrawal"
+  # is the part of line 7 "Total contributions made to your FHSAs in 2024" made before the first
+  # qualifying withdrawal, so it is at most line 7: a line 8 above line 7 is an input error, not
+  # capped, and line 9 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/fhsa_contributions_in_2024_before_first_qualifying_withdrawal
+      bound: ca/fhsa_contributions_in_2024
+    produces:
+      output: ca/fhsa_contributions_in_2024_before_first_qualifying_withdrawal_checked
+  # Line 44 "Your total FHSA deductions for 2024 and prior years (from your 2025 FHSA participation
+  # room statement)" is at most line 42 "Your total annual FHSA limits for 2024 and prior years":
+  # the deductions are made against those limits. The form prints no number for that bound, so the
+  # bound is that reading, not a printed figure. A line 44 above line 42 is an input error, not
+  # capped, and lines 45 and 48 read the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/fhsa_deductions_for_2024_and_prior_years
+      bound: ca/fhsa_annual_limits_for_2024_and_prior_years
+    produces:
+      output: ca/fhsa_deductions_for_2024_and_prior_years_checked
+  # Part 4 line 6 "Line 4 minus line 5 (if negative, enter "0")", line 5 "Amount from line B
+  # of Part 2": the earnings subject to second additional contributions; line 7 "Line 4
+  # minus line 6 (if negative, enter "0")"; and line 9 "Line 7 minus line 8 (if negative,
+  # enter "0") (maximum $67,800)", line 8 "Amount from line E of Part 2": the earnings
+  # subject to base and first additional contributions.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_pensionable_earnings_up_to_additional_maximum
+      less: ca/cpp_maximum_pensionable_earnings
+    produces:
+      output: ca/cpp_earnings_subject_to_second_additional
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_pensionable_earnings_up_to_additional_maximum
+      less: ca/cpp_earnings_subject_to_second_additional
+    produces:
+      output: ca/cpp_earnings_up_to_maximum
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_earnings_up_to_maximum
+      less: ca/cpp_basic_exemption
+    produces:
+      output: ca/cpp_earnings_subject_to_base_and_first_additional
+  # Part 4 line 10 "amount from line 9 multiplied by 9.9% (maximum $6,712.20)", line 11
+  # "amount from line 9 multiplied by 2% (maximum $1,356.00)" and line 12 "amount from line
+  # 6 multiplied by 8% (maximum $792.00)": the self-employed person's base, first additional
+  # and second additional contributions, each the tier on the earnings of its line (lines 9,
+  # 9 and 6).
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_base_contribution
+    consumes:
+      earnings: ca/cpp_earnings_subject_to_base_and_first_additional
+    produces:
+      output: ca/self_employed_cpp_base_contributions
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_first_additional_contribution
+    consumes:
+      earnings: ca/cpp_earnings_subject_to_base_and_first_additional
+    produces:
+      output: ca/self_employed_cpp_first_additional_contributions
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_second_additional_contribution
+    consumes:
+      earnings: ca/cpp_earnings_subject_to_second_additional
+    produces:
+      output: ca/self_employed_cpp_second_additional_contributions
+  # Part 4 line 13 "Line 11 plus line 12" and line 14 "Line 10 plus line 13 Enter this
+  # amount (in dollars and cents) on line 42100 of your return.": the enhanced
+  # contributions, then the CPP contributions payable.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/self_employed_cpp_first_additional_contributions
+        - ca/self_employed_cpp_second_additional_contributions
+    produces:
+      output: ca/self_employed_cpp_enhanced_contributions
+  # Part 4 line 15 "amount from line 10 multiplied by 50%" (enter on line 31000) and line 17
+  # "Line 15 plus line 16 Enter this amount (in dollars and cents) on line 22200 of your
+  # return.", line 16 "Amount from line 13": the base CPP contributions credit and the
+  # deduction.
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_self_employed_base_credit_rate
+    consumes:
+      base: ca/self_employed_cpp_base_contributions
+    produces:
+      output: ca/self_employed_cpp_base_credit
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/self_employed_cpp_base_credit
+        - ca/self_employed_cpp_enhanced_contributions
+    produces:
+      output: ca/self_employed_cpp_deduction
+  # T1 line 47 (22200), entered from Part 4 line 17: Part 4 is completed only when the filer
+  # reports self-employment income alone, so the amount is counted once for each Part 4
+  # completed, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/self_employed_cpp_deduction
+      count: ca/cpp_part_4_completed
+    produces:
+      output: ca/cpp_deduction_on_self_employment
+  # T1 line 22200 from Part 5 line 88, once for each Part 5 completed, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/cpp_part_5_line_88
+      count: ca/cpp_part_5_completed
+    produces:
+      output: ca/cpp_part_5_deduction_on_self_employment
+  # T1 line 22200: the Part 4 amount plus the Part 5 amount, plus Form RC381 Part 4 line 129
+  # "Deduction for CPP enhanced contributions on self-employment income and other earnings: Add
+  # lines 121, 122, 124, 125, and 128. Enter this amount (in dollar and cents) on line 22200 of
+  # your return." (08j, 0 with no Form RC381). Schedule 8 Part 4 and Part 5 are the filer's choices
+  # (counts 1 or 0); the return carries Schedule 8 or Form RC381, never both.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_deduction_on_self_employment
+        - ca/cpp_part_5_deduction_on_self_employment
+        - ca/rc381_cpp_deduction_on_self_employment_and_other_earnings
+    produces:
+      output: ca/cpp_deduction_on_self_employment_and_other_earnings
+  # Form T778 Part B line 1 "Number of eligible children born in 2019 or later whom the
+  # disability amount cannot be claimed for" "multiplied by $8,000", line 2 (line 67960)
+  # "Number of eligible children born in 2025 or earlier whom the disability amount can
+  # be claimed for" "multiplied by $11,000" and line 3 "Number of eligible children born
+  # in 2009 to 2018 (and born in 2008 or earlier with a mental or physical infirmity whom
+  # the disability amount cannot be claimed for)" "multiplied by $5,000".
+  - name: core/per_unit_amount
+    params:
+      amount: ca/child_care_limit_under_seven
+    consumes:
+      count: ca/children_under_seven
+    produces:
+      output: ca/child_care_limit_for_children_under_seven
+  - name: core/per_unit_amount
+    params:
+      amount: ca/child_care_limit_disability
+    consumes:
+      count: ca/children_with_disability
+    produces:
+      output: ca/child_care_limit_for_children_with_disability
+  - name: core/per_unit_amount
+    params:
+      amount: ca/child_care_limit_seven_to_sixteen
+    consumes:
+      count: ca/children_seven_to_sixteen
+    produces:
+      output: ca/child_care_limit_for_children_seven_to_sixteen
+  # T778 line 4 "Add lines 1 to 3.", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/child_care_limit_for_children_under_seven
+        - ca/child_care_limit_for_children_with_disability
+        - ca/child_care_limit_for_children_seven_to_sixteen
+    produces:
+      output: ca/child_care_basic_limit
+  # T778 line 6 "Enter your earned income.", "the total of the following: employment
+  # income (including tips and gratuities, and the non-taxable part of an allowance
+  # received as an emergency volunteer) ...": the employment income, the other earned
+  # income lines not triggered; then "multiplied by two-thirds": one part.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+    produces:
+      output: ca/child_care_earned_income
+  - name: core/apply_fraction
+    params:
+      fraction: ca/child_care_earned_income_fraction
+    consumes:
+      base: ca/child_care_earned_income
+    produces:
+      output: ca/child_care_earned_income_limit
+  # T778 line 7 "Enter whichever amount is the least: line 4, line 5 or line 6.", in that
+  # order, line 5 "Enter the amount from line 67950." being the expenses paid; with line
+  # 8 (the other person with the higher net income) not triggered, line 9 "Line 7 minus
+  # line 8. ... enter this amount on line 21400 of your return. Allowable deduction" is
+  # line 7.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/child_care_basic_limit
+        - ca/child_care_expenses_paid
+        - ca/child_care_earned_income_limit
+    produces:
+      output: ca/child_care_expenses
+  # Federal Worksheet "Line 22100 - Carrying charges, interest expenses, and other expenses": line 1
+  # "Total carrying charges", line 2 "Total interest expenses" and line 3 "Total other expenses"
+  # (starting amounts), and line 4 "Add lines 1 to 3. Enter this amount on line 22100 of your
+  # return.", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/total_carrying_charges
+        - ca/total_interest_expenses
+        - ca/total_other_expenses
+    produces:
+      output: ca/carrying_charges_interest_expenses_and_other_expenses
+  # Lines 8 to 13 (the amounts of Schedule 3 for 1986 to 1994, 1994 to 1996, 1997 to 1999, 2000,
+  # 2001 to 2023 and 2024) are starting amounts; line 14 "Add lines 8 to 13." Total of all other
+  # business investment loss reductions for 1986 to 2024.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/other_business_investment_loss_reductions_1986_to_1994
+        - ca/other_business_investment_loss_reductions_1994_to_1996
+        - ca/other_business_investment_loss_reductions_1997_to_1999
+        - ca/other_business_investment_loss_reductions_2000
+        - ca/other_business_investment_loss_reductions_2001_to_2023
+        - ca/other_business_investment_loss_reductions_2024
+    produces:
+      output: ca/other_business_investment_loss_reductions_1986_to_2024
+  # Line 15 "Line 7 minus line 14" prints no "(if negative, enter "0")", so it may be negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_deductions_claimed_1985_to_2024
+      less: ca/other_business_investment_loss_reductions_1986_to_2024
+    produces:
+      output: ca/business_investment_loss_reduction_available
+  # Line 16 "Business investment loss in 2025 Enter this amount on line 21699 of your return." is a
+  # starting amount, the gross of line 21699; line 17 "Enter whichever is less: amount from line 15
+  # or line 16. Enter this amount on line 17800 of Schedule 3." prints no "(if negative, enter "0")"
+  # either, so it may be negative with line 15.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/business_investment_loss_reduction_available
+        - ca/business_investment_loss
+    produces:
+      output: ca/business_investment_loss_reduction
+  # Line 18 "Line 16 minus line 17 Business investment loss reduction": never negative, as line 17
+  # is at most line 16.
+  - name: core/subtract
+    consumes:
+      amount: ca/business_investment_loss
+      less: ca/business_investment_loss_reduction
+    produces:
+      output: ca/business_investment_loss_after_reduction
+  # Line 19 "Inclusion rate for 2025 × 50 %", the rate dataset, and line 20 "Line 18 multiplied by
+  # the percentage on line 19 Enter this amount on line 21700 of your return. Allowable business
+  # investment loss".
+  - name: core/apply_rate
+    params:
+      rate: ca/business_investment_loss_inclusion_rate
+    consumes:
+      base: ca/business_investment_loss_after_reduction
+    produces:
+      output: ca/allowable_business_investment_loss
+  # T1 line 53 and line 23300 "Add lines 35 to 52.": the deductions wired so far in the form's line order
+  # (20700, 20800, 20805, 21000, 21200, 21300, 21400, 21700, 21900, 22000, 22100, 22200, 22215, 22400,
+  # 23100, 23200), line 23100 being the clergy residence deduction (Form T1223 Part C) and line 23200 the
+  # caller's other deductions, the Form T746 deduction (05y_t929_t746_deduction.yaml), the Form T1043
+  # deduction (05z_t929_t1043_deduction.yaml), the foreign tax over 15% on property income
+  # (05w_t929_foreign_property_tax_over_limit.yaml) and the total split income of Form T1206 Part 1 line 4.
+  # Not wired yet: 22900. This copy leaves out line 21500, because the net income
+  # of line 5 is the net income "if you had no claim for the disability supports deduction on line 21500";
+  # line 20810 has no line among lines 35 to 52 and nothing on this return reads it. Line 22000 is read as
+  # entered (see the top).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rpp_deduction
+        - ca/rrsp_deduction
+        - ca/fhsa_deduction
+        - ca/elected_split_pension_deduction
+        - ca/union_dues
+        - ca/uccb_repayment
+        - ca/child_care_expenses
+        - ca/allowable_business_investment_loss
+        - ca/moving_expenses_deduction
+        - ca/support_payments_deduction
+        - ca/carrying_charges_interest_expenses_and_other_expenses
+        - ca/cpp_deduction_on_self_employment_and_other_earnings
+        - ca/cpp_enhanced_contributions_on_return
+        - ca/exploration_and_development_expenses
+        - ca/clergy_residence_deduction
+        - ca/other_deductions
+        - ca/t746_deduction_on_return
+        - ca/t1043_deduction_on_return
+        - ca/foreign_property_tax_over_limit
+        - ca/total_split_income
+    produces:
+      output: ca/deductions_from_total_income
+  # T1 line 54 and line 23400 "Line 34 minus line 53 (if negative, show in brackets) Net income
+  # before adjustments": total income less total deductions, not floored, so a negative result is
+  # shown in brackets.
+  - name: core/subtract
+    consumes:
+      amount: ca/total_income
+      less: ca/deductions_from_total_income
+    produces:
+      output: ca/net_income_before_adjustments
+  # Line 56 itself: line 23400 less line 23500, not below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/net_income_before_adjustments
+      less: ca/social_benefits_repayment
+    produces:
+      output: ca/net_income
+  # Form T1206 Part 1 "TOSI-adjusted net income", line 4 (68360) "Total split income: line 1 plus
+  # line 3 Enter this amount on line 23200 of your return.": line 1 (68330) "Part of the taxable
+  # amount of dividends (eligible and other than eligible) described in the information section
+  # received from taxable Canadian corporations" and line 3 "All other split income (see "Split
+  # income" on page 1)", line 1 as checked (`ca/split_income_dividends_checked`) and line 3 as the
+  # caller's; line 2 (68340) "Part of the taxable amount of dividends other than eligible
+  # dividends, included on line 1, from taxable Canadian corporations" is checked too and is read
+  # by Part 2. Line 4 is a part of the T1 line 23300 sum above.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/split_income_dividends_checked
+        - ca/other_split_income_total
+    produces:
+      output: ca/total_split_income
+  # Federal Worksheet "Line 23500 - Social benefits repayment": "Complete the chart below if one or
+  # both of the following applies:" "You entered an amount on line 11900 of your return and the
+  # amount on line 23400 is more than $82,125" and "You entered an amount on line 11300 or line
+  # 14600 of your return and the amount on line 23400 is more than $93,454", and T1 line 55 and line
+  # 23500 "If not, enter "0" on line 23500.": a count of 1 when either holds.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/social_benefits_repayment_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/ei_and_other_benefits
+        - ca/net_income_before_adjustments
+        - ca/old_age_security
+        - ca/net_federal_supplements
+    produces:
+      output: ca/social_benefits_repayment_applies
+  # Chart line 3 "Line 1 plus line 2 =": line 1 "Old age security (OAS) pension from line 11300 of
+  # your return" and line 2 "Net federal supplements paid from line 14600 of your return".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/old_age_security
+        - ca/net_federal_supplements
+    produces:
+      output: ca/oas_and_federal_supplements
+  # Line 4 "Overpayment of OAS benefits recovered (box 20 of your T4A(OAS) slip)" is the caller's
+  # amount; line 5 "Line 3 minus line 4 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/oas_and_federal_supplements
+      less: ca/oas_overpayment_recovered
+    produces:
+      output: ca/social_benefits_line_5
+  # Line 6 "Net income before adjustments from line 23400 of your return", plus, as Form T1206 Part
+  # 1 says, "add the amount from line 4 of this form to line 6 of your Federal Worksheet in the
+  # calculation of the social benefits repayment for the calculation of lines 23500 and 42200 of
+  # your tax return, if applicable": the total split income. It prints no "(if negative, enter
+  # "0")", so it is signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/net_income_before_adjustments
+        - ca/total_split_income
+    produces:
+      output: ca/social_benefits_line_6
+  # Line 7 "EI benefits repayment from line 4 of the repayment chart on your T4E slip, if any" is
+  # at most the EI and other benefits of line 11900; above it is an input error.
+  - name: core/at_most
+    consumes:
+      amount: ca/ei_benefits_repayment
+      bound: ca/ei_and_other_benefits
+    produces:
+      output: ca/ei_benefits_repayment_checked
+  # Line 8 "Universal child care benefit (UCCB) from line 11700 of your return"; line 9 "Registered
+  # disability savings plan (RDSP) income from line 12500 of your return"; line 10 "Add lines 7 to
+  # 9. =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/ei_benefits_repayment_checked
+        - ca/universal_child_care_benefit
+        - ca/rdsp_income
+    produces:
+      output: ca/social_benefits_line_10
+  # Line 11 "Line 6 minus line 10 =" prints no "(if negative, enter "0")", so it is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/social_benefits_line_6
+      less: ca/social_benefits_line_10
+    produces:
+      output: ca/social_benefits_line_11
+  # Line 13 "RDSP income repayment (included in the amount on line 23200 of your return)": a
+  # part of the caller's line 23200 amount (`ca/other_deductions`), so at most that amount. An
+  # amount above it is an input error, not capped. Line 14 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/rdsp_income_repayment
+      bound: ca/other_deductions
+    produces:
+      output: ca/rdsp_income_repayment_checked
+  # Line 12 "UCCB repayment from line 21300 of your return" and line 13 "RDSP income repayment
+  # (included in the amount on line 23200 of your return)"; line 14 "Line 12 plus line 13 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/uccb_repayment
+        - ca/rdsp_income_repayment_checked
+    produces:
+      output: ca/social_benefits_line_14
+  # Line 15 "Line 11 plus line 14 Adjusted net income =", signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/social_benefits_line_11
+        - ca/social_benefits_line_14
+    produces:
+      output: ca/social_benefits_line_15
+  # Line 16 "OAS benefits base amount 93,343.00", claimed whole.
+  - name: core/credit_amount
+    params:
+      amount: ca/oas_benefits_base_amount
+    produces:
+      output: ca/oas_benefits_base_amount
+  # Line 17 "Line 15 minus line 16 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/social_benefits_line_15
+      less: ca/oas_benefits_base_amount
+    produces:
+      output: ca/social_benefits_line_17
+  # Line 18 "Amount from line 17 multiplied by 15% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/social_benefits_repayment_rate
+    consumes:
+      base: ca/social_benefits_line_17
+    produces:
+      output: ca/social_benefits_line_18
+  # Line 19 "Enter whichever is less: amount from line 5 or line 18."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/social_benefits_line_5
+        - ca/social_benefits_line_18
+    produces:
+      output: ca/social_benefits_line_19
+  # Line 20 "Amount from line 7, if any" and line 21 "Line 19 plus line 20. Enter this amount on
+  # line 23500 and line 42200 of your return. =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/social_benefits_line_19
+        - ca/ei_benefits_repayment_checked
+    produces:
+      output: ca/social_benefits_line_21
+  # T1 line 55 and line 23500 (the chart's line 21, or "0" "If not"): the chart's result counted
+  # once when the chart applies, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/social_benefits_line_21
+      count: ca/social_benefits_repayment_applies
+    produces:
+      output: ca/social_benefits_repayment
+  # T1 line 22215: Schedule 8 Part 5 line 69 when Part 5 is completed, else the Part 3a or Part
+  # 3b amount, for each Schedule 8 the return carries, added. With no Schedule 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/schedule_8_cpp_enhanced_contributions_on_return
+  # T1 line 22200: Schedule 8 Part 5 line 88 "Deduction for CPP enhanced contributions on self-
+  # employment income and other earnings", for each Schedule 8 the return carries, added. With
+  # no Schedule 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.cpp_part_5_line_88
+    produces:
+      output: ca/cpp_part_5_line_88
+  # T1 line 22215. Schedule 8 line 69 (Part 5, or Part 3a line 28 / Part 3b line 48): "Deduction
+  # for CPP enhanced contributions on employment income: Line 64 plus line 68 Enter this amount
+  # (in dollars and cents) on line 22215 of your return." Form RC381 Part 4 line 110: "Deduction
+  # for CPP enhanced contributions on employment income: Line 105 plus line 109 Enter this amount
+  # (in dollars and cents) on line 22215 of your return." (Part 3a line 73 or Part 3b line 93).
+  # The line is the Schedule 8 total plus the Form RC381 total.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/schedule_8_cpp_enhanced_contributions_on_return
+        - ca/rc381_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/cpp_enhanced_contributions_on_return
+  # T1 line 22215 "Deduction for CPP enhanced contributions on employment income": Form RC381 Part 4
+  # line 110 when Part 4 is completed, else Part 3a line 73 or Part 3b line 93, for each Form RC381
+  # the return carries, added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/rc381_cpp_enhanced_contributions_on_return
+  # T1 line 22200 "Deduction for CPP enhanced contributions on self-employment income and other
+  # earnings": Form RC381 Part 4 line 129 when Part 4 is completed, else 0, for each Form RC381 the
+  # return carries, added. With no Form RC381 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/rc381.rc381_cpp_deduction_on_self_employment_and_other_earnings
+    produces:
+      output: ca/rc381_cpp_deduction_on_self_employment_and_other_earnings
+  # Form T1223 Part C line 2 "Amount from line 1 multiplied by 1/3": the income from qualifying
+  # employment (line 1) times one third, the dataset's fraction.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/clergy_residence_fraction
+    consumes:
+      base: ca/clergy_qualifying_employment_income
+    produces:
+      output: ca/clergy_residence_line_2
+  # Form T1223 Part C line 4 "Line 3 multiplied by $1,000 (maximum $10,000)": the months in
+  # qualifying employment (line 3) times the per-month amount, before the maximum.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/clergy_residence_per_month
+    consumes:
+      count: ca/clergy_months_in_qualifying_employment
+    produces:
+      output: ca/clergy_residence_months_amount
+  # Form T1223 Part C line 4 "(maximum $10,000)": the months amount capped at the maximum.
+  - name: core/capped_amount
+    params:
+      cap: ca/clergy_residence_months_maximum
+    consumes:
+      base: ca/clergy_residence_months_amount
+    produces:
+      output: ca/clergy_residence_line_4
+  # Form T1223 Part C line 5 "Enter whichever is more: line 2 or line 4.".
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/clergy_residence_line_2
+        - ca/clergy_residence_line_4
+    produces:
+      output: ca/clergy_residence_line_5
+  # Form T1223 Part C line 8 "Line 6 minus line 7 =": the accommodation cost less the other
+  # claims, not floored (the form prints no floor).
+  - name: core/subtract
+    consumes:
+      amount: ca/clergy_accommodation_cost
+      less: ca/clergy_other_accommodation_claims_checked
+    produces:
+      output: ca/clergy_residence_line_8
+  # Form T1223 Part C line 9 "Enter whichever is less: Line 5 or line 8.".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/clergy_residence_line_5
+        - ca/clergy_residence_line_8
+    produces:
+      output: ca/clergy_residence_line_9
+  # Form T1223 Part C line 10 "Enter whichever is less: Line 1 or line 9.", the (B) amount.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/clergy_qualifying_employment_income
+        - ca/clergy_residence_line_9
+    produces:
+      output: ca/clergy_residence_line_10
+  # Form T1223 Part C (A) "the value of this benefit ... is shown as a taxable benefit in box 30 of
+  # your T4 slip", and Guide 5000-G "Report the amount from box 30 of your T4 slips on line 10400 of
+  # your return.": the benefit is at most line 10400 (`ca/other_employment_income`), so an amount
+  # above it is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/clergy_employer_residence_benefit
+      bound: ca/other_employment_income
+    produces:
+      output: ca/clergy_employer_residence_benefit_checked
+  # Form T1223 Part C (C) "add amounts (A) and (B)": the employer's residence benefit (A), the T4
+  # box 30 value, and the (B) amount of line 10.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/clergy_employer_residence_benefit_checked
+        - ca/clergy_residence_line_10
+    produces:
+      output: ca/clergy_residence_total
+  # Form T1223 Part C (C) "The amount claimed for the clergy residence deduction cannot be more
+  # than the income from qualifying employment on line 1.": the total, not more than line 1.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/clergy_residence_total
+        - ca/clergy_qualifying_employment_income
+    produces:
+      output: ca/clergy_residence_total_limited
+  # Form T1223 Part C "Enter this amount on line 23100 of your return." The cap applies only when
+  # Part C (B) is completed (1), a count derived from the (B) figures above, so the total limited to
+  # line 1 is chosen by that count; with (A) alone (0) the total is the deduction.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/clergy_residence_part_b_completed
+      when_none: ca/clergy_residence_total
+      when_any: ca/clergy_residence_total_limited
+    produces:
+      output: ca/clergy_residence_deduction
+  # T1 line 21900 "Moving expenses (complete Form T1-M)": the line 29 amounts of the moves added.
+  - name: core/record_total
+    consumes:
+      records: ca/t1_m.moving_expenses_claim
+    produces:
+      output: ca/moving_expenses_deduction
+  # Form T1206 Part 1 line 1 (68330) "Part of the taxable amount of dividends (eligible and other
+  # than eligible) described in the information section received from taxable Canadian corporations"
+  # is at most the taxable amount of dividends on line 12000 of the return.
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_dividends_total
+      bound: ca/taxable_dividends
+    produces:
+      output: ca/split_income_dividends_checked
+  # Schedule 3 line 4 and line 13200 "Total gain or loss (add all the amounts under column 5)" is
+  # the share gain or loss, which may be a loss; line 4 counted as a gain only, a loss counts 0.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/share_gain_or_loss
+    produces:
+      output: ca/share_gain_not_below_zero

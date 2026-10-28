@@ -1,0 +1,13 @@
+# Ontario medical expenses rate on the net income, 2025 tax year (Form ON428, form 5006-C):
+# line 38 "Applicable rate 3%", with line 39 "Line 37 multiplied by the percentage from
+# line 38" and line 37 "Amount from line 23600 of your return". It is the share of the net
+# income that line 41 takes off the filer's own medical expenses (line 36).
+# Line 39 is a dollars-and-cents box, so the product rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca-on/medical_net_income_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.03"

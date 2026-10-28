@@ -1,0 +1,22 @@
+# Condition under which the Canada caregiver amount for the spouse is claimed without the spouse
+# amount, 2025 tax year: Schedule 5 line 30425 "You may be able to claim this amount if you can claim
+# an amount for your spouse or common-law partner on line 30300 of your return", and "Complete this
+# calculation only if you entered $2,687 on line 51090 or line 51100 of this schedule". The count is
+# 1 when the caregiver amount is entered on line 51090 (`ca/spouse_caregiver_eligible`, 1 or more)
+# and no amount is claimed on line 30300 (`ca/spouses_claimed`, 0), and 0 otherwise. Not a
+# dollars-and-cents box, so no rounding.
+family: ca/spouse_caregiver_without_spouse_amount_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      line 51090 is entered ($2,687) and no amount is claimed on line 30300
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "0"}

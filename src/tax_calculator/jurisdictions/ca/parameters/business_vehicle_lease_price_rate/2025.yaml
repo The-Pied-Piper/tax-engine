@@ -1,0 +1,11 @@
+# Form T2125 (2025), Chart C line 24: "Amount 23 or ($44,706 + GST and PST, or $44,706 + HST),
+# whichever is more × 85% = 24". The printed 85% is the share of the price that the leasing cost
+# uses, so the rate is the fraction 0.85. Line 24 is a dollars-and-cents box, so the product rounds
+# half-up to the cent, as the form states no rounding rule.
+family: ca/business_vehicle_lease_price_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.85"

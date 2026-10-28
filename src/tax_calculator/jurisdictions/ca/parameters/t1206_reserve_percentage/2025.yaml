@@ -1,0 +1,18 @@
+# Form T1206 (2025), page 6, "Calculation of reserve" "(ii) Capital gain x Applicable percentage for
+# year of sale or year after sale (1)": the printed table "Applicable percentage for year of sale or
+# year after sale (1)": "Year of sale 80%", "1st year: 60%", "2nd year: 40%", "3rd year: 20%" and
+# "4th year: 0%", keyed by the years after the sale (0 for the year of sale, 1 to 4 for the 1st to
+# the 4th year after it). Confirmed from the PDF; no .txt published. The percentage is applied to the
+# capital gain and the product is rounded half-up to the cent. A year with no row is refused.
+family: ca/t1206_reserve_percentage
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amounts:
+  "0": "80"
+  "1": "60"
+  "2": "40"
+  "3": "20"
+  "4": "0"

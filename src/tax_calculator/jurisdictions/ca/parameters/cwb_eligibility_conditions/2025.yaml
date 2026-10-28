@@ -1,0 +1,53 @@
+# Conditions under which a filer cannot claim the Canada workers benefit, 2025 tax year: Schedule 6
+# "Complete this schedule if you met all of the following conditions in 2025: You were a resident of
+# Canada throughout the year ... You were, at the end of the year, 19 years of age or older, or you
+# resided with your spouse or common-law partner or your child" and "You cannot claim the CWB for
+# 2025 if any of the following conditions apply to you". The count is 0 when any condition applies
+# and 1 otherwise. The counts are, in order, the residence in Canada throughout the year, 19 years of
+# age or older, resided with a spouse or common-law partner or a child, the Schedule 6 eligible
+# dependants (line 38100), a full-time student for more than 13 weeks, confined to a prison for at
+# least 90 days, and exempt from tax as an officer or a servant of another country. Not a
+# dollars-and-cents box, so no rounding.
+family: ca/cwb_eligibility_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: >-
+      not a resident of Canada throughout the year
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "0"}
+  - text: >-
+      under 19 years of age at the end of the year and did not reside with a spouse or common-law
+      partner or a child
+    parts:
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "0"}
+      - tests:
+          - {reads: count, position: "3", relation: equal_to, than: "0"}
+      - tests:
+          - {reads: count, position: "4", relation: equal_to, than: "0"}
+  - text: >-
+      enrolled as a full-time student at a designated educational institution for a total of more
+      than 13 weeks in the year, unless you had an eligible dependant at the end of the year
+    parts:
+      - tests:
+          - {reads: count, position: "5", relation: more_than, than: "0"}
+      - tests:
+          - {reads: count, position: "4", relation: equal_to, than: "0"}
+  - text: >-
+      confined to a prison or similar institution for a period of at least 90 days during the year
+    parts:
+      - tests:
+          - {reads: count, position: "6", relation: more_than, than: "0"}
+  - text: >-
+      exempt from income tax in Canada for a period in the year when an officer or a servant of
+      another country (such as a diplomat) residing in Canada, a family member who resided with such
+      a person or an employee of such a person
+    parts:
+      - tests:
+          - {reads: count, position: "7", relation: more_than, than: "0"}

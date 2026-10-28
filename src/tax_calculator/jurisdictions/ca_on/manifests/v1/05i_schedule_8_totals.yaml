@@ -1,0 +1,61 @@
+# Totals of the form Schedule 8 (ca/schedule_8) for the return: each line the return reads is the
+# form's line added over its copies, which is the line of the one copy the return carries, and 0
+# with no copy of the form (the record list ca/schedule_8_instances empty). The totals of the three
+# lines the return also gets from Form RC381 (30800, 22215 and 44800) have their own kinds, which
+# 05j_cpp_lines.yaml adds to Form RC381's.
+capabilities:
+  # T1 line 30800 and ON428 line 58240: Schedule 8 Part 5 line 57 when Part 5 is completed, else
+  # the Part 3a or Part 3b amount, for each Schedule 8 the return carries, added. With no
+  # Schedule 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca/schedule_8_cpp_base_contributions_on_return
+  # T1 line 22215: Schedule 8 Part 5 line 69 when Part 5 is completed, else the Part 3a or Part
+  # 3b amount, for each Schedule 8 the return carries, added. With no Schedule 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/schedule_8_cpp_enhanced_contributions_on_return
+  # T1 line 44800: Schedule 8 Part 5 line 50 when Part 5 is completed, else the Part 3a line 29
+  # amount or 0, for each Schedule 8 the return carries, added. With no Schedule 8 the total is
+  # 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_overpayment
+    produces:
+      output: ca/schedule_8_cpp_overpayment
+  # T1 line 42100: Schedule 8 Part 5 line 49 "CPP contributions payable on self-employment
+  # income and other earnings", for each Schedule 8 the return carries, added. With no Schedule
+  # 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.cpp_part_5_line_49
+    produces:
+      output: ca/cpp_part_5_line_49
+  # T1 line 31000: Schedule 8 Part 5 line 70 "Base CPP contributions through self-employment
+  # income and other earnings", for each Schedule 8 the return carries, added. With no Schedule
+  # 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.cpp_part_5_line_70
+    produces:
+      output: ca/cpp_part_5_line_70
+  # T1 line 22200: Schedule 8 Part 5 line 88 "Deduction for CPP enhanced contributions on self-
+  # employment income and other earnings", for each Schedule 8 the return carries, added. With
+  # no Schedule 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.cpp_part_5_line_88
+    produces:
+      output: ca/cpp_part_5_line_88
+  # the zero of Schedule 8 Part 3b and Part 3a "enter "0"", which the lines of the return that
+  # compare with it start from, for each Schedule 8 the return carries, added. With no Schedule
+  # 8 the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_8.cpp_zero
+    produces:
+      output: ca/cpp_zero

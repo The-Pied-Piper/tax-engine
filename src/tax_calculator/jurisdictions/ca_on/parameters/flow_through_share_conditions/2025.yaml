@@ -1,0 +1,19 @@
+# Condition for the Ontario focused flow-through share credit, 2025 tax year (Form T1221, form
+# t1221-25e.pdf, confirmed from the PDF; no .txt published): "You must be a resident of Ontario
+# on the last day of the tax year to claim this credit." It is written as the one case that rules
+# the credit out, in the wording of the count ON428 reads for it ("You were not a resident of
+# Ontario on December 31, 2025", `ca-on/not_resident_of_ontario_at_year_end`), 1 when it
+# applies. So the count is 0 when the condition applies and 1 when it does not. The result is a
+# count, not a dollars-and-cents box, so there is no rounding.
+family: ca-on/flow_through_share_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1221/t1221-25e.pdf
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: You were not a resident of Ontario on the last day of the tax year
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}

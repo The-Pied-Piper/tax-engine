@@ -1,0 +1,12 @@
+# Form T657 Chart 2019 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed
+# of in 2019 included in your 2025 income: amount F plus amount G (if negative, enter "0") × 1/2 =
+# H". The form prints no rounding rule, so the repo convention applies: the figure rounds half-up
+# to the cent.
+family: ca/t657_chart_2019_part_1_h_fraction
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "1"
+denominator: "2"

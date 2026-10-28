@@ -1,0 +1,172 @@
+# Form T2205 (2025) "Amounts from a Spousal or Common-law Partner RRSP, RRIF, or SPP to Include in Income":
+# the form ca/t2205, run once (it has no instances list). Its starting amounts are in
+# 01p_t2205_inputs.yaml, and its steps are the printed lines in the order the form prints them; each part
+# the form says is "the part of" a whole is checked against that whole (refused above it, never capped).
+# Line 9 "Enter the amount from line 3" is line 3 itself and has no step. Its exports are the RRSP part of
+# line 11 (T1 line 12900), the SPP part of line 11 and line 22 (T1 line 11500 or line 13000 by age), which
+# 03v_t2205_routing.yaml reads, and line 10 and line 21, the spouse's or common-law partner's amounts,
+# which nothing reads. The return selects none of these steps.
+form:
+  name: ca/t2205
+  exports:
+    - ca/t2205_line_11_rrsp_part
+    - ca/t2205_line_11_spp_part_checked
+    - ca/t2205_line_22
+    - ca/t2205_line_10
+    - ca/t2205_line_21
+capabilities:
+  # Line 3 "Line 1 plus line 2 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2205_line_1
+        - ca/t2205_line_2
+    produces:
+      output: ca/t2205_line_3
+  # Line 4 "Enter the part of the amount from line 1": a part of line 1, so refused above it, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2205_line_4
+      bound: ca/t2205_line_1
+    produces:
+      output: ca/t2205_line_4_checked
+  # Line 5 "Line 3 minus line 4 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_3
+      less: ca/t2205_line_4_checked
+    produces:
+      output: ca/t2205_line_5
+  # Line 7 "Enter the part of the amount from line 6": a part of line 6, so refused above it, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2205_line_7
+      bound: ca/t2205_line_6
+    produces:
+      output: ca/t2205_line_7_checked
+  # Line 8 "Line 6 minus line 7 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_6
+      less: ca/t2205_line_7_checked
+    produces:
+      output: ca/t2205_line_8
+  # Line 10 "Enter the amount from line 5 or line 8, whichever is less." (line 9 is the amount from line 3,
+  # used at line 11). The spouse's or common-law partner's amount.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t2205_line_5
+        - ca/t2205_line_8
+    produces:
+      output: ca/t2205_line_10
+  # Line 11 "Line 9 minus line 10.": line 9 is "Enter the amount from line 3."
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_3
+      less: ca/t2205_line_10
+    produces:
+      output: ca/t2205_line_11
+  # Line 11 "If part of this amount relates to withdrawals from an SPP": a part of line 11, so refused
+  # above it, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2205_line_11_spp_part
+      bound: ca/t2205_line_11
+    produces:
+      output: ca/t2205_line_11_spp_part_checked
+  # Line 11 "If part of this amount relates to withdrawals from an RRSP (including transfers from an RRSP
+  # that are considered to be taxable withdrawals), you must report it on line 12900": the rest of line 11.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_11
+      less: ca/t2205_line_11_spp_part_checked
+    produces:
+      output: ca/t2205_line_11_rrsp_part
+  # Line 14 "Enter the part of the amount from line 13": a part of line 13, so refused above it, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2205_line_14
+      bound: ca/t2205_line_13
+    produces:
+      output: ca/t2205_line_14_checked
+  # Line 15 "Line 13 minus line 14 = (added at line 16)".
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_13
+      less: ca/t2205_line_14_checked
+    produces:
+      output: ca/t2205_line_15
+  # Line 16 "Line 12 plus line 15 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2205_line_12
+        - ca/t2205_line_15
+    produces:
+      output: ca/t2205_line_16
+  # Line 17 "If you filled in Part 1 above, enter the amount from line 6." The decision: Part 1 is filled
+  # in when line 3 is more than 0. Then line 17 is line 6; otherwise the amount typed on line 17.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/t2205_line_3
+      when_positive:
+        - ca/t2205_line_6
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/t2205_line_17
+      when_non_negative: []
+    produces:
+      output: ca/t2205_line_17_used
+  # Line 18 "If you filled in Part 1 above, add the amounts from line 7 and line 10 and enter the result."
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2205_line_7_checked
+        - ca/t2205_line_10
+    produces:
+      output: ca/t2205_line_18_from_part_1
+  # Line 18: that result when Part 1 is filled in (line 3 more than 0), otherwise the amount typed on line 18.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/t2205_line_3
+      when_positive:
+        - ca/t2205_line_18_from_part_1
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/t2205_line_18
+      when_non_negative: []
+    produces:
+      output: ca/t2205_line_18_used
+  # Line 18 "Enter the part of the amount from line 17": a part of line 17, so refused above it, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2205_line_18_used
+      bound: ca/t2205_line_17_used
+    produces:
+      output: ca/t2205_line_18_checked
+  # Line 19 "Line 17 minus line 18 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_17_used
+      less: ca/t2205_line_18_checked
+    produces:
+      output: ca/t2205_line_19
+  # Line 21 "Enter the amount from line 16 or line 19, whichever is less." The spouse's or common-law
+  # partner's amount.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t2205_line_16
+        - ca/t2205_line_19
+    produces:
+      output: ca/t2205_line_21
+  # Line 22 "Line 20 minus line 21." Signed: the form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_20
+      less: ca/t2205_line_21
+    produces:
+      output: ca/t2205_line_22

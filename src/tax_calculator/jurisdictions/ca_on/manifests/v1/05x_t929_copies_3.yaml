@@ -1,0 +1,80 @@
+# Form T929 (see 05k_t929.yaml), part 3 of the copies of the return's steps that compute the net
+# income of line 23600 (see 05l_t929_copies_1.yaml): the steps moved out of 05l and 05m, which are at
+# the part size cap, and the copies of the Form T1206 Part 1 line 1 and line 3 totals
+# (25_split_income_checks.yaml), which add the amounts of Form T1206 page 6 to the filer's own
+# figures. Each copy is its original, verbatim, with the comment of the original.
+form:
+  name: ca/t929
+capabilities:
+  # Form T1206 page 6: the amount deemed to be a dividend of a filer under 18, the one record of the
+  # form ca/t1206_share_dispositions run once, 0 for a filer 18 or older.
+  - name: core/record_total
+    consumes:
+      records: ca/t1206_share_dispositions.t1206_under_18_dividend_amount
+    produces:
+      output: ca/t1206_under_18_dividend_amount
+  # Form T1206 page 6: the Part 1 line 3 amount of a filer 18 or older, the one record of the form
+  # ca/t1206_share_dispositions run once, 0 under 18.
+  - name: core/record_total
+    consumes:
+      records: ca/t1206_share_dispositions.t1206_part_1_line_3_amount
+    produces:
+      output: ca/t1206_part_1_line_3_amount
+  # Form T1206 Part 1 line 1 (68330) "Part of the taxable amount of dividends (eligible and other
+  # than eligible) described in the information section received from taxable Canadian corporations"
+  # is the filer's figure plus the amount deemed to be a dividend of Form T1206 page 6 ("In addition,
+  # enter this amount on lines 1 and 2 as indicated in Part 1 on page 7").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/split_income_dividends
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/split_income_dividends_total
+  # Form T1206 Part 1 line 3 "All other split income (see "Split income" on page 1)" is the filer's
+  # figure plus the Part 1 line 3 amount of Form T1206 page 6 ("enter the total on line 3 in Part 1
+  # on page 7").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/other_split_income
+        - ca/t1206_part_1_line_3_amount
+    produces:
+      output: ca/other_split_income_total
+  # Schedule 8 Part 4 line 1 "amount from line 12200 of your return plus line 27 of your
+  # return": the pensionable net self-employment earnings, the net partnership income then
+  # the net self-employment income.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/net_partnership_income
+        - ca/net_self_employment_income
+    produces:
+      output: ca/pensionable_net_self_employment_earnings
+  # Part 4 line 2 and line 50373 "Employment earnings not shown on a T4 slip that you are
+  # electing to pay additional CPP contributions on (complete Form CPT20)" and line 3 "Line
+  # 1 plus line 2 (if negative, enter "0")": the CPP pensionable earnings.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/pensionable_net_self_employment_earnings
+        - ca/cpt20_earnings
+    produces:
+      output: ca/cpp_pensionable_earnings
+  # Part 4 line 4 "Enter whichever is less: amount from line D of Part 2 or line 3.", line D
+  # in the form's order first.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cpp_additional_maximum_pensionable_earnings
+        - ca/cpp_pensionable_earnings
+    produces:
+      output: ca/cpp_pensionable_earnings_up_to_additional_maximum
+  # Schedule 3 line 13 and line 16100 "Capital gains deferral from qualifying dispositions of
+  # eligible small business corporation shares included on line 4" is at most line 4 (checked).
+  - name: core/at_most
+    consumes:
+      amount: ca/capital_gains_deferral
+      bound: ca/share_gain_not_below_zero
+    produces:
+      output: ca/capital_gains_deferral_checked

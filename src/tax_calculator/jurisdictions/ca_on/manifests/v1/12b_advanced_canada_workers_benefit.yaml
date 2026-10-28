@@ -1,0 +1,80 @@
+# Schedule 6 Step 4 "Advanced Canada workers benefit (ACWB)": "Complete this step if you or your spouse
+# or common-law partner received an RC210 slip. Otherwise, enter "0" on line 49." Lines 44, 45 and
+# 47 (lines 38120 to 38122) are inputs, declared in 01g_canada_workers_benefit_inputs.yaml.
+capabilities:
+  # Line 43 "Enter whichever is more: amount from line 28 or line 42. If you are not claiming the
+  # basic CWB or the CWB disability supplement, enter "0".": line 28 counts only when Step 2 is
+  # completed (line 38102 yes), as line 41 reads it, and line 42 (line 40 plus line 41) is entered
+  # only with Step 3, so line 42 is never below line 41 and line 43 is the Canada workers benefit of
+  # the return (line 42 for a filer eligible for the DTC, else line 41, for a filer who meets the
+  # conditions, else 0), one part.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/canada_workers_benefit
+    produces:
+      output: ca/cwb_claimed
+  # Line 44 plus line 45, the basic ACWB paid to the filer and to their spouse or common-law partner.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/acwb_paid_to_you
+        - ca/acwb_paid_to_spouse
+    produces:
+      output: ca/acwb_lines_44_and_45
+  # The filer's answer to "an eligible spouse who is claiming the basic CWB for you", a count of 1 or 0,
+  # checked before line 46 reads it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cwb_spouse_claiming_basic
+    produces:
+      output: ca/cwb_spouse_claiming_basic_checked
+  # "an eligible spouse who is claiming the basic CWB for you": a 1 with no eligible spouse (line
+  # 38101) is an input error.
+  - name: ca/count_at_most
+    consumes:
+      count: ca/cwb_spouse_claiming_basic_checked
+      maximum: ca/cwb_eligible_spouses_checked
+    produces:
+      output: ca/cwb_spouse_claiming_basic_with_spouse_checked
+  # Line 46 "If you have an eligible spouse who is claiming the basic CWB for you, but you are claiming
+  # your CWB disability supplement, enter "0" on line 46 and continue on line 47.": 0 when the filer
+  # has an eligible spouse (line 38101), is not claiming the basic CWB (line 38102), that spouse is
+  # claiming the basic CWB for them, and they are claiming the CWB disability supplement (line
+  # 38103), else 1.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/acwb_line_46_spouse_rule
+    consumes:
+      counts:
+        - ca/cwb_eligible_spouses_checked
+        - ca/cwb_claiming_basic_checked
+        - ca/cwb_spouse_claiming_basic_with_spouse_checked
+        - ca/eligible_for_disability_amount_checked
+      amounts: []
+    produces:
+      output: ca/acwb_line_46_applies
+  # Line 46 "Line 44 plus line 45", or 0 under the rule above.
+  - name: core/times_count
+    consumes:
+      amount: ca/acwb_lines_44_and_45
+      count: ca/acwb_line_46_applies
+    produces:
+      output: ca/acwb_basic_paid
+  # Line 48 "Line 46 plus line 47".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/acwb_basic_paid
+        - ca/acwb_disability_supplement_paid
+    produces:
+      output: ca/acwb_paid
+  # Line 49 "Enter whichever is less: amount from line 43 or line 48. Enter this amount on line 41500
+  # of your return. Advanced Canada workers benefit".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cwb_claimed
+        - ca/acwb_paid
+    produces:
+      output: ca/advanced_canada_workers_benefit

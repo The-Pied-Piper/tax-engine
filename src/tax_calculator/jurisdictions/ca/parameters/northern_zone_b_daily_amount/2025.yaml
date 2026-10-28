@@ -1,0 +1,14 @@
+# Northern residents deductions, Zone B daily amount, 2025 tax year (Form T2222 Step 2):
+# line 6 "Enter the number of days you lived in an intermediate zone in 2025. multiplied by
+# $5.50 =" and line 7 "Enter the number of days you qualify for the additional residency
+# amount in 2025. multiplied by $5.50 =". It is a per-unit amount, applied to each count of
+# days.
+# Lines 6 and 7 are dollars-and-cents boxes, so the amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/northern_zone_b_daily_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2222/t2222-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "5.50"

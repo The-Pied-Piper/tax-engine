@@ -1,0 +1,399 @@
+# Form T1139 (2025), "Report amount G as self-employment income on your return: For business income,
+# enter it at line 13500 ... For fishing income, enter it at line 14300" (amount L under Part 5,
+# the same): the summary form ca/t1139_return, run once. For each of the lines 13500, 13700, 13900,
+# 14100 and 14300 it takes the net income of the statements of the line (line 9946 of Forms T2125,
+# T2042 and T2121, the lists the return totalled before this form), leaves out the net income of the
+# statements a Form T1139 takes the place of (ca/t1139.t1139_replaced_on_*) and adds the net income
+# the forms tell the filer to report (ca/t1139.t1139_reported_on_*). With no Form T1139 the line is
+# the total of its statements, as before. Its exports are the five lines, which T1 lines 22 to 26
+# read in place of the statement lists (03_income.yaml and the copies of those steps). It also
+# exports the same five lines as profits (ca/t1139_<line>_profit_on_return) for the readers of "net
+# self-employment income (not including losses)": Form T1-M line 28, Form T929 line 4 and the
+# medical expense supplement, which "use only the profit amounts" of the businesses on a line, so
+# each statement and each Form T1139's amount G or L counts alone and a loss counts 0.
+form:
+  name: ca/t1139_return
+  exports:
+    - ca/t1139_business_income_on_return
+    - ca/t1139_professional_income_on_return
+    - ca/t1139_commission_income_on_return
+    - ca/t1139_farming_income_on_return
+    - ca/t1139_fishing_income_on_return
+    - ca/t1139_business_profit_on_return
+    - ca/t1139_professional_profit_on_return
+    - ca/t1139_commission_profit_on_return
+    - ca/t1139_farming_profit_on_return
+    - ca/t1139_fishing_profit_on_return
+capabilities:
+  # T1 line 22 and line 13500 "Net": Form T2125 line 9946 "... business income on line 13500", for
+  # each statement the return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2125.net_on_business_line
+    produces:
+      output: ca/t1139_statements_on_business_line
+  # The net income of the statements that a Form T1139 takes the place of on line 13500, added over
+  # the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_replaced_on_business_line
+    produces:
+      output: ca/t1139_replaced_total_on_business_line
+  # Amount G or L of each Form T1139 reported on line 13500, "For business income, enter it at line
+  # 13500", added over the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_business_line
+    produces:
+      output: ca/t1139_reported_total_on_business_line
+  # The statements of line 13500 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statements_on_business_line
+      less: ca/t1139_replaced_total_on_business_line
+    produces:
+      output: ca/t1139_kept_on_business_line
+  # T1 line 22 and line 13500 "Net": the statements with no Form T1139 plus amount G or L of each
+  # Form T1139 on this line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_on_business_line
+        - ca/t1139_reported_total_on_business_line
+    produces:
+      output: ca/t1139_business_income_on_return
+  # T1 line 23 and line 13700 "Net": Form T2125 line 9946 "... professional income on line 13700",
+  # for each statement the return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2125.net_on_professional_line
+    produces:
+      output: ca/t1139_statements_on_professional_line
+  # The net income of the statements that a Form T1139 takes the place of on line 13700, added over
+  # the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_replaced_on_professional_line
+    produces:
+      output: ca/t1139_replaced_total_on_professional_line
+  # Amount G or L of each Form T1139 reported on line 13700, "For professional income, enter it at
+  # line 13700", added over the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_professional_line
+    produces:
+      output: ca/t1139_reported_total_on_professional_line
+  # The statements of line 13700 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statements_on_professional_line
+      less: ca/t1139_replaced_total_on_professional_line
+    produces:
+      output: ca/t1139_kept_on_professional_line
+  # T1 line 23 and line 13700 "Net": the statements with no Form T1139 plus amount G or L of each
+  # Form T1139 on this line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_on_professional_line
+        - ca/t1139_reported_total_on_professional_line
+    produces:
+      output: ca/t1139_professional_income_on_return
+  # T1 line 24 and line 13900 "Net": Form T2125 line 9946 "... commission income on line 13900", for
+  # each statement the return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2125.net_on_commission_line
+    produces:
+      output: ca/t1139_statements_on_commission_line
+  # The net income of the statements that a Form T1139 takes the place of on line 13900, added over
+  # the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_replaced_on_commission_line
+    produces:
+      output: ca/t1139_replaced_total_on_commission_line
+  # Amount G or L of each Form T1139 reported on line 13900, "For commission income, enter it at
+  # line 13900", added over the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_commission_line
+    produces:
+      output: ca/t1139_reported_total_on_commission_line
+  # The statements of line 13900 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statements_on_commission_line
+      less: ca/t1139_replaced_total_on_commission_line
+    produces:
+      output: ca/t1139_kept_on_commission_line
+  # T1 line 24 and line 13900 "Net": the statements with no Form T1139 plus amount G or L of each
+  # Form T1139 on this line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_on_commission_line
+        - ca/t1139_reported_total_on_commission_line
+    produces:
+      output: ca/t1139_commission_income_on_return
+  # T1 line 25 and line 14100 "Net": Form T2042 line 9946 "(enter this amount on line 14100 of your
+  # income tax and benefit return)", with the restricted farm loss added back (ca/farm_loss), for
+  # each statement the return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/farm_loss.farming_income
+    produces:
+      output: ca/t1139_statements_on_farming_line
+  # The net income of the statements that a Form T1139 takes the place of on line 14100, added over
+  # the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_replaced_on_farming_line
+    produces:
+      output: ca/t1139_replaced_total_on_farming_line
+  # Amount G or L of each Form T1139 reported on line 14100, "For farming income, enter it at line
+  # 14100", added over the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_farming_line
+    produces:
+      output: ca/t1139_reported_total_on_farming_line
+  # The statements of line 14100 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statements_on_farming_line
+      less: ca/t1139_replaced_total_on_farming_line
+    produces:
+      output: ca/t1139_kept_on_farming_line
+  # T1 line 25 and line 14100 "Net": the statements with no Form T1139 plus amount G or L of each
+  # Form T1139 on this line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_on_farming_line
+        - ca/t1139_reported_total_on_farming_line
+    produces:
+      output: ca/t1139_farming_income_on_return
+  # T1 line 26 and line 14300 "Net": Form T2121 line 9946 "(enter this amount on line 14300 of your
+  # income tax and benefit return)", for each statement the return carries, added. With no statement
+  # the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2121.fishing_income
+    produces:
+      output: ca/t1139_statements_on_fishing_line
+  # The net income of the statements that a Form T1139 takes the place of on line 14300, added over
+  # the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_replaced_on_fishing_line
+    produces:
+      output: ca/t1139_replaced_total_on_fishing_line
+  # Amount G or L of each Form T1139 reported on line 14300, "For fishing income, enter it at line
+  # 14300", added over the forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_fishing_line
+    produces:
+      output: ca/t1139_reported_total_on_fishing_line
+  # The statements of line 14300 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statements_on_fishing_line
+      less: ca/t1139_replaced_total_on_fishing_line
+    produces:
+      output: ca/t1139_kept_on_fishing_line
+  # T1 line 26 and line 14300 "Net": the statements with no Form T1139 plus amount G or L of each
+  # Form T1139 on this line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_on_fishing_line
+        - ca/t1139_reported_total_on_fishing_line
+    produces:
+      output: ca/t1139_fishing_income_on_return
+  # Line 13500 counted as the readers of "net self-employment income (not including losses)" take
+  # it: "use only the profit amounts" of the businesses on a line, so each statement and each Form
+  # T1139's amount G or L counts alone and a loss counts 0. The profit of the statements:
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t2125.net_on_business_line
+    produces:
+      output: ca/t1139_statement_profits_on_business_line
+  # The profit of the statements that a Form T1139 takes the place of on line 13500, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_profit_replaced_on_business_line
+    produces:
+      output: ca/t1139_replaced_profits_total_on_business_line
+  # Amount G or L of each Form T1139 reported on line 13500, a loss counted as 0, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_business_line
+    produces:
+      output: ca/t1139_reported_profits_total_on_business_line
+  # The profit of the statements of line 13500 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statement_profits_on_business_line
+      less: ca/t1139_replaced_profits_total_on_business_line
+    produces:
+      output: ca/t1139_kept_profits_on_business_line
+  # Line 13500's profit: the statements with no Form T1139 plus amount G or L of each Form T1139.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_profits_on_business_line
+        - ca/t1139_reported_profits_total_on_business_line
+    produces:
+      output: ca/t1139_business_profit_on_return
+  # Line 13700 counted as the readers of "net self-employment income (not including losses)" take
+  # it: "use only the profit amounts" of the businesses on a line, so each statement and each Form
+  # T1139's amount G or L counts alone and a loss counts 0. The profit of the statements:
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t2125.net_on_professional_line
+    produces:
+      output: ca/t1139_statement_profits_on_professional_line
+  # The profit of the statements that a Form T1139 takes the place of on line 13700, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_profit_replaced_on_professional_line
+    produces:
+      output: ca/t1139_replaced_profits_total_on_professional_line
+  # Amount G or L of each Form T1139 reported on line 13700, a loss counted as 0, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_professional_line
+    produces:
+      output: ca/t1139_reported_profits_total_on_professional_line
+  # The profit of the statements of line 13700 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statement_profits_on_professional_line
+      less: ca/t1139_replaced_profits_total_on_professional_line
+    produces:
+      output: ca/t1139_kept_profits_on_professional_line
+  # Line 13700's profit: the statements with no Form T1139 plus amount G or L of each Form T1139.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_profits_on_professional_line
+        - ca/t1139_reported_profits_total_on_professional_line
+    produces:
+      output: ca/t1139_professional_profit_on_return
+  # Line 13900 counted as the readers of "net self-employment income (not including losses)" take
+  # it: "use only the profit amounts" of the businesses on a line, so each statement and each Form
+  # T1139's amount G or L counts alone and a loss counts 0. The profit of the statements:
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t2125.net_on_commission_line
+    produces:
+      output: ca/t1139_statement_profits_on_commission_line
+  # The profit of the statements that a Form T1139 takes the place of on line 13900, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_profit_replaced_on_commission_line
+    produces:
+      output: ca/t1139_replaced_profits_total_on_commission_line
+  # Amount G or L of each Form T1139 reported on line 13900, a loss counted as 0, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_commission_line
+    produces:
+      output: ca/t1139_reported_profits_total_on_commission_line
+  # The profit of the statements of line 13900 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statement_profits_on_commission_line
+      less: ca/t1139_replaced_profits_total_on_commission_line
+    produces:
+      output: ca/t1139_kept_profits_on_commission_line
+  # Line 13900's profit: the statements with no Form T1139 plus amount G or L of each Form T1139.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_profits_on_commission_line
+        - ca/t1139_reported_profits_total_on_commission_line
+    produces:
+      output: ca/t1139_commission_profit_on_return
+  # Line 14100 counted as the readers of "net self-employment income (not including losses)" take
+  # it: "use only the profit amounts" of the businesses on a line, so each statement and each Form
+  # T1139's amount G or L counts alone and a loss counts 0. The profit of the statements:
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t2042.farming_income
+    produces:
+      output: ca/t1139_statement_profits_on_farming_line
+  # The profit of the statements that a Form T1139 takes the place of on line 14100, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_profit_replaced_on_farming_line
+    produces:
+      output: ca/t1139_replaced_profits_total_on_farming_line
+  # Amount G or L of each Form T1139 reported on line 14100, a loss counted as 0, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_farming_line
+    produces:
+      output: ca/t1139_reported_profits_total_on_farming_line
+  # The profit of the statements of line 14100 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statement_profits_on_farming_line
+      less: ca/t1139_replaced_profits_total_on_farming_line
+    produces:
+      output: ca/t1139_kept_profits_on_farming_line
+  # Line 14100's profit: the statements with no Form T1139 plus amount G or L of each Form T1139.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_profits_on_farming_line
+        - ca/t1139_reported_profits_total_on_farming_line
+    produces:
+      output: ca/t1139_farming_profit_on_return
+  # Line 14300 counted as the readers of "net self-employment income (not including losses)" take
+  # it: "use only the profit amounts" of the businesses on a line, so each statement and each Form
+  # T1139's amount G or L counts alone and a loss counts 0. The profit of the statements:
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t2121.fishing_income
+    produces:
+      output: ca/t1139_statement_profits_on_fishing_line
+  # The profit of the statements that a Form T1139 takes the place of on line 14300, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139.t1139_profit_replaced_on_fishing_line
+    produces:
+      output: ca/t1139_replaced_profits_total_on_fishing_line
+  # Amount G or L of each Form T1139 reported on line 14300, a loss counted as 0, added over the
+  # forms; 0 with no Form T1139.
+  - name: core/record_positive_total
+    consumes:
+      records: ca/t1139.t1139_reported_on_fishing_line
+    produces:
+      output: ca/t1139_reported_profits_total_on_fishing_line
+  # The profit of the statements of line 14300 that no Form T1139 takes the place of.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_statement_profits_on_fishing_line
+      less: ca/t1139_replaced_profits_total_on_fishing_line
+    produces:
+      output: ca/t1139_kept_profits_on_fishing_line
+  # Line 14300's profit: the statements with no Form T1139 plus amount G or L of each Form T1139.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_kept_profits_on_fishing_line
+        - ca/t1139_reported_profits_total_on_fishing_line
+    produces:
+      output: ca/t1139_fishing_profit_on_return

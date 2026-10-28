@@ -1,0 +1,228 @@
+# The yes or no flags the filer states as a count of 1 or 0 on the personal amounts, the
+# credits and the forms that read them. Each is checked here, one step per flag, and the steps
+# that read the flag read the checked count, except the raw readers of Parts 4 and 5 completed
+# named in the comments at the end of this file. A count of 2 or more is refused, not capped.
+# The raw counts are declared in 01_inputs.yaml.
+capabilities:
+  # Claiming the Ontario seniors care at home tax credit, Form ON479 line 13 and line 63095: the
+  # answer to a yes or no question, a count of 1 or 0, checked before the steps that read it. A
+  # count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca-on/claims_seniors_care_credit
+    produces:
+      output: ca-on/claims_seniors_care_credit_checked
+  # 18 years of age or older at the end of 2025, Federal Worksheet "Line 45200 - Refundable
+  # medical expense supplement": the answer to a yes or no question, a count of 1 or 0, checked
+  # before the steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/aged_18_or_older_at_end_of_2025
+    produces:
+      output: ca/aged_18_or_older_at_end_of_2025_checked
+  # Resident in Canada throughout 2025, Federal Worksheet "Line 45200 - Refundable medical
+  # expense supplement": the answer to a yes or no question, a count of 1 or 0, checked before
+  # the steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/resident_in_canada_throughout_2025
+    produces:
+      output: ca/resident_in_canada_throughout_2025_checked
+  # Born in 1960 or earlier, T1 line 78 (line 30100) "Age amount (if you were born in 1960 or
+  # earlier)": the answer to a yes or no question, a count of 1 or 0, checked before the steps
+  # that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/born_in_1960_or_earlier
+    produces:
+      output: ca/born_in_1960_or_earlier_checked
+  # Under 18 years of age on December 31, 2025, Federal Worksheet (form 5000-D1) "Line 31600 -
+  # Disability amount for self": the answer to a yes or no question, a count of 1 or 0, checked
+  # before the steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/under_18_on_december_31
+    produces:
+      output: ca/under_18_on_december_31_checked
+  # Qualifies for the disability amount, Federal Worksheet (form 5000-D1) "Line 31600 -
+  # Disability amount for self": the answer to a yes or no question, a count of 1 or 0, checked
+  # before the steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/eligible_for_disability_amount
+    produces:
+      output: ca/eligible_for_disability_amount_checked
+  # Spouse or common-law partner amount claimed, T1 line 79 (line 30300) "Spouse or common-law
+  # partner amount (complete Schedule 5)": the answer to a yes or no question, a count of 1 or
+  # 0, checked before the steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/spouses_claimed
+    produces:
+      output: ca/spouses_claimed_checked
+  # Eligible for the Canada caregiver amount for the spouse, Schedule 5 line 51090: the answer
+  # to a yes or no question, a count of 1 or 0, checked before the steps that read it. A count
+  # of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/spouse_caregiver_eligible
+    produces:
+      output: ca/spouse_caregiver_eligible_checked
+  # Eligible for the Canada caregiver amount for the eligible dependant, Schedule 5 line 51100:
+  # the answer to a yes or no question, a count of 1 or 0, checked before the steps that read
+  # it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/dependant_caregiver_eligible
+    produces:
+      output: ca/dependant_caregiver_eligible_checked
+  # Eligible dependant 18 years of age or older, Schedule 5 "Line 30425": the answer to a yes or
+  # no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or more
+  # is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/dependant_caregiver_aged_18_or_older
+    produces:
+      output: ca/dependant_caregiver_aged_18_or_older_checked
+  # Spouse not separated for 90 days, Schedule 2: the answer to a yes or no question, a count of
+  # 1 or 0, checked before the steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/spouse_not_separated_90_days
+    produces:
+      output: ca/spouse_not_separated_90_days_checked
+  # Agreement with the Canada Employment Insurance Commission, Schedule 13: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/ei_special_benefits_agreement
+    produces:
+      output: ca/ei_special_benefits_agreement_checked
+  # Pension annuity conditions met, Federal Worksheet for line 31400 line 7: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/pension_annuity_conditions_met
+    produces:
+      output: ca/pension_annuity_conditions_met_checked
+  # Part A applies, Form T1172 Part B "Fill out this part only if Part A does not apply to
+  # you.": the answer to a yes or no question, a count of 1 or 0, checked before the steps that
+  # read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/resp_aips_part_a_applies
+    produces:
+      output: ca/resp_aips_part_a_applies_checked
+  # Search and rescue conditions met, T1 line 91 (line 31240): the answer to a yes or no
+  # question, a count of 1 or 0, checked before the steps that read it. A count of 2 or more is
+  # refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/search_and_rescue_conditions_met
+    produces:
+      output: ca/search_and_rescue_conditions_met_checked
+  # Volunteer firefighters' conditions met, T1 line 90 (line 31220): the answer to a yes or no
+  # question, a count of 1 or 0, checked before the steps that read it. A count of 2 or more is
+  # refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/volunteer_firefighters_conditions_met
+    produces:
+      output: ca/volunteer_firefighters_conditions_met_checked
+  # Chart 2016 uses the (2016-1) calculation, Form T657 Chart 2016 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2016_uses_d_instead
+    produces:
+      output: ca/t657_chart_2016_uses_d_instead_checked
+  # Chart 2017 uses the (2017-1) calculation, Form T657 Chart 2017 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2017_uses_d_instead
+    produces:
+      output: ca/t657_chart_2017_uses_d_instead_checked
+  # Chart 2018 uses the (2018-1) calculation, Form T657 Chart 2018 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2018_uses_d_instead
+    produces:
+      output: ca/t657_chart_2018_uses_d_instead_checked
+  # Chart 2019 uses the (2019-1) calculation, Form T657 Chart 2019 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2019_uses_d_instead
+    produces:
+      output: ca/t657_chart_2019_uses_d_instead_checked
+  # Chart 2020 uses the (2020-1) calculation, Form T657 Chart 2020 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2020_uses_d_instead
+    produces:
+      output: ca/t657_chart_2020_uses_d_instead_checked
+  # Chart 2021 uses the (2021-1) calculation, Form T657 Chart 2021 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2021_uses_d_instead
+    produces:
+      output: ca/t657_chart_2021_uses_d_instead_checked
+  # Chart 2022 uses the (2022-1) calculation, Form T657 Chart 2022 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2022_uses_d_instead
+    produces:
+      output: ca/t657_chart_2022_uses_d_instead_checked
+  # Chart 2023 uses the (2023-1) calculation, Form T657 Chart 2023 Part 1: the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it. A count of 2 or
+  # more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t657_chart_2023_uses_d_instead
+    produces:
+      output: ca/t657_chart_2023_uses_d_instead_checked
+  # Maximum participation period of your FHSAs ended in a prior year, Schedule 15 Step 2: the
+  # answer to a yes or no question, a count of 1 or 0, checked before the steps that read it. A
+  # count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/fhsa_maximum_participation_period_ended
+    produces:
+      output: ca/fhsa_maximum_participation_period_ended_checked
+  # Schedule 8 Part 4 completed, the answer to a yes or no question, a count of 1 or 0, checked
+  # before the steps that read it. A count of 2 or more is refused, not capped. The Form RC381
+  # guard (`ca/count_without_records`) in 05j_cpp_lines.yaml reads the checked count. The raw
+  # reader keeps the raw count: 05m_t929_copies_2.yaml (`cpp_deduction_on_self_employment`),
+  # which is at its size cap. That is safe because this step refuses a count of 2 for the whole
+  # return, so the raw reader never sees a 2.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cpp_part_4_completed
+    produces:
+      output: ca/cpp_part_4_completed_yes_or_no_checked
+  # Schedule 8 Part 5 completed, the answer to a yes or no question, a count of 1 or 0, checked
+  # before the steps that read it. A count of 2 or more is refused, not capped. The Form RC381
+  # guard (`ca/count_without_records`) in 05j_cpp_lines.yaml reads the checked count. The raw
+  # readers keep the raw count: 05m_t929_copies_2.yaml (`cpp_part_5_deduction_on_self_employment`),
+  # which is at its size cap, and 05d_schedule_8_part_3b.yaml, which is form `ca/schedule_8` and
+  # cannot read a step of this form. That is safe because this step refuses a count of 2 for the
+  # whole return, so the raw readers never see a 2.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cpp_part_5_completed
+    produces:
+      output: ca/cpp_part_5_completed_yes_or_no_checked

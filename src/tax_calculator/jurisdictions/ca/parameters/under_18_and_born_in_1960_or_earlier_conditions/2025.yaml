@@ -1,0 +1,22 @@
+# Condition under which a filer is entered as both under 18 and born in 1960 or earlier, 2025 tax
+# year: Worksheet ON428 line 58440 "Complete the following calculation if you were under 18 years of
+# age on December 31, 2025" and Form ON428 line 10 "Age amount (if you were born in 1960 or
+# earlier)". Born in 1960 or earlier means 65 or older, so the two exclude each other. The count is 1
+# when `ca/under_18_on_december_31` and `ca/born_in_1960_or_earlier` are each more than 0, and 0
+# otherwise. Not a dollars-and-cents box, so no rounding.
+family: ca/under_18_and_born_in_1960_or_earlier_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      under 18 years of age on December 31, 2025 and born in 1960 or earlier are both entered
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: count, position: "2", relation: more_than, than: "0"}

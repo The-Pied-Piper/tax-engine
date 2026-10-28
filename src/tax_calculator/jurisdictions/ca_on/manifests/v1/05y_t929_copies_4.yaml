@@ -1,0 +1,72 @@
+# Form T929 (the form ca/t929): the copies of the return's steps that route Form T2205's amounts to T1 lines
+# 12900, 11500 and 13000, which the copy of the line 15000 sum in 05l_t929_copies_1.yaml adds. The copies
+# are the steps of 03v_t2205_routing.yaml; the one difference is the count, read from the input (born in
+# 1960 or earlier) where the return reads the checked count, as a form cannot read the return's artifacts.
+form:
+  name: ca/t929
+capabilities:
+  # Form T2205 (the form ca/t2205), copied from 03v_t2205_routing.yaml: the form cannot read the return's
+  # age figure, so the copy counts "65 or older at the end of the year" from the input (born in 1960 or
+  # earlier) where the return reads the checked count. Line 11 "If part of this amount relates to
+  # withdrawals from an RRSP ... you must report it on line 12900": the RRSP part.
+  - name: core/record_total
+    consumes:
+      records: ca/t2205.t2205_line_11_rrsp_part
+    produces:
+      output: ca/t2205_on_line_12900
+  # Line 11 "If part of this amount relates to withdrawals from an SPP": the SPP part.
+  - name: core/record_total
+    consumes:
+      records: ca/t2205.t2205_line_11_spp_part_checked
+    produces:
+      output: ca/t2205_spp_part_total
+  # Line 22 "Line 20 minus line 21.": signed.
+  - name: core/record_total
+    consumes:
+      records: ca/t2205.t2205_line_22
+    produces:
+      output: ca/t2205_line_22_total
+  # The SPP part on line 11500 "if you are 65 or older at the end of the year".
+  - name: core/times_count
+    consumes:
+      amount: ca/t2205_spp_part_total
+      count: ca/born_in_1960_or_earlier
+    produces:
+      output: ca/t2205_spp_part_on_line_11500
+  # "or on line 13000 otherwise".
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_spp_part_total
+      less: ca/t2205_spp_part_on_line_11500
+    produces:
+      output: ca/t2205_spp_part_on_line_13000
+  # Line 22 on line 11500 "If you were 65 or older at the end of the year".
+  - name: core/times_count
+    consumes:
+      amount: ca/t2205_line_22_total
+      count: ca/born_in_1960_or_earlier
+    produces:
+      output: ca/t2205_line_22_on_line_11500
+  # Line 22 "Otherwise, report it on line 13000."
+  - name: core/subtract
+    consumes:
+      amount: ca/t2205_line_22_total
+      less: ca/t2205_line_22_on_line_11500
+    produces:
+      output: ca/t2205_line_22_on_line_13000
+  # The T2205 amount on T1 line 11500.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2205_spp_part_on_line_11500
+        - ca/t2205_line_22_on_line_11500
+    produces:
+      output: ca/t2205_on_line_11500
+  # The T2205 amount on T1 line 13000.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2205_spp_part_on_line_13000
+        - ca/t2205_line_22_on_line_13000
+    produces:
+      output: ca/t2205_on_line_13000

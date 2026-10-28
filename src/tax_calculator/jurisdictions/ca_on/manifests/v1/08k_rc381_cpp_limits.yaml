@@ -1,0 +1,119 @@
+# Form RC381 (ca/rc381): the form's own copies of the steps the return also needs, which the return
+# keeps: Part 2 lines C to F (the monthly proration table read with line A), Part 4 line 1 and the
+# net self-employment income it adds with the three totals it reads. See
+# 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # Form RC381 Part 2 line C (maximum pensionable earnings), the row of the monthly proration
+  # table for the months in line A ("the number of months that CPP applied in 2025", Schedule 8
+  # box A).
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_maximum_pensionable_earnings
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_maximum_pensionable_earnings
+  # Form RC381 Part 2 line D (maximum amount subject to second additional contributions), the row
+  # for the months in line A.
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_second_additional_earnings_maximum
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_second_additional_earnings_maximum
+  # Form RC381 Part 2 line E (additional maximum pensionable earnings), the row for the months in
+  # line A.
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_additional_maximum_pensionable_earnings
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_additional_maximum_pensionable_earnings
+  # Form RC381 Part 2 line F (maximum basic exemption), the row for the months in line A.
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_basic_exemption
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_basic_exemption
+  # Form RC381 Part 4 line 1 "Pensionable net self-employment earnings: amount from line 12200 of
+  # your return plus line 27 of your return": the net partnership income then the net
+  # self-employment income.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/net_partnership_income
+        - ca/net_self_employment_income
+    produces:
+      output: ca/pensionable_net_self_employment_earnings
+  # T1 line 22 and line 13500 "Net": Form T2125 line 9946 "Your net income (loss)" ... "Report
+  # the net income amount from line 9946 on the applicable line of your income tax and benefit
+  # return as indicated below: business income on line 13500", for each T2125 statement the
+  # return carries whose line code is business, added. With no statement the total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_business_income_on_return
+    produces:
+      output: ca/business_income
+  # T1 line 23 and line 13700 "Net": Form T2125 line 9946 "... professional income on line
+  # 13700", for each T2125 statement whose line code is professional, added. With no such
+  # statement the total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_professional_income_on_return
+    produces:
+      output: ca/professional_income
+  # T1 line 24 and line 13900 "Net": Form T2125 line 9946 "... commission income on line 13900",
+  # for each T2125 statement whose line code is commission, added. With no such statement the
+  # total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_commission_income_on_return
+    produces:
+      output: ca/commission_income
+  # T1 line 25 and line 14100 "Net": Form T2042 line 9946 "Your net income (loss): Amount 5C minus
+  # line 9945 (enter this amount on line 14100 of your income tax and benefit return)", added over
+  # the T2042 statements, with the restricted farm loss added back (ca/farm_loss); 0 with none.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_farming_income_on_return
+    produces:
+      output: ca/farming_income
+  # T1 line 26 and line 14300 "Net": Form T2121 line 9946 "Your net income (loss): Amount 5C minus
+  # line 9945 (enter this amount on line 14300 of your income tax and benefit return)", for each
+  # T2121 statement the return carries, added. With no statement the total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_fishing_income_on_return
+    produces:
+      output: ca/fishing_income
+  # T1 line 27 "Add lines 22 to 26. Net self-employment income": line 22 (13500) business
+  # income, line 23 (13700) professional income, line 24 (13900) commission income, line 25
+  # (14100) farming income and line 26 (14300) fishing income, the "Net" box of each, in
+  # line order. Line 28 "Line 21 plus line 27" is not a step of its own: total income (line
+  # 15000) adds line 27 to the lines 1 to 20, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/business_income
+        - ca/professional_income
+        - ca/commission_income
+        - ca/farming_income
+        - ca/fishing_income
+    produces:
+      output: ca/net_self_employment_income

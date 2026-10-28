@@ -1,0 +1,395 @@
+# Form T657 (2025), the amounts the charts take "from line 6 / line 12 of Form T2017" for one year or
+# period of disposition: each is Form T2017 line 6 "Line 1 minus line 5" (QFFP, lines 2 to 4) or line 12
+# "Line 7 minus line 11" (QSBCS, lines 8 to 10) for only the dispositions the chart names ("do not include
+# reserves from dispositions of QFFP in any year other than 2016"), the total, over those dispositions of the
+# Form T2017 row forms, of each one's 2024 reserve less its 2025 reserve (`ca/t2017_row_change`). A
+# disposition's year is 2025 less its years after the disposition; Period 1 and Period 2 of 2024 and the
+# T5013 slip are the yes or no answers of its record. The dispositions each chart takes are the dataset
+# `ca/t657_chart_NNNN_dispositions` (in the form's words), a count of each record of the lists read.
+capabilities:
+  # Chart 2016 Part 1 amount D "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2016)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2016_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2016_amount_d
+  # Chart 2016 Part 1 amount E "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2016)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2016_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2016_amount_e
+  # Chart 2017 Part 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2017)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2017_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2017_amount_f
+  # Chart 2017 Part 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2017)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2017_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2017_amount_g
+  # Chart 2018 Part 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2018)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2018_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2018_amount_f
+  # Chart 2018 Part 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2018)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2018_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2018_amount_g
+  # Chart 2019 Part 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2019)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2019_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2019_amount_f
+  # Chart 2019 Part 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2019)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2019_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2019_amount_g
+  # Chart 2020 Part 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2020)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2020_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2020_amount_f
+  # Chart 2020 Part 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2020)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2020_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2020_amount_g
+  # Chart 2021 Part 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2021)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2021_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2021_amount_f
+  # Chart 2021 Part 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2021)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2021_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2021_amount_g
+  # Chart 2022 Part 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2022)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2022_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2022_amount_f
+  # Chart 2022 Part 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2022)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2022_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2022_amount_g
+  # Chart 2023 Part 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year other than 2023)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2023_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2023_amount_f
+  # Chart 2023 Part 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year other than 2023)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2023_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2023_amount_g
+  # Chart 2024 Period 1 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year or period other than Period 1 of 2024)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2024_period_1_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2024_period_1_amount_f
+  # Chart 2024 Period 1 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year or period other than Period 1 of 2024)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2024_period_1_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2024_period_1_amount_g
+  # Chart 2024 Period 2 amount F "Amount from line 6 of Form T2017 (do not include reserves from
+  # dispositions of QFFP in any year or period other than Period 2 of 2024)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2024_period_2_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2024_period_2_amount_f
+  # Chart 2024 Period 2 amount G "Amount from line 12 of Form T2017 (do not include reserves from
+  # dispositions of QSBCS in any year or period other than Period 2 of 2024)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2024_period_2_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_chart_2024_period_2_amount_g
+  # Chart 2025 Part 1 amount I "Amount from line 6 of Form T2017 (only include reserves reported on
+  # a T5013 slip or letter from dispositions of QFFP for Period 1 of 2024)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2025_part_1_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_part_1_amount_i
+  # Chart 2025 Part 1 amount J "Amount from line 12 of Form T2017 (only include reserves reported on
+  # a 2025 T5013 slip or letter from dispositions of QSBCS for Period 1 of 2024)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2025_part_1_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_part_1_amount_j
+  # Chart 2025 Part 2 amount I "Amount from line 6 of Form T2017 (do not include any reserves
+  # claimed on dispositions of QFFP before 2025 or in Period 1 of 2024 that is reported on a 2025
+  # T5013 slip or in a letter to the partner)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2025_part_2_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_2_reserve_rows
+        - ca/t2017_line_3_reserve_rows
+        - ca/t2017_line_4_reserve_rows
+      amounts:
+        - ca/t2017_line_2_reserve.t2017_row_change
+        - ca/t2017_line_3_reserve.t2017_row_change
+        - ca/t2017_line_4_reserve.t2017_row_change
+    produces:
+      total: ca/t657_part_2_amount_i
+  # Chart 2025 Part 2 amount J "Amount from line 12 of Form T2017 (do not include any reserves
+  # claimed on dispositions of QSBCS before 2025 or in Period 1 of 2024 that is reported on a 2025
+  # T5013 slip or in a letter to the partner)".
+  - name: ca/t2017_reserve_total_for_period
+    params:
+      conditions: ca/t657_chart_2025_part_2_dispositions
+    consumes:
+      rows:
+        - ca/t2017_line_8_reserve_rows
+        - ca/t2017_line_9_reserve_rows
+        - ca/t2017_line_10_reserve_rows
+      amounts:
+        - ca/t2017_line_8_reserve.t2017_row_change
+        - ca/t2017_line_9_reserve.t2017_row_change
+        - ca/t2017_line_10_reserve.t2017_row_change
+    produces:
+      total: ca/t657_part_2_amount_j

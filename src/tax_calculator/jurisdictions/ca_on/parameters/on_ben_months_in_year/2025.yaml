@@ -1,0 +1,10 @@
+# Form ON-BEN (5006-TG, 2025) Part B, column 3 "Number of months resident in 2025": the most the
+# months of one row may be. Not printed on the form; a year has 12 months. It borrows
+# the credit kind as a constant claimed whole, as the northern residents' days in the year does.
+family: ca-on/on_ben_months_in_year
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tg/5006-tg-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "12"

@@ -1,0 +1,167 @@
+# Form T1032 E (25) Step 4 Part B, page 3, "Line 33: Otherwise, enter the amount from line 30" and Note 1,
+# part of the form ca/t1032 (see 22a_t1032_pension_income_splitting.yaml for the form's exports and the
+# other lines; the starting inputs are in 01j_t1032_inputs.yaml). When the conditions above line 33 all
+# apply (line 32 is less than $2,000, the receiving spouse was under 65, the transferring spouse was 65
+# or older and received any of the amounts a) to e)), Note 1 is followed: subtract those amounts from
+# line 1 (not those received as a consequence of a death); if the result is $4,000 or more,
+# line 33 is line 30; if it is less, the result is used as the amount for line 17 to recalculate lines
+# 18 to 31 and line 33 is the lesser of line 22 and the recalculated line 30. Lines 22, 29 and 30
+# are repeated below (lines 18 to 21 only bound line 22, which Note 1 does not ask to check again;
+# lines 23 to 28 only copy; line 31 does not reach line 33). The
+# amounts a) to d) and the part received on a death are the caller's, e) is the box 128 amount line 2
+# takes; the form prints no limit for them, so the total of a) to e) may be above line 1 and the result
+# of Note 1, printed arithmetic, may be below 0 (the form prints no floor and this is no claim). The
+# lines recalculated from it are signed likewise; line 34, the amount that reaches a credit, is not
+# held below 0 (refused). The part received on a death is refused above the amounts a) to e), never capped.
+form:
+  name: ca/t1032
+capabilities:
+  # Form T1032 Step 4 Part B "the receiving spouse or common-law partner was under age 65 on December 31,
+  # 2025", the answer taken as a count, checked to be 0 or 1 before the conditions read it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_receiving_spouse_under_65
+    produces:
+      output: ca/t1032_receiving_spouse_under_65_checked
+  # Form T1032 Step 4 Part B "the transferring spouse or common-law partner was age 65 or older", the
+  # answer taken as a count, checked to be 0 or 1 before the conditions read it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_transferring_spouse_65_or_older
+    produces:
+      output: ca/t1032_transferring_spouse_65_or_older_checked
+  # Form T1032 Step 4 Part B "e) eligible veterans benefits" is the amount from box 128 of the T4A that
+  # line 2 takes (line 9 of the form's veterans benefits calculation enters "the amount from line 2"),
+  # so it is added to the total of a) to d) the caller enters and not entered twice.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1032_note_1_payments_a_to_d
+        - ca/t1032_t4a_box_128
+    produces:
+      output: ca/t1032_note_1_payments_total
+  # Form T1032 Step 4 Part B "the amount on line 32 is less than $2,000": the $2,000, from the dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/t1032_line_32_figure
+    produces:
+      output: ca/t1032_note_1_line_32_limit
+  # Form T1032 Step 4 Part B "If all of the following conditions apply, calculate line 33 according to the
+  # instructions in note 1": 1 when line 32 is less than $2,000, the receiving spouse was under age 65
+  # and the transferring spouse was age 65 or older and received any of the amounts a) to e), 0 when not.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1032_note_1_applies_conditions
+    consumes:
+      counts:
+        - ca/t1032_receiving_spouse_under_65_checked
+        - ca/t1032_transferring_spouse_65_or_older_checked
+      amounts:
+        - ca/t1032_receiving_spouse_pension_amount
+        - ca/t1032_note_1_line_32_limit
+        - ca/t1032_note_1_payments_total
+    produces:
+      output: ca/t1032_note_1_applies
+  # Form T1032 Note 1 "does not need to remove those payments from line 1 if the transferring spouse or
+  # common-law partner has received those payments as a consequence of the death of a spouse or
+  # common-law partner in the year": the part of the amounts a) to e) received on a death, a part that
+  # is refused above the whole (not capped).
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_note_1_payments_due_to_death_if_applies
+      bound: ca/t1032_note_1_payments_total_if_applies
+    produces:
+      output: ca/t1032_note_1_payments_due_to_death_checked
+  # The payments Note 1 asks to be removed from line 1: the amounts a) to e) less those received on a death.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_note_1_payments_total_if_applies
+      less: ca/t1032_note_1_payments_due_to_death_checked
+    produces:
+      output: ca/t1032_note_1_payments_to_remove
+  # Form T1032 Note 1 "Subtract from line 1 any of the above amounts noted in a) through e) received by
+  # the transferring spouse or common-law partner in the year", except those received on a death. This
+  # is the result Note 1 compares with $4,000.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_eligible_pension_income
+      less: ca/t1032_note_1_payments_to_remove
+    produces:
+      output: ca/t1032_note_1_result
+  # Form T1032 Note 1 "If the result is $4,000 or more ... If the result is less than $4,000": the $4,000,
+  # from the dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/t1032_note_1_result_figure
+    produces:
+      output: ca/t1032_note_1_result_limit
+  # Form T1032 Note 1 "If the result is less than $4,000, use that result as the amount for line 17 to
+  # recalculate lines 18 to 31": 1 when Note 1 applies and the result is less than $4,000, 0 when not
+  # (line 33 is then line 30, and the steps below only repeat lines 18 to 31 as they were).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1032_note_1_recalculation_conditions
+    consumes:
+      counts:
+        - ca/t1032_note_1_applies
+      amounts:
+        - ca/t1032_note_1_result_limit
+        - ca/t1032_note_1_result
+    produces:
+      output: ca/t1032_note_1_recalculation
+  # Form T1032 Note 1 "use that result as the amount for line 17": the result when line 33 is
+  # recalculated, otherwise line 17 as it was.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_note_1_recalculation
+      when_none: ca/t1032_line_17
+      when_any: ca/t1032_note_1_result
+    produces:
+      output: ca/t1032_note_1_line_17
+  # Form T1032 Note 1 "the amount from line 22": the elected amount already entered on line 22, kept
+  # as it is. It was checked against the original line 21 on line 22 and is not checked again against
+  # the recalculated line 21, which the form does not ask for (ticketed).
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_line_22_checked
+      bound: ca/t1032_line_21
+    produces:
+      output: ca/t1032_note_1_line_22
+  # Form T1032 "Line 29: Line 27 multiplied by line 28 =" recalculated with the result as the amount
+  # for line 17 (line 26): line 22 times line 8 over line 17, rounded half-up to the cent once, as in
+  # 22a. Line 8 is checked against that line 17 (22h_t1032_note_1_checks.yaml), so it is zero when line
+  # 17 is zero, and the form then says to enter line 22 on line 30 (no amount on line 8).
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1032_rounding
+    consumes:
+      amount: ca/t1032_note_1_line_22
+      numerator: ca/t1032_note_1_line_8_checked
+      denominator: ca/t1032_note_1_line_17
+    produces:
+      output: ca/t1032_note_1_line_29
+  # Form T1032 "Line 30: Line 24 minus line 29 =" recalculated, line 24 being line 22.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_note_1_line_22
+      less: ca/t1032_note_1_line_29
+    produces:
+      output: ca/t1032_note_1_line_30
+  # Form T1032 Note 1 "Enter on line 33 whichever is less: the amount from line 22 or line 30", line 30
+  # being the recalculated one.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1032_note_1_line_22
+        - ca/t1032_note_1_line_30
+    produces:
+      output: ca/t1032_note_1_line_33
+  # Form T1032 "Line 33: Otherwise, enter the amount from line 30" and Note 1 "If the result is $4,000
+  # or more, enter on line 33 the amount from line 30": line 30 unless line 33 is recalculated.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_note_1_recalculation
+      when_none: ca/t1032_line_30
+      when_any: ca/t1032_note_1_line_33
+    produces:
+      output: ca/t1032_line_33

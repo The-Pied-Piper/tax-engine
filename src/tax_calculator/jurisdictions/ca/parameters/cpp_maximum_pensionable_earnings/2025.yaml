@@ -1,0 +1,30 @@
+# Maximum pensionable earnings, 2025 tax year (T1-2025 Schedule 8, form 5000-S8). Part 2:
+# "Box A: Enter the number of months that CPP applied in 2025." and the "Monthly proration
+# for 2025" table, "Enter the corresponding amounts from the monthly proration table above
+# using the number of months from line A.": line B "Your maximum pensionable earnings for
+# 2025 (maximum $71,300)".
+# The rows are the table's column "Maximum pensionable earnings", one for each number of
+# months from 1 to 12, as printed. Part 4 line 5 is "Amount from line B of Part 2". The
+# table has no row for 0 months, so a count without a row is refused.
+# The figures are in dollars and cents, so each rounds half-up to the cent, which changes
+# none of them.
+family: ca/cpp_maximum_pensionable_earnings
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amounts:
+  "1": "5941.67"
+  "2": "11883.33"
+  "3": "17825.00"
+  "4": "23766.67"
+  "5": "29708.33"
+  "6": "35650.00"
+  "7": "41591.67"
+  "8": "47533.33"
+  "9": "53475.00"
+  "10": "59416.67"
+  "11": "65358.33"
+  "12": "71300.00"

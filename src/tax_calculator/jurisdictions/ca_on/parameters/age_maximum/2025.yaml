@@ -1,0 +1,14 @@
+# Ontario age amount, maximum, 2025 tax year (Worksheet ON428, form 5006-D): "Line 58080 -
+# Age amount (if you were born in 1960 or earlier)", line 1 "Maximum amount 6,223.00"; ON428
+# line 10 and line 58080 "Age amount (if you were born in 1960 or earlier) (use Worksheet
+# ON428) (maximum $6,223)". It borrows the credit kind because it is claimed whole, as the
+# basic reduction is.
+# Line 1 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca-on/age_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "6223.00"

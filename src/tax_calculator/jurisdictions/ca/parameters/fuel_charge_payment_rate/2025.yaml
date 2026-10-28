@@ -1,0 +1,13 @@
+# Payment rate of the return of fuel charge proceeds to farmers tax credit, 2025 tax year (Form
+# T2043 Part 2): "ON payment rate 0.229%", and the same 0.229% for each of the other seven
+# designated provinces ("each at 0.229%"), by which each province's farming expenses (lines
+# 67063 to 67066 and 67091 to 67094) are multiplied (confirmed from the PDF; no .txt published).
+# Each product, amounts 2A to 2H, is a dollars-and-cents box, so it rounds half-up to the cent,
+# the owner's decision, as the form states no rounding rule.
+family: ca/fuel_charge_payment_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.00229"

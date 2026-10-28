@@ -1,0 +1,112 @@
+capabilities:
+  # Part 7 line 4 "Line 2 plus line 3": line 2, the basic federal tax of Part 2 line 7, and line 3,
+  # the recapture of investment tax credit, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_basic_federal_tax
+        - ca/itc_recapture
+    produces:
+      output: ca/amt_part_7_basic_tax_with_recapture
+  # Part 7 line 7 "Line 5 plus line 6": line 5, the federal logging tax credit (line 133 of your
+  # return, as on Part 1 line 100), and line 6, "Amount from line 41600 of your return", in line
+  # order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_logging_tax_credit
+        - ca/credits_against_federal_tax
+    produces:
+      output: ca/amt_part_7_credits_total
+  # Part 7 line 8 "Line 4 minus line 7": line 4 less line 7. The form prints no floor, so the
+  # difference may be negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_part_7_basic_tax_with_recapture
+      less: ca/amt_part_7_credits_total
+    produces:
+      output: ca/amt_part_7_tax_less_credits
+  # Part 7 line 11 "Line 9 minus line 10 (if negative, enter "0")": the special foreign tax credit of
+  # Part 4 line 11 less the federal foreign tax credit of Part 3 line 7, not below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_special_foreign_tax_credit
+      less: ca/federal_foreign_tax_credit
+    produces:
+      output: ca/amt_part_7_foreign_credit_difference
+  # Part 7 line 12, the denominator of the fraction: "Foreign taxes paid (non-business income tax
+  # paid to a foreign country (15) plus business income tax paid to a foreign country (16))", the
+  # two totals over the foreign tax countries added. It is not a numbered line of the form.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_foreign_non_business_tax_paid
+        - ca/amt_foreign_business_tax_paid
+    produces:
+      output: ca/amt_part_7_foreign_taxes_paid
+  # Part 7 line 12 "Line 11 × [Foreign taxes paid for special foreign tax credit (line 9 of Part 4)] /
+  # [Foreign taxes paid ...]": line 11 times line 9 of Part 4 over the denominator, rounded once to
+  # the cent; 0 when there are no foreign taxes paid.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/amt_foreign_taxes_ratio_rounding
+    consumes:
+      amount: ca/amt_part_7_foreign_credit_difference
+      numerator: ca/amt_foreign_taxes_paid
+      denominator: ca/amt_part_7_foreign_taxes_paid
+    produces:
+      output: ca/amt_part_7_foreign_credit_share
+  # Part 7 line 13 "Line 8 plus line 12": line 8 and line 12, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_part_7_tax_less_credits
+        - ca/amt_part_7_foreign_credit_share
+    produces:
+      output: ca/amt_part_7_tax_less_credits_plus_share
+  # Part 7 line 14 "Line 1 minus line 13 (if negative, enter "0")" "Additional taxes paid for minimum tax
+  # carryover": line 1, the minimum amount of Part 1 line 103, less line 13, not below zero. Part 8
+  # line 14 reads it.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_minimum_amount
+      less: ca/amt_part_7_tax_less_credits_plus_share
+    produces:
+      output: ca/amt_additional_taxes_for_carryover
+  # Part 8 line 13 "Balance of minimum tax carryover available for later years, if any: line 1 minus
+  # line 12": line 1 less line 12. Line 12 is read after its check against the largest claim, so
+  # a claim above line 1 is refused there and the balance is not below zero.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_minimum_tax_carryover_from_previous_years
+      less: ca/amt_minimum_tax_carryover_within_maximum
+    produces:
+      output: ca/amt_carryover_balance
+  # Part 5 "If line 11 is positive, complete parts 6 and 7." Part 8 line 14 "Additional 2025 taxes
+  # for carryover to later years from line 14 of Part 7": line 14 of Part 7 when line 11 is positive
+  # (the count is 1), and 0 otherwise, since a filer with no minimum tax payable does not complete
+  # Part 7.
+  - name: core/times_count
+    consumes:
+      amount: ca/amt_additional_taxes_for_carryover
+      count: ca/amt_part_5_line_11_is_positive
+    produces:
+      output: ca/amt_part_8_additional_taxes
+  # Part 8 line 15 "Line 13 plus line 14": line 13 and line 14, the additional 2025 taxes of Part 8
+  # line 14, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_carryover_balance
+        - ca/amt_part_8_additional_taxes
+    produces:
+      output: ca/amt_carryover_balance_with_additional_taxes
+  # Part 8 line 17 "Total minimum tax carryover available for 2026: line 15 minus line 16": line 15
+  # less line 16, the unapplied 2018 minimum tax carryover. The form prints no floor, so the
+  # difference may be negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_carryover_balance_with_additional_taxes
+      less: ca/amt_unapplied_2018_carryover_checked
+    produces:
+      output: ca/amt_carryover_available_for_2026

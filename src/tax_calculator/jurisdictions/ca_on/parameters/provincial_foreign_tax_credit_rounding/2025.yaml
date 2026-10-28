@@ -1,0 +1,12 @@
+# Rounding of the Ontario provincial foreign tax credit, 2025 tax year (Form T2036, Provincial or
+# Territorial Foreign Tax Credit): line 4 "Net foreign non-business income (2)" "× Provincial or
+# territorial tax otherwise payable (4)" over "Net income (3)" and line 5 "Enter whichever amount
+# is less: line 3 or line 4." "Provincial or territorial foreign tax credit". The form prints no
+# figure and no rounding rule; line 4 is a dollars-and-cents box, so its quotient rounds half-up
+# to the cent, the owner's decision. Lines 1, 2, 3 and 5 take amounts already in cents.
+family: ca-on/provincial_foreign_tax_credit_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2036/t2036-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

@@ -1,0 +1,223 @@
+capabilities:
+  # Form RC359 line 9 "Tax on excess EPSP amount. Include this amount on line 41800 of your return."
+  # (line 9 "Line 7 multiplied by the percentage from line 8"), for each copy of the form, one for
+  # each employer: the total over the copies, 0 with no employer.
+  - name: core/record_total
+    consumes:
+      records: ca/rc359.rc359_tax_on_excess_epsp
+    produces:
+      output: ca/rc359_tax_total
+  # T1 line 141 and line 41800 "Special taxes": the amount of Form T1172 (line 10 or 13), the
+  # RL-10 amount, the guide's "Report, on line 41800 of your return, the result of the
+  # following calculation using your RL-10 slip: Tax Credit for a Labour-Sponsored Fund"
+  # whose list the guide's .txt cuts off after "75% of box", so the amount is the caller's
+  # until the rest is quoted (to be confirmed), and the Form RC359 total (`ca/rc359_tax_total`,
+  # the last part).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/resp_aips_additional_tax
+        - ca/rl_10_labour_sponsored_fund_amount
+        - ca/rc359_tax_total
+    produces:
+      output: ca/special_taxes
+  # Form T1206 Part 2 line 10 "Line 8 plus line 9", line 9 being "Amount from line 41500 of your
+  # return" (the advanced Canada workers benefit).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_tax_on_split_income
+        - ca/advanced_canada_workers_benefit
+    produces:
+      output: ca/split_income_line_10
+  # "Federal disability tax credit": line 11 "Amount from line 31600 of your return" (the disability
+  # amount for self, computed on the personal amounts steps) and line 12 "Amount from line 31800 of
+  # your return" (the disability amount transferred from a dependant), line 13 "Line 11 plus line
+  # 12".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/disability_amount_for_self
+        - ca/disability_transferred_amount
+    produces:
+      output: ca/split_income_line_13
+  # Line 14, line 13 "× 14.5%".
+  - name: core/apply_rate
+    params:
+      rate: ca/split_income_disability_credit_rate
+    consumes:
+      base: ca/split_income_line_13
+    produces:
+      output: ca/split_income_line_14
+  # Line 15 "Line 10 minus line 14", which prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/split_income_line_10
+      less: ca/split_income_line_14
+    produces:
+      output: ca/split_income_line_15
+  # "Federal dividend tax credit on split income": line 16 "Amount from line 1 of Part 1" and line
+  # 17 "Amount from line 2 of Part 1" are the checked lines 1 and 2
+  # (`ca/split_income_dividends_checked` and
+  # `ca/split_income_dividends_other_than_eligible_checked`); line 18 "Line 16 minus line 17 (if
+  # negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/split_income_dividends_checked
+      less: ca/split_income_dividends_other_than_eligible_checked
+    produces:
+      output: ca/split_income_line_18
+  # Line 19, line 17 "× 9.0301%", and line 20, line 18 "× 15.0198%".
+  - name: core/apply_rate
+    params:
+      rate: ca/split_income_dividend_credit_rate_other_than_eligible
+    consumes:
+      base: ca/split_income_dividends_other_than_eligible_checked
+    produces:
+      output: ca/split_income_line_19
+  - name: core/apply_rate
+    params:
+      rate: ca/split_income_dividend_credit_rate_eligible
+    consumes:
+      base: ca/split_income_line_18
+    produces:
+      output: ca/split_income_line_20
+  # Line 21 "Line 19 plus line 20" and line 22 "Line 15 minus line 21", which prints no floor.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/split_income_line_19
+        - ca/split_income_line_20
+    produces:
+      output: ca/split_income_line_21
+  - name: core/subtract
+    consumes:
+      amount: ca/split_income_line_15
+      less: ca/split_income_line_21
+    produces:
+      output: ca/split_income_line_22
+  # Line 23 "Part of the amount on line 3 that is from foreign sources" (68370) over "Total income
+  # from foreign sources" (68380), "× Amount from line 40500 of your return": the numerator is the
+  # checked 68370 (`ca/split_income_from_foreign_sources_checked`), at most 68380 and line 3; the
+  # federal foreign tax credit times the share of the split income from foreign sources, rounded
+  # half-up to the cent once; 0 when there is no income from foreign sources.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/split_income_line_23_rounding
+    consumes:
+      amount: ca/federal_foreign_tax_credit
+      numerator: ca/split_income_from_foreign_sources_checked
+      denominator: ca/total_income_from_foreign_sources
+    produces:
+      output: ca/split_income_line_23
+  # Line 24 "Line 22 minus line 23 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/split_income_line_22
+      less: ca/split_income_line_23
+    produces:
+      output: ca/split_income_line_24
+  # Line 25 "Amount from line 40600 of your return", line 26 "Amount from line 41600 of your
+  # return" and line 27 "Line 25 minus line 26 (if negative, enter "0")" are the T1's line 41700,
+  # the federal tax of the return (line 139, or the Part 6 line 14 of Form T691 when Part 5 line
+  # 11 is positive), and line 28 "Amount from line 41500 of your return" is line 140: line 29
+  # "Line 27 plus line 28". Lines 25 to 27 print the return's line 139 word for word ("Line 134
+  # minus line 138 (if negative, enter "0")"), and Form T691 Part 6 line 14 says "Enter this amount
+  # on line 41700 of your return" (Guide 5000-G: "enter the result on line 41700 of your
+  # return"), so under minimum tax line 27 is the Part 6 figure, not line 40600 less line 41600
+  # (pinned by Return MA).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_tax_line_41700
+        - ca/advanced_canada_workers_benefit
+    produces:
+      output: ca/split_income_line_29
+  # Line 30 "Enter whichever is more: the amount from line 24 or line 29."
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/split_income_line_24
+        - ca/split_income_line_29
+    produces:
+      output: ca/split_income_line_30
+  # T1 line 142 (line 42000) "Add lines 139 to 141. Net federal tax", here by Form T1206 Part 2
+  # "Add the amount from line 30 to the amount from line 41800 of your return, and enter the
+  # result on line 42000 of your return.": line 30 (the more of line 24 and line 29, line 29 being
+  # lines 139 and 140) and line 141 (41800), in line order. Line 124 (40427, minimum tax carryover)
+  # is modelled: it is the claim of Form T691 Part 8 line 12, one of the lines 122 to 124 added in
+  # 03_income.yaml, and Form ON428 line 59 reads it.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/split_income_line_30
+        - ca/special_taxes
+    produces:
+      output: ca/net_federal_tax
+  # T1 line 144 and line 42100, entered from Schedule 8 Part 4 line 14: Part 4 is completed
+  # only when the filer reports self-employment income alone, so the amount is counted once
+  # for each Part 4 completed, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/self_employed_cpp_contributions_payable
+      count: ca/cpp_part_4_completed_checked
+    produces:
+      output: ca/cpp_payable_on_self_employment
+  # Schedule 8 Part 5 line 49 "If positive, enter the amount (in dollars and cents) on line
+  # 42100 of your return": line 49 less 0, not below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_part_5_line_49
+      less: ca/cpp_zero
+    produces:
+      output: ca/cpp_part_5_line_49_if_positive
+  # T1 line 42100 from Part 5 line 49, once for each Part 5 completed, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/cpp_part_5_line_49_if_positive
+      count: ca/cpp_part_5_completed_checked
+    produces:
+      output: ca/cpp_part_5_payable_on_self_employment
+  # T1 line 42100: the Part 4 amount plus the Part 5 amount, plus Form RC381 Part 4 line 90 "If
+  # positive, enter the amount (in dollars and cents) on line 42100 of your return" (08j, 0 with no
+  # Form RC381). Schedule 8 Part 4 and Part 5 are the filer's choices (counts 1 or 0); the return
+  # carries Schedule 8 or Form RC381, never both.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_payable_on_self_employment
+        - ca/cpp_part_5_payable_on_self_employment
+        - ca/rc381_cpp_payable_on_self_employment
+    produces:
+      output: ca/cpp_payable_on_self_employment_and_other_earnings
+  # T1 line 145 and line 42120, entered from Schedule 13 line 9, counted once for each
+  # agreement with the Canada Employment Insurance Commission, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/self_employed_ei_premiums
+      count: ca/ei_special_benefits_agreement_checked
+    produces:
+      output: ca/ei_payable_on_self_employment
+  # T1 line 146 and line 42200 "Social benefits repayment (amount from line 23500)": the amount
+  # of line 23500, carried over one part.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/social_benefits_repayment
+    produces:
+      output: ca/social_benefits_repayment_payable
+  # T1 line 148 (line 43500) "Add lines 143 to 147. Total payable": line 143 "Amount from line
+  # 42000", line 144 (42100) "CPP contributions payable on self-employment income and other
+  # earnings", line 145 (42120) "Employment insurance premiums payable on self-employment and
+  # other eligible earnings", line 146 (42200) "Social benefits repayment (amount from line
+  # 23500)" and line 147 (42800), the Ontario tax, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/net_federal_tax
+        - ca/cpp_payable_on_self_employment_and_other_earnings
+        - ca/ei_payable_on_self_employment
+        - ca/social_benefits_repayment_payable
+        - ca-on/ontario_tax
+    produces:
+      output: ca/total_payable

@@ -1,0 +1,14 @@
+# Form T1032 E (25) Step 2 Note 1, part of the form ca/t1032 (see 22a_t1032_pension_income_splitting.yaml
+# for the form's exports and the other lines; the starting input is in 01j_t1032_inputs.yaml): "If the
+# transferring spouse or common-law partner is deceased, replace the "12" with the number of months up to
+# and including the month of death". The answer is read by the denominator of line 18.
+form:
+  name: ca/t1032
+capabilities:
+  # Form T1032 Step 2 Note 1 "If the transferring spouse or common-law partner is deceased", the answer
+  # taken as a count, checked to be 0 or 1 before the denominator of line 18 reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_transferring_spouse_died
+    produces:
+      output: ca/t1032_transferring_spouse_died_checked

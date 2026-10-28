@@ -1,0 +1,20 @@
+# Condition under which the designated province code of a Form T2043 farming statement is refused,
+# 2025 tax year: Part 2 lines 2A to 2H list eight designated provinces (1 Ontario, 2 Manitoba, 3
+# Saskatchewan, 4 Alberta, 5 Nova Scotia, 6 Prince Edward Island, 7 Newfoundland and Labrador, 8
+# New Brunswick: the order of Part 2, confirmed from the PDF, no .txt published). Part 2 is only for
+# a business with permanent establishments in the designated provinces, so a statement of a farm
+# elsewhere has code 0 (no province) and adds nothing to Part 2; that code is accepted. A code
+# above 8 names no province, so it is refused. The result is a count, not a dollars-and-cents box,
+# so there is no rounding.
+family: ca/farm_designated_province_refused
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: the designated province code is above 8
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "8"}

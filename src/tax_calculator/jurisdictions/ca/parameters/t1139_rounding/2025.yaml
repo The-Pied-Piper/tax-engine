@@ -1,0 +1,13 @@
+# Form T1139 (2025), the three products of an amount and a quotient of days: Part 2 amount B
+# ("Amount 2D multiplied by amount 2G", amount 2G being "Amount 2E divided by amount 2F"), Part 2
+# amount C ("Amount 2L multiplied by amount 2O", amount 2O being "Amount 2M divided by amount 2N")
+# and Part 3 amount 3H ("Amount 3D multiplied by amount 3G", amount 3G being "Amount 3E divided by
+# amount 3F"). Each is a dollars-and-cents box and the form states no rounding rule, so each product
+# rounds half-up to the cent, once, from the exact fraction, the owner's decision. The form's
+# example gives amount B and amount C as 33,904.11 for 45,000 x 275 / 365 = 33,904.109...
+family: ca/t1139_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1139/t1139-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

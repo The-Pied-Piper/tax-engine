@@ -1,0 +1,22 @@
+# Schedule 3 (form 5000-S3) line 4 and line 13200 "Total gain or loss (add all the amounts under
+# column 5)" and line 13 and line 16100 "Capital gains deferral from qualifying dispositions of
+# eligible small business corporation shares included on line 4". The deferral of line 13 is
+# included on line 4, so it is checked to be at most the share gain of line 4. An amount above it
+# is refused, not capped.
+capabilities:
+  # Schedule 3 line 4 and line 13200 "Total gain or loss (add all the amounts under column 5)" is
+  # the share gain or loss, which may be a loss; line 4 counted as a gain only, a loss counts 0.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/share_gain_or_loss
+    produces:
+      output: ca/share_gain_not_below_zero
+  # Schedule 3 line 13 and line 16100 "Capital gains deferral from qualifying dispositions of
+  # eligible small business corporation shares included on line 4" is at most line 4 (checked).
+  - name: core/at_most
+    consumes:
+      amount: ca/capital_gains_deferral
+      bound: ca/share_gain_not_below_zero
+    produces:
+      output: ca/capital_gains_deferral_checked

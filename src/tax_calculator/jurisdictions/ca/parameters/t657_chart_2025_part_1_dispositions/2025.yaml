@@ -1,0 +1,30 @@
+# Dispositions that Form T657 Chart 2025 Part 1 takes, 2025 tax year: "only include reserves
+# reported on a T5013 slip or letter from dispositions of QFFP for Period 1 of 2024" (the same for
+# QSBCS). Counts are those of a Form T2017 reserve record, in order: 1 the years after the
+# disposition (2025 less the year of disposition), 2 disposed of in Period 1 of 2024 (1 yes, 0 no),
+# 3 reserve reported on a T5013 slip or letter (1 yes, 0 no), 4 partnership year began before June
+# 25, 2024 (1 yes, 0 no). The count is 1 when the condition applies (the disposition is taken) and 0
+# when it does not. The result is a count, not a dollars-and-cents box, so there is no rounding.
+# Guide T4037: a disposition in Period 1 of 2024 reported by a partnership whose fiscal period began
+# before June 25, 2024 and ends on or after January 1, 2025 uses Part 1 of Chart 2025; one whose
+# fiscal period began after June 25, 2024 uses Period 1 of Chart 2024.
+family: ca/t657_chart_2025_part_1_dispositions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      Reserves reported on a T5013 slip or letter from dispositions in Period 1 of 2024 by a
+      partnership whose fiscal period began before June 25, 2024
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "3", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "4", relation: equal_to, than: "1"}

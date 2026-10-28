@@ -1,0 +1,203 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 4 (for residents of a province or territory other than Quebec), lines 92 to
+# 110: the base contributions through employment income (lines 92 to 98, the amount for line 30800
+# of the return) and the deduction for the enhanced contributions on employment income (lines 99
+# to 110, the amount for line 22215). Lines 1 to 27 are in 08d_rc381_part_4_lines_1_to_27.yaml,
+# lines 28 to 56 in 08e_rc381_part_4_lines_31_to_56.yaml and lines 59 to 91 in
+# 08f_rc381_part_4_lines_59_to_91.yaml. Every line of 92 to 110 has a step of its own.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # Line 92 "If line 53 of Part 3 is positive or "0", enter the amount from line 52 of Part 3 at
+  # line 92 and line 98, and continue at line 99. If not, enter the amount from line 49 of Part 3
+  # and continue at line 93." (The lines it skips come out the same by their own rules: line 93 is
+  # "0", so lines 94, 95 and 97 are "0" and line 98 is line 96, line 92.)
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_53
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_3_line_49
+      when_non_positive: []
+      when_non_negative:
+        - ca/rc381_part_3_line_52
+    produces:
+      output: ca/rc381_part_4_line_92
+  # Line 93 "If line 53 of Part 3 is negative: Enter the amount from line 53 of Part 3 as a
+  # positive amount." (above zero only when line 53 is negative).
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_53
+    produces:
+      output: ca/rc381_part_4_line_93
+  # Line 94 "If line 53 of Part 3 is negative and line 60 of Part 3 is positive, enter whichever
+  # is less: amount from line 60 of Part 3 or line 93. If not, enter "0"." Line 93 is above zero
+  # only when line 53 is negative, so the least of line 60 and line 93 when both are above zero is
+  # the form's rule.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_60
+        - ca/rc381_part_4_line_93
+    produces:
+      output: ca/rc381_part_4_line_94
+  # Line 95 "Line 93 minus line 94".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_93
+      less: ca/rc381_part_4_line_94
+    produces:
+      output: ca/rc381_part_4_line_95
+  # Line 96 "Line 92 plus line 94".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_92
+        - ca/rc381_part_4_line_94
+    produces:
+      output: ca/rc381_part_4_line_96
+  # Line 97 "If line 68 of Part 3 and line 95 are both positive, enter whichever is less. If not,
+  # enter "0"." (the lesser of line 68 of Part 3 and line 95).
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_68
+        - ca/rc381_part_4_line_95
+    produces:
+      output: ca/rc381_part_4_line_97
+  # Line 98 "Base CPP contributions through employment income: Line 96 plus line 97. Enter this
+  # amount (in dollars and cents) on line 30800 of your return."
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_96
+        - ca/rc381_part_4_line_97
+    produces:
+      output: ca/rc381_part_4_line_98
+  # Line 99 "If line 60 of Part 3 is positive or "0", enter the amount from line 59 of Part 3 at
+  # line 99 and line 105, and continue at line 106. If not, enter the amount from line 56 of Part
+  # 3 and continue at line 100." (The lines it skips come out the same by their own rules: line
+  # 100 is "0", so lines 101, 102 and 104 are "0" and line 105 is line 103, line 99.)
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_60
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_3_line_56
+      when_non_positive: []
+      when_non_negative:
+        - ca/rc381_part_3_line_59
+    produces:
+      output: ca/rc381_part_4_line_99
+  # Line 100 "If line 60 of Part 3 is negative: Enter the amount from line 60 of Part 3 as a
+  # positive amount." (above zero only when line 60 is negative).
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_60
+    produces:
+      output: ca/rc381_part_4_line_100
+  # Line 101 "If line 53 of Part 3 is positive, enter whichever is less: amount from line 53 of
+  # Part 3 or line 100. If not, enter "0"." Line 100 is above zero only when line 60 is negative.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_53
+        - ca/rc381_part_4_line_100
+    produces:
+      output: ca/rc381_part_4_line_101
+  # Line 102 "Line 100 minus line 101".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_100
+      less: ca/rc381_part_4_line_101
+    produces:
+      output: ca/rc381_part_4_line_102
+  # Line 103 "Line 99 plus line 101".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_99
+        - ca/rc381_part_4_line_101
+    produces:
+      output: ca/rc381_part_4_line_103
+  # The result printed inside line 104, "the result of line 68 of Part 3 minus line 97", which is
+  # above zero only when line 68 is.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_68
+      less: ca/rc381_part_4_line_97
+    produces:
+      output: ca/rc381_part_4_line_104_difference
+  # Line 104 "If line 68 of Part 3 and line 102 are both positive, enter whichever is less:
+  # amount from line 102 or the result of line 68 of Part 3 minus line 97. If not, enter "0"."
+  # Line 97 is never more than a positive line 68, so the difference is above zero exactly when
+  # line 68 is more than line 97; when it is "0" or line 68 is not positive the lesser is not
+  # above zero and the line is "0" either way.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_102
+        - ca/rc381_part_4_line_104_difference
+    produces:
+      output: ca/rc381_part_4_line_104
+  # Line 105 "Line 103 plus line 104".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_103
+        - ca/rc381_part_4_line_104
+    produces:
+      output: ca/rc381_part_4_line_105
+  # Line 106 "If line 68 of Part 3 is positive or "0", enter the amount from line 67 of Part 3 at
+  # line 106 and line 109, and continue at line 110. If not, enter the amount from line 64 of Part
+  # 3 and continue at line 107." (The lines it skips come out the same by their own rules: line
+  # 107 is "0", so line 108 is "0" and line 109 is line 106, line 67.)
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_68
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_3_line_64
+      when_non_positive: []
+      when_non_negative:
+        - ca/rc381_part_3_line_67
+    produces:
+      output: ca/rc381_part_4_line_106
+  # Line 107 "If line 68 of Part 3 is negative: Enter the amount from line 68 of Part 3 as a
+  # positive amount." (above zero only when line 68 is negative).
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_68
+    produces:
+      output: ca/rc381_part_4_line_107
+  # Line 108 "If line 61 of Part 3 is positive and line 68 of Part 3 is negative, enter whichever
+  # is less: amount from line 61 of Part 3 or line 107. If not, enter "0"." Line 107 is above zero
+  # only when line 68 is negative.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_61
+        - ca/rc381_part_4_line_107
+    produces:
+      output: ca/rc381_part_4_line_108
+  # Line 109 "Line 106 plus line 108".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_106
+        - ca/rc381_part_4_line_108
+    produces:
+      output: ca/rc381_part_4_line_109
+  # Line 110 "Deduction for CPP enhanced contributions on employment income: Line 105 plus line
+  # 109. Enter this amount (in dollars and cents) on line 22215 of your return."
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_105
+        - ca/rc381_part_4_line_109
+    produces:
+      output: ca/rc381_part_4_line_110

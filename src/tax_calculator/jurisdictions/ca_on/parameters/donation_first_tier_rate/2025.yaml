@@ -1,0 +1,12 @@
+# Ontario donations and gifts credit rate, 2025 tax year (Form ON428, form 5006-C), under
+# "Donations and gifts:": line 47 "Amount from line 13 of your federal Schedule 9"
+# "multiplied by 5.05%".
+# Line 47 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca-on/donation_first_tier_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.0505"

@@ -1,0 +1,25 @@
+# Form T2017 (2025), page 3, "How do you calculate a reserve", the nine-year calculation: "(ii) Capital
+# gain x Enter the applicable percentage from the table" for family farm or fishing property and small
+# business corporation shares disposed of to your child, or a disposition under a QBT or QCC. The printed
+# table "Year of disposition (A)" 90%, "1st year: 80%", "2nd year: 70%", "3rd year: 60%", "4th year: 50%",
+# "5th year: 40%", "6th year: 30%", "7th year: 20%", "8th year: 10%" and "9th year: zero", keyed by the years
+# after the disposition (0 for the year of disposition). Confirmed from the PDF; no .txt published. The
+# percentage is applied to the capital gain and the product is rounded half-up to the cent. A year past
+# the table is refused.
+family: ca/t2017_nine_year_percentage
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2017/t2017-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amounts:
+  "0": "90"
+  "1": "80"
+  "2": "70"
+  "3": "60"
+  "4": "50"
+  "5": "40"
+  "6": "30"
+  "7": "20"
+  "8": "10"
+  "9": "0"

@@ -1,0 +1,12 @@
+# Rounding of the alternative minimum tax federal surtax for multiple jurisdictions, 2025 tax year
+# (Form T691 Part 3 line 3): "If you have to pay tax to multiple jurisdictions, multiply the amount
+# from line 2 by the percentage in Column 5 of line 52220 on Form T2203." The form prints no figure
+# of its own and no rounding rule; the product is a dollars-and-cents line, so it rounds half-up to
+# the cent, the owner's decision. The dataset holds no rate: the percentage is the caller's, as
+# printed (50 for 50%).
+family: ca/amt_multiple_jurisdictions_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

@@ -1,0 +1,11 @@
+# Donations first tier rate, 2025 tax year (Schedule 9, form 5000-S9): line 22 "Amount from
+# line 13 of the previous page Line H" "multiplied by 14.5%".
+# Line 22 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/donation_first_tier_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s9/5000-s9-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.145"

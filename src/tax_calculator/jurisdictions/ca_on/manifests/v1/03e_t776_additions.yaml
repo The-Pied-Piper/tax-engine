@@ -1,0 +1,22 @@
+# Form T776 (ca/t776), Area B "Equipment additions in the year" and Area C "Building additions in
+# the year": see 03e_t776.yaml for the form's selections and exports. Each area is a list of
+# additions, one row for each, holding column 1 "Class number", column 3 "Total cost" and column 4
+# "Personal portion (if applicable)"; column 5 "Rental portion (column 3 minus column 4)" is
+# worked for each row. The two totals feed no other line: Area A's column 3, "Cost of additions in
+# the year (see Areas B and C below)", is a starting amount (Guide T4036 "Non-arm's length
+# transactions": the Area A cost of the example differs from the Area B cost).
+form:
+  name: ca/t776
+capabilities:
+  # T776 Area B "Line 9925: Total equipment additions in the year: Total of column 5".
+  - name: ca/rental_additions_total
+    consumes:
+      additions: ca/rental_equipment_additions
+    produces:
+      total: ca/rental_equipment_additions_total
+  # T776 Area C "Line 9927: Total building additions in the year: Total of column 5".
+  - name: ca/rental_additions_total
+    consumes:
+      additions: ca/rental_building_additions
+    produces:
+      total: ca/rental_building_additions_total

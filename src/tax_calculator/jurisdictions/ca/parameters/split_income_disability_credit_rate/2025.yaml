@@ -1,0 +1,11 @@
+# Federal disability tax credit rate on split income, 2025 tax year (Form T1206 Part 2, line
+# 14): line 13 "Line 11 plus line 12" "x 14.5%", under "Federal disability tax credit". It is
+# T1206's own dataset beside the T1's credit rate. Line 14 is a dollars-and-cents box, so the
+# product rounds half-up to the cent, the owner's decision, as the form states no rounding rule.
+family: ca/split_income_disability_credit_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.145"

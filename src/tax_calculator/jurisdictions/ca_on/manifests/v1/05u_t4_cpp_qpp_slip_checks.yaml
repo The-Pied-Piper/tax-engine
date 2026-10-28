@@ -1,0 +1,39 @@
+# Box 26 of all T4 slips (Schedule 8 line 1, RC381 lines 1 and 2) at most the count of slips times
+# "(maximum $81,200 per slip)". Nothing on the return reads the checked amounts.
+capabilities:
+  # Schedule 8 Part 3 line 1 and Form RC381 Part 3 line 1 "Total CPP pensionable earnings from box
+  # 26 of all of your T4 slips ... (maximum $81,200 per slip)": the printed maximum for each of the
+  # slips counted by `ca/t4_cpp_slip_count`. The product is not a form line.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/t4_slip_pensionable_earnings_maximum
+    consumes:
+      count: ca/t4_cpp_slip_count
+    produces:
+      output: ca/t4_cpp_pensionable_earnings_slip_limit
+  # Line 1 at most the limit above. Box 26 is totalled over every slip, so the maximum of one slip
+  # bounds it only with the count of slips. Nothing on the return reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/t4_cpp_pensionable_earnings_outside_quebec
+      bound: ca/t4_cpp_pensionable_earnings_slip_limit
+    produces:
+      output: ca/t4_cpp_pensionable_earnings_slip_checked
+  # Form RC381 Part 3 line 2 "Total QPP pensionable earnings from box 26 of all of your T4 slips
+  # where the province of employment is Quebec ... (maximum $81,200 per slip)": the printed maximum
+  # for each of the slips counted by `ca/t4_qpp_slip_count`. The product is not a form line.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/t4_slip_pensionable_earnings_maximum
+    consumes:
+      count: ca/t4_qpp_slip_count
+    produces:
+      output: ca/t4_qpp_pensionable_earnings_slip_limit
+  # Line 2 at most the limit above. Box 26 is totalled over every slip. Nothing on the return reads
+  # the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/t4_qpp_pensionable_earnings_in_quebec
+      bound: ca/t4_qpp_pensionable_earnings_slip_limit
+    produces:
+      output: ca/t4_qpp_pensionable_earnings_slip_checked

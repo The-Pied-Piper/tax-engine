@@ -1,0 +1,15 @@
+# Volunteer firefighters' amount, 2025 tax year (T1-2025, form 5000-R): line 90 (line 31220)
+# "Volunteer firefighters' amount (VFA)", and the guide (5000-G): "You can claim $6,000 for the
+# volunteer firefighters' amount (VFA) or search and rescue volunteers' amount (SRVA), but not
+# both, if you meet all of the following conditions:" and "You completed at least 200 hours of
+# eligible volunteer firefighting services or eligible search and rescue volunteer services in
+# the year." The amount is $6,000 once the conditions are met.
+# It is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/volunteer_firefighters_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "6000"

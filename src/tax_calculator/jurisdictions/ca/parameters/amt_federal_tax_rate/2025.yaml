@@ -1,0 +1,13 @@
+# Federal tax rate of the alternative minimum tax, 2025 tax year (Form T691 Part 1 line 96): "Federal
+# tax rate" "× 20.5%", read by line 97 "Gross minimum amount: line 95 multiplied by the percentage on
+# line 96.". The 20.5% is the printed percentage of the form, a rate of 0.205, and the product is a
+# dollars-and-cents line, so it rounds half-up to the cent, the owner's decision, as the form states
+# no rounding rule. The same printed 20.5% is Form T691 Part 4 line 5 "Applicable rate" "× 20.5%",
+# which line 6 applies to line 4 (the foreign income limit); one rate dataset serves both lines.
+family: ca/amt_federal_tax_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.205"

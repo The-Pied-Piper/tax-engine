@@ -1,0 +1,12 @@
+# Federal political contribution tax credit, column 1 line 4, 2025 tax year (Federal Worksheet,
+# form 5000-D1): "Line 41000 - Federal political contribution tax credit", "Column 1: Line 40900 is $400 or less",
+# line 4 "Rate 75%", applied by line 5 "Line 3 multiplied by the percentage from line 4 =".
+# Line 5 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/political_credit_column_1_line_4
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.75"

@@ -1,0 +1,11 @@
+# Form T1206 (2025), page 6, the "Calculation of reserve" and the amounts of "Dispositions of certain
+# capital property - shares subject to TOSI": each calculation is a dollars-and-cents box (lines C,
+# D, E and G, the reserve calculations (i) and (ii), and the amounts of the line G branches). Confirmed
+# from the PDF; no .txt published. The form states no rounding rule, so each quotient or product
+# rounds half-up to the cent, once, the owner's decision.
+family: ca/t1206_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

@@ -1,0 +1,14 @@
+# Moving distance threshold, 2025 tax year (Form T1-M, Moving Expenses Deduction, 2025): Part 2
+# "If the amount on line 3 is less than 40 kilometres, you cannot deduct your moving expenses."
+# and page 1 "To qualify, your new home must be at least 40 kilometres closer (by the shortest
+# public route) to your new work location or school." The gate of line 29 is "at least", so a
+# line 3 of exactly 40 claims.
+# Line 29 is a dollars-and-cents box, so the amount it gates rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/moving_distance_threshold
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1-m/t1-m-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "40"

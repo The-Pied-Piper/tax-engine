@@ -1,0 +1,18 @@
+# Form T776 (ca/t776), the Class 10.1 vehicle additions check of the CCA table of Area A: see
+# 03e_t776.yaml for the form's selections and for the proceeds step, which reads the checked rows.
+# The check runs before the proceeds are adjusted and passes each row on unchanged.
+# Guide T4036 2025, "Class 10.1 (30%)" (the guide T776 Area A points to): "The capital cost limits of a Class 10.1 passenger vehicle are the
+# following prescribed amounts: ... $38,000 for vehicles acquired in 2025, plus the GST/HST or PST."
+# The cost of additions of each Class 10.1 row is refused, not capped, when it is more than that
+# amount plus the tax at the sales tax rate the caller enters: the filer enters the capped amount.
+form:
+  name: ca/t776
+capabilities:
+  - name: ca/cca_vehicle_additions_checks
+    params:
+      prescribed_amounts: ca/cca_vehicle_prescribed_amounts
+    consumes:
+      classes: ca/rental_cca_classes
+      sales_tax_rate: ca/rental_vehicle_sales_tax_rate
+    produces:
+      output: ca/rental_cca_classes_checked

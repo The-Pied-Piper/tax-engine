@@ -1,0 +1,29 @@
+# Schedule 5 line 30300 and line 30400 "If you did not claim an amount on line 30300 of your return,
+# you may be able to claim the amount for one eligible dependant": the count of the spouse or
+# common-law partner amount and of the eligible dependant amount both above 0, 1 when both are
+# claimed and 0 otherwise. The schedule prints no refusal; the count of 1 is refused below, not
+# capped, so the two amounts are never credited together.
+capabilities:
+  # Schedule 5 line 30300 and line 30400, the count of the two both above 0: 1 when the spouse or
+  # common-law partner count (line 30300) and the eligible dependant count (line 30400) are each
+  # more than 0, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/spouse_and_dependant_both_conditions
+    consumes:
+      counts:
+        - ca/spouses_claimed_checked
+        - ca/eligible_dependants_checked
+      amounts: []
+    produces:
+      output: ca/spouse_and_dependant_both
+  # The count above is refused when it is 1: an input error naming lines 30300 and 30400 both
+  # claimed (not capped, and not a printed line). The checked count, 0, is read by nothing on the
+  # return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/spouse_and_dependant_both_refused
+    consumes:
+      count: ca/spouse_and_dependant_both
+    produces:
+      output: ca/spouse_and_dependant_both_checked

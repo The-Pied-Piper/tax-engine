@@ -1,0 +1,76 @@
+# Conditions of Schedule 3 (2025) Part 1, flipped property, the flag of a housing unit: the
+# housing unit is not a flipped property when any of these applies (line 17905 is on page 1 and
+# line 17906 on page 2). Line 17905 "If you ticked "no", the housing unit is not considered a
+# flipped property." is condition 1: the count of line 17905 is 0 ("No"). Line 17906 "If any of the life events above
+# apply to you, the housing unit is not considered a flipped property." is conditions 2 to 10, one
+# for each box: the count of the box is 1 (ticked). The flag is 0 when any applies and 1 when none
+# does, so a housing unit with line 17905 "Yes" and no box ticked is a flipped property. Each
+# count is a checked tick box or yes or no answer (0 or 1). The flag is a count, not a
+# dollars-and-cents box, so there is no rounding.
+family: ca/schedule_3_flipped_property_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: >-
+      If you ticked "no", the housing unit is not considered a flipped property.
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "0"}
+  - text: >-
+      Box 1: the death of the taxpayer or a related person
+    parts:
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "1"}
+  - text: >-
+      Box 2: a related person joining the taxpayer's household or the taxpayer joining a related
+      person's household (for example, birth of a child, adoption, or care of an elderly parent)
+    parts:
+      - tests:
+          - {reads: count, position: "3", relation: equal_to, than: "1"}
+  - text: >-
+      Box 3: the breakdown of a marriage or common-law partnership where the taxpayer had been
+      living separate and apart from their spouse or common-law partner for at least 90 days before
+      the disposition
+    parts:
+      - tests:
+          - {reads: count, position: "4", relation: equal_to, than: "1"}
+  - text: >-
+      Box 4: a threat to the personal safety of the taxpayer or a related person (for example,
+      domestic violence)
+    parts:
+      - tests:
+          - {reads: count, position: "5", relation: equal_to, than: "1"}
+  - text: >-
+      Box 5: a serious disability or illness of the taxpayer or a related person
+    parts:
+      - tests:
+          - {reads: count, position: "6", relation: equal_to, than: "1"}
+  - text: >-
+      Box 6: the eligible relocation of the taxpayer or their spouse or common-law partner where
+      the taxpayer's new home (including area code): is at least 40 kilometres closer to the new
+      work (including area code): location or school (generally, an eligible relocation allows the
+      taxpayer to carry on business, be employed, or attend full-time post-secondary education)
+    parts:
+      - tests:
+          - {reads: count, position: "7", relation: equal_to, than: "1"}
+  - text: >-
+      Box 7: the involuntary termination of employment of the taxpayer or their spouse or
+      common-law partner
+    parts:
+      - tests:
+          - {reads: count, position: "8", relation: equal_to, than: "1"}
+  - text: >-
+      Box 8: the insolvency of the taxpayer (for example, due to an accumulation of debt)
+    parts:
+      - tests:
+          - {reads: count, position: "9", relation: equal_to, than: "1"}
+  - text: >-
+      Box 9: the destruction or expropriation of the taxpayer's property (for example, when the
+      property is destroyed due to natural or man-made disaster)
+    parts:
+      - tests:
+          - {reads: count, position: "10", relation: equal_to, than: "1"}

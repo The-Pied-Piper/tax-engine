@@ -1,0 +1,37 @@
+# Federal basic personal amount, 2025 tax year (the 2025 T1 return, form 5000-R). Line 77
+# (line 30000) "If the amount on line 23600 is $177,882 or less, enter $16,129. If the
+# amount on line 23600 is $253,414 or more, enter $14,538. Otherwise, use the Federal
+# Worksheet to calculate the amount to enter. (maximum $16,129)".
+# Federal Worksheet (form 5000-D1), line 30000: "If the amount from line 23600 of your
+# return is: $177,882 or less, enter $16,129 on line 30000 of your return; $253,414 or
+# more, enter $14,538 on line 30000 of your return. Otherwise, complete the calculation
+# below." Line 1 "Base amount 14,538.00"; line 2 "Supplement amount 1,591.00"; line 3
+# "Amount from line 23600 of your return"; line 4 "Income threshold 177,882.00"; line 5
+# "Line 3 minus line 4"; line 6 "75,532.00"; line 7 "Line 5 divided by line 6"; line 8
+# "1,591.00"; line 9 "Line 7 multiplied by line 8"; line 10 "Line 2 minus line 9 (if
+# negative, enter "0")"; line 11 "Line 1 plus line 10 Enter this amount on line 30000 of
+# your return. (maximum $16,129)". So the amount is a taper on net income (line 23600):
+# base 14,538 (line 1), supplement 1,591 (lines 2 and 8), threshold 177,882 (line 4) and
+# range 75,532 (line 6). The credit rate that turns it into tax relief is its own dataset,
+# ca/credit_rate.
+# The worksheet states no rounding. T4127 (Payroll Deductions Formulas, 120th edition,
+# effective January 1, 2025) gives the same formula on its own payroll figure NI, not line
+# 23600, and is cited for its rounding rule: "Where $177,882 < NI* < $253,414, BPAF** =
+# $16,129 - (NI* - $177,882) × ($1,591 / $75,532)***", with "*** Note that there is no
+# rounding on this division." and "** If the BPAF has three or more digits after the
+# decimal point, increase the second digit after the decimal point by one if the third
+# digit is five or more, and drop the third digit. If the third digit after the decimal
+# point is less than five, drop the third digit." So the quotient is kept exact and
+# the amount rounds half-up to the cent, once.
+family: ca/basic_personal_amount
+tax_year: 2025
+kind: taper
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/payroll-deductions-t4127-payroll-deductions-formulas/t4127-jan-120th-edition-effective-january-1-2025/t4127-jan-payroll-deductions-formulas-computer-programs.html
+rounding: {increment: "0.01", mode: half_up}
+base: "14538"
+supplement: "1591"
+threshold: "177882"
+range: "75532"

@@ -1,0 +1,13 @@
+# Ontario political contribution tax credit maximum, 2025 tax year (Form ON479, form 5006-TC):
+# line 16 "Enter $1,666.82 if your total contributions are $3,793 or more. If not, use Worksheet
+# ON479. (maximum $1,666.82)". The maximum is printed after the worksheet's result, so it caps
+# line 16.
+# Line 16 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca-on/political_credit_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1666.82"

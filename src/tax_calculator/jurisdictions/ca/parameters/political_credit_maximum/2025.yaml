@@ -1,0 +1,12 @@
+# Federal political contribution tax credit maximum, 2025 tax year (T1 for Ontario, form 5006-R):
+# "Line 135 and line 41000: Total federal political contributions (attach receipts) Line 40900"
+# "(maximum $650)". The maximum is printed after the worksheet's result, so it caps line 135.
+# Line 135 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/political_credit_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "650"

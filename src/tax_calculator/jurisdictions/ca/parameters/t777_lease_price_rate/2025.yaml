@@ -1,0 +1,11 @@
+# Guide T4044 (2025), "Eligible leasing costs", line 6 "Enter the amount from line 4 or line 5,
+# whichever is more. multiplied by 85%": the printed 85%, a rate of 0.85. The product is a
+# dollars-and-cents line, so it rounds half-up to the cent, as the guide states
+# no rounding rule.
+family: ca/t777_lease_price_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.85"

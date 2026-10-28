@@ -1,0 +1,21 @@
+# EI premium on employment income, 2025 tax year (the 2025 T1 return, form 5000-R).
+# CRA "EI premium rates and maximums", 2025 federal row: maximum annual insurable
+# earnings $65,700; rate 1.64%; maximum annual employee premium $1,077.48. Line 88
+# (line 31200) "through employment (boxes 18 and 55 of all T4 slips) (maximum
+# $1,077.48)". So the tier is 1.64% of the earnings from 0 to the $65,700 maximum
+# insurable earnings, with no exemption. This tier is Form T2204 line 10 "Amount from
+# line 1 x 1.64% (maximum $1,077.48)", the premium required on the insurable earnings; line 31200
+# is Form T2204 line 16.
+# Premiums are in dollars and cents, and 1.64% of 65,700 is exactly the printed
+# $1,077.48, so the tier rounds half-up to the cent.
+family: ca/ei_premium
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.0164"
+lower: "0"
+upper: "65700"
+maximum: "1077.48"

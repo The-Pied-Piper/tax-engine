@@ -1,0 +1,12 @@
+# Percentage of the excess in amount B, 2025 tax year (Guide T4002, "Restricted farm losses (partly deductible)", pp. 95-96):
+# "B) $2,500 plus 50% × (your net farm loss minus $2,500)"; kept as the guide prints it (50 for 50%) (confirmed from the PDF; no .txt published). It borrows the credit kind because the
+# figure is used whole, as the basic personal amount is.
+# The guide states no rounding rule, so the figure rounds half-up to the cent, the owner's
+# decision, the repo convention.
+family: ca/farm_restricted_loss_percentage
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "50"

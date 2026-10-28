@@ -1,0 +1,13 @@
+# Largest spouse's age amount, 2025 tax year (T1 line 78 and line 30100, "Age amount (if you were
+# born in 1960 or earlier) (use Federal Worksheet) (maximum $9,028)"), the most Schedule 2 line 1
+# "Enter the amount from line 30100 of their return." can carry. It borrows the credit kind because
+# the figure is claimed whole, as the basic personal amount is.
+# The T1 states no rounding rule, so the figure rounds half-up to the cent, the owner's decision,
+# the repo convention.
+family: ca/spouse_return_age_amount_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "9028"

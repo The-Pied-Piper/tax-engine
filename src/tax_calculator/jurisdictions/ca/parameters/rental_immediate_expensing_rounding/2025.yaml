@@ -1,0 +1,10 @@
+# Form T776 (2025), Area G "Line iii: Immediate expensing limit allocated to you: Multiply
+# $1.5 million by the percentage assigned to you in column 3 (see note 11)". The form prints no
+# figure of its own for the multiplication and no rounding rule; line iii is a dollars-and-cents
+# box, so the product rounds half-up to the cent, the owner's decision, the repo convention.
+family: ca/rental_immediate_expensing_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt
+rounding: {increment: "0.01", mode: half_up}

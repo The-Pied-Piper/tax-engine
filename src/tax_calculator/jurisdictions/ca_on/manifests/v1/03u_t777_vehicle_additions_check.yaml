@@ -1,0 +1,21 @@
+# Form T777 (ca/t777), the Class 10.1 vehicle additions check of Part B: see 03k_t777.yaml for the
+# form's selections and for the Part B claim, which reads the checked rows. The check runs after the
+# Part B checks and before the Part B claim, and passes each row on unchanged.
+# Guide T4044 2025 (the guide T777 Part B points to): "The maximum capital cost of each vehicle that may
+# be included in Class 10.1 is now $38,000 plus GST and PST, or HST." and "For a passenger vehicle you
+# acquired in 2025 that cost you more than $38,000 before GST and PST or HST no matter how much more
+# than $38,000 it cost, the amount you record is $38,000 plus the GST and PST or HST that you would
+# have paid on $38,000."
+# The cost of additions (column 3) of each Class 10.1 row is refused, not capped, when it is more than
+# that amount plus the tax at the sales tax rate the caller enters: the filer enters the capped amount.
+form:
+  name: ca/t777
+capabilities:
+  - name: ca/cca_vehicle_additions_checks
+    params:
+      prescribed_amounts: ca/cca_vehicle_prescribed_amounts
+    consumes:
+      classes: ca/t777_part_b_checked_rows
+      sales_tax_rate: ca/t777_vehicle_sales_tax_rate
+    produces:
+      output: ca/t777_part_b_additions_checked_rows

@@ -1,0 +1,57 @@
+# Guide T4044 (2025) "Deduction for tools for an eligible apprentice mechanic": "* This claim cannot
+# be more than your net income for 2025 from all sources (the claim cannot create a non-capital
+# loss)." Form T777 line 10 is the claim; the net income is the return's (T1 line 23600, signed), so
+# the check is a step of the return, which reads the form's export. The net income before the claim is
+# the net income plus the claim, never below zero: a return that is already at a loss without the
+# claim has a limit of 0, and only a claim above 0 is refused.
+capabilities:
+  # Form T777 line 10, the export of the form ca/t777 (one record, the form has no instances list),
+  # read as its total.
+  - name: core/record_total
+    consumes:
+      records: ca/t777.t777_line_10
+    produces:
+      output: ca/t777_line_10_total
+  # "your net income for 2025 from all sources": the net income with the claim deducted, plus the
+  # claim.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/net_income_signed
+        - ca/t777_line_10_total
+    produces:
+      output: ca/t777_apprentice_mechanic_tools_net_income_limit
+  # "This claim cannot be more than your net income": above it the claim is an input error
+  # (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_line_10_total
+      bound: ca/t777_apprentice_mechanic_tools_net_income_limit
+    produces:
+      output: ca/t777_line_10_checked
+  # Form T777 maximum deduction "(A minus B) plus C", the export of the form read as its total.
+  - name: core/record_total
+    consumes:
+      records: ca/t777.t777_apprentice_mechanic_tools_maximum_deduction
+    produces:
+      output: ca/t777_apprentice_mechanic_tools_maximum_deduction_total
+  # Example 1: "your maximum deduction in 2025 is $4,029 [...] since it is less than your net
+  # income": the maximum is the lesser of the formula and the net income, so a claim held down by
+  # the net income leaves nothing unused.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t777_apprentice_mechanic_tools_maximum_deduction_total
+        - ca/t777_apprentice_mechanic_tools_net_income_limit
+    produces:
+      output: ca/t777_apprentice_mechanic_tools_maximum_allowed
+  # "If you do not want to claim the maximum deduction, you can carry forward the unused amount for
+  # use against income earned in a future year": the maximum allowed less the claim, carried to 2026
+  # as the next year's amount C. The claim is at most the limit and the formula maximum, so the
+  # difference is never negative.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t777_apprentice_mechanic_tools_maximum_allowed
+      less: ca/t777_line_10_checked
+    produces:
+      output: ca/t777_apprentice_mechanic_tools_carried_forward_out

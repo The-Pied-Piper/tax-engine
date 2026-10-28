@@ -1,0 +1,10 @@
+# Form T776 (2025), Line 7 "Partners: your share of amount 6, or the amount from your T5013 slip":
+# the share of amount 6 of a partner who received no T5013 slip, amount 6 times "Your percentage of
+# the partnership %" (Part 1). The form prints no rounding rule; line 7 is a dollars-and-cents box,
+# so the product rounds half-up to the cent, the repo's rule for a dollars-and-cents box.
+family: ca/rental_partner_share_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt
+rounding: {increment: "0.01", mode: half_up}

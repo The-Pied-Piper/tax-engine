@@ -1,0 +1,28 @@
+# Conditions of Form 5000-G "Emergency services volunteers" (2025), the $1,000 exemption (line
+# 10105) claimed with the volunteer firefighters' amount (VFA, line 31220) or the search and rescue
+# volunteers' amount (SRVA, line 31240), 2025 tax year. The guide: "If you are eligible for the
+# $1,000 exemption on line 10100 of your return and the VFA or SRVA (lines 31220 and 31240 of your
+# return), you must choose which one you want to claim." The exemption is the amount reported on
+# line 10105 (`ca/emergency_services_volunteer_exempt_income`, box 87 of the T4 slips). The VFA and
+# the SRVA are each a condition met, checked to be 0 or 1 (`ca/volunteer_firefighters_conditions_met`
+# and `ca/search_and_rescue_conditions_met`). The condition applies when the exemption is not 0 and
+# either flag is not 0: one condition of two parts, every part must hold, and a part holds when any
+# of its tests holds. The count is 1 when the condition applies and 0 otherwise. The form prints no
+# such rule; the refusal of the count is the guard of this check
+# (`ca/emergency_services_volunteer_conflict_refused`). The count is a count, not a dollars-and-cents
+# box, so there is no rounding.
+family: ca/emergency_services_volunteer_conflicts
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: the $1,000 exemption (line 10105) is claimed with the VFA or SRVA
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: not_equal_to, than: "0"}
+      - tests:
+          - {reads: count, position: "1", relation: not_equal_to, than: "0"}
+          - {reads: count, position: "2", relation: not_equal_to, than: "0"}

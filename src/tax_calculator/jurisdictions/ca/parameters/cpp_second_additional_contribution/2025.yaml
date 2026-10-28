@@ -1,0 +1,26 @@
+# Second additional CPP contribution on employment income, 2025 tax year (T1-2025
+# Schedule 8, form 5000-S8). Part 2, 12 months: line B "Your maximum pensionable
+# earnings for 2025 (maximum $71,300)"; line D "Your additional maximum pensionable
+# earnings for 2025 (maximum $81,200)". Part 3: line 2 "Enter whichever is less: amount
+# from line D of Part 2 or line 1."; line 3 "Amount from line B of Part 2"; line 4
+# "Line 2 minus line 3 (if negative, enter "0")"; line 22 "amount from line 4
+# multiplied by 4% (maximum $396.00)". So the tier is 4% of the earnings between the
+# $71,300 and $81,200 ceilings; the CRA second additional rate page's 2025 row gives
+# the same additional ceiling. Part 2's proration for fewer than 12 months is not
+# triggered by the returns modelled.
+# Part 3b line 44 "If line 23 is positive or "0", enter the amount from line 22 on
+# line 44 and line 47, and continue at line 48." and line 48 "Line 43 plus line 47
+# Enter this amount (in dollars and cents) on line 22215 of your return." (Part 3a
+# lines 27 and 28 when line 24 is positive), so the tier rounds half-up to the cent.
+family: ca/cpp_second_additional_contribution
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/calculating-deductions/making-deductions/second-additional-cpp-contribution-rates-maximums.html
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.04"
+lower: "71300"
+upper: "81200"
+maximum: "396.00"

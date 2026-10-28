@@ -1,0 +1,12 @@
+# Maximum for the Ontario caregiver amount, 2025 tax year (Worksheet ON428, form 5006-D):
+# "Line 58185 - Ontario caregiver amount", line 3 "Line 1 minus line 2 (if negative, enter "0")
+# (maximum $6,008 per dependant)". It is a plain cap on each dependant's allowable amount.
+# Line 3 is a dollars-and-cents box, so each dependant's allowable amount rounds half-up to the
+# cent, as the form states no rounding rule.
+family: ca-on/caregiver_maximum_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "6008"

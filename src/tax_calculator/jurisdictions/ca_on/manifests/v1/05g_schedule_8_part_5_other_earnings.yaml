@@ -1,0 +1,127 @@
+# Form Schedule 8 (ca/schedule_8), Parts 3a to 5: see 05c_schedule_8_part_3.yaml.
+form:
+  name: ca/schedule_8
+capabilities:
+  # Schedule 8 Part 5 line 70 "Base CPP contributions through self-employment income and other
+  # earnings: Line 70: Enter the result of the following calculation (in dollars and cents) on
+  # line 31000 of your return. amount from line 43 multiplied by 50% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_part_5_line_70_rate
+    consumes:
+      base: ca/cpp_part_5_line_43
+    produces:
+      output: ca/cpp_part_5_line_70
+  # Schedule 8 Part 5 line 71 "Amount from line 44 multiplied by 50% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_part_5_line_71_rate
+    consumes:
+      base: ca/cpp_part_5_line_44
+    produces:
+      output: ca/cpp_part_5_line_71
+  # Schedule 8 Part 5 line 72 "Line 70 plus line 71 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_70
+        - ca/cpp_part_5_line_71
+    produces:
+      output: ca/cpp_part_5_line_72
+  # Schedule 8 Part 5 line 73 "Enter the amount from line 24 of Part 3 if positive. If not,
+  # enter "0".": line 24 of Part 3 less "0", not below zero (line 48 takes the same amount
+  # through its own step).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_contributions_difference
+      less: ca/cpp_zero
+    produces:
+      output: ca/cpp_part_5_line_73
+  # Schedule 8 Part 5 line 74 "Line 72 minus line 73 (if negative, show in brackets) =": signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_part_5_line_72
+      less: ca/cpp_part_5_line_73
+    produces:
+      output: ca/cpp_part_5_line_74
+  # Schedule 8 Part 5 line 75 "Enter whichever is less: amount from line 72 or line 73 Line A":
+  # the lesser of the two, the amount line 75 multiplies and line 77 takes line 76 off.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cpp_part_5_line_72
+        - ca/cpp_part_5_line_73
+    produces:
+      output: ca/cpp_part_5_line_75_base
+  # Schedule 8 Part 5 line 75 "multiply by 83.1933 =": line A times 83.1933%, the same factor as
+  # Part 3 line 9, as a dataset of this line.
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_part_5_line_75_rate
+    consumes:
+      base: ca/cpp_part_5_line_75_base
+    produces:
+      output: ca/cpp_part_5_line_75
+  # Schedule 8 Part 5 line 77 "Amount A minus line 76 =": line 76 is "Amount from line 75".
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_part_5_line_75_base
+      less: ca/cpp_part_5_line_75
+    produces:
+      output: ca/cpp_part_5_line_77
+  # Schedule 8 Part 5 line 80 "Line 78 minus line 79 =": line 78 is "Amount from line 70" and
+  # line 79 "Amount from line 75". Signed: line 75 can be a cent more than line 70 when the
+  # amounts are a few dollars or less.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_part_5_line_70
+      less: ca/cpp_part_5_line_75
+    produces:
+      output: ca/cpp_part_5_line_80
+  # Schedule 8 Part 5 line 83 "Line 81 minus line 82 =": line 81 is "Amount from line 71" and
+  # line 82 "Amount from line 77". The form prints no brackets for it, so the kind is declared
+  # non-negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_part_5_line_71
+      less: ca/cpp_part_5_line_77
+    produces:
+      output: ca/cpp_part_5_line_83
+  # Schedule 8 Part 5 line 84 "Amount from line 45 multiplied by 50% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_part_5_line_84_rate
+    consumes:
+      base: ca/cpp_part_5_line_45
+    produces:
+      output: ca/cpp_part_5_line_84
+  # Schedule 8 Part 5 line 86 "If line 74 is negative, enter it as a positive amount.": "0" less
+  # line 74, not below zero (0 when line 74 is positive or "0").
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_zero
+      less: ca/cpp_part_5_line_74
+    produces:
+      output: ca/cpp_part_5_line_86
+  # Schedule 8 Part 5 line 87 "Line 85 minus line 86 (if negative, enter "0") =": line 85 is
+  # "Amount from line 84".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_part_5_line_84
+      less: ca/cpp_part_5_line_86
+    produces:
+      output: ca/cpp_part_5_line_87
+  # Schedule 8 Part 5 line 88 "Deduction for CPP enhanced contributions on self-employment
+  # income and other earnings: Add lines 80, 81, 83, 84, and 87. Enter this amount (in dollar
+  # and cents) on line 22200 of your return. =": the five as printed (line 81 is "Amount from
+  # line 71").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_5_line_80
+        - ca/cpp_part_5_line_71
+        - ca/cpp_part_5_line_83
+        - ca/cpp_part_5_line_84
+        - ca/cpp_part_5_line_87
+    produces:
+      output: ca/cpp_part_5_line_88

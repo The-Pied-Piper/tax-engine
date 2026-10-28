@@ -1,0 +1,24 @@
+# Guide T4036 (2025), "Class 54 (30%)": "There is a limit of $61,000 (plus federal and provincial
+# sales taxes) on the capital cost for each zero-emission passenger vehicle in Class 54." and "If a
+# zero-emission passenger vehicle is disposed of to a person or partnership with whom you deal at
+# arm's length, and its cost exceeds the prescribed amount ($55,000 for vehicles acquired after
+# March 18, 2019, and before January 1, 2022; $59,000 for vehicles acquired after December 31,
+# 2021, and before January 1, 2023; or $61,000 for vehicles acquired after December 31, 2022), the
+# proceeds of disposition will be adjusted based on a factor equal to the prescribed amount as a
+# proportion of the actual cost of the vehicle." The amounts are by the year acquired: 2019 to
+# 2021, 2022, and 2023 and later; a vehicle acquired before 2019 is not a Class 54 vehicle, so the
+# table has no row for it. The printed amounts are claimed whole, and the tax on each is a
+# dollars-and-cents box, rounded half-up to the cent, as the guide states no rounding rule.
+family: ca/cca_zepv_prescribed_amounts
+tax_year: 2025
+kind: year_amounts
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4036/t4036-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - from_year: 2023
+    amounts: {prescribed_amount: "61000"}
+  - from_year: 2022
+    amounts: {prescribed_amount: "59000"}
+  - from_year: 2019
+    amounts: {prescribed_amount: "55000"}

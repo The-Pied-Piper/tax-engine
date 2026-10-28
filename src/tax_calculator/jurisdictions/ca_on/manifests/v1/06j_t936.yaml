@@ -1,0 +1,353 @@
+# Form T936 (2025) "Calculation of Cumulative Net Investment Loss (CNIL) to December 31, 2025": the
+# form ca/t936, run once (it has no instances list). Its starting amounts are in
+# 01o_t936_inputs.yaml, and its steps are the printed lines of Chart A, Part 1, Part 2 and Part 3
+# that compute (the copies of the return's steps it reads are in 06j_t936_copies.yaml). Its exports
+# are Chart A line 14 and Part 3 line C, which Form T657 Step 1 line 15 and Step 2 line 16 read as
+# ca/t936.<name> (06b_capital_gains_deduction_t657.yaml). The return selects none of these steps.
+form:
+  name: ca/t936
+  exports:
+    - ca/t936_chart_a_line_14
+    - ca/t936_cnil
+capabilities:
+  # Part 1 line 2 and Part 2 line 9: "Net rental losses (line 12600)" is the negative part of the
+  # signed net rental income, and "Net rental income, including recaptured capital cost allowance
+  # (line 12600)" its positive part (as Form T2048 Chart A lines 2 and 12 do).
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/net_rental_income
+    produces:
+      output: ca/t936_net_rental_income
+  - name: core/subtract
+    consumes:
+      amount: ca/t936_net_rental_income
+      less: ca/net_rental_income
+    produces:
+      output: ca/t936_net_rental_loss
+  # Part 1 line 3 "Limited or non-active partnership losses (line 12200) other than allowable
+  # capital losses", part 1 line 6 (68080) "Any other investment expenses claimed in 2025 to earn
+  # property income", Part 2 line 11 (68100) "Any other property income reported in 2025": the
+  # total of the one record of each shared fact's form.
+  - name: core/record_total
+    consumes:
+      records: ca/non_active_partnership_losses.non_active_partnership_losses
+    produces:
+      output: ca/t936_partnership_losses
+  - name: core/record_total
+    consumes:
+      records: ca/other_investment_expenses.other_investment_expenses
+    produces:
+      output: ca/t936_other_investment_expenses
+  - name: core/record_total
+    consumes:
+      records: ca/other_property_income.other_property_income
+    produces:
+      output: ca/t936_other_property_income
+  # Part 1 line 5 "50% of exploration and development expenses (line 22400)".
+  - name: core/apply_rate
+    params:
+      rate: ca/t936_exploration_expenses_rate
+    consumes:
+      base: ca/exploration_and_development_expenses
+    produces:
+      output: ca/t936_exploration_expenses_at_half
+  # Part 1 line 7 "Additional investment expenses ... enter whichever is less: line 20 in Chart A
+  # or line 25300 of your return". Chart A is always computed (a filer with no gains other than
+  # QSBCS or QFFP gets 0 from its lines).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t936_additional_investment_income
+        - ca/net_capital_losses_of_other_years
+    produces:
+      output: ca/t936_additional_investment_expenses
+  # Part 1 "Add lines 1 to 7." (Total investment expenses claimed in 2025) A: line 1 "Carrying
+  # charges and interest expenses (line 22100)", line 2, line 3, line 4 "Limited partnership
+  # losses of other years after 1985 (line 25100)", lines 5, 6 and 7.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/carrying_charges_interest_expenses_and_other_expenses
+        - ca/t936_net_rental_loss
+        - ca/t936_partnership_losses
+        - ca/limited_partnership_losses_of_other_years
+        - ca/t936_exploration_expenses_at_half
+        - ca/t936_other_investment_expenses
+        - ca/t936_additional_investment_expenses
+    produces:
+      output: ca/t936_total_investment_expenses
+  # Part 2 line 8 "Investment income (lines 12000 and 12100)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/taxable_dividends
+        - ca/interest_and_other_investment_income
+    produces:
+      output: ca/t936_investment_income
+  # Part 2 line 10 "Net income from limited or non-active partnership (line 12200) other than
+  # taxable capital gains": line 12200 less the taxable capital gains in it. The form prints no
+  # floor or limit on the line, so it is signed (gains above line 12200 leave a negative amount).
+  - name: core/record_total
+    consumes:
+      records: ca/partnership_taxable_capital_gains.partnership_taxable_capital_gains
+    produces:
+      output: ca/t936_partnership_taxable_capital_gains
+  - name: core/subtract
+    consumes:
+      amount: ca/net_partnership_income
+      less: ca/t936_partnership_taxable_capital_gains
+    produces:
+      output: ca/t936_partnership_income_other_than_gains
+  # Part 2 line 12 (68110) "50% of income from the recovery of exploration and development
+  # expenses (line 13000)": the recovery part of line 13000, an input (the one of Form T2048 Chart A
+  # line 15) that may not exceed line 13000 (refused, not capped), then 50% of it.
+  - name: core/at_most
+    consumes:
+      amount: ca/qbt_exploration_recovery_income
+      bound: ca/other_income
+    produces:
+      output: ca/t936_exploration_recovery_income_checked
+  - name: core/apply_rate
+    params:
+      rate: ca/t936_exploration_recovery_rate
+    consumes:
+      base: ca/t936_exploration_recovery_income_checked
+    produces:
+      output: ca/t936_recovery_of_exploration_expenses
+  # Part 2 "Add lines 8 to 13." (Total investment income reported in 2025) B: line 13 is Chart A
+  # line 20, "Additional investment income".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t936_investment_income
+        - ca/t936_net_rental_income
+        - ca/t936_partnership_income_other_than_gains
+        - ca/t936_other_property_income
+        - ca/t936_recovery_of_exploration_expenses
+        - ca/t936_additional_investment_income
+    produces:
+      output: ca/t936_total_investment_income
+  # Part 3 line 14 is line A. Line 16 "Line 14 plus line 15" (line 15, "Total investment expenses
+  # claimed in previous years after 1987", is an input).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t936_total_investment_expenses
+        - ca/t936_investment_expenses_previous_years
+    produces:
+      output: ca/t936_line_16
+  # Part 3 line 17 "Amount from line 17218 of Form T2048 for 2024 to 2025": the 2024 amount (an
+  # input) plus the total over this return's dispositions of line 17218 of Form T2048 for 2025.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_net_investment_loss_reduction
+    produces:
+      output: ca/t936_t2048_line_17218_for_2025
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t936_t2048_line_17218_for_2024
+        - ca/t936_t2048_line_17218_for_2025
+    produces:
+      output: ca/t936_t2048_line_17218
+  # Part 3 line 18 "Cumulative investment expenses (line 16 minus line 17)": no floor is printed,
+  # so it is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t936_line_16
+      less: ca/t936_t2048_line_17218
+    produces:
+      output: ca/t936_cumulative_investment_expenses
+  # Part 3 line 19 is line B. Line 21 "Cumulative investment income (total of lines 19 and 20)"
+  # (line 20, "Total investment income reported in previous years after 1987", is an input).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t936_total_investment_income
+        - ca/t936_investment_income_previous_years
+    produces:
+      output: ca/t936_cumulative_investment_income
+  # Part 3 line C "Line 18 minus line 21 (if negative, enter "0")" "CNIL to December 31, 2025".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t936_cumulative_investment_expenses
+      less: ca/t936_cumulative_investment_income
+    produces:
+      output: ca/t936_cnil
+  # Chart A line 2 "Amount from line 17215 of Form T2048": the total over the dispositions.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_taxable_gains_related_to_deduction
+    produces:
+      output: ca/t936_t2048_line_17215
+  # Chart A line 3 "Line 1 minus line 2" (line 1 is Schedule 3 line 19900, signed): no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/schedule_3_line_19900
+      less: ca/t936_t2048_line_17215
+    produces:
+      output: ca/t936_chart_a_line_3
+  # Chart A line 7 "Add lines 4 to 6 (if negative, show in brackets)": Schedule 3 lines 10700,
+  # 11000 and 12400, signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/qsbcs_gain_or_loss
+        - ca/qffp_gain_or_loss
+        - ca/qffp_foreclosure_gain_or_loss
+    produces:
+      output: ca/t936_chart_a_line_7
+  # Chart A line 8 "If you reported an amount on line 19200 of Schedule 3, enter the amount from
+  # line 13 of Form T2017 (if negative, show in brackets)": line 13 of Form T2017 (the one
+  # record) whenever line 19200 is reported, that is more or less than 0 (the line is signed),
+  # else 0. A sign gate takes one candidate for each branch, so the two branches are two gates and
+  # line 8 is their sum (only one of the two is not 0).
+  - name: core/record_total
+    consumes:
+      records: ca/t2017.t2017_line_13
+    produces:
+      output: ca/t936_t2017_line_13
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/schedule_3_line_19200
+      when_positive:
+        - ca/t936_t2017_line_13
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/t936_chart_a_line_8_when_positive
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/schedule_3_line_19200
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/t936_t2017_line_13
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/t936_chart_a_line_8_when_negative
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t936_chart_a_line_8_when_positive
+        - ca/t936_chart_a_line_8_when_negative
+    produces:
+      output: ca/t936_chart_a_line_8
+  # Chart A line 9 "Line 7 plus line 8 (if negative, show in brackets)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t936_chart_a_line_7
+        - ca/t936_chart_a_line_8
+    produces:
+      output: ca/t936_chart_a_line_9
+  # Chart A line 10 "Inclusion rate × 50%", then line 11 "Line 9 multiplied by the percentage on
+  # line 10 (if negative, enter "0")": the product, signed, then its positive part.
+  - name: core/apply_rate
+    params:
+      rate: ca/t936_chart_a_inclusion_rate
+    consumes:
+      base: ca/t936_chart_a_line_9
+    produces:
+      output: ca/t936_chart_a_line_9_at_inclusion_rate
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t936_chart_a_line_9_at_inclusion_rate
+    produces:
+      output: ca/t936_chart_a_line_11
+  # Chart A line 12 "Amount from line 17216 of Form T2048": the total over the dispositions.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qsbcs_qffp_taxable_gains_related_to_deduction
+    produces:
+      output: ca/t936_t2048_line_17216
+  # Chart A line 13 "Line 11 minus line 12": no floor is printed, so it is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t936_chart_a_line_11
+      less: ca/t936_t2048_line_17216
+    produces:
+      output: ca/t936_chart_a_line_13
+  # Chart A line 14 "Line 3 minus line 13 (if negative, enter "0")", before the gate of line 1.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t936_chart_a_line_3
+      less: ca/t936_chart_a_line_13
+    produces:
+      output: ca/t936_chart_a_line_14_before_gate
+  # Chart A line 1 "If the amount is "0", do not complete lines 2 to 17, and enter "0" on line
+  # 20": line 14 is the computed amount whenever line 1 is more or less than 0 (the line is
+  # signed), else 0. The two branches are two gates and line 14 is their sum (only one of the two
+  # is not 0).
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/schedule_3_line_19900
+      when_positive:
+        - ca/t936_chart_a_line_14_before_gate
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/t936_chart_a_line_14_when_line_1_positive
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/schedule_3_line_19900
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/t936_chart_a_line_14_before_gate
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/t936_chart_a_line_14_when_line_1_negative
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t936_chart_a_line_14_when_line_1_positive
+        - ca/t936_chart_a_line_14_when_line_1_negative
+    produces:
+      output: ca/t936_chart_a_line_14
+  # Chart A line 17 "Line 15 minus line 16" (68150): box 21 less box 30 of the 2025 T3 slips, no
+  # floor printed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t936_t3_box_21_capital_gains
+      less: ca/t936_t3_box_30_capital_gains
+    produces:
+      output: ca/t936_chart_a_line_17
+  # Chart A line 18 "Inclusion rate × 50%", then line 19 "Line 17 multiplied by the percentage
+  # on line 18": signed, no floor printed.
+  - name: core/apply_rate
+    params:
+      rate: ca/t936_t3_inclusion_rate
+    consumes:
+      base: ca/t936_chart_a_line_17
+    produces:
+      output: ca/t936_chart_a_line_19_before_gate
+  # Chart A line 14 "If the total from line 14 is "0", do not complete lines 15 to 19, and enter
+  # "0" on line 20": line 19 is the product only when line 14 is more than 0, else 0.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/t936_chart_a_line_14
+      when_positive:
+        - ca/t936_chart_a_line_19_before_gate
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/t936_chart_a_line_19
+  # Chart A line 20 "Line 14 minus line 19 (if negative, enter "0")" "Additional investment
+  # income".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t936_chart_a_line_14
+      less: ca/t936_chart_a_line_19
+    produces:
+      output: ca/t936_additional_investment_income

@@ -1,0 +1,14 @@
+# FHSA annual limit after a maximum participation period that ended in a prior year, 2025
+# tax year (Schedule 15, FHSA Contributions, Transfers and Activities): Step 2 "If your
+# maximum participation period (MPP) ended in a prior year, do not complete this step. Your
+# 2025 annual FHSA limit is "0". Enter "0" on line 40 and continue at Step 3." The printed 0
+# borrows the credit kind because it is a printed amount taken whole. Line 40 is a
+# dollars-and-cents box, so the amount rounds half-up to the cent, the owner's decision, as
+# the schedule states no rounding rule.
+family: ca/fhsa_annual_limit_after_maximum_participation_period
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s15/5000-s15-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "0"

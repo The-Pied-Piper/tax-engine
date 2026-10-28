@@ -1,0 +1,15 @@
+# Maximum insurable earnings, 2025 tax year (T1-2025 Schedule 13, form 5000-S13): "Total EI
+# insurable earnings", line 5 "Maximum insurable earnings 65,700.00"; CRA "EI premium rates
+# and maximums", 2025 federal row, gives $65,700. It is the figure line 7 "Line 5 minus line
+# 6 (if negative, enter "0")" starts from, so it borrows the credit kind, claimed whole, as
+# the age amount maximum does.
+# Line 5 prints dollars and cents, so the amount rounds half-up to the cent, which changes
+# nothing.
+family: ca/ei_maximum_insurable_earnings
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s13/5000-s13-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html
+rounding: {increment: "0.01", mode: half_up}
+amount: "65700.00"

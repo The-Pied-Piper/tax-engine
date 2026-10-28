@@ -1,0 +1,13 @@
+# Maximum for each apprentice's eligible salary and wages in the apprenticeship job creation tax
+# credit, 2025 tax year (Form T2038(IND) Part B, Table 1, form T2038(IND) E (25)): column 3 "The
+# lesser of eligible salary and wages** payable in the year or $20,000.". It is a plain cap on
+# each apprentice's row, not a credit; the credit's 10% is taken of the total of the column.
+# Column 3 is a dollars-and-cents box, so each apprentice's lesser rounds half-up to the cent, the
+# half-up rule, as the form states no rounding rule.
+family: ca/itc_apprentice_wages_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2038-ind/t2038-ind-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "20000"

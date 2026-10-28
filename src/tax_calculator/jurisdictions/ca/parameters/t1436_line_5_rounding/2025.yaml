@@ -1,0 +1,10 @@
+# Form T1436 (Capital Gains Worksheet, 2025), "Line 21700 - Allowable business investment loss", line 5
+# "For 2000: Amount from line 254 of your return x 1/IR (1) = 5": the quotient of the amount by the 2000
+# inclusion rate (ca/t657_inclusion_rate_2000), with the numerator 1, is a dollars-and-cents box, rounded
+# half-up to the cent once, as the form states no rounding rule; 0 when the inclusion rate is 0.
+family: ca/t1436_line_5_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

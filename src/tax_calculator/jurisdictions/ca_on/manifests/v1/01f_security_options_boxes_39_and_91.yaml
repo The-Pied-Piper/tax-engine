@@ -1,0 +1,22 @@
+# The shared fact "T4 boxes 39 and 91": the form ca/security_options_boxes_39_and_91, a form of its
+# own with no instances, run once on one input, ca/t4_security_options_boxes_39_and_91 (the return's
+# inputs, in 01_inputs.yaml). It is the total of all amounts in boxes 39 and 91 of the T4 slips, and
+# two CRA forms ask it in the same words: Form T691 Part 1 line 28 "Total of all amounts in boxes 39
+# and 91 of your T4 slips" (the security options deduction "included on line 24900 of your return")
+# and the T1 line 24900 claim of Guide 5000-G, "the total of the amounts shown in boxes 39, 41, 91,
+# and 92 of your T4 slips". It is entered once, here, and both read this form's export, so the two
+# cannot differ.
+#
+# This is a targeted exception to taking inputs the way the form does: a fact gets a form of its
+# own like this only when two CRA forms ask the very same fact. It is not a way to merge inputs
+# that merely look alike, and every other input is still taken the way the form asks it.
+#
+# The form has no step and no computed line. It exports the input as entered. The return reads the
+# export as a record list of one record, totalled by `core/record_total` into
+# ca/t4_security_options_boxes_39_and_91_total (in 05v_security_options_deduction.yaml), which
+# line 30 of the alternative minimum tax (20_alternative_minimum_tax.yaml) and the line 24900 sum
+# read.
+form:
+  name: ca/security_options_boxes_39_and_91
+  exports:
+    - ca/t4_security_options_boxes_39_and_91

@@ -1,0 +1,19 @@
+# Limit of the Federal Worksheet "Line 25000 - Other payments deduction" (form 5000-D1, 2025):
+# "If the amount on line 9 is more than $93,454, go to canada.ca/line-25000 to find out how much
+# you can deduct. Otherwise, enter the amount from line 14700 of your return on line 25000 of your
+# return." So the count is 1 when line 9 is more than $93,454 and 0 when it is not. Line 9 is
+# signed (the form prints no floor on it), so a negative line 9 is not over the limit. The one
+# amount read is line 9. The result is a count, not a dollars-and-cents box, so there is no
+# rounding.
+family: ca/other_payments_line_9_over_limit_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: the amount on line 9 is more than $93,454
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "93454"}

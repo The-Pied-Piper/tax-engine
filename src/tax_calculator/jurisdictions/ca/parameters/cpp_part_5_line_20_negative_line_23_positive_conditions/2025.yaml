@@ -1,0 +1,22 @@
+# Entry conditions of Schedule 8 Part 5 lines 8 and 9 (form 5000-S8, 2025): "If the amount from
+# line 20 of Part 3 is negative and line 23 of Part 3 is positive, complete lines 8 and 9. If
+# not, enter "0" on line 9 and continue at line 10." So the count is 1 when the condition
+# applies and 0 when it does not. The condition is two parts that must both hold: line 8 (line
+# 20 of Part 3 as a positive amount) more than 0, which is line 20 negative, and line 23 of
+# Part 3 more than 0. The caller's amounts are read in the order line 8, then line 23 of Part 3.
+# The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca/cpp_part_5_line_20_negative_line_23_positive_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      line 20 of Part 3 is negative and line 23 of Part 3 is positive
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}

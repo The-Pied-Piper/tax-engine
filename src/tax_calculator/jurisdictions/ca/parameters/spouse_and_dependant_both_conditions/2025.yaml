@@ -1,0 +1,21 @@
+# Condition under which T1 lines 30300 and 30400 are both claimed, 2025 tax year: "If you did not
+# claim an amount on line 30300 of your return, you may be able to claim the amount for one eligible
+# dependant if, at any time in the year, you met all the following conditions:" (Schedule 5, line
+# 30400). The count is 1 when the spouse or common-law partner amount (`ca/spouses_claimed`) and the
+# eligible dependant amount (`ca/eligible_dependants_checked`) are each more than 0, and 0 otherwise.
+# Not a dollars-and-cents box, so no rounding.
+family: ca/spouse_and_dependant_both_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      line 30300 and line 30400 are both more than 0
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: count, position: "2", relation: more_than, than: "0"}

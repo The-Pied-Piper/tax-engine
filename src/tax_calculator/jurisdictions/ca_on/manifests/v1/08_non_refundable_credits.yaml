@@ -1,0 +1,698 @@
+capabilities:
+  # T1 line 87 and line 31000, entered from Schedule 8 Part 4 line 15: Part 4 is completed only
+  # when the filer reports self-employment income alone, so the amount is counted once for
+  # each Part 4 completed, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/self_employed_cpp_base_credit
+      count: ca/cpp_part_4_completed_checked
+    produces:
+      output: ca/cpp_base_contributions_on_self_employment
+  # T1 line 31000 from Part 5 line 70, once for each Part 5 completed, 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/cpp_part_5_line_70
+      count: ca/cpp_part_5_completed_checked
+    produces:
+      output: ca/cpp_part_5_base_contributions_on_self_employment
+  # T1 line 31000: the Part 4 amount plus the Part 5 amount, plus Form RC381 Part 4 line 111
+  # "Enter the result of the following calculation (in dollars and cents) on line 31000 of your
+  # return: amount from line 84 multiplied by 50%" (08j, 0 with no Form RC381). Schedule 8 Part 4
+  # and Part 5 are the filer's choices (counts 1 or 0); the return carries Schedule 8 or Form
+  # RC381, never both.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_base_contributions_on_self_employment
+        - ca/cpp_part_5_base_contributions_on_self_employment
+        - ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings
+    produces:
+      output: ca/cpp_base_contributions_on_self_employment_and_other_earnings
+  # "Enter the amount from line 9 or line 10, whichever applies, on line 31217 and line
+  # 42120 of your return.": Schedule 13 is completed only with an agreement with the Canada
+  # Employment Insurance Commission, so line 9 is counted once for each agreement, 1 or 0,
+  # on each of the two lines.
+  - name: core/times_count
+    consumes:
+      amount: ca/self_employed_ei_premiums
+      count: ca/ei_special_benefits_agreement_checked
+    produces:
+      output: ca/ei_premiums_on_self_employment
+  # T1 line 92 (line 31260) "Enter whichever is less: $1,471 or line 1 plus line 2.": line 1
+  # "Employment income (box 14 of all T4 slips)" (line 10100) and line 2 "Other employment
+  # income" (line 10400), in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+    produces:
+      output: ca/canada_employment_amount_income
+  # The Canada employment amount: the lesser of the T1's cap and line 1 plus line 2.
+  - name: core/capped_amount
+    params:
+      cap: ca/canada_employment_amount
+    consumes:
+      base: ca/canada_employment_amount_income
+    produces:
+      output: ca/canada_employment_amount
+  # Schedule 11 line 2 "Amount from line 1" "multiplied by 50% =": line 1 and line 32000 "Eligible
+  # tuition fees paid to Canadian educational institutions for 2025" is a caller input.
+  - name: core/apply_rate
+    params:
+      rate: ca/canada_training_credit_rate
+    consumes:
+      base: ca/canadian_tuition_fees_checked
+    produces:
+      output: ca/canada_training_credit_basis
+  # Schedule 11 line 3 "Your Canada training credit limit from your latest notice of assessment
+  # or reassessment", a caller input, and line 4 "Enter whichever is less: amount from line 2
+  # or line 3."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/canada_training_credit_basis
+        - ca/canada_training_credit_limit
+    produces:
+      output: ca/canada_training_credit_maximum
+  # Schedule 11 "Enter the Canada training credit amount that you are claiming for 2025 (cannot
+  # be more than the amount on line 4)." and line 5 "Enter this amount on line 45350 of your
+  # return. Your Canada training credit": the amount claimed is the filer's election, a caller
+  # input, at most line 4; T1 line 156 and line 45350 "Canada training credit (CTC) (complete
+  # Schedule 11)".
+  - name: core/at_most
+    consumes:
+      amount: ca/canada_training_credit_claimed
+      bound: ca/canada_training_credit_maximum
+    produces:
+      output: ca/canada_training_credit
+  # Schedule 11 line 6 "Line 1 minus line 5 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/canadian_tuition_fees_checked
+      less: ca/canada_training_credit
+    produces:
+      output: ca/canadian_tuition_available
+  # Schedule 11 line 7 and line 32001 "Eligible tuition fees paid to foreign educational
+  # institutions for 2025", a caller input, and line 8 "Line 6 plus line 7 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/canadian_tuition_available
+        - ca/foreign_tuition_fees
+    produces:
+      output: ca/current_year_tuition_available
+  # Schedule 11 line 9 "Unused federal tuition from your 2024 notice of assessment or
+  # reassessment (note 1)", a caller input, and line 10 "Line 8 plus line 9 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/current_year_tuition_available
+        - ca/unused_tuition_from_2024
+    produces:
+      output: ca/total_tuition_available
+  # Schedule 11 "Enter the amount from line 26000 of your return on line 11 if it is $57,375 or
+  # less. If it is more than $57,375, enter the result of the following calculation:" and line
+  # 11 "Amount from line 76 of your return divided by 14.5% =".
+  - name: ca/amount_or_divided_by_rate
+    params:
+      limit: ca/tuition_income_limit
+    consumes:
+      amount: ca/taxable_income
+      dividend: ca/federal_basic_tax
+    produces:
+      output: ca/tuition_income_base
+  # Form T1206 Part 2 line 8 "Amount from line 7 multiplied by 33% Enter this amount on line 40424
+  # of your return. Federal tax on split income", line 7 being "Total split income from line 4",
+  # which is line 4 itself: T1 line 120 and line 40424 "Federal tax on split income (TOSI)
+  # (complete Form T1206)".
+  - name: core/apply_rate
+    params:
+      rate: ca/split_income_rate
+    consumes:
+      base: ca/total_split_income
+    produces:
+      output: ca/federal_tax_on_split_income
+  # Form T1206 Part 2 line 8A "TOSI-adjusted taxable income Amount from line 8 ÷ 14.5% =", line 8
+  # being the federal tax on split income.
+  - name: ca/divided_by_rate
+    params:
+      rate: ca/tosi_taxable_income_rate
+    consumes:
+      dividend: ca/federal_tax_on_split_income
+    produces:
+      output: ca/tosi_adjusted_taxable_income
+  # Form T1206 "If you are completing a federal Schedule 11, calculate line 8A and add it to the
+  # amount on line 11 of Schedule 11": the amount on line 11 (the taxable income, or the tax
+  # divided by 14.5%) plus line 8A.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/tuition_income_base
+        - ca/tosi_adjusted_taxable_income
+    produces:
+      output: ca/tuition_income_with_tosi
+  # T1 line 101 "Add lines 98 to 100. =": the credit amounts of the lines wired up to line 100
+  # (line 31800), in the forms' line order, before line 102; Schedule 11 line 12 "Enter the
+  # amount from line 101 of your return" reads it.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/basic_personal_amount
+        - ca/age_amount
+        - ca/spouse_amount
+        - ca/eligible_dependant_amount
+        - ca/caregiver_amount_for_spouse_or_dependant
+        - ca/caregiver_amount
+        - ca/infirm_children_amount
+        - ca/cpp_base_contributions_on_return
+        - ca/cpp_base_contributions_on_self_employment_and_other_earnings
+        - ca/ei_premiums
+        - ca/ei_premiums_on_self_employment
+        - ca/volunteer_firefighters_credit
+        - ca/search_and_rescue_credit
+        - ca/canada_employment_amount
+        - ca/home_buyers_credit
+        - ca/home_accessibility_credit
+        - ca/adoption_credit
+        - ca/pension_income_credit
+        - ca/disability_amount_for_self
+        - ca/disability_transferred_amount
+    produces:
+      output: ca/credit_amounts_subtotal
+  # Schedule 11 line 13 "Line 11 minus line 12 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/tuition_income_with_tosi
+      less: ca/credit_amounts_subtotal
+    produces:
+      output: ca/tuition_income_less_credits
+  # Schedule 11 line 14 "Enter whichever is less amount from line 9 or line 13."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/unused_tuition_from_2024
+        - ca/tuition_income_less_credits
+    produces:
+      output: ca/unused_tuition_claimed
+  # Schedule 11 line 15 "Line 13 minus line 14 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/tuition_income_less_credits
+      less: ca/unused_tuition_claimed
+    produces:
+      output: ca/tuition_income_remaining
+  # Schedule 11 line 16 "Enter whichever is less amount from line 8 or line 15."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/current_year_tuition_available
+        - ca/tuition_income_remaining
+    produces:
+      output: ca/current_year_tuition_claimed
+  # Schedule 11 line 17 "Line 14 plus line 16 Enter this amount on line 32300 of your return.
+  # Your federal tuition amount =", T1 line 103 and line 32300 "Your federal tuition amount
+  # (complete Schedule 11)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/unused_tuition_claimed
+        - ca/current_year_tuition_claimed
+    produces:
+      output: ca/federal_tuition_amount
+  # Schedule 11 line 18 "Amount from line 10 of the previous page", line 19 "Amount from line
+  # 17 of the previous page" and line 20 "Line 18 minus line 19 Total unused federal tuition
+  # amount =".
+  - name: core/subtract
+    consumes:
+      amount: ca/total_tuition_available
+      less: ca/federal_tuition_amount
+    produces:
+      output: ca/unused_federal_tuition
+  # Schedule 11 line 21 "Amount from line 8 of the previous page (maximum $5,000)".
+  - name: core/capped_amount
+    params:
+      cap: ca/tuition_transfer_maximum
+    consumes:
+      base: ca/current_year_tuition_available
+    produces:
+      output: ca/tuition_transfer_limit
+  # Schedule 11 line 22 "Amount from line 16 of the previous page" and line 23 "minus line 22
+  # (if negative, enter "0") Unused federal tuition amount available to transfer =", line 21
+  # less line 22.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/tuition_transfer_limit
+      less: ca/current_year_tuition_claimed
+    produces:
+      output: ca/tuition_available_to_transfer
+  # Schedule 11 line 24 and line 32700 "Enter the amount you are transferring to a designated
+  # individual as shown on your Tuition and Enrolment Certificate (cannot be more than the
+  # amount on line 23). Federal tuition amount transferred": the filer's election, a caller
+  # input, at most line 23.
+  - name: core/at_most
+    consumes:
+      amount: ca/tuition_transfer_elected
+      bound: ca/tuition_available_to_transfer
+    produces:
+      output: ca/tuition_transferred
+  # Schedule 11 line 25 "Line 20 minus line 24 Unused federal tuition amount available to carry
+  # forward to a future year =".
+  - name: core/subtract
+    consumes:
+      amount: ca/unused_federal_tuition
+      less: ca/tuition_transferred
+    produces:
+      output: ca/tuition_carried_forward
+  # Schedule 2 line 6 "Add lines 1 to 5. =": line 1 and line 35200 "Enter the amount from line
+  # 30100 of their return.", line 2 and line 35300 "Enter the amount from line 30500 of their
+  # return.", line 3 and line 35500 "Enter the amount from line 31400 of their return.
+  # (maximum $2,000)", line 4 and line 35700 "Enter the amount from line 31600 of their return.
+  # (Note 1)" and line 5 and line 36000 "Enter the federal amount designated to you from their
+  # forms T2202, TL11A, or TL11C. (Note 2)", all of them figures from another person's return,
+  # caller inputs; lines 1, 3, 4 and 5 are the checked amounts of 08n_spouse_return_maxima.yaml.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/spouse_return_age_amount_checked
+        - ca/spouse_return_infirm_children_amount
+        - ca/spouse_return_pension_income_amount_checked
+        - ca/spouse_return_disability_amount_checked
+        - ca/spouse_designated_tuition_checked
+    produces:
+      output: ca/spouse_transferable_amounts
+  # Schedule 2 line 7 "Enter the amount from line 26000 of their return on line 7 if it is
+  # $57,375 or less. If it is more than $57,375, enter the result of the following calculation:
+  # amount from line 76 of their return divided by 14.5% =": their line 26000 and their line 76
+  # are caller inputs.
+  - name: ca/amount_or_divided_by_rate
+    params:
+      limit: ca/spouse_transfer_income_limit
+    consumes:
+      amount: ca/spouse_return_taxable_income
+      dividend: ca/spouse_return_federal_basic_tax
+    produces:
+      output: ca/spouse_income_for_transfer
+  # Schedule 2 line 8 "Amount from line 30000 of their return", line 9 "Amount from line 96 of
+  # their return" and line 10 "Amount from line 32300 of their return", caller inputs, and line
+  # 11 "Add lines 8 to 10. =". Line 8 is the checked amount of 08n_spouse_return_maxima.yaml.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/spouse_return_basic_personal_amount_checked
+        - ca/spouse_return_line_96
+        - ca/spouse_return_federal_tuition_amount
+    produces:
+      output: ca/spouse_credits_used
+  # Schedule 2 line 12 and line 36100 "Line 7 minus line 11 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/spouse_income_for_transfer
+      less: ca/spouse_credits_used
+    produces:
+      output: ca/spouse_adjusted_taxable_income
+  # Schedule 2 line 13 "Line 6 minus line 12 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/spouse_transferable_amounts
+      less: ca/spouse_adjusted_taxable_income
+    produces:
+      output: ca/spouse_unused_amounts
+  # Schedule 2 "If you were separated because of a breakdown in your relationship for a period
+  # of 90 days or more including December 31, 2025, your spouse or common-law partner cannot
+  # transfer any unused amounts to you." and line 13 "Enter this amount on line 32600 of your
+  # return. Federal amounts transferred from your spouse or common-law partner", T1 line 105
+  # and line 32600 "Amounts transferred from your spouse or common-law partner (complete
+  # Schedule 2)": line 13 is counted once when not separated and not at all when separated, a
+  # caller's 1 or 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/spouse_unused_amounts
+      count: ca/spouse_not_separated_90_days_checked
+    produces:
+      output: ca/amounts_transferred_from_spouse
+  # T1 line 33500 (lines 30000, 30100, 30300, 30400, 30425, 30450, 30500, 30800, 31000, 31200,
+  # 31217, 31220, 31240, 31260, 31270, 31285, 31300, 31400, 31800, 31900, 32300, 32400, 32600,
+  # 33200) and ON428 line 58800 (lines 58040, 58080, 58120, 58160, 58185, 58240, 58280, 58300,
+  # 58305, 58769), in the forms' line order. The lines 31220 and 31240 (the volunteer amounts),
+  # 31270 (home buyers'), 31285 (home accessibility), 31300 (adoption), 31400 (pension income) and
+  # 31900 (student loan interest) are the parts in 08m_other_federal_non_refundable_credits.yaml,
+  # and line 33500 sums them where the form does. T1 line 113 and line 33500 is
+  # "Line 106 plus line 112", and line 112 (line 33200) follows the lines that line 106 adds;
+  # ON428 line 44 and line 58800 is "Line 35 plus line 43", and line 43 (line 58769) follows the
+  # lines that line 35 adds. ON428 lines 58240, 58280, 58300 and 58305 are "Amount from line
+  # 30800 / 31000 / 31200 / 31217 of your return", so the Ontario sum reads the federal kinds; it
+  # has no Canada employment amount. Lines 31000 "on self-employment income and other earnings"
+  # and 31217 "on self-employment and other eligible earnings (complete Schedule 13)" follow
+  # lines 30800 and 31200, as ON428's lines 58280 and 58305 follow its lines 58240 and 58300.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/basic_personal_amount
+        - ca/age_amount
+        - ca/spouse_amount
+        - ca/eligible_dependant_amount
+        - ca/caregiver_amount_for_spouse_or_dependant
+        - ca/caregiver_amount
+        - ca/infirm_children_amount
+        - ca/cpp_base_contributions_on_return
+        - ca/cpp_base_contributions_on_self_employment_and_other_earnings
+        - ca/ei_premiums
+        - ca/ei_premiums_on_self_employment
+        - ca/volunteer_firefighters_credit
+        - ca/search_and_rescue_credit
+        - ca/canada_employment_amount
+        - ca/home_buyers_credit
+        - ca/home_accessibility_credit
+        - ca/adoption_credit
+        - ca/pension_income_credit
+        - ca/disability_amount_for_self
+        - ca/disability_transferred_amount
+        - ca/student_loan_interest
+        - ca/federal_tuition_amount
+        - ca/tuition_transferred_from_child_checked
+        - ca/amounts_transferred_from_spouse
+        - ca/medical_claim
+    produces:
+      output: ca/non_refundable_credit_amounts
+  # Schedule 9 chart for line 33700 "Gifts of capital property that is depreciable
+  # property", line 4 "Enter whichever is less: amount from line 2 or line 3.": the net
+  # proceeds of disposition of the property donated in 2025 (line 2) and its capital cost
+  # (line 3), caller inputs for the one class and property the return claims.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/depreciable_gift_net_proceeds
+        - ca/depreciable_gift_capital_cost
+    produces:
+      output: ca/depreciable_gift_proceeds_or_cost
+  # Schedule 9 chart for line 33700, line 5 "Enter whichever is less: amount from line 1 or
+  # line 4. Enter this amount on line 33700 of the previous page.": line 1 "Amount of
+  # recaptured depreciation included on your 2025 return" is a caller input. This is the
+  # previous page's line B, "Gifts of capital property that are depreciable property".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/depreciable_gift_recaptured_depreciation
+        - ca/depreciable_gift_proceeds_or_cost
+    produces:
+      output: ca/depreciable_gifts
+  # Schedule 9 chart for line 33900 line 3 "Line 1 minus Line 2 Enter this amount on line 33900
+  # on the previous page.": line 1 is the caller's input and line 2 is the checked amount of
+  # 08o_capital_gift_gains_deduction_check.yaml. This is the previous page's line C, "Gifts of
+  # capital property".
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gift_taxable_gains
+      less: ca/capital_gift_gains_deduction_checked
+    produces:
+      output: ca/capital_property_gifts
+  # Schedule 9 line 5 "Add lines 1 to 4. Total eligible amount of charitable donations":
+  # line 1 donations to registered charities and similar organizations, line 2 (line 32900)
+  # donations to the Government of Canada, a province or territory and similar bodies, line
+  # 3 (line 33300) donations to registered universities outside Canada and line 4 (line
+  # 33400) donations to the United Nations and its agencies and registered foreign
+  # charities, caller inputs taken as the receipts state them, with any unused donations of
+  # the previous five years that the filer chooses to claim.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/charitable_donations
+        - ca/government_donations
+        - ca/university_donations_outside_canada
+        - ca/foreign_charity_donations
+    produces:
+      output: ca/total_charitable_donations
+  # Schedule 9 line 6 "Enter your net income from line 23600 of your return. Line A"
+  # "multiplied by 75%": 75% of the net income.
+  - name: core/apply_rate
+    params:
+      rate: ca/donation_net_income_rate
+    consumes:
+      base: ca/net_income
+    produces:
+      output: ca/donation_limit_on_net_income
+  # Schedule 9 line 7 "Amount B plus amount C Line D" "multiplied by 25%": line D is the
+  # gifts of capital property that are depreciable property (line B, line 33700) plus the
+  # gifts of capital property (line C, line 33900), and line 7 is 25% of it.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/depreciable_gifts
+        - ca/capital_property_gifts
+    produces:
+      output: ca/capital_gifts_total
+  - name: core/apply_rate
+    params:
+      rate: ca/capital_gifts_limit_rate
+    consumes:
+      base: ca/capital_gifts_total
+    produces:
+      output: ca/capital_gifts_limit_addition
+  # Schedule 9 line 8 "Line 6 plus line 7".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/donation_limit_on_net_income
+        - ca/capital_gifts_limit_addition
+    produces:
+      output: ca/donation_limit_with_capital_gifts
+  # Schedule 9 line 9 "Enter whichever is less: amount A or line 8. Total charitable
+  # donations limit": amount A is the net income of line 6, so the 25% of the gifts of
+  # capital property can raise the limit above 75% of the net income, but not above the net
+  # income itself.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/net_income
+        - ca/donation_limit_with_capital_gifts
+    produces:
+      output: ca/charitable_donations_limit
+  # Schedule 9 line 10 and line 34000 "Enter whichever is less: amount from line 5 or line
+  # 9."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/total_charitable_donations
+        - ca/charitable_donations_limit
+    produces:
+      output: ca/charitable_donations_claimed
+  # Schedule 9 line 11 and line 34200 "Eligible amount of ecological gifts and cultural
+  # gifts (see Guide P113)", a caller input, and line 12 "Line 10 plus line 11".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/charitable_donations_claimed
+        - ca/ecological_and_cultural_gifts
+    produces:
+      output: ca/donations_and_gifts_total
+  # Schedule 9 line 13 "Enter whichever is less: amount from line 12 or $200.": the $200 is
+  # a dataset, claimed whole.
+  - name: core/credit_amount
+    params:
+      amount: ca/donation_first_tier_maximum
+    produces:
+      output: ca/donation_first_tier_maximum
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/donations_and_gifts_total
+        - ca/donation_first_tier_maximum
+    produces:
+      output: ca/donations_first_tier
+  # Schedule 9 line 14 "Line 12 minus line 13".
+  - name: core/subtract
+    consumes:
+      amount: ca/donations_and_gifts_total
+      less: ca/donations_first_tier
+    produces:
+      output: ca/donations_over_first_tier
+  # Schedule 9 line 15 and line 34210 "Total ecological gifts made after February 10, 2014,
+  # and before 2016 included in the amount on line 11", a caller input, and line 16 "Line 14
+  # minus line 15 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/donations_over_first_tier
+      less: ca/ecological_gifts_before_2016
+    produces:
+      output: ca/donations_over_first_tier_after_2016_gifts
+  # Schedule 9 line 18 "Income threshold 253,414.00": the dataset becomes an artifact of the
+  # same name.
+  - name: core/credit_amount
+    params:
+      amount: ca/donation_high_income_threshold
+    produces:
+      output: ca/donation_high_income_threshold
+  # Schedule 9 line 17 "Enter your taxable income from line 26000 of your return." and line
+  # 19 "Line 17 minus line 18 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/taxable_income
+      less: ca/donation_high_income_threshold
+    produces:
+      output: ca/taxable_income_over_donation_threshold
+  # Schedule 9 line 20 "Enter whichever is less: amount from line 16 or line 19. Line F"
+  # "multiplied by 33%": line F, then 33% of it.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/donations_over_first_tier_after_2016_gifts
+        - ca/taxable_income_over_donation_threshold
+    produces:
+      output: ca/high_income_donations
+  - name: core/apply_rate
+    params:
+      rate: ca/donation_high_income_rate
+    consumes:
+      base: ca/high_income_donations
+    produces:
+      output: ca/high_income_donation_credit
+  # Schedule 9 line 21 "Amount E minus amount F Line G" "multiplied by 29%": amount E is the
+  # amount from line 14 of the previous page and amount F is line F; line G, then 29% of it.
+  - name: core/subtract
+    consumes:
+      amount: ca/donations_over_first_tier
+      less: ca/high_income_donations
+    produces:
+      output: ca/regular_rate_donations
+  - name: core/apply_rate
+    params:
+      rate: ca/donation_regular_rate
+    consumes:
+      base: ca/regular_rate_donations
+    produces:
+      output: ca/regular_rate_donation_credit
+  # Schedule 9 line 22 "Amount from line 13 of the previous page Line H" "multiplied by
+  # 14.5%".
+  - name: core/apply_rate
+    params:
+      rate: ca/donation_first_tier_rate
+    consumes:
+      base: ca/donations_first_tier
+    produces:
+      output: ca/first_tier_donation_credit
+  # Schedule 9 line 23 "Add lines 20 to 22. Enter this amount on line 34900 of your return.
+  # Allowable donations for 2025", T1 line 116 (line 34900) "Donations and gifts (complete
+  # Schedule 9)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/high_income_donation_credit
+        - ca/regular_rate_donation_credit
+        - ca/first_tier_donation_credit
+    produces:
+      output: ca/donations_and_gifts_credit
+  # T1 line 115 (line 33800) "Line 113 multiplied by the percentage from line 114": the
+  # federal credit rate is applied once, to the total of credit amounts. It is the first of
+  # the three lines that line 35000 adds, and the base of the top-up tax credit.
+  - name: core/apply_rate
+    params:
+      rate: ca/credit_rate
+    consumes:
+      base: ca/non_refundable_credit_amounts
+    produces:
+      output: ca/credit_amounts_at_credit_rate
+  # Federal Worksheet 5000-D1, "Line 34990 - Top-up tax credit": line 1 "Amount from line
+  # 33800 of your return", line 2 "Amount from line 22 of your Schedule 9" and line 3 "Line
+  # 1 plus line 2".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/credit_amounts_at_credit_rate
+        - ca/first_tier_donation_credit
+    produces:
+      output: ca/top_up_credits_base
+  # Federal Worksheet 5000-D1, "Line 34990 - Top-up tax credit", line 4 "8,319.38": the
+  # dataset becomes an artifact of the same name; line 5 "Line 3 minus line 4 (if negative,
+  # enter "0")".
+  - name: core/credit_amount
+    params:
+      amount: ca/top_up_threshold
+    produces:
+      output: ca/top_up_threshold
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/top_up_credits_base
+      less: ca/top_up_threshold
+    produces:
+      output: ca/top_up_excess
+  # Federal Worksheet 5000-D1, "Line 34990 - Top-up tax credit", line 6 "Applicable rate
+  # 3.45%" and line 7 "Line 5 multiplied by the percentage from line 6 Enter this amount on
+  # line 34990 of your return.", T1 line 117 (line 34990) "Top-up tax credit (use Federal
+  # Worksheet)".
+  - name: core/apply_rate
+    params:
+      rate: ca/top_up_rate
+    consumes:
+      base: ca/top_up_excess
+    produces:
+      output: ca/top_up_tax_credit
+  # T1 line 118 (line 35000) "Add lines 115 to 117. Total federal non-refundable tax
+  # credits": line 115 (line 33800), line 116 (line 34900) and line 117 (line 34990), in
+  # line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/credit_amounts_at_credit_rate
+        - ca/donations_and_gifts_credit
+        - ca/top_up_tax_credit
+    produces:
+      output: ca/non_refundable_tax_credits
+  # T1 line 121 and line 40400 "Line 119 plus line 120 =": line 119 "Enter the amount from line
+  # 76." is the federal basic tax and line 120 is the federal tax on split income, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_basic_tax
+        - ca/federal_tax_on_split_income
+    produces:
+      output: ca/federal_tax_with_split_income
+  # Each form's credits come off its tax, not below zero: the unused part is lost. Federally the
+  # tax is line 121 (line 119, the basic tax, plus line 120, the tax on split income) and the
+  # credits are line 125 (T1 line 126 "Line 121 minus line 125 (if negative, enter "0")").
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/federal_tax_with_split_income
+      less: ca/credits_against_basic_federal_tax
+    produces:
+      output: ca/federal_tax_after_credits
+  # T2038(IND) Part C "Recapture", "Amount of expenditure on which ITC earned at 15% (after
+  # 2013) is recaptured. Do not enter more than the amount of the original expenditure"
+  # (line 67193), times 0.15, amount 1: the caller's line 67193 at 15%.
+  - name: core/apply_rate
+    params:
+      rate: ca/itc_recapture_rate_after_2013
+    consumes:
+      base: ca/itc_recapture_expenditure_at_15_percent
+    produces:
+      output: ca/itc_recapture_at_15_percent
+  # Line 67195 "Amount of expenditure on which ITC earned at 20% (before 2014) is
+  # recaptured. Do not enter more than the amount of the original expenditure", times 0.20,
+  # amount 2: the caller's line 67195 at 20%.
+  - name: core/apply_rate
+    params:
+      rate: ca/itc_recapture_rate_before_2014
+    consumes:
+      base: ca/itc_recapture_expenditure_at_20_percent
+    produces:
+      output: ca/itc_recapture_at_20_percent
+  # "Total recapture of investment tax credit on SR&ED expenditures (add amounts 1 and 2)
+  # Enter this amount on the Recapture of investment tax credit line of your income tax and
+  # benefit return" (amount 3), T1 line 131 "Recapture of investment tax credit (complete
+  # Form T2038(IND))": amounts 1 and 2 added.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/itc_recapture_at_15_percent
+        - ca/itc_recapture_at_20_percent
+    produces:
+      output: ca/itc_recapture
+  # T1 line 132 "Line 130 plus line 131 =": line 130 and line 131 "Recapture of investment tax
+  # credit (complete Form T2038(IND))".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_tax_less_foreign_tax_credit
+        - ca/itc_recapture
+    produces:
+      output: ca/federal_tax_with_itc_recapture

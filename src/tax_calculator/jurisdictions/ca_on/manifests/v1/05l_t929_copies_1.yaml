@@ -1,0 +1,695 @@
+# Form T929 (see 05k_t929.yaml), part 1 of 3 of the copies of the return's steps that compute the net
+# income of line 23600, the figure line 5 "Enter your net income" reads ("the amount you would enter
+# on line 23600 of your tax return, if you had no claim for the disability supports deduction on
+# line 21500"): total income, the deductions of line 23300 without line 21500, line 23400, the
+# Federal Worksheet for lines 23500 and 23600. The originals stay in the return, which the form
+# cannot read: a form reads the manifest's inputs and other forms' exports (ca/t2125.*,
+# ca/farm_loss.*, ca/t2121.*, ca/t776.*, ca/t1_m.*, ca/t2017.t2017_line_31, ca/schedule_8.*,
+# ca/rc381.*), never the return's artifacts. Each copy is its original.
+form:
+  name: ca/t929
+capabilities:
+  # Schedule 3 (form 5000-S3) Part 3: "For each Gain or loss enter as many lines as necessary."
+  # Each property type lists one row per disposition: "(Column 2): Proceeds of disposition",
+  # "(Column 3): Adjusted cost base", "(Column 4): Outlays and expenses", "(Column 5): Gain or
+  # loss (column 2 minus columns 3 and 4)"; lines 1 to 8 (10700, 11000, 12400, 13200, 13800,
+  # 15300, 15301, 15500) are each "Total gain or loss (add all the amounts under column 5)",
+  # one step each.
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/qsbcs_dispositions
+    produces:
+      output: ca/qsbcs_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/qffp_dispositions
+    produces:
+      output: ca/qffp_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/qffp_foreclosure_dispositions
+    produces:
+      output: ca/qffp_foreclosure_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/share_dispositions
+    produces:
+      output: ca/share_gain_or_loss
+  - name: ca/depreciable_property_gains
+    consumes:
+      dispositions: ca/real_estate_dispositions
+    produces:
+      output: ca/real_estate_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/bond_dispositions
+    produces:
+      output: ca/bond_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/crypto_asset_dispositions
+    produces:
+      output: ca/crypto_asset_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/other_foreclosure_dispositions
+    produces:
+      output: ca/other_foreclosure_gain_or_loss
+  # Part 3, Personal-use property: "Line 9 and line 15800: Total gain only (add all the amounts
+  # under column 5)", each row's proceeds and cost base at least the Guide T4037 $1,000: the rows'
+  # gains, a row's loss counting 0, then line 9 itself, a sum of those rows and line 57 of T2091(IND)
+  # Part 4.
+  - name: ca/personal_use_property_gains
+    params:
+      minimum: ca/personal_use_property_minimum
+    consumes:
+      dispositions: ca/personal_use_property_dispositions
+    produces:
+      output: ca/personal_use_property_gain_rows
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/personal_use_property_gain_rows
+        - ca/principal_residence_line_57
+    produces:
+      output: ca/personal_use_property_gain
+  # Part 3, Listed personal property: the rows' gains and losses (column 5) added, then line 10
+  # and line 15900 "Net gain only": that total less the unapplied listed personal property
+  # losses from other years, not below zero.
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/listed_personal_property_dispositions
+    produces:
+      output: ca/listed_personal_property_gain_or_loss
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/listed_personal_property_gain_or_loss
+      less: ca/unapplied_listed_personal_property_losses
+    produces:
+      output: ca/listed_personal_property_net_gain
+  # Part 3 "Line 11: Add lines 1 to 10. Total gains or losses of qualified properties and
+  # other properties ="; Part 4 "Line 12: Amount from line 11 of the previous page" is the same
+  # artifact, so it has no step of its own.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/qsbcs_gain_or_loss
+        - ca/qffp_gain_or_loss
+        - ca/qffp_foreclosure_gain_or_loss
+        - ca/share_gain_or_loss
+        - ca/real_estate_gain_or_loss
+        - ca/bond_gain_or_loss
+        - ca/crypto_asset_gain_or_loss
+        - ca/other_foreclosure_gain_or_loss
+        - ca/personal_use_property_gain
+        - ca/listed_personal_property_net_gain
+    produces:
+      output: ca/capital_gains_of_qualified_and_other_properties
+  # Part 4 "Line 14: Line 12 minus line 13 =" (line 13, 16100: checked).
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_of_qualified_and_other_properties
+      less: ca/capital_gains_deferral_checked
+    produces:
+      output: ca/capital_gains_after_deferral
+  # Part 4 "Line 17: Add lines 14 to 16. =" (lines 15 and 16, 17400 and 17600, are inputs).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/capital_gains_after_deferral
+        - ca/slip_capital_gains_or_losses
+        - ca/t3_capital_gains_or_losses
+    produces:
+      output: ca/capital_gains_before_investment_loss_reduction
+  # Part 4 "Line 19 and line 19100: Total gains or losses before reserves: line 17 minus line
+  # 18 =" (line 18 and line 17800 is the business investment loss reduction already computed).
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_before_investment_loss_reduction
+      less: ca/business_investment_loss_reduction
+    produces:
+      output: ca/capital_gains_before_reserves
+  # Part 4 "Line 20 and line 19200" (Form T2017 "Total reserve to be included in income"): the
+  # total of `ca/t2017.t2017_line_31`.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017.t2017_line_31
+    produces:
+      output: ca/schedule_3_line_19200
+  # Part 4 "Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses =" (line
+  # 20 is the total above).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/capital_gains_before_reserves
+        - ca/schedule_3_line_19200
+    produces:
+      output: ca/capital_gain
+  # Part 5 line 22 is the same artifact as line 21; line 24 "Line 22 multiplied by the
+  # percentage on line 23" (signed, the included capital gain), then line 26 and line 19900
+  # "Line 24 plus line 25 If positive, enter the result on line 12700 of your return": line 24
+  # and line 25 (the partnership gains at full inclusion, a caller input) as the parts of a sum
+  # not below zero, so the taxable capital gains stay non-negative.
+  - name: core/apply_rate
+    params:
+      rate: ca/capital_gains_inclusion_rate
+    consumes:
+      base: ca/capital_gain
+    produces:
+      output: ca/included_capital_gain
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/included_capital_gain
+        - ca/partnership_gains_at_full_inclusion
+    produces:
+      output: ca/taxable_capital_gains
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_taxable_dividends
+        - ca/t4ps_taxable_dividends
+        - ca/t5_taxable_dividends
+        - ca/t5013_taxable_dividends
+    produces:
+      output: ca/slip_taxable_dividends
+  - name: core/apply_fraction
+    params:
+      fraction: ca/eligible_dividend_gross_up
+    consumes:
+      base: ca/eligible_dividends_received_without_a_slip
+    produces:
+      output: ca/eligible_dividends_grossed_up
+  - name: core/apply_fraction
+    params:
+      fraction: ca/other_dividend_gross_up
+    consumes:
+      base: ca/other_dividends_received_without_a_slip
+    produces:
+      output: ca/other_dividends_grossed_up
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/eligible_dividends_grossed_up
+        - ca/other_dividends_grossed_up
+    produces:
+      output: ca/dividends_without_a_slip_grossed_up
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/slip_taxable_dividends
+        - ca/dividends_without_a_slip_grossed_up
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/taxable_dividends
+  # T1 Step 2 line 10 (12100) "Interest and other investment income (use Federal
+  # Worksheet)": the Federal Worksheet's "Line 12100 - Interest and other investment
+  # income" line 9 "Add lines 1 to 8.", in line order, then line 11 "Line 9 minus line
+  # 10. Enter this amount on line 12100 of your return." with line 10 "Interest and other
+  # investment income, included on line 9, received and reported in previous years".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_investment_income
+        - ca/t5_investment_income
+        - ca/t5013_investment_income
+        - ca/investment_income_credited_not_received
+        - ca/tax_refund_interest
+        - ca/foreign_investment_income
+        - ca/investment_income_without_a_slip
+        - ca/investment_royalties
+    produces:
+      output: ca/investment_income_before_prior_years
+  # Federal Worksheet line 10 "Interest and other investment income, included on line 9, received
+  # and reported in previous years": a starting amount, refused when above line 9, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/investment_income_reported_in_previous_years
+      bound: ca/investment_income_before_prior_years
+    produces:
+      output: ca/investment_income_reported_in_previous_years_applied
+  - name: core/subtract
+    consumes:
+      amount: ca/investment_income_before_prior_years
+      less: ca/investment_income_reported_in_previous_years_applied
+    produces:
+      output: ca/interest_and_other_investment_income
+  # T1 line 32 and line 14700 "Add lines 29 to 31 (see line 25000 in Step 4).": workers'
+  # compensation benefits (14400), social assistance payments (14500) and net federal
+  # supplements paid (14600), in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/workers_compensation_benefits
+        - ca/social_assistance_payments
+        - ca/net_federal_supplements
+    produces:
+      output: ca/income_support_benefits
+  # T1 line 13 and line 12600 "Net": Form T776 line 9946 "Your net income (loss)" ... "Enter this
+  # amount on line 12600 of your income tax and benefit return", for each T776 statement the
+  # return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t776.net_rental_income
+    produces:
+      output: ca/net_rental_income
+  # T1 line 22 and line 13500 "Net": Form T2125 line 9946 "Your net income (loss)" ... "Report
+  # the net income amount from line 9946 on the applicable line of your income tax and benefit
+  # return as indicated below: business income on line 13500", for each T2125 statement the
+  # return carries whose line code is business, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_business_income_on_return
+    produces:
+      output: ca/business_income
+  # T1 line 23 and line 13700 "Net": Form T2125 line 9946 "... professional income on line
+  # 13700", for each T2125 statement whose line code is professional, added. With no such
+  # statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_professional_income_on_return
+    produces:
+      output: ca/professional_income
+  # T1 line 24 and line 13900 "Net": Form T2125 line 9946 "... commission income on line 13900",
+  # for each T2125 statement whose line code is commission, added. With no such statement the
+  # total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_commission_income_on_return
+    produces:
+      output: ca/commission_income
+  # T1 line 25 and line 14100 "Net": Form T2042 line 9946 "Your net income (loss): Amount 5C minus
+  # line 9945 (enter this amount on line 14100 of your income tax and benefit return)", added over
+  # the T2042 statements, with the restricted farm loss added back (ca/farm_loss); 0 with none.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_farming_income_on_return
+    produces:
+      output: ca/farming_income
+  # T1 line 26 and line 14300 "Net": Form T2121 line 9946 "Your net income (loss): Amount 5C minus
+  # line 9945 (enter this amount on line 14300 of your income tax and benefit return)", for each
+  # T2121 statement the return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_fishing_income_on_return
+    produces:
+      output: ca/fishing_income
+  # T1 line 33 and line 15000 "Line 28 plus line 32 Total income": every income line the
+  # return lists, in line order (lines 1 to 20, line 13 being the net rental income, line
+  # 12600 "Net"; here with the amount of dividends of line 9 (12000), the taxable capital
+  # gains of line 14 and the taxable support payments of line 15, then line 32); line 27
+  # "Add lines 22 to 26. Net self-employment income" comes after line 20, before lines 29 to
+  # 31 (line 32).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+        - ca/old_age_security
+        - ca/cpp_or_qpp_benefits
+        - ca/other_pensions_and_superannuation
+        - ca/t2205_on_line_11500
+        - ca/elected_split_pension_amount
+        - ca/universal_child_care_benefit
+        - ca/ei_and_other_benefits
+        - ca/taxable_dividends
+        - ca/interest_and_other_investment_income
+        - ca/net_partnership_income
+        - ca/rdsp_income
+        - ca/net_rental_income
+        - ca/taxable_capital_gains
+        - ca/taxable_support_payments
+        - ca/rrsp_income
+        - ca/t2205_on_line_12900
+        - ca/fhsa_income
+        - ca/other_fhsa_income
+        - ca/other_income
+        - ca/t2205_on_line_13000
+        - ca/taxable_scholarships
+        - ca/net_self_employment_income
+        - ca/income_support_benefits
+    produces:
+      output: ca/total_income
+  # T1 line 27 "Add lines 22 to 26. Net self-employment income": line 22 (13500) business
+  # income, line 23 (13700) professional income, line 24 (13900) commission income, line 25
+  # (14100) farming income and line 26 (14300) fishing income, the "Net" box of each, in
+  # line order. Line 28 "Line 21 plus line 27" is not a step of its own: total income (line
+  # 15000) adds line 27 to the lines 1 to 20, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/business_income
+        - ca/professional_income
+        - ca/commission_income
+        - ca/farming_income
+        - ca/fishing_income
+    produces:
+      output: ca/net_self_employment_income
+  # Form T2091(IND) Part 4 line 57 "Line 55 minus line 56 (if negative, enter "0")" "Capital gain":
+  # the total over the properties of that line of each one, entered on line 15800 of Schedule 3
+  # ("Enter the amount from line 57 on line 15800 of Schedule 3, Capital Gains or Losses, for
+  # dispositions or deemed dispositions.").
+  - name: ca/principal_residence_line_57
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_57
+  # Schedule 7 line 5 "Line 1 plus line 4 ... Total contributions", line 6 "Total
+  # contributions from line 5" and line 10 "Line 6 minus line 9 Contributions available
+  # to deduct": with no HBP or LLP repayments (line 9), line 10 is line 5. In line 5's
+  # order: the unused contributions (line 1), then the contributions (line 4).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/unused_rrsp_contributions
+        - ca/rrsp_contributions
+    produces:
+      output: ca/rrsp_contributions_available
+  # Schedule 7 line 17 "Enter whichever is less: amount from line 13 or line 16.": with
+  # no employer PRPP contributions (line 12) and no transfers (line 15), line 13 is the
+  # limit and line 16 the contributions available to deduct. The parts keep line 20's
+  # order (line 10, then the limit).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rrsp_contributions_available
+        - ca/rrsp_deduction_limit
+    produces:
+      output: ca/rrsp_deduction_maximum
+  # Schedule 7 line 18 "Enter your RRSP, PRPP, or SPP contributions you are deducting for
+  # 2025 (cannot be more than the amount on line 17).", line 19 "Line 15 plus line 18"
+  # and line 20 "Enter whichever is less: amount from line 10 or line 19. Enter this
+  # amount on line 20800 of your return. RRSP deduction": with no transfers (line 15),
+  # line 19 is line 18, at most line 17 and so at most line 10, and line 20 is line 18
+  # itself. A claim above line 17 is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/rrsp_amount_deducted
+      bound: ca/rrsp_deduction_maximum
+    produces:
+      output: ca/rrsp_deduction
+  # Schedule 15 (form 5000-S15) Step 2 "Calculate your annual FHSA limit for 2025": line 1 and line
+  # 68935 "Total contributions made to your FHSAs in 2025 (box 18 of your 2025 T4FHSA slips)" and
+  # line 2 and line 68940 "Total contributions made to your FHSAs in 2025 after your first
+  # qualifying withdrawal" are starting amounts, line 2 checked in
+  # 05m_t929_copies_2.yaml; line 3 "Line 1 minus line 2 =" prints no "(if negative, enter "0")", so it may be negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/fhsa_contributions_in_2025
+      less: ca/fhsa_contributions_in_2025_after_first_qualifying_withdrawal_checked
+    produces:
+      output: ca/fhsa_contributions_in_2025_before_first_qualifying_withdrawal
+  # Line 4 "Variable "B" amount of your annual FHSA limit for 2024 (from your 2025 FHSA
+  # participation room statement)" is a starting amount; line 5 "Line 3 plus line 4 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_contributions_in_2025_before_first_qualifying_withdrawal
+        - ca/fhsa_variable_b_amount
+    produces:
+      output: ca/fhsa_contributions_plus_variable_b_amount
+  # Line 6 and line 68945 "Total designated withdrawals from your FHSAs in 2025 (box 38 of your 2025
+  # T4FHSA slips)", line 7 "Total contributions made to your FHSAs in 2024 (from your 2025 FHSA
+  # participation room statement)" and line 8 "Contributions to your FHSAs in 2024 before your first
+  # qualifying withdrawal (from your 2025 FHSA participation room statement)" are starting amounts;
+  # line 9 "Line 7 minus line 8 =" prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/fhsa_contributions_in_2024
+      less: ca/fhsa_contributions_in_2024_before_first_qualifying_withdrawal_checked
+    produces:
+      output: ca/fhsa_contributions_in_2024_after_first_qualifying_withdrawal
+  # Line 10 "Amount from line 2" is the checked amount of line 2; line 11 "Line 9 plus line 10 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_contributions_in_2024_after_first_qualifying_withdrawal
+        - ca/fhsa_contributions_in_2025_after_first_qualifying_withdrawal_checked
+    produces:
+      output: ca/fhsa_contributions_after_first_qualifying_withdrawal
+  # Line 12 "Line 6 minus line 11 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/fhsa_designated_withdrawals_in_2025
+      less: ca/fhsa_contributions_after_first_qualifying_withdrawal
+    produces:
+      output: ca/fhsa_excess_designated_withdrawals
+  # Line 13 "Line 5 minus line 12 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/fhsa_contributions_plus_variable_b_amount
+      less: ca/fhsa_excess_designated_withdrawals
+    produces:
+      output: ca/fhsa_contributions_limit
+  # Line 14 "8,000.00", the dataset as an artifact of the same name; line 30 "8,000.00" is the same
+  # figure, read again below.
+  - name: core/credit_amount
+    params:
+      amount: ca/fhsa_annual_amount
+    produces:
+      output: ca/fhsa_annual_amount
+  # Line 15 "Your FHSA carryforward for 2025 (from your 2025 FHSA participation room statement)" is
+  # a starting amount; line 16 "Line 14 plus line 15 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_annual_amount
+        - ca/fhsa_carryforward_for_2025
+    produces:
+      output: ca/fhsa_annual_amount_with_carryforward
+  # Line 17 "Total transfers from your RRSPs to your FHSAs in 2024 and prior years (from your 2025
+  # FHSA participation room statement)" and line 18 and line 68950 "Total transfers from your RRSPs
+  # to your FHSAs in 2025 (boxes 32 and 34 of your 2025 T4FHSA slips)" are starting amounts; line 19
+  # "Line 17 plus line 18 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_rrsp_transfers_in_2024_and_prior_years
+        - ca/fhsa_rrsp_transfers_in_2025
+    produces:
+      output: ca/fhsa_total_rrsp_transfers
+  # Line 20 "Total designated transfers from your FHSAs to your RRSPs or RRIFs in 2024 and prior
+  # years (from your 2025 FHSA participation room statement)" and line 21 and line 68955 "Total
+  # designated transfers from your FHSAs to your RRSPs or RRIFs in 2025 (box 36 of your 2025 T4FHSA
+  # slips)" are starting amounts; line 22 "Line 20 plus line 21 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_designated_transfers_in_2024_and_prior_years
+        - ca/fhsa_designated_transfers_in_2025
+    produces:
+      output: ca/fhsa_total_designated_transfers
+  # Line 23 "Line 19 minus line 22 Net RRSP-to-FHSA transfer amount =" prints no floor. Line 24
+  # "Amount from line 23 of the previous page" is the same artifact.
+  - name: core/subtract
+    consumes:
+      amount: ca/fhsa_total_rrsp_transfers
+      less: ca/fhsa_total_designated_transfers
+    produces:
+      output: ca/fhsa_net_rrsp_transfer_amount
+  # Step 2 (continued): line 25 "Amount from line 17 of the previous page" and line 26 "Amount from
+  # line 20 of the previous page" are the same artifacts; line 27 "Net RRSP-to-FHSA transfer amount
+  # for 2024 and prior years: Line 25 minus line 26 =" prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/fhsa_rrsp_transfers_in_2024_and_prior_years
+      less: ca/fhsa_designated_transfers_in_2024_and_prior_years
+    produces:
+      output: ca/fhsa_net_rrsp_transfer_amount_for_2024_and_prior_years
+  # Line 28 "Variable "H" amount of your annual FHSA limit for 2024 (from your 2025 FHSA
+  # participation room statement)" is a starting amount; line 29 "Line 27 minus line 28 (if
+  # negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/fhsa_net_rrsp_transfer_amount_for_2024_and_prior_years
+      less: ca/fhsa_variable_h_amount
+    produces:
+      output: ca/fhsa_net_transfer_amount_less_variable_h_amount
+  # Line 30 "8,000.00", the same dataset as line 14, read by its own step.
+  - name: core/credit_amount
+    params:
+      amount: ca/fhsa_annual_amount
+    produces:
+      output: ca/fhsa_annual_amount_for_2024
+  # Line 31 "Your FHSA carryforward for 2024 (from your 2024 FHSA participation room statement)" is
+  # a starting amount; line 32 "Line 30 plus line 31 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_annual_amount_for_2024
+        - ca/fhsa_carryforward_for_2024
+    produces:
+      output: ca/fhsa_annual_amount_for_2024_with_carryforward
+  # Line 33 "Enter whichever is less: amount from line 29 or line 32.", in that order.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/fhsa_net_transfer_amount_less_variable_h_amount
+        - ca/fhsa_annual_amount_for_2024_with_carryforward
+    produces:
+      output: ca/fhsa_transfer_amount_at_most_limit
+  # Line 34 "Variable "F" amount of your annual FHSA limit for 2024 (from your 2025 FHSA
+  # participation room statement)" is a starting amount; line 35 "Line 33 plus line 34 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_transfer_amount_at_most_limit
+        - ca/fhsa_variable_f_amount
+    produces:
+      output: ca/fhsa_transfer_amount_plus_variable_f_amount
+  # Line 36 "Line 24 minus line 35 =" (line 24 "Amount from line 23 of the previous page") prints no
+  # floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/fhsa_net_rrsp_transfer_amount
+      less: ca/fhsa_transfer_amount_plus_variable_f_amount
+    produces:
+      output: ca/fhsa_net_transfer_amount_after_prior_years
+  # Line 37 "Amount from line 16 of the previous page" and line 38 "Amount from line 36" are the
+  # same artifacts; line 39 "Line 37 minus line 38 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/fhsa_annual_amount_with_carryforward
+      less: ca/fhsa_net_transfer_amount_after_prior_years
+    produces:
+      output: ca/fhsa_annual_amount_after_transfers
+  # Line 40 "Enter whichever is less: amount from line 13 of the previous page or line 39. Annual
+  # FHSA limit for 2025", in that order, when the maximum participation period has not ended.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/fhsa_contributions_limit
+        - ca/fhsa_annual_amount_after_transfers
+    produces:
+      output: ca/fhsa_annual_limit_from_step_2
+  # "If your maximum participation period (MPP) ended in a prior year, do not complete this step.
+  # Your 2025 annual FHSA limit is "0". Enter "0" on line 40 and continue at Step 3.": the printed
+  # 0, the dataset as an artifact of the same name.
+  - name: core/credit_amount
+    params:
+      amount: ca/fhsa_annual_limit_after_maximum_participation_period
+    produces:
+      output: ca/fhsa_annual_limit_after_maximum_participation_period
+  # A count of 1 when the maximum participation period ended in a prior year (a caller's 0 or 1)
+  # chooses the printed 0 over the result of Step 2 for line 40 (and so for line 41 "Annual FHSA
+  # limit from line 40").
+  - name: core/choose_by_count
+    consumes:
+      count: ca/fhsa_maximum_participation_period_ended_checked
+      when_none: ca/fhsa_annual_limit_from_step_2
+      when_any: ca/fhsa_annual_limit_after_maximum_participation_period
+    produces:
+      output: ca/fhsa_annual_limit
+  # Step 3 "Calculate your FHSA deduction and unused FHSA contributions available to deduct in
+  # future years": line 42 "Your total annual FHSA limits for 2024 and prior years (from your 2025
+  # FHSA participation room statement)" is a starting amount; line 43 "Line 41 plus line 42 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fhsa_annual_limit
+        - ca/fhsa_annual_limits_for_2024_and_prior_years
+    produces:
+      output: ca/fhsa_total_annual_limits
+  # Line 45 "Line 43 minus line 44 =" prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/fhsa_total_annual_limits
+      less: ca/fhsa_deductions_for_2024_and_prior_years_checked
+    produces:
+      output: ca/fhsa_annual_limits_less_deductions
+  # Line 46 "Lifetime FHSA limit 40,000.00", the dataset as an artifact of the same name.
+  - name: core/credit_amount
+    params:
+      amount: ca/fhsa_lifetime_limit
+    produces:
+      output: ca/fhsa_lifetime_limit
+  # Line 47 "Your FHSA deduction from line 44" is the same artifact as line 44; line 48 "Line 46
+  # minus line 47 =" prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/fhsa_lifetime_limit
+      less: ca/fhsa_deductions_for_2024_and_prior_years_checked
+    produces:
+      output: ca/fhsa_lifetime_limit_less_deductions
+  # Line 49 "Net RRSP-to-FHSA transfer amount from line 24" is the same artifact as line 23; line 50
+  # "Line 48 minus line 49 (if negative, enter "0") =".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/fhsa_lifetime_limit_less_deductions
+      less: ca/fhsa_net_rrsp_transfer_amount
+    produces:
+      output: ca/fhsa_lifetime_limit_less_deductions_and_transfers
+  # Line 51 "Enter whichever is less: amount from line 45 or line 50. Maximum FHSA deduction
+  # available for 2025", in that order.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/fhsa_annual_limits_less_deductions
+        - ca/fhsa_lifetime_limit_less_deductions_and_transfers
+    produces:
+      output: ca/fhsa_maximum_deduction
+  # Line 57 "Enter the FHSA contributions you are deducting for 2025 (cannot be more than the amount
+  # on line 51 of the previous page). Enter this amount on line 20805 of your return. FHSA deduction
+  # for 2025": the amount the filer chooses to deduct, a starting amount, refused when above line
+  # 51, not capped (as Schedule 7 line 18 is refused above line 17); T1 line 37 and line 20805 is
+  # that amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/fhsa_contributions_deducted
+      bound: ca/fhsa_maximum_deduction
+    produces:
+      output: ca/fhsa_deduction
+  # Schedule 8 Part 2 "Box A: Enter the number of months that CPP applied in 2025." and the
+  # "Monthly proration for 2025" table, a row for each number of months (1 to 12): line B
+  # (maximum pensionable earnings), line C (maximum amount subject to second additional
+  # contributions), line D (additional maximum pensionable earnings) and line E (maximum
+  # basic exemption), each the figure of the row for the months in box A.
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_maximum_pensionable_earnings
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_maximum_pensionable_earnings
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_additional_maximum_pensionable_earnings
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_additional_maximum_pensionable_earnings
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_basic_exemption
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_basic_exemption
+  # T1 line 11600 and line 21000 are Form T1032 line 22 (22c_t1032_income_tax_deducted.yaml), which the
+  # form reads from the export of ca/t1032 (the checked line 22 and the answer of Step 3), as the
+  # return does: line 22 on line 21000 when the answer is 1, otherwise on line 11600.
+  - name: core/record_total
+    consumes:
+      records: ca/t1032.t1032_line_22_checked
+    produces:
+      output: ca/t1032_line_22_total
+  - name: core/first_record_count
+    consumes:
+      records: ca/t1032.t1032_filer_is_transferring_spouse_checked
+    produces:
+      output: ca/t1032_filer_is_transferring_spouse_total
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_line_22_total
+      count: ca/t1032_filer_is_transferring_spouse_total
+    produces:
+      output: ca/elected_split_pension_deduction
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_line_22_total
+      less: ca/elected_split_pension_deduction
+    produces:
+      output: ca/elected_split_pension_amount

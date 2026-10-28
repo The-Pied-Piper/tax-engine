@@ -1,0 +1,119 @@
+# Form T777 line 9 "Tradesperson's tools expenses (maximum $1,000)", the maximum deduction of Guide
+# T4044 (2025) Chapter 7 "Deduction for tools" (steps of the same form as 03q_t777_lines.yaml):
+# "Maximum deduction for eligible tools is the lesser of the following amounts: a) $1,000 [the Guide
+# prints $500 in its general formula and $1,000 in its example and on the form] b) the amount, if any,
+# determined by the formula A minus $1,471, where A = the lesser of the following amounts: 1. the total
+# cost of eligible tools that you bought in 2025 2. your income from employment as a tradesperson for
+# the year plus the amount you received in 2025 under the Apprenticeship Incentive Grant and the
+# Apprenticeship Completion Grant programs minus the amount of any [such] overpayments that you had to
+# repay in 2025". "Enter your claim on the "Tradesperson's tools expenses" line of Form T777": the
+# claim is the filer's, line 9, and a claim above the maximum is refused, not capped. The Guide prints
+# the "plus" and "minus" lines flush left under item 2; they are read as part of item 2, the
+# employment income item. "If you were a tradesperson in 2025, use the following formula" and the
+# employer's certification on Form T2200 are the filer's yes or no answers (a count of 1 or 0): the
+# Guide settles the conditions, the form cannot, and a "no" leaves a maximum deduction of 0, so any
+# claim is refused.
+form:
+  name: ca/t777
+capabilities:
+  # "your income from employment as a tradesperson for the year" is a part of the return's
+  # employment income (line 51 of the line 16 chart, T1 lines 10100 and 10400): above it the figure
+  # is an input error (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_tradesperson_employment_income
+      bound: ca/t777_work_space_employment_income
+    produces:
+      output: ca/t777_tradesperson_employment_income_checked
+  # "If you were a tradesperson in 2025, use the following formula to calculate your maximum
+  # tradesperson's tools deduction": a yes or no answer, a count of 1 or 0, checked before the step
+  # that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_were_a_tradesperson_in_2025
+    produces:
+      output: ca/t777_were_a_tradesperson_in_2025_checked
+  # "Have your employer complete question 12 of Part C of the form to certify that the tools being
+  # claimed were bought and provided by you as a condition of your employment as a tradesperson": a
+  # yes or no answer, a count of 1 or 0.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_tradesperson_tools_certified_on_t2200_question_12
+    produces:
+      output: ca/t777_tradesperson_tools_certified_on_t2200_question_12_checked
+  # Item 2, "your income from employment as a tradesperson for the year plus the amount you received
+  # in 2025 under the Apprenticeship Incentive Grant and the Apprenticeship Completion Grant
+  # programs".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_tradesperson_employment_income_checked
+        - ca/t777_apprenticeship_grants_received
+    produces:
+      output: ca/t777_tradesperson_income_with_grants
+  # Item 2, "minus the amount of any Apprenticeship Incentive Grant and Apprenticeship Completion
+  # Grant overpayments that you had to repay in 2025": the guide prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/t777_tradesperson_income_with_grants
+      less: ca/t777_apprenticeship_grant_overpayments
+    produces:
+      output: ca/t777_tradesperson_income_for_tools
+  # "A = the lesser of the following amounts: 1. the total cost of eligible tools that you bought in
+  # 2025 2. [item 2 above]".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t777_eligible_tools_cost
+        - ca/t777_tradesperson_income_for_tools
+    produces:
+      output: ca/t777_tools_formula_a
+  # "$1,471" of the formula, the dataset's figure as printed.
+  - name: core/credit_amount
+    params:
+      amount: ca/t777_tradespersons_tools_threshold
+    produces:
+      output: ca/t777_tradespersons_tools_threshold
+  # "b) the amount, if any, determined by the formula A minus $1,471": "if any" is no amount below
+  # zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t777_tools_formula_a
+      less: ca/t777_tradespersons_tools_threshold
+    produces:
+      output: ca/t777_tools_formula_b
+  # "Maximum deduction for eligible tools is the lesser of the following amounts: a) $1,000 b) [the
+  # formula]": the $1,000 is the dataset ca/t777_tradespersons_tools_maximum, the printed maximum of
+  # line 9.
+  - name: ca/lesser_of_with_maximum
+    params:
+      maximum: ca/t777_tradespersons_tools_maximum
+    consumes:
+      amounts:
+        - ca/t777_tools_formula_b
+    produces:
+      output: ca/t777_tradespersons_tools_formula_maximum
+  # "If you were a tradesperson in 2025": the maximum above for a tradesperson, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t777_tradespersons_tools_formula_maximum
+      count: ca/t777_were_a_tradesperson_in_2025_checked
+    produces:
+      output: ca/t777_tradespersons_tools_maximum_for_a_tradesperson
+  # "Have your employer complete question 12 of Part C of the form to certify [...]": the maximum
+  # above when the employer certified the tools, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t777_tradespersons_tools_maximum_for_a_tradesperson
+      count: ca/t777_tradesperson_tools_certified_on_t2200_question_12_checked
+    produces:
+      output: ca/t777_tradespersons_tools_maximum_deduction
+  # Line 9 "Tradesperson's tools expenses (maximum $1,000)": "Enter your claim on the "Tradesperson's
+  # tools expenses" line of Form T777". The claim is the filer's; above the maximum deduction it is
+  # an input error (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_tradespersons_tools
+      bound: ca/t777_tradespersons_tools_maximum_deduction
+    produces:
+      output: ca/t777_line_9

@@ -1,0 +1,98 @@
+capabilities:
+  # Part 6 line 3 "Line 1 minus line 2 (if negative, enter "0")": line 1, the basic federal tax of
+  # Part 2 line 7, less line 2, the amount from line 22 of Form T1206, Tax on Split Income, and never
+  # below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_basic_federal_tax
+      less: ca/split_income_line_22
+    produces:
+      output: ca/amt_basic_federal_tax_less_split_income_tax
+  # Part 6 line 5 "Enter whichever is more: amount from line 3 or line 4.": the greater of line 3 and
+  # line 4, the minimum amount from line 103 of Part 1.
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/amt_basic_federal_tax_less_split_income_tax
+        - ca/amt_minimum_amount
+    produces:
+      output: ca/amt_greater_of_basic_tax_and_minimum_amount
+  # Part 6 line 7 "Line 5 plus line 6 (14)": line 5 and line 6, the amount from line 22 of Form
+  # T1206, in line order. The form prints no floor, so the sum may be negative.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_greater_of_basic_tax_and_minimum_amount
+        - ca/split_income_line_22
+    produces:
+      output: ca/amt_federal_tax_under_minimum_tax
+  # Part 6 line 9 "Federal surtax on business income earned outside Canada" "Multiply the amount
+  # from line 7 by 48%.": line 7 times the 48% of its dataset, rounded to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_federal_surtax_rate
+    consumes:
+      base: ca/amt_federal_tax_under_minimum_tax
+    produces:
+      output: ca/amt_part_6_surtax_at_48_percent
+  # Part 6 line 10 "If you have to pay tax to multiple jurisdictions, multiply the amount from line 9
+  # by the percentage in Column 5 of line 52220 on Form T2203.": the percentage as printed (50 for
+  # 50%), the caller's figure, rounded once by its dataset.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/amt_multiple_jurisdictions_rounding
+    consumes:
+      amount: ca/amt_part_6_surtax_at_48_percent
+      percentage: ca/amt_t2203_column_5_percentage_checked
+    produces:
+      output: ca/amt_part_6_surtax_multiple_jurisdictions
+  # Part 6 line 11 "If you have an amount on line 10, enter that amount. If not, and you are a
+  # non-resident or deemed resident, enter the amount from line 9. Otherwise, enter "0".": the
+  # condition "you have an amount on line 10" counts 1 when line 10 is not 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/amt_line_10_has_amount_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/amt_part_6_surtax_multiple_jurisdictions
+    produces:
+      output: ca/amt_part_6_has_amount_on_line_10
+  # Part 6 line 11, the second branch: line 9 when "you are a non-resident or deemed resident" (the
+  # caller's count, 1 for yes), and "0" otherwise.
+  - name: core/times_count
+    consumes:
+      amount: ca/amt_part_6_surtax_at_48_percent
+      count: ca/amt_non_resident_or_deemed_resident_checked
+    produces:
+      output: ca/amt_part_6_surtax_if_non_resident
+  # Part 6 line 11, chosen by the condition above: line 10 when there is an amount on it, else the
+  # second branch.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/amt_part_6_has_amount_on_line_10
+      when_none: ca/amt_part_6_surtax_if_non_resident
+      when_any: ca/amt_part_6_surtax_multiple_jurisdictions
+    produces:
+      output: ca/amt_part_6_federal_surtax
+  # Part 6 line 12 "Line 8 plus line 11": line 8, the net minimum tax payable of Part 5 line 3, and
+  # line 11, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_net_minimum_tax_payable
+        - ca/amt_part_6_federal_surtax
+    produces:
+      output: ca/amt_part_6_tax_with_surtax
+  # Part 6 line 14 "Enter whichever is more: amount from line 12 or line 13. Enter this amount on
+  # line 41700 of your return." "Federal tax payable (under alternative minimum tax)": the greater
+  # of line 12 and line 13, "Amount from line 24 of Form T1206". The entry on line 41700 of the
+  # return is made by the choice of the line 41700 entry, which takes this amount only when Part 5
+  # line 11 is positive.
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/amt_part_6_tax_with_surtax
+        - ca/split_income_line_24
+    produces:
+      output: ca/amt_federal_tax_payable_under_minimum_tax

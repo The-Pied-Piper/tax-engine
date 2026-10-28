@@ -1,0 +1,46 @@
+# The security options deductions of T1 line 24900, computed rather than entered. Guide 5000-G line
+# 24900 "Claim on line 24900 of your return the total of the amounts shown in boxes 39, 41, 91, and
+# 92 of your T4 slips" is the sum of the Form T691 Part 1 deductions that are "included on line
+# 24900 of your return", in T691 line order: line 28 (the T4 boxes 39 and 91), line 29 (50% of line 2
+# of Form T1212, the form `ca/t1212`), line 31 (the gifts of publicly listed securities), line 35
+# (the T4 boxes 41 and 92), line 36 (the prospector or grubstaker deduction) and line 37 (the
+# deferred profit-sharing plan deduction). The T4 boxes are entered once, in the forms
+# `ca/security_options_boxes_39_and_91` (01f) and `ca/security_options_boxes_41_and_92` (01g); their
+# totals are taken here.
+capabilities:
+  # T691 Part 1 line 28 "Total of all amounts in boxes 39 and 91 of your T4 slips": the total of the
+  # one record of the form `ca/security_options_boxes_39_and_91`, the T4 boxes entered there.
+  - name: core/record_total
+    consumes:
+      records: ca/security_options_boxes_39_and_91.t4_security_options_boxes_39_and_91
+    produces:
+      output: ca/t4_security_options_boxes_39_and_91_total
+  # T691 Part 1 line 35 "total of all amounts in boxes 41 and 92 of your T4 slips": the total of the
+  # one record of the form `ca/security_options_boxes_41_and_92`, the T4 boxes entered there.
+  - name: core/record_total
+    consumes:
+      records: ca/security_options_boxes_41_and_92.t4_security_options_boxes_41_and_92
+    produces:
+      output: ca/t4_security_options_boxes_41_and_92_total
+  # T691 Part 1 line 29 "Amount from line 2 of Form T1212" (7) "If you disposed of securities, include 50% of
+  # the amount from line 2 of Form T1212", and the T1212 footnote (1) "enter 50% of the amount from line 2
+  # on line 24900 of your return": the total of the one record of the form `ca/t1212`, the 50% amount.
+  - name: core/record_total
+    consumes:
+      records: ca/t1212.t1212_line_24900_amount
+    produces:
+      output: ca/amt_t1212_line_29_deferred_security_options
+  # T1 line 24900 "Security options deductions (boxes 39, 41, 91 and 92 of all T4 slips or see Form
+  # T1212)" and T691 Part 1 lines 28, 29, 31, 35, 36 and 37 in line order, each "included on line
+  # 24900 of your return".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t4_security_options_boxes_39_and_91_total
+        - ca/amt_t1212_line_29_deferred_security_options
+        - ca/amt_security_option_publicly_listed_gifts
+        - ca/t4_security_options_boxes_41_and_92_total
+        - ca/amt_prospector_or_grubstaker_deduction
+        - ca/amt_deferred_profit_sharing_plan_deduction
+    produces:
+      output: ca/security_options_deductions

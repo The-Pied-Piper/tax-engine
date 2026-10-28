@@ -1,0 +1,16 @@
+# Form T1032 E (25), Step 4 Part A, page 3, "Line 27: Line 25 divided by line 26 =" with Note 1 "use that
+# result as the amount for line 17" (line 26): the division has no answer when the line 17 of the
+# recalculation is 0, so the count is 1 when it is 0 and 0 otherwise. The result is a count, not a
+# dollars-and-cents box, so there is no rounding.
+family: ca/t1032_note_1_line_17_is_zero_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: the amount from line 26 is 0
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: equal_to, than: "0"}

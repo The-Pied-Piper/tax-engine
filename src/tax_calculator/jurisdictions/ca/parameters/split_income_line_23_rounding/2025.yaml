@@ -1,0 +1,12 @@
+# Rounding of the federal foreign tax credit on split income, 2025 tax year (Form T1206 Part 2
+# line 23): "Part of the amount on line 3 that is from foreign sources" (68370) over "Total income
+# from foreign sources" (68380), "× Amount from line 40500 of your return". The form prints no
+# figure and no rounding rule; line 23 is a dollars-and-cents box, so the product over the
+# quotient rounds half-up to the cent once, as the owner decided for the other foreign tax credit
+# lines. Line 22 and line 40500 take amounts already in cents.
+family: ca/split_income_line_23_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

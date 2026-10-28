@@ -1,0 +1,12 @@
+capabilities:
+  # Guide 5000-G line 25100 "you can only deduct them if you have a positive at-risk amount" and
+  # "You can only deduct this loss if there is an amount in box 105": the claim is at most the
+  # T5013 box 105 amount (0 when there is none). The cap by box 105 itself is not printed in the
+  # guide. An amount above it is an input error, not capped, as the filer states the amount to
+  # claim.
+  - name: core/at_most
+    consumes:
+      amount: ca/limited_partnership_losses_of_other_years
+      bound: ca/limited_partnership_at_risk_amount
+    produces:
+      output: ca/limited_partnership_losses_of_other_years_checked

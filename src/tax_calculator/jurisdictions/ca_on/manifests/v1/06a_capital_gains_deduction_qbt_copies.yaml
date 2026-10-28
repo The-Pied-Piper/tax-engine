@@ -1,0 +1,538 @@
+# Form T2048 (see 06a_capital_gains_deduction_qbt.yaml): copies of 57 steps of the return, the
+# steps that compute the figures Parts 2 to 5 and Chart A read which the return computes from its
+# own inputs and parts: the taxable capital gains of line 12700, the net rental income of line
+# 12600, the taxable dividends and the interest and other investment income (lines 12000 and
+# 12100), the net capital losses of other years (line 25300), the carrying charges and interest
+# expenses (line 22100) and the allowable business investment loss (line 21700), with the steps
+# each of those reads. Their originals stay in 03_income.yaml, 05_deductions.yaml and
+# 06_taxable_income.yaml, which the return keeps: the form carries its own copies because a form
+# reads the manifest's inputs, its record fields and another form's export (here
+# ca/t776.net_rental_income, which the copy of line 12600 reads, and ca/t2017.t2017_line_31, which
+# the copy of line 12700 reads), never the return's artifacts.
+# Each copy is its original, verbatim, with the comment of the original, so the two agree.
+# The Form T1436 lines 1 to 7 (line 7 included, which this part no longer holds) are in
+# 06a_t1436_lines_1_to_7_t2048.yaml.
+form:
+  name: ca/t2048
+capabilities:
+  # Form T1206 page 6: the amount deemed to be a dividend of a filer under 18, the one record of the
+  # form ca/t1206_share_dispositions run once, 0 for a filer 18 or older.
+  - name: core/record_total
+    consumes:
+      records: ca/t1206_share_dispositions.t1206_under_18_dividend_amount
+    produces:
+      output: ca/t1206_under_18_dividend_amount
+  # Schedule 3 (form 5000-S3) Part 3: "For each Gain or loss enter as many lines as necessary."
+  # Each property type lists one row per disposition: "(Column 2): Proceeds of disposition",
+  # "(Column 3): Adjusted cost base", "(Column 4): Outlays and expenses", "(Column 5): Gain or
+  # loss (column 2 minus columns 3 and 4)"; lines 1 to 8 (10700, 11000, 12400, 13200, 13800,
+  # 15300, 15301, 15500) are each "Total gain or loss (add all the amounts under column 5)",
+  # one step each.
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/qsbcs_dispositions
+    produces:
+      output: ca/qsbcs_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/qffp_dispositions
+    produces:
+      output: ca/qffp_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/qffp_foreclosure_dispositions
+    produces:
+      output: ca/qffp_foreclosure_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/share_dispositions
+    produces:
+      output: ca/share_gain_or_loss
+  # Line 5: a depreciable property loss counts 0.
+  - name: ca/depreciable_property_gains
+    consumes:
+      dispositions: ca/real_estate_dispositions
+    produces:
+      output: ca/real_estate_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/bond_dispositions
+    produces:
+      output: ca/bond_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/crypto_asset_dispositions
+    produces:
+      output: ca/crypto_asset_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/other_foreclosure_dispositions
+    produces:
+      output: ca/other_foreclosure_gain_or_loss
+  # Part 3, Personal-use property: "Line 9 and line 15800: Total gain only (add all the amounts
+  # under column 5)", each row's proceeds and adjusted cost base at least the Guide T4037 $1,000
+  # ("Proceeds of disposition (whichever is more: selling price or $1,000)"; "ACB (whichever is
+  # more: cost or $1,000) plus outlays and expenses"): the rows' gains, a row's loss counting 0,
+  # then line 9 itself, a sum of those rows and line 57 of T2091(IND) Part 4 ("Enter the amount
+  # from line 57 on line 15800 of Schedule 3").
+  - name: ca/personal_use_property_gains
+    params:
+      minimum: ca/personal_use_property_minimum
+    consumes:
+      dispositions: ca/personal_use_property_dispositions
+    produces:
+      output: ca/personal_use_property_gain_rows
+  # Form T2091(IND) Part 4 line 57 "Line 55 minus line 56 (if negative, enter "0")" "Capital gain":
+  # the total over the properties of that line of each one, entered on line 15800 of Schedule 3
+  # ("Enter the amount from line 57 on line 15800 of Schedule 3, Capital Gains or Losses, for
+  # dispositions or deemed dispositions.").
+  - name: ca/principal_residence_line_57
+    params:
+      rounding: ca/principal_residence_gain_rounding
+      chart_1_factor: ca/principal_residence_chart_1_factor
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_57
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/personal_use_property_gain_rows
+        - ca/principal_residence_line_57
+    produces:
+      output: ca/personal_use_property_gain
+  # Part 3, Listed personal property: the rows' gains and losses (column 5) added, then line 10
+  # and line 15900 "Net gain only": that total less the unapplied listed personal property
+  # losses from other years, not below zero.
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/listed_personal_property_dispositions
+    produces:
+      output: ca/listed_personal_property_gain_or_loss
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/listed_personal_property_gain_or_loss
+      less: ca/unapplied_listed_personal_property_losses
+    produces:
+      output: ca/listed_personal_property_net_gain
+  # Part 3 "Line 11: Add lines 1 to 10. Total gains or losses of qualified properties and
+  # other properties ="; Part 4 "Line 12: Amount from line 11 of the previous page" is the same
+  # artifact, so it has no step of its own.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/qsbcs_gain_or_loss
+        - ca/qffp_gain_or_loss
+        - ca/qffp_foreclosure_gain_or_loss
+        - ca/share_gain_or_loss
+        - ca/real_estate_gain_or_loss
+        - ca/bond_gain_or_loss
+        - ca/crypto_asset_gain_or_loss
+        - ca/other_foreclosure_gain_or_loss
+        - ca/personal_use_property_gain
+        - ca/listed_personal_property_net_gain
+    produces:
+      output: ca/capital_gains_of_qualified_and_other_properties
+  # Part 4 "Line 14: Line 12 minus line 13 =" (line 13, 16100: checked).
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_of_qualified_and_other_properties
+      less: ca/capital_gains_deferral_checked
+    produces:
+      output: ca/capital_gains_after_deferral
+  # Part 4 "Line 17: Add lines 14 to 16. =" (lines 15 and 16, 17400 and 17600, are inputs).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/capital_gains_after_deferral
+        - ca/slip_capital_gains_or_losses
+        - ca/t3_capital_gains_or_losses
+    produces:
+      output: ca/capital_gains_before_investment_loss_reduction
+  # Part 4 "Line 19 and line 19100: Total gains or losses before reserves: line 17 minus line
+  # 18 =" (line 18 and line 17800 is the business investment loss reduction already computed).
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_before_investment_loss_reduction
+      less: ca/business_investment_loss_reduction
+    produces:
+      output: ca/capital_gains_before_reserves
+  # Part 4 "Line 20 and line 19200" (Form T2017 "Total reserve to be included in income"): the
+  # total of `ca/t2017.t2017_line_31`.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017.t2017_line_31
+    produces:
+      output: ca/schedule_3_line_19200
+  # Part 4 "Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses =" (line
+  # 20 is the total above).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/capital_gains_before_reserves
+        - ca/schedule_3_line_19200
+    produces:
+      output: ca/capital_gain
+  # Part 5 line 22 is the same artifact as line 21; line 24 "Line 22 multiplied by the
+  # percentage on line 23" (signed, the included capital gain), then line 26 and line 19900
+  # "Line 24 plus line 25 If positive, enter the result on line 12700 of your return": line 24
+  # and line 25 (the partnership gains at full inclusion, a caller input) as the parts of a sum
+  # not below zero, so the taxable capital gains stay non-negative.
+  - name: core/apply_rate
+    params:
+      rate: ca/capital_gains_inclusion_rate
+    consumes:
+      base: ca/capital_gain
+    produces:
+      output: ca/included_capital_gain
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/included_capital_gain
+        - ca/partnership_gains_at_full_inclusion
+    produces:
+      output: ca/taxable_capital_gains
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_taxable_dividends
+        - ca/t4ps_taxable_dividends
+        - ca/t5_taxable_dividends
+        - ca/t5013_taxable_dividends
+    produces:
+      output: ca/slip_taxable_dividends
+  - name: core/apply_fraction
+    params:
+      fraction: ca/eligible_dividend_gross_up
+    consumes:
+      base: ca/eligible_dividends_received_without_a_slip
+    produces:
+      output: ca/eligible_dividends_grossed_up
+  - name: core/apply_fraction
+    params:
+      fraction: ca/other_dividend_gross_up
+    consumes:
+      base: ca/other_dividends_received_without_a_slip
+    produces:
+      output: ca/other_dividends_grossed_up
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/eligible_dividends_grossed_up
+        - ca/other_dividends_grossed_up
+    produces:
+      output: ca/dividends_without_a_slip_grossed_up
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/slip_taxable_dividends
+        - ca/dividends_without_a_slip_grossed_up
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/taxable_dividends
+  # T1 Step 2 line 10 (12100) "Interest and other investment income (use Federal
+  # Worksheet)": the Federal Worksheet's "Line 12100 - Interest and other investment
+  # income" line 9 "Add lines 1 to 8.", in line order, then line 11 "Line 9 minus line
+  # 10. Enter this amount on line 12100 of your return." with line 10 "Interest and other
+  # investment income, included on line 9, received and reported in previous years".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_investment_income
+        - ca/t5_investment_income
+        - ca/t5013_investment_income
+        - ca/investment_income_credited_not_received
+        - ca/tax_refund_interest
+        - ca/foreign_investment_income
+        - ca/investment_income_without_a_slip
+        - ca/investment_royalties
+    produces:
+      output: ca/investment_income_before_prior_years
+  # Federal Worksheet line 10 "Interest and other investment income, included on line 9, received
+  # and reported in previous years": a starting amount, refused when above line 9, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/investment_income_reported_in_previous_years
+      bound: ca/investment_income_before_prior_years
+    produces:
+      output: ca/investment_income_reported_in_previous_years_applied
+  - name: core/subtract
+    consumes:
+      amount: ca/investment_income_before_prior_years
+      less: ca/investment_income_reported_in_previous_years_applied
+    produces:
+      output: ca/interest_and_other_investment_income
+  # T1 line 13 and line 12600 "Net": Form T776 line 9946 "Your net income (loss)" ... "Enter this
+  # amount on line 12600 of your income tax and benefit return", for each T776 statement the
+  # return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t776.net_rental_income
+    produces:
+      output: ca/net_rental_income
+  # Federal Worksheet "Line 22100 - Carrying charges, interest expenses, and other expenses": line 1
+  # "Total carrying charges", line 2 "Total interest expenses" and line 3 "Total other expenses"
+  # (starting amounts), and line 4 "Add lines 1 to 3. Enter this amount on line 22100 of your
+  # return.", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/total_carrying_charges
+        - ca/total_interest_expenses
+        - ca/total_other_expenses
+    produces:
+      output: ca/carrying_charges_interest_expenses_and_other_expenses
+  # Lines 8 to 13 (the amounts of Schedule 3 for 1986 to 1994, 1994 to 1996, 1997 to 1999, 2000,
+  # 2001 to 2023 and 2024) are starting amounts; line 14 "Add lines 8 to 13." Total of all other
+  # business investment loss reductions for 1986 to 2024.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/other_business_investment_loss_reductions_1986_to_1994
+        - ca/other_business_investment_loss_reductions_1994_to_1996
+        - ca/other_business_investment_loss_reductions_1997_to_1999
+        - ca/other_business_investment_loss_reductions_2000
+        - ca/other_business_investment_loss_reductions_2001_to_2023
+        - ca/other_business_investment_loss_reductions_2024
+    produces:
+      output: ca/other_business_investment_loss_reductions_1986_to_2024
+  # Line 15 "Line 7 minus line 14" prints no "(if negative, enter "0")", so it may be negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_deductions_claimed_1985_to_2024
+      less: ca/other_business_investment_loss_reductions_1986_to_2024
+    produces:
+      output: ca/business_investment_loss_reduction_available
+  # Line 16 "Business investment loss in 2025 Enter this amount on line 21699 of your return." is a
+  # starting amount, the gross of line 21699; line 17 "Enter whichever is less: amount from line 15
+  # or line 16. Enter this amount on line 17800 of Schedule 3." prints no "(if negative, enter "0")"
+  # either, so it may be negative with line 15.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/business_investment_loss_reduction_available
+        - ca/business_investment_loss
+    produces:
+      output: ca/business_investment_loss_reduction
+  # Line 18 "Line 16 minus line 17 Business investment loss reduction": never negative, as line 17
+  # is at most line 16.
+  - name: core/subtract
+    consumes:
+      amount: ca/business_investment_loss
+      less: ca/business_investment_loss_reduction
+    produces:
+      output: ca/business_investment_loss_after_reduction
+  # Line 19 "Inclusion rate for 2025 × 50 %", the rate dataset, and line 20 "Line 18 multiplied by
+  # the percentage on line 19 Enter this amount on line 21700 of your return. Allowable business
+  # investment loss".
+  - name: core/apply_rate
+    params:
+      rate: ca/business_investment_loss_inclusion_rate
+    consumes:
+      base: ca/business_investment_loss_after_reduction
+    produces:
+      output: ca/allowable_business_investment_loss
+  # Form T1436 (Capital Gains Worksheet), "Line 25300 - Net capital loss of other years (if you have
+  # pre-1986 capital loss balance)" and its "Chart A - Adjustment calculation for carry-forward
+  # losses": each cell of the printed rows "Before May 23, 1985", "After May 22, 1985, and before
+  # 1988", "In 1988 and 1989", "After 1989 and before 2000", "In 2000" and "After 2000 and before
+  # 2025" is its own step.
+  # Column (A) "Amount of your unapplied net capital losses" is a starting amount per row, as the
+  # form takes it (the row "Before May 23, 1985" takes line 3 of the pre-1986 calculation above it).
+  # Form T1436 "Calculating your pre-1986 capital loss balance available for 2025, if any": line 1
+  # "Balance of unapplied net capital losses you had before May 23, 1985" and the capital gains
+  # deductions claimed, "Before 1988" (A), "In 1988 and 1989" (B), "From 1990 to 1999" (C), "In
+  # 2000" (D) and "From 2001 to 2024" (E), are starting amounts.
+  # "In 1988 and 1989" (B), "x 0.75" being 3/4.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/pre_1986_deductions_factor_1988_and_1989
+    consumes:
+      base: ca/pre_1986_deductions_1988_and_1989
+    produces:
+      output: ca/pre_1986_deductions_adjusted_1988_and_1989
+  # "From 1990 to 1999" (C), "x 0.6667" being 2/3.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/pre_1986_deductions_factor_1990_to_1999
+    consumes:
+      base: ca/pre_1986_deductions_1990_to_1999
+    produces:
+      output: ca/pre_1986_deductions_adjusted_1990_to_1999
+  # "In 2000" (D), "x 1/(IR x 2)": the deductions times the same factor as the Chart A row "In
+  # 2000" column (B), that is divided by 2 x IR, rounded half-up to the cent once; 0 when IR is 0.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/pre_1986_deductions_adjusted_2000_rounding
+    consumes:
+      amount: ca/pre_1986_deductions_2000
+      numerator: ca/net_capital_loss_numerator_one_2000
+      denominator: ca/net_capital_loss_twice_ir_2000
+    produces:
+      output: ca/pre_1986_deductions_adjusted_2000
+  # "Total capital gains deductions after adjustment: add amounts A to E." (line 2).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/pre_1986_deductions_before_1988
+        - ca/pre_1986_deductions_adjusted_1988_and_1989
+        - ca/pre_1986_deductions_adjusted_1990_to_1999
+        - ca/pre_1986_deductions_adjusted_2000
+        - ca/pre_1986_deductions_2001_to_2024
+    produces:
+      output: ca/pre_1986_deductions_total
+  # Line 3 "Pre-1986 capital loss balance available for 2025: line 1 minus line 2".
+  - name: core/subtract
+    consumes:
+      amount: ca/net_capital_losses_before_may_23_1985
+      less: ca/pre_1986_deductions_total
+    produces:
+      output: ca/pre_1986_capital_loss_balance
+  # Row "Before May 23, 1985", column (A) being line 3, column (C) "Adjusted gross capital losses
+  # (column A multiplied by column B)", column (B) "Adjustment factor (for the inclusion rate)"
+  # being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_before_may_23_1985
+    consumes:
+      base: ca/pre_1986_capital_loss_balance
+    produces:
+      output: ca/adjusted_gross_capital_losses_before_may_23_1985
+  # Row "After May 22, 1985, and before 1988", column (C) "Adjusted gross capital losses (column A
+  # multiplied by column B)", column (B) "Adjustment factor (for the inclusion rate)" being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_1985_to_1987
+    consumes:
+      base: ca/unapplied_net_capital_losses_1985_to_1987
+    produces:
+      output: ca/adjusted_gross_capital_losses_1985_to_1987
+  # Row "In 1988 and 1989", column (C) "Adjusted gross capital losses (column A multiplied by column
+  # B)", column (B) "Adjustment factor (for the inclusion rate)" being 3/4 (printed 0.75).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_1988_and_1989
+    consumes:
+      base: ca/unapplied_net_capital_losses_1988_and_1989
+    produces:
+      output: ca/adjusted_gross_capital_losses_1988_and_1989
+  # Row "After 1989 and before 2000", column (C) "Adjusted gross capital losses (column A multiplied
+  # by column B)", column (B) "Adjustment factor (for the inclusion rate)" being 2/3 (printed
+  # 0.6667).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_1990_to_1999
+    consumes:
+      base: ca/unapplied_net_capital_losses_1990_to_1999
+    produces:
+      output: ca/adjusted_gross_capital_losses_1990_to_1999
+  # Row "After 2000 and before 2025", column (C) "Adjusted gross capital losses (column A multiplied
+  # by column B)", column (B) "Adjustment factor (for the inclusion rate)" being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_2001_to_2024
+    consumes:
+      base: ca/unapplied_net_capital_losses_2001_to_2024
+    produces:
+      output: ca/adjusted_gross_capital_losses_2001_to_2024
+  # Line 4 "Total of column C from Chart A".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/adjusted_gross_capital_losses_before_may_23_1985
+        - ca/adjusted_gross_capital_losses_1985_to_1987
+        - ca/adjusted_gross_capital_losses_1988_and_1989
+        - ca/adjusted_gross_capital_losses_1990_to_1999
+        - ca/adjusted_gross_capital_losses_2000
+        - ca/adjusted_gross_capital_losses_2001_to_2024
+    produces:
+      output: ca/total_adjusted_net_capital_losses
+  # Line 5 "Taxable capital gains from line 12700 of your 2025 return", then line 6 "Enter whichever
+  # is less: amount from line 4 or line 5.", in that order.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/total_adjusted_net_capital_losses
+        - ca/taxable_capital_gains
+    produces:
+      output: ca/net_capital_losses_available_to_claim
+  # Line 7 "Enter the amount of losses you want to claim (3).", note (3) "You can apply all or part
+  # of the amount from line 6 against your taxable capital gains in 2025.": the amount the filer
+  # chooses to claim, a starting amount, refused when above line 6, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/net_capital_losses_claimed
+      bound: ca/net_capital_losses_available_to_claim
+    produces:
+      output: ca/adjusted_net_capital_losses_applied
+  # Line 8 "Balance of unapplied adjusted net capital losses of other years not used to reduce
+  # taxable capital gains: line 4 minus line 7".
+  - name: core/subtract
+    consumes:
+      amount: ca/total_adjusted_net_capital_losses
+      less: ca/adjusted_net_capital_losses_applied
+    produces:
+      output: ca/unapplied_adjusted_net_capital_losses
+  # Line 9 "Enter whichever is less: amount from line 3, line 8, or $2,000.".
+  - name: ca/lesser_of_with_maximum
+    params:
+      maximum: ca/net_capital_losses_additional_deduction_maximum
+    consumes:
+      amounts:
+        - ca/pre_1986_capital_loss_balance
+        - ca/unapplied_adjusted_net_capital_losses
+    produces:
+      output: ca/net_capital_losses_additional_deduction
+  # Line 10 "Line 7 plus line 9", "Deduction in 2025 for net capital losses of other years": T1
+  # line 63 and line 25300 "Net capital losses of other years".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/adjusted_net_capital_losses_applied
+        - ca/net_capital_losses_additional_deduction
+    produces:
+      output: ca/net_capital_losses_of_other_years
+  # Row "In 2000", column (F) "2 × IR" (footnote (2): "IR" is the inclusion rate for 2000, from line
+  # 16 in Part 4 of Schedule 3 for 2000, or from the notice of assessment): IR times 2, exact and not
+  # rounded. IR is the 2000 inclusion rate that Form T657 Chart 2 reads.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_twice_ir_fraction_2000
+    consumes:
+      base: ca/t657_inclusion_rate_2000
+    produces:
+      output: ca/net_capital_loss_twice_ir_2000
+  # Row "In 2000", column (B) "1/(IR × 2)": the printed 1 of the factor, as an artifact.
+  - name: core/credit_amount
+    params:
+      amount: ca/net_capital_loss_numerator_one_2000
+    produces:
+      output: ca/net_capital_loss_numerator_one_2000
+  # Row "In 2000", column (C) "Adjusted gross capital losses (column A multiplied by column B)":
+  # column A times 1/(IR × 2), that is column A divided by column (F), rounded half-up to the cent
+  # once; 0 when IR is 0.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/adjusted_gross_capital_losses_2000_rounding
+    consumes:
+      amount: ca/unapplied_net_capital_losses_2000
+      numerator: ca/net_capital_loss_numerator_one_2000
+      denominator: ca/net_capital_loss_twice_ir_2000
+    produces:
+      output: ca/adjusted_gross_capital_losses_2000
+  # Schedule 3 line 4 and line 13200 "Total gain or loss (add all the amounts under column 5)" is
+  # the share gain or loss, which may be a loss; line 4 counted as a gain only, a loss counts 0.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/share_gain_or_loss
+    produces:
+      output: ca/share_gain_not_below_zero
+  # Schedule 3 line 13 and line 16100 "Capital gains deferral from qualifying dispositions of
+  # eligible small business corporation shares included on line 4" is at most line 4 (checked).
+  - name: core/at_most
+    consumes:
+      amount: ca/capital_gains_deferral
+      bound: ca/share_gain_not_below_zero
+    produces:
+      output: ca/capital_gains_deferral_checked

@@ -1,0 +1,18 @@
+# Form T2125 (ca/t2125), the Class 10.1 vehicle additions check of the CCA table of Area A: see
+# 03b_t2125.yaml for the form's selections and for the proceeds step, which reads the checked rows.
+# The check runs before the proceeds are adjusted and passes each row on unchanged.
+# Guide T4002 2025, "Class 10.1 (30%)": "The capital cost limits of a Class 10.1 passenger vehicle are the
+# following prescribed amounts: ... $38,000 for vehicles acquired in 2025, plus the GST/HST or PST."
+# The cost of additions of each Class 10.1 row is refused, not capped, when it is more than that
+# amount plus the tax at the sales tax rate the caller enters: the filer enters the capped amount.
+form:
+  name: ca/t2125
+capabilities:
+  - name: ca/cca_vehicle_additions_checks
+    params:
+      prescribed_amounts: ca/cca_vehicle_prescribed_amounts
+    consumes:
+      classes: ca/business_cca_classes
+      sales_tax_rate: ca/business_vehicle_sales_tax_rate
+    produces:
+      output: ca/business_cca_classes_checked

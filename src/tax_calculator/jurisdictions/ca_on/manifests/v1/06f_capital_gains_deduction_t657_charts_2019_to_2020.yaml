@@ -1,0 +1,345 @@
+capabilities:
+  # Chart 2019 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS disposed of
+  # in 2019" 433,456.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2019_part_1_amount_a
+    produces:
+      output: ca/chart_2019_part_1_amount_a
+  # Chart 2019 Part 1 "Amount A minus amount B" C (B: the last total carried from the chart before
+  # it). The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2019_part_1_amount_a
+      less: ca/chart_2018_total_carried
+    produces:
+      output: ca/chart_2019_part_1_amount_c
+  # Chart 2019 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
+  # (2019-1)", or, when the filer claimed a deduction for other eligible capital gains from 2019
+  # to 2024, the (2019-1) calculation, whose result the caller enters (uses_d_instead 1).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t657_chart_2019_uses_d_instead_checked
+      when_none: ca/chart_2_line_19
+      when_any: ca/t657_chart_2019_amount_d_instead
+    produces:
+      output: ca/chart_2019_amount_d
+  # Chart 2019 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2019
+  # and included in your 2025 income: amount C minus amount D (if negative, enter "0")" E.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2019_part_1_amount_c
+      less: ca/chart_2019_amount_d
+    produces:
+      output: ca/chart_2019_part_1_amount_e
+  # Chart 2019 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in
+  # 2019 included in your 2025 income: amount F plus amount G (if negative, enter "0")", F "Amount
+  # from line 6 of Form T2017" and G "Amount from line 12 of Form T2017" (signed: a loss is
+  # negative).
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t657_chart_2019_amount_f
+        - ca/t657_chart_2019_amount_g
+    produces:
+      output: ca/chart_2019_part_1_amounts_f_and_g
+  # Chart 2019 Part 1 "× 1/2 =" H (the amounts F and G, times the 1/2 printed on the form).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2019_part_1_h_fraction
+    consumes:
+      base: ca/chart_2019_part_1_amounts_f_and_g
+    produces:
+      output: ca/chart_2019_part_1_amount_h
+  # Chart 2019 Part 1 "Enter whichever is less: amount E or amount H." I.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2019_part_1_amount_e
+        - ca/chart_2019_part_1_amount_h
+    produces:
+      output: ca/chart_2019_part_1_amount_i
+  # Chart 2019 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
+  # carried in from the chart before it).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2019_part_1_amount_i
+        - ca/chart_2018_total_carried
+    produces:
+      output: ca/chart_2019_part_1_amount_k
+  # Chart 2019 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
+  # above." L, the maximum for line 25400 if no other reserve is reported (nothing reads it).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2019_part_1_amount_k
+    produces:
+      output: ca/chart_2019_part_1_amount_l
+  # Chart 2019 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2019"
+  # 500,000.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2019_part_2_amount_a
+    produces:
+      output: ca/chart_2019_part_2_amount_a
+  # Chart 2019 Part 2 "Amount A minus amount B" C (B "Enter amount K from Part 1 of Chart 2019.").
+  # The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2019_part_2_amount_a
+      less: ca/chart_2019_part_1_amount_k
+    produces:
+      output: ca/chart_2019_part_2_amount_c
+  # Chart 2019 Part 2 "Capital gains deduction available for QFFP disposed of in 2019 included in
+  # your 2025 income: amount C minus amount D (if negative, enter "0")" E (D as in Part 1).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2019_part_2_amount_c
+      less: ca/chart_2019_amount_d
+    produces:
+      output: ca/chart_2019_part_2_amount_e
+  # Chart 2019 Part 2 "Amount from line 6 of Form T2017 ... × 1/2 = F" (Part 1's F input, halved).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2019_part_2_f_fraction
+    consumes:
+      base: ca/t657_chart_2019_amount_f
+    produces:
+      output: ca/chart_2019_part_2_amount_f
+  # Chart 2019 Part 2 "Enter whichever is less: amount E or amount F." G.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2019_part_2_amount_e
+        - ca/chart_2019_part_2_amount_f
+    produces:
+      output: ca/chart_2019_part_2_amount_g
+  # Chart 2019 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
+  # K).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2019_part_2_amount_g
+        - ca/chart_2019_part_1_amount_k
+    produces:
+      output: ca/chart_2019_part_2_amount_i
+  # Chart 2019 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
+  # capital gains included in 2025 income eligible for capital gains deduction.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2019_part_2_amount_f
+        - ca/chart_2019_part_2_amount_i
+    produces:
+      output: ca/chart_2019_part_2_amount_j
+  # Chart 2019 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
+  # above." K, the maximum for line 25400 if no other disposition is reported (nothing reads it).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2019_part_2_amount_j
+    produces:
+      output: ca/chart_2019_part_2_amount_k
+  # Chart 2019 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
+  # claim the additional deduction, complete Part 2", and amount E of Part 1 is equal to or less
+  # than the three amounts the form names. The count is 1 when none of its conditions applies,
+  # else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t657_chart_2019_part_2_conditions
+    consumes:
+      counts:
+        - ca/t657_chart_2019_claims_additional_deduction
+      amounts:
+        - ca/chart_2019_part_1_amount_e
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2019_part_1_amount_k
+    produces:
+      output: ca/chart_2019_part_2_applies
+  # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K (the
+  # form: "Enter the last amount that you calculated" for the charts that follow).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/chart_2019_part_2_applies
+      when_none: ca/chart_2019_part_1_amount_k
+      when_any: ca/chart_2019_part_2_amount_j
+    produces:
+      output: ca/chart_2019_total_carried
+  # Chart 2020 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS disposed of
+  # in 2020" 441,692.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2020_part_1_amount_a
+    produces:
+      output: ca/chart_2020_part_1_amount_a
+  # Chart 2020 Part 1 "Amount A minus amount B" C (B: the last total carried from the chart before
+  # it). The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2020_part_1_amount_a
+      less: ca/chart_2019_total_carried
+    produces:
+      output: ca/chart_2020_part_1_amount_c
+  # Chart 2020 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
+  # (2020-1)", or, when the filer claimed a deduction for other eligible capital gains from 2020
+  # to 2024, the (2020-1) calculation, whose result the caller enters (uses_d_instead 1).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t657_chart_2020_uses_d_instead_checked
+      when_none: ca/chart_2_line_19
+      when_any: ca/t657_chart_2020_amount_d_instead
+    produces:
+      output: ca/chart_2020_amount_d
+  # Chart 2020 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2020
+  # and included in your 2025 income: amount C minus amount D (if negative, enter "0")" E.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2020_part_1_amount_c
+      less: ca/chart_2020_amount_d
+    produces:
+      output: ca/chart_2020_part_1_amount_e
+  # Chart 2020 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in
+  # 2020 included in your 2025 income: amount F plus amount G (if negative, enter "0")", F "Amount
+  # from line 6 of Form T2017" and G "Amount from line 12 of Form T2017" (signed: a loss is
+  # negative).
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t657_chart_2020_amount_f
+        - ca/t657_chart_2020_amount_g
+    produces:
+      output: ca/chart_2020_part_1_amounts_f_and_g
+  # Chart 2020 Part 1 "× 1/2 =" H (the amounts F and G, times the 1/2 printed on the form).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2020_part_1_h_fraction
+    consumes:
+      base: ca/chart_2020_part_1_amounts_f_and_g
+    produces:
+      output: ca/chart_2020_part_1_amount_h
+  # Chart 2020 Part 1 "Enter whichever is less: amount E or amount H." I.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2020_part_1_amount_e
+        - ca/chart_2020_part_1_amount_h
+    produces:
+      output: ca/chart_2020_part_1_amount_i
+  # Chart 2020 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
+  # carried in from the chart before it).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2020_part_1_amount_i
+        - ca/chart_2019_total_carried
+    produces:
+      output: ca/chart_2020_part_1_amount_k
+  # Chart 2020 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
+  # above." L, the maximum for line 25400 if no other reserve is reported (nothing reads it).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2020_part_1_amount_k
+    produces:
+      output: ca/chart_2020_part_1_amount_l
+  # Chart 2020 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2020"
+  # 500,000.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2020_part_2_amount_a
+    produces:
+      output: ca/chart_2020_part_2_amount_a
+  # Chart 2020 Part 2 "Amount A minus amount B" C (B "Enter amount K from Part 1 of Chart 2020.").
+  # The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2020_part_2_amount_a
+      less: ca/chart_2020_part_1_amount_k
+    produces:
+      output: ca/chart_2020_part_2_amount_c
+  # Chart 2020 Part 2 "Capital gains deduction available for QFFP disposed of in 2020 included in
+  # your 2025 income: amount C minus amount D (if negative, enter "0")" E (D as in Part 1).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2020_part_2_amount_c
+      less: ca/chart_2020_amount_d
+    produces:
+      output: ca/chart_2020_part_2_amount_e
+  # Chart 2020 Part 2 "Amount from line 6 of Form T2017 ... × 1/2 = F" (Part 1's F input, halved).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2020_part_2_f_fraction
+    consumes:
+      base: ca/t657_chart_2020_amount_f
+    produces:
+      output: ca/chart_2020_part_2_amount_f
+  # Chart 2020 Part 2 "Enter whichever is less: amount E or amount F." G.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2020_part_2_amount_e
+        - ca/chart_2020_part_2_amount_f
+    produces:
+      output: ca/chart_2020_part_2_amount_g
+  # Chart 2020 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
+  # K).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2020_part_2_amount_g
+        - ca/chart_2020_part_1_amount_k
+    produces:
+      output: ca/chart_2020_part_2_amount_i
+  # Chart 2020 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
+  # capital gains included in 2025 income eligible for capital gains deduction.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2020_part_2_amount_f
+        - ca/chart_2020_part_2_amount_i
+    produces:
+      output: ca/chart_2020_part_2_amount_j
+  # Chart 2020 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
+  # above." K, the maximum for line 25400 if no other disposition is reported (nothing reads it).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2020_part_2_amount_j
+    produces:
+      output: ca/chart_2020_part_2_amount_k
+  # Chart 2020 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
+  # claim the additional deduction, complete Part 2", and amount E of Part 1 is equal to or less
+  # than the three amounts the form names. The count is 1 when none of its conditions applies,
+  # else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t657_chart_2020_part_2_conditions
+    consumes:
+      counts:
+        - ca/t657_chart_2020_claims_additional_deduction
+      amounts:
+        - ca/chart_2020_part_1_amount_e
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2020_part_1_amount_k
+    produces:
+      output: ca/chart_2020_part_2_applies
+  # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K (the
+  # form: "Enter the last amount that you calculated" for the charts that follow).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/chart_2020_part_2_applies
+      when_none: ca/chart_2020_part_1_amount_k
+      when_any: ca/chart_2020_part_2_amount_j
+    produces:
+      output: ca/chart_2020_total_carried

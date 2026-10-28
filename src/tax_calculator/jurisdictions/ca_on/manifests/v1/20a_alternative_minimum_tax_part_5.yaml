@@ -1,0 +1,44 @@
+capabilities:
+  # Part 5 line 3 "Line 1 minus line 2 (if negative, enter "0")" "Net minimum tax payable": line 1,
+  # the minimum amount of line 103 of Part 1, less line 2, the special foreign tax credit of Part 4
+  # line 11, and never below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_minimum_amount
+      less: ca/amt_special_foreign_tax_credit
+    produces:
+      output: ca/amt_net_minimum_tax_payable
+  # Part 5 line 6 "Line 4 minus line 5 (if negative, enter "0")": line 4, the regular net federal
+  # tax payable of Part 3 line 15, less line 5, the federal surtax of Part 3 line 4. Line 5 may be
+  # negative when the basic federal tax is negative, and then it is added back.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_regular_net_federal_tax_payable
+      less: ca/amt_federal_surtax
+    produces:
+      output: ca/amt_regular_net_tax_less_surtax
+  # Part 5 line 7 "Line 3 minus line 6 (if negative, enter "0")": line 3 less line 6, never below
+  # zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_net_minimum_tax_payable
+      less: ca/amt_regular_net_tax_less_surtax
+    produces:
+      output: ca/amt_minimum_tax_after_regular_tax
+  # Part 5 line 10 "Line 8 minus line 9 (if negative, enter "0")": line 8, the investment tax credit
+  # of Part 3 line 12, less line 9, amount 15 of Part D of Form T2038(IND) (line 41200, read from the
+  # investment tax credit family), and never below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_investment_tax_credit
+      less: ca/investment_tax_credit
+    produces:
+      output: ca/amt_investment_tax_credit_less_part_d
+  # Part 5 line 11 "Line 7 minus line 10 (if negative, enter "0")": line 7 less line 10, never
+  # below zero. The count of the condition "line 11 is positive" reads it for T1 line 41700.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_minimum_tax_after_regular_tax
+      less: ca/amt_investment_tax_credit_less_part_d
+    produces:
+      output: ca/amt_alternative_minimum_tax_payable

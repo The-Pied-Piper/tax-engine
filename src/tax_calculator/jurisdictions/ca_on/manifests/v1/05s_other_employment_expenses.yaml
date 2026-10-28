@@ -1,0 +1,29 @@
+# T1 line 22900 "Other employment expenses (see Guide T4044)", computed: the total of Form T777 line 17
+# "Total expenses" (the form ca/t777, 03q_t777_lines.yaml) and the total of Form RC359 line 7 "Excess
+# EPSP amount" over the copies of the form ca/rc359 (11a_rc359.yaml). The line 23300 sum of
+# 05_deductions.yaml takes it, and line 45200 (13_refundable_credits.yaml) and T691 Part 1 line 77
+# (20_alternative_minimum_tax.yaml) read it. With no T777 and no RC359 copy, it is 0.
+capabilities:
+  # Form RC359 line 7 "Excess EPSP amount", the total over the copies: "Add the amount from line 7
+  # of each form and include the total on line 22900 of your return." 0 with no employer.
+  - name: core/record_total
+    consumes:
+      records: ca/rc359.rc359_excess_epsp_amount
+    produces:
+      output: ca/rc359_excess_epsp_total
+  # Form T777 line 17 "Total expenses", the export of the form ca/t777 (one record, the form has no
+  # instances list), read as its total.
+  - name: core/record_total
+    consumes:
+      records: ca/t777.t777_line_17
+    produces:
+      output: ca/t777_line_17_total
+  # T1 line 22900 "Other employment expenses (see Guide T4044)": the T777 line 17 total and the
+  # RC359 line 7 total.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_line_17_total
+        - ca/rc359_excess_epsp_total
+    produces:
+      output: ca/other_employment_expenses

@@ -1,0 +1,10 @@
+# Form T1436 Chart A row "In 2000", column (B) "1/(IR × 2)": the 1 of the factor, a credit of 1.
+# The form prints no rounding rule, so the repo convention applies: the figure rounds half-up to
+# the cent.
+family: ca/net_capital_loss_numerator_one_2000
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "1"

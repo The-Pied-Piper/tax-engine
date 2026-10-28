@@ -1,0 +1,14 @@
+# The statement counted once for each place it is present in, for Form T2043 box 67062 "Tick this
+# box if you have multiple farming businesses with one or more permanent establishments in multiple
+# provinces or territories" (2025 tax year), read from the PDF (no .txt is published). Each presence
+# amount of a statement is this amount times its presence count, which is 1 or 0, so the product is
+# exact: "1" for a statement present in the place and 0 otherwise. It is a count written as an amount
+# so that the per-unit capability gives the presence amount, which Form T2043 totals as money of each
+# statement. The figure is one dollar, rounded half-up to the cent (no rounding is needed).
+family: ca/farm_statement_counted
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "1"

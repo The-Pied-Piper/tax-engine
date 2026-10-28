@@ -1,0 +1,13 @@
+# Base amount for the Canada caregiver amount for other infirm dependants, 2025 tax year
+# (Schedule 5, form 5000-S5): "Line 30450 - Canada caregiver amount for other infirm
+# dependants age 18 or older", line 1 "Base amount 28,798.00". It is a plain amount, not a
+# claimed credit: line 3 reduces it by the dependant's net income.
+# Line 3 is a dollars-and-cents box, so the allowable amount rounds half-up to the cent
+# (with the maximum's rule), as the form states no rounding rule.
+family: ca/caregiver_base_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "28798.00"

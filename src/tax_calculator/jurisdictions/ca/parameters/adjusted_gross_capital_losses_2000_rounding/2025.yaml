@@ -1,0 +1,10 @@
+# Form T1436 Chart A row "In 2000", column (C) "Adjusted gross capital losses (column A multiplied
+# by column B)": column A times 1/(IR × 2), which is column A divided by column (F). The form
+# prints no figure and no rounding rule for the quotient, the one rounding of the cell, so the
+# quotient rounds half-up to the cent once; 0 when IR is 0.
+family: ca/adjusted_gross_capital_losses_2000_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

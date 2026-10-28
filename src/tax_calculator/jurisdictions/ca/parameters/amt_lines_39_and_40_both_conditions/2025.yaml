@@ -1,0 +1,21 @@
+# Condition under which Form T691 Part 1 lines 39 and 40 are both filled in, 2025 tax year: "If you
+# claimed limited partnership losses incurred in another year on line 25100 of your 2025 return,
+# complete line 39 or 40 depending on your situation: If you have not filed an election, enter the
+# difference [...] (39)", "If you have filed an election, enter the difference [...] (40)". The
+# count is 1 when line 39 and line 40 are each more than 0, and 0 otherwise. Not a dollars-and-cents
+# box, so no rounding.
+family: ca/amt_lines_39_and_40_both_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      line 39 and line 40 are both more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}

@@ -1,0 +1,12 @@
+# Educator supplies rate, 2025 tax year (T1, form 5006-R, Step 6, "Eligible educator school
+# supply tax credit"): "Line 161 and line 46900: Supplies expenses (maximum $1,000) Line 46800
+# multiplied by 25% =".
+# Line 161 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/educator_supplies_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.25"

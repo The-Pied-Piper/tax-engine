@@ -1,0 +1,13 @@
+# Applicable rate of the multigenerational home renovation tax credit, 2025 tax year (Schedule 12,
+# form 5000-S12): line 9 "Applicable rate 14.5%", applied in line 10 "Line 8 multiplied by the
+# percentage from line 9 Enter this amount on line 45355 of your return". The credit is the lesser
+# of the qualifying expenditures and $50,000, times this rate.
+# Line 10 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/home_renovation_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s12/5000-s12-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.145"

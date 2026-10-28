@@ -1,0 +1,504 @@
+capabilities:
+  # Form T1436 (Capital Gains Worksheet), "Line 25300 - Net capital loss of other years (if you have
+  # pre-1986 capital loss balance)" and its "Chart A - Adjustment calculation for carry-forward
+  # losses": each cell of the printed rows "Before May 23, 1985", "After May 22, 1985, and before
+  # 1988", "In 1988 and 1989", "After 1989 and before 2000", "In 2000" and "After 2000 and before
+  # 2025" is its own step.
+  # Column (A) "Amount of your unapplied net capital losses" is a starting amount per row, as the
+  # form takes it (the row "Before May 23, 1985" takes line 3 of the pre-1986 calculation above it).
+  # Form T1436 "Calculating your pre-1986 capital loss balance available for 2025, if any": line 1
+  # "Balance of unapplied net capital losses you had before May 23, 1985" and the capital gains
+  # deductions claimed, "Before 1988" (A), "In 1988 and 1989" (B), "From 1990 to 1999" (C), "In
+  # 2000" (D) and "From 2001 to 2024" (E), are starting amounts.
+  # "In 1988 and 1989" (B), "x 0.75" being 3/4.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/pre_1986_deductions_factor_1988_and_1989
+    consumes:
+      base: ca/pre_1986_deductions_1988_and_1989
+    produces:
+      output: ca/pre_1986_deductions_adjusted_1988_and_1989
+  # "From 1990 to 1999" (C), "x 0.6667" being 2/3.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/pre_1986_deductions_factor_1990_to_1999
+    consumes:
+      base: ca/pre_1986_deductions_1990_to_1999
+    produces:
+      output: ca/pre_1986_deductions_adjusted_1990_to_1999
+  # "In 2000" (D), "x 1/(IR x 2)": the deductions times the same factor as the Chart A row "In
+  # 2000" column (B), that is divided by 2 x IR, rounded half-up to the cent once; 0 when IR is 0.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/pre_1986_deductions_adjusted_2000_rounding
+    consumes:
+      amount: ca/pre_1986_deductions_2000
+      numerator: ca/net_capital_loss_numerator_one_2000
+      denominator: ca/net_capital_loss_twice_ir_2000
+    produces:
+      output: ca/pre_1986_deductions_adjusted_2000
+  # "Total capital gains deductions after adjustment: add amounts A to E." (line 2).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/pre_1986_deductions_before_1988
+        - ca/pre_1986_deductions_adjusted_1988_and_1989
+        - ca/pre_1986_deductions_adjusted_1990_to_1999
+        - ca/pre_1986_deductions_adjusted_2000
+        - ca/pre_1986_deductions_2001_to_2024
+    produces:
+      output: ca/pre_1986_deductions_total
+  # Line 3 "Pre-1986 capital loss balance available for 2025: line 1 minus line 2".
+  - name: core/subtract
+    consumes:
+      amount: ca/net_capital_losses_before_may_23_1985
+      less: ca/pre_1986_deductions_total
+    produces:
+      output: ca/pre_1986_capital_loss_balance
+  # Row "Before May 23, 1985", column (A) being line 3, column (C) "Adjusted gross capital losses
+  # (column A multiplied by column B)", column (B) "Adjustment factor (for the inclusion rate)"
+  # being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_before_may_23_1985
+    consumes:
+      base: ca/pre_1986_capital_loss_balance
+    produces:
+      output: ca/adjusted_gross_capital_losses_before_may_23_1985
+  # Row "After May 22, 1985, and before 1988", column (C) "Adjusted gross capital losses (column A
+  # multiplied by column B)", column (B) "Adjustment factor (for the inclusion rate)" being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_1985_to_1987
+    consumes:
+      base: ca/unapplied_net_capital_losses_1985_to_1987
+    produces:
+      output: ca/adjusted_gross_capital_losses_1985_to_1987
+  # Row "In 1988 and 1989", column (C) "Adjusted gross capital losses (column A multiplied by column
+  # B)", column (B) "Adjustment factor (for the inclusion rate)" being 3/4 (printed 0.75).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_1988_and_1989
+    consumes:
+      base: ca/unapplied_net_capital_losses_1988_and_1989
+    produces:
+      output: ca/adjusted_gross_capital_losses_1988_and_1989
+  # Row "After 1989 and before 2000", column (C) "Adjusted gross capital losses (column A multiplied
+  # by column B)", column (B) "Adjustment factor (for the inclusion rate)" being 2/3 (printed
+  # 0.6667).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_1990_to_1999
+    consumes:
+      base: ca/unapplied_net_capital_losses_1990_to_1999
+    produces:
+      output: ca/adjusted_gross_capital_losses_1990_to_1999
+  # Row "After 2000 and before 2025", column (C) "Adjusted gross capital losses (column A multiplied
+  # by column B)", column (B) "Adjustment factor (for the inclusion rate)" being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_inclusion_rate_factor_2001_to_2024
+    consumes:
+      base: ca/unapplied_net_capital_losses_2001_to_2024
+    produces:
+      output: ca/adjusted_gross_capital_losses_2001_to_2024
+  # Line 4 "Total of column C from Chart A".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/adjusted_gross_capital_losses_before_may_23_1985
+        - ca/adjusted_gross_capital_losses_1985_to_1987
+        - ca/adjusted_gross_capital_losses_1988_and_1989
+        - ca/adjusted_gross_capital_losses_1990_to_1999
+        - ca/adjusted_gross_capital_losses_2000
+        - ca/adjusted_gross_capital_losses_2001_to_2024
+    produces:
+      output: ca/total_adjusted_net_capital_losses
+  # Line 5 "Taxable capital gains from line 12700 of your 2025 return", then line 6 "Enter whichever
+  # is less: amount from line 4 or line 5.", in that order.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/total_adjusted_net_capital_losses
+        - ca/taxable_capital_gains
+    produces:
+      output: ca/net_capital_losses_available_to_claim
+  # Line 7 "Enter the amount of losses you want to claim (3).", note (3) "You can apply all or part
+  # of the amount from line 6 against your taxable capital gains in 2025.": the amount the filer
+  # chooses to claim, a starting amount, refused when above line 6, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/net_capital_losses_claimed
+      bound: ca/net_capital_losses_available_to_claim
+    produces:
+      output: ca/adjusted_net_capital_losses_applied
+  # Line 8 "Balance of unapplied adjusted net capital losses of other years not used to reduce
+  # taxable capital gains: line 4 minus line 7".
+  - name: core/subtract
+    consumes:
+      amount: ca/total_adjusted_net_capital_losses
+      less: ca/adjusted_net_capital_losses_applied
+    produces:
+      output: ca/unapplied_adjusted_net_capital_losses
+  # Line 9 "Enter whichever is less: amount from line 3, line 8, or $2,000.".
+  - name: ca/lesser_of_with_maximum
+    params:
+      maximum: ca/net_capital_losses_additional_deduction_maximum
+    consumes:
+      amounts:
+        - ca/pre_1986_capital_loss_balance
+        - ca/unapplied_adjusted_net_capital_losses
+    produces:
+      output: ca/net_capital_losses_additional_deduction
+  # Line 10 "Line 7 plus line 9", "Deduction in 2025 for net capital losses of other years": T1
+  # line 63 and line 25300 "Net capital losses of other years".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/adjusted_net_capital_losses_applied
+        - ca/net_capital_losses_additional_deduction
+    produces:
+      output: ca/net_capital_losses_of_other_years
+  # Lines 11 "Amount from line 7" and 12 "Amount from line 9" are copies; line 13 "Line 11 plus line
+  # 12", "Total adjusted net capital losses of other years applied in 2025", which note (4) makes
+  # the total of column D.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/adjusted_net_capital_losses_applied
+        - ca/net_capital_losses_additional_deduction
+    produces:
+      output: ca/total_adjusted_net_capital_losses_applied
+  # Row "Before May 23, 1985", column (D): the lesser of column C and line 13, the oldest row
+  # first.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/adjusted_gross_capital_losses_before_may_23_1985
+        - ca/total_adjusted_net_capital_losses_applied
+    produces:
+      output: ca/adjusted_losses_applied_before_may_23_1985
+  # What is left of line 13 after the row "Before May 23, 1985": line 13 less its column D.
+  - name: core/subtract
+    consumes:
+      amount: ca/total_adjusted_net_capital_losses_applied
+      less: ca/adjusted_losses_applied_before_may_23_1985
+    produces:
+      output: ca/adjusted_losses_left_after_before_may_23_1985
+  # Row "Before May 23, 1985", column (E) "Remaining adjusted net capital losses (column C minus
+  # column D)".
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_gross_capital_losses_before_may_23_1985
+      less: ca/adjusted_losses_applied_before_may_23_1985
+    produces:
+      output: ca/remaining_adjusted_losses_before_may_23_1985
+  # Row "Before May 23, 1985", column (G) "Net capital loss balance available to carry forward
+  # (column E multiplied by column F)", column (F) "Adjustment factor (for carry-forward losses)"
+  # being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_carry_forward_factor_before_may_23_1985
+    consumes:
+      base: ca/remaining_adjusted_losses_before_may_23_1985
+    produces:
+      output: ca/net_capital_loss_balance_before_may_23_1985
+  # Row "After May 22, 1985, and before 1988", column (D) "Total adjusted net capital losses
+  # applied against taxable capital gains in 2025": the lesser of column C and what is left of line
+  # 13 after the row "Before May 23, 1985", as "You have to apply net capital losses of earlier
+  # years before you apply net capital losses of later years." (Guide T4037) puts the oldest row
+  # first.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/adjusted_gross_capital_losses_1985_to_1987
+        - ca/adjusted_losses_left_after_before_may_23_1985
+    produces:
+      output: ca/adjusted_losses_applied_1985_to_1987
+  # What is left of line 13 after the row "After May 22, 1985, and before 1988": the amount left
+  # after the row before it less its column D.
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_losses_left_after_before_may_23_1985
+      less: ca/adjusted_losses_applied_1985_to_1987
+    produces:
+      output: ca/adjusted_losses_left_after_1985_to_1987
+  # Row "After May 22, 1985, and before 1988", column (E) "Remaining adjusted net capital losses
+  # (column C minus column D)".
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_gross_capital_losses_1985_to_1987
+      less: ca/adjusted_losses_applied_1985_to_1987
+    produces:
+      output: ca/remaining_adjusted_losses_1985_to_1987
+  # Row "After May 22, 1985, and before 1988", column (G) "Net capital loss balance available to
+  # carry forward (column E multiplied by column F)", column (F) "Adjustment factor (for carry-
+  # forward losses)" being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_carry_forward_factor_1985_to_1987
+    consumes:
+      base: ca/remaining_adjusted_losses_1985_to_1987
+    produces:
+      output: ca/net_capital_loss_balance_1985_to_1987
+  # Row "In 1988 and 1989", column (D): the lesser of column C and what is left of line 13 after the
+  # older rows.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/adjusted_gross_capital_losses_1988_and_1989
+        - ca/adjusted_losses_left_after_1985_to_1987
+    produces:
+      output: ca/adjusted_losses_applied_1988_and_1989
+  # What is left of line 13 after the row "In 1988 and 1989": the amount before it less its column
+  # D.
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_losses_left_after_1985_to_1987
+      less: ca/adjusted_losses_applied_1988_and_1989
+    produces:
+      output: ca/adjusted_losses_left_after_1988_and_1989
+  # Row "In 1988 and 1989", column (E) "Remaining adjusted net capital losses (column C minus column
+  # D)".
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_gross_capital_losses_1988_and_1989
+      less: ca/adjusted_losses_applied_1988_and_1989
+    produces:
+      output: ca/remaining_adjusted_losses_1988_and_1989
+  # Row "In 1988 and 1989", column (G) "Net capital loss balance available to carry forward (column
+  # E multiplied by column F)", column (F) "Adjustment factor (for carry-forward losses)" being 4/3
+  # (printed 1.33).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_carry_forward_factor_1988_and_1989
+    consumes:
+      base: ca/remaining_adjusted_losses_1988_and_1989
+    produces:
+      output: ca/net_capital_loss_balance_1988_and_1989
+  # Row "After 1989 and before 2000", column (D): the lesser of column C and what is left of line 13
+  # after the older rows.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/adjusted_gross_capital_losses_1990_to_1999
+        - ca/adjusted_losses_left_after_1988_and_1989
+    produces:
+      output: ca/adjusted_losses_applied_1990_to_1999
+  # What is left of line 13 after the row "After 1989 and before 2000": the amount before it less
+  # its column D.
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_losses_left_after_1988_and_1989
+      less: ca/adjusted_losses_applied_1990_to_1999
+    produces:
+      output: ca/adjusted_losses_left_after_1990_to_1999
+  # Row "After 1989 and before 2000", column (E) "Remaining adjusted net capital losses (column C
+  # minus column D)".
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_gross_capital_losses_1990_to_1999
+      less: ca/adjusted_losses_applied_1990_to_1999
+    produces:
+      output: ca/remaining_adjusted_losses_1990_to_1999
+  # Row "After 1989 and before 2000", column (G) "Net capital loss balance available to carry
+  # forward (column E multiplied by column F)", column (F) "Adjustment factor (for carry-forward
+  # losses)" being 3/2 (printed 1.5).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_carry_forward_factor_1990_to_1999
+    consumes:
+      base: ca/remaining_adjusted_losses_1990_to_1999
+    produces:
+      output: ca/net_capital_loss_balance_1990_to_1999
+  # Row "In 2000", column (F) "2 × IR" (footnote (2): "IR" is the inclusion rate for 2000, from line
+  # 16 in Part 4 of Schedule 3 for 2000, or from the notice of assessment): IR times 2, exact and not
+  # rounded. IR is the 2000 inclusion rate that Form T657 Chart 2 reads.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_twice_ir_fraction_2000
+    consumes:
+      base: ca/t657_inclusion_rate_2000
+    produces:
+      output: ca/net_capital_loss_twice_ir_2000
+  # Row "In 2000", column (B) "1/(IR × 2)": the printed 1 of the factor, as an artifact.
+  - name: core/credit_amount
+    params:
+      amount: ca/net_capital_loss_numerator_one_2000
+    produces:
+      output: ca/net_capital_loss_numerator_one_2000
+  # Row "In 2000", column (C) "Adjusted gross capital losses (column A multiplied by column B)":
+  # column A times 1/(IR × 2), that is column A divided by column (F), rounded half-up to the cent
+  # once; 0 when IR is 0.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/adjusted_gross_capital_losses_2000_rounding
+    consumes:
+      amount: ca/unapplied_net_capital_losses_2000
+      numerator: ca/net_capital_loss_numerator_one_2000
+      denominator: ca/net_capital_loss_twice_ir_2000
+    produces:
+      output: ca/adjusted_gross_capital_losses_2000
+  # Row "In 2000", column (D) "Total adjusted net capital losses applied against taxable capital gains
+  # in 2025": the lesser of column C and what is left of line 13 after the older rows, the rows
+  # before it taken first, as Guide T4037 applies the earlier years first.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/adjusted_gross_capital_losses_2000
+        - ca/adjusted_losses_left_after_1990_to_1999
+    produces:
+      output: ca/adjusted_losses_applied_2000
+  # What is left of line 13 after the row "In 2000": the amount before it less its column D.
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_losses_left_after_1990_to_1999
+      less: ca/adjusted_losses_applied_2000
+    produces:
+      output: ca/adjusted_losses_left_after_2000
+  # Row "In 2000", column (E) "Remaining adjusted net capital losses (column C minus column D)".
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_gross_capital_losses_2000
+      less: ca/adjusted_losses_applied_2000
+    produces:
+      output: ca/remaining_adjusted_losses_2000
+  # Row "In 2000", column (G) "Net capital loss balance available to carry forward (column E
+  # multiplied by column F)": column E multiplied by column F (2 × IR), rounded half-up to the cent
+  # once, over the printed 1 of column B.
+  - name: core/apply_ratio
+    params:
+      rounding: ca/net_capital_loss_balance_2000_rounding
+    consumes:
+      amount: ca/remaining_adjusted_losses_2000
+      numerator: ca/net_capital_loss_twice_ir_2000
+      denominator: ca/net_capital_loss_numerator_one_2000
+    produces:
+      output: ca/net_capital_loss_balance_2000
+  # Row "After 2000 and before 2025", column (D): the lesser of column C and what is left of line 13
+  # after the older rows.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/adjusted_gross_capital_losses_2001_to_2024
+        - ca/adjusted_losses_left_after_2000
+    produces:
+      output: ca/adjusted_losses_applied_2001_to_2024
+  # Row "After 2000 and before 2025", column (E) "Remaining adjusted net capital losses (column C
+  # minus column D)".
+  - name: core/subtract
+    consumes:
+      amount: ca/adjusted_gross_capital_losses_2001_to_2024
+      less: ca/adjusted_losses_applied_2001_to_2024
+    produces:
+      output: ca/remaining_adjusted_losses_2001_to_2024
+  # Row "After 2000 and before 2025", column (G) "Net capital loss balance available to carry
+  # forward (column E multiplied by column F)", column (F) "Adjustment factor (for carry-forward
+  # losses)" being 1.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/net_capital_loss_carry_forward_factor_2001_to_2024
+    consumes:
+      base: ca/remaining_adjusted_losses_2001_to_2024
+    produces:
+      output: ca/net_capital_loss_balance_2001_to_2024
+  # Form T2048 Part 4 line 32 "Line 30 plus line 31", for each T2048 disposition the return carries,
+  # added. With no disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_allocation_total
+    produces:
+      output: ca/qbt_allocation_total
+  # Form T2048 Part 5 A "Deduction available from QCC election" (total 17211), for each T2048
+  # disposition the return carries, added. With no disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qcc_election_deduction
+    produces:
+      output: ca/qcc_election_deduction
+  # Form T2048 Part 5 B "Deduction available from QBT election" (total 17212), for each T2048
+  # disposition the return carries, added. With no disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_election_deduction
+    produces:
+      output: ca/qbt_election_deduction
+  # Form T2048 Part 5 C "Taxable capital gains for QBT or QCC" (line 16, total 17213), for each
+  # T2048 disposition the return carries, added. With no disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_taxable_capital_gains
+    produces:
+      output: ca/qbt_taxable_capital_gains
+  # Form T2048 Part 5 D "Portion of the taxable capital gains related to a capital gain deduction
+  # for QBT or QCC claimed" (total 17215), for each T2048 disposition the return carries, added.
+  # With no disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_taxable_gains_related_to_deduction
+    produces:
+      output: ca/qbt_taxable_gains_related_to_deduction
+  # Form T2048 Part 5 E "Portion of QSBCS or QFFP taxable capital gains related to a capital gain
+  # deduction" (total 17216), for each T2048 disposition the return carries, added. With no
+  # disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qsbcs_qffp_taxable_gains_related_to_deduction
+    produces:
+      output: ca/qsbcs_qffp_taxable_gains_related_to_deduction
+  # Form T2048 Part 4 line 41 "ABIL reduction" (Part 5 F, total 17217), for each T2048 disposition
+  # the return carries, added. With no disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_abil_reduction
+    produces:
+      output: ca/qbt_abil_reduction
+  # Form T2048 Part 4 line 42 "Net investment loss reduction" (Part 5 G, total 17218), for each
+  # T2048 disposition the return carries, added. With no disposition the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_net_investment_loss_reduction
+    produces:
+      output: ca/qbt_net_investment_loss_reduction
+  # Form T2048 Part 3 line 27 "Eligible capital gains deduction for QBT or QCC" (line 25395 of your
+  # return), for each T2048 disposition the return carries, added. With no disposition the total
+  # is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2048.qbt_capital_gains_deduction
+    produces:
+      output: ca/qbt_capital_gains_deduction
+  # T1 line 68 and line 25700 "Add lines 58 to 67.": lines 58 to 67 (lines 24400, 24900, 25000,
+  # 25100, 25200, 25300, 25395, 25400, 25500 and 25600), in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/canadian_armed_forces_and_police_deduction
+        - ca/security_options_deductions
+        - ca/other_payments_deduction
+        - ca/limited_partnership_losses_of_other_years_checked
+        - ca/non_capital_losses_on_line_25200
+        - ca/net_capital_losses_of_other_years
+        - ca/qbt_capital_gains_deduction
+        - ca/capital_gains_deduction
+        - ca/northern_residents_deductions
+        - ca/additional_deductions_total
+    produces:
+      output: ca/deductions_from_net_income
+  # Form T691 Part 1 line 1 "Taxable income from line 26000 of your return (or the amount you would
+  # have entered on line 26000 if the instructions for lines 23600 and 26000 said "if negative,
+  # show in brackets") (1)": line 57 minus line 68 of T1 line 26000, with line 57 the net income
+  # signed (`ca/net_income_signed`, line 23600) and line 68 the deductions from net income (line
+  # 25700), before the floor at 0 that `ca/taxable_income` takes.
+  - name: core/subtract
+    consumes:
+      amount: ca/net_income_signed
+      less: ca/deductions_from_net_income
+    produces:
+      output: ca/taxable_income_signed
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/net_income
+      less: ca/deductions_from_net_income
+    produces:
+      output: ca/taxable_income

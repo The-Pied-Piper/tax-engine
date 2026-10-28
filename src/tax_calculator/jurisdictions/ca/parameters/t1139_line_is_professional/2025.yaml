@@ -1,0 +1,20 @@
+# Form T1139 (2025), Part 4 "Report amount G as self-employment income on your return" (and Part 5
+# "Report amount L as self-employment income on your return"): "For professional income, enter it at line
+# 13700". The line of a business is the number of the filer's choice in that list (1 business, 2
+# professional, 3 commission, 4 farming, 5 fishing; the form names no codes, a listed check). The
+# count is 1 when the number is 2 and 0 otherwise; a number outside 1 to 5 is refused first by
+# `ca/t1139_line_refused`.
+# A count, not a dollars-and-cents box, so there is no rounding. Confirmed from the PDF; no .txt
+# published.
+family: ca/t1139_line_is_professional
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1139/t1139-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: "For professional income, enter it at line 13700"
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "2"}

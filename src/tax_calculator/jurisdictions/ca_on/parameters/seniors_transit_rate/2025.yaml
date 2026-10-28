@@ -1,0 +1,12 @@
+# Ontario seniors' public transit tax credit rate, 2025 tax year (Form ON479, form 5006-TC):
+# line 14 "Amount paid in the year for eligible seniors' use of Ontario public transit services
+# (maximum $3,000) Line 63100 multiplied by 15% =".
+# Line 14 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca-on/seniors_transit_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15"

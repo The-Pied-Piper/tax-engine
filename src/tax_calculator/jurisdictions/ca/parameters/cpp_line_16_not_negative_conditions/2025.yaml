@@ -1,0 +1,19 @@
+# Entry condition of Schedule 8 Part 3 line 30, 2025 tax year (form 5000-S8, page 6): "Line 30:
+# If line 16 is positive or "0", enter the amount from line 15 at line 30 and line 36, and
+# continue at line 37. If not, enter the amount from line 14 and continue at line 31." The count
+# is 1 when line 16 (line 14 minus line 15, "if negative, show in brackets") is more than 0 or
+# equal to 0, and 0 when it is negative. Not a dollars-and-cents box, so no rounding.
+family: ca/cpp_line_16_not_negative_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      line 16 is positive or "0"
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+          - {reads: amount, position: "1", relation: equal_to, than: "0"}

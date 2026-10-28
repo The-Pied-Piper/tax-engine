@@ -1,0 +1,11 @@
+# Rate of the food, beverages and entertainment expenses, Form T777 (2025) line 4 "Food, beverages, and
+# entertainment expenses × 50% = 8523": the printed 50%, a rate of 0.5 on the amount entered on the
+# line. The product is a dollars-and-cents line, so it rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/t777_meals_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.5"

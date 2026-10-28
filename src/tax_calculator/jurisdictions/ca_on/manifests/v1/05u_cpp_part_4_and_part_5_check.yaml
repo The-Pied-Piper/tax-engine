@@ -1,0 +1,55 @@
+# Schedule 8 Part 4 and Part 5 "Parts you have to complete": Part 4 "Complete this part if you are
+# reporting only self-employment income", Part 5 "Complete this part if you are reporting both:
+# employment income ... self-employment income". The count of the two both completed, 1 when each
+# checked count is more than 0 and 0 otherwise. The form's parts are alternatives, so the count of 1
+# is refused below, not added: the self-employed contributions would otherwise be counted twice. The
+# schedule prints no refusal; the guard is the count of 1.
+#
+# Schedule 8 Part 4 completed with employment earnings: Part 4 is for a filer with no employment
+# income, and Part 3 line 1 (`ca/t4_cpp_pensionable_earnings_outside_quebec`) is the employment input.
+# The count of Part 4 completed with that input above 0, 1 when both hold, refused when it is 1.
+# Part 5 alone is not refused.
+capabilities:
+  # Schedule 8 Part 4 and Part 5 completed, each checked against Form RC381 in 05j_cpp_lines.yaml
+  # (`ca/cpp_part_4_completed_checked`, `ca/cpp_part_5_completed_checked`): the count of the two both
+  # above 0, 1 when both are completed and 0 otherwise.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/cpp_part_4_and_part_5_both_conditions
+    consumes:
+      counts:
+        - ca/cpp_part_4_completed_checked
+        - ca/cpp_part_5_completed_checked
+      amounts: []
+    produces:
+      output: ca/cpp_part_4_and_part_5_both
+  # The count above is refused when it is 1: an input error naming Part 4 and Part 5 both completed
+  # (not capped, and not a printed line). The checked count, 0, is read by nothing on the return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/cpp_part_4_and_part_5_both_refused
+    consumes:
+      count: ca/cpp_part_4_and_part_5_both
+    produces:
+      output: ca/cpp_part_4_and_part_5_both_checked
+  # Schedule 8 Part 4 completed, checked, and Part 3 line 1 above 0: the count of the two, 1 when both
+  # hold and 0 otherwise. Part 4 is for a filer with no employment income, so the count of 1 is
+  # refused below, an input error naming Part 4 and the Part 5 route, not added. The checked count is
+  # read by nothing on the return.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/cpp_part_4_with_employment_earnings_conditions
+    consumes:
+      counts:
+        - ca/cpp_part_4_completed_checked
+      amounts:
+        - ca/t4_cpp_pensionable_earnings_outside_quebec
+    produces:
+      output: ca/cpp_part_4_with_employment_earnings
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/cpp_part_4_with_employment_earnings_refused
+    consumes:
+      count: ca/cpp_part_4_with_employment_earnings
+    produces:
+      output: ca/cpp_part_4_with_employment_earnings_checked

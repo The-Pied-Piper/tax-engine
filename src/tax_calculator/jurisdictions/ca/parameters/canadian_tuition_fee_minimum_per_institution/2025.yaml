@@ -1,0 +1,13 @@
+# Canadian tuition fee minimum for each institution, 2025 tax year (Schedule 11, form 5000-S11, line 1
+# and line 32000): "Eligible tuition fees paid to Canadian educational institutions for 2025 (fees
+# for each institution must be more than $100)". The printed figure is $100, multiplied by the
+# number of institutions (`ca/more_than_per_unit`); the total of the fees must be more than it.
+# It is a dollars-and-cents figure, so the amount rounds half-up to the cent, as the form states no
+# rounding rule.
+family: ca/canadian_tuition_fee_minimum_per_institution
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s11/5000-s11-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "100.00"

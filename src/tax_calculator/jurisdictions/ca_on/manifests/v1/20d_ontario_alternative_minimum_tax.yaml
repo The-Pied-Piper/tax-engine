@@ -1,0 +1,85 @@
+capabilities:
+  # ON428 line 59 "Amount from line 40427 of your return multiplied by 24.63% =": the minimum
+  # tax carryover applied on the T1 (T691 Part 8 line 12).
+  - name: core/apply_rate
+    params:
+      rate: ca-on/minimum_tax_rate
+    consumes:
+      base: ca/amt_minimum_tax_carryover_applied
+    produces:
+      output: ca-on/minimum_tax_carryover_credit
+  # ON428 line 60 and line 61540 "Enter whichever is less: amount from line 58 or line 59."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca-on/ontario_tax_less_dividend_credit
+        - ca-on/minimum_tax_carryover_credit
+    produces:
+      output: ca-on/ontario_minimum_tax_carryover_applied
+  # ON428 line 61 "Line 55 minus line 60 (if negative, enter "0")"; lines 62 and 63 are the
+  # amount from line 61 and are read from it in 16_ontario_credits.yaml.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/ontario_tax_with_split_income
+      less: ca-on/ontario_minimum_tax_carryover_applied
+    produces:
+      output: ca-on/ontario_tax_after_minimum_tax_carryover
+  # Worksheet ON428 "Line 72 - Ontario additional tax for minimum tax purposes" line 1 "Amount
+  # from line 11 of Part 5 of your Form T691 multiplied by 24.63% =".
+  - name: core/apply_rate
+    params:
+      rate: ca-on/minimum_tax_rate
+    consumes:
+      base: ca/amt_alternative_minimum_tax_payable
+    produces:
+      output: ca-on/worksheet_on428_line_1
+  # Worksheet ON428 line 2 "Amount from line 65 of your Form ON428".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca-on/ontario_surtax_base
+    produces:
+      output: ca-on/worksheet_on428_line_2
+  # Worksheet ON428 line 3 "Line 1 plus line 2 =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca-on/worksheet_on428_line_1
+        - ca-on/worksheet_on428_line_2
+    produces:
+      output: ca-on/worksheet_on428_line_3
+  # Worksheet ON428 lines 4 to 6: "(Line 3 Minus $5,710) multiplied by 20%" and "(Line 3 Minus
+  # $7,307) multiplied by 36%", each "if negative, enter "0"", and line 6 "Line 4 plus line 5 =".
+  # Lines 4 and 5 are inside this step, as ON428 lines 66 to 68 are one step.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca-on/surtax
+    consumes:
+      base: ca-on/worksheet_on428_line_3
+    produces:
+      output: ca-on/worksheet_on428_line_6
+  # Worksheet ON428 line 7 "Amount from line 68 of your Form ON428".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca-on/ontario_surtax
+    produces:
+      output: ca-on/worksheet_on428_line_7
+  # Worksheet ON428 line 8 "Line 6 minus line 7 =": no floor is printed; it is never negative
+  # as line 65 is at most line 3.
+  - name: core/subtract
+    consumes:
+      amount: ca-on/worksheet_on428_line_6
+      less: ca-on/worksheet_on428_line_7
+    produces:
+      output: ca-on/worksheet_on428_line_8
+  # Worksheet ON428 line 9 "Line 1 plus line 8 Enter this amount on line 72 of your Form
+  # ON428.", which is ON428 line 72. Where line 3 is not more than $5,710, lines 4 to 8 are 0
+  # and line 72 is line 1.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca-on/worksheet_on428_line_1
+        - ca-on/worksheet_on428_line_8
+    produces:
+      output: ca-on/ontario_minimum_tax

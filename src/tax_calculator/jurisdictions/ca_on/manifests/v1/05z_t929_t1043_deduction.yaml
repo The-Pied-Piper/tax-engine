@@ -1,0 +1,13 @@
+# Form T929 (see 05k_t929.yaml): the one copy, for the form, of the return's step in 05_deductions.yaml
+# that reads the deduction of Form T1043 line 9 ("You can deduct this amount on line 23200 of your income
+# tax and benefit return"), which the line 23300 sum copy in 05m_t929_copies_2.yaml adds as part of line
+# 23200. A form reads another form's export (here ca/t1043.t1043_deduction), never the return's
+# artifacts, so the step is copied verbatim and the two agree.
+form:
+  name: ca/t929
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t1043.t1043_deduction
+    produces:
+      output: ca/t1043_deduction_on_return

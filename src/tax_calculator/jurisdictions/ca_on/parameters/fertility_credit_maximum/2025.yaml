@@ -1,0 +1,12 @@
+# Ontario fertility treatment tax credit maximum, 2025 tax year (Form ON479, form 5006-TC): line 1
+# and line 61268 "Eligible medical expenses for fertility treatment multiplied by 25% (maximum
+# $5,000) =". The maximum is printed after the percentage, so it caps the credit.
+# Line 1 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca-on/fertility_credit_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "5000"

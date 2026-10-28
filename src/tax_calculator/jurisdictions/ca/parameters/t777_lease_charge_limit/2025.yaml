@@ -1,0 +1,17 @@
+# Guide T4044 (2025), "Eligible leasing costs for passenger vehicles leased after December 31, 2000"
+# line 7 "($1,100*** + GST** and PST** or HST**) multiplied by line 3" and its footnote "***": "For
+# leases entered into in 2024, this amount is $1,050. For leases entered into in 2023, this amount
+# is $950. For leases entered into in 2022, this amount is $900. For leases entered into in 2021
+# or earlier, this amount is $800."
+family: ca/t777_lease_charge_limit
+tax_year: 2025
+kind: year_amounts
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - {from_year: 2025, amounts: {amount: "1100"}}
+  - {from_year: 2024, amounts: {amount: "1050"}}
+  - {from_year: 2023, amounts: {amount: "950"}}
+  - {from_year: 2022, amounts: {amount: "900"}}
+  - {amounts: {amount: "800"}}

@@ -1,0 +1,10 @@
+# Form T657 Chart 2018 Part 1 "Maximum capital gains deduction for QFFP and/or QSBCS disposed of
+# in 2018" 424,126.00 A. The form prints no rounding rule, so the repo convention applies: the
+# figure rounds half-up to the cent.
+family: ca/chart_2018_part_1_amount_a
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "424126"

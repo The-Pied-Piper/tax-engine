@@ -1,0 +1,19 @@
+# Condition under which the count of amount 7 conflicting with the partner and T5013 slip answers
+# is refused, Form T776 (2025), 2025 tax year: an amount 7 is entered by a partner who received no
+# T5013 slip (the count of `ca/t776_partner_amount_7_conflicts`, 1). Such a return
+# is an input error, not a rule the form prints, so the count is refused. The refusal is the guard
+# of this check, not a printed rule. The count is 1 when it applies and 0 otherwise. The count is a
+# count, not a dollars-and-cents box, so there is no rounding.
+family: ca/t776_partner_amount_7_conflict_refused
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4036/t4036-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: amount 7 conflicts with the partner and slip answers
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}

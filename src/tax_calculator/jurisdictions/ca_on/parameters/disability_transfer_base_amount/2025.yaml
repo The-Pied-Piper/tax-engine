@@ -1,0 +1,14 @@
+# Base amount for the Ontario disability amount transferred from a dependant, 2025 tax year
+# (Worksheet ON428, form 5006-D): "Line 58480 - Disability amount transferred from a
+# dependant", line 1 "Base amount 10,298.00". It is a plain amount, not a claimed credit:
+# line 7 adds the amount for a dependant under 18, and line 9 combines it with the dependant's
+# own figures.
+# Line 12 is a dollars-and-cents box, so the allowable amount rounds half-up to the cent (with
+# the maximum's rule), as the form states no rounding rule.
+family: ca-on/disability_transfer_base_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "10298.00"

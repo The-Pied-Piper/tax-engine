@@ -1,0 +1,11 @@
+capabilities:
+  # T1 "Line 45: Support payments made (go to canada.ca/taxes-support-payments)", "Line 21999: Total"
+  # and "Line 22000: Allowable deduction". The deductible part on line 22000 is a part of the total
+  # paid on line 21999, so a deduction above the total is refused, not capped (`core/at_most`); the
+  # sum on line 23300 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/support_payments_deduction
+      bound: ca/support_payments_made_total
+    produces:
+      output: ca/support_payments_deduction_checked

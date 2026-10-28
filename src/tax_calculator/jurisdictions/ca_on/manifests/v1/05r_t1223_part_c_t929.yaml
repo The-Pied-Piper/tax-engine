@@ -1,0 +1,33 @@
+# Form T1223 Part C steps for the form ca/t929 (see 05k_t929.yaml), copied verbatim from
+# 22_clergy_residence_deduction.yaml: the line 7 check against line 6 (core/at_most) and the (B)
+# completed count. They are a part of their own because 05m_t929_copies_2.yaml is at the 30 KB cap,
+# and the line 7 check is not added to 05m.
+form:
+  name: ca/t929
+capabilities:
+  # Form T1223 Part C line 7 "All amounts claimed by you, or any person, for the accommodation" is
+  # at most line 6 "Actual rent and eligible utilities paid or, if residence is owned, fair rental
+  # value ...", the full amount of rent or fair rental value (Note 2: "each of you should record the
+  # full amount of rent paid or the fair rental value on line 6"), so an amount above line 6 is
+  # refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/clergy_other_accommodation_claims
+      bound: ca/clergy_accommodation_cost
+    produces:
+      output: ca/clergy_other_accommodation_claims_checked
+  # Form T1223 Part C (B) "If you owned or rented the residence that you occupied, complete the
+  # following:": a count of 1 when line 3 "Number of months in qualifying employment", line 6 "Actual
+  # rent and eligible utilities paid ..." or line 7 "All amounts claimed by you, or any person, for
+  # the accommodation" is more than 0, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/clergy_residence_part_b_conditions
+    consumes:
+      counts:
+        - ca/clergy_months_in_qualifying_employment
+      amounts:
+        - ca/clergy_accommodation_cost
+        - ca/clergy_other_accommodation_claims
+    produces:
+      output: ca/clergy_residence_part_b_completed

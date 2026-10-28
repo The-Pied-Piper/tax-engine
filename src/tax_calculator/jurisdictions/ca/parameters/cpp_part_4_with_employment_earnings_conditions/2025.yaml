@@ -1,0 +1,25 @@
+# Condition under which Schedule 8 Part 4 is completed with employment earnings, 2025 tax year:
+# Part 4 "Contributions on self-employment income and other earnings only (no employment income)",
+# with "Complete this part if you are reporting only self-employment income or other earnings you are
+# electing to pay CPP contributions on." (Schedule 8, "Parts you have to complete"), and Part 3 line 1
+# "Total CPP pensionable earnings from box 26 of all of your T4 slips where the province of employment
+# is not Quebec" (line 50339), read as the employment input (`ca/t4_cpp_pensionable_earnings_outside_quebec`)
+# that Part 3 and Part 5 use; Quebec T4 earnings are not read, nor employment income that is not carried
+# into that input. The count is 1 when Part 4 completed
+# (`ca/cpp_part_4_completed_checked`) and the T4 pensionable earnings are each more than 0, two parts of
+# one condition (both must hold), and 0 otherwise. Not a dollars-and-cents box, so no rounding.
+family: ca/cpp_part_4_with_employment_earnings_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      Part 4 is completed and CPP pensionable earnings from T4 slips are more than 0
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}

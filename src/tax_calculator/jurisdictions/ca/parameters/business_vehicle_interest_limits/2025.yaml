@@ -1,0 +1,17 @@
+# Form T2125 (2025), Chart B line 18: "($350*** ÷ 30) × the number of days in the fiscal period for
+# which interest was payable (accrual method) or paid (cash method) = 18", with the footnote "***
+# For passenger vehicles bought after 2023. For passenger vehicles bought after 2000 and before
+# 2024, the amount is $300." The limit is claimed whole and depends on the year the vehicle was
+# bought; the form prints none for 2000 or earlier. Line 18 is a dollars-and-cents box, so the
+# quotient rounds half-up to the cent, as the form states no rounding rule.
+family: ca/business_vehicle_interest_limits
+tax_year: 2025
+kind: year_amounts
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - from_year: 2024
+    amounts: {interest_limit: "350"}
+  - from_year: 2001
+    amounts: {interest_limit: "300"}

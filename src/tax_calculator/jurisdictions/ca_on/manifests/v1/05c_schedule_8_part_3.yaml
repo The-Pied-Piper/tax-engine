@@ -1,0 +1,93 @@
+# Form Schedule 8, Canada Pension Plan Contributions and Overpayment: the form ca/schedule_8, run
+# once for the copy of the form the return carries (the record list ca/schedule_8_instances: none or
+# one; the record has no fields, because every figure the form reads is a starting amount of the
+# return). Parts 3, 3a, 3b and 5 of the form are this part and 05d to 05h; Part 4 stays in the
+# return. The form exports the lines the return reads, which T1 totals in 05i_schedule_8_totals.yaml
+# and which are 0 with no copy of the form, and the line 13 of Part 3 "Line 11 plus line 12", which
+# nothing on the return reads.
+form:
+  name: ca/schedule_8
+  instances: ca/schedule_8_instances
+  # The return carries at most one copy of Schedule 8, and not with Form RC381.
+  max_instances: 1
+  min_instances: 0
+  exclusive_group: ca/cpp_calculation
+  exports:
+    - ca/schedule_8_cpp_base_contributions_on_return
+    - ca/schedule_8_cpp_enhanced_contributions_on_return
+    - ca/schedule_8_cpp_overpayment
+    - ca/cpp_part_5_line_49
+    - ca/cpp_part_5_line_70
+    - ca/cpp_part_5_line_88
+    - ca/cpp_zero
+    - ca/cpp_required_base_and_first_additional_contributions
+capabilities:
+  # Schedule 8 Part 3 line 9 "amount from line 8 multiplied by 83.1933% =", line 8 being the
+  # total actual base and first additional contributions on the T4 slips (line 8 and line
+  # 50340): the actual base contributions, to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_actual_base_share
+    consumes:
+      base: ca/cpp_t4_base_and_first_additional_contributions
+    produces:
+      output: ca/cpp_actual_base_contributions
+  # Schedule 8 Part 3 line 10 "Line 8 minus line 9 =": the actual first additional contributions.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_t4_base_and_first_additional_contributions
+      less: ca/cpp_actual_base_contributions
+    produces:
+      output: ca/cpp_actual_first_additional_contributions
+  # Schedule 8 Part 3 line 13 "Line 11 plus line 12 =": the required base and first additional
+  # contributions, from the two required tiers (lines 11 and 12).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_base_contributions
+        - ca/cpp_first_additional_contributions
+    produces:
+      output: ca/cpp_required_base_and_first_additional_contributions
+  # Schedule 8 Part 3 line 16 "Line 14 minus line 15 (if negative, show in brackets) =", line 14
+  # being "Amount from line 9" and line 15 "Amount from line 11": the base contributions difference.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_actual_base_contributions
+      less: ca/cpp_base_contributions
+    produces:
+      output: ca/cpp_base_contributions_difference
+  # Schedule 8 Part 3 line 19 "Line 17 minus line 18 (if negative, show in brackets) =", line 17
+  # being "Amount from line 10" and line 18 "Amount from line 12": the first additional
+  # contributions difference.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_actual_first_additional_contributions
+      less: ca/cpp_first_additional_contributions
+    produces:
+      output: ca/cpp_first_additional_contributions_difference
+  # Schedule 8 Part 3 line 20 "Line 16 plus line 19 (if negative, show in brackets) =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_base_contributions_difference
+        - ca/cpp_first_additional_contributions_difference
+    produces:
+      output: ca/cpp_base_and_first_additional_contributions_difference
+  # Schedule 8 Part 3 line 23 "Line 21 minus line 22 (if negative, show in brackets) =", line 21
+  # being the total actual second additional contributions (line 21 and line 50341) and line 22
+  # "amount from line 4 multiplied by 4% (maximum $396.00)": the second additional difference.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_t4_second_additional_contributions
+      less: ca/cpp_second_additional_contributions
+    produces:
+      output: ca/cpp_second_additional_contributions_difference
+  # Schedule 8 Part 3 line 24 "Line 20 plus line 23 (if negative, show in brackets) =": the
+  # contributions difference, the amount Part 3a line 29 carries to line 44800 when it is positive.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_base_and_first_additional_contributions_difference
+        - ca/cpp_second_additional_contributions_difference
+    produces:
+      output: ca/cpp_contributions_difference

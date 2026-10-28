@@ -1,0 +1,11 @@
+# Capital gains on gifts of publicly listed securities, 2025 tax year (Form T691 Part 1 line 26):
+# "Line 24 minus line 25" then "× 30%", the product on line 26. The 30% is the printed
+# percentage of the form, a rate of 0.3, and the product is a dollars-and-cents line, so it
+# rounds half-up to the cent, the owner's decision, as the form states no rounding rule.
+family: ca/publicly_listed_gifts_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.3"

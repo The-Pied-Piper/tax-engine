@@ -1,0 +1,176 @@
+# Form T2017 (2025), Part 1 (pages 1 and 2), "Summary of Reserves on Dispositions of Capital Property":
+# the form ca/t2017, run once. Its exports are lines 6, 12, 13, 31 and 14: line 31 "Total reserve to be included
+# in income" is entered on line 19200 of Schedule 3. Each row total is read as the record total of the
+# export of the row form ca/t2017_line_N_reserve (03z_t2017_line_N_reserve.yaml), and the lines are added
+# and subtracted in the order of the form. Line 14 is exported as entered (a starting input that no
+# step reads); line 15 is line 13 of the previous page.
+form:
+  name: ca/t2017
+  exports:
+    - ca/t2017_line_6
+    - ca/t2017_line_12
+    - ca/t2017_line_13
+    - ca/t2017_line_31
+    - ca/t2017_line_14
+capabilities:
+  # The total of the reserves of the records of line 2, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_2_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_2
+  # The total of the reserves of the records of line 3, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_3_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_3
+  # The total of the reserves of the records of line 4, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_4_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_4
+  # "Add lines 2 to 4." (5)
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2017_line_2
+        - ca/t2017_line_3
+        - ca/t2017_line_4
+    produces:
+      output: ca/t2017_line_5
+  # "Line 1 minus line 5 (if negative, show in brackets)" (6), signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_line_1
+      less: ca/t2017_line_5
+    produces:
+      output: ca/t2017_line_6
+  # The total of the reserves of the records of line 8, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_8_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_8
+  # The total of the reserves of the records of line 9, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_9_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_9
+  # The total of the reserves of the records of line 10, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_10_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_10
+  # "Add lines 8 to 10." (11)
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2017_line_8
+        - ca/t2017_line_9
+        - ca/t2017_line_10
+    produces:
+      output: ca/t2017_line_11
+  # "Line 7 minus line 11 (if negative, show in brackets)" (12), signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_line_7
+      less: ca/t2017_line_11
+    produces:
+      output: ca/t2017_line_12
+  # "Line 6 plus line 12 (if negative, show in brackets)" (13), signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2017_line_6
+        - ca/t2017_line_12
+    produces:
+      output: ca/t2017_line_13
+  # The total of the reserves of the records of line 17, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_17_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_17
+  # "Line 16 minus line 17 (if negative, show in brackets)" (18), signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_line_16
+      less: ca/t2017_line_17
+    produces:
+      output: ca/t2017_line_18
+  # "Line 15 plus line 18 (if negative, show in brackets)" (19), signed; line 15 is line 13.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2017_line_13
+        - ca/t2017_line_18
+    produces:
+      output: ca/t2017_line_19
+  # The total of the reserves of the records of line 21, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_21_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_21
+  # "Line 20 minus line 21 (if negative, show in brackets)" (22), signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_line_20
+      less: ca/t2017_line_21
+    produces:
+      output: ca/t2017_line_22
+  # The total of the reserves of the records of line 24, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_24_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_24
+  # "Line 23 minus line 24 (if negative, show in brackets)" (25), signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_line_23
+      less: ca/t2017_line_24
+    produces:
+      output: ca/t2017_line_25
+  # The 2024 figure of line 26 less line 23 (26), signed: the form prints no bound.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_lines_66990_and_67058_for_2024
+      less: ca/t2017_line_23
+    produces:
+      output: ca/t2017_line_26
+  # The total of the reserves of the records of line 27, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017_line_27_reserve.t2017_row_reserve
+    produces:
+      output: ca/t2017_line_27
+  # "Line 26 minus line 27 (if negative, show in brackets)" (28), signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_line_26
+      less: ca/t2017_line_27
+    produces:
+      output: ca/t2017_line_28
+  # "Add lines 19, 22, 25, and 28 (if negative, show in brackets)." (29), signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2017_line_19
+        - ca/t2017_line_22
+        - ca/t2017_line_25
+        - ca/t2017_line_28
+    produces:
+      output: ca/t2017_line_29
+  # "Line 29 plus line 30" (31), signed: "Total reserve to be included in income".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2017_line_29
+        - ca/t2017_line_30
+    produces:
+      output: ca/t2017_line_31

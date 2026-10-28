@@ -1,0 +1,14 @@
+# Largest percentage allocated to you, 2025 tax year (Form T2048): Part 2 line 2 "Percentage
+# allocated to you", entered as the form prints a percentage (100 for 100%). The form prints no
+# maximum on line 2: the 100% limit, the whole of the election, is a choice, not a form rule (no
+# .txt published; confirmed from the PDF). It borrows the credit kind because the figure is used
+# whole, as the basic personal amount is.
+# The form states no rounding rule, so the figure rounds half-up to the cent, the owner's
+# decision, the repo convention.
+family: ca/qbt_percentage_allocated_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2048/t2048-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "100"

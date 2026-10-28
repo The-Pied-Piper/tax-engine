@@ -1,0 +1,40 @@
+# Schedule 3 (form 5000-S3) Part 1, page 1 line 17905 "If you ticked "yes", continue at line 17906
+# on the next page." and page 2 line 17906, the nine life event boxes: a box ticked while line
+# 17905 is not "Yes" is refused. The form is `ca/schedule_3`, declared in
+# 03h_schedule_3_flipped_property.yaml, which holds its exports; this part only adds the steps of
+# the form. The checked count of the boxes ticked without a "Yes" is the form's export
+# `ca/flipped_property_life_event_without_yes_checked`, read by nothing on the return.
+form:
+  name: ca/schedule_3
+capabilities:
+  # Form 5000-S3 Part 1, page 1 line 17905 "Yes" or "No" with page 2 line 17906 "Box 1" to "Box 9":
+  # the count is 1 when line 17905 is "No" (0) and a box of line 17906 is ticked (1), else 0, from
+  # the ten checked answers of the flag (line 17905 at position 1, boxes 1 to 9 at positions 2 to
+  # 10). The form prints no such rule; it is the guard of the form.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/schedule_3_life_event_without_yes
+    consumes:
+      counts:
+        - ca/flipped_property_disposed_checked
+        - ca/flipped_property_life_event_1_checked
+        - ca/flipped_property_life_event_2_checked
+        - ca/flipped_property_life_event_3_checked
+        - ca/flipped_property_life_event_4_checked
+        - ca/flipped_property_life_event_5_checked
+        - ca/flipped_property_life_event_6_checked
+        - ca/flipped_property_life_event_7_checked
+        - ca/flipped_property_life_event_8_checked
+        - ca/flipped_property_life_event_9_checked
+      amounts: []
+    produces:
+      output: ca/flipped_property_life_event_without_yes
+  # The count above is refused when it is 1: an input error naming the box ticked without a "Yes"
+  # on line 17905 (not capped, and not a printed line). The checked count, 0, is the form's export.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/schedule_3_life_event_without_yes_refused
+    consumes:
+      count: ca/flipped_property_life_event_without_yes
+    produces:
+      output: ca/flipped_property_life_event_without_yes_checked

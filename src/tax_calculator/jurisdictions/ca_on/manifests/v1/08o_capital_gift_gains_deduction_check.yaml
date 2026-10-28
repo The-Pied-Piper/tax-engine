@@ -1,0 +1,11 @@
+capabilities:
+  # Schedule 9 chart for line 33900 "Gifts of capital property", line 2 "Amount of current-year
+  # capital gains deduction from capital property donated in 2025" at most line 1 "Amount of
+  # current-year taxable capital gains from capital property donated in 2025" (the bound; the
+  # form prints no maximum for line 2), checked against line 1.
+  - name: core/at_most
+    consumes:
+      amount: ca/capital_gift_gains_deduction
+      bound: ca/capital_gift_taxable_gains
+    produces:
+      output: ca/capital_gift_gains_deduction_checked

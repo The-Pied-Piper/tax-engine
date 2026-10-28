@@ -1,0 +1,202 @@
+# Guide T4044 (2025), "Leasing costs" (the guide Form T777 line 27 refers to): the chart "Eligible
+# leasing costs for passenger vehicles leased after December 31, 2000", lines 1 to 8, as steps of the
+# form ca/t777 (the same form as 03q_t777_lines.yaml). Lines 1 to 4 and the year the lease was entered
+# into (the footnotes "*" to "****" print other amounts for earlier years) are the filer's figures
+# (01c_t777_inputs.yaml); the GST rate or HST rate is ca/t777_vehicle_sales_tax_rate. "Your eligible
+# leasing cost is the lower of the amounts on line 7 and line 8" and "Enter your eligible leasing
+# costs on line 27 of Form T777": the last step produces line 27, which line 29 adds
+# (03q_t777_lines.yaml).
+form:
+  name: ca/t777
+capabilities:
+  # "If you use a passenger vehicle to earn employment income, there is a limit on the amount of
+  # leasing costs you can deduct. Use the chart ... for a passenger vehicle": the answer to a yes
+  # or no question, a count of 1 or 0, checked before the steps that read it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_passenger_vehicle
+    produces:
+      output: ca/t777_passenger_vehicle_checked
+  # "Repayments and imputed interest": "When you lease a passenger vehicle, you may have either a
+  # repayment owing to you, or you may have imputed interest. If this is your situation, you cannot
+  # use the leasing chart below. Instead, contact the CRA." Imputed interest needs all three of "You
+  # made one or more deposits for the leased passenger vehicle", "All deposits are refundable" and "The
+  # deposits total is more than $1,000". The three answers are yes or no counts, checked before the
+  # step that reads them; the count of the conflict is refused when it is 1 (an input error, not a
+  # figure), and the form reads it nowhere.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_lease_repayment_owing
+    produces:
+      output: ca/t777_lease_repayment_owing_checked
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_lease_deposits_made
+    produces:
+      output: ca/t777_lease_deposits_made_checked
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t777_lease_deposits_refundable
+    produces:
+      output: ca/t777_lease_deposits_refundable_checked
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t777_lease_chart_conflicts
+    consumes:
+      counts:
+        - ca/t777_passenger_vehicle_checked
+        - ca/t777_lease_repayment_owing_checked
+        - ca/t777_lease_deposits_made_checked
+        - ca/t777_lease_deposits_refundable_checked
+      amounts:
+        - ca/t777_lease_deposits_total
+    produces:
+      output: ca/t777_lease_chart_conflict
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/t777_lease_chart_conflict_refused
+    consumes:
+      count: ca/t777_lease_chart_conflict
+    produces:
+      output: ca/t777_lease_chart_conflict_checked
+  # Line 5 "44,706* + GST** and PST** or HST**": the printed amount (or its footnoted amount for the
+  # year of the lease), the tax on it, and their sum.
+  - name: ca/year_amount
+    params:
+      amounts: ca/t777_lease_list_price_limit
+    consumes:
+      year: ca/t777_lease_year
+    produces:
+      output: ca/t777_lease_list_price_limit
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t777_vehicle_rounding
+    consumes:
+      amount: ca/t777_lease_list_price_limit
+      percentage: ca/t777_vehicle_sales_tax_rate
+    produces:
+      output: ca/t777_lease_list_price_tax
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_lease_list_price_limit
+        - ca/t777_lease_list_price_tax
+    produces:
+      output: ca/t777_lease_line_5
+  # Line 6 "Enter the amount from line 4 or line 5, whichever is more. multiplied by 85%".
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/t777_lease_list_price
+        - ca/t777_lease_line_5
+    produces:
+      output: ca/t777_lease_line_6_amount
+  - name: core/apply_rate
+    params:
+      rate: ca/t777_lease_price_rate
+    consumes:
+      base: ca/t777_lease_line_6_amount
+    produces:
+      output: ca/t777_lease_line_6
+  # Line 7 "($1,100*** + GST** and PST** or HST**) multiplied by line 3 = divided by 30 = minus line
+  # 2": the printed amount, its tax, their sum, times the days, over 30, less line 2. Line 7 prints
+  # no floor and line 27 is a deduction, so a line 2 above the "divided by 30" figure (a negative
+  # leasing cost) is refused.
+  - name: ca/year_amount
+    params:
+      amounts: ca/t777_lease_charge_limit
+    consumes:
+      year: ca/t777_lease_year
+    produces:
+      output: ca/t777_lease_charge_limit
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t777_vehicle_rounding
+    consumes:
+      amount: ca/t777_lease_charge_limit
+      percentage: ca/t777_vehicle_sales_tax_rate
+    produces:
+      output: ca/t777_lease_charge_tax
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_lease_charge_limit
+        - ca/t777_lease_charge_tax
+    produces:
+      output: ca/t777_lease_charge_with_tax
+  - name: core/times_count
+    consumes:
+      amount: ca/t777_lease_charge_with_tax
+      count: ca/t777_lease_days
+    produces:
+      output: ca/t777_lease_line_7_times_days
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t777_lease_days_fraction
+    consumes:
+      base: ca/t777_lease_line_7_times_days
+    produces:
+      output: ca/t777_lease_line_7_divided
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_lease_payments_before
+      bound: ca/t777_lease_line_7_divided
+    produces:
+      output: ca/t777_lease_payments_before_checked
+  - name: core/subtract
+    consumes:
+      amount: ca/t777_lease_line_7_divided
+      less: ca/t777_lease_payments_before_checked
+    produces:
+      output: ca/t777_lease_line_7
+  # Line 8 "($38,000**** + GST** and PST** or HST**) multiplied by line 1 = divided by line 6".
+  - name: ca/year_amount
+    params:
+      amounts: ca/t777_lease_cost_limit
+    consumes:
+      year: ca/t777_lease_year
+    produces:
+      output: ca/t777_lease_cost_limit
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t777_vehicle_rounding
+    consumes:
+      amount: ca/t777_lease_cost_limit
+      percentage: ca/t777_vehicle_sales_tax_rate
+    produces:
+      output: ca/t777_lease_cost_tax
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_lease_cost_limit
+        - ca/t777_lease_cost_tax
+    produces:
+      output: ca/t777_lease_cost_with_tax
+  - name: core/apply_ratio
+    params:
+      rounding: ca/t777_vehicle_rounding
+    consumes:
+      amount: ca/t777_lease_cost_with_tax
+      numerator: ca/t777_lease_charges
+      denominator: ca/t777_lease_line_6
+    produces:
+      output: ca/t777_lease_line_8
+  # "Your eligible leasing cost is the lower of the amounts on line 7 and line 8".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t777_lease_line_7
+        - ca/t777_lease_line_8
+    produces:
+      output: ca/t777_lease_eligible_cost
+  # Form T777 line 27 "Leasing costs": for a passenger vehicle, the eligible leasing cost the chart
+  # gives ("Enter your eligible leasing costs on line 27 of Form T777"); for any other motor vehicle
+  # the chart does not apply, and the lease charges paid (line 1) are the leasing costs ("You can
+  # deduct amounts you paid to lease a motor vehicle you used to earn employment income").
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t777_passenger_vehicle_checked
+      when_none: ca/t777_lease_charges
+      when_any: ca/t777_lease_eligible_cost
+    produces:
+      output: ca/t777_vehicle_leasing_costs

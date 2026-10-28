@@ -1,0 +1,142 @@
+# Form ca/farm_loss, run once per return: the restricted farm loss of Guide T4002 "Restricted farm
+# losses (partly deductible)" (pp. 95-96; confirmed from the PDF, no .txt published), applied once
+# to the net of all the T2042 statements ("your net farm loss for the year"), with the filer's yes
+# or no (`ca/farm_not_main_source_of_income`, 01e_farm_loss_inputs.yaml) asked once for the return.
+# It exports the amount of T1 line 14100 "Net": the net of the statements' line 9946 (exported by
+# ca/t2042, 03c_t2042.yaml) plus the restricted part added back. T1 line 14100 and the copies of it
+# in Schedule 8, Form RC381 and Form T929 read that export.
+form:
+  name: ca/farm_loss
+  exports:
+    - ca/farming_income
+capabilities:
+  # T1 line 14100 "Net": Form T2042 line 9946 "Your net income (loss): Amount 5C minus line 9945
+  # (enter this amount on line 14100 of your income tax and benefit return)", for each T2042
+  # statement the return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farming_income
+    produces:
+      output: ca/farm_net_income_line_9946
+  # Guide T4002 "Restricted farm losses (partly deductible)": the filer's answer to "farming was
+  # neither your main source of income nor ... your main source of income in addition to some
+  # other subordinate source of income", a yes or no for the return, a count of 1 or 0, checked
+  # before the step that reads it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/farm_not_main_source_of_income
+    produces:
+      output: ca/farm_not_main_source_of_income_checked
+  # Guide T4002 "the amount you can deduct from your other income is the lesser of: A) your net
+  # farm loss for the year": the negation of the net of line 9946 when it is a loss, else 0.
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/farm_net_income_line_9946
+    produces:
+      output: ca/farm_net_loss
+  # Guide T4002 "B) $2,500 plus 50% × (your net farm loss minus $2,500)", "When your net farm
+  # loss is $32,500 or more, you can deduct $17,500" and "the annual maximum deduction ... is
+  # $17,500": the printed $2,500, $32,500, $17,500 and 50% (50 for 50%), each a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/farm_restricted_loss_base_amount
+    produces:
+      output: ca/farm_restricted_loss_base_amount
+  - name: core/credit_amount
+    params:
+      amount: ca/farm_restricted_loss_full_threshold
+    produces:
+      output: ca/farm_restricted_loss_full_threshold
+  - name: core/credit_amount
+    params:
+      amount: ca/farm_restricted_loss_annual_maximum
+    produces:
+      output: ca/farm_restricted_loss_annual_maximum
+  - name: core/credit_amount
+    params:
+      amount: ca/farm_restricted_loss_percentage
+    produces:
+      output: ca/farm_restricted_loss_percentage
+  # Guide T4002 "(your net farm loss minus $2,500)", signed: below $2,500 it is negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/farm_net_loss
+      less: ca/farm_restricted_loss_base_amount
+    produces:
+      output: ca/farm_net_loss_less_base_amount
+  # Guide T4002 "50% × (your net farm loss minus $2,500)": the printed 50% of the difference.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_restricted_loss_rounding
+    consumes:
+      amount: ca/farm_net_loss_less_base_amount
+      percentage: ca/farm_restricted_loss_percentage
+    produces:
+      output: ca/farm_restricted_loss_half_of_excess
+  # Guide T4002 "B) $2,500 plus 50% × (your net farm loss minus $2,500)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_restricted_loss_base_amount
+        - ca/farm_restricted_loss_half_of_excess
+    produces:
+      output: ca/farm_restricted_loss_amount_b
+  # Guide T4002 "the amount you can deduct from your other income is the lesser of: A) your net
+  # farm loss for the year B) $2,500 plus 50% × (your net farm loss minus $2,500)".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/farm_net_loss
+        - ca/farm_restricted_loss_amount_b
+    produces:
+      output: ca/farm_restricted_loss_lesser_of_a_and_b
+  # Guide T4002 "When your net farm loss is $32,500 or more": the net farm loss minus $32,500,
+  # signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/farm_net_loss
+      less: ca/farm_restricted_loss_full_threshold
+    produces:
+      output: ca/farm_net_loss_less_full_threshold
+  # Guide T4002 "When your net farm loss is $32,500 or more, you can deduct $17,500 from your
+  # other income" and "When your net farm loss is less than $32,500, the amount you can deduct
+  # from your other income is the lesser of" A and B: the annual maximum when the net farm loss
+  # minus $32,500 is zero or positive, else the lesser of A and B.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/farm_net_loss_less_full_threshold
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/farm_restricted_loss_lesser_of_a_and_b
+      when_non_positive: []
+      when_non_negative:
+        - ca/farm_restricted_loss_annual_maximum
+    produces:
+      output: ca/farm_loss_deductible
+  # Guide T4002 "The amount remaining is your restricted farm loss": the net farm loss minus the
+  # amount deductible.
+  - name: core/subtract
+    consumes:
+      amount: ca/farm_net_loss
+      less: ca/farm_loss_deductible
+    produces:
+      output: ca/farm_restricted_loss
+  # Guide T4002 "she enters $5,850 on line 14100": the restricted part added back to line 9946
+  # only when the answer is yes (a count of 1), so 0 when it is no.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_restricted_loss
+      count: ca/farm_not_main_source_of_income_checked
+    produces:
+      output: ca/farm_restricted_loss_added_back
+  # Guide T4002 "she enters $5,850 on line 14100 of her income tax return": line 9946 plus the
+  # restricted part added back, T1 "Line 25: Farming income" and "Line 14100: Net", signed: the
+  # deductible part of a loss is negative.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_net_income_line_9946
+        - ca/farm_restricted_loss_added_back
+    produces:
+      output: ca/farming_income

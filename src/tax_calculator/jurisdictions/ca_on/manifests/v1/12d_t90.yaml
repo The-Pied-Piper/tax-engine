@@ -1,0 +1,70 @@
+# Form T90 (2025) "Income Exempt from Tax under the Indian Act": the form ca/t90, run once (it has no
+# instances list). Its starting amounts are in 01j_t90_inputs.yaml, and its steps are the printed sums and
+# differences of lines 4, 14, 16, 18 and 20 and the check of line 10019. Its exports are line 4 "Total
+# exempt working income 10000", the checked line 10019 and line 20 "Net exempt income 10026", which
+# Schedule 6 (12_canada_workers_benefit.yaml and 12c_cwb_spouse_column.yaml) reads as ca/t90.<name>. The
+# return selects none of these steps.
+form:
+  name: ca/t90
+  exports:
+    - ca/t90_exempt_working_income
+    - ca/t90_ei_maternity_parental_ppip_benefits_checked
+    - ca/t90_net_exempt_income
+capabilities:
+  # Line 4 "Add lines 1 to 3.": "Total exempt working income 10000", the employment income (box 71 of your
+  # T4 slip(s)), the other employment income and the net self-employment income (excluding losses).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t90_t4_box_71_employment_income
+        - ca/t90_other_employment_income
+        - ca/t90_net_self_employment_income
+    produces:
+      output: ca/t90_exempt_working_income
+  # Line 10019 "EI maternity and parental benefits and PPIP benefits included on line 9": the amount is part
+  # of line 9, so it is refused above line 9, not capped (the form prints no bound of its own).
+  - name: core/at_most
+    consumes:
+      amount: ca/t90_ei_maternity_parental_ppip_benefits
+      bound: ca/t90_ei_ppip_and_other_benefits
+    produces:
+      output: ca/t90_ei_maternity_parental_ppip_benefits_checked
+  # Line 14 "Add lines 4 to 13.": line 4, then lines 5 to 13 except line 10019, which line 9 already holds.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t90_exempt_working_income
+        - ca/t90_cpp_qpp_benefits
+        - ca/t90_rrsp_rrif_pension_transfer_income
+        - ca/t90_covid_19_payments
+        - ca/t90_other_pensions_and_superannuation
+        - ca/t90_ei_ppip_and_other_benefits
+        - ca/t90_interest_dividends_investment_income
+        - ca/t90_net_rental_income
+        - ca/t90_social_assistance_payments
+        - ca/t90_other_exempt_income
+    produces:
+      output: ca/t90_line_14
+  # Line 16 "Line 14 minus line 15": the net rental losses. No floor is printed, so the result is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t90_line_14
+      less: ca/t90_net_rental_losses
+    produces:
+      output: ca/t90_line_16
+  # Line 18 "Line 16 minus line 17" "Total exempt income": the net self-employment losses. Signed, as no
+  # floor is printed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t90_line_16
+      less: ca/t90_net_self_employment_losses
+    produces:
+      output: ca/t90_total_exempt_income
+  # Line 20 "Line 18 minus line 19 (if negative, show in brackets)" "Net exempt income 10026": the deductions
+  # relating to exempt income. Signed: a negative result is shown in brackets.
+  - name: core/subtract
+    consumes:
+      amount: ca/t90_total_exempt_income
+      less: ca/t90_deductions_relating_to_exempt_income
+    produces:
+      output: ca/t90_net_exempt_income

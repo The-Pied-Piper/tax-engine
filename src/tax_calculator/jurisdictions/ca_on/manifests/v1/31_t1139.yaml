@@ -1,0 +1,573 @@
+# Form T1139 (2025), "Reconciliation of 2025 Business Income for Tax Purposes", Parts 2 to 5: the row
+# form ca/t1139, run once for each record of its list ca/t1139_businesses (one record for each
+# business that has a Form T1139, none included). Amounts A, H and I are the net income, line 9946,
+# of the statements of the business ("Your net income (loss) is the amount found on line 9946 on the
+# following forms: T2125 ... T2121 ... T2042"), added by ca/statement_amounts_total over the
+# statements the record names by position; the record's line (1 to 5) picks the form's statements.
+# Parts 2 and 3 give amounts B, C and 3H (a formula whose boxes are blank gives 0), Part 4 takes
+# only the formula the filer says was used ("Use only one of the formulas below"; the boxes of the
+# others are ignored) as D, then gives E and G, Part 5 gives J and L. "Report amount G as self-employment
+# income on your return" (amount L for Part 5): the form exports the amount to report and the net
+# income of the statements it takes the place of, on the line of the business and 0 on the other
+# four; the summary form ca/t1139_return (31a_t1139_return.yaml) puts them on the lines of the return.
+form:
+  name: ca/t1139
+  instances: ca/t1139_businesses
+  exports:
+    - ca/t1139_reported_on_business_line
+    - ca/t1139_reported_on_professional_line
+    - ca/t1139_reported_on_commission_line
+    - ca/t1139_reported_on_farming_line
+    - ca/t1139_reported_on_fishing_line
+    - ca/t1139_replaced_on_business_line
+    - ca/t1139_replaced_on_professional_line
+    - ca/t1139_replaced_on_commission_line
+    - ca/t1139_replaced_on_farming_line
+    - ca/t1139_replaced_on_fishing_line
+    - ca/t1139_profit_replaced_on_business_line
+    - ca/t1139_profit_replaced_on_professional_line
+    - ca/t1139_profit_replaced_on_commission_line
+    - ca/t1139_profit_replaced_on_farming_line
+    - ca/t1139_profit_replaced_on_fishing_line
+capabilities:
+  # Part 6 "I am cancelling my previous election to have a fiscal period that does not end on
+  # December 31 in order to have a fiscal period ending on December 31.": a box ticked or not, 1 or
+  # 0; an answer above 1 is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1139_cancelling_election
+    produces:
+      output: ca/t1139_cancelling_election_checked
+  # Part 2 "Enter at amount C the lesser of any amount you designate as your additional business
+  # income or the result of the following formula": the answer to whether an amount is designated, 1
+  # or 0; an answer above 1 is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1139_designates_amount
+    produces:
+      output: ca/t1139_designates_amount_checked
+  # Part 4 "Report amount G as self-employment income on your return" lists five lines (13500,
+  # 13700, 13900, 14100, 14300): a number that is none of 1 to 5 names no line and is refused.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/t1139_line_refused
+    consumes:
+      count: ca/t1139_line
+    produces:
+      output: ca/t1139_line_checked
+  # Part 2 "Use only one of the formulas below" and Part 4 "Enter either amount B, C, or 3H based
+  # on the formula you used above": the formula used is the filer's choice (1 amount B, 2 amount C,
+  # 3 amount 3H, 0 none); a number above 3 names no formula and is refused, not capped.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/t1139_formula_refused
+    consumes:
+      count: ca/t1139_formula
+    produces:
+      output: ca/t1139_formula_checked
+  # Part 4 "Report amount G as self-employment income on your return: For business income, enter it
+  # at line 13500, for professional income at line 13700, for commission income at line 13900, for
+  # farming income at line 14100, for fishing income at line 14300", and the same for amount L under
+  # Part 5: a flag of 1 for the business's line, 0 for the other four.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_line_is_business
+    consumes:
+      counts:
+        - ca/t1139_line_checked
+      amounts: []
+    produces:
+      output: ca/t1139_on_business_line
+  # Part 4 "For professional income, enter it at line 13700": 1 when the business's line is this
+  # one, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_line_is_professional
+    consumes:
+      counts:
+        - ca/t1139_line_checked
+      amounts: []
+    produces:
+      output: ca/t1139_on_professional_line
+  # Part 4 "For commission income, enter it at line 13900": 1 when the business's line is this one,
+  # else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_line_is_commission
+    consumes:
+      counts:
+        - ca/t1139_line_checked
+      amounts: []
+    produces:
+      output: ca/t1139_on_commission_line
+  # Part 4 "For farming income, enter it at line 14100": 1 when the business's line is this one,
+  # else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_line_is_farming
+    consumes:
+      counts:
+        - ca/t1139_line_checked
+      amounts: []
+    produces:
+      output: ca/t1139_on_farming_line
+  # Part 4 "For fishing income, enter it at line 14300": 1 when the business's line is this one,
+  # else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_line_is_fishing
+    consumes:
+      counts:
+        - ca/t1139_line_checked
+      amounts: []
+    produces:
+      output: ca/t1139_on_fishing_line
+  # Part 2 amount A "Net income (loss) for your fiscal period ending in 2025 (if applicable)", Part
+  # 3 amount A and Part 4 line E: the net income, line 9946, of the statements of the business
+  # ("amount A is the total of the net income (loss) of these fiscal periods"), 0 with none named
+  # ("leave this field blank").
+  - name: ca/statement_amounts_total
+    consumes:
+      records:
+        - ca/t2125.net_on_business_line
+        - ca/t2125.net_on_professional_line
+        - ca/t2125.net_on_commission_line
+        - ca/t2042.farming_income
+        - ca/t2121.fishing_income
+      line: ca/t1139_line_checked
+      positions: ca/t1139_a_statements
+    produces:
+      total: ca/t1139_amount_a
+  # Part 5 amount H "Net income (loss) for your first fiscal period that ends between January 1,
+  # 2025, and December 30, 2025": the net income, line 9946, of the statement of that period.
+  - name: ca/statement_amounts_total
+    consumes:
+      records:
+        - ca/t2125.net_on_business_line
+        - ca/t2125.net_on_professional_line
+        - ca/t2125.net_on_commission_line
+        - ca/t2042.farming_income
+        - ca/t2121.fishing_income
+      line: ca/t1139_line_checked
+      positions: ca/t1139_h_statements
+    produces:
+      total: ca/t1139_amount_h
+  # Part 5 amount I "Net income (loss) for the period that starts after the end of your first fiscal
+  # period in 2025, and ends on December 31, 2025": the net income, line 9946, of the statement of
+  # that period ("You need a separate income and expense statement for each fiscal period").
+  - name: ca/statement_amounts_total
+    consumes:
+      records:
+        - ca/t2125.net_on_business_line
+        - ca/t2125.net_on_professional_line
+        - ca/t2125.net_on_commission_line
+        - ca/t2042.farming_income
+        - ca/t2121.fishing_income
+      line: ca/t1139_line_checked
+      positions: ca/t1139_i_statements
+    produces:
+      total: ca/t1139_amount_i
+  # Amount A, Part 2 "Net income (loss) for your fiscal period ending in 2025" and Part 3 amount A,
+  # counting only the profit of each statement (a loss counts 0): the note "use only the profit
+  # amounts" of Form T1-M line 28, Form T929 line 4 and the medical expense supplement, which take
+  # the profit of each business and not the net of the businesses on a line.
+  - name: ca/statement_profits_total
+    consumes:
+      records:
+        - ca/t2125.net_on_business_line
+        - ca/t2125.net_on_professional_line
+        - ca/t2125.net_on_commission_line
+        - ca/t2042.farming_income
+        - ca/t2121.fishing_income
+      line: ca/t1139_line_checked
+      positions: ca/t1139_a_statements
+    produces:
+      total: ca/t1139_profit_a
+  # Amount H, Part 5 "Net income (loss) for your first fiscal period that ends between January 1,
+  # 2025, and December 30, 2025", counting only the profit of each statement (a loss counts 0): the
+  # note "use only the profit amounts" of Form T1-M line 28, Form T929 line 4 and the medical
+  # expense supplement, which take the profit of each business and not the net of the businesses on
+  # a line.
+  - name: ca/statement_profits_total
+    consumes:
+      records:
+        - ca/t2125.net_on_business_line
+        - ca/t2125.net_on_professional_line
+        - ca/t2125.net_on_commission_line
+        - ca/t2042.farming_income
+        - ca/t2121.fishing_income
+      line: ca/t1139_line_checked
+      positions: ca/t1139_h_statements
+    produces:
+      total: ca/t1139_profit_h
+  # Amount I, Part 5 "Net income (loss) for the period that starts after the end of your first
+  # fiscal period in 2025", counting only the profit of each statement (a loss counts 0): the note
+  # "use only the profit amounts" of Form T1-M line 28, Form T929 line 4 and the medical expense
+  # supplement, which take the profit of each business and not the net of the businesses on a line.
+  - name: ca/statement_profits_total
+    consumes:
+      records:
+        - ca/t2125.net_on_business_line
+        - ca/t2125.net_on_professional_line
+        - ca/t2125.net_on_commission_line
+        - ca/t2042.farming_income
+        - ca/t2121.fishing_income
+      line: ca/t1139_line_checked
+      positions: ca/t1139_i_statements
+    produces:
+      total: ca/t1139_profit_i
+  # Part 2 line 2C "Amount 2A or 2B, whichever is less".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1139_amount_2a
+        - ca/t1139_amount_2b
+    produces:
+      output: ca/t1139_amount_2c
+  # Part 2 line 2D "Amount A minus amount 2C".
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_amount_a
+      less: ca/t1139_amount_2c
+    produces:
+      output: ca/t1139_amount_2d
+  # Part 2 amount B "Amount 2D multiplied by amount 2G", line 2G being "Amount 2E divided by amount
+  # 2F": 2D times 2E over 2F as one exact fraction, rounded half-up to the cent once (line 2G has no
+  # finite decimal expansion for most days, so it is not an artifact of its own). 0 when line 2F is
+  # 0: the formula is not used.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1139_rounding
+    consumes:
+      amount: ca/t1139_amount_2d
+      numerator: ca/t1139_amount_2e
+      denominator: ca/t1139_amount_2f
+    produces:
+      output: ca/t1139_amount_b
+  # Part 2 line 2K "Amount 2I or 2J, whichever is less".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1139_amount_2i
+        - ca/t1139_amount_2j
+    produces:
+      output: ca/t1139_amount_2k
+  # Part 2 line 2L "Amount 2H minus amount 2K".
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_amount_2h
+      less: ca/t1139_amount_2k
+    produces:
+      output: ca/t1139_amount_2l
+  # Part 2 "Amount 2L multiplied by amount 2O", line 2O being "Amount 2M divided by amount 2N": 2L
+  # times 2M over 2N as one exact fraction, rounded half-up to the cent once. 0 when line 2N is 0:
+  # the formula is not used.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1139_rounding
+    consumes:
+      amount: ca/t1139_amount_2l
+      numerator: ca/t1139_amount_2m
+      denominator: ca/t1139_amount_2n
+    produces:
+      output: ca/t1139_formula_amount_for_c
+  # Part 2 "Enter at amount C the lesser of any amount you designate as your additional business
+  # income or the result of the following formula": the lesser of the two, which amount C takes when
+  # an amount is designated.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1139_designated_amount
+        - ca/t1139_formula_amount_for_c
+    produces:
+      output: ca/t1139_designated_or_formula_amount
+  # Part 2 amount C: the result of the formula when no amount is designated, the lesser of the
+  # designated amount and the result when one is.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1139_designates_amount_checked
+      when_none: ca/t1139_formula_amount_for_c
+      when_any: ca/t1139_designated_or_formula_amount
+    produces:
+      output: ca/t1139_amount_c
+  # Part 3 line 3C "Amounts 3A or 3B, whichever is less".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1139_amount_3a
+        - ca/t1139_amount_3b
+    produces:
+      output: ca/t1139_amount_3c
+  # Part 3 line 3D "Amount A minus amount 3C".
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_amount_a
+      less: ca/t1139_amount_3c
+    produces:
+      output: ca/t1139_amount_3d
+  # Part 3 amount 3H "Amount 3D multiplied by amount 3G", line 3G being "Amount 3E divided by amount
+  # 3F": 3D times 3E over 3F as one exact fraction, rounded half-up to the cent once. 0 when line 3F
+  # is 0: the formula is not used.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1139_rounding
+    consumes:
+      amount: ca/t1139_amount_3d
+      numerator: ca/t1139_amount_3e
+      denominator: ca/t1139_amount_3f
+    produces:
+      output: ca/t1139_amount_3h
+  # Part 4 "Enter either amount B, C, or 3H based on the formula you used above": amount B when
+  # that is the formula used, 0 for the others (the boxes of the formulas not used are ignored).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_formula_is_b
+    consumes:
+      counts:
+        - ca/t1139_formula_checked
+      amounts: []
+    produces:
+      output: ca/t1139_formula_is_b
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_amount_b
+      count: ca/t1139_formula_is_b
+    produces:
+      output: ca/t1139_amount_b_chosen
+  # Part 4 "Enter either amount B, C, or 3H based on the formula you used above": amount C when
+  # that is the formula used, 0 for the others (the boxes of the formulas not used are ignored).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_formula_is_c
+    consumes:
+      counts:
+        - ca/t1139_formula_checked
+      amounts: []
+    produces:
+      output: ca/t1139_formula_is_c
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_amount_c
+      count: ca/t1139_formula_is_c
+    produces:
+      output: ca/t1139_amount_c_chosen
+  # Part 4 "Enter either amount B, C, or 3H based on the formula you used above": amount 3H when
+  # that is the formula used, 0 for the others (the boxes of the formulas not used are ignored).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1139_formula_is_3h
+    consumes:
+      counts:
+        - ca/t1139_formula_checked
+      amounts: []
+    produces:
+      output: ca/t1139_formula_is_3h
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_amount_3h
+      count: ca/t1139_formula_is_3h
+    produces:
+      output: ca/t1139_amount_3h_chosen
+  # Part 4 amount D "Additional business income: Enter either amount B, C, or 3H based on the
+  # formula you used above", at least 0: Part 2 says "Enter the result at amount D (if the amount
+  # you calculate is negative, the CRA considers it to be zero)". The amounts of the formulas not
+  # used are 0, so the sum is the one used.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t1139_amount_b_chosen
+        - ca/t1139_amount_c_chosen
+        - ca/t1139_amount_3h_chosen
+    produces:
+      output: ca/t1139_amount_d
+  # Part 4 line E "Subtotal: Amount A plus amount D".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_amount_a
+        - ca/t1139_amount_d
+    produces:
+      output: ca/t1139_amount_e
+  # Part 4 amount G "Net income (loss) of the business: Amount E minus amount F", amount F being
+  # "Last year's additional business income: Enter amount D from last year's Form T1139".
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_amount_e
+      less: ca/t1139_last_years_additional_income
+    produces:
+      output: ca/t1139_amount_g
+  # Part 5 line J "Subtotal: Amount H plus amount I".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_amount_h
+        - ca/t1139_amount_i
+    produces:
+      output: ca/t1139_amount_j
+  # Part 5 amount L "Net income (loss) of the business: Amount J minus amount K", amount K being
+  # "Last year's additional business income: Enter amount D from last year's Form T1139" (the same
+  # figure as amount F, entered once).
+  - name: core/subtract
+    consumes:
+      amount: ca/t1139_amount_j
+      less: ca/t1139_last_years_additional_income
+    produces:
+      output: ca/t1139_amount_l
+  # Part 4 "Report amount G as self-employment income on your return" and Part 5 "Report amount L as
+  # self-employment income on your return": amount L when the election is cancelled (Part 5
+  # applies), else amount G.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1139_cancelling_election_checked
+      when_none: ca/t1139_amount_g
+      when_any: ca/t1139_amount_l
+    produces:
+      output: ca/t1139_net_income_reported
+  # The net income of the statements that amount G or amount L is reported in place of: amount A
+  # (Part 4) or line J, amounts H plus I (Part 5), the line 9946 amounts the return would otherwise
+  # carry on the line.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1139_cancelling_election_checked
+      when_none: ca/t1139_amount_a
+      when_any: ca/t1139_amount_j
+    produces:
+      output: ca/t1139_net_income_replaced
+  # Part 5 line J "Subtotal: Amount H plus amount I", counting only the profit of each statement.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1139_profit_h
+        - ca/t1139_profit_i
+    produces:
+      output: ca/t1139_profit_hi
+  # The profit of the statements that amount G or amount L is reported in place of: the profit of
+  # the statements of amount A (Part 4) or of amounts H and I (Part 5), each statement counted
+  # alone.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1139_cancelling_election_checked
+      when_none: ca/t1139_profit_a
+      when_any: ca/t1139_profit_hi
+    produces:
+      output: ca/t1139_profit_replaced
+  # "For business income, enter it at line 13500": the amount to report on this line, 0 on the lines
+  # of the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_reported
+      count: ca/t1139_on_business_line
+    produces:
+      output: ca/t1139_reported_on_business_line
+  # "For professional income, enter it at line 13700": the amount to report on this line, 0 on the
+  # lines of the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_reported
+      count: ca/t1139_on_professional_line
+    produces:
+      output: ca/t1139_reported_on_professional_line
+  # "For commission income, enter it at line 13900": the amount to report on this line, 0 on the
+  # lines of the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_reported
+      count: ca/t1139_on_commission_line
+    produces:
+      output: ca/t1139_reported_on_commission_line
+  # "For farming income, enter it at line 14100": the amount to report on this line, 0 on the lines
+  # of the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_reported
+      count: ca/t1139_on_farming_line
+    produces:
+      output: ca/t1139_reported_on_farming_line
+  # "For fishing income, enter it at line 14300": the amount to report on this line, 0 on the lines
+  # of the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_reported
+      count: ca/t1139_on_fishing_line
+    produces:
+      output: ca/t1139_reported_on_fishing_line
+  # The net income of the statements this form takes the place of on line 13500, 0 on the lines of
+  # the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_replaced
+      count: ca/t1139_on_business_line
+    produces:
+      output: ca/t1139_replaced_on_business_line
+  # The net income of the statements this form takes the place of on line 13700, 0 on the lines of
+  # the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_replaced
+      count: ca/t1139_on_professional_line
+    produces:
+      output: ca/t1139_replaced_on_professional_line
+  # The net income of the statements this form takes the place of on line 13900, 0 on the lines of
+  # the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_replaced
+      count: ca/t1139_on_commission_line
+    produces:
+      output: ca/t1139_replaced_on_commission_line
+  # The net income of the statements this form takes the place of on line 14100, 0 on the lines of
+  # the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_replaced
+      count: ca/t1139_on_farming_line
+    produces:
+      output: ca/t1139_replaced_on_farming_line
+  # The net income of the statements this form takes the place of on line 14300, 0 on the lines of
+  # the other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_net_income_replaced
+      count: ca/t1139_on_fishing_line
+    produces:
+      output: ca/t1139_replaced_on_fishing_line
+  # The profit of the statements this form takes the place of on line 13500, 0 on the lines of the
+  # other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_profit_replaced
+      count: ca/t1139_on_business_line
+    produces:
+      output: ca/t1139_profit_replaced_on_business_line
+  # The profit of the statements this form takes the place of on line 13700, 0 on the lines of the
+  # other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_profit_replaced
+      count: ca/t1139_on_professional_line
+    produces:
+      output: ca/t1139_profit_replaced_on_professional_line
+  # The profit of the statements this form takes the place of on line 13900, 0 on the lines of the
+  # other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_profit_replaced
+      count: ca/t1139_on_commission_line
+    produces:
+      output: ca/t1139_profit_replaced_on_commission_line
+  # The profit of the statements this form takes the place of on line 14100, 0 on the lines of the
+  # other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_profit_replaced
+      count: ca/t1139_on_farming_line
+    produces:
+      output: ca/t1139_profit_replaced_on_farming_line
+  # The profit of the statements this form takes the place of on line 14300, 0 on the lines of the
+  # other kinds of business income.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1139_profit_replaced
+      count: ca/t1139_on_fishing_line
+    produces:
+      output: ca/t1139_profit_replaced_on_fishing_line

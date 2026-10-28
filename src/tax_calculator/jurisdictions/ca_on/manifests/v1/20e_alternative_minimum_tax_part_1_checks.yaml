@@ -1,0 +1,60 @@
+capabilities:
+  # Part 1 line 17 "Part of total capital gains included on line 15 that is exempt from Canadian
+  # tax under a tax treaty (included on line 25600 of your return)": line 17 is part of line 15
+  # (`capital_gain`), so it is at most line 15. An amount above it is an input error, not capped.
+  # Line 19 reads the checked amount. As for Part 4 line 3, the bound is line 15 with a loss taken
+  # as 0, so that a loss on line 15 refuses no amount of 0. It is not a form line.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/capital_gain
+    produces:
+      output: ca/amt_capital_gain_not_below_zero
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_treaty_exempt_capital_gains
+      bound: ca/amt_capital_gain_not_below_zero
+    produces:
+      output: ca/amt_treaty_exempt_capital_gains_checked
+  # Part 1 line 46 "Amount from line 39 or 40, as applicable", the difference of the limited
+  # partnership losses. Line 39 or 40 is "the difference between those losses and the amount of
+  # losses deductible (9) for AMT purposes", so it is at most the losses of other years on line
+  # 25100 (`limited_partnership_losses_of_other_years_checked`), which line 47 subtracts it from.
+  # An amount above them is an input error, not capped. Line 47 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_limited_partnership_difference_applied
+      bound: ca/limited_partnership_losses_of_other_years_checked
+    produces:
+      output: ca/amt_limited_partnership_difference_applied_checked
+  # Part 1 line 41 "indicate the difference between those losses and the losses that are deductible
+  # for AMT purposes", the difference for the non-capital losses of other years on line 25200 of
+  # the return. The difference is at most those losses, which line 50 subtracts it from. An amount
+  # above them is an input error, not capped. Lines 43 and 50 read the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_non_capital_losses_difference
+      bound: ca/non_capital_losses_on_line_25200
+    produces:
+      output: ca/amt_non_capital_losses_difference_checked
+  # Part 1 line 42 "indicate the difference between those losses and the losses that are deductible
+  # for AMT purposes", the difference for the net capital losses of other years on line 25300 of
+  # the return. The difference is at most those losses. An amount above them is an input error, not
+  # capped. Line 43 reads the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_net_capital_losses_difference
+      bound: ca/net_capital_losses_of_other_years
+    produces:
+      output: ca/amt_net_capital_losses_difference_checked
+  # Form T691 Part 1 line 17 "(included on line 25600 of your return)": the checked treaty-exempt
+  # gains are part of line 25600 "Additional deductions" (`ca/additional_deductions_total`), which
+  # the
+  # return deducts them from, so the amount is at most it. An amount above it is an input error, not
+  # capped. Line 19 reads the amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_treaty_exempt_capital_gains_checked
+      bound: ca/additional_deductions_total
+    produces:
+      output: ca/amt_treaty_exempt_capital_gains_within_additional_deductions

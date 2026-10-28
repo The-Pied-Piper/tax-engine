@@ -1,0 +1,17 @@
+# Condition for line 5 of Part 2 of Form T2203, 2025 tax year: "If you have to pay tax on split
+# income, enter the amount from line 22 of your Form T1206. If not, enter "0"." The one condition,
+# "you have to pay tax on split income", reads the federal tax on split income (Form T1206 line 8):
+# a count of 1 when it is more than 0, and 0 otherwise. The result is a count, not a
+# dollars-and-cents box, so there is no rounding.
+family: ca/t2203_tax_on_split_income_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2203/t2203-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: you have to pay tax on split income
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}

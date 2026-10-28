@@ -1,0 +1,23 @@
+# Form T2125 (2025), Chart C: line 23 "Amount 23 or ($44,706 + GST and PST, or $44,706 + HST),
+# whichever is more", line 25 "[($1,100 + GST and PST, or $1,100 + HST) × amount 22] ÷ 30" and line
+# 27 "[($38,000 + GST and PST, or $38,000 + HST) × amount 20] ÷ amount 24", with endnotes 11 to 13
+# for a lease entered into in 2024 (43,529, 1,050 and 37,000), in 2023 (42,353, 950 and 36,000), in
+# 2022 (40,000, 900 and 34,000) and before 2022 (35,294, 800 and 30,000). The printed amounts are
+# claimed whole, and the tax on each is a dollars-and-cents box, rounded half-up to the cent, as
+# the form states no rounding rule.
+family: ca/business_vehicle_lease_limits
+tax_year: 2025
+kind: year_amounts
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - from_year: 2025
+    amounts: {list_price_limit: "44706", lease_charge_limit: "1100", lease_cost_limit: "38000"}
+  - from_year: 2024
+    amounts: {list_price_limit: "43529", lease_charge_limit: "1050", lease_cost_limit: "37000"}
+  - from_year: 2023
+    amounts: {list_price_limit: "42353", lease_charge_limit: "950", lease_cost_limit: "36000"}
+  - from_year: 2022
+    amounts: {list_price_limit: "40000", lease_charge_limit: "900", lease_cost_limit: "34000"}
+  - amounts: {list_price_limit: "35294", lease_charge_limit: "800", lease_cost_limit: "30000"}

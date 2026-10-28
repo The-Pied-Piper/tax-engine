@@ -1,0 +1,11 @@
+# Rounding of Form T2043 Chart B row 11 (2025): "Portion of eligible farming expenses of the farming
+# business allocated to the designated province attributed to the 2024 calendar year. Row 9
+# multiplied by row 10" (confirmed from the PDF; no .txt published). It is a dollars-and-cents box
+# and the form states no rounding rule, so the product, formed as one exact fraction, rounds
+# half-up to the cent once, as Chart A amount 8 does, the owner's decision.
+family: ca/farm_chart_b_row_11_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

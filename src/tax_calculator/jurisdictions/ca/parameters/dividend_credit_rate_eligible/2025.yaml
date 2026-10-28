@@ -1,0 +1,12 @@
+# Federal dividend tax credit rate on eligible dividends, 2025 tax year (Federal
+# Worksheet, form 5000-D1): "Line 40425 - Federal dividend tax credit", line 7 (printed
+# "Line 2") "Amount A minus amount B" line C, "multiplied by 15.0198%".
+# Line 7 is a dollars-and-cents box, so the product rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/dividend_credit_rate_eligible
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.150198"

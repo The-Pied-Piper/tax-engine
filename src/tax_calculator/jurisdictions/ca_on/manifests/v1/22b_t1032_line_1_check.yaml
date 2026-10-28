@@ -1,0 +1,78 @@
+# Form T1032 E (25) Step 2 "Line 1 and line 68020: Enter the amount of eligible pension income that was
+# calculated on line 8 of the transferring spouse's or common-law partner's Federal Worksheet for line
+# 31400". On the transferring spouse's return that worksheet is the return's own (line 8 is
+# `ca/pension_chart_line_8`, in 08m_other_federal_non_refundable_credits.yaml), so line 1 must be it: a
+# line 1 above or below it is refused, not changed. On the receiving spouse's return line 1 is the other
+# spouse's worksheet figure and nothing is checked. The form ca/t1032 is in
+# 22a_t1032_pension_income_splitting.yaml; the checked amounts are listed as outputs in
+# 02_outputs.yaml, which nothing else reads, so that the checks run. Line 4 (box 17 of the T4A-RCA
+# slips) is also checked, against the return's other income (T1 line 13000), at the end of the part.
+capabilities:
+  # Form T1032 Step 3 "Enter this amount on line 21000 of the transferring spouse's ... return and on line
+  # 11600 of the receiving spouse's ... return": the answer, 1 when this return is the transferring
+  # spouse's and 0 when it is the receiving spouse's, checked in the form ca/t1032 and exported there;
+  # this step takes the first value of the form's export, a record list of one record.
+  - name: core/first_record_count
+    consumes:
+      records: ca/t1032.t1032_filer_is_transferring_spouse_checked
+    produces:
+      output: ca/t1032_filer_is_transferring_spouse_total
+  # Form T1032 "Line 1 and line 68020: Enter the amount of eligible pension income that was calculated on
+  # line 8 of the transferring spouse's ... Federal Worksheet for line 31400": line 1 of this return
+  # when it is the transferring spouse's, otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_eligible_pension_income
+      count: ca/t1032_filer_is_transferring_spouse_total
+    produces:
+      output: ca/t1032_line_1_of_transferring_spouse
+  # Line 8 of the Federal Worksheet for line 31400 ("Line 6 plus line 7") of this return when it is the
+  # transferring spouse's, otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/pension_chart_line_8
+      count: ca/t1032_filer_is_transferring_spouse_total
+    produces:
+      output: ca/t1032_worksheet_line_8_of_transferring_spouse
+  # Form T1032 line 1 is "the amount of eligible pension income that was calculated on line 8" of the
+  # worksheet, so a line 1 above it is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_line_1_of_transferring_spouse
+      bound: ca/t1032_worksheet_line_8_of_transferring_spouse
+    produces:
+      output: ca/t1032_line_1_of_transferring_spouse_checked
+  # Form T1032 line 1 is the amount calculated on line 8 of the worksheet, so a line 8 above line 1
+  # (a line 1 below it) is refused, not changed.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_worksheet_line_8_of_transferring_spouse
+      bound: ca/t1032_line_1_of_transferring_spouse
+    produces:
+      output: ca/t1032_worksheet_line_8_of_transferring_spouse_checked
+  # Form T1032 "Line 4 and line 68026: Enter the amount from box 17 of the transferring spouse's or
+  # common-law partner's T4A-RCA slips": line 4 of this return when it is the transferring spouse's,
+  # otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_t4a_rca_box_17
+      count: ca/t1032_filer_is_transferring_spouse_total
+    produces:
+      output: ca/t1032_line_4_of_transferring_spouse
+  # Guide 5000-G, T4A-RCA box 17 "already included in box 16": the amounts of the T4A-RCA slips go on
+  # line 13000 of the T1 (other income), so this is the return's other income when it is the
+  # transferring spouse's, otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/other_income
+      count: ca/t1032_filer_is_transferring_spouse_total
+    produces:
+      output: ca/t1032_other_income_of_transferring_spouse
+  # Form T1032 line 4 is "the amount from box 17" of the T4A-RCA slips, which is included in the
+  # return's other income (line 13000), so a line 4 above it is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_line_4_of_transferring_spouse
+      bound: ca/t1032_other_income_of_transferring_spouse
+    produces:
+      output: ca/t1032_line_4_of_transferring_spouse_checked

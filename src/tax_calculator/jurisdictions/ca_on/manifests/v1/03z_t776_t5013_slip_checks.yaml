@@ -1,0 +1,91 @@
+# Form T776 (ca/t776), the checks of the T5013 slip answer: see 03e_t776.yaml for the form's
+# selections and exports. Guide T4036: "If you determine that you are a member of a partnership and
+# you received a T5013 slip, fill in only the following fields on Form T776": the business number,
+# the ownership percentage and amount 7; the CCA of such a partner "is already included in box 110
+# of your T5013 slip". A partner who received no slip fills in all of the parts. The answer is a
+# yes or no question checked to be 0 or 1, and a yes without the partner answer, or with any figure
+# of the statement but amount 7 and lines 9974 and 9943 (a CCA claim, gross rents, other income, an
+# expense, a recapture, a terminal loss, a land addition or disposition, an opening UCC, an addition
+# or a remaining personal part of Area A, the equipment additions of Area B or the building
+# additions of Area C), is refused. A caller's 2 or more is refused, not capped.
+form:
+  name: ca/t776
+capabilities:
+  # Guide T4036 "If you determine that you are a member of a partnership and you received a T5013
+  # slip": the answer to a yes or no question, a count of 1 or 0, checked before the steps that read
+  # it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/rental_partner_t5013_slip
+    produces:
+      output: ca/rental_partner_t5013_slip_checked
+  # The entries of the Area A rows that are not a claim, each totalled over the rows: the opening
+  # UCC (column 2), the additions (column 3 and its parts in columns 4, 11 and 12, added) and the
+  # remaining personal part (Note 9). A row with one of them is an entry of the form even when its
+  # claim is 0. The totals are tests of any entry, not figures of the form.
+  - name: ca/cca_opening_ucc_total
+    consumes:
+      classes: ca/rental_cca_classes_checked
+    produces:
+      output: ca/rental_cca_opening_ucc_total
+  - name: ca/cca_additions_total
+    consumes:
+      classes: ca/rental_cca_classes_checked
+    produces:
+      output: ca/rental_cca_additions_total
+  - name: ca/cca_personal_part_remaining_total
+    consumes:
+      classes: ca/rental_cca_classes_checked
+    produces:
+      output: ca/rental_cca_personal_part_remaining_total
+  # The slip answer with the partner answer (line 7) and the other figures of the statement: the
+  # count is 1 when the slip answer is 1 and the partner answer is 0, or when the slip answer is 1
+  # and any of the amounts below is not 0 (the CCA claim of amount ii, the gross rents, the other
+  # income, the expense lines, the recapture, the terminal loss, the land additions, the land
+  # dispositions, the opening UCC total, the additions total and the remaining personal part total
+  # of Area A, the total equipment additions of Area B and the total building additions of Area
+  # C), else 0. The form prints no such rule; it is the guard of the form.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t776_t5013_slip_conflicts
+    consumes:
+      counts:
+        - ca/rental_partner_checked
+        - ca/rental_partner_t5013_slip_checked
+      amounts:
+        - ca/rental_cca_table_claim
+        - ca/rental_gross_rents
+        - ca/rental_other_income
+        - ca/rental_advertising
+        - ca/rental_insurance
+        - ca/rental_interest_and_bank_charges
+        - ca/rental_office_expenses
+        - ca/rental_professional_fees
+        - ca/rental_management_and_administration_fees
+        - ca/rental_repairs_and_maintenance
+        - ca/rental_salaries_wages_and_benefits
+        - ca/rental_property_taxes
+        - ca/rental_travel
+        - ca/rental_utilities
+        - ca/rental_motor_vehicle_expenses
+        - ca/rental_other_expenses
+        - ca/rental_cca_table_recapture
+        - ca/rental_cca_table_terminal_loss
+        - ca/rental_land_additions
+        - ca/rental_land_dispositions
+        - ca/rental_cca_opening_ucc_total
+        - ca/rental_cca_additions_total
+        - ca/rental_cca_personal_part_remaining_total
+        - ca/rental_equipment_additions_total
+        - ca/rental_building_additions_total
+    produces:
+      output: ca/rental_t5013_slip_conflict
+  # The count above is refused when it is 1: an input error naming the conflict (not capped, and not
+  # a printed line). Its checked count is the form's export, read by nothing on the return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/t776_t5013_slip_conflict_refused
+    consumes:
+      count: ca/rental_t5013_slip_conflict
+    produces:
+      output: ca/rental_t5013_slip_conflict_checked

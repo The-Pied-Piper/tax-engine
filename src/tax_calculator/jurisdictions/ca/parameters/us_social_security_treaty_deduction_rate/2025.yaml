@@ -1,0 +1,13 @@
+# U.S. Social Security treaty deduction rate, 2025 tax year (Guide 5000-G, "Line 25600 - Additional
+# deductions", "Exempt foreign income"): "you can claim a deduction equal to 15% of the U.S. Social
+# Security benefits, including U.S. Medicare premiums paid on your behalf, that you reported as
+# income on line 11500 of your return."
+# The deduction is a dollars-and-cents amount, so the product rounds half-up to the cent, the
+# owner's decision, as the guide states no rounding rule.
+family: ca/us_social_security_treaty_deduction_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15"

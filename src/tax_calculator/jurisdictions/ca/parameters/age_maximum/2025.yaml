@@ -1,0 +1,13 @@
+# Age amount, maximum, 2025 tax year (Federal Worksheet, form 5000-D1): "Line 30100 -
+# Age amount", line 1 "Maximum amount 9,028.00"; T1 line 78 (line 30100) "Age amount (if
+# you were born in 1960 or earlier) (use Federal Worksheet) (maximum $9,028)". It borrows
+# the credit kind because it is claimed whole, as the basic reduction is.
+# Line 1 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/age_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "9028.00"

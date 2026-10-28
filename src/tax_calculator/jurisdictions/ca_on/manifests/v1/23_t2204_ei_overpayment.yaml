@@ -1,0 +1,165 @@
+capabilities:
+  # T2204 line 1 "Total EI insurable earnings (box 24 or, if blank, box 14 of your T4 slips) (1)",
+  # with note (1) "If you have no self-employment earnings and your total EI insurable earnings on
+  # your T4 slips are less than $2,000, enter "0"." The count is 0 when the note applies and 1
+  # otherwise, and line 1 is the insurable earnings times that count. The Quebec variant of line 11
+  # is not modelled.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t2204_line_1_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/t2204_self_employment_earnings
+        - ca/t2204_exemption
+        - ca/t2204_insurable_earnings
+    produces:
+      output: ca/t2204_line_1_count
+  - name: core/times_count
+    consumes:
+      amount: ca/t2204_insurable_earnings
+      count: ca/t2204_line_1_count
+    produces:
+      output: ca/t2204_line_1
+  # T2204 line 3 "Line 1 plus line 2 (maximum $65,700)": the sum of lines 1 and 2, capped at the
+  # maximum insurable earnings of the dataset.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2204_line_1
+        - ca/t2204_self_employment_earnings
+    produces:
+      output: ca/t2204_line_1_plus_2
+  - name: core/capped_amount
+    params:
+      cap: ca/t2204_maximum_insurable_earnings
+    consumes:
+      base: ca/t2204_line_1_plus_2
+    produces:
+      output: ca/t2204_line_3
+  # T2204 line 7 "Amount from line 3 – $2,000 = (if negative, enter "0")": the $2,000 exemption is
+  # claimed whole, and line 3 less it is not below zero.
+  - name: core/credit_amount
+    params:
+      amount: ca/t2204_exemption
+    produces:
+      output: ca/t2204_exemption
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t2204_line_3
+      less: ca/t2204_exemption
+    produces:
+      output: ca/t2204_line_7
+  # Form T2204 line 4 "Total premiums deducted" is taken as typed: the form prints no limit on it
+  # (the maxima are on lines 3 and 10 only), so it is not checked against the rate times the
+  # insurable earnings (box 24) or against any allowance.
+  # The box 55 premiums are a part of line 4 ("box 18 and box 55 of your T4 slips", residents of
+  # other than Quebec; the Quebec parental insurance plan premiums, which are not part of the
+  # 1.64%), so they are refused above line 4, naming the input.
+  # It is not capped at the $1,077.48 maximum premium: each employer may deduct up to that amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2204_ppip_premiums
+      bound: ca/t2204_premiums_deducted
+    produces:
+      output: ca/t2204_ppip_premiums_checked
+  # T2204 line 6 "Line 4 plus line 5", where line 4 is the premiums deducted, as typed, and line 5
+  # is Schedule 13 line 9 for each agreement (`ca/ei_payable_on_self_employment`).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2204_premiums_deducted
+        - ca/ei_payable_on_self_employment
+    produces:
+      output: ca/t2204_line_6
+  # T2204 line 8 "Line 6 minus line 7 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t2204_line_6
+      less: ca/t2204_line_7
+    produces:
+      output: ca/t2204_line_8
+  # T2204 line 9 "Total premiums deducted from line 4 above": line 4, as typed, carried over one
+  # part.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2204_premiums_deducted
+    produces:
+      output: ca/t2204_line_9
+  # T2204 line 10 "Residents of other than Quebec Amount from line 1 × 1.64% = (maximum $1,077.48)":
+  # the EI premium tier, on line 1 (not line 3).
+  - name: core/contribution_tier
+    params:
+      tier: ca/ei_premium
+    consumes:
+      earnings: ca/t2204_line_1
+    produces:
+      output: ca/t2204_line_10
+  # T2204 line 12 "Enter the amount from line 10 or line 11, whichever applies.": line 10, as the
+  # Quebec variant of line 11 is not modelled.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2204_line_10
+    produces:
+      output: ca/t2204_line_12
+  # T2204 line 13 "Line 9 minus line 12 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t2204_line_9
+      less: ca/t2204_line_12
+    produces:
+      output: ca/t2204_line_13
+  # T2204 line 14 "Enter whichever is more: amount from line 8 or line 13.", and line 15 "Enter
+  # whichever is less: amount from line 9 or line 14."
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/t2204_line_8
+        - ca/t2204_line_13
+    produces:
+      output: ca/t2204_line_14
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t2204_line_9
+        - ca/t2204_line_14
+    produces:
+      output: ca/t2204_line_15
+  # T1 line 153 and line 45000 "Employment insurance (EI) overpayment": T2204 line 15 "If this
+  # amount is more than $1, enter it on line 45000 of your return." The count is 1 when line 15 is
+  # more than $1 and 0 otherwise, and line 45000 is line 15 times that count.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t2204_line_15_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/t2204_line_15
+    produces:
+      output: ca/t2204_line_15_count
+  - name: core/times_count
+    consumes:
+      amount: ca/t2204_line_15
+      count: ca/t2204_line_15_count
+    produces:
+      output: ca/ei_overpayment
+  # T2204 line 16 "Enter whichever amount is the least: line 7, line 9 or line 12."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t2204_line_7
+        - ca/t2204_line_9
+        - ca/t2204_line_12
+    produces:
+      output: ca/t2204_line_16
+  # T2204 line 16 "Enter this amount on line 31200 of your return": T1 line 31200 "through
+  # employment (boxes 18 and 55 of all T4 slips) (maximum $1,077.48)" is that amount, carried over
+  # one part.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2204_line_16
+    produces:
+      output: ca/ei_premiums

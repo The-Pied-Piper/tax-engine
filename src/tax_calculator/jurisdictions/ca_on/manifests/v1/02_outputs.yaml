@@ -1,0 +1,260 @@
+outputs:
+  - ca/refund_or_balance_owing
+  - ca-on/net_refund
+  - ca/unused_rrsp_contributions_carried_forward
+  - ca/net_income_before_adjustments
+  - ca/fhsa_unused_contributions_carried_forward
+  - ca/taxable_dividends_other_than_eligible
+  - ca/other_payments_limit_income
+  - ca/cwb_spouse_for_eligible_spouse_checked
+  - ca-on/ontario_tax_less_dividend_credit
+  - ca-on/coop_education_placement_count
+  - ca-on/coop_claimed_as_partnership_member
+  - ca-on/coop_partnership_business_number
+  - ca/net_capital_loss_balance_before_may_23_1985
+  - ca/net_capital_loss_balance_1985_to_1987
+  - ca/net_capital_loss_balance_1988_and_1989
+  - ca/net_capital_loss_balance_1990_to_1999
+  - ca/net_capital_loss_balance_2000
+  - ca/net_capital_loss_balance_2001_to_2024
+  - ca/tuition_carried_forward
+  - ca/volunteer_credits_checked
+  - ca/t777_line_10_checked
+  - ca/t777_apprentice_mechanic_tools_carried_forward_out
+  - ca/qsbcs_proceeds
+  - ca/qffp_proceeds
+  - ca/qffp_foreclosure_proceeds
+  - ca/share_proceeds
+  - ca/real_estate_proceeds
+  - ca/bond_proceeds
+  - ca/crypto_asset_proceeds
+  - ca/other_foreclosure_proceeds
+  # Form T2091(IND) Part 2 lines 27 to 53 (the total over the properties of each line): no
+  # step reads them, so each is declared as an unread printed line.
+  - ca/principal_residence_line_27
+  - ca/principal_residence_line_29
+  - ca/principal_residence_line_30
+  - ca/principal_residence_line_32
+  - ca/principal_residence_line_33
+  - ca/principal_residence_line_38
+  - ca/principal_residence_line_39
+  - ca/principal_residence_line_42
+  - ca/principal_residence_line_44
+  - ca/principal_residence_line_45
+  - ca/principal_residence_line_48
+  - ca/principal_residence_line_51
+  - ca/principal_residence_line_53
+  # Form T2091(IND)-WS Chart 1 and Parts 1, 2 and 3, and Form T2091(IND) Part 4 line 56: the total
+  # over the properties of each line; no step reads them, so each is declared as an unread
+  # printed line.
+  - ca/principal_residence_worksheet_line_3
+  - ca/principal_residence_worksheet_line_6
+  - ca/principal_residence_worksheet_line_16
+  - ca/principal_residence_worksheet_line_17
+  - ca/principal_residence_worksheet_line_18
+  - ca/principal_residence_worksheet_line_19
+  - ca/principal_residence_worksheet_line_21
+  - ca/principal_residence_worksheet_line_23
+  - ca/principal_residence_worksheet_line_24
+  - ca/principal_residence_worksheet_line_26
+  - ca/principal_residence_worksheet_line_27
+  - ca/principal_residence_worksheet_line_30
+  - ca/principal_residence_worksheet_line_32
+  - ca/principal_residence_worksheet_line_33
+  - ca/principal_residence_worksheet_line_35
+  - ca/principal_residence_worksheet_line_36
+  - ca/principal_residence_worksheet_line_40
+  - ca/principal_residence_worksheet_line_41
+  - ca/principal_residence_worksheet_line_44
+  - ca/principal_residence_worksheet_line_46
+  - ca/principal_residence_worksheet_line_47
+  - ca/principal_residence_worksheet_line_50
+  - ca/principal_residence_worksheet_line_53
+  - ca/principal_residence_worksheet_line_55
+  - ca/principal_residence_worksheet_line_58
+  - ca/principal_residence_worksheet_line_59
+  - ca/principal_residence_worksheet_line_61
+  - ca/principal_residence_worksheet_line_63
+  - ca/principal_residence_worksheet_line_64
+  - ca/principal_residence_worksheet_line_66
+  - ca/principal_residence_line_56
+  # Form T2091(IND) Part 3 line 54 "Total capital gain": line 57 is entered on line 15800 of
+  # Schedule 3 instead, so no step reads it and it is a declared unread printed line.
+  - ca/principal_residence_gain
+  - ca/cpp_second_additional_earnings_maximum
+  # Schedule 8 Part 3 line 1 and Form RC381 Part 3 lines 1 and 2, box 26 of all T4 slips, each
+  # checked against the count of slips times the "(maximum $81,200 per slip)" the form prints.
+  # Guards of the checks in 05u_t4_cpp_qpp_slip_checks.yaml, which nothing on the return reads.
+  - ca/t4_cpp_pensionable_earnings_slip_checked
+  - ca/t4_qpp_pensionable_earnings_slip_checked
+  # T2204 line 4 box 55 part: the Quebec parental insurance plan premiums are at most line 4
+  # (`ca/t2204_premiums_deducted`), checked in 23_t2204_ei_overpayment.yaml. Nothing on the return
+  # reads the checked amount.
+  - ca/t2204_ppip_premiums_checked
+  - ca-on/applies_for_energy_and_property_tax_credit
+  - ca-on/applies_for_northern_energy_credit
+  - ca-on/chooses_single_benefit_payment
+  - ca-on/applies_for_senior_homeowners_grant
+  - ca-on/separate_residences_for_medical_reasons
+  - ca-on/spouse_for_separate_residences_checked
+  - ca-on/lived_in_student_residence
+  - ca-on/rent_paid
+  - ca-on/property_tax_paid
+  - ca-on/reserve_home_energy_costs
+  - ca-on/public_long_term_care_paid
+  - ca-on/unused_tuition_carried_forward
+  - ca/standard_amount_allocated
+  - ca/foreign_property_tax_over_limit
+  - ca/foreign_surtax_allocated_total_checked
+  - ca/schedule_3_line_19900
+  - ca/foreign_tax_credit_sheets
+  - ca/foreign_business_tax_credit_line_4
+  - ca/foreign_business_tax_credit_line_5
+  - ca/foreign_business_tax_credit_line_7
+  - ca/foreign_business_tax_credit_line_8
+  - ca/foreign_business_tax_credit_line_10
+  # Form T2048 (line 25395): the Part 4 and Part 5 figures, and the line 41 and 42 reductions,
+  # totalled over the dispositions by `core/record_total` from the form ca/t2048's exports
+  # (`06_taxable_income.yaml`).
+  - ca/qbt_allocation_total
+  - ca/qcc_election_deduction
+  - ca/qbt_election_deduction
+  - ca/qbt_taxable_capital_gains
+  - ca/qbt_taxable_gains_related_to_deduction
+  - ca/qsbcs_qffp_taxable_gains_related_to_deduction
+  - ca/qbt_abil_reduction
+  - ca/qbt_net_investment_loss_reduction
+  # Form T657
+  - ca/chart_2025_part_1_amount_q
+  # Form T657 Chart 2024 Period 1 and Period 2 amount O, "Enter whichever is less: line 21 of Step 1,
+  # line 19 of Step 2 or amount N above", which nothing reads (Chart 2025 reads Period 2's amount N).
+  - ca/chart_2024_period_1_amount_o
+  - ca/chart_2024_period_2_amount_o
+  # Form T657 Charts 2016 to 2020 Part 1 amount H (Chart 2016) or amount L (Charts 2017 to 2020) and
+  # Part 2 amount K, "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount G above"
+  # and "... or amount J above", the maximum for line 25400 when no later reserve is reported, which
+  # nothing reads (the total carried forward is what the next chart reads).
+  - ca/chart_2016_part_1_amount_h
+  - ca/chart_2016_part_2_amount_k
+  - ca/chart_2017_part_1_amount_l
+  - ca/chart_2018_part_1_amount_l
+  - ca/chart_2019_part_1_amount_l
+  - ca/chart_2020_part_1_amount_l
+  - ca/chart_2017_part_2_amount_k
+  - ca/chart_2018_part_2_amount_k
+  - ca/chart_2019_part_2_amount_k
+  - ca/chart_2020_part_2_amount_k
+  # Form T657 Charts 2021, 2022 and 2023 Part 1 amount N and Part 2 amount M, "Enter whichever is
+  # less: line 21 of Step 1, line 19 of Step 2 or amount M above" and "... or amount L above", the
+  # maximum for line 25400 when no later reserve is reported, which nothing reads (the total carried
+  # forward is what the next chart reads).
+  - ca/chart_2021_part_1_amount_n
+  - ca/chart_2021_part_2_amount_m
+  - ca/chart_2022_part_1_amount_n
+  - ca/chart_2022_part_2_amount_m
+  - ca/chart_2023_part_1_amount_n
+  - ca/chart_2023_part_2_amount_m
+  # Form T1206 Part 3 line 33C "Amount from line 33A divided by the tax rate you entered on line
+  # 33B": Ontario's provincial Schedule does not add it, so nothing on the return reads it.
+  - ca-on/tosi_adjusted_taxable_income
+  # Form T691 Part 8 line 17 "Total minimum tax carryover available for 2026: line 15 minus line 16":
+  # the carryover for 2026, which nothing on the return reads (Part 8 line 14 reads Part 7 line 14,
+  # not this line).
+  - ca/amt_carryover_available_for_2026
+  # Form T691 Part 1 lines 39 and 40 "complete line 39 or 40 depending on your situation": the count
+  # of the two both above 0, checked (a 1 is refused). A guard of this check, which nothing on the
+  # return reads.
+  - ca/amt_lines_39_and_40_both_checked
+  # Form T691 Part 1 line 59 "(Quebec only)": the count of line 59 above 0 for a resident of Ontario,
+  # checked (a 1 is refused). A guard of this check, which nothing on the return reads.
+  - ca/amt_ppip_premiums_in_ontario_checked
+  # Form T691 Part 1 lines 10 and 64 to 67 "(included on line 22100 of your return)": their sum,
+  # checked (an amount above line 22100 is refused). A guard of this check, which nothing on the
+  # return reads.
+  - ca/amt_expenses_included_on_line_22100_checked
+  # Schedule 12 Step 1, line 3 "Line 1 minus line 2 (maximum $50,000 per qualifying renovation)" and
+  # line 6 "Line 4 minus line 5", each the total over the renovations: line 7 (line 8, which the
+  # credit reads) is worked from the renovations on its own, so no step reads these lines.
+  - ca/home_renovation_line_3
+  - ca/home_renovation_line_6
+  # Area A endnote 5 of Forms T776, T2125, T2042 and T2121 and Guides T4002 and T4036 "The deduction
+  # is limited to $1.5 million per tax year": the total of column 9 over every statement of the four
+  # forms, at most the person's one limit. Nothing on the return reads it; the step refuses a total
+  # above the limit.
+  - ca/immediate_expensing_total_claim
+  # Guide T4036 "Limits on CCA": the CCA claimed on the person's own properties over all the
+  # statements of Form T776 (line 9936 of an owner or co-owner statement; a partner statement adds
+  # 0, its line 9936 being the partnership's depreciation, already inside amount 7), at most the
+  # overall net rental income before CCA of all the statements (0 when it is a loss). Nothing on
+  # the return reads it; the step refuses a total above the limit.
+  - ca/rental_cca_total_claim
+  # T1 lines 13499 "Gross" (business), 13699 "Gross" (professional) and 13899 "Gross"
+  # (commission): line 8299 of the Form T2125 statements of each line code, totalled over the
+  # statements; no step of the return reads them, so each is declared as an unread printed line.
+  - ca/gross_business_income
+  - ca/gross_professional_income
+  - ca/gross_commission_income
+  # Form 5000-G "Emergency services volunteers": the conflict of the $1,000 exemption with the VFA or
+  # SRVA, checked to be 0 (`ca/count_refused_by_conditions`, part 29). The form reads it nowhere.
+  - ca/emergency_services_volunteer_conflict_checked
+  # T1 lines 10120, 10130, 11410, 11701, 11905 and 12799, T1 lines 20600 and 21999, T1 line 26600,
+  # Schedule 11 lines 32005, 32010 and 32020, and Schedule 15 lines 68930, 59 and 68960, and 68965:
+  # no step reads them, so each is declared as an unread printed line. T1 line 10105 is read by the
+  # conflict check in part 29.
+  - ca/emergency_services_volunteer_exempt_income
+  - ca/t4_commissions
+  - ca/wage_loss_replacement_contributions
+  - ca/t4ap_disability_benefits
+  - ca/uccb_designated_to_dependant
+  - ca/ei_maternity_parental_benefits
+  - ca/support_payments_received_total
+  - ca/pension_adjustment
+  - ca/support_payments_made_total
+  - ca/specified_foreign_property_over_100k
+  - ca/tuition_cannot_be_full_time_student
+  - ca/tuition_part_time_months
+  - ca/tuition_full_time_months
+  - ca/fhsa_first_opened_in_year
+  - ca/fhsa_qualifying_withdrawals
+  - ca/fhsa_home_address_same
+  # Schedule 5 line 30300 and line 30400 "If you did not claim an amount on line 30300 of your return,
+  # you may be able to claim the amount for one eligible dependant": the count of the two both
+  # claimed, checked (a 1 is refused). A guard of this check, which nothing on the return reads.
+  - ca/spouse_and_dependant_both_checked
+  # Schedule 5 line 51090 and line 30300, and line 51100 and line 30400, "You may be able to claim
+  # this amount if you can claim an amount for your spouse or common-law partner on line 30300 of
+  # your return, or for an eligible dependant 18 years of age or older on line 30400": the count of
+  # each caregiver amount claimed without the amount it builds on, checked (a 1 is refused). Guards
+  # of these checks, which nothing on the return reads.
+  - ca/spouse_caregiver_without_spouse_amount_checked
+  - ca/dependant_caregiver_without_dependant_amount_checked
+  # Worksheet ON428 line 58440 "if you were under 18 years of age on December 31, 2025" beside Form
+  # ON428 line 10 "Age amount (if you were born in 1960 or earlier)" and the Federal Worksheet for
+  # line 45200 "You were 18 years of age or older at the end of 2025": the count of under 18 entered
+  # with each of the two other ages, checked (a 1 is refused). Guards of these checks, which nothing
+  # on the return reads.
+  - ca/under_18_and_born_in_1960_or_earlier_checked
+  - ca/under_18_and_aged_18_or_older_checked
+  # Schedule 8 Part 4 and Part 5 completed together, checked: the count of the two both completed (a 1
+  # is refused). A guard of this check, which nothing on the return reads.
+  - ca/cpp_part_4_and_part_5_both_checked
+  # Schedule 8 Part 4 completed with employment earnings (Part 3 line 1 above 0), checked: the count
+  # of the two, a 1 is refused. A guard of this check, which nothing on the return reads.
+  - ca/cpp_part_4_with_employment_earnings_checked
+  # Form T1032 Step 2 "Line 1 and line 68020" of a transferring spouse's return, checked against line 8
+  # of the return's own Federal Worksheet for line 31400, and that line 8 checked against line 1
+  # (22b_t1032_line_1_check.yaml): guards of these checks, which the return does not read.
+  - ca/t1032_line_1_of_transferring_spouse_checked
+  - ca/t1032_worksheet_line_8_of_transferring_spouse_checked
+  # Form T1032 Step 2 "Line 4 and line 68026" of a transferring spouse's return, checked against the
+  # return's other income (T1 line 13000, where the T4A-RCA amounts go; 22b_t1032_line_1_check.yaml):
+  # a guard of this check, which the return does not read.
+  - ca/t1032_line_4_of_transferring_spouse_checked
+  # T1 line 12599 "Gross": the total over the T776 statements of line 8299 "Total gross rental
+  # income" (03e_t776_gross_total.yaml); no step reads it, so it is declared as an unread printed
+  # line.
+  - ca/gross_rental_income
+  # Guide T4037 p.34 "Also, you have to reduce your RFL balance by these amounts.": the restricted
+  # farm loss applied against the farmland gains, checked at most the unapplied taxes and interest
+  # (06h_restricted_farm_loss_applied.yaml); no step reads it, so it is declared an output.
+  - ca/restricted_farm_loss_applied_checked

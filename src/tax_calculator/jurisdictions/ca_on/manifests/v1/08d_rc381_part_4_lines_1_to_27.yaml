@@ -1,0 +1,244 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 4 (for residents of a province or territory other than Quebec), lines 1 to
+# 27. Part 2 and Part 3 lines 1 to 26 are in 08a_rc381_part_2_and_3.yaml, lines 27 to 69 in
+# 08b_rc381_part_3_qpp_and_totals.yaml, Part 3a and Part 3b in 08c_rc381_part_3a_and_3b.yaml.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # Part 4 (for residents of a province or territory other than Quebec), lines 1 to 27. Line 1
+  # "Pensionable net self-employment earnings: amount from line 12200 of your return plus line
+  # 27 of your return", line 2 "Employment earnings not shown on a T4 slip that you elect to
+  # pay additional CPP contributions on (complete Form CPT20)" (50373) and line 5 "Total actual
+  # base and first additional CPP contributions from line 19 of Part 3" are the existing
+  # artifacts of Schedule 8 Part 4 and of Part 3, so they have no step of their own.
+  # Line 4 "Add lines 1 to 3.", line 3 "Employment earnings shown on a T4 slip that you elect to
+  # pay additional CPP contributions on (complete Form CPT20)" (50399): no floor is printed, so
+  # a loss on line 1 stays in line 4.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/pensionable_net_self_employment_earnings
+        - ca/cpt20_earnings
+        - ca/cpt20_t4_earnings
+    produces:
+      output: ca/rc381_part_4_line_4
+  # Line 8 "Line 6 minus line 7 (if negative, show in brackets)", line 6 "Amount from line 47 of
+  # Part 3" (the amount from line 20) and line 7 "Amount from line 50 of Part 3" (the amount
+  # from line 22).
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_20
+      less: ca/rc381_part_3_line_22
+    produces:
+      output: ca/rc381_part_4_line_8
+  # Line 11 "Line 9 minus line 10 (if negative, show in brackets)", line 9 "Amount from line 54
+  # of Part 3" (the amount from line 21) and line 10 "Amount from line 57 of Part 3" (the amount
+  # from line 23).
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_21
+      less: ca/rc381_part_3_line_23
+    produces:
+      output: ca/rc381_part_4_line_11
+  # Line 12 "Line 8 plus line 11 (if negative, show in brackets)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_8
+        - ca/rc381_part_4_line_11
+    produces:
+      output: ca/rc381_part_4_line_12
+  # The result printed inside line 13, "Line 5 minus line 12", entered when line 61 of Part 3 is
+  # positive.
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_t4_base_and_first_additional_contributions
+      less: ca/rc381_part_4_line_12
+    produces:
+      output: ca/rc381_part_4_line_13_difference
+  # Line 13 "Line 5 minus line 12", with the block "If line 61 of Part 3 is: "0", do not complete
+  # lines 6 to 24. Enter the amount from line 5 on line 26 ... positive, complete lines 6 to 13
+  # only, and continue at line 25. negative, enter the amount from line 5 on line 13 and continue
+  # at line 14.": line 5 when line 61 is "0" (line 25 is line 13, so line 26 is line 5, as the
+  # block says) or negative, else line 5 minus line 12.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_61
+      when_positive:
+        - ca/rc381_part_4_line_13_difference
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/cpp_t4_base_and_first_additional_contributions
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_13
+  # Line 14 "Enter the amount from line 61 of Part 3 as a positive amount." (above zero only when
+  # line 61 is negative).
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_61
+    produces:
+      output: ca/rc381_part_4_line_14
+  # Line 17 "Line 15 minus line 16 (if negative, show in brackets)", line 15 "Amount from line
+  # 19 of Part 3" and line 16 "Amount from line 24 of Part 3".
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_t4_base_and_first_additional_contributions
+      less: ca/rc381_part_3_line_24
+    produces:
+      output: ca/rc381_part_4_line_17
+  # Line 17A "If line 17 is negative, enter it as a positive amount. If not, enter "0"."
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_4_line_17
+    produces:
+      output: ca/rc381_part_4_line_17a
+  # Line 20 "Line 18 minus line 19 (if negative, show in brackets)", line 18 "Amount from line
+  # 39 of Part 3" and line 19 "Amount from line 44 of Part 3".
+  - name: core/subtract
+    consumes:
+      amount: ca/t4_qpp_contributions_box_17
+      less: ca/rc381_part_3_line_44
+    produces:
+      output: ca/rc381_part_4_line_20
+  # The result printed inside line 21, "If line 17 is positive, enter the amount from line 17
+  # (show in brackets)": the negative of line 17 when it is above zero, else "0".
+  - name: ca/lesser_of_when_positive_in_brackets
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_17
+    produces:
+      output: ca/rc381_part_4_line_21_from_line_17
+  # The result printed inside line 21, "If line 20 is positive, enter whichever is less: amount
+  # from line 20 or line 17A.": the lesser of lines 20 and 17A when both are above zero (line
+  # 17A is above zero only when line 17 is negative), else "0".
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_20
+        - ca/rc381_part_4_line_17a
+    produces:
+      output: ca/rc381_part_4_line_21_lesser
+  # Line 21 "If line 17 and line 20 are both negative or either amount is "0", enter "0". If line
+  # 17 is positive, enter the amount from line 17 (show in brackets). If line 20 is positive,
+  # enter whichever is less: amount from line 20 or line 17A.", read by the sign of line 20:
+  # positive, the lesser of lines 20 and 17A ("0" when line 17 is not negative, which is also
+  # the reading when lines 17 and 20 are both positive, a case the form does not settle);
+  # negative, line 17 in brackets ("0" when line 17 is not positive); "0", "0".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_line_20
+      when_positive:
+        - ca/rc381_part_4_line_21_lesser
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_4_line_21_from_line_17
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_21
+  # Line 22 "If line 17A is more than line 14, enter "1". If not, enter the result of line 17A
+  # divided by line 14 (calculated to the fifth decimal place without rounding).": truncated,
+  # not rounded, to 0.00001; 1 when line 17A is more than line 14 (even when line 14 is 0); 0
+  # when line 14 is 0 and line 17A is not more.
+  - name: ca/ratio_truncated_at_most_one
+    params:
+      rounding: ca/rc381_ratio_truncation
+    consumes:
+      dividend: ca/rc381_part_4_line_17a
+      divisor: ca/rc381_part_4_line_14
+    produces:
+      output: ca/rc381_part_4_line_22
+  # The first result printed inside line 23, "If line 69 of Part 3 is positive or "0", enter
+  # whichever is less: amount from line 68 of Part 3 or line 17A."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_68
+        - ca/rc381_part_4_line_17a
+    produces:
+      output: ca/rc381_part_4_line_23_lesser
+  # The second result printed inside line 23, "If not, enter the result of line 68 of Part 3
+  # multiplied by the rate at line 22.": a dollars-and-cents box, so it rounds half up to the
+  # cent, and it is negative when line 68 is.
+  - name: ca/apply_chosen_rate
+    params:
+      rounding: ca/rc381_cents_rounding
+    consumes:
+      base: ca/rc381_part_3_line_68
+      rate: ca/rc381_part_4_line_22
+    produces:
+      output: ca/rc381_part_4_line_23_multiplied
+  # Line 23, by the sign of line 69 of Part 3: "0" or positive, the lesser; negative, the
+  # product.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_69
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_4_line_23_multiplied
+      when_non_positive: []
+      when_non_negative:
+        - ca/rc381_part_4_line_23_lesser
+    produces:
+      output: ca/rc381_part_4_line_23
+  # Line 24 "Enter whichever is less: amount from line 17A or line 23.", before the block's "If
+  # line 61 of Part 3 is ... negative" decides whether line 24 takes it: the lesser of lines
+  # 17A and 23.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_17a
+        - ca/rc381_part_4_line_23
+    produces:
+      output: ca/rc381_part_4_line_24_lesser
+  # ... and line 24 itself, that amount only when line 61 of Part 3 is negative (lines 14 to 24
+  # are completed then, and not when line 61 is "0" or positive).
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_61
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_4_line_24_lesser
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_24
+  # Line 25 "Amount from line 13" is a copy of line 13, so no step of its own. Line 25A "Amount
+  # from line 21": that amount only when line 61 of Part 3 is negative (the block completes
+  # lines 14 to 24 then), else "0".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_61
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_4_line_21
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_25a
+  # Line 26 "Add lines 24 to 25A.", line 25 being the amount from line 13: with line 61 of Part
+  # 3 at "0" lines 24 and 25A are "0" and line 13 is line 5, "Enter the amount from line 5 on line
+  # 26".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_24
+        - ca/rc381_part_4_line_13
+        - ca/rc381_part_4_line_25a
+    produces:
+      output: ca/rc381_part_4_line_26
+  # Line 27 "Amount from line 26 × 16.80672 =": the product rounds half up to the cent, the
+  # owner's decision, as the form states no rounding rule.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/rc381_cpp_gross_up_fraction
+    consumes:
+      base: ca/rc381_part_4_line_26
+    produces:
+      output: ca/rc381_part_4_line_27

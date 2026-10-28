@@ -1,0 +1,618 @@
+# Form T2043, Return of Fuel Charge Proceeds to Farmers Tax Credit, Chart B: for a farming
+# business with permanent establishments in more than one province or territory, where at least
+# one province is a designated province. Chart B is "one for each farming business", so its
+# steps belong to the form ca/t2042, run once for each statement of the list ca/t2042_statements,
+# beside Chart A (03h_t2043_chart_a.yaml). Rows 1 and 4 of each designated province are totals of
+# the statement's province list, computed in 03l_t2043_chart_b_provinces.yaml (the allocated
+# portions are the caller's). Row 2 and row 5 are the statement's lines 9659 and 9814, computed in
+# 03c_t2042.yaml; amount 6 is Chart A's gross farming expenses. Chart C is in
+# 03k_t2043_chart_c.yaml, after these steps. The form's exports are declared in 03c_t2042.yaml;
+# part 03i_t2043.yaml reads them as `ca/t2042.<export>`, one record for each statement.
+# Box 67062 (the presence of a statement in each place) is in 03o_t2043_places_present.yaml, which
+# reads the Chart B amounts of this part's province totals.
+form:
+  name: ca/t2042
+capabilities:
+  # Form T2043 Chart B row 2 "Total gross income ($) of the farming business in all provinces and
+  # territories (line 9659 of Form T2042, excluding the credit). See note 6.": the statement's line
+  # 9659, computed in Part 3 of Form T2042 (03c_t2042.yaml).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_gross_income
+    produces:
+      output: ca/farm_chart_b_total_gross_income
+  # Form T2043 Chart B row 5 "Total salaries and wages paid ($) to employees of the farming business
+  # in all provinces and territories (line 9814 of Form T2042). See note 8.": the statement's line
+  # 9814, the salaries and wages paid in all provinces.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_salaries_wages_and_benefits
+    produces:
+      output: ca/farm_chart_b_total_salaries
+  # Form T2043 Part 3 line 67075 "Total gross income in all provinces and territories from all farming
+  # businesses: Add the amount from row 2 of every Chart B you fill in" and line 67076 "Total salaries
+  # and wages paid to employees in all provinces and territories from all farming businesses: Add the
+  # amount from row 5 of every Chart B you fill in": a statement that fills in no Chart B has no row 2
+  # or row 5 for these lines. So the statement uses Chart B when any of its rows 1 or 4 (the sixteen
+  # province totals) is more than 0: 1 when one is, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_chart_b_in_use_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/farm_chart_b_gross_income_on
+        - ca/farm_chart_b_gross_income_mb
+        - ca/farm_chart_b_gross_income_sk
+        - ca/farm_chart_b_gross_income_ab
+        - ca/farm_chart_b_gross_income_ns
+        - ca/farm_chart_b_gross_income_pe
+        - ca/farm_chart_b_gross_income_nl
+        - ca/farm_chart_b_gross_income_nb
+        - ca/farm_chart_b_salaries_on
+        - ca/farm_chart_b_salaries_mb
+        - ca/farm_chart_b_salaries_sk
+        - ca/farm_chart_b_salaries_ab
+        - ca/farm_chart_b_salaries_ns
+        - ca/farm_chart_b_salaries_pe
+        - ca/farm_chart_b_salaries_nl
+        - ca/farm_chart_b_salaries_nb
+    produces:
+      output: ca/farm_chart_b_in_use
+  # ... and row 2 (and row 5) is counted only then: row 2 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_b_total_gross_income
+      count: ca/farm_chart_b_in_use
+    produces:
+      output: ca/farm_chart_b_row_2_when_in_use
+  # ... and row 5 is counted only then: row 5 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_b_total_salaries
+      count: ca/farm_chart_b_in_use
+    produces:
+      output: ca/farm_chart_b_row_5_when_in_use
+  # Form T2043 Chart B note 9 "If either the total gross income from row 2 or the total salaries and
+  # wages from row 5 is zero, do not multiply row 7 by 50%.": 1 when either total is zero, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_chart_b_note_9_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/farm_chart_b_total_gross_income
+        - ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_note_9_applies
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9.": 50 when note 9 does not apply, 100 when it does.
+  - name: core/amount_by_count
+    params:
+      table: ca/farm_chart_b_row_8_percentage_table
+    consumes:
+      count: ca/farm_chart_b_note_9_applies
+    produces:
+      output: ca/farm_chart_b_row_8_percentage
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (Ontario): row 1 of ON over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_on
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_on
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (Ontario): row 4 of ON over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_on
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_on
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (Ontario): row 3
+  # plus row 6 of ON.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_on
+        - ca/farm_chart_b_row_6_on
+    produces:
+      output: ca/farm_chart_b_row_7_on
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (Ontario): row 7 of ON times the percentage of row 8 kept by
+  # note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_on
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_on
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (Ontario):
+  # amount 6 of Chart A times row 8 of ON.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_on
+    produces:
+      output: ca/farm_chart_b_row_9_on
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (Ontario): row 9 of ON times
+  # the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_on
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_on
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (Manitoba): row 1 of MB over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_mb
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_mb
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (Manitoba): row 4 of MB over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_mb
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_mb
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (Manitoba): row 3
+  # plus row 6 of MB.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_mb
+        - ca/farm_chart_b_row_6_mb
+    produces:
+      output: ca/farm_chart_b_row_7_mb
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (Manitoba): row 7 of MB times the percentage of row 8 kept by
+  # note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_mb
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_mb
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (Manitoba):
+  # amount 6 of Chart A times row 8 of MB.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_mb
+    produces:
+      output: ca/farm_chart_b_row_9_mb
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (Manitoba): row 9 of MB times
+  # the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_mb
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_mb
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (Saskatchewan): row 1 of SK over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_sk
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_sk
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (Saskatchewan): row 4 of SK over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_sk
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_sk
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (Saskatchewan):
+  # row 3 plus row 6 of SK.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_sk
+        - ca/farm_chart_b_row_6_sk
+    produces:
+      output: ca/farm_chart_b_row_7_sk
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (Saskatchewan): row 7 of SK times the percentage of row 8 kept
+  # by note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_sk
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_sk
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (Saskatchewan):
+  # amount 6 of Chart A times row 8 of SK.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_sk
+    produces:
+      output: ca/farm_chart_b_row_9_sk
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (Saskatchewan): row 9 of SK
+  # times the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_sk
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_sk
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (Alberta): row 1 of AB over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_ab
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_ab
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (Alberta): row 4 of AB over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_ab
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_ab
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (Alberta): row 3
+  # plus row 6 of AB.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_ab
+        - ca/farm_chart_b_row_6_ab
+    produces:
+      output: ca/farm_chart_b_row_7_ab
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (Alberta): row 7 of AB times the percentage of row 8 kept by
+  # note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_ab
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_ab
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (Alberta):
+  # amount 6 of Chart A times row 8 of AB.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_ab
+    produces:
+      output: ca/farm_chart_b_row_9_ab
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (Alberta): row 9 of AB times
+  # the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_ab
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_ab
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (Nova Scotia): row 1 of NS over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_ns
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_ns
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (Nova Scotia): row 4 of NS over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_ns
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_ns
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (Nova Scotia): row
+  # 3 plus row 6 of NS.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_ns
+        - ca/farm_chart_b_row_6_ns
+    produces:
+      output: ca/farm_chart_b_row_7_ns
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (Nova Scotia): row 7 of NS times the percentage of row 8 kept by
+  # note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_ns
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_ns
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (Nova Scotia):
+  # amount 6 of Chart A times row 8 of NS.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_ns
+    produces:
+      output: ca/farm_chart_b_row_9_ns
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (Nova Scotia): row 9 of NS
+  # times the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_ns
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_ns
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (Prince Edward Island): row 1 of PE over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_pe
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_pe
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (Prince Edward Island): row 4 of PE over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_pe
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_pe
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (Prince Edward
+  # Island): row 3 plus row 6 of PE.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_pe
+        - ca/farm_chart_b_row_6_pe
+    produces:
+      output: ca/farm_chart_b_row_7_pe
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (Prince Edward Island): row 7 of PE times the percentage of row
+  # 8 kept by note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_pe
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_pe
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (Prince Edward
+  # Island): amount 6 of Chart A times row 8 of PE.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_pe
+    produces:
+      output: ca/farm_chart_b_row_9_pe
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (Prince Edward Island): row 9
+  # of PE times the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_pe
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_pe
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (Newfoundland and Labrador): row 1 of NL over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_nl
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_nl
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (Newfoundland and Labrador): row 4 of NL over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_nl
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_nl
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (Newfoundland and
+  # Labrador): row 3 plus row 6 of NL.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_nl
+        - ca/farm_chart_b_row_6_nl
+    produces:
+      output: ca/farm_chart_b_row_7_nl
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (Newfoundland and Labrador): row 7 of NL times the percentage of
+  # row 8 kept by note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_nl
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_nl
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (Newfoundland
+  # and Labrador): amount 6 of Chart A times row 8 of NL.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_nl
+    produces:
+      output: ca/farm_chart_b_row_9_nl
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (Newfoundland and Labrador):
+  # row 9 of NL times the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_nl
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_nl
+  # Form T2043 Chart B row 3 "Percentage (%) of gross income allocated to the designated province.
+  # Row 1 divided by row 2" (New Brunswick): row 1 of NB over row 2.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_gross_income_nb
+      divisor: ca/farm_chart_b_total_gross_income
+    produces:
+      output: ca/farm_chart_b_row_3_nb
+  # Form T2043 Chart B row 6 "Percentage (%) of salaries and wages allocated to the designated
+  # province. Row 4 divided by row 5" (New Brunswick): row 4 of NB over row 5.
+  - name: ca/percentage_of
+    params:
+      rounding: ca/farm_chart_b_percentage_rounding
+    consumes:
+      dividend: ca/farm_chart_b_salaries_nb
+      divisor: ca/farm_chart_b_total_salaries
+    produces:
+      output: ca/farm_chart_b_row_6_nb
+  # Form T2043 Chart B row 7 "Total percentage (%) of expenses. Row 3 plus row 6" (New Brunswick):
+  # row 3 plus row 6 of NB.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_chart_b_row_3_nb
+        - ca/farm_chart_b_row_6_nb
+    produces:
+      output: ca/farm_chart_b_row_7_nb
+  # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
+  # multiplied by 50%. See note 9." (New Brunswick): row 7 of NB times the percentage of row 8 kept
+  # by note 9 (50, or 100 when note 9 applies).
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_8_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_7_nb
+      percentage: ca/farm_chart_b_row_8_percentage
+    produces:
+      output: ca/farm_chart_b_row_8_nb
+  # Form T2043 Chart B row 9 "Eligible farming expenses ($) of the farming business allocated to the
+  # designated province. Row 8 multiplied by amount 6 of Chart A for this business" (New Brunswick):
+  # amount 6 of Chart A times row 8 of NB.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/farm_chart_b_row_9_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      percentage: ca/farm_chart_b_row_8_nb
+    produces:
+      output: ca/farm_chart_b_row_9_nb
+  # Form T2043 Chart B rows 10 and 11 "Total number of days in the fiscal period that fall within
+  # the 2024 calendar year divided by the total number of days in the fiscal period" and "Portion of
+  # eligible farming expenses of the farming business allocated to the designated province
+  # attributed to the 2024 calendar year. Row 9 multiplied by row 10" (New Brunswick): row 9 of NB
+  # times the days in 2024 over the days of the fiscal period, rounded to the cent.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_b_row_11_rounding
+    consumes:
+      amount: ca/farm_chart_b_row_9_nb
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_b_row_11_nb

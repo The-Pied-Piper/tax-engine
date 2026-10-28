@@ -1,0 +1,17 @@
+# Short-year figure of the immediate expensing limit, 2025 tax year: Income Tax Regulations
+# 1104(3.5)(b) "where an eligible person or partnership has a taxation year that is less than 51
+# weeks, its immediate expensing limit for the year is that proportion of its immediate expensing
+# limit for the year determined without reference to this paragraph that the number of days in the
+# year is of 365". The Regulations print 51 weeks, taken as printed: 51 weeks of 7 days is 357
+# days, so a year of 357 days or more is not prorated and a year of fewer days is. Guides T4002
+# and T4036 say only "The limit is also prorated for tax years shorter than 365 days"; the
+# Regulations decide over the guides. It borrows the credit kind because the figure is used whole,
+# as the basic personal amount is.
+# The figure is a whole number of days, so it rounds half-up to the cent, as the cap datasets do.
+family: ca/immediate_expensing_short_year_days
+tax_year: 2025
+kind: credit
+sources:
+  - https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._945/section-1104.html
+rounding: {increment: "0.01", mode: half_up}
+amount: "357"

@@ -1,0 +1,15 @@
+# Volunteer amount maximum, 2025 tax year (T1 guide, form 5000-G): "You can claim $6,000 for
+# the volunteer firefighters' amount (VFA) or search and rescue volunteers' amount (SRVA), but
+# not both, if you meet all of the following conditions:" (T1 lines 31220 and 31240). The
+# $6,000 is the most the VFA and the SRVA together can be.
+# It is claimed whole through core/credit_amount, so it is the `credit` kind, as the donation
+# first tier maximum is.
+# It is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/volunteer_amount_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "6000"

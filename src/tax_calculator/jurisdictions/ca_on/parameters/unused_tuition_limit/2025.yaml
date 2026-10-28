@@ -1,0 +1,16 @@
+# Ontario unused tuition and education income limit, 2025 tax year (Schedule ON(S11), form
+# 5006-S11), line 2: "Enter the amount from line 26000 of your return on line 2 if it is $52,886 or
+# less. If it is more than $52,886, enter the result of the following calculation:" "Line 2: Amount
+# from line 8 of your Form ON428" "divided by 5.05% =". So the threshold is $52,886 (at or below it
+# the taxable income passes through) and the rate is 5.05%, which divides the Ontario tax on taxable
+# income (ON428 line 8).
+# Line 2 is a dollars-and-cents figure, so the quotient rounds half-up to the cent, as every
+# dollars-and-cents line does; the form states no rounding rule.
+family: ca-on/unused_tuition_limit
+tax_year: 2025
+kind: threshold_rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s11/5006-s11-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+threshold: "52886"
+rate: "0.0505"

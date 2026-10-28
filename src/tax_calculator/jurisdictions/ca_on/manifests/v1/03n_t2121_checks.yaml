@@ -1,0 +1,13 @@
+# Form T2121 (ca/t2121), the checks of the statement: see 03d_t2121.yaml for the form's selections
+# and exports. They run once for each statement, with the steps of 03d_t2121.yaml.
+form:
+  name: ca/t2121
+capabilities:
+  # T2121 Part 5 "Your share of line 9369 or the amount from your T5013 slip, Statement of Partnership Income"
+  # (5A): the answer to a yes or no question, a count of 1 or 0, checked before the step that reads
+  # it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/fish_partner
+    produces:
+      output: ca/fish_partner_checked

@@ -1,0 +1,16 @@
+# Spouse's income threshold and rate for the amounts transferred, 2025 tax year (T1-2025, form
+# 5000-S2): line 7 "Enter the amount from line 26000 of their return on line 7 if it is
+# $57,375 or less. If it is more than $57,375, enter the result of the following calculation:
+# amount from line 76 of their return divided by 14.5% =". At or below the threshold line 7 is
+# their taxable income; above it, their federal tax divided by the rate. The figures are
+# Schedule 11 line 11's again, a dataset of its own because it is another form's line.
+# Line 7 is a dollars-and-cents box, so the result rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/spouse_transfer_income_limit
+tax_year: 2025
+kind: threshold_rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s2/5000-s2-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+threshold: "57375"
+rate: "0.145"

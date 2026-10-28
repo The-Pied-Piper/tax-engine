@@ -1,0 +1,7 @@
+capabilities:
+  # T1 line 21900 "Moving expenses (complete Form T1-M)": the line 29 amounts of the moves added.
+  - name: core/record_total
+    consumes:
+      records: ca/t1_m.moving_expenses_claim
+    produces:
+      output: ca/moving_expenses_deduction

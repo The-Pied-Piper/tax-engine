@@ -1,0 +1,15 @@
+# Ontario dividend tax credit rate on split income, eligible dividends, 2025 tax year (Form T1206
+# Part 3, line 42): line 40 "Amount from line 18" "Eligible dividend tax credit rate that applies
+# to your province or territory from column 5 in Chart C on page 5" (line 41, Ontario's 10%),
+# "Amount from line 40 multiplied by the rate you entered on line 41", under "Provincial or
+# territorial dividend tax credit on split income for eligible dividends and dividends other than
+# eligible dividends". It is T1206's own dataset beside the Ontario Worksheet's. Line 42 is a
+# dollars-and-cents box, so the product rounds half-up to the cent, the owner's decision, as the
+# form states no rounding rule.
+family: ca-on/split_income_dividend_credit_rate_eligible
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.1"

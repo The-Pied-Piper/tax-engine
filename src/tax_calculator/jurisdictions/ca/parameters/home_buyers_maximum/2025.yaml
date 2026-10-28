@@ -1,0 +1,16 @@
+# Home buyers' maximum, 2025 tax year (T1-2025, form 5000-R): line 93 (line 31270) "Home buyers'
+# amount (maximum $10,000)", and the guide (5000-G): "Enter $10,000 on line 31270 of your return
+# if you are not splitting the amount with your spouse or common-law partner." and "You and your
+# spouse or common-law partner can split the claim but the combined total cannot be more than
+# $10,000."
+# It is claimed whole through core/credit_amount, so it is the `credit` kind, as the donation
+# first tier maximum is.
+# It is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/home_buyers_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "10000"

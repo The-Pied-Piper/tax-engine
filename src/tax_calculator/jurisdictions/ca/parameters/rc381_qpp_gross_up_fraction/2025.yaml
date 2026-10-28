@@ -1,0 +1,12 @@
+# Form RC381 (2025), Part 4 line 41 "Amount from line 40 × 15.625 =": the QPP contributions
+# grossed up. 15.625 is above one, which a rate refuses, so it is a fraction, 15625/1000, kept as
+# printed. Line 41 is a dollars-and-cents box, so the product rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/rc381_qpp_gross_up_fraction
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "15625"
+denominator: "1000"

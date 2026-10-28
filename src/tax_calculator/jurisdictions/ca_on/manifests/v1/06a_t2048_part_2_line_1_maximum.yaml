@@ -1,0 +1,20 @@
+# Form T2048 (2025) Part 2 line 1 maximum for the form ca/t2048 (see
+# 06a_capital_gains_deduction_qbt.yaml, whose line 3 step reads the checked amount).
+form:
+  name: ca/t2048
+capabilities:
+  # Form T2048 Part 2 line 1 "Total eligible amount for the joint election (maximum of $10 million
+  # per election)": the printed maximum, a dataset figure taken as printed.
+  - name: core/credit_amount
+    params:
+      amount: ca/qbt_election_eligible_amount_maximum
+    produces:
+      output: ca/qbt_election_eligible_amount_maximum
+  # Form T2048 Part 2 line 1 against that maximum: an amount above it is an input error, not
+  # capped. The checked amount is the one line 3 multiplies by the percentage.
+  - name: core/at_most
+    consumes:
+      amount: ca/qbt_election_eligible_amount
+      bound: ca/qbt_election_eligible_amount_maximum
+    produces:
+      output: ca/qbt_election_eligible_amount_checked

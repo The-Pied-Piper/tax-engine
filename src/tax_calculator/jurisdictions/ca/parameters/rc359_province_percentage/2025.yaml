@@ -1,0 +1,31 @@
+# Form RC359 (2025), line 8 "Enter the rate for your province or territory of residence at the end
+# of the year using the charts below. (If you were not a resident of a province or territory in
+# Canada, enter the rate for "Other".)": the chart's "Jurisdiction" and "Rate" columns, printed in
+# two columns and read in order, left then right, keyed by the province code the filer enters
+# (1 Newfoundland and Labrador, 2 Prince Edward Island, 3 Nova Scotia, 4 New Brunswick, 5 Québec,
+# 6 Ontario, 7 Manitoba, 8 Saskatchewan, 9 Alberta, 10 British Columbia, 11 Northwest Territories,
+# 12 Yukon, 13 Nunavut, 14 Other (non-resident)). Confirmed from the PDF; no .txt published. The
+# percentage on line 9 "Line 7 multiplied by the percentage from line 8" is a dollars-and-cents
+# box, and the figures are rounded half-up to the cent, which changes none of them. A code with no
+# row is refused.
+family: ca/rc359_province_percentage
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc359/rc359-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amounts:
+  "1": "54.8"
+  "2": "52"
+  "3": "54"
+  "4": "52.5"
+  "5": "33"
+  "6": "53.53"
+  "7": "50.4"
+  "8": "47.5"
+  "9": "48"
+  "10": "53.5"
+  "11": "47.05"
+  "12": "48"
+  "13": "44.5"
+  "14": "49"

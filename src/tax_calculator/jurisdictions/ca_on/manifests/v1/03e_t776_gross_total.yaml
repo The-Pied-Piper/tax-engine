@@ -1,0 +1,17 @@
+# T1 line 12599 "Gross", the total of Form T776 line 8299 over the statements. Guide T4036 "Line 8299
+# - Total gross rental income": "Your gross rental income is your total "Gross rents for all
+# units," on Form T776. Enter this amount on line 12599 of your income tax return. If you are a
+# co-owner of the rental property or a member of a partnership that does not need to provide you
+# with a T5013 slip, enter the gross rental income for the entire property on line 12599. Do not
+# split the gross income according to your ownership share." Each statement's gross rents are
+# taken as entered, for the entire property, and never scaled by the co-owner's or the partner's
+# share.
+capabilities:
+  # T1 line 12599 "Gross": Form T776 line 8299 "Total gross rental income ... Enter this amount on
+  # your income tax and benefit return on line 12599", for each T776 statement the return carries,
+  # added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t776.gross_rental_income
+    produces:
+      output: ca/gross_rental_income

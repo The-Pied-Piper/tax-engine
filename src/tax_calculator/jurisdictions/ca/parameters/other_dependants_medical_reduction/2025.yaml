@@ -1,0 +1,19 @@
+# Reduction of the medical expenses for each other dependant, 2025 tax year (Federal
+# Worksheet, form 5000-D1, and T1-2025, form 5006-R): line 33199, for each dependant, line 2
+# "For provinces and territories other than Quebec: amount from line 109 of the
+# dependant's return.", which on every return is line 109 "Enter whichever is less: $2,834
+# or the amount from line 108." with line 108 "multiplied by 3%" of that person's line
+# 23600, so it is worked out here from the dependant's net income with the same two printed
+# figures. The Federal Worksheet prints no maximum for line 3, so there is none.
+# Line 3 "Line 1 minus line 2 (if negative, enter "0")" is a dollars-and-cents box, so each
+# dependant's allowable amount rounds half-up to the cent, the owner's decision, as the
+# form states no rounding rule.
+family: ca/other_dependants_medical_reduction
+tax_year: 2025
+kind: claim_reduction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.03"
+ceiling: "2834"

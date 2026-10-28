@@ -1,0 +1,29 @@
+# Conditions of Form T776 (2025), amount 7 with the partner
+# and T5013 slip answers, 2025 tax year. Guide T4036 (confirmed 2026-10-27 from the PDF; no .txt
+# published): "Amount 7 - Partnerships: If you are a member of a partnership, enter your share of
+# amount 6 or the amount from box 107 or 110 from your T5013 slip". A partner who received no slip
+# fills in all of the parts, so amount 7 is the share of amount 6 and is not typed; a typed amount
+# 7 beside a partner answer yes and a slip answer no is refused. A condition applies when every
+# one of its parts holds; a part holds when any of its tests holds. The counts are the checked
+# answers (position 1 the partner answer of line 7, position 2 the T5013 slip answer); the amount
+# is the typed amount 7 (position 1). The count is 1 when a condition applies, else 0. The form
+# prints no such rule; the refusal of the count is the guard of this check
+# (`ca/t776_partner_amount_7_conflict_refused`). The count is a count, not a dollars-and-cents box,
+# so there is no rounding.
+family: ca/t776_partner_amount_7_conflicts
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4036/t4036-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: an amount 7 is entered by a partner who received no T5013 slip
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "0"}
+      - tests:
+          - {reads: amount, position: "1", relation: not_equal_to, than: "0"}

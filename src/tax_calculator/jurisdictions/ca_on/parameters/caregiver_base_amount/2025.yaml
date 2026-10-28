@@ -1,0 +1,12 @@
+# Base amount for the Ontario caregiver amount, 2025 tax year (Worksheet ON428, form 5006-D):
+# "Line 58185 - Ontario caregiver amount", line 1 "Base amount 26,562.00". It is a plain amount,
+# not a claimed credit: line 3 reduces it by the dependant's net income.
+# Line 3 is a dollars-and-cents box, so the allowable amount rounds half-up to the cent (with the
+# maximum's rule), as the form states no rounding rule.
+family: ca-on/caregiver_base_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "26562.00"

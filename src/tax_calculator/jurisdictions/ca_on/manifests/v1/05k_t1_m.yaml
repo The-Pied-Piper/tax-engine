@@ -1,0 +1,227 @@
+# Form T1-M, Moving Expenses Deduction: the form ca/t1_m, run once for each move of the list
+# ca/t1_m_moves (one for each move; any number, none included). Each move's fields are the T1-M
+# inputs. The form exports its line 29, "Enter this amount on line 21900 of your return", which
+# T1 line 21900 adds over the moves, and its line 30, which nothing on the return reads.
+form:
+  name: ca/t1_m
+  instances: ca/t1_m_moves
+  exports:
+    - ca/moving_expenses_claim
+    - ca/moving_unused_expenses
+capabilities:
+  # T1-M Part 2 "Line 1 minus line 2" (line 3): the old home distance less the new one. The form
+  # prints no floor, so the difference is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/moving_old_home_distance
+      less: ca/moving_new_home_distance
+    produces:
+      output: ca/moving_distance_difference
+  # T1-M Part 4 "Add lines 5 to 7." (line 8): the travel, accommodation and meal expenses.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/moving_travel_expenses
+        - ca/moving_accommodation_expenses
+        - ca/moving_meal_expenses
+    produces:
+      output: ca/moving_travel_expenses_subtotal
+  # T1-M Part 4 "Line 9 plus line 10" (line 11): the temporary lodging and meals.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/moving_temporary_lodging
+        - ca/moving_temporary_meals
+    produces:
+      output: ca/moving_temporary_living_subtotal
+  # T1-M Part 4 "Costs to maintain your old home when vacant (maximum $5,000)" (line 14): the
+  # caller's costs; above the $5,000 maximum they are an input error (`InputAboveBoundError`),
+  # not capped.
+  - name: core/credit_amount
+    params:
+      amount: ca/moving_old_home_maintenance_cap
+    produces:
+      output: ca/moving_old_home_maintenance_cap
+  - name: core/at_most
+    consumes:
+      amount: ca/moving_old_home_maintenance
+      bound: ca/moving_old_home_maintenance_cap
+    produces:
+      output: ca/moving_old_home_maintenance_checked
+  # T1-M Part 4 "Add lines 12 to 14." (line 15): the lease, the incidental costs and line 14.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/moving_lease_cancellation
+        - ca/moving_incidental_costs
+        - ca/moving_old_home_maintenance_checked
+    produces:
+      output: ca/moving_lease_and_incidental_subtotal
+  # T1-M Part 4 "Add lines 16 to 19." (line 20): the costs of selling the old home.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/moving_selling_commission
+        - ca/moving_selling_legal_fees
+        - ca/moving_selling_advertising
+        - ca/moving_selling_other_costs
+    produces:
+      output: ca/moving_selling_subtotal
+  # T1-M Part 4 "Line 21 plus line 22" (line 23): the costs of buying the new home.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/moving_buying_legal_fees
+        - ca/moving_buying_taxes
+    produces:
+      output: ca/moving_buying_subtotal
+  # T1-M Part 4 "Add lines 4, 8, 11, 15, 20 and 23." (line 24) "Total moving expenses".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/moving_transportation_and_storage
+        - ca/moving_travel_expenses_subtotal
+        - ca/moving_temporary_living_subtotal
+        - ca/moving_lease_and_incidental_subtotal
+        - ca/moving_selling_subtotal
+        - ca/moving_buying_subtotal
+    produces:
+      output: ca/moving_total_expenses
+  # T1-M Part 4 "Line 24 minus line 25 (if negative, enter "0")" (line 26) "Net moving expenses".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/moving_total_expenses
+      less: ca/moving_reimbursement
+    produces:
+      output: ca/moving_net_expenses
+  # T1-M Part 4 "Amount from line 26 of the previous page" (line 27).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/moving_net_expenses
+    produces:
+      output: ca/moving_net_expenses_carried
+  # T1-M Part 4 line 28 "Net eligible income", if you are self-employed: "the net amounts earned at
+  # the new work location that are included on lines 13500 ... of your return" (line 13500): the
+  # positive net of the Form T2125 statements on business line 1, a loss counting 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the profit on the line of the return,
+  # so amount G or L of a Form T1139 takes the place of its statements.
+  # T1-M prints no "not including losses"; the loss counting 0 per statement is the earlier build,
+  # kept as it was (not retroactive), now applied to amount G or L as well.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_business_profit_on_return
+    produces:
+      output: ca/moving_business_income
+  # T1-M Part 4 line 28 "Net eligible income", the same rule for professional income (line 13700):
+  # the positive net of the Form T2125 statements on professional line 2, a loss counting 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the profit on the line of the return,
+  # so amount G or L of a Form T1139 takes the place of its statements.
+  # T1-M prints no "not including losses"; the loss counting 0 per statement is the earlier build,
+  # kept as it was (not retroactive), now applied to amount G or L as well.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_professional_profit_on_return
+    produces:
+      output: ca/moving_professional_income
+  # T1-M Part 4 line 28 "Net eligible income", the same rule for commission income (line 13900):
+  # the positive net of the Form T2125 statements on commission line 3, a loss counting 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the profit on the line of the return,
+  # so amount G or L of a Form T1139 takes the place of its statements.
+  # T1-M prints no "not including losses"; the loss counting 0 per statement is the earlier build,
+  # kept as it was (not retroactive), now applied to amount G or L as well.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_commission_profit_on_return
+    produces:
+      output: ca/moving_commission_income
+  # T1-M Part 4 line 28 "Net eligible income", the same rule for farming income (line 14100): the
+  # positive net of the Form T2042 statements, a loss counting 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the profit on the line of the return,
+  # so amount G or L of a Form T1139 takes the place of its statements.
+  # T1-M prints no "not including losses"; the loss counting 0 per statement is the earlier build,
+  # kept as it was (not retroactive), now applied to amount G or L as well.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_farming_profit_on_return
+    produces:
+      output: ca/moving_farming_income
+  # T1-M Part 4 line 28 "Net eligible income", the same rule for fishing income (line 14300): the
+  # positive net of the Form T2121 statements, a loss counting 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the profit on the line of the return,
+  # so amount G or L of a Form T1139 takes the place of its statements.
+  # T1-M prints no "not including losses"; the loss counting 0 per statement is the earlier build,
+  # kept as it was (not retroactive), now applied to amount G or L as well.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_fishing_profit_on_return
+    produces:
+      output: ca/moving_fishing_income
+  # T1-M Part 4 line 28 "Net eligible income": the income lines it is taken from, the employment
+  # income (line 10100 "T4 or T4A slips ... included on lines 10100 or 10400"), the other employment
+  # income (line 10400), the taxable scholarships of a student ("scholarships, bursaries, fellowships,
+  # research grants, or certain prizes required to be included in your income") and the five
+  # self-employment amounts above, added in that order. The sum is not a form line.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+        - ca/taxable_scholarships
+        - ca/moving_business_income
+        - ca/moving_professional_income
+        - ca/moving_commission_income
+        - ca/moving_farming_income
+        - ca/moving_fishing_income
+    produces:
+      output: ca/moving_eligible_income_lines
+  # T1-M Part 4 line 28 is at most those income lines. The printed text gives no other limit (looked
+  # in t1-m-25e.pdf and 5000-g-25e.txt, found nothing). The printed line 28 of an employee is less
+  # than the lines 10100 and 10400 by the amounts claimed on lines 20700 to 23200, which this bound
+  # does not net, so the bound is looser than the printed net. An amount above the income lines is
+  # an input error, not capped (`core/at_most`). The checked amount is the one that lines 29 and 30
+  # read.
+  - name: core/at_most
+    consumes:
+      amount: ca/moving_net_eligible_income
+      bound: ca/moving_eligible_income_lines
+    produces:
+      output: ca/moving_net_eligible_income_checked
+  # T1-M Part 4 "Enter whichever is less: amount from line 27 or line 28." (before line 29).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/moving_net_expenses_carried
+        - ca/moving_net_eligible_income_checked
+    produces:
+      output: ca/moving_lesser_of_expenses_and_income
+  # T1-M Part 2 "If the amount on line 3 is less than 40 kilometres, you cannot deduct your moving
+  # expenses." The line 29 amount is claimed only when line 3 is at least the 40 kilometres of the
+  # `ca/moving_distance_threshold` dataset, otherwise 0.
+  - name: ca/threshold_gate
+    params:
+      threshold: ca/moving_distance_threshold
+    consumes:
+      amount: ca/moving_lesser_of_expenses_and_income
+      gate: ca/moving_distance_difference
+    produces:
+      output: ca/moving_expenses_claim
+  # T1-M Part 4 "Line 27 minus line 28 (if negative, enter "0")" (line 30).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/moving_net_expenses_carried
+      less: ca/moving_net_eligible_income_checked
+    produces:
+      output: ca/moving_unused_expenses_before_test
+  # T1-M Part 2 "If the amount on line 3 is less than 40 kilometres, you cannot deduct your moving
+  # expenses. If this is the case, do not complete the rest of this form." The line 30 amount "Your
+  # unused moving expenses available to carry forward to a future year" is kept only when line 3 is
+  # at least the 40 kilometres of the `ca/moving_distance_threshold` dataset, otherwise 0.
+  - name: ca/threshold_gate
+    params:
+      threshold: ca/moving_distance_threshold
+    consumes:
+      amount: ca/moving_unused_expenses_before_test
+      gate: ca/moving_distance_difference
+    produces:
+      output: ca/moving_unused_expenses

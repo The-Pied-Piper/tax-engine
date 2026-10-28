@@ -1,0 +1,77 @@
+# Form T1032 E (25) Step 5, read into T1 line 150 (line 43700) "Total income tax deducted (amounts from
+# all Canadian slips)". The form ca/t1032 is in 22a_t1032_pension_income_splitting.yaml and reads the
+# return's own `ca/income_tax_deducted` as its line 37 and line 40 ("Enter the amount that you would have
+# entered on line 43700 of your return if you did not choose to split your eligible pension income").
+# When the election applies, line 43700 is line 39 of the form on the transferring spouse's return
+# ("Enter the result on line 43700 of the transferring spouse's or common-law partner's return") and
+# line 42 on the receiving spouse's; otherwise it is the amount without the form. The total credits of
+# 14_refund.yaml read the result. The same count (the election applies) is read by the line 31400 step of
+# 08m_other_federal_non_refundable_credits.yaml.
+capabilities:
+  # Form T1032 "Line 22: Enter the amount that you and your spouse or common-law partner decide to jointly
+  # elect", the checked amount of the form's export, a record list of one record, totalled.
+  - name: core/record_total
+    consumes:
+      records: ca/t1032.t1032_line_22_checked
+    produces:
+      output: ca/t1032_line_22_total
+  # The T1032 is filed only when a split-pension amount is elected: the election applies (1) when line 22
+  # is above 0, otherwise it does not (0).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1032_election_applies_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/t1032_line_22_total
+    produces:
+      output: ca/t1032_election_applies
+  # Form T1032 "Line 39: Line 37 minus line 38 Enter the result on line 43700 of the transferring spouse's
+  # or common-law partner's return.", the form's export totalled.
+  - name: core/record_total
+    consumes:
+      records: ca/t1032.t1032_line_39
+    produces:
+      output: ca/t1032_line_39_total
+  # Form T1032 "Line 42: Line 40 plus line 41 Enter the result on line 43700 of the receiving spouse's or
+  # common-law partner's return.", the form's export totalled.
+  - name: core/record_total
+    consumes:
+      records: ca/t1032.t1032_line_42
+    produces:
+      output: ca/t1032_line_42_total
+  # Line 43700 of this return when the election applies: line 39 when this return is the transferring
+  # spouse's (the answer 1, as the form checked it), line 42 when it is the receiving spouse's (0).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_filer_is_transferring_spouse_total
+      when_none: ca/t1032_line_42_total
+      when_any: ca/t1032_line_39_total
+    produces:
+      output: ca/t1032_line_43700
+  # T1 line 150 (line 43700): the Form T1032 amount when the election applies, otherwise the total
+  # income tax deducted of the return.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_election_applies
+      when_none: ca/income_tax_deducted
+      when_any: ca/t1032_line_43700
+    produces:
+      output: ca/income_tax_deducted_after_election
+  # Form T1032 "Line 22 ... Enter this amount on line 21000 of the transferring spouse's or common-law
+  # partner's return and on line 11600 of the receiving spouse's or common-law partner's return": line 22
+  # on T1 line 21000 when this return is the transferring spouse's (the answer 1), otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_line_22_total
+      count: ca/t1032_filer_is_transferring_spouse_total
+    produces:
+      output: ca/elected_split_pension_deduction
+  # Line 22 on T1 line 11600 when this return is the receiving spouse's (the answer 0): line 22 less the
+  # part on line 21000, otherwise 0.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_line_22_total
+      less: ca/elected_split_pension_deduction
+    produces:
+      output: ca/elected_split_pension_amount

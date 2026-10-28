@@ -1,0 +1,20 @@
+# First additional CPP contribution on self-employment income, 2025 tax year (T1-2025
+# Schedule 8, form 5000-S8). Part 4 line 9 "Line 7 minus line 8 (if negative, enter "0")
+# (maximum $67,800)"; line 11 "amount from line 9 multiplied by 2% (maximum $1,356.00)". The
+# tier starts at 0 and ends at line 9's printed maximum of $67,800, as the base tier does. A
+# self-employed person pays both halves, so 2% is twice the employee's 1%; the CRA rate
+# page's 2025 row gives the employee rate.
+# Line 13 "Line 11 plus line 12" and line 14 "Line 10 plus line 13 Enter this amount (in
+# dollars and cents) on line 42100 of your return." are in dollars and cents, so the tier
+# rounds half-up to the cent.
+family: ca/cpp_self_employed_first_additional_contribution
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.02"
+lower: "0"
+upper: "67800"
+maximum: "1356.00"

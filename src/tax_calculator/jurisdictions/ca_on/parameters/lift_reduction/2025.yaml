@@ -1,0 +1,16 @@
+# Ontario LIFT credit reduction, 2025 tax year (Schedule ON428-A, form 5006-A), Part A:
+# line 15 "Amount from line 13 above"; line 16 "Individual income threshold
+# 32,500.00"; line 17 "Line 15 minus line 16 (if negative, enter "0")"; line 18
+# "Applicable rate 5%"; line 19 "Line 17 multiplied by the percentage from line 18".
+# Lines 16 to 19 are one tier over the threshold, with no maximum.
+# Line 19 is a dollars-and-cents box, so the tier rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule; line 17 takes amounts already
+# in cents.
+family: ca-on/lift_reduction
+tax_year: 2025
+kind: surcharge_tiers
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+tiers:
+  - {threshold: "32500", rate: "0.05"}

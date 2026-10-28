@@ -1,0 +1,70 @@
+# Form T777 lines 12 and 13, the limit of Guide T4044 (2025) "Part 2 - Musical instrument expenses"
+# (steps of the same form as 03q_t777_lines.yaml): "Enter the amount you can deduct on the "Musical
+# instrument expenses" line and the "Capital cost allowance for musical instruments" line of Form
+# T777 as appropriate. However, the amount of musical instrument expenses you can deduct cannot be
+# more than your income for the year from your employment as a musician after deducting all other
+# employment expenses." The claims are the filer's, lines 12 and 13 together (the capital cost
+# allowance is among the "amounts you can deduct for your musical instrument"), and a total above
+# the limit is refused, not capped. "All other employment expenses" are lines 1 to 11 and 14 of
+# page 1 and lines 20700 and 21200 of the return, as in the line 16 chart (line 52). Line 16 is not
+# among them: its chart (line 52) subtracts line 15, which includes lines 12 and 13, so a person
+# filling in the form cannot have it before the limit.
+form:
+  name: ca/t777
+capabilities:
+  # "your income for the year from your employment as a musician" is a part of the return's
+  # employment income (line 51 of the line 16 chart, T1 lines 10100 and 10400): above it the figure
+  # is an input error (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_musician_employment_income
+      bound: ca/t777_work_space_employment_income
+    produces:
+      output: ca/t777_musician_employment_income_checked
+  # "the amount of musical instrument expenses you can deduct": lines 12 and 13.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_musical_instrument_expenses
+        - ca/t777_line_13
+    produces:
+      output: ca/t777_musical_instrument_expenses_deducted
+  # "after deducting all other employment expenses": lines 1 to 11 and 14 of page 1, line 14 as the
+  # filer enters it, and lines 20700 and 21200 of the return, as the line 16 chart (line 52) adds
+  # them to line 15 for the same Guide phrase, read as entered like line 52 does.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_accounting_and_legal_fees
+        - ca/t777_advertising_and_promotion
+        - ca/t777_line_3
+        - ca/t777_line_4
+        - ca/t777_lodging
+        - ca/t777_parking
+        - ca/t777_office_supplies
+        - ca/t777_other_expenses
+        - ca/t777_line_9
+        - ca/t777_line_10
+        - ca/t777_line_11
+        - ca/t777_artists_employment_expenses
+        - ca/rpp_deduction
+        - ca/union_dues
+    produces:
+      output: ca/t777_employment_expenses_other_than_musical_instrument
+  # "your income for the year from your employment as a musician after deducting all other
+  # employment expenses". The guide prints no floor; a result below zero allows no deduction, so it
+  # is zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t777_musician_employment_income_checked
+      less: ca/t777_employment_expenses_other_than_musical_instrument
+    produces:
+      output: ca/t777_musical_instrument_expenses_maximum_deduction
+  # "cannot be more than": above the limit the lines 12 and 13 are an input error
+  # (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_musical_instrument_expenses_deducted
+      bound: ca/t777_musical_instrument_expenses_maximum_deduction
+    produces:
+      output: ca/t777_musical_instrument_expenses_checked

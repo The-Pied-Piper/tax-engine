@@ -1,0 +1,22 @@
+capabilities:
+  # 5000-G line 32400 "Tuition amount transferred from a child or grandchild": "The maximum amount
+  # each student can transfer to you is $5,000 minus the amount that they used to reduce their own
+  # tax payable." and "Only one person can claim this transfer from a student". The bound is the
+  # printed $5,000 for each student times the caller's count of students (the student's own use is
+  # not an input).
+  - name: core/per_unit_amount
+    params:
+      amount: ca/tuition_transfer_maximum_per_student
+    consumes:
+      count: ca/tuition_transfer_students
+    produces:
+      output: ca/tuition_transferred_from_child_maximum
+  # T1 line 32400 "Tuition amount transferred from a child or grandchild": the amount the student
+  # designates, a caller input, refused above the bound of the students times $5,000 (not capped).
+  # The checked amount is the one the total of the credit amounts on the T1 (line 33500) adds.
+  - name: core/at_most
+    consumes:
+      amount: ca/tuition_transferred_from_child
+      bound: ca/tuition_transferred_from_child_maximum
+    produces:
+      output: ca/tuition_transferred_from_child_checked

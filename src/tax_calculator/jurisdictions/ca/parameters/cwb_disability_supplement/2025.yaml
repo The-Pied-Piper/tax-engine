@@ -1,0 +1,15 @@
+# Canada workers benefit disability supplement, 2025 tax year (Schedule 6, form 5000-S6), Step 3:
+# line 29 "Amount from line 5 in column 1"; line 30 "Base amount 1,150.00"; line 31 "Line 29 minus
+# line 30 (if negative, enter "0")"; line 32 "Rate 27%"; line 33 "Line 31 multiplied by the
+# percentage from line 32"; line 34 "Enter whichever is less: amount from line 33 or $843."
+# Lines 30 to 34 are one tier over the base amount, with line 34's $843 as its maximum.
+# Line 34 is a dollars-and-cents box, so the tier rounds half-up to the cent, once, after its
+# maximum, as the basic amount does (`ca/cwb_basic`); line 31 takes amounts already in cents.
+family: ca/cwb_disability_supplement
+tax_year: 2025
+kind: surcharge_tiers
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+tiers:
+  - {threshold: "1150", rate: "0.27", maximum: "843"}

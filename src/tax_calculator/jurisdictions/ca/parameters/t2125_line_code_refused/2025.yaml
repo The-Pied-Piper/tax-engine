@@ -1,0 +1,25 @@
+# Condition under which the line code of a Form T2125 statement is refused, 2025 tax year: Part 5
+# line 9946 "Report the net income amount from line 9946 on the applicable line of your income tax
+# and benefit return as indicated below" lists three lines (1 business income on line 13500, 2
+# professional income on line 13700, 3 commission income on line 13900; the form names no codes, a
+# listed check). A code that is none of them names no line, so the statement's net and gross would
+# go to none of them. The one condition has a part for each listed code, "not equal to" it: every
+# part holds, so the condition applies, only when the code is none of 1, 2 and 3. The result is a
+# count, not a dollars-and-cents box, so there is no rounding. Confirmed from the PDF; no .txt
+# published.
+family: ca/t2125_line_code_refused
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: the statement's line code is not 1, 2 or 3
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: not_equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "1", relation: not_equal_to, than: "2"}
+      - tests:
+          - {reads: count, position: "1", relation: not_equal_to, than: "3"}

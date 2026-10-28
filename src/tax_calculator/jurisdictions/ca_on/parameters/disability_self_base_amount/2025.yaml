@@ -1,0 +1,13 @@
+# Base amount for the Ontario disability amount for self, 2025 tax year (Worksheet ON428, form
+# 5006-D): "Line 58440 - Disability amount for self", line 1 "Base amount 10,298.00". It is the
+# amount claimed by a filer 18 or older, and line 7 of the worksheet adds the supplement for a
+# filer under 18.
+# Line 1 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca-on/disability_self_base_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "10298.00"

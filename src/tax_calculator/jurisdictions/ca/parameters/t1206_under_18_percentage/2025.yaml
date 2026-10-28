@@ -1,0 +1,16 @@
+# Form T1206 (2025), page 6, "If you were under 18 years of age at the end of the year, the amount at
+# line G is deemed to be a dividend (other than eligible dividend). Multiply the amount from line G by
+# 1.15 and include this amount under "Taxable amount of dividends (eligible and other than eligible)"
+# on the Federal Worksheet, and on lines 12000 and 12010 of your return.": the percentage of line G,
+# 1.15 as 115 (115%), keyed by the age answer (0 for under 18; 1 for 18 or older, which takes 0).
+# Confirmed from the PDF; no .txt published. The product is rounded half-up to the cent, once, the
+# owner's decision, as the form states no rounding rule.
+family: ca/t1206_under_18_percentage
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amounts:
+  "0": "115"
+  "1": "0"

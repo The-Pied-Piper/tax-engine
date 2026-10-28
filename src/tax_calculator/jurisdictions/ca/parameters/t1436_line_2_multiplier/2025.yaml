@@ -1,0 +1,12 @@
+# Form T1436 (Capital Gains Worksheet, 2025), "Line 21700 - Allowable business investment loss", line 2
+# "... (a) x 1.5 = 2": amount (a) is multiplied by the printed 1.5, kept as given (15/10, never reduced).
+# Line 2 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's decision,
+# as the form states no rounding rule.
+family: ca/t1436_line_2_multiplier
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "15"
+denominator: "10"

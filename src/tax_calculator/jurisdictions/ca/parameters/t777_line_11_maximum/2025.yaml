@@ -1,0 +1,14 @@
+# Maximum of the labour mobility deduction for the year, Form T777 (2025) line 11 "Total labour
+# mobility deduction for the year (maximum $4,000)" and the line 41 chart line "Total labour
+# mobility deduction for the year (maximum $4,000)": the printed $4,000, which the total of the
+# line 39 amounts may not exceed. It is claimed whole through core/credit_amount, so it is the
+# `credit` kind, as the home buyers' maximum is.
+# The lines are dollars-and-cents boxes, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/t777_line_11_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "4000"

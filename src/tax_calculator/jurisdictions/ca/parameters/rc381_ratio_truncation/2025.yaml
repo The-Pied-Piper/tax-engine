@@ -1,0 +1,11 @@
+# Form RC381 (2025), Part 3 line 6 "Line 4 divided by line 5 (calculated to the fifth decimal
+# place without rounding)", line 4 "Amount from line 1" and line 5 "Amount from line 3": the
+# share of the pensionable earnings outside Quebec. The form says "without rounding", so the
+# quotient is cut off, not rounded: it keeps five decimal places and drops the rest (the
+# increment 0.00001, mode down).
+family: ca/rc381_ratio_truncation
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
+rounding: {increment: "0.00001", mode: down}

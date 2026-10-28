@@ -1,0 +1,68 @@
+# The T1 lines for CPP that both forms give: the return carries Schedule 8 or Form RC381, never both
+# (the exclusive group ca/cpp_calculation), so one of the two totals is 0 and each line is the sum
+# of the Schedule 8 total (05i_schedule_8_totals.yaml) and the Form RC381 total
+# (08j_rc381_totals.yaml). T1 lines 42100, 31000 and 22200 also add Form RC381's amount to the
+# sums that already add Part 4 and Part 5 of Schedule 8 (11_net_tax.yaml,
+# 08_non_refundable_credits.yaml and 05_deductions.yaml).
+capabilities:
+  # Parts 4 and 5 completed, checked before the T1 lines 42100, 31000 and 22200 read them. The
+  # return carries Schedule 8 or Form RC381, never both, and the Form RC381 total already holds the
+  # Part 4 and Part 5 lines of that form. A Part 4 or Part 5 completed above 0 on a return with a
+  # copy of Form RC381 would count Schedule 8's amount on top of the form's, and is refused (an
+  # input error) by the guard, which passes the count on unchanged otherwise. The guard reads the
+  # checked answers produced in 30_yes_or_no_flag_checks.yaml, so it sees 0 or 1 only.
+  - name: ca/count_without_records
+    consumes:
+      count: ca/cpp_part_4_completed_yes_or_no_checked
+      records: ca/rc381_instances
+    produces:
+      output: ca/cpp_part_4_completed_checked
+  - name: ca/count_without_records
+    consumes:
+      count: ca/cpp_part_5_completed_yes_or_no_checked
+      records: ca/rc381_instances
+    produces:
+      output: ca/cpp_part_5_completed_checked
+  # T1 line 30800 and ON428 line 58240. Schedule 8 line 57 (Part 5, or Part 3a line 25 / Part 3b
+  # line 36): "Base CPP contributions through employment income: Line 55 plus line 56 Enter this
+  # amount (in dollars and cents) on line 30800 of your return." Form RC381 Part 4 line 98:
+  # "Base CPP contributions through employment income: Line 96 plus line 97 Enter this amount (in
+  # dollars and cents) on line 30800 of your return." (Part 3a line 70 or Part 3b line 81 for
+  # employment income only, "also enter this amount ... on line 58240 of your provincial or
+  # territorial Form 428"). The line is the Schedule 8 total plus the Form RC381 total.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/schedule_8_cpp_base_contributions_on_return
+        - ca/rc381_cpp_base_contributions_on_return
+    produces:
+      output: ca/cpp_base_contributions_on_return
+  # T1 line 22215. Schedule 8 line 69 (Part 5, or Part 3a line 28 / Part 3b line 48): "Deduction
+  # for CPP enhanced contributions on employment income: Line 64 plus line 68 Enter this amount
+  # (in dollars and cents) on line 22215 of your return." Form RC381 Part 4 line 110: "Deduction
+  # for CPP enhanced contributions on employment income: Line 105 plus line 109 Enter this amount
+  # (in dollars and cents) on line 22215 of your return." (Part 3a line 73 or Part 3b line 93).
+  # The line is the Schedule 8 total plus the Form RC381 total.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/schedule_8_cpp_enhanced_contributions_on_return
+        - ca/rc381_cpp_enhanced_contributions_on_return
+    produces:
+      output: ca/cpp_enhanced_contributions_on_return
+  # T1 line 44800. Schedule 8 line 50 (Part 5: "Enter the result of the following calculation (in
+  # dollars and cents) on line 44800 of your return: amount from line 49 entered as a positive
+  # amount multiplied by 50%") or Part 3a line 29 ("Enter the amount from line 24. Enter this
+  # amount (in dollars and cents) on line 44800 of your return."). Form RC381 Part 4 line 91
+  # ("CPP overpayment: Enter the result of the following calculation (in dollars and cents) on
+  # line 44800 of your return: amount from line 90 entered as a positive amount multiplied by
+  # 50%") or Part 3a line 74 ("Enter the amount from line 69. Enter this amount (in dollars and
+  # cents) on line 44800 of your return."). The line is the Schedule 8 total plus the Form RC381
+  # total.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/schedule_8_cpp_overpayment
+        - ca/rc381_cpp_overpayment_on_return
+    produces:
+      output: ca/cpp_overpayment

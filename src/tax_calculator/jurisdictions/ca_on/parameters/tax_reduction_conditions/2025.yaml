@@ -1,0 +1,39 @@
+# Conditions for line 80 of the Ontario tax reduction, 2025 tax year (Form ON428, form 5006-C):
+# "Enter "0" on line 80 if any of the following applies to you:" the six conditions below in the
+# form's order and wording, and "If none of the above applies to you, complete lines 74 to 80 to
+# calculate your Ontario tax reduction." So the count is 0 when any condition applies and 1 when
+# none does. Five conditions read a count the caller gives, 1 when it applies, in the order
+# listed; "There is an amount on line 72" reads line 72's amount, not equal to 0.
+# The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca-on/tax_reduction_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: You were not a resident of Canada at the beginning of the year
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}
+  - text: You were not a resident of Ontario on December 31, 2025
+    parts:
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "1"}
+  - text: There is an amount on line 72
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: not_equal_to, than: "0"}
+  - text: You were bankrupt at any time in 2025
+    parts:
+      - tests:
+          - {reads: count, position: "3", relation: equal_to, than: "1"}
+  - text: Your return is filed for you by a trustee in bankruptcy
+    parts:
+      - tests:
+          - {reads: count, position: "4", relation: equal_to, than: "1"}
+  - text: You are choosing not to claim an Ontario tax reduction
+    parts:
+      - tests:
+          - {reads: count, position: "5", relation: equal_to, than: "1"}

@@ -1,0 +1,56 @@
+capabilities:
+  # Guide 5000-G "Line 25600 - Additional deductions": the benefits are "reported as income on line
+  # 11500 of your return", so they are part of line 11500 (`ca/other_pensions_and_superannuation`)
+  # and at most it. An amount above it is an input error, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/us_social_security_benefits
+      bound: ca/other_pensions_and_superannuation
+    produces:
+      output: ca/us_social_security_benefits_checked
+  # Guide 5000-G "Line 25600 - Additional deductions": whether the filer has been a resident of
+  # Canada receiving the benefits continuously since before January 1, 1996, the answer to a yes or
+  # no question, a count of 1 or 0, checked before the step that reads it. A count of 2 or more is
+  # refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/us_social_security_resident_since_before_1996
+    produces:
+      output: ca/us_social_security_resident_since_before_1996_checked
+  # Guide 5000-G "Line 25600 - Additional deductions": "a deduction equal to 15% of the U.S. Social
+  # Security benefits".
+  - name: core/apply_rate
+    params:
+      rate: ca/us_social_security_treaty_deduction_rate
+    consumes:
+      base: ca/us_social_security_benefits_checked
+    produces:
+      output: ca/us_social_security_deduction_at_standard_rate
+  # Guide 5000-G "Line 25600 - Additional deductions": "a deduction equal to 50% of the U.S. Social
+  # Security benefits received in 2025", for a resident since before 1996.
+  - name: core/apply_rate
+    params:
+      rate: ca/us_social_security_treaty_deduction_rate_since_before_1996
+    consumes:
+      base: ca/us_social_security_benefits_checked
+    produces:
+      output: ca/us_social_security_deduction_at_resident_rate
+  # Guide 5000-G "Line 25600 - Additional deductions": a count of 1 for a resident since before 1996
+  # chooses the 50% deduction; with a count of 0 the 15% deduction stands.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/us_social_security_resident_since_before_1996_checked
+      when_none: ca/us_social_security_deduction_at_standard_rate
+      when_any: ca/us_social_security_deduction_at_resident_rate
+    produces:
+      output: ca/us_social_security_treaty_deduction
+  # T1 line 67 and line 25600 "Additional deductions": the deductions the filer specifies plus the
+  # U.S. Social Security treaty deduction, added. T1 line 68 and the amounts the forms name as
+  # included on line 25600 read this total.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/additional_deductions
+        - ca/us_social_security_treaty_deduction
+    produces:
+      output: ca/additional_deductions_total

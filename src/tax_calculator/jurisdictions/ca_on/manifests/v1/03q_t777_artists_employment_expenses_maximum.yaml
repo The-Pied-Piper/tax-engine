@@ -1,0 +1,94 @@
+# Form T777 line 14 "Artists' employment expenses", the limit of Guide T4044 (2025) "Part 1 -
+# Artists' employment expenses" (steps of the same form as 03q_t777_lines.yaml): "The amount you can
+# claim is limited to the lesser of: a) the expenses you actually paid in 2025 plus any amounts you
+# carried forward from previous years b) the lesser of: -- $1000 -- 20% of your employment income from
+# artistic activities minus the following amounts you deducted from your income from an artistic
+# activity: -- musical instrument expenses -- interest for your motor vehicle -- capital cost
+# allowance for your motor vehicle". "Enter the amount you can deduct on the "Artists' employment
+# expenses" line of Form T777": the claim is the filer's, line 14, and a claim above the limit is
+# refused, not capped.
+form:
+  name: ca/t777
+capabilities:
+  # "your employment income from artistic activities" is a part of the return's employment income
+  # (line 51 of the line 16 chart, T1 lines 10100 and 10400): above it the figure is an input error
+  # (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_artists_employment_income
+      bound: ca/t777_work_space_employment_income
+    produces:
+      output: ca/t777_artists_employment_income_checked
+  # a) "the expenses you actually paid in 2025 plus any amounts you carried forward from previous
+  # years".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_artists_expenses_paid
+        - ca/t777_artists_expenses_carry_forward
+    produces:
+      output: ca/t777_artists_expenses_available
+  # b) "20% of your employment income from artistic activities".
+  - name: core/apply_rate
+    params:
+      rate: ca/t777_artists_employment_expenses_rate
+    consumes:
+      base: ca/t777_artists_employment_income_checked
+    produces:
+      output: ca/t777_artists_income_twenty_percent
+  # b) "the lesser of: -- $1000 -- 20% of your employment income from artistic activities": the
+  # $1,000 is the dataset ca/t777_artists_employment_expenses_maximum.
+  - name: ca/lesser_of_with_maximum
+    params:
+      maximum: ca/t777_artists_employment_expenses_maximum
+    consumes:
+      amounts:
+        - ca/t777_artists_income_twenty_percent
+    produces:
+      output: ca/t777_artists_limit_before_deductions
+  # b) "minus the following amounts you deducted from your income from an artistic activity:
+  # -- musical instrument expenses -- interest for your motor vehicle -- capital cost allowance for
+  # your motor vehicle". Part 2 "Musical instrument expenses": "Enter the amount you can deduct on
+  # the "Musical instrument expenses" line and the "Capital cost allowance for musical instruments"
+  # line of Form T777", lines 12 and 13.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_musical_instrument_expenses
+        - ca/t777_line_13
+        - ca/t777_artists_vehicle_interest_deducted
+        - ca/t777_artists_vehicle_cca_deducted
+    produces:
+      output: ca/t777_artists_deductions_from_artistic_income
+  # The guide prints no floor; a result below zero allows no claim, so it is zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t777_artists_limit_before_deductions
+      less: ca/t777_artists_deductions_from_artistic_income
+    produces:
+      output: ca/t777_artists_limit
+  # "limited to the lesser of: a) [...] b) [...]".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t777_artists_expenses_available
+        - ca/t777_artists_limit
+    produces:
+      output: ca/t777_artists_employment_expenses_maximum_deduction
+  # "If you have expenses you cannot claim because of the 20% or $1,000 limit, you can deduct them
+  # from artistic income you earn in a future year": the expenses available (paid plus carried in)
+  # that the maximum above does not allow, carried to 2026 as the next year's carry forward.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t777_artists_expenses_available
+      less: ca/t777_artists_employment_expenses_maximum_deduction
+    produces:
+      output: ca/t777_artists_expenses_carried_forward_out
+  # Line 14 "Artists' employment expenses": the claim is the filer's; above the maximum it is an input
+  # error (`InputAboveBoundError`), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_artists_employment_expenses
+      bound: ca/t777_artists_employment_expenses_maximum_deduction
+    produces:
+      output: ca/t777_line_14

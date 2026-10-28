@@ -1,0 +1,12 @@
+# ITC rate, 2025 tax year: Form T2038(IND) Part A, line 67140 "× 0.10 =" amount 4, the qualified
+# property. The product is the caller's investments in qualified property times the rate the form
+# prints.
+# The form's line is a dollars-and-cents box, so the product rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/itc_part_a_line_4_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2038-ind/t2038-ind-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.10"

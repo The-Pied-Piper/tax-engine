@@ -1,0 +1,14 @@
+# Ontario co-operative education tax credit maximum, 2025 tax year (Worksheet ON479 (form
+# 5006-D1), "Line 20 - Ontario co-operative education tax credit"): line 13 "Line 1 plus line 12
+# (maximum $3,000 per student) =". Form ON479: "Line 20 and line 63300: Enter the total amount
+# claimed for all qualifying work placements. (maximum $3,000 per student)". Line 13 is a dollars-
+# and-cents box, so each placement's lesser amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca-on/coop_education_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d1/5006-d1-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "3000"

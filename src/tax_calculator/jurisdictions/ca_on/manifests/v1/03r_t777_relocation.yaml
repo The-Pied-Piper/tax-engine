@@ -1,0 +1,55 @@
+# Form T777 (2025) line 11 chart, "Complete lines 33 to 40 below for each eligible temporary
+# relocation", the labour mobility deduction: the form ca/t777_relocation, run once for each
+# relocation of the list ca/t777_relocations (one record for each relocation). Its exports are its
+# line 39 "Temporary relocation expenses available for deduction in the year" and line 40 "Unused
+# temporary relocation expenses carried forward", which the form ca/t777 (03q_t777_lines.yaml) reads
+# as ca/t777_relocation.<export>: line 41 totals line 39 over the copies.
+form:
+  name: ca/t777_relocation
+  instances: ca/t777_relocations
+  exports:
+    - ca/t777_relocation_deduction
+    - ca/t777_relocation_carried_forward_out
+capabilities:
+  # Line 37 "Add lines 33 to 36. Total eligible temporary relocation expenses": the carried forward
+  # expenses, transportation, meals and temporary lodging of the relocation.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_relocation_carried_forward
+        - ca/t777_relocation_transportation
+        - ca/t777_relocation_meals
+        - ca/t777_relocation_lodging
+    produces:
+      output: ca/t777_relocation_total
+  # Line 38 "Employment income earned as an eligible tradesperson in the year at the temporary work
+  # location × 50% =": the tradesperson's employment income times the printed 50%, rounded half-up to
+  # the cent once.
+  - name: core/apply_rate
+    params:
+      rate: ca/t777_relocation_income_rate
+    consumes:
+      base: ca/t777_relocation_tradesperson_income
+    produces:
+      output: ca/t777_relocation_income_limit
+  # Line 39 "Enter whichever is less: Amount from line 37, line 38 or the amount you are claiming for
+  # this eligible temporary relocation. (maximum $4,000)": the least of the three, and at most the
+  # $4,000 maximum of the dataset.
+  - name: ca/lesser_of_with_maximum
+    params:
+      maximum: ca/t777_relocation_maximum
+    consumes:
+      amounts:
+        - ca/t777_relocation_total
+        - ca/t777_relocation_income_limit
+        - ca/t777_relocation_claim
+    produces:
+      output: ca/t777_relocation_deduction
+  # Line 40 "Line 37 minus line 39. Unused temporary relocation expenses carried forward to the
+  # following year": the form prints no floor, the line 39 amount never exceeds line 37.
+  - name: core/subtract
+    consumes:
+      amount: ca/t777_relocation_total
+      less: ca/t777_relocation_deduction
+    produces:
+      output: ca/t777_relocation_carried_forward_out

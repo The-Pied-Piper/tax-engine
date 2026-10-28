@@ -1,0 +1,59 @@
+# Schedule 6's conditions for claiming the Canada workers benefit: "Complete this schedule if you met
+# all of the following conditions in 2025: You were a resident of Canada throughout the year ... You
+# were, at the end of the year, 19 years of age or older, or you resided with your spouse or
+# common-law partner or your child", and "You cannot claim the CWB for 2025 if any of the following
+# conditions apply to you". Each answer is checked to be 0 or 1, the conditions give 0 when the
+# filer cannot claim and 1 when they can, and the benefit of line 28 is multiplied by that count. A
+# filer who cannot claim it gets 0 on line 45300; it is not an input error.
+capabilities:
+  # The answers are yes or no questions, counts of 1 or 0, checked before the step that reads them.
+  # A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/aged_19_or_older_at_end_of_2025
+    produces:
+      output: ca/aged_19_or_older_at_end_of_2025_checked
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/resided_with_spouse_or_child_at_end_of_2025
+    produces:
+      output: ca/resided_with_spouse_or_child_at_end_of_2025_checked
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/full_time_student_for_more_than_13_weeks
+    produces:
+      output: ca/full_time_student_for_more_than_13_weeks_checked
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/confined_to_prison_for_90_days
+    produces:
+      output: ca/confined_to_prison_for_90_days_checked
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/exempt_as_foreign_officer_or_family
+    produces:
+      output: ca/exempt_as_foreign_officer_or_family_checked
+  # 0 when any condition applies, else 1.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/cwb_eligibility_conditions
+    consumes:
+      counts:
+        - ca/resident_in_canada_throughout_2025_checked
+        - ca/aged_19_or_older_at_end_of_2025_checked
+        - ca/resided_with_spouse_or_child_at_end_of_2025_checked
+        - ca/cwb_eligible_dependants_checked
+        - ca/full_time_student_for_more_than_13_weeks_checked
+        - ca/confined_to_prison_for_90_days_checked
+        - ca/exempt_as_foreign_officer_or_family_checked
+      amounts: []
+    produces:
+      output: ca/cwb_eligible
+  # The benefit of Step 2 or, for a filer eligible for the DTC, of Step 3 (12e) for a filer who meets the
+  # conditions, else 0: line 45300 of the return.
+  - name: core/times_count
+    consumes:
+      amount: ca/canada_workers_benefit_before_conditions
+      count: ca/cwb_eligible
+    produces:
+      output: ca/canada_workers_benefit

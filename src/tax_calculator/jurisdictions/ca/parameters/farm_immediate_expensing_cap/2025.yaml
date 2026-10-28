@@ -1,0 +1,16 @@
+# Immediate expensing limit of an EPOP not associated, 2025 tax year (Form T2042): Area A endnote 5
+# "the immediate expensing limit, which is equal to one of the following, whichever is
+# applicable: $1.5 million, if you are not associated with any other eligible person or
+# partnership (EPOP) in the tax year" and Area G "Immediate expensing limit allocated to your
+# business: Multiply $1.5 million by the percentage assigned to your business in column 3**"
+# (confirmed from the PDF; no .txt published). It borrows the credit kind because the figure is
+# used whole, as the basic personal amount is.
+# The figure is a dollars-and-cents amount, so it rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/farm_immediate_expensing_cap
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2042/t2042-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "1500000"

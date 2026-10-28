@@ -1,0 +1,19 @@
+capabilities:
+  # Schedule 13 line 1 "If you received a T4 slip for self-employment income with EI premiums in
+  # box 18, do not include any net income (or net loss) reported on lines 13500, 13700, 13900,
+  # 14100, and 14300 of your return for that slip (Note 1)": the net income (or net loss) of those
+  # slips, added.
+  - name: ca/ei_excluded_slips_net_income
+    consumes:
+      slips: ca/ei_excluded_slips
+    produces:
+      output: ca/ei_excluded_slips_net_income
+  # Schedule 13 line 1 "Enter the total amount from line 1 1 plus line 27 of your return ... do not
+  # include any net income (or net loss) reported ... for that slip (Note 1) (if negative, enter
+  # "0")": line 12200 plus line 27, less the net income of those slips, not below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/ei_self_employment_before_slips
+      less: ca/ei_excluded_slips_net_income
+    produces:
+      output: ca/ei_self_employment_earnings

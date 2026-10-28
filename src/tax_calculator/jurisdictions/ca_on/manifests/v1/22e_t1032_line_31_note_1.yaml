@@ -1,0 +1,26 @@
+# Form T1032 E (25) Step 4 Part B, page 3, Note 1: "If the result is less than $4,000, use that result as
+# the amount for line 17 to recalculate lines 18 to 31", part of the form ca/t1032 (see
+# 22a_t1032_pension_income_splitting.yaml for the form's exports and 22d_t1032_line_33_note_1.yaml for the
+# recalculated lines 17, 22, 29 and 30). Line 31 is the last line recalculated; the transferring spouse's
+# line 31400 reads it, so it is line 31 as recalculated when Note 1 recalculates and line 31 as it was
+# otherwise. Lines 23 to 28 only copy, as in 22d; lines 18 to 21 recalculated would bound line 22 again,
+# which 22d does not do.
+form:
+  name: ca/t1032
+capabilities:
+  # Form T1032 "Line 31: Line 23 minus line 30 =", where line 23 is line 1, with line 30 recalculated.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_eligible_pension_income
+      less: ca/t1032_note_1_line_30
+    produces:
+      output: ca/t1032_note_1_line_31
+  # Form T1032 Note 1 "use that result as the amount for line 17 to recalculate lines 18 to 31": the
+  # recalculated line 31 when Note 1 recalculates, otherwise line 31 as it was.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_note_1_recalculation
+      when_none: ca/t1032_line_31
+      when_any: ca/t1032_note_1_line_31
+    produces:
+      output: ca/t1032_line_31_after_note_1

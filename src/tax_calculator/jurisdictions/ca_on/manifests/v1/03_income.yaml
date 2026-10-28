@@ -1,0 +1,663 @@
+capabilities:
+  # Schedule 3 (form 5000-S3) Part 3: "For each Gain or loss enter as many lines as necessary."
+  # Each property type lists one row per disposition: "(Column 2): Proceeds of disposition",
+  # "(Column 3): Adjusted cost base", "(Column 4): Outlays and expenses", "(Column 5): Gain or
+  # loss (column 2 minus columns 3 and 4)"; lines 1 to 8 (10700, 11000, 12400, 13200, 13800,
+  # 15300, 15301, 15500) are each "Total gain or loss (add all the amounts under column 5)",
+  # one step each.
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/qsbcs_dispositions
+    produces:
+      output: ca/qsbcs_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/qffp_dispositions
+    produces:
+      output: ca/qffp_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/qffp_foreclosure_dispositions
+    produces:
+      output: ca/qffp_foreclosure_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/share_dispositions
+    produces:
+      output: ca/share_gain_or_loss
+  # Line 5: a depreciable property loss counts 0.
+  - name: ca/depreciable_property_gains
+    consumes:
+      dispositions: ca/real_estate_dispositions
+    produces:
+      output: ca/real_estate_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/bond_dispositions
+    produces:
+      output: ca/bond_gain_or_loss
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/crypto_asset_dispositions
+    produces:
+      output: ca/crypto_asset_gain_or_loss
+  - name: ca/qffp_gains
+    consumes:
+      dispositions: ca/other_foreclosure_dispositions
+    produces:
+      output: ca/other_foreclosure_gain_or_loss
+  # Part 3, Personal-use property: "Line 9 and line 15800: Total gain only (add all the amounts
+  # under column 5)", each row's proceeds and adjusted cost base at least the Guide T4037 $1,000
+  # ("Proceeds of disposition (whichever is more: selling price or $1,000)"; "ACB (whichever is
+  # more: cost or $1,000) plus outlays and expenses"): the rows' gains, a row's loss counting 0,
+  # then line 9 itself, a sum of those rows and line 57 of T2091(IND) Part 4 ("Enter the amount
+  # from line 57 on line 15800 of Schedule 3").
+  - name: ca/personal_use_property_gains
+    params:
+      minimum: ca/personal_use_property_minimum
+    consumes:
+      dispositions: ca/personal_use_property_dispositions
+    produces:
+      output: ca/personal_use_property_gain_rows
+  # Form T2091(IND) Part 1 and Part 3, one form for each property sold: "Divide line 21 by line
+  # 22." (line 23, the exempt part, rounded half up to the cent), "Line 18 minus line 23 (if
+  # negative, enter "0")" (line 24) and "Total capital gain" (line 54, which is line 24 when
+  # Part 2 is not completed), added over the properties. Line 54 is not read: line 57 of Part 4
+  # is entered on line 15800 of Schedule 3 instead.
+  - name: ca/principal_residence_gain
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_gain
+  # Form T2091(IND) Part 2 line 27 "Line 25 minus line 26" "Pre-1982 gain before principal
+  # residence exemption": the total over the properties of that line of each one (0 where the form
+  # says to enter "0").
+  - name: ca/principal_residence_line_27
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_27
+  # Form T2091(IND) Part 2 line 29 "Line 2 plus 1 (see note on page 4)": the total over the
+  # properties of that line of each one (0 where the area is not completed).
+  - name: ca/principal_residence_line_29
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_29
+  # Form T2091(IND) Part 2 line 30 "Multiply line 28 by line 29.": the total over the properties
+  # of that line of each one (0 where the area is not completed).
+  - name: ca/principal_residence_line_30
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_30
+  # Form T2091(IND) Part 2 line 32 "Divide line 30 by line 31.": the total over the properties of
+  # that line of each one (0 where the area is not completed).
+  - name: ca/principal_residence_line_32
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_32
+  # Form T2091(IND) Part 2 line 33 "Line 27 minus line 32 (if negative, enter "0")" "Pre-1982
+  # gain": the total over the properties of that line of each one (0 where the form says to enter
+  # "0").
+  - name: ca/principal_residence_line_33
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_33
+  # Form T2091(IND) Part 2 line 38 "Add lines 35 to 37.": the total over the properties of that
+  # line of each one (0 where the area is not completed).
+  - name: ca/principal_residence_line_38
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_38
+  # Form T2091(IND) Part 2 line 39 "Line 34 minus line 38" "Post-1981 gain before principal
+  # residence exemption": the total over the properties of that line of each one (0 where the form
+  # says to enter "0").
+  - name: ca/principal_residence_line_39
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_39
+  # Form T2091(IND) Part 2 line 42 "Multiply line 40 by line 41.": the total over the properties
+  # of that line of each one (0 where the area is not completed).
+  - name: ca/principal_residence_line_42
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_42
+  # Form T2091(IND) Part 2 line 44 "Divide line 42 by line 43.": the total over the properties of
+  # that line of each one (0 where the area is not completed).
+  - name: ca/principal_residence_line_44
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_44
+  # Form T2091(IND) Part 2 line 45 "Line 39 minus line 44 (if negative, enter "0")" "Post-1981
+  # gain": the total over the properties of that line of each one (0 where the form says to enter
+  # "0").
+  - name: ca/principal_residence_line_45
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_45
+  # Form T2091(IND) Part 2 line 48 "Line 46 minus line 47 (if negative, enter "0")" "Post-1981
+  # loss": the total over the properties of that line of each one (0 where the form says to enter
+  # "0").
+  - name: ca/principal_residence_line_48
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_48
+  # Form T2091(IND) Part 2 line 51 "Line 49 plus line 50": the total over the properties of that
+  # line of each one (0 where the area is not completed).
+  - name: ca/principal_residence_line_51
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_51
+  # Form T2091(IND) Part 2 line 53 "Line 51 minus line 52 (if negative, enter "0")" "Net capital
+  # gain": the total over the properties of that line of each one (0 where the form says to enter
+  # "0").
+  - name: ca/principal_residence_line_53
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_line_53
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/personal_use_property_gain_rows
+        - ca/principal_residence_line_57
+    produces:
+      output: ca/personal_use_property_gain
+  # Part 3, Listed personal property: the rows' gains and losses (column 5) added, then line 10
+  # and line 15900 "Net gain only": that total less the unapplied listed personal property
+  # losses from other years, not below zero.
+  - name: ca/disposition_gains
+    consumes:
+      dispositions: ca/listed_personal_property_dispositions
+    produces:
+      output: ca/listed_personal_property_gain_or_loss
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/listed_personal_property_gain_or_loss
+      less: ca/unapplied_listed_personal_property_losses
+    produces:
+      output: ca/listed_personal_property_net_gain
+  # Part 3 "Line 11: Add lines 1 to 10. Total gains or losses of qualified properties and
+  # other properties ="; Part 4 "Line 12: Amount from line 11 of the previous page" is the same
+  # artifact, so it has no step of its own.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/qsbcs_gain_or_loss
+        - ca/qffp_gain_or_loss
+        - ca/qffp_foreclosure_gain_or_loss
+        - ca/share_gain_or_loss
+        - ca/real_estate_gain_or_loss
+        - ca/bond_gain_or_loss
+        - ca/crypto_asset_gain_or_loss
+        - ca/other_foreclosure_gain_or_loss
+        - ca/personal_use_property_gain
+        - ca/listed_personal_property_net_gain
+    produces:
+      output: ca/capital_gains_of_qualified_and_other_properties
+  # Part 4 "Line 14: Line 12 minus line 13 =" (line 13 and line 16100 is an input, checked against
+  # line 4 in 26_capital_gains_deferral_checks.yaml: `ca/capital_gains_deferral_checked`).
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_of_qualified_and_other_properties
+      less: ca/capital_gains_deferral_checked
+    produces:
+      output: ca/capital_gains_after_deferral
+  # Part 4 "Line 17: Add lines 14 to 16. =" (lines 15 and 16, 17400 and 17600, are inputs).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/capital_gains_after_deferral
+        - ca/slip_capital_gains_or_losses
+        - ca/t3_capital_gains_or_losses
+    produces:
+      output: ca/capital_gains_before_investment_loss_reduction
+  # Part 4 "Line 19 and line 19100: Total gains or losses before reserves: line 17 minus line
+  # 18 =" (line 18 and line 17800 is the business investment loss reduction already computed).
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_before_investment_loss_reduction
+      less: ca/business_investment_loss_reduction
+    produces:
+      output: ca/capital_gains_before_reserves
+  # Part 4 "Line 20 and line 19200" (Form T2017 "Total reserve to be included in income"): the
+  # total of `ca/t2017.t2017_line_31`.
+  - name: core/record_total
+    consumes:
+      records: ca/t2017.t2017_line_31
+    produces:
+      output: ca/schedule_3_line_19200
+  # Part 4 "Line 21 and line 19700: Line 19 plus line 20 Total capital gains or losses =" (line
+  # 20 is the total above).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/capital_gains_before_reserves
+        - ca/schedule_3_line_19200
+    produces:
+      output: ca/capital_gain
+  # Part 5 line 22 is the same artifact as line 21; line 24 "Line 22 multiplied by the
+  # percentage on line 23" (signed, the included capital gain), then line 26 and line 19900
+  # "Line 24 plus line 25 If positive, enter the result on line 12700 of your return": line 24
+  # and line 25 (the partnership gains at full inclusion, a caller input) as the parts of a sum
+  # not below zero, so the taxable capital gains stay non-negative.
+  - name: core/apply_rate
+    params:
+      rate: ca/capital_gains_inclusion_rate
+    consumes:
+      base: ca/capital_gain
+    produces:
+      output: ca/included_capital_gain
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/included_capital_gain
+        - ca/partnership_gains_at_full_inclusion
+    produces:
+      output: ca/taxable_capital_gains
+  # Federal Worksheet for lines 12000 and 12010, lines 1 to 4 at most lines 6 to 9 of the same
+  # slip type: line 1 "Box 32 of all T3 slips" within line 6 "Boxes 32 and 50 of all T3 slips",
+  # line 2 "Box 25 of all T4PS slips" within line 7 "Boxes 25 and 31 of all T4PS slips", line 3
+  # "Box 11 of all T5 slips" within line 8 "Boxes 11 and 25 of all T5 slips" and line 4 "Box 130
+  # of all T5013 slips" within line 9 "Boxes 130 and 133 of all T5013 slips". A part above its
+  # whole is an input error, refused and not capped (`core/at_most`).
+  - name: core/at_most
+    consumes:
+      amount: ca/t3_taxable_dividends_other_than_eligible
+      bound: ca/t3_taxable_dividends
+    produces:
+      output: ca/t3_taxable_dividends_other_than_eligible_checked
+  - name: core/at_most
+    consumes:
+      amount: ca/t4ps_taxable_dividends_other_than_eligible
+      bound: ca/t4ps_taxable_dividends
+    produces:
+      output: ca/t4ps_taxable_dividends_other_than_eligible_checked
+  - name: core/at_most
+    consumes:
+      amount: ca/t5_taxable_dividends_other_than_eligible
+      bound: ca/t5_taxable_dividends
+    produces:
+      output: ca/t5_taxable_dividends_other_than_eligible_checked
+  - name: core/at_most
+    consumes:
+      amount: ca/t5013_taxable_dividends_other_than_eligible
+      bound: ca/t5013_taxable_dividends
+    produces:
+      output: ca/t5013_taxable_dividends_other_than_eligible_checked
+  # T1 line 9 (12000) "Amount of dividends (eligible and other than eligible)" and line
+  # 12010 "Amount of dividends (other than eligible)" (use Federal Worksheet): the Federal
+  # Worksheet's "Lines 12000 and 12010 - Taxable amount of dividends from taxable Canadian
+  # corporations", line 5 "Add lines 1 to 4. Enter this amount on line 12010 of your
+  # return." (the T3, T4PS, T5 and T5013 slip boxes of lines 1 to 4) and line 10 "Add lines
+  # 6 to 9. Enter this amount on line 12000 of your return." (lines 6 to 9). For dividends
+  # with no information slip, line 11 "Actual amount of eligible dividends received" and
+  # line 12 "Applicable rate 138%" give line 13 "Line 11 multiplied by the percentage from
+  # line 12"; line 14 "Actual amount of dividends other than eligible dividends received"
+  # and line 15 "Applicable rate 115%" give line 16 "Line 14 multiplied by the percentage
+  # from line 15 Include this amount on line 12010 of your return."; line 17 "Line 13 plus
+  # line 16. Include this amount on line 12000 of your return." The rates are above one, so
+  # they are fractions, not rates. Line 12010 is line 5 plus line 16 and line 12000 is line
+  # 10 plus line 17.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_taxable_dividends_other_than_eligible_checked
+        - ca/t4ps_taxable_dividends_other_than_eligible_checked
+        - ca/t5_taxable_dividends_other_than_eligible_checked
+        - ca/t5013_taxable_dividends_other_than_eligible_checked
+    produces:
+      output: ca/slip_taxable_dividends_other_than_eligible
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_taxable_dividends
+        - ca/t4ps_taxable_dividends
+        - ca/t5_taxable_dividends
+        - ca/t5013_taxable_dividends
+    produces:
+      output: ca/slip_taxable_dividends
+  - name: core/apply_fraction
+    params:
+      fraction: ca/eligible_dividend_gross_up
+    consumes:
+      base: ca/eligible_dividends_received_without_a_slip
+    produces:
+      output: ca/eligible_dividends_grossed_up
+  - name: core/apply_fraction
+    params:
+      fraction: ca/other_dividend_gross_up
+    consumes:
+      base: ca/other_dividends_received_without_a_slip
+    produces:
+      output: ca/other_dividends_grossed_up
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/eligible_dividends_grossed_up
+        - ca/other_dividends_grossed_up
+    produces:
+      output: ca/dividends_without_a_slip_grossed_up
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/slip_taxable_dividends_other_than_eligible
+        - ca/other_dividends_grossed_up
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/taxable_dividends_other_than_eligible
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/slip_taxable_dividends
+        - ca/dividends_without_a_slip_grossed_up
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/taxable_dividends
+  # T1 Step 2 line 10 (12100) "Interest and other investment income (use Federal
+  # Worksheet)": the Federal Worksheet's "Line 12100 - Interest and other investment
+  # income" line 9 "Add lines 1 to 8.", in line order, then line 11 "Line 9 minus line
+  # 10. Enter this amount on line 12100 of your return." with line 10 "Interest and other
+  # investment income, included on line 9, received and reported in previous years".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_investment_income
+        - ca/t5_investment_income
+        - ca/t5013_investment_income
+        - ca/investment_income_credited_not_received
+        - ca/tax_refund_interest
+        - ca/foreign_investment_income
+        - ca/investment_income_without_a_slip
+        - ca/investment_royalties
+    produces:
+      output: ca/investment_income_before_prior_years
+  # Federal Worksheet line 10 "Interest and other investment income, included on line 9, received
+  # and reported in previous years": a starting amount, refused when above line 9, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/investment_income_reported_in_previous_years
+      bound: ca/investment_income_before_prior_years
+    produces:
+      output: ca/investment_income_reported_in_previous_years_applied
+  - name: core/subtract
+    consumes:
+      amount: ca/investment_income_before_prior_years
+      less: ca/investment_income_reported_in_previous_years_applied
+    produces:
+      output: ca/interest_and_other_investment_income
+  # T1 line 32 and line 14700 "Add lines 29 to 31 (see line 25000 in Step 4).": workers'
+  # compensation benefits (14400), social assistance payments (14500) and net federal
+  # supplements paid (14600), in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/workers_compensation_benefits
+        - ca/social_assistance_payments
+        - ca/net_federal_supplements
+    produces:
+      output: ca/income_support_benefits
+  # T1 line 13 and line 12600 "Net": Form T776 line 9946 "Your net income (loss)" ... "Enter this
+  # amount on line 12600 of your income tax and benefit return", for each T776 statement the
+  # return carries, added. With no statement the total is 0.
+  - name: core/record_total
+    consumes:
+      records: ca/t776.net_rental_income
+    produces:
+      output: ca/net_rental_income
+  # T1 line 22 and line 13500 "Net": Form T2125 line 9946 "Your net income (loss)" ... "Report
+  # the net income amount from line 9946 on the applicable line of your income tax and benefit
+  # return as indicated below: business income on line 13500", for each T2125 statement the
+  # return carries whose line code is business, added. With no statement the total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_business_income_on_return
+    produces:
+      output: ca/business_income
+  # T1 line 23 and line 13700 "Net": Form T2125 line 9946 "Report the net income amount from line
+  # 9946 on the applicable line of your income tax and benefit return as indicated below:
+  # professional income on line 13700", for each T2125 statement whose line code is professional,
+  # added. With no such statement the total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_professional_income_on_return
+    produces:
+      output: ca/professional_income
+  # T1 line 24 and line 13900 "Net": Form T2125 line 9946 "... commission income on line 13900",
+  # for each T2125 statement whose line code is commission, added. With no such statement the
+  # total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_commission_income_on_return
+    produces:
+      output: ca/commission_income
+  # T1 line 22 and line 13499 "Gross": Form T2125 line 8299 "Gross business or professional income:
+  # Line 8000 plus amount 3O", for each T2125 statement whose line code is business, added.
+  - name: core/record_total
+    consumes:
+      records: ca/t2125.gross_on_business_line
+    produces:
+      output: ca/gross_business_income
+  # T1 line 23 and line 13699 "Gross": line 8299 of each statement whose line code is professional.
+  - name: core/record_total
+    consumes:
+      records: ca/t2125.gross_on_professional_line
+    produces:
+      output: ca/gross_professional_income
+  # T1 line 24 and line 13899 "Gross": line 8299 of each statement whose line code is commission.
+  - name: core/record_total
+    consumes:
+      records: ca/t2125.gross_on_commission_line
+    produces:
+      output: ca/gross_commission_income
+  # T1 line 25 and line 14100 "Net": Form T2042 line 9946 "Your net income (loss): Amount 5C minus
+  # line 9945 (enter this amount on line 14100 of your income tax and benefit return)", added over
+  # the T2042 statements, with the restricted farm loss added back (ca/farm_loss); 0 with none.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_farming_income_on_return
+    produces:
+      output: ca/farming_income
+  # T1 line 26 and line 14300 "Net": Form T2121 line 9946 "Your net income (loss): Amount 5C minus
+  # line 9945 (enter this amount on line 14300 of your income tax and benefit return)", for each
+  # T2121 statement the return carries, added. With no statement the total is 0.
+  # Read through Form T1139's summary form (ca/t1139_return): the total of the statements, with a
+  # Form T1139's amount G or L in place of the statements it covers.
+  - name: core/record_total
+    consumes:
+      records: ca/t1139_return.t1139_fishing_income_on_return
+    produces:
+      output: ca/fishing_income
+  # T1 line 33 and line 15000 "Line 28 plus line 32 Total income": every income line the
+  # return lists, in line order (lines 1 to 20, line 13 being the net rental income, line
+  # 12600 "Net"; here with the amount of dividends of line 9 (12000), the taxable capital
+  # gains of line 14 and the taxable support payments of line 15, then line 32); line 27
+  # "Add lines 22 to 26. Net self-employment income" comes after line 20, before lines 29 to
+  # 31 (line 32).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+        - ca/old_age_security
+        - ca/cpp_or_qpp_benefits
+        - ca/other_pensions_and_superannuation
+        - ca/t2205_on_line_11500
+        - ca/elected_split_pension_amount
+        - ca/universal_child_care_benefit
+        - ca/ei_and_other_benefits
+        - ca/taxable_dividends
+        - ca/interest_and_other_investment_income
+        - ca/net_partnership_income
+        - ca/rdsp_income
+        - ca/net_rental_income
+        - ca/taxable_capital_gains
+        - ca/taxable_support_payments
+        - ca/rrsp_income
+        - ca/t2205_on_line_12900
+        - ca/fhsa_income
+        - ca/other_fhsa_income
+        - ca/other_income
+        - ca/t2205_on_line_13000
+        - ca/taxable_scholarships
+        - ca/net_self_employment_income
+        - ca/income_support_benefits
+    produces:
+      output: ca/total_income
+  # T1 line 123 (40425) "Federal dividend tax credit (use Federal Worksheet)": the Federal
+  # Worksheet's "Line 40425 - Federal dividend tax credit", line 5 "Add lines 1 to 4." of
+  # the credits shown on the T3, T4PS, T5 and T5013 slips. For dividends with no
+  # information slip, line A "Amount from line 12000 of your return (Note 1)" and line B
+  # "Amount from line 12010 of your return (Note 1)", Note 1 being "Enter only the amount
+  # of dividends that were not shown on an information slip.", so line A is the
+  # Worksheet's line 17 and line B its line 16, each its own step; line 6 is "Line B,
+  # multiplied by 9.0301%"; line C is "Amount A minus amount B", and line 7 (printed "Line
+  # 2") is line C "multiplied by 15.0198%"; line 8 is "Line 6 plus line 7" and line 9 "Line
+  # 5 plus line 8 Enter this amount on line 40425 of your return." The amount deemed to be a
+  # dividend of Form T1206 page 6 is on lines 12000 and 12010 and is on no information slip
+  # ("include this amount under "Taxable amount of dividends (eligible and other than eligible)" on
+  # the Federal Worksheet, and on lines 12000 and 12010 of your return"), so Note 1 admits it in both
+  # line A and line B.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t3_dividend_tax_credit
+        - ca/t4ps_dividend_tax_credit
+        - ca/t5_dividend_tax_credit
+        - ca/t5013_dividend_tax_credit
+    produces:
+      output: ca/slip_dividend_tax_credit
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/dividends_without_a_slip_grossed_up
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/dividends_amount_a
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/other_dividends_grossed_up
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/dividends_amount_b
+  - name: core/apply_rate
+    params:
+      rate: ca/dividend_credit_rate_other_than_eligible
+    consumes:
+      base: ca/dividends_amount_b
+    produces:
+      output: ca/other_dividends_credit
+  - name: core/subtract
+    consumes:
+      amount: ca/dividends_amount_a
+      less: ca/dividends_amount_b
+    produces:
+      output: ca/dividends_amount_a_less_b
+  - name: core/apply_rate
+    params:
+      rate: ca/dividend_credit_rate_eligible
+    consumes:
+      base: ca/dividends_amount_a_less_b
+    produces:
+      output: ca/eligible_dividends_credit
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/other_dividends_credit
+        - ca/eligible_dividends_credit
+    produces:
+      output: ca/no_slip_dividend_tax_credit
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/slip_dividend_tax_credit
+        - ca/no_slip_dividend_tax_credit
+    produces:
+      output: ca/dividend_tax_credit
+  # T1 line 125 "Add lines 122 to 124.": line 122 "Amount from line 35000", line 123 (40425),
+  # the federal dividend tax credit, and line 124 (40427), the minimum tax carryover applied
+  # on Form T691 Part 8 line 12, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/non_refundable_tax_credits
+        - ca/dividend_tax_credit
+        - ca/amt_minimum_tax_carryover_applied
+    produces:
+      output: ca/credits_against_basic_federal_tax
+  # T1 line 27 "Add lines 22 to 26. Net self-employment income": line 22 (13500) business
+  # income, line 23 (13700) professional income, line 24 (13900) commission income, line 25
+  # (14100) farming income and line 26 (14300) fishing income, the "Net" box of each, in
+  # line order. Line 28 "Line 21 plus line 27" is not a step of its own: total income (line
+  # 15000) adds line 27 to the lines 1 to 20, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/business_income
+        - ca/professional_income
+        - ca/commission_income
+        - ca/farming_income
+        - ca/fishing_income
+    produces:
+      output: ca/net_self_employment_income
+  # Form T1206 page 6: the amount deemed to be a dividend of a filer under 18, the one record of the
+  # form ca/t1206_share_dispositions run once, 0 for a filer 18 or older.
+  - name: core/record_total
+    consumes:
+      records: ca/t1206_share_dispositions.t1206_under_18_dividend_amount
+    produces:
+      output: ca/t1206_under_18_dividend_amount
+  # Form T1206 page 6: the Part 1 line 3 amount of a filer 18 or older, the one record of the form
+  # ca/t1206_share_dispositions run once, 0 under 18.
+  - name: core/record_total
+    consumes:
+      records: ca/t1206_share_dispositions.t1206_part_1_line_3_amount
+    produces:
+      output: ca/t1206_part_1_line_3_amount

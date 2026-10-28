@@ -1,0 +1,12 @@
+# Form T1436 Chart A row "In 2000", column (F) "2 × IR" (footnote (2): replace "IR" with your
+# inclusion rate for 2000): the 2 of "2 × IR", as the fraction 2/1 applied to IR. The product is
+# exact and not rounded, as the form states no rounding rule for column (F); column (B)
+# "1/(IR × 2)" is the printed 1 over it, see ca/net_capital_loss_numerator_one_2000.
+family: ca/net_capital_loss_twice_ir_fraction_2000
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: none
+numerator: "2"
+denominator: "1"

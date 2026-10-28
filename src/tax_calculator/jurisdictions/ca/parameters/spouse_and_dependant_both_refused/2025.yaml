@@ -1,0 +1,20 @@
+# Condition under which the count of T1 lines 30300 and 30400 both claimed is refused, 2025 tax
+# year: Schedule 5 line 30400 allows the eligible dependant amount "If you did not claim an amount
+# on line 30300 of your return", so a count of 1 (`ca/spouse_and_dependant_both`) is an input error,
+# not a second claim added to the first. The schedule prints no refusal; it is the guard of this
+# check. The count is 1 when it applies and 0 otherwise. A count, not a dollars-and-cents box, so
+# there is no rounding.
+family: ca/spouse_and_dependant_both_refused
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      line 30300 and line 30400 are both claimed, but line 30400 applies only if you did not
+      claim an amount on line 30300 of your return
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}

@@ -1,0 +1,12 @@
+# Northern residents deductions, standard amount for travel, 2025 tax year (Form T2222
+# Step 3 Chart A): "Row C: Enter the total of all amounts in row B. This total cannot be more
+# than $1,200." It is a bound on each individual's row C, not a figure on a line.
+# The capability only uses the amount as that bound and never rounds with it; the rounding key
+# (to the cent, half-up) is the dataset convention, as the form states no rounding rule.
+family: ca/northern_travel_standard_amount
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2222/t2222-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1200"

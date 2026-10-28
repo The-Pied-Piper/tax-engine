@@ -1,0 +1,13 @@
+# Base CPP credit rate on self-employment income, 2025 tax year (T1-2025 Schedule 8, form
+# 5000-S8). Part 4 "Base CPP contributions on self-employment income and other earnings:
+# Enter the result of the following calculation (in dollars and cents) on line 31000 of your
+# return: Line 15: amount from line 10 multiplied by 50%". Line 17 "Line 15 plus line 16
+# Enter this amount (in dollars and cents) on line 22200 of your return." is the deduction.
+# Line 15 is in dollars and cents, so the product rounds half-up to the cent.
+family: ca/cpp_self_employed_base_credit_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.5"

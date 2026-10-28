@@ -1,0 +1,237 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 2 and Part 3 lines 1 to 26. Part 2 lines C to F are Schedule 8 Part 2's
+# lines B to E, the same table read with the same months (line A): the form has its own copy of the
+# four steps (08k_rc381_cpp_limits.yaml), as Schedule 8 has.
+# Part 2 line B and the Part 3 lines 1, 2 and 19 are the filer's entries; line 25 (box 16A)
+# is read by Part 3 line 64. Part 3 line 19 is the T4 box 16 input of Schedule 8 Part 3 line 8
+# (in 01_inputs.yaml, with the other inputs of the form).
+#
+# Form RC381: the form ca/rc381, run once for the copy of the form the return carries (the record
+# list ca/rc381_instances: none or one; the record has no fields, because every figure the form
+# reads is a starting amount of the return). The form is in the exclusive group ca/cpp_calculation
+# with Schedule 8 (ca/schedule_8): the return carries one of the two. Parts 2, 3, 3a, 3b and 4 of
+# the form are this part and 08b to 08i, with 08k_rc381_cpp_limits.yaml. The form exports the six
+# results of its final selection, which the return totals in 08j_rc381_totals.yaml and which are 0
+# with no copy of the form.
+form:
+  name: ca/rc381
+  instances: ca/rc381_instances
+  # The return carries at most one copy of Form RC381, and not with Schedule 8.
+  max_instances: 1
+  min_instances: 0
+  exclusive_group: ca/cpp_calculation
+  exports:
+    - ca/rc381_cpp_base_contributions_on_return
+    - ca/rc381_cpp_enhanced_contributions_on_return
+    - ca/rc381_cpp_overpayment_on_return
+    - ca/rc381_cpp_payable_on_self_employment
+    - ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings
+    - ca/rc381_cpp_deduction_on_self_employment_and_other_earnings
+capabilities:
+  # Part 2 "The number you enter on line A cannot be more than the number you enter on line
+  # B.": line B is the QPP months, produced unchanged when it is at least line A's months and
+  # refused (an input error) when it is less; the QPP lookups below read this checked line B.
+  - name: ca/count_at_least
+    consumes:
+      count: ca/qpp_months
+      minimum: ca/cpp_months
+    produces:
+      output: ca/rc381_part_2_line_b
+  # Part 2 "Enter the corresponding amounts from the monthly proration table above using the
+  # number of months from lines A and B." QPP: line G "Your maximum pensionable earnings for
+  # 2025 (maximum $71,300)", line H "Your maximum amount subject to second additional
+  # contributions for 2025 (maximum $9,900)", line I "Your additional maximum pensionable
+  # earnings for 2025 (maximum $81,200)" and line J "Your maximum basic exemption for 2025
+  # (maximum $3,500)": the row of the table for line B's months, the table of Schedule 8
+  # Part 2 (lines C to F are the same table read with line A, the existing artifacts).
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_maximum_pensionable_earnings
+    consumes:
+      count: ca/rc381_part_2_line_b
+    produces:
+      output: ca/rc381_part_2_line_g
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_second_additional_earnings_maximum
+    consumes:
+      count: ca/rc381_part_2_line_b
+    produces:
+      output: ca/rc381_part_2_line_h
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_additional_maximum_pensionable_earnings
+    consumes:
+      count: ca/rc381_part_2_line_b
+    produces:
+      output: ca/rc381_part_2_line_i
+  - name: core/amount_by_count
+    params:
+      table: ca/cpp_basic_exemption
+    consumes:
+      count: ca/rc381_part_2_line_b
+    produces:
+      output: ca/rc381_part_2_line_j
+  # Part 3 line 3 "Line 1 plus line 2 Total pensionable earnings", line 1 "Total CPP
+  # pensionable earnings from box 26 of all of your T4 slips where the province of employment
+  # is not Quebec" (50339) and line 2 "Total QPP pensionable earnings from box 26 of all of
+  # your T4 slips where the province of employment is Quebec" (50329).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t4_cpp_pensionable_earnings_outside_quebec
+        - ca/t4_qpp_pensionable_earnings_in_quebec
+    produces:
+      output: ca/rc381_part_3_line_3
+  # Line 6 "Line 4 divided by line 5 (calculated to the fifth decimal place without
+  # rounding)", line 4 "Amount from line 1" and line 5 "Amount from line 3": truncated, not
+  # rounded, to 0.00001; 0 when line 3 is 0.
+  - name: ca/ratio_truncated
+    params:
+      rounding: ca/rc381_ratio_truncation
+    consumes:
+      dividend: ca/t4_cpp_pensionable_earnings_outside_quebec
+      divisor: ca/rc381_part_3_line_3
+    produces:
+      output: ca/rc381_part_3_line_6
+  # Lines 7 to 10 "Amount from line E of Part 2 multiplied by the rate at line 6", "Amount from
+  # line C of Part 2 ...", "Amount from line F of Part 2 ..." and "Amount from line D of Part
+  # 2 ...": each product rounds half up to the cent.
+  - name: ca/apply_chosen_rate
+    params:
+      rounding: ca/rc381_cents_rounding
+    consumes:
+      base: ca/cpp_additional_maximum_pensionable_earnings
+      rate: ca/rc381_part_3_line_6
+    produces:
+      output: ca/rc381_part_3_line_7
+  - name: ca/apply_chosen_rate
+    params:
+      rounding: ca/rc381_cents_rounding
+    consumes:
+      base: ca/cpp_maximum_pensionable_earnings
+      rate: ca/rc381_part_3_line_6
+    produces:
+      output: ca/rc381_part_3_line_8
+  - name: ca/apply_chosen_rate
+    params:
+      rounding: ca/rc381_cents_rounding
+    consumes:
+      base: ca/cpp_basic_exemption
+      rate: ca/rc381_part_3_line_6
+    produces:
+      output: ca/rc381_part_3_line_9
+  - name: ca/apply_chosen_rate
+    params:
+      rounding: ca/rc381_cents_rounding
+    consumes:
+      base: ca/cpp_second_additional_earnings_maximum
+      rate: ca/rc381_part_3_line_6
+    produces:
+      output: ca/rc381_part_3_line_10
+  # Line 11 "Earnings subject to CPP contributions: Enter whichever is less: amount from line
+  # 1 or line 7."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t4_cpp_pensionable_earnings_outside_quebec
+        - ca/rc381_part_3_line_7
+    produces:
+      output: ca/rc381_part_3_line_11
+  # Line 14 "Line 12 minus line 13 (if negative, enter "0")", line 12 "Amount from line 11"
+  # and line 13 "Amount from line 8".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_3_line_11
+      less: ca/rc381_part_3_line_8
+    produces:
+      output: ca/rc381_part_3_line_14
+  # Line 15 "Earnings subject to second additional CPP contributions: Enter whichever is less:
+  # amount from line 10 or line 14.", which line 3's instruction "If the amount from line 3 is
+  # more than the amount from line C of Part 2, complete lines 12 to 15. If not, enter the
+  # amount from line 11 on line 16 and continue at line 17." makes 0 when it does not apply:
+  # the lesser of lines 10 and 14 (the printed sub-calculation of line 15) ...
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_10
+        - ca/rc381_part_3_line_14
+    produces:
+      output: ca/rc381_part_3_line_15_lesser
+  # ... and line 15 itself, that amount only when line 3 is more than line C.
+  - name: ca/amount_when_more
+    consumes:
+      amount: ca/rc381_part_3_line_15_lesser
+      more: ca/rc381_part_3_line_3
+      than: ca/cpp_maximum_pensionable_earnings
+    produces:
+      output: ca/rc381_part_3_line_15
+  # Line 16 "Line 11 minus line 15".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_11
+      less: ca/rc381_part_3_line_15
+    produces:
+      output: ca/rc381_part_3_line_16
+  # Line 18 "Earnings subject to base and first additional CPP contributions: Line 16 minus
+  # line 17 (if negative, enter "0")", line 17 "Amount from line 9".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_3_line_16
+      less: ca/rc381_part_3_line_9
+    produces:
+      output: ca/rc381_part_3_line_18
+  # Line 20 "Actual base contributions on CPP pensionable earnings: amount from line 19 x
+  # 83.1933%", line 19 "Total actual base and first additional contributions on CPP
+  # pensionable earnings from box 16 of all of your T4 slips" (50340).
+  - name: core/apply_rate
+    params:
+      rate: ca/rc381_cpp_base_share_rate
+    consumes:
+      base: ca/cpp_t4_base_and_first_additional_contributions
+    produces:
+      output: ca/rc381_part_3_line_20
+  # Line 21 "Actual first additional contributions on CPP pensionable earnings: Line 19 minus
+  # line 20".
+  - name: core/subtract
+    consumes:
+      amount: ca/cpp_t4_base_and_first_additional_contributions
+      less: ca/rc381_part_3_line_20
+    produces:
+      output: ca/rc381_part_3_line_21
+  # Line 22 "Required base contributions on CPP pensionable earnings: amount from line 18 x
+  # 4.95% = (maximum $3,356.10)".
+  - name: core/contribution_tier
+    params:
+      tier: ca/rc381_required_cpp_base
+    consumes:
+      earnings: ca/rc381_part_3_line_18
+    produces:
+      output: ca/rc381_part_3_line_22
+  # Line 23 "Required first additional contributions on CPP pensionable earnings: amount from
+  # line 18 x 1% = (maximum $678.00)".
+  - name: core/contribution_tier
+    params:
+      tier: ca/rc381_required_first_additional
+    consumes:
+      earnings: ca/rc381_part_3_line_18
+    produces:
+      output: ca/rc381_part_3_line_23
+  # Line 24 "Required base and first additional contributions on CPP pensionable earnings:
+  # Line 22 plus line 23".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_22
+        - ca/rc381_part_3_line_23
+    produces:
+      output: ca/rc381_part_3_line_24
+  # Line 26 "Required second additional contributions on CPP pensionable earnings: amount from
+  # line 15 x 4% = (maximum $396.00)".
+  - name: core/contribution_tier
+    params:
+      tier: ca/rc381_required_second_additional
+    consumes:
+      earnings: ca/rc381_part_3_line_15
+    produces:
+      output: ca/rc381_part_3_line_26

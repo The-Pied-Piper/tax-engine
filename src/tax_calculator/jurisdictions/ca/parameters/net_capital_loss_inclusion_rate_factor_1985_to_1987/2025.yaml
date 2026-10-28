@@ -1,0 +1,16 @@
+# Net capital loss adjustment factor for the inclusion rate, row "After May 22, 1985, and before
+# 1988", 2025 tax year (Form T1436, Capital Gains Worksheet, "Line 25300 - Net capital loss of other
+# years (if you have pre-1986 capital loss balance)", "Chart A - Adjustment calculation for carry-
+# forward losses"): column (B) "Adjustment factor (for the inclusion rate)", which column (C)
+# "Adjusted gross capital losses (column A multiplied by column B)" multiplies by.
+# The form prints 1, the fraction 1/1.
+# Column (C) is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/net_capital_loss_inclusion_rate_factor_1985_to_1987
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "1"
+denominator: "1"

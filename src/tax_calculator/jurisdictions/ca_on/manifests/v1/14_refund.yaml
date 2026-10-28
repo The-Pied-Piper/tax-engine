@@ -1,0 +1,73 @@
+capabilities:
+  # T1 line 47556 "Return of fuel charge proceeds to farmers tax credit (complete Form T2043)":
+  # amount 5D of Form T2043, the form's export `ca/t2043.fuel_charge_credit_farmers` (one record,
+  # as the form runs once), totalled into one amount for the line 48200 sum below.
+  - name: core/record_total
+    consumes:
+      records: ca/t2043.fuel_charge_credit_farmers
+    produces:
+      output: ca/fuel_charge_credit_farmers_total
+  # T1 line 162 (47555) "Canadian journalism labour tax credit (box 236 of all T5013 slips)": the
+  # guide says to include the amount in business income too, so it is the total of amount 5B of
+  # Form T2125 (the form's export `ca/t2125.business_journalism_labour_tax_credit`, one record for
+  # each statement), entered once on the statement and read here.
+  - name: core/record_total
+    consumes:
+      records: ca/t2125.business_journalism_labour_tax_credit
+    produces:
+      output: ca/journalism_labour_tax_credit
+  # T1 line 166 (line 48200) "Add lines 150 to 165. Total credits": line 150 (43700, the income
+  # tax deducted as entered, or Form T1032 line 39 or line 42 when the pension is split:
+  # 22c_t1032_income_tax_deducted.yaml), line 152 (44800) "CPP or QPP overpayment" (Form 5006-R), line 153 (45000)
+  # "Employment insurance (EI) overpayment" (Form T2204 line 15 when it is more than $1), line 154
+  # (45200) "Refundable medical expense supplement (use Federal Worksheet)", line 155 (45300)
+  # "Canada workers benefit (CWB) (complete Schedule 6)", line 156 (45350) "Canada training credit
+  # (CTC) (complete Schedule 11)",
+  # line 157 (45355) "Multigenerational home renovation tax credit (MHRTC) (complete Schedule 12)",
+  # line 158 (45400) "Refund of investment tax credit (complete Form T2038(IND))", line 159
+  # (45600) "Part XII.2 tax credit (box 38 of all T3 slips and box 209 of all T5013 slips)", line
+  # 160 (45700) "Employee and partner GST/HST rebate (complete Form GST370)", line 161 (46900),
+  # line 162 (47555) "Canadian journalism labour tax credit (box 236 of all T5013 slips)", the total of
+  # amount 5B above,
+  # line 47556 "Return of fuel charge proceeds to farmers tax credit (complete Form T2043)" (amount
+  # 5D of Form T2043, totalled as `ca/fuel_charge_credit_farmers_total`), line 164 (47600) "Tax paid by
+  # instalments" and line 165 (47900), in line order; line 151 (44000, a Quebec abatement that does
+  # not apply to an Ontario return) is left out.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/income_tax_deducted_after_election
+        - ca/cpp_overpayment
+        - ca/ei_overpayment
+        - ca/refundable_medical_expense_supplement
+        - ca/canada_workers_benefit
+        - ca/canada_training_credit
+        - ca/multigenerational_home_renovation_credit
+        - ca/investment_tax_credit_refund
+        - ca/part_xii_2_tax_credit
+        - ca/employee_and_partner_gst_hst_rebate
+        - ca/educator_school_supply_credit
+        - ca/journalism_labour_tax_credit
+        - ca/fuel_charge_credit_farmers_total
+        - ca/tax_paid_by_instalments
+        - ca/provincial_credits
+    produces:
+      output: ca/total_credits
+  # T1 line 167 "Line 149 minus line 166 If the amount is negative, enter it on line
+  # 48400 below. If the amount is positive, enter it on line 48500 below. Refund or
+  # balance owing": not floored, so a negative result is a refund and a positive one a
+  # balance owing.
+  - name: core/subtract
+    consumes:
+      amount: ca/total_payable
+      less: ca/total_credits
+    produces:
+      output: ca/refund_or_balance_owing
+  # T1 line 48400 "Refund": line 167 is entered on line 48400 "If the amount is negative", so
+  # the total credits less the total payable, not below zero, a refund and never a negative.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/total_credits
+      less: ca/total_payable
+    produces:
+      output: ca/refund

@@ -1,0 +1,11 @@
+# Maximum costs to maintain the old home when vacant, 2025 tax year (Form T1-M, Moving Expenses
+# Deduction, 2025): Part 4 line 14 "Costs to maintain your old home when vacant (maximum $5,000)".
+# Line 14 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/moving_old_home_maintenance_cap
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1-m/t1-m-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "5000"

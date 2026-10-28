@@ -1,0 +1,16 @@
+# Form T929 (see 05k_t929.yaml): the one copy, for the form, of the return's step in
+# 08a_foreign_tax_credit.yaml that totals the foreign tax on income from property over 15% (Form
+# T2209 page 1 note), which the line 23300 sum copy in 05m_t929_copies_2.yaml adds as part of line
+# 23200. Line 5 of Form T929 reads the net income of line 23600, and a form reads the manifest's
+# inputs only (here `ca/foreign_tax_countries`), never the return's artifacts, so the step is
+# copied verbatim and the two agree.
+form:
+  name: ca/t929
+capabilities:
+  - name: ca/foreign_property_tax_over_limit
+    params:
+      limit_rate: ca/foreign_property_income_credit_limit_rate
+    consumes:
+      countries: ca/foreign_tax_countries
+    produces:
+      output: ca/foreign_property_tax_over_limit

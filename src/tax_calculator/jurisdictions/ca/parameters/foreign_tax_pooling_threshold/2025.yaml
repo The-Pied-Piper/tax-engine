@@ -1,0 +1,14 @@
+# Foreign tax total above which the foreign tax credit is worked country by country, 2025 tax year
+# (Form T2209, federal foreign tax credits): "If you paid tax to more than one foreign country,
+# and the total foreign taxes paid to all foreign countries was more than $200, do the applicable
+# calculation shown on this form for non-business and business taxes paid to each country on a
+# separate sheet in Canadian dollars. Enter the total amount on this form." The $200 is the
+# printed figure. The form states no rounding rule and the figure is whole dollars, so it rounds
+# half-up to the cent, the owner's decision.
+family: ca/foreign_tax_pooling_threshold
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "200"

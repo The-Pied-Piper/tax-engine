@@ -1,0 +1,30 @@
+# The shared fact "has investment expenses in 2025": the form ca/has_investment_expenses, a form of
+# its own with no instances, run once on one input, ca/has_investment_expenses (the return's inputs,
+# in 01_inputs.yaml). Form T2048 Part 3 line 24 asks "If you have investment expenses in 2025,
+# complete Chart A on page 4 and enter the amount from line 20 of Chart A. Otherwise, enter "0"."
+# That is one answer for the year, and the Chart A amounts it gates (lines 3, 6 and 14) are entered
+# once for the return, so it is entered once here and not for each qualifying disposition: the
+# form ca/t2048, run once for each disposition, reads this form's export, so the answers of the
+# dispositions cannot differ.
+#
+# This is a targeted exception to taking inputs the way the form does: a fact gets a form of its
+# own like this when a form that runs more than once asks it once for the year. It is not a way to
+# merge inputs that merely look alike, and every other input is still taken the way the form asks
+# it.
+#
+# The form has no computed line. Its one step checks the answer to be 0 or 1 (ca/yes_or_no_count)
+# and it exports the checked count, whose first value the form ca/t2048 takes as
+# ca/qbt_has_investment_expenses (core/first_record_count, in 06a_capital_gains_deduction_qbt.yaml).
+form:
+  name: ca/has_investment_expenses
+  exports:
+    - ca/has_investment_expenses_checked
+capabilities:
+  # Form T2048 Part 3 line 24 "If you have investment expenses in 2025": the answer taken as a
+  # count, 1 for yes and 0 for no, checked to be 0 or 1 before the step that reads it. A count of 2
+  # or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/has_investment_expenses
+    produces:
+      output: ca/has_investment_expenses_checked

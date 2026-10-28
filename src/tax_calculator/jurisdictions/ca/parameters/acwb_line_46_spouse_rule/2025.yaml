@@ -1,0 +1,33 @@
+# Rule for Schedule 6 line 46 of Step 4 "Advanced Canada workers benefit (ACWB)", 2025 tax year (form
+# 5000-S6): "If you have an eligible spouse who is claiming the basic CWB for you, but you are
+# claiming your CWB disability supplement, enter "0" on line 46 and continue on line 47." The
+# sentence is one condition in four parts, all of which must hold: the filer has an eligible spouse
+# (line 38101, count 1 of `ca/cwb_eligible_spouses_checked`), the filer is not claiming the basic CWB
+# (line 38102 answered no, count 2 of `ca/cwb_claiming_basic_checked`: Step 2 says "If you had an
+# eligible spouse, only one of you can claim the basic CWB"), that spouse is claiming the basic CWB
+# for the filer (the caller's yes or no, count 3 of `ca/cwb_spouse_claiming_basic_with_spouse_checked`: the form
+# does not print it as a line, and the filer answering no to line 38102 does not say whether the
+# spouse claims it or neither does), and the filer is claiming the CWB disability supplement (line
+# 38103, count 4 of `ca/eligible_for_disability_amount_checked`). The count is 0 when the rule
+# applies, so line 46 is 0, and 1 otherwise, so line 46 is line 44 plus line 45. The result is a
+# count, not a dollars-and-cents box, so there is no rounding.
+family: ca/acwb_line_46_spouse_rule
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: >-
+      If you have an eligible spouse who is claiming the basic CWB for you, but you are claiming
+      your CWB disability supplement, enter "0" on line 46 and continue on line 47.
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "0"}
+      - tests:
+          - {reads: count, position: "3", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "4", relation: equal_to, than: "1"}

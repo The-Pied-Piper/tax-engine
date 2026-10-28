@@ -1,0 +1,234 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 3 lines 27 to 69: the QPP side of the calculation on employment income and
+# the totals. Lines 43 and 46 print the figures of lines 23 and 26, so they read the same
+# datasets. Lines 25, 39 and 45 (boxes 16A, 17 and 17A) are the filer's entries (01_inputs.yaml).
+# Part 2 lines G to J and Part 3 lines 1 to 26 are in 08a_rc381_part_2_and_3.yaml.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # Lines 27 to 30 "Amount from line I of Part 2 minus the amount from line 7", "Amount from
+  # line G of Part 2 minus the amount from line 8", "Amount from line J of Part 2 minus the
+  # amount from line 9" and "Amount from line H of Part 2 minus the amount from line 10": the
+  # QPP maximums less the shares taken by the CPP side.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_2_line_i
+      less: ca/rc381_part_3_line_7
+    produces:
+      output: ca/rc381_part_3_line_27
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_2_line_g
+      less: ca/rc381_part_3_line_8
+    produces:
+      output: ca/rc381_part_3_line_28
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_2_line_j
+      less: ca/rc381_part_3_line_9
+    produces:
+      output: ca/rc381_part_3_line_29
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_2_line_h
+      less: ca/rc381_part_3_line_10
+    produces:
+      output: ca/rc381_part_3_line_30
+  # Line 31 "Earnings subject to QPP contributions: Enter whichever is less: amount from line
+  # 2 or line 27."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t4_qpp_pensionable_earnings_in_quebec
+        - ca/rc381_part_3_line_27
+    produces:
+      output: ca/rc381_part_3_line_31
+  # Line 34 "Line 32 minus line 33 (if negative, enter "0")", line 32 "Amount from line 31"
+  # and line 33 "Amount from line 28".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_3_line_31
+      less: ca/rc381_part_3_line_28
+    produces:
+      output: ca/rc381_part_3_line_34
+  # Line 35 "Earnings subject to second additional QPP contributions: Enter whichever is less:
+  # amount from line 30 or line 34.", which line 3's instruction "If the amount from line 3 is
+  # more than the amount from line G of Part 2, complete lines 32 to 35. If not, enter the
+  # amount from line 31 on line 36 and continue at line 37." makes 0 when it does not apply:
+  # the lesser of lines 30 and 34 (the printed sub-calculation of line 35) ...
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_30
+        - ca/rc381_part_3_line_34
+    produces:
+      output: ca/rc381_part_3_line_35_lesser
+  # ... and line 35 itself, that amount only when line 3 is more than line G.
+  - name: ca/amount_when_more
+    consumes:
+      amount: ca/rc381_part_3_line_35_lesser
+      more: ca/rc381_part_3_line_3
+      than: ca/rc381_part_2_line_g
+    produces:
+      output: ca/rc381_part_3_line_35
+  # Line 36 "Line 31 minus line 35".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_31
+      less: ca/rc381_part_3_line_35
+    produces:
+      output: ca/rc381_part_3_line_36
+  # Line 38 "Earnings subject to base and first additional QPP contributions: Line 36 minus
+  # line 37 (if negative, enter "0")", line 37 "Amount from line 29".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_3_line_36
+      less: ca/rc381_part_3_line_29
+    produces:
+      output: ca/rc381_part_3_line_38
+  # Line 40 "Actual base contributions on QPP pensionable earnings: amount from line 39 x
+  # 84.375%", line 39 "Total actual base and first additional contributions on QPP pensionable
+  # earnings from box 17 of all of your T4 slips" (50330).
+  - name: core/apply_rate
+    params:
+      rate: ca/rc381_qpp_base_share_rate
+    consumes:
+      base: ca/t4_qpp_contributions_box_17
+    produces:
+      output: ca/rc381_part_3_line_40
+  # Line 41 "Actual first additional contributions on QPP pensionable earnings: Line 39 minus
+  # line 40".
+  - name: core/subtract
+    consumes:
+      amount: ca/t4_qpp_contributions_box_17
+      less: ca/rc381_part_3_line_40
+    produces:
+      output: ca/rc381_part_3_line_41
+  # Line 42 "Required base contributions on QPP pensionable earnings: amount from line 38 x
+  # 5.4% = (maximum $3,661.20)".
+  - name: core/contribution_tier
+    params:
+      tier: ca/rc381_required_qpp_base
+    consumes:
+      earnings: ca/rc381_part_3_line_38
+    produces:
+      output: ca/rc381_part_3_line_42
+  # Line 43 "Required first additional contributions on QPP pensionable earnings: amount from
+  # line 38 x 1% = (maximum $678.00)", the figures of line 23, so the same dataset.
+  - name: core/contribution_tier
+    params:
+      tier: ca/rc381_required_first_additional
+    consumes:
+      earnings: ca/rc381_part_3_line_38
+    produces:
+      output: ca/rc381_part_3_line_43
+  # Line 44 "Required base and first additional contributions on QPP pensionable earnings:
+  # Line 42 plus line 43".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_42
+        - ca/rc381_part_3_line_43
+    produces:
+      output: ca/rc381_part_3_line_44
+  # Line 46 "Required second additional contributions on QPP pensionable earnings: amount from
+  # line 35 x 4% = (maximum $396.00)", the figures of line 26, so the same dataset.
+  - name: core/contribution_tier
+    params:
+      tier: ca/rc381_required_second_additional
+    consumes:
+      earnings: ca/rc381_part_3_line_35
+    produces:
+      output: ca/rc381_part_3_line_46
+  # Line 49 "Total actual base contributions: line 47 plus line 48", line 47 "Amount from line
+  # 20" and line 48 "Amount from line 40".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_20
+        - ca/rc381_part_3_line_40
+    produces:
+      output: ca/rc381_part_3_line_49
+  # Line 52 "Total required base contributions: line 50 plus line 51", line 50 "Amount from
+  # line 22" and line 51 "Amount from line 42".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_22
+        - ca/rc381_part_3_line_42
+    produces:
+      output: ca/rc381_part_3_line_52
+  # Line 53 "Line 49 minus line 52 (if negative, show in brackets)".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_49
+      less: ca/rc381_part_3_line_52
+    produces:
+      output: ca/rc381_part_3_line_53
+  # Line 56 "Total actual first additional contributions: Line 54 plus line 55", line 54
+  # "Amount from line 21" and line 55 "Amount from line 41".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_21
+        - ca/rc381_part_3_line_41
+    produces:
+      output: ca/rc381_part_3_line_56
+  # Line 59 "Total required first additional contributions: Line 57 plus line 58", line 57
+  # "Amount from line 23" and line 58 "Amount from line 43".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_23
+        - ca/rc381_part_3_line_43
+    produces:
+      output: ca/rc381_part_3_line_59
+  # Line 60 "Line 56 minus line 59 (if negative, show in brackets)".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_56
+      less: ca/rc381_part_3_line_59
+    produces:
+      output: ca/rc381_part_3_line_60
+  # Line 61 "Line 53 plus line 60 (if negative, show in brackets)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_53
+        - ca/rc381_part_3_line_60
+    produces:
+      output: ca/rc381_part_3_line_61
+  # Line 64 "Total actual second additional contributions: Line 62 plus line 63", line 62
+  # "Amount from line 25" (box 16A, 50341) and line 63 "Amount from line 45" (box 17A, 50331).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t4_cpp_second_additional_box_16a
+        - ca/t4_qpp_second_additional_box_17a
+    produces:
+      output: ca/rc381_part_3_line_64
+  # Line 67 "Total required second additional contributions: Line 65 plus line 66", line 65
+  # "Amount from line 26" and line 66 "Amount from line 46".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_26
+        - ca/rc381_part_3_line_46
+    produces:
+      output: ca/rc381_part_3_line_67
+  # Line 68 "Line 64 minus line 67 (if negative, show in brackets)".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_64
+      less: ca/rc381_part_3_line_67
+    produces:
+      output: ca/rc381_part_3_line_68
+  # Line 69 "Line 61 plus line 68 (if negative, show in brackets)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_61
+        - ca/rc381_part_3_line_68
+    produces:
+      output: ca/rc381_part_3_line_69

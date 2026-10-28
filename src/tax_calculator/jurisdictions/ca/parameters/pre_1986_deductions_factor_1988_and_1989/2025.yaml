@@ -1,0 +1,14 @@
+# Capital gains deductions adjustment factor, row "In 1988 and 1989" (B), 2025 tax year (Form
+# T1436, Capital Gains Worksheet, "Calculating your pre-1986 capital loss balance available for
+# 2025, if any", "Capital gains deductions you claimed:"): the amount is multiplied by 0.75.
+# The form prints 0.75, which is 3/4 exactly; the dataset keeps the fraction exact.
+# The cell is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/pre_1986_deductions_factor_1988_and_1989
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "3"
+denominator: "4"

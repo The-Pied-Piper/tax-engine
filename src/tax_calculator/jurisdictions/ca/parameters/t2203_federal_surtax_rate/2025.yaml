@@ -1,0 +1,13 @@
+# Federal surtax rate of line 9 of Part 2 of Form T2203, 2025 tax year: "Federal surtax rate" 48%,
+# for "Line 8 multiplied by the percentage from line 9" on line 10, "Federal surtax on income
+# allocated to "Other (Outside Canada)"". The 48% is the printed percentage, a rate of 0.48, and
+# the product is a dollars-and-cents line, so it rounds half-up to the cent, the owner's decision,
+# as the form states no rounding rule. The same printed 48% is Form T691 Part 3 line 2, which
+# `ca/amt_federal_surtax_rate` holds.
+family: ca/t2203_federal_surtax_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2203/t2203-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.48"

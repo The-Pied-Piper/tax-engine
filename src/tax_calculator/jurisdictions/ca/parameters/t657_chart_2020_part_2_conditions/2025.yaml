@@ -1,0 +1,31 @@
+# Entry conditions of Form T657 Chart 2020 Part 2, 2025 tax year: Form T657 Chart 2020 Part 1: "If
+# you are reporting a reserve in 2025 from a disposition of QFFP in 2020 and amount E above is
+# equal to or less than the amounts on line 21 of Step 1, line 19 of Step 2, and amount K above,
+# and you want to claim the additional deduction, complete Part 2 of Chart 2020 on the next page."
+# and Part 2 "Complete this chart if you meet both of the following conditions". The count is 0
+# when any condition applies (Part 2 is not completed) and 1 when none does (Part 2 is completed).
+# The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca/t657_chart_2020_part_2_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: "You do not want to claim the additional deduction"
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "0"}
+  - text: "Amount E in Part 1 is more than your annual gains limit for 2025 from line 21 in Step 1"
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, against: "2"}
+  - text: "Amount E in Part 1 is more than your cumulative gains limit for 2025 from line 19 in Step 2"
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, against: "3"}
+  - text: "Amount E in Part 1 is more than the total amount of capital gains included in your 2025 income that is eligible for the capital gains deduction from amount K in Part 1"
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, against: "4"}

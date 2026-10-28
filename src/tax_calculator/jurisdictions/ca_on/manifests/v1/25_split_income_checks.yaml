@@ -1,0 +1,130 @@
+# Form T1206 Part 1 line 1 (68330) and line 2 (68340), checked against the return's dividends, and
+# the foreign-source amounts of Part 2 (lines 68370 and 68380) and Part 3 (line 49), each checked
+# against the amount it is a part of. Line 1 "Part of the taxable amount of dividends (eligible and
+# other than eligible) described in the information section received from taxable Canadian
+# corporations" is part of the dividends on line 12000 of the return, and line 2 "Part of the
+# taxable amount of dividends other than eligible dividends, included on line 1, from taxable
+# Canadian corporations" is part of line 1. The Federal Worksheet for lines 12000 and 12010
+# "Taxable amount of dividends from taxable Canadian corporations" and Form T1206 page 6
+# dispositions: "Multiply the amount from line G by 1.15 and include this amount under "Taxable
+# amount of dividends (eligible and other than eligible)" on the Federal Worksheet, and on lines
+# 12000 and 12010 of your return." An amount above its bound is refused, not capped.
+capabilities:
+  # Form T1206 Part 1 line 1 (68330) "Part of the taxable amount of dividends (eligible and other
+  # than eligible) described in the information section received from taxable Canadian corporations"
+  # is the filer's figure plus the amount deemed to be a dividend of Form T1206 page 6 ("In addition,
+  # enter this amount on lines 1 and 2 as indicated in Part 1 on page 7").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/split_income_dividends
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/split_income_dividends_total
+  # Form T1206 Part 1 line 2 (68340) "Part of the taxable amount of dividends other than eligible
+  # dividends, included on line 1, from taxable Canadian corporations" is the filer's figure plus the
+  # amount deemed to be a dividend (other than eligible dividend) of Form T1206 page 6.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/split_income_dividends_other_than_eligible
+        - ca/t1206_under_18_dividend_amount
+    produces:
+      output: ca/split_income_dividends_other_than_eligible_total
+  # Form T1206 Part 1 line 3 "All other split income (see "Split income" on page 1)" is the filer's
+  # figure plus the Part 1 line 3 amount of Form T1206 page 6 ("enter the total on line 3 in Part 1
+  # on page 7").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/other_split_income
+        - ca/t1206_part_1_line_3_amount
+    produces:
+      output: ca/other_split_income_total
+  # Form T1206 Part 1 line 1 (68330) "Part of the taxable amount of dividends (eligible and other
+  # than eligible) described in the information section received from taxable Canadian corporations"
+  # is at most the taxable amount of dividends on line 12000 of the return.
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_dividends_total
+      bound: ca/taxable_dividends
+    produces:
+      output: ca/split_income_dividends_checked
+  # Form T1206 Part 1 line 2 (68340) "Part of the taxable amount of dividends other than eligible
+  # dividends, included on line 1, from taxable Canadian corporations" is at most line 1 (checked).
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_dividends_other_than_eligible_total
+      bound: ca/split_income_dividends_checked
+    produces:
+      output: ca/split_income_dividends_other_than_eligible_part_of_line_1
+  # Form T1206 Part 1 line 2 (68340) is also at most the taxable amount of dividends other than
+  # eligible dividends on line 12010 of the return.
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_dividends_other_than_eligible_part_of_line_1
+      bound: ca/taxable_dividends_other_than_eligible
+    produces:
+      output: ca/split_income_dividends_other_than_eligible_checked
+  # Form T1206 Part 1 line 3 "All other split income (see "Split income" on page 1)" is at most the
+  # income before losses, the whole it is part of (`ca/income_before_losses`, produced in
+  # 14a_income_before_losses.yaml); an amount above it is refused,
+  # not capped. The T1206 prints no limit on line 3, so the part-over-whole default applies to the
+  # filer's own figure; the Part 1 line 3 amount of page 6 (50% of line G) is computed by the T1206
+  # itself and is added after the check, unbounded.
+  - name: core/at_most
+    consumes:
+      amount: ca/other_split_income
+      bound: ca/income_before_losses
+    produces:
+      output: ca/other_split_income_own_checked
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/other_split_income_own_checked
+        - ca/t1206_part_1_line_3_amount
+    produces:
+      output: ca/other_split_income_checked
+  # Form T1206 Part 2 line 68370 "Part of the amount on line 3 that is from foreign sources" is at
+  # most line 3 "All other split income" (`ca/other_split_income_total`).
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_from_foreign_sources
+      bound: ca/other_split_income_total
+    produces:
+      output: ca/split_income_from_foreign_sources_part_of_line_3
+  # Form T1206 Part 2 line 68370 "Part of the amount on line 3 that is from foreign sources" over
+  # "Total income from foreign sources" 68380 is the share's numerator over its denominator, so the
+  # checked 68370 is at most 68380.
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_from_foreign_sources_part_of_line_3
+      bound: ca/total_income_from_foreign_sources
+    produces:
+      output: ca/split_income_from_foreign_sources_checked
+  # Form T1206 Part 3 line 49 "Part of the amount from line 68370 on page 8 that is non-business
+  # income" is at most the checked 68370 that line 23 reads.
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_non_business_from_foreign_sources
+      bound: ca/split_income_from_foreign_sources_checked
+    produces:
+      output: ca/split_income_non_business_from_foreign_sources_part_of_68370
+  # Form T1206 Part 3 line 49 "Part of the amount from line 68380 on page 8 that is non-business
+  # income" is at most "Total income from foreign sources" 68380.
+  - name: core/at_most
+    consumes:
+      amount: ca/total_non_business_income_from_foreign_sources
+      bound: ca/total_income_from_foreign_sources
+    produces:
+      output: ca/total_non_business_income_from_foreign_sources_checked
+  # Form T1206 Part 3 line 49 "Part of the amount from line 68370 on page 8 that is non-business
+  # income" over "Part of the amount from line 68380 on page 8 that is non-business income" is the
+  # share's numerator over its denominator, so the checked non-business 68370 is at most the checked
+  # non-business 68380.
+  - name: core/at_most
+    consumes:
+      amount: ca/split_income_non_business_from_foreign_sources_part_of_68370
+      bound: ca/total_non_business_income_from_foreign_sources_checked
+    produces:
+      output: ca/split_income_non_business_from_foreign_sources_checked

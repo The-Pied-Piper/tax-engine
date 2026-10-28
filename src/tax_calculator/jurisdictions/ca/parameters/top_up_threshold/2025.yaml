@@ -1,0 +1,12 @@
+# Top-up tax credit threshold, 2025 tax year (Federal Worksheet, form 5000-D1), "Line 34990 -
+# Top-up tax credit": line 4 "8,319.38", the amount that line 5 takes from line 3. It borrows
+# the credit kind because it is claimed whole, as the basic personal amount is.
+# Line 4 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the worksheet states no rounding rule.
+family: ca/top_up_threshold
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "8319.38"

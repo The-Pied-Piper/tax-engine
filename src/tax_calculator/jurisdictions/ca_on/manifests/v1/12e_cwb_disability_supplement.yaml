@@ -1,0 +1,131 @@
+# Schedule 6 Step 3, the CWB disability supplement (lines 29 to 42), for a filer who answers yes to
+# line 38103 "Are you eligible for the disability tax credit (DTC)? If yes, complete parts A and B,
+# then, if applicable, complete Step 3." The answer is the shared fact
+# `ca/eligible_for_disability_amount_checked` (the CRA's approval of Form T2201, the same fact as
+# the disability amount of line 31600), read here and by the personal amounts, not typed again.
+capabilities:
+  # Schedule 6 line 38104 "Is your eligible spouse eligible for the DTC for themselves? ... 1 Yes or
+  # 2 No": a count of 1 or 0, checked before the step that reads it. A count of 2 or more is refused,
+  # not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cwb_eligible_spouse_eligible_for_dtc
+    produces:
+      output: ca/cwb_eligible_spouse_eligible_for_dtc_checked
+  # Line 38104 asks about "your eligible spouse": a 1 with no eligible spouse (line 38101) is an input
+  # error.
+  - name: ca/count_at_most
+    consumes:
+      count: ca/cwb_eligible_spouse_eligible_for_dtc_checked
+      maximum: ca/cwb_eligible_spouses_checked
+    produces:
+      output: ca/cwb_dtc_spouse_for_eligible_spouse_checked
+  # Schedule 6 lines 29 to 34: line 29 "Amount from line 5 in column 1" (ca/working_income); line 30
+  # "Base amount 1,150.00"; line 31 "Line 29 minus line 30 (if negative, enter "0")"; line 32 "Rate
+  # 27%"; line 33 "Line 31 multiplied by the percentage from line 32"; line 34 "Enter whichever is
+  # less: amount from line 33 or $843.": one tier with a maximum, as the basic amount of Step 2.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_disability_supplement
+    consumes:
+      base: ca/working_income
+    produces:
+      output: ca/cwb_disability_supplement_before_reduction
+  # Schedule 6 lines 35 to 39: line 35 "Adjusted family net income from line 15"; line 36 "If you had an
+  # eligible spouse or an eligible dependant, enter $49,389. If not, enter $37,740."; line 37 "Line 35
+  # minus line 36 (if negative, enter "0")"; line 38 "Rate: If you had an eligible spouse who is also
+  # eligible for the DTC, enter 7.5%. If not, enter 15%."; line 39 "Line 37 multiplied by the
+  # percentage from line 38": one tier, with no eligible spouse or dependant.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_disability_reduction
+    consumes:
+      base: ca/adjusted_family_net_income
+    produces:
+      output: ca/cwb_disability_reduction_without_dependant
+  # The same lines with an eligible spouse or an eligible dependant: line 36's $49,389 as the tier's
+  # threshold, at 15%.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_disability_reduction_with_dependant
+    consumes:
+      base: ca/adjusted_family_net_income
+    produces:
+      output: ca/cwb_disability_reduction_with_dependant
+  # The same lines with an eligible spouse who is also eligible for the DTC: line 36's $49,389 and
+  # line 38's 7.5%.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_disability_reduction_with_dtc_spouse
+    consumes:
+      base: ca/adjusted_family_net_income
+    produces:
+      output: ca/cwb_disability_reduction_with_dtc_spouse
+  # Line 39 for the filer's spouse status, which line 36 reads ("If you had an eligible spouse or an
+  # eligible dependant ... If not ..."): the reduction with no eligible spouse when the count of
+  # Schedule 6 line 38101 is 0, else the one with an eligible spouse.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cwb_eligible_spouses_checked
+      when_none: ca/cwb_disability_reduction_without_dependant
+      when_any: ca/cwb_disability_reduction_with_dependant
+    produces:
+      output: ca/cwb_disability_reduction_by_spouse
+  # Line 39 for the filer's family status: the reduction by spouse when there is no eligible dependant
+  # (line 38100), else the reduction with an eligible dependant.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cwb_eligible_dependants_checked
+      when_none: ca/cwb_disability_reduction_by_spouse
+      when_any: ca/cwb_disability_reduction_with_dependant
+    produces:
+      output: ca/cwb_disability_reduction_by_status
+  # Line 38's rate: 7.5% when the eligible spouse is also eligible for the DTC (line 38104), else 15%.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cwb_dtc_spouse_for_eligible_spouse_checked
+      when_none: ca/cwb_disability_reduction_by_status
+      when_any: ca/cwb_disability_reduction_with_dtc_spouse
+    produces:
+      output: ca/cwb_disability_reduction
+  # Line 40 "Line 34 minus line 39 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cwb_disability_supplement_before_reduction
+      less: ca/cwb_disability_reduction
+    produces:
+      output: ca/cwb_disability_supplement
+  # Schedule 6 line 38102 "Are you claiming the basic CWB? If yes, complete parts A and B, then, if
+  # applicable, complete Step 2. 1 Yes or 2 No": a count of 1 or 0, checked before line 41 reads it. A
+  # count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cwb_claiming_basic
+    produces:
+      output: ca/cwb_claiming_basic_checked
+  # Line 41 "If you completed Step 2, enter the amount from line 28. If not, enter "0".": line 28
+  # when line 38102 is yes, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/canada_workers_benefit_line_28
+      count: ca/cwb_claiming_basic_checked
+    produces:
+      output: ca/canada_workers_benefit_line_41
+  # Line 42 "Line 40 plus line 41 Enter this amount on line 45300 of your return."
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cwb_disability_supplement
+        - ca/canada_workers_benefit_line_41
+    produces:
+      output: ca/canada_workers_benefit_line_42
+  # Line 38103 "Are you eligible for the disability tax credit (DTC)?": the amount for line 45300 is
+  # line 42 when yes, else line 28 ("If you are not completing Step 3, enter this amount on line
+  # 45300 of your return."), which is nil when line 38102 says the basic CWB is not claimed (line 41).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/eligible_for_disability_amount_checked
+      when_none: ca/canada_workers_benefit_line_41
+      when_any: ca/canada_workers_benefit_line_42
+    produces:
+      output: ca/canada_workers_benefit_before_conditions

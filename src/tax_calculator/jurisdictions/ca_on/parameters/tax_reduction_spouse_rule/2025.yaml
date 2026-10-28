@@ -1,0 +1,30 @@
+# Rule for lines 75 and 76 of the Ontario tax reduction, 2025 tax year (Form ON428, form
+# 5006-C): "If you had a spouse or common-law partner on December 31, 2025, only the individual
+# with the higher net income can claim the amounts on lines 75 and 76." The count is 1 when the
+# rule lets this return claim them. The sentence is one condition in two parts, both of which
+# must hold, each holding when there was no spouse or common-law partner (the caller's count
+# from the T1's "Marital status on December 31, 2025" Box 1 Married and Box 2 Living
+# common-law), or the net income (line 23600) is more than the spouse's, or else, in the first
+# part, the two are equal, and in the second, the caller says this return claims at a tie. The
+# form names no claimant when the net incomes are equal, so that yes or no is the caller's.
+# The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca-on/tax_reduction_spouse_rule
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      If you had a spouse or common-law partner on December 31, 2025, only the individual with
+      the higher net income can claim the amounts on lines 75 and 76.
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "0"}
+          - {reads: amount, position: "1", relation: more_than, against: "2"}
+          - {reads: amount, position: "1", relation: equal_to, against: "2"}
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "0"}
+          - {reads: amount, position: "1", relation: more_than, against: "2"}
+          - {reads: count, position: "2", relation: equal_to, than: "1"}

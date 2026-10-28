@@ -1,0 +1,28 @@
+# Form T2043 Part 5 amount 5C "Total credit allocated from partnerships" and Form T2042 line 9951
+# "Return of fuel charge proceeds to farmers tax credit allocated to you in the year (amount 5C of
+# Form T2043 ...)": both forms print the credit the partnerships allocated, so the total of line 9951 over the
+# statements may not exceed amount 5C.
+# T2043 note 2: "you must include the portion of the credit allocated to each business on line 9951
+# of Form T2042 for that business when you calculate your net farming income". Line 9951 is the
+# portion of one business and amount 5C the credit of all of them, so line 9951 is totalled over the
+# statements and compared with amount 5C. Amount 5C may be more than that total: note 2 puts the
+# credit of a filer in the AgriStability and AgriInvest programs on line 9951 of Form T1163, T1164,
+# T1273 or T1274 instead, which the engine does not take, so only a total above amount 5C is refused.
+form:
+  name: ca/t2043
+capabilities:
+  # Form T2042 line 9951 over the statements: the total of the export of ca/t2042, one record for
+  # each statement.
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_fuel_charge_credit
+    produces:
+      output: ca/farm_fuel_charge_credit_total
+  # Line 9951 over the statements is not more than amount 5C; a total above it is refused, not
+  # capped. The checked total is exported by the form.
+  - name: core/at_most
+    consumes:
+      amount: ca/farm_fuel_charge_credit_total
+      bound: ca/fuel_charge_partnership_credit_total
+    produces:
+      output: ca/farm_fuel_charge_credit_total_checked

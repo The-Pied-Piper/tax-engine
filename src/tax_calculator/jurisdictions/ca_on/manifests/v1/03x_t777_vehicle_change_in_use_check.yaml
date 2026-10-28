@@ -1,0 +1,18 @@
+# The change in use check of Part B of the T777 form, the fourth of its checks: see 03k_t777.yaml for
+# the form's selections and for the Part B claim, which reads the checked rows. The check runs after
+# the non-arm's-length purchase check (`03w_t777_vehicle_non_arms_length_check.yaml`) and before the
+# Part B claim, and passes each row on unchanged.
+# Guide T4044 2025, Part B column 3: "If you owned a passenger vehicle for personal use and then
+# started using it for employment in 2025, there is a change in use. In most cases when this
+# happens, the amount you will enter in column 3 is the fair market value of the property at the
+# time you start using the property for employment." The filer answers whether the vehicle had a
+# change in use and enters the fair market value; the cost of additions (column 3) of such a row is
+# refused unless it is that value.
+form:
+  name: ca/t777
+capabilities:
+  - name: ca/cca_vehicle_change_in_use_checks
+    consumes:
+      classes: ca/t777_part_b_non_arms_length_checked_rows
+    produces:
+      output: ca/t777_part_b_change_in_use_checked_rows

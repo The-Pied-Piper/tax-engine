@@ -1,0 +1,717 @@
+capabilities:
+  # Part 1 line 4 "Line 2 minus line 3 (if negative, enter "0")" and "67820 =", the film
+  # property's adjustment, line 2 being the caller's CCA and carrying charges and line 3 the
+  # caller's net income from film property before CCA.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_film_property_cca_and_carrying_charges
+      less: ca/amt_film_property_income_before_cca
+    produces:
+      output: ca/amt_film_property_adjustment
+  # Part 1 line 7 "Line 5 minus line 6 (if negative, enter "0")" and "67830 =", the rental and
+  # leasing property's adjustment, line 5 the caller's CCA and carrying charges and line 6 the
+  # caller's net income from rental and leasing property before CCA.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_rental_property_cca_and_carrying_charges
+      less: ca/amt_rental_property_income_before_cca
+    produces:
+      output: ca/amt_rental_property_adjustment
+  # Part 1 line 11 "Add lines 8 to 10." and "67840 =", the tax shelters, limited partnerships and
+  # non-active partners: the caller's lines 8, 9 and 10 in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_tax_shelter_losses
+        - ca/amt_tax_shelter_deductible_amounts
+        - ca/amt_limited_partner_carrying_charges
+    produces:
+      output: ca/amt_tax_shelter_adjustments
+  # Part 1 line 12 "Add lines 1, 4, 7, and 11." (line 1 the taxable income from line 26000 of the
+  # return, read from the signed taxable income artifact, and lines 4, 7 and 11 in line order).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/taxable_income_signed
+        - ca/amt_film_property_adjustment
+        - ca/amt_rental_property_adjustment
+        - ca/amt_tax_shelter_adjustments
+    produces:
+      output: ca/amt_part_1_subtotal
+  # Form T691 Part 9 line 5 "Add lines 2 to 4.", the three income lines of Part 9 in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_resource_production_income
+        - ca/amt_resource_foreign_property_income
+        - ca/amt_class_43_1_income
+    produces:
+      output: ca/amt_resource_income_total
+  # Part 9 line 6 "Line 1 minus line 5 (if negative, enter "0")" and "Resource property and
+  # flow-through share 67860 =", the amount that goes to line 14 of Part 1.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_resource_expenditures_checked
+      less: ca/amt_resource_income_total
+    produces:
+      output: ca/amt_resource_property_and_flow_through_shares
+  # Part 1 line 16 "Capital gains or losses arising from mortgage foreclosures and conditional
+  # sales repossessions from lines 12400 and 15500 of Schedule 3", the two foreclosure totals of
+  # Schedule 3, a loss in brackets.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/qffp_foreclosure_gain_or_loss
+        - ca/other_foreclosure_gain_or_loss
+    produces:
+      output: ca/amt_mortgage_foreclosure_capital_gains
+  # Part 1 line 19 "Add lines 16 to 18.", lines 16, 17 and 18 in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_mortgage_foreclosure_capital_gains
+        - ca/amt_treaty_exempt_capital_gains_within_additional_deductions
+        - ca/amt_graduated_rate_estate_capital_gains
+    produces:
+      output: ca/amt_capital_gains_adjustments
+  # Part 1 line 20 "Line 15 minus line 19 (if negative, show in brackets)", the capital gains of
+  # line 15 (`capital_gain`, from line 19700 of Schedule 3) less line 19.
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gain
+      less: ca/amt_capital_gains_adjustments
+    produces:
+      output: ca/amt_net_capital_gains_after_adjustments
+  # Part 1 line 22 "Line 20 minus line 21 (if negative, do not show in brackets.)", line 21 the
+  # amount from line 12700 of the return (the taxable capital gains), left signed here.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_net_capital_gains_after_adjustments
+      less: ca/taxable_capital_gains
+    produces:
+      output: ca/amt_capital_gains_difference
+  # Part 1 line 23 "If line 20 is positive, enter the amount from line 22. If line 20 is negative,
+  # enter whichever is less: the amount from line 21 or line 22 (show in brackets).", picked by
+  # the sign of line 20.
+  - name: ca/sign_chosen_difference
+    consumes:
+      sign_amount: ca/amt_net_capital_gains_after_adjustments
+      reference: ca/taxable_capital_gains
+      difference: ca/amt_capital_gains_difference
+    produces:
+      output: ca/amt_capital_gains_added
+  # Part 1 line 26 "Line 24 minus line 25", the net of the gifts before the 30% of line 26.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_publicly_listed_gifts_total
+      less: ca/amt_publicly_listed_gifts_t1170_line_68231
+    produces:
+      output: ca/amt_publicly_listed_gifts_net
+  # Part 1 line 26 "× 30%" of "Line 24 minus line 25", the rate from its dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/publicly_listed_gifts_rate
+    consumes:
+      base: ca/amt_publicly_listed_gifts_net
+    produces:
+      output: ca/amt_publicly_listed_gifts_adjustment
+  # Part 1 line 27 "Add lines 13, 14, 23, and 26.", line 13 the amount from line 12 and line 14
+  # the amount from line 6 of Part 9, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_part_1_subtotal
+        - ca/amt_resource_property_and_flow_through_shares
+        - ca/amt_capital_gains_added
+        - ca/amt_publicly_listed_gifts_adjustment
+    produces:
+      output: ca/amt_adjusted_income_with_gains
+  # Part 1 line 30 "Line 28 plus line 29" and "67910 =", the security options deduction under
+  # paragraph 110(1)(d): the total of the T4 slips' boxes 39 and 91 (line 28, the total of the form
+  # `ca/security_options_boxes_39_and_91`) and the T1212 amount (line 29).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t4_security_options_boxes_39_and_91_total
+        - ca/amt_t1212_line_29_deferred_security_options
+    produces:
+      output: ca/amt_security_options_d_total
+  # Part 1 line 31 "× 40% =" of the gifts of publicly listed securities acquired under a security
+  # option plan (line 24900 of the return, the caller's figure), the rate from its dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/security_option_gifts_rate
+    consumes:
+      base: ca/amt_security_option_publicly_listed_gifts
+    produces:
+      output: ca/amt_security_option_gifts_deduction
+  # Part 1 line 32 "Line 30 minus line 31 (if negative, enter "0")", not below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_security_options_d_total
+      less: ca/amt_security_option_gifts_deduction
+    produces:
+      output: ca/amt_security_options_net
+  # Part 1 line 38 "Add lines 35 to 37." and "67918 =", lines 35, 36 and 37 in line order; line 35
+  # is the total of the T4 slips' boxes 41 and 92 (the form `ca/security_options_boxes_41_and_92`).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t4_security_options_boxes_41_and_92_total
+        - ca/amt_prospector_or_grubstaker_deduction
+        - ca/amt_deferred_profit_sharing_plan_deduction
+    produces:
+      output: ca/amt_security_options_d1_total
+  # Part 1 line 43 "Line 39 or 40, as applicable, plus line 41 and 42", the one of lines 39 and 40
+  # that applies (the other is blank) with lines 41 and 42, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_limited_partnership_difference_no_election
+        - ca/amt_limited_partnership_difference_election
+        - ca/amt_non_capital_losses_difference_checked
+        - ca/amt_net_capital_losses_difference_checked
+    produces:
+      output: ca/amt_other_years_losses_total
+  # Part 1 line 46 "Amount from line 39 or 40, as applicable", the one of lines 39 and 40 that
+  # applies.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_limited_partnership_difference_no_election
+        - ca/amt_limited_partnership_difference_election
+    produces:
+      output: ca/amt_limited_partnership_difference_applied
+  # Part 1 line 47 "Line 45 minus line 46", the limited partnership losses of other years (line
+  # 25100 of the return, read from its artifact) less line 46, a loss in brackets.
+  - name: core/subtract
+    consumes:
+      amount: ca/limited_partnership_losses_of_other_years_checked
+      less: ca/amt_limited_partnership_difference_applied_checked
+    produces:
+      output: ca/amt_limited_partnership_losses_adjustment
+  # Part 1 line 50 "Line 48 minus line 49", the non-capital losses of other years (line 25200 of
+  # the return, read from its artifact) less line 49, the amount from line 41.
+  - name: core/subtract
+    consumes:
+      amount: ca/non_capital_losses_on_line_25200
+      less: ca/amt_non_capital_losses_difference_checked
+    produces:
+      output: ca/amt_non_capital_losses_adjustment
+  # Part 1 line 53 "Add lines 47, 50, 51, and 52.", line 51 the union dues of line 21200 of the
+  # return and line 52 the child care expenses of line 21400, read from their artifacts.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_limited_partnership_losses_adjustment
+        - ca/amt_non_capital_losses_adjustment
+        - ca/union_dues
+        - ca/child_care_expenses
+    produces:
+      output: ca/amt_losses_and_deductions_subtotal
+  # Part 1 line 63 "Add lines 54 to 62.", line 53 carried and lines 55 to 62 in line order: the
+  # deductions of the return on lines 21500 (the amount computed on Form T929 line 12),
+  # 21900 (the moving expenses deduction of Form T1-M), 22200, 22215, 22300 (a caller's amount),
+  # 23100, 24400 and 25500.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_losses_and_deductions_subtotal
+        - ca/disability_supports_deduction
+        - ca/moving_expenses_deduction
+        - ca/cpp_deduction_on_self_employment_and_other_earnings
+        - ca/cpp_enhanced_contributions_on_return
+        - ca/amt_ppip_premiums_deduction
+        - ca/clergy_residence_deduction
+        - ca/canadian_armed_forces_and_police_deduction
+        - ca/northern_residents_deductions
+    produces:
+      output: ca/amt_deductions_total
+  # Part 1 line 68 "Add lines 64 to 67 (11)", lines 64 to 67 in line order (caller's amounts).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_non_deductible_interest
+        - ca/amt_life_insurance_premiums_as_collateral
+        - ca/amt_financing_expenses
+        - ca/amt_investment_counsel_fees
+    produces:
+      output: ca/amt_non_deductible_property_expenses
+  # Part 1 line 76 "Add lines 70 to 75." and "67926 =", lines 70 to 75 in line order (caller's
+  # amounts).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_commission_employment_expenses
+        - ca/amt_legal_and_accounting_expenses
+        - ca/amt_repayment_of_salary_and_wages
+        - ca/amt_excess_epsp_amounts
+        - ca/amt_forfeited_salary_deferral_amounts
+        - ca/amt_repayment_of_wage_loss_replacement
+    produces:
+      output: ca/amt_non_deductible_office_expenses
+  # Part 1 line 77 "Line 69 minus line 76", line 69 the other employment expenses of line 22900 of
+  # the return, read from its artifact, less line 76 (its checked amount), a loss in brackets.
+  - name: core/subtract
+    consumes:
+      amount: ca/other_employment_expenses
+      less: ca/amt_non_deductible_office_expenses_checked
+    produces:
+      output: ca/amt_office_expenses_adjustment
+  # Part 1 line 78 "Add lines 63, 68, and 77.", lines 63, 68 and 77 in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_deductions_total
+        - ca/amt_non_deductible_property_expenses
+        - ca/amt_office_expenses_adjustment
+    produces:
+      output: ca/amt_adjustments_before_rate_total
+  # Part 1 line 80 "Line 78 multiply by the percentage from line 79", the applicable rate of line 79
+  # "Applicable Rate" "× 50%" from its dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_applicable_rate
+    consumes:
+      base: ca/amt_adjustments_before_rate_total
+    produces:
+      output: ca/amt_applicable_rate_amount
+  # Part 1 line 33 "Line 27 plus line 32".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_adjusted_income_with_gains
+        - ca/amt_security_options_net
+    produces:
+      output: ca/amt_adjusted_income_with_security_options
+  # Part 1 line 44 "Add lines 34, 38, and 43.", line 34 the amount from line 33, then lines 38 and
+  # 43, in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_adjusted_income_with_security_options
+        - ca/amt_security_options_d1_total
+        - ca/amt_other_years_losses_total
+    produces:
+      output: ca/amt_security_options_and_losses_total
+  # Part 1 line 82 "Line 80 plus line 81", line 81 the amount from line 44 ("Enter the amount
+  # from line 44.").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_applicable_rate_amount
+        - ca/amt_security_options_and_losses_total
+    produces:
+      output: ca/amt_adjustments_after_rate_total
+  # Part 1 line 84 "B × 13.0435%", B the taxable dividends other than eligible of line 12010
+  # of the return, the printed rate from its dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_dividends_other_than_eligible_rate
+    consumes:
+      base: ca/taxable_dividends_other_than_eligible
+    produces:
+      output: ca/amt_dividends_other_than_eligible_adjustment
+  # Part 1 "Amount A minus Amount B", A the taxable dividends of line 12000 of the return and B
+  # the amount of line 12010 of the return.
+  - name: core/subtract
+    consumes:
+      amount: ca/taxable_dividends
+      less: ca/taxable_dividends_other_than_eligible
+    produces:
+      output: ca/amt_amount_a_minus_amount_b
+  # Part 1 line 85 "C × 27.5362%", C the amount A minus amount B, the printed rate from its
+  # dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_dividends_difference_rate
+    consumes:
+      base: ca/amt_amount_a_minus_amount_b
+    produces:
+      output: ca/amt_dividends_difference_adjustment
+  # Part 1 line 86 "Line 84 plus line 85".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_dividends_other_than_eligible_adjustment
+        - ca/amt_dividends_difference_adjustment
+    produces:
+      output: ca/amt_dividends_adjustments_total
+  # Part 1 line 87 "Enter the amount from line 25400 of your return" "× 40% =", the lifetime
+  # capital gains exemption, the printed rate from its dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_lifetime_exemption_rate
+    consumes:
+      base: ca/capital_gains_deduction
+    produces:
+      output: ca/amt_lifetime_exemption_adjustment
+  # Part 1 line 88 "Line 86 plus line 87".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_dividends_adjustments_total
+        - ca/amt_lifetime_exemption_adjustment
+    produces:
+      output: ca/amt_adjustments_with_lifetime_exemption_total
+  # Part 1 line 89 "Amount from line 25395 of your return" "× 2 =", the amount from line 25395
+  # of the return doubled, the printed 2 a fraction, 2/1, as it is above one.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/amt_qbt_capital_gains_deduction_multiplier
+    consumes:
+      base: ca/qbt_capital_gains_deduction
+    produces:
+      output: ca/amt_qbt_capital_gains_deduction_doubled
+  # Part 1 line 91 "line 89 minus line 90", line 90 the amount from line 25395 of your return.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_qbt_capital_gains_deduction_doubled
+      less: ca/qbt_capital_gains_deduction
+    produces:
+      output: ca/amt_qbt_capital_gains_deduction_difference
+  # Part 1 line 92 "Line 88 plus line 91".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_adjustments_with_lifetime_exemption_total
+        - ca/amt_qbt_capital_gains_deduction_difference
+    produces:
+      output: ca/amt_capital_gains_deductions_total
+  # Part 1 line 93 "Line 83 minus line 92 (if negative, enter "0")", "Adjusted taxable income",
+  # line 83 the amount from line 82 of the previous page.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_adjustments_after_rate_total
+      less: ca/amt_capital_gains_deductions_total
+    produces:
+      output: ca/amt_adjusted_taxable_income
+  # Part 1 line 94 "Basic exemption" 177,882.00, a printed amount from its dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/amt_basic_exemption
+    produces:
+      output: ca/amt_basic_exemption
+  # Part 1 line 95 "Line 93 minus line 94 (if negative, enter "0")", "Net adjusted taxable
+  # income".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_adjusted_taxable_income
+      less: ca/amt_basic_exemption
+    produces:
+      output: ca/amt_net_adjusted_taxable_income
+  # Part 1 line 97 "Gross minimum amount: line 95 multiplied by the percentage on line 96.", the
+  # federal tax rate of line 96, 20.5%, from its dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_federal_tax_rate
+    consumes:
+      base: ca/amt_net_adjusted_taxable_income
+    produces:
+      output: ca/amt_gross_minimum_amount
+  # Part 1 line 98 "Net non-refundable tax credits (line 33800 of your return)" "× 50% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_non_refundable_credits_rate
+    consumes:
+      base: ca/credit_amounts_at_credit_rate
+    produces:
+      output: ca/amt_non_refundable_credits_adjustment
+  # Part 1 line 99 "Donations and gifts (line 34900 of your return)" "× 80% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_donations_and_gifts_rate
+    consumes:
+      base: ca/donations_and_gifts_credit
+    produces:
+      output: ca/amt_donations_and_gifts_adjustment
+  # Part 1 line 102 "Add lines 98 to 101.", line 100 the federal logging tax credit of line 133 and
+  # line 101 the caller's amount.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_non_refundable_credits_adjustment
+        - ca/amt_donations_and_gifts_adjustment
+        - ca/federal_logging_tax_credit
+        - ca/amt_section_119_former_resident_credit
+    produces:
+      output: ca/amt_credits_adjustments_total
+  # Part 1 line 103 "Line 97 minus line 102 (if negative, enter "0")", "Minimum amount".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_gross_minimum_amount
+      less: ca/amt_credits_adjustments_total
+    produces:
+      output: ca/amt_minimum_amount
+  # Part 2 line 4 "Line 2 plus line 3": line 2 "Total non-refundable tax credits (line 35000 of
+  # your return)" and line 3 "Dividend tax credit (line 40425 of your return)", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/non_refundable_tax_credits
+        - ca/dividend_tax_credit
+    produces:
+      output: ca/amt_credits_total
+  # Part 2 line 5 "Line 1 minus line 4" "Tax payable before minimum tax carryover": line 1 "Enter
+  # the amount from line 40400 of your return", the federal tax with split income, less line 4.
+  # The form prints no floor, so the difference may be negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/federal_tax_with_split_income
+      less: ca/amt_credits_total
+    produces:
+      output: ca/amt_tax_payable_before_minimum_tax_carryover
+  # Part 2 line 7 "Line 5 minus line 6" "Basic federal tax": line 6 "Minimum tax carryover applied
+  # in 2025 from line 12 of Part 8", the claim of Part 8 line 12, less line 5.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_tax_payable_before_minimum_tax_carryover
+      less: ca/amt_minimum_tax_carryover_applied
+    produces:
+      output: ca/amt_basic_federal_tax
+  # Part 8 line 4 "Line 2 plus line 3": line 2 "Tax payable before minimum tax carryover from line
+  # 5 of Part 2" and line 3 "Recapture of investment tax credit from line 3 of Part C of Form
+  # T2038(IND)", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_tax_payable_before_minimum_tax_carryover
+        - ca/itc_recapture
+    produces:
+      output: ca/amt_tax_payable_with_itc_recapture
+  # Part 8 line 8 "Add lines 5 to 7": line 5 "Federal tax on split income from line 8 of Form
+  # T1206", line 6 "Federal logging tax credit" (line 133 of your return, as on Part 1 line 100)
+  # and line 7 "Amount from line 41600 of your return", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_tax_on_split_income
+        - ca/federal_logging_tax_credit
+        - ca/credits_against_federal_tax
+    produces:
+      output: ca/amt_split_income_and_credits_total
+  # Part 8 line 9 "Line 4 minus line 8": the form prints no floor, so the difference may be
+  # negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/amt_tax_payable_with_itc_recapture
+      less: ca/amt_split_income_and_credits_total
+    produces:
+      output: ca/amt_tax_payable_after_credits
+  # Part 8 line 11 "Maximum carryover that can be applied in 2025: line 9 minus line 10 (if
+  # negative, enter "0")", line 10 "Minimum amount from line 103 of Part 1".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_tax_payable_after_credits
+      less: ca/amt_minimum_amount
+    produces:
+      output: ca/amt_maximum_carryover_applied
+  # Part 8 line 12 "Claim an amount that is not more than line 1 or 11, whichever is less.": the
+  # cap on the claim, the lesser of line 1 "Minimum tax carryover from previous years (2018 to
+  # 2024)" and line 11. The form does not print it; it is the bound of the claim below.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/amt_minimum_tax_carryover_from_previous_years
+        - ca/amt_maximum_carryover_applied
+    produces:
+      output: ca/amt_maximum_carryover_claim
+  # Part 8 line 12 "Enter this amount on line 40427 of your return.": the claim, an election the
+  # filer makes and an input, may not be more than the cap; a claim above it is refused, not
+  # capped. Part 8 line 13 reads the checked claim; the lines before it read the claim itself,
+  # because line 11 reads line 41600 and so the claim cannot come out of this check.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_minimum_tax_carryover_applied
+      bound: ca/amt_maximum_carryover_claim
+    produces:
+      output: ca/amt_minimum_tax_carryover_within_maximum
+  # Part 3 line 2 "Federal surtax on business income earned outside Canada" "Multiply the amount
+  # from line 1 by 48%.": line 1 is the basic federal tax of Part 2 line 7, the rate from its
+  # dataset. The form prints no floor, so a negative basic federal tax gives a negative surtax.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_federal_surtax_rate
+    consumes:
+      base: ca/amt_basic_federal_tax
+    produces:
+      output: ca/amt_federal_surtax_at_48_percent
+  # Part 3 line 3 "If you have to pay tax to multiple jurisdictions, multiply the amount from
+  # line 2 by the percentage in Column 5 of line 52220 on Form T2203.": the percentage as printed
+  # (50 for 50%), the caller's figure, rounded once by its dataset.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/amt_multiple_jurisdictions_rounding
+    consumes:
+      amount: ca/amt_federal_surtax_at_48_percent
+      percentage: ca/amt_t2203_column_5_percentage_checked
+    produces:
+      output: ca/amt_federal_surtax_multiple_jurisdictions
+  # Part 3 line 4 "If you have an amount on line 3, enter that amount. If not, and you are a
+  # non-resident or deemed resident, enter the amount from line 2. Otherwise, enter "0".": the
+  # condition "you have an amount on line 3" counts 1 when line 3 is not 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/amt_line_3_has_amount_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/amt_federal_surtax_multiple_jurisdictions
+    produces:
+      output: ca/amt_line_3_has_amount
+  # Part 3 line 4 "you are a non-resident or deemed resident": the answer to a yes or no question, a
+  # count of 1 or 0, checked before the second branch and Part 6 line 11 read it. A count of 2 or more
+  # is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/amt_non_resident_or_deemed_resident
+    produces:
+      output: ca/amt_non_resident_or_deemed_resident_checked
+  # Part 3 line 4, the second branch: line 2 when "you are a non-resident or deemed resident"
+  # (the caller's count, 1 for yes), and "0" otherwise.
+  - name: core/times_count
+    consumes:
+      amount: ca/amt_federal_surtax_at_48_percent
+      count: ca/amt_non_resident_or_deemed_resident_checked
+    produces:
+      output: ca/amt_federal_surtax_if_non_resident
+  # Part 3 line 4, chosen by the condition above: line 3 when there is an amount on it, else the
+  # second branch.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/amt_line_3_has_amount
+      when_none: ca/amt_federal_surtax_if_non_resident
+      when_any: ca/amt_federal_surtax_multiple_jurisdictions
+    produces:
+      output: ca/amt_federal_surtax
+  # Part 3 line 6 "Add lines 1, 4, and 5.": line 1 (the basic federal tax), line 4 (the surtax)
+  # and line 5 "Recapture of investment tax credit (from line 3 of Part C of Form T2038(IND))", in
+  # line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/amt_basic_federal_tax
+        - ca/amt_federal_surtax
+        - ca/itc_recapture
+    produces:
+      output: ca/amt_federal_tax_with_surtax_and_recapture
+  # Part 3 line 9 "Line 7 plus line 8": line 7 "Federal foreign tax credit from Form T2209" and
+  # line 8 "Federal logging tax credit", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_foreign_tax_credit
+        - ca/federal_logging_tax_credit
+    produces:
+      output: ca/amt_foreign_and_logging_credits_total
+  # Part 3 line 10 "Line 6 minus line 9 (if negative, enter "0")" "Federal tax payable".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_federal_tax_with_surtax_and_recapture
+      less: ca/amt_foreign_and_logging_credits_total
+    produces:
+      output: ca/amt_federal_tax_payable
+  # Part 3 line 12 "Investment tax credit amount up to, but not more than the amount I of Form
+  # T2038(IND)": the claim, the filer's figure, may not be more than amount I, which the investment
+  # tax credit family reads from Part D, and above it is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_investment_tax_credit_claim
+      bound: ca/itc_amount_i
+    produces:
+      output: ca/amt_investment_tax_credit
+  # Part 3 line 14 "Add lines 11 to 13.": line 11 "Federal political contribution tax credit from
+  # line 41000 of your return", line 12 and line 13 "Labour-sponsored funds tax credit from line
+  # 41400 of your return", in line order.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/political_credit
+        - ca/amt_investment_tax_credit
+        - ca/labour_sponsored_funds_credit
+    produces:
+      output: ca/amt_regular_tax_credits_total
+  # Part 3 line 15 "Line 10 minus line 14 (if negative, enter "0")" "Regular net federal tax
+  # payable", which nothing reads until Part 5 lands.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_federal_tax_payable
+      less: ca/amt_regular_tax_credits_total
+    produces:
+      output: ca/amt_regular_net_federal_tax_payable
+  # Part 4 line 3 "Non-taxable part of foreign capital gains included in adjusted taxable income
+  # (cannot be more than line 23 of Part 1)": the bound is line 23 with a loss taken as 0, so that
+  # a loss on line 23 refuses no claim of 0. It is not a form line.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/amt_capital_gains_added
+    produces:
+      output: ca/amt_capital_gains_added_not_below_zero
+  # Part 4 line 3, the claim against line 23 of Part 1: the claim may not be more than the bound,
+  # and a claim above it is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_foreign_capital_gains_non_taxable_claim
+      bound: ca/amt_capital_gains_added_not_below_zero
+    produces:
+      output: ca/amt_foreign_capital_gains_non_taxable
+  # Part 4 line 4 "Total foreign income: add lines 1 to 3 (if negative, enter "0")": lines 1 (the
+  # caller's foreign business income, which may be negative), 2 and 3 in line order, floored at
+  # zero.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/amt_foreign_business_income
+        - ca/amt_foreign_non_business_income
+        - ca/amt_foreign_capital_gains_non_taxable
+    produces:
+      output: ca/amt_total_foreign_income
+  # Part 4 line 5 "Applicable rate" "× 20.5%" and line 6 "Foreign income limit for special foreign
+  # tax credit: line 4 multiplied by the percentage on line 5 (if negative, enter "0")": the rate
+  # of Part 1 line 96. Line 4 is never negative (it is floored above), so the printed floor on
+  # line 6 cannot apply.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_federal_tax_rate
+    consumes:
+      base: ca/amt_total_foreign_income
+    produces:
+      output: ca/amt_foreign_income_limit
+  # Part 4 line 7 "Total non-business income tax paid to a foreign country (12)" "× 66.6666%": the
+  # tax paid over the foreign tax countries, times the percentage as printed.
+  - name: core/apply_rate
+    params:
+      rate: ca/amt_special_foreign_tax_credit_rate
+    consumes:
+      base: ca/amt_foreign_non_business_tax_paid
+    produces:
+      output: ca/amt_foreign_non_business_tax_two_thirds
+  # Part 4 line 9 "Foreign taxes paid for special foreign tax credit: line 7 plus line 8 (if
+  # negative, enter "0")": line 7 and line 8 (the countries' business tax), floored at zero.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/amt_foreign_non_business_tax_two_thirds
+        - ca/amt_foreign_business_tax_paid
+    produces:
+      output: ca/amt_foreign_taxes_paid
+  # Part 4 line 10 "Enter whichever is less: amount from line 6 or line 9.": the lesser of the
+  # two.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/amt_foreign_income_limit
+        - ca/amt_foreign_taxes_paid
+    produces:
+      output: ca/amt_foreign_tax_credit_lesser
+  # Part 4 line 11 "Enter whichever is more: amount from line 7 of Part 3 or line 10." "Special
+  # foreign tax credit": the greater of the federal foreign tax credit of Part 3 line 7 (Form
+  # T2209) and line 10. Nothing reads it until Part 5.
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/federal_foreign_tax_credit
+        - ca/amt_foreign_tax_credit_lesser
+    produces:
+      output: ca/amt_special_foreign_tax_credit

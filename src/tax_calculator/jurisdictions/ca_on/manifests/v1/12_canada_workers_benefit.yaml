@@ -1,0 +1,198 @@
+capabilities:
+  # Schedule 6 line 1 "Employment income and other employment income from line 10100 and line
+  # 10400 of the return": the two amounts added, as line 1 of the medical supplement's
+  # worksheet adds them.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+    produces:
+      output: ca/cwb_employment_income
+  # Schedule 6 line 4 "Tax-exempt working income earned on a reserve (from line 10000 of Form T90,
+  # Income Exempt from Tax under the Indian Act) (Note 1) and the tax-exempt portion of any allowance
+  # received as an emergency volunteer (from line 10105 of the return)": the T90 line 4 export
+  # ("Total exempt working income 10000") as the one record of the form, totalled.
+  - name: core/record_total
+    consumes:
+      records: ca/t90.t90_exempt_working_income
+    produces:
+      output: ca/cwb_t90_exempt_working_income_total
+  # Line 4 before the election: the T90 total plus the tax-exempt portion of the emergency volunteer
+  # allowance, T1 line 10105 (ca/emergency_services_volunteer_exempt_income).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cwb_t90_exempt_working_income_total
+        - ca/emergency_services_volunteer_exempt_income
+    produces:
+      output: ca/cwb_tax_exempt_working_income_before_election
+  # Schedule 6 line 38105 "Are you choosing to include tax-exempt income to calculate the CWB? (Note 1)
+  # 1 Yes or 2 No": a count of 1 or 0, checked before the election reads it. A count of 2 or more is
+  # refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cwb_include_tax_exempt_income
+    produces:
+      output: ca/cwb_include_tax_exempt_income_checked
+  # Line 4 counts only when the election is yes (line 38105): with no election the Form T90 figures are
+  # ignored, and no refusal is made. Note 1 is met by the one answer, which covers both columns.
+  - name: core/times_count
+    consumes:
+      amount: ca/cwb_tax_exempt_working_income_before_election
+      count: ca/cwb_include_tax_exempt_income_checked
+    produces:
+      output: ca/cwb_tax_exempt_working_income
+  # Schedule 6 Part A column 1 line 5 "Add lines 1 to 4. Enter the result, even if it is "0". Working
+  # income": line 1 (the step above), line 2 "Taxable scholarships, fellowships, bursaries, and
+  # artists' project grants from line 13010 of the return" (ca/taxable_scholarships), line 3
+  # "Total self-employment income from lines 13500, 13700, 13900, 14100, and 14300 of the
+  # return (excluding losses) (Note 2)" (ca/medical_supplement_self_employment_income) and line 4
+  # (ca/cwb_tax_exempt_working_income, zero unless the election is yes). Line 6 "Add the amounts from
+  # line 5 in columns 1 and 2. Enter this amount on line 16. Family working income" adds column 2 in 12c
+  # (ca/cwb_family_working_income). The line 1, 2 and 3 quotes are from Schedule 6 (5000-S6).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cwb_employment_income
+        - ca/taxable_scholarships
+        - ca/medical_supplement_self_employment_income
+        - ca/cwb_tax_exempt_working_income
+    produces:
+      output: ca/working_income
+  # Schedule 6 line 8 "Total of net exempt income earned on a reserve (line 10026 of Form T90) and the
+  # tax-exempt portion of any allowance received as an emergency volunteer (line 10105 of the return)":
+  # the T90 line 20 export ("Net exempt income 10026", signed) as the one record of the form, totalled.
+  - name: core/record_total
+    consumes:
+      records: ca/t90.t90_net_exempt_income
+    produces:
+      output: ca/cwb_t90_net_exempt_income_total
+  # Line 8 before the election: the T90 net exempt income plus the emergency volunteer allowance, T1
+  # line 10105 (ca/emergency_services_volunteer_exempt_income).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cwb_t90_net_exempt_income_total
+        - ca/emergency_services_volunteer_exempt_income
+    produces:
+      output: ca/cwb_tax_exempt_net_income_before_election
+  # Line 8 counts only when the election is yes (line 38105), as line 4 does. Signed: a negative net exempt
+  # income is shown in brackets on the form.
+  - name: core/times_count
+    consumes:
+      amount: ca/cwb_tax_exempt_net_income_before_election
+      count: ca/cwb_include_tax_exempt_income_checked
+    produces:
+      output: ca/cwb_tax_exempt_net_income
+  # Schedule 6 Part B, column 1 "You": line 7 "Net income from line 23600 of the return (or the
+  # amount you would have entered if the instructions on line 23600 said "if negative, show in
+  # brackets")" is the TOSI-adjusted net income of Form T1206 Part 1 line 6, signed ("use line 6 of
+  # this form at line 7 of column 1 of Schedule 6"); line 8 (ca/cwb_tax_exempt_net_income, above) and
+  # line 9 "Total of universal child care benefit (UCCB) repayment (line 21300 of the return) and
+  # registered disability savings plan (RDSP) income repayment (included on line 23200 of the return)"
+  # are added by line 10 "Add lines 7 to 9.", the UCCB and RDSP income repayments of the other payments
+  # worksheet.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/tosi_adjusted_net_income
+        - ca/uccb_and_rdsp_income_repayments
+        - ca/cwb_tax_exempt_net_income
+    produces:
+      output: ca/cwb_family_net_income_line_10
+  # Line 11 "Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)"
+  # is the UCCB and RDSP income of the other payments worksheet; line 12 "Line 10 minus line 11
+  # (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cwb_family_net_income_line_10
+      less: ca/uccb_and_rdsp_income
+    produces:
+      output: ca/cwb_family_net_income_line_12
+  # Schedule 6 line 15 "Line 13 minus line 14 Enter this amount on line 23 and line 35. Adjusted
+  # family net income": line 13 (ca/cwb_family_net_income_line_13, in 12c) less line 14 (the
+  # secondary earner exemption, 0 with no eligible spouse). The form prints no "if negative, enter
+  # "0"" on this line, so the difference is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/cwb_family_net_income_line_13
+      less: ca/cwb_secondary_earner_exemption
+    produces:
+      output: ca/adjusted_family_net_income
+  # Schedule 6 lines 16 to 22: line 16 "Family working income from line 6"; line 17
+  # "Base amount 3,000.00"; line 18 "Line 16 minus line 17 (if negative, enter "0")";
+  # line 19 "Rate 27%"; line 20 "Line 18 multiplied by the percentage from line 19";
+  # line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If
+  # not, enter $1,633."; line 22 "Enter whichever is less: amount from line 20 or line
+  # 21.": one tier with a maximum, with no eligible spouse or dependant.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_basic
+    consumes:
+      base: ca/cwb_family_working_income
+    produces:
+      output: ca/cwb_before_reduction_without_dependant
+  # The same lines with an eligible dependant or spouse: line 21's $2,813 as the tier's maximum.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_basic_with_dependant
+    consumes:
+      base: ca/cwb_family_working_income
+    produces:
+      output: ca/cwb_before_reduction_with_dependant
+  # Schedule 6 lines 23 to 27: line 23 "Adjusted family net income from line 15"; line
+  # 24 "If you had an eligible spouse or an eligible dependant, enter $30,639. If not,
+  # enter $26,855."; line 25 "Line 23 minus line 24 (if negative, enter "0")"; line 26
+  # "Rate 15%"; line 27 "Line 25 multiplied by the percentage from line 26": one tier,
+  # with no eligible spouse or dependant.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_reduction
+    consumes:
+      base: ca/adjusted_family_net_income
+    produces:
+      output: ca/cwb_reduction_without_dependant
+  # The same lines with an eligible dependant: line 24's $30,639 as the tier's threshold.
+  - name: core/tiered_surcharge
+    params:
+      tiers: ca/cwb_reduction_with_dependant
+    consumes:
+      base: ca/adjusted_family_net_income
+    produces:
+      output: ca/cwb_reduction_with_dependant
+  # Schedule 6 line 28 "Line 22 minus line 27 (if negative, enter "0") If you are not
+  # completing Step 3, enter this amount on line 45300 of your return.", with no
+  # eligible spouse or dependant: Step 3 (the disability supplement) is not triggered.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cwb_before_reduction_without_dependant
+      less: ca/cwb_reduction_without_dependant
+    produces:
+      output: ca/canada_workers_benefit_without_dependant
+  # Line 28 with an eligible dependant.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cwb_before_reduction_with_dependant
+      less: ca/cwb_reduction_with_dependant
+    produces:
+      output: ca/canada_workers_benefit_with_dependant
+  # Schedule 6 line 38100 "Do you have an eligible dependant? 1 Yes or 2 No": the answer to a yes or
+  # no question, a count of 1 or 0, checked before the step that reads it. A count of 2 or more is
+  # refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/cwb_eligible_dependants
+    produces:
+      output: ca/cwb_eligible_dependants_checked
+  # Line 28 for the filer's family status, which lines 21 and 24 read ("If you had an
+  # eligible spouse or an eligible dependant ... If not ..."): the line by spouse
+  # (ca/cwb_line_28_by_spouse, in 12c) when the number of Schedule 6 eligible dependants
+  # (line 38100) is 0, else the line with an eligible dependant.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/cwb_eligible_dependants_checked
+      when_none: ca/cwb_line_28_by_spouse
+      when_any: ca/canada_workers_benefit_with_dependant
+    produces:
+      output: ca/canada_workers_benefit_line_28

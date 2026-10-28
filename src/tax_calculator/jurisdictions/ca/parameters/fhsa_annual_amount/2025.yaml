@@ -1,0 +1,13 @@
+# FHSA annual amount, 2025 tax year (Schedule 15, FHSA Contributions, Transfers and
+# Activities): Step 2 line 14 "8,000.00" and line 30 "8,000.00", from which line 16 "Line 14
+# plus line 15" and line 32 "Line 30 plus line 31" are taken. It borrows the credit kind
+# because it is a printed amount taken whole, as the age amount threshold does. Lines 14 and
+# 30 are dollars-and-cents boxes, so the amount rounds half-up to the cent, the owner's
+# decision, as the schedule states no rounding rule.
+family: ca/fhsa_annual_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s15/5000-s15-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "8000.00"

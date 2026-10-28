@@ -1,0 +1,30 @@
+# Capital cost allowance class rates of Form T777 Part B, Class 10.1 only, 2025 tax year (line 25,
+# Part B "Capital cost allowance"). T777 page 5, Part B "Class 10.1": the printed rate is "10.1 30%".
+# Note (11): "If you owned the vehicle in the previous year and still owned it at the end of the current
+# year, enter the amount from column 2 in column 5. ... If you sold the vehicle in the current year and
+# owned the vehicle at the end of the previous year, enter 1/2 of the amount from column 2 in column 5."
+# Note (12): "Recapture and terminal loss rules do not apply." is printed for Part B; this dataset's
+# recapture_and_terminal_loss setting (excluded) is the form's own statement for the Class 10.1 row. The
+# half-year rule on sale (half_year_rule_on_sale: applies) is note (11)'s rule for a vehicle sold in the
+# year, "1/2 of the amount from column 2 in column 5", and the half-year rule of Guides T4036 and T4002
+# for Class 10.1, as `ca/cca_class_rates` states it. The RIIP factor 1/2 of Class 10.1 is implied by note
+# (11) "3/2 of column 3" (the base is column 7 plus column 7 times 1/2); notes (8) and (9) print no
+# Class 10.1 factor, so it is the shared dataset's and listed as an assumption. The Class 10.1 cost limit
+# (Guide T4044) is not applied here: the form prints none and Guide T4044 is not in the repository. The
+# rounding is the owner's decision, as the form states no rounding rule.
+family: ca/t777_part_b_class_rates
+tax_year: 2025
+kind: class_rates
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+full_year_days: "365"
+longest_fiscal_period_days: "366"
+classes:
+  "10.1":
+    rate: "0.30"
+    half_year_rule: applies
+    recapture_and_terminal_loss: excluded
+    half_year_rule_on_sale: applies
+    aiip_factor: {numerator: "0", denominator: "1"}
+    riip_factor: {numerator: "1", denominator: "2"}

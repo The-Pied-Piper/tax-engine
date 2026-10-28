@@ -1,0 +1,7 @@
+inputs:
+  # Form ON-BEN Part B "I declare the following information about my principal residences in
+  # Ontario during 2025": one record for each row of the table (any number, none included; the
+  # form's table has four entries and says to use a separate sheet for more), holding the months
+  # resident, the amount paid and the long-term care tick. The address, postal code and name
+  # columns are text that feeds no calculation. Read by the form (28a_on_ben_residences.yaml).
+  - ca-on/on_ben_residence_rows

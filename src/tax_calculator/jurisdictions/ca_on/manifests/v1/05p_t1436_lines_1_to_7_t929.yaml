@@ -1,0 +1,120 @@
+# Form T1436 lines 1 to 7 for the form ca/t929 (see 05k_t929.yaml): the steps of
+# 05o_t1436_lines_1_to_7.yaml, copied verbatim, with the credit of line 5's ratio first, which the
+# form reads as the return does. The line 7 sum leaves 05m_t929_copies_2.yaml.
+form:
+  name: ca/t929
+capabilities:
+  # Row "In 2000", column (B) "1/(IR x 2)": the printed 1 of the factor, as an artifact. The form
+  # ca/t929 has no copy of it, so line 5's ratio below reads this copy.
+  - name: core/credit_amount
+    params:
+      amount: ca/net_capital_loss_numerator_one_2000
+    produces:
+      output: ca/net_capital_loss_numerator_one_2000
+  # Schedule 3 lines 543 and 544 added: the sum that Form T1436 (Capital Gains Worksheet) line 2
+  # "minus any amounts reported on lines 543 and 544 of Schedule 3" takes off and line 3 "cannot be
+  # more than the amounts from lines 543 and 544 of Schedule 3" limits.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/schedule_3_line_543
+        - ca/schedule_3_line_544
+    produces:
+      output: ca/schedule_3_lines_543_and_544_total
+  # Line 2, "For 1988 and 1989 (other than for eligible capital property gains): Total amounts from
+  # line 254 of your returns minus any amounts reported on lines 543 and 544 of Schedule 3 (if
+  # negative, enter "0") (a)": amount (a), the amount entered less the Schedule 3 sum, not below 0.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/capital_gains_deductions_1988_and_1989_other_than_eligible_capital_property
+      less: ca/schedule_3_lines_543_and_544_total
+    produces:
+      output: ca/capital_gains_deductions_1988_and_1989_amount_a
+  # Line 1, "For 1985 to 1987: Total amounts from line 254 of your income tax and benefit returns for
+  # these years x 2 = 1": the amount entered, times the printed 2 (fraction 2/1, as printed).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t1436_line_1_multiplier
+    consumes:
+      base: ca/capital_gains_deductions_1985_to_1987
+    produces:
+      output: ca/capital_gains_deductions_line_1
+  # Line 2, "... (a) x 1.5 = 2": amount (a), times the printed 1.5 (fraction 15/10, as printed).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t1436_line_2_multiplier
+    consumes:
+      base: ca/capital_gains_deductions_1988_and_1989_amount_a
+    produces:
+      output: ca/capital_gains_deductions_line_2
+  # Line 3, "For 1988 and 1989 (for eligible capital property gains): Total amounts from line 254 of
+  # your returns minus amount (a) above (cannot be more than the amounts from lines 543 and 544 of
+  # Schedule 3)": the amount entered less amount (a), with no floor printed, so signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/capital_gains_deductions_1988_and_1989_eligible_capital_property
+      less: ca/capital_gains_deductions_1988_and_1989_amount_a
+    produces:
+      output: ca/capital_gains_deductions_1988_and_1989_after_amount_a
+  # Line 3, "... (cannot be more than the amounts from lines 543 and 544 of Schedule 3)": the lesser
+  # of that difference and the Schedule 3 sum.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/capital_gains_deductions_1988_and_1989_after_amount_a
+        - ca/schedule_3_lines_543_and_544_total
+    produces:
+      output: ca/capital_gains_deductions_1988_and_1989_limited
+  # Line 3, "... x 1.3333 = 3": the limited amount, times the printed 1.3333 (fraction 13333/10000,
+  # as printed).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t1436_line_3_multiplier
+    consumes:
+      base: ca/capital_gains_deductions_1988_and_1989_limited
+    produces:
+      output: ca/capital_gains_deductions_line_3
+  # Line 4, "For 1990 to 1999: Total amounts from line 254 of your returns for these years x 1.3333
+  # = 4": the amount entered, times the printed 1.3333 (fraction 13333/10000, as printed).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t1436_line_4_multiplier
+    consumes:
+      base: ca/capital_gains_deductions_1990_to_1999
+    produces:
+      output: ca/capital_gains_deductions_line_4
+  # Line 5, "For 2000: Amount from line 254 of your return x 1/IR (1) = 5", with (1) "This inclusion
+  # rate (IR) is from line 16 in Part 4 of Schedule 3 for 2000, or from your notice of assessment or
+  # latest notice of reassessment for 2000": the amount times 1, divided by the 2000 inclusion rate,
+  # rounded half-up to the cent once; 0 when the rate is 0.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1436_line_5_rounding
+    consumes:
+      amount: ca/capital_gains_deductions_2000
+      numerator: ca/net_capital_loss_numerator_one_2000
+      denominator: ca/t657_inclusion_rate_2000
+    produces:
+      output: ca/capital_gains_deductions_line_5
+  # Line 6, "For 2001 to 2024: ... x 2 = 6": the amount entered, times the printed 2 (fraction 2/1,
+  # as printed).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t1436_line_6_multiplier
+    consumes:
+      base: ca/capital_gains_deductions_2001_to_2024
+    produces:
+      output: ca/capital_gains_deductions_line_6
+  # Line 7 "Add lines 1 to 6.": the six lines as they print after their multipliers. Total of all
+  # capital gains deductions claimed from 1985 to 2024.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/capital_gains_deductions_line_1
+        - ca/capital_gains_deductions_line_2
+        - ca/capital_gains_deductions_line_3
+        - ca/capital_gains_deductions_line_4
+        - ca/capital_gains_deductions_line_5
+        - ca/capital_gains_deductions_line_6
+    produces:
+      output: ca/capital_gains_deductions_claimed_1985_to_2024

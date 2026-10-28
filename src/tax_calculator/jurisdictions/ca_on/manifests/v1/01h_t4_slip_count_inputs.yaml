@@ -1,0 +1,7 @@
+inputs:
+  # Schedule 8 Part 3 line 1 and Form RC381 Part 3 lines 1 and 2 "(maximum $81,200 per slip)": the
+  # forms take one total over all the T4 slips, so the number of slips with CPP pensionable
+  # earnings and the number with QPP pensionable earnings are the caller's counts, whole numbers
+  # of 0 or more, read by `core/per_unit_amount` (times the maximum) for the limit of box 26.
+  - ca/t4_cpp_slip_count
+  - ca/t4_qpp_slip_count

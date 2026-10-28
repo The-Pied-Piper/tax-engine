@@ -1,0 +1,11 @@
+# Form T1436 "Calculating your pre-1986 capital loss balance available for 2025, if any", row "In
+# 2000" (D), "x 1/(IR x 2)": the capital gains deductions claimed in 2000 times 1/(IR x 2), which is
+# the amount divided by 2 x IR (ca/net_capital_loss_twice_ir_2000). The form prints no rounding rule
+# for the quotient, the one rounding of the cell, so the quotient rounds half-up to the cent once;
+# 0 when IR is 0.
+family: ca/pre_1986_deductions_adjusted_2000_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

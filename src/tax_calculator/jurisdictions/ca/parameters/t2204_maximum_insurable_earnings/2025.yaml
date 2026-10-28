@@ -1,0 +1,12 @@
+# Maximum of T2204 line 3, 2025 tax year (Form T2204, Employee Overpayment of Employment
+# Insurance Premiums, 2025 edition): line 3 "Line 1 plus line 2 (maximum $65,700)". It is a plain
+# amount, not a credit: the cap the sum of lines 1 and 2 is held to.
+# Line 3 is a dollars-and-cents box, so the capped figure rounds half-up to the cent, which
+# changes nothing.
+family: ca/t2204_maximum_insurable_earnings
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "65700.00"

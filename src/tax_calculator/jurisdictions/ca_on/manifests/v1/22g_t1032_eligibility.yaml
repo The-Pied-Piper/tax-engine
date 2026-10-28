@@ -1,0 +1,37 @@
+# Form T1032 E (25) page 1, part of the form ca/t1032 (see 22a_t1032_pension_income_splitting.yaml for the
+# form's exports and the other lines; the starting inputs are in 01j_t1032_inputs.yaml): "Complete this
+# form if you ... are electing to split your eligible pension income ... You must meet all of the
+# following conditions:" not living separate and apart for 90 days or more including December 31, 2025,
+# and both residents of Canada on December 31, 2025. When a condition is not met no amount can be
+# elected: the most line 22 can be (the amount from line 21) is 0, so an elected amount is refused.
+form:
+  name: ca/t1032
+capabilities:
+  # Form T1032 page 1 "were not living separate and apart from each other ... for a continuous period of
+  # 90 days or more which includes December 31, 2025", the answer taken as a count, checked to be 0 or 1.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_not_separated_90_days
+    produces:
+      output: ca/t1032_not_separated_90_days_checked
+  # Form T1032 page 1 "were residents of Canada on December 31, 2025 (or on the date of death)", the
+  # answer taken as a count, checked to be 0 or 1.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_residents_of_canada
+    produces:
+      output: ca/t1032_residents_of_canada_checked
+  # Line 21 when the spouses were not separated, otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_line_21
+      count: ca/t1032_not_separated_90_days_checked
+    produces:
+      output: ca/t1032_line_21_if_not_separated
+  # That amount when the spouses were also residents of Canada, otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_line_21_if_not_separated
+      count: ca/t1032_residents_of_canada_checked
+    produces:
+      output: ca/t1032_line_21_if_conditions_met

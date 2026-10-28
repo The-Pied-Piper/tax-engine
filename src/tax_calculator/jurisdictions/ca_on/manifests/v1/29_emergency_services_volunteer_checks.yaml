@@ -1,0 +1,33 @@
+# Form 5000-G "Emergency services volunteers" (ca/emergency_services_volunteer_conflicts), the
+# checks of the $1,000 exemption (line 10105) claimed with the volunteer firefighters' amount (VFA,
+# line 31220) or the search and rescue volunteers' amount (SRVA, line 31240). The two flags are the
+# caller's counts (ca/volunteer_firefighters_conditions_met and
+# ca/search_and_rescue_conditions_met), and the exemption is the memo carried in 01_inputs.yaml.
+# The count of the conflict is 1 when the exemption is claimed with either flag, and a count of 1
+# is refused, not capped. The checked count is exported by the return (02_outputs.yaml) and read by
+# nothing on the return.
+capabilities:
+  # Form 5000-G "Emergency services volunteers": "If you are eligible for the $1,000 exemption on
+  # line 10100 of your return and the VFA or SRVA (lines 31220 and 31240 of your return), you must
+  # choose which one you want to claim." The count is 1 when the exemption is above 0 and either
+  # flag is 1, else 0. The form prints no such rule; it is the guard of the form.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/emergency_services_volunteer_conflicts
+    consumes:
+      counts:
+        - ca/volunteer_firefighters_conditions_met_checked
+        - ca/search_and_rescue_conditions_met_checked
+      amounts:
+        - ca/emergency_services_volunteer_exempt_income
+    produces:
+      output: ca/emergency_services_volunteer_conflict
+  # The count above is refused when it is 1: an input error naming the conflict (not capped, and not
+  # a printed line). Its checked count is the form's export, read by nothing on the return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/emergency_services_volunteer_conflict_refused
+    consumes:
+      count: ca/emergency_services_volunteer_conflict
+    produces:
+      output: ca/emergency_services_volunteer_conflict_checked

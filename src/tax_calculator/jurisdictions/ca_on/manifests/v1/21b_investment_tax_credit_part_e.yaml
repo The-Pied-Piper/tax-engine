@@ -1,0 +1,112 @@
+capabilities:
+  # Form T2038(IND) Part E amount 3, "Subtotal (amount 1 minus amount 2)": amount 1, "Total
+  # available ITC (amount G in Part D)", less amount 2, "ITC opening balance and carry-forward from
+  # prior years (amount 1 in Part D)". No floor is printed, so amount 3 is not floored at 0.
+  - name: core/subtract
+    consumes:
+      amount: ca/itc_available
+      less: ca/itc_opening_balance
+    produces:
+      output: ca/itc_part_e_amount_3
+  # Form T2038(IND) Part E amount 6, "Subtotal (amount 4 minus amount 5, if negative enter "0")":
+  # amount 4, "Maximum ITC you could have claimed in Part D (amount I or K, whichever applies)",
+  # less amount 5, "ITC opening balance and carry-forward from prior years (amount 1 in Part D)",
+  # and never below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/itc_claim_limit
+      less: ca/itc_opening_balance
+    produces:
+      output: ca/itc_part_e_amount_6
+  # Form T2038(IND) Part E "Total credit available for carryback (amount 3 minus amount 6)", L:
+  # amount 3 less amount 6. No floor is printed.
+  - name: core/subtract
+    consumes:
+      amount: ca/itc_part_e_amount_3
+      less: ca/itc_part_e_amount_6
+    produces:
+      output: ca/itc_amount_l
+  # Form T2038(IND) Part E, "Total credit designated for carryback (Add lines 67200, 67210, and
+  # 67220. The total cannot be more than amount L)": the three lines added in line order, the
+  # third previous year (67200), the second (67210) and the first (67220).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/itc_carryback_third_previous_year
+        - ca/itc_carryback_second_previous_year
+        - ca/itc_carryback_first_previous_year
+    produces:
+      output: ca/itc_carryback_requested
+  # Form T2038(IND) Part E amount M, "Total credit designated for carryback (Add lines 67200,
+  # 67210, and 67220. The total cannot be more than amount L)": the requested total, refused above
+  # L (as Form T2038(IND) Part D amount 15 is refused above its limit), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/itc_carryback_requested
+      bound: ca/itc_amount_l
+    produces:
+      output: ca/itc_amount_m
+  # Form T2038(IND) Part E amount 9, "Total current-year refundable credit available (amount 7
+  # minus amount 8)": amount 7, "Current year refundable credit (amount A in Part A)", less amount
+  # 8, "Adjustment (amount 6 in Part D)". No floor is printed.
+  - name: core/subtract
+    consumes:
+      amount: ca/itc_refundable_credits
+      less: ca/itc_graduated_rate_estate_allocation
+    produces:
+      output: ca/itc_part_e_amount_9
+  # Form T2038(IND) Part E amount 12, "Subtotal (amount 10 minus amount 11)": amount 10, "Amount
+  # 15 from Part D" (the claim on line 41200), less amount 11, "ITC opening balance and
+  # carry-forward from prior years (amount 1 in Part D)". No floor is printed.
+  - name: core/subtract
+    consumes:
+      amount: ca/investment_tax_credit
+      less: ca/itc_opening_balance
+    produces:
+      output: ca/itc_part_e_amount_12
+  # Form T2038(IND) Part E amount 14, "Subtotal (amount 12 plus amount 13)": amount 12, and amount
+  # 13, "Total credit designated for carryback (amount M in Part E)".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/itc_part_e_amount_12
+        - ca/itc_amount_m
+    produces:
+      output: ca/itc_part_e_amount_14
+  # Form T2038(IND) Part E amount 16, "Total (amount 14 minus amount 15, if negative, enter "0")":
+  # amount 14 less amount 15, "Current-year non-refundable tax credit (amount F in Part B)", and
+  # never below zero.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/itc_part_e_amount_14
+      less: ca/itc_nonrefundable_credits
+    produces:
+      output: ca/itc_part_e_amount_16
+  # Form T2038(IND) Part E amount N, "Total credit available for refund (amount 9 minus amount
+  # 16)": amount 9 less amount 16. No floor is printed.
+  - name: core/subtract
+    consumes:
+      amount: ca/itc_part_e_amount_9
+      less: ca/itc_part_e_amount_16
+    produces:
+      output: ca/itc_amount_n
+  # Form T2038(IND) Part E, "Amount you designate as a refund of ITC (cannot be more than amount
+  # N)": the refund the filer designates, refused above N (as Form T2038(IND) Part D amount 15 is
+  # refused above its limit), not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/itc_refund_designation
+      bound: ca/itc_amount_n
+    produces:
+      output: ca/itc_part_e_amount_17
+  # Form T2038(IND) Part E "Refund of ITC (multiply amount 17 by amount 18)", O: amount 17 times
+  # amount 18, "The refundable rate" 0.40, of the rate dataset, rounded half-up to the cent. Line
+  # 45400 of the return is amount O, "Enter amount O on line 45400 of your income tax and benefit
+  # return".
+  - name: core/apply_rate
+    params:
+      rate: ca/itc_part_e_refundable_rate
+    consumes:
+      base: ca/itc_part_e_amount_17
+    produces:
+      output: ca/investment_tax_credit_refund

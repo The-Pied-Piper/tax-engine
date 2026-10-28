@@ -1,0 +1,227 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 4 (for residents of a province or territory other than Quebec), lines 59 to
+# 91: the earnings subject to contributions (lines 59 to 83), the contributions through
+# self-employment income and other earnings (lines 84 to 88) and the contributions payable and the
+# overpayment (lines 89 to 91). Lines 1 to 27 are in 08d_rc381_part_4_lines_1_to_27.yaml and lines
+# 28 to 56 in 08e_rc381_part_4_lines_31_to_56.yaml. Lines 57 (the amount from line C of Part 2), 58
+# (the amount from line F of Part 2), 60 (the amount from line 42), 63 (the amount from line 58),
+# 64 (the amount from line 3 of Part 3), 66 (the amount from line 4), 67 (the amount from line
+# 59), 71 (the amount from line 4), 72 (the amount from line 11 of Part 3), 73 (the amount from
+# line 31 of Part 3), 75 (the amount from line D of Part 2), 78 (the amount from line 4), 79 (the
+# amount from line 65) and 81 (the amount from line 70) only copy other artifacts, so they have no
+# step of their own.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # Line 59 "Line 57 minus line 58 (if negative, enter "0") (maximum $67,800)", line 57 "Amount from
+  # line C of Part 2" and line 58 "Amount from line F of Part 2".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_maximum_pensionable_earnings
+      less: ca/cpp_basic_exemption
+    produces:
+      output: ca/rc381_part_4_line_59
+  # Line 61 "Line 59 minus line 60 (if negative, enter "0")", line 60 "Amount from line 42".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_4_line_59
+      less: ca/rc381_part_4_line_42
+    produces:
+      output: ca/rc381_part_4_line_61
+  # Line 62 "Enter whichever is less: amount from line 4 or line 61."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_4
+        - ca/rc381_part_4_line_61
+    produces:
+      output: ca/rc381_part_4_line_62
+  # Line 65 "Line 63 minus line 64 (if negative, enter "0" on lines 65 and 69, and continue at line
+  # 70)", line 63 "Amount from line 58" and line 64 "Amount from line 3 of Part 3". The block "If
+  # line 3 of Part 3 is less than line 58, complete lines 63 to 69. If not, enter "0" on line 69"
+  # is met by this floor: line 3 is not less than line 58 exactly when this line is "0" (and then
+  # line 69 is "0" too).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_basic_exemption
+      less: ca/rc381_part_3_line_3
+    produces:
+      output: ca/rc381_part_4_line_65
+  # Line 68 "Line 66 minus line 67 (if negative, enter "0")", line 66 "Amount from line 4" and line
+  # 67 "Amount from line 59".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_4_line_4
+      less: ca/rc381_part_4_line_59
+    produces:
+      output: ca/rc381_part_4_line_68
+  # Line 69 "Line 65 minus line 68 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_4_line_65
+      less: ca/rc381_part_4_line_68
+    produces:
+      output: ca/rc381_part_4_line_69
+  # Line 70 "Self-employment income and other earnings subject to base and first additional
+  # contributions: Line 62 minus line 69". The form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_62
+      less: ca/rc381_part_4_line_69
+    produces:
+      output: ca/rc381_part_4_line_70
+  # Line 74 "Add lines 71 to 73.", line 71 "Amount from line 4", line 72 "Amount from line 11 of
+  # Part 3" and line 73 "Amount from line 31 of Part 3".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_4
+        - ca/rc381_part_3_line_11
+        - ca/rc381_part_3_line_31
+    produces:
+      output: ca/rc381_part_4_line_74
+  # Line 76 "Amount from line 56 ÷ 4% =" (line 75, the amount from line D of Part 2, is read by
+  # line 77).
+  - name: ca/divided_by_rate
+    params:
+      rate: ca/rc381_second_additional_rate
+    consumes:
+      dividend: ca/rc381_part_4_line_56
+    produces:
+      output: ca/rc381_part_4_line_76
+  # Line 77 "Line 75 minus line 76 (if negative, enter "0")", line 75 "Amount from line D of Part
+  # 2".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_second_additional_earnings_maximum
+      less: ca/rc381_part_4_line_76
+    produces:
+      output: ca/rc381_part_4_line_77
+  # Line 80 "Line 78 minus line 79", line 78 "Amount from line 4" and line 79 "Amount from line 65
+  # (if any)".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_4
+      less: ca/rc381_part_4_line_65
+    produces:
+      output: ca/rc381_part_4_line_80
+  # Line 82 "Line 80 minus line 81", line 81 "Amount from line 70".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_80
+      less: ca/rc381_part_4_line_70
+    produces:
+      output: ca/rc381_part_4_line_82
+  # Line 83 "Self-employment income and other earnings subject to second additional contributions:
+  # Enter whichever is less: amount from line 77 or line 82." ...
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_77
+        - ca/rc381_part_4_line_82
+    produces:
+      output: ca/rc381_part_4_line_83_lesser
+  # ... which the instruction "If line 74 is more than line 57, complete lines 75 to 83. If not,
+  # enter "0" on line 83 and continue at line 84." completes only when line 74 is more than line
+  # 57 (the amount from line C of Part 2).
+  - name: ca/amount_when_more
+    consumes:
+      amount: ca/rc381_part_4_line_83_lesser
+      more: ca/rc381_part_4_line_74
+      than: ca/cpp_maximum_pensionable_earnings
+    produces:
+      output: ca/rc381_part_4_line_83
+  # Line 84 "Required base contributions on CPP pensionable earnings: amount from line 70 × 9.9% =
+  # (maximum $6,712.20)", line 85 "Required first additional contributions on CPP pensionable
+  # earnings: amount from line 70 × 2% = (maximum $1,356.00)" and line 86 "Required second
+  # additional contributions on CPP pensionable earnings: amount from line 83 × 8% = (maximum
+  # $792.00)": the self-employed person's tiers of Schedule 8 Part 4 (the same figures), on the
+  # earnings of lines 70 and 83. A line 70 below zero contributes nothing.
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_base_contribution
+    consumes:
+      earnings: ca/rc381_part_4_line_70
+    produces:
+      output: ca/rc381_part_4_line_84
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_first_additional_contribution
+    consumes:
+      earnings: ca/rc381_part_4_line_70
+    produces:
+      output: ca/rc381_part_4_line_85
+  - name: core/contribution_tier
+    params:
+      tier: ca/cpp_self_employed_second_additional_contribution
+    consumes:
+      earnings: ca/rc381_part_4_line_83
+    produces:
+      output: ca/rc381_part_4_line_86
+  # Line 87 "Line 85 plus line 86".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_85
+        - ca/rc381_part_4_line_86
+    produces:
+      output: ca/rc381_part_4_line_87
+  # Line 88 "Line 84 plus line 87".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_84
+        - ca/rc381_part_4_line_87
+    produces:
+      output: ca/rc381_part_4_line_88
+  # The amount printed inside line 89, "Amount from line 69 of Part 3 (if positive)": line 69 of
+  # Part 3 floored at zero ...
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_69
+    produces:
+      output: ca/rc381_part_4_line_89_from_line_69
+  # ... and line 89 "× 2 =": twice that amount. 2 is above one, which a rate refuses, so it is a
+  # fraction, 2/1, kept as printed.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/rc381_double_fraction
+    consumes:
+      base: ca/rc381_part_4_line_89_from_line_69
+    produces:
+      output: ca/rc381_part_4_line_89
+  # Line 90 "CPP contributions payable on self-employment income and other earnings: Line 88
+  # minus 89." (if negative, show in brackets).
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_88
+      less: ca/rc381_part_4_line_89
+    produces:
+      output: ca/rc381_part_4_line_90
+  # Line 90 "If positive, enter the amount (in dollars and cents) on line 42100 of your return":
+  # line 90 floored at zero.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_90
+    produces:
+      output: ca/rc381_self_employment_cpp_contributions
+  # The amount printed inside line 91, "amount from line 90 entered as a positive amount": above
+  # zero only when line 90 is negative ("If negative, show in brackets and continue at line 91").
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_4_line_90
+    produces:
+      output: ca/rc381_part_4_line_91_from_line_90
+  # Line 91 "CPP overpayment: ... amount from line 90 entered as a positive amount × 50% =", the
+  # result for line 44800 of the return; the 50% is the base credit rate of Schedule 8 Part 4
+  # (line 15, "multiplied by 50%").
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_self_employed_base_credit_rate
+    consumes:
+      base: ca/rc381_part_4_line_91_from_line_90
+    produces:
+      output: ca/rc381_part_4_line_91

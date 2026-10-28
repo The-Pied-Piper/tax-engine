@@ -1,0 +1,103 @@
+# Form T2043 box 67062, "Tick this box if you have multiple farming businesses with one or more
+# permanent establishments in multiple provinces or territories", over the statements of ca/t2042.
+# The nine presence amounts (03o_t2043_places_present.yaml, exported by ca/t2042) are totalled over
+# the statements, one total for each place. The statement count is the record count of the
+# statements (through the ON record list, which has one record for each statement). The box is 1
+# when there is more than one statement and two of the nine places each have a statement present
+# in them (`ca/fuel_charge_multiple_provinces_box_conditions`, 36 pairs of places), else 0. The box
+# is a count of the form's one line, so it is not rounded. ca/t2043 exports the box; the return
+# declares no output for it, as no return step reads the form's export as a count.
+form:
+  name: ca/t2043
+capabilities:
+  # Form T2043 box 67062: the statements present in Ontario, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_on
+    produces:
+      output: ca/fuel_charge_farms_in_province_on
+  # Form T2043 box 67062: the statements present in Manitoba, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_mb
+    produces:
+      output: ca/fuel_charge_farms_in_province_mb
+  # Form T2043 box 67062: the statements present in Saskatchewan, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_sk
+    produces:
+      output: ca/fuel_charge_farms_in_province_sk
+  # Form T2043 box 67062: the statements present in Alberta, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_ab
+    produces:
+      output: ca/fuel_charge_farms_in_province_ab
+  # Form T2043 box 67062: the statements present in Nova Scotia, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_ns
+    produces:
+      output: ca/fuel_charge_farms_in_province_ns
+  # Form T2043 box 67062: the statements present in Prince Edward Island, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_pe
+    produces:
+      output: ca/fuel_charge_farms_in_province_pe
+  # Form T2043 box 67062: the statements present in Newfoundland and Labrador, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_nl
+    produces:
+      output: ca/fuel_charge_farms_in_province_nl
+  # Form T2043 box 67062: the statements present in New Brunswick, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_nb
+    produces:
+      output: ca/fuel_charge_farms_in_province_nb
+  # Form T2043 box 67062: the statements present in outside eight, the total of the presence amount over the
+  # statements (one record for each statement).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_present_amount_outside_eight
+    produces:
+      output: ca/fuel_charge_farms_outside_eight
+  # Form T2043 box 67062: the number of statements, the record count of the statements through the
+  # ON record list (one record for each statement).
+  - name: ca-on/record_count
+    consumes:
+      records: ca/t2042.farm_present_amount_on
+    produces:
+      output: ca/fuel_charge_farm_statement_count
+  # Form T2043 box 67062: 1 when there is more than one statement and two of the nine places each
+  # have a statement present in them (one condition for each pair of places, in the form's order),
+  # else 0. The box is a count, so it is not rounded.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/fuel_charge_multiple_provinces_box_conditions
+    consumes:
+      counts:
+        - ca/fuel_charge_farm_statement_count
+      amounts:
+        - ca/fuel_charge_farms_in_province_on
+        - ca/fuel_charge_farms_in_province_mb
+        - ca/fuel_charge_farms_in_province_sk
+        - ca/fuel_charge_farms_in_province_ab
+        - ca/fuel_charge_farms_in_province_ns
+        - ca/fuel_charge_farms_in_province_pe
+        - ca/fuel_charge_farms_in_province_nl
+        - ca/fuel_charge_farms_in_province_nb
+        - ca/fuel_charge_farms_outside_eight
+    produces:
+      output: ca/fuel_charge_multiple_provinces_box

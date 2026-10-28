@@ -1,0 +1,10 @@
+# Form T1223 (2025, clergy residence deduction) Part C line 4 "(maximum $10,000)": the maximum of
+# the months amount, which caps line 4. Line 4 is a dollars-and-cents box, so the capped amount
+# rounds half-up to the cent, the owner's decision, as the form states no rounding rule.
+family: ca/clergy_residence_months_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1223/t1223-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "10000"

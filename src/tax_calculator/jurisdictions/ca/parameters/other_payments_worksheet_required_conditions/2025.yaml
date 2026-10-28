@@ -1,0 +1,20 @@
+# Entry condition of the Federal Worksheet "Line 25000 - Other payments deduction" (form 5000-D1,
+# 2025): "Complete the following calculation if you reported net federal supplements on line
+# 14600 of your return." and Guide 5000-G line 25000 "Enter the amount from line 14700 of your
+# return on line 25000 if you did not enter an amount on line 14600." So the count is 1 when an
+# amount was entered on line 14600 (more than 0; line 14600 is never negative) and 0 when not. The
+# one amount read is line 14600. The result is a count, not a dollars-and-cents box, so there is
+# no rounding.
+family: ca/other_payments_worksheet_required_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: you reported net federal supplements on line 14600 of your return
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}

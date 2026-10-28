@@ -1,0 +1,74 @@
+# Form T746 (2025), "Calculating Your Deduction for Refund of Unused RRSP, PRPP, and SPP Contributions",
+# lines 4 to 13: the form ca/t746, run once. Line 4 is the total of the line 4 amounts of all years ("enter
+# the total of the amounts from line 4 for all years on line 4 of the most recent Form T746"), the export of
+# the row form ca/t746_year (05y_t746_year.yaml); the withdrawals of lines 6 to 10 are its starting inputs
+# (01o_t746_inputs.yaml). Line 11 (the amount from Form T2205) is not added yet: Form T2205 is not built.
+# Line 13 is computed as ca/t746_line_13, and ca/t746_deduction is that line when "one or both of the
+# following conditions apply" (the filer's two yes or no answers, a count of 1 or 0, combined by
+# ca/count_by_conditions) and 0 when neither does: "For you to claim the deduction". Its exports are
+# line 5, the year of the withdrawal, as entered (no step reads it), and the deduction, "This is your
+# deduction. Enter this amount on line 23200", which 05_deductions.yaml reads as
+# ca/t746.t746_deduction.
+form:
+  name: ca/t746
+  exports:
+    - ca/t746_deduction
+    - ca/t746_withdrawal_year
+capabilities:
+  # "For you to claim the deduction, it has to be reasonable for the CRA to consider that one or both
+  # of the following conditions apply": each condition is the filer's yes or no answer, a count of 1
+  # or 0, checked before the step that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t746_expected_to_fully_deduct_contributions
+    produces:
+      output: ca/t746_expected_to_fully_deduct_contributions_checked
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t746_did_not_make_contributions_intending_to_withdraw
+    produces:
+      output: ca/t746_did_not_make_contributions_intending_to_withdraw_checked
+  # "one or both of the following conditions apply": 1 when at least one answer is yes, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t746_conditions
+    consumes:
+      counts:
+        - ca/t746_expected_to_fully_deduct_contributions_checked
+        - ca/t746_did_not_make_contributions_intending_to_withdraw_checked
+      amounts: []
+    produces:
+      output: ca/t746_conditions_met
+  # Line 4: the total of the unused contributions of all the years listed, the export of the row form.
+  - name: core/record_total
+    consumes:
+      records: ca/t746_year.t746_unused_contributions_of_year
+    produces:
+      output: ca/t746_unused_contributions
+  # Line 12 "Add lines 6 to 11": lines 6 to 10 (line 11 is not built yet).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t746_t4rsp_box_20
+        - ca/t746_t4rsp_box_22
+        - ca/t746_t4rif_box_24
+        - ca/t746_t4a_box_194
+        - ca/t746_t4a_box_18_spp
+    produces:
+      output: ca/t746_withdrawals
+  # Line 13 "Enter the amount from line 4 or the amount from line 12, whichever is less. This is your
+  # deduction."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t746_unused_contributions
+        - ca/t746_withdrawals
+    produces:
+      output: ca/t746_line_13
+  # "For you to claim the deduction" with one or both conditions met: line 13 when they are, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t746_line_13
+      count: ca/t746_conditions_met
+    produces:
+      output: ca/t746_deduction

@@ -1,0 +1,12 @@
+# Canada caregiver amount for a spouse, maximum, 2025 tax year (Schedule 5, form
+# 5000-S5): "Line 30425", line 3 "Line 1 minus line 2 (if negative, enter "0") (maximum
+# $8,601)". It is a plain cap, not a credit.
+# Line 3 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/spouse_caregiver_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s5/5000-s5-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "8601"

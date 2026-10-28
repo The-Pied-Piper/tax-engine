@@ -1,0 +1,12 @@
+# Schedule 8 Part 5 line 75 "Enter whichever is less: amount from line 72 or line 73 Line A
+# multiply by 83.1933 =" (form 5000-S8, 2025): the printed 83.1933 is a percentage, so the rate is
+# 0.831933, the same factor as Part 3 line 9's ca/cpp_actual_base_share. Line 75 is a
+# dollars-and-cents box, so the product rounds half-up to the cent, as the form states no
+# rounding rule.
+family: ca/cpp_part_5_line_75_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.831933"

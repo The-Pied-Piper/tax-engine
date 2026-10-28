@@ -1,0 +1,15 @@
+capabilities:
+  # Schedule 11 line 1 and line 32000 "Eligible tuition fees paid to Canadian educational
+  # institutions for 2025 (fees for each institution must be more than $100)": the fees are one
+  # caller total and the institutions their caller count; the total must be more than $100 for
+  # each institution (not capped), and a count of 0 takes no fees. The checked total is the one
+  # that line 2 and line 6 read. It cannot tell one institution's fees apart: two institutions
+  # and $201 pass although one fee may have been $60.
+  - name: ca/more_than_per_unit
+    params:
+      amount: ca/canadian_tuition_fee_minimum_per_institution
+    consumes:
+      total: ca/canadian_tuition_fees
+      count: ca/canadian_tuition_institutions
+    produces:
+      output: ca/canadian_tuition_fees_checked

@@ -1,0 +1,209 @@
+# Form T2043, Return of Fuel Charge Proceeds to Farmers Tax Credit, Chart A: "Chart A is one for
+# each business", so its steps belong to the form ca/t2042, run once for each statement. Amount 1 is
+# line 9898 of the statement and amounts 2 and 3 its lines 9937 and 9938 (steps of the part
+# 03c_t2042.yaml); amount 4 and the days in 2024 of amount 7 are fields of the statement. The
+# form's exports are declared in 03c_t2042.yaml; the part 03i_t2043.yaml reads the Chart A exports
+# (amount 6 and the amount 8 of each designated province) as `ca/t2042.<export>`, one record for
+# each statement.
+# Part 2 skips a statement that uses Chart B (ca/farm_chart_b_in_use is 1): its Chart B credit
+# (Chart C, in 03j and 03k) takes the place of the Chart A amount 8, so one business never
+# counts in both. The province conditions read that count as their second count.
+form:
+  name: ca/t2042
+capabilities:
+  # Chart A amount 5 "Subtotal: Add amounts 2 to 4": the mandatory inventory adjustment (amount 2,
+  # line 9937 of Form T2042), the optional inventory adjustment (amount 3, line 9938) and the
+  # non-arm's length transactions (amount 4, "total of all expenses incurred in a non-arm's length
+  # transaction from Part 4 of Form T2042").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/farm_mandatory_inventory_adjustment_previous_year
+        - ca/farm_optional_inventory_adjustment_previous_year
+        - ca/farm_non_arms_length_expenses
+    produces:
+      output: ca/farm_chart_a_subtotal
+  # Chart A amount 6 "Gross farming expenses: Amount 1 minus amount 5": amount 1 is the total
+  # farming expenses (line 9898 of Form T2042) less amount 5, signed: the form prints no floor, so
+  # an amount 5 above amount 1 gives a negative amount 6.
+  - name: core/subtract
+    consumes:
+      amount: ca/farm_total_expenses
+      less: ca/farm_chart_a_subtotal
+    produces:
+      output: ca/farm_chart_a_gross_expenses
+  # Chart A amount 8 "Amount 6 multiplied by amount 7.", where amount 7 is "Total number of days in
+  # the fiscal period that fall within the 2024 calendar year divided by the total number of days
+  # in the fiscal period (if the fiscal period starts and ends in 2025, enter "0")": amount 6 times
+  # the days in 2024 over the days of the fiscal period (365 when not entered), one exact fraction
+  # rounded half-up to the cent. Days in 2024 above the days of the period are refused.
+  - name: ca/prorated_by_days_in_period
+    params:
+      rounding: ca/farm_chart_a_amount_8_rounding
+    consumes:
+      amount: ca/farm_chart_a_gross_expenses
+      days: ca/farm_days_in_2024
+      period_days: ca/farm_fiscal_period_days
+    produces:
+      output: ca/farm_chart_a_amount_8
+  # Part 2 lines 2A to 2H: the statement's designated province code is refused when it is above 8,
+  # since a code that names none of the eight provinces (0 is none: a farm elsewhere) is not a code ...
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/farm_designated_province_refused
+    consumes:
+      count: ca/farm_designated_province
+    produces:
+      output: ca/farm_designated_province_checked
+  # Part 2 line 67063 "Add all farming expenses in ON from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is Ontario (code 1) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_on_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_on
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_on
+    produces:
+      output: ca/farm_amount_8_on
+  # Part 2 line 67064 "Add all farming expenses in MB from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is Manitoba (code 2) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_mb_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_mb
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_mb
+    produces:
+      output: ca/farm_amount_8_mb
+  # Part 2 line 67065 "Add all farming expenses in SK from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is Saskatchewan (code 3) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_sk_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_sk
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_sk
+    produces:
+      output: ca/farm_amount_8_sk
+  # Part 2 line 67066 "Add all farming expenses in AB from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is Alberta (code 4) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_ab_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_ab
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_ab
+    produces:
+      output: ca/farm_amount_8_ab
+  # Part 2 line 67091 "Add all farming expenses in NS from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is Nova Scotia (code 5) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_ns_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_ns
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_ns
+    produces:
+      output: ca/farm_amount_8_ns
+  # Part 2 line 67092 "Add all farming expenses in PE from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is Prince Edward Island (code 6) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_pe_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_pe
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_pe
+    produces:
+      output: ca/farm_amount_8_pe
+  # Part 2 line 67093 "Add all farming expenses in NL from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is Newfoundland and Labrador (code 7) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_nl_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_nl
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_nl
+    produces:
+      output: ca/farm_amount_8_nl
+  # Part 2 line 67094 "Add all farming expenses in NB from amount 8 of Chart A.": this statement
+  # counts 1 when its designated province is New Brunswick (code 8) and no Chart B is in use, else 0 ...
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/farm_province_nb_conditions
+    consumes:
+      counts:
+        - ca/farm_designated_province_checked
+        - ca/farm_chart_b_in_use
+      amounts: []
+    produces:
+      output: ca/farm_in_province_nb
+  # ... and its amount 8 is added to the line only then: amount 8 times that count.
+  - name: core/times_count
+    consumes:
+      amount: ca/farm_chart_a_amount_8
+      count: ca/farm_in_province_nb
+    produces:
+      output: ca/farm_amount_8_nb

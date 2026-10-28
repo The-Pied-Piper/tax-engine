@@ -1,0 +1,19 @@
+# Reduction of the medical expenses for each other dependant, 2025 tax year (Worksheet
+# ON428, form 5006-D, and Form ON428, form 5006-C): line 58729, for each dependant, line 2
+# "Enter the amount from line 40 of the dependant's Form ON428.", which on every return is
+# line 40 "Enter whichever is less: $2,885 or the amount on line 39." with line 39 the
+# "Applicable rate 3%" of that person's line 23600, so it is worked out here from the
+# dependant's net income with the same two printed figures. Line 3 "Line 1 minus line 2 (if
+# negative, enter "0") (maximum $15,551 per dependant)" prints a maximum for each dependant.
+# Line 3 is a dollars-and-cents box, so each dependant's allowable amount rounds half-up to
+# the cent, the owner's decision, as the form states no rounding rule.
+family: ca-on/other_dependants_medical_reduction
+tax_year: 2025
+kind: claim_reduction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.03"
+ceiling: "2885"
+maximum: "15551"

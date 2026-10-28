@@ -1,0 +1,25 @@
+# Capital cost allowance class rates of Form T777 Part A, Class 8 only, 2025 tax year (line 13,
+# Capital cost allowance for musical instruments). T777 page 4, Part A: "Class 8 includes musical
+# instruments." (note (5)); the printed rate of Class 8 is 20%. Note (8): "... and 0 for the
+# remaining AIIPs." (factor 0); note (9): "... and 1/2 (Class 8 and 10)." (factor 1/2 for RIIPs). Note
+# (12): "Recapture and terminal loss rules do not apply." is printed for Part B, not for Part A: the
+# recapture_and_terminal_loss setting below is the shared table's (Class 8 applies), read as the Class 8
+# row of `ca/cca_class_rates`, which Form T2125 Area A reads. Only Class 8 is listed: a row of any other
+# class is refused by the table. The half-year rule is the same shared row; the rounding is the owner's
+# decision, as the form states no rounding rule. The columns the form computes round half-up to the cent.
+family: ca/t777_class_8_rates
+tax_year: 2025
+kind: class_rates
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+full_year_days: "365"
+longest_fiscal_period_days: "366"
+classes:
+  "8":
+    rate: "0.20"
+    half_year_rule: applies
+    recapture_and_terminal_loss: applies
+    half_year_rule_on_sale: does_not_apply
+    aiip_factor: {numerator: "0", denominator: "1"}
+    riip_factor: {numerator: "1", denominator: "2"}

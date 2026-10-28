@@ -1,0 +1,12 @@
+# Schedule 8 Part 5 line 50 "CPP overpayment: Enter the result of the following calculation (in
+# dollars and cents) on line 44800 of your return: amount from line 49 entered as a positive
+# amount multiplied by 50% =" (form 5000-S8, 2025): the printed 50% is the rate, 0.5.
+# Line 50 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/cpp_part_5_line_50_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.5"

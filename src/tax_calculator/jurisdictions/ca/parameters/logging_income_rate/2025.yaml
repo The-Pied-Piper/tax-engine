@@ -1,0 +1,14 @@
+# Federal logging tax credit, 2025 tax year: 5000-G (General Income Tax and Benefit Guide 2025),
+# "Federal logging tax credit": "6.6667% of your net logging income in that province for the year",
+# and the cap, "up to 6.6667% of your taxable income from line 26000 of your return". The guide
+# prints the percentage as 6.6667%, so the rate is 0.066667; it is used for the net logging income
+# of each province and for the cap of line 133 alike. The product rounds half-up to the cent, as
+# every dollars-and-cents box on the forms does: the guide states no rounding rule, so that is the
+# owner's decision.
+family: ca/logging_income_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.066667"

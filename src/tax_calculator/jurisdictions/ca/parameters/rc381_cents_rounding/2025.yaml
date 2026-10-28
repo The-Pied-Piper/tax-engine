@@ -1,0 +1,11 @@
+# Form RC381 (2025), Part 3 lines 7 to 10 "Amount from line E of Part 2 multiplied by the rate
+# at line 6", "Amount from line C of Part 2 multiplied by the rate at line 6", "Amount from
+# line F of Part 2 multiplied by the rate at line 6" and "Amount from line D of Part 2
+# multiplied by the rate at line 6". The form prints no figure and no rounding rule; each is a
+# dollars-and-cents amount, so the product rounds half-up to the cent, the owner's decision.
+family: ca/rc381_cents_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/rc381/rc381-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

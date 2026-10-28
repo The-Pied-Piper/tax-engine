@@ -1,0 +1,138 @@
+# Form T2017 (2025), page 1, line 3 "Amount of 2025 reserve for dispositions of QFFP under a QBT after 2023": the form
+# ca/t2017_line_3_reserve, run once for each record of its list
+# ca/t2017_line_3_reserve_rows (one record for each disposition, none included). The calculation
+# of reserve is Form T2017 page 3, "How do you calculate a reserve": the maximum is the lesser of (i)
+# and (ii), and the reserve claimed, up to the claim limit (the maximum, or in a later year
+# the lower of the maximum and the previous year's claim), is the row's export ca/t2017_row_reserve, which
+# the summary form ca/t2017 (03z_t2017_summary.yaml) reads as ca/t2017_line_3_reserve.t2017_row_reserve.
+# This line takes the nine-year table (family farm or fishing property and small business corporation
+# shares disposed of to your child, or a disposition under a QBT or QCC).
+form:
+  name: ca/t2017_line_3_reserve
+  instances: ca/t2017_line_3_reserve_rows
+  exports:
+    - ca/t2017_row_reserve
+    - ca/t2017_row_change
+    - ca/t2017_reserve_period_1_of_2024_checked
+    - ca/t2017_reserve_reported_on_slip_checked
+    - ca/t2017_reserve_partnership_year_began_before_june_25_2024_checked
+capabilities:
+  # "Amount payable to you after the end of the year" over "Proceeds of disposition": the form prints no
+  # bound, so an amount payable above the proceeds is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2017_reserve_amount_payable_after_year_end
+      bound: ca/t2017_reserve_proceeds
+    produces:
+      output: ca/t2017_reserve_payable_checked
+  # (i) "Capital gain x Amount payable to you after the end of the year / Proceeds of disposition", zero
+  # when the proceeds are zero, rounded half-up to the cent once.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t2017_rounding
+    consumes:
+      amount: ca/t2017_reserve_capital_gain
+      numerator: ca/t2017_reserve_payable_checked
+      denominator: ca/t2017_reserve_proceeds
+    produces:
+      output: ca/t2017_reserve_by_payment
+  # "Enter the applicable percentage from the table", by the years after the disposition (0 for the
+  # year of disposition, then the years after it in the table).
+  - name: core/amount_by_count
+    params:
+      table: ca/t2017_nine_year_percentage
+    consumes:
+      count: ca/t2017_reserve_years_after_disposition
+    produces:
+      output: ca/t2017_reserve_applicable_percentage
+  # (ii) "Capital gain x Enter the applicable percentage from the table", rounded half-up to the cent once.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t2017_rounding
+    consumes:
+      amount: ca/t2017_reserve_capital_gain
+      percentage: ca/t2017_reserve_applicable_percentage
+    produces:
+      output: ca/t2017_reserve_by_percentage
+  # "Your reserve for the year cannot be more than the lesser of the following": (i) and (ii).
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t2017_reserve_by_payment
+        - ca/t2017_reserve_by_percentage
+    produces:
+      output: ca/t2017_reserve_maximum
+  # "You do not have to claim the maximum reserve in a tax year (Year A). However, the amount you claim in a
+  # later year (Year B) cannot be more than the amount you claimed for that property in the previous year
+  # (Year A)": 1 for a year after the disposition, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t2017_later_year_conditions
+    consumes:
+      counts:
+        - ca/t2017_reserve_years_after_disposition
+      amounts: []
+    produces:
+      output: ca/t2017_reserve_later_year
+  # The maximum of a later year: the lesser of the maximum and the reserve claimed for the property in the
+  # previous year.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t2017_reserve_maximum
+        - ca/t2017_reserve_previous_year_claim
+    produces:
+      output: ca/t2017_reserve_later_year_maximum
+  # The claim limit: the maximum in the year of disposition, the later-year maximum in a later year.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t2017_reserve_later_year
+      when_none: ca/t2017_reserve_maximum
+      when_any: ca/t2017_reserve_later_year_maximum
+    produces:
+      output: ca/t2017_reserve_claim_limit
+  # The reserve claimed, up to the claim limit. A claim above the limit is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t2017_reserve_claimed
+      bound: ca/t2017_reserve_claim_limit
+    produces:
+      output: ca/t2017_row_reserve
+  # Form T657 asks whether the disposition was made in Period 1 of 2024 (before June 25, 2024): 1 for
+  # yes, 0 for no; the answer is exported for the chart totals (`ca/t2017_reserve_total_for_period`).
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t2017_reserve_period_1_of_2024
+    produces:
+      output: ca/t2017_reserve_period_1_of_2024_checked
+  # Form T657 asks whether the reserve is reported on a T5013 slip or in a letter to the partner: 1
+  # for yes, 0 for no; exported for the chart totals.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t2017_reserve_reported_on_slip
+    produces:
+      output: ca/t2017_reserve_reported_on_slip_checked
+  # Guide T4037 sends a Period 1 of 2024 reserve a partnership reports to Part 1 of Chart 2025 when the
+  # partnership's fiscal period began before June 25, 2024, and to Period 1 of Chart 2024 when it
+  # began after: 1 for yes, 0 for no; exported for the chart totals.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t2017_reserve_partnership_year_began_before_june_25_2024
+    produces:
+      output: ca/t2017_reserve_partnership_year_began_before_june_25_2024_checked
+  # Line 1 "Amount of 2024 reserve" of the disposition: the reserve claimed for the property in the
+  # previous year in a later year, and 0 in the year of disposition.
+  - name: core/times_count
+    consumes:
+      amount: ca/t2017_reserve_previous_year_claim
+      count: ca/t2017_reserve_later_year
+    produces:
+      output: ca/t2017_row_previous_reserve
+  # Line 6 "Line 1 minus line 5 (if negative, show in brackets)" of the disposition, signed: its 2024
+  # reserve less its 2025 reserve, which Form T657 reads for the dispositions of one year.
+  - name: core/subtract
+    consumes:
+      amount: ca/t2017_row_previous_reserve
+      less: ca/t2017_row_reserve
+    produces:
+      output: ca/t2017_row_change

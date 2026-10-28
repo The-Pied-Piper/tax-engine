@@ -1,0 +1,565 @@
+capabilities:
+  # Form T657 Step 1 line 1 "Total of lines 10700, 11000, and 12400 of Schedule 3 (if negative, show
+  # in brackets)": the gains or losses on QSBCS, QFFP and QFFP foreclosures (Schedule 3 lines 10700,
+  # 11000 and 12400), signed.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/qsbcs_gain_or_loss
+        - ca/qffp_gain_or_loss
+        - ca/qffp_foreclosure_gain_or_loss
+    produces:
+      output: ca/annual_gains_schedule_3_total
+  # Step 1 line 2 "Total amount from line 13 of Form T2017 (if negative, show in brackets)": the
+  # total of `ca/t2017.t2017_line_13`, the summary form's line 13 (one record).
+  - name: core/record_total
+    consumes:
+      records: ca/t2017.t2017_line_13
+    produces:
+      output: ca/annual_gains_line_2
+  # Step 1 line 3 "Add lines 1 and 2 (if negative, show in brackets)." (line 2 is the total above).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/annual_gains_schedule_3_total
+        - ca/annual_gains_line_2
+    produces:
+      output: ca/annual_gains_line_3
+  # Step 1 line 4 "Inclusion rate × 1/2": line 3 multiplied by the 1/2, before line 5 floors it.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_annual_gains_inclusion_rate
+    consumes:
+      base: ca/annual_gains_line_3
+    produces:
+      output: ca/annual_gains_line_3_at_inclusion_rate
+  # Step 1 line 5 "Line 3 multiplied by the inclusion rate on line 4 (if negative, enter "0")".
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/annual_gains_line_3_at_inclusion_rate
+    produces:
+      output: ca/annual_gains_line_5
+  # Step 1 line 7 "Line 5 minus line 6" "Total taxable capital gains or losses for 2025 for qualifying
+  # property" (line 6 "Amount from line 17216 of Form T2048"). The form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/annual_gains_line_5
+      less: ca/qsbcs_qffp_taxable_gains_related_to_deduction
+    produces:
+      output: ca/annual_gains_line_7
+  # Step 1 line 8 "Total taxable capital gains (or net capital losses) from line 19900 of Schedule 3
+  # (if negative, show in brackets)": Schedule 3 line 24 plus line 25, signed;
+  # ca/taxable_capital_gains is the same figure floored at 0 for T1 line 12700.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/included_capital_gain
+        - ca/partnership_gains_at_full_inclusion
+    produces:
+      output: ca/schedule_3_line_19900
+  # Step 1 line 9 "Amount from line 17600 of Schedule 3 (if negative, enter "0")".
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t3_capital_gains_or_losses
+    produces:
+      output: ca/schedule_3_line_17600_not_below_zero
+  # Step 1 line 9 "× 1/2 =".
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_schedule_3_line_17600_fraction
+    consumes:
+      base: ca/schedule_3_line_17600_not_below_zero
+    produces:
+      output: ca/annual_gains_line_9
+  # Step 1 line 10 "Line 8 minus line 9".
+  - name: core/subtract
+    consumes:
+      amount: ca/schedule_3_line_19900
+      less: ca/annual_gains_line_9
+    produces:
+      output: ca/annual_gains_line_10
+  # Step 1 line 12 "Line 10 minus line 11" (line 11 "Amount from line 17215 of Form T2048").
+  - name: core/subtract
+    consumes:
+      amount: ca/annual_gains_line_10
+      less: ca/qbt_taxable_gains_related_to_deduction
+    produces:
+      output: ca/annual_gains_line_12
+  # Step 1 line 13 "Enter whichever is less: amount from line 7 or line 12." "Eligible taxable capital
+  # gains for 2025".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_line_7
+        - ca/annual_gains_line_12
+    produces:
+      output: ca/eligible_taxable_capital_gains_2025
+  # Step 1 line 15 "Net non-eligible taxable capital gains in 2025 (line 14 of Chart A of Form T936 for
+  # 2025)": the total of ca/t936.t936_chart_a_line_14, the form's export (one record). Step 2 line 16
+  # "Cumulative net investment loss to December 31, 2025: Amount from line C in Part 3 of Form T936
+  # for 2025": the total of ca/t936.t936_cnil (one record). Neither is an input any more.
+  - name: core/record_total
+    consumes:
+      records: ca/t936.t936_chart_a_line_14
+    produces:
+      output: ca/t657_net_non_eligible_taxable_capital_gains
+  - name: core/record_total
+    consumes:
+      records: ca/t936.t936_cnil
+    produces:
+      output: ca/t657_cumulative_net_investment_loss
+  # Step 1 line 16 "Adjusted net capital losses of other years: Line 14 minus line 15 (if negative,
+  # enter "0")" (line 14 "Net capital losses of other years deducted in 2025 (line 25300 of your 2025
+  # return)", line 15 "Net non-eligible taxable capital gains in 2025 (line 14 of Chart A of Form T936
+  # for 2025)").
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/net_capital_losses_of_other_years
+      less: ca/t657_net_non_eligible_taxable_capital_gains
+    produces:
+      output: ca/adjusted_net_capital_losses_of_other_years
+  # Step 1 line 19 "Line 17 minus line 18" (line 17 "Allowable business investment losses from line
+  # 21700 of your 2025 return.", line 18 "Amount from line 17217 of Form T2048"). The form prints no
+  # floor; so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/allowable_business_investment_loss
+      less: ca/qbt_abil_reduction
+    produces:
+      output: ca/abil_after_qbt_reduction
+  # Step 1 line 20 "Line 16 plus line 19" "Total losses for annual gains limit".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/adjusted_net_capital_losses_of_other_years
+        - ca/abil_after_qbt_reduction
+    produces:
+      output: ca/total_losses_for_annual_gains_limit
+  # Step 1 line 21 "Line 13 minus line 20 (if negative, enter "0")" "Annual gains limit for 2025".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/eligible_taxable_capital_gains_2025
+      less: ca/total_losses_for_annual_gains_limit
+    produces:
+      output: ca/annual_gains_limit_2025
+  # Chart 1 "Calculate your net capital losses of other years (line 14 of Step 2)": for each year row,
+  # column E "(C – D) (If negative, enter "0")", column F "(B + E)" and column G "(A – F) (If
+  # negative, enter "0")"; "Add the amounts in column G and enter the result on line 14 of Step 2."
+  # One record for each YEAR (the form's own Note: "complete a separate calculation for each year
+  # that applies to you"; the printed rows combine years only for space); a single-year filer
+  # enters one record.
+  - name: ca/chart_1_column_g_total
+    consumes:
+      rows: ca/t657_chart_1_rows
+    produces:
+      total: ca/chart_1_column_g_total
+  # Step 2 line 8 "2002 to 2025 eligible taxable capital gains: Total amount from line 10 in Part 1 of
+  # Form T657 for 2002 to 2017, line 8 in Part 1 of Form T657 for 2018 to 2023, line 12 in Step 1 of
+  # Form T657 for 2024, and line 13 in Step 1 of Form T657 for 2025": the earlier years are one input,
+  # 2025 is Step 1 line 13.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t657_gains_2002_to_2024
+        - ca/eligible_taxable_capital_gains_2025
+    produces:
+      output: ca/eligible_taxable_capital_gains_2002_to_2025
+  # Step 2 line 9 "Add lines 1 to 8." "Cumulative eligible taxable capital gains".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t657_gains_1985_to_1991
+        - ca/t657_gains_1992_and_1993
+        - ca/t657_gains_1994
+        - ca/t657_gains_1995
+        - ca/t657_gains_1996_to_1999
+        - ca/t657_gains_2000
+        - ca/t657_gains_2001
+        - ca/eligible_taxable_capital_gains_2002_to_2025
+    produces:
+      output: ca/cumulative_eligible_taxable_capital_gains
+  # Step 2 line 13 "Total allowable business investment losses claimed after 1984 and before 2025:
+  # Line 11 minus line 12" (line 11 "Total amount from line 217 of your returns for 1985 to 2018 and
+  # line 21700 of your returns for 2019 to 2024", line 12 "Amount from line 17217 of Form T2048 for
+  # 2024"). The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/t657_abil_claimed_1985_to_2024
+      less: ca/t657_t2048_line_17217_for_2024
+    produces:
+      output: ca/abil_claimed_after_1984_and_before_2025
+  # Step 2 line 18 "Add lines 10 and 13 to 17." (line 10 allowable capital losses claimed in 1985,
+  # line 13 above, line 14 "Total of amounts in column G in Chart 1", line 15 "Amount from line 20 in
+  # Step 1", line 16 "Amount from line C in Part 3 of Form T936 for 2025", line 17 "Total amount from
+  # line 254 of your returns for 1985 to 2018 and line 25400 of your returns for 2019 to 2024").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t657_capital_losses_claimed_1985
+        - ca/abil_claimed_after_1984_and_before_2025
+        - ca/chart_1_column_g_total
+        - ca/total_losses_for_annual_gains_limit
+        - ca/t657_cumulative_net_investment_loss
+        - ca/t657_deductions_claimed_1985_to_2024
+    produces:
+      output: ca/cumulative_losses_and_deductions
+  # Step 2 line 19 "Line 9 minus line 18 (if negative, enter "0")" "Cumulative gains limit for 2025".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cumulative_eligible_taxable_capital_gains
+      less: ca/cumulative_losses_and_deductions
+    produces:
+      output: ca/cumulative_gains_limit_2025
+  # Chart 2 line 3 "Line 1 plus line 2" (line 1 "Amount from line 254 of your 1985 to 1987 returns",
+  # line 2 "Amount from line 254 of your 1988 and 1989 returns minus any amounts reported on lines 543
+  # and 544 of Schedule 3 for 1988 and 1989 (if negative, enter "0")").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t657_chart_2_line_1
+        - ca/t657_chart_2_line_2
+    produces:
+      output: ca/chart_2_line_3
+  # Chart 2 line 4 "Adjustment of 1988 and 1989 capital gains deductions excluding eligible capital
+  # property: Amount from line 2 × 1/4".
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2_line_4_fraction
+    consumes:
+      base: ca/t657_chart_2_line_2
+    produces:
+      output: ca/chart_2_line_4
+  # Chart 2 line 5 "Line 3 minus line 4 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2_line_3
+      less: ca/chart_2_line_4
+    produces:
+      output: ca/chart_2_line_5
+  # Chart 2 line 7 "Line 5 plus line 6" (line 6 "Capital gains deductions claimed in 1988 and 1989 for
+  # eligible capital property").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2_line_5
+        - ca/t657_chart_2_line_6
+    produces:
+      output: ca/chart_2_line_7
+  # Chart 2 line 8 "Adjustment of 1988 and 1989 capital gains deductions for eligible capital
+  # property: Amount from line 6 × 1/3".
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2_line_8_fraction
+    consumes:
+      base: ca/t657_chart_2_line_6
+    produces:
+      output: ca/chart_2_line_8
+  # Chart 2 line 9 "Line 7 minus line 8 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2_line_7
+      less: ca/chart_2_line_8
+    produces:
+      output: ca/chart_2_line_9
+  # Chart 2 line 11 "Line 9 plus line 10" (line 10 "Total capital gains deductions claimed in 1990 to
+  # 1999: Amount from line 254 of your returns for 1990 to 1999").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2_line_9
+        - ca/t657_chart_2_line_10
+    produces:
+      output: ca/chart_2_line_11
+  # Chart 2 line 12 "Adjustment of 1990 to 1999 capital gains deductions: Amount from line 10 × 1/3".
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2_line_12_fraction
+    consumes:
+      base: ca/t657_chart_2_line_10
+    produces:
+      output: ca/chart_2_line_12
+  # Chart 2 line 13 "Line 11 minus line 12 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2_line_11
+      less: ca/chart_2_line_12
+    produces:
+      output: ca/chart_2_line_13
+  # Chart 2 line 15 "Line 13 plus line 14" (line 14 "Total capital gains deduction claimed in 2000:
+  # Amount from line 254 of your 2000 return").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2_line_13
+        - ca/t657_chart_2_line_14
+    produces:
+      output: ca/chart_2_line_15
+  # Chart 2 line 16 "Adjustment of 2000 capital gains deduction: Amount from line 14 × [ 1 – ( 2 × IR
+  # )]", first the "2 × IR" (footnote (2) "Your "IR" is your inclusion rate for 2000 from line 16 in
+  # Part 4 of your Schedule 3 for 2000 or on your notice of assessment or latest notice of
+  # reassessment for 2000."): IR times 2, exact and not rounded. IR must be entered when line 14 is
+  # not 0: it is the 2000 inclusion rate from the filer's 2000 Schedule 3 Part 4 line 16, and 0
+  # means not entered, which gives an adjustment of 0 (line 16 equals line 14).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2_twice_ir_fraction
+    consumes:
+      base: ca/t657_inclusion_rate_2000
+    produces:
+      output: ca/chart_2_twice_ir
+  # Chart 2 line 16, the 1 of "1 over ( 2 × IR )": the printed 1 as an artifact.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2_numerator_one
+    produces:
+      output: ca/chart_2_numerator_one
+  # Chart 2 line 16, line 14 × 1 ÷ ( 2 × IR ), rounded half-up to the cent once, the only rounding
+  # of the line; 0 when IR is 0.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t657_chart_2_line_16_rounding
+    consumes:
+      amount: ca/t657_chart_2_line_14
+      numerator: ca/chart_2_numerator_one
+      denominator: ca/chart_2_twice_ir
+    produces:
+      output: ca/chart_2_line_14_over_twice_ir
+  # Chart 2 line 16 "Amount from line 14 × [ 1 – ( 2 × IR )]": line 14 minus line 14 × 1/(2 × IR).
+  - name: core/subtract
+    consumes:
+      amount: ca/t657_chart_2_line_14
+      less: ca/chart_2_line_14_over_twice_ir
+    produces:
+      output: ca/chart_2_line_16
+  # Chart 2 line 17 "Line 15 minus line 16 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2_line_15
+      less: ca/chart_2_line_16
+    produces:
+      output: ca/chart_2_line_17
+  # Chart 2 line 19 "Capital gains deductions from previous years: Line 17 plus line 18 (if negative,
+  # enter 0)" (line 18 "Total capital gains deduction claimed in 2001 to 2024: Amount from line 254 of
+  # your 2001 to 2018 returns and line 25400 of your 2019 and later returns").
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/chart_2_line_17
+        - ca/t657_chart_2_line_18
+    produces:
+      output: ca/chart_2_line_19
+  # Chart 2025 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS" 522,145.00, a
+  # dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2025_part_1_amount_a
+    produces:
+      output: ca/chart_2025_part_1_amount_a
+  # Chart 2025 Part 1 "Amount A minus amount B" C (B "Enter the last amount that you calculated for
+  # "Total amount of capital gains included in 2025 income eligible for the capital gains
+  # deduction"" from 2016 to 2024: Chart 2024 Period 2's amount N). The form prints no floor, so the
+  # result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2025_part_1_amount_a
+      less: ca/chart_2024_period_2_amount_n
+    produces:
+      output: ca/chart_2025_part_1_amount_c
+  # Chart 2025 Part 1 amount E "Capital gains deduction available for QFFP and/or QSBCS ...: amount C
+  # minus amount D (if negative, enter "0")" (D "Capital gains deductions from previous years from
+  # line 19 of Chart 2").
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2025_part_1_amount_c
+      less: ca/chart_2_line_19
+    produces:
+      output: ca/chart_2025_part_1_amount_e
+  # Chart 2025 Part 1 "Add amounts F to J (if negative, enter "0")" (F box 57 of a T3 slip or box 153
+  # of a T5013 slip, G box 55 or box 154, H box 155 of a T5013 slip, I "Amount from line 6 of Form
+  # T2017 ...", J "Amount from line 12 of Form T2017 ...", each for a disposition in Period 1 of
+  # 2024).
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t657_part_1_amount_f
+        - ca/t657_part_1_amount_g
+        - ca/t657_part_1_amount_h
+        - ca/t657_part_1_amount_i
+        - ca/t657_part_1_amount_j
+    produces:
+      output: ca/chart_2025_part_1_amounts_f_to_j
+  # Chart 2025 Part 1 "= × 1/2 = K".
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_part_1_k_fraction
+    consumes:
+      base: ca/chart_2025_part_1_amounts_f_to_j
+    produces:
+      output: ca/chart_2025_part_1_amount_k
+  # Chart 2025 Part 1 "Amount K minus amount L" M (L "Portion of the amount from line 17216 of Form
+  # T2048 in respect of a QFFP or QSBCS disposed of in the 2025 fiscal period of the partnership but
+  # in Period 1 of 2024."). The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2025_part_1_amount_k
+      less: ca/t657_part_1_amount_l
+    produces:
+      output: ca/chart_2025_part_1_amount_m
+  # Chart 2025 Part 1 amount N "Enter whichever is less: amount E or amount M.".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2025_part_1_amount_e
+        - ca/chart_2025_part_1_amount_m
+    produces:
+      output: ca/chart_2025_part_1_amount_n
+  # Chart 2025 Part 1 "Amount N plus amount O" P (O "Enter amount B from above.", Chart 2024 Period 2's
+  # amount N).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2025_part_1_amount_n
+        - ca/chart_2024_period_2_amount_n
+    produces:
+      output: ca/chart_2025_part_1_amount_p
+  # Chart 2025 Part 1 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
+  # amount P above. If you are not disposing of any other QFFP or QSBCS in 2025, this is the maximum
+  # amount you can claim on line 25400 of your 2025 return."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2025_part_1_amount_p
+    produces:
+      output: ca/chart_2025_part_1_amount_q
+  # Chart 2025 Part 2 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS" 625,000.00, a
+  # dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2025_part_2_amount_a
+    produces:
+      output: ca/chart_2025_part_2_amount_a
+  # Chart 2025 Part 2 "Amount A minus amount B" C (B "Enter the last amount that you calculated for
+  # "Total amount of capital gains included in 2025 income eligible for the capital gains
+  # deduction""). The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2025_part_2_amount_a
+      less: ca/chart_2025_part_1_amount_p
+    produces:
+      output: ca/chart_2025_part_2_amount_c
+  # Chart 2025 Part 2 amount E "Capital gains deduction available for QFFP and/or QSBCS ...: amount C
+  # minus amount D (if negative, enter "0")" (D "Capital gains deductions from previous years from
+  # line 19 of Chart 2").
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2025_part_2_amount_c
+      less: ca/chart_2_line_19
+    produces:
+      output: ca/chart_2025_part_2_amount_e
+  # Chart 2025 Part 2 amount F "Amount from line 10700 of Schedule 3 (do not include capital gains
+  # reported in box 30 of a T3 slip relating to a disposition of QSBCS unless ...)": line 10700 less
+  # the amounts the filer enters as not to be included.
+  - name: core/subtract
+    consumes:
+      amount: ca/qsbcs_gain_or_loss
+      less: ca/t657_part_2_excluded_f
+    produces:
+      output: ca/chart_2025_part_2_amount_f
+  # Chart 2025 Part 2 amount G "Amount from line 11000 of Schedule 3 (do not include capital gains
+  # reported in box 30 of a T3 slip relating to a disposition of QFFP unless ...)".
+  - name: core/subtract
+    consumes:
+      amount: ca/qffp_gain_or_loss
+      less: ca/t657_part_2_excluded_g
+    produces:
+      output: ca/chart_2025_part_2_amount_g
+  # Chart 2025 Part 2 amount H "Amount from line 12400 of Schedule 3 (do not include capital gains
+  # reported in box 155 of a T5013 slip)".
+  - name: core/subtract
+    consumes:
+      amount: ca/qffp_foreclosure_gain_or_loss
+      less: ca/t657_part_2_excluded_h
+    produces:
+      output: ca/chart_2025_part_2_amount_h
+  # Chart 2025 Part 2 "Add amounts F to J (if negative, enter "0")" (I "Amount from line 6 of Form
+  # T2017 (do not include any reserves claimed on dispositions of QFFP before 2025 or in Period 1 of
+  # 2024 ...)", J "Amount from line 12 of Form T2017 (...)").
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/chart_2025_part_2_amount_f
+        - ca/chart_2025_part_2_amount_g
+        - ca/chart_2025_part_2_amount_h
+        - ca/t657_part_2_amount_i
+        - ca/t657_part_2_amount_j
+    produces:
+      output: ca/chart_2025_part_2_amounts_f_to_j
+  # Chart 2025 Part 2 "= × 1/2 = K".
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_part_2_k_fraction
+    consumes:
+      base: ca/chart_2025_part_2_amounts_f_to_j
+    produces:
+      output: ca/chart_2025_part_2_amount_k
+  # Chart 2025 Part 2 "Amount K minus amount L" M (L "Portion of the amount from line 17216 of Form
+  # T2048 in respect of a QFFP or QSBCS disposed of in 2025 or disposed of in the 2025 fiscal period
+  # of the partnership but after June 24, 2024"). The form prints no floor, so the result stays
+  # signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2025_part_2_amount_k
+      less: ca/t657_part_2_amount_l
+    produces:
+      output: ca/chart_2025_part_2_amount_m
+  # Chart 2025 Part 2 amount N "Enter whichever is less: amount E or amount M.".
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2025_part_2_amount_e
+        - ca/chart_2025_part_2_amount_m
+    produces:
+      output: ca/chart_2025_part_2_amount_n
+  # Chart 2025 Part 2 "Amount N plus amount O" P (O "Enter amount B from above.", B being Part 1
+  # amount P).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2025_part_2_amount_n
+        - ca/chart_2025_part_1_amount_p
+    produces:
+      output: ca/chart_2025_part_2_amount_p
+  # Chart 2025 Part 2 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
+  # amount P above. This is the maximum amount you can claim on line 25400 of your 2025 return.
+  # However, you can choose to claim less."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2025_part_2_amount_p
+    produces:
+      output: ca/chart_2025_part_2_amount_q
+  # Guide T4037 "Claiming the capital gains deduction": "You can claim any amount of the capital gains
+  # deduction that you want to in a year, up to the maximum allowable amount that you calculated."
+  # Part 2 amount Q is that maximum; when it is negative (the form prints no floor on C or M) nothing
+  # can be claimed, so the limit on the claim is Q not below 0 and a claim of 0 is still allowed.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/chart_2025_part_2_amount_q
+    produces:
+      output: ca/chart_2025_part_2_maximum_claim
+  # T1 line 65 and line 25400 "Capital gains deduction (complete Form T657)": the amount the filer
+  # chooses, an input, which may not exceed the maximum claim (Part 2 amount Q not below 0)
+  # ("However, you can choose to claim less.").
+  - name: core/at_most
+    consumes:
+      amount: ca/capital_gains_deduction_claimed
+      bound: ca/chart_2025_part_2_maximum_claim
+    produces:
+      output: ca/capital_gains_deduction

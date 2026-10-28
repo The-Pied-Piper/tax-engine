@@ -1,0 +1,23 @@
+# Condition under which a filer is entered as both under 18 and 18 or older, 2025 tax year: Worksheet
+# ON428 line 58440 "Complete the following calculation if you were under 18 years of age on December
+# 31, 2025" and the Federal Worksheet for line 45200 "You were 18 years of age or older at the end of
+# 2025". The two exclude each other. The count is 1 when `ca/under_18_on_december_31` and
+# `ca/aged_18_or_older_at_end_of_2025` are each more than 0, and 0 otherwise. Not a
+# dollars-and-cents box, so no rounding.
+family: ca/under_18_and_aged_18_or_older_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-g/5000-g-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      under 18 years of age on December 31, 2025 and 18 years of age or older at the end of 2025
+      are both entered
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+      - tests:
+          - {reads: count, position: "2", relation: more_than, than: "0"}

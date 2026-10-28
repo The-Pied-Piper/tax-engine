@@ -1,0 +1,10 @@
+# Guide T4002 (2025), "Restricted farm losses (partly deductible)":
+# "B) $2,500 plus 50% × (your net farm loss minus $2,500)" (confirmed from the PDF; no .txt
+# published). The guide states no rounding rule for the 50% of an amount in dollars and cents, so
+# the product rounds half-up to the cent, the owner's decision, the repo convention.
+family: ca/farm_restricted_loss_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

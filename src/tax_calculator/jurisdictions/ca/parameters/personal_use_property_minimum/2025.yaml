@@ -1,0 +1,13 @@
+# Minimum for the proceeds of disposition and the adjusted cost base of personal-use property on
+# Schedule 3 Part 3, 2025 tax year (Guide T4037 2025, "Personal-use property" Example, p.24): the
+# chart prints "Proceeds of disposition (whichever is more: selling price or $1,000)" and "Minus:
+# ACB (whichever is more: cost or $1,000) plus outlays and expenses". It is a plain amount (the
+# `amount` kind), not a credit or a rate. Form 5000-S3 prints no $1,000 line, so the Guide is the
+# only source. The Guide states no rounding rule for the figure, so it is not rounded.
+family: ca/personal_use_property_minimum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4037/t4037-25e.pdf
+rounding: none
+amount: "1000"

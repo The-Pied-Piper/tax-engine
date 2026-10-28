@@ -1,0 +1,21 @@
+# The shared fact "other property income": the form ca/other_property_income, a form of its own
+# with no instances, run once on one input, ca/other_property_income (the return's inputs, in
+# 01_inputs.yaml). Two CRA forms ask it in the same words: Form T936 Part 2 line 11 (68100) "Any
+# other property income reported in 2025 (see the list "Other property income" on the next page)
+# including annuity payments taxable under paragraph 56(1)(d) minus the capital portion deducted
+# under paragraph 60(a)" and Form T2048 Chart A line 14 "Any other property income reported in
+# 2025 (see the list of "other property income" on the next page) including annuity payments
+# taxable under paragraph 56(1)(d) minus the capital portion deducted under paragraph 60(a)". It
+# is entered once, here, and both forms read this form's export, so the two cannot differ.
+#
+# This is a targeted exception to taking inputs the way the form does: a fact gets a form of its
+# own like this only when two CRA forms ask the very same fact. It is not a way to merge inputs
+# that merely look alike, and every other input is still taken the way the form asks it.
+#
+# The form has no step and no computed line. It exports the input as entered. Each of the two
+# forms reads the export as a record list of one record, totalled by `core/record_total` into its
+# own line (the form ca/t2048 does so in 06a_capital_gains_deduction_qbt.yaml).
+form:
+  name: ca/other_property_income
+  exports:
+    - ca/other_property_income

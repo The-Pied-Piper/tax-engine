@@ -1,0 +1,110 @@
+# Form T2043, Chart B rows 1 and 4 for each designated province, totalled over the statement's Chart
+# B province list (ca/farm_chart_b_provinces, one record for each province the business has a
+# permanent establishment in; a province with no record totals 0). Part of Chart B: the steps run
+# once for each statement, with the steps of 03j_t2043_chart_b.yaml, which read these totals as
+# the starting amounts of the rows of each province. The statement's province list is a field of
+# ca/t2042_statements, declared in app/jurisdictions/ca/catalog/income.py.
+form:
+  name: ca/t2042
+capabilities:
+  # Form T2043 Chart B row 1 "Gross income ($) of the farming business reasonably allocated to the
+  # permanent establishment(s) in the designated province (applicable portion of line 9659 of Form
+  # T2042, excluding the credit). See note 5." (Ontario): the total of the list's rows for Ontario.
+  - name: ca/chart_b_gross_income_on_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_on
+  # Form T2043 Chart B row 1 (Manitoba): the total of the list's rows for Manitoba.
+  - name: ca/chart_b_gross_income_mb_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_mb
+  # Form T2043 Chart B row 1 (Saskatchewan): the total of the list's rows for Saskatchewan.
+  - name: ca/chart_b_gross_income_sk_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_sk
+  # Form T2043 Chart B row 1 (Alberta): the total of the list's rows for Alberta.
+  - name: ca/chart_b_gross_income_ab_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_ab
+  # Form T2043 Chart B row 1 (Nova Scotia): the total of the list's rows for Nova Scotia.
+  - name: ca/chart_b_gross_income_ns_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_ns
+  # Form T2043 Chart B row 1 (Prince Edward Island): the total of the list's rows for it.
+  - name: ca/chart_b_gross_income_pe_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_pe
+  # Form T2043 Chart B row 1 (Newfoundland and Labrador): the total of the list's rows for it.
+  - name: ca/chart_b_gross_income_nl_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_nl
+  # Form T2043 Chart B row 1 (New Brunswick): the total of the list's rows for New Brunswick.
+  - name: ca/chart_b_gross_income_nb_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_gross_income_nb
+  # Form T2043 Chart B row 4 "Salaries and wages paid ($) to employees of the farming business
+  # reasonably allocated to the permanent establishment(s) in the designated province (applicable
+  # portion of line 9814 of Form T2042). See note 7." (Ontario): the total of the list's rows for
+  # Ontario.
+  - name: ca/chart_b_salaries_on_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_on
+  # Form T2043 Chart B row 4 (Manitoba): the total of the list's rows for Manitoba.
+  - name: ca/chart_b_salaries_mb_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_mb
+  # Form T2043 Chart B row 4 (Saskatchewan): the total of the list's rows for Saskatchewan.
+  - name: ca/chart_b_salaries_sk_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_sk
+  # Form T2043 Chart B row 4 (Alberta): the total of the list's rows for Alberta.
+  - name: ca/chart_b_salaries_ab_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_ab
+  # Form T2043 Chart B row 4 (Nova Scotia): the total of the list's rows for Nova Scotia.
+  - name: ca/chart_b_salaries_ns_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_ns
+  # Form T2043 Chart B row 4 (Prince Edward Island): the total of the list's rows for it.
+  - name: ca/chart_b_salaries_pe_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_pe
+  # Form T2043 Chart B row 4 (Newfoundland and Labrador): the total of the list's rows for it.
+  - name: ca/chart_b_salaries_nl_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_nl
+  # Form T2043 Chart B row 4 (New Brunswick): the total of the list's rows for New Brunswick.
+  - name: ca/chart_b_salaries_nb_total
+    consumes:
+      provinces: ca/farm_chart_b_provinces
+    produces:
+      output: ca/farm_chart_b_salaries_nb

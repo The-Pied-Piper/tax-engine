@@ -1,0 +1,86 @@
+capabilities:
+  # Form T2203 Part 1 line 52220 column 5 "percentage" (Form T691 Part 3 line 3 "the percentage in
+  # Column 5 of line 52220 on Form T2203"): a percentage above 100 is an input error, not capped. The
+  # form prints no maximum: the refusal above 100 is a choice, not a form rule. The maximum is a
+  # credit dataset of 100, taken whole.
+  - name: core/credit_amount
+    params:
+      amount: ca/amt_t2203_column_5_percentage_maximum
+    produces:
+      output: ca/amt_t2203_column_5_percentage_maximum
+  # The percentage as entered against that maximum: the checked percentage is the one the readers of
+  # the percentage apply, in place of the entered one.
+  - name: core/at_most
+    consumes:
+      amount: ca/amt_t2203_column_5_percentage
+      bound: ca/amt_t2203_column_5_percentage_maximum
+    produces:
+      output: ca/amt_t2203_column_5_percentage_checked
+  # Form T2203 Part 2 line 4 "Enter your basic federal tax from line 42900 of your return." is
+  # `ca/federal_tax_after_credits`, read directly. Line 5 "If you have to pay tax on split income,
+  # enter the amount from line 22 of your Form T1206. If not, enter "0"": the condition "you have
+  # to pay tax on split income" counts 1 when the federal tax on split income is more than 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t2203_tax_on_split_income_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/federal_tax_on_split_income
+    produces:
+      output: ca/t2203_has_tax_on_split_income
+  # T2203 Part 2 line 5, the second branch: line 22 of Form T1206 when there is tax on split
+  # income (the count above), and "0" otherwise.
+  - name: core/times_count
+    consumes:
+      amount: ca/split_income_line_22
+      count: ca/t2203_has_tax_on_split_income
+    produces:
+      output: ca/t2203_line_5
+  # T2203 Part 2 line 6 "Enter whichever is more: amount from line 4 or line 5.": the greater of
+  # line 4 (`ca/federal_tax_after_credits`) and line 5.
+  - name: core/greater_of
+    consumes:
+      amounts:
+        - ca/federal_tax_after_credits
+        - ca/t2203_line_5
+    produces:
+      output: ca/t2203_line_6
+  # T2203 Part 2 line 8 "Line 6 multiplied by the percentage from line 7": line 7 is the caller's
+  # percentage of Part 1 line 52220 column 5, as printed (25 for 25%), rounded once by its dataset.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t2203_line_8_rounding
+    consumes:
+      amount: ca/t2203_line_6
+      percentage: ca/amt_t2203_column_5_percentage_checked
+    produces:
+      output: ca/t2203_line_8
+  # T2203 Part 2 line 10 "Line 8 multiplied by the percentage from line 9 (1)": line 9 "Federal
+  # surtax rate", 48%, from its rate dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/t2203_federal_surtax_rate
+    consumes:
+      base: ca/t2203_line_8
+    produces:
+      output: ca/t2203_federal_surtax_outside_canada
+  # T1 line 127 "Federal surtax on income earned outside Canada (complete Form T2203)": line 10 of
+  # Part 2 of Form T2203, or, when you are subject to minimum tax (the caller's count, 1 for yes),
+  # line 4 of Part 3 of Form T691 ("If you are subject to minimum tax, do not complete lines 4 to
+  # 10" on Form T2203). Part 3 line 4 has no floor, so the surtax may be negative.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/amt_subject_to_minimum_tax
+      when_none: ca/t2203_federal_surtax_outside_canada
+      when_any: ca/amt_federal_surtax
+    produces:
+      output: ca/federal_surtax_outside_canada
+  # T1 line 128 "Line 126 plus line 127 =": line 126 (`ca/federal_tax_after_credits`) and line 127.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_tax_after_credits
+        - ca/federal_surtax_outside_canada
+    produces:
+      output: ca/federal_tax_with_surtax

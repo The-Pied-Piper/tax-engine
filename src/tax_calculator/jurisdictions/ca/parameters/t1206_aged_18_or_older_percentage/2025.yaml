@@ -1,0 +1,15 @@
+# Form T1206 (2025), page 6, "If you were 18 years of age or older at the end of the year, enter the
+# amount from line G on the applicable line(s) of Schedule 3. In addition, multiply the capital gain
+# for each disposition reported on lines A, B, C and F by 50% and enter the total on line 3 in Part 1
+# on page 7.": the percentage of line G, 50 (50%), keyed by the age answer (0 for under 18, which takes
+# 0, and 1 for 18 or older). Confirmed from the PDF; no .txt published. The product is rounded
+# half-up to the cent, once, the owner's decision, as the form states no rounding rule.
+family: ca/t1206_aged_18_or_older_percentage
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amounts:
+  "0": "0"
+  "1": "50"

@@ -1,0 +1,14 @@
+# Limit on the non-business foreign tax credit for income from property, 2025 tax year (Form T2209
+# page 1 note): "If you paid tax on income from property sourced outside of Canada (other than real
+# or immovable property), your non-business foreign tax credit for that income cannot be more than
+# 15% of your net income from that property. However, you may be able to deduct the part of the
+# foreign taxes you paid over 15% on line 23200 of your return." The 15% is printed. The product is
+# a dollars-and-cents amount, so it rounds half-up to the cent, the owner's decision, as the form
+# states no rounding rule.
+family: ca/foreign_property_income_credit_limit_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15"

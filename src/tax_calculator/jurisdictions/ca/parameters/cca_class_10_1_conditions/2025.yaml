@@ -1,0 +1,28 @@
+# Guide T4044 (2025), "Class 10.1": "Include your passenger vehicle in Class 10.1 if it meets one of
+# the following conditions: - You acquired it after December 31, 2000, and before January 1, 2022,
+# and it cost you more than $30,000 - You acquired it after December 31, 2021, and before January 1,
+# 2023, and it cost you more than $34,000 - You acquired it after December 31, 2022, and before
+# January 1, 2024, and it cost you more than $36,000 - You acquired it after December 31, 2023, and
+# before January 1, 2025, and it cost you more than $37,000 - You acquired it after December 31,
+# 2024, and it cost you more than $38,000. If your passenger vehicle does not meet any of these
+# conditions, then it belongs in Class 10." and "To determine what class your passenger vehicle
+# belongs to, do not include the GST and PST or HST when calculating the cost of the vehicle." The
+# amount is the cost the vehicle must be more than, taken as printed; a vehicle acquired before 2001
+# meets none of the conditions, so the oldest row begins in 2001.
+family: ca/cca_class_10_1_conditions
+tax_year: 2025
+kind: year_amounts
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - from_year: 2025
+    amounts: {minimum_cost: "38000"}
+  - from_year: 2024
+    amounts: {minimum_cost: "37000"}
+  - from_year: 2023
+    amounts: {minimum_cost: "36000"}
+  - from_year: 2022
+    amounts: {minimum_cost: "34000"}
+  - from_year: 2001
+    amounts: {minimum_cost: "30000"}

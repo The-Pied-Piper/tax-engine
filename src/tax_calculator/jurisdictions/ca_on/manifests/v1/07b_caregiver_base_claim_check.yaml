@@ -1,0 +1,52 @@
+# Schedule 5 line 30425 "You may be able to claim this amount if you can claim an amount for your
+# spouse or common-law partner on line 30300 of your return, or for an eligible dependant 18 years of
+# age or older on line 30400 of your return": the Canada caregiver amount entered on line 51090 or
+# line 51100 is an add-on to the amount it builds on. The count of the caregiver amount for the spouse
+# without the spouse amount, and of the caregiver amount for a dependant without the eligible
+# dependant amount, is 1 when the one is claimed and the other is nil, else 0. The schedule prints no
+# refusal; the count of 1 is refused below, not capped, so the caregiver amount is never credited
+# without its base claim.
+capabilities:
+  # Schedule 5 line 51090 and line 30300, the caregiver amount for the spouse without the spouse
+  # amount: 1 when the caregiver count (line 51090) is more than 0 and the spouse count (line 30300)
+  # is 0, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/spouse_caregiver_without_spouse_amount_conditions
+    consumes:
+      counts:
+        - ca/spouse_caregiver_eligible_checked
+        - ca/spouses_claimed_checked
+      amounts: []
+    produces:
+      output: ca/spouse_caregiver_without_spouse_amount
+  # The count above is refused when it is 1: an input error naming lines 51090 and 30300 (not capped,
+  # and not a printed line). The checked count, 0, is read by nothing on the return.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/spouse_caregiver_without_spouse_amount_refused
+    consumes:
+      count: ca/spouse_caregiver_without_spouse_amount
+    produces:
+      output: ca/spouse_caregiver_without_spouse_amount_checked
+  # Schedule 5 line 51100 and line 30400, the same for the caregiver amount for a dependant without
+  # the eligible dependant amount: 1 when the caregiver count (line 51100) is more than 0 and the
+  # eligible dependant count (line 30400) is 0, else 0.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/dependant_caregiver_without_dependant_amount_conditions
+    consumes:
+      counts:
+        - ca/dependant_caregiver_eligible_checked
+        - ca/eligible_dependants_checked
+      amounts: []
+    produces:
+      output: ca/dependant_caregiver_without_dependant_amount
+  # The count above is refused when it is 1: an input error naming lines 51100 and 30400.
+  - name: ca/count_refused_by_conditions
+    params:
+      conditions: ca/dependant_caregiver_without_dependant_amount_refused
+    consumes:
+      count: ca/dependant_caregiver_without_dependant_amount
+    produces:
+      output: ca/dependant_caregiver_without_dependant_amount_checked

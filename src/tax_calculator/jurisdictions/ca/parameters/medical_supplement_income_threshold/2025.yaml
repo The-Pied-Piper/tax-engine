@@ -1,0 +1,12 @@
+# Refundable medical expense supplement income threshold, 2025 tax year (Federal Worksheet,
+# form 5000-D1): "Line 45200 - Refundable medical expense supplement", line 7: "Income threshold
+# 33,294.00". It borrows the credit kind because it is a printed constant, claimed whole.
+# Line 7 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/medical_supplement_income_threshold
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "33294.00"

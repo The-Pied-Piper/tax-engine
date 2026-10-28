@@ -1,0 +1,24 @@
+# The change in use check of Part A of the T777 form, the fifth of its CCA checks: see 03k_t777.yaml
+# for the form's selections and for the Class 8 claim, the Class 8 closing UCC and the vehicle
+# proceeds, which read the checked rows. The check runs after the Part A list checks
+# (`03k_t777.yaml`) and before those readers, and passes each row on unchanged, with the same fields as
+# the rows it reads.
+# Guide T4044 2025, Part A column 3: "If you owned property for personal use and then started using it
+# for employment in 2025, there is a change in use. In most cases when this happens, the amount you
+# will enter in this column is the fair market value of the property at the time you start using the
+# property for employment." The filer answers whether a row had a change in use and enters the fair
+# market value; the cost of additions (column 3) of such a row is refused unless it is that value.
+# One selection for the Class 8 list and one for the vehicle list, the same capability.
+form:
+  name: ca/t777
+capabilities:
+  - name: ca/cca_change_in_use_checks
+    consumes:
+      classes: ca/t777_class_8_checked_rows
+    produces:
+      output: ca/t777_class_8_change_in_use_checked_rows
+  - name: ca/cca_change_in_use_checks
+    consumes:
+      classes: ca/t777_vehicle_checked_rows
+    produces:
+      output: ca/t777_vehicle_change_in_use_checked_rows

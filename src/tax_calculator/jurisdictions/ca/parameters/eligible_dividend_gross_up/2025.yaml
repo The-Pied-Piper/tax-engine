@@ -1,0 +1,16 @@
+# Eligible dividend gross-up, 2025 tax year (Federal Worksheet, form 5000-D1): "Lines 12000
+# and 12010 - Taxable amount of dividends from taxable Canadian corporations", "Taxable
+# amount of dividends if you did not receive an information slip": line 11 "Actual amount
+# of eligible dividends received"; line 12 "Applicable rate 138%"; line 13 "Line 11
+# multiplied by the percentage from line 12". 138% is above one, which the rate kind
+# refuses, so it is a fraction, 138/100, kept as given.
+# Line 13 is a dollars-and-cents box, so the product rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/eligible_dividend_gross_up
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+numerator: "138"
+denominator: "100"

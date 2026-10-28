@@ -1,0 +1,243 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 3a and Part 3b (lines 70 to 93): the results for earnings subject to
+# contributions from employment income only. Lines 70, 71, 72 and 74 only copy lines 52, 59,
+# 67 and 69, so they have no step of their own. Part 2 and Part 3 lines 1 to 26 are in
+# 08a_rc381_part_2_and_3.yaml, lines 27 to 69 in 08b_rc381_part_3_qpp_and_totals.yaml.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # Part 3a, line 73 "Deduction for enhanced contributions on employment income: Line 71 plus
+  # line 72", line 71 "Enter the amount from line 59." and line 72 "Enter the amount from line 67
+  # (if any).": copies of lines 59 and 67, so no step of their own.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_59
+        - ca/rc381_part_3_line_67
+    produces:
+      output: ca/rc381_part_3_line_73
+  # Part 3b, line 75 "If line 53 is positive or "0", enter the amount from line 52 at line 75 and
+  # line 81, and continue at line 82. If not, enter the amount from line 49 and continue at
+  # line 76." (The lines it skips come out the same by their own rules: line 76 is "0", so lines
+  # 77, 78 and 80 are "0" and line 81 is line 79, line 52.)
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_53
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_3_line_49
+      when_non_positive: []
+      when_non_negative:
+        - ca/rc381_part_3_line_52
+    produces:
+      output: ca/rc381_part_3_line_75
+  # Line 76 "If line 53 is negative: Enter the amount from line 53 as a positive amount."
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_53
+    produces:
+      output: ca/rc381_part_3_line_76
+  # Line 77 "If line 53 is negative and line 60 is positive, enter whichever is less: amount from
+  # line 60 or line 76. If not, enter "0"." Line 76 is above zero only when line 53 is negative,
+  # so the least of lines 60 and 76 when both are above zero is the form's rule.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_60
+        - ca/rc381_part_3_line_76
+    produces:
+      output: ca/rc381_part_3_line_77
+  # Line 78 "Line 76 minus line 77".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_76
+      less: ca/rc381_part_3_line_77
+    produces:
+      output: ca/rc381_part_3_line_78
+  # Line 79 "Line 75 plus line 77".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_75
+        - ca/rc381_part_3_line_77
+    produces:
+      output: ca/rc381_part_3_line_79
+  # Line 80 "If line 68 and line 78 are both positive, enter whichever is less. If not, enter
+  # "0"" (the lesser of lines 68 and 78).
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_68
+        - ca/rc381_part_3_line_78
+    produces:
+      output: ca/rc381_part_3_line_80
+  # Line 81 "Base contributions through employment income: Line 79 plus line 80".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_79
+        - ca/rc381_part_3_line_80
+    produces:
+      output: ca/rc381_part_3_line_81
+  # Line 82 "If line 60 is positive or "0", enter the amount from line 59 at line 82 and line 88,
+  # and continue at line 89. If not, enter the amount from line 56 and continue at line 83."
+  # (The lines it skips come out the same by their own rules: line 83 is "0", so lines 84, 85 and
+  # 87 are "0" and line 88 is line 86, line 59.)
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_60
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_3_line_56
+      when_non_positive: []
+      when_non_negative:
+        - ca/rc381_part_3_line_59
+    produces:
+      output: ca/rc381_part_3_line_82
+  # Line 83 "If line 60 is negative: Enter the amount from line 60 as a positive amount."
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_60
+    produces:
+      output: ca/rc381_part_3_line_83
+  # Line 84 "If line 53 is positive, enter whichever is less: amount from line 53 or line 83. If
+  # not, enter "0"." Line 83 is above zero only when line 60 is negative.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_53
+        - ca/rc381_part_3_line_83
+    produces:
+      output: ca/rc381_part_3_line_84
+  # Line 85 "Line 83 minus line 84".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_83
+      less: ca/rc381_part_3_line_84
+    produces:
+      output: ca/rc381_part_3_line_85
+  # Line 86 "Line 82 plus line 84".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_82
+        - ca/rc381_part_3_line_84
+    produces:
+      output: ca/rc381_part_3_line_86
+  # The result printed inside line 87, "the result of line 68 minus line 80", which is above zero
+  # only when line 68 is.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_68
+      less: ca/rc381_part_3_line_80
+    produces:
+      output: ca/rc381_part_3_line_87_difference
+  # Line 87 "If line 68 and line 85 are both positive, enter whichever is less: amount from line
+  # 85 or the result of line 68 minus line 80. If not, enter "0"." Line 80 is never more than a
+  # positive line 68, so the difference is above zero exactly when line 68 is more than line 80;
+  # when it is "0" or line 68 is not positive the lesser is not above zero and the line is "0"
+  # either way.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_85
+        - ca/rc381_part_3_line_87_difference
+    produces:
+      output: ca/rc381_part_3_line_87
+  # Line 88 "Line 86 plus line 87".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_86
+        - ca/rc381_part_3_line_87
+    produces:
+      output: ca/rc381_part_3_line_88
+  # Line 89 "If line 68 is positive or "0", enter the amount from line 67 at line 89 and line 92,
+  # and continue at line 93. If not, enter the amount from line 64 and continue at line 90."
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_68
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_3_line_64
+      when_non_positive: []
+      when_non_negative:
+        - ca/rc381_part_3_line_67
+    produces:
+      output: ca/rc381_part_3_line_89
+  # Line 90 "If line 68 is negative: Enter the amount from line 68 as a positive amount."
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_68
+    produces:
+      output: ca/rc381_part_3_line_90
+  # Line 91 "If line 61 is positive, enter whichever is less: amount from line 61 or line 90. If
+  # not, enter "0"." Line 90 is above zero only when line 68 is negative.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_61
+        - ca/rc381_part_3_line_90
+    produces:
+      output: ca/rc381_part_3_line_91
+  # Line 92 "Line 89 plus line 91".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_89
+        - ca/rc381_part_3_line_91
+    produces:
+      output: ca/rc381_part_3_line_92
+  # Line 93 "Deduction for enhanced contributions on employment income: Line 88 plus line 92".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_88
+        - ca/rc381_part_3_line_92
+    produces:
+      output: ca/rc381_part_3_line_93
+  # The result for line 30800 of the return, "If your earnings subject to contributions are from
+  # employment income only and line 69 is: positive, complete Part 3a ... "0", complete Part 3b
+  # ... negative ... If not, complete Part 3b": Part 3a line 70 "Base contributions through
+  # employment income: Enter the amount from line 52." when line 69 is positive, else Part 3b
+  # line 81 "Base contributions through employment income".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_69
+      when_positive:
+        - ca/rc381_part_3_line_52
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/rc381_part_3_line_81
+      when_non_negative: []
+    produces:
+      output: ca/rc381_employment_cpp_base_contributions
+  # The result for line 22215 of the return: Part 3a line 73 "Deduction for enhanced
+  # contributions on employment income: Line 71 plus line 72" when line 69 is positive, else Part
+  # 3b line 93 "Deduction for enhanced contributions on employment income".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_69
+      when_positive:
+        - ca/rc381_part_3_line_73
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/rc381_part_3_line_93
+      when_non_negative: []
+    produces:
+      output: ca/rc381_employment_cpp_enhanced_contributions
+  # The result for line 44800 of the return: Part 3a line 74 "Overpayment: Enter the amount from
+  # line 69." when line 69 is positive; Part 3b has no overpayment, so "0" otherwise. Line 69 is
+  # its own sign, so the amount is line 69 not below zero.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_69
+    produces:
+      output: ca/rc381_cpp_overpayment

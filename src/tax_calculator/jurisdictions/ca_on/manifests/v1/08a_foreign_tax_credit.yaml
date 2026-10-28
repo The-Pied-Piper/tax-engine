@@ -1,0 +1,258 @@
+capabilities:
+  # Form T2209 note (3), "amounts deductible as net employment income from a prescribed
+  # international organization, as foreign income exempt under a tax treaty, or as adult basic
+  # education tuition assistance (included on line 25600 of your return)": the part of line 25600
+  # that is exempt income is at most the whole, line 25600 "Additional deductions"
+  # (`ca/additional_deductions_total`). An amount above it is refused, not capped; the sum below
+  # reads
+  # the checked amount.
+  - name: core/at_most
+    consumes:
+      amount: ca/exempt_income_deductions
+      bound: ca/additional_deductions_total
+    produces:
+      output: ca/exempt_income_deductions_checked
+  # Form T2209 note (3), net income: "Amount from line 23600 of your return (or the amount you
+  # would have entered if the instructions said "if negative, show in brackets") plus the
+  # amount on line 68360 of Form T1206, Total split income, minus any:" "amount deductible as
+  # a Canadian Forces personnel and police deduction (line 24400 of your return)", "amount
+  # deductible as security options deductions (line 24900 of your return)", "amount
+  # deductible as an other payments deduction (line 25000 of your return)", "net capital
+  # losses of other years you claimed (line 25300 of your return)", "capital gains deduction
+  # for qualifying business transfer or qualifying cooperative conversion you claimed (line
+  # 25395 of your return)", "capital gains deduction you claimed (line 25400 of your return)"
+  # and "amounts deductible as net employment income from a prescribed international
+  # organization, as foreign income exempt under a tax treaty, or as adult basic education
+  # tuition assistance (included on line 25600 of your return)", in the note's order, added. The
+  # last is the checked amount, `ca/exempt_income_deductions_checked`, not the input.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/canadian_armed_forces_and_police_deduction
+        - ca/security_options_deductions
+        - ca/other_payments_deduction
+        - ca/net_capital_losses_of_other_years
+        - ca/qbt_capital_gains_deduction
+        - ca/capital_gains_deduction
+        - ca/exempt_income_deductions_checked
+    produces:
+      output: ca/foreign_tax_credit_net_income_deductions
+  # The net income of note (3), "Amount from line 23600 of your return (or the amount you would
+  # have entered if the instructions said "if negative, show in brackets")": line 23400 less
+  # line 23500, not floored, so signed. It is not the line 23600 kind, which is floored at 0.
+  - name: core/subtract
+    consumes:
+      amount: ca/net_income_before_adjustments
+      less: ca/social_benefits_repayment
+    produces:
+      output: ca/foreign_tax_credit_net_income_before_split_income
+  # Note (3), "plus the amount on line 68360 of Form T1206, Total split income": that amount
+  # added. It is the same figure as the TOSI-adjusted net income, which adds line 68360 to line
+  # 23400 less line 23500.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/foreign_tax_credit_net_income_before_split_income
+        - ca/total_split_income
+    produces:
+      output: ca/foreign_tax_credit_net_income_with_split_income
+  # Note (3), "minus any:" the deductions above. The note prints no "(if negative, enter "0")",
+  # so the result is signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/foreign_tax_credit_net_income_with_split_income
+      less: ca/foreign_tax_credit_net_income_deductions
+    produces:
+      output: ca/foreign_tax_credit_net_income
+  # Form T2209 note (4), basic federal tax: "Line 42900 of your return plus any:" "federal
+  # dividend tax credit (line 40425 of your return)" (note (8) is this sum alone, for the
+  # business lines).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_tax_after_credits
+        - ca/dividend_tax_credit
+    produces:
+      output: ca/basic_federal_tax_with_dividend_credit
+  # Note (4), "plus any:" "federal surtax on income allocated to "Other (Outside Canada)" (line 10
+  # of Part 2 of Form T2203 or 48% of the amount from line 42900 of your return)": the surtax on
+  # income earned outside Canada, T1 line 127 (`ca/federal_surtax_outside_canada`). Note (8) has
+  # no surtax, so the business lines do not take it. The surtax prints no floor, so the sum may be
+  # negative under minimum tax (Form T691 Part 3 line 4).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/basic_federal_tax_with_dividend_credit
+        - ca/federal_surtax_outside_canada
+    produces:
+      output: ca/basic_federal_tax_with_dividend_credit_and_surtax
+  # Note (4), "minus any:" the refundable Quebec abatement (line 44000 of your return or line 15 of
+  # Part 2 of Form T2203), which does not apply to an Ontario return, and "federal refundable First
+  # Nations abatement (line 44100 of your return)". The abatement is not allowed to take the basic
+  # federal tax below zero, so the result is held at 0.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/basic_federal_tax_with_dividend_credit_and_surtax
+      less: ca/first_nations_abatement
+    produces:
+      output: ca/foreign_tax_credit_basic_federal_tax
+  # Form T2209 page 1 note: "If you paid tax on income from property sourced outside of Canada
+  # (other than real or immovable property), your non-business foreign tax credit for that income
+  # cannot be more than 15% of your net income from that property. However, you may be able to
+  # deduct the part of the foreign taxes you paid over 15% on line 23200 of your return." For each
+  # country the property tax paid less 15% of the property income, not below zero, added: the amount
+  # for line 23200 (05_deductions.yaml), taken off line 1 of the credit below.
+  - name: ca/foreign_property_tax_over_limit
+    params:
+      limit_rate: ca/foreign_property_income_credit_limit_rate
+    consumes:
+      countries: ca/foreign_tax_countries
+    produces:
+      output: ca/foreign_property_tax_over_limit
+  # Form T2209 line 6 "Federal surtax on income allocated to "Other (Outside Canada)":" "Amount from
+  # line 10 of Part 2 of Form T2203 ... or 48% of the amount from line 42900 of your return. Enter
+  # the amount that applies to the country or countries you identified at the top of this page.":
+  # the amount that applies to the countries of a sheet is the filer's, each country's record
+  # holding its part of the one surtax of T1 line 127 (`ca/federal_surtax_outside_canada`; T2203
+  # Part 2 note (1): "enter this amount on line 127 of your return"). The parts are added and may
+  # not be more than that surtax; no positive part is allocated of a surtax of 0 or less.
+  - name: ca/foreign_surtax_allocated_total
+    consumes:
+      countries: ca/foreign_tax_countries
+    produces:
+      output: ca/foreign_surtax_allocated_total
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/federal_surtax_outside_canada
+    produces:
+      output: ca/foreign_surtax_limit
+  - name: core/at_most
+    consumes:
+      amount: ca/foreign_surtax_allocated_total
+      bound: ca/foreign_surtax_limit
+    produces:
+      output: ca/foreign_surtax_allocated_total_checked
+  # Form T2209, federal non-business foreign tax credit: line 1 "Non-business income tax paid
+  # to a foreign country (1) 43100", line 2 "Net foreign non-business income (2) 43300" "×
+  # Basic federal tax (4) =" over "Net income (3)", line 3 "Enter whichever is less: the
+  # amount from line 1 or line 2. Federal non-business foreign tax credit", for each country
+  # on its own when "you paid tax to more than one foreign country, and the total foreign
+  # taxes paid to all foreign countries was more than $200", otherwise once on the totals; the
+  # total of line 3. Line 1 is the tax paid less the excess over 15% on income from property.
+  - name: ca/foreign_non_business_tax_credit
+    params:
+      rounding: ca/foreign_non_business_tax_credit_rounding
+      pooling_threshold: ca/foreign_tax_pooling_threshold
+      limit_rate: ca/foreign_property_income_credit_limit_rate
+    consumes:
+      countries: ca/foreign_tax_countries
+      net_income: ca/foreign_tax_credit_net_income
+      basic_federal_tax: ca/foreign_tax_credit_basic_federal_tax
+    produces:
+      total: ca/federal_non_business_foreign_tax_credit
+      sheets: ca/foreign_tax_credit_sheets
+  # Form T2209, federal business foreign tax credit, on the same sheets: line 4 "Business income
+  # tax paid to a foreign country (5) for the year, plus any unused foreign tax credits for that
+  # country for the 10 years (6) before, and the 3 years after this year" (43400); the total of
+  # line 4.
+  - name: ca/foreign_business_tax_credit_line_4
+    params:
+      rounding: ca/foreign_business_tax_credit_rounding
+    consumes:
+      sheets: ca/foreign_tax_credit_sheets
+      net_income: ca/foreign_tax_credit_net_income
+      basic_federal_tax: ca/basic_federal_tax_with_dividend_credit
+    produces:
+      output: ca/foreign_business_tax_credit_line_4
+  # Line 5 "Net foreign business income (7)" (43900) "× Basic federal tax (8)" over "Net income
+  # (3)", where note (8) is "Line 42900 of your return plus any federal dividend tax credit (line
+  # 40425 of your return)." and note (7) says "If your net foreign business income is more than
+  # your net income, use your net income in the calculation."; the total of line 5, each sheet
+  # rounded half-up to the cent.
+  - name: ca/foreign_business_tax_credit_line_5
+    params:
+      rounding: ca/foreign_business_tax_credit_rounding
+    consumes:
+      sheets: ca/foreign_tax_credit_sheets
+      net_income: ca/foreign_tax_credit_net_income
+      basic_federal_tax: ca/basic_federal_tax_with_dividend_credit
+    produces:
+      output: ca/foreign_business_tax_credit_line_5
+  # Line 7 "Add lines 5 and 6.", line 6 being "Federal surtax on income allocated to "Other
+  # (Outside Canada)":" "Amount from line 10 of Part 2 of Form T2203, Provincial and Territorial
+  # Taxes for Multiple Jurisdictions, or 48% of the amount from line 42900 of your return. Enter
+  # the amount that applies to the country or countries you identified at the top of this
+  # page."; the total of line 7.
+  - name: ca/foreign_business_tax_credit_line_7
+    params:
+      rounding: ca/foreign_business_tax_credit_rounding
+    consumes:
+      sheets: ca/foreign_tax_credit_sheets
+      net_income: ca/foreign_tax_credit_net_income
+      basic_federal_tax: ca/basic_federal_tax_with_dividend_credit
+    produces:
+      output: ca/foreign_business_tax_credit_line_7
+  # Line 8 "Add basic federal tax (8) and the amount from line 6."; the total of line 8.
+  - name: ca/foreign_business_tax_credit_line_8
+    params:
+      rounding: ca/foreign_business_tax_credit_rounding
+    consumes:
+      sheets: ca/foreign_tax_credit_sheets
+      net_income: ca/foreign_tax_credit_net_income
+      basic_federal_tax: ca/basic_federal_tax_with_dividend_credit
+    produces:
+      output: ca/foreign_business_tax_credit_line_8
+  # Line 9 "Enter the amount from line 3, if any." and line 10 "Line 8 minus line 9", which prints
+  # no "(if negative, enter "0")"; the total of line 10.
+  - name: ca/foreign_business_tax_credit_line_10
+    params:
+      rounding: ca/foreign_business_tax_credit_rounding
+    consumes:
+      sheets: ca/foreign_tax_credit_sheets
+      net_income: ca/foreign_tax_credit_net_income
+      basic_federal_tax: ca/basic_federal_tax_with_dividend_credit
+    produces:
+      output: ca/foreign_business_tax_credit_line_10
+  # Line 11 "Enter whichever is less: the amount from line 4, 7 or 10." "Federal business foreign
+  # tax credit"; the total of line 11.
+  - name: ca/foreign_business_tax_credit_line_11
+    params:
+      rounding: ca/foreign_business_tax_credit_rounding
+    consumes:
+      sheets: ca/foreign_tax_credit_sheets
+      net_income: ca/foreign_tax_credit_net_income
+      basic_federal_tax: ca/basic_federal_tax_with_dividend_credit
+    produces:
+      output: ca/federal_business_foreign_tax_credit
+  # T2209 line 12 "Enter the amount from line 3, if any." and line 13 "Add lines 11 and 12."
+  # "Federal foreign tax credit": line 11 and line 12, the total of line 3.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/federal_business_foreign_tax_credit
+        - ca/federal_non_business_foreign_tax_credit
+    produces:
+      output: ca/federal_foreign_tax_credit_before_limit
+  # T1 line 129 (line 40500) "Federal foreign tax credit (complete Form T2209)" and T2209 line
+  # 13: "The amount on line 13 should not be more than the total of the amount on line 42900 of
+  # your return, plus any federal surtax on income earned outside of Canada." The limit is line
+  # 42900 plus line 127, that is line 128 (`ca/federal_tax_with_surtax`). Line 128 is not above
+  # zero only when line 126 is 0 or line 127 is negative (minimum tax, Form T691 Part 3 line 4 has
+  # no floor); then the credit is 0.
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/federal_foreign_tax_credit_before_limit
+        - ca/federal_tax_with_surtax
+    produces:
+      output: ca/federal_foreign_tax_credit
+  # T1 line 130 "Line 128 minus line 129 =": line 128 (`ca/federal_tax_with_surtax`, "Line 126
+  # plus line 127 =") less line 129 (40500). The line prints no "(if negative, enter "0")", so
+  # the result is signed: line 128 is negative only when line 127 is, and then the credit is 0.
+  - name: core/subtract
+    consumes:
+      amount: ca/federal_tax_with_surtax
+      less: ca/federal_foreign_tax_credit
+    produces:
+      output: ca/federal_tax_less_foreign_tax_credit

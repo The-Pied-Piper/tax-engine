@@ -1,0 +1,39 @@
+# Conditions of Guide T4044 (2025) "Eligible leasing costs", "Repayments and imputed interest" (the
+# guide of Form T777 line 27), 2025 tax year: "When you lease a passenger vehicle, you may have either
+# a repayment owing to you, or you may have imputed interest. If this is your situation, you cannot
+# use the leasing chart below. Instead, contact the CRA." and "You can only consider imputed interest
+# as leasing costs on a passenger vehicle if all the following apply: - You made one or more deposits
+# for the leased passenger vehicle - All deposits are refundable - The deposits total is more than
+# $1,000". The counts are the checked answers (position 1 the passenger vehicle, 2 the repayment
+# owing, 3 deposits made, 4 all deposits refundable); the amount (position 1) is the deposits total,
+# which must be more than the printed $1,000 (a total of exactly $1,000 is not more). The chart is
+# for a passenger vehicle, so both conditions read position 1. The first condition applies when the
+# vehicle is a passenger vehicle with a repayment owing; the second when it is a passenger vehicle
+# and all three printed conditions hold, each read as typed (the guide prints no link between them).
+# A condition applies when every one of its parts holds; a part holds when any of its tests holds.
+# The count is 1 when a condition applies and 0 otherwise. The count is a count, not a
+# dollars-and-cents box, so there is no rounding.
+family: ca/t777_lease_chart_conflicts
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: a passenger vehicle with a repayment owing to the filer
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "2", relation: equal_to, than: "1"}
+  - text: a passenger vehicle with imputed interest (deposits made, all refundable, total more than $1,000)
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "3", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: count, position: "4", relation: equal_to, than: "1"}
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "1000"}

@@ -1,0 +1,44 @@
+capabilities:
+  # Guide T4037 p.34 "Plus: Property taxes + $ C" and "Interest + $ D": the property taxes and interest
+  # of the restricted farm loss added to the adjusted cost base of each farmland disposition, summed
+  # over the real estate list, then the qualified farm or fishing property list, its foreclosures and the other mortgage
+  # foreclosures list.
+  - name: ca/restricted_farm_loss_applied
+    consumes:
+      dispositions: ca/real_estate_dispositions
+    produces:
+      output: ca/real_estate_restricted_farm_loss_applied
+  - name: ca/restricted_farm_loss_applied
+    consumes:
+      dispositions: ca/qffp_dispositions
+    produces:
+      output: ca/qffp_restricted_farm_loss_applied
+  - name: ca/restricted_farm_loss_applied
+    consumes:
+      dispositions: ca/qffp_foreclosure_dispositions
+    produces:
+      output: ca/qffp_foreclosure_restricted_farm_loss_applied
+  - name: ca/restricted_farm_loss_applied
+    consumes:
+      dispositions: ca/other_foreclosure_dispositions
+    produces:
+      output: ca/other_foreclosure_restricted_farm_loss_applied
+  # The amount applied on the four lists, added: "Also, you have to reduce your RFL balance by these
+  # amounts."
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/real_estate_restricted_farm_loss_applied
+        - ca/qffp_restricted_farm_loss_applied
+        - ca/qffp_foreclosure_restricted_farm_loss_applied
+        - ca/other_foreclosure_restricted_farm_loss_applied
+    produces:
+      output: ca/restricted_farm_loss_applied_total
+  # The amount applied is at most the unapplied balance of the property taxes and interest part. An
+  # amount above it is an input error, not capped, as the filer states the amounts on each row.
+  - name: core/at_most
+    consumes:
+      amount: ca/restricted_farm_loss_applied_total
+      bound: ca/unapplied_restricted_farm_loss_taxes_and_interest
+    produces:
+      output: ca/restricted_farm_loss_applied_checked

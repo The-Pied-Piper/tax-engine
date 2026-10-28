@@ -1,0 +1,68 @@
+# Form T1206 (2025) page 6, "Calculation of reserve": the form ca/t1206_share_reserve, run once for each
+# disposition of the list ca/t1206_share_reserve_rows (one record for each disposition, none included).
+# The maximum is the lesser of (i) and (ii); the reserve claimed for the disposition is taken up to that
+# maximum, and the claim is the row's export, ca/t1206_row_reserve, which the form ca/t1206_share_dispositions
+# (03w_t1206_share_dispositions.yaml) reads as ca/t1206_share_reserve.t1206_row_reserve and totals on
+# line C.
+form:
+  name: ca/t1206_share_reserve
+  instances: ca/t1206_share_reserve_rows
+  exports:
+    - ca/t1206_row_reserve
+capabilities:
+  # "Amount payable after the end of the year" over "Proceeds of disposition": the form prints no bound,
+  # so an amount payable above the proceeds is refused, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1206_reserve_amount_payable_after_year_end
+      bound: ca/t1206_reserve_proceeds
+    produces:
+      output: ca/t1206_reserve_payable_checked
+  # (i) "Capital gain x Amount payable after the end of the year / Proceeds of disposition", zero when
+  # the proceeds are zero, rounded half-up to the cent once.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1206_rounding
+    consumes:
+      amount: ca/t1206_reserve_capital_gain
+      numerator: ca/t1206_reserve_payable_checked
+      denominator: ca/t1206_reserve_proceeds
+    produces:
+      output: ca/t1206_reserve_by_payment
+  # "Applicable percentage for year of sale or year after sale (1)": 80%, 60%, 40%, 20% and 0%, by the
+  # years after the sale.
+  - name: core/amount_by_count
+    params:
+      table: ca/t1206_reserve_percentage
+    consumes:
+      count: ca/t1206_reserve_years_after_sale
+    produces:
+      output: ca/t1206_reserve_applicable_percentage
+  # (ii) "Capital gain x Applicable percentage for year of sale or year after sale (1)", rounded half-up
+  # to the cent once.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/t1206_rounding
+    consumes:
+      amount: ca/t1206_reserve_capital_gain
+      percentage: ca/t1206_reserve_applicable_percentage
+    produces:
+      output: ca/t1206_reserve_by_percentage
+  # "Your reserve in each year cannot be more than whichever of the following two calculations is less":
+  # the lesser of (i) and (ii), the most the reserve can be.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1206_reserve_by_payment
+        - ca/t1206_reserve_by_percentage
+    produces:
+      output: ca/t1206_reserve_maximum
+  # "Complete this calculation and include the total amount of your 2025 reserve on line C above": the
+  # reserve claimed for the disposition, up to the maximum. A claim above the maximum is refused, not
+  # capped; a claim below it is taken as entered.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1206_reserve_claimed
+      bound: ca/t1206_reserve_maximum
+    produces:
+      output: ca/t1206_row_reserve

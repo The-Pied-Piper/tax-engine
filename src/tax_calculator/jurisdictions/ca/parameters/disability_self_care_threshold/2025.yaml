@@ -1,0 +1,13 @@
+# Threshold for child care and attendant care expenses for the disability amount for self, 2025
+# tax year (Federal Worksheet, form 5000-D1): "Line 31600 - Disability amount for self", line 4
+# "Threshold for child care and attendant care expenses 3,464.00". Line 5 of the worksheet is the
+# care expenses less this threshold, not below zero.
+# Line 4 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/disability_self_care_threshold
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "3464.00"

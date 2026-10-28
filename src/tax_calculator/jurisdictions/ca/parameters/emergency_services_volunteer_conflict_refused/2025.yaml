@@ -1,0 +1,20 @@
+# Condition under which the count of the $1,000 exemption (line 10105) claimed with the volunteer
+# firefighters' amount or the search and rescue volunteers' amount is refused, Form 5000-G
+# "Emergency services volunteers" (2025), 2025 tax year: the guide's "you must choose which one you
+# want to claim", applied to the count of `ca/emergency_services_volunteer_conflict`, 1. Such a
+# return is an input error, not a rule the form prints, so the count is refused and never read as
+# both the exemption and the VFA or SRVA. The refusal is the guard of this check, not a printed
+# rule. The count is 1 when it applies and 0 otherwise. The count is a count, not a dollars-and-cents
+# box, so there is no rounding.
+family: ca/emergency_services_volunteer_conflict_refused
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: the $1,000 exemption (line 10105) and the VFA or SRVA are both claimed
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: equal_to, than: "1"}

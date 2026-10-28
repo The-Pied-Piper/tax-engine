@@ -1,0 +1,14 @@
+# Ontario age amount reduction rate, 2025 tax year (Worksheet ON428, form 5006-D): "Line
+# 58080 - Age amount (if you were born in 1960 or earlier)", line 5 "Applicable rate 15%",
+# by which line 6 "Line 4 multiplied by the percentage from line 5" multiplies line 4. The
+# worksheet's "$87,817 or more, enter "0" on line 58080" follows from the arithmetic, as
+# 6,223 less 15% of (87,817 - 46,330) is negative and so zero, so it is not a dataset.
+# Line 6 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca-on/age_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15"

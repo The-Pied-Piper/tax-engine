@@ -1,0 +1,96 @@
+capabilities:
+  # Form T2222 (Northern Residents Deductions) Step 2, "Zone A - Residents of prescribed
+  # northern zones", line 1 "Enter the number of days you lived in a prescribed northern
+  # zone in 2025.": the filer's own count, used as typed; the form prints no maximum.
+  # "Basic residency amount" line 1 "Enter the number of days you lived in a prescribed
+  # northern zone in 2025. multiplied by $11.00 =" and "Additional residency amount" line 2
+  # "Enter the number of days you qualify for the additional residency amount in 2025.
+  # multiplied by $11.00 =": each a count of days (a starting count, the form's) times the
+  # yearly $11.00 dataset.
+  - name: core/per_unit_amount
+    params:
+      amount: ca/northern_zone_a_daily_amount
+    consumes:
+      count: ca/zone_a_days_lived
+    produces:
+      output: ca/zone_a_basic_residency_amount
+  # Line 2 "Enter the number of days you qualify for the additional residency amount in 2025."
+  # is refused (an input error) above the Zone A days of line 1: the form says to "Claim this
+  # amount for the days you used to calculate your basic residency amount", so the additional
+  # days are some of the line 1 days. The checked count is the line 2 count, unchanged, when it
+  # is at most line 1.
+  - name: ca/count_at_most
+    consumes:
+      count: ca/zone_a_additional_residency_days
+      maximum: ca/zone_a_days_lived
+    produces:
+      output: ca/zone_a_additional_residency_days_checked
+  - name: core/per_unit_amount
+    params:
+      amount: ca/northern_zone_a_daily_amount
+    consumes:
+      count: ca/zone_a_additional_residency_days_checked
+    produces:
+      output: ca/zone_a_additional_residency_amount
+  # Line 3 and line 67490 "Line 1 plus line 2 =", then line 4 and line 67507 (a starting
+  # amount, the non-taxable board and lodging benefits at a special work site, box 31 of
+  # the T4 slip or box 124 of the T4A slip) and line 5 "Line 3 minus line 4 (if negative,
+  # enter "0") =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/zone_a_basic_residency_amount
+        - ca/zone_a_additional_residency_amount
+    produces:
+      output: ca/zone_a_residency_amount
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/zone_a_residency_amount
+      less: ca/zone_a_special_work_site_benefits
+    produces:
+      output: ca/zone_a_residency_after_work_site
+  # "Zone B - Residents of prescribed intermediate zones": line 6 "Enter the number of days
+  # you lived in an intermediate zone in 2025." is the filer's own count, used as typed; the
+  # form prints no maximum.
+  # Line 6 "Enter the number of days you lived in an intermediate zone in 2025. multiplied by
+  # $5.50 =" and line 7 "Enter the number of days you qualify for the additional residency
+  # amount in 2025. multiplied by $5.50 =", line 8 and line 67520 "Line 6 plus line 7 =", line
+  # 9 and line 67529 (the special work site benefits) and line 10 "Line 8 minus line 9 (if
+  # negative, enter "0") =".
+  - name: core/per_unit_amount
+    params:
+      amount: ca/northern_zone_b_daily_amount
+    consumes:
+      count: ca/zone_b_days_lived
+    produces:
+      output: ca/zone_b_basic_residency_amount
+  # Line 7 is refused (an input error) above the Zone B days of line 6: the form says to "Claim
+  # this amount for the days you used to calculate your basic residency amount", so the
+  # additional days are some of the line 6 days. The checked count is the line 7 count,
+  # unchanged, when it is at most line 6.
+  - name: ca/count_at_most
+    consumes:
+      count: ca/zone_b_additional_residency_days
+      maximum: ca/zone_b_days_lived
+    produces:
+      output: ca/zone_b_additional_residency_days_checked
+  - name: core/per_unit_amount
+    params:
+      amount: ca/northern_zone_b_daily_amount
+    consumes:
+      count: ca/zone_b_additional_residency_days_checked
+    produces:
+      output: ca/zone_b_additional_residency_amount
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/zone_b_basic_residency_amount
+        - ca/zone_b_additional_residency_amount
+    produces:
+      output: ca/zone_b_residency_amount
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/zone_b_residency_amount
+      less: ca/zone_b_special_work_site_benefits
+    produces:
+      output: ca/zone_b_residency_after_work_site

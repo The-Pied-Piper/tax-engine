@@ -1,0 +1,14 @@
+# Form T1032 E (25), Step 4 Part B, page 3, Note 1: "Subtract from line 1 any of the above amounts noted
+# in a) through e) ...: If the result is $4,000 or more, enter on line 33 the amount from line 30. If
+# the result is less than $4,000, use that result as the amount for line 17 to recalculate lines 18 to
+# 31." The $4,000 is the figure the result is compared with, from the form as printed (confirmed
+# 2026-10-27 from the PDF; the .txt garbles the second bullet). The form states no rounding rule, so
+# the figure rounds half-up to the cent, the owner's decision, the repo convention. It is a
+# dollars-and-cents box claimed whole, so it borrows the credit kind.
+family: ca/t1032_note_1_result_figure
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "4000"

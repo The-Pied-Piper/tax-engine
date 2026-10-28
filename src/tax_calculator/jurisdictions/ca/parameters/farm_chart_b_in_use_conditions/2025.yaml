@@ -1,0 +1,97 @@
+# Use of Form T2043 Chart B by a statement (2025 tax year): "Fill in a separate Chart B for each farming
+# business with one or more permanent establishments in more than one province or territory, where at
+# least one province is a designated province, to allocate eligible farming expenses to a designated
+# province." (confirmed from the PDF; no .txt published). A statement uses Chart B when it has
+# totals in Chart B rows 1 or 4 for any designated province: the count is 1 when any of the
+# sixteen amounts (rows 1 and 4 for each province, read in the order ON, MB, SK, AB, NS, PE, NL, NB
+# for row 1, then the same for row 4) is more than 0, and 0 otherwise. Part 3 adds rows 2 and 5 only
+# of the statements that use Chart B ("row 2 of every Chart B you fill in"). Not a dollars-and-cents
+# box, so there is no rounding.
+family: ca/farm_chart_b_in_use_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      the Chart B row 1 amount for Ontario is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 1 amount for Manitoba is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 1 amount for Saskatchewan is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "3", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 1 amount for Alberta is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "4", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 1 amount for Nova Scotia is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "5", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 1 amount for Prince Edward Island is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "6", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 1 amount for Newfoundland and Labrador is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "7", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 1 amount for New Brunswick is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "8", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for Ontario is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "9", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for Manitoba is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "10", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for Saskatchewan is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "11", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for Alberta is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "12", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for Nova Scotia is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "13", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for Prince Edward Island is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "14", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for Newfoundland and Labrador is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "15", relation: more_than, than: "0"}
+  - text: >-
+      the Chart B row 4 amount for New Brunswick is more than 0
+    parts:
+      - tests:
+          - {reads: amount, position: "16", relation: more_than, than: "0"}

@@ -1,0 +1,95 @@
+# Form T1043 (2025), "Deduction for Excess Registered Pension Plan Transfers You Withdrew from an RRSP, a
+# PRPP, an SPP, or a RRIF", lines 1 to 9: the form ca/t1043, run once. Its starting inputs are the
+# caller's figures of lines 1, 2, 3, 6 and 7 and the filer's two yes or no answers to the conditions
+# (01p_t1043_inputs.yaml). Its export is line 9, "You can deduct this amount on line 23200" (0 unless
+# both answers are yes), which 05_deductions.yaml reads as ca/t1043.t1043_deduction.
+form:
+  name: ca/t1043
+  exports:
+    - ca/t1043_deduction
+capabilities:
+  # "To claim the deduction, you have to meet both of the following conditions: You included the
+  # excess amount that was transferred to your RRSP, PRPP, SPP, or RRIF in your income for the year it
+  # was transferred": a yes or no answer, a count of 1 or 0, checked before the step that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1043_included_excess_in_income_for_year_transferred
+    produces:
+      output: ca/t1043_included_excess_in_income_for_year_transferred_checked
+  # "You are including amounts received from your RRSPs, PRPPs, SPP, or RRIFs in your income for the
+  # year you are claiming this deduction": a yes or no answer, a count of 1 or 0.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1043_including_plan_amounts_in_income_for_year_claimed
+    produces:
+      output: ca/t1043_including_plan_amounts_in_income_for_year_claimed_checked
+  # Line 1 "Enter the amount of the excess transfer shown on your T4A slip(s) ... or the excess amount
+  # shown on your RRSP, PRPP, or SPP receipt, whichever is less."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1043_excess_transfer_on_t4a
+        - ca/t1043_excess_amount_on_receipt
+    produces:
+      output: ca/t1043_excess_transferred
+  # Line 4 "Line 2 plus line 3".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1043_claimed_as_rrsp_deduction
+        - ca/t1043_deducted_using_form
+    produces:
+      output: ca/t1043_previously_claimed
+  # Lines 2 and 3 are parts of line 1 ("the part of the amount from line 1"), so their sum is at most
+  # line 1 (the form prints no bound of its own; refused above it, not capped).
+  - name: core/at_most
+    consumes:
+      amount: ca/t1043_previously_claimed
+      bound: ca/t1043_excess_transferred
+    produces:
+      output: ca/t1043_previously_claimed_checked
+  # Line 5 "Line 1 minus line 4".
+  - name: core/subtract
+    consumes:
+      amount: ca/t1043_excess_transferred
+      less: ca/t1043_previously_claimed_checked
+    produces:
+      output: ca/t1043_not_yet_claimed
+  # Line 7 is "the part of the amount from line 6", so at most line 6 (refused above it, not capped).
+  - name: core/at_most
+    consumes:
+      amount: ca/t1043_part_deductible_elsewhere
+      bound: ca/t1043_plan_amounts_in_income
+    produces:
+      output: ca/t1043_part_deductible_elsewhere_checked
+  # Line 8 "Line 6 minus line 7".
+  - name: core/subtract
+    consumes:
+      amount: ca/t1043_plan_amounts_in_income
+      less: ca/t1043_part_deductible_elsewhere_checked
+    produces:
+      output: ca/t1043_plan_amounts_remaining
+  # Line 9 "Enter the amount from line 5 or line 8, whichever is less."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1043_not_yet_claimed
+        - ca/t1043_plan_amounts_remaining
+    produces:
+      output: ca/t1043_line_9
+  # The first condition: line 9 when the excess amount was included in income for the year it was
+  # transferred, else 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1043_line_9
+      count: ca/t1043_included_excess_in_income_for_year_transferred_checked
+    produces:
+      output: ca/t1043_line_9_if_excess_included
+  # The second condition ("you have to meet both"): the amount above when the plan amounts are
+  # included in income for the year of the claim, else 0. You can deduct this on line 23200.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1043_line_9_if_excess_included
+      count: ca/t1043_including_plan_amounts_in_income_for_year_claimed_checked
+    produces:
+      output: ca/t1043_deduction

@@ -1,0 +1,134 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 4 (for residents of a province or territory other than Quebec), lines 111 to
+# 129: the base contributions through self-employment income and other earnings (lines 111 to 124,
+# line 111 being the amount for line 31000 of the return) and the deduction for the enhanced
+# contributions on them (lines 125 to 129, the amount for line 22200). Lines 1 to 27 are in
+# 08d_rc381_part_4_lines_1_to_27.yaml, lines 28 to 56 in 08e_rc381_part_4_lines_31_to_56.yaml,
+# lines 59 to 91 in 08f_rc381_part_4_lines_59_to_91.yaml and lines 92 to 110 in
+# 08g_rc381_part_4_lines_92_to_110.yaml. Lines 117, 119, 120, 122, 123 and 126 only copy the
+# amount of another line, so they have no step of their own; every other line of 111 to 129 has
+# one, as has the amount lettered A.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # Line 111 "Base CPP contributions through self-employment income and other earnings: Enter the
+  # result of the following calculation (in dollars and cents) on line 31000 of your return:
+  # amount from line 84 x 50% =". The 50% is the base credit rate of Schedule 8 Part 4 (line 15,
+  # "multiplied by 50%").
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_self_employed_base_credit_rate
+    consumes:
+      base: ca/rc381_part_4_line_84
+    produces:
+      output: ca/rc381_part_4_line_111
+  # Line 112 "Amount from line 85 x 50% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_self_employed_base_credit_rate
+    consumes:
+      base: ca/rc381_part_4_line_85
+    produces:
+      output: ca/rc381_part_4_line_112
+  # Line 113 "Line 111 plus line 112".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_111
+        - ca/rc381_part_4_line_112
+    produces:
+      output: ca/rc381_part_4_line_113
+  # Line 114 "Enter the amount from line 69 of Part 3 if positive. If not, enter "0"." (line 69 of
+  # Part 3 floored at zero).
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_69
+    produces:
+      output: ca/rc381_part_4_line_114
+  # Line 115 "Line 113 minus line 114 (if negative, show in brackets)".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_113
+      less: ca/rc381_part_4_line_114
+    produces:
+      output: ca/rc381_part_4_line_115
+  # The amount lettered A, printed in line 116's row: "Enter whichever is less: amount from line
+  # 113 or line 114."
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_113
+        - ca/rc381_part_4_line_114
+    produces:
+      output: ca/rc381_part_4_line_116_lesser
+  # Line 116 "A x 83.1933% =": the base share of the CPP contributions (the rate of Part 3 line
+  # 20).
+  - name: core/apply_rate
+    params:
+      rate: ca/rc381_cpp_base_share_rate
+    consumes:
+      base: ca/rc381_part_4_line_116_lesser
+    produces:
+      output: ca/rc381_part_4_line_116
+  # Line 118 "Amount A minus line 117", line 117 being the amount from line 116.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_116_lesser
+      less: ca/rc381_part_4_line_116
+    produces:
+      output: ca/rc381_part_4_line_118
+  # Line 121 "Line 119 minus line 120", line 119 being the amount from line 111 and line 120 the
+  # amount from line 116. The form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_111
+      less: ca/rc381_part_4_line_116
+    produces:
+      output: ca/rc381_part_4_line_121
+  # Line 124 "Line 122 minus line 123", line 122 being the amount from line 112 and line 123 the
+  # amount from line 118. The form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_112
+      less: ca/rc381_part_4_line_118
+    produces:
+      output: ca/rc381_part_4_line_124
+  # Line 125 "Amount from line 86 x 50% =".
+  - name: core/apply_rate
+    params:
+      rate: ca/cpp_self_employed_base_credit_rate
+    consumes:
+      base: ca/rc381_part_4_line_86
+    produces:
+      output: ca/rc381_part_4_line_125
+  # Line 127 "If line 115 is negative, enter it as a positive amount." (above zero only when line
+  # 115 is negative; when it is positive or "0" the form enters the amount from line 126 on line
+  # 128, which a line 127 of "0" gives).
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_4_line_115
+    produces:
+      output: ca/rc381_part_4_line_127
+  # Line 128 "Line 126 minus line 127 (if negative, enter "0")", line 126 being the amount from
+  # line 125.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc381_part_4_line_125
+      less: ca/rc381_part_4_line_127
+    produces:
+      output: ca/rc381_part_4_line_128
+  # Line 129 "Deduction for CPP enhanced contributions on self-employment income and other
+  # earnings: Add lines 121, 122, 124, 125, and 128. Enter this amount (in dollar and cents) on
+  # line 22200 of your return." Line 122 is the amount from line 112.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_121
+        - ca/rc381_part_4_line_112
+        - ca/rc381_part_4_line_124
+        - ca/rc381_part_4_line_125
+        - ca/rc381_part_4_line_128
+    produces:
+      output: ca/rc381_part_4_line_129

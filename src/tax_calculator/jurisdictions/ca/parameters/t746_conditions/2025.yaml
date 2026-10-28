@@ -1,0 +1,24 @@
+# Eligibility conditions of Form T746, 2025 tax year: "For you to claim the deduction, it has to be
+# reasonable for the CRA to consider that one or both of the following conditions apply:" "you
+# expected to be able to fully deduct your RRSP, PRPP, or SPP contributions in the year you made
+# them or the year before" and "you did not make the contributions intending to withdraw them later
+# and claim the deduction" (confirmed 2026-10-27 from the PDF; no .txt published). The count is 1
+# when at least one of the filer's two yes or no answers is yes (the two tests of one part: either
+# holds), else 0. Not a dollars-and-cents box, so no rounding.
+family: ca/t746_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t746/t746-25e.pdf
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: >-
+      it has to be reasonable for the CRA to consider that one or both of the following conditions
+      apply: you expected to be able to fully deduct your RRSP, PRPP, or SPP contributions in the
+      year you made them or the year before; you did not make the contributions intending to
+      withdraw them later and claim the deduction
+    parts:
+      - tests:
+          - {reads: count, position: "1", relation: more_than, than: "0"}
+          - {reads: count, position: "2", relation: more_than, than: "0"}

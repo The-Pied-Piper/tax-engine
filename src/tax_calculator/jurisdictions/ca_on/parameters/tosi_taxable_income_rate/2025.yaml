@@ -1,0 +1,13 @@
+# Ontario TOSI-adjusted taxable income rate, 2025 tax year (Form T1206 Part 3, line 33B): "Tax rate
+# that applies to your province or territory from column 3 in Chart C on page 5" (Ontario's row:
+# "ON 20.53% 5.05% 10% 2.9863%"), the divisor of line 33C "Amount from line 33A divided by the tax
+# rate you entered on line 33B". The same 5.05% is the first Ontario bracket rate, but the form's
+# own line gets a dataset of its own. Line 33C is a dollars-and-cents box, so the quotient rounds
+# half-up to the cent, the owner's decision, as the form states no rounding rule.
+family: ca-on/tosi_taxable_income_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.0505"

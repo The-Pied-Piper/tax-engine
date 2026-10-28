@@ -1,0 +1,12 @@
+# Amount taken off in the tradesperson's tools formula, Guide T4044 (2025) Chapter 7 "Deduction for
+# tools": "b) the amount, if any, determined by the formula A minus $1,471". It is the printed
+# $1,471, entered whole as one step of the worksheet through core/credit_amount, so it is the
+# `credit` kind, as the home buyers' maximum is. It is a dollars-and-cents figure, so the amount
+# rounds half-up to the cent, the owner's decision, as the guide states no rounding rule.
+family: ca/t777_tradespersons_tools_threshold
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1471"

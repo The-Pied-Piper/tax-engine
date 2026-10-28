@@ -1,0 +1,26 @@
+# Form T2017 (2025), page 3, "How do you calculate a reserve", the four-year calculation: "(ii) Capital
+# gain x Enter the applicable percentage from the table" for a disposition of property other than family
+# farm or fishing property and small business corporation shares disposed of to a child, and other than a
+# QBT or QCC. The printed table "Year of disposition (A)" 80%, "1st year: 60%", "2nd year: 40%",
+# "3rd year: 20%" and "4th year: zero", keyed by the years after the disposition (0 for the year of
+# disposition). Rows 5 to 9 are zero only so that the unchosen table of a nine-year row of lines 2 and 8
+# never raises: a four-year property has no reserve after its 4th year, and the printed table stops there.
+# Confirmed from the PDF; no .txt published. The percentage is applied to the capital gain and the product
+# is rounded half-up to the cent. A year past the table is refused.
+family: ca/t2017_four_year_percentage
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2017/t2017-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amounts:
+  "0": "80"
+  "1": "60"
+  "2": "40"
+  "3": "20"
+  "4": "0"
+  "5": "0"
+  "6": "0"
+  "7": "0"
+  "8": "0"
+  "9": "0"

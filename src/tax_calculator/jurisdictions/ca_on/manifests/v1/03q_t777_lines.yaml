@@ -1,0 +1,181 @@
+# Form T777 (2025), Statement of Employment Expenses, pages 1 to 3: the lines of page 1 that the form
+# computes (lines 3, 4, 11, 15, 16 and 17; line 9 is in 03q_t777_tradespersons_tools_maximum.yaml and
+# line 10 in 03q_t777_apprentice_mechanic_tools_maximum.yaml and line 14 in
+# 03q_t777_artists_employment_expenses_maximum.yaml) and the charts of line 3 (page 2) and
+# line 16 (page 3), as steps of the form ca/t777 (the same form as 03k_t777.yaml; its exports are
+# declared there). Line 13 and line 25 are the CCA steps of 03k_t777.yaml. Line 17 "Enter this amount
+# on line 22900 of your return" is read by 05s_other_employment_expenses.yaml. The labour mobility
+# relocations of line 11 are the copies of the form ca/t777_relocation (03r_t777_relocation.yaml).
+form:
+  name: ca/t777
+capabilities:
+  # Form T777 line 4 "Food, beverages, and entertainment expenses × 50% =": the amount entered on the
+  # line, times the printed 50% (the dataset's rate), rounded half-up to the cent once.
+  - name: core/apply_rate
+    params:
+      rate: ca/t777_meals_rate
+    consumes:
+      base: ca/t777_food_beverages_entertainment
+    produces:
+      output: ca/t777_line_4
+  # Line 3 chart, line 29 "Add lines 21 to 28.": the vehicle expenses, the capital cost allowance of
+  # line 25 among them.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_vehicle_fuel
+        - ca/t777_vehicle_maintenance
+        - ca/t777_vehicle_insurance
+        - ca/t777_vehicle_licence_and_registration
+        - ca/t777_line_25
+        - ca/t777_line_26
+        - ca/t777_vehicle_leasing_costs
+        - ca/t777_vehicle_other_expenses
+    produces:
+      output: ca/t777_vehicle_total_expenses
+  # Line 3 chart, line 30 "Line 20 multiplied by line 29. Employment-use portion": line 29 times the
+  # quotient of line 18 over line 19 (line 20 "Line 18 divided by line 19", not rounded on its own),
+  # rounded once; zero when no kilometres are entered.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t777_vehicle_rounding
+    consumes:
+      amount: ca/t777_vehicle_total_expenses
+      numerator: ca/t777_employment_kilometres
+      denominator: ca/t777_total_kilometres
+    produces:
+      output: ca/t777_vehicle_employment_use
+  # Line 3 chart, line 31 "Enter the total of all rebates, motor vehicle allowances, and
+  # reimbursements": the form prints no bound, and line 32 prints no floor, so a line 31 above line
+  # 30 would make line 3 negative, which the total of line 3 cannot take. The filer's line 31 is
+  # refused above line 30: the form prints neither bound nor floor, and the T4044 guide allows the
+  # deduction only if the expenses are in excess of the allowance. The checked amount is the one
+  # line 32 subtracts.
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_vehicle_allowances
+      bound: ca/t777_vehicle_employment_use
+    produces:
+      output: ca/t777_vehicle_allowances_checked
+  # Line 3 chart, line 32 "Line 30 minus line 31. Enter this amount on line 3 of page 1. Allowable
+  # motor vehicle expenses": the form prints no floor; line 31 is checked above, so the figure is
+  # never negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/t777_vehicle_employment_use
+      less: ca/t777_vehicle_allowances_checked
+    produces:
+      output: ca/t777_line_3
+  # Line 11 "Total labour mobility deduction for the year (maximum $4,000)": the line 39 amounts of the
+  # relocation copies (ca/t777_relocation, one for each relocation), totalled.
+  - name: core/record_total
+    consumes:
+      records: ca/t777_relocation.t777_relocation_deduction
+    produces:
+      output: ca/t777_relocation_deduction_total
+  # Line 11 "(maximum $4,000)": above the maximum of the dataset the total is an input error
+  # (`InputAboveBoundError`), not capped.
+  - name: core/credit_amount
+    params:
+      amount: ca/t777_line_11_maximum
+    produces:
+      output: ca/t777_line_11_maximum
+  - name: core/at_most
+    consumes:
+      amount: ca/t777_relocation_deduction_total
+      bound: ca/t777_line_11_maximum
+    produces:
+      output: ca/t777_line_11
+  # Line 15 "Add lines 1 to 14.": the page 1 expenses, lines 3, 4, 9, 11 and 13 among them.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_accounting_and_legal_fees
+        - ca/t777_advertising_and_promotion
+        - ca/t777_line_3
+        - ca/t777_line_4
+        - ca/t777_lodging
+        - ca/t777_parking
+        - ca/t777_office_supplies
+        - ca/t777_other_expenses
+        - ca/t777_line_9
+        - ca/t777_line_10
+        - ca/t777_line_11
+        - ca/t777_musical_instrument_expenses
+        - ca/t777_line_13
+        - ca/t777_line_14
+    produces:
+      output: ca/t777_line_15
+  # Line 16 chart, line 47 "Add lines 42 to 46.": the work-space expenses.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_work_space_electricity_heat_water_internet
+        - ca/t777_work_space_maintenance
+        - ca/t777_work_space_home_insurance
+        - ca/t777_work_space_property_taxes
+        - ca/t777_work_space_other_expenses
+    produces:
+      output: ca/t777_work_space_expenses
+  # Line 16 chart, line 50 "Line 48 plus line 49": the employment-use amount and the amount carried
+  # forward from the previous year.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_work_space_employment_use_amount
+        - ca/t777_work_space_carried_forward
+    produces:
+      output: ca/t777_work_space_total_amount
+  # Line 16 chart, line 51 "Enter your employment income.": the form does not name a T1 line, so the
+  # return's employment income is read as lines 10100 and 10400 (the employment income and the other
+  # employment income of the return).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+    produces:
+      output: ca/t777_work_space_employment_income
+  # Line 16 chart, line 52 "Enter any amounts from line 15 of page 1 and lines 20700 and 21200 of your
+  # return that relate to your employment income.": all three in full (the return's only employment).
+  # Lines 20700 and 21200 are read as entered: form ca/t777 cannot read the return's artifacts.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_line_15
+        - ca/rpp_deduction
+        - ca/union_dues
+    produces:
+      output: ca/t777_work_space_employment_offsets
+  # Line 16 chart, line 53 "Line 51 minus line 52 (if negative, enter "0")".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t777_work_space_employment_income
+      less: ca/t777_work_space_employment_offsets
+    produces:
+      output: ca/t777_work_space_income_limit
+  # Line 16 chart, line 54 "Enter whichever is less: Amount from line 50 or line 53. Work-space-in-the-home
+  # expenses. Enter this amount on line 16 of page 1.": the lesser of the two.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t777_work_space_total_amount
+        - ca/t777_work_space_income_limit
+    produces:
+      output: ca/t777_line_16
+  # Line 16 chart, line 55 "Line 50 minus line 53 (if negative, enter "0") Work-space-in-the-home
+  # expenses available to use in future years": carried to the next year's line 49.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t777_work_space_total_amount
+      less: ca/t777_work_space_income_limit
+    produces:
+      output: ca/t777_work_space_carried_forward_out
+  # Line 17 "Line 15 plus line 16. Enter this amount on line 22900 of your return. Total expenses".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_line_15
+        - ca/t777_line_16
+    produces:
+      output: ca/t777_line_17

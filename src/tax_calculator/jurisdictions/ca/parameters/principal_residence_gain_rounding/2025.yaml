@@ -1,0 +1,11 @@
+# Form T2091(IND) (2025), Section 2, Part 1: "Line 4 plus 1 (see note on page 4)" (line 20),
+# "Multiply line 19 by line 20." (line 21), "Total number of years from line 7" (line 22) and
+# "Divide line 21 by line 22." (line 23). Part 2: "Divide line 30 by line 31." (line 32) and
+# "Divide line 42 by line 43." (line 44). The form prints no figure and no rounding rule; lines 23,
+# 32 and 44 are dollars-and-cents boxes, so each quotient rounds half-up to the cent.
+family: ca/principal_residence_gain_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2091ind/t2091ind-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

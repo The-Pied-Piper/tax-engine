@@ -1,0 +1,26 @@
+capabilities:
+  # Form T691 Part 4 line 2 "Foreign non-business income (on which non-business income tax was paid to a foreign country (12))": the total of the net foreign non-business income over the foreign tax countries, one record for each country (Form T2209 line 2, 43300).
+  - name: ca/foreign_net_non_business_income_total
+    consumes:
+      countries: ca/foreign_tax_countries
+    produces:
+      output: ca/amt_foreign_non_business_income
+  # Form T691 Part 4 line 7 "(ii) Total non-business income tax paid to a foreign country (12)": the total of the non-business tax paid over the foreign tax countries (Form T2209 line 1, 43100).
+  - name: ca/foreign_non_business_tax_paid_total
+    consumes:
+      countries: ca/foreign_tax_countries
+    produces:
+      output: ca/amt_foreign_non_business_tax_paid_before_excess
+  # Form T691 Part 4 line 7 "(ii) Total non-business income tax paid to a foreign country (12)", note (12): the tax paid "minus any part of this tax that is deductible under subsection 20(11) or deducted under subsection 20(12) of the ITA", the same as Form T2209 note (1). The tax on income from property over 15% of it is deducted on line 23200 (ca/foreign_property_tax_over_limit), so it is taken off the total.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/amt_foreign_non_business_tax_paid_before_excess
+      less: ca/foreign_property_tax_over_limit
+    produces:
+      output: ca/amt_foreign_non_business_tax_paid
+  # Form T691 Part 4 line 8 "Total business income tax paid to a foreign country (13)": the total of the business tax paid for the year over the foreign tax countries (Form T2209 line 4, the first part, 43400); the unused credits of that line are not part of it.
+  - name: ca/foreign_business_tax_paid_total
+    consumes:
+      countries: ca/foreign_tax_countries
+    produces:
+      output: ca/amt_foreign_business_tax_paid

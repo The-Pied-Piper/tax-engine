@@ -1,0 +1,15 @@
+# The 5% of the apprentice mechanic tools formula, Guide T4044 (2025) "Deduction for tools for an
+# eligible apprentice mechanic": "B = the lesser of: [...] 2. the greater of: [...] - 5% of: -- your
+# employment income as an eligible apprentice mechanic -- plus the amount you received in 2025 under
+# the Apprenticeship Incentive Grant and the Apprenticeship Completion Grant programs -- minus any
+# claim you made for the tradesperson's deduction for tools, and the amount of any Apprenticeship
+# Incentive Grant and Apprenticeship Completion Grant overpayments that you had to repay in 2025":
+# the printed 5%, a rate of 0.05. The product is a dollars-and-cents figure, so it rounds half-up to
+# the cent, the owner's decision, as the guide states no rounding rule.
+family: ca/t777_apprentice_mechanic_tools_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.05"

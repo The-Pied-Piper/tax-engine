@@ -1,0 +1,620 @@
+capabilities:
+  # --- Chart 2021 Part 1 ---
+  # Chart 2021 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS disposed of
+  # in 2021" 446,109.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2021_part_1_amount_a
+    produces:
+      output: ca/chart_2021_part_1_amount_a
+  # Chart 2021 Part 1 "Amount A minus amount B" C (B "Enter the last amount that you calculated for
+  # "Total amount of capital gains included in 2025 income eligible for the capital gains deduction"
+  # from 2016 to 2020: Chart 2020's total carried, or "0" if no chart is completed. The form
+  # prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2021_part_1_amount_a
+      less: ca/chart_2020_total_carried
+    produces:
+      output: ca/chart_2021_part_1_amount_c
+  # Chart 2021 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
+  # (2021-1)", or, when the filer claimed a deduction for other eligible capital gains from 2021 to
+  # 2024, the (2021-1) calculation, whose result the caller enters at amount D (uses_d_instead 1).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t657_chart_2021_uses_d_instead_checked
+      when_none: ca/chart_2_line_19
+      when_any: ca/t657_chart_2021_amount_d_instead
+    produces:
+      output: ca/chart_2021_amount_d
+  # Chart 2021 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2021
+  # and included in your 2025 income: amount C minus amount D (if negative, enter "0")" E.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2021_part_1_amount_c
+      less: ca/chart_2021_amount_d
+    produces:
+      output: ca/chart_2021_part_1_amount_e
+  # Chart 2021 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in 2021
+  # included in your 2025 income: amount F plus amount G (if negative, enter "0")", F "Amount from
+  # line 6 of Form T2017" and G "Amount from line 12 of Form T2017".
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t657_chart_2021_amount_f
+        - ca/t657_chart_2021_amount_g
+    produces:
+      output: ca/chart_2021_part_1_amounts_f_and_g
+  # Chart 2021 Part 1 "× 1/2 = H" (amounts F and G, times the 1/2 printed on the form).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2021_part_1_h_fraction
+    consumes:
+      base: ca/chart_2021_part_1_amounts_f_and_g
+    produces:
+      output: ca/chart_2021_part_1_amount_h
+  # Chart 2021 Part 1 "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates
+  # the property was disposed of in 2021 × 1/2 = +" I (the caller's box 30 amount).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2021_part_1_i_fraction
+    consumes:
+      base: ca/t657_chart_2021_amount_i
+    produces:
+      output: ca/chart_2021_part_1_amount_i
+  # Chart 2021 Part 1 "Amount H plus amount I" J.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2021_part_1_amount_h
+        - ca/chart_2021_part_1_amount_i
+    produces:
+      output: ca/chart_2021_part_1_amount_j
+  # Chart 2021 Part 1 "Enter whichever is less: amount E or amount J." K.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2021_part_1_amount_e
+        - ca/chart_2021_part_1_amount_j
+    produces:
+      output: ca/chart_2021_part_1_amount_k
+  # Chart 2021 Part 1 "Amount K plus amount L" M (L "Enter amount B from above.", Chart 2020's total
+  # carried).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2021_part_1_amount_k
+        - ca/chart_2020_total_carried
+    produces:
+      output: ca/chart_2021_part_1_amount_m
+  # Chart 2021 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
+  # above." N, the maximum for line 25400 if no other reserve is reported.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2021_part_1_amount_m
+    produces:
+      output: ca/chart_2021_part_1_amount_n
+  # --- Chart 2021 Part 2 ---
+  # Chart 2021 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2021"
+  # 500,000.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2021_part_2_amount_a
+    produces:
+      output: ca/chart_2021_part_2_amount_a
+  # Chart 2021 Part 2 "Amount A minus amount B" C (B "Enter amount M from Part 1 of Chart 2021.").
+  # The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2021_part_2_amount_a
+      less: ca/chart_2021_part_1_amount_m
+    produces:
+      output: ca/chart_2021_part_2_amount_c
+  # Chart 2021 Part 2 "Capital gains deduction available for QFFP disposed of in 2021 included in
+  # your 2025 income: amount C minus amount D (if negative, enter "0")" E (D as in Part 1).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2021_part_2_amount_c
+      less: ca/chart_2021_amount_d
+    produces:
+      output: ca/chart_2021_part_2_amount_e
+  # Chart 2021 Part 2 "Amount from line 6 of Form T2017 (do not include reserves from dispositions
+  # of QFFP in any year other than 2021)" × 1/2 = F (Part 1's F input).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2021_part_2_f_fraction
+    consumes:
+      base: ca/t657_chart_2021_amount_f
+    produces:
+      output: ca/chart_2021_part_2_amount_f
+  # Chart 2021 Part 2 "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates
+  # the QFFP was disposed of in 2021" × 1/2 = G.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2021_part_2_g_fraction
+    consumes:
+      base: ca/t657_chart_2021_part_2_amount_g
+    produces:
+      output: ca/chart_2021_part_2_amount_g
+  # Chart 2021 Part 2 "Amount F plus amount G" H.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2021_part_2_amount_f
+        - ca/chart_2021_part_2_amount_g
+    produces:
+      output: ca/chart_2021_part_2_amount_h
+  # Chart 2021 Part 2 "Enter whichever is less: amount E or amount H." I.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2021_part_2_amount_e
+        - ca/chart_2021_part_2_amount_h
+    produces:
+      output: ca/chart_2021_part_2_amount_i
+  # Chart 2021 Part 2 "Amount I plus amount J" K (J "Enter amount B from above.", Part 1 amount M).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2021_part_2_amount_i
+        - ca/chart_2021_part_1_amount_m
+    produces:
+      output: ca/chart_2021_part_2_amount_k
+  # Chart 2021 Part 2 "Enter whichever is less: amount H or amount K." L.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2021_part_2_amount_h
+        - ca/chart_2021_part_2_amount_k
+    produces:
+      output: ca/chart_2021_part_2_amount_l
+  # Chart 2021 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount L
+  # above." M, the maximum for line 25400 if no other disposition is reported.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2021_part_2_amount_l
+    produces:
+      output: ca/chart_2021_part_2_amount_m
+  # Chart 2021 Part 2 is completed only when the filer reports a QFFP reserve, wants the additional
+  # deduction and amount E of Part 1 is no more than the three amounts the form names (the
+  # `t657_chart_2021_part_2_conditions` dataset: 1 when none of its conditions applies, else 0).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t657_chart_2021_part_2_conditions
+    consumes:
+      counts:
+        - ca/t657_chart_2021_claims_additional_deduction
+      amounts:
+        - ca/chart_2021_part_1_amount_e
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2021_part_1_amount_m
+    produces:
+      output: ca/chart_2021_part_2_applies
+  # The total carried forward: Part 2's amount L when Part 2 is completed, else Part 1's amount M
+  # (the form: "Enter the last amount that you calculated" for the charts that follow).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/chart_2021_part_2_applies
+      when_none: ca/chart_2021_part_1_amount_m
+      when_any: ca/chart_2021_part_2_amount_l
+    produces:
+      output: ca/chart_2021_total_carried
+  # --- Chart 2022 Part 1 ---
+  # Chart 2022 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS disposed of
+  # in 2022" 456,815.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2022_part_1_amount_a
+    produces:
+      output: ca/chart_2022_part_1_amount_a
+  # Chart 2022 Part 1 "Amount A minus amount B" C (B is Chart 2021's total carried (the last total
+  # from 2016 to 2021, the Chart 2021 total carried)). The form prints no floor, so the result stays
+  # signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2022_part_1_amount_a
+      less: ca/chart_2021_total_carried
+    produces:
+      output: ca/chart_2022_part_1_amount_c
+  # Chart 2022 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
+  # (2022-1)", or, when the filer claimed a deduction for other eligible capital gains from 2022 to
+  # 2024, the (2022-1) calculation, whose result the caller enters at amount D (uses_d_instead 1).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t657_chart_2022_uses_d_instead_checked
+      when_none: ca/chart_2_line_19
+      when_any: ca/t657_chart_2022_amount_d_instead
+    produces:
+      output: ca/chart_2022_amount_d
+  # Chart 2022 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2022
+  # and included in your 2025 income: amount C minus amount D (if negative, enter "0")" E.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2022_part_1_amount_c
+      less: ca/chart_2022_amount_d
+    produces:
+      output: ca/chart_2022_part_1_amount_e
+  # Chart 2022 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in 2022
+  # included in your 2025 income: amount F plus amount G (if negative, enter "0")", F "Amount from
+  # line 6 of Form T2017" and G "Amount from line 12 of Form T2017".
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t657_chart_2022_amount_f
+        - ca/t657_chart_2022_amount_g
+    produces:
+      output: ca/chart_2022_part_1_amounts_f_and_g
+  # Chart 2022 Part 1 "× 1/2 = H" (amounts F and G, times the 1/2 printed on the form).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2022_part_1_h_fraction
+    consumes:
+      base: ca/chart_2022_part_1_amounts_f_and_g
+    produces:
+      output: ca/chart_2022_part_1_amount_h
+  # Chart 2022 Part 1 "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates
+  # the property was disposed of in 2022 × 1/2 = +" I (the caller's box 30 amount).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2022_part_1_i_fraction
+    consumes:
+      base: ca/t657_chart_2022_amount_i
+    produces:
+      output: ca/chart_2022_part_1_amount_i
+  # Chart 2022 Part 1 "Amount H plus amount I" J.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2022_part_1_amount_h
+        - ca/chart_2022_part_1_amount_i
+    produces:
+      output: ca/chart_2022_part_1_amount_j
+  # Chart 2022 Part 1 "Enter whichever is less: amount E or amount J." K.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2022_part_1_amount_e
+        - ca/chart_2022_part_1_amount_j
+    produces:
+      output: ca/chart_2022_part_1_amount_k
+  # Chart 2022 Part 1 "Amount K plus amount L" M (L "Enter amount B from above.", the amount B of
+  # this chart).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2022_part_1_amount_k
+        - ca/chart_2021_total_carried
+    produces:
+      output: ca/chart_2022_part_1_amount_m
+  # Chart 2022 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
+  # above." N, the maximum for line 25400 if no other reserve is reported.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2022_part_1_amount_m
+    produces:
+      output: ca/chart_2022_part_1_amount_n
+  # --- Chart 2022 Part 2 ---
+  # Chart 2022 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2022"
+  # 500,000.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2022_part_2_amount_a
+    produces:
+      output: ca/chart_2022_part_2_amount_a
+  # Chart 2022 Part 2 "Amount A minus amount B" C (B "Enter amount M from Part 1 of Chart 2022.").
+  # The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2022_part_2_amount_a
+      less: ca/chart_2022_part_1_amount_m
+    produces:
+      output: ca/chart_2022_part_2_amount_c
+  # Chart 2022 Part 2 "Capital gains deduction available for QFFP disposed of in 2022 included in
+  # your 2025 income: amount C minus amount D (if negative, enter "0")" E (D as in Part 1).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2022_part_2_amount_c
+      less: ca/chart_2022_amount_d
+    produces:
+      output: ca/chart_2022_part_2_amount_e
+  # Chart 2022 Part 2 "Amount from line 6 of Form T2017 (do not include reserves from dispositions
+  # of QFFP in any year other than 2022)" × 1/2 = F (Part 1's F input).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2022_part_2_f_fraction
+    consumes:
+      base: ca/t657_chart_2022_amount_f
+    produces:
+      output: ca/chart_2022_part_2_amount_f
+  # Chart 2022 Part 2 "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates
+  # the QFFP was disposed of in 2022" × 1/2 = G.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2022_part_2_g_fraction
+    consumes:
+      base: ca/t657_chart_2022_part_2_amount_g
+    produces:
+      output: ca/chart_2022_part_2_amount_g
+  # Chart 2022 Part 2 "Amount F plus amount G" H.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2022_part_2_amount_f
+        - ca/chart_2022_part_2_amount_g
+    produces:
+      output: ca/chart_2022_part_2_amount_h
+  # Chart 2022 Part 2 "Enter whichever is less: amount E or amount H." I.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2022_part_2_amount_e
+        - ca/chart_2022_part_2_amount_h
+    produces:
+      output: ca/chart_2022_part_2_amount_i
+  # Chart 2022 Part 2 "Amount I plus amount J" K (J "Enter amount B from above.", Part 1 amount M).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2022_part_2_amount_i
+        - ca/chart_2022_part_1_amount_m
+    produces:
+      output: ca/chart_2022_part_2_amount_k
+  # Chart 2022 Part 2 "Enter whichever is less: amount H or amount K." L.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2022_part_2_amount_h
+        - ca/chart_2022_part_2_amount_k
+    produces:
+      output: ca/chart_2022_part_2_amount_l
+  # Chart 2022 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount L
+  # above." M, the maximum for line 25400 if no other disposition is reported.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2022_part_2_amount_l
+    produces:
+      output: ca/chart_2022_part_2_amount_m
+  # Chart 2022 Part 2 is completed only when the filer reports a QFFP reserve, wants the additional
+  # deduction and amount E of Part 1 is no more than the three amounts the form names (the
+  # `t657_chart_2022_part_2_conditions` dataset: 1 when none of its conditions applies, else 0).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t657_chart_2022_part_2_conditions
+    consumes:
+      counts:
+        - ca/t657_chart_2022_claims_additional_deduction
+      amounts:
+        - ca/chart_2022_part_1_amount_e
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2022_part_1_amount_m
+    produces:
+      output: ca/chart_2022_part_2_applies
+  # The total carried forward: Part 2's amount L when Part 2 is completed, else Part 1's amount M
+  # (the form: "Enter the last amount that you calculated" for the charts that follow).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/chart_2022_part_2_applies
+      when_none: ca/chart_2022_part_1_amount_m
+      when_any: ca/chart_2022_part_2_amount_l
+    produces:
+      output: ca/chart_2022_total_carried
+  # --- Chart 2023 Part 1 ---
+  # Chart 2023 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS disposed of
+  # in 2023" 485,595.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2023_part_1_amount_a
+    produces:
+      output: ca/chart_2023_part_1_amount_a
+  # Chart 2023 Part 1 "Amount A minus amount B" C (B is Chart 2022's total carried (the last total
+  # from 2016 to 2022, the Chart 2022 total carried)). The form prints no floor, so the result stays
+  # signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2023_part_1_amount_a
+      less: ca/chart_2022_total_carried
+    produces:
+      output: ca/chart_2023_part_1_amount_c
+  # Chart 2023 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
+  # (2023-1)", or, when the filer claimed a deduction for other eligible capital gains from 2023 to
+  # 2024, the (2023-1) calculation, whose result the caller enters at amount D (uses_d_instead 1).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t657_chart_2023_uses_d_instead_checked
+      when_none: ca/chart_2_line_19
+      when_any: ca/t657_chart_2023_amount_d_instead
+    produces:
+      output: ca/chart_2023_amount_d
+  # Chart 2023 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2023
+  # and included in your 2025 income: amount C minus amount D (if negative, enter "0")" E.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2023_part_1_amount_c
+      less: ca/chart_2023_amount_d
+    produces:
+      output: ca/chart_2023_part_1_amount_e
+  # Chart 2023 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in 2023
+  # included in your 2025 income: amount F plus amount G (if negative, enter "0")", F "Amount from
+  # line 6 of Form T2017" and G "Amount from line 12 of Form T2017".
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/t657_chart_2023_amount_f
+        - ca/t657_chart_2023_amount_g
+    produces:
+      output: ca/chart_2023_part_1_amounts_f_and_g
+  # Chart 2023 Part 1 "× 1/2 = H" (amounts F and G, times the 1/2 printed on the form).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2023_part_1_h_fraction
+    consumes:
+      base: ca/chart_2023_part_1_amounts_f_and_g
+    produces:
+      output: ca/chart_2023_part_1_amount_h
+  # Chart 2023 Part 1 "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates
+  # the property was disposed of in 2023 × 1/2 = +" I (the caller's box 30 amount).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2023_part_1_i_fraction
+    consumes:
+      base: ca/t657_chart_2023_amount_i
+    produces:
+      output: ca/chart_2023_part_1_amount_i
+  # Chart 2023 Part 1 "Amount H plus amount I" J.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2023_part_1_amount_h
+        - ca/chart_2023_part_1_amount_i
+    produces:
+      output: ca/chart_2023_part_1_amount_j
+  # Chart 2023 Part 1 "Enter whichever is less: amount E or amount J." K.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2023_part_1_amount_e
+        - ca/chart_2023_part_1_amount_j
+    produces:
+      output: ca/chart_2023_part_1_amount_k
+  # Chart 2023 Part 1 "Amount K plus amount L" M (L "Enter amount B from above.", the amount B of
+  # this chart).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2023_part_1_amount_k
+        - ca/chart_2022_total_carried
+    produces:
+      output: ca/chart_2023_part_1_amount_m
+  # Chart 2023 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
+  # above." N, the maximum for line 25400 if no other reserve is reported.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2023_part_1_amount_m
+    produces:
+      output: ca/chart_2023_part_1_amount_n
+  # --- Chart 2023 Part 2 ---
+  # Chart 2023 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2023"
+  # 500,000.00, a dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/chart_2023_part_2_amount_a
+    produces:
+      output: ca/chart_2023_part_2_amount_a
+  # Chart 2023 Part 2 "Amount A minus amount B" C (B "Enter amount M from Part 1 of Chart 2023.").
+  # The form prints no floor, so the result stays signed.
+  - name: core/subtract
+    consumes:
+      amount: ca/chart_2023_part_2_amount_a
+      less: ca/chart_2023_part_1_amount_m
+    produces:
+      output: ca/chart_2023_part_2_amount_c
+  # Chart 2023 Part 2 "Capital gains deduction available for QFFP disposed of in 2023 included in
+  # your 2025 income: amount C minus amount D (if negative, enter "0")" E (D as in Part 1).
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/chart_2023_part_2_amount_c
+      less: ca/chart_2023_amount_d
+    produces:
+      output: ca/chart_2023_part_2_amount_e
+  # Chart 2023 Part 2 "Amount from line 6 of Form T2017 (do not include reserves from dispositions
+  # of QFFP in any year other than 2023)" × 1/2 = F (Part 1's F input).
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2023_part_2_f_fraction
+    consumes:
+      base: ca/t657_chart_2023_amount_f
+    produces:
+      output: ca/chart_2023_part_2_amount_f
+  # Chart 2023 Part 2 "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates
+  # the QFFP was disposed of in 2023" × 1/2 = G.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/t657_chart_2023_part_2_g_fraction
+    consumes:
+      base: ca/t657_chart_2023_part_2_amount_g
+    produces:
+      output: ca/chart_2023_part_2_amount_g
+  # Chart 2023 Part 2 "Amount F plus amount G" H.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2023_part_2_amount_f
+        - ca/chart_2023_part_2_amount_g
+    produces:
+      output: ca/chart_2023_part_2_amount_h
+  # Chart 2023 Part 2 "Enter whichever is less: amount E or amount H." I.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2023_part_2_amount_e
+        - ca/chart_2023_part_2_amount_h
+    produces:
+      output: ca/chart_2023_part_2_amount_i
+  # Chart 2023 Part 2 "Amount I plus amount J" K (J "Enter amount B from above.", Part 1 amount M).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/chart_2023_part_2_amount_i
+        - ca/chart_2023_part_1_amount_m
+    produces:
+      output: ca/chart_2023_part_2_amount_k
+  # Chart 2023 Part 2 "Enter whichever is less: amount H or amount K." L.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/chart_2023_part_2_amount_h
+        - ca/chart_2023_part_2_amount_k
+    produces:
+      output: ca/chart_2023_part_2_amount_l
+  # Chart 2023 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount L
+  # above." M, the maximum for line 25400 if no other disposition is reported.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2023_part_2_amount_l
+    produces:
+      output: ca/chart_2023_part_2_amount_m
+  # Chart 2023 Part 2 is completed only when the filer reports a QFFP reserve, wants the additional
+  # deduction and amount E of Part 1 is no more than the three amounts the form names (the
+  # `t657_chart_2023_part_2_conditions` dataset: 1 when none of its conditions applies, else 0).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t657_chart_2023_part_2_conditions
+    consumes:
+      counts:
+        - ca/t657_chart_2023_claims_additional_deduction
+      amounts:
+        - ca/chart_2023_part_1_amount_e
+        - ca/annual_gains_limit_2025
+        - ca/cumulative_gains_limit_2025
+        - ca/chart_2023_part_1_amount_m
+    produces:
+      output: ca/chart_2023_part_2_applies
+  # The total carried forward: Part 2's amount L when Part 2 is completed, else Part 1's amount M
+  # (the form: "Enter the last amount that you calculated" for the charts that follow).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/chart_2023_part_2_applies
+      when_none: ca/chart_2023_part_1_amount_m
+      when_any: ca/chart_2023_part_2_amount_l
+    produces:
+      output: ca/chart_2023_total_carried

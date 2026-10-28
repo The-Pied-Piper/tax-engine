@@ -1,0 +1,13 @@
+# Maximum amount per qualifying renovation, 2025 tax year (Schedule 12, form 5000-S12): line 4
+# "Maximum amount per qualifying renovation 50,000.00". It caps line 3 "Line 1 minus line 2
+# (maximum $50,000 per qualifying renovation)" and sets line 6 "Line 4 minus line 5", for each
+# qualifying renovation.
+# The line 3 and line 6 figures are dollars-and-cents boxes, so the maximum rounds half-up to the
+# cent, the owner's decision, as the form states no rounding rule.
+family: ca/home_renovation_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s12/5000-s12-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "50000"

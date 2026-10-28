@@ -1,0 +1,19 @@
+# Canada workers benefit basic amount, 2025 tax year (Schedule 6, form 5000-S6), Step 2,
+# for a filer with no eligible spouse and no eligible dependant: line 16 "Family working
+# income from line 6"; line 17 "Base amount 3,000.00"; line 18 "Line 16 minus line 17
+# (if negative, enter "0")"; line 19 "Rate 27%"; line 20 "Line 18 multiplied by the
+# percentage from line 19"; line 21 "If you had an eligible spouse or an eligible
+# dependant, enter $2,813. If not, enter $1,633."; line 22 "Enter whichever is less:
+# amount from line 20 or line 21."
+# Lines 17 to 22 are one tier over the base amount, with line 21 as its maximum.
+# Line 22 is a dollars-and-cents box, so the tier rounds half-up to the cent, once,
+# after its maximum, the owner's decision, as the form states no rounding rule; line 20
+# is not rounded on its own, and line 18 takes amounts already in cents.
+family: ca/cwb_basic
+tax_year: 2025
+kind: surcharge_tiers
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+tiers:
+  - {threshold: "3000", rate: "0.27", maximum: "1633"}

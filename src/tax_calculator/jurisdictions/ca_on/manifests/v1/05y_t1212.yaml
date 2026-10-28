@@ -1,0 +1,32 @@
+# Form T1212 (2025) "Statement of Deferred Security Options Benefits": the form ca/t1212, run once (it has
+# no instances list). Its starting amounts, line 1 and line 2, are in 01p_t1212_inputs.yaml. Its steps are
+# line 3 "Closing balance of deferred security options benefits: line 1 minus line 2" and the 50% of
+# line 2 of footnote (1), "To claim your security options deduction on this amount, enter 50% of the amount
+# from line 2 on line 24900 of your return". Line 3 is the amount the CRA shows on the notice of assessment
+# and is exported with the 50% amount; the return reads the 50% amount in 05v_security_options_deduction.yaml
+# as ca/t1212.t1212_line_24900_amount, for T1 line 24900 and for Form T691 Part 1 line 29. Line 2 is part
+# of the employment income of line 10100, which is entered once as ca/employment_income. The return
+# selects none of these steps.
+form:
+  name: ca/t1212
+  exports:
+    - ca/t1212_line_3_closing_balance
+    - ca/t1212_line_24900_amount
+capabilities:
+  # Line 3 "Line 1 minus line 2" "65220 =": the closing balance. A line 2 above line 1 is refused, as the
+  # balance never falls below zero.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1212_line_1_opening_balance
+      less: ca/t1212_line_2_benefits_no_longer_deferred
+    produces:
+      output: ca/t1212_line_3_closing_balance
+  # Footnote (1) "enter 50% of the amount from line 2 on line 24900 of your return": line 2 at the 50% of
+  # its dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/t1212_line_24900_rate
+    consumes:
+      base: ca/t1212_line_2_benefits_no_longer_deferred
+    produces:
+      output: ca/t1212_line_24900_amount

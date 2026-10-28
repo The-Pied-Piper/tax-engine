@@ -1,0 +1,12 @@
+# Annual maximum deduction of a restricted farm loss, 2025 tax year (Guide T4002, "Restricted farm losses (partly deductible)", pp. 95-96):
+# "the annual maximum deduction used in the calculation for restricted farm losses is $17,500" (confirmed from the PDF; no .txt published). It borrows the credit kind because the
+# figure is used whole, as the basic personal amount is.
+# The guide states no rounding rule, so the figure rounds half-up to the cent, the owner's
+# decision, the repo convention.
+family: ca/farm_restricted_loss_annual_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "17500"

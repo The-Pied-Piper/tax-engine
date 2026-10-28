@@ -1,0 +1,70 @@
+# Form T1032 E (25) Step 4 Part B, page 3, Note 1, part of the form ca/t1032 (see
+# 22a_t1032_pension_income_splitting.yaml for the form's exports and 22d_t1032_line_33_note_1.yaml for
+# the steps of line 33). Two checks that run only where Note 1 does something: the amounts a) to e)
+# count only when Note 1 applies (the form prints no bound on them against line 1), and line 8
+# (line 25) is refused where the line 17 of the recalculation (line 26) is 0 and line 22 has an amount
+# to multiply, since the form prints no answer for a division by 0.
+form:
+  name: ca/t1032
+capabilities:
+  # Form T1032 Note 1 "Subtract from line 1 any of the above amounts noted in a) through e)": the amounts
+  # a) to e) when Note 1 applies, otherwise 0, so that an amount Note 1 does not ask for is not subtracted.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_note_1_payments_total
+      count: ca/t1032_note_1_applies
+    produces:
+      output: ca/t1032_note_1_payments_total_if_applies
+  # The part of the amounts a) to e) received on a death, when Note 1 applies, otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_note_1_payments_due_to_death
+      count: ca/t1032_note_1_applies
+    produces:
+      output: ca/t1032_note_1_payments_due_to_death_if_applies
+  # Form T1032 "Line 29: Line 27 multiplied by line 28" with line 28 "Amount from line 24": 1 when the
+  # recalculated line 22 is above 0, 0 when not (line 29 is then 0 whatever line 27 is).
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1032_note_1_line_29_applies_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/t1032_note_1_line_22
+    produces:
+      output: ca/t1032_note_1_line_29_applies
+  # Line 8 (line 25) when line 29 has an amount to multiply, otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_line_8
+      count: ca/t1032_note_1_line_29_applies
+    produces:
+      output: ca/t1032_note_1_line_8_to_check
+  # Form T1032 "Line 27: Line 25 divided by line 26": 1 when the line 17 of the recalculation (line 26)
+  # is 0, 0 when not.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t1032_note_1_line_17_is_zero_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/t1032_note_1_line_17
+    produces:
+      output: ca/t1032_note_1_line_17_is_zero
+  # What line 8 (line 25) may not exceed: 0 when line 26 is 0, otherwise line 8 itself.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_note_1_line_17_is_zero
+      when_none: ca/t1032_note_1_line_8_to_check
+      when_any: ca/t1032_note_1_line_17
+    produces:
+      output: ca/t1032_note_1_line_8_bound
+  # Form T1032 "Line 27: Line 25 divided by line 26 =": line 8 is refused where line 26 is 0, the form
+  # printing no answer for a division by 0, never replaced by 0. A line 27 above 1 is printed arithmetic:
+  # line 30 below 0 is not refused here.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_note_1_line_8_to_check
+      bound: ca/t1032_note_1_line_8_bound
+    produces:
+      output: ca/t1032_note_1_line_8_checked

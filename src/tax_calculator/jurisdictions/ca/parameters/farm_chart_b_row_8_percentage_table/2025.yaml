@@ -1,0 +1,14 @@
+# Percentage of row 7 kept at row 8 of Form T2043 Chart B (2025): "Percentage (%) of expenses
+# allocated to the designated province. Row 7 multiplied by 50%. See note 9." (confirmed from the
+# PDF; no .txt published). The count is note 9's: 0 when neither row 2 nor row 5 is zero, so row 7
+# is multiplied by 50 (50%), and 1 when either is zero, so it is not halved (100%). A percent as the
+# form prints it, 50 means 50%, so there is no rounding.
+family: ca/farm_chart_b_row_8_percentage_table
+tax_year: 2025
+kind: amount_by_count
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: none
+amounts:
+  "0": "50"
+  "1": "100"

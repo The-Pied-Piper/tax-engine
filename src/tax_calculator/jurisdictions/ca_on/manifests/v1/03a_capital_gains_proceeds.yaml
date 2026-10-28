@@ -1,0 +1,44 @@
+capabilities:
+  # Part 3: lines 1 to 8 (10699, 10999, 12399, 13199, 13599, 15199, 15200, 15499) are each "Total
+  # proceeds of disposition (add all the amounts under column 2)", one step each; the totals feed
+  # no later line.
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/qsbcs_dispositions
+    produces:
+      output: ca/qsbcs_proceeds
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/qffp_dispositions
+    produces:
+      output: ca/qffp_proceeds
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/qffp_foreclosure_dispositions
+    produces:
+      output: ca/qffp_foreclosure_proceeds
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/share_dispositions
+    produces:
+      output: ca/share_proceeds
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/real_estate_dispositions
+    produces:
+      output: ca/real_estate_proceeds
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/bond_dispositions
+    produces:
+      output: ca/bond_proceeds
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/crypto_asset_dispositions
+    produces:
+      output: ca/crypto_asset_proceeds
+  - name: ca/disposition_proceeds
+    consumes:
+      dispositions: ca/other_foreclosure_dispositions
+    produces:
+      output: ca/other_foreclosure_proceeds

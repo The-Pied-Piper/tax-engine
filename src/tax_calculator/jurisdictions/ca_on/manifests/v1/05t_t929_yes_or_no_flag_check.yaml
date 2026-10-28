@@ -1,0 +1,13 @@
+# Schedule 15 Step 2 flag, in the form that reads it (Form T929): the yes or no count is checked
+# here. A count of 2 or more is refused, not capped.
+form:
+  name: ca/t929
+capabilities:
+  # Maximum participation period of your FHSAs ended in a prior year, Schedule 15 Step 2: the
+  # answer to a yes or no question, a count of 1 or 0, checked before the steps that read it. A
+  # count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/fhsa_maximum_participation_period_ended
+    produces:
+      output: ca/fhsa_maximum_participation_period_ended_checked

@@ -1,0 +1,25 @@
+# Note (1) on Form T2204 line 1, 2025 tax year: "If you have no self-employment earnings and your
+# total EI insurable earnings on your T4 slips are less than $2,000, enter "0"." One condition,
+# "you have no self-employment earnings and your total EI insurable earnings are less than $2,000",
+# with two parts that must both hold: the line 2 amount is "0" (no self-employment earnings under the
+# agreement), and the $2,000 (the exemption amount, position 2) is more than the insurable earnings
+# (position 3), so the insurable earnings are less than $2,000. The caller's amounts are read in the
+# order line 2, the exemption of line 7, then the insurable earnings of line 1. When the note applies
+# the count is 0, and it is 1 otherwise. The result is a count, not a dollars-and-cents box, so
+# there is no rounding.
+family: ca/t2204_line_1_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: >-
+      you have no self-employment earnings and your total EI insurable earnings on your T4 slips
+      are less than $2,000
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: equal_to, than: "0"}
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, against: "3"}

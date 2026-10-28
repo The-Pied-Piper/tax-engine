@@ -1,0 +1,24 @@
+# The non-arm's-length purchase check of Part B of the T777 form, the third of its checks: see
+# 03k_t777.yaml for the form's selections and for the Part B claim, which reads the checked rows.
+# The check runs after the Class 10.1 class condition check (`03v_t777_vehicle_class_check.yaml`)
+# and before the change in use check (`03x_t777_vehicle_change_in_use_check.yaml`), and passes each
+# row on unchanged.
+# Guide T4044 2025, Part B column 3: "There is a limit on the capital cost of a Class 10.1 vehicle
+# you buy from a person with whom you have a non-arm's length relationship. [...] In this case, the
+# capital cost is the least of the following three amounts: - the fair market value of the vehicle
+# when you acquired it - $38,000 plus the GST and PST or HST that you would have paid on $38,000 if
+# you had acquired the vehicle in 2025 - the seller's cost of the vehicle just before you acquired
+# it." The filer answers whether the vehicle was bought from such a person and enters the fair market
+# value and the seller's cost; the cost of additions (column 3) of such a row is refused unless it is
+# the least of the three, at the sales tax rate the caller enters.
+form:
+  name: ca/t777
+capabilities:
+  - name: ca/cca_vehicle_non_arms_length_checks
+    params:
+      prescribed_amounts: ca/cca_vehicle_prescribed_amounts
+    consumes:
+      classes: ca/t777_part_b_class_checked_rows
+      sales_tax_rate: ca/t777_vehicle_sales_tax_rate
+    produces:
+      output: ca/t777_part_b_non_arms_length_checked_rows

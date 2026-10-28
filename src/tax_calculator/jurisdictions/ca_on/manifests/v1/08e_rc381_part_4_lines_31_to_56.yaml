@@ -1,0 +1,280 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", Part 4 (for residents of a province or territory other than Quebec), lines 28 to
+# 56: the QPP side before the gross-up (lines 28 to 41), line 42, and the second additional
+# contributions and the totals (lines 43 to 56). Lines 1 to 27 are in
+# 08d_rc381_part_4_lines_1_to_27.yaml. Lines 28 (the amount from line 39 of Part 3), 29 (the
+# amount from line 61 of Part 3), 30 (the amount from line 12), 37 (the amount from line 24), 43
+# (the amount from line 25 of Part 3), 44 (the amount from line 62 of Part 3, which is line 25),
+# 45 (the amount from line 65 of Part 3, which is line 26), 48 (the amount from line 45 of Part
+# 3), 49 (the amount from line 68 of Part 3) and 50 (the amount from line 46) only copy other
+# artifacts, so they have no step of their own.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # The result printed inside line 31, "Line 29 minus line 30 (if negative, show in brackets)",
+  # line 29 "Amount from line 61 of Part 3" and line 30 "Amount from line 12 (if negative, show
+  # in brackets)", entered when line 61 of Part 3 is positive.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_61
+      less: ca/rc381_part_4_line_12
+    produces:
+      output: ca/rc381_part_4_line_31_difference
+  # Line 31, with the block "If line 61 of Part 3 is: "0", do not complete lines 29 to 39 ...
+  # positive, complete lines 28 to 32 only ... negative, complete line 28 and enter "0" at line 31
+  # and continue at line 32.": line 29 minus line 30 when line 61 is positive, else "0".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_61
+      when_positive:
+        - ca/rc381_part_4_line_31_difference
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_31
+  # Line 32 "Line 28 minus line 31", line 28 "Total actual base and first additional QPP
+  # contributions from line 39 of Part 3": no floor is printed. With line 61 of Part 3 at "0" the
+  # form enters line 28 on line 40, which is this line with line 31 at "0".
+  - name: core/subtract
+    consumes:
+      amount: ca/t4_qpp_contributions_box_17
+      less: ca/rc381_part_4_line_31
+    produces:
+      output: ca/rc381_part_4_line_32
+  # Line 33 "Enter the amount from line 61 of Part 3 as a positive amount." (above zero only when
+  # line 61 is negative).
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_61
+    produces:
+      output: ca/rc381_part_4_line_33
+  # Line 34 "If line 17A is positive, enter whichever is less: amount from line 17A or line 33.
+  # If not, enter "0".": the lesser of the two when both are above zero, else "0".
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_17a
+        - ca/rc381_part_4_line_33
+    produces:
+      output: ca/rc381_part_4_line_34
+  # Line 35 "Line 33 minus line 34".
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_33
+      less: ca/rc381_part_4_line_34
+    produces:
+      output: ca/rc381_part_4_line_35
+  # The amount printed inside line 35A, "If line 35 and line 17 are both positive, enter the
+  # amount from line 17.": line 17 when it is above zero, else "0".
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_17
+    produces:
+      output: ca/rc381_part_4_line_35aa_from_line_17
+  # ... that amount when line 35 is positive too (line 35 is above zero only when line 61 is
+  # negative, so the block's gate is met), else "0".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_line_35
+      when_positive:
+        - ca/rc381_part_4_line_35aa_from_line_17
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_35aa
+  # The amount printed inside line 35A, "If line 35 is "0" and line 20 is positive, enter the
+  # amount from line 20 (show in brackets).": the negative of line 20 when it is above zero,
+  # else "0".
+  - name: ca/lesser_of_when_positive_in_brackets
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_20
+    produces:
+      output: ca/rc381_part_4_line_35ab_from_line_20
+  # ... that amount when line 35 is "0" ...
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_line_35
+      when_positive: []
+      when_zero:
+        - ca/rc381_part_4_line_35ab_from_line_20
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_35ab_when_line_35_zero
+  # ... and only when line 61 of Part 3 is negative (lines 33 to 39 are completed then, and line
+  # 35 is "0" also when line 61 is "0" or positive, where they are not).
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_61
+      when_positive: []
+      when_zero: []
+      when_negative:
+        - ca/rc381_part_4_line_35ab_when_line_35_zero
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_35ab
+  # Line 35A, the two sentences printed on it added (at most one is other than "0").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_35aa
+        - ca/rc381_part_4_line_35ab
+    produces:
+      output: ca/rc381_part_4_line_35a
+  # Line 36 "Enter the amount from line 68 of Part 3 if positive. If not, enter "0".": line 68
+  # floored at zero.
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/rc381_part_3_line_68
+    produces:
+      output: ca/rc381_part_4_line_36
+  # Line 38 "Line 36 minus line 37", line 37 "Amount from line 24". The form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_4_line_36
+      less: ca/rc381_part_4_line_24
+    produces:
+      output: ca/rc381_part_4_line_38
+  # Line 39 "Enter whichever is less: amount from line 35 or line 38.": line 35 is "0" unless line
+  # 61 of Part 3 is negative, and line 38 is not below zero then (line 24 is "0" unless line 61 is
+  # negative, and never more than line 36), so this is "0" where the form does not complete line
+  # 39.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/rc381_part_4_line_35
+        - ca/rc381_part_4_line_38
+    produces:
+      output: ca/rc381_part_4_line_39
+  # Line 40 "Add lines 32, 35A, and 39.": with line 61 of Part 3 at "0" lines 35A and 39 are "0"
+  # and line 32 is line 28, "Complete line 28 and enter the amount on line 40"; with line 61
+  # positive "continue at line 40" after line 32 (lines 35A and 39 are "0").
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_32
+        - ca/rc381_part_4_line_35a
+        - ca/rc381_part_4_line_39
+    produces:
+      output: ca/rc381_part_4_line_40
+  # Line 41 "Amount from line 40 × 15.625 =": the product rounds half up to the cent, the
+  # owner's decision, as the form states no rounding rule.
+  - name: core/apply_fraction
+    params:
+      fraction: ca/rc381_qpp_gross_up_fraction
+    consumes:
+      base: ca/rc381_part_4_line_40
+    produces:
+      output: ca/rc381_part_4_line_41
+  # Line 42 "Line 27 plus line 41".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_27
+        - ca/rc381_part_4_line_41
+    produces:
+      output: ca/rc381_part_4_line_42
+  # The result printed inside line 46, "Line 44 minus line 45 (if negative, show in brackets)",
+  # line 44 "Amount from line 62 of Part 3" (the amount from line 25) and line 45 "Amount from
+  # line 65 of Part 3" (the amount from line 26), completed when line 68 of Part 3 is positive.
+  - name: core/subtract
+    consumes:
+      amount: ca/t4_cpp_second_additional_box_16a
+      less: ca/rc381_part_3_line_26
+    produces:
+      output: ca/rc381_part_4_line_46_difference
+  # Line 46, with "If line 68 of Part 3 is positive, complete lines 44 to 46. If not, enter "0"
+  # on line 46 and continue at line 47.".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_68
+      when_positive:
+        - ca/rc381_part_4_line_46_difference
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_46
+  # Line 47 "Line 43 minus line 46 (if negative, show in brackets)", line 43 "Total actual
+  # second additional CPP contributions from line 25 of Part 3".
+  - name: core/subtract
+    consumes:
+      amount: ca/t4_cpp_second_additional_box_16a
+      less: ca/rc381_part_4_line_46
+    produces:
+      output: ca/rc381_part_4_line_47
+  # The result printed inside line 51, "Line 49 minus line 50 (if negative, show in brackets)",
+  # line 49 "Enter the amount from line 68 of Part 3." and line 50 "Enter the amount from line 46
+  # (if negative, show in brackets).", completed when line 68 of Part 3 is positive.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc381_part_3_line_68
+      less: ca/rc381_part_4_line_46
+    produces:
+      output: ca/rc381_part_4_line_51_difference
+  # Line 51, with "If line 68 of Part 3 is positive, complete lines 49 to 51. If not, enter "0"
+  # on line 51 and continue at line 52.".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_3_line_68
+      when_positive:
+        - ca/rc381_part_4_line_51_difference
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_part_4_line_51
+  # Line 52 "Line 48 minus line 51", line 48 "Total actual second additional QPP contributions
+  # from line 45 of Part 3". The form prints no floor.
+  - name: core/subtract
+    consumes:
+      amount: ca/t4_qpp_second_additional_box_17a
+      less: ca/rc381_part_4_line_51
+    produces:
+      output: ca/rc381_part_4_line_52
+  # Line 53 "Line 47 plus line 52".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_47
+        - ca/rc381_part_4_line_52
+    produces:
+      output: ca/rc381_part_4_line_53
+  # Line 54 "Enter the amount from line 68 of Part 3 as a positive amount." (above zero only when
+  # line 68 is negative).
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rc381_part_3_line_68
+    produces:
+      output: ca/rc381_part_4_line_54
+  # Line 55 "If line 61 of Part 3 is positive, enter whichever is less: amount from line 61 of
+  # Part 3 or line 54.", with "If line 61 of Part 3 is positive and line 68 of Part 3 is
+  # negative, complete lines 54 and 55. If not, enter "0" on line 55": the lesser of the two when
+  # both are above zero (line 54 is above zero only when line 68 is negative), else "0".
+  - name: ca/lesser_of_when_positive
+    consumes:
+      amounts:
+        - ca/rc381_part_3_line_61
+        - ca/rc381_part_4_line_54
+    produces:
+      output: ca/rc381_part_4_line_55
+  # Line 56 "Line 53 plus line 55".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_53
+        - ca/rc381_part_4_line_55
+    produces:
+      output: ca/rc381_part_4_line_56

@@ -1,0 +1,148 @@
+# Schedule 3 (2025) Part 1: the form ca/schedule_3, a form of its own with no instances, run once
+# on the answer to line 17905 and the nine tick boxes of line 17906 (the return's inputs, in
+# 01_inputs.yaml), and on the properties of Form T2091(IND) (ca/principal_residence_properties, a
+# return input). Flipped property: each answer is checked to be 0 or 1 before the count that reads
+# it (ca/yes_or_no_count, as the T776 tick boxes are). The flag ca/flipped_property is counted by
+# ca/count_by_conditions from the ten checked answers and the conditions dataset
+# ca/schedule_3_flipped_property_conditions: 1 when line 17905 is "Yes" and no box is ticked, else
+# 0. Line 17900, the principal residence designation box (1, 2 or 3; 0 with no property), is
+# worked by ca/principal_residence_designation_box from the properties. The checks of the life
+# event boxes ticked while line 17905 is "No" are in 27_schedule_3_life_event_checks.yaml (a count
+# refused when it is 1), which adds steps to this same form. The form exports the flag, the box and
+# the checked count of those boxes; the return reads them nowhere, and the filer enters the sale on
+# Form T2125. This form holds Part 1 only: the other parts of Schedule 3 (the capital gains lines)
+# are still steps of the shared T1 part, and move into this form when that part is split.
+form:
+  name: ca/schedule_3
+  exports:
+    - ca/flipped_property
+    - ca/principal_residence_designation_box
+    - ca/flipped_property_life_event_without_yes_checked
+capabilities:
+  # Form 5000-S3 Part 1, page 1, "Line 17905: Did you dispose of a housing unit, or a right to
+  # acquire a housing unit, located in Canada (including a rental property) that was not
+  # considered inventory and was owned for less than 365 consecutive days before the disposition?
+  # Yes or No": the answer taken as a count, 1 for "Yes" and 0 for "No", checked to be 0 or 1
+  # before the count that reads it (line 17905 is a yes or no answer, not a dollars-and-cents
+  # line).
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_disposed
+    produces:
+      output: ca/flipped_property_disposed_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 1: the death of the taxpayer or a related
+  # person": a tick box, 1 when ticked and 0 when not, checked to be 0 or 1 before the count that
+  # reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_1
+    produces:
+      output: ca/flipped_property_life_event_1_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 2: a related person joining the taxpayer's
+  # household or the taxpayer joining a related person's household (for example, birth of a child,
+  # adoption, or care of an elderly parent)": a tick box, 1 when ticked and 0 when not, checked to
+  # be 0 or 1 before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_2
+    produces:
+      output: ca/flipped_property_life_event_2_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 3: the breakdown of a marriage or common-law
+  # partnership where the taxpayer had been living separate and apart from their spouse or
+  # common-law partner for at least 90 days before the disposition": a tick box, 1 when ticked and
+  # 0 when not, checked to be 0 or 1 before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_3
+    produces:
+      output: ca/flipped_property_life_event_3_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 4: a threat to the personal safety of the
+  # taxpayer or a related person (for example, domestic violence)": a tick box, 1 when ticked and
+  # 0 when not, checked to be 0 or 1 before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_4
+    produces:
+      output: ca/flipped_property_life_event_4_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 5: a serious disability or illness of the
+  # taxpayer or a related person": a tick box, 1 when ticked and 0 when not, checked to be 0 or 1
+  # before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_5
+    produces:
+      output: ca/flipped_property_life_event_5_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 6: the eligible relocation of the taxpayer or
+  # their spouse or common-law partner where the taxpayer's new home (including area code): is at
+  # least 40 kilometres closer to the new work (including area code): location or school
+  # (generally, an eligible relocation allows the taxpayer to carry on business, be employed, or
+  # attend full-time post-secondary education)": a tick box, 1 when ticked and 0 when not, checked
+  # to be 0 or 1 before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_6
+    produces:
+      output: ca/flipped_property_life_event_6_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 7: the involuntary termination of employment of
+  # the taxpayer or their spouse or common-law partner": a tick box, 1 when ticked and 0 when not,
+  # checked to be 0 or 1 before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_7
+    produces:
+      output: ca/flipped_property_life_event_7_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 8: the insolvency of the taxpayer (for example,
+  # due to an accumulation of debt)": a tick box, 1 when ticked and 0 when not, checked to be 0 or
+  # 1 before the count that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_8
+    produces:
+      output: ca/flipped_property_life_event_8_checked
+  # Form 5000-S3 Part 1, page 2, line 17906 "Box 9: the destruction or expropriation of the
+  # taxpayer's property (for example, when the property is destroyed due to natural or man-made
+  # disaster)": a tick box, 1 when ticked and 0 when not, checked to be 0 or 1 before the count
+  # that reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/flipped_property_life_event_9
+    produces:
+      output: ca/flipped_property_life_event_9_checked
+  # Form 5000-S3 Part 1, line 17900 "Box 1: I designate the property as my principal residence for
+  # all of the years that I owned it or for all of the years that I owned it except one year. Box 2:
+  # I designate the property as my principal residence for some but not all of the years that I
+  # owned it. Box 3: I designate the properties as my principal residences for some or all of the
+  # years that I owned them.": the box from the consumed properties, 0 with no property, 3 with
+  # more than one property, and for one property 1 when its years designated (line 3 of Form
+  # T2091(IND)) are at least its years owned (line 7) less one, else 2.
+  - name: ca/principal_residence_designation_box
+    params:
+      rounding: ca/principal_residence_gain_rounding
+    consumes:
+      properties: ca/principal_residence_properties
+    produces:
+      output: ca/principal_residence_designation_box
+  # Form 5000-S3 Part 1 "If you ticked "no", the housing unit is not considered a flipped
+  # property." (line 17905), "If any of the life events above apply to you, the housing unit is
+  # not considered a flipped property." and "If none of the life events above apply to you, the
+  # housing unit is considered a flipped property and the gain is taxable as business income."
+  # (line 17906): a count of 0 when line 17905 is "No" or a box of line 17906 is ticked, and 1
+  # when none applies, so the flag is 1 only for a housing unit that is a flipped property.
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/schedule_3_flipped_property_conditions
+    consumes:
+      counts:
+        - ca/flipped_property_disposed_checked
+        - ca/flipped_property_life_event_1_checked
+        - ca/flipped_property_life_event_2_checked
+        - ca/flipped_property_life_event_3_checked
+        - ca/flipped_property_life_event_4_checked
+        - ca/flipped_property_life_event_5_checked
+        - ca/flipped_property_life_event_6_checked
+        - ca/flipped_property_life_event_7_checked
+        - ca/flipped_property_life_event_8_checked
+        - ca/flipped_property_life_event_9_checked
+      amounts: []
+    produces:
+      output: ca/flipped_property

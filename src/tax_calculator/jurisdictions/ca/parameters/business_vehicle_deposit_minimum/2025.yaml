@@ -1,0 +1,11 @@
+# Guide T4002 (2025), printed page 56, "Repayments and imputed interest": "Calculate imputed
+# interest for leasing costs on a passenger vehicle only if all of the following apply: ... the total
+# of the deposits is more than $1,000". The printed $1,000 is the amount the total of the deposits
+# must be more than. It borrows the credit kind because it is a printed constant, claimed whole.
+family: ca/business_vehicle_deposit_minimum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "1000"

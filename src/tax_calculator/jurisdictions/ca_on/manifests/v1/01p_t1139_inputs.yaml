@@ -1,0 +1,7 @@
+# Form T1139 (2025), "Reconciliation of 2025 Business Income for Tax Purposes": the caller's figures,
+# one list with a record for each business that has a Form T1139 ("fill in another Form T1139 for
+# each business"), none included. Each record holds the line the business is reported on, the
+# positions of its statements for amounts A, H and I, the box ticked in Part 6 and the figures
+# entered on the lines of Parts 2 to 5; the row form ca/t1139 (31_t1139.yaml) runs once for each.
+inputs:
+  - ca/t1139_businesses

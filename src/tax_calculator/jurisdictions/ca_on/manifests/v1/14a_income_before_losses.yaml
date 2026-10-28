@@ -1,0 +1,86 @@
+# The bound of the amount that is part of the income it comes out of: Form T1206 line 3 (other split
+# income). The form prints no limit on it, so the bound is our own part-over-whole check,
+# `ca/income_before_losses`: the income lines of T1 Step 2 (lines 10100 to 14700) added as in total
+# income (line 15000, 03_income.yaml), except that each line that can be a loss counts 0 when it is
+# one. Total income itself shows a loss in brackets, so floored at 0 it would bound this amount at 0
+# for a filer whose losses are larger than the other income, and a real amount would be refused.
+# Wages of $30,000 with a $40,000 business loss give total income of -$10,000 but income before
+# losses of $30,000.
+# The six lines that print a loss are the net rental income (line 12600) and the net business,
+# professional, commission, farming and fishing income (lines 13500, 13700, 13900, 14100 and
+# 14300), each floored on its own by `core/sum_not_below_zero` over a single part. The other lines
+# cannot be negative as modelled.
+capabilities:
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/net_rental_income
+    produces:
+      output: ca/net_rental_income_not_below_zero
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/business_income
+    produces:
+      output: ca/business_income_not_below_zero
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/professional_income
+    produces:
+      output: ca/professional_income_not_below_zero
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/commission_income
+    produces:
+      output: ca/commission_income_not_below_zero
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/farming_income
+    produces:
+      output: ca/farming_income_not_below_zero
+  - name: core/sum_not_below_zero
+    consumes:
+      parts:
+        - ca/fishing_income
+    produces:
+      output: ca/fishing_income_not_below_zero
+  # Every income line of the total income sum in 03_income.yaml, in its order, with the six lines
+  # above in place of their signed amounts and the self-employment lines 22 to 26 added one by one
+  # (not as line 27, which nets a loss on one line against a gain on another).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+        - ca/other_employment_income
+        - ca/old_age_security
+        - ca/cpp_or_qpp_benefits
+        - ca/other_pensions_and_superannuation
+        - ca/t2205_on_line_11500
+        - ca/elected_split_pension_amount
+        - ca/universal_child_care_benefit
+        - ca/ei_and_other_benefits
+        - ca/taxable_dividends
+        - ca/interest_and_other_investment_income
+        - ca/net_partnership_income
+        - ca/rdsp_income
+        - ca/net_rental_income_not_below_zero
+        - ca/taxable_capital_gains
+        - ca/taxable_support_payments
+        - ca/rrsp_income
+        - ca/t2205_on_line_12900
+        - ca/fhsa_income
+        - ca/other_fhsa_income
+        - ca/other_income
+        - ca/t2205_on_line_13000
+        - ca/taxable_scholarships
+        - ca/business_income_not_below_zero
+        - ca/professional_income_not_below_zero
+        - ca/commission_income_not_below_zero
+        - ca/farming_income_not_below_zero
+        - ca/fishing_income_not_below_zero
+        - ca/income_support_benefits
+    produces:
+      output: ca/income_before_losses

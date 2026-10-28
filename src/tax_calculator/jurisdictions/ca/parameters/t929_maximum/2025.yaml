@@ -1,0 +1,13 @@
+# Disability supports deduction, maximum amount for school attendance, 2025 tax year (Form T929,
+# Disability Supports Deduction, 2024 edition, the latest CRA publishes; no 2025 edition is
+# published, so the 2024 figure is used for 2025): Step 2 line 10 "Enter the amount from line 7 or
+# line 9, whichever is less. (maximum $15,000)", the amount the form caps line 10 at.
+# Line 10 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/t929_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t929/t929-24e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "15000"

@@ -1,0 +1,119 @@
+# Form T776 (ca/t776), the checks of the co-owner and partner counts: see 03e_t776.yaml for the
+# form's selections and exports. T776 line 2 "Co-owners" and line 7 "Partners" take no count: the
+# counts are the answers "co-owner" and "partner", checked to be 0 or 1 before the steps that read
+# them. A caller's 2 or more is refused, not capped. The personal and short-term rental portions of
+# the 13 expense lines and the personal part of CCA and the CCA for business-use-of-home expenses
+# on line 9936 are not checked: the form prints no maximum for them, so the totals of lines 9949
+# and 9365 and the subtractions of lines 1 and 9936 read them as entered and may come out negative.
+# The co-owner's shares of lines 9947 and 9948 and of amount ii are checked to be at most their
+# wholes, and the co-owner's share of line 9369 (amount 2) between the whole's lower and upper
+# bounds, before the steps that choose the co-owner's figures read them. The total of Chart A's
+# column 3 is checked to be at most line 9365 (the short-term rental portion), and line B at most
+# that checked total, before line 1 subtracts line B.
+form:
+  name: ca/t776
+capabilities:
+  # T776 "Line 2: Co-owners: calculate your share of net income from line 9369. Enter your result on
+  # amount 2": the answer to a yes or no question, a count of 1 or 0, checked before the steps that
+  # read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/rental_coowner
+    produces:
+      output: ca/rental_coowner_checked
+  # T776 "Line 7: Partners: your share of amount 6, or the amount from your T5013 slip, Statement of
+  # Partnership Income": the answer to a yes or no question, a count of 1 or 0, checked before the
+  # steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/rental_partner
+    produces:
+      output: ca/rental_partner_checked
+  # T776 "Line 9947: Recaptured capital cost allowance (co-owners: enter your share of the amount)":
+  # the co-owner's share at most the recapture of Area A, refused above it.
+  - name: core/at_most
+    consumes:
+      amount: ca/rental_coowner_recaptured_cca
+      bound: ca/rental_cca_table_recapture
+    produces:
+      output: ca/rental_coowner_recaptured_cca_checked
+  # T776 "Line 9948: Terminal loss (co-owners: enter your share of the amount)": the co-owner's
+  # share at most the terminal loss of Area A, refused above it.
+  - name: core/at_most
+    consumes:
+      amount: ca/rental_coowner_terminal_loss
+      bound: ca/rental_cca_table_terminal_loss
+    produces:
+      output: ca/rental_coowner_terminal_loss_checked
+  # T776 Area A "Co-owners: Enter only your share of the total CCA claim for the year from amount ii
+  # on line 9936": the co-owner's share at most amount ii, refused above it.
+  - name: core/at_most
+    consumes:
+      amount: ca/rental_coowner_cca_claim
+      bound: ca/rental_cca_table_claim
+    produces:
+      output: ca/rental_coowner_cca_claim_checked
+  # T776 "Line 9369: Net income (loss) before adjustments": the size of a loss, the negation of a
+  # negative line 9369 (else 0), never below zero.
+  - name: ca/positive_part_of_negation
+    consumes:
+      amount: ca/rental_net_income_before_adjustments
+    produces:
+      output: ca/rental_net_income_loss_size
+  # T776 "Line 9369: Net income (loss) before adjustments": the upper bound of the co-owner's share,
+  # the whole plus its loss size, which is the whole's positive part (0 for a loss).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rental_net_income_before_adjustments
+        - ca/rental_net_income_loss_size
+    produces:
+      output: ca/rental_net_income_upper_bound
+  # T776 "Line 9369: Net income (loss) before adjustments": the lower bound of the co-owner's share,
+  # the whole less its upper bound, which is the whole's negative part (0 for a profit).
+  - name: core/subtract
+    consumes:
+      amount: ca/rental_net_income_before_adjustments
+      less: ca/rental_net_income_upper_bound
+    produces:
+      output: ca/rental_net_income_lower_bound
+  # T776 "Line 2: Co-owners: calculate your share of net income from line 9369. Enter your result on
+  # amount 2": the co-owner's share at most the upper bound, refused above it.
+  - name: core/at_most
+    consumes:
+      amount: ca/rental_coowner_share
+      bound: ca/rental_net_income_upper_bound
+    produces:
+      output: ca/rental_coowner_share_checked
+  # T776 "Line 2: Co-owners: calculate your share of net income from line 9369. Enter your result on
+  # amount 2": the co-owner's share at least the lower bound (a share of a loss is a loss no larger
+  # than the whole), refused below it.
+  - name: core/at_most
+    consumes:
+      amount: ca/rental_net_income_lower_bound
+      bound: ca/rental_coowner_share_checked
+    produces:
+      output: ca/rental_coowner_share_lower_checked
+  # T776 Chart A "Column 3: Related portion of the total from line 9365 of Part 4": the total of
+  # that column over the short-term rental units, one row for each property.
+  - name: ca/short_term_rental_related_expenses
+    consumes:
+      units: ca/short_term_rental_units
+    produces:
+      output: ca/short_term_rental_related_expenses_total
+  # T776 Chart A column 3 total at most "Line 9365: Total for short-term rental portion": refused
+  # above it, before line B is checked against it.
+  - name: core/at_most
+    consumes:
+      amount: ca/short_term_rental_related_expenses_total
+      bound: ca/rental_short_term_portion
+    produces:
+      output: ca/short_term_rental_related_expenses_total_checked
+  # T776 "Line B: Total non-compliant amount of expenses for short-term rentals": at most the
+  # checked column 3 total, refused above it, before line 1 subtracts it.
+  - name: core/at_most
+    consumes:
+      amount: ca/rental_non_compliant_expenses
+      bound: ca/short_term_rental_related_expenses_total_checked
+    produces:
+      output: ca/rental_non_compliant_expenses_checked

@@ -1,0 +1,32 @@
+# The shared fact "spouse or common-law partner on December 31, 2025": the form
+# ca/spouse_on_december_31, a form of its own with no instances, run once on one input,
+# ca/spouse_or_common_law_partner_on_december_31 (the return's inputs, in 01_inputs.yaml). It is the
+# T1's "Marital status on December 31, 2025" Box 1 Married or Box 2 Living common-law, and two CRA
+# forms ask it in the same words: ON428 (before lines 75 and 76, "If you had a spouse or
+# common-law partner on December 31, 2025, only the individual with the higher net income can
+# claim the amounts on lines 75 and 76") and Schedule ON428-A (Part A or Part B, by "a spouse or
+# common-law partner at the end of the year"). It is entered once, here, and both forms read this
+# form's export, so the two answers cannot differ.
+#
+# This is a targeted exception to taking inputs the way the form does: a fact gets a form of its
+# own like this only when two CRA forms ask the very same fact. It is not a way to merge inputs
+# that merely look alike, and every other input is still taken the way the form asks it.
+#
+# The form has no computed line. Its one step checks the answer to be 0 or 1 (ca/yes_or_no_count)
+# and it exports the checked count, whose first value the return takes as
+# ca/spouse_or_common_law_partner_on_december_31_total (core/first_record_count, in
+# 17_ontario_tax_reduction.yaml). A spouse or common-law partner who died in the year is entered as
+# 0, as Schedule ON428-A says to complete Part A as if single.
+form:
+  name: ca/spouse_on_december_31
+  exports:
+    - ca/spouse_or_common_law_partner_on_december_31_checked
+capabilities:
+  # T1 "Marital status on December 31, 2025" Box 1 Married or Box 2 Living common-law: the answer
+  # taken as a count, 1 for a spouse or common-law partner and 0 for none, checked to be 0 or 1
+  # before the steps that read it. A count of 2 or more is refused, not capped.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/spouse_or_common_law_partner_on_december_31
+    produces:
+      output: ca/spouse_or_common_law_partner_on_december_31_checked

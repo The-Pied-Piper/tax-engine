@@ -1,0 +1,57 @@
+# Form RC359, Tax on Excess Employees Profit Sharing Plan Amounts: the form ca/rc359, run once for
+# each employer of the list ca/rc359_employers (any number, none included). Each copy's fields are
+# the RC359 inputs. The form exports its line 7 "Excess EPSP amount" and its line 9 "Tax on excess
+# EPSP amount", which T1 line 41800 totals over the copies in 11_net_tax, and which T1 line 22900
+# totals in 05s_other_employment_expenses.yaml. The line 5 rate is a dataset of the form.
+form:
+  name: ca/rc359
+  instances: ca/rc359_employers
+  exports:
+    - ca/rc359_excess_epsp_amount
+    - ca/rc359_tax_on_excess_epsp
+capabilities:
+  # Form RC359 line 4 "Line 2 minus line 3": the employment income less the security options and
+  # other employment income. No floor is printed, so the figure may be negative.
+  - name: core/subtract
+    consumes:
+      amount: ca/rc359_employment_income
+      less: ca/rc359_other_employment_income
+    produces:
+      output: ca/rc359_line_4
+  # Form RC359 line 5 "Rate × 20%" and line 6 "Line 4 multiplied by the percentage from line 5":
+  # line 4 at the rate of its dataset, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/rc359_employment_income_rate
+    consumes:
+      base: ca/rc359_line_4
+    produces:
+      output: ca/rc359_line_6
+  # Form RC359 line 7 "Line 1 minus line 6 (if negative, enter "0")": the contributions less line
+  # 6, not below zero. "Excess EPSP amount".
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/rc359_epsp_contributions
+      less: ca/rc359_line_6
+    produces:
+      output: ca/rc359_excess_epsp_amount
+  # Form RC359 line 8 "Enter the rate for your province or territory of residence at the end of the
+  # year using the charts below. (If you were not a resident of a province or territory in Canada,
+  # enter the rate for "Other".)": the printed percentage of the province code the filer enters.
+  - name: core/amount_by_count
+    params:
+      table: ca/rc359_province_percentage
+    consumes:
+      count: ca/rc359_province
+    produces:
+      output: ca/rc359_line_8
+  # Form RC359 line 9 "Line 7 multiplied by the percentage from line 8. Include this amount on line
+  # 41800 of your return.": "Tax on excess EPSP amount", rounded half-up to the cent once.
+  - name: ca/apply_percentage
+    params:
+      rounding: ca/rc359_tax_rounding
+    consumes:
+      amount: ca/rc359_excess_epsp_amount
+      percentage: ca/rc359_line_8
+    produces:
+      output: ca/rc359_tax_on_excess_epsp

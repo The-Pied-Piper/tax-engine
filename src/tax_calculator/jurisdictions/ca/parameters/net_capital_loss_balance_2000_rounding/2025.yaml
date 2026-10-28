@@ -1,0 +1,10 @@
+# Form T1436 Chart A row "In 2000", column (G) "Net capital loss balance available to carry forward
+# (column E multiplied by column F)": column E times column F (2 × IR), over the printed 1 of
+# column (B). The form prints no rounding rule for the product, so it rounds half-up to the cent
+# once.
+family: ca/net_capital_loss_balance_2000_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

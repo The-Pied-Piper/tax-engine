@@ -1,0 +1,13 @@
+# Ontario tax on split income rate, 2025 tax year (Form T1206 Part 3, line 33): "The amount from
+# line 31 multiplied by the tax rate you entered on line 32. Enter this amount on the line of your
+# Form 428 shown in column 4 in Chart C on page 5", line 31 being "Total split income from line 4",
+# line 32 the rate "from column 2 in Chart C" (Ontario's row: "ON 20.53% 5.05% 10% 2.9863%"), and
+# column 4 for Ontario ON428 line 54 and line 61510. Line 33 is a dollars-and-cents box, so the
+# product rounds half-up to the cent, the owner's decision, as the form states no rounding rule.
+family: ca-on/split_income_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.2053"

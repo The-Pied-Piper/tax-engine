@@ -1,0 +1,45 @@
+# Form T2125 (ca/t2125), the routing of each statement by its line code: see 03b_t2125.yaml for the
+# form's selections and exports. The three flags are 1 for the line of the statement's code, and the
+# six routed amounts are line 9946 and line 8299 times the flag of their line.
+form:
+  name: ca/t2125
+capabilities:
+  # The statement's line code is refused when it is not 1, 2 or 3: a code that names none of the
+  # three lines would send the net and the gross of the statement to no line.
+  - name: ca/count_refused_by_conditions
+    params: {conditions: ca/t2125_line_code_refused}
+    consumes: {count: ca/business_income_line}
+    produces: {output: ca/business_income_line_checked}
+  # T2125 line 9946 "Report the net income amount ... on the applicable line": a flag of 1 for the
+  # line of the statement's code (1 business, 2 professional, 3 commission), 0 for the others.
+  - name: ca/count_by_conditions
+    params: {conditions: ca/t2125_line_is_business}
+    consumes: {counts: [ca/business_income_line_checked], amounts: []}
+    produces: {output: ca/business_line_is_business}
+  - name: ca/count_by_conditions
+    params: {conditions: ca/t2125_line_is_professional}
+    consumes: {counts: [ca/business_income_line_checked], amounts: []}
+    produces: {output: ca/business_line_is_professional}
+  - name: ca/count_by_conditions
+    params: {conditions: ca/t2125_line_is_commission}
+    consumes: {counts: [ca/business_income_line_checked], amounts: []}
+    produces: {output: ca/business_line_is_commission}
+  # Line 9946 and line 8299, each times the flag of its line: 0 on the other two.
+  - name: core/times_count
+    consumes: {amount: ca/business_income, count: ca/business_line_is_business}
+    produces: {output: ca/net_on_business_line}
+  - name: core/times_count
+    consumes: {amount: ca/business_income, count: ca/business_line_is_professional}
+    produces: {output: ca/net_on_professional_line}
+  - name: core/times_count
+    consumes: {amount: ca/business_income, count: ca/business_line_is_commission}
+    produces: {output: ca/net_on_commission_line}
+  - name: core/times_count
+    consumes: {amount: ca/business_gross_income, count: ca/business_line_is_business}
+    produces: {output: ca/gross_on_business_line}
+  - name: core/times_count
+    consumes: {amount: ca/business_gross_income, count: ca/business_line_is_professional}
+    produces: {output: ca/gross_on_professional_line}
+  - name: core/times_count
+    consumes: {amount: ca/business_gross_income, count: ca/business_line_is_commission}
+    produces: {output: ca/gross_on_commission_line}

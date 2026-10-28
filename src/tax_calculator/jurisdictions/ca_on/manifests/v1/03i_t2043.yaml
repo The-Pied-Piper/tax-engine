@@ -1,0 +1,423 @@
+# Form T2043, Return of Fuel Charge Proceeds to Farmers Tax Credit, Parts 1 to 5: the form
+# ca/t2043, which has no instances list and so runs once. Part 1 line 67061 and Part 2 read the
+# Chart A amounts of each Form T2042 statement (the part 03h_t2043_chart_a.yaml), exported by
+# ca/t2042 as one record for each statement. Part 5 reads the eight partnership credits, which
+# are starting amounts (01_inputs.yaml). The form exports amount 5D "Total credit for all
+# businesses", which T1 line 47556 takes into the line 48200 sum (14_refund.yaml) as
+# `ca/t2043.fuel_charge_credit_farmers`. Parts 3 and 4 total the Chart B and Chart C exports of
+# each statement (a business in more than one province), and line 5B takes amount 4I, gated by the
+# same threshold as 5A. Box 67062 (the part 03p_t2043_box_67062.yaml) totals the statements present
+# in each place and counts the statements; the form exports the box.
+form:
+  name: ca/t2043
+  exports:
+    - ca/fuel_charge_credit_farmers
+    - ca/fuel_charge_chart_b_gross_income_on
+    - ca/fuel_charge_chart_b_gross_income_mb
+    - ca/fuel_charge_chart_b_gross_income_sk
+    - ca/fuel_charge_chart_b_gross_income_ab
+    - ca/fuel_charge_chart_b_gross_income_ns
+    - ca/fuel_charge_chart_b_gross_income_pe
+    - ca/fuel_charge_chart_b_gross_income_nl
+    - ca/fuel_charge_chart_b_gross_income_nb
+    - ca/fuel_charge_chart_b_salaries_on
+    - ca/fuel_charge_chart_b_salaries_mb
+    - ca/fuel_charge_chart_b_salaries_sk
+    - ca/fuel_charge_chart_b_salaries_ab
+    - ca/fuel_charge_chart_b_salaries_ns
+    - ca/fuel_charge_chart_b_salaries_pe
+    - ca/fuel_charge_chart_b_salaries_nl
+    - ca/fuel_charge_chart_b_salaries_nb
+    - ca/fuel_charge_chart_b_total_gross_income
+    - ca/fuel_charge_chart_b_total_salaries
+    - ca/fuel_charge_multiple_provinces_box
+    - ca/farm_fuel_charge_credit_total_checked
+capabilities:
+  # Part 1 line 67061 "Total gross farming expenses for all of your businesses: Add amount 6 of
+  # every Chart A.": the total of amount 6 over the statements.
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_a_gross_expenses
+    produces:
+      output: ca/fuel_charge_gross_farming_expenses
+  # Part 2 line 67063 "Add all farming expenses in ON from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in Ontario (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_on
+    produces:
+      output: ca/fuel_charge_expenses_on
+  # Part 2 line 67064 "Add all farming expenses in MB from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in Manitoba (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_mb
+    produces:
+      output: ca/fuel_charge_expenses_mb
+  # Part 2 line 67065 "Add all farming expenses in SK from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in Saskatchewan (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_sk
+    produces:
+      output: ca/fuel_charge_expenses_sk
+  # Part 2 line 67066 "Add all farming expenses in AB from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in Alberta (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_ab
+    produces:
+      output: ca/fuel_charge_expenses_ab
+  # Part 2 line 67091 "Add all farming expenses in NS from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in Nova Scotia (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_ns
+    produces:
+      output: ca/fuel_charge_expenses_ns
+  # Part 2 line 67092 "Add all farming expenses in PE from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in Prince Edward Island (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_pe
+    produces:
+      output: ca/fuel_charge_expenses_pe
+  # Part 2 line 67093 "Add all farming expenses in NL from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in Newfoundland and Labrador (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_nl
+    produces:
+      output: ca/fuel_charge_expenses_nl
+  # Part 2 line 67094 "Add all farming expenses in NB from amount 8 of Chart A.": the total of
+  # amount 8 over the statements in New Brunswick (the others give 0 for it).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_amount_8_nb
+    produces:
+      output: ca/fuel_charge_expenses_nb
+  # Part 2 amount 2A "67063 × ON payment rate 0.229% = 2A": line 67063 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_on
+    produces:
+      output: ca/fuel_charge_credit_on
+  # Part 2 amount 2B "67064 × MB payment rate 0.229% = 2B": line 67064 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_mb
+    produces:
+      output: ca/fuel_charge_credit_mb
+  # Part 2 amount 2C "67065 × SK payment rate 0.229% = 2C": line 67065 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_sk
+    produces:
+      output: ca/fuel_charge_credit_sk
+  # Part 2 amount 2D "67066 × AB payment rate 0.229% = 2D": line 67066 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_ab
+    produces:
+      output: ca/fuel_charge_credit_ab
+  # Part 2 amount 2E "67091 × NS payment rate 0.229% = 2E": line 67091 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_ns
+    produces:
+      output: ca/fuel_charge_credit_ns
+  # Part 2 amount 2F "67092 × PE payment rate 0.229% = 2F": line 67092 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_pe
+    produces:
+      output: ca/fuel_charge_credit_pe
+  # Part 2 amount 2G "67093 × NL payment rate 0.229% = 2G": line 67093 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_nl
+    produces:
+      output: ca/fuel_charge_credit_nl
+  # Part 2 amount 2H "67094 × NB payment rate 0.229% = 2H": line 67094 at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/fuel_charge_expenses_nb
+    produces:
+      output: ca/fuel_charge_credit_nb
+  # Part 2 amount 2I "Total: Add amounts 2A to 2H": the eight credits added.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fuel_charge_credit_on
+        - ca/fuel_charge_credit_mb
+        - ca/fuel_charge_credit_sk
+        - ca/fuel_charge_credit_ab
+        - ca/fuel_charge_credit_ns
+        - ca/fuel_charge_credit_pe
+        - ca/fuel_charge_credit_nl
+        - ca/fuel_charge_credit_nb
+    produces:
+      output: ca/fuel_charge_part_2_total
+  # Parts 3 and 4 total the Chart B and Chart C records of the statements, one record total for
+  # each line (Part 3 line 67067 to 67076 and Part 4 amounts 4A to 4H), and amount 4I adds them.
+  # Form T2043 Part 3 line 67067 "Add all ON amounts from row 1 of every Chart B" (Ontario).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_on
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_on
+  # Form T2043 Part 3 line 67068 "Add all MB amounts from row 1 of every Chart B" (Manitoba).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_mb
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_mb
+  # Form T2043 Part 3 line 67069 "Add all SK amounts from row 1 of every Chart B" (Saskatchewan).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_sk
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_sk
+  # Form T2043 Part 3 line 67070 "Add all AB amounts from row 1 of every Chart B" (Alberta).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_ab
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_ab
+  # Form T2043 Part 3 line 67095 "Add all NS amounts from row 1 of every Chart B" (Nova Scotia).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_ns
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_ns
+  # Form T2043 Part 3 line 67096 "Add all PE amounts from row 1 of every Chart B" (Prince Edward
+  # Island).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_pe
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_pe
+  # Form T2043 Part 3 line 67097 "Add all NL amounts from row 1 of every Chart B" (Newfoundland and
+  # Labrador).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_nl
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_nl
+  # Form T2043 Part 3 line 67098 "Add all NB amounts from row 1 of every Chart B" (New Brunswick).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_gross_income_nb
+    produces:
+      output: ca/fuel_charge_chart_b_gross_income_nb
+  # Form T2043 Part 3 line 67071 "Add all ON amounts from row 4 of every Chart B" (Ontario).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_on
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_on
+  # Form T2043 Part 3 line 67072 "Add all MB amounts from row 4 of every Chart B" (Manitoba).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_mb
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_mb
+  # Form T2043 Part 3 line 67073 "Add all SK amounts from row 4 of every Chart B" (Saskatchewan).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_sk
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_sk
+  # Form T2043 Part 3 line 67074 "Add all AB amounts from row 4 of every Chart B" (Alberta).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_ab
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_ab
+  # Form T2043 Part 3 line 67099 "Add all NS amounts from row 4 of every Chart B" (Nova Scotia).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_ns
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_ns
+  # Form T2043 Part 3 line 67100 "Add all PE amounts from row 4 of every Chart B" (Prince Edward
+  # Island).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_pe
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_pe
+  # Form T2043 Part 3 line 67101 "Add all NL amounts from row 4 of every Chart B" (Newfoundland and
+  # Labrador).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_nl
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_nl
+  # Form T2043 Part 3 line 67102 "Add all NB amounts from row 4 of every Chart B" (New Brunswick).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_salaries_nb
+    produces:
+      output: ca/fuel_charge_chart_b_salaries_nb
+  # Form T2043 Part 3 line 67075 "Total gross income in all provinces and territories from all
+  # farming businesses: Add the amount from row 2 of every Chart B you fill in".
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_row_2_when_in_use
+    produces:
+      output: ca/fuel_charge_chart_b_total_gross_income
+  # Form T2043 Part 3 line 67076 "Total salaries and wages paid to employees in all provinces and
+  # territories from all farming businesses: Add the amount from row 5 of every Chart B you fill
+  # in".
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_b_row_5_when_in_use
+    produces:
+      output: ca/fuel_charge_chart_b_total_salaries
+  # Form T2043 Part 4 amount 4A "Total credit in ON for all businesses: Add amount 7 of every Chart
+  # C" (Ontario).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_on
+    produces:
+      output: ca/fuel_charge_chart_c_total_on
+  # Form T2043 Part 4 amount 4B "Total credit in MB for all businesses: Add amount 8 of every Chart
+  # C" (Manitoba).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_mb
+    produces:
+      output: ca/fuel_charge_chart_c_total_mb
+  # Form T2043 Part 4 amount 4C "Total credit in SK for all businesses: Add amount 9 of every Chart
+  # C" (Saskatchewan).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_sk
+    produces:
+      output: ca/fuel_charge_chart_c_total_sk
+  # Form T2043 Part 4 amount 4D "Total credit in AB for all businesses: Add amount 10 of every Chart
+  # C" (Alberta).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_ab
+    produces:
+      output: ca/fuel_charge_chart_c_total_ab
+  # Form T2043 Part 4 amount 4E "Total credit in NS for all businesses: Add amount 11 of every Chart
+  # C" (Nova Scotia).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_ns
+    produces:
+      output: ca/fuel_charge_chart_c_total_ns
+  # Form T2043 Part 4 amount 4F "Total credit in PE for all businesses: Add amount 12 of every Chart
+  # C" (Prince Edward Island).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_pe
+    produces:
+      output: ca/fuel_charge_chart_c_total_pe
+  # Form T2043 Part 4 amount 4G "Total credit in NL for all businesses: Add amount 13 of every Chart
+  # C" (Newfoundland and Labrador).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_nl
+    produces:
+      output: ca/fuel_charge_chart_c_total_nl
+  # Form T2043 Part 4 amount 4H "Total credit in NB for all businesses: Add amount 14 of every Chart
+  # C" (New Brunswick).
+  - name: core/record_total
+    consumes:
+      records: ca/t2042.farm_chart_c_amount_nb
+    produces:
+      output: ca/fuel_charge_chart_c_total_nb
+  # Form T2043 Part 4 amount 4I "Total: Add amounts 4A to 4H (enter this total at amount 5B)": the
+  # eight totals added.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fuel_charge_chart_c_total_on
+        - ca/fuel_charge_chart_c_total_mb
+        - ca/fuel_charge_chart_c_total_sk
+        - ca/fuel_charge_chart_c_total_ab
+        - ca/fuel_charge_chart_c_total_ns
+        - ca/fuel_charge_chart_c_total_pe
+        - ca/fuel_charge_chart_c_total_nl
+        - ca/fuel_charge_chart_c_total_nb
+    produces:
+      output: ca/fuel_charge_part_4_total
+  # Part 5 amount 5A "Enter amount 2I", for total gross farming expenses of at least $25,000 (Part 1
+  # Note 1 "If your total gross farming expenses for all businesses are $25,000 or more, you are
+  # eligible to claim the credit."): amount 2I when line 67061 reaches the threshold, else 0. The
+  # test does not apply to the partnership credits (see 5C): the first page tells a partnership
+  # member to fill in only lines 67079 to 67082 and 67103 to 67106 and amounts 5C and 5D.
+  - name: ca/threshold_gate
+    params:
+      threshold: ca/fuel_charge_expense_threshold
+    consumes:
+      amount: ca/fuel_charge_part_2_total
+      gate: ca/fuel_charge_gross_farming_expenses
+    produces:
+      output: ca/fuel_charge_part_5a_credit
+  # Part 5 amount 5C "Total credit allocated from partnerships: Add lines 67079 to 67082 and lines
+  # 67103 to 67106.": the eight partnership credits added, one for each designated province (each
+  # "Credit allocated from a partnership for ON (amount from box 237 of each T5013 slip or from
+  # each letter)" and the same for the other provinces).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fuel_charge_partnership_credit_on
+        - ca/fuel_charge_partnership_credit_mb
+        - ca/fuel_charge_partnership_credit_sk
+        - ca/fuel_charge_partnership_credit_ab
+        - ca/fuel_charge_partnership_credit_ns
+        - ca/fuel_charge_partnership_credit_pe
+        - ca/fuel_charge_partnership_credit_nl
+        - ca/fuel_charge_partnership_credit_nb
+    produces:
+      output: ca/fuel_charge_partnership_credit_total
+  # Part 5 amount 5B "Enter amount 4I", gated like 5A: Part 1 Note 1 covers all of the businesses,
+  # so the same test applies: amount 4I when line 67061 reaches the threshold, else 0.
+  - name: ca/threshold_gate
+    params:
+      threshold: ca/fuel_charge_expense_threshold
+    consumes:
+      amount: ca/fuel_charge_part_4_total
+      gate: ca/fuel_charge_gross_farming_expenses
+    produces:
+      output: ca/fuel_charge_part_5b_credit
+  # Part 5 amount 5D "Total credit for all businesses: Amount 5A plus amount 5B plus amount 5C
+  # (enter this amount on line 47556 of your income tax and benefit return).", amount 5B being
+  # "Enter amount 4I" of Part 4.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/fuel_charge_part_5a_credit
+        - ca/fuel_charge_part_5b_credit
+        - ca/fuel_charge_partnership_credit_total
+    produces:
+      output: ca/fuel_charge_credit_farmers

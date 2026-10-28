@@ -1,0 +1,14 @@
+# Age amount reduction rate, 2025 tax year (Federal Worksheet, form 5000-D1): "Line 30100 -
+# Age amount", line 5 "Applicable rate 15%", by which line 6 "Line 4 multiplied by the
+# percentage from line 5" multiplies line 4. The worksheet's "$105,709 or more, enter "0""
+# follows from the arithmetic, as 9,028 less 15% of (105,709 - 45,522) is zero, so it is not a
+# dataset.
+# Line 6 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/age_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15"

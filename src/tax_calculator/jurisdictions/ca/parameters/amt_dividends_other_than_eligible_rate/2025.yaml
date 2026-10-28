@@ -1,0 +1,11 @@
+# Rate of the taxable dividends other than eligible, 2025 tax year (Form T691 Part 1 line 84):
+# "B × 13.0435%" "=", B the amount of line 12010 of your return. The 13.0435% is the printed
+# percentage of the form, a rate of 0.130435, and the product is a dollars-and-cents line, so it
+# rounds half-up to the cent, the owner's decision, as the form states no rounding rule.
+family: ca/amt_dividends_other_than_eligible_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.130435"

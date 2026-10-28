@@ -1,0 +1,11 @@
+# Ontario seniors care at home tax credit base amount, 2025 tax year (Form ON479, form 5006-TC):
+# line 9 "Base amount 35,000.00", taken off line 8, the family net income. Line 9 is a
+# dollars-and-cents box, so the dataset carries the half-up cent rule, the owner's decision, as
+# the form states no rounding rule.
+family: ca-on/seniors_care_base_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/5006-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "35000.00"

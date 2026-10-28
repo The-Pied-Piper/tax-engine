@@ -1,0 +1,16 @@
+# Ontario spouse transfer income limit, 2025 tax year (Schedule ON(S2), form 5006-S2), line 5:
+# "Enter the amount from line 26000 of their return on line 5 if it is $52,886 or less. If it is
+# more than $52,886, enter the result of the following calculation:" "Amount from line 8 of their
+# Form ON428" "divided by 5.05% =". So the threshold is $52,886 (at or below it their taxable
+# income passes through) and the rate is 5.05%, which divides the Ontario tax on their taxable
+# income (their ON428 line 8).
+# Line 5 is a dollars-and-cents figure, so the quotient rounds half-up to the cent, as every
+# dollars-and-cents line does; the form states no rounding rule.
+family: ca-on/spouse_transfer_income_limit
+tax_year: 2025
+kind: threshold_rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s2/5006-s2-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+threshold: "52886"
+rate: "0.0505"

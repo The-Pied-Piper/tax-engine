@@ -1,0 +1,12 @@
+# Form T657 Chart 2 line 16 "Adjustment of 2000 capital gains deduction: Amount from line 14 × [ 1 –
+# ( 2 × IR )]": the 2 of "2 × IR", as the fraction 2/1 applied to IR. The product is exact and not
+# rounded; the one rounding of the line is line 14 × 1/(2 × IR), see
+# ca/t657_chart_2_line_16_rounding.
+family: ca/t657_chart_2_twice_ir_fraction
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+rounding: none
+numerator: "2"
+denominator: "1"

@@ -1,0 +1,10 @@
+# Rounding of Form T2043 Chart B row 8 (2025): "Percentage (%) of expenses allocated to the
+# designated province. Row 7 multiplied by 50%. See note 9." (confirmed from the PDF; no .txt
+# published). Row 7 is a percent with twelve decimals, so half of it has at most thirteen decimals: the
+# product, a percent, is exact, and no rounding applies.
+family: ca/farm_chart_b_row_8_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf
+rounding: none

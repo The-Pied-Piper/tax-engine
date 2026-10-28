@@ -1,0 +1,15 @@
+# Income base threshold and rate for the federal tuition amount, 2025 tax year (T1-2025, form
+# 5000-S11): "Enter the amount from line 26000 of your return on line 11 if it is $57,375 or
+# less. If it is more than $57,375, enter the result of the following calculation:" and line 11
+# "Amount from line 76 of your return divided by 14.5% =". At or below the threshold line 11 is
+# the taxable income; above it, the federal tax divided by the rate.
+# Line 11 is a dollars-and-cents box, so the result rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/tuition_income_limit
+tax_year: 2025
+kind: threshold_rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s11/5000-s11-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+threshold: "57375"
+rate: "0.145"

@@ -1,0 +1,12 @@
+# Maximum of the secondary earner exemption, 2025 tax year (Schedule 6, form 5000-S6), Part B line 14
+# "Secondary earner exemption": "... amount from line 5 or line 12. (maximum $16,386)". It is a plain
+# amount, not a credit: the cap the line 14 amount is held to.
+# Line 14 is a dollars-and-cents box, so the capped figure rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/cwb_secondary_earner_exemption_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "16386.00"

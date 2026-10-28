@@ -1,0 +1,319 @@
+# Form T1032 E (25), Joint Election to Split Pension Income: the form ca/t1032, run once (no instances),
+# its steps the lines of Step 2 to Step 5 in the order the form prints them. The starting inputs are in
+# 01j_t1032_inputs.yaml. Line 22 is the one input ca/t1032_line_22, entered once with the filer's answer
+# of Step 3; 22c_t1032_income_tax_deducted.yaml carries the checked line 22 to T1 line 21000
+# (ca/elected_split_pension_deduction) when the answer is 1 and to T1 line 11600
+# (ca/elected_split_pension_amount) when it is 0.
+# Lines 37 and 40 are the return's own `ca/income_tax_deducted` (T1 line 43700 before the election), entered
+# once. The exports are read by the return: line 39 and line 42 by 22c_t1032_income_tax_deducted.yaml for
+# T1 line 43700, and the two line 31400 amounts by 08m_other_federal_non_refundable_credits.yaml. Line 1
+# of a transferring spouse's return is checked in 22b_t1032_line_1_check.yaml. Every line is checked,
+# refused above its bound, never capped, where the form prints no limit. Line 33 follows Note 1 in
+# 22d_t1032_line_33_note_1.yaml.
+form:
+  name: ca/t1032
+  exports:
+    - ca/t1032_line_21
+    - ca/t1032_filer_is_transferring_spouse_checked
+    - ca/t1032_line_22_checked
+    - ca/t1032_line_31400_transferring
+    - ca/t1032_line_31400_receiving
+    - ca/t1032_line_39
+    - ca/t1032_line_42
+capabilities:
+  # Form T1032 Step 2 "Qualifying retirement compensation arrangement (RCA) payments": the answer taken as
+  # a count, 1 for yes and 0 for no, checked to be 0 or 1 before line 8 reads it. A count above 1 is refused.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_rca_payments_qualify
+    produces:
+      output: ca/t1032_rca_payments_qualify_checked
+  # Form T1032 Step 2 "Adjustment for marital status change during the tax year": "If your marital status
+  # changed during the year", the answer taken as a count, checked to be 0 or 1 before line 19 reads it.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_marital_status_changed
+    produces:
+      output: ca/t1032_marital_status_changed_checked
+  # Form T1032 "Line 2 and line 68025: Enter the amount from box 128", included in "Line 1 and line 68020":
+  # the box 128 amount, refused above line 1, not capped.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_t4a_box_128
+      bound: ca/t1032_eligible_pension_income
+    produces:
+      output: ca/t1032_line_2_checked
+  # Form T1032 "Line 3: Line 1 minus line 2 =".
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_eligible_pension_income
+      less: ca/t1032_line_2_checked
+    produces:
+      output: ca/t1032_line_3
+  # Form T1032 "Line 5: 131,483.45", the ceiling of the RCA calculation, from the dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/t1032_rca_and_veterans_ceiling
+    produces:
+      output: ca/t1032_line_5
+  # Form T1032 "Line 7: Line 5 minus line 6 (if negative, enter "0") =", where line 6 is line 3 ("Enter the
+  # amount from line 3").
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t1032_line_5
+      less: ca/t1032_line_3
+    produces:
+      output: ca/t1032_line_7
+  # Form T1032 "Line 8: Enter whichever is less: line 4 or line 7", before the RCA answer gates it.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1032_t4a_rca_box_17
+        - ca/t1032_line_7
+    produces:
+      output: ca/t1032_line_8_before_gate
+  # Form T1032 "Otherwise, enter "0" on line 8": the amount of line 8 times the RCA answer, 0 without a
+  # qualifying RCA payment.
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_line_8_before_gate
+      count: ca/t1032_rca_payments_qualify_checked
+    produces:
+      output: ca/t1032_line_8
+  # Form T1032 "Line 12: Line 10 plus line 11 =", where line 10 is line 3 and line 11 is line 8.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1032_line_3
+        - ca/t1032_line_8
+    produces:
+      output: ca/t1032_line_12
+  # Form T1032 "Line 13: 131,483.45", the ceiling of the veterans benefits calculation, from the dataset.
+  - name: core/credit_amount
+    params:
+      amount: ca/t1032_rca_and_veterans_ceiling
+    produces:
+      output: ca/t1032_line_13
+  # Form T1032 "Line 15: Line 13 minus line 14 (if negative, enter "0") =", where line 14 is line 12.
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t1032_line_13
+      less: ca/t1032_line_12
+    produces:
+      output: ca/t1032_line_15
+  # Form T1032 "Line 16: Enter whichever is less: line 9 or line 15", where line 9 is line 2.
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t1032_line_2_checked
+        - ca/t1032_line_15
+    produces:
+      output: ca/t1032_line_16
+  # Form T1032 "Line 17: Add lines 3, 8, and 16. =".
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1032_line_3
+        - ca/t1032_line_8
+        - ca/t1032_line_16
+    produces:
+      output: ca/t1032_line_17
+  # Form T1032 "Line 18: Number of months married or living common-law Line 68030", at most the months in
+  # the tax year, refused above it (the form prints no bound).
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_months_married
+      bound: ca/t1032_months_in_tax_year_checked
+    produces:
+      output: ca/t1032_months_married_checked
+  # Form T1032 "Divided by Number of months in the tax year (12) (Note 1)": the 12 months of the dataset,
+  # the most the denominator can be.
+  - name: core/credit_amount
+    params:
+      amount: ca/t1032_months_in_tax_year_maximum
+    produces:
+      output: ca/t1032_months_in_tax_year_ceiling
+  # Form T1032 "Divided by Number of months in the tax year (12) (Note 1)": the printed 12 unless the
+  # transferring spouse died in the year, otherwise the months the filer enters (Note 1: "If the
+  # transferring spouse or common-law partner is deceased, replace the "12" with the number of months
+  # up to and including the month of death").
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_transferring_spouse_died_checked
+      when_none: ca/t1032_months_in_tax_year_ceiling
+      when_any: ca/t1032_months_in_tax_year
+    produces:
+      output: ca/t1032_line_18_months_in_tax_year
+  # The denominator chosen, at most the 12 (or the months to the month of death, Note 1), refused
+  # above it.
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_line_18_months_in_tax_year
+      bound: ca/t1032_months_in_tax_year_ceiling
+    produces:
+      output: ca/t1032_months_in_tax_year_checked
+  # Form T1032 "Line 18: Number of months married or living common-law Line 68030 Divided by Number of
+  # months in the tax year (12) (Note 1) multiplied by Amount from line 17 =": line 17 times the months
+  # married over that denominator, rounded half-up to the cent once; a zero denominator is refused (the
+  # form prints no "if zero" rule), though a transferring spouse who did not die always divides by the
+  # printed 12.
+  - name: core/apply_ratio
+    params:
+      rounding: ca/t1032_rounding
+    consumes:
+      amount: ca/t1032_line_17
+      numerator: ca/t1032_months_married_checked
+      denominator: ca/t1032_months_in_tax_year_checked
+    produces:
+      output: ca/t1032_line_18
+  # Form T1032 "Line 19: Enter the amount from line 18, if it applies. Otherwise, enter the amount from
+  # line 17.": line 18 when the marital status changed in the year, otherwise line 17.
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_marital_status_changed_checked
+      when_none: ca/t1032_line_17
+      when_any: ca/t1032_line_18
+    produces:
+      output: ca/t1032_line_19
+  # Form T1032 "Line 21: Line 19 multiplied by line 20 Maximum split-pension amount =", line 20 being the
+  # maximum rate of 50%, from the dataset.
+  - name: core/apply_rate
+    params:
+      rate: ca/t1032_maximum_split_rate
+    consumes:
+      base: ca/t1032_line_19
+    produces:
+      output: ca/t1032_line_21
+  # Form T1032 Step 3 "Enter this amount on line 21000 of the transferring spouse's or common-law partner's
+  # return and on line 11600 of the receiving spouse's or common-law partner's return": the answer, 1 when
+  # this return is the transferring spouse's and 0 when it is the receiving spouse's, checked to be 0 or 1
+  # before line 22 reads it. A count above 1 is refused.
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/t1032_filer_is_transferring_spouse
+    produces:
+      output: ca/t1032_filer_is_transferring_spouse_checked
+  # Form T1032 "Line 22: ... The split-pension amount cannot be more than the amount from line 21": refused
+  # above line 21, not capped. Line 21 is 0 when a condition of page 1 is not met (22g_t1032_eligibility.yaml).
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_line_22
+      bound: ca/t1032_line_21_if_conditions_met
+    produces:
+      output: ca/t1032_line_22_checked
+  # Form T1032 "Line 29: Line 27 multiplied by line 28 =", where line 27 is line 25 (line 8) divided by line 26
+  # (line 17) and line 28 is line 24 (line 22): zero when line 17 is zero, rounded half-up to the cent once.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1032_rounding
+    consumes:
+      amount: ca/t1032_line_22_checked
+      numerator: ca/t1032_line_8
+      denominator: ca/t1032_line_17
+    produces:
+      output: ca/t1032_line_29
+  # Form T1032 "Line 30: Line 24 minus line 29 =", where line 24 is line 22.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_line_22_checked
+      less: ca/t1032_line_29
+    produces:
+      output: ca/t1032_line_30
+  # Form T1032 "Line 31: Line 23 minus line 30 =", where line 23 is line 1.
+  - name: core/subtract
+    consumes:
+      amount: ca/t1032_eligible_pension_income
+      less: ca/t1032_line_30
+    produces:
+      output: ca/t1032_line_31
+  # Form T1032 Step 4 Part A "Enter on line 31400 of the transferring spouse's or common-law partner's return,
+  # whichever is less: $2,000 or the amount from line 31.": the lesser of the $2,000 maximum and line 31,
+  # as recalculated by Note 1 when it recalculates (22e_t1032_line_31_note_1.yaml).
+  - name: core/capped_amount
+    params:
+      cap: ca/pension_income_maximum
+    consumes:
+      base: ca/t1032_line_31_after_note_1
+    produces:
+      output: ca/t1032_line_31400_transferring
+  # Form T1032 "Line 34: Line 32 plus line 33 =", line 33 being in 22d_t1032_line_33_note_1.yaml.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t1032_receiving_spouse_pension_amount
+        - ca/t1032_line_33
+    produces:
+      output: ca/t1032_line_34
+  # Form T1032 Step 4 Part B "Enter on line 31400 of the receiving spouse's or common-law partner's return,
+  # whichever is less: $2,000 or the amount from line 34.": the lesser of the $2,000 maximum and line 34.
+  - name: core/capped_amount
+    params:
+      cap: ca/pension_income_maximum
+    consumes:
+      base: ca/t1032_line_34
+    produces:
+      output: ca/t1032_line_31400_receiving
+  # Form T1032 "Line 35 and line 68040: Enter the total tax deducted ... entered on line 17" is part of
+  # "Line 37: Total tax deducted from all of the transferring spouse's ... slips", which is the filer's
+  # own `ca/income_tax_deducted` only on the transferring spouse's return: line 35 of that return
+  # (otherwise 0) ...
+  - name: core/times_count
+    consumes:
+      amount: ca/t1032_income_tax_deducted_on_pension
+      count: ca/t1032_filer_is_transferring_spouse_checked
+    produces:
+      output: ca/t1032_line_35_of_transferring_spouse
+  # ... and its line 37, the return's own `ca/income_tax_deducted` ("the amount that you would have entered
+  # on line 43700 of your return if you did not choose to split your eligible pension income"), otherwise 0.
+  - name: core/times_count
+    consumes:
+      amount: ca/income_tax_deducted
+      count: ca/t1032_filer_is_transferring_spouse_checked
+    produces:
+      output: ca/t1032_line_37_of_transferring_spouse
+  # Line 35 refused above line 37, not capped, on the transferring spouse's return (0 and 0 otherwise).
+  - name: core/at_most
+    consumes:
+      amount: ca/t1032_line_35_of_transferring_spouse
+      bound: ca/t1032_line_37_of_transferring_spouse
+    produces:
+      output: ca/t1032_line_35_of_transferring_spouse_checked
+  # Form T1032 "Line 35 and line 68040": the checked amount on the transferring spouse's return, the
+  # amount as entered on the receiving spouse's (whose line 37 is not the transferring spouse's total).
+  - name: core/choose_by_count
+    consumes:
+      count: ca/t1032_filer_is_transferring_spouse_checked
+      when_none: ca/t1032_income_tax_deducted_on_pension
+      when_any: ca/t1032_line_35_of_transferring_spouse_checked
+    produces:
+      output: ca/t1032_line_35_checked
+  # Form T1032 "Line 36: Amount from line 35 multiplied by Amount from line 22 divided by Amount from line 17
+  # Line 68050 =": zero when line 17 is zero, rounded half-up to the cent once.
+  - name: ca/apply_ratio_or_zero
+    params:
+      rounding: ca/t1032_rounding
+    consumes:
+      amount: ca/t1032_line_35_checked
+      numerator: ca/t1032_line_22_checked
+      denominator: ca/t1032_line_17
+    produces:
+      output: ca/t1032_line_36
+  # Form T1032 "Line 39: Line 37 minus line 38 Enter the result on line 43700 of the transferring spouse's or
+  # common-law partner's return.", where line 37 is the return's own `ca/income_tax_deducted` and line 38
+  # is line 36.
+  - name: core/subtract
+    consumes:
+      amount: ca/income_tax_deducted
+      less: ca/t1032_line_36
+    produces:
+      output: ca/t1032_line_39
+  # Form T1032 "Line 42: Line 40 plus line 41 Enter the result on line 43700 of the receiving spouse's or
+  # common-law partner's return.", where line 40 is the return's own `ca/income_tax_deducted` and line 41
+  # is line 36.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/income_tax_deducted
+        - ca/t1032_line_36
+    produces:
+      output: ca/t1032_line_42

@@ -1,0 +1,88 @@
+# Form T2043, Return of Fuel Charge Proceeds to Farmers Tax Credit, Chart C: for each designated
+# province, the eligible farming expenses of Chart B row 11 at the fuel charge payment rate. Its
+# steps belong to the form ca/t2042, run once for each statement of the list ca/t2042_statements,
+# after the Chart B steps of 03j_t2043_chart_b.yaml. Chart C's amounts 7 to 14 are the eight
+# credits Part 4 of Form T2043 totals; the form's exports are declared in 03c_t2042.yaml.
+form:
+  name: ca/t2042
+capabilities:
+  # Form T2043 Chart C "Eligible farming expenses in ON from row 11 of Chart B. Add amount 7 at
+  # amount 4A" × ON payment rate 0.229% (Ontario): row 11 of ON at the payment rate, rounded half-up
+  # to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_on
+    produces:
+      output: ca/farm_chart_c_amount_on
+  # Form T2043 Chart C "Eligible farming expenses in MB from row 11 of Chart B. Add amount 8 at
+  # amount 4B" × MB payment rate 0.229% (Manitoba): row 11 of MB at the payment rate, rounded half-
+  # up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_mb
+    produces:
+      output: ca/farm_chart_c_amount_mb
+  # Form T2043 Chart C "Eligible farming expenses in SK from row 11 of Chart B. Add amount 9 at
+  # amount 4C" × SK payment rate 0.229% (Saskatchewan): row 11 of SK at the payment rate, rounded
+  # half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_sk
+    produces:
+      output: ca/farm_chart_c_amount_sk
+  # Form T2043 Chart C "Eligible farming expenses in AB from row 11 of Chart B. Add amount 10 at
+  # amount 4D" × AB payment rate 0.229% (Alberta): row 11 of AB at the payment rate, rounded half-up
+  # to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_ab
+    produces:
+      output: ca/farm_chart_c_amount_ab
+  # Form T2043 Chart C "Eligible farming expenses in NS from row 11 of Chart B. Add amount 11 at
+  # amount 4E" × NS payment rate 0.229% (Nova Scotia): row 11 of NS at the payment rate, rounded
+  # half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_ns
+    produces:
+      output: ca/farm_chart_c_amount_ns
+  # Form T2043 Chart C "Eligible farming expenses in PE from row 11 of Chart B. Add amount 12 at
+  # amount 4F" × PE payment rate 0.229% (Prince Edward Island): row 11 of PE at the payment rate,
+  # rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_pe
+    produces:
+      output: ca/farm_chart_c_amount_pe
+  # Form T2043 Chart C "Eligible farming expenses in NL from row 11 of Chart B. Add amount 13 at
+  # amount 4G" × NL payment rate 0.229% (Newfoundland and Labrador): row 11 of NL at the payment
+  # rate, rounded half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_nl
+    produces:
+      output: ca/farm_chart_c_amount_nl
+  # Form T2043 Chart C "Eligible farming expenses in NB from row 11 of Chart B. Add amount 14 at
+  # amount 4H" × NB payment rate 0.229% (New Brunswick): row 11 of NB at the payment rate, rounded
+  # half-up to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca/fuel_charge_payment_rate
+    consumes:
+      base: ca/farm_chart_b_row_11_nb
+    produces:
+      output: ca/farm_chart_c_amount_nb

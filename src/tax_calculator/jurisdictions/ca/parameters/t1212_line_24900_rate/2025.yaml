@@ -1,0 +1,11 @@
+# Form T1212 footnote (1), 2025 tax year: "To claim your security options deduction on this amount, enter
+# 50% of the amount from line 2 on line 24900 of your return". The 50% is the printed percentage of the
+# form, a rate of 0.5, and the product is a dollars-and-cents amount, so it rounds half-up to the cent,
+# the owner's decision, as the form states no rounding rule.
+family: ca/t1212_line_24900_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1212/t1212-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.5"

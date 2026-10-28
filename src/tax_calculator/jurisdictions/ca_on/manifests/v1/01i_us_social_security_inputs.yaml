@@ -1,0 +1,8 @@
+inputs:
+  # Guide 5000-G "Line 25600 - Additional deductions", "Exempt foreign income": the U.S. Social
+  # Security benefits, including U.S. Medicare premiums paid on your behalf, reported as income on
+  # line 11500, in Canadian dollars; and whether the filer has been a resident of Canada receiving
+  # them continuously since before January 1, 1996 (or meets the deceased-spouse conditions), a
+  # yes or no answer as a count of 1 or 0. The deduction on line 25600 is computed from them.
+  - ca/us_social_security_benefits
+  - ca/us_social_security_resident_since_before_1996

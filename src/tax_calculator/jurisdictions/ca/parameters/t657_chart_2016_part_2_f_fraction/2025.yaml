@@ -1,0 +1,12 @@
+# Form T657 Chart 2016 Part 2 "Amount from line 6 of Form T2017 (do not include reserves from
+# dispositions of QFFP in any year other than 2016) (if negative, show in brackets) × 1/2 = F".
+# The form prints no rounding rule, so the repo convention applies: the figure rounds half-up to
+# the cent.
+family: ca/t657_chart_2016_part_2_f_fraction
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+numerator: "1"
+denominator: "2"

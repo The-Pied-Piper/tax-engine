@@ -1,0 +1,14 @@
+# Child care expenses earned income fraction, 2025 tax year (Form T778): Part B line 6
+# "Enter your earned income." "multiplied by two-thirds", one of the three amounts of
+# line 7 "Enter whichever amount is the least: line 4, line 5 or line 6.". Two-thirds is
+# not a finite decimal, so it is a fraction, not a rate.
+# Line 6 is a dollars-and-cents box, so the two-thirds rounds half-up to the cent, the
+# owner's decision, as the form states no rounding rule.
+family: ca/child_care_earned_income_fraction
+tax_year: 2025
+kind: fraction
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t778/t778-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+numerator: "2"
+denominator: "3"

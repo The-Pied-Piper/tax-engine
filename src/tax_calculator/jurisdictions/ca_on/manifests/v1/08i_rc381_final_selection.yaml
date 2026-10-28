@@ -1,0 +1,109 @@
+# Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and
+# Overpayments", after Part 3 and Part 4 (for residents of a province or territory other than
+# Quebec): which part gives each line of the return. Part 3 (page 7), after line 69: "If you are
+# completing Part 4 or Part 5 and calculate that your self-employment income and other earnings
+# subject to contributions (lines 70 and 83 of Part 4 or lines 68 and 81 of Part 5) are "0,"
+# follow the instructions below." (the instructions for employment income only, Part 3a and Part
+# 3b), and Part 4 after line 83: "Note: If lines 70 and 83 are both "0", return to Part 3 (page 7)
+# and follow the instructions to calculate your claim for the tax credit, deduction, and
+# overpayment for the contributions on your employment income." Part 4 lines 1 to 110 are in 08d
+# to 08g and lines 111 to 129 in 08h_rc381_part_4_lines_111_to_129.yaml. The six results are the
+# amounts RC381 gives for lines 30800, 22215, 44800, 42100, 31000 and 22200 of the return.
+# Form RC381 (ca/rc381): see 08a_rc381_part_2_and_3.yaml.
+form:
+  name: ca/rc381
+capabilities:
+  # The "self-employment income and other earnings subject to contributions" of the instruction
+  # above, lines 70 and 83 of Part 4 added: above zero when Part 4 has earnings to contribute on,
+  # and "0" when both lines are "0" (line 70 prints no floor, so it may be below zero). When the
+  # total is not above zero the selections below take Part 3's results; with line 83 "0" and
+  # line 70 below zero, Part 4's own lines 98, 110 and 91 equal Part 3's results and lines 90, 111
+  # and 129 are "0", so the sign test and the form's "both "0"" test give the same figures.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/rc381_part_4_line_70
+        - ca/rc381_part_4_line_83
+    produces:
+      output: ca/rc381_part_4_earnings_subject_to_contributions
+  # Line 30800 "Base CPP contributions through employment income": Part 4 line 98 when Part 4 is
+  # completed, else Part 3a line 70 or Part 3b line 81 (the instruction above).
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_earnings_subject_to_contributions
+      when_positive:
+        - ca/rc381_part_4_line_98
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/rc381_employment_cpp_base_contributions
+      when_non_negative: []
+    produces:
+      output: ca/rc381_cpp_base_contributions_on_return
+  # Line 22215 "Deduction for CPP enhanced contributions on employment income": Part 4 line 110
+  # when Part 4 is completed, else Part 3a line 73 or Part 3b line 93.
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_earnings_subject_to_contributions
+      when_positive:
+        - ca/rc381_part_4_line_110
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/rc381_employment_cpp_enhanced_contributions
+      when_non_negative: []
+    produces:
+      output: ca/rc381_cpp_enhanced_contributions_on_return
+  # Line 44800 "CPP overpayment": Part 4 line 91 when Part 4 is completed, else Part 3a line 74
+  # (Part 3b has none).
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_earnings_subject_to_contributions
+      when_positive:
+        - ca/rc381_part_4_line_91
+      when_zero: []
+      when_negative: []
+      when_non_positive:
+        - ca/rc381_cpp_overpayment
+      when_non_negative: []
+    produces:
+      output: ca/rc381_cpp_overpayment_on_return
+  # Line 42100 "CPP contributions payable on self-employment income and other earnings": Part 4
+  # line 90 when it is positive, only when Part 4 is completed; otherwise "0".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_earnings_subject_to_contributions
+      when_positive:
+        - ca/rc381_self_employment_cpp_contributions
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_cpp_payable_on_self_employment
+  # Line 31000 "Base CPP contributions through self-employment income and other earnings": Part 4
+  # line 111 when Part 4 is completed; otherwise "0".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_earnings_subject_to_contributions
+      when_positive:
+        - ca/rc381_part_4_line_111
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings
+  # Line 22200 "Deduction for CPP enhanced contributions on self-employment income and other
+  # earnings": Part 4 line 129 when Part 4 is completed; otherwise "0".
+  - name: ca/choose_by_sign
+    consumes:
+      sign: ca/rc381_part_4_earnings_subject_to_contributions
+      when_positive:
+        - ca/rc381_part_4_line_129
+      when_zero: []
+      when_negative: []
+      when_non_positive: []
+      when_non_negative: []
+    produces:
+      output: ca/rc381_cpp_deduction_on_self_employment_and_other_earnings

@@ -1,0 +1,156 @@
+# Form T777, Statement of Employment Expenses, the capital cost allowance schedule for employees,
+# Parts A and B (pages 4 and 5): the form ca/t777, which has no instances list and so runs once. Its
+# inputs are the row lists and the figures of 01c_t777_inputs.yaml. Its selections are these CCA
+# steps and the lines of pages 1 to 3 in 03q_t777_lines.yaml, and its exports are declared here in
+# the order the form prints them: lines 3, 4, 9, 11, 13, 15, 16, 17 and 25 (line 13 the CCA of the
+# Class 8 rows, line 25 the CCA of the vehicle classes plus the Part B total), the work-space
+# expenses of line 47 (the form's subtotal, which nothing else reads, so it is exported), the closing UCC of
+# Parts A and B, which the form prints in Part A column 16 and Part B column 8, and the work-space
+# amount carried forward (line 55), and the leasing chart's conflict check (Guide T4044 "Repayments and
+# imputed interest", 03q_t777_leasing_chart.yaml), which the form reads nowhere, and the musical
+# instrument limit (Guide T4044 "Part 2 - Musical instrument expenses",
+# 03q_t777_musical_instrument_expenses_limit.yaml) with its check, which the form reads nowhere.
+# The return reads line 17 (T1 line 22900) in 05s_other_employment_expenses.yaml and no other export.
+form:
+  name: ca/t777
+  exports:
+    - ca/t777_line_3
+    - ca/t777_line_4
+    - ca/t777_tools_formula_b
+    - ca/t777_tradespersons_tools_maximum_deduction
+    - ca/t777_line_9
+    - ca/t777_apprentice_mechanic_tools_maximum_deduction
+    - ca/t777_line_10
+    - ca/t777_artists_employment_expenses_maximum_deduction
+    - ca/t777_artists_expenses_carried_forward_out
+    - ca/t777_line_14
+    - ca/t777_line_11
+    - ca/t777_line_13
+    - ca/t777_musical_instrument_expenses_maximum_deduction
+    - ca/t777_musical_instrument_expenses_checked
+    - ca/t777_line_15
+    - ca/t777_line_16
+    - ca/t777_work_space_expenses
+    - ca/t777_line_17
+    - ca/t777_line_25
+    - ca/t777_lease_chart_conflict_checked
+    - ca/t777_class_8_closing_ucc
+    - ca/t777_vehicle_closing_ucc
+    - ca/t777_part_b_closing_ucc
+    - ca/t777_work_space_carried_forward_out
+capabilities:
+  # T777 Part A "Part A - Classes 8, 10, 54, and 55", the Class 8 list: "Class number" 8 printed
+  # once, one row for each class, so a class number already listed in an earlier row is refused,
+  # and the rows are passed on unchanged.
+  - name: ca/cca_part_a_checks
+    consumes:
+      classes: ca/t777_class_8_rows
+    produces:
+      output: ca/t777_class_8_checked_rows
+  # T777 Part A "Part A - Classes 8, 10, 54, and 55", the vehicle list: "Class number" 10, 54 and 55
+  # printed once each, one row for each class, so a class number already listed in an earlier row is
+  # refused, and the rows are passed on unchanged.
+  - name: ca/cca_part_a_checks
+    consumes:
+      classes: ca/t777_vehicle_rows
+    produces:
+      output: ca/t777_vehicle_checked_rows
+  # T777 line 13 "Capital cost allowance for musical instruments (see Part A on page 4)": the CCA of
+  # the Class 8 rows, column 15 "CCA for the year (column 13 multiplied by column 14 or lower
+  # amount)", totalled. Class 8 includes musical instruments (note (5)); the class rates are the
+  # Class 8 dataset, the only class the list holds. It reads the rows that passed the change in use
+  # check of column 3 (`03y_t777_change_in_use_check.yaml`).
+  - name: ca/cca_claim
+    params:
+      class_rates: ca/t777_class_8_rates
+    consumes:
+      classes: ca/t777_class_8_change_in_use_checked_rows
+    produces:
+      output: ca/t777_line_13
+  # T777 Part A, the vehicle rows: a Class 54 zero-emission vehicle sold from the row is scaled to its
+  # prescribed amount, Guide T4036 2025 "Class 54 (30%)": "If a zero-emission passenger vehicle is
+  # disposed of to a person or partnership with whom you deal at arm's length, and its cost exceeds
+  # the prescribed amount [...], the proceeds of disposition will be adjusted based on a factor equal
+  # to the prescribed amount as a proportion of the actual cost of the vehicle." The GST or HST rate
+  # of the sale is the caller's input, and the record list is the vehicle rows without the year, cost,
+  # assistance and sold vehicles. It reads the vehicle rows that passed the change in use check of
+  # column 3 (`03y_t777_change_in_use_check.yaml`).
+  - name: ca/cca_vehicle_proceeds
+    params:
+      prescribed_amounts: ca/cca_vehicle_prescribed_amounts
+      zepv_prescribed_amounts: ca/cca_zepv_prescribed_amounts
+    consumes:
+      classes: ca/t777_vehicle_change_in_use_checked_rows
+      sales_tax_rate: ca/t777_vehicle_sales_tax_rate
+    produces:
+      output: ca/t777_vehicle_rows_adjusted
+  # T777 Part A, the vehicle classes 10, 54 and 55, column 15 "CCA for the year" totalled (the part of
+  # line 25 that Part A gives); the class rates are the vehicle dataset, which lists those classes only.
+  - name: ca/cca_claim
+    params:
+      class_rates: ca/t777_vehicle_class_rates
+    consumes:
+      classes: ca/t777_vehicle_rows_adjusted
+    produces:
+      output: ca/t777_vehicle_claim
+  # T777 Part B "List each passenger vehicle on a separate line" and notes (11) and (12): one UCC
+  # at the start or additions (not both), proceeds only with the sold in the year tick, and a tick
+  # only with proceeds, checked and passed on unchanged.
+  - name: ca/cca_part_b_checks
+    consumes:
+      classes: ca/t777_part_b_rows
+    produces:
+      output: ca/t777_part_b_checked_rows
+  # T777 Part B column 7 "CCA for the year (column 5 multiplied by column 6 or lower amount)",
+  # totalled over the vehicles: the Class 10.1 rate, 30% (printed "10.1 30%", page 5), on column 5
+  # (note (11)), the Class 10.1 dataset. It reads the rows that passed the Class 10.1 additions
+  # check of column 3 (`03u_t777_vehicle_additions_check.yaml`), the Class 10.1 class condition
+  # check (`03v_t777_vehicle_class_check.yaml`), the non-arm's-length purchase check
+  # (`03w_t777_vehicle_non_arms_length_check.yaml`) and the change in use check
+  # (`03x_t777_vehicle_change_in_use_check.yaml`), not the rows of the Part B checks.
+  - name: ca/cca_claim
+    params:
+      class_rates: ca/t777_part_b_class_rates
+    consumes:
+      classes: ca/t777_part_b_change_in_use_checked_rows
+    produces:
+      output: ca/t777_part_b_claim
+  # T777 line 25 "Capital cost allowance (see Part A and Part B on pages 4 and 5)": the CCA of the
+  # vehicle classes of Part A plus the Part B total.
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t777_vehicle_claim
+        - ca/t777_part_b_claim
+    produces:
+      output: ca/t777_line_25
+  # T777 Part A "Column 16: UCC at the end of the year (column 7 minus column 15)" of the Class 8
+  # rows: the class number and the UCC at the end of the year of each Class 8 row, the Class 8
+  # dataset, on the rows that passed the change in use check of column 3
+  # (`03y_t777_change_in_use_check.yaml`).
+  - name: ca/closing_ucc
+    params:
+      class_rates: ca/t777_class_8_rates
+    consumes:
+      classes: ca/t777_class_8_change_in_use_checked_rows
+    produces:
+      output: ca/t777_class_8_closing_ucc
+  # T777 Part A "Column 16: UCC at the end of the year (column 7 minus column 15)" of the vehicle
+  # rows of Classes 10, 54 and 55: the class number and the UCC at the end of the year of each row,
+  # the vehicle dataset, on the rows after the sold zero-emission vehicles are scaled.
+  - name: ca/closing_ucc
+    params:
+      class_rates: ca/t777_vehicle_class_rates
+    consumes:
+      classes: ca/t777_vehicle_rows_adjusted
+    produces:
+      output: ca/t777_vehicle_closing_ucc
+  # T777 Part B "Column 8: UCC at the end of the year (column 2 or column 3 minus column 7)", note
+  # (12): 0 for the year the vehicle was sold; the class number and column 8 of each vehicle.
+  - name: ca/closing_ucc
+    params:
+      class_rates: ca/t777_part_b_class_rates
+    consumes:
+      classes: ca/t777_part_b_checked_rows
+    produces:
+      output: ca/t777_part_b_closing_ucc

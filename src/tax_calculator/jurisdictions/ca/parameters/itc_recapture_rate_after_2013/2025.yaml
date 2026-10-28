@@ -1,0 +1,12 @@
+# ITC recapture rate on expenditure earned at 15%, 2025 tax year (Form T2038(IND), Part C,
+# "Recapture"): "Amount of expenditure on which ITC earned at 15% (after 2013) is recaptured. Do
+# not enter more than the amount of the original expenditure 67193 × 0.15 = 1".
+# Amount 1 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
+# decision, as the form states no rounding rule.
+family: ca/itc_recapture_rate_after_2013
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2038-ind/t2038-ind-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.15"

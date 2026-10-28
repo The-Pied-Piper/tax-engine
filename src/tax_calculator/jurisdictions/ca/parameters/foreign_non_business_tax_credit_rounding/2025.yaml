@@ -1,0 +1,12 @@
+# Rounding of the federal non-business foreign tax credit, 2025 tax year (Form T2209): line 1
+# "Non-business income tax paid to a foreign country (1) 43100", line 2 "Net foreign
+# non-business income (2) 43300" "x Basic federal tax (4) =" over "Net income (3)" and line 3
+# "Enter whichever is less: the amount from line 1 or line 2. Federal non-business foreign tax
+# credit". The form prints no figure and no rounding rule; line 2 is a dollars-and-cents box, so
+# its quotient rounds half-up to the cent, the owner's decision.
+family: ca/foreign_non_business_tax_credit_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf
+rounding: {increment: "0.01", mode: half_up}

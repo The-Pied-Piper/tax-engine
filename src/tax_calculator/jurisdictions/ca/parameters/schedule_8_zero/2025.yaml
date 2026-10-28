@@ -1,0 +1,11 @@
+# The "enter "0"" of Schedule 8 Part 3b (2025 tax year, form 5000-S8, page 6): the alternative
+# on lines 32, 35, 39, 42 and 46 when the condition does not hold ("If not, enter "0""), and the
+# base of the "as a positive amount" lines 31, 38 and 45. A dollars-and-cents box, so the amount
+# is "0" to the cent, which the rounding of the dataset keeps.
+family: ca/schedule_8_zero
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "0"
