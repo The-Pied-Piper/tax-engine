@@ -1,0 +1,174 @@
+﻿5006-TCA (Front) 
+ 
+Protected B when completed 
+ 
+2025 
+ 
+Schedule ON479-A 
+ 
+Ontario Childcare Access and Relief from Expenses (CARE) Tax Credit 
+ 
+Complete Form T778, Child Care Expenses Deduction for 2025, and enter the 
+amount claimed on line 21400 of your return before completing this form. 
+ 
+To find out if you are eligible for this tax credit, go to canada.ca/on-tax-
+info. 
+ 
+Complete and attach a copy of this schedule to your paper return. 
+ 
+An eligible child can be any of the following: 
+ 
+- your or your spouse's or common-law partner's child 
+ 
+- a child whose net income was $16,129 or less and who was dependent upon you 
+or your spouse or common-law partner 
+ 
+The child must have been under 16 years of age at some time in the year; 
+however, the age limit does not apply if the child had a physical or mental 
+impairment and was dependent upon you or your spouse or common-law partner at 
+any time during the year. 
+ 
+For each eligible child, there may be one or more supporting persons. 
+ 
+A supporting person is a person (other than you) who meets all of the 
+following conditions: 
+ 
+- They were a resident of Ontario at the end of 2025 
+ 
+- They lived with you at any time in 2025 and at any time in the first 60 
+days of 2026, and were any of the following: 
+ 
+-- the eligible child's parent 
+ 
+-- your spouse or common-law partner, if you are the parent of the eligible 
+child 
+ 
+-- an individual claiming an amount for the eligible child on line 30425, 
+30400, 30450, or 30500 of their return 
+ 
+No supporting person for any eligible children 
+ 
+If none of the eligible children has a supporting person, calculate your 
+adjusted income and enter it on line 4 of column 1. 
+ 
+One supporting person for all eligible children 
+ 
+If there is only one supporting person and all of the eligible children have 
+the same supporting person: 
+ 
+- Calculate your adjusted income and enter it on line 4 of column 1 
+ 
+- Calculate the adjusted income of the supporting person and enter it on line 
+4 of column 2 
+ 
+Two or more supporting persons for all eligible children 
+ 
+If there are two or more supporting persons and all of the eligible children 
+have the same supporting persons: 
+ 
+- Calculate your adjusted income and enter it on line 4 of column 1 
+ 
+- Calculate the adjusted income of each supporting person on a separate sheet 
+and enter the total of their adjusted incomes on line 4 of column 2 (leave 
+lines 1 to 3 of column 2 blank) 
+ 
+Different supporting persons for each eligible child 
+ 
+If there is one or more supporting persons and the eligible children do not 
+have the same supporting person(s): 
+ 
+- Calculate your adjusted income and enter it on line 4 of column 1 
+ 
+- Calculate the adjusted income of each supporting person. For each eligible 
+child, calculate the total of the adjusted incomes of all supporting persons 
+for that child on a separate sheet. Enter the highest sum on line 4 of column 
+2 (leave lines 1 to 3 of column 2 blank) 
+ 
+ 
+5006-TCA (Back) 
+ 
+Family adjusted income calculation for the tax credit 
+ 
+*** Transcriber's Note: In print, the following table is set-up as 2 columns. 
+Column 1 You; Column 2 Supporting person(s). *** 
+ 
+Line 1: Net income from line 23600 of the return (or the amount you would have 
+entered if the instructions on line 23600 said "if negative, show in 
+brackets") 
+Column 1 You ^
+Column 2 Supporting person(s) ^
+ 
+Line 2: Child care expenses deduction from line 21400 of the return 
+Column 1 You ^
+Column 2 Supporting person(s) Line 63045 ^
+ 
+Line 3: Social benefits repayment from line 23500 of the return 
+Column 1 You ^
+Column 2 Supporting person(s) ^
+ 
+Line 4: Add lines 1 to 3 (if negative, enter "0"). Adjusted income 
+Column 1 You = ^
+Column 2 Supporting person(s) Line 63047 = ^
+ 
+Line 5: Add the amounts from line 4 of columns 1 and 2. Family adjusted 
+income ^
+ 
+Line 6: Enter your child care expenses deduction from line 21400 of your 
+return. ^
+ 
+Line 7: If your family adjusted income on line 5 is "0", enter 75%. If not, 
+enter the tax credit rate that applies to your family adjusted income from 
+the table below. % ^
+ 
+Line 8: Line 6 multiplied by the percentage from line 7 Enter this amount on 
+line 63050 of your Form ON479. = ^
+ 
+Family adjusted income and Tax credit rate 
+ 
+more than $0 but not more than $20,000: 75% 
+more than $20,000 but not more than $22,500: 73% 
+more than $22,500 but not more than $25,000: 71% 
+more than $25,000 but not more than $27,500: 69% 
+more than $27,500 but not more than $30,000: 67% 
+more than $30,000 but not more than $32,500: 65% 
+more than $32,500 but not more than $35,000: 63% 
+more than $35,000 but not more than $37,500: 61% 
+more than $37,500 but not more than $40,000: 59% 
+more than $40,000 but not more than $45,000: 57% 
+more than $45,000 but not more than $50,000: 55% 
+more than $50,000 but not more than $55,000: 53% 
+more than $55,000 but not more than $60,000: 51% 
+more than $60,000 but not more than $63,600: 49% 
+more than $63,600 but not more than $67,200: 47% 
+more than $67,200 but not more than $70,800: 45% 
+more than $70,800 but not more than $74,400: 43% 
+more than $74,400 but not more than $78,000: 41% 
+more than $78,000 but not more than $81,600: 39% 
+more than $81,600 but not more than $85,200: 37% 
+more than $85,200 but not more than $88,800: 35% 
+more than $88,800 but not more than $92,400: 33% 
+more than $92,400 but not more than $96,000: 31% 
+more than $96,000 but not more than $99,600: 29% 
+more than $99,600 but not more than $103,200: 27% 
+more than $103,200 but not more than $106,800: 25% 
+more than $106,800 but not more than $110,400: 23% 
+more than $110,400 but not more than $114,000: 21% 
+more than $114,000 but not more than $117,600: 19% 
+more than $117,600 but not more than $121,200: 17% 
+more than $121,200 but not more than $124,800: 15% 
+more than $124,800 but not more than $128,400: 13% 
+more than $128,400 but not more than $132,000: 11% 
+more than $132,000 but not more than $136,500: 9% 
+more than $135,600 but not more than $139,200: 7% 
+more than $139,200 but not more than $142,800: 5% 
+more than $142,800 but not more than $146,400: 3% 
+more than $146,400 but not more than $150,000: 1% 
+more than $150,000: 0% 
+ 
+See the privacy notice on your return.
+
+ 
+
+
+
+

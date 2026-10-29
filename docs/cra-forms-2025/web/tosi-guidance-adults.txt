@@ -1,0 +1,332 @@
+Guidance on the application of the split income rules for adults
+Notice to the reader 
+This measure has received Royal Assent.
+The Department of Finance consultation paper, Tax Planning Using Private Corporations, released on July 18, 2017, included proposed amendments to expand the existing tax on split incomeFootnote 1 to restrict income sprinkling involving adult individuals. The consultation period for public comments on the paper ended on October 2, 2017. Based on the comments received during that period, revised draft legislative proposals were released on December 13, 2017 (the "Proposals").  These new rules are proposed to be applicable to the 2018 and subsequent taxation years.
+Overview
+The Proposals will expand the tax on split income to amounts received by an adult individual.  In this context, "split income" will generally include dividends or interest, but not salary, paid by a private corporationFootnote 2 directly or indirectlyFootnote 3 to an individual from a related business ("Related Business")Footnote 4 in respect of the individual and certain capital gains unless the amount falls within a specific exclusion (the "Excluded Amount" or "Excluded Amounts").
+Under the Proposals, the following will be Excluded Amounts from split income:
+For adult individuals – amounts received from an excluded business ("Excluded Business"):
+Excluded Business: amounts derived from a Related Business where the individual was actively engaged on a regular, continuous and substantial basis ("Actively Engaged") in the activities of the business in the taxation year or in any five prior taxation years of the individual.
+An individual will be deemed to be Actively Engaged if the individual works in the business at least an average of 20 hours per week during the portion of the taxation year of the individual that the business operates, or meets that requirement for any five prior years.  The five taxation years need not be consecutive.  In any other case, whether an individual is Actively Engaged will depend on the facts and circumstances of that case.
+For individuals age 25 or over – income from or taxable capital gain from the disposition of excluded shares ("Excluded Shares") or a payment that qualifies as a reasonable return ("Reasonable Return"):
+Excluded Shares: shares of a corporation owned by an individual are excluded shares where:
+less than 90% of the corporation's business income was from the provision of services and the corporation is not a professional corporation;
+the shares represent 10% or more of the votes and value of the corporation; and
+all or substantially all of the income of the corporation is not derived from another Related Business in respect of the individual other than a business of the corporation, and
+Reasonable Return: payments that represent a reasonable return based on the following criteria (the "Reasonableness Criteria"):
+the work performed in support of the Related Business;
+the property contributed directly or indirectly in support of the Related Business;
+the risks assumed in respect of the Related Business;
+the total amounts paid or payable by any person or partnership to or for the benefit of the individual in respect of the Related Business; and
+such other factors that may be relevant.
+For more information, see the Reasonableness Criteria section.
+For individuals between the age of 18 and 24 – return on property contributed in support of a Related Business that is a safe harbour capital return ("Safe Harbour Capital Return") or a Reasonable Return having regard only to contributions of arm's length capital to the business ("Arm's Length Capital"):
+Safe Harbour Capital Return: return on property contributed by the individual in support of the Related Business provided that such return does not exceed a prescribed capital return determined by formula, and
+Arm's Length Capital: property of an individual, other than property that is derived from property income in respect of a Related Business, that is borrowed under a loan, or that is transferred from a related person (other than inherited property).
+For any individual – taxable capital gains realized on death or from the disposition of qualified farm or fishing property and qualified small business corporation shares.
+Where the individual acquired a property as a consequence of the death of another individual, special rules will apply for determining whether a payment from property is derived from an Excluded Business in respect of an individual, is a Reasonable Return on contributions made to a Related Business or is income from, or a taxable capital gain from the disposition of, Excluded Shares.
+General comments
+The following examples are intended to provide guidance on how the Canada Revenue Agency (the “Agency”) will administer the Proposals and the Excluded Amounts from split income.
+In determining whether the payment is a Reasonable Return, the Agency does not intend to generally substitute its judgment of what would be considered a reasonable amount unless there has not been a good faith attempt to determine a reasonable amount based on the Reasonableness Criteria.  In those cases, taxpayers should expect the Agency to review the payment based on all of the relevant facts and circumstances to determine whether the amount of the payment is reasonable and taxpayers should be prepared to support their position that the amount of the payment is a reasonable amount not subject to the tax on split income.
+The Agency’s approach to the interpretation and the application of the Proposals will develop over time based on our experience in dealing with specific factual circumstances and whether our approach is adequately addressing the tax policy concerns underlying the Proposals.
+Examples
+The following examples are intended to provide general guidance on how the Agency intends to administer the different Excluded Amounts.  The examples assume that all of the taxpayers are residents of Canada at all relevant times and that the amounts received by the individual would otherwise be split income from a Related Business unless the payment is of an Excluded Amount.  It is also assumed in the examples that, unless otherwise stated, shares of a corporation were not acquired as a consequence of the death of a person, and individuals between the age of 18 and 24 did not otherwise make a capital contribution to the Related Business with Arm’s Length Capital.  Where relevant, the examples indicate where the payment could be considered more than one kind of Excluded Amounts but such additional comments are generally for illustrative purposes only and may depend on a review of the facts and circumstances of the particular case.
+Example 1: Dividends to adult child away at school
+Facts
+Opco carries on an active business supplying parts to an auto parts manufacturer.  The sole shareholder of Opco is Holdco.  The shareholders of Holdco are Parent A and Family Trust, a discretionary trustFootnote 5 for the benefit of Parent B, Child 1 and Child 2.  Parent A and Family Trust each owns a separate class of shares of Holdco.  Parent A is the founder of Opco’s business and is the controlling shareholder of Holdco.
+Child 1 is age 23 and is a full-time graduate student at a university and is away from home for most of the year either attending classes during the school term or working part-time as a research assistant during the summer.  Child 1 has never performed any functions for Holdco or Opco and has not made any other contribution to Holdco or Opco and its business.
+Child 2 is age 16 and is a high school student.
+Opco pays a dividend to Holdco.  Holdco pays a dividend on the class of shares held by Family Trust.  Family Trust distributes the full amount of the dividend to Child 1 and that amount is included in computing the income of Child 1.
+Conclusion
+The Proposals will apply to the amount received by Child 1 from the Family Trust.  The amount received by Child 1 will be split income and subject to tax at the top marginal rate.
+Explanation
+The distribution received by Child 1 will be split income unless it is an Excluded Amount.  In general, a payment received by an individual will be an Excluded Amount if
+the amount is paid directly or indirectly from a business other than a Related Business;
+the amount is received from an Excluded Business;
+the individual is between the ages of 18 and 24 and the amount does not exceed: the Safe Harbour Capital Return, or a Reasonable Return on contributions of Arm’s Length Capital;
+the individual is age 25 or over and the amount is from Excluded Shares; or
+the individual is age 25 or over and the amount represents a Reasonable Return based on:
+the work performed by the individual in support of the Related Business;
+the property contributed directly or indirectly by the individual in support of the Related Business;
+the risks assumed by the individual in respect of the Related Business;
+the total amounts paid by any person or partnership to or for the benefit of the individual in respect of the Related Business; and
+any other factors that may be relevant.
+In the circumstances, the amount received by Child 1 will not be an Excluded Amount and will be split income.  Child 1 is between the ages of 18 and 24 and has never worked in the business.  As a result, the amount received by Child 1 is not from an Excluded Business in respect of Child 1 as Child 1 has not been Actively Engaged in the activities of the business. As well, because Child 1 has never contributed property in support of Opco’s business, Child 1 cannot rely on the Safe Harbour Capital Return, or a Reasonable Return on contributions of Arm’s Length Capital.
+If the Family Trust had distributed any part of the dividend to Child 2, the full amount of the dividend would have been subject to the higher tax on split income under existing law as Child 2 is a minor.  There is no change in the law in this respect.
+Example 2: Funding start-up business
+Facts
+Child is age 25, has a degree in culinary arts and after working the last few years at different positions in kitchens at well-known restaurants has opened his own restaurant which is owned and operated by Foodco.  Child is the sole shareholder of Foodco.
+Because of the high failure rate of new restaurants, Child was unable to obtain any financing from institutional or other arm’s length lenders or investors.  Mother provided part of the start-up capital of the business through an interest bearing loan to Foodco.
+Other start-up capital was contributed by interest bearing loans from friends.  Child also invested as much of his savings as he could afford through loans.
+The rate of interest on Mother’s loan is similar to the interest payable by Foodco to Child’s friends, both of which are higher than the prevailing rate of interest generally charged by a financial institution on a typical small business loan.
+Mother has no other investment in or involvement with the business.
+Conclusion
+The Proposals will not apply to the higher interest received by Mother.  No change in treatment.
+Explanation
+The interest paid to Mother from Foodco on the loan by Mother will be split income unless it is an Excluded Amount.  In the circumstances, the higher interest charged by Mother on the loan will be an Excluded Amount because it is a Reasonable Return based on the property contributed and the risk assumed by Mother by lending money to Foodco. In the circumstances, paragraph 20(1)(c) should also not apply to limit the deduction of any part of the interest expense by Foodco.
+Example 3: Dividends to spouse
+Facts
+Spouse A and Spouse B each owns 50 common shares of a different class of Opco.  These classes of shares are identical in all respects.  The only other shareholder of Opco is a discretionary trust for the benefit of their children, all of whom are under age 17.  Spouse A and Spouse B have held common shares of Opco since incorporation.
+Spouse A and Spouse B are over age 25.
+Opco carries on an active business supplying components for processing units of personal computers.  Opco’s business was founded by Spouse A, an engineer, who works full-time managing Opco’s operations.  Spouse A worked in the business at least an average of 20 hours per week during the taxation year. Initial capital was provided by a relative.
+Spouse B has no direct involvement in any aspect of Opco’s business.  In general, Spouse B has never performed any functions for Opco; contributed any property directly or indirectly to Opco; or assumed any risks in respect of Opco’s business. 
+Opco pays the same amount of dividends to Spouse A and Spouse B.
+Conclusion
+The Proposals will not apply to the dividend received by Spouse B.  No change in treatment.
+Explanation
+The dividend paid by Opco to Spouse B will be split income unless it is an Excluded Amount.  The dividend paid by Opco to Spouse B is not received from an Excluded Business in respect of Spouse B as Spouse B has never worked at the business and is not Actively Engaged in the activities of the business.  However, Spouse B holds shares that qualify as Excluded Shares.  As such, the dividend received by Spouse B will be an Excluded Amount.
+For greater certainty, the dividend paid to Spouse A will be an Excluded Amount and will not be split income. See Example 3A below.
+Example 3A: Dividends to spouse
+Facts
+The same facts as Example 3 except that Opco pays all of its after-tax excess cash to Spouse A as a dividend.
+No dividends are paid to Spouse B.
+Conclusion
+The Proposals will not apply to the dividend received by Spouse A.  No change in treatment.
+Explanation
+The amount of the dividend paid by Opco to Spouse A will be split income unless it is an Excluded Amount.  In the circumstances, the dividend paid by Opco will be an Excluded Amount because it is received from an Excluded Business in respect of Spouse A.  Spouse A is deemed to be Actively Engaged in the activities of the business for the year.  This is because Spouse A has worked in the business at least an average 20 hours per week during the taxation year. Also, Spouse A holds shares that qualify as Excluded Shares.  As such, the dividend received by Spouse A will be an Excluded Amount.
+Example 3B: Dividends to spouse
+Facts
+Same as Example 3A except that Opco pays all of its after-tax excess cash to Spouse B as a dividend.
+No dividends are paid to Spouse A
+Conclusion
+The Proposals will not apply to the dividend received by Spouse B.  No change in treatment
+Explanation
+Spouse B holds shares that qualify as Excluded Shares.  As such, the dividend received by Spouse B will be an Excluded Amount.
+Example 3C: Dividends to spouse
+Facts
+The same facts as Example 3 except that Opco is a professional corporation and as a result of the governing provincial law, Spouse B is not permitted to own voting shares in Opco.  Opco has added during its start-up phase an operating line of credit from a financial institution and Spouse B was required by the institution to act as guarantor of the operating line of credit which guarantee is secured by a mortgage on the matrimonial home.
+The credit line remains necessary for the operation of Opco’s business and is used to purchase inputs and pay ongoing expenses while receivables are being collected.  Opco does not pay Spouse B any fee for the guarantee.
+Opco pays a dividend on the class of shares held by Spouse B.  The amount of the dividend received by Spouse B is similar to the amount of an arm’s length guarantee fee.
+Conclusion
+The Proposals will not apply to dividend received by Spouse B.  No change in treatment.
+Explanation
+The dividend received by Spouse B will be split income unless it is an Excluded Amount.  Spouse B does not hold shares that qualify as Excluded Shares since Opco is a professional corporation and Spouse B owns only non-voting shares. However, the dividend will be an Excluded Amount as a Reasonable Return based on the risks assumed in respect of Opco’s business.
+Example 4: Dividends paid to adult children active in the family business
+Facts
+Farmco carries on an active farming business.  All of the issued and outstanding shares of Farmco are held by Father, Mother and Children’s Trust, a discretionary trust for the benefit of Child 1 and Child 2.  Father, Mother and Children’s Trust each owns separate class of Farmco shares.
+All the family members currently work full-time in the business and are involved in almost all aspects of the farming operations, as required.
+Child 1 is age 25 and has a university degree.  Child 1’s work includes assisting Mother with the administration and marketing of the business in order to gain work experience to help with his future career.  Child 1 works in the business at least an average of 20 hours per week during the taxation year.
+Child 2 is age 20 and has indicated an interest in succeeding Father and Mother in running the farming business.  As a result, Father and Mother are involving Child 2 more in the discussion of management decisions to learn how to run the business, but actual decisions continue to be made by Father and Mother.  Child 2 works in the business at least an average of 20 hours per week during the taxation year.
+Farmco pays dividends to Children’s Trust which are then distributed equally to each of Child 1 and Child 2.  The children include the distribution in computing their income.
+The total amount received by each Child is similar but is not the same as the salary that Farmco would pay to an arm’s length employee.
+Conclusion
+The Proposals will not apply to the amounts received by Child 1 and Child 2 from Children’s Trust.  No change in treatment.
+Explanation
+The amounts distributed to each of Child 1 and Child 2 will be split income unless they are an Excluded Amount.  In the circumstances, the distribution of the dividend paid by Farmco will be an Excluded Amount because it is received from an Excluded Business in respect of each of Child 1 and Child 2.  They will each be deemed to be Actively Engaged in the business because each works in the business at least an average of 20 hours per week during the taxation year.
+Example 4A: Dividends paid to adult children active in the seasonal family business
+Facts
+The same facts as Example 4 except that Opco carries on a seasonal farming business and only operates for 40 weeks in the taxation year.  Child 1 worked in the business 40 hours per week but only during 20 weeks.  Child 2 worked in the business at least an average of 20 hours per week during the 40-week period that the farming business operates.
+Conclusion
+The Proposals will not apply to the amounts received by Child 1 and Child 2 from Children’s Trust. No change in treatment.
+Explanation
+The amounts distributed to each of Child 1 and Child 2 will be split income unless they are Excluded Amounts.  In the circumstances, the distribution of the dividend paid by Farmco will be an Excluded Amount because it is received from an Excluded Business in respect of each of Child 1 and Child 2. They will each be deemed to be Actively Engaged in the business because each works in the business at least an average of 20 hours per week during the portion of the taxation year that the farming business operates.
+Example 4B: Dividends paid to an adult
+Facts
+Opco carries on an active business operating a franchised food court stall in a mall.  The shareholders of Opco are Sibling A and Sibling B who are equal shareholders and hold the same class of shares.  They are both over age 25.
+Opco retains part-time help during lunch and dinner hours and during the summer season.
+Sibling A works in the business at least an average of 20 hours per week during the taxation year.
+Sibling B worked full-time during the first two years of the business but has since returned to school to complete an accounting degree.  Sibling B plans on returning to work in the business but now only works during the summer and when the mall has more shoppers.
+Opco pays dividends of all of its excess cash equally to Sibling A and Sibling B.
+The dividend received by Sibling B is significantly more than what is paid to the other part-time help.
+Conclusion
+The Proposals will not apply to the dividends received by Sibling A and Sibling B.
+Explanation
+The dividends paid to Sibling A and Sibling B will be split income unless it is an Excluded Amount.
+In the circumstances, the dividend paid by Opco to Sibling A will be an Excluded Amount as it is received from an Excluded Business in respect of Sibling A. Sibling A is deemed to be Actively Engaged in the activities of the business.  This is because Sibling A works in the business at least an average of 20 hours per week during the taxation year.  Also, Sibling A holds shares that qualify as Excluded Shares.  As such, the dividend received by Sibling A will be an Excluded Amount.
+The dividend paid to Sibling B will be an Excluded Amount.  The dividend paid to Sibling B is not received from an Excluded Business in respect of Sibling B as Sibling B is not Actively Engaged in the activities of the business.  This is because Sibling B works in the business less than an average of 20 hours per week during the taxation year and the performance of the work is not sufficiently regular, continuous, or substantial based on the facts and circumstances.  However, Sibling B holds shares that qualify as Excluded Shares.  As such, the dividend received by Sibling B will be an Excluded Amount.
+Example 5: Dividends paid to an adult under age 25
+Facts
+Grandchild 1 is age 19 and is attending the local university.
+Grandchild 1 does part-time (one day per week) clerical work in the family’s business operated by Opco, which operates during the entire taxation year.  Grandchild 1 works approximately 350 hours during the taxation year.
+The shareholders of Opco are Parent and Family Trust, a discretionary trust for the benefit of Child 1, Child 2 and Child 3 and their families.
+Opco pays a dividend to the Family Trust, part of which is distributed to Grandchild 1.  The amount of the distribution received by Grandchild 1 is the same as the amount paid by Opco to its full-time clerical staff prorated for the time worked by Grandchild 1.
+Conclusion
+The Proposals will apply to the distribution received by Grandchild 1 from the Family Trust.  The distribution received by Grandchild 1 will be subject to the higher tax on split income.
+Explanation
+The distribution received by Grandchild 1 will be split income unless it is an Excluded Amount.  In the circumstances, the distribution will not be considered an Excluded Amount.  Grandchild 1 is between ages 18 to 24. The distribution will not be received from an Excluded Business in respect of Grandchild 1 as Grandchild 1 is not Actively Engaged in the activities of the business.  This is because Grandchild 1 works in the business less than an average of 20 hours per week in the taxation year; and the performance of the work is not sufficiently regular, continuous or substantial based on the facts and circumstances.  As well, because Grandchild 1 has never contributed property in support of Opco’s business, the distribution will not be a Safe Harbour Capital Return, or a Reasonable Return on contributions of Arm’s Length Capital of Grandchild 1.
+Example 5A: Dividends paid to an adult under age 25
+Facts
+Child is age 20 and is a full-time student.
+Child works in the family business’ warehouse operated by Opco as a summer job (on a full-time basis in May, June, July and August) while attending university.  Child works 600 hours during the taxation year.
+The shareholders of Opco are Parent and Family Trust, a discretionary trust for the benefit of Child and his family.  Parent controls Opco.  Family Trust owns a separate class of Opco shares.
+Opco pays a dividend to Family Trust which is then distributed to Child.  Child includes the amount of the distribution in computing his income.
+The amount of the distribution received by Child is similar to the salary paid to another Opco employee doing comparable work prorated for the time worked by Child.
+Conclusion
+The Proposals will apply to the distribution received by Child from the Family Trust.  The distribution received by Child will be subject to the higher tax on split income.
+Explanation
+The distribution received by Child from Family Trust will be split income unless it is an Excluded Amount.  In the circumstances, the distribution will not be an Excluded Amount.  Child is between the ages of 18 to 24.  The distribution will not be received from an Excluded Business in respect of Child as Child is not Actively Engaged in the activities of the business.  This is because Child works in the business less than an average of 20 hours per week during the taxation year; and the part-time work is not sufficiently regular, continuous or substantial based on the facts and circumstances.  As well, because Child has never contributed property in support of Opco’s business, the distribution will not be a Safe harbour Capital Return, or a Reasonable Return on contributions of Arm’s Length Capital of Child.
+Example 5B: Salary paid to an adult under age 25
+Facts
+Same as Example 5 and Example 5A except the same amount is paid as salary instead of dividends.
+Conclusion
+The Proposals will not apply.  No change in treatment.
+Explanation
+Section 120.4 does not apply to salary.  In the circumstances, section 67 should also not apply to limit the deduction of the salary expense by Opco.
+Example 5C: Dividends paid to an adult age 25 or over
+Facts
+Same as in Example 5 and Example 5A above except that Grandchild 1 (in Example 5) and Child (in Example 5A) are both age 25 or over.
+Conclusion
+The Proposals will not apply to the amounts received by Grandchild 1 and Child.  No change in treatment.
+Explanation
+The distribution received by Grandchild 1 and Child will be split income unless it is an Excluded Amount.  Grandchild 1 and Child are over age 25.  In the circumstances, the amount received by Grandchild 1 and Child will be an Excluded Amount as a Reasonable Return based on the work performed by Grandchild 1 and Child in support of the business.
+Example 6: Estate FreezeFootnote 6
+Facts
+Opco carries on an active business.  The shareholders of Opco are Parent A and Family Trust, a discretionary trust for the benefit of Parent B, Child 1 and Child 2 and their respective children.  Parent A holds preferred freeze shares and a class of voting shares which allow Parent A to control Opco.  Family Trust owns all of the Opco common shares.
+Child 1 and Child 2 are over the age of 25.  Parent A’s grandchildren are under age 17.
+Parent A was the founder and owner-manager of the business but has begun to step away from the day-to-day management and has been succeeded by Child 1.
+Parent A worked in the business less than an average of 20 hours per week during the taxation year but has worked in the business at least an average of 20 hours per week during each previous taxation year since Opco was incorporated more than 20 years ago. 
+Child 1 worked in the business at least an average of 20 hours per week during the taxation year.
+Child 2 has a successful career with a large public company and is already taxed at the top marginal rate.  Child 2 is not involved in Opco’s business.
+The family has discussed how Opco shareholdings should be dealt with once Parent A retires from the business so that Child 1 and Child 2 are treated fairly.
+As part of those discussions, Parent A has decided that for the immediate future, Opco will redeem Parent A’s freeze shares over a 10 year period; Child 1 will receive salary; and dividends will be paid to Family Trust which will be distributed equally between Child 1 and Child 2.
+Conclusion
+The Proposals will not apply to the proceeds received by Parent A when Opco will repurchase the freeze shares over time.  No change in treatment.
+The Proposals will not apply to the payments received by Child 1.  No change in treatment.
+The Proposals will apply to the payments received by Child 2 but will not increase the rate of tax paid on the amount received by Child 2.
+Explanation:
+The amounts received by Parent A, Child 1 and Child 2 will be split income unless it is an Excluded Amount.
+In the circumstances, the dividends deemed to be paid by Opco on the repurchase of the freeze shares held by Parent A will be an Excluded Amount as the dividend is received from an Excluded Business in respect of Parent A. Parent A was deemed to be Actively Engaged in the activities of the business.  This is because Parent A worked in the business at least an average of 20 hours per week in any the five prior taxation years of Parent A.
+In the circumstances, the distribution paid to Child 1 will be an Excluded Amount as the dividend is received from an Excluded Business in respect of Child 1. This is because Child 1 is deemed to be Actively Engaged in the activities of the business.  Child 1 worked in the business at least an average of 20 hours per week during the taxation year.
+In the circumstances, the distribution paid to Child 2 will not be an Excluded Amount.  As Child 2 does not own shares of Opco, the Excluded Shares exception is not available.  Child 2 was not Actively Engaged in the activities of the business during the taxation year.  The distribution is also not a Reasonable Return based on the Reasonableness Criteria.  In each case, this is because Child 2 has no involvement and has made no contribution in support of the business.  As Child 2’s income is already taxed at the top marginal rate, the Proposals will not increase the tax rate paid by Child 2 on the dividend.
+Example 7: Sale to Child
+Facts
+Opco carries on a successful active business.  Parent is the founder of Opco’s business, is the sole shareholder and has managed the business since inception.
+Child is over the age of 25 and has been working full-time as an executive at another corporation in a different industry.
+Parent is retiring and would like Child to carry on the business. Prior to retirement, Parent worked in the business at least an average of 20 hours per week in each taxation year since the incorporation of Opco.
+Parent sells all of his shares of Opco to Child for a fair market value purchase price.
+The shares are qualified small business corporation shares.
+Opco continues to carry on the business, now managed by Child.
+Because the acquisition occurs in the middle of the taxation year, Child works in the business less than an average of 20 hours per week during the taxation year.
+At the end of the taxation year in which the acquisition occurred, Opco pays a large dividend to Child.
+Conclusion
+The Proposals will not apply to the amounts paid to Parent or Child.
+Explanation:
+The amount received by Parent on the sale of the shares will be split income unless it is an Excluded Amount.  In the circumstances, the amount received will be an Excluded Amount because the shares of Opco are qualified small business corporation shares. It is also the case that the taxable capital gain would be from an Excluded Business in respect of Parent.  Parent is deemed to be Actively Engaged in the activities of the business because Parent worked in the business at least an average of 20 hours per week in each taxation year in any five prior taxation years.  The Opco shares also qualify as Excluded Shares of Parent.
+The dividend paid to Child will be split income unless it is an Excluded Amount.  In the circumstances, the dividend paid by Opco will be an Excluded Amount as the dividend received is from an Excluded Business in respect of Child. Child is Actively Engaged in the activities of the business based on the facts and circumstances and the work performed by Child.  As well, for greater certainty, the dividend paid to Child could also have been an Excluded Amount as a Reasonable Return based on the Reasonableness Criteria and the amount at risk in Child’s acquisition and ownership of the business.  The Opco shares also qualify as Excluded Shares of Child.
+Example 8: Retired Owner-Manager
+Facts
+Sibling A and Sibling B were the original shareholders of Investco from incorporation.
+They each owned 50% of the common shares of Investco.
+Investco carried on an active business for over 20 years.  Investco wound down that business many years ago and now owns a portfolio of passive investment assets that requires sporadic management decisions and investment activity.
+During the period when Investco was carrying on its active business, Sibling A and Sibling B were involved full time in different aspects of the management and operation of the business.
+Sibling A is now retired but still owns shares in Investco.  Sibling B passed away a few years ago and his Investco shares were left to Sibling B’s spouse, Spouse B.
+Investco pays substantially all of its net investment income each year as dividends to Sibling A and Spouse B to augment their other retirement income.
+Conclusion
+The Proposals will not apply to the dividends paid to Sibling A or Spouse B.
+Explanation:
+The dividend paid to Sibling A and Spouse B will be split income unless it is an Excluded Amount.  In the circumstances, the dividend will be an Excluded Amount as Sibling A and Spouse B hold shares that qualify as Excluded Shares.
+Example 9: Dividends paid to adults active in the business
+Facts
+Spouse A is working part-time in a communications company while completing a master’s degree in marketing.  Spouse B is working full-time as a software developer for a video game publisher.  Both Spouse A and Spouse B are age 23.
+Spouse A and Spouse B are the only shareholders of Opco, a corporation carrying on an active business of developing mobile applications.
+Spouse A and Spouse B each acquired 50 shares of Opco on incorporation for nominal consideration.
+Both Spouse A and Spouse B are involved in Opco’s business.
+Spouse A is responsible for the administration and marketing aspects of the business while Spouse B creates the mobile applications.
+Each of Spouse A and Spouse B are working in Opco’s business on evenings and weekends.
+Although each of Spouse A and Spouse B are working in the business less than an average of 20 hours per week during the taxation year, Opco does not need other employees or more involvement from Spouse A and Spouse B to carry on its business.
+One of Opco’s applications has been particularly successful and has been downloaded by millions of users.
+Opco pays significant dividends to Spouse A and Spouse B.
+Conclusion
+The Proposals will not apply to the dividends received by Spouse A and Spouse B.  No change in treatment.
+Explanation:
+The dividends paid to Spouse A and Spouse B will be considered to be received from an Excluded Business in respect of Spouse A and Spouse B as they are both Actively Engaged in the activities of Opco’s business based on the facts and circumstances and the work performed by Spouse A and Spouse B.
+Example 10: Dividends paid to adults shareholders
+Facts
+Sibling A, Sibling B and Sibling C are over age 25 and they each acquired 10 shares of Real Estateco on incorporation for nominal consideration.  All siblings are directors of Real Estateco.
+Over the years, Real Estateco has acquired several rental properties financed by arm’s length financial institutions with limited personal guarantees from each sibling.
+Third Party was engaged to manage all the aspects of Real Estateco’s rental activities.
+Real Estateco has sold one of its properties at a significant gain.
+Real Estateco uses the proceeds from such gain to pay taxable dividends to its shareholders.
+Conclusion
+The Proposals will not apply to the taxable dividends received by Sibling A, Sibling B and Sibling C.  No change in treatment.
+Explanation:
+The taxable dividends paid to Sibling A, Sibling B and Sibling C will be considered to be a Reasonable Return having regard to the risks they assumed as directors of Real Estateco, their supervision of Third Party and their involvement in Real Estateco’s strategic decisions.  The taxable dividends will also be Excluded Amounts as Sibling A, Sibling B and Sibling C hold shares that qualify as Excluded Shares.
+Example 11: Reasonable Return
+Facts
+Professionalco carries on a professional practice business.  The sole shareholders of Professionalco are Spouse A and Spouse B.  Each holds a different class of shares.
+Spouse A and Spouse B are both over age 25.
+Spouse A is a licenced professional and works full-time in the business.
+Spouse B works less than an average of 20 hours per week and assists with bookkeeping.  Before their marriage, Professionalco hired an arm’s length person to keep the books.
+Professionalco pays a dividend to Spouse B.  The amount of the dividend approximates but is higher than the amount that was paid to the arm’s length bookkeeper.
+Spouse B does not receive any other payment for his/her services.
+Conclusion
+The Proposals will not apply to the dividend paid to Spouse B.
+Explanation:
+The dividend paid to Spouse B will be split income unless it is an Excluded Amount.  In the circumstances, the dividend paid by Professionalco to Spouse B will be an Excluded Amount because it is a Reasonable Return based on the Reasonableness Criteria.  Spouse B works at Professionalco’s business.  While high, the amount of the dividend is comparable to the amount that was paid to an arm’s length person.  In general, the Agency will not substitute its judgment for what is a reasonable amount where the taxpayers have made a good faith attempt to determine a Reasonable Return based on the Reasonableness Criteria.
+Example 12: Retired Shareholders
+Facts
+Spouse A and Spouse B own respectively 95 % and 5% of all the issued and outstanding shares of Investco.
+Spouse A is over age of 65 and Spouse B is age 60.
+Investco carried on an active business for over 25 years.  Investco wound down that business many years ago and now owns a portfolio of passive investment assets that require sporadic management decisions and investment activity.
+During the period when Investco was carrying on its active business, Spouse A was involved full-time in different aspects of the management and operation of the business.
+Spouse B was never involved in Investco’s business.
+Spouse A is now retired.
+Investco pays substantially all of its net investment income each year as dividends to Spouse A and Spouse B to augment their retirement income.
+Conclusion
+The Proposals will not apply to the dividends paid to Spouse A and Spouse B.
+Explanation:
+In the case of Spouse A, the dividend will be split income unless it is an Excluded Amount.  In the circumstances, the dividend will be an Excluded Amount as Spouse A holds shares that qualify as Excluded Shares.
+In the case of Spouse B, the dividend will be split income unless it is an Excluded Amount. In the circumstances, the dividend will be deemed to be an Excluded Amount because, on the one hand, it would be an Excluded Amount in respect of Spouse A if it had been included in the income of Spouse A and, on the other hand, Spouse A is over age 65.  Indeed, if the amount had been included in the income of Spouse A, it would have been an Excluded Amount because, as discussed above, Spouse A owns shares that qualify as Excluded Shares.
+Reasonableness criteria
+For individuals age 25 or over who cannot rely on the Excluded Business and Excluded Shares specific exclusions, an amount can still be an Excluded Amount if it is a Reasonable Return based on the Reasonableness Criteria.  Specifically, the Proposals provide that the reasonableness of an amount will be evaluated based on one or more of the following criteria:
+Labour Contribution: the work performed by the individual in support of the Related Business before the amounts became paid;
+Property Contribution: the property contributed by the individual in support of the Related Business;
+Risk Incurred: the risks assumed by the individual in respect of the Related Business;
+Historical Payments: the total amounts paid by any person or partnership to or for the benefit of the individual in respect of the Related Business; and
+Such other factors that may be relevant.
+While the determination will be based on the facts and circumstances of each case, the following are some of the factors that will be considered in that regard.  This list is not to be considered exhaustive of the factors that could be relevant in any particular fact circumstance.
+Similar considerations will be relevant to determine whether the individual is Actively Engaged in the activities of the business.
+For individuals aged 18 to 24 who have contributed Arm’s Length Capital in support of a business, their Reasonable Return from the business will be based only on that property contribution of the individual.
+Labour Contribution
+In determining whether the amount received by an individual exceeds a reasonable amount having regard to the functions performed by the individual in support of the Related Business, factors that may be considered include the following:
+The nature of the tasks performed;
+Hours required to complete the tasks;
+A competitive salary/wage for the tasks in relation to businesses of similar size and industry;
+Education, training and experience;
+Degree of activities and nature of activities in relation to those of a business of a comparable nature and size;
+Time spent on the activity in comparison to time spent in other activities or undertakings;
+Particular knowledge, skills or know-how that the individual possessed;
+Business acumen; and
+Past performance of functions.
+Property Contribution
+In determining whether the amount received by the individual exceeds a reasonable amount having regard to the property contributed in support of the Related Business, the factors that may be considered include the following:
+The amount of capital contributed to the business;
+The amount of loans to the business;
+The fair market value of property (both tangible and intangible property) transferred to the business, including technical knowledge, experience, skill, or know-how;
+Whether the individual has provided property as collateral for loans or other undertakings;
+Whether other sources of capital or loans are readily available;
+Whether comparable property are readily available;
+Whether property are unique or personal to the individual;
+Opportunity costs; and
+Past property contributions.
+Risk Assumption
+In determining whether the amount received by the individual exceeds a reasonable amount having regard to the risks assumed by the individual in respect of the Related Business, the factors that may be considered include the following:
+Whether the individual is exposed to the financial liabilities of the business, whether through guarantees of mortgages, loans or lines of credit or otherwise;
+Whether the individual is exposed to statutory liabilities related to the business;
+Extent of the risk that contributions made by the individual to the business may be lost, whether in whole or part;
+Whether any risk is indemnified or otherwise limited in the circumstances, whether by agreement or otherwise;
+Whether the individual’s reputation or personal goodwill is at risk; and
+Past or ongoing risk assumption.
+Total Amounts Paid
+In determining whether a payment received by the individual exceeds a reasonable amount, account should be taken of other amounts previously paid to the individual.  This should generally include any payment of any kind (including salary or other remuneration or compensation, dividends, interest, proceeds, and fees), benefits, and deemed payments (as may be reasonably required in the circumstances).
+Footnotes
+Footnote 1 
+Under section 120.4 of the Income Tax Act (Canada). Unless otherwise noted, all references are to the Income Tax Act.
+Return to footnote 1 referrer
+Footnote 2 
+Split income will generally also include an amount paid by partnerships or trusts from a related business of the individual receiving the payment.
+Return to footnote 2 referrer
+ Footnote 3 
+This would include certain types of payments received indirectly through certain trusts and partnerships. This would also include amounts derived from the provision of property or services to, or in support of, the business.
+Return to footnote 3 referrer
+ Footnote 4 
+A Related Business in respect of an individual includes any business of a corporation where another individual related to the former owns either shares of the corporation or property the value of which is derived from shares of the corporation and their fair market value is not less than 10% of the fair market value of all of the shares of the corporation. A Related Business in respect of an individual can also include a business of a sole proprietorship, corporation, partnership, or trust where another individual related to the former is actively engaged in the operation of the business.
+Return to footnote 4 referrer
+ Footnote 5 
+A discretionary trust is a trust in which the trustees have the discretion to decide who, among the beneficiaries, is to receive either the income or capital of the trust.
+Return to footnote 5 referrer
+ Footnote 6 
+Briefly, an estate freeze refers to transactions carried on to limit the growth in value of the shares of a corporation held by a particular shareholder (often the founder of the business). This allows other shareholders (for example the founder’s children) to benefit from the future growth in value of the corporation.
+Return to footnote 6 referrer
+Page details
+	2019-07-10
