@@ -21,7 +21,7 @@ from tax_engine.domain.errors import (
     DuplicateArtifactError,
     MissingArtifactError,
 )
-from tax_engine.domain.trace import TraceLine
+from tax_engine.domain.trace import LeftBlankLine, TraceLine
 
 
 class Worksheet:
@@ -36,6 +36,8 @@ class Worksheet:
             if artifact.kind in self._artifacts:
                 raise DuplicateArtifactError(f"two starting values for {artifact.kind.label!r}")
             self._artifacts[artifact.kind] = artifact
+            if artifact.is_blank:
+                self._trace.append(LeftBlankLine(artifact.kind))
 
     @property
     def trace(self) -> tuple[TraceLine, ...]:
@@ -70,7 +72,7 @@ class Worksheet:
         with decimal.localcontext() as context:
             context.traps[decimal.Inexact] = True
             try:
-                result = capability.compute(inputs)
+                result = capability.run(inputs)
             except decimal.Inexact as error:
                 raise CapabilityContractError(
                     f"{name} produced an inexact result: {error}"

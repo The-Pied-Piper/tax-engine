@@ -20,7 +20,9 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any, Generic, TypeVar
 
+from tax_engine.domain.blank import Blank
 from tax_engine.domain.errors import (
+    BlankValueError,
     DuplicateRegistrationError,
     InvalidAmountError,
     InvalidRegistrationError,
@@ -97,33 +99,50 @@ type Money = ArtifactKind[Decimal]
 """A money kind: its artifacts are exact `Decimal`s in the jurisdiction's currency."""
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, init=False)
 class Artifact[T]:
     """One value of an artifact kind in one computation, checked against the kind's value type.
 
     A `Decimal` that is NaN or infinite is an InvalidAmountError, whatever the kind. A value below
     zero for a kind declared non-negative is a NegativeArtifactError; zero, signed or not, is
-    accepted.
+    accepted. `BLANK` is accepted for any kind, whatever its value type: the artifact is then
+    blank (`is_blank`), the kind's checks are skipped, and reading its `value` is a
+    BlankValueError, since a blank has none.
     """
 
     kind: ArtifactKind[T]
-    value: T
+    _content: T | Blank
 
-    def __post_init__(self) -> None:
-        if not isinstance(self.value, self.kind.value_type):
+    def __init__(self, kind: ArtifactKind[T], value: T | Blank) -> None:
+        object.__setattr__(self, "kind", kind)
+        object.__setattr__(self, "_content", value)
+        if isinstance(value, Blank):
+            return
+        if not isinstance(value, kind.value_type):
             raise TypeError(
-                f"{self.kind.label} must be a {self.kind.value_type.__name__}, "
-                f"got {type(self.value).__name__}"
+                f"{kind.label} must be a {kind.value_type.__name__}, got {type(value).__name__}"
             )
-        if isinstance(self.value, Decimal) and not self.value.is_finite():
-            raise InvalidAmountError(f"{self.kind.identifier} must be finite, got {self.value}")
-        self.kind.check_value(self.value)
-        if self.kind.non_negative and isinstance(self.value, Decimal | int) and self.value < 0:
+        if isinstance(value, Decimal) and not value.is_finite():
+            raise InvalidAmountError(f"{kind.identifier} must be finite, got {value}")
+        kind.check_value(value)
+        if kind.non_negative and isinstance(value, Decimal | int) and value < 0:
             raise NegativeArtifactError(
-                f"{self.kind.identifier} cannot be negative, got {self.value}",
-                identifier=self.kind.identifier,
-                value=self.value,
+                f"{kind.identifier} cannot be negative, got {value}",
+                identifier=kind.identifier,
+                value=value,
             )
+
+    @property
+    def is_blank(self) -> bool:
+        """Whether the filer left this line blank, which is not the same as zero."""
+        return isinstance(self._content, Blank)
+
+    @property
+    def value(self) -> T:
+        """The value; a BlankValueError naming the kind if the artifact is blank."""
+        if isinstance(self._content, Blank):
+            raise BlankValueError(f"{self.kind.label} was left blank, so it has no value")
+        return self._content
 
 
 class ArtifactRegistry(Registry[object]):

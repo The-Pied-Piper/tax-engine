@@ -167,6 +167,9 @@ def test_shared_renderer_registry_is_not_the_shared_parser_registry() -> None:
 
 def test_the_shared_registry_holds_exactly_the_built_in_renderers() -> None:
     assert REAL_SHARED.identifiers() == {
+        "tax_engine.domain.trace.blank.BlankFallbackLine",
+        "tax_engine.domain.trace.blank.BlankPassedOnLine",
+        "tax_engine.domain.trace.blank.LeftBlankLine",
         "tax_engine.domain.trace.arithmetic.AmountOrDividedByRateLine",
         "tax_engine.domain.trace.arithmetic.AmountWhenMoreLine",
         "tax_engine.domain.trace.arithmetic.AtMostLine",
