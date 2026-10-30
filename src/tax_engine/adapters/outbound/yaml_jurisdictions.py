@@ -42,8 +42,8 @@ justifies it, which the loader keeps but does not check. A required input takes 
 A `form:` block that declares `exports` also declares `required` (`true` or `false`) and, for an
 optional form, `required_when` (the identifier of the yes/no artifact that says when the form is
 needed: a required input or an artifact a selection produces, never one of its own exports) and
-`basis` (the printed "Complete this form if" sentence); a required form takes neither. A form with `instances` lists `fields`, one
-mapping per field of the instances kind, declared like inputs (`name`, `required`, and for an
+`basis` (the printed "Complete this form if" sentence); a required form takes neither.
+A form with `instances` lists `fields`, one mapping per field of the instances kind, declared like inputs (`name`, `required`, and for an
 optional one `default` and `basis`); a form without `instances` has none. Which fields the
 instances kind has, that defaults suit their kinds and that a predicate is a yes/no count are
 checked when the manifest is composed (`Manifest.check_artifacts`), where the kinds are known.
