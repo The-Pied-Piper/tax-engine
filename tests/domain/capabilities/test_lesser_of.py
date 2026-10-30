@@ -17,13 +17,13 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.domain.capabilities as core
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.trace import LesserOfLine
+import tax_engine.domain.capabilities as core
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.trace import LesserOfLine
 
 D = Decimal
 

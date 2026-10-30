@@ -25,18 +25,18 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, Money
-from tax_calculator.domain.capability import Capability, CapabilityResult
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
+from tax_engine.domain.capability import Capability, CapabilityResult
+from tax_engine.domain.errors import (
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
 IN = ArtifactKind("ex/in", Decimal)

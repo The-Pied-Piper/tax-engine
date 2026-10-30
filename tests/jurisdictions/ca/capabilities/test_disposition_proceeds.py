@@ -17,21 +17,21 @@ from decimal import Decimal
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.disposition_proceeds import DispositionProceeds
-from tax_calculator.jurisdictions.ca.capabilities.disposition_rows import DispositionRows
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.disposition_proceeds import DispositionProceeds
+from tax_engine.jurisdictions.ca.capabilities.disposition_rows import DispositionRows
+from tax_engine.jurisdictions.ca.catalog import (
     CAREGIVER_AMOUNT,
     PERSONAL_USE_PROPERTY_DISPOSITIONS,
     SHARE_DISPOSITIONS,
     SHARE_PROCEEDS,
 )
-from tax_calculator.jurisdictions.ca.trace import DispositionProceedsLine
+from tax_engine.jurisdictions.ca.trace import DispositionProceedsLine
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     GAIN,
     LOSS,

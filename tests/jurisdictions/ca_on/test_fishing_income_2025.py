@@ -37,10 +37,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FISH_CCA_CLAIM,
     FISH_CCA_CLAIM_LESS_PERSONAL_PART,
     FISH_CCA_TABLE_CLAIM,
@@ -68,7 +68,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     FISH_TOTAL_EXPENSES,
     FISHING_INCOME,
 )
-from tax_calculator.jurisdictions.ca.trace import BusinessVehicleLine
+from tax_engine.jurisdictions.ca.trace import BusinessVehicleLine
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
 # Return BD's statement, the default of these tests: one fish products amount of 40000 (amount 3A),

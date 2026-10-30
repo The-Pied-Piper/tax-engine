@@ -17,10 +17,10 @@ from types import ModuleType
 import pytest
 
 # lists the packages; build_tax_computation registers their catalogs
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Manifest
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Manifest
 from tests.jurisdictions.ca_on.end_to_end.support import service
 from tests.jurisdictions.ca_on.manifest_families import (
     alternative_minimum_tax,
@@ -167,7 +167,7 @@ FAMILIES: tuple[ModuleType, ...] = (
     yes_or_no_flag_checks,
 )
 
-ROOTS = tax_calculator.registrations.JURISDICTIONS.roots()
+ROOTS = tax_engine.registrations.JURISDICTIONS.roots()
 CA_ON = JurisdictionCode("CA-ON")
 # The three Part 5 modules hold only steps of the form `ca/schedule_8`, which
 # `test_manifest_schedule_8.py` checks, and the manifest inputs those steps read.

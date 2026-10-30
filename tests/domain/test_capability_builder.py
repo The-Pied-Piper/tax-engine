@@ -18,21 +18,21 @@ from typing import Any, ClassVar, assert_type
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry, Money
-from tax_calculator.domain.capability import Capability, CapabilityResult
-from tax_calculator.domain.capability_builder import CapabilityBuilder
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry, Money
+from tax_engine.domain.capability import Capability, CapabilityResult
+from tax_engine.domain.capability_builder import CapabilityBuilder
+from tax_engine.domain.errors import (
     DomainError,
     InvalidCapabilityError,
     InvalidRegistrationError,
     InvalidSelectionError,
     UnknownRegistrationError,
 )
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.domain.trace import TraceLine
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.trace import TraceLine
 
 D = Decimal
 

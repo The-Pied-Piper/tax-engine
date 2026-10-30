@@ -23,20 +23,20 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 TWELVE_DECIMALS_OF_A_PERCENT = RoundTo(D("0.000000000001"), RoundingMode.HALF_UP)
 T2043_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf"

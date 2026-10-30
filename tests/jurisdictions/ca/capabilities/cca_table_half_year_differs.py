@@ -22,9 +22,9 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import CCA_HALF_YEAR_RULE_DIFFERS
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.catalog import CCA_HALF_YEAR_RULE_DIFFERS
 from tests.jurisdictions.ca.capabilities.cca_table import CLASS_FIELDS, row
 
 HALF_YEAR_CLASSES = RecordListKind(

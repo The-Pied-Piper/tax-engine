@@ -16,9 +16,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError, NegativeArtifactError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError, NegativeArtifactError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
     NET_INCOME,
     T746_CONDITIONS_MET,

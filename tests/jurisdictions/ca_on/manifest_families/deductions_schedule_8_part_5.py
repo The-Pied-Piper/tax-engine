@@ -7,16 +7,16 @@ you also have employment income", and Part 3 line 2. The copy lines (Part 5 line
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_ADDITIONAL_MAXIMUM_PENSIONABLE_EARNINGS,
     CPP_BASE_AND_FIRST_ADDITIONAL_CONTRIBUTIONS_DIFFERENCE,
     CPP_BASIC_EXEMPTION,

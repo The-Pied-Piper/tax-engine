@@ -52,36 +52,36 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry, CapabilityResult
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InputBelowBoundError,
     InvalidCapabilityError,
 )
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.parameters.class_rates import ClassRates
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim import CcaClaim
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim_after_column_22 import (
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.parameters.class_rates import ClassRates
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.record_list import RecordList
+from tax_engine.jurisdictions.ca.capabilities.cca_claim import CcaClaim
+from tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22 import (
     CcaClaimAfterColumn22,
 )
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim_after_column_22_prorated import (
+from tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22_prorated import (
     CcaClaimAfterColumn22Prorated,
 )
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim_prorated import CcaClaimProrated
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc_after_column_22 import (
+from tax_engine.jurisdictions.ca.capabilities.cca_claim_prorated import CcaClaimProrated
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc_after_column_22 import (
     ClosingUccAfterColumn22,
 )
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc_after_column_22_prorated import (
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc_after_column_22_prorated import (
     ClosingUccAfterColumn22Prorated,
 )
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc_prorated import ClosingUccProrated
-from tax_calculator.jurisdictions.ca.catalog import CCA_CLAIMED, CCA_CLASS_NUMBER, CCA_UCC_AT_END
-from tax_calculator.jurisdictions.ca.trace import CcaClaimLine, ClosingUccLine
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc_prorated import ClosingUccProrated
+from tax_engine.jurisdictions.ca.catalog import CCA_CLAIMED, CCA_CLASS_NUMBER, CCA_UCC_AT_END
+from tax_engine.jurisdictions.ca.trace import CcaClaimLine, ClosingUccLine
 from tests.jurisdictions.ca.capabilities.cca_table import (
     CCA_CLAIM,
     CLASSES,

@@ -29,15 +29,15 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, InvalidRecordError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.cca_change_in_use_checks import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.cca_change_in_use_checks import (
     CcaChangeInUseChecks,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_CHANGE_IN_USE,
     CCA_CHANGE_IN_USE_FAIR_MARKET_VALUE,
@@ -49,7 +49,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     T777_VEHICLE_CHANGE_IN_USE_CHECKED_ROWS,
     T777_VEHICLE_CHECKED_ROWS,
 )
-from tax_calculator.jurisdictions.ca.trace import CcaChangeInUseCheckLine
+from tax_engine.jurisdictions.ca.trace import CcaChangeInUseCheckLine
 
 D = Decimal
 CLASSES: RecordListKind = T777_CLASS_8_CHECKED_ROWS

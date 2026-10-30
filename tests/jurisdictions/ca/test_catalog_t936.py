@@ -1,5 +1,5 @@
 """Registered kinds of Form T936 "Calculation of Cumulative Net Investment Loss (CNIL) to December
-31, 2025", in the federal catalog family `t936` (`tax_calculator/jurisdictions/ca/catalog/t936.py`).
+31, 2025", in the federal catalog family `t936` (`tax_engine/jurisdictions/ca/catalog/t936.py`).
 
 The form `ca/t936` runs once. Its five starting amounts are the printed lines the filer enters:
 Part 3 line 15 (investment expenses of previous years), line 20 (investment income of previous
@@ -15,9 +15,9 @@ import ast
 from decimal import Decimal
 from pathlib import Path
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     T657_CUMULATIVE_NET_INVESTMENT_LOSS,
     T657_NET_NON_ELIGIBLE_TAXABLE_CAPITAL_GAINS,
     T936_ADDITIONAL_INVESTMENT_EXPENSES,
@@ -153,7 +153,7 @@ def squashed(text: str) -> str:
 def docstring_of(identifier: str) -> str:
     """The string right after the declaration of the kind `identifier` in a catalog module (its
     name is a constant of the declaration's call, which may take the catalog first)."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

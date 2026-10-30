@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     CANADA_WORKERS_BENEFIT,
     CANADA_WORKERS_BENEFIT_WITH_DEPENDANT,

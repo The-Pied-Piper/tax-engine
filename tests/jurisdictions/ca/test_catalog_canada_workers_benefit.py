@@ -5,8 +5,8 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     ACWB_LINE_46_APPLIES,
     ACWB_LINES_44_AND_45,
     ADJUSTED_FAMILY_NET_INCOME,

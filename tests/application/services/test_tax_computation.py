@@ -20,19 +20,19 @@ from typing import Any, ClassVar, assert_type
 
 import pytest
 
-from tax_calculator.application.ports.jurisdiction_source import JurisdictionSource
-from tax_calculator.application.ports.parameter_source import ParameterSource
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import (
+from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
+from tax_engine.application.ports.parameter_source import ParameterSource
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import (
     Artifact,
     ArtifactCatalog,
     ArtifactKind,
     ArtifactRegistry,
     Money,
 )
-from tax_calculator.domain.capability import Capability, CapabilityRegistry, CapabilityResult
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.errors import (
+from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.errors import (
     InvalidCompositionError,
     InvalidParameterDataError,
     InvalidRegistrationError,
@@ -40,15 +40,15 @@ from tax_calculator.domain.errors import (
     NotFoundError,
     UnknownRegistrationError,
 )
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.domain.registry import Namespace
-from tax_calculator.domain.trace import TraceLine
-from tax_calculator.domain.worksheet import Worksheet
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.registry import Namespace
+from tax_engine.domain.trace import TraceLine
+from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
 EX_ON = JurisdictionCode("EX-ON")
@@ -767,7 +767,7 @@ def test_a_list_for_a_single_slot_is_an_invalid_selection() -> None:
 
 @cache
 def sum_class() -> Any:
-    from tax_calculator.domain.capabilities.sum import Sum
+    from tax_engine.domain.capabilities.sum import Sum
 
     return Sum
 
@@ -811,7 +811,7 @@ def sum_service(*manifests: Manifest) -> TaxComputationService:
 
 
 def test_computes_core_sum_end_to_end() -> None:
-    from tax_calculator.domain.trace import SumLine
+    from tax_engine.domain.trace import SumLine
 
     parts = ("ex/part_two", "ex/part_three", "ex/part_one")
 
@@ -849,7 +849,7 @@ def test_core_sum_runs_after_all_its_parts() -> None:
 
 @cache
 def sum_not_below_zero_class() -> Any:
-    from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+    from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 
     return SumNotBelowZero
 
@@ -873,7 +873,7 @@ def sum_not_below_zero_service(parts: tuple[str, ...]) -> TaxComputationService:
 
 
 def test_computes_core_sum_not_below_zero_end_to_end() -> None:
-    from tax_calculator.domain.trace import SumNotBelowZeroLine
+    from tax_engine.domain.trace import SumNotBelowZeroLine
 
     parts = ("ex/part_two", "ex/part_three", "ex/part_one")
 
@@ -891,7 +891,7 @@ def test_computes_core_sum_not_below_zero_end_to_end() -> None:
 
 
 def test_core_sum_not_below_zero_floors_a_negative_total_end_to_end() -> None:
-    from tax_calculator.domain.trace import SumNotBelowZeroLine
+    from tax_engine.domain.trace import SumNotBelowZeroLine
 
     parts = ("ex/part_two", "ex/part_three", "ex/part_one")
 
@@ -943,14 +943,14 @@ def test_core_sum_not_below_zero_refuses_a_single_kind_for_its_parts_at_wiring()
 
 @cache
 def apply_rate_class() -> Any:
-    from tax_calculator.domain.capabilities.apply_rate import ApplyRate
+    from tax_engine.domain.capabilities.apply_rate import ApplyRate
 
     return ApplyRate
 
 
 def portion_rate_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.rate import RATE, Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.rate import RATE, Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/portion_rate",
@@ -983,9 +983,9 @@ def apply_rate_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_apply_rate_end_to_end() -> None:
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import RateAppliedLine
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import RateAppliedLine
 
     built, _parameters = apply_rate_service()
 
@@ -1016,7 +1016,7 @@ def test_core_apply_rate_runs_after_its_base_is_produced() -> None:
 
 
 def test_core_apply_rate_asks_for_its_dataset_as_a_rate() -> None:
-    from tax_calculator.domain.parameters.rate import RATE
+    from tax_engine.domain.parameters.rate import RATE
 
     built, parameters = apply_rate_service()
 
@@ -1034,7 +1034,7 @@ def test_core_apply_rate_asks_for_its_dataset_as_a_rate() -> None:
 
 @cache
 def subtract_class() -> Any:
-    from tax_calculator.domain.capabilities.subtract import Subtract
+    from tax_engine.domain.capabilities.subtract import Subtract
 
     return Subtract
 
@@ -1053,7 +1053,7 @@ def subtract_service(amount: str, less: str) -> TaxComputationService:
 
 
 def test_computes_core_subtract_end_to_end() -> None:
-    from tax_calculator.domain.trace import SubtractedLine
+    from tax_engine.domain.trace import SubtractedLine
 
     worksheet = subtract_service("ex/scaled", "ex/base").compute(
         EX_ON, 2025, Artifact(BASE, D("5.01"))
@@ -1069,7 +1069,7 @@ def test_computes_core_subtract_end_to_end() -> None:
 
 
 def test_core_subtract_produces_a_negative_result_end_to_end() -> None:
-    from tax_calculator.domain.trace import SubtractedLine
+    from tax_engine.domain.trace import SubtractedLine
 
     worksheet = subtract_service("ex/base", "ex/scaled").compute(
         EX_ON, 2025, Artifact(BASE, D("5.01"))
@@ -1103,7 +1103,7 @@ def test_core_subtract_runs_after_what_it_consumes_is_produced() -> None:
 
 @cache
 def subtract_not_below_zero_class() -> Any:
-    from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+    from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 
     return SubtractNotBelowZero
 
@@ -1122,7 +1122,7 @@ def subtract_not_below_zero_service(amount: str, less: str) -> TaxComputationSer
 
 
 def test_computes_core_subtract_not_below_zero_end_to_end() -> None:
-    from tax_calculator.domain.trace import SubtractedNotBelowZeroLine
+    from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 
     worksheet = subtract_not_below_zero_service("ex/scaled", "ex/base").compute(
         EX_ON, 2025, Artifact(BASE, D("5.01"))
@@ -1138,7 +1138,7 @@ def test_computes_core_subtract_not_below_zero_end_to_end() -> None:
 
 
 def test_core_subtract_not_below_zero_floors_a_negative_difference_end_to_end() -> None:
-    from tax_calculator.domain.trace import SubtractedNotBelowZeroLine
+    from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 
     worksheet = subtract_not_below_zero_service("ex/base", "ex/scaled").compute(
         EX_ON, 2025, Artifact(BASE, D("5.01"))
@@ -1174,14 +1174,14 @@ def test_core_subtract_not_below_zero_runs_after_what_it_consumes_is_produced() 
 
 @cache
 def credit_amount_class() -> Any:
-    from tax_calculator.domain.capabilities.credit_amount import CreditAmount
+    from tax_engine.domain.capabilities.credit_amount import CreditAmount
 
     return CreditAmount
 
 
 def personal_credit_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.credit import CREDIT, Credit
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.credit import CREDIT, Credit
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/personal_credit",
@@ -1232,9 +1232,9 @@ def credit_amount_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_credit_amount_as_a_part_of_core_sum_end_to_end() -> None:
-    from tax_calculator.domain.parameters.credit import Credit
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import CreditAmountLine, SumLine
+    from tax_engine.domain.parameters.credit import Credit
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import CreditAmountLine, SumLine
 
     built, _parameters = credit_amount_service()
 
@@ -1268,7 +1268,7 @@ def test_the_composition_accepts_a_selection_without_consumes() -> None:
 
 
 def test_core_credit_amount_asks_for_its_dataset_as_a_credit() -> None:
-    from tax_calculator.domain.parameters.credit import CREDIT
+    from tax_engine.domain.parameters.credit import CREDIT
 
     built, parameters = credit_amount_service()
 
@@ -1286,14 +1286,14 @@ def test_core_credit_amount_asks_for_its_dataset_as_a_credit() -> None:
 
 @cache
 def capped_amount_class() -> Any:
-    from tax_calculator.domain.capabilities.capped_amount import CappedAmount
+    from tax_engine.domain.capabilities.capped_amount import CappedAmount
 
     return CappedAmount
 
 
 def some_cap_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.amount import AMOUNT, Amount
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/some_cap",
@@ -1326,9 +1326,9 @@ def capped_amount_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_capped_amount_below_the_cap_end_to_end() -> None:
-    from tax_calculator.domain.parameters.amount import Amount
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import CappedAmountLine
+    from tax_engine.domain.parameters.amount import Amount
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import CappedAmountLine
 
     built, _parameters = capped_amount_service()
 
@@ -1350,9 +1350,9 @@ def test_computes_core_capped_amount_below_the_cap_end_to_end() -> None:
 
 
 def test_computes_core_capped_amount_above_the_cap_end_to_end() -> None:
-    from tax_calculator.domain.parameters.amount import Amount
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import CappedAmountLine
+    from tax_engine.domain.parameters.amount import Amount
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import CappedAmountLine
 
     built, _parameters = capped_amount_service()
 
@@ -1381,7 +1381,7 @@ def test_core_capped_amount_runs_after_its_base_is_produced() -> None:
 
 
 def test_core_capped_amount_asks_for_its_dataset_as_an_amount() -> None:
-    from tax_calculator.domain.parameters.amount import AMOUNT
+    from tax_engine.domain.parameters.amount import AMOUNT
 
     built, parameters = capped_amount_service()
 
@@ -1399,7 +1399,7 @@ def test_core_capped_amount_asks_for_its_dataset_as_an_amount() -> None:
 
 @cache
 def lesser_of_class() -> Any:
-    from tax_calculator.domain.capabilities.lesser_of import LesserOf
+    from tax_engine.domain.capabilities.lesser_of import LesserOf
 
     return LesserOf
 
@@ -1450,7 +1450,7 @@ def lesser_of_service(*manifests: Manifest) -> TaxComputationService:
 
 
 def test_computes_core_lesser_of_three_amounts_end_to_end() -> None:
-    from tax_calculator.domain.trace import LesserOfLine
+    from tax_engine.domain.trace import LesserOfLine
 
     amounts = ("ex/part_three", "ex/part_two", "ex/part_one")
 
@@ -1468,7 +1468,7 @@ def test_computes_core_lesser_of_three_amounts_end_to_end() -> None:
 
 
 def test_computes_core_lesser_of_two_amounts_end_to_end() -> None:
-    from tax_calculator.domain.trace import LesserOfLine
+    from tax_engine.domain.trace import LesserOfLine
 
     amounts = ("ex/part_three", "ex/part_one")
 
@@ -1513,7 +1513,7 @@ def test_core_lesser_of_with_no_amounts_is_an_invalid_selection() -> None:
 
 @cache
 def greater_of_class() -> Any:
-    from tax_calculator.domain.capabilities.greater_of import GreaterOf
+    from tax_engine.domain.capabilities.greater_of import GreaterOf
 
     return GreaterOf
 
@@ -1564,7 +1564,7 @@ def greater_of_service(*manifests: Manifest) -> TaxComputationService:
 
 
 def test_computes_core_greater_of_three_amounts_end_to_end() -> None:
-    from tax_calculator.domain.trace import GreaterOfLine
+    from tax_engine.domain.trace import GreaterOfLine
 
     amounts = ("ex/part_three", "ex/part_two", "ex/part_one")
 
@@ -1582,7 +1582,7 @@ def test_computes_core_greater_of_three_amounts_end_to_end() -> None:
 
 
 def test_computes_core_greater_of_two_amounts_end_to_end() -> None:
-    from tax_calculator.domain.trace import GreaterOfLine
+    from tax_engine.domain.trace import GreaterOfLine
 
     amounts = ("ex/part_three", "ex/part_one")
 
@@ -1629,18 +1629,18 @@ def test_core_greater_of_with_no_amounts_is_an_invalid_selection() -> None:
 
 @cache
 def tiered_contribution_class() -> Any:
-    from tax_calculator.domain.capabilities.contribution_tier import TieredContribution
+    from tax_engine.domain.capabilities.contribution_tier import TieredContribution
 
     return TieredContribution
 
 
 def some_tier_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.contribution_tier import (
+    from tax_engine.domain.parameters.contribution_tier import (
         CONTRIBUTION_TIER,
         ContributionTier,
     )
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/some_tier",
@@ -1673,10 +1673,10 @@ def tiered_contribution_service() -> tuple[TaxComputationService, FakeParameters
 
 
 def test_computes_core_contribution_tier_inside_the_band_end_to_end() -> None:
-    from tax_calculator.domain.parameters.contribution_tier import ContributionTier
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import ContributionTierLine
+    from tax_engine.domain.parameters.contribution_tier import ContributionTier
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import ContributionTierLine
 
     built, _parameters = tiered_contribution_service()
 
@@ -1700,10 +1700,10 @@ def test_computes_core_contribution_tier_inside_the_band_end_to_end() -> None:
 
 
 def test_computes_core_contribution_tier_above_the_band_end_to_end() -> None:
-    from tax_calculator.domain.parameters.contribution_tier import ContributionTier
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import ContributionTierLine
+    from tax_engine.domain.parameters.contribution_tier import ContributionTier
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import ContributionTierLine
 
     built, _parameters = tiered_contribution_service()
 
@@ -1743,7 +1743,7 @@ def test_core_contribution_tier_runs_after_its_earnings_are_produced() -> None:
 
 
 def test_core_contribution_tier_asks_for_its_dataset_as_a_contribution_tier() -> None:
-    from tax_calculator.domain.parameters.contribution_tier import CONTRIBUTION_TIER
+    from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER
 
     built, parameters = tiered_contribution_service()
 
@@ -1762,15 +1762,15 @@ def test_core_contribution_tier_asks_for_its_dataset_as_a_contribution_tier() ->
 
 @cache
 def tiered_surcharge_class() -> Any:
-    from tax_calculator.domain.capabilities.tiered_surcharge import TieredSurcharge
+    from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
 
     return TieredSurcharge
 
 
 def surcharge_tiers_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.parameters.surcharge_tiers import (
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.surcharge_tiers import (
         SURCHARGE_TIERS,
         SurchargeTier,
         SurchargeTiers,
@@ -1809,9 +1809,9 @@ def tiered_surcharge_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_tiered_surcharge_above_all_thresholds_end_to_end() -> None:
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import SurchargeTierLine
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import SurchargeTierLine
 
     built, _parameters = tiered_surcharge_service()
 
@@ -1830,7 +1830,7 @@ def test_computes_core_tiered_surcharge_above_all_thresholds_end_to_end() -> Non
 
 
 def test_computes_core_tiered_surcharge_between_the_thresholds_end_to_end() -> None:
-    from tax_calculator.domain.trace import SurchargeTierLine
+    from tax_engine.domain.trace import SurchargeTierLine
 
     built, _parameters = tiered_surcharge_service()
 
@@ -1861,7 +1861,7 @@ def test_core_tiered_surcharge_runs_after_its_base_is_produced() -> None:
 
 
 def test_core_tiered_surcharge_asks_for_its_dataset_as_surcharge_tiers() -> None:
-    from tax_calculator.domain.parameters.surcharge_tiers import SURCHARGE_TIERS
+    from tax_engine.domain.parameters.surcharge_tiers import SURCHARGE_TIERS
 
     built, parameters = tiered_surcharge_service()
 
@@ -1875,9 +1875,9 @@ def test_core_tiered_surcharge_asks_for_its_dataset_as_surcharge_tiers() -> None
 
 
 def capped_surcharge_tiers_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.parameters.surcharge_tiers import (
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.surcharge_tiers import (
         SURCHARGE_TIERS,
         SurchargeTier,
         SurchargeTiers,
@@ -1911,9 +1911,9 @@ def capped_surcharge_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_tiered_surcharge_with_every_tier_at_its_maximum_end_to_end() -> None:
-    from tax_calculator.domain.parameters.rate import Rate
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import SurchargeTierLine
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import SurchargeTierLine
 
     built, _parameters = capped_surcharge_service()
 
@@ -1934,7 +1934,7 @@ def test_computes_core_tiered_surcharge_with_every_tier_at_its_maximum_end_to_en
 
 
 def test_computes_core_tiered_surcharge_with_one_tier_at_its_maximum_end_to_end() -> None:
-    from tax_calculator.domain.trace import SurchargeTierLine
+    from tax_engine.domain.trace import SurchargeTierLine
 
     built, _parameters = capped_surcharge_service()
 
@@ -1969,14 +1969,14 @@ def test_computes_core_tiered_surcharge_under_every_maximum_end_to_end() -> None
 
 @cache
 def tapered_amount_class() -> Any:
-    from tax_calculator.domain.capabilities.tapered_amount import TaperedAmount
+    from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
 
     return TaperedAmount
 
 
 def some_taper_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.parameters.taper import TAPER, Taper
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.taper import TAPER, Taper
 
     return ParameterDataset(
         family="ex/some_taper",
@@ -2009,9 +2009,9 @@ def tapered_amount_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_tapered_amount_inside_the_range_end_to_end() -> None:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.parameters.taper import Taper
-    from tax_calculator.domain.trace import TaperedAmountLine
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.taper import Taper
+    from tax_engine.domain.trace import TaperedAmountLine
 
     built, _parameters = tapered_amount_service()
 
@@ -2035,7 +2035,7 @@ def test_computes_core_tapered_amount_inside_the_range_end_to_end() -> None:
 
 
 def test_computes_core_tapered_amount_above_the_range_end_to_end() -> None:
-    from tax_calculator.domain.trace import TaperedAmountLine
+    from tax_engine.domain.trace import TaperedAmountLine
 
     built, _parameters = tapered_amount_service()
 
@@ -2069,7 +2069,7 @@ def test_core_tapered_amount_runs_after_its_base_is_produced() -> None:
 
 
 def test_core_tapered_amount_asks_for_its_dataset_as_a_taper() -> None:
-    from tax_calculator.domain.parameters.taper import TAPER
+    from tax_engine.domain.parameters.taper import TAPER
 
     built, parameters = tapered_amount_service()
 
@@ -2090,14 +2090,14 @@ COUNT = ArtifactKind("ex/count", int)
 
 @cache
 def per_unit_amount_class() -> Any:
-    from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
+    from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
 
     return PerUnitAmount
 
 
 def some_amount_per_unit_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.amount import AMOUNT, Amount
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/some_amount_per_unit",
@@ -2133,9 +2133,9 @@ def per_unit_amount_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_per_unit_amount_end_to_end() -> None:
-    from tax_calculator.domain.parameters.amount import Amount
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import PerUnitAmountLine
+    from tax_engine.domain.parameters.amount import Amount
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import PerUnitAmountLine
 
     built, _parameters = per_unit_amount_service()
 
@@ -2184,7 +2184,7 @@ def test_core_per_unit_amount_rejects_a_money_input_for_its_count() -> None:
 
 
 def test_core_per_unit_amount_asks_for_its_dataset_as_an_amount() -> None:
-    from tax_calculator.domain.parameters.amount import AMOUNT
+    from tax_engine.domain.parameters.amount import AMOUNT
 
     built, parameters = per_unit_amount_service()
 
@@ -2204,14 +2204,14 @@ def test_core_per_unit_amount_asks_for_its_dataset_as_an_amount() -> None:
 
 @cache
 def amount_by_count_class() -> Any:
-    from tax_calculator.domain.capabilities.amount_by_count import AmountForCount
+    from tax_engine.domain.capabilities.amount_by_count import AmountForCount
 
     return AmountForCount
 
 
 def some_amount_by_count_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/some_amount_by_count",
@@ -2247,8 +2247,8 @@ def amount_by_count_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_amount_by_count_end_to_end() -> None:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import AmountByCountLine
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import AmountByCountLine
 
     built, _parameters = amount_by_count_service()
 
@@ -2272,8 +2272,8 @@ def test_computes_core_amount_by_count_end_to_end() -> None:
 
 
 def test_computes_core_amount_by_count_rounding_the_row_end_to_end() -> None:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import AmountByCountLine
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import AmountByCountLine
 
     built, _parameters = amount_by_count_service()
 
@@ -2287,7 +2287,7 @@ def test_computes_core_amount_by_count_rounding_the_row_end_to_end() -> None:
 
 
 def test_core_amount_by_count_refuses_a_count_without_a_row_end_to_end() -> None:
-    from tax_calculator.domain.errors import NoAmountForCountError
+    from tax_engine.domain.errors import NoAmountForCountError
 
     built, _parameters = amount_by_count_service()
 
@@ -2315,7 +2315,7 @@ def test_core_amount_by_count_rejects_a_money_input_for_its_count() -> None:
 
 
 def test_core_amount_by_count_asks_for_its_dataset_as_an_amount_by_count() -> None:
-    from tax_calculator.domain.parameters.amount_by_count import AMOUNT_BY_COUNT
+    from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT
 
     built, parameters = amount_by_count_service()
 
@@ -2335,15 +2335,15 @@ def test_core_amount_by_count_asks_for_its_dataset_as_an_amount_by_count() -> No
 
 @cache
 def multiple_over_class() -> Any:
-    from tax_calculator.domain.capabilities.multiple_over import MultipleOver
+    from tax_engine.domain.capabilities.multiple_over import MultipleOver
 
     return MultipleOver
 
 
 def some_factor_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.factor import FACTOR as FACTOR_KIND
-    from tax_calculator.domain.parameters.factor import Factor as FactorValue
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.factor import FACTOR as FACTOR_KIND
+    from tax_engine.domain.parameters.factor import Factor as FactorValue
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/some_factor",
@@ -2378,9 +2378,9 @@ def multiple_over_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_multiple_over_above_the_figure_end_to_end() -> None:
-    from tax_calculator.domain.parameters.factor import Factor as FactorValue
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import MultipleOverLine
+    from tax_engine.domain.parameters.factor import Factor as FactorValue
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import MultipleOverLine
 
     built, _parameters = multiple_over_service()
 
@@ -2407,7 +2407,7 @@ def test_computes_core_multiple_over_above_the_figure_end_to_end() -> None:
 
 
 def test_computes_core_multiple_over_floored_at_zero_end_to_end() -> None:
-    from tax_calculator.domain.trace import MultipleOverLine
+    from tax_engine.domain.trace import MultipleOverLine
 
     built, _parameters = multiple_over_service()
 
@@ -2432,7 +2432,7 @@ def test_core_multiple_over_runs_after_its_amount_is_produced() -> None:
 
 
 def test_core_multiple_over_asks_for_its_dataset_as_a_factor() -> None:
-    from tax_calculator.domain.parameters.factor import FACTOR as FACTOR_KIND
+    from tax_engine.domain.parameters.factor import FACTOR as FACTOR_KIND
 
     built, parameters = multiple_over_service()
 
@@ -2512,7 +2512,7 @@ def test_computes_core_per_unit_amount_into_core_multiple_over_with_no_units() -
 
 @cache
 def at_most_class() -> Any:
-    from tax_calculator.domain.capabilities.at_most import AtMost
+    from tax_engine.domain.capabilities.at_most import AtMost
 
     return AtMost
 
@@ -2534,7 +2534,7 @@ def at_most_service() -> TaxComputationService:
 
 
 def test_computes_core_at_most_below_the_bound_end_to_end() -> None:
-    from tax_calculator.domain.trace import AtMostLine
+    from tax_engine.domain.trace import AtMostLine
 
     worksheet = at_most_service().compute(
         EX_ON, 2025, Artifact(BASE, D("5")), Artifact(EXTRA, D("10.50"))
@@ -2549,7 +2549,7 @@ def test_computes_core_at_most_below_the_bound_end_to_end() -> None:
 
 
 def test_computes_core_at_most_equal_to_the_bound_end_to_end() -> None:
-    from tax_calculator.domain.trace import AtMostLine
+    from tax_engine.domain.trace import AtMostLine
 
     worksheet = at_most_service().compute(
         EX_ON, 2025, Artifact(BASE, D("5")), Artifact(EXTRA, D("15"))
@@ -2561,7 +2561,7 @@ def test_computes_core_at_most_equal_to_the_bound_end_to_end() -> None:
 
 
 def test_core_at_most_above_the_bound_raises_naming_both_kinds_end_to_end() -> None:
-    from tax_calculator.domain.errors import InputAboveBoundError
+    from tax_engine.domain.errors import InputAboveBoundError
 
     built = at_most_service()
 
@@ -2589,14 +2589,14 @@ def test_core_at_most_runs_after_what_it_consumes_is_produced() -> None:
 
 @cache
 def apply_fraction_class() -> Any:
-    from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
+    from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 
     return ApplyFraction
 
 
 def portion_fraction_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.fraction import FRACTION, Fraction
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.fraction import FRACTION, Fraction
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/portion_fraction",
@@ -2629,9 +2629,9 @@ def apply_fraction_service() -> tuple[TaxComputationService, FakeParameters]:
 
 
 def test_computes_core_apply_fraction_end_to_end() -> None:
-    from tax_calculator.domain.parameters.fraction import Fraction
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import FractionAppliedLine
+    from tax_engine.domain.parameters.fraction import Fraction
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import FractionAppliedLine
 
     built, _parameters = apply_fraction_service()
 
@@ -2665,8 +2665,8 @@ def test_computes_core_apply_fraction_to_an_exact_quotient_end_to_end() -> None:
 def test_core_apply_fraction_with_an_inexact_quotient_and_no_rounding_names_the_capability() -> (
     None
 ):
-    from tax_calculator.domain.errors import CapabilityContractError
-    from tax_calculator.domain.parameters.fraction import FRACTION, Fraction
+    from tax_engine.domain.errors import CapabilityContractError
+    from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 
     capabilities = capability_registry()
     capabilities.register("core/apply_fraction", apply_fraction_class())
@@ -2701,7 +2701,7 @@ def test_core_apply_fraction_runs_after_its_base_is_produced() -> None:
 
 
 def test_core_apply_fraction_asks_for_its_dataset_as_a_fraction() -> None:
-    from tax_calculator.domain.parameters.fraction import FRACTION
+    from tax_engine.domain.parameters.fraction import FRACTION
 
     built, parameters = apply_fraction_service()
 
@@ -2721,14 +2721,14 @@ def test_core_apply_fraction_asks_for_its_dataset_as_a_fraction() -> None:
 
 @cache
 def apply_ratio_class() -> Any:
-    from tax_calculator.domain.capabilities.apply_ratio import ApplyRatio
+    from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 
     return ApplyRatio
 
 
 def ratio_rounding_data(rounding: Any = None, tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 
     return ParameterDataset(
         family="ex/ratio_rounding",
@@ -2766,8 +2766,8 @@ def apply_ratio_service(
 
 
 def test_computes_core_apply_ratio_end_to_end() -> None:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_calculator.domain.trace import RatioAppliedLine
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.trace import RatioAppliedLine
 
     built, _parameters = apply_ratio_service()
 
@@ -2806,7 +2806,7 @@ def test_computes_core_apply_ratio_to_an_exact_quotient_end_to_end() -> None:
 
 
 def test_core_apply_ratio_with_an_inexact_quotient_and_no_rounding_names_the_capability() -> None:
-    from tax_calculator.domain.errors import CapabilityContractError
+    from tax_engine.domain.errors import CapabilityContractError
 
     built, _parameters = apply_ratio_service(rounding=NO_ROUNDING)
 
@@ -2818,7 +2818,7 @@ def test_core_apply_ratio_with_an_inexact_quotient_and_no_rounding_names_the_cap
 
 
 def test_core_apply_ratio_with_a_zero_denominator_is_a_validation_error_end_to_end() -> None:
-    from tax_calculator.domain.errors import ValidationError
+    from tax_engine.domain.errors import ValidationError
 
     built, _parameters = apply_ratio_service()
 
@@ -2841,7 +2841,7 @@ def test_core_apply_ratio_runs_after_what_it_consumes_is_produced() -> None:
 
 
 def test_core_apply_ratio_asks_for_its_dataset_as_rounding_only() -> None:
-    from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY
+    from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 
     built, parameters = apply_ratio_service()
 
@@ -2875,7 +2875,7 @@ PERSON_COUNT = ArtifactKind("ex/person_count", int)
 
 @cache
 def times_count_class() -> Any:
-    from tax_calculator.domain.capabilities.times_count import TimesCount
+    from tax_engine.domain.capabilities.times_count import TimesCount
 
     return TimesCount
 
@@ -2912,7 +2912,7 @@ def times_count_service(
 
 
 def test_computes_core_times_count_end_to_end() -> None:
-    from tax_calculator.domain.trace import TimesCountLine
+    from tax_engine.domain.trace import TimesCountLine
 
     worksheet = times_count_service().compute(
         EX_ON, 2025, Artifact(BASE, D("5376.50")), Artifact(COUNT, 1)
@@ -2990,7 +2990,7 @@ def test_core_times_count_refuses_a_count_kind_for_its_amount_at_wiring() -> Non
 
 @cache
 def choose_by_count_class() -> Any:
-    from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
+    from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
 
     return ChooseByCount
 
@@ -3028,7 +3028,7 @@ def choose_by_count_service(
 
 
 def test_computes_core_choose_by_count_for_a_count_of_zero_end_to_end() -> None:
-    from tax_calculator.domain.trace import ChosenByCountLine
+    from tax_engine.domain.trace import ChosenByCountLine
 
     worksheet = choose_by_count_service().compute(
         EX_ON, 2025, Artifact(BASE, D("544.50")), Artifact(EXTRA, D("2813")), Artifact(COUNT, 0)
@@ -3045,7 +3045,7 @@ def test_computes_core_choose_by_count_for_a_count_of_zero_end_to_end() -> None:
 
 
 def test_computes_core_choose_by_count_for_a_count_of_one_end_to_end() -> None:
-    from tax_calculator.domain.trace import ChosenByCountLine
+    from tax_engine.domain.trace import ChosenByCountLine
 
     worksheet = choose_by_count_service().compute(
         EX_ON, 2025, Artifact(BASE, D("544.50")), Artifact(EXTRA, D("2813.00")), Artifact(COUNT, 1)
@@ -3126,7 +3126,7 @@ MAXIMUM_AMOUNT = ArtifactKind("ex/maximum_amount", Decimal)
 @cache
 def dependants_kind() -> Any:
     """The made-up `ex/dependants` record-list kind, declared like any package's."""
-    from tax_calculator.domain.record_list import RecordListKind
+    from tax_engine.domain.record_list import RecordListKind
 
     catalog = ArtifactCatalog(Namespace("ex"))
     return RecordListKind.declare(catalog, "dependants", fields=(DEPENDANT_NET_INCOME,))
@@ -3134,7 +3134,7 @@ def dependants_kind() -> Any:
 
 def dependants(*net_incomes: str) -> Artifact[Any]:
     """An `ex/dependants` artifact of one record per net income, in the order given."""
-    from tax_calculator.domain.record_list import RecordList
+    from tax_engine.domain.record_list import RecordList
 
     kind = dependants_kind()
     records = [{DEPENDANT_NET_INCOME: D(net_income)} for net_income in net_incomes]
@@ -3143,7 +3143,7 @@ def dependants(*net_incomes: str) -> Artifact[Any]:
 
 @cache
 def per_item_claim_class() -> Any:
-    from tax_calculator.domain.record_list import RecordList
+    from tax_engine.domain.record_list import RecordList
 
     class PerItemClaim(Capability):
         """Produces `total`: for each record, `base` less its net income, from 0 up to
@@ -3328,7 +3328,7 @@ LAST = ArtifactKind("ex/last", Decimal)
 
 @cache
 def choose_by_range_class() -> Any:
-    from tax_calculator.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
+    from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
 
     return ChooseByRange
 
@@ -3391,7 +3391,7 @@ def compute_choose_by_range(base: str) -> Worksheet:
 
 
 def test_computes_ca_on_choose_by_range_for_the_first_range_end_to_end() -> None:
-    from tax_calculator.domain.trace import ChosenByRangeLine
+    from tax_engine.domain.trace import ChosenByRangeLine
 
     worksheet = compute_choose_by_range("30")
 
@@ -3406,7 +3406,7 @@ def test_computes_ca_on_choose_by_range_for_the_first_range_end_to_end() -> None
 
 
 def test_computes_ca_on_choose_by_range_for_the_second_range_end_to_end() -> None:
-    from tax_calculator.domain.trace import ChosenByRangeLine
+    from tax_engine.domain.trace import ChosenByRangeLine
 
     worksheet = compute_choose_by_range("150")
 
@@ -3483,7 +3483,7 @@ def test_an_input_that_is_also_an_output_is_carried_onto_the_worksheet_as_entere
 @cache
 def business_number_kind() -> Any:
     """The made-up `ex/business_number` digits kind of nine digits, declared like any package's."""
-    from tax_calculator.domain.digits import DigitsKind
+    from tax_engine.domain.digits import DigitsKind
 
     return DigitsKind.declare(ArtifactCatalog(Namespace("ex")), "business_number", digits=9)
 
@@ -3515,7 +3515,7 @@ def test_a_carried_digits_entry_is_returned_as_entered(text: str) -> None:
 
 
 def test_a_digits_kind_of_another_number_of_digits_is_not_the_carried_entry() -> None:
-    from tax_calculator.domain.digits import DigitsKind
+    from tax_engine.domain.digits import DigitsKind
 
     other = DigitsKind("ex/business_number", digits=5)
 

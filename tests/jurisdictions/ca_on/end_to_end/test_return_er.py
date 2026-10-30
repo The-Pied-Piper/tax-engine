@@ -9,8 +9,8 @@ each line; the tax figures are the engine's and are checked in the YAML only.
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FHSA_ANNUAL_AMOUNT_WITH_CARRYFORWARD,
     FHSA_ANNUAL_LIMIT,
     FHSA_ANNUAL_LIMIT_FROM_STEP_2,

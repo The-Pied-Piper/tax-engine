@@ -23,9 +23,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InvalidRecordError, NegativeArtifactError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_CHART_A_GROSS_EXPENSES,
     FARM_CHART_B_NOTE_9_APPLIES,
     FARM_CHART_B_ROW_3_MB,

@@ -22,19 +22,19 @@ from pathlib import Path
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionList,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 T657_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf"
 
 # The datasets and the counts each condition requires, as (position, figure) in order, one tuple for
@@ -94,9 +94,9 @@ def test_each_period_total_pairs_every_row_list_with_the_export_of_its_own_row_f
     # 10) each product reads.
     import yaml
 
-    import tax_calculator.jurisdictions.ca_on
+    import tax_engine.jurisdictions.ca_on
 
-    manifests = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+    manifests = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
     part = yaml.safe_load((manifests / "04d_t657_chart_amounts_from_t2017.yaml").read_text())
     steps = part["capabilities"]
     assert len(steps) == 24

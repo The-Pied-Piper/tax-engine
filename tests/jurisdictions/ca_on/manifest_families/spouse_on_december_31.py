@@ -18,9 +18,9 @@ checked` (`ontario_tax_reduction.py`), so the return's own selections here are n
 
 from __future__ import annotations
 
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31,
     SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_CHECKED,
 )

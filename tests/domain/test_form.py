@@ -30,13 +30,13 @@ from typing import Any, ClassVar
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capability import Capability, CapabilityResult
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capability import Capability, CapabilityResult
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.errors import (
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
@@ -45,10 +45,10 @@ from tax_calculator.domain.errors import (
     NotFoundError,
     ValidationError,
 )
-from tax_calculator.domain.form import FormComposition, FormSet
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
-from tax_calculator.domain.worksheet import Worksheet
+from tax_engine.domain.form import FormComposition, FormSet
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
+from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
 

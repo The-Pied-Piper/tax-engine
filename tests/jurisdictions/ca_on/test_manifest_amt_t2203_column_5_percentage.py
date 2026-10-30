@@ -18,9 +18,9 @@ from typing import Any
 import pytest
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
-MANIFESTS = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 SURTAX_PART = MANIFESTS / "08l_t2203_federal_surtax.yaml"
 AMT_PART = MANIFESTS / "20_alternative_minimum_tax.yaml"
 AMT_PART_6 = MANIFESTS / "20b_alternative_minimum_tax_part_6.yaml"

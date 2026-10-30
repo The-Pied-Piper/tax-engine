@@ -27,18 +27,18 @@ from decimal import Decimal
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 INFIRM_CHILD = "ca/infirm_child_amount"
 ONTARIO_BASE = "ca-on/eligible_dependant_base"
 ONTARIO_MAXIMUM = "ca-on/eligible_dependant_maximum"

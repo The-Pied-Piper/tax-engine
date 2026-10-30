@@ -9,10 +9,10 @@ from pathlib import Path
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     ABIL_AFTER_QBT_REDUCTION,
     ABIL_CLAIMED_AFTER_1984_AND_BEFORE_2025,
     ADDITIONAL_DEDUCTIONS,
@@ -1229,7 +1229,7 @@ def squashed(text: str) -> str:
 
 def docstring_of(name: str) -> str:
     """The string right after `NAME = CATALOG.declare("<name>", ...)` in a catalog module."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

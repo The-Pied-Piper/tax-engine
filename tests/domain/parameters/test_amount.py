@@ -13,9 +13,9 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidAmountError
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.kind import ParameterKind
+from tax_engine.domain.errors import DomainError, InvalidAmountError
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.kind import ParameterKind
 
 D = Decimal
 

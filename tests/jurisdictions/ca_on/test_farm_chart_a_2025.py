@@ -23,24 +23,24 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.errors import InputOutOfRangeError
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.jurisdictions.ca.capabilities.count_refused_by_conditions import (
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
     CountRefusedByConditions,
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T2043_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf"
 AMOUNT_8_ROUNDING = "ca/farm_chart_a_amount_8_rounding"

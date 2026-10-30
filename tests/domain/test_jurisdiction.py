@@ -11,10 +11,10 @@ from typing import assert_type
 
 import pytest
 
-from tax_calculator.domain.errors import AmbiguousManifestError, DomainError, NotFoundError
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.errors import AmbiguousManifestError, DomainError, NotFoundError
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 
 EX_ON = JurisdictionCode("EX-ON")
 

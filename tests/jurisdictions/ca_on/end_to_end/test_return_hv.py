@@ -6,10 +6,10 @@ import re
 
 import pytest
 
-from tax_calculator.domain.errors import InputOutOfRangeError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import SPOUSE_AND_DEPENDANT_BOTH_CHECKED
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import SPOUSE_AND_DEPENDANT_BOTH_CHECKED
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 

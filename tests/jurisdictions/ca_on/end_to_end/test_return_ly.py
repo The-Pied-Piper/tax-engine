@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError, InputOutOfRangeError
-from tax_calculator.jurisdictions.ca.catalog import T777_VEHICLE_LEASING_COSTS
+from tax_engine.domain.errors import InputAboveBoundError, InputOutOfRangeError
+from tax_engine.jurisdictions.ca.catalog import T777_VEHICLE_LEASING_COSTS
 from tests.jurisdictions.ca_on.end_to_end.support import D
 from tests.jurisdictions.ca_on.end_to_end.test_return_hi import t777_form
 

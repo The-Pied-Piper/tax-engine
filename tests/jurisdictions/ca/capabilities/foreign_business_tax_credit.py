@@ -15,12 +15,12 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.record_list import RecordList
+from tax_engine.jurisdictions.ca.catalog import (
     FOREIGN_BUSINESS_TAX_PAID,
     FOREIGN_BUSINESS_UNUSED_TAX_CREDITS,
     FOREIGN_NON_BUSINESS_TAX_PAID,

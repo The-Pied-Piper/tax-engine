@@ -24,9 +24,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError, InputOutOfRangeError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError, InputOutOfRangeError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_AMOUNT_8_ON,
     FARM_CHART_A_GROSS_EXPENSES,
     FUEL_CHARGE_CREDIT_FARMERS,

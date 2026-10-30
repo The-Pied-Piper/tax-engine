@@ -7,10 +7,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.errors import InputOutOfRangeError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     EMERGENCY_SERVICES_VOLUNTEER_EXEMPT_INCOME,
     REFUND_OR_BALANCE_OWING,
     SEARCH_AND_RESCUE_CONDITIONS_MET,

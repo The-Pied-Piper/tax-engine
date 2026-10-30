@@ -7,11 +7,11 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.trace import RatioAppliedLine, SubtractedLine, SubtractedNotBelowZeroLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.trace import RatioAppliedLine, SubtractedLine, SubtractedNotBelowZeroLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FEDERAL_FOREIGN_TAX_CREDIT,
     NET_FEDERAL_TAX,
     OTHER_SPLIT_INCOME,
@@ -36,7 +36,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_NON_BUSINESS_INCOME_FROM_FOREIGN_SOURCES_CHECKED,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import CENT, D, compute, routed_statement
 
 

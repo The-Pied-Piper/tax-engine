@@ -18,13 +18,13 @@ amounts in `02_outputs.yaml` are.
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.restricted_farm_loss_applied import (
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.restricted_farm_loss_applied import (
     RestrictedFarmLossApplied,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     OTHER_FORECLOSURE_DISPOSITIONS,
     OTHER_FORECLOSURE_RESTRICTED_FARM_LOSS_APPLIED,
     QFFP_DISPOSITIONS,

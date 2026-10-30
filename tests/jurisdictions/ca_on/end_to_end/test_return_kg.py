@@ -15,8 +15,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     GROSS_RENTAL_INCOME,
     NET_RENTAL_INCOME,
     TOTAL_INCOME,

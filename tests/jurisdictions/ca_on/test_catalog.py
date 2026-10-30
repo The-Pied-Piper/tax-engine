@@ -13,24 +13,24 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca_on
-import tax_calculator.jurisdictions.ca_on.catalog
-from tax_calculator.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.digits import DigitsKind
-from tax_calculator.domain.errors import InvalidRecordError, NegativeArtifactError
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on.catalog
+from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.digits import DigitsKind
+from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_CARE_EXPENSES,
     DEPENDANT_NET_INCOME,
     DEPENDANT_TAXABLE_INCOME,
     DEPENDANT_UNDER_18,
     INFIRM_DEPENDANTS,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     DISABILITY_DEPENDANTS as FEDERAL_DISABILITY_DEPENDANTS,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     ADOPTION_CREDIT,
     AGE_AMOUNT,
     AGE_AMOUNT_BEFORE_COUNT,
@@ -279,7 +279,7 @@ from tax_calculator.jurisdictions.ca_on.catalog import (
     WORKSHEET_ON428_LINE_7,
     WORKSHEET_ON428_LINE_8,
 )
-from tax_calculator.registrations import JURISDICTIONS
+from tax_engine.registrations import JURISDICTIONS
 
 REGISTERED = frozenset(
     {
@@ -636,8 +636,8 @@ def test_registered_identifiers_snapshot(registry: ArtifactRegistry) -> None:
 
 
 def test_the_package_exposes_its_catalog() -> None:
-    assert isinstance(tax_calculator.jurisdictions.ca_on.catalog.CATALOG, ArtifactCatalog)
-    assert tax_calculator.jurisdictions.ca_on.catalog.CATALOG is CATALOG
+    assert isinstance(tax_engine.jurisdictions.ca_on.catalog.CATALOG, ArtifactCatalog)
+    assert tax_engine.jurisdictions.ca_on.catalog.CATALOG is CATALOG
     assert {kind.identifier for kind in CATALOG.kinds} == REGISTERED
 
 
@@ -1130,7 +1130,7 @@ def test_every_registered_kind_but_counts_lists_digits_and_rates_is_money_in_the
     for identifier in REGISTERED - COUNTS - RECORD_LISTS - DIGITS - RATES:
         kind = registry.get(identifier)
         assert isinstance(kind, ArtifactKind)
-        assert kind.identifier.startswith(f"{tax_calculator.jurisdictions.ca_on.NAMESPACE}/")
+        assert kind.identifier.startswith(f"{tax_engine.jurisdictions.ca_on.NAMESPACE}/")
         assert kind.value_type is Decimal, identifier
 
 
@@ -1139,7 +1139,7 @@ def test_the_counts_are_int_kinds_in_the_package_namespace(registry: ArtifactReg
     for identifier in COUNTS:
         kind = registry.get(identifier)
         assert isinstance(kind, ArtifactKind)
-        assert kind.identifier.startswith(f"{tax_calculator.jurisdictions.ca_on.NAMESPACE}/")
+        assert kind.identifier.startswith(f"{tax_engine.jurisdictions.ca_on.NAMESPACE}/")
         assert kind.value_type is int, identifier
 
 
@@ -1150,7 +1150,7 @@ def test_the_care_credit_percentage_is_a_rate_kind_in_the_package_namespace(
     for identifier in RATES:
         kind = registry.get(identifier)
         assert isinstance(kind, ArtifactKind)
-        assert kind.identifier.startswith(f"{tax_calculator.jurisdictions.ca_on.NAMESPACE}/")
+        assert kind.identifier.startswith(f"{tax_engine.jurisdictions.ca_on.NAMESPACE}/")
         assert kind.value_type is Rate, identifier
 
 
@@ -1161,7 +1161,7 @@ def test_the_flow_through_share_slips_are_a_record_list_of_the_slip_expenses(
     for identifier in RECORD_LISTS:
         kind = registry.get(identifier)
         assert isinstance(kind, RecordListKind)
-        assert kind.identifier.startswith(f"{tax_calculator.jurisdictions.ca_on.NAMESPACE}/")
+        assert kind.identifier.startswith(f"{tax_engine.jurisdictions.ca_on.NAMESPACE}/")
     assert FLOW_THROUGH_SHARE_SLIPS.fields == (FLOW_THROUGH_SHARE_SLIP_EXPENSES,)
     assert FLOW_THROUGH_SHARE_SLIP_EXPENSES.value_type is Decimal
 
@@ -1445,10 +1445,8 @@ def test_the_lift_spouse_flag_is_not_a_kind_of_its_own(registry: ArtifactRegistr
 
 
 def test_the_ontario_catalog_module_declares_no_lift_spouse_at_year_end_kind() -> None:
-    assert not hasattr(tax_calculator.jurisdictions.ca_on.catalog, "LIFT_SPOUSE_AT_YEAR_END")
-    assert not hasattr(
-        tax_calculator.jurisdictions.ca_on.catalog, "LIFT_SPOUSE_AT_YEAR_END_CHECKED"
-    )
+    assert not hasattr(tax_engine.jurisdictions.ca_on.catalog, "LIFT_SPOUSE_AT_YEAR_END")
+    assert not hasattr(tax_engine.jurisdictions.ca_on.catalog, "LIFT_SPOUSE_AT_YEAR_END_CHECKED")
 
 
 def test_every_kind_but_record_lists_signed_lines_digits_and_rates_is_declared_non_negative(

@@ -20,9 +20,9 @@ from typing import Any
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
-PARTS = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+PARTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 INPUTS_PART = PARTS / "01d_t1436_inputs.yaml"
 RETURN_PART = PARTS / "05o_t1436_lines_1_to_7.yaml"
 T929_PART = PARTS / "05p_t1436_lines_1_to_7_t929.yaml"

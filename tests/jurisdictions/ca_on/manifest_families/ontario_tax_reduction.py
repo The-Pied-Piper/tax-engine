@@ -2,19 +2,19 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.first_record_count import FirstRecordCount
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.multiple_over import MultipleOver
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.first_record_count import FirstRecordCount
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.multiple_over import MultipleOver
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_FOREIGN_BUSINESS_TAX_PAID,
     AMT_FOREIGN_NON_BUSINESS_TAX_TWO_THIRDS,
     AMT_PART_5_LINE_11_IS_POSITIVE,
@@ -26,10 +26,10 @@ from tax_calculator.jurisdictions.ca.catalog import (
     SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_CHECKED,
     SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_TOTAL,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.provincial_foreign_tax_credit import (
+from tax_engine.jurisdictions.ca_on.capabilities.provincial_foreign_tax_credit import (
     ProvincialForeignTaxCredit,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     BANKRUPT_IN_YEAR,
     BANKRUPT_IN_YEAR_CHECKED,
     CLAIMS_TAX_REDUCTION_AMOUNTS_AT_EQUAL_NET_INCOME,

@@ -15,25 +15,25 @@ from pathlib import Path
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
-import tax_calculator.registrations
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Form, Manifest
-from tax_calculator.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
-from tax_calculator.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
-from tax_calculator.jurisdictions.ca.capabilities.positive_part_of_negation import (
+import tax_engine.jurisdictions.ca_on
+import tax_engine.registrations
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Form, Manifest
+from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+from tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation import (
     PositivePartOfNegation,
 )
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_LOSS_DEDUCTIBLE,
     FARM_NET_INCOME_LINE_9946,
     FARM_NET_LOSS,
@@ -55,7 +55,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
 from tests.jurisdictions.ca_on.end_to_end.support import run_a
 
 CA_ON = JurisdictionCode("CA-ON")
-V1 = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+V1 = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 PART = V1 / "03s_t2042_restricted_farm_loss.yaml"
 INPUTS_PART = V1 / "01e_farm_loss_inputs.yaml"
 # The parts that read line 14100 as the net of the statements with the restricted loss added back.
@@ -71,7 +71,7 @@ POSITIVE_READERS = ("05k_t929.yaml", "05k_t1_m.yaml", "13_refundable_credits.yam
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
         .get_jurisdiction(CA_ON)
         .manifests
     )

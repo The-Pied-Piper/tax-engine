@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
     EiExcludedSlipsNetIncome,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_PAYABLE_ON_SELF_EMPLOYMENT,
     EI_EARNINGS_SUBJECT_TO_PREMIUM,
     EI_EXCLUDED_SLIPS_NET_INCOME,

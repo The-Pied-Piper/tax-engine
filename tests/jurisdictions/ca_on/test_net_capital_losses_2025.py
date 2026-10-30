@@ -29,21 +29,21 @@ from typing import cast
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capability import CapabilityResult
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.parameters.fraction import FRACTION, Fraction
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.parameters.fraction import FRACTION, Fraction
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FORM = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf"
 ROWS = ("before_may_23_1985", "1985_to_1987", "1988_and_1989", "1990_to_1999", "2001_to_2024")

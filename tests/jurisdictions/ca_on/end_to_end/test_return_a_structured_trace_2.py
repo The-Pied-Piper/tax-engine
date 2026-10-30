@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.trace import (
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.trace import (
     SumLine,
     SumNotBelowZeroLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     ABIL_AFTER_QBT_REDUCTION,
     ABIL_CLAIMED_AFTER_1984_AND_BEFORE_2025,
     ACWB_BASIC_PAID,
@@ -1118,8 +1118,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AFTER_WORK_SITE,
     ZONE_B_RESIDENCY_AMOUNT,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_ADJUSTED_INCOME,
     CARE_CREDIT,
     CARE_FAMILY_ADJUSTED_INCOME,

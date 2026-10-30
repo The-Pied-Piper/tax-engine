@@ -27,26 +27,26 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.errors import InputAboveBoundError, InputOutOfRangeError
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.errors import InputAboveBoundError, InputOutOfRangeError
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionList,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.count_refused_by_conditions import (
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
     CountRefusedByConditions,
 )
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 S3_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt"
 
 CONDITIONS_FAMILY = "ca/schedule_3_flipped_property_conditions"

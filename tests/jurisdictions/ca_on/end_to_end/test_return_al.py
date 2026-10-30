@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.trace import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.trace import (
     DividedByRateLine,
     GreaterOfLine,
     RateAppliedLine,
@@ -15,8 +15,8 @@ from tax_calculator.domain.trace import (
     SumLine,
     SumNotBelowZeroLine,
 )
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     ADVANCED_CANADA_WORKERS_BENEFIT,
     AGE_AMOUNT,
@@ -65,8 +65,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TUITION_INCOME_REMAINING,
     TUITION_INCOME_WITH_TOSI,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     LIFT_CREDIT,
     ONTARIO_HEALTH_PREMIUM,
     ONTARIO_SURTAX,

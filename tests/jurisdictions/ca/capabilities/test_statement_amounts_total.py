@@ -22,18 +22,18 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputOutOfRangeError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.statement_amounts_total import (
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.statement_amounts_total import (
     StatementAmountsTotal,
 )
 

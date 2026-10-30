@@ -19,7 +19,7 @@ fiscal_period_days / full_year_days)`, formed as one exact fraction and rounded 
 dataset's rule. Any other period gives the amount itself, unchanged and unrounded. Days below 1 are
 refused (`InputBelowBoundError`, "<kind> 0 is below the minimum 1") and days above `full_year_days`
 are refused (`InputAboveBoundError`, "<kind> 366 is above the maximum 365"), as the CCA table words
-them. It records one `ProratedByDaysLine` (in `tax_calculator.jurisdictions.ca.trace`, next to
+them. It records one `ProratedByDaysLine` (in `tax_engine.jurisdictions.ca.trace`, next to
 `FiscalPeriodDaysLine`) in either case, with the output, the amount's kind and value, the days' kind
 and value, the dataset's `full_year_days`, the short-year figure's kind and value and the result,
 in that order.
@@ -43,28 +43,28 @@ from typing import assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, Money
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InputBelowBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.parameters.class_rates import CLASS_RATES
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.parameters.class_rates import CLASS_RATES
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.jurisdictions.ca.capabilities.prorated_by_fiscal_period_days import (
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.jurisdictions.ca.capabilities.prorated_by_fiscal_period_days import (
     ProratedByFiscalPeriodDays,
 )
-from tax_calculator.jurisdictions.ca.trace import ProratedByDaysLine
+from tax_engine.jurisdictions.ca.trace import ProratedByDaysLine
 from tests.jurisdictions.ca.capabilities.cca_table import class_rates
 
 D = Decimal

@@ -20,16 +20,16 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
     InvalidRecordError,
     InvalidRegistrationError,
     NegativeArtifactError,
 )
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.registry import Namespace
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.registry import Namespace
 
 D = Decimal
 NET_INCOME = ArtifactKind("ex/dependant_net_income", Decimal, non_negative=True)

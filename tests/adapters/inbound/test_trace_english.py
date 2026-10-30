@@ -16,32 +16,32 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.parameters.amount import Amount
-from tax_calculator.domain.parameters.claim_reduction import ClaimReduction
-from tax_calculator.domain.parameters.class_rates import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.parameters.amount import Amount
+from tax_engine.domain.parameters.claim_reduction import ClaimReduction
+from tax_engine.domain.parameters.class_rates import (
     ClassRate,
     HalfYearRule,
     HalfYearRuleOnSale,
     RecaptureAndTerminalLoss,
 )
-from tax_calculator.domain.parameters.contribution_tier import ContributionTier
-from tax_calculator.domain.parameters.credit import Credit
-from tax_calculator.domain.parameters.factor import Factor
-from tax_calculator.domain.parameters.fraction import Fraction
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rate_table import RateTableRow
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.parameters.contribution_tier import ContributionTier
+from tax_engine.domain.parameters.credit import Credit
+from tax_engine.domain.parameters.factor import Factor
+from tax_engine.domain.parameters.fraction import Fraction
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rate_table import RateTableRow
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.parameters.taper import Taper
-from tax_calculator.domain.parameters.threshold_rate import ThresholdRate
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.domain.trace import (
+from tax_engine.domain.parameters.taper import Taper
+from tax_engine.domain.parameters.threshold_rate import ThresholdRate
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.trace import (
     AmountByCountLine,
     AmountOrDividedByRateLine,
     AmountWhenMoreLine,
@@ -97,12 +97,12 @@ from tax_calculator.domain.trace import (
     TraceLine,
     YesOrNoCountLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_UCC_AT_END,
     RENTAL_BUILDING_ADDITIONS_TOTAL,
     RENTAL_EQUIPMENT_ADDITIONS_TOTAL,
 )
-from tax_calculator.jurisdictions.ca.trace import (
+from tax_engine.jurisdictions.ca.trace import (
     ApprenticeWagesLine,
     BusinessVehicleLine,
     CaregiverClaimLine,
@@ -202,7 +202,7 @@ from tax_calculator.jurisdictions.ca.trace import (
     TerminalLossLine,
     YearAmountLine,
 )
-from tax_calculator.jurisdictions.ca_on.trace import (
+from tax_engine.jurisdictions.ca_on.trace import (
     CappedRecordLine,
     CaregiverClaimLessClaimedLine,
     PlacementCreditLine,

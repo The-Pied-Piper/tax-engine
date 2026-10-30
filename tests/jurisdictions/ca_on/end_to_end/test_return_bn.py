@@ -9,12 +9,12 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.errors import InputOutOfRangeError
-from tax_calculator.domain.parameters.fraction import Fraction
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.trace import (
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.parameters.fraction import Fraction
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.trace import (
     ChosenByCountLine,
     ContributionTierLine,
     DividedByRateLine,
@@ -25,7 +25,7 @@ from tax_calculator.domain.trace import (
     SumLine,
     TimesCountLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_DEDUCTIONS_TOTAL,
     CPP_ACTUAL_BASE_CONTRIBUTIONS,
     CPP_ACTUAL_FIRST_ADDITIONAL_CONTRIBUTIONS,
@@ -183,7 +183,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import (
     D,
     ReturnAndSchedule8,

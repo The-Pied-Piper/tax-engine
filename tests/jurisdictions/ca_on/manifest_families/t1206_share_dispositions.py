@@ -15,18 +15,18 @@ The return selects no step of the forms; it totals two of the dispositions form'
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.amount_by_count import AmountForCount
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
-from tax_calculator.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.amount_by_count import AmountForCount
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     AGED_18_OR_OLDER_AT_END_OF_2025,
     T1206_AGED_18_OR_OLDER_CHECKED,
     T1206_CAPITAL_GAIN_ON_DISPOSITIONS,

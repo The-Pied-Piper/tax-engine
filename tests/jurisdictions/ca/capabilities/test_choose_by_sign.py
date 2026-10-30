@@ -26,12 +26,12 @@ from typing import Any, assert_type
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.trace import ChosenBySignLine
-from tax_calculator.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.trace import ChosenBySignLine
+from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
 
 D = Decimal
 Kinds = tuple[ArtifactKind[Decimal], ...]

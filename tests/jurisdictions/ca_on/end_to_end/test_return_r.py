@@ -4,18 +4,18 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import NegativeArtifactError
-from tax_calculator.domain.parameters.amount import Amount
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.trace import ItemsTotalLine, QuotientLine, RecordCountLine
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import NegativeArtifactError
+from tax_engine.domain.parameters.amount import Amount
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.trace import ItemsTotalLine, QuotientLine, RecordCountLine
+from tax_engine.jurisdictions.ca.catalog import (
     PROVINCIAL_CREDITS,
     REFUND_OR_BALANCE_OWING,
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     COOP_EDUCATION_CREDIT,
     COOP_EDUCATION_FULL_SHARE,
     COOP_EDUCATION_PAYROLL,
@@ -31,7 +31,7 @@ from tax_calculator.jurisdictions.ca_on.catalog import (
     ONTARIO_CREDITS_SUBTOTAL,
     ONTARIO_TAX,
 )
-from tax_calculator.jurisdictions.ca_on.trace import PlacementCreditLine
+from tax_engine.jurisdictions.ca_on.trace import PlacementCreditLine
 from tests.jurisdictions.ca_on.end_to_end.support import (
     CENT,
     D,

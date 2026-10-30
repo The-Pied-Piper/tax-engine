@@ -7,9 +7,9 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.domain.trace import RecordTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.cca_opening_ucc_total import CcaOpeningUccTotal
-from tax_calculator.jurisdictions.ca.catalog import CCA_UCC_AT_START
+from tax_engine.domain.trace import RecordTotalLine
+from tax_engine.jurisdictions.ca.capabilities.cca_opening_ucc_total import CcaOpeningUccTotal
+from tax_engine.jurisdictions.ca.catalog import CCA_UCC_AT_START
 from tests.jurisdictions.ca.capabilities.cca_entries_totals import (
     TOTAL,
     CcaEntriesTotalCases,

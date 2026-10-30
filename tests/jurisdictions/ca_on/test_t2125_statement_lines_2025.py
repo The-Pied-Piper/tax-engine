@@ -24,22 +24,22 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.errors import InputOutOfRangeError
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.count_refused_by_conditions import (
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
     CountRefusedByConditions,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_INCOME_LINE,
     BUSINESS_LINE_IS_BUSINESS,
     BUSINESS_LINE_IS_COMMISSION,
@@ -47,7 +47,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 T2125_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf"
 
 BUSINESS = "ca/t2125_line_is_business"

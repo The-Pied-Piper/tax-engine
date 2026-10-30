@@ -8,10 +8,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.jurisdictions.ca.capabilities.foreign_non_business_tax_paid_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_paid_total import (
     ForeignNonBusinessTaxPaidTotal,
 )
-from tax_calculator.jurisdictions.ca.catalog import FOREIGN_NON_BUSINESS_TAX_PAID
+from tax_engine.jurisdictions.ca.catalog import FOREIGN_NON_BUSINESS_TAX_PAID
 from tests.jurisdictions.ca.capabilities.foreign_tax_countries_totals import (
     ForeignTaxCountriesTotalCases,
 )

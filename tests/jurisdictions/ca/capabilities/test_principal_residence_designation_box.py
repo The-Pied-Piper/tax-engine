@@ -17,21 +17,21 @@ from decimal import Decimal
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.capability import CapabilityRegistry, CapabilityResult
-from tax_calculator.domain.errors import ValidationError
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_designation_box import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
+from tax_engine.domain.errors import ValidationError
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_designation_box import (
     PrincipalResidenceDesignationBoxCapability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_rows import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_rows import (
     PrincipalResidenceRows,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     PRINCIPAL_RESIDENCE_DESIGNATION_BOX,
     PRINCIPAL_RESIDENCE_PROPERTIES,
 )
-from tax_calculator.jurisdictions.ca.trace import PrincipalResidenceDesignationBox
+from tax_engine.jurisdictions.ca.trace import PrincipalResidenceDesignationBox
 from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     Figures,
     properties,
@@ -102,7 +102,7 @@ def test_is_registered_under_its_identifier() -> None:
 
     assert registered is CAPABILITY
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.principal_residence_designation_box"
+        "tax_engine.jurisdictions.ca.capabilities.principal_residence_designation_box"
     )
 
 

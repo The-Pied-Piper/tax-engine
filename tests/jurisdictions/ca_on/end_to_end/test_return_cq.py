@@ -7,10 +7,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_UCC_AT_END,
     FEDERAL_BASIC_TAX,
@@ -24,7 +24,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     RENTAL_NET_INCOME_AFTER_CCA,
     TOTAL_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import ONTARIO_BASIC_TAX
+from tax_engine.jurisdictions.ca_on.catalog import ONTARIO_BASIC_TAX
 from tests.jurisdictions.ca_on.end_to_end.support import D, rental_return
 
 # Return CQ's one Area A class: Class 1 (4%), the building bought on July 1, 2025, with additions

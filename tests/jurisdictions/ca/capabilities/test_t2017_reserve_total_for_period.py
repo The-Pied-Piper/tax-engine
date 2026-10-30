@@ -27,29 +27,29 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
     ValidationError,
 )
-from tax_calculator.domain.parameters.conditions import (
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionList,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.t2017_reserve_total_for_period import (
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.t2017_reserve_total_for_period import (
     T2017ReserveTotalForPeriod,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     T2017_LINE_2_RESERVE_ROWS,
     T2017_LINE_3_RESERVE_ROWS,
     T2017_LINE_17_RESERVE_ROWS,
@@ -66,7 +66,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     T2017_ROW_CHANGE,
     T2017_ROW_RESERVE,
 )
-from tax_calculator.jurisdictions.ca.trace.gains import ReserveRowForPeriodLine
+from tax_engine.jurisdictions.ca.trace.gains import ReserveRowForPeriodLine
 
 D = Decimal
 

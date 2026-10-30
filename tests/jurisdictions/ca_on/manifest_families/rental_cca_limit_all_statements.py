@@ -18,11 +18,11 @@ statement, 0 for a partner statement) when above that limit.
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.catalog import (
     RENTAL_CCA_CLAIMS_TOTAL,
     RENTAL_CCA_LIMIT_ALL_STATEMENTS,
     RENTAL_CCA_TOTAL_CLAIM,

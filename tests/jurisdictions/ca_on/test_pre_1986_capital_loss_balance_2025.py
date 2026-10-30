@@ -34,24 +34,24 @@ from typing import cast
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capability import CapabilityResult
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.credit import CREDIT
-from tax_calculator.domain.parameters.fraction import FRACTION, Fraction
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY
-from tax_calculator.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
-from tax_calculator.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.credit import CREDIT
+from tax_engine.domain.parameters.fraction import FRACTION, Fraction
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
+from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
+from tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FORM = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.pdf"
 

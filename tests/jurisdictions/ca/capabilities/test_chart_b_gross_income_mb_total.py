@@ -7,11 +7,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_mb_total import (
+from tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_mb_total import (
     ChartBGrossIncomeMbTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.chart_b_province_total import PROVINCE_MB
-from tax_calculator.jurisdictions.ca.catalog import FARM_CHART_B_PROVINCE_GROSS_INCOME
+from tax_engine.jurisdictions.ca.capabilities.chart_b_province_total import PROVINCE_MB
+from tax_engine.jurisdictions.ca.catalog import FARM_CHART_B_PROVINCE_GROSS_INCOME
 from tests.jurisdictions.ca.capabilities.chart_b_provinces import ProvinceTotalCases
 
 

@@ -8,8 +8,8 @@ one row, with the same starting values for everything else (no income).
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GAIN,
     INCLUDED_CAPITAL_GAIN,
     SHARE_GAIN_OR_LOSS,

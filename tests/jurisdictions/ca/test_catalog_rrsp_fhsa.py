@@ -6,8 +6,8 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     FHSA_ANNUAL_AMOUNT,
     FHSA_ANNUAL_AMOUNT_AFTER_TRANSFERS,
     FHSA_ANNUAL_AMOUNT_FOR_2024,

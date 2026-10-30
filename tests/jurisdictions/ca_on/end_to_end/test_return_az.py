@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     BASIC_PERSONAL_AMOUNT,
     CREDIT_AMOUNTS_SUBTOTAL,
     DISABILITY_AMOUNT_FOR_SELF,
@@ -15,7 +15,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     DISABILITY_SELF_WORKSHEET_AMOUNT,
     NON_REFUNDABLE_CREDIT_AMOUNTS,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import D, step_3
 
 

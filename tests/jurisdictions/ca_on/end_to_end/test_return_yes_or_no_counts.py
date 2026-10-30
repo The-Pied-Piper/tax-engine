@@ -10,10 +10,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_FEDERAL_SURTAX,
     AMT_NON_RESIDENT_OR_DEEMED_RESIDENT_CHECKED,
     CWB_ELIGIBLE_DEPENDANTS_CHECKED,

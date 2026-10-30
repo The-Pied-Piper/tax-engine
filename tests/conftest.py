@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from tax_calculator.adapters.outbound.yaml_support import YamlNode
+from tax_engine.adapters.outbound.yaml_support import YamlNode
 
 _REPOSITORY = Path(__file__).resolve().parent.parent
 

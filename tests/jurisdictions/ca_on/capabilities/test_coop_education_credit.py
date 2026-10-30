@@ -24,38 +24,38 @@ from types import MappingProxyType
 
 import pytest
 
-import tax_calculator.jurisdictions.ca_on
-import tax_calculator.jurisdictions.ca_on.capabilities
-import tax_calculator.registrations
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on.capabilities
+import tax_engine.registrations
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     DuplicateArtifactError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca_on.capabilities.coop_education_credit import (
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca_on.capabilities.coop_education_credit import (
     CoopEducationCredit,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     COOP_EDUCATION_CREDIT,
     COOP_EDUCATION_PLACEMENT_EXPENDITURES,
     COOP_EDUCATION_PLACEMENTS,
     COOP_EDUCATION_REMAINING_SHARE,
 )
-from tax_calculator.jurisdictions.ca_on.trace import PlacementCreditLine
+from tax_engine.jurisdictions.ca_on.trace import PlacementCreditLine
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -111,9 +111,7 @@ def credit_of(
 
 
 def test_is_registered_as_ca_on_coop_education_credit() -> None:
-    assert (
-        tax_calculator.registrations.CORE_PACKAGES
-    )  # importing registrations imports the packages
+    assert tax_engine.registrations.CORE_PACKAGES  # importing registrations imports the packages
 
     registered = CapabilityRegistry.shared().get("ca-on/coop_education_credit")
 
@@ -121,9 +119,9 @@ def test_is_registered_as_ca_on_coop_education_credit() -> None:
 
 
 def test_its_package_declares_the_ca_on_namespace_and_exports_the_module() -> None:
-    package = tax_calculator.jurisdictions.ca_on.capabilities
+    package = tax_engine.jurisdictions.ca_on.capabilities
 
-    assert package.NAMESPACE == tax_calculator.jurisdictions.ca_on.NAMESPACE == "ca-on"
+    assert package.NAMESPACE == tax_engine.jurisdictions.ca_on.NAMESPACE == "ca-on"
     assert "coop_education_credit" in package.__all__
     assert package.coop_education_credit.CoopEducationCredit is CoopEducationCredit
 

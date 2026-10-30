@@ -13,16 +13,16 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, Money
-from tax_calculator.domain.capability import Capability, CapabilityResult
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
+from tax_engine.domain.capability import Capability, CapabilityResult
+from tax_engine.domain.errors import (
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
     MissingArtifactError,
 )
-from tax_calculator.domain.trace import TraceLine
-from tax_calculator.domain.worksheet import Worksheet
+from tax_engine.domain.trace import TraceLine
+from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
 A = ArtifactKind("ex/a", Decimal)
@@ -382,7 +382,7 @@ def test_the_trap_is_off_again_after_apply_so_other_code_is_not_trapped() -> Non
 
 
 def test_a_capability_that_rounds_through_a_rounding_rule_is_not_trapped() -> None:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     class Rounded(Multiply):
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:

@@ -2,17 +2,17 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.logging_tax_credit import LoggingTaxCredit
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.logging_tax_credit import LoggingTaxCredit
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_ALTERNATIVE_MINIMUM_TAX_PAYABLE,
     AMT_FEDERAL_TAX_PAYABLE_UNDER_MINIMUM_TAX,
     AMT_PART_5_LINE_11_IS_POSITIVE,
@@ -60,7 +60,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     SUPPORT_PAYMENTS_DEDUCTION_CHECKED,
     TAXABLE_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
+from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
 
 INPUTS = frozenset(
     {

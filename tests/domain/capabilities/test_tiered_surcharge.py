@@ -17,26 +17,26 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.domain.capabilities as core
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.tiered_surcharge import TieredSurcharge
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import (
+import tax_engine.domain.capabilities as core
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.parameters.surcharge_tiers import (
+from tax_engine.domain.parameters.surcharge_tiers import (
     SURCHARGE_TIERS,
     SurchargeTier,
     SurchargeTiers,
 )
-from tax_calculator.domain.trace import SurchargeTierLine
+from tax_engine.domain.trace import SurchargeTierLine
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

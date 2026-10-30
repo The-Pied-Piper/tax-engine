@@ -7,10 +7,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.errors import InvalidRecordError, NegativeArtifactError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     CREDITS_AGAINST_FEDERAL_TAX,
     FEDERAL_BUSINESS_FOREIGN_TAX_CREDIT,
     FEDERAL_FOREIGN_TAX_CREDIT_BEFORE_LIMIT,

@@ -7,9 +7,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     ADOPTION_CHILD_EXPENSES,
     ADOPTION_CREDIT,
     ADOPTION_EXPENSE_CHILDREN,

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.registrations import JURISDICTIONS
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.registrations import JURISDICTIONS
 
 
 @pytest.fixture

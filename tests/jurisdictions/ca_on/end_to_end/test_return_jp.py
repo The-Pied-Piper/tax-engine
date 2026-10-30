@@ -16,9 +16,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import ValidationError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import ValidationError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_FOREIGN_NON_BUSINESS_TAX_PAID,
     AMT_FOREIGN_NON_BUSINESS_TAX_PAID_BEFORE_EXCESS,
     AMT_PART_7_FOREIGN_TAXES_PAID,
@@ -29,7 +29,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     FOREIGN_TAX_CREDIT_SHEETS,
     NET_INCOME_BEFORE_ADJUSTMENTS,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 # (tax paid, net foreign non-business income, the four business figures, then the tax paid on

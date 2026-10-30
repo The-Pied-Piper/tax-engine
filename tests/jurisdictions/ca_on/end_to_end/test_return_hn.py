@@ -13,8 +13,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_LAND_ADDITIONS,
     FARM_LAND_DISPOSITIONS,
     FARM_NET_INCOME_AFTER_ADJUSTMENTS,

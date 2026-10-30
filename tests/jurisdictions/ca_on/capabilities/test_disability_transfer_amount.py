@@ -36,36 +36,36 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca_on.capabilities as ca_on_capabilities
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import (
+import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.disability_transfer_amount import (
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.disability_transfer_amount import (
     DisabilityTransferAmount,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_CARE_EXPENSES,
     DEPENDANT_NET_INCOME,
     DEPENDANT_TAXABLE_INCOME,
     DEPENDANT_UNDER_18,
 )
-from tax_calculator.jurisdictions.ca.trace import DisabilityTransferLine
-from tax_calculator.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
+from tax_engine.jurisdictions.ca.trace import DisabilityTransferLine
+from tax_engine.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
     OntarioDisabilityTransferAmount,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     CAREGIVER_AMOUNT,
     DEPENDANT_ON428_LINE_28,
     DISABILITY_DEPENDANTS,

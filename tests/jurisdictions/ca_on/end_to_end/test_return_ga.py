@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_BASE_CONTRIBUTIONS_ON_RETURN,
     CPP_BASE_CONTRIBUTIONS_ON_SELF_EMPLOYMENT_AND_OTHER_EARNINGS,
     CPP_DEDUCTION_ON_SELF_EMPLOYMENT_AND_OTHER_EARNINGS,
@@ -96,7 +96,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import ONTARIO_TAX
+from tax_engine.jurisdictions.ca_on.catalog import ONTARIO_TAX
 from tests.jurisdictions.ca_on.end_to_end.support import D, assert_values, run
 
 

@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.jurisdictions.ca.catalog import (
     DIVIDEND_TAX_CREDIT,
     DIVIDENDS_AMOUNT_A,
     TAXABLE_DIVIDENDS,
     TAXABLE_DIVIDENDS_OTHER_THAN_ELIGIBLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     ONTARIO_SURTAX,
     ONTARIO_TAX_AFTER_REDUCTION,
     ONTARIO_TAX_REDUCTION,

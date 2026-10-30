@@ -22,14 +22,14 @@ The entries of the return are listed in `manifest_families/other_employment_expe
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     NET_INCOME_SIGNED,
     T777_APPRENTICE_MECHANIC_TOOLS_CARRIED_FORWARD_OUT,
     T777_APPRENTICE_MECHANIC_TOOLS_MAXIMUM_ALLOWED,

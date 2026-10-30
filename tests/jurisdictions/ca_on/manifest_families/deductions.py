@@ -2,35 +2,35 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.amount_by_count import AmountForCount
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.contribution_tier import TieredContribution
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.greater_of import GreaterOf
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
-from tax_calculator.jurisdictions.ca.capabilities.chart_a_row_c_total import ChartARowCTotal
-from tax_calculator.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartBZoneATotal
-from tax_calculator.jurisdictions.ca.capabilities.chart_b_zone_b_total import ChartBZoneBTotal
-from tax_calculator.jurisdictions.ca.capabilities.count_at_most import CountAtMost
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
+from tax_engine.domain.capabilities.amount_by_count import AmountForCount
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.contribution_tier import TieredContribution
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.greater_of import GreaterOf
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
+from tax_engine.jurisdictions.ca.capabilities.chart_a_row_c_total import ChartARowCTotal
+from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartBZoneATotal
+from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_b_total import ChartBZoneBTotal
+from tax_engine.jurisdictions.ca.capabilities.count_at_most import CountAtMost
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
     EiExcludedSlipsNetIncome,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
     AMT_DEFERRED_PROFIT_SHARING_PLAN_DEDUCTION,
     AMT_PROSPECTOR_OR_GRUBSTAKER_DEDUCTION,

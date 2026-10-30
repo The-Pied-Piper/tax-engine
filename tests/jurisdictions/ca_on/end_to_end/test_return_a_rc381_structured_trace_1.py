@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.trace import (
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.trace import (
     RateAppliedLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_T4_BASE_AND_FIRST_ADDITIONAL_CONTRIBUTIONS,
     RC381_PART_3_LINE_20,
     RC381_PART_3_LINE_40,

@@ -7,11 +7,11 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_DEDUCTIONS_TOTAL,
     CLERGY_EMPLOYER_RESIDENCE_BENEFIT_CHECKED,
     CLERGY_OTHER_ACCOMMODATION_CLAIMS_CHECKED,

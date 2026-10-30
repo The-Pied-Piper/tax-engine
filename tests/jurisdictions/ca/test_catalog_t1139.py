@@ -1,5 +1,5 @@
 """Registered kinds of Form T1139 "Reconciliation of 2025 Business Income for Tax Purposes", in the
-federal catalog family `t1139` (`tax_calculator/jurisdictions/ca/catalog/t1139.py`).
+federal catalog family `t1139` (`tax_engine/jurisdictions/ca/catalog/t1139.py`).
 
 The row form `ca/t1139` is the form for one business (the record list `ca/t1139_businesses`); the
 summary form `ca/t1139_return` runs once and gives the net income of each of the lines 13500, 13700,
@@ -14,10 +14,10 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     T1139_A_STATEMENTS,
     T1139_AMOUNT_2A,
     T1139_AMOUNT_2B,
@@ -309,7 +309,7 @@ def squashed(text: str) -> str:
 def docstring_of(identifier: str) -> str:
     """The string right after the declaration of the kind `identifier` in a catalog module (its
     name is a constant of the declaration's call, which may take the catalog first)."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

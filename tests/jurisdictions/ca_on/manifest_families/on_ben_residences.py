@@ -10,11 +10,11 @@ and exports them with the amount; rows are not added. The return reads nothing o
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca_on.catalog import (
     ON_BEN_MONTHS_IN_YEAR,
     ON_BEN_RESIDENCE_AMOUNT,
     ON_BEN_RESIDENCE_LONG_TERM_CARE,

@@ -21,18 +21,18 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionList,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 T657_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf"
 YEARS = (2021, 2022, 2023)
 # Charts 2016 to 2020: the amount read as Part 1's amount C (2016) or E (2017 to 2020), and the

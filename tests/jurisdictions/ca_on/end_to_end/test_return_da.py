@@ -7,10 +7,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InvalidRecordError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InvalidRecordError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_DIEP_PROCEEDS,
     CCA_PROCEEDS,
@@ -37,7 +37,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import ONTARIO_BASIC_TAX
+from tax_engine.jurisdictions.ca_on.catalog import ONTARIO_BASIC_TAX
 from tests.jurisdictions.ca_on.end_to_end.support import D, FarmCcaRow, run
 
 # Return DA's T2042, Return BX's farm with the wheat raised to 62540 (a chosen figure, so that

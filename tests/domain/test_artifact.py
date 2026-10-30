@@ -15,14 +15,14 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_calculator.domain.artifact import (
+from tax_engine.domain.artifact import (
     Artifact,
     ArtifactCatalog,
     ArtifactKind,
     ArtifactRegistry,
     Money,
 )
-from tax_calculator.domain.errors import (
+from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
     InvalidAmountError,
@@ -30,7 +30,7 @@ from tax_calculator.domain.errors import (
     NegativeArtifactError,
     UnknownRegistrationError,
 )
-from tax_calculator.domain.registry import Namespace, Registry
+from tax_engine.domain.registry import Namespace, Registry
 
 D = Decimal
 BASE = ArtifactKind("ex/taxable_base", Decimal)

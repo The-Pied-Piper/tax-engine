@@ -2,21 +2,21 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.greater_of import GreaterOf
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.capabilities.tiered_surcharge import TieredSurcharge
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.greater_of import GreaterOf
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.catalog import (
     CHILD_CARE_EXPENSES,
     DONATIONS_AND_GIFTS_TOTAL,
     REFUND,
@@ -27,18 +27,18 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOSI_ADJUSTED_NET_INCOME_NOT_BELOW_ZERO,
     TOTAL_SPLIT_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
-from tax_calculator.jurisdictions.ca_on.capabilities.coop_education_credit import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
+from tax_engine.jurisdictions.ca_on.capabilities.coop_education_credit import (
     CoopEducationCredit,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.flow_through_share_expenses import (
+from tax_engine.jurisdictions.ca_on.capabilities.flow_through_share_expenses import (
     FlowThroughShareExpenses,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.quotient import Quotient
-from tax_calculator.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
-from tax_calculator.jurisdictions.ca_on.capabilities.record_count import RecordCount
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.capabilities.quotient import Quotient
+from tax_engine.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
+from tax_engine.jurisdictions.ca_on.capabilities.record_count import RecordCount
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_ADJUSTED_INCOME,
     CARE_CREDIT,
     CARE_CREDIT_PERCENTAGE,

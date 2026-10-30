@@ -9,10 +9,10 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_paid_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_paid_total import (
     ForeignBusinessTaxPaidTotal,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     FOREIGN_BUSINESS_TAX_PAID,
     FOREIGN_BUSINESS_UNUSED_TAX_CREDITS,
 )

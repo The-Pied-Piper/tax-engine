@@ -23,10 +23,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_ADJUSTED_GROSS_SALES,
     BUSINESS_ADVERTISING,
     BUSINESS_BAD_DEBTS,

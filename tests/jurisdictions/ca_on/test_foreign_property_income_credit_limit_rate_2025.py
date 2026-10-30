@@ -15,14 +15,14 @@ from __future__ import annotations
 import re
 from decimal import Decimal
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.registry import Namespace
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.registry import Namespace
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 LIMIT_RATE = "ca/foreign_property_income_credit_limit_rate"
 T2209_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf"
@@ -30,7 +30,7 @@ T2209_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209
 
 def dataset_header(family: str) -> str:
     """The comment lines above the dataset's first key, squashed."""
-    root = tax_calculator.registrations.JURISDICTIONS.roots()[Namespace("ca")]
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca")]
     name = family.removeprefix("ca/")
     lines = (root / "parameters" / name / "2025.yaml").read_text().splitlines()
     first_key = next(i for i, line in enumerate(lines) if line[:1] != "#")

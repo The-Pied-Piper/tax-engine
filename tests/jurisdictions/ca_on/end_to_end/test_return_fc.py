@@ -11,8 +11,8 @@ checked in the YAML only.
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     INCOME_SUPPORT_BENEFITS,
     MEDICAL_SUPPLEMENT_COLUMN_1_LINE_3,
     MEDICAL_SUPPLEMENT_COLUMN_1_LINE_5,
@@ -37,7 +37,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     UCCB_AND_RDSP_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     LIFT_ADJUSTED_NET_INCOME,
     LIFT_CREDIT,
     LIFT_CREDIT_BEFORE_MAXIMUM,

@@ -15,14 +15,14 @@ from pathlib import Path
 import pytest
 import yaml
 
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Manifest
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Manifest
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_CARE_EXPENSES,
     DEPENDANT_CREDIT_AMOUNTS,
     DEPENDANT_NET_INCOME,
@@ -44,11 +44,11 @@ from tax_calculator.jurisdictions.ca.catalog import (
     RESIDENCE_YEARS_OWNED_1972_TO_1981,
     RESIDENCE_YEARS_OWNED_AFTER_1981,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     CLAIMED_AS_ELIGIBLE_DEPENDANT,
     DEPENDANT_ON428_LINE_28,
 )
-from tax_calculator.registrations import JURISDICTIONS
+from tax_engine.registrations import JURISDICTIONS
 from tests.application.services.test_tax_computation_forms import (
     COUNT_DOUBLED,
     artifact_registry,

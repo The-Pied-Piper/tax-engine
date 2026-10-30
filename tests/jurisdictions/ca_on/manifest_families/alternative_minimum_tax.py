@@ -2,37 +2,37 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.greater_of import GreaterOf
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
-from tax_calculator.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.count_refused_by_conditions import (
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.greater_of import GreaterOf
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
     CountRefusedByConditions,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_paid_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_paid_total import (
     ForeignBusinessTaxPaidTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_net_non_business_income_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_net_non_business_income_total import (
     ForeignNetNonBusinessIncomeTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_non_business_tax_paid_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_paid_total import (
     ForeignNonBusinessTaxPaidTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     ADDITIONAL_DEDUCTIONS_TOTAL,
     AMT_ADDITIONAL_TAXES_FOR_CARRYOVER,
     AMT_ADJUSTED_INCOME_WITH_GAINS,
@@ -250,7 +250,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_SPLIT_INCOME,
     UNION_DUES,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import NOT_RESIDENT_OF_ONTARIO_AT_YEAR_END_CHECKED
+from tax_engine.jurisdictions.ca_on.catalog import NOT_RESIDENT_OF_ONTARIO_AT_YEAR_END_CHECKED
 
 INPUTS = frozenset(
     {

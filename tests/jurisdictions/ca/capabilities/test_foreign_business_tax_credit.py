@@ -33,48 +33,48 @@ from typing import Any, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.capability import Capability, CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
     NotFoundError,
     UnknownRegistrationError,
 )
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_4 import (
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_4 import (
     ForeignBusinessTaxCreditLine4,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_5 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_5 import (
     ForeignBusinessTaxCreditLine5,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_7 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_7 import (
     ForeignBusinessTaxCreditLine7,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_8 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_8 import (
     ForeignBusinessTaxCreditLine8,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_10 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_10 import (
     ForeignBusinessTaxCreditLine10,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_11 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_11 import (
     ForeignBusinessTaxCreditLine11,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_rows import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_rows import (
     ForeignBusinessTaxCreditRows,
 )
-from tax_calculator.jurisdictions.ca.trace import (
+from tax_engine.jurisdictions.ca.trace import (
     ForeignBusinessLine4,
     ForeignBusinessLine5,
     ForeignBusinessLine7,

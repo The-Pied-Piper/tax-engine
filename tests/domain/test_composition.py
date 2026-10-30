@@ -18,14 +18,14 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, Money
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capability import Capability, CapabilityRegistry, CapabilityResult
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.errors import (
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
@@ -34,12 +34,12 @@ from tax_calculator.domain.errors import (
     InvalidCompositionError,
     NegativeArtifactError,
 )
-from tax_calculator.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.domain.trace import BracketColumnLine, RoundedTotalLine, TraceLine
-from tax_calculator.domain.worksheet import Worksheet
+from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.trace import BracketColumnLine, RoundedTotalLine, TraceLine
+from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
 A = ArtifactKind("ex/a", Decimal)
@@ -1048,7 +1048,7 @@ def test_compute_leaves_the_callers_decimal_context_untrapped() -> None:
 
 
 def test_a_rounding_rule_still_rounds_inside_compute() -> None:
-    from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     class RoundedLink(Link):
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:

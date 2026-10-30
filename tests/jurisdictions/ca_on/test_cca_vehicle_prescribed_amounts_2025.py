@@ -22,14 +22,14 @@ from pathlib import Path
 
 import pytest
 
-import tax_calculator.jurisdictions.ca
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
+import tax_engine.jurisdictions.ca
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
 from tests.jurisdictions.ca_on.end_to_end.support import D
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/cca_vehicle_prescribed_amounts"
 
@@ -85,7 +85,7 @@ def test_2025_the_dataset_cites_the_guide() -> None:
 
 def test_2025_the_dataset_file_quotes_the_guide() -> None:
     path = (
-        Path(tax_calculator.jurisdictions.ca.__file__).parent
+        Path(tax_engine.jurisdictions.ca.__file__).parent
         / "parameters"
         / FAMILY.removeprefix("ca/")
     )

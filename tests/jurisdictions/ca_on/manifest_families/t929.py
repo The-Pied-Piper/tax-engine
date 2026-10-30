@@ -16,17 +16,17 @@ of $375 and the maximum of $15,000, are `ca/t929_weekly_amount` and `ca/t929_max
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     DISABILITY_SUPPORTS_DEDUCTION,
     EMPLOYMENT_INCOME,
     FHSA_MAXIMUM_PARTICIPATION_PERIOD_ENDED,

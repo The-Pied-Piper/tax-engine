@@ -20,19 +20,19 @@ from typing import Any, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     DomainError,
     InvalidCapabilityError,
     MissingArtifactError,
     ValidationError,
 )
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.qbt_before_qcc import QbtBeforeQcc
-from tax_calculator.jurisdictions.ca.trace import QbtBeforeQccLine
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.qbt_before_qcc import QbtBeforeQcc
+from tax_engine.jurisdictions.ca.trace import QbtBeforeQccLine
 
 IS_QBT = ArtifactKind("ex/election_is_qbt", int)
 ANSWER = ArtifactKind("ex/earlier_answer", int)

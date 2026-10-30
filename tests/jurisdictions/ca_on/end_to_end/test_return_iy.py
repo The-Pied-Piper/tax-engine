@@ -9,9 +9,9 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError, InputBelowBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError, InputBelowBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CANADIAN_TUITION_FEES,
     CANADIAN_TUITION_FEES_CHECKED,
     REFUND_OR_BALANCE_OWING,

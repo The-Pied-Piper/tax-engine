@@ -10,16 +10,16 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     PENSION_INCOME_CREDIT,
     PENSION_WORKSHEET_AMOUNT,
     T1032_ELECTION_APPLIES,
     T1032_LINE_31,
     T1032_LINE_31400_TRANSFERRING,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, service, starting
 
 

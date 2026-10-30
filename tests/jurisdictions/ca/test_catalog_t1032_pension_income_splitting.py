@@ -16,9 +16,9 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     T1032_ELECTION_APPLIES,
     T1032_ELIGIBLE_PENSION_INCOME,
     T1032_FILER_IS_TRANSFERRING_SPOUSE,
@@ -209,7 +209,7 @@ def squashed(text: str) -> str:
 def docstring_of(identifier: str) -> str:
     """The string right after the declaration of the kind `identifier` in a catalog module (its
     name is a constant of the declaration's call, which may take the catalog first)."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

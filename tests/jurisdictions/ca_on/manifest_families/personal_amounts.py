@@ -2,30 +2,30 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.tapered_amount import TaperedAmount
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.caregiver_amount import CaregiverAmount
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.count_refused_by_conditions import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.caregiver_amount import CaregiverAmount
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
     CountRefusedByConditions,
 )
-from tax_calculator.jurisdictions.ca.capabilities.disability_transfer_amount import (
+from tax_engine.jurisdictions.ca.capabilities.disability_transfer_amount import (
     DisabilityTransferAmount,
 )
-from tax_calculator.jurisdictions.ca.capabilities.other_dependants_medical import (
+from tax_engine.jurisdictions.ca.capabilities.other_dependants_medical import (
     OtherDependantsMedical,
 )
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     AGE_AMOUNT,
     AGE_AMOUNT_BEFORE_COUNT,
     AGE_INCOME_OVER_THRESHOLD,

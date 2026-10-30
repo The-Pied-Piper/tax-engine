@@ -41,10 +41,10 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.jurisdictions.ca.catalog import (
     QPP_MONTHS,
     RC381_CPP_BASE_CONTRIBUTIONS_ON_RETURN,
     RC381_CPP_BASE_CONTRIBUTIONS_ON_SELF_EMPLOYMENT_AND_OTHER_EARNINGS,
@@ -1063,7 +1063,7 @@ def squashed(text: str) -> str:
 
 def docstring_of(name: str) -> str:
     """The string right after `NAME = CATALOG.declare("<name>", ...)` in a catalog module."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

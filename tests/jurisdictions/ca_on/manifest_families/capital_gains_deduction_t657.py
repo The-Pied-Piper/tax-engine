@@ -8,19 +8,19 @@ out of this family.
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
-from tax_calculator.jurisdictions.ca.capabilities.chart_1_column_g_total import Chart1ColumnGTotal
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
+from tax_engine.jurisdictions.ca.capabilities.chart_1_column_g_total import Chart1ColumnGTotal
+from tax_engine.jurisdictions.ca.catalog import (
     ABIL_AFTER_QBT_REDUCTION,
     ABIL_CLAIMED_AFTER_1984_AND_BEFORE_2025,
     ADJUSTED_NET_CAPITAL_LOSSES_OF_OTHER_YEARS,

@@ -18,22 +18,22 @@ from pathlib import Path
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
 # lists the packages; build_tax_computation registers their catalogs
-import tax_calculator.registrations
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.form import FormComposition
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Form, Manifest
-from tax_calculator.domain.record_list import RecordListKind
+import tax_engine.registrations
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.form import FormComposition
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Form, Manifest
+from tax_engine.domain.record_list import RecordListKind
 from tests.jurisdictions.ca_on.manifest_families import capital_gains_deduction_t657, t2048
 from tests.jurisdictions.ca_on.manifest_families import t936 as family
 
 CA_ON = JurisdictionCode("CA-ON")
-MANIFESTS = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 INPUTS_PART = MANIFESTS / "01o_t936_inputs.yaml"
 FORM_PART = MANIFESTS / "06j_t936.yaml"
 COPIES_PART = MANIFESTS / "06j_t936_copies.yaml"
@@ -52,7 +52,7 @@ T657_LINES = {
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
         .get_jurisdiction(CA_ON)
         .manifests
     )

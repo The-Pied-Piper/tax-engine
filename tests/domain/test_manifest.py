@@ -16,9 +16,9 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.errors import InvalidManifestError
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.errors import InvalidManifestError
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 
 
 def selection() -> CapabilitySelection:

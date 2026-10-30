@@ -2,43 +2,43 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_4 import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_4 import (
     ForeignBusinessTaxCreditLine4,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_5 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_5 import (
     ForeignBusinessTaxCreditLine5,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_7 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_7 import (
     ForeignBusinessTaxCreditLine7,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_8 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_8 import (
     ForeignBusinessTaxCreditLine8,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_10 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_10 import (
     ForeignBusinessTaxCreditLine10,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_11 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_11 import (
     ForeignBusinessTaxCreditLine11,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_non_business_tax_credit import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_credit import (
     ForeignNonBusinessTaxCredit,
 )
-from tax_calculator.jurisdictions.ca.capabilities.lesser_of_when_positive import (
+from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
     LesserOfWhenPositive,
 )
-from tax_calculator.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
+from tax_engine.jurisdictions.ca.catalog import (
     ACWB_PAID_TO_YOU,
     ADVANCED_CANADA_WORKERS_BENEFIT,
     BASIC_FEDERAL_TAX_WITH_DIVIDEND_CREDIT,
@@ -128,17 +128,17 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
-from tax_calculator.jurisdictions.ca_on.capabilities.coop_education_credit import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
+from tax_engine.jurisdictions.ca_on.capabilities.coop_education_credit import (
     CoopEducationCredit,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.flow_through_share_expenses import (
+from tax_engine.jurisdictions.ca_on.capabilities.flow_through_share_expenses import (
     FlowThroughShareExpenses,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.quotient import Quotient
-from tax_calculator.jurisdictions.ca_on.capabilities.record_count import RecordCount
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.capabilities.quotient import Quotient
+from tax_engine.jurisdictions.ca_on.capabilities.record_count import RecordCount
+from tax_engine.jurisdictions.ca_on.catalog import (
     CLAIMS_SENIORS_CARE_CREDIT,
     COOP_EDUCATION_CREDIT,
     COOP_EDUCATION_FULL_SHARE,

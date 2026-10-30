@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import FormInstanceLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import NET_RENTAL_INCOME, TOTAL_INCOME
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import FormInstanceLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import NET_RENTAL_INCOME, TOTAL_INCOME
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, compute, run, service
 
 # T776 line 8230 "Other income": the first rental operation has 12,000 of it and no expenses, so its

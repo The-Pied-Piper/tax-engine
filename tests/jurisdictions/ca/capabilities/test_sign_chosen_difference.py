@@ -24,17 +24,17 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.trace import SignChosenDifferenceLine
-from tax_calculator.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.trace import SignChosenDifferenceLine
+from tax_engine.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
 
 D = Decimal
 

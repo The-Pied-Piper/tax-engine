@@ -6,9 +6,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import NoAmountForCountError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import NoAmountForCountError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     NET_FEDERAL_TAX,
     RC359_EMPLOYMENT_INCOME,
     RC359_EPSP_CONTRIBUTIONS,

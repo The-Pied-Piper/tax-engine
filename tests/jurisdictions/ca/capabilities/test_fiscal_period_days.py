@@ -31,18 +31,18 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.parameters.class_rates import CLASS_RATES, ClassRates
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
-from tax_calculator.jurisdictions.ca.trace import FiscalPeriodDaysLine
+from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRates
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
+from tax_engine.jurisdictions.ca.trace import FiscalPeriodDaysLine
 from tests.jurisdictions.ca.capabilities.cca_table import class_rates
 
 ENTERED = ArtifactKind("ex/fiscal_period_days_entered", int)

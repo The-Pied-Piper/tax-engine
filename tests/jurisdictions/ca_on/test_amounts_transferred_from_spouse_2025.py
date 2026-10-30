@@ -29,21 +29,21 @@ from decimal import Decimal
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
-from tax_calculator.domain.registry import Namespace
-from tax_calculator.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
+from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
     AmountOrDividedByRate,
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 INCOME_LIMIT = "ca/spouse_transfer_income_limit"
 AGE_MAXIMUM = "ca/spouse_return_age_amount_maximum"
 PENSION_MAXIMUM = "ca/spouse_return_pension_income_amount_maximum"
@@ -105,7 +105,7 @@ def test_line_7_is_their_taxable_income_or_their_tax_divided_by_14_5_percent(
 
 def dataset_header(family: str) -> str:
     """The comment lines above the dataset's first key, whitespace squashed."""
-    root = tax_calculator.registrations.JURISDICTIONS.roots()[Namespace("ca")]
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca")]
     lines = (
         (root / "parameters" / family.removeprefix("ca/") / "2025.yaml").read_text().splitlines()
     )

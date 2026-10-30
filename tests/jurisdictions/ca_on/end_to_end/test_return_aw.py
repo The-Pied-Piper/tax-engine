@@ -8,18 +8,18 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.multiple_over import MultipleOver
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine, SubtractedLine, SumLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.multiple_over import MultipleOver
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine, SubtractedLine, SumLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_ALTERNATIVE_MINIMUM_TAX_PAYABLE,
     AMT_SPECIAL_FOREIGN_TAX_CREDIT,
     BASIC_FEDERAL_TAX_WITH_DIVIDEND_CREDIT,
@@ -62,7 +62,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_PAYABLE,
     TOTAL_SPLIT_INCOME,
 )
-from tax_calculator.jurisdictions.ca.trace import (
+from tax_engine.jurisdictions.ca.trace import (
     ForeignBusinessLine4,
     ForeignBusinessLine5,
     ForeignBusinessLine7,
@@ -72,11 +72,11 @@ from tax_calculator.jurisdictions.ca.trace import (
     ForeignTaxCreditLine,
     PooledForeignTaxCreditLine,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.capabilities.provincial_foreign_tax_credit import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.capabilities.provincial_foreign_tax_credit import (
     ProvincialForeignTaxCredit,
 )
-from tax_calculator.jurisdictions.ca_on.trace import (
+from tax_engine.jurisdictions.ca_on.trace import (
     PooledProvincialForeignTaxCreditLine,
     ProvincialForeignTaxCreditLine,
 )

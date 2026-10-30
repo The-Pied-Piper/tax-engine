@@ -13,9 +13,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InputOutOfRangeError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GAINS_AFTER_DEFERRAL,
     FLIPPED_PROPERTY,
     FLIPPED_PROPERTY_LIFE_EVENT_WITHOUT_YES_CHECKED,

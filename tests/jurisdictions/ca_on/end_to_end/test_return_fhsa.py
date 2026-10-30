@@ -6,9 +6,9 @@ import re
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.jurisdictions.ca.catalog import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
     FHSA_ANNUAL_AMOUNT,
     FHSA_ANNUAL_AMOUNT_AFTER_TRANSFERS,

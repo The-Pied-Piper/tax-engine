@@ -24,20 +24,20 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, InvalidRecordError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.cca_part_a_checks import CcaPartAChecks
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.cca_part_a_checks import CcaPartAChecks
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     T777_CLASS_8_CHECKED_ROWS,
     T777_CLASS_8_ROWS,
     T777_VEHICLE_CHECKED_ROWS,
     T777_VEHICLE_ROWS,
 )
-from tax_calculator.jurisdictions.ca.trace import CcaPartACheckLine
+from tax_engine.jurisdictions.ca.trace import CcaPartACheckLine
 
 D = Decimal
 CLASSES: RecordListKind = T777_CLASS_8_ROWS

@@ -16,8 +16,8 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     FISH_BOAT_MAINLY_PERSONAL,
     FISH_BOAT_MAINLY_PERSONAL_CHECKED,
     FISH_EXPENSES_LIMITED_TO_CATCH_INCOME,

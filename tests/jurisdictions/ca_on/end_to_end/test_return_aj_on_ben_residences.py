@@ -13,8 +13,8 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.jurisdictions.ca_on.catalog import (
     NET_REFUND,
     ON_BEN_RESIDENCE_AMOUNT,
     ON_BEN_RESIDENCE_LONG_TERM_CARE_CHECKED,

@@ -6,10 +6,10 @@ import re
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GIFT_GAINS_DEDUCTION,
     CAPITAL_GIFT_GAINS_DEDUCTION_CHECKED,
     CAPITAL_GIFTS_LIMIT_ADDITION,
@@ -48,8 +48,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_CHARITABLE_DONATIONS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     COMMUNITY_FOOD_PROGRAM_CREDIT,
     COMMUNITY_FOOD_PROGRAM_DONATIONS,
     COMMUNITY_FOOD_PROGRAM_DONATIONS_APPLIED,

@@ -13,7 +13,7 @@ amount, and a carve-out above it, which leaves line 13 negative.
 
 from __future__ import annotations
 
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     QBT_CHART_A_NET_INVESTMENT_LOSS,
     QBT_INVESTMENT_INCOME,
     QBT_PARTNERSHIP_INCOME_OTHER_THAN_GAINS,

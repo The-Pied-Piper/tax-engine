@@ -12,10 +12,10 @@ from typing import cast
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.trace.base import TraceLine
-from tax_calculator.jurisdictions.ca.catalog import PRINCIPAL_RESIDENCE_DESIGNATION_BOX
-from tax_calculator.jurisdictions.ca.trace import PrincipalResidenceDesignationBox
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.trace.base import TraceLine
+from tax_engine.jurisdictions.ca.catalog import PRINCIPAL_RESIDENCE_DESIGNATION_BOX
+from tax_engine.jurisdictions.ca.trace import PrincipalResidenceDesignationBox
 
 
 def render(line: TraceLine) -> str:

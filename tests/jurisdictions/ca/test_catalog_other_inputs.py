@@ -6,8 +6,8 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     AGED_18_OR_OLDER_AT_END_OF_2025,
     AGED_18_OR_OLDER_AT_END_OF_2025_CHECKED,
     OTHER_EMPLOYMENT_EXPENSES,

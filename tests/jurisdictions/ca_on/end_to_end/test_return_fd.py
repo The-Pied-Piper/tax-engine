@@ -12,8 +12,8 @@ the hand figure of each line; the tax figures are the engine's and are checked i
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     DEDUCTIONS_FROM_NET_INCOME,
     DEDUCTIONS_FROM_TOTAL_INCOME,
     INCOME_SUPPORT_BENEFITS,
@@ -44,7 +44,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     UCCB_AND_RDSP_INCOME_REPAYMENTS,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import LIFT_SPOUSE_NET_INCOME_AND_REPAYMENTS
+from tax_engine.jurisdictions.ca_on.catalog import LIFT_SPOUSE_NET_INCOME_AND_REPAYMENTS
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 

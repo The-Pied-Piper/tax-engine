@@ -34,17 +34,17 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.parameters.class_rates import CLASS_RATES
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim_prorated import CcaClaimProrated
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc_prorated import ClosingUccProrated
-from tax_calculator.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.registrations
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.parameters.class_rates import CLASS_RATES
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.cca_claim_prorated import CcaClaimProrated
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc_prorated import ClosingUccProrated
+from tax_engine.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_UCC_AT_END,
     FISH_CCA_CLAIM,
@@ -55,12 +55,12 @@ from tax_calculator.jurisdictions.ca.catalog import (
     FISH_IMMEDIATE_EXPENSING_LIMIT,
     FISH_IMMEDIATE_EXPENSING_LIMIT_BEFORE_PRORATION,
 )
-from tax_calculator.jurisdictions.ca.trace import FiscalPeriodDaysLine
+from tax_engine.jurisdictions.ca.trace import FiscalPeriodDaysLine
 from tests.jurisdictions.ca.capabilities.cca_table import CLASSES, CLOSING_UCC, classes, row
 from tests.jurisdictions.ca_on.end_to_end.support import run
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 RATES = SOURCE.get("ca/cca_class_rates", 2025, CLASS_RATES)
 
 # Made up for this test and not registered: the days entered, the days of the fiscal period, the

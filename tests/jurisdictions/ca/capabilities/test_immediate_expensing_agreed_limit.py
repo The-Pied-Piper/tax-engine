@@ -41,20 +41,20 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InvalidCapabilityError,
     InvalidRecordError,
     MissingArtifactError,
     ValidationError,
 )
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
     ImmediateExpensingAgreedLimit,
 )
-from tax_calculator.jurisdictions.ca.trace import ImmediateExpensingAgreedLimitLine
+from tax_engine.jurisdictions.ca.trace import ImmediateExpensingAgreedLimitLine
 
 D = Decimal
 

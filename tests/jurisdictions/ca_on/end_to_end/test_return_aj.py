@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     NET_INCOME,
     REFUND_OR_BALANCE_OWING,
     TOTAL_CREDITS,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     APPLIES_FOR_ENERGY_AND_PROPERTY_TAX_CREDIT,
     APPLIES_FOR_NORTHERN_ENERGY_CREDIT,
     APPLIES_FOR_SENIOR_HOMEOWNERS_GRANT,

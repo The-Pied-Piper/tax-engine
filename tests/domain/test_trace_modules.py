@@ -1,9 +1,9 @@
 """Unit tests for the layout of the trace packages: each line class's home module.
 
-The generic line classes live in `tax_calculator.domain.trace`, one module per feature group, each
+The generic line classes live in `tax_engine.domain.trace`, one module per feature group, each
 with an
 `__all__`; its `__init__` re-exports every module's `__all__`, so
-`from tax_calculator.domain.trace import SumLine` keeps working. Every exported line class appears
+`from tax_engine.domain.trace import SumLine` keeps working. Every exported line class appears
 in
 `HOMES`, so a new one is placed deliberately. A jurisdiction's own trace package is checked under
 `tests/jurisdictions/<package>/test_trace_modules.py`.
@@ -16,10 +16,10 @@ import inspect
 
 import pytest
 
-import tax_calculator.domain.trace
-from tax_calculator.domain.trace import TraceLine
+import tax_engine.domain.trace
+from tax_engine.domain.trace import TraceLine
 
-CORE = "tax_calculator.domain.trace"
+CORE = "tax_engine.domain.trace"
 
 CORE_HOMES: dict[str, tuple[str, ...]] = {
     "base": ("TraceLine",),
@@ -150,11 +150,11 @@ def test_core_exports_no_jurisdiction_line() -> None:
     moved = {
         name
         for package in (
-            "tax_calculator.jurisdictions.ca.trace",
-            "tax_calculator.jurisdictions.ca_on.trace",
+            "tax_engine.jurisdictions.ca.trace",
+            "tax_engine.jurisdictions.ca_on.trace",
         )
         for name in importlib.import_module(package).__all__
     }
 
     assert moved
-    assert not moved & set(vars(tax_calculator.domain.trace))
+    assert not moved & set(vars(tax_engine.domain.trace))

@@ -11,10 +11,10 @@ steps of the form.
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.catalog import (
     T1212_LINE_1_OPENING_BALANCE,
     T1212_LINE_2_BENEFITS_NO_LONGER_DEFERRED,
     T1212_LINE_3_CLOSING_BALANCE,

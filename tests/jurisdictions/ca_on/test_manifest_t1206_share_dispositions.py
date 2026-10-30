@@ -18,24 +18,24 @@ from pathlib import Path
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
 # lists the packages; build_tax_computation registers their catalogs
-import tax_calculator.registrations
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.form import FormComposition
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Form, Manifest
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.registrations
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.form import FormComposition
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Form, Manifest
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     T1206_SHARE_RESERVE_ROWS,
 )
 from tests.jurisdictions.ca_on.manifest_families import t1206_share_dispositions as family
 
 CA_ON = JurisdictionCode("CA-ON")
-MANIFESTS = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 INPUTS_PART = MANIFESTS / "01h_t1206_inputs.yaml"
 DISPOSITIONS_PART = MANIFESTS / "03w_t1206_share_dispositions.yaml"
 RESERVE_PART = MANIFESTS / "03x_t1206_share_reserve.yaml"
@@ -46,7 +46,7 @@ AGE_FLAG = "ca/aged_18_or_older_at_end_of_2025"
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
         .get_jurisdiction(CA_ON)
         .manifests
     )

@@ -17,10 +17,10 @@ from types import ModuleType
 
 import pytest
 
-from tax_calculator.adapters.outbound.jurisdiction_packages import JurisdictionPackages
-from tax_calculator.domain.artifact import ArtifactCatalog, ArtifactRegistry
-from tax_calculator.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
-from tax_calculator.domain.registry import Namespace
+from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
+from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
+from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
+from tax_engine.domain.registry import Namespace
 
 _MISSING = object()
 """No `catalog` module at all."""

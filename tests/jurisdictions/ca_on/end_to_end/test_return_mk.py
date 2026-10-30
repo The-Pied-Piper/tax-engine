@@ -17,9 +17,9 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GAIN,
     OTHER_FORECLOSURE_GAIN_OR_LOSS,
     QFFP_GAIN_OR_LOSS,

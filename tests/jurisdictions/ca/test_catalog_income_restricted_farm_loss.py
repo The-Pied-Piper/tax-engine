@@ -14,8 +14,8 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_LOSS_DEDUCTIBLE,
     FARM_NET_INCOME_LINE_9946,
     FARM_NET_LOSS,

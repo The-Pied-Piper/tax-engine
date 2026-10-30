@@ -11,8 +11,8 @@ the tax figures are the engine's and are checked in the YAML only.
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_LOSSES_APPLIED_1985_TO_1987,
     ADJUSTED_NET_CAPITAL_LOSSES_APPLIED,
     CARRYING_CHARGES_INTEREST_EXPENSES_AND_OTHER_EXPENSES,

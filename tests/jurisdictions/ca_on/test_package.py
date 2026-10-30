@@ -5,15 +5,15 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
 
 def test_declares_its_namespace() -> None:
-    assert tax_calculator.jurisdictions.ca_on.NAMESPACE == "ca-on"
+    assert tax_engine.jurisdictions.ca_on.NAMESPACE == "ca-on"
 
 
 def test_holds_its_manifest_and_parameter_data() -> None:
-    directory = Path(tax_calculator.jurisdictions.ca_on.__file__).parent
+    directory = Path(tax_engine.jurisdictions.ca_on.__file__).parent
 
     assert (directory / "manifests" / "v1").is_dir()
     assert not (directory / "manifests" / "v1.yaml").exists()
@@ -23,7 +23,7 @@ def test_holds_its_manifest_and_parameter_data() -> None:
 
 
 def test_no_manifest_part_is_over_30_kb() -> None:
-    manifests = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests"
+    manifests = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests"
 
     parts = [p for p in manifests.rglob("*") if p.is_file()]
 
@@ -32,7 +32,7 @@ def test_no_manifest_part_is_over_30_kb() -> None:
 
 
 def test_manifest_parts_are_named_by_number_letter_and_topic() -> None:
-    manifests = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests"
+    manifests = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests"
     names = [p.name for p in manifests.rglob("*.yaml")]
     pattern = re.compile(r"^(\d\d)([a-z]?)_[a-z0-9_]+\.yaml$")
 

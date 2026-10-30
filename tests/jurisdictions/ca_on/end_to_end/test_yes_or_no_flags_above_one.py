@@ -13,10 +13,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AGED_18_OR_OLDER_AT_END_OF_2025,
     AGED_18_OR_OLDER_AT_END_OF_2025_CHECKED,
     AGED_19_OR_OLDER_AT_END_OF_2025,
@@ -81,7 +81,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     VOLUNTEER_FIREFIGHTERS_CONDITIONS_MET,
     VOLUNTEER_FIREFIGHTERS_CONDITIONS_MET_CHECKED,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     CLAIMS_SENIORS_CARE_CREDIT,
     CLAIMS_SENIORS_CARE_CREDIT_CHECKED,
 )

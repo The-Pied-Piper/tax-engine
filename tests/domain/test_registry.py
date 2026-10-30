@@ -16,13 +16,13 @@ from typing import assert_type
 
 import pytest
 
-from tax_calculator.domain.errors import (
+from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
     InvalidRegistrationError,
     UnknownRegistrationError,
 )
-from tax_calculator.domain.registry import Namespace, Registry
+from tax_engine.domain.registry import Namespace, Registry
 from tests.domain.registration_fixtures.bad_namespace.oddities import Oddity
 from tests.domain.registration_fixtures.nonstring_namespace import oddities as nonstring
 from tests.domain.registration_fixtures.with_namespace.gadgets import Gadget, Sprocket

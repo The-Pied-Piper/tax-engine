@@ -2,17 +2,17 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
+from tax_engine.jurisdictions.ca.catalog import (
     AGED_18_OR_OLDER_AT_END_OF_2025_CHECKED,
     CLERGY_RESIDENCE_DEDUCTION,
     DISABILITY_SUPPORTS_DEDUCTION,
@@ -65,7 +65,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     UNION_DUES,
     WAGE_LOSS_REPLACEMENT_PLAN_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import ONTARIO_CREDITS
+from tax_engine.jurisdictions.ca_on.catalog import ONTARIO_CREDITS
 from tests.jurisdictions.ca_on.manifest_families.t1139 import (
     BUSINESS_PROFIT_ON_RETURN_LINES,
     COMMISSION_PROFIT_ON_RETURN_LINES,

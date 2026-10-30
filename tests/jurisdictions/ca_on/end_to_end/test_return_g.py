@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.jurisdictions.ca.catalog import (
     PROVINCIAL_CREDITS,
     REFUND_OR_BALANCE_OWING,
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_CREDIT,
     FERTILITY_CREDIT,
     FERTILITY_CREDIT_BEFORE_MAXIMUM,

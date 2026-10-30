@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_UCC_AT_END,
     FEDERAL_BASIC_TAX,
@@ -32,7 +32,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import ONTARIO_BASIC_TAX
+from tax_engine.jurisdictions.ca_on.catalog import ONTARIO_BASIC_TAX
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
 # Return GY's T2121, as in `returns/2025_return_gy.yaml`: the five lines no other return sets,

@@ -33,16 +33,16 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, InvalidRecordError
-from tax_calculator.domain.parameters.year_amounts import YEAR_AMOUNTS
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.cca_vehicle_additions_checks import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
+from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_additions_checks import (
     CcaVehicleAdditionsChecks,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_CCA_CLASSES,
     BUSINESS_CCA_CLASSES_CHECKED,
     BUSINESS_VEHICLE_SALES_TAX_RATE,
@@ -50,7 +50,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_UCC_AT_START,
 )
-from tax_calculator.jurisdictions.ca.trace import CcaVehicleAdditionsCheckLine
+from tax_engine.jurisdictions.ca.trace import CcaVehicleAdditionsCheckLine
 from tests.jurisdictions.ca.capabilities.cca_vehicle_proceeds import (
     CcaRow,
     prescribed_amounts,

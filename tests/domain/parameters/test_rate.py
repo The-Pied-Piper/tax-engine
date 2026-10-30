@@ -12,9 +12,9 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidRateError
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.errors import DomainError, InvalidRateError
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
 
 D = Decimal
 

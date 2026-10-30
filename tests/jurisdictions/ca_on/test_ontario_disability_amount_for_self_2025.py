@@ -15,13 +15,13 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 BASE = "ca-on/disability_self_base_amount"
 SUPPLEMENT_MAXIMUM = "ca-on/disability_self_supplement_maximum"
 CARE_THRESHOLD = "ca-on/disability_self_care_threshold"

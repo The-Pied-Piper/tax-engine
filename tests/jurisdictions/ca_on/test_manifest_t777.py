@@ -21,18 +21,18 @@ from pathlib import Path
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
 # lists the packages; build_tax_computation registers their catalogs
-import tax_calculator.registrations
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Form, Manifest
+import tax_engine.registrations
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Form, Manifest
 from tests.jurisdictions.ca_on.manifest_families import t777
 
 CA_ON = JurisdictionCode("CA-ON")
-MANIFESTS = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 PART = MANIFESTS / "03k_t777.yaml"
 INPUTS_PART = MANIFESTS / "01c_t777_inputs.yaml"
 LINES_PART = MANIFESTS / "03q_t777_lines.yaml"
@@ -90,7 +90,7 @@ NEW_LINE_EXPORTS = (
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
         .get_jurisdiction(CA_ON)
         .manifests
     )

@@ -6,13 +6,13 @@ import re
 
 import pytest
 
-from tax_calculator.domain.errors import InputOutOfRangeError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     UNDER_18_AND_AGED_18_OR_OLDER_CHECKED,
     UNDER_18_AND_BORN_IN_1960_OR_EARLIER_CHECKED,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 BORN_REFUSED = (

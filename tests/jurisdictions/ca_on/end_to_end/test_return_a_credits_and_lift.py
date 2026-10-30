@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     CANADA_EMPLOYMENT_AMOUNT,
     CANADA_WORKERS_BENEFIT,
@@ -38,8 +38,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     UNUSED_RRSP_CONTRIBUTIONS_CARRIED_FORWARD,
     WORKING_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     DEPENDANTS,
     DEPENDENT_CHILDREN,
     LIFT_CREDIT,

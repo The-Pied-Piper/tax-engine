@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     CANADA_WORKERS_BENEFIT,
     CANADA_WORKERS_BENEFIT_WITH_DEPENDANT,
@@ -25,8 +25,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     LIFT_CREDIT,
     ONTARIO_TAX,
     ONTARIO_TAX_AFTER_LIFT_CREDIT,

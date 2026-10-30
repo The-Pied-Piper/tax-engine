@@ -45,36 +45,36 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.capabilities.apply_ratio import ApplyRatio
-from tax_calculator.domain.capability import CapabilityRegistry, CapabilityResult
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
+from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
+from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
     NotFoundError,
 )
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.foreign_non_business_tax_credit import (
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_credit import (
     ForeignNonBusinessTaxCredit,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     FOREIGN_BUSINESS_TAX_PAID,
     FOREIGN_BUSINESS_UNUSED_TAX_CREDITS,
     FOREIGN_NON_BUSINESS_TAX_PAID,
@@ -87,7 +87,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     NET_FOREIGN_NON_BUSINESS_INCOME,
     NET_FOREIGN_PROPERTY_INCOME,
 )
-from tax_calculator.jurisdictions.ca.trace import ForeignTaxCreditLine, PooledForeignTaxCreditLine
+from tax_engine.jurisdictions.ca.trace import ForeignTaxCreditLine, PooledForeignTaxCreditLine
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

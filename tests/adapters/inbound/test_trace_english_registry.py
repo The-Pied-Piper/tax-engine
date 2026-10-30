@@ -23,20 +23,20 @@ import pytest
 
 # Imported first, so the core and jurisdiction renderers fill the real shared registry before any
 # test points `shared` at a fresh one.
-import tax_calculator.adapters.inbound.trace_english
-import tax_calculator.domain.trace
-import tax_calculator.jurisdictions.ca.trace
-import tax_calculator.jurisdictions.ca_on.trace
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.adapters.inbound.trace_english.registry import (
+import tax_engine.adapters.inbound.trace_english
+import tax_engine.domain.trace
+import tax_engine.jurisdictions.ca.trace
+import tax_engine.jurisdictions.ca_on.trace
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.adapters.inbound.trace_english.registry import (
     EnglishRendererRegistry,
     english_renderer,
 )
-from tax_calculator.adapters.outbound.parameter_parsers.registry import ParameterParserRegistry
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
-from tax_calculator.domain.registry import Registry
-from tax_calculator.domain.trace import SumLine, TraceLine
+from tax_engine.adapters.outbound.parameter_parsers.registry import ParameterParserRegistry
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
+from tax_engine.domain.registry import Registry
+from tax_engine.domain.trace import SumLine, TraceLine
 
 D = Decimal
 
@@ -167,165 +167,165 @@ def test_shared_renderer_registry_is_not_the_shared_parser_registry() -> None:
 
 def test_the_shared_registry_holds_exactly_the_built_in_renderers() -> None:
     assert REAL_SHARED.identifiers() == {
-        "tax_calculator.domain.trace.arithmetic.AmountOrDividedByRateLine",
-        "tax_calculator.domain.trace.arithmetic.AmountWhenMoreLine",
-        "tax_calculator.domain.trace.arithmetic.AtMostLine",
-        "tax_calculator.domain.trace.arithmetic.CappedAmountLine",
-        "tax_calculator.domain.trace.arithmetic.ClaimAtMostLine",
-        "tax_calculator.domain.trace.arithmetic.CountAtLeastLine",
-        "tax_calculator.domain.trace.arithmetic.CountAtMostLine",
-        "tax_calculator.domain.trace.arithmetic.CountNotRefusedLine",
-        "tax_calculator.domain.trace.arithmetic.CountWithoutRecordsLine",
-        "tax_calculator.domain.trace.arithmetic.CreditAmountLine",
-        "tax_calculator.domain.trace.arithmetic.DividedByRateLine",
-        "tax_calculator.domain.trace.arithmetic.FractionAppliedLine",
-        "tax_calculator.domain.trace.arithmetic.GreaterOfLine",
-        "tax_calculator.domain.trace.arithmetic.LesserOfLine",
-        "tax_calculator.domain.trace.arithmetic.LesserOfWhenPositiveLine",
-        "tax_calculator.domain.trace.arithmetic.LesserOfWithMaximumLine",
-        "tax_calculator.domain.trace.arithmetic.MoreThanPerUnitLine",
-        "tax_calculator.domain.trace.arithmetic.MultipleOverLine",
-        "tax_calculator.domain.trace.arithmetic.PerUnitAmountLine",
-        "tax_calculator.domain.trace.arithmetic.PositivePartOfNegationLine",
-        "tax_calculator.domain.trace.arithmetic.QuotientLine",
-        "tax_calculator.domain.trace.arithmetic.RateAppliedLine",
-        "tax_calculator.domain.trace.arithmetic.RatioAppliedLine",
-        "tax_calculator.domain.trace.arithmetic.RatioTruncatedLine",
-        "tax_calculator.domain.trace.arithmetic.RoundedTotalLine",
-        "tax_calculator.domain.trace.arithmetic.SignChosenDifferenceLine",
-        "tax_calculator.domain.trace.arithmetic.SubtractedLine",
-        "tax_calculator.domain.trace.arithmetic.SubtractedNotBelowZeroLine",
-        "tax_calculator.domain.trace.arithmetic.SumLine",
-        "tax_calculator.domain.trace.arithmetic.SumNotBelowZeroLine",
-        "tax_calculator.domain.trace.arithmetic.ThresholdGateLine",
-        "tax_calculator.domain.trace.arithmetic.TimesCountLine",
-        "tax_calculator.domain.trace.arithmetic.YesOrNoCountLine",
-        "tax_calculator.domain.trace.choices.ChosenByCountLine",
-        "tax_calculator.domain.trace.choices.ChosenByRangeLine",
-        "tax_calculator.domain.trace.choices.ChosenBySignLine",
-        "tax_calculator.domain.trace.choices.ConditionLine",
-        "tax_calculator.domain.trace.choices.ConditionsCountLine",
-        "tax_calculator.domain.trace.forms.FormInstanceLine",
-        "tax_calculator.domain.trace.rate_tables.AmountByCountLine",
-        "tax_calculator.domain.trace.rate_tables.BracketColumnLine",
-        "tax_calculator.domain.trace.rate_tables.ChosenRateAppliedLine",
-        "tax_calculator.domain.trace.rate_tables.ContributionTierLine",
-        "tax_calculator.domain.trace.rate_tables.RateByIncomeBandLine",
-        "tax_calculator.domain.trace.rate_tables.SurchargeTierLine",
-        "tax_calculator.domain.trace.rate_tables.TaperedAmountLine",
-        "tax_calculator.domain.trace.record_lists.FirstRecordCountLine",
-        "tax_calculator.domain.trace.record_lists.ItemLesserOfLine",
-        "tax_calculator.domain.trace.record_lists.ItemSumLine",
-        "tax_calculator.domain.trace.record_lists.ItemsTotalLine",
-        "tax_calculator.domain.trace.record_lists.RecordCountLine",
-        "tax_calculator.domain.trace.record_lists.RecordPositiveTotalLine",
-        "tax_calculator.domain.trace.record_lists.RecordTotalLine",
-        "tax_calculator.jurisdictions.ca.trace.apprenticeship.ApprenticeWagesLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaClaimLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaVehicleProceedsLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaZepvProceedsLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaPartACheckLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaChangeInUseCheckLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaPartBCheckLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaVehicleAdditionsCheckLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaVehicleClassCheckLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaVehicleNonArmsLengthCheckLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.CcaVehicleChangeInUseCheckLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.ClosingUccLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.FiscalPeriodDaysFromDatesLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.FiscalPeriodDaysLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.ImmediateExpensingLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.ProratedByDaysLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.ProratedByDaysInPeriodLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.ImmediateExpensingAgreedLimitLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.RecapturedCcaLine",
-        "tax_calculator.jurisdictions.ca.trace.capital_cost.TerminalLossLine",
-        "tax_calculator.jurisdictions.ca.trace.vehicles.BusinessVehicleLine",
-        "tax_calculator.jurisdictions.ca.trace.vehicles.YearAmountLine",
-        "tax_calculator.jurisdictions.ca.trace.dependants.CaregiverClaimLine",
-        "tax_calculator.jurisdictions.ca.trace.dependants.DisabilityTransferLine",
-        "tax_calculator.jurisdictions.ca.trace.dependants.OtherDependantMedicalLine",
-        "tax_calculator.jurisdictions.ca.trace.logging_tax_credit.LoggingTaxCreditLine",
-        "tax_calculator.jurisdictions.ca.trace.farm_chart.PercentageOfLine",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine10",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine11",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine4",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine5",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine7",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine8",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignPropertyTaxLine",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.ForeignTaxCreditLine",
-        "tax_calculator.jurisdictions.ca.trace.foreign_tax.PooledForeignTaxCreditLine",
-        "tax_calculator.jurisdictions.ca.trace.home_renovation.RenovationLine3",
-        "tax_calculator.jurisdictions.ca.trace.home_renovation.RenovationLine6",
-        "tax_calculator.jurisdictions.ca.trace.home_renovation.RenovationLine7",
-        "tax_calculator.jurisdictions.ca.trace.gains.DispositionGainLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.DispositionGainOnlyLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.DepreciablePropertyGainLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.QffpGainLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.FarmLossAppliedLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.PersonalUsePropertyGainLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.DispositionProceedsLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.NetCapitalLossesRowLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceDesignationBox",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceGainLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine27",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine29",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine30",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine32",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine33",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine38",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine39",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine42",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine44",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine45",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine48",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine51",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine53",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine3",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine6",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine16",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine17",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine18",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine19",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine21",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine23",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine24",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine26",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine27",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine30",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine32",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine33",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine35",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine36",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine40",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine41",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine44",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine46",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine47",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine50",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine53",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine55",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine58",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine59",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine61",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine63",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine64",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine66",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine56",
-        "tax_calculator.jurisdictions.ca.trace.gains.PrincipalResidenceLine57",
-        "tax_calculator.jurisdictions.ca.trace.gains.ReserveRowForPeriodLine",
-        "tax_calculator.jurisdictions.ca.trace.gains.QbtBeforeQccLine",
-        "tax_calculator.domain.trace.arithmetic.PercentageAppliedLine",
-        "tax_calculator.jurisdictions.ca.trace.rentals.RentalAdditionLine",
-        "tax_calculator.jurisdictions.ca.trace.rentals.ShortTermRentalNonCompliantCcaByClassLine",
-        "tax_calculator.jurisdictions.ca.trace.rentals.ShortTermRentalNonCompliantCcaLine",
-        "tax_calculator.jurisdictions.ca.trace.rentals.ShortTermRentalNonCompliantLine",
-        "tax_calculator.jurisdictions.ca_on.trace.capped_records.CappedRecordLine",
-        "tax_calculator.jurisdictions.ca_on.trace.dependants.CaregiverClaimLessClaimedLine",
-        "tax_calculator.jurisdictions.ca_on.trace.foreign_tax.ProvincialForeignTaxCreditLine",
-        "tax_calculator.jurisdictions.ca_on.trace.foreign_tax.PooledProvincialForeignTaxCreditLine",
-        "tax_calculator.jurisdictions.ca_on.trace.placement_credit.PlacementCreditLine",
+        "tax_engine.domain.trace.arithmetic.AmountOrDividedByRateLine",
+        "tax_engine.domain.trace.arithmetic.AmountWhenMoreLine",
+        "tax_engine.domain.trace.arithmetic.AtMostLine",
+        "tax_engine.domain.trace.arithmetic.CappedAmountLine",
+        "tax_engine.domain.trace.arithmetic.ClaimAtMostLine",
+        "tax_engine.domain.trace.arithmetic.CountAtLeastLine",
+        "tax_engine.domain.trace.arithmetic.CountAtMostLine",
+        "tax_engine.domain.trace.arithmetic.CountNotRefusedLine",
+        "tax_engine.domain.trace.arithmetic.CountWithoutRecordsLine",
+        "tax_engine.domain.trace.arithmetic.CreditAmountLine",
+        "tax_engine.domain.trace.arithmetic.DividedByRateLine",
+        "tax_engine.domain.trace.arithmetic.FractionAppliedLine",
+        "tax_engine.domain.trace.arithmetic.GreaterOfLine",
+        "tax_engine.domain.trace.arithmetic.LesserOfLine",
+        "tax_engine.domain.trace.arithmetic.LesserOfWhenPositiveLine",
+        "tax_engine.domain.trace.arithmetic.LesserOfWithMaximumLine",
+        "tax_engine.domain.trace.arithmetic.MoreThanPerUnitLine",
+        "tax_engine.domain.trace.arithmetic.MultipleOverLine",
+        "tax_engine.domain.trace.arithmetic.PerUnitAmountLine",
+        "tax_engine.domain.trace.arithmetic.PositivePartOfNegationLine",
+        "tax_engine.domain.trace.arithmetic.QuotientLine",
+        "tax_engine.domain.trace.arithmetic.RateAppliedLine",
+        "tax_engine.domain.trace.arithmetic.RatioAppliedLine",
+        "tax_engine.domain.trace.arithmetic.RatioTruncatedLine",
+        "tax_engine.domain.trace.arithmetic.RoundedTotalLine",
+        "tax_engine.domain.trace.arithmetic.SignChosenDifferenceLine",
+        "tax_engine.domain.trace.arithmetic.SubtractedLine",
+        "tax_engine.domain.trace.arithmetic.SubtractedNotBelowZeroLine",
+        "tax_engine.domain.trace.arithmetic.SumLine",
+        "tax_engine.domain.trace.arithmetic.SumNotBelowZeroLine",
+        "tax_engine.domain.trace.arithmetic.ThresholdGateLine",
+        "tax_engine.domain.trace.arithmetic.TimesCountLine",
+        "tax_engine.domain.trace.arithmetic.YesOrNoCountLine",
+        "tax_engine.domain.trace.choices.ChosenByCountLine",
+        "tax_engine.domain.trace.choices.ChosenByRangeLine",
+        "tax_engine.domain.trace.choices.ChosenBySignLine",
+        "tax_engine.domain.trace.choices.ConditionLine",
+        "tax_engine.domain.trace.choices.ConditionsCountLine",
+        "tax_engine.domain.trace.forms.FormInstanceLine",
+        "tax_engine.domain.trace.rate_tables.AmountByCountLine",
+        "tax_engine.domain.trace.rate_tables.BracketColumnLine",
+        "tax_engine.domain.trace.rate_tables.ChosenRateAppliedLine",
+        "tax_engine.domain.trace.rate_tables.ContributionTierLine",
+        "tax_engine.domain.trace.rate_tables.RateByIncomeBandLine",
+        "tax_engine.domain.trace.rate_tables.SurchargeTierLine",
+        "tax_engine.domain.trace.rate_tables.TaperedAmountLine",
+        "tax_engine.domain.trace.record_lists.FirstRecordCountLine",
+        "tax_engine.domain.trace.record_lists.ItemLesserOfLine",
+        "tax_engine.domain.trace.record_lists.ItemSumLine",
+        "tax_engine.domain.trace.record_lists.ItemsTotalLine",
+        "tax_engine.domain.trace.record_lists.RecordCountLine",
+        "tax_engine.domain.trace.record_lists.RecordPositiveTotalLine",
+        "tax_engine.domain.trace.record_lists.RecordTotalLine",
+        "tax_engine.jurisdictions.ca.trace.apprenticeship.ApprenticeWagesLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaClaimLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaVehicleProceedsLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaZepvProceedsLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaPartACheckLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaChangeInUseCheckLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaPartBCheckLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaVehicleAdditionsCheckLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaVehicleClassCheckLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaVehicleNonArmsLengthCheckLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.CcaVehicleChangeInUseCheckLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.ClosingUccLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.FiscalPeriodDaysFromDatesLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.FiscalPeriodDaysLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.ImmediateExpensingLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.ProratedByDaysLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.ProratedByDaysInPeriodLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.ImmediateExpensingAgreedLimitLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.RecapturedCcaLine",
+        "tax_engine.jurisdictions.ca.trace.capital_cost.TerminalLossLine",
+        "tax_engine.jurisdictions.ca.trace.vehicles.BusinessVehicleLine",
+        "tax_engine.jurisdictions.ca.trace.vehicles.YearAmountLine",
+        "tax_engine.jurisdictions.ca.trace.dependants.CaregiverClaimLine",
+        "tax_engine.jurisdictions.ca.trace.dependants.DisabilityTransferLine",
+        "tax_engine.jurisdictions.ca.trace.dependants.OtherDependantMedicalLine",
+        "tax_engine.jurisdictions.ca.trace.logging_tax_credit.LoggingTaxCreditLine",
+        "tax_engine.jurisdictions.ca.trace.farm_chart.PercentageOfLine",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine10",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine11",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine4",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine5",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine7",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignBusinessLine8",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignPropertyTaxLine",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.ForeignTaxCreditLine",
+        "tax_engine.jurisdictions.ca.trace.foreign_tax.PooledForeignTaxCreditLine",
+        "tax_engine.jurisdictions.ca.trace.home_renovation.RenovationLine3",
+        "tax_engine.jurisdictions.ca.trace.home_renovation.RenovationLine6",
+        "tax_engine.jurisdictions.ca.trace.home_renovation.RenovationLine7",
+        "tax_engine.jurisdictions.ca.trace.gains.DispositionGainLine",
+        "tax_engine.jurisdictions.ca.trace.gains.DispositionGainOnlyLine",
+        "tax_engine.jurisdictions.ca.trace.gains.DepreciablePropertyGainLine",
+        "tax_engine.jurisdictions.ca.trace.gains.QffpGainLine",
+        "tax_engine.jurisdictions.ca.trace.gains.FarmLossAppliedLine",
+        "tax_engine.jurisdictions.ca.trace.gains.PersonalUsePropertyGainLine",
+        "tax_engine.jurisdictions.ca.trace.gains.DispositionProceedsLine",
+        "tax_engine.jurisdictions.ca.trace.gains.NetCapitalLossesRowLine",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceDesignationBox",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceGainLine",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine27",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine29",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine30",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine32",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine33",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine38",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine39",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine42",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine44",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine45",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine48",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine51",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine53",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine3",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine6",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine16",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine17",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine18",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine19",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine21",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine23",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine24",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine26",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine27",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine30",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine32",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine33",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine35",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine36",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine40",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine41",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine44",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine46",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine47",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine50",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine53",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine55",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine58",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine59",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine61",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine63",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine64",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceWorksheetLine66",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine56",
+        "tax_engine.jurisdictions.ca.trace.gains.PrincipalResidenceLine57",
+        "tax_engine.jurisdictions.ca.trace.gains.ReserveRowForPeriodLine",
+        "tax_engine.jurisdictions.ca.trace.gains.QbtBeforeQccLine",
+        "tax_engine.domain.trace.arithmetic.PercentageAppliedLine",
+        "tax_engine.jurisdictions.ca.trace.rentals.RentalAdditionLine",
+        "tax_engine.jurisdictions.ca.trace.rentals.ShortTermRentalNonCompliantCcaByClassLine",
+        "tax_engine.jurisdictions.ca.trace.rentals.ShortTermRentalNonCompliantCcaLine",
+        "tax_engine.jurisdictions.ca.trace.rentals.ShortTermRentalNonCompliantLine",
+        "tax_engine.jurisdictions.ca_on.trace.capped_records.CappedRecordLine",
+        "tax_engine.jurisdictions.ca_on.trace.dependants.CaregiverClaimLessClaimedLine",
+        "tax_engine.jurisdictions.ca_on.trace.foreign_tax.ProvincialForeignTaxCreditLine",
+        "tax_engine.jurisdictions.ca_on.trace.foreign_tax.PooledProvincialForeignTaxCreditLine",
+        "tax_engine.jurisdictions.ca_on.trace.placement_credit.PlacementCreditLine",
     }
 
 
@@ -405,9 +405,9 @@ def test_the_default_renderer_uses_the_shared_registry(fresh: EnglishRendererReg
 # The core and jurisdiction trace packages, imported above so that all their renderers are
 # registered; where each jurisdiction's renderers live is checked under tests/jurisdictions.
 TRACE_PACKAGES: tuple[ModuleType, ...] = (
-    tax_calculator.domain.trace,
-    tax_calculator.jurisdictions.ca.trace,
-    tax_calculator.jurisdictions.ca_on.trace,
+    tax_engine.domain.trace,
+    tax_engine.jurisdictions.ca.trace,
+    tax_engine.jurisdictions.ca_on.trace,
 )
 
 
@@ -439,7 +439,7 @@ def core_line_classes() -> list[type[TraceLine]]:
     return [
         cls
         for cls in exported_line_classes()
-        if cls.__module__.startswith("tax_calculator.domain.trace.")
+        if cls.__module__.startswith("tax_engine.domain.trace.")
     ]
 
 
@@ -447,23 +447,20 @@ def core_line_classes() -> list[type[TraceLine]]:
 def test_each_core_renderer_lives_in_the_adapter_module_matching_its_line_classs_module(
     line_class: type[TraceLine],
 ) -> None:
-    # SumLine in tax_calculator.domain.trace.arithmetic -> its renderer in trace_english.arithmetic.
+    # SumLine in tax_engine.domain.trace.arithmetic -> its renderer in trace_english.arithmetic.
     feature = line_class.__module__.rsplit(".", 1)[1]
     found = EnglishRendererRegistry.shared().for_line_class(line_class)
 
-    assert type(found).__module__ == f"tax_calculator.adapters.inbound.trace_english.{feature}"
+    assert type(found).__module__ == f"tax_engine.adapters.inbound.trace_english.{feature}"
 
 
 def test_the_adapter_is_a_package_with_registry_and_renderer_modules() -> None:
-    assert hasattr(tax_calculator.adapters.inbound.trace_english, "__path__")
+    assert hasattr(tax_engine.adapters.inbound.trace_english, "__path__")
     assert (
-        EnglishRendererRegistry.__module__
-        == "tax_calculator.adapters.inbound.trace_english.registry"
+        EnglishRendererRegistry.__module__ == "tax_engine.adapters.inbound.trace_english.registry"
     )
-    assert english_renderer.__module__ == "tax_calculator.adapters.inbound.trace_english.registry"
-    assert (
-        EnglishTraceRenderer.__module__ == "tax_calculator.adapters.inbound.trace_english.renderer"
-    )
+    assert english_renderer.__module__ == "tax_engine.adapters.inbound.trace_english.registry"
+    assert EnglishTraceRenderer.__module__ == "tax_engine.adapters.inbound.trace_english.renderer"
 
 
 # --- a made-up package adds a line class and its English text --------------------------------

@@ -15,8 +15,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_GROSS_CAPITAL_LOSSES_1985_TO_1987,
     ADJUSTED_GROSS_CAPITAL_LOSSES_1988_AND_1989,
     ADJUSTED_GROSS_CAPITAL_LOSSES_1990_TO_1999,

@@ -10,9 +10,9 @@ from typing import assert_type
 import pytest
 import yaml
 
-from tax_calculator.adapters.outbound.yaml_support import YamlNode, YamlShapeError
-from tax_calculator.domain.errors import InvalidRoundingRuleError
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
+from tax_engine.domain.errors import InvalidRoundingRuleError
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,

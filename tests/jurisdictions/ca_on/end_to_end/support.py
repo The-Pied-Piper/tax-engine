@@ -8,18 +8,18 @@ from decimal import ROUND_HALF_UP, Decimal
 from functools import cache
 from typing import Any
 
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.errors import MissingArtifactError
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.parameters.contribution_tier import CONTRIBUTION_TIER
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.trace import TraceLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.errors import MissingArtifactError
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import TraceLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ACWB_DISABILITY_SUPPLEMENT_PAID,
     ACWB_PAID_TO_SPOUSE,
     ACWB_PAID_TO_YOU,
@@ -941,8 +941,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     ZONE_B_DAYS_LIVED,
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     APPLIES_FOR_ENERGY_AND_PROPERTY_TAX_CREDIT,
     APPLIES_FOR_NORTHERN_ENERGY_CREDIT,
     APPLIES_FOR_SENIOR_HOMEOWNERS_GRANT,
@@ -972,7 +972,7 @@ from tax_calculator.jurisdictions.ca_on.catalog import (
     SENIORS_TRANSIT_PAID,
     SEPARATE_RESIDENCES_FOR_MEDICAL_REASONS,
 )
-from tax_calculator.registrations import JURISDICTIONS
+from tax_engine.registrations import JURISDICTIONS
 
 D = Decimal
 
@@ -2162,7 +2162,7 @@ def t777_artifacts(
         given["other_expenses"] = other_expenses
     records = list(relocations)
 
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T777_ACCOUNTING_AND_LEGAL_FEES,
         T777_ADVERTISING_AND_PROMOTION,
         T777_APPRENTICE_MECHANIC_EMPLOYMENT_INCOME,
@@ -2321,7 +2321,7 @@ def t1206_artifacts(
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T1206_CAPITAL_GAIN_ON_DISPOSITIONS,
         T1206_RESERVE_2024,
         T1206_RESERVE_AMOUNT_PAYABLE_AFTER_YEAR_END,
@@ -2370,7 +2370,7 @@ def t2017_artifacts(
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T2017_LINE_1,
         T2017_LINE_2_RESERVE_ROWS,
         T2017_LINE_3_RESERVE_ROWS,
@@ -2488,7 +2488,7 @@ def t1032_artifacts(
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T1032_ELIGIBLE_PENSION_INCOME,
         T1032_FILER_IS_TRANSFERRING_SPOUSE,
         T1032_INCOME_TAX_DEDUCTED_ON_PENSION,
@@ -2539,7 +2539,7 @@ def t2205_artifacts(amounts: Mapping[str, str]) -> list[Artifact[Any]]:
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T2205_LINE_1,
         T2205_LINE_2,
         T2205_LINE_4,
@@ -2581,7 +2581,7 @@ def t90_artifacts(amounts: Mapping[str, str]) -> list[Artifact[Any]]:
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T90_COVID_19_PAYMENTS,
         T90_CPP_QPP_BENEFITS,
         T90_DEDUCTIONS_RELATING_TO_EXEMPT_INCOME,
@@ -2737,7 +2737,7 @@ def t746_artifacts(
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T746_CONTRIBUTION_YEAR,
         T746_CONTRIBUTIONS,
         T746_CONTRIBUTIONS_DEDUCTED,
@@ -2794,7 +2794,7 @@ def t1043_artifacts(amounts: Mapping[str, str]) -> list[Artifact[Any]]:
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T1043_CLAIMED_AS_RRSP_DEDUCTION,
         T1043_DEDUCTED_USING_FORM,
         T1043_EXCESS_AMOUNT_ON_RECEIPT,
@@ -2838,7 +2838,7 @@ def t936_artifacts(amounts: Mapping[str, str]) -> list[Artifact[Any]]:
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T936_INVESTMENT_EXPENSES_PREVIOUS_YEARS,
         T936_INVESTMENT_INCOME_PREVIOUS_YEARS,
         T936_T3_BOX_21_CAPITAL_GAINS,
@@ -2872,7 +2872,7 @@ def t1139_artifacts(businesses: Iterable[Mapping[str, Any]] = ()) -> list[Artifa
     The kinds are imported here, when they are used, so that the end-to-end modules of the other
     forms import none of them.
     """
-    from tax_calculator.jurisdictions.ca.catalog import (
+    from tax_engine.jurisdictions.ca.catalog import (
         T1139_A_STATEMENTS,
         T1139_AMOUNT_2A,
         T1139_AMOUNT_2B,

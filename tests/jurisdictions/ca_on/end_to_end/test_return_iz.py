@@ -15,8 +15,8 @@ import re
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError, InputOutOfRangeError
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError, InputOutOfRangeError
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_PART_4_AND_PART_5_BOTH_CHECKED,
     CPP_PAYABLE_ON_SELF_EMPLOYMENT_AND_OTHER_EARNINGS,
 )

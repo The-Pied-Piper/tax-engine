@@ -5,14 +5,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_INCOME,
     BUSINESS_MOTOR_VEHICLE_EXPENSES,
     BUSINESS_NET_INCOME_BEFORE_ADJUSTMENTS,
     BUSINESS_TOTAL_EXPENSES,
 )
-from tax_calculator.jurisdictions.ca.trace import BusinessVehicleLine
+from tax_engine.jurisdictions.ca.trace import BusinessVehicleLine
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
 CAR = {

@@ -19,11 +19,11 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.errors import InvalidRecordError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InvalidRecordError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_AIIP_ADDITIONS,
     CCA_CLAIMED,

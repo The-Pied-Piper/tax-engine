@@ -15,10 +15,10 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidSurchargeTiersError
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.surcharge_tiers import (
+from tax_engine.domain.errors import DomainError, InvalidSurchargeTiersError
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.surcharge_tiers import (
     SURCHARGE_TIERS,
     SurchargeTier,
     SurchargeTiers,

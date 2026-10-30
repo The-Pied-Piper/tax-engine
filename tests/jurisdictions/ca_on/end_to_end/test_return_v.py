@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.trace import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.trace import (
     SumLine,
 )
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ACWB_PAID,
     ADVANCED_CANADA_WORKERS_BENEFIT,
     CREDITS_AGAINST_FEDERAL_TAX,
@@ -44,8 +44,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     ONTARIO_TAX,
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute, return_a

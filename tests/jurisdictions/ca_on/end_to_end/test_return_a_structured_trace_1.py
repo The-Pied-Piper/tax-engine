@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.trace import (
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.trace import (
     AtMostLine,
     CappedAmountLine,
     ChosenByCountLine,
@@ -29,7 +29,7 @@ from tax_calculator.domain.trace import (
     ThresholdGateLine,
     TimesCountLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     AGE_INCOME_OVER_THRESHOLD,
     AGE_REDUCTION,
     ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
@@ -185,8 +185,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     US_SOCIAL_SECURITY_DEDUCTION_AT_RESIDENT_RATE,
     US_SOCIAL_SECURITY_DEDUCTION_AT_STANDARD_RATE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     COMMUNITY_FOOD_PROGRAM_CREDIT,
     COMMUNITY_FOOD_PROGRAM_DONATIONS_APPLIED,
     COOP_EDUCATION_CREDIT,
@@ -204,7 +204,7 @@ from tax_calculator.jurisdictions.ca_on.catalog import (
     SENIORS_TRANSIT_AMOUNT_PAID_CHECKED,
     SENIORS_TRANSIT_CREDIT,
 )
-from tax_calculator.jurisdictions.ca_on.trace import PlacementCreditLine
+from tax_engine.jurisdictions.ca_on.trace import PlacementCreditLine
 from tests.jurisdictions.ca_on.end_to_end.support import CENT, D, run_a
 
 

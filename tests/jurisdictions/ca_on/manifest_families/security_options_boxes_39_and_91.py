@@ -19,8 +19,8 @@ return's own selections here are none: `STEPS`, `WIRING` and `OUTPUTS` are empty
 
 from __future__ import annotations
 
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.catalog import (
     T4_SECURITY_OPTIONS_BOXES_39_AND_91,
 )
 

@@ -6,7 +6,7 @@ allocated to you" is a number the filer enters as printed (50 for 50%). It mirro
 `Decimal` slots, `amount` and `percentage`, and one produced slot `output`. The output is
 `rounding.apply(amount × percentage / 100)`, formed as an exact fraction and rounded once by the
 dataset's rule. A percentage above 100 is not capped. It records one `PercentageAppliedLine` (new;
-in `tax_calculator.domain.trace`) with the output, the amount's kind and value, the
+in `tax_engine.domain.trace`) with the output, the amount's kind and value, the
 percentage's kind and value, the rounding rule and the result, in that order.
 """
 
@@ -17,19 +17,19 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.trace import PercentageAppliedLine
-from tax_calculator.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.trace import PercentageAppliedLine
+from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

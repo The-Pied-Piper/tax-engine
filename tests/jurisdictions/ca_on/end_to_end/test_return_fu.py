@@ -6,8 +6,8 @@ line 17905 is "No", the boxes of line 17906 are blank, the flag is 0 and every c
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FLIPPED_PROPERTY,
     FLIPPED_PROPERTY_LIFE_EVENT_1_CHECKED,
     FLIPPED_PROPERTY_LIFE_EVENT_2_CHECKED,

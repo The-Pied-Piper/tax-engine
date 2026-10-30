@@ -17,14 +17,14 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCompositionError,
     ValidationError,
 )
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ELECTED_SPLIT_PENSION_AMOUNT,
     ELECTED_SPLIT_PENSION_DEDUCTION,
     INCOME_TAX_DEDUCTED_AFTER_ELECTION,
