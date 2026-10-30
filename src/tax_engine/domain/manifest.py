@@ -218,11 +218,8 @@ class Form:
             )
         if not self.basis:
             raise InvalidManifestError(f"form {self.name!r}: an optional form needs a basis")
-        predicate, _, export = self.required_when.partition(".")
-        self.check_identifier("required_when", predicate)
-        if export:
-            Namespace(predicate.partition("/")[0]).identifier(export)
-        if self.required_when in self.exports or self.required_when in self.export_names():
+        self.check_identifier("required_when", self.required_when)
+        if self.required_when in self.exports:
             raise InvalidManifestError(
                 f"form {self.name!r}: required_when {self.required_when!r} is one of its own "
                 "exports"
@@ -237,10 +234,6 @@ class Form:
         for name in names:
             if names.count(name) > 1:
                 raise InvalidManifestError(f"form {self.name!r}: field {name!r} is declared twice")
-
-    def export_names(self) -> tuple[str, ...]:
-        """The identifiers other forms read the exports by: `<name>.<local id of the export>`."""
-        return tuple(f"{self.name}.{export.partition('/')[2]}" for export in self.exports)
 
     @staticmethod
     def check_limits(
@@ -310,7 +303,7 @@ class Manifest:
     once each: a non-empty mapping, among them the instances kind of each form, which the caller
     supplies with the rest. Each form's own inputs are derived from its selections. The
     `required_when` of an optional form names a required input, an artifact one of the manifest's
-    selections produces, or an export of another form as `<form>.<local id>`; that it is a yes/no
+    selections produces; that it is a yes/no
     is checked with the artifact kinds by `check_artifacts`.
     """
 
@@ -396,10 +389,9 @@ class Manifest:
             for selection in form.capabilities
             for identifier in selection.produces.values()
         }
-        exported = {name for form in self.forms for name in form.export_names()}
         for form in self.forms:
             predicate = form.required_when
-            if predicate is None or predicate in required | produced | exported:
+            if predicate is None or predicate in required | produced:
                 continue
             if predicate in self.inputs:
                 raise InvalidManifestError(
@@ -407,6 +399,6 @@ class Manifest:
                     "and the filer always answers a yes/no"
                 )
             raise InvalidManifestError(
-                f"form {form.name!r}: required_when {predicate!r} is not a required input, "
-                "produced by a selection, or an export of a form"
+                f"form {form.name!r}: required_when {predicate!r} is not a required input "
+                "or produced by a selection"
             )

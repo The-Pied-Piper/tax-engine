@@ -1967,9 +1967,7 @@ def test_a_predicate_that_is_an_optional_input_is_refused(tmp_path: Path) -> Non
     )
 
 
-def test_a_predicate_may_be_produced_by_a_selection_or_exported_by_another_form(
-    tmp_path: Path,
-) -> None:
+def test_a_predicate_may_be_produced_by_a_selection(tmp_path: Path) -> None:
     answers = """\
 form:
   name: ex/answers
@@ -1978,15 +1976,13 @@ form:
 capabilities:
   - {name: ex/answer, produces: {output: ex/relief_applies}}
 """
-    dotted = OPTIONAL_FORM.replace(
-        "required_when: ex/relief_applies", "required_when: ex/answers.relief_applies"
-    )
 
     manifest = load_parts(
-        tmp_path, {"01-inputs.yaml": INPUTS, "02-answers.yaml": answers, "03-form.yaml": dotted}
+        tmp_path,
+        {"01-inputs.yaml": INPUTS, "02-answers.yaml": answers, "03-form.yaml": OPTIONAL_FORM},
     )
 
-    assert [form.required_when for form in others(manifest)] == [None, "ex/answers.relief_applies"]
+    assert [form.required_when for form in others(manifest)] == [None, "ex/relief_applies"]
 
 
 @pytest.mark.parametrize("key", ["required", "required_when", "basis", "fields"])

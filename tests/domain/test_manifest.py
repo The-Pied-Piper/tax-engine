@@ -607,15 +607,12 @@ def test_an_optional_form_needs_a_predicate_and_a_basis() -> None:
         optional_form(basis=None)
 
 
-def test_a_predicate_is_an_identifier_or_a_form_export() -> None:
-    assert optional_form(required_when="ex/other_form.applies").required_when == (
-        "ex/other_form.applies"
-    )
+def test_a_predicate_is_an_identifier() -> None:
     with pytest.raises(InvalidManifestError, match="required_when 'Applies'"):
         optional_form(required_when="Applies")
 
 
-@pytest.mark.parametrize("predicate", ["ex/relief_amount", "ex/relief.relief_amount"])
+@pytest.mark.parametrize("predicate", ["ex/relief_amount"])
 def test_a_form_may_not_be_gated_by_its_own_export(predicate: str) -> None:
     with pytest.raises(InvalidManifestError, match="is one of its own exports"):
         optional_form(required_when=predicate)
@@ -663,19 +660,6 @@ def test_a_predicate_may_be_produced_by_a_selection() -> None:
     inputs = required_inputs(["ex/taxable_base"])
 
     assert with_forms(produced, optional_form(), inputs=inputs).forms[2].name == "ex/relief"
-
-
-def test_a_predicate_may_be_an_export_of_another_form() -> None:
-    gated = optional_form(required_when="ex/answers.relief_applies")
-    answers = Form(
-        required=True,
-        name="ex/answers",
-        instances=None,
-        exports=("ex/relief_applies",),
-        capabilities=(),
-    )
-
-    assert with_forms(answers, gated).forms[2] == gated
 
 
 def test_a_predicate_nothing_declares_or_produces_is_refused_naming_the_form() -> None:
