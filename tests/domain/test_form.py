@@ -31,12 +31,14 @@ from typing import Any, ClassVar
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
@@ -1758,3 +1760,12 @@ def test_the_trace_names_are_those_of_any_form() -> None:
     ]
     assert lines[2].lines == result["ex/step"][2].trace
     assert [type(line) for line in lines[2].lines] == [RecordTotalLine, type(lines[2].lines[1])]
+
+
+def test_a_form_set_refuses_a_blank_starting_artifact() -> None:
+    forms = flat(
+        [Subtract(SALES, COSTS, LEVY)], inputs=frozenset({SALES, COSTS}), outputs=frozenset({LEVY})
+    )
+
+    with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):
+        forms.compute(Artifact(SALES, BLANK), Artifact(COSTS, Decimal(1)))

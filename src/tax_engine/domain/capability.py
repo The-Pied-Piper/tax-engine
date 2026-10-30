@@ -6,7 +6,9 @@ type), each a keyword parameter of its constructor; a manifest fills them. A con
 take a list of kinds of one value type (declared as `list[Decimal]`), so a capability's number of
 inputs can be left to the manifest. An instance consumes and produces the artifact kinds it was
 built with, and the worksheet holds it to that. The vocabulary is consume / produce only: there
-is no "modify".
+is no "modify". Any artifact can be blank (blank.py), so a class also declares in `BLANK_RULES`
+what it does with a blank in each consumed slot; the base applies the rule before `compute` runs,
+so `compute` never sees a blank.
 """
 
 from __future__ import annotations
@@ -16,19 +18,23 @@ import re
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from decimal import Decimal
 from types import MappingProxyType
 from typing import Any, ClassVar, cast, get_args, get_origin
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK, BlankRule, PassOn
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     CapabilityContractError,
+    DomainError,
     DuplicateArtifactError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.registry import Namespace, Registry
-from tax_engine.domain.trace import TraceLine
+from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, TraceLine
 
 
 @dataclass(frozen=True)
@@ -41,6 +47,7 @@ class CapabilityResult:
 
 _SLOT_NAME = re.compile(r"[a-z][a-z0-9]*(_[a-z0-9]+)*")
 _SLOT_MAPPINGS = ("PARAMETERS", "CONSUMES", "PRODUCES")
+_FROZEN_MAPPINGS = (*_SLOT_MAPPINGS, "BLANK_RULES")
 _KEYWORD_CAPABLE = frozenset(
     {inspect.Parameter.POSITIONAL_OR_KEYWORD, inspect.Parameter.KEYWORD_ONLY}
 )
@@ -69,13 +76,21 @@ class Capability(ABC):
     PRODUCES: ClassVar[Mapping[str, type]] = MappingProxyType({})
     """Produced artifact slots: slot name -> the value type of the artifact kind it takes."""
 
+    BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = MappingProxyType({})
+    """What a blank does in a consumed slot: slot name -> the fallback value the capability takes
+    in its place (a `Decimal`, or an `int` for a count slot), or `PASS_ON` to make everything it
+    produces blank. A consumed slot with no entry refuses a blank. A fallback applies to every
+    kind of a list slot. A subclass inherits its parent's rules unless it declares its own, so
+    classes with one compute and different blank rules share a parent that declares none.
+    """
+
     def __init_subclass__(cls, **kwargs: Any) -> None:
         """Freeze the slot mappings `cls` declares and check every slot it has against `__init__`.
 
         Raises InvalidCapabilityError naming the class and the slot.
         """
         super().__init_subclass__(**kwargs)
-        for mapping in _SLOT_MAPPINGS:
+        for mapping in _FROZEN_MAPPINGS:
             if mapping in vars(cls):
                 declared = getattr(cls, mapping)
                 if not isinstance(declared, Mapping):
@@ -99,6 +114,7 @@ class Capability(ABC):
                         f"and {mapping}"
                     )
                 declared_in[slot] = mapping
+        cls._check_blank_rules()
         # `__init__`'s own signature, not the class's, so a custom `__new__` cannot hide it; its
         # first parameter (`self`) is skipped, so `self` can never fill a slot.
         _self, *parameters = inspect.signature(cls.__init__).parameters.values()
@@ -107,6 +123,27 @@ class Capability(ABC):
             if slot not in keywords:
                 raise InvalidCapabilityError(
                     f"{name}: {mapping} slot {slot!r} is not a keyword parameter of {name}.__init__"
+                )
+
+    @classmethod
+    def _check_blank_rules(cls) -> None:
+        """Refuse a blank rule for a slot that is not a consumed one, or whose rule is not a
+        finite `Decimal` or an `int` of exactly the slot's value type, or `PASS_ON`.
+        """
+        name = cls.__name__
+        for slot, rule in cls.BLANK_RULES.items():
+            if slot not in cls.CONSUMES:
+                raise InvalidCapabilityError(
+                    f"{name}: BLANK_RULES slot {slot!r} is not a consumed slot"
+                )
+            if isinstance(rule, PassOn):
+                continue
+            declared = cls.CONSUMES[slot]
+            value_type = cls._element_type(declared) or declared
+            if type(rule) is not value_type or (isinstance(rule, Decimal) and not rule.is_finite()):
+                raise InvalidCapabilityError(
+                    f"{name}: BLANK_RULES slot {slot!r} must be PASS_ON or a finite "
+                    f"{value_type.__name__} (a Decimal or int slot's own type), got {rule!r}"
                 )
 
     @classmethod
@@ -185,8 +222,27 @@ class Capability(ABC):
                         f"{kind.identifier!r}"
                     )
                 filled_by[kind] = slot
+        self._check_fallbacks(wired)
+        self._slot_of = {kind: slot for slot in self.CONSUMES for kind in wired[slot]}
         self._consumes = frozenset(kind for slot in self.CONSUMES for kind in wired[slot])
         self._produces = frozenset(kind for slot in self.PRODUCES for kind in wired[slot])
+
+    def _check_fallbacks(self, wired: Mapping[str, tuple[ArtifactKind[Any], ...]]) -> None:
+        """Refuse a fallback that a kind wired to its slot cannot hold, such as a negative one for
+        a non-negative kind.
+        """
+        name = type(self).__name__
+        for slot, rule in self.BLANK_RULES.items():
+            if isinstance(rule, PassOn):
+                continue
+            for kind in wired[slot]:
+                try:
+                    Artifact(kind, rule)
+                except DomainError as error:
+                    raise InvalidCapabilityError(
+                        f"{name}: the blank fallback {rule} for slot {slot!r} is not valid for "
+                        f"{kind.identifier!r}: {error}"
+                    ) from error
 
     def _slot_kinds(
         self, slot: str, declared: type, given: object
@@ -253,8 +309,49 @@ class Capability(ABC):
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         """Compute this capability's output artifacts from the artifacts of the kinds it consumes.
 
-        Only `Worksheet.apply` calls this in a real computation, checking the contract.
+        Only `run` calls this in a real computation, with no blank among `inputs`.
         """
+
+    def run(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        """Apply the `BLANK_RULES` to `inputs`, then compute; only `Worksheet.apply` calls this.
+
+        A blank input in a slot with a fallback is replaced by an artifact of the fallback, and the
+        trace says so first. A blank in a slot with no rule is a BlankNotAllowedError naming the
+        line and the slot; that refusal comes before anything else. Otherwise a blank in a
+        `PASS_ON` slot gives a blank artifact for every produced kind, with a trace line each and
+        `compute` not called; with no blank left, `compute` runs as usual.
+        """
+        name = type(self).__name__
+        kept: list[Artifact[Any]] = []
+        fallbacks: list[BlankFallbackLine] = []
+        passed_on: list[ArtifactKind[Any]] = []
+        for artifact in sorted(inputs, key=lambda each: each.kind.identifier):
+            if not artifact.is_blank:
+                kept.append(artifact)
+                continue
+            slot = self._slot_of[artifact.kind]
+            rule = self.BLANK_RULES.get(slot)
+            if rule is None:
+                raise BlankNotAllowedError(
+                    f"{name}: {artifact.kind.label!r} was left blank, and {slot!r} may not be blank"
+                )
+            if isinstance(rule, PassOn):
+                passed_on.append(artifact.kind)
+            else:
+                kept.append(Artifact(artifact.kind, rule))
+                fallbacks.append(BlankFallbackLine(artifact.kind, rule))
+        if passed_on:
+            because = tuple(sorted(passed_on, key=lambda kind: kind.identifier))
+            produced = sorted(self.produces, key=lambda kind: kind.identifier)
+            return CapabilityResult(
+                outputs=tuple(Artifact(kind, BLANK) for kind in produced),
+                trace=(
+                    *fallbacks,
+                    *(BlankPassedOnLine(kind, because) for kind in produced),
+                ),
+            )
+        result = self.compute(tuple(kept))
+        return CapabilityResult(outputs=result.outputs, trace=(*fallbacks, *result.trace))
 
     def _input[V](self, inputs: tuple[Artifact[Any], ...], kind: ArtifactKind[V]) -> Artifact[V]:
         """The one artifact of `kind` in `inputs`; `kind` must be one this consumes."""

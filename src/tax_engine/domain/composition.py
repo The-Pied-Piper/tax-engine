@@ -1,9 +1,10 @@
 """The composition: wired capabilities, checked and ordered (design.md §5).
 
 A composition is built once from capabilities and the artifact kinds a computation takes and
-returns. An input that is also a declared output is carried onto the worksheet as entered, with
-no producer. It rejects bad wiring when built, derives the execution order from the capabilities'
-contracts, and computes by applying each capability, in that order, to a fresh worksheet.
+returns, and which of its inputs may be left blank. An input that is also a declared output is
+carried onto the worksheet as entered, with no producer. It rejects bad wiring when built,
+derives the execution order from the capabilities' contracts, and computes by applying each
+capability, in that order, to a fresh worksheet.
 """
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ from typing import Any
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     CapabilityContractError,
     InvalidCompositionError,
     NegativeArtifactError,
@@ -33,11 +35,14 @@ class Composition:
         *,
         inputs: frozenset[ArtifactKind[Any]],
         outputs: frozenset[ArtifactKind[Any]],
+        blank_inputs: frozenset[ArtifactKind[Any]] = frozenset(),
     ) -> None:
         # Sorted once by the tie-break key, so every check and the order are deterministic.
         self._capabilities = tuple(sorted(capabilities, key=self._tie_break_key))
         self._inputs = inputs
         self._outputs = outputs
+        self._blank_inputs = blank_inputs
+        self._check_blank_inputs()
         self._check_each_produces_something()
         self._producers = self._index_producers()
         self._check_inputs()
@@ -53,12 +58,18 @@ class Composition:
     def compute(self, *artifacts: Artifact[Any]) -> Worksheet:
         """Apply every capability, in `order`, to a fresh worksheet of the starting `artifacts`.
 
-        The starting artifacts must be exactly one of each declared input kind. A capability that
-        produces a value below zero for a kind declared non-negative breaks its contract: its
+        The starting artifacts must be exactly one of each declared input kind, and only a kind
+        declared in `blank_inputs` may be blank, else it is a BlankNotAllowedError. A capability
+        that produces a value below zero for a kind declared non-negative breaks its contract: its
         `NegativeArtifactError` is raised as the `CapabilityContractError` naming it.
         """
         worksheet = Worksheet(*artifacts)
         self.check_starting_kinds((artifact.kind for artifact in artifacts), self._inputs)
+        refused = [a.kind for a in artifacts if a.is_blank and a.kind not in self._blank_inputs]
+        if refused:
+            raise BlankNotAllowedError(
+                f"{ArtifactKind.labels(refused)} may not be left blank in this computation"
+            )
         for capability in self._order:
             try:
                 worksheet.apply(capability)
@@ -71,6 +82,12 @@ class Composition:
                 )
                 raise CapabilityContractError(f"{name} produced {produced}") from error
         return worksheet
+
+    def _check_blank_inputs(self) -> None:
+        stray = self._blank_inputs - self._inputs
+        if stray:
+            kind = min(stray, key=Composition.sort_key)
+            raise InvalidCompositionError(f"blank input {kind.label!r} is not an input")
 
     def _check_each_produces_something(self) -> None:
         empty = [capability for capability in self._capabilities if not capability.produces]
