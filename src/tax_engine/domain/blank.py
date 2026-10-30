@@ -1,7 +1,8 @@
 """Blank: the value of a line the filer left empty, and how a capability treats one (design.md §3).
 
 A blank is a value of its own, distinct from zero, an empty list and an empty text: a form that
-says to skip a line leaves every line after it blank, not zero. Any artifact can be blank, so
+says to leave a part blank, or not to complete the rest of the form, leaves those lines blank, not
+zero. Any artifact can be blank, so
 every capability states, for each artifact slot it consumes, what it does with a blank there: it
 refuses it (the default), takes a fallback value the capability itself supplies, or passes the
 blank on to everything it produces. The rule is the consuming capability's, whether the blank

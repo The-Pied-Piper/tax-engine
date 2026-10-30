@@ -371,3 +371,19 @@ def test_a_composition_declares_no_blank_input_by_default() -> None:
 
     with pytest.raises(BlankNotAllowedError):
         plain.compute(Artifact(INCOME, D(7)), blank(DEDUCTION))
+
+
+def test_a_fallback_a_kind_cannot_hold_is_refused_when_the_capability_is_built() -> None:
+    class Negative(SubtractCompute):
+        BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"less": D(-5)}
+
+    floor = ArtifactKind("ex/floor", Decimal, non_negative=True)
+
+    Negative(INCOME, LIMIT, NET)
+    with pytest.raises(InvalidCapabilityError, match="fallback -5 for slot 'less'.*'ex/floor'"):
+        Negative(INCOME, floor, NET)
+
+
+def test_with_several_blank_slots_the_refusal_names_the_first_by_identifier() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'income'"):
+        SubtractStrict(LIMIT, INCOME, NET).run((blank(LIMIT), blank(INCOME)))

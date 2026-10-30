@@ -27,6 +27,7 @@ from tax_engine.domain.blank import BLANK, BlankRule, PassOn
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     CapabilityContractError,
+    DomainError,
     DuplicateArtifactError,
     InvalidCapabilityError,
     MissingArtifactError,
@@ -221,9 +222,27 @@ class Capability(ABC):
                         f"{kind.identifier!r}"
                     )
                 filled_by[kind] = slot
+        self._check_fallbacks(wired)
         self._slot_of = {kind: slot for slot in self.CONSUMES for kind in wired[slot]}
         self._consumes = frozenset(kind for slot in self.CONSUMES for kind in wired[slot])
         self._produces = frozenset(kind for slot in self.PRODUCES for kind in wired[slot])
+
+    def _check_fallbacks(self, wired: Mapping[str, tuple[ArtifactKind[Any], ...]]) -> None:
+        """Refuse a fallback that a kind wired to its slot cannot hold, such as a negative one for
+        a non-negative kind.
+        """
+        name = type(self).__name__
+        for slot, rule in self.BLANK_RULES.items():
+            if isinstance(rule, PassOn):
+                continue
+            for kind in wired[slot]:
+                try:
+                    Artifact(kind, rule)
+                except DomainError as error:
+                    raise InvalidCapabilityError(
+                        f"{name}: the blank fallback {rule} for slot {slot!r} is not valid for "
+                        f"{kind.identifier!r}: {error}"
+                    ) from error
 
     def _slot_kinds(
         self, slot: str, declared: type, given: object
@@ -306,7 +325,7 @@ class Capability(ABC):
         kept: list[Artifact[Any]] = []
         fallbacks: list[BlankFallbackLine] = []
         passed_on: list[ArtifactKind[Any]] = []
-        for artifact in inputs:
+        for artifact in sorted(inputs, key=lambda each: each.kind.identifier):
             if not artifact.is_blank:
                 kept.append(artifact)
                 continue

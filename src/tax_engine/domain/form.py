@@ -37,6 +37,7 @@ from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     DomainError,
     DuplicateArtifactError,
     InvalidCompositionError,
@@ -345,6 +346,11 @@ class FormSet:
     def _check_given(self, given: Mapping[ArtifactKind[Any], Artifact[Any]]) -> None:
         self._check_not_derived(given.keys())
         Composition.check_starting_kinds(given.keys(), self._inputs)
+        blank = [kind for kind, artifact in given.items() if artifact.is_blank]
+        if blank:
+            raise BlankNotAllowedError(
+                f"{ArtifactKind.labels(blank)} may not be left blank: a form set takes none"
+            )
 
     def _check_not_derived(self, kinds: Iterable[ArtifactKind[Any]]) -> None:
         derived = set(kinds) & self._producers.keys()
