@@ -17,24 +17,24 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.domain.capabilities as core
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.errors import InvalidCapabilityError, InvalidCompositionError
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import (
+import tax_engine.domain.capabilities as core
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.errors import InvalidCapabilityError, InvalidCompositionError
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.trace import CreditAmountLine, SumLine
+from tax_engine.domain.trace import CreditAmountLine, SumLine
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

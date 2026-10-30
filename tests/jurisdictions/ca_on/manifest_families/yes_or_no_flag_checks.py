@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     AGED_18_OR_OLDER_AT_END_OF_2025,
     AGED_18_OR_OLDER_AT_END_OF_2025_CHECKED,
     BORN_IN_1960_OR_EARLIER,
@@ -58,7 +58,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     VOLUNTEER_FIREFIGHTERS_CONDITIONS_MET,
     VOLUNTEER_FIREFIGHTERS_CONDITIONS_MET_CHECKED,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     CLAIMS_SENIORS_CARE_CREDIT,
     CLAIMS_SENIORS_CARE_CREDIT_CHECKED,
 )

@@ -16,9 +16,9 @@ selections here are none: `STEPS`, `WIRING` and `OUTPUTS` are empty.
 
 from __future__ import annotations
 
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     HAS_INVESTMENT_EXPENSES,
     HAS_INVESTMENT_EXPENSES_CHECKED,
 )

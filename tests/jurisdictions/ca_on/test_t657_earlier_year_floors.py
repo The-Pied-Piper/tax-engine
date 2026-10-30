@@ -22,12 +22,12 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator import build_tax_computation
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca import catalog
+from tax_engine import build_tax_computation
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca import catalog
 from tests.jurisdictions.ca_on.manifest_families.t657_chart_amounts_from_t2017 import CHARTS
 
 D = Decimal

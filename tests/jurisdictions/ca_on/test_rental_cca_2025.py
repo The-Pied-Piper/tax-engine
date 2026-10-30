@@ -30,21 +30,21 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.errors import InputAboveBoundError, InvalidRecordError
-from tax_calculator.domain.parameters.class_rates import (
+import tax_engine.registrations
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.errors import InputAboveBoundError, InvalidRecordError
+from tax_engine.domain.parameters.class_rates import (
     CLASS_RATES,
     ClassRate,
     HalfYearRule,
     HalfYearRuleOnSale,
     RecaptureAndTerminalLoss,
 )
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.registry import Namespace
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.registry import Namespace
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     NET_RENTAL_INCOME,
     RENTAL_CCA_CLAIM,
     RENTAL_CCA_LIMIT,
@@ -58,7 +58,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/cca_class_rates"
 T776_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt"
@@ -131,7 +131,7 @@ def squashed(text: str) -> str:
 
 def dataset_header() -> str:
     """The comment lines above the dataset's first key, squashed."""
-    root = tax_calculator.registrations.JURISDICTIONS.roots()[Namespace("ca")]
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca")]
     lines = (root / "parameters" / "cca_class_rates" / "2025.yaml").read_text().splitlines()
     first_key = next(i for i, line in enumerate(lines) if line[:1] != "#")
     return squashed("\n".join(lines[:first_key]))

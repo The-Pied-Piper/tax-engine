@@ -3,12 +3,12 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.home_renovation_line_3 import HomeRenovationLine3
-from tax_calculator.jurisdictions.ca.capabilities.home_renovation_line_6 import HomeRenovationLine6
-from tax_calculator.jurisdictions.ca.capabilities.home_renovation_line_7 import HomeRenovationLine7
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_3 import HomeRenovationLine3
+from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_6 import HomeRenovationLine6
+from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_7 import HomeRenovationLine7
+from tax_engine.jurisdictions.ca.catalog import (
     HOME_RENOVATION_LINE_3,
     HOME_RENOVATION_LINE_6,
     HOME_RENOVATION_LINE_8,

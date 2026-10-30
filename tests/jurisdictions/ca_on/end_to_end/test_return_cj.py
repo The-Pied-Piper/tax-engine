@@ -4,105 +4,105 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_56 import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_56 import (
     PrincipalResidencePart4Line56,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_57 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_57 import (
     PrincipalResidencePart4Line57,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_3 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_3 import (
     PrincipalResidenceWorksheetLine3Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_6 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_6 import (
     PrincipalResidenceWorksheetLine6Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_16 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_16 import (
     PrincipalResidenceWorksheetLine16Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_17 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_17 import (
     PrincipalResidenceWorksheetLine17Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_18 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_18 import (
     PrincipalResidenceWorksheetLine18Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_19 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_19 import (
     PrincipalResidenceWorksheetLine19Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_21 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_21 import (
     PrincipalResidenceWorksheetLine21Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_23 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_23 import (
     PrincipalResidenceWorksheetLine23Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_24 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_24 import (
     PrincipalResidenceWorksheetLine24Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_26 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_26 import (
     PrincipalResidenceWorksheetLine26Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_27 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_27 import (
     PrincipalResidenceWorksheetLine27Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_30 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_30 import (
     PrincipalResidenceWorksheetLine30Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_32 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_32 import (
     PrincipalResidenceWorksheetLine32Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_33 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_33 import (
     PrincipalResidenceWorksheetLine33Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_35 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_35 import (
     PrincipalResidenceWorksheetLine35Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_36 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_36 import (
     PrincipalResidenceWorksheetLine36Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_40 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_40 import (
     PrincipalResidenceWorksheetLine40Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_41 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_41 import (
     PrincipalResidenceWorksheetLine41Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_44 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_44 import (
     PrincipalResidenceWorksheetLine44Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_46 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_46 import (
     PrincipalResidenceWorksheetLine46Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_47 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_47 import (
     PrincipalResidenceWorksheetLine47Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_50 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_50 import (
     PrincipalResidenceWorksheetLine50Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_53 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_53 import (
     PrincipalResidenceWorksheetLine53Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_55 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_55 import (
     PrincipalResidenceWorksheetLine55Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_58 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_58 import (
     PrincipalResidenceWorksheetLine58Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_59 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_59 import (
     PrincipalResidenceWorksheetLine59Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_61 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_61 import (
     PrincipalResidenceWorksheetLine61Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_63 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_63 import (
     PrincipalResidenceWorksheetLine63Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_64 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_64 import (
     PrincipalResidenceWorksheetLine64Capability,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_66 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_66 import (
     PrincipalResidenceWorksheetLine66Capability,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GAIN,
     INCLUDED_CAPITAL_GAIN,
     PERSONAL_USE_PROPERTY_GAIN,

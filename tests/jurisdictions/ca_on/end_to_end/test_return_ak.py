@@ -6,10 +6,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InvalidTextError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import REFUND_OR_BALANCE_OWING, TOTAL_CREDITS
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.domain.errors import InvalidTextError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import REFUND_OR_BALANCE_OWING, TOTAL_CREDITS
+from tax_engine.jurisdictions.ca_on.catalog import (
     COOP_CLAIMED_AS_PARTNERSHIP_MEMBER,
     COOP_EDUCATION_CREDIT,
     COOP_EDUCATION_PLACEMENT_COUNT,

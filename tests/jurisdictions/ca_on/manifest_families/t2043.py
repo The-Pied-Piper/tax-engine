@@ -26,15 +26,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_FUEL_CHARGE_CREDIT_TOTAL,
     FARM_FUEL_CHARGE_CREDIT_TOTAL_CHECKED,
     FUEL_CHARGE_CHART_B_GROSS_INCOME_AB,
@@ -107,7 +107,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     FUEL_CHARGE_PARTNERSHIP_CREDIT_SK,
     FUEL_CHARGE_PARTNERSHIP_CREDIT_TOTAL,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.record_count import RecordCount
+from tax_engine.jurisdictions.ca_on.capabilities.record_count import RecordCount
 from tests.jurisdictions.ca_on.manifest_families.t2042 import (
     FARM_AMOUNT_8_AB_PER_STATEMENT,
     FARM_AMOUNT_8_MB_PER_STATEMENT,

@@ -7,10 +7,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.errors import InvalidRecordError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import InvalidRecordError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
     BUSINESS_INVESTMENT_LOSS,
     BUSINESS_INVESTMENT_LOSS_AFTER_REDUCTION,

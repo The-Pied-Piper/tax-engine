@@ -23,19 +23,19 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.class_rates import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.class_rates import (
     CLASS_RATES,
     ClassRate,
     HalfYearRule,
     HalfYearRuleOnSale,
     RecaptureAndTerminalLoss,
 )
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tests.jurisdictions.ca_on.end_to_end.support import D
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T777_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf"
 CLASS_8 = "ca/t777_class_8_rates"

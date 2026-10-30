@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.manifest import CapabilitySelection
+from tax_engine.domain.manifest import CapabilitySelection
 
 INPUTS = frozenset(
     {

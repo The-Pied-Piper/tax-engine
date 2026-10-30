@@ -15,12 +15,12 @@ from __future__ import annotations
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.ca.catalog import (
     T777_LINE_9,
     T777_TOOLS_FORMULA_A,
     T777_TOOLS_FORMULA_B,
@@ -30,7 +30,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, service, starting
 from tests.jurisdictions.ca_on.end_to_end.test_return_hi import t777_form
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 THRESHOLD = "ca/t777_tradespersons_tools_threshold"
 T4044_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt"
 TRADESPERSON_CERTIFIED = "tradesperson_tools_certified_on_t2200_question_12"

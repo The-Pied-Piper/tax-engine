@@ -7,10 +7,10 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.catalog.alternative_minimum_tax
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.errors import NegativeArtifactError
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog.alternative_minimum_tax
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import NegativeArtifactError
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_ADDITIONAL_TAXES_FOR_CARRYOVER,
     AMT_ADJUSTED_INCOME_WITH_GAINS,
     AMT_ADJUSTED_INCOME_WITH_SECURITY_OPTIONS,
@@ -1021,11 +1021,11 @@ def test_the_part_8_kinds_after_line_12_are_the_registered_ones(
 
 def test_the_alternative_minimum_tax_module_declares_no_amt_box_kind() -> None:
     assert not hasattr(
-        tax_calculator.jurisdictions.ca.catalog.alternative_minimum_tax,
+        tax_engine.jurisdictions.ca.catalog.alternative_minimum_tax,
         "AMT_T4_SECURITY_OPTIONS_BOXES_39_AND_91",
     )
     assert not hasattr(
-        tax_calculator.jurisdictions.ca.catalog.alternative_minimum_tax,
+        tax_engine.jurisdictions.ca.catalog.alternative_minimum_tax,
         "AMT_T4_SECURITY_OPTIONS_BOXES_41_AND_92",
     )
 

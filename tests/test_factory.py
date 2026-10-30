@@ -1,11 +1,11 @@
 import pytest
 
-from tax_calculator import build_tax_computation
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.jurisdictions.ca.catalog import FEDERAL_BASIC_TAX, TAXABLE_INCOME
-from tax_calculator.registrations import JURISDICTIONS
+from tax_engine import build_tax_computation
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.jurisdictions.ca.catalog import FEDERAL_BASIC_TAX, TAXABLE_INCOME
+from tax_engine.registrations import JURISDICTIONS
 
 
 @pytest.fixture

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rate_table import RateTableRow
-from tax_calculator.domain.trace import (
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rate_table import RateTableRow
+from tax_engine.domain.trace import (
     BracketColumnLine,
     ChosenByRangeLine,
     ChosenBySignLine,
@@ -13,7 +13,7 @@ from tax_calculator.domain.trace import (
     RateByIncomeBandLine,
     RoundedTotalLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_EPOP_PERCENTAGE_ROOM,
     BUSINESS_IMMEDIATE_EXPENSING_ALLOCATED,
     BUSINESS_IMMEDIATE_EXPENSING_SHARE,
@@ -40,12 +40,12 @@ from tax_calculator.jurisdictions.ca.catalog import (
     RENTAL_NON_COMPLIANT_EXPENSES,
     TAXABLE_INCOME,
 )
-from tax_calculator.jurisdictions.ca.trace import (
+from tax_engine.jurisdictions.ca.trace import (
     OtherDependantMedicalLine,
     ShortTermRentalNonCompliantLine,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_CREDIT,
     CARE_CREDIT_PERCENTAGE,
     CARE_FAMILY_ADJUSTED_INCOME,

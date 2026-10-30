@@ -1,9 +1,9 @@
 """Unit tests for the layout of the CA-ON trace package: each line class's home module.
 
-The CA-ON line classes live in `tax_calculator.jurisdictions.ca_on.trace`, one module per feature
+The CA-ON line classes live in `tax_engine.jurisdictions.ca_on.trace`, one module per feature
 group, each with an `__all__`; its `__init__` re-exports every module's `__all__`. Every exported
 line class appears in `HOMES`, so a new one is placed deliberately. Each has a renderer in the
-matching module of `tax_calculator.jurisdictions.ca_on.trace_english`.
+matching module of `tax_engine.jurisdictions.ca_on.trace_english`.
 """
 
 from __future__ import annotations
@@ -13,12 +13,12 @@ import inspect
 
 import pytest
 
-import tax_calculator.jurisdictions.ca_on.trace_english  # noqa: F401  (registers the renderers)
-from tax_calculator.adapters.inbound.trace_english.registry import EnglishRendererRegistry
-from tax_calculator.domain.trace import TraceLine
+import tax_engine.jurisdictions.ca_on.trace_english  # noqa: F401  (registers the renderers)
+from tax_engine.adapters.inbound.trace_english.registry import EnglishRendererRegistry
+from tax_engine.domain.trace import TraceLine
 
-PACKAGE = "tax_calculator.jurisdictions.ca_on.trace"
-RENDERERS = "tax_calculator.jurisdictions.ca_on.trace_english"
+PACKAGE = "tax_engine.jurisdictions.ca_on.trace"
+RENDERERS = "tax_engine.jurisdictions.ca_on.trace_english"
 
 HOMES: dict[str, tuple[str, ...]] = {
     "capped_records": ("CappedRecordLine",),

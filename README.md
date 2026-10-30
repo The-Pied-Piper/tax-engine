@@ -1,4 +1,4 @@
-# tax_calculator
+# tax_engine
 
 A jurisdiction-agnostic personal income tax computation engine. Canada and Ontario
 are the bundled pilot jurisdictions. Requires Python 3.12 or newer.
@@ -60,8 +60,8 @@ forms, guides, and source provenance used to verify the Canadian calculations.
 ## Engine usage
 
 ```python
-from tax_calculator import build_tax_computation
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
+from tax_engine import build_tax_computation
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 
 engine = build_tax_computation()
 forms = engine.compose(JurisdictionCode("CA-ON"), 2025)

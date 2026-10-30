@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.jurisdictions.ca.catalog import (
     ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
     CARRYING_CHARGES_INTEREST_EXPENSES_AND_OTHER_EXPENSES,
     DEDUCTIONS_FROM_TOTAL_INCOME,

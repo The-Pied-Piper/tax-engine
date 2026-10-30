@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.trace import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.trace import (
     TimesCountLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     AGE_AMOUNT_BEFORE_COUNT,
     CAREGIVER_AMOUNT,
     DISABILITY_TRANSFERRED_AMOUNT,
@@ -17,7 +17,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     MEDICAL_NET_INCOME_SHARE,
     OTHER_DEPENDANTS_MEDICAL,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import D, run_a
 
 

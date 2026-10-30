@@ -17,9 +17,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError, NoAmountForCountError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError, NoAmountForCountError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     T1206_LINE_C,
     T1206_LINE_D,
     T1206_LINE_E,

@@ -18,9 +18,9 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_CCA_CLAIM,
     BUSINESS_CCA_TABLE_CLAIM,
     BUSINESS_CLOSING_UCC,

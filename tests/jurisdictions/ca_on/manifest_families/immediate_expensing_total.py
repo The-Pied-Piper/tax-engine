@@ -20,14 +20,14 @@ input; the check refuses a total above the limit and never picks the claim.
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
     ImmediateExpensingAgreedLimit,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,
     FARM_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,
     FISH_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,

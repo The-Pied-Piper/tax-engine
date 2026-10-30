@@ -37,19 +37,19 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim import CcaClaim
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim_after_column_22 import (
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.cca_claim import CcaClaim
+from tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22 import (
     CcaClaimAfterColumn22,
 )
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
-from tax_calculator.jurisdictions.ca.capabilities.recaptured_cca import RecapturedCca
-from tax_calculator.jurisdictions.ca.capabilities.terminal_loss import TerminalLoss
-from tax_calculator.jurisdictions.ca.catalog import CCA_CLASS_NUMBER, CCA_UCC_AT_END
-from tax_calculator.jurisdictions.ca.trace import (
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
+from tax_engine.jurisdictions.ca.capabilities.recaptured_cca import RecapturedCca
+from tax_engine.jurisdictions.ca.capabilities.terminal_loss import TerminalLoss
+from tax_engine.jurisdictions.ca.catalog import CCA_CLASS_NUMBER, CCA_UCC_AT_END
+from tax_engine.jurisdictions.ca.trace import (
     CcaClaimLine,
     CcaZeroReason,
     ClosingUccLine,

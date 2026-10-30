@@ -13,10 +13,10 @@ and line 74), so the slip values flow as typed.
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.catalog import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
     T4_CPP_PENSIONABLE_EARNINGS_SLIP_CHECKED,
     T4_CPP_PENSIONABLE_EARNINGS_SLIP_LIMIT,

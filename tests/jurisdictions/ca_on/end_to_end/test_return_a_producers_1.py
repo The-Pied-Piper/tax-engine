@@ -6,85 +6,85 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.capabilities.amount_by_count import AmountForCount
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.contribution_tier import TieredContribution
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.first_record_count import FirstRecordCount
-from tax_calculator.domain.capabilities.greater_of import GreaterOf
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.multiple_over import MultipleOver
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.capabilities.tapered_amount import TaperedAmount
-from tax_calculator.domain.capabilities.tiered_surcharge import TieredSurcharge
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.errors import MissingArtifactError
-from tax_calculator.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
-from tax_calculator.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
-from tax_calculator.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
-from tax_calculator.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
-from tax_calculator.jurisdictions.ca.capabilities.business_vehicle_expenses import (
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.capabilities.amount_by_count import AmountForCount
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.contribution_tier import TieredContribution
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.first_record_count import FirstRecordCount
+from tax_engine.domain.capabilities.greater_of import GreaterOf
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.multiple_over import MultipleOver
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
+from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.errors import MissingArtifactError
+from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
+from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
+from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
+from tax_engine.jurisdictions.ca.capabilities.business_vehicle_expenses import (
     BusinessVehicleExpenses,
 )
-from tax_calculator.jurisdictions.ca.capabilities.caregiver_amount import CaregiverAmount
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim import CcaClaim
-from tax_calculator.jurisdictions.ca.capabilities.chart_a_row_c_total import ChartARowCTotal
-from tax_calculator.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartBZoneATotal
-from tax_calculator.jurisdictions.ca.capabilities.chart_b_zone_b_total import ChartBZoneBTotal
-from tax_calculator.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
-from tax_calculator.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.disability_transfer_amount import (
+from tax_engine.jurisdictions.ca.capabilities.caregiver_amount import CaregiverAmount
+from tax_engine.jurisdictions.ca.capabilities.cca_claim import CcaClaim
+from tax_engine.jurisdictions.ca.capabilities.chart_a_row_c_total import ChartARowCTotal
+from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartBZoneATotal
+from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_b_total import ChartBZoneBTotal
+from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
+from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.disability_transfer_amount import (
     DisabilityTransferAmount,
 )
-from tax_calculator.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
-from tax_calculator.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
+from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
+from tax_engine.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
     EiExcludedSlipsNetIncome,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_paid_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_paid_total import (
     ForeignBusinessTaxPaidTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_net_non_business_income_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_net_non_business_income_total import (
     ForeignNetNonBusinessIncomeTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.lesser_of_when_positive import (
+from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
     LesserOfWhenPositive,
     LesserOfWhenPositiveInBrackets,
 )
-from tax_calculator.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
-from tax_calculator.jurisdictions.ca.capabilities.other_dependants_medical import (
+from tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
+from tax_engine.jurisdictions.ca.capabilities.other_dependants_medical import (
     OtherDependantsMedical,
 )
-from tax_calculator.jurisdictions.ca.capabilities.positive_part_of_negation import (
+from tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation import (
     PositivePartOfNegation,
 )
-from tax_calculator.jurisdictions.ca.capabilities.ratio_truncated import (
+from tax_engine.jurisdictions.ca.capabilities.ratio_truncated import (
     RatioTruncated,
     RatioTruncatedAtMostOne,
 )
-from tax_calculator.jurisdictions.ca.capabilities.recaptured_cca import RecapturedCca
-from tax_calculator.jurisdictions.ca.capabilities.rental_gross_rents import RentalGrossRents
-from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_gross_rents import (
+from tax_engine.jurisdictions.ca.capabilities.recaptured_cca import RecapturedCca
+from tax_engine.jurisdictions.ca.capabilities.rental_gross_rents import RentalGrossRents
+from tax_engine.jurisdictions.ca.capabilities.short_term_rental_gross_rents import (
     ShortTermRentalGrossRents,
 )
-from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_non_compliant_expenses import (
+from tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_expenses import (
     ShortTermRentalNonCompliantExpenses,
 )
-from tax_calculator.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
-from tax_calculator.jurisdictions.ca.capabilities.terminal_loss import TerminalLoss
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
+from tax_engine.jurisdictions.ca.capabilities.terminal_loss import TerminalLoss
+from tax_engine.jurisdictions.ca.catalog import (
     ADDITIONAL_DEDUCTIONS,
     ADJUSTED_FAMILY_NET_INCOME,
     ADJUSTED_GROSS_CAPITAL_LOSSES_1985_TO_1987,
@@ -1115,13 +1115,13 @@ from tax_calculator.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AMOUNT,
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.capabilities.caregiver_amount import OntarioCaregiverAmount
-from tax_calculator.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.capabilities.caregiver_amount import OntarioCaregiverAmount
+from tax_engine.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
     OntarioDisabilityTransferAmount,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_ADJUSTED_INCOME,
     CARE_CREDIT,
     CARE_CREDIT_PERCENTAGE,

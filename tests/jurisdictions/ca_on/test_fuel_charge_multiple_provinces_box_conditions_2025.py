@@ -19,18 +19,18 @@ from __future__ import annotations
 from decimal import Decimal
 from itertools import combinations
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 BOX_CONDITIONS = "ca/fuel_charge_multiple_provinces_box_conditions"
 PLACES = ("on", "mb", "sk", "ab", "ns", "pe", "nl", "nb", "outside_eight")
 

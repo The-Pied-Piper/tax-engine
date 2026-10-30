@@ -6,18 +6,18 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.brackets import BRACKETS, BracketSchedule
-from tax_calculator.domain.parameters.claim_reduction import CLAIM_REDUCTION, ClaimReduction
-from tax_calculator.domain.parameters.class_rates import CLASS_RATES, ClassRates
-from tax_calculator.domain.parameters.conditions import CONDITIONS, ConditionList
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rate_table import RATE_TABLE, RateTable
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
-from tax_calculator.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.brackets import BRACKETS, BracketSchedule
+from tax_engine.domain.parameters.claim_reduction import CLAIM_REDUCTION, ClaimReduction
+from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRates
+from tax_engine.domain.parameters.conditions import CONDITIONS, ConditionList
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rate_table import RATE_TABLE, RateTable
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
+from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts
 
 
 def test_built_in_kinds() -> None:

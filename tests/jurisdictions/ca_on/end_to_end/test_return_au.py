@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.disposition_proceeds import DispositionProceeds
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.disposition_proceeds import DispositionProceeds
+from tax_engine.jurisdictions.ca.catalog import (
     BOND_PROCEEDS,
     CAPITAL_GAIN,
     CRYPTO_ASSET_PROCEEDS,

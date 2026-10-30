@@ -17,24 +17,24 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities  # noqa: F401  (registers the federal capabilities)
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities  # noqa: F401  (registers the federal capabilities)
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
     NotFoundError,
 )
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
-from tax_calculator.jurisdictions.ca.trace import YearAmountLine
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
+from tax_engine.jurisdictions.ca.trace import YearAmountLine
 
 D = Decimal
 
@@ -71,7 +71,7 @@ def compute(year: int) -> Any:
 
 
 def test_is_registered_as_ca_year_amount() -> None:
-    assert year_amount().__module__ == "tax_calculator.jurisdictions.ca.capabilities.year_amount"
+    assert year_amount().__module__ == "tax_engine.jurisdictions.ca.capabilities.year_amount"
 
 
 def test_declares_its_slots() -> None:

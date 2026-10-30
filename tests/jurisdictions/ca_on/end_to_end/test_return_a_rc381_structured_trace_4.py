@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.contribution_tier import ContributionTier
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.trace import (
+from tax_engine.domain.parameters.contribution_tier import ContributionTier
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.trace import (
     AmountByCountLine,
     ContributionTierLine,
     LesserOfLine,
     SubtractedNotBelowZeroLine,
     SumNotBelowZeroLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_BASIC_EXEMPTION,
     CPP_MAXIMUM_PENSIONABLE_EARNINGS,
     CPP_SECOND_ADDITIONAL_EARNINGS_MAXIMUM,

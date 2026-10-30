@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
     MOVING_EXPENSES_CLAIM,
     MOVING_EXPENSES_DEDUCTION,

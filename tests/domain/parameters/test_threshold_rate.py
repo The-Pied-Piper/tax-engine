@@ -14,10 +14,10 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidRateError, InvalidThresholdRateError
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
+from tax_engine.domain.errors import DomainError, InvalidRateError, InvalidThresholdRateError
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
 
 D = Decimal
 RATE = Rate(D("0.0505"))

@@ -4,14 +4,14 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.parameters.amount import Amount
-from tax_calculator.domain.trace import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.parameters.amount import Amount
+from tax_engine.domain.trace import (
     AtMostLine,
     CappedAmountLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     ELIGIBLE_DEPENDANT_AMOUNT,
     ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_COUNT,
     FEDERAL_TAX_AFTER_CREDITS,
@@ -23,8 +23,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     REFUND_OR_BALANCE_OWING,
     TOTAL_CREDITS,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_MAXIMUM,
     FERTILITY_CREDIT,
     FERTILITY_CREDIT_BEFORE_MAXIMUM,

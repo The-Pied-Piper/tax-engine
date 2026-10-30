@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import UnknownRegistrationError
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import UnknownRegistrationError
 
 
 def test_the_base_is_not_registered() -> None:

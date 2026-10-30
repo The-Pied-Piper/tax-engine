@@ -16,11 +16,11 @@ from typing import Any
 import pytest
 import yaml
 
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.registrations import JURISDICTIONS
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.registrations import JURISDICTIONS
 from tests.jurisdictions.ca_on.end_to_end.support import service as shared_service
 from tests.jurisdictions.ca_on.test_worked_returns import RETURNS, check_against
 from tests.jurisdictions.ca_on.worked_return import WorkedReturn

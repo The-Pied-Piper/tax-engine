@@ -17,18 +17,18 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
     InputBelowBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.trace import CountAtLeastLine
-from tax_calculator.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
+from tax_engine.domain.trace import CountAtLeastLine
+from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
 
 COUNT = ArtifactKind("ex/widget_count", int)
 MINIMUM = ArtifactKind("ex/widget_minimum", int)

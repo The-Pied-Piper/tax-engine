@@ -14,11 +14,11 @@ The return declares no output for the line: it is read by the return's own steps
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     OTHER_EMPLOYMENT_EXPENSES,
     RC359_EXCESS_EPSP_AMOUNT,
     RC359_EXCESS_EPSP_TOTAL,

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     CANADA_WORKERS_BENEFIT,
     CHILD_CARE_BASIC_LIMIT,
@@ -20,7 +20,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     NET_INCOME,
     TAXABLE_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     LIFT_CREDIT,
     LIFT_REDUCTION,
     ONTARIO_BASIC_TAX,

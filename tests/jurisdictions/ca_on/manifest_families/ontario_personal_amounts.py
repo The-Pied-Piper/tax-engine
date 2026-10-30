@@ -2,25 +2,25 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
     AmountOrDividedByRate,
 )
-from tax_calculator.jurisdictions.ca.capabilities.other_dependants_medical import (
+from tax_engine.jurisdictions.ca.capabilities.other_dependants_medical import (
     OtherDependantsMedical,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     ADOPTION_EXPENSE_CHILDREN,
     BORN_IN_1960_OR_EARLIER_CHECKED,
     CPP_BASE_CONTRIBUTIONS_ON_RETURN,
@@ -43,15 +43,15 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOSI_ADJUSTED_NET_INCOME_NOT_BELOW_ZERO,
     UNDER_18_ON_DECEMBER_31_CHECKED,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.capabilities.capped_record_total import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.capabilities.capped_record_total import (
     OntarioCappedRecordTotal,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.caregiver_amount import OntarioCaregiverAmount
-from tax_calculator.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
+from tax_engine.jurisdictions.ca_on.capabilities.caregiver_amount import OntarioCaregiverAmount
+from tax_engine.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
     OntarioDisabilityTransferAmount,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     CAREGIVER_DEPENDANTS,
     ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_MAXIMUM,
     ELIGIBLE_DEPENDANT_BASE,

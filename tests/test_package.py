@@ -1,5 +1,5 @@
-from tax_calculator import build_tax_computation
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
+from tax_engine import build_tax_computation
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 
 
 def test_bundled_jurisdiction_data_composes() -> None:

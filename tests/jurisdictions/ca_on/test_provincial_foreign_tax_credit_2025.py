@@ -29,24 +29,24 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.parameters.amount import AMOUNT
-from tax_calculator.domain.parameters.conditions import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.parameters.amount import AMOUNT
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionList,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.rate import RATE
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.registry import Namespace
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.parameters.rate import RATE
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.catalog import (
     FOREIGN_BUSINESS_TAX_PAID,
     FOREIGN_BUSINESS_UNUSED_TAX_CREDITS,
     FOREIGN_NON_BUSINESS_TAX_PAID,
@@ -56,12 +56,12 @@ from tax_calculator.jurisdictions.ca.catalog import (
     NET_FOREIGN_BUSINESS_INCOME,
     NET_FOREIGN_NON_BUSINESS_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.provincial_foreign_tax_credit import (
+from tax_engine.jurisdictions.ca_on.capabilities.provincial_foreign_tax_credit import (
     ProvincialForeignTaxCredit,
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 ROUNDING = "ca-on/provincial_foreign_tax_credit_rounding"
 THRESHOLD = "ca-on/provincial_foreign_tax_credit_separate_sheet_threshold"
@@ -95,7 +95,7 @@ def squashed(text: str) -> str:
 
 def dataset_header(family: str) -> str:
     """The comment lines above the dataset's first key, squashed."""
-    root = tax_calculator.registrations.JURISDICTIONS.roots()[Namespace("ca-on")]
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca-on")]
     name = family.removeprefix("ca-on/")
     lines = (root / "parameters" / name / "2025.yaml").read_text().splitlines()
     first_key = next(i for i, line in enumerate(lines) if line[:1] != "#")

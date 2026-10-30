@@ -12,8 +12,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_SECOND_ADDITIONAL_EARNINGS_MAXIMUM,
     FARM_CCA_CLAIM,
     FARM_CCA_CLAIM_LESS_PERSONAL_PART,
@@ -90,11 +90,11 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca.trace import BusinessVehicleLine
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca.trace import BusinessVehicleLine
+from tax_engine.jurisdictions.ca_on.catalog import (
     NON_REFUNDABLE_TAX_CREDITS as ONTARIO_NON_REFUNDABLE_TAX_CREDITS,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     ONTARIO_BASIC_TAX,
     ONTARIO_HEALTH_PREMIUM,
     ONTARIO_TAX,

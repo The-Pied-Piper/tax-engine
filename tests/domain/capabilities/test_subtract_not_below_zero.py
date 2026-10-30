@@ -16,14 +16,14 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.domain.capabilities as core
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.trace import SubtractedLine, SubtractedNotBelowZeroLine
+import tax_engine.domain.capabilities as core
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.trace import SubtractedLine, SubtractedNotBelowZeroLine
 
 D = Decimal
 

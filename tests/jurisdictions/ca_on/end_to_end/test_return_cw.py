@@ -7,11 +7,11 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError, ValidationError
-from tax_calculator.domain.trace import AtMostLine, RecordTotalLine, SumLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError, ValidationError
+from tax_engine.domain.trace import AtMostLine, RecordTotalLine, SumLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,
     FARM_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,
     FISH_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,
@@ -20,7 +20,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     IMMEDIATE_EXPENSING_TOTAL_CLAIM,
     RENTAL_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,
 )
-from tax_calculator.jurisdictions.ca.trace import ImmediateExpensingAgreedLimitLine
+from tax_engine.jurisdictions.ca.trace import ImmediateExpensingAgreedLimitLine
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
 # Return CW: a rental (Form T776), a shop (Form T2125), a farm (Form T2042) and, in some tests, a

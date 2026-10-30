@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.trace import (
+from tax_engine.domain.trace import (
     SumLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CPT20_EARNINGS,
     CPT20_T4_EARNINGS,
     PENSIONABLE_NET_SELF_EMPLOYMENT_EARNINGS,

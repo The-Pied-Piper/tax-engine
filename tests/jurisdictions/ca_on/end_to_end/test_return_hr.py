@@ -14,8 +14,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_CAPITAL_CONTRIBUTIONS,
     FARM_DRAWINGS,
     FARM_LIABILITIES,

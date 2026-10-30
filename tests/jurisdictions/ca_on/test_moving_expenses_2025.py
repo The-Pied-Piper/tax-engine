@@ -37,15 +37,15 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.registrations
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_DEDUCTIONS_TOTAL,
     DEDUCTIONS_FROM_TOTAL_INCOME,
     MOVING_BUSINESS_INCOME,
@@ -61,7 +61,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 DISTANCE_THRESHOLD = "ca/moving_distance_threshold"
 MAINTENANCE_CAP = "ca/moving_old_home_maintenance_cap"
 

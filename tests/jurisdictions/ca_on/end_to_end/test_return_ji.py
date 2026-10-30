@@ -5,9 +5,9 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_ALTERNATIVE_MINIMUM_TAX_PAYABLE,
     AMT_FOREIGN_BUSINESS_TAX_PAID,
     AMT_FOREIGN_INCOME_LIMIT,
@@ -28,8 +28,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     REFUND_OR_BALANCE_OWING,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.trace import ProvincialForeignTaxCreditLine
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.trace import ProvincialForeignTaxCreditLine
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 # The two countries, each a record of Form T2209 as (tax paid, net foreign non-business income

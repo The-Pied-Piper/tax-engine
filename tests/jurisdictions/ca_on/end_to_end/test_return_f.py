@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.trace import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.trace import (
     ChosenByCountLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     BASIC_PERSONAL_AMOUNT,
     CANADA_WORKERS_BENEFIT,
@@ -30,8 +30,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_PAYABLE,
     WORKING_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_MAXIMUM,
     ELIGIBLE_DEPENDANT_BASE,
     ONTARIO_TAX,

@@ -45,26 +45,26 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca
-import tax_calculator.registrations
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.errors import InputAboveBoundError, InvalidRecordError
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca
+import tax_engine.registrations
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.errors import InputAboveBoundError, InvalidRecordError
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_MOTOR_VEHICLE_EXPENSES,
     BUSINESS_TOTAL_EXPENSES,
 )
-from tax_calculator.jurisdictions.ca.trace import BusinessVehicleLine
+from tax_engine.jurisdictions.ca.trace import BusinessVehicleLine
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T2125_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf"
 T4002_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf"
@@ -206,7 +206,7 @@ CREDIT_LIMITS = (
 
 @pytest.mark.parametrize("family", CREDIT_LIMITS)
 def test_2025_the_four_credit_limit_datasets_are_deleted(family: str) -> None:
-    parameters = Path(tax_calculator.jurisdictions.ca.__file__).parent / "parameters"
+    parameters = Path(tax_engine.jurisdictions.ca.__file__).parent / "parameters"
 
     assert not (parameters / family.removeprefix("ca/") / "2025.yaml").exists()
     assert not (parameters / family.removeprefix("ca/")).exists()
@@ -244,7 +244,7 @@ PER_LINE_ROUNDINGS = (
 
 @pytest.mark.parametrize("family", PER_LINE_ROUNDINGS)
 def test_2025_the_per_line_chart_roundings_are_deleted(family: str) -> None:
-    parameters = Path(tax_calculator.jurisdictions.ca.__file__).parent / "parameters"
+    parameters = Path(tax_engine.jurisdictions.ca.__file__).parent / "parameters"
 
     assert not (parameters / family.removeprefix("ca/") / "2025.yaml").exists()
 

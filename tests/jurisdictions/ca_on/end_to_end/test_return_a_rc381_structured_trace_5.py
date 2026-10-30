@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.trace import (
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.trace import (
     AmountWhenMoreLine,
     ChosenBySignLine,
     CountAtLeastLine,
@@ -13,7 +13,7 @@ from tax_calculator.domain.trace import (
     PositivePartOfNegationLine,
     RatioTruncatedLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_MAXIMUM_PENSIONABLE_EARNINGS,
     CPP_MONTHS,
     CPP_T4_BASE_AND_FIRST_ADDITIONAL_CONTRIBUTIONS,

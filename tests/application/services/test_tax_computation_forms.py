@@ -23,12 +23,12 @@ from typing import Any, ClassVar
 
 import pytest
 
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capability import Capability, CapabilityRegistry, CapabilityResult
-from tax_calculator.domain.errors import (
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
+from tax_engine.domain.errors import (
     CapabilityContractError,
     DuplicateRegistrationError,
     InvalidCompositionError,
@@ -38,12 +38,12 @@ from tax_calculator.domain.errors import (
     UnknownRegistrationError,
     ValidationError,
 )
-from tax_calculator.domain.form import FormSet
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
+from tax_engine.domain.form import FormSet
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
 from tests.application.services.test_tax_computation import (
     BASE,
     FACTOR,

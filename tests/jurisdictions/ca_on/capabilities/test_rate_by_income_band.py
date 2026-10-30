@@ -25,17 +25,17 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca_on.capabilities as ca_on_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import DomainError, InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rate_table import RATE_TABLE, RateTable
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.domain.trace import RateByIncomeBandLine
-from tax_calculator.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
+import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import DomainError, InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rate_table import RATE_TABLE, RateTable
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.trace import RateByIncomeBandLine
+from tax_engine.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
 from tests.jurisdictions.ca_on.capabilities.on479a_table import (
     FAMILY_INCOME,
     ON479A_ROWS,

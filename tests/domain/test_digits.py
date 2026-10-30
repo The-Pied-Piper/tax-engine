@@ -18,15 +18,15 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.digits import DigitsKind
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.digits import DigitsKind
+from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
     InvalidRegistrationError,
     InvalidTextError,
 )
-from tax_calculator.domain.registry import Namespace
+from tax_engine.domain.registry import Namespace
 
 NUMBER = DigitsKind("ex/business_number", digits=9)
 SHORT = DigitsKind("ex/filing_number", digits=5)

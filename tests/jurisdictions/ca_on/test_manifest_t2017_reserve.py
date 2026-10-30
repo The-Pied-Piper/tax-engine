@@ -18,18 +18,18 @@ from pathlib import Path
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
 # lists the packages; build_tax_computation registers their catalogs
-import tax_calculator.registrations
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.form import FormComposition
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Form, Manifest
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.registrations
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.form import FormComposition
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Form, Manifest
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     T2017_LINE_2_RESERVE_ROWS,
     T2017_LINE_8_RESERVE_ROWS,
     T2017_RESERVE_NINE_YEAR,
@@ -38,7 +38,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
 from tests.jurisdictions.ca_on.manifest_families import t2017_reserve as family
 
 CA_ON = JurisdictionCode("CA-ON")
-MANIFESTS = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 INPUTS_PART = MANIFESTS / "01j_t2017_inputs.yaml"
 SUMMARY_PART = MANIFESTS / "03z_t2017_summary.yaml"
 ROW_PARTS = {line: MANIFESTS / f"03z_t2017_line_{line}_reserve.yaml" for line in family.ROW_LINES}
@@ -48,7 +48,7 @@ LAYOUT = re.compile(r"^\d\d[a-z]?_[a-z0-9_]+\.yaml$")
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
         .get_jurisdiction(CA_ON)
         .manifests
     )

@@ -17,18 +17,18 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
     InputBelowBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.trace import YesOrNoCountLine
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.domain.trace import YesOrNoCountLine
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 
 COUNT = ArtifactKind("ex/yes_or_no", int)
 OUTPUT = ArtifactKind("ex/yes_or_no_checked", int)

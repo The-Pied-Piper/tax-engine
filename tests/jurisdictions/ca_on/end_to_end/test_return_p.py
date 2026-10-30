@@ -4,19 +4,19 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.trace import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.trace import (
     ChosenByRangeLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     NET_INCOME,
     PROVINCIAL_CREDITS,
     REFUND_OR_BALANCE_OWING,
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     ONTARIO_CREDITS,
     ONTARIO_CREDITS_SUBTOTAL,
     ONTARIO_TAX,

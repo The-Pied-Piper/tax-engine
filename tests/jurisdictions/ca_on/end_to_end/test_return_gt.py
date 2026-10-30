@@ -8,9 +8,9 @@ not taken from the engine.
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_CCA_CLAIM,
     FARM_CCA_CLAIM_LESS_PERSONAL_PART,
     FARM_CCA_TABLE_CLAIM,

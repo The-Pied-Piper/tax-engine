@@ -2,59 +2,59 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.capped_amount import CappedAmount
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.greater_of import GreaterOf
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.greater_of import GreaterOf
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
     AmountOrDividedByRate,
 )
-from tax_calculator.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_4 import (
+from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_4 import (
     ForeignBusinessTaxCreditLine4,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_5 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_5 import (
     ForeignBusinessTaxCreditLine5,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_7 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_7 import (
     ForeignBusinessTaxCreditLine7,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_8 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_8 import (
     ForeignBusinessTaxCreditLine8,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_10 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_10 import (
     ForeignBusinessTaxCreditLine10,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_11 import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_11 import (
     ForeignBusinessTaxCreditLine11,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_non_business_tax_credit import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_credit import (
     ForeignNonBusinessTaxCredit,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_property_tax_over_limit import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_property_tax_over_limit import (
     ForeignPropertyTaxOverLimit,
 )
-from tax_calculator.jurisdictions.ca.capabilities.foreign_surtax_allocated_total import (
+from tax_engine.jurisdictions.ca.capabilities.foreign_surtax_allocated_total import (
     ForeignSurtaxAllocatedTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.lesser_of_when_positive import (
+from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
     LesserOfWhenPositive,
 )
-from tax_calculator.jurisdictions.ca.capabilities.more_than_per_unit import MoreThanPerUnit
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.more_than_per_unit import MoreThanPerUnit
+from tax_engine.jurisdictions.ca.catalog import (
     ADDITIONAL_DEDUCTIONS_TOTAL,
     ADOPTION_CREDIT,
     ADOPTION_EXPENSE_CHILDREN,

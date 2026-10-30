@@ -22,16 +22,16 @@ from typing import Any, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as canada
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.restricted_farm_loss_applied import (
+import tax_engine.jurisdictions.ca.capabilities as canada
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.restricted_farm_loss_applied import (
     RestrictedFarmLossApplied,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     QFFP_DISPOSITIONS,
     QFFP_FORECLOSURE_DISPOSITIONS,
     QFFP_FORECLOSURE_RESTRICTED_FARM_LOSS_APPLIED,
@@ -39,7 +39,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     REAL_ESTATE_DISPOSITIONS,
     REAL_ESTATE_RESTRICTED_FARM_LOSS_APPLIED,
 )
-from tax_calculator.jurisdictions.ca.trace import FarmLossAppliedLine
+from tax_engine.jurisdictions.ca.trace import FarmLossAppliedLine
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     FarmLossRow,
     QffpRow,

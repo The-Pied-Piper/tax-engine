@@ -8,41 +8,41 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.capabilities.amount_by_count import AmountForCount
-from tax_calculator.domain.capabilities.apply_fraction import ApplyFraction
-from tax_calculator.domain.capabilities.apply_rate import ApplyRate
-from tax_calculator.domain.capabilities.contribution_tier import TieredContribution
-from tax_calculator.domain.capabilities.lesser_of import LesserOf
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.errors import (
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.capabilities.amount_by_count import AmountForCount
+from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.capabilities.contribution_tier import TieredContribution
+from tax_engine.domain.capabilities.lesser_of import LesserOf
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InputBelowBoundError,
     NegativeArtifactError,
     NoAmountForCountError,
 )
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
-from tax_calculator.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
-from tax_calculator.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
-from tax_calculator.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
-from tax_calculator.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
-from tax_calculator.jurisdictions.ca.capabilities.lesser_of_when_positive import (
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
+from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
+from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
+from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
+from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
     LesserOfWhenPositive,
     LesserOfWhenPositiveInBrackets,
 )
-from tax_calculator.jurisdictions.ca.capabilities.positive_part_of_negation import (
+from tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation import (
     PositivePartOfNegation,
 )
-from tax_calculator.jurisdictions.ca.capabilities.ratio_truncated import (
+from tax_engine.jurisdictions.ca.capabilities.ratio_truncated import (
     RatioTruncated,
     RatioTruncatedAtMostOne,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_ADDITIONAL_MAXIMUM_PENSIONABLE_EARNINGS,
     CPP_BASE_CONTRIBUTIONS,
     CPP_BASE_CONTRIBUTIONS_ON_RETURN,

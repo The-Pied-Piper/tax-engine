@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_LIMITED_PARTNERSHIP_LOSSES_ADJUSTMENT,
     DEDUCTIONS_FROM_NET_INCOME,
     LIMITED_PARTNERSHIP_LOSSES_OF_OTHER_YEARS_CHECKED,

@@ -6,9 +6,9 @@ import re
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     RDSP_INCOME_REPAYMENT_CHECKED,
     SOCIAL_BENEFITS_LINE_14,
     SOCIAL_BENEFITS_REPAYMENT,

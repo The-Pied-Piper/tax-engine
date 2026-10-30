@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.fraction import Fraction
-from tax_calculator.domain.trace import (
+from tax_engine.domain.parameters.fraction import Fraction
+from tax_engine.domain.trace import (
     FractionAppliedLine,
     SubtractedLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_T4_BASE_AND_FIRST_ADDITIONAL_CONTRIBUTIONS,
     RC381_PART_2_LINE_G,
     RC381_PART_2_LINE_H,

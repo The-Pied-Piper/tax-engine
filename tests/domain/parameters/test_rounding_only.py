@@ -11,8 +11,8 @@ from dataclasses import fields, is_dataclass
 
 import pytest
 
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 
 
 def test_holds_nothing() -> None:

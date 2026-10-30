@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_INCOME_NOT_BELOW_ZERO,
     COMMISSION_INCOME_NOT_BELOW_ZERO,
     CPP_PAYABLE_ON_SELF_EMPLOYMENT,

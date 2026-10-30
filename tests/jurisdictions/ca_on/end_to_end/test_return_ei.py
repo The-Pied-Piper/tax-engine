@@ -9,9 +9,9 @@ shared starting values.
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import PRINCIPAL_RESIDENCE_DESIGNATION_BOX
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import PRINCIPAL_RESIDENCE_DESIGNATION_BOX
 from tests.jurisdictions.ca.capabilities.principal_residence_figures import Figures
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, service, starting
 

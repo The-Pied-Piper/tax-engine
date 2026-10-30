@@ -9,8 +9,8 @@ older, so it is 0 here.
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BASIC_PERSONAL_AMOUNT,
     CAREGIVER_AMOUNT_FOR_SPOUSE_OR_DEPENDANT,
     DEPENDANT_CAREGIVER_AMOUNT,

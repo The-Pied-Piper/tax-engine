@@ -16,12 +16,12 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError, InputBelowBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError, InputBelowBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_TOTAL,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import compute_with_spouse
 
 

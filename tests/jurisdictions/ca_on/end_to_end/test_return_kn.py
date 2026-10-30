@@ -11,7 +11,7 @@ CRA prints. This module reads the same gain through the Schedule 3 lines and the
 
 from __future__ import annotations
 
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GAIN,
     REAL_ESTATE_GAIN_OR_LOSS,
     TAXABLE_CAPITAL_GAINS,

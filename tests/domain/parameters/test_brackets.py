@@ -17,9 +17,9 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidBracketScheduleError
-from tax_calculator.domain.parameters.brackets import Bracket, BracketColumn, BracketSchedule
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.errors import DomainError, InvalidBracketScheduleError
+from tax_engine.domain.parameters.brackets import Bracket, BracketColumn, BracketSchedule
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,

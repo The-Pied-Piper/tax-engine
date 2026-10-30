@@ -14,12 +14,12 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.errors import InvalidRecordError, NegativeArtifactError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     ADVANCED_CANADA_WORKERS_BENEFIT,
     AGED_18_OR_OLDER_AT_END_OF_2025,
     ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
@@ -802,14 +802,14 @@ def test_registered_identifiers_snapshot(registry: ArtifactRegistry) -> None:
 
 
 def test_the_package_exposes_its_catalog() -> None:
-    assert isinstance(tax_calculator.jurisdictions.ca.catalog.CATALOG, ArtifactCatalog)
-    assert tax_calculator.jurisdictions.ca.catalog.CATALOG is CATALOG
+    assert isinstance(tax_engine.jurisdictions.ca.catalog.CATALOG, ArtifactCatalog)
+    assert tax_engine.jurisdictions.ca.catalog.CATALOG is CATALOG
     assert {kind.identifier for kind in CATALOG.kinds} == REGISTERED
 
 
 def test_catalog_kinds_are_in_the_package_namespace() -> None:
     for kind in CATALOG.kinds:
-        assert kind.identifier.startswith(f"{tax_calculator.jurisdictions.ca.NAMESPACE}/")
+        assert kind.identifier.startswith(f"{tax_engine.jurisdictions.ca.NAMESPACE}/")
 
 
 def test_the_catalog_kinds_named_by_the_package_are_money() -> None:
@@ -831,7 +831,7 @@ def test_the_counts_are_int_kinds_in_the_package_namespace(registry: ArtifactReg
     for identifier in COUNTS:
         kind = registry.get(identifier)
         assert isinstance(kind, ArtifactKind)
-        assert kind.identifier.startswith(f"{tax_calculator.jurisdictions.ca.NAMESPACE}/")
+        assert kind.identifier.startswith(f"{tax_engine.jurisdictions.ca.NAMESPACE}/")
         assert kind.value_type is int, identifier
 
 
@@ -3388,7 +3388,7 @@ def test_the_four_credit_limit_kinds_are_gone() -> None:
     for name in ("interest_limit", "list_price_limit", "lease_charge_limit", "lease_cost_limit"):
         assert f"ca/business_vehicle_{name}" not in REGISTERED, name
         assert f"BUSINESS_VEHICLE_{name.upper()}" not in vars(
-            tax_calculator.jurisdictions.ca.catalog
+            tax_engine.jurisdictions.ca.catalog
         ), name
 
 

@@ -18,10 +18,10 @@ import inspect
 from collections.abc import Mapping, Sequence
 from typing import Any
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_INCOME,
     BUSINESS_PARTNERSHIP_TOTAL,
     JOURNALISM_LABOUR_TAX_CREDIT,

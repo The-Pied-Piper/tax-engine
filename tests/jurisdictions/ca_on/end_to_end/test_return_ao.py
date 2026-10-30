@@ -6,16 +6,16 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.trace import ConditionsCountLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.trace import ConditionsCountLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_ALTERNATIVE_MINIMUM_TAX_PAYABLE,
     NET_INCOME,
     SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_TOTAL,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     BANKRUPT_IN_YEAR_CHECKED,
     CLAIMS_TAX_REDUCTION_AMOUNTS_AT_EQUAL_NET_INCOME_CHECKED,
     NOT_CLAIMING_ONTARIO_TAX_REDUCTION_CHECKED,

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InputOutOfRangeError
+from tax_engine.domain.errors import InputOutOfRangeError
 from tests.jurisdictions.ca_on.end_to_end.test_return_ex import RENTAL_ONE, RENTAL_TWO, run_ex
 
 REFUSED = "rental_t5013_slip_conflict 1 is refused"

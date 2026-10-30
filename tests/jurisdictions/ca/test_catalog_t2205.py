@@ -1,6 +1,6 @@
 """Registered kinds of Form T2205 "Amounts from a Spousal or Common-law Partner RRSP, RRIF, or SPP
 to Include in Income", in the federal catalog family `t2205`
-(`tax_calculator/jurisdictions/ca/catalog/t2205.py`).
+(`tax_engine/jurisdictions/ca/catalog/t2205.py`).
 
 The form `ca/t2205` runs once. Its twelve starting amounts are the printed lines 1, 2, 4, 6, 7, 12,
 13, 14, 17, 18 and 20 and the part of line 11 that relates to SPP withdrawals; the steps compute
@@ -14,9 +14,9 @@ import ast
 from decimal import Decimal
 from pathlib import Path
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     T2205_LINE_1,
     T2205_LINE_2,
     T2205_LINE_3,
@@ -123,7 +123,7 @@ def squashed(text: str) -> str:
 def docstring_of(identifier: str) -> str:
     """The string right after the declaration of the kind `identifier` in a catalog module (its
     name is a constant of the declaration's call, which may take the catalog first)."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

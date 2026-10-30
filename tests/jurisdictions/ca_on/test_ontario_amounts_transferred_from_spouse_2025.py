@@ -23,25 +23,25 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
-from tax_calculator.domain.registry import Namespace
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
+from tax_engine.domain.registry import Namespace
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
     AmountOrDividedByRate,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import compute
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 INCOME_LIMIT = "ca-on/spouse_transfer_income_limit"
 S2_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s2/5006-s2-25e.txt"
 
@@ -117,7 +117,7 @@ def squashed(text: str) -> str:
 
 def dataset_header(family: str) -> str:
     """The comment lines above the dataset's first key, squashed."""
-    root = tax_calculator.registrations.JURISDICTIONS.roots()[Namespace("ca-on")]
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca-on")]
     name = family.removeprefix("ca-on/")
     lines = (root / "parameters" / name / "2025.yaml").read_text().splitlines()
     first_key = next(i for i, line in enumerate(lines) if line[:1] != "#")

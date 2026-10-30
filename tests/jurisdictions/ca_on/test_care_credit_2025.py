@@ -22,16 +22,16 @@ from pathlib import Path
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rate_table import RATE_TABLE
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.registry import Namespace
-from tax_calculator.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
-from tax_calculator.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rate_table import RATE_TABLE
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
+from tax_engine.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
 from tests.jurisdictions.ca_on.capabilities.on479a_table import (
     FAMILY_INCOME,
     ON479A_ROWS,
@@ -39,7 +39,7 @@ from tests.jurisdictions.ca_on.capabilities.on479a_table import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 TABLE_FAMILY = "ca-on/care_credit_rate"
 ROUNDING_FAMILY = "ca-on/care_credit_rounding"
@@ -59,7 +59,7 @@ def squashed(text: str) -> str:
 
 
 def dataset_lines(family: str) -> list[str]:
-    root = tax_calculator.registrations.JURISDICTIONS.roots()[Namespace("ca-on")]
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca-on")]
     return (root / "parameters" / family.partition("/")[2] / "2025.yaml").read_text().splitlines()
 
 

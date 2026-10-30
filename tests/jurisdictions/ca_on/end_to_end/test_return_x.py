@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.parameters.claim_reduction import ClaimReduction
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.other_dependants_medical import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.parameters.claim_reduction import ClaimReduction
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.other_dependants_medical import (
     OtherDependantsMedical,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CANADA_WORKERS_BENEFIT,
     DEPENDANT_NET_INCOME,
     FEDERAL_TAX_AFTER_CREDITS,
@@ -35,9 +35,9 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca.trace import OtherDependantMedicalLine
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca.trace import OtherDependantMedicalLine
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     ONTARIO_TAX,
     ONTARIO_TAX_AFTER_CREDITS,
 )

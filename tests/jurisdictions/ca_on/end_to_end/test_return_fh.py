@@ -13,8 +13,8 @@ hand figure of each line; the engine's tax figures are checked in the YAML only.
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GIFTS_LIMIT_ADDITION,
     CAPITAL_GIFTS_TOTAL,
     CAPITAL_PROPERTY_GIFTS,

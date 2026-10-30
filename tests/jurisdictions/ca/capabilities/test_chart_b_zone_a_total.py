@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartBZoneATotal
+from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartBZoneATotal
 from tests.jurisdictions.ca.capabilities.chart_b_trips import ZONE_A, ZONE_B, ZoneTotalCases
 
 

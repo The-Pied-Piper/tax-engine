@@ -16,14 +16,14 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.domain.capabilities as core
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.trace import RecordTotalLine
+import tax_engine.domain.capabilities as core
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import RecordTotalLine
 
 D = Decimal
 

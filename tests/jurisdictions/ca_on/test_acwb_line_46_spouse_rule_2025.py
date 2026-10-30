@@ -15,13 +15,13 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.parameters.conditions import CONDITIONS, ConditionPart, ConditionTest
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.conditions import CONDITIONS, ConditionPart, ConditionTest
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 LINE_46 = "ca/acwb_line_46_spouse_rule"
 SCHEDULE_6_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt"
 

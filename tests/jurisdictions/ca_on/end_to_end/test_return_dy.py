@@ -12,9 +12,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     EI_MATERNITY_PARENTAL_BENEFITS,
     EMERGENCY_SERVICES_VOLUNTEER_EXEMPT_INCOME,
     FHSA_FIRST_OPENED_IN_YEAR,

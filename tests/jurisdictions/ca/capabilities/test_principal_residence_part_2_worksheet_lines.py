@@ -22,11 +22,11 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_59 import (
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_59 import (
     PrincipalResidenceWorksheetLine59Capability,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     PRINCIPAL_RESIDENCE_PROPERTIES,
     PRINCIPAL_RESIDENCE_WORKSHEET_LINE_59,
     RESIDENCE_WS_COST_BASE_ADJUSTMENTS_TO_FEB_1994,

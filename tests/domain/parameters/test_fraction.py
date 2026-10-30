@@ -17,9 +17,9 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidFractionError
-from tax_calculator.domain.parameters.fraction import FRACTION, Fraction
-from tax_calculator.domain.parameters.kind import ParameterKind
+from tax_engine.domain.errors import DomainError, InvalidFractionError
+from tax_engine.domain.parameters.fraction import FRACTION, Fraction
+from tax_engine.domain.parameters.kind import ParameterKind
 
 D = Decimal
 

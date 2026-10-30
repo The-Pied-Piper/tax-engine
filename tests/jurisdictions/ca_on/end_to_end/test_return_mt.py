@@ -14,9 +14,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import CapabilityContractError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import CapabilityContractError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     AMT_T1212_LINE_29_DEFERRED_SECURITY_OPTIONS,
     SECURITY_OPTIONS_DEDUCTIONS,
     T1212_LINE_3_CLOSING_BALANCE,

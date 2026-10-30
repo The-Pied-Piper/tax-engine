@@ -15,13 +15,13 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import Capability, CapabilityRegistry
-from tax_calculator.domain.errors import MissingArtifactError
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.cca_entries_total import CcaEntriesTotal
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.errors import MissingArtifactError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.cca_entries_total import CcaEntriesTotal
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_AIIP_ADDITIONS,
     CCA_CLAIMED,

@@ -17,8 +17,8 @@ selections here are none: `STEPS`, `WIRING` and `OUTPUTS` are empty.
 
 from __future__ import annotations
 
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca.catalog import PARTNERSHIP_TAXABLE_CAPITAL_GAINS
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.catalog import PARTNERSHIP_TAXABLE_CAPITAL_GAINS
 
 # The one input of the form: the amount, entered once. It stays in the return's inputs list
 # (`01_inputs.yaml`).

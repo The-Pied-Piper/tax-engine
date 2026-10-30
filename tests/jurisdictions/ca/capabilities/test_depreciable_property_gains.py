@@ -23,27 +23,27 @@ from decimal import Decimal
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.depreciable_property_gains import (
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.depreciable_property_gains import (
     DepreciablePropertyGains,
 )
-from tax_calculator.jurisdictions.ca.capabilities.disposition_rows import DispositionRows
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.disposition_rows import DispositionRows
+from tax_engine.jurisdictions.ca.catalog import (
     CAREGIVER_AMOUNT,
     REAL_ESTATE_DISPOSITIONS,
     REAL_ESTATE_GAIN_OR_LOSS,
     SHARE_DISPOSITIONS,
 )
-from tax_calculator.jurisdictions.ca.trace import DepreciablePropertyGainLine
+from tax_engine.jurisdictions.ca.trace import DepreciablePropertyGainLine
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     GAIN,
     LOSS,

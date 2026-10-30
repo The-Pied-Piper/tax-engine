@@ -8,8 +8,8 @@ income. The tests check the form's figure of $6,424.00.
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     NET_INCOME,
     NORTHERN_RESIDENTS_DEDUCTIONS,
     RESIDENCY_AMOUNT,

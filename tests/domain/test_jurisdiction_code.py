@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import pytest
 
-from tax_calculator.domain.errors import InvalidJurisdictionCodeError, ValidationError
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.registry import Namespace
+from tax_engine.domain.errors import InvalidJurisdictionCodeError, ValidationError
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.registry import Namespace
 
 
 @pytest.mark.parametrize(

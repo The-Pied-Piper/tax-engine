@@ -14,18 +14,18 @@ from decimal import Decimal
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
-from tax_calculator.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
+from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
     AmountOrDividedByRate,
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 FAMILY = "ca-on/unused_tuition_limit"
 S11_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s11/5006-s11-25e.txt"
 

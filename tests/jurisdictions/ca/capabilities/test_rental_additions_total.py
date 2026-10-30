@@ -23,26 +23,26 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca
-import tax_calculator.jurisdictions.ca.capabilities as canada
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca
+import tax_engine.jurisdictions.ca.capabilities as canada
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.rental_additions_total import RentalAdditionsTotal
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.rental_additions_total import RentalAdditionsTotal
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     RENTAL_ADDITION_PERSONAL_PORTION,
     RENTAL_ADDITION_TOTAL_COST,
     RENTAL_BUILDING_ADDITIONS,
     RENTAL_EQUIPMENT_ADDITIONS,
 )
-from tax_calculator.jurisdictions.ca.trace import RentalAdditionLine
+from tax_engine.jurisdictions.ca.trace import RentalAdditionLine
 
 D = Decimal
 
@@ -77,7 +77,7 @@ def total(*rows: dict[Any, Any], kind: RecordListKind = RENTAL_EQUIPMENT_ADDITIO
 
 
 def test_is_registered_as_ca_rental_additions_total() -> None:
-    assert tax_calculator.jurisdictions.ca.capabilities is canada
+    assert tax_engine.jurisdictions.ca.capabilities is canada
     assert CapabilityRegistry.shared().get("ca/rental_additions_total") is RentalAdditionsTotal
 
 

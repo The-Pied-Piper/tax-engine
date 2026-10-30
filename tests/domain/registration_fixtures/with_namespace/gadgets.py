@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.artifact import Artifact
-from tax_calculator.domain.capability import Capability, CapabilityResult
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.capability import Capability, CapabilityResult
 
 
 class Gadget:

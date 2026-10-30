@@ -6,10 +6,10 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 
 def test_holds_values_of_its_kind() -> None:

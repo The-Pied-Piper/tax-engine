@@ -13,9 +13,9 @@ from typing import Any, assert_type
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.errors import InvalidRegistrationError, UnknownRegistrationError
-from tax_calculator.domain.registry import Namespace
+from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import InvalidRegistrationError, UnknownRegistrationError
+from tax_engine.domain.registry import Namespace
 
 BASE = ArtifactKind("ex/taxable_base", Decimal)
 COUNT = ArtifactKind("ex/count", int)

@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.domain.artifact import ArtifactCatalog
-from tax_calculator.domain.registry import Namespace
+from tax_engine.domain.artifact import ArtifactCatalog
+from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.registration_fixtures.ex_on import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))

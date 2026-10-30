@@ -11,68 +11,68 @@ the total of the gross rental income that is T1 line 12599 (`STEPS` and `WIRING`
 
 from __future__ import annotations
 
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capabilities.choose_by_count import ChooseByCount
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.capabilities.sum import Sum
-from tax_calculator.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_calculator.domain.capabilities.times_count import TimesCount
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.domain.record_list import RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities import (
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.domain.record_list import RecordListKind
+from tax_engine.jurisdictions.ca.capabilities import (
     short_term_rental_non_compliant_cca_by_class as rental_cca,
 )
-from tax_calculator.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
-from tax_calculator.jurisdictions.ca.capabilities.cca_additions_total import CcaAdditionsTotal
-from tax_calculator.jurisdictions.ca.capabilities.cca_claim_after_column_22_prorated import (
+from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.jurisdictions.ca.capabilities.cca_additions_total import CcaAdditionsTotal
+from tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22_prorated import (
     CcaClaimAfterColumn22Prorated,
 )
-from tax_calculator.jurisdictions.ca.capabilities.cca_opening_ucc_total import CcaOpeningUccTotal
-from tax_calculator.jurisdictions.ca.capabilities.cca_personal_part_remaining_total import (
+from tax_engine.jurisdictions.ca.capabilities.cca_opening_ucc_total import CcaOpeningUccTotal
+from tax_engine.jurisdictions.ca.capabilities.cca_personal_part_remaining_total import (
     CcaPersonalPartRemainingTotal,
 )
-from tax_calculator.jurisdictions.ca.capabilities.cca_vehicle_additions_checks import (
+from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_additions_checks import (
     CcaVehicleAdditionsChecks,
 )
-from tax_calculator.jurisdictions.ca.capabilities.cca_vehicle_proceeds import CcaVehicleProceeds
-from tax_calculator.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc_after_column_22_prorated import (
+from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_proceeds import CcaVehicleProceeds
+from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc_after_column_22_prorated import (
     ClosingUccAfterColumn22Prorated,
 )
-from tax_calculator.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
-from tax_calculator.jurisdictions.ca.capabilities.count_refused_by_conditions import (
+from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
     CountRefusedByConditions,
 )
-from tax_calculator.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
-from tax_calculator.jurisdictions.ca.capabilities.immediate_expensing_claim import (
+from tax_engine.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
+from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_claim import (
     ImmediateExpensingClaim,
 )
-from tax_calculator.jurisdictions.ca.capabilities.positive_part_of_negation import (
+from tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation import (
     PositivePartOfNegation,
 )
-from tax_calculator.jurisdictions.ca.capabilities.prorated_by_fiscal_period_days import (
+from tax_engine.jurisdictions.ca.capabilities.prorated_by_fiscal_period_days import (
     ProratedByFiscalPeriodDays,
 )
-from tax_calculator.jurisdictions.ca.capabilities.recaptured_cca import RecapturedCca
-from tax_calculator.jurisdictions.ca.capabilities.rental_additions_total import RentalAdditionsTotal
-from tax_calculator.jurisdictions.ca.capabilities.rental_gross_rents import RentalGrossRents
-from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_gross_rents import (
+from tax_engine.jurisdictions.ca.capabilities.recaptured_cca import RecapturedCca
+from tax_engine.jurisdictions.ca.capabilities.rental_additions_total import RentalAdditionsTotal
+from tax_engine.jurisdictions.ca.capabilities.rental_gross_rents import RentalGrossRents
+from tax_engine.jurisdictions.ca.capabilities.short_term_rental_gross_rents import (
     ShortTermRentalGrossRents,
 )
-from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_non_compliant_cca import (
+from tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_cca import (
     ShortTermRentalNonCompliantCca,
 )
-from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_non_compliant_expenses import (
+from tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_expenses import (
     ShortTermRentalNonCompliantExpenses,
 )
-from tax_calculator.jurisdictions.ca.capabilities.short_term_rental_related_expenses import (
+from tax_engine.jurisdictions.ca.capabilities.short_term_rental_related_expenses import (
     ShortTermRentalRelatedExpenses,
 )
-from tax_calculator.jurisdictions.ca.capabilities.terminal_loss import TerminalLoss
-from tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.capabilities.terminal_loss import TerminalLoss
+from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
+from tax_engine.jurisdictions.ca.catalog import (
     GROSS_RENTAL_INCOME,
     IMMEDIATE_EXPENSING_SHORT_YEAR_DAYS,
     NET_RENTAL_INCOME,

@@ -18,15 +18,15 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.capabilities.credit_amount import CreditAmount
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 SHORT_YEAR_DAYS = "ca/immediate_expensing_short_year_days"
 REGULATIONS = "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._945/section-1104.html"
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

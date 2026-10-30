@@ -20,14 +20,14 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca_on.capabilities as ontario
-import tax_calculator.registrations
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.trace import ChosenByCountLine, ChosenByRangeLine
-from tax_calculator.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
+import tax_engine.jurisdictions.ca_on.capabilities as ontario
+import tax_engine.registrations
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.trace import ChosenByCountLine, ChosenByRangeLine
+from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
 
 D = Decimal
 
@@ -73,9 +73,7 @@ def compute(amount: str, **candidates: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_on_choose_by_range() -> None:
-    assert (
-        tax_calculator.registrations.CORE_PACKAGES
-    )  # importing registrations imports the packages
+    assert tax_engine.registrations.CORE_PACKAGES  # importing registrations imports the packages
     assert CapabilityRegistry.shared().get("ca-on/choose_by_range") is ChooseByRange
 
 

@@ -26,26 +26,26 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
     InputBelowBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.trace import MoreThanPerUnitLine, PerUnitAmountLine
-from tax_calculator.jurisdictions.ca.capabilities.more_than_per_unit import MoreThanPerUnit
+from tax_engine.domain.trace import MoreThanPerUnitLine, PerUnitAmountLine
+from tax_engine.jurisdictions.ca.capabilities.more_than_per_unit import MoreThanPerUnit
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

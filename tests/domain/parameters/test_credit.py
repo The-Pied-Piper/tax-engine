@@ -11,9 +11,9 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidCreditError
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.kind import ParameterKind
+from tax_engine.domain.errors import DomainError, InvalidCreditError
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.kind import ParameterKind
 
 D = Decimal
 

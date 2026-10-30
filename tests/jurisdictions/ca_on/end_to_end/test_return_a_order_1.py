@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     ADJUSTED_GROSS_CAPITAL_LOSSES_1985_TO_1987,
     ADJUSTED_GROSS_CAPITAL_LOSSES_1988_AND_1989,
@@ -636,8 +636,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AFTER_WORK_SITE,
     ZONE_B_RESIDENCY_AMOUNT,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_ADJUSTED_INCOME,
     CARE_CREDIT,
     CARE_CREDIT_PERCENTAGE,

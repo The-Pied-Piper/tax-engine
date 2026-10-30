@@ -1,0 +1,60 @@
+"""RecordTotal: adds one amount field over the records of a record list, exactly.
+
+The record-list kind has exactly one field, an amount; the capability adds it over the records in
+order, and an empty list totals zero. It has no dataset, so it never rounds. Each item is named by
+its position from 1 in the trace.
+"""
+
+from __future__ import annotations
+
+from collections.abc import Mapping
+from decimal import Decimal
+from typing import Any, ClassVar
+
+from tax_engine.domain.artifact import Artifact, Money
+from tax_engine.domain.capability import Capability, CapabilityResult, capability
+from tax_engine.domain.errors import InvalidCapabilityError
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.trace import RecordTotalLine
+
+
+@capability(identifier="record_total")
+class RecordTotal(Capability):
+    """Produces `output`: the sum of the one amount field over the consumed `records`."""
+
+    CONSUMES: ClassVar[Mapping[str, type]] = {"records": RecordList}
+    PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+
+    def __init__(self, records: RecordListKind, output: Money) -> None:
+        """Wire the capability: the record-list kind it adds and the kind it produces.
+
+        Raises InvalidCapabilityError when the list kind does not have exactly one field, an
+        amount.
+        """
+        super().__init__(records=records, output=output)
+        if not isinstance(records, RecordListKind):
+            raise InvalidCapabilityError(
+                f"{type(self).__name__}: CONSUMES slot 'records' must be a record-list kind"
+            )
+        amount_fields = [kind for kind in records.fields if issubclass(kind.value_type, Decimal)]
+        if len(records.fields) != 1 or not amount_fields:
+            raise InvalidCapabilityError(
+                f"{type(self).__name__}: CONSUMES slot 'records' must be a record list of "
+                "exactly one amount field"
+            )
+        self._field = amount_fields[0]
+        self._records = records
+        self._output = output
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        records = self._input(inputs, self._records).value.records
+        amounts = tuple(record[self._field] for record in records)
+        total = sum(amounts, Decimal(0))
+        return CapabilityResult(
+            outputs=(Artifact(self._output, total),),
+            trace=(
+                RecordTotalLine(
+                    output=self._output, field=self._field, amounts=amounts, total=total
+                ),
+            ),
+        )

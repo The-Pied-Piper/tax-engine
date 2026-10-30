@@ -9,13 +9,13 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-import tax_calculator.adapters.inbound.trace_english.forms as english_forms
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.adapters.inbound.trace_english.registry import EnglishRendererRegistry
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.subtract import Subtract
-from tax_calculator.domain.form import FormComposition, FormSet
-from tax_calculator.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
+import tax_engine.adapters.inbound.trace_english.forms as english_forms
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.adapters.inbound.trace_english.registry import EnglishRendererRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.subtract import Subtract
+from tax_engine.domain.form import FormComposition, FormSet
+from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
 
 D = Decimal
 
@@ -34,7 +34,7 @@ def render(line: FormInstanceLine) -> str:
 
 
 def test_the_forms_renderer_module_registers_the_line() -> None:
-    assert english_forms.__name__ == "tax_calculator.adapters.inbound.trace_english.forms"
+    assert english_forms.__name__ == "tax_engine.adapters.inbound.trace_english.forms"
     registry = EnglishRendererRegistry.shared()
 
     assert registry.for_line_class(FormInstanceLine).line_class is FormInstanceLine

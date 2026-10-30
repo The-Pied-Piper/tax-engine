@@ -14,9 +14,9 @@ from typing import Any, cast
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidYearAmountsError
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
+from tax_engine.domain.errors import DomainError, InvalidYearAmountsError
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
 
 D = Decimal
 

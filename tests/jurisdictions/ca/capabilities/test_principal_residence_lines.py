@@ -33,67 +33,67 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
     UnknownRegistrationError,
     ValidationError,
 )
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingRule
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.domain.trace.base import TraceLine
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_27 import (
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.domain.trace.base import TraceLine
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_27 import (
     PrincipalResidencePart2Line27,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_29 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_29 import (
     PrincipalResidencePart2Line29,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_30 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_30 import (
     PrincipalResidencePart2Line30,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_32 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_32 import (
     PrincipalResidencePart2Line32,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_33 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_33 import (
     PrincipalResidencePart2Line33,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_38 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_38 import (
     PrincipalResidencePart2Line38,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_39 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_39 import (
     PrincipalResidencePart2Line39,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_42 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_42 import (
     PrincipalResidencePart2Line42,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_44 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_44 import (
     PrincipalResidencePart2Line44,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_45 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_45 import (
     PrincipalResidencePart2Line45,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_48 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_48 import (
     PrincipalResidencePart2Line48,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_51 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_51 import (
     PrincipalResidencePart2Line51,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_53 import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_line_53 import (
     PrincipalResidencePart2Line53,
 )
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_rows import (
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_rows import (
     PrincipalResidenceRows,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CAREGIVER_AMOUNT,
     PRINCIPAL_RESIDENCE_LINE_27,
     PRINCIPAL_RESIDENCE_LINE_29,
@@ -110,7 +110,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     PRINCIPAL_RESIDENCE_LINE_53,
     PRINCIPAL_RESIDENCE_PROPERTIES,
 )
-from tax_calculator.jurisdictions.ca.trace import (
+from tax_engine.jurisdictions.ca.trace import (
     PrincipalResidenceLine27,
     PrincipalResidenceLine29,
     PrincipalResidenceLine30,
@@ -429,7 +429,7 @@ def test_is_registered_under_its_line(line: int) -> None:
 
     assert registered is CAPABILITIES[line]
     assert registered.__module__ == (
-        f"tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_{line}"
+        f"tax_engine.jurisdictions.ca.capabilities.principal_residence_line_{line}"
     )
 
 

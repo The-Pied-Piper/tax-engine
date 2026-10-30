@@ -15,9 +15,9 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.errors import NegativeArtifactError
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import NegativeArtifactError
+from tax_engine.jurisdictions.ca.catalog import (
     INVESTMENT_TAX_CREDIT,
     INVESTMENT_TAX_CREDIT_REFUND,
     ITC_AGRICULTURAL_SRED_CONTRIBUTIONS,

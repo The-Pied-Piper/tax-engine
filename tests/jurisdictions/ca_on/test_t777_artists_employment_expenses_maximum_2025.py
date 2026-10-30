@@ -15,14 +15,14 @@ from __future__ import annotations
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_CLAIMED,
     CCA_CLASS_NUMBER,
@@ -40,7 +40,7 @@ from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, service, star
 from tests.jurisdictions.ca_on.end_to_end.test_return_ee import rows
 from tests.jurisdictions.ca_on.end_to_end.test_return_hi import t777_form
 
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 MAXIMUM = "ca/t777_artists_employment_expenses_maximum"
 RATE_DATASET = "ca/t777_artists_employment_expenses_rate"
 T4044_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt"

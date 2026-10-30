@@ -3,7 +3,7 @@
 A form runs once per instance, each on its own worksheet. Its trace lines come back grouped in
 one `FormInstanceLine` per instance: the form's name, the instance's position from 1 (as items of
 a record list are named) and the lines of that instance's run, in order. It lives in
-`tax_calculator.domain.trace.forms`, and the package re-exports it.
+`tax_engine.domain.trace.forms`, and the package re-exports it.
 """
 
 from __future__ import annotations
@@ -13,10 +13,10 @@ from decimal import Decimal
 
 import pytest
 
-import tax_calculator.domain.trace
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
-from tax_calculator.domain.trace import forms as trace_forms
+import tax_engine.domain.trace
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
+from tax_engine.domain.trace import forms as trace_forms
 
 D = Decimal
 
@@ -36,9 +36,9 @@ def line() -> FormInstanceLine:
 
 def test_is_a_trace_line_of_the_forms_module_re_exported_by_the_package() -> None:
     assert issubclass(FormInstanceLine, TraceLine)
-    assert FormInstanceLine.__module__ == "tax_calculator.domain.trace.forms"
+    assert FormInstanceLine.__module__ == "tax_engine.domain.trace.forms"
     assert list(trace_forms.__all__) == ["FormInstanceLine"]
-    assert "FormInstanceLine" in tax_calculator.domain.trace.__all__
+    assert "FormInstanceLine" in tax_engine.domain.trace.__all__
 
 
 def test_fields_in_order() -> None:

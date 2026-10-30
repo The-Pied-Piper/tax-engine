@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     FARM_NET_INCOME_AFTER_INVENTORY_ADJUSTMENTS,
     FARM_NET_INCOME_BEFORE_ADJUSTMENTS,
     FARMING_INCOME,

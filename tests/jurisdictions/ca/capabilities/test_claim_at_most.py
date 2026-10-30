@@ -18,18 +18,18 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
     InputBelowBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.trace import ClaimAtMostLine
-from tax_calculator.jurisdictions.ca.capabilities.claim_at_most import ClaimAtMost
+from tax_engine.domain.trace import ClaimAtMostLine
+from tax_engine.jurisdictions.ca.capabilities.claim_at_most import ClaimAtMost
 
 D = Decimal
 

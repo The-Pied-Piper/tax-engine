@@ -25,15 +25,15 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InvalidConditionsError
-from tax_calculator.domain.parameters.conditions import (
+from tax_engine.domain.errors import DomainError, InvalidConditionsError
+from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
     ConditionList,
     ConditionPart,
     ConditionTest,
 )
-from tax_calculator.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.kind import ParameterKind
 
 D = Decimal
 ONE = D(1)

@@ -5,9 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 
-from tax_calculator.adapters.inbound.trace_english.registry import english_renderer
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.trace import TraceLine
+from tax_engine.adapters.inbound.trace_english.registry import english_renderer
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.trace import TraceLine
 
 
 @dataclass(frozen=True)

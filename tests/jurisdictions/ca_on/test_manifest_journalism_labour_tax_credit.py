@@ -17,20 +17,20 @@ from typing import Any
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
 # lists the packages; build_tax_computation registers their catalogs
-import tax_calculator.registrations
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.capabilities.record_total import RecordTotal
-from tax_calculator.domain.form import FormComposition
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Manifest
+import tax_engine.registrations
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.capabilities.record_total import RecordTotal
+from tax_engine.domain.form import FormComposition
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_on.manifest_families import t2125
 
 CA_ON = JurisdictionCode("CA-ON")
-MANIFESTS = Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
+MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
 T2125_PART = MANIFESTS / "03b_t2125.yaml"
 REFUND_PART = MANIFESTS / "14_refund.yaml"
 INPUTS_PART = MANIFESTS / "01_inputs.yaml"
@@ -42,7 +42,7 @@ TOTAL_CREDITS = "ca/total_credits"
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
         .get_jurisdiction(CA_ON)
         .manifests
     )

@@ -15,8 +15,8 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     CANADA_WORKERS_BENEFIT,
     CWB_FAMILY_NET_INCOME_LINE_10,

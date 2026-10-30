@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.parameters.amount import Amount
-from tax_calculator.domain.parameters.contribution_tier import ContributionTier
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING
-from tax_calculator.domain.trace import (
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.parameters.amount import Amount
+from tax_engine.domain.parameters.contribution_tier import ContributionTier
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.trace import (
     AmountByCountLine,
     AtMostLine,
     ChosenByCountLine,
@@ -29,7 +29,7 @@ from tax_calculator.domain.trace import (
     SurchargeTierLine,
     TimesCountLine,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     ACWB_PAID,
     ADDITIONAL_DEDUCTIONS_TOTAL,
     ADJUSTED_FAMILY_NET_INCOME,
@@ -1227,8 +1227,8 @@ from tax_calculator.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AMOUNT,
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
-from tax_calculator.jurisdictions.ca_on import catalog as ontario
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_ADJUSTED_INCOME,
     COMMUNITY_FOOD_PROGRAM_CREDIT,
     COMMUNITY_FOOD_PROGRAM_DONATIONS,
@@ -1270,7 +1270,7 @@ from tax_calculator.jurisdictions.ca_on.catalog import (
     SENIORS_TRANSIT_MAXIMUM,
     SENIORS_TRANSIT_PAID,
 )
-from tax_calculator.jurisdictions.ca_on.trace import PlacementCreditLine
+from tax_engine.jurisdictions.ca_on.trace import PlacementCreditLine
 from tests.jurisdictions.ca_on.end_to_end.support import CENT, D, return_a, run_a
 
 

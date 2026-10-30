@@ -15,10 +15,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_ADJUSTED_GROSS_SALES,
     BUSINESS_CCA_CLAIM,
     BUSINESS_CCA_CLAIM_LESS_PERSONAL_PART,
@@ -96,10 +96,10 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     NON_REFUNDABLE_TAX_CREDITS as ONTARIO_NON_REFUNDABLE_TAX_CREDITS,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     ONTARIO_BASIC_TAX,
     ONTARIO_HEALTH_PREMIUM,
     ONTARIO_TAX,

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     EI_OVERPAYMENT,
     FARM_FUEL_CHARGE_CREDIT_TOTAL,
     FARM_FUEL_CHARGE_CREDIT_TOTAL_CHECKED,

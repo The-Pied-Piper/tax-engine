@@ -25,29 +25,29 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.composition import Composition
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.composition import Composition
+from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
     UnknownRegistrationError,
 )
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_calculator.domain.trace import ChosenRateAppliedLine, RateAppliedLine, RateByIncomeBandLine
-from tax_calculator.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
-from tax_calculator.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.trace import ChosenRateAppliedLine, RateAppliedLine, RateByIncomeBandLine
+from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
+from tax_engine.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
 from tests.jurisdictions.ca_on.capabilities.on479a_table import (
     FAMILY_INCOME,
     form_row,
@@ -411,8 +411,6 @@ def test_is_no_longer_registered_under_the_ontario_namespace() -> None:
 
 def test_the_ontario_package_holds_no_module_for_it() -> None:
     assert (
-        importlib.util.find_spec(
-            "tax_calculator.jurisdictions.ca_on.capabilities.apply_chosen_rate"
-        )
+        importlib.util.find_spec("tax_engine.jurisdictions.ca_on.capabilities.apply_chosen_rate")
         is None
     )

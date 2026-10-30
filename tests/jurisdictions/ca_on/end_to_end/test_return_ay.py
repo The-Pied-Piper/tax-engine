@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CHILD_CARE_EXPENSES,
     NET_INCOME_BEFORE_ADJUSTMENTS,
     TOSI_ADJUSTED_NET_INCOME,
     TOTAL_SPLIT_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_ADJUSTED_INCOME,
     CARE_CREDIT,
     CARE_CREDIT_PERCENTAGE,

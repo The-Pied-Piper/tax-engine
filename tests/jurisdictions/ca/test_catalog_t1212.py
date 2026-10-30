@@ -1,5 +1,5 @@
 """Registered kinds of Form T1212 "Statement of Deferred Security Options Benefits", in the federal
-catalog family `t1212` (`tax_calculator/jurisdictions/ca/catalog/t1212.py`).
+catalog family `t1212` (`tax_engine/jurisdictions/ca/catalog/t1212.py`).
 
 The form `ca/t1212` runs once. Its two starting amounts are the printed line 1 and line 2; the steps
 compute line 3 and the 50% of line 2 that footnote (1) says to enter on line 24900.
@@ -11,9 +11,9 @@ import ast
 from decimal import Decimal
 from pathlib import Path
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     T1212_LINE_1_OPENING_BALANCE,
     T1212_LINE_2_BENEFITS_NO_LONGER_DEFERRED,
     T1212_LINE_3_CLOSING_BALANCE,
@@ -32,7 +32,7 @@ def squashed(text: str) -> str:
 
 def docstring_of(identifier: str) -> str:
     """The string right after the declaration of the kind `identifier` in a catalog module."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

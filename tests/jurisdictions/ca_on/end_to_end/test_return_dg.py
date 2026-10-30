@@ -6,11 +6,11 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ADDITIONAL_DEDUCTIONS,
     ADOPTION_CHILD_EXPENSES,
     ADOPTION_CREDIT,

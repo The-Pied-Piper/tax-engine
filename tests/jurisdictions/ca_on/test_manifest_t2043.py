@@ -15,21 +15,19 @@ from pathlib import Path
 
 import yaml
 
-import tax_calculator.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca_on
 
 # lists the packages; build_tax_computation registers their catalogs
-import tax_calculator.registrations
-from tax_calculator import build_tax_computation
-from tax_calculator.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_calculator.domain.form import FormComposition
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import Form, Manifest
+import tax_engine.registrations
+from tax_engine import build_tax_computation
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.form import FormComposition
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Form, Manifest
 from tests.jurisdictions.ca_on.manifest_families import t2042, t2043
 
 CA_ON = JurisdictionCode("CA-ON")
-PART = (
-    Path(tax_calculator.jurisdictions.ca_on.__file__).parent / "manifests" / "v1" / "03i_t2043.yaml"
-)
+PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1" / "03i_t2043.yaml"
 CHART_A_PART = PART.with_name("03h_t2043_chart_a.yaml")
 REFUND_PART = PART.with_name("14_refund.yaml")
 INPUTS_PART = PART.with_name("01_inputs.yaml")
@@ -49,7 +47,7 @@ PARTNERSHIP_INPUTS = frozenset(
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_calculator.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
         .get_jurisdiction(CA_ON)
         .manifests
     )

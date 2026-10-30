@@ -7,11 +7,11 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.domain.trace import RecordTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.cca_personal_part_remaining_total import (
+from tax_engine.domain.trace import RecordTotalLine
+from tax_engine.jurisdictions.ca.capabilities.cca_personal_part_remaining_total import (
     CcaPersonalPartRemainingTotal,
 )
-from tax_calculator.jurisdictions.ca.catalog import CCA_PERSONAL_PART_REMAINING
+from tax_engine.jurisdictions.ca.catalog import CCA_PERSONAL_PART_REMAINING
 from tests.jurisdictions.ca.capabilities.cca_entries_totals import (
     TOTAL,
     CcaEntriesTotalCases,

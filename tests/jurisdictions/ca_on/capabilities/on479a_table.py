@@ -10,11 +10,11 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.domain.artifact import ArtifactKind
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.parameters.rate_table import RATE_TABLE, RateTable, RateTableRow
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingRule
+from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.rate_table import RATE_TABLE, RateTable, RateTableRow
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule
 
 D = Decimal
 

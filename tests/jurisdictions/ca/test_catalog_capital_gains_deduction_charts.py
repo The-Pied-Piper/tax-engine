@@ -11,8 +11,8 @@ from decimal import Decimal
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     CHART_2016_AMOUNT_B,
     CHART_2016_PART_1_AMOUNT_A,
     CHART_2016_PART_1_AMOUNT_C,

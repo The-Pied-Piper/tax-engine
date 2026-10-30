@@ -29,21 +29,21 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import Capability, CapabilityRegistry
-from tax_calculator.domain.errors import InvalidCapabilityError, ValidationError
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.jurisdictions.ca.capabilities.home_renovation_line_3 import HomeRenovationLine3
-from tax_calculator.jurisdictions.ca.capabilities.home_renovation_line_6 import HomeRenovationLine6
-from tax_calculator.jurisdictions.ca.capabilities.home_renovation_line_7 import HomeRenovationLine7
-from tax_calculator.jurisdictions.ca.capabilities.home_renovation_rows import HomeRenovationRows
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.errors import InvalidCapabilityError, ValidationError
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_3 import HomeRenovationLine3
+from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_6 import HomeRenovationLine6
+from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_7 import HomeRenovationLine7
+from tax_engine.jurisdictions.ca.capabilities.home_renovation_rows import HomeRenovationRows
+from tax_engine.jurisdictions.ca.catalog import (
     HOME_RENOVATION_CLAIMED_BY_OTHERS,
     HOME_RENOVATION_EXPENDITURES,
     HOME_RENOVATION_LINE_3,
@@ -52,7 +52,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     HOME_RENOVATION_REIMBURSED,
     HOME_RENOVATIONS,
 )
-from tax_calculator.jurisdictions.ca.trace import RenovationLine3, RenovationLine6, RenovationLine7
+from tax_engine.jurisdictions.ca.trace import RenovationLine3, RenovationLine6, RenovationLine7
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -134,7 +134,7 @@ def test_the_base_is_not_exported_or_registered() -> None:
     assert "home_renovation_rows" not in ca_capabilities.__all__
     assert (
         HomeRenovationRows.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.home_renovation_rows"
+        == "tax_engine.jurisdictions.ca.capabilities.home_renovation_rows"
     )
 
 

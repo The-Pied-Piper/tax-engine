@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     CREDITS_AGAINST_FEDERAL_TAX,
     FEDERAL_LOGGING_TAX_CREDIT,
     FEDERAL_TAX,
@@ -16,7 +16,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     PROVINCES_LOGGING_TAX_CREDIT,
     TAXABLE_INCOME,
 )
-from tax_calculator.jurisdictions.ca.trace import LoggingTaxCreditLine
+from tax_engine.jurisdictions.ca.trace import LoggingTaxCreditLine
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
 # The two provinces of Return DN, as its inputs give them (`returns/2025_return_dn.yaml`).

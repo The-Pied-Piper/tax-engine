@@ -1,5 +1,5 @@
 """Registered kinds of Form T90 "Income Exempt from Tax under the Indian Act", in the federal
-catalog family `t90` (`tax_calculator/jurisdictions/ca/catalog/t90.py`).
+catalog family `t90` (`tax_engine/jurisdictions/ca/catalog/t90.py`).
 
 The form `ca/t90` runs once. Its sixteen starting amounts are the printed lines 1 to 19 (line 10019
 is the unnumbered line "EI maternity and parental benefits and PPIP benefits included on line 9"),
@@ -13,9 +13,9 @@ import ast
 from decimal import Decimal
 from pathlib import Path
 
-import tax_calculator.jurisdictions.ca.catalog
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.jurisdictions.ca.catalog
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.jurisdictions.ca.catalog import (
     T90_COVID_19_PAYMENTS,
     T90_CPP_QPP_BENEFITS,
     T90_DEDUCTIONS_RELATING_TO_EXEMPT_INCOME,
@@ -83,7 +83,7 @@ def squashed(text: str) -> str:
 def docstring_of(identifier: str) -> str:
     """The string right after the declaration of the kind `identifier` in a catalog module (its
     name is a constant of the declaration's call, which may take the catalog first)."""
-    folder = Path(tax_calculator.jurisdictions.ca.catalog.__file__).parent
+    folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
         for statement, following in zip(body, body[1:], strict=False):

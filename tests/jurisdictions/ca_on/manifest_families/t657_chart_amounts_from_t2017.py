@@ -10,12 +10,12 @@ inputs of the return.
 
 from __future__ import annotations
 
-from tax_calculator.domain.manifest import CapabilitySelection
-from tax_calculator.jurisdictions.ca import catalog
-from tax_calculator.jurisdictions.ca.capabilities.t2017_reserve_total_for_period import (
+from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca import catalog
+from tax_engine.jurisdictions.ca.capabilities.t2017_reserve_total_for_period import (
     T2017ReserveTotalForPeriod,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     T2017_LINE_2_RESERVE_ROWS,
     T2017_LINE_3_RESERVE_ROWS,
     T2017_LINE_4_RESERVE_ROWS,

@@ -17,20 +17,20 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_calculator.domain.errors import InvalidCapabilityError
-from tax_calculator.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
-from tax_calculator.domain.parameters.credit import CREDIT, Credit
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rounding import (
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.domain.errors import InvalidCapabilityError
+from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
     RoundingMode,
     RoundingRule,
     RoundTo,
 )
-from tax_calculator.domain.trace import BracketColumnLine, RoundedTotalLine
+from tax_engine.domain.trace import BracketColumnLine, RoundedTotalLine
 
 D = Decimal
 

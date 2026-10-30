@@ -20,28 +20,28 @@ from typing import Any
 
 import pytest
 
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.jurisdictions.ca.catalog import (
+import tax_engine.registrations
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.record_list import RecordList
+from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_CARE_EXPENSES,
     DEPENDANT_TAXABLE_INCOME,
     DEPENDANT_UNDER_18,
 )
-from tax_calculator.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
+from tax_engine.jurisdictions.ca_on.capabilities.disability_transfer_amount import (
     OntarioDisabilityTransferAmount,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     DEPENDANT_ON428_LINE_28,
     DISABILITY_DEPENDANTS,
     DISABILITY_TRANSFERRED_AMOUNT,
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_calculator.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 BASE = "ca-on/disability_transfer_base_amount"
 SUPPLEMENT = "ca-on/disability_transfer_supplement_maximum"
 THRESHOLD = "ca-on/disability_transfer_care_threshold"

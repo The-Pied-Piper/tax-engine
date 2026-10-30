@@ -24,30 +24,30 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca
-import tax_calculator.jurisdictions.ca.capabilities as canada
-from tax_calculator.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_calculator.application.services.tax_computation import TaxComputationService
-from tax_calculator.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca
+import tax_engine.jurisdictions.ca.capabilities as canada
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.services.tax_computation import TaxComputationService
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
     NotFoundError,
 )
-from tax_calculator.domain.jurisdiction import Jurisdiction
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_calculator.domain.parameters.amount import AMOUNT, Amount
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.parameters.rate import RATE, Rate
-from tax_calculator.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine, ItemSumLine
-from tax_calculator.jurisdictions.ca.capabilities.chart_a_row_c_total import ChartARowCTotal
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.jurisdiction import Jurisdiction
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rate import RATE, Rate
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine, ItemSumLine
+from tax_engine.jurisdictions.ca.capabilities.chart_a_row_c_total import ChartARowCTotal
+from tax_engine.jurisdictions.ca.catalog import (
     STANDARD_AMOUNT_ALLOCATED_1,
     STANDARD_AMOUNT_ALLOCATED_2,
     STANDARD_AMOUNT_ALLOCATED_3,
@@ -97,7 +97,7 @@ def total(*rows: dict[Any, Any], dataset: ParameterDataset[Amount] | None = None
 
 
 def test_is_registered_as_ca_chart_a_row_c_total() -> None:
-    assert tax_calculator.jurisdictions.ca.capabilities is canada
+    assert tax_engine.jurisdictions.ca.capabilities is canada
     assert CapabilityRegistry.shared().get("ca/chart_a_row_c_total") is ChartARowCTotal
 
 
@@ -214,7 +214,7 @@ def test_refuses_a_row_c_one_cent_above_1200() -> None:
 
 
 def test_the_form_text_is_the_real_datasets_message() -> None:
-    from tax_calculator.registrations import JURISDICTIONS
+    from tax_engine.registrations import JURISDICTIONS
 
     dataset = YamlParameterSource(JURISDICTIONS.roots()).get(
         "ca/northern_travel_standard_amount", 2025, AMOUNT

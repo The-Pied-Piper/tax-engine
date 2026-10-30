@@ -13,9 +13,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import T1032_LINE_18, T1032_LINE_21
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import T1032_LINE_18, T1032_LINE_21
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, service, starting
 
 FORM = "ca/t1032"

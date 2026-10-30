@@ -25,12 +25,12 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.parameters.class_rates import ClassElection, ClassRate, ClassRates
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rate import Rate
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import CCA_RATE_ELECTION
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.parameters.class_rates import ClassElection, ClassRate, ClassRates
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.catalog import CCA_RATE_ELECTION
 from tests.jurisdictions.ca.capabilities.cca_table import (
     ALL_CLASSES,
     APPLIES,

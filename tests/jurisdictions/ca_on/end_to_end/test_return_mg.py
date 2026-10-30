@@ -17,9 +17,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import DomainError, InputAboveBoundError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import DomainError, InputAboveBoundError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     T2205_LINE_3,
     T2205_LINE_5,
     T2205_LINE_8,

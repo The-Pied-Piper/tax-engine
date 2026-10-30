@@ -16,10 +16,10 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.errors import InputAboveBoundError, UnknownRegistrationError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.errors import InputAboveBoundError, UnknownRegistrationError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     ANNUAL_GAINS_LINE_2,
     ANNUAL_GAINS_LINE_3,
     CAPITAL_GAIN,

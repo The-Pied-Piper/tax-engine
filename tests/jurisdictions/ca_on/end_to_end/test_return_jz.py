@@ -21,9 +21,9 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.domain.errors import NegativeArtifactError
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import NegativeArtifactError
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     T2017_LINE_6,
     T2017_LINE_12,
     T2017_LINE_13,

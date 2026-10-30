@@ -11,8 +11,8 @@ tax figures are the engine's and are checked in the YAML only.
 
 from __future__ import annotations
 
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog import (
     DEDUCTIONS_FROM_NET_INCOME,
     DEDUCTIONS_FROM_TOTAL_INCOME,
     NET_INCOME,
@@ -20,7 +20,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TAXABLE_INCOME,
     TOTAL_INCOME,
 )
-from tax_calculator.jurisdictions.ca_on.catalog import (
+from tax_engine.jurisdictions.ca_on.catalog import (
     APPLIES_FOR_ENERGY_AND_PROPERTY_TAX_CREDIT,
     APPLIES_FOR_NORTHERN_ENERGY_CREDIT,
     APPLIES_FOR_SENIOR_HOMEOWNERS_GRANT,

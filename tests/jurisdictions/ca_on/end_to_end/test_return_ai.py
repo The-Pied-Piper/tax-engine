@@ -6,15 +6,15 @@ from typing import Any
 
 import pytest
 
-from tax_calculator.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_calculator.domain.errors import ValidationError
-from tax_calculator.domain.record_list import RecordList
-from tax_calculator.domain.trace import ItemsTotalLine
-from tax_calculator.domain.worksheet import Worksheet
-from tax_calculator.jurisdictions.ca.capabilities.principal_residence_gain import (
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.errors import ValidationError
+from tax_engine.domain.record_list import RecordList
+from tax_engine.domain.trace import ItemsTotalLine
+from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.principal_residence_gain import (
     PrincipalResidenceGain,
 )
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GAIN,
     INCLUDED_CAPITAL_GAIN,
     NET_INCOME,
@@ -50,7 +50,7 @@ from tax_calculator.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     TOTAL_PAYABLE,
 )
-from tax_calculator.jurisdictions.ca.trace import PrincipalResidenceGainLine
+from tax_engine.jurisdictions.ca.trace import PrincipalResidenceGainLine
 from tests.jurisdictions.ca_on.end_to_end.support import CENT, D, compute
 
 EXAMPLE = (6, 0, 10, 0, "400000.00", "5000.00", "95000.00", 1)

@@ -25,27 +25,27 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.jurisdictions.ca.capabilities as ca_capabilities
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     InvalidRecordError,
     MissingArtifactError,
 )
-from tax_calculator.domain.jurisdiction_code import JurisdictionCode
-from tax_calculator.domain.parameters.class_rates import CLASS_RATES, ClassRate, ClassRates
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRate, ClassRates
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
+from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_UCC_AT_END,
     CCA_UCC_AT_START,
 )
-from tax_calculator.jurisdictions.ca.trace import CcaZeroReason, ClosingUccLine
+from tax_engine.jurisdictions.ca.trace import CcaZeroReason, ClosingUccLine
 from tests.jurisdictions.ca.capabilities.cca_table import (
     CCA_CLAIM,
     CENT,

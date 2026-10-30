@@ -14,9 +14,9 @@ this applies to you, enter 50% of the amount from column 2 (for Class 10.1 vehic
 
 from __future__ import annotations
 
-from tax_calculator.domain.parameters.class_rates import ClassRate, ClassRates, HalfYearRuleOnSale
-from tax_calculator.domain.parameters.datasets import ParameterDataset
-from tax_calculator.domain.parameters.rate import Rate
+from tax_engine.domain.parameters.class_rates import ClassRate, ClassRates, HalfYearRuleOnSale
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rate import Rate
 from tests.jurisdictions.ca.capabilities.cca_table import (
     APPLIES,
     CLASS_1,

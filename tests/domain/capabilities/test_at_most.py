@@ -17,18 +17,18 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_calculator.domain.capabilities as core
-from tax_calculator.domain.artifact import Artifact, ArtifactKind
-from tax_calculator.domain.capabilities.at_most import AtMost
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import (
+import tax_engine.domain.capabilities as core
+from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.capabilities.at_most import AtMost
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_calculator.domain.parameters.kind import ParameterKind
-from tax_calculator.domain.trace import AtMostLine
+from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.trace import AtMostLine
 
 D = Decimal
 

@@ -13,8 +13,8 @@ import re
 
 import pytest
 
-from tax_calculator.domain.errors import InputAboveBoundError
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.jurisdictions.ca.catalog import (
     CPP_PAYABLE_ON_SELF_EMPLOYMENT_AND_OTHER_EARNINGS,
 )
 from tests.jurisdictions.ca_on.end_to_end.support import (

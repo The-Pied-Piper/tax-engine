@@ -1,6 +1,6 @@
 """The composition root's explicit list of jurisdiction packages and the data roots it yields.
 
-Checked generically, so a package added under `tax_calculator/jurisdictions/` but not registered
+Checked generically, so a package added under `tax_engine/jurisdictions/` but not registered
 fails here.
 Catalogs register only when `JURISDICTIONS.register()` is called; importing registers no kind.
 """
@@ -16,44 +16,44 @@ from pathlib import Path
 
 import pytest
 
-import tax_calculator
-import tax_calculator.adapters.inbound.trace_english
-import tax_calculator.adapters.outbound.parameter_parsers
-import tax_calculator.domain.capabilities
-import tax_calculator.jurisdictions
-import tax_calculator.registrations
-from tax_calculator.adapters.outbound.jurisdiction_packages import JurisdictionPackages
-from tax_calculator.domain.artifact import ArtifactCatalog, ArtifactRegistry
-from tax_calculator.domain.capability import CapabilityRegistry
-from tax_calculator.domain.errors import UnknownRegistrationError
+import tax_engine
+import tax_engine.adapters.inbound.trace_english
+import tax_engine.adapters.outbound.parameter_parsers
+import tax_engine.domain.capabilities
+import tax_engine.jurisdictions
+import tax_engine.registrations
+from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
+from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
+from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.errors import UnknownRegistrationError
 
-JURISDICTIONS_DIRECTORY = Path(tax_calculator.jurisdictions.__file__).parent
+JURISDICTIONS_DIRECTORY = Path(tax_engine.jurisdictions.__file__).parent
 
 
 def test_lists_the_jurisdiction_packages() -> None:
-    assert isinstance(tax_calculator.registrations.JURISDICTIONS, JurisdictionPackages)
+    assert isinstance(tax_engine.registrations.JURISDICTIONS, JurisdictionPackages)
 
 
 def test_every_jurisdiction_package_is_registered() -> None:
     packages = {init.parent for init in JURISDICTIONS_DIRECTORY.glob("*/__init__.py")}
 
     assert packages
-    assert packages <= set(tax_calculator.registrations.JURISDICTIONS.roots().values())
+    assert packages <= set(tax_engine.registrations.JURISDICTIONS.roots().values())
 
 
 def test_each_root_is_the_directory_of_the_package_declaring_its_namespace() -> None:
-    for namespace, directory in tax_calculator.registrations.JURISDICTIONS.roots().items():
-        package = importlib.import_module(f"tax_calculator.jurisdictions.{directory.name}")
+    for namespace, directory in tax_engine.registrations.JURISDICTIONS.roots().items():
+        package = importlib.import_module(f"tax_engine.jurisdictions.{directory.name}")
 
         assert Path(package.__file__ or "").parent == directory
         assert package.NAMESPACE == namespace.name
 
 
 def test_lists_the_core_packages() -> None:
-    assert tax_calculator.registrations.CORE_PACKAGES == (
-        tax_calculator.domain.capabilities,
-        tax_calculator.adapters.outbound.parameter_parsers,
-        tax_calculator.adapters.inbound.trace_english,
+    assert tax_engine.registrations.CORE_PACKAGES == (
+        tax_engine.domain.capabilities,
+        tax_engine.adapters.outbound.parameter_parsers,
+        tax_engine.adapters.inbound.trace_english,
     )
 
 
@@ -69,13 +69,13 @@ def test_importing_a_jurisdiction_package_registers_its_capabilities() -> None:
         "provincial_foreign_tax_credit",
     ):
         registered = registry.get(f"ca-on/{name}")
-        assert registered.__module__ == f"tax_calculator.jurisdictions.ca_on.capabilities.{name}"
+        assert registered.__module__ == f"tax_engine.jurisdictions.ca_on.capabilities.{name}"
 
 
 def test_importing_the_federal_package_registers_its_capabilities() -> None:
     registered = CapabilityRegistry.shared().get("ca/caregiver_amount")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.caregiver_amount"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.caregiver_amount"
 
 
 def test_importing_the_federal_package_registers_the_home_renovation_capabilities() -> None:
@@ -83,15 +83,14 @@ def test_importing_the_federal_package_registers_the_home_renovation_capabilitie
 
     for name in ("home_renovation_line_3", "home_renovation_line_6", "home_renovation_line_7"):
         registered = registry.get(f"ca/{name}")
-        assert registered.__module__ == f"tax_calculator.jurisdictions.ca.capabilities.{name}"
+        assert registered.__module__ == f"tax_engine.jurisdictions.ca.capabilities.{name}"
 
 
 def test_importing_the_federal_package_registers_the_other_dependants_medical_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/other_dependants_medical")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.other_dependants_medical"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.other_dependants_medical"
     )
 
 
@@ -100,22 +99,21 @@ def test_importing_the_federal_package_registers_the_apprenticeship_capability()
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.apprenticeship_wages_total"
+        == "tax_engine.jurisdictions.ca.capabilities.apprenticeship_wages_total"
     )
 
 
 def test_importing_the_federal_package_registers_the_threshold_gate_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/threshold_gate")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.threshold_gate"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.threshold_gate"
 
 
 def test_importing_the_federal_package_registers_the_principal_residence_gain() -> None:
     registered = CapabilityRegistry.shared().get("ca/principal_residence_gain")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.principal_residence_gain"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.principal_residence_gain"
     )
 
 
@@ -126,13 +124,13 @@ def test_importing_the_federal_package_registers_the_principal_residence_part_2_
     registered = CapabilityRegistry.shared().get(f"ca/principal_residence_line_{line}")
 
     assert registered.__module__ == (
-        f"tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_{line}"
+        f"tax_engine.jurisdictions.ca.capabilities.principal_residence_line_{line}"
     )
 
 
 def test_the_principal_residence_rows_base_is_not_registered() -> None:
     # The base is a class of its own, imported here, and is never registered under any name.
-    from tax_calculator.jurisdictions.ca.capabilities.principal_residence_rows import (
+    from tax_engine.jurisdictions.ca.capabilities.principal_residence_rows import (
         PrincipalResidenceRows,
     )
 
@@ -150,7 +148,7 @@ def test_importing_the_federal_package_registers_the_worksheet_lines(line: int) 
     registered = CapabilityRegistry.shared().get(f"ca/principal_residence_worksheet_line_{line}")
 
     assert registered.__module__ == (
-        f"tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_line_{line}"
+        f"tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_{line}"
     )
 
 
@@ -159,13 +157,13 @@ def test_importing_the_federal_package_registers_the_part_4_lines(line: int) -> 
     registered = CapabilityRegistry.shared().get(f"ca/principal_residence_line_{line}")
 
     assert registered.__module__ == (
-        f"tax_calculator.jurisdictions.ca.capabilities.principal_residence_line_{line}"
+        f"tax_engine.jurisdictions.ca.capabilities.principal_residence_line_{line}"
     )
 
 
 def test_the_worksheet_base_is_not_registered() -> None:
     # The base is a class of its own, imported here, and is never registered under any name.
-    from tax_calculator.jurisdictions.ca.capabilities.principal_residence_worksheet_rows import (
+    from tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_rows import (
         PrincipalResidenceWorksheetRows,
     )
 
@@ -177,15 +175,14 @@ def test_the_worksheet_base_is_not_registered() -> None:
 def test_importing_the_federal_package_registers_the_disposition_gains_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/disposition_gains")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.disposition_gains"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.disposition_gains"
 
 
 def test_importing_the_federal_package_registers_the_disposition_gains_only_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/disposition_gains_only")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.disposition_gains_only"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.disposition_gains_only"
     )
 
 
@@ -196,14 +193,14 @@ def test_importing_the_federal_package_registers_the_depreciable_property_gains_
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.depreciable_property_gains"
+        == "tax_engine.jurisdictions.ca.capabilities.depreciable_property_gains"
     )
 
 
 def test_importing_the_federal_package_registers_the_qffp_gains_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/qffp_gains")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.qffp_gains"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.qffp_gains"
 
 
 def test_importing_the_federal_package_registers_the_personal_use_gains_capability() -> None:
@@ -211,16 +208,14 @@ def test_importing_the_federal_package_registers_the_personal_use_gains_capabili
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.personal_use_property_gains"
+        == "tax_engine.jurisdictions.ca.capabilities.personal_use_property_gains"
     )
 
 
 def test_importing_the_federal_package_registers_the_disposition_proceeds_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/disposition_proceeds")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.disposition_proceeds"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.disposition_proceeds"
 
 
 def test_importing_the_federal_package_registers_the_ei_excluded_slips_net_income_capability() -> (
@@ -230,14 +225,14 @@ def test_importing_the_federal_package_registers_the_ei_excluded_slips_net_incom
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.ei_excluded_slips_net_income"
+        == "tax_engine.jurisdictions.ca.capabilities.ei_excluded_slips_net_income"
     )
 
 
 def test_importing_the_federal_package_registers_the_cca_claim_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/cca_claim")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.cca_claim"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_claim"
 
 
 def test_importing_the_federal_package_registers_the_cca_claim_after_column_22_capability() -> None:
@@ -245,16 +240,14 @@ def test_importing_the_federal_package_registers_the_cca_claim_after_column_22_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.cca_claim_after_column_22"
+        == "tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22"
     )
 
 
 def test_importing_the_federal_package_registers_the_cca_claim_prorated_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/cca_claim_prorated")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.cca_claim_prorated"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_claim_prorated"
 
 
 def test_importing_the_federal_package_registers_the_cca_claim_after_22_prorated_capability() -> (
@@ -264,31 +257,26 @@ def test_importing_the_federal_package_registers_the_cca_claim_after_22_prorated
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.cca_claim_after_column_22_prorated"
+        == "tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22_prorated"
     )
 
 
 def test_importing_the_federal_package_registers_the_recaptured_cca_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/recaptured_cca")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.recaptured_cca"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.recaptured_cca"
 
 
 def test_importing_the_federal_package_registers_the_cca_opening_ucc_total_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/cca_opening_ucc_total")
 
-    assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.cca_opening_ucc_total"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_opening_ucc_total"
 
 
 def test_importing_the_federal_package_registers_the_cca_additions_total_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/cca_additions_total")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.cca_additions_total"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_additions_total"
 
 
 def test_importing_the_federal_package_registers_the_cca_personal_part_remaining_total() -> None:
@@ -296,7 +284,7 @@ def test_importing_the_federal_package_registers_the_cca_personal_part_remaining
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.cca_personal_part_remaining_total"
+        == "tax_engine.jurisdictions.ca.capabilities.cca_personal_part_remaining_total"
     )
 
 
@@ -305,7 +293,7 @@ def test_importing_the_federal_package_registers_the_immediate_expensing_claim_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.immediate_expensing_claim"
+        == "tax_engine.jurisdictions.ca.capabilities.immediate_expensing_claim"
     )
 
 
@@ -314,7 +302,7 @@ def test_importing_the_federal_package_registers_the_agreed_limit_capability() -
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit"
+        == "tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit"
     )
 
 
@@ -323,28 +311,26 @@ def test_importing_the_federal_package_registers_the_business_vehicle_expenses_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.business_vehicle_expenses"
+        == "tax_engine.jurisdictions.ca.capabilities.business_vehicle_expenses"
     )
 
 
 def test_importing_the_federal_package_registers_the_cca_vehicle_proceeds_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/cca_vehicle_proceeds")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.cca_vehicle_proceeds"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_vehicle_proceeds"
 
 
 def test_importing_the_federal_package_registers_the_terminal_loss_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/terminal_loss")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.terminal_loss"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.terminal_loss"
 
 
 def test_importing_the_federal_package_registers_the_closing_ucc_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/closing_ucc")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.closing_ucc"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.closing_ucc"
 
 
 def test_importing_the_federal_package_registers_the_closing_ucc_after_column_22_capability() -> (
@@ -354,16 +340,14 @@ def test_importing_the_federal_package_registers_the_closing_ucc_after_column_22
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.closing_ucc_after_column_22"
+        == "tax_engine.jurisdictions.ca.capabilities.closing_ucc_after_column_22"
     )
 
 
 def test_importing_the_federal_package_registers_the_closing_ucc_prorated_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/closing_ucc_prorated")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.closing_ucc_prorated"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.closing_ucc_prorated"
 
 
 def test_importing_the_federal_package_registers_the_closing_ucc_after_22_prorated_capability() -> (
@@ -373,16 +357,14 @@ def test_importing_the_federal_package_registers_the_closing_ucc_after_22_prorat
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.closing_ucc_after_column_22_prorated"
+        == "tax_engine.jurisdictions.ca.capabilities.closing_ucc_after_column_22_prorated"
     )
 
 
 def test_importing_the_federal_package_registers_the_fiscal_period_days_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/fiscal_period_days")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.fiscal_period_days"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.fiscal_period_days"
 
 
 def test_importing_the_federal_package_registers_the_fiscal_period_days_from_dates_capability() -> (
@@ -392,7 +374,7 @@ def test_importing_the_federal_package_registers_the_fiscal_period_days_from_dat
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.fiscal_period_days_from_dates"
+        == "tax_engine.jurisdictions.ca.capabilities.fiscal_period_days_from_dates"
     )
 
 
@@ -401,7 +383,7 @@ def test_importing_the_federal_package_registers_the_prorated_by_fiscal_days_cap
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.prorated_by_fiscal_period_days"
+        == "tax_engine.jurisdictions.ca.capabilities.prorated_by_fiscal_period_days"
     )
 
 
@@ -410,7 +392,7 @@ def test_importing_the_federal_package_registers_the_prorated_by_days_in_period(
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.prorated_by_days_in_period"
+        == "tax_engine.jurisdictions.ca.capabilities.prorated_by_days_in_period"
     )
 
 
@@ -418,8 +400,7 @@ def test_importing_the_federal_package_registers_the_statement_amounts_total() -
     registered = CapabilityRegistry.shared().get("ca/statement_amounts_total")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.statement_amounts_total"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.statement_amounts_total"
     )
 
 
@@ -427,8 +408,7 @@ def test_importing_the_federal_package_registers_the_statement_profits_total() -
     registered = CapabilityRegistry.shared().get("ca/statement_profits_total")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.statement_profits_total"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.statement_profits_total"
     )
 
 
@@ -438,7 +418,7 @@ def test_importing_the_federal_package_registers_the_short_term_rental_expenses_
     registered = CapabilityRegistry.shared().get("ca/short_term_rental_non_compliant_expenses")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.short_term_rental_non_compliant_expenses"
+        "tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_expenses"
     )
 
 
@@ -447,10 +427,10 @@ def test_importing_the_federal_package_registers_the_short_term_rental_cca_capab
     by_class = CapabilityRegistry.shared().get("ca/short_term_rental_non_compliant_cca_by_class")
 
     assert total.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.short_term_rental_non_compliant_cca"
+        "tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_cca"
     )
     assert by_class.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.short_term_rental_non_compliant_cca_by_class"
+        "tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_cca_by_class"
     )
 
 
@@ -458,7 +438,7 @@ def test_importing_the_federal_package_registers_the_short_term_rental_gross_ren
     registered = CapabilityRegistry.shared().get("ca/short_term_rental_gross_rents")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.short_term_rental_gross_rents"
+        "tax_engine.jurisdictions.ca.capabilities.short_term_rental_gross_rents"
     )
 
 
@@ -466,16 +446,14 @@ def test_importing_the_federal_package_registers_the_short_term_rental_related_e
     registered = CapabilityRegistry.shared().get("ca/short_term_rental_related_expenses")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.short_term_rental_related_expenses"
+        "tax_engine.jurisdictions.ca.capabilities.short_term_rental_related_expenses"
     )
 
 
 def test_importing_the_federal_package_registers_the_rental_gross_rents() -> None:
     registered = CapabilityRegistry.shared().get("ca/rental_gross_rents")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.rental_gross_rents"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.rental_gross_rents"
 
 
 def test_importing_the_federal_package_registers_the_amount_or_divided_by_rate_capability() -> None:
@@ -483,22 +461,21 @@ def test_importing_the_federal_package_registers_the_amount_or_divided_by_rate_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.amount_or_divided_by_rate"
+        == "tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate"
     )
 
 
 def test_importing_the_federal_package_registers_the_divided_by_rate_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/divided_by_rate")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.divided_by_rate"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.divided_by_rate"
 
 
 def test_importing_the_federal_package_registers_the_sign_chosen_difference_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/sign_chosen_difference")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.sign_chosen_difference"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.sign_chosen_difference"
     )
 
 
@@ -506,33 +483,26 @@ def test_importing_the_federal_package_registers_the_lesser_of_with_maximum_capa
     registered = CapabilityRegistry.shared().get("ca/lesser_of_with_maximum")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.lesser_of_with_maximum"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum"
     )
 
 
 def test_importing_the_federal_package_registers_the_chart_a_row_c_total_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/chart_a_row_c_total")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.chart_a_row_c_total"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.chart_a_row_c_total"
 
 
 def test_importing_the_federal_package_registers_the_chart_b_zone_a_total_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/chart_b_zone_a_total")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.chart_b_zone_a_total"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.chart_b_zone_a_total"
 
 
 def test_importing_the_federal_package_registers_the_chart_b_zone_b_total_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/chart_b_zone_b_total")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.chart_b_zone_b_total"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.chart_b_zone_b_total"
 
 
 def test_importing_the_federal_package_registers_the_chart_b_gross_income_on_total_capability() -> (
@@ -541,7 +511,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_on_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_on_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_on_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_on_total"
     )
 
 
@@ -551,7 +521,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_mb_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_mb_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_mb_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_mb_total"
     )
 
 
@@ -561,7 +531,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_sk_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_sk_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_sk_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_sk_total"
     )
 
 
@@ -571,7 +541,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_ab_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_ab_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_ab_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_ab_total"
     )
 
 
@@ -581,7 +551,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_ns_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_ns_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_ns_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_ns_total"
     )
 
 
@@ -591,7 +561,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_pe_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_pe_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_pe_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_pe_total"
     )
 
 
@@ -601,7 +571,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_nl_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_nl_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_nl_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_nl_total"
     )
 
 
@@ -611,7 +581,7 @@ def test_importing_the_federal_package_registers_the_chart_b_gross_income_nb_tot
     registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_nb_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.chart_b_gross_income_nb_total"
+        "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_nb_total"
     )
 
 
@@ -620,7 +590,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_on_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_on_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_on_total"
     )
 
 
@@ -629,7 +599,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_mb_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_mb_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_mb_total"
     )
 
 
@@ -638,7 +608,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_sk_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_sk_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_sk_total"
     )
 
 
@@ -647,7 +617,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_ab_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_ab_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_ab_total"
     )
 
 
@@ -656,7 +626,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_ns_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_ns_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_ns_total"
     )
 
 
@@ -665,7 +635,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_pe_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_pe_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_pe_total"
     )
 
 
@@ -674,7 +644,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_nl_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_nl_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_nl_total"
     )
 
 
@@ -683,7 +653,7 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_nb_total_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.chart_b_salaries_nb_total"
+        == "tax_engine.jurisdictions.ca.capabilities.chart_b_salaries_nb_total"
     )
 
 
@@ -691,7 +661,7 @@ def test_importing_the_federal_package_registers_the_foreign_non_business_tax_cr
     registered = CapabilityRegistry.shared().get("ca/foreign_non_business_tax_credit")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.foreign_non_business_tax_credit"
+        "tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_credit"
     )
 
 
@@ -702,7 +672,7 @@ def test_importing_the_federal_package_registers_the_foreign_business_tax_credit
     registered = CapabilityRegistry.shared().get(f"ca/foreign_business_tax_credit_line_{line}")
 
     assert registered.__module__ == (
-        f"tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_{line}"
+        f"tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_{line}"
     )
 
 
@@ -716,7 +686,7 @@ def test_importing_the_federal_package_registers_the_disability_transfer_amount(
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.disability_transfer_amount"
+        == "tax_engine.jurisdictions.ca.capabilities.disability_transfer_amount"
     )
 
 
@@ -724,7 +694,7 @@ def test_importing_the_federal_package_registers_the_foreign_non_business_tax_pa
     registered = CapabilityRegistry.shared().get("ca/foreign_non_business_tax_paid_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.foreign_non_business_tax_paid_total"
+        "tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_paid_total"
     )
 
 
@@ -734,7 +704,7 @@ def test_importing_the_federal_package_registers_the_foreign_net_non_business_in
     registered = CapabilityRegistry.shared().get("ca/foreign_net_non_business_income_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.foreign_net_non_business_income_total"
+        "tax_engine.jurisdictions.ca.capabilities.foreign_net_non_business_income_total"
     )
 
 
@@ -742,7 +712,7 @@ def test_importing_the_federal_package_registers_the_foreign_business_tax_paid_t
     registered = CapabilityRegistry.shared().get("ca/foreign_business_tax_paid_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.foreign_business_tax_paid_total"
+        "tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_paid_total"
     )
 
 
@@ -750,12 +720,12 @@ def test_importing_the_federal_package_registers_the_foreign_surtax_allocated_to
     registered = CapabilityRegistry.shared().get("ca/foreign_surtax_allocated_total")
 
     assert registered.__module__ == (
-        "tax_calculator.jurisdictions.ca.capabilities.foreign_surtax_allocated_total"
+        "tax_engine.jurisdictions.ca.capabilities.foreign_surtax_allocated_total"
     )
 
 
 def test_each_core_package_imports_every_module_in_its_directory() -> None:
-    for package in tax_calculator.registrations.CORE_PACKAGES:
+    for package in tax_engine.registrations.CORE_PACKAGES:
         directory = Path(package.__file__ or "").parent
         modules = {path.stem for path in directory.glob("*.py")} - {"__init__"}
 
@@ -766,14 +736,14 @@ def test_each_core_package_imports_every_module_in_its_directory() -> None:
 
 
 def test_has_no_side_effect_only_imports() -> None:
-    source = inspect.getsource(tax_calculator.registrations)
+    source = inspect.getsource(tax_engine.registrations)
 
     assert "noqa" not in source
 
 
 def test_every_listed_package_exposes_its_catalog() -> None:
-    for directory in tax_calculator.registrations.JURISDICTIONS.roots().values():
-        catalog = importlib.import_module(f"tax_calculator.jurisdictions.{directory.name}.catalog")
+    for directory in tax_engine.registrations.JURISDICTIONS.roots().values():
+        catalog = importlib.import_module(f"tax_engine.jurisdictions.{directory.name}.catalog")
 
         assert isinstance(getattr(catalog, "CATALOG", None), ArtifactCatalog), catalog.__name__
 
@@ -781,12 +751,12 @@ def test_every_listed_package_exposes_its_catalog() -> None:
 def test_register_fills_a_fresh_registry_with_every_listed_catalog() -> None:
     registry = ArtifactRegistry()
 
-    tax_calculator.registrations.JURISDICTIONS.register(registry)
+    tax_engine.registrations.JURISDICTIONS.register(registry)
 
     expected = set()
-    for directory in tax_calculator.registrations.JURISDICTIONS.roots().values():
+    for directory in tax_engine.registrations.JURISDICTIONS.roots().values():
         catalog = importlib.import_module(
-            f"tax_calculator.jurisdictions.{directory.name}.catalog"
+            f"tax_engine.jurisdictions.{directory.name}.catalog"
         ).CATALOG
         expected |= {kind.identifier for kind in catalog.kinds}
         for kind in catalog.kinds:
@@ -797,25 +767,25 @@ def test_register_fills_a_fresh_registry_with_every_listed_catalog() -> None:
 
 def test_registering_twice_is_idempotent() -> None:
     registry = ArtifactRegistry()
-    tax_calculator.registrations.JURISDICTIONS.register(registry)
+    tax_engine.registrations.JURISDICTIONS.register(registry)
     first = registry.identifiers()
 
-    tax_calculator.registrations.JURISDICTIONS.register(registry)
+    tax_engine.registrations.JURISDICTIONS.register(registry)
 
     assert registry.identifiers() == first
 
 
 _IMPORT_EVERYTHING = """
 import pkgutil, importlib
-import tax_calculator
-import tax_calculator.adapters.outbound.parameter_parsers
-import tax_calculator.domain.capabilities
-import tax_calculator.jurisdictions
-import tax_calculator.registrations
-from tax_calculator.domain.artifact import ArtifactRegistry
+import tax_engine
+import tax_engine.adapters.outbound.parameter_parsers
+import tax_engine.domain.capabilities
+import tax_engine.jurisdictions
+import tax_engine.registrations
+from tax_engine.domain.artifact import ArtifactRegistry
 for info in pkgutil.walk_packages(
-    tax_calculator.jurisdictions.__path__,
-    "tax_calculator.jurisdictions.",
+    tax_engine.jurisdictions.__path__,
+    "tax_engine.jurisdictions.",
 ):
     importlib.import_module(info.name)
 print(sorted(ArtifactRegistry.shared().identifiers()))
@@ -826,7 +796,7 @@ def test_importing_the_packages_and_registrations_registers_no_artifact_kind() -
     # A fresh interpreter, so modules this test session already imported are imported again.
     result = subprocess.run(
         [sys.executable, "-c", _IMPORT_EVERYTHING],
-        cwd=Path(tax_calculator.__file__).parent.parent,
+        cwd=Path(tax_engine.__file__).parent.parent,
         capture_output=True,
         text=True,
         check=False,
@@ -839,48 +809,43 @@ def test_importing_the_packages_and_registrations_registers_no_artifact_kind() -
 def test_importing_the_federal_package_registers_the_count_at_least_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/count_at_least")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.count_at_least"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.count_at_least"
 
 
 def test_importing_the_federal_package_registers_the_more_than_per_unit_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/more_than_per_unit")
 
-    assert (
-        registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.more_than_per_unit"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.more_than_per_unit"
 
 
 def test_importing_the_federal_package_registers_the_count_at_most_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/count_at_most")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.count_at_most"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.count_at_most"
 
 
 def test_importing_the_federal_package_registers_the_claim_at_most_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/claim_at_most")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.claim_at_most"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.claim_at_most"
 
 
 def test_importing_the_federal_package_registers_the_qbt_before_qcc_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/qbt_before_qcc")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.qbt_before_qcc"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.qbt_before_qcc"
 
 
 def test_importing_the_federal_package_registers_the_yes_or_no_count_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/yes_or_no_count")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.yes_or_no_count"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.yes_or_no_count"
 
 
 def test_importing_the_federal_package_registers_the_count_without_records_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/count_without_records")
 
-    assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.count_without_records"
-    )
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.count_without_records"
 
 
 def test_importing_the_federal_package_registers_the_count_refused_by_conditions_capability() -> (
@@ -890,14 +855,14 @@ def test_importing_the_federal_package_registers_the_count_refused_by_conditions
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.count_refused_by_conditions"
+        == "tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions"
     )
 
 
 def test_importing_the_federal_package_registers_the_ratio_truncated_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/ratio_truncated")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.ratio_truncated"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.ratio_truncated"
 
 
 def test_importing_the_federal_package_registers_the_ratio_truncated_at_most_one_capability() -> (
@@ -905,7 +870,7 @@ def test_importing_the_federal_package_registers_the_ratio_truncated_at_most_one
 ):
     registered = CapabilityRegistry.shared().get("ca/ratio_truncated_at_most_one")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.ratio_truncated"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.ratio_truncated"
 
 
 def test_importing_the_federal_package_registers_the_percentage_of_capability() -> None:
@@ -923,13 +888,13 @@ def test_importing_the_federal_package_registers_the_year_amount_capability() ->
 def test_importing_the_federal_package_registers_the_apply_chosen_rate_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/apply_chosen_rate")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.apply_chosen_rate"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate"
 
 
 def test_importing_the_federal_package_registers_the_choose_by_sign_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/choose_by_sign")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.choose_by_sign"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.choose_by_sign"
 
 
 def test_importing_the_federal_package_registers_the_positive_part_of_negation_capability() -> None:
@@ -937,7 +902,7 @@ def test_importing_the_federal_package_registers_the_positive_part_of_negation_c
 
     assert (
         registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.positive_part_of_negation"
+        == "tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation"
     )
 
 
@@ -945,8 +910,7 @@ def test_importing_the_federal_package_registers_the_lesser_of_when_positive_cap
     registered = CapabilityRegistry.shared().get("ca/lesser_of_when_positive")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.lesser_of_when_positive"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive"
     )
 
 
@@ -954,12 +918,11 @@ def test_importing_the_federal_package_registers_the_in_brackets_lesser_capabili
     registered = CapabilityRegistry.shared().get("ca/lesser_of_when_positive_in_brackets")
 
     assert (
-        registered.__module__
-        == "tax_calculator.jurisdictions.ca.capabilities.lesser_of_when_positive"
+        registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive"
     )
 
 
 def test_importing_the_federal_package_registers_the_amount_when_more_capability() -> None:
     registered = CapabilityRegistry.shared().get("ca/amount_when_more")
 
-    assert registered.__module__ == "tax_calculator.jurisdictions.ca.capabilities.amount_when_more"
+    assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.amount_when_more"

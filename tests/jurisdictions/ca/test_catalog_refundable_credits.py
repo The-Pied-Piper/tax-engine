@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_calculator.domain.artifact import ArtifactRegistry
-from tax_calculator.domain.record_list import RecordList, RecordListKind
-from tax_calculator.jurisdictions.ca.catalog import (
+from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.jurisdictions.ca.catalog import (
     CANADA_TRAINING_CREDIT,
     EDUCATOR_SCHOOL_SUPPLY_CREDIT,
     EDUCATOR_SUPPLIES_EXPENSES,
