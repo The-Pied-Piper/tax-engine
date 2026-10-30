@@ -162,6 +162,19 @@ def test_require_integer_accepts_int() -> None:
     assert node({"a": 7}).field("a").require_integer() == 7
 
 
+@pytest.mark.parametrize(
+    ("value", "got"), [(1, "int"), (0, "int"), ("true", "str"), ("yes", "str"), (None, "NoneType")]
+)
+def test_require_boolean_rejects(value: object, got: str) -> None:
+    with pytest.raises(YamlShapeError, match=f"^a must be true or false, got {got}"):
+        node({"a": value}).field("a").require_boolean()
+
+
+def test_require_boolean_accepts_a_boolean() -> None:
+    assert node({"a": True}).field("a").require_boolean() is True
+    assert node({"a": False}).field("a").require_boolean() is False
+
+
 def test_parse_decimal_reads_strings_exactly() -> None:
     assert node({"a": "0.145"}).field("a").parse_decimal() == Decimal("0.145")
 
@@ -391,14 +404,3 @@ def test_parse_choice_reads_a_rounding_mode_as_parse_rounding_rule_does() -> Non
     with pytest.raises(YamlShapeError) as by_rule:
         node({"a": {"increment": "1", "mode": "sideways"}}).field("a").parse_rounding_rule()
     assert str(by_rule.value) == str(by_choice.value)
-
-
-@pytest.mark.parametrize("value", [True, False])
-def test_require_boolean_accepts_a_boolean(value: bool) -> None:
-    assert node(value).require_boolean() is value
-
-
-@pytest.mark.parametrize("value", [0, 1, "true", "yes", None, []])
-def test_require_boolean_rejects_anything_else_naming_the_type(value: object) -> None:
-    with pytest.raises(YamlShapeError, match=r"document must be true or false, got "):
-        node(value).require_boolean()
