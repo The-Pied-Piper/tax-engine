@@ -23,6 +23,7 @@ from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     BlankValueError,
+    CapabilityContractError,
     InvalidCapabilityError,
     InvalidCompositionError,
     NegativeArtifactError,
@@ -387,3 +388,12 @@ def test_a_fallback_a_kind_cannot_hold_is_refused_when_the_capability_is_built()
 def test_with_several_blank_slots_the_refusal_names_the_first_by_identifier() -> None:
     with pytest.raises(BlankNotAllowedError, match="'income'"):
         SubtractStrict(LIMIT, INCOME, NET).run((blank(LIMIT), blank(INCOME)))
+
+
+def test_a_compute_that_returns_a_blank_breaks_its_contract() -> None:
+    class Leaky(SubtractCompute):
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            return CapabilityResult((blank(self._output),), ())
+
+    with pytest.raises(CapabilityContractError, match="returned 'net' blank from compute"):
+        Leaky(INCOME, LIMIT, NET).run((Artifact(INCOME, D(1)), Artifact(LIMIT, D(1))))

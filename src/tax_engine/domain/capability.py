@@ -319,7 +319,8 @@ class Capability(ABC):
         trace says so first. A blank in a slot with no rule is a BlankNotAllowedError naming the
         line and the slot; that refusal comes before anything else. Otherwise a blank in a
         `PASS_ON` slot gives a blank artifact for every produced kind, with a trace line each and
-        `compute` not called; with no blank left, `compute` runs as usual.
+        `compute` not called; with no blank left, `compute` runs as usual, and a blank among its
+        outputs is a CapabilityContractError, since only a `PASS_ON` rule makes an output blank.
         """
         name = type(self).__name__
         kept: list[Artifact[Any]] = []
@@ -351,6 +352,17 @@ class Capability(ABC):
                 ),
             )
         result = self.compute(tuple(kept))
+        # A non-Artifact output is the worksheet's TypeError to raise, not this check's.
+        blank = [
+            artifact.kind
+            for artifact in result.outputs
+            if isinstance(artifact, Artifact) and artifact.is_blank
+        ]
+        if blank:
+            raise CapabilityContractError(
+                f"{name} returned {ArtifactKind.labels(blank)} blank from compute; "
+                "only a PASS_ON rule makes an output blank"
+            )
         return CapabilityResult(outputs=result.outputs, trace=(*fallbacks, *result.trace))
 
     def _input[V](self, inputs: tuple[Artifact[Any], ...], kind: ArtifactKind[V]) -> Artifact[V]:
