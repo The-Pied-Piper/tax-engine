@@ -20,7 +20,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any, Generic, TypeVar
 
-from tax_engine.domain.blank import Blank
+from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
     BlankValueError,
     DuplicateRegistrationError,
@@ -116,7 +116,7 @@ class Artifact[T]:
     def __init__(self, kind: ArtifactKind[T], value: T | Blank) -> None:
         object.__setattr__(self, "kind", kind)
         object.__setattr__(self, "_content", value)
-        if isinstance(value, Blank):
+        if value is BLANK:
             return
         if not isinstance(value, kind.value_type):
             raise TypeError(
@@ -135,12 +135,12 @@ class Artifact[T]:
     @property
     def is_blank(self) -> bool:
         """Whether the filer left this line blank, which is not the same as zero."""
-        return isinstance(self._content, Blank)
+        return self._content is BLANK
 
     @property
     def value(self) -> T:
         """The value; a BlankValueError naming the kind if the artifact is blank."""
-        if isinstance(self._content, Blank):
+        if self._content is BLANK:
             raise BlankValueError(f"{self.kind.label} was left blank, so it has no value")
         return self._content
 
