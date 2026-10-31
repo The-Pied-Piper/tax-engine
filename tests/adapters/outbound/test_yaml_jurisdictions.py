@@ -1792,7 +1792,7 @@ def test_parses_the_blank_rules_of_a_selection(tmp_path: Path) -> None:
         jurisdiction: EX-ON
         version: 1
         valid_from_tax_year: 2025
-        inputs: [ex/income, ex/deduction]
+        inputs: [{name: ex/income, required: true}, {name: ex/deduction, required: true}]
         outputs: [ex/net]
         capabilities:
           - name: ex/subtract
