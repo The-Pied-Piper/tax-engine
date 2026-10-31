@@ -25,12 +25,10 @@ capabilities:
       count: ca/t657_chart_2021_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2021_amount_d_instead
-    # Left blank: the "use the (YYYY-1) calculation instead" box not ticked reads as no (0); the
-    # amount from that calculation is read only when the box is ticked, and then a blank is the
-    # form's "0".
+    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). The form
+    # gives no value for a blank in either amount, so those still refuse.
     blank:
       count: "0"
-      when_any: "0"
     produces:
       output: ca/chart_2021_amount_d
   # Chart 2021 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2021
@@ -210,8 +208,9 @@ capabilities:
       count: ca/chart_2021_part_2_applies
       when_none: ca/chart_2021_part_1_amount_m
       when_any: ca/chart_2021_part_2_amount_l
-    # A skipped chart leaves its total blank, and the next chart's line B enters "0" (T657). Part 2
-    # not completed reads as no (0); a blank amount from the chosen part is passed on.
+    # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
+    # amount is passed on, so a skipped chart leaves its total blank; what the next chart's line B
+    # does with it ("enter 0") is the line B steps' own blank rule (#98, #99, #101).
     blank:
       count: "0"
       when_none: pass_on
@@ -243,12 +242,10 @@ capabilities:
       count: ca/t657_chart_2022_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2022_amount_d_instead
-    # Left blank: the "use the (YYYY-1) calculation instead" box not ticked reads as no (0); the
-    # amount from that calculation is read only when the box is ticked, and then a blank is the
-    # form's "0".
+    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). The form
+    # gives no value for a blank in either amount, so those still refuse.
     blank:
       count: "0"
-      when_any: "0"
     produces:
       output: ca/chart_2022_amount_d
   # Chart 2022 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2022
@@ -428,8 +425,9 @@ capabilities:
       count: ca/chart_2022_part_2_applies
       when_none: ca/chart_2022_part_1_amount_m
       when_any: ca/chart_2022_part_2_amount_l
-    # A skipped chart leaves its total blank, and the next chart's line B enters "0" (T657). Part 2
-    # not completed reads as no (0); a blank amount from the chosen part is passed on.
+    # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
+    # amount is passed on, so a skipped chart leaves its total blank; what the next chart's line B
+    # does with it ("enter 0") is the line B steps' own blank rule (#98, #99, #101).
     blank:
       count: "0"
       when_none: pass_on
@@ -461,12 +459,10 @@ capabilities:
       count: ca/t657_chart_2023_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2023_amount_d_instead
-    # Left blank: the "use the (YYYY-1) calculation instead" box not ticked reads as no (0); the
-    # amount from that calculation is read only when the box is ticked, and then a blank is the
-    # form's "0".
+    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). The form
+    # gives no value for a blank in either amount, so those still refuse.
     blank:
       count: "0"
-      when_any: "0"
     produces:
       output: ca/chart_2023_amount_d
   # Chart 2023 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2023
@@ -646,8 +642,9 @@ capabilities:
       count: ca/chart_2023_part_2_applies
       when_none: ca/chart_2023_part_1_amount_m
       when_any: ca/chart_2023_part_2_amount_l
-    # A skipped chart leaves its total blank, and the next chart's line B enters "0" (T657). Part 2
-    # not completed reads as no (0); a blank amount from the chosen part is passed on.
+    # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
+    # amount is passed on, so a skipped chart leaves its total blank; what the next chart's line B
+    # does with it ("enter 0") is the line B steps' own blank rule (#98, #99, #101).
     blank:
       count: "0"
       when_none: pass_on
