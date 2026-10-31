@@ -3,6 +3,8 @@
 Its slots: two consumed single slots, `amount` and `less`, one produced slot `output`, no
 parameter slots. The output is amount − less, exact, with no rounding (a subtraction has no
 dataset) and no floor: a negative difference is produced as is. It records one `SubtractedLine`.
+Either consumed slot may be blank (`BLANK_ALLOWED`); the rules the manifest gives decide what a
+blank does there.
 """
 
 from __future__ import annotations
@@ -44,6 +46,10 @@ def capability() -> Subtract:
 
 def inputs(amount: str, less: str) -> tuple[Artifact[Decimal], ...]:
     return (Artifact(GROSS, D(amount)), Artifact(REDUCTION, D(less)))
+
+
+def blank_input(kind: ArtifactKind[Decimal]) -> Artifact[Any]:
+    return Artifact(kind, BLANK)
 
 
 def compute(amount: str, less: str) -> Artifact[Any]:
@@ -270,10 +276,6 @@ def test_trace_holds_no_text() -> None:
 
 
 # --- a blank in either slot ---------------------------------------------------------------------
-
-
-def blank_input(kind: ArtifactKind[Decimal]) -> Artifact[Any]:
-    return Artifact(kind, BLANK)
 
 
 def test_declares_that_either_slot_may_be_blank() -> None:
