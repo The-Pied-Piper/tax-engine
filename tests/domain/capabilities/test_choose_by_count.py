@@ -445,6 +445,7 @@ def test_a_blank_second_candidate_is_chosen_by_a_count_of_one() -> None:
 
     (output,) = result.outputs
     assert output.is_blank
+    assert result.trace == (BlankPassedOnLine(CHOSEN, (WITH_FAMILY,)),)
 
 
 def test_a_candidate_fallback_replaces_the_blank_by_the_fallback_value() -> None:
