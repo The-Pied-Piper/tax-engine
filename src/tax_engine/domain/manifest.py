@@ -19,7 +19,11 @@ from types import MappingProxyType
 from typing import Any
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.errors import InvalidManifestError, InvalidRegistrationError
+from tax_engine.domain.errors import (
+    InvalidManifestError,
+    InvalidRegistrationError,
+    InvalidTextError,
+)
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.registry import Namespace
@@ -127,6 +131,11 @@ class InputDeclaration:
             problem = None if value == () else "must be an empty list"
         elif not isinstance(value, str):
             problem = "must be a string"
+        else:
+            try:
+                kind.check_value(value)  # a digits kind takes only its own digits, or blank
+            except InvalidTextError as exc:
+                problem = f"is not a value of the kind: {exc}"
         if problem is not None:
             raise InvalidManifestError(
                 f"input {self.name!r}: default {value!r} {problem} for the kind {kind.identifier!r}"

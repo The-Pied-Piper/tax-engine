@@ -18,6 +18,7 @@ from typing import Any, cast
 import pytest
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidManifestError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import (
@@ -543,6 +544,7 @@ LEVY = ArtifactKind("ex/levy_amount", Decimal, non_negative=True)
 COUNT = ArtifactKind("ex/count", int, non_negative=True)
 ROWS = RecordListKind("ex/rows", fields=(AMOUNT, COUNT))
 NOTE = ArtifactKind("ex/note", str)
+BUSINESS_NUMBER = DigitsKind("ex/business_number", digits=9)
 
 
 @pytest.mark.parametrize(
@@ -554,6 +556,8 @@ NOTE = ArtifactKind("ex/note", str)
         (COUNT, "0"),
         (ROWS, ()),
         (NOTE, ""),
+        (BUSINESS_NUMBER, ""),
+        (BUSINESS_NUMBER, "123456789"),
         (AMOUNT, None),
         (ROWS, None),
         (COUNT, None),
@@ -579,6 +583,8 @@ def test_a_default_that_suits_its_kind_is_accepted(
         (COUNT, "-1", "must not be below zero"),
         (ROWS, "0", "must be an empty list"),
         (NOTE, (), "must be a string"),
+        (BUSINESS_NUMBER, "abc", "must be 9 digits"),
+        (BUSINESS_NUMBER, "12345", "must be 9 digits"),
     ],
 )
 def test_a_default_that_does_not_suit_its_kind_is_refused_naming_the_input(
