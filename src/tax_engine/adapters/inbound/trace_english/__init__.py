@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from tax_engine.adapters.inbound.trace_english import (
     arithmetic,
+    blank,
     choices,
     figures,
     forms,
@@ -30,6 +31,7 @@ __all__ = [
     "EnglishTraceRenderer",
     "LineRenderer",
     "arithmetic",
+    "blank",
     "choices",
     "figures",
     "forms",

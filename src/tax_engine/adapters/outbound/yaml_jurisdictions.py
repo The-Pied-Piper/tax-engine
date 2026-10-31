@@ -28,7 +28,9 @@ so two with one local id (`ex/x` and `ca/x`, both `<ns>/return.x`) are rejected 
 A single manifest file is not a part and takes no `form:` key: all of it is the default form.
 Each selection names a capability and fills its slots: `params` (slot -> family, optional),
 `consumes` (slot -> artifact identifier, or a list of them kept in order as a tuple, optional)
-and `produces` (slot -> artifact identifier, required, at least one). Slot names, and whether a
+`blank` (consumed slot -> what a blank in it does: the text of a fallback value, or `pass_on`;
+optional, a slot not named refuses a blank) and `produces` (slot -> artifact identifier,
+required, at least one). Slot names, and whether a
 slot takes one identifier or a list, are not checked against capability classes here.
 The top-level `inputs` and `outputs` list the computation's starting artifacts and the default
 form's exports: both required, non-empty lists of non-empty strings without duplicates (an
@@ -68,7 +70,7 @@ _OPTIONAL_FORM_KEYS = frozenset(
 )
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
-_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes"})
+_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank"})
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year")
 _IDENTIFIER_LISTS = ("inputs", "outputs")
 _PATTERNS = ("*.yaml", "*.yml")
@@ -376,6 +378,7 @@ class YamlJurisdictionSource:
             params=cls._bindings(fields.optional_field("params")),
             consumes=cls._consumed(fields.optional_field("consumes")),
             produces=cls._produced(fields.field("produces")),
+            blank=cls._bindings(fields.optional_field("blank")),
         )
 
     @classmethod

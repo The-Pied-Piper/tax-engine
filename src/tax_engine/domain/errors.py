@@ -40,6 +40,16 @@ class MissingArtifactError(DomainError):
     """No value was given for an artifact that was asked for."""
 
 
+class BlankValueError(DomainError):
+    """The value of an artifact that is blank was read: a blank has none."""
+
+
+class BlankNotAllowedError(ValidationError):
+    """A blank reached a place that may not take one, such as a consumed slot with no blank rule
+    or an input the composition does not allow to be blank.
+    """
+
+
 class DuplicateArtifactError(DomainError):
     """An artifact was given more than one value."""
 

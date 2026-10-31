@@ -9,6 +9,7 @@ starts from.
 
 from __future__ import annotations
 
+import dataclasses
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from types import MappingProxyType
@@ -24,17 +25,20 @@ class CapabilitySelection:
 
     `params` maps parameter slots to families; `consumes` and `produces` map artifact slots to
     artifact identifiers, and a consumed slot may instead map to a list of identifiers, kept in
-    order as a tuple. Each is kept as a read-only copy of what it was given.
+    order as a tuple. `blank` maps a consumed slot to what a blank in it does: the text of the
+    fallback value taken in its place, or `pass_on`; a slot not named refuses a blank. Each is
+    kept as a read-only copy of what it was given.
     """
 
     name: str
     params: Mapping[str, str]
     consumes: Mapping[str, str | tuple[str, ...]]
     produces: Mapping[str, str]
+    blank: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        for field in ("params", "produces"):
-            object.__setattr__(self, field, MappingProxyType(dict(getattr(self, field))))
+        for name in ("params", "produces", "blank"):
+            object.__setattr__(self, name, MappingProxyType(dict(getattr(self, name))))
         # A list of identifiers becomes a tuple, so the selection stays frozen and hashable.
         consumes = {
             slot: named if isinstance(named, str) else tuple(named)
@@ -44,7 +48,7 @@ class CapabilitySelection:
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mappings are unhashable."""
-        bindings = (self.params, self.consumes, self.produces)
+        bindings = (self.params, self.consumes, self.produces, self.blank)
         return hash((self.name, *(frozenset(mapping.items()) for mapping in bindings)))
 
 
