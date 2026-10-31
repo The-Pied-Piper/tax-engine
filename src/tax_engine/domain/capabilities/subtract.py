@@ -3,6 +3,9 @@
 One mechanism for every difference between two amounts on a return: the manifest decides which
 artifact is the amount and which is taken off. A subtraction has no dataset, so it never rounds,
 and it has no floor: when `less` exceeds `amount` the result is negative, as is.
+
+Either consumed slot may be blank. What a blank does there is the manifest step's `blank:` line:
+pass it on (the difference is blank too), or take a fallback in its place.
 """
 
 from __future__ import annotations
@@ -22,6 +25,7 @@ class Subtract(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "less": Decimal}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"amount", "less"})
 
     def __init__(self, amount: Money, less: Money, output: Money) -> None:
         """Wire the capability: the kind it starts from, the kind taken off, the kind produced."""
