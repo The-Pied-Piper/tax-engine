@@ -217,7 +217,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2016_amount_b_instead",
         },
-        blank={"count": "0", "when_any": "0"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2016_amount_b"},
     ),
     # Chart 2016 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of
@@ -435,7 +435,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2017_amount_d_instead",
         },
-        blank={"count": "0", "when_any": "0"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2017_amount_d"},
     ),
     # Chart 2017 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in
@@ -678,7 +678,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2018_amount_d_instead",
         },
-        blank={"count": "0", "when_any": "0"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2018_amount_d"},
     ),
     # Chart 2018 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in
@@ -921,7 +921,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2019_amount_d_instead",
         },
-        blank={"count": "0", "when_any": "0"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2019_amount_d"},
     ),
     # Chart 2019 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in
@@ -1164,7 +1164,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2020_amount_d_instead",
         },
-        blank={"count": "0", "when_any": "0"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2020_amount_d"},
     ),
     # Chart 2020 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in
