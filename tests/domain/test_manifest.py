@@ -575,6 +575,7 @@ def test_a_default_that_suits_its_kind_is_accepted(
         (AMOUNT, (), "must be a quoted number"),
         (LEVY, "-1", "must not be below zero"),
         (COUNT, "1.5", "must be a whole number"),
+        (COUNT, "1" * 5000, "is too long to read as a number"),
         (COUNT, "-1", "must not be below zero"),
         (ROWS, "0", "must be an empty list"),
         (NOTE, (), "must be a string"),

@@ -140,8 +140,9 @@ class InputDeclaration:
         if not pattern.fullmatch(value):
             return "must be a whole number" if whole else "must be a plain decimal number"
         try:
-            number = Decimal(value)
+            number = Decimal(int(value)) if whole else Decimal(value)
         except (InvalidOperation, ValueError):
+            # Python refuses a whole number of more than 4300 digits.
             return "is too long to read as a number"
         if non_negative and number < 0:
             return "must not be below zero"
