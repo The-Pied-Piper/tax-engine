@@ -20,7 +20,7 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.blank import BLANK, PASS_ON
+from tax_engine.domain.blank import BLANK, PASS_ON, BlankRule
 from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
@@ -383,10 +383,15 @@ def test_allows_a_blank_count_and_either_candidate_and_nothing_else() -> None:
     assert ChooseByCount.BLANK_ALLOWED == frozenset({"count", "when_none", "when_any"})
 
 
-def test_refuses_a_blank_in_any_input_when_the_manifest_gives_no_rule() -> None:
-    for blanked in ({"count": None}, {"when_none": None}, {"when_any": None}):
-        with pytest.raises(BlankNotAllowedError):
-            capability().run(blank_inputs(**{"count": 0, **blanked}))
+@pytest.mark.parametrize(
+    "given",
+    [blank_inputs(count=None), blank_inputs(when_none=None), blank_inputs(when_any=None)],
+)
+def test_refuses_a_blank_in_any_input_when_the_manifest_gives_no_rule(
+    given: tuple[Artifact[Any], ...],
+) -> None:
+    with pytest.raises(BlankNotAllowedError):
+        capability().run(given)
 
 
 def test_refuses_a_blank_rule_on_the_output() -> None:
@@ -405,7 +410,7 @@ def test_a_blank_count_with_a_zero_fallback_chooses_the_first_candidate() -> Non
 
 
 def test_a_blank_count_with_a_zero_fallback_does_not_read_a_blank_unchosen_candidate() -> None:
-    rules = {"count": 0, "when_any": D("0")}
+    rules: dict[str, BlankRule] = {"count": 0, "when_any": D("0")}
 
     result = capability().with_blank_rules(rules).run(blank_inputs(count=None, when_any=None))
 
@@ -413,7 +418,7 @@ def test_a_blank_count_with_a_zero_fallback_does_not_read_a_blank_unchosen_candi
 
 
 def test_a_blank_chosen_candidate_passes_on_to_a_blank_output() -> None:
-    rules = {"when_none": PASS_ON, "when_any": PASS_ON}
+    rules: dict[str, BlankRule] = {"when_none": PASS_ON, "when_any": PASS_ON}
 
     result = capability().with_blank_rules(rules).run(blank_inputs(count=0, when_none=None))
 
@@ -423,7 +428,7 @@ def test_a_blank_chosen_candidate_passes_on_to_a_blank_output() -> None:
 
 
 def test_a_blank_count_and_a_blank_chosen_candidate_give_a_blank_output() -> None:
-    rules = {"count": 0, "when_none": PASS_ON, "when_any": PASS_ON}
+    rules: dict[str, BlankRule] = {"count": 0, "when_none": PASS_ON, "when_any": PASS_ON}
 
     result = capability().with_blank_rules(rules).run(blank_inputs(count=None, when_none=None))
 
@@ -434,7 +439,7 @@ def test_a_blank_count_and_a_blank_chosen_candidate_give_a_blank_output() -> Non
 
 
 def test_a_blank_second_candidate_is_chosen_by_a_count_of_one() -> None:
-    rules = {"when_none": D("0"), "when_any": PASS_ON}
+    rules: dict[str, BlankRule] = {"when_none": D("0"), "when_any": PASS_ON}
 
     result = capability().with_blank_rules(rules).run(blank_inputs(count=1, when_any=None))
 
