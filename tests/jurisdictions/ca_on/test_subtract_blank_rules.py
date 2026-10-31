@@ -1,4 +1,4 @@
-"""The `blank:` lines of the `core/subtract` steps in the CA-ON manifest (T657, #98).
+"""The `blank:` lines of the `core/subtract` steps in the CA-ON manifest (T657).
 
 Form T657 line B of Charts 2017 to 2025 prints "If you did not complete charts for ..., enter
 "0"", so at each of those steps a blank B reads 0. The seven T657 inputs the form lets the filer
@@ -76,10 +76,10 @@ def wired(
 
 
 def test_the_steps_of_the_carry_lines_and_the_inputs_are_all_found() -> None:
-    lessers = {less_of(step) for step in subtract_steps()}
+    lessers = [less_of(step) for step in subtract_steps()]
 
-    assert CARRY_LESS <= lessers
-    assert INPUT_LESS <= lessers
+    assert sum(each in CARRY_LESS for each in lessers) == len(CARRY_LESS) == 11
+    assert sum(each in INPUT_LESS for each in lessers) == len(INPUT_LESS) == 7
 
 
 @pytest.mark.parametrize("less", sorted(CARRY_LESS))

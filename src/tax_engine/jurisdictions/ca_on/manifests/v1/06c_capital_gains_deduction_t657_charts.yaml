@@ -57,7 +57,7 @@ capabilities:
     consumes:
       amount: ca/chart_2024_period_1_amount_i
       less: ca/t657_chart_2024_period_1_amount_j
-    # A blank on either side blanks the result (the line is skipped as a whole).
+    # A blank on either side blanks the result.
     blank:
       amount: pass_on
       less: pass_on
@@ -145,7 +145,7 @@ capabilities:
     consumes:
       amount: ca/chart_2024_period_2_amount_i
       less: ca/t657_chart_2024_period_2_amount_j
-    # A blank on either side blanks the result (the line is skipped as a whole).
+    # A blank on either side blanks the result.
     blank:
       amount: pass_on
       less: pass_on
