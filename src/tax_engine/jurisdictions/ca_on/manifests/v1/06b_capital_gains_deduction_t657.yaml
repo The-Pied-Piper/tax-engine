@@ -408,7 +408,7 @@ capabilities:
     consumes:
       amount: ca/chart_2025_part_1_amount_k
       less: ca/t657_part_1_amount_l
-    # A blank on either side blanks the result.
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a blank here).
     blank:
       amount: pass_on
       less: pass_on
@@ -477,7 +477,7 @@ capabilities:
     consumes:
       amount: ca/qsbcs_gain_or_loss
       less: ca/t657_part_2_excluded_f
-    # A blank on either side blanks the result.
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a blank here).
     blank:
       amount: pass_on
       less: pass_on
@@ -489,7 +489,7 @@ capabilities:
     consumes:
       amount: ca/qffp_gain_or_loss
       less: ca/t657_part_2_excluded_g
-    # A blank on either side blanks the result.
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a blank here).
     blank:
       amount: pass_on
       less: pass_on
@@ -501,7 +501,7 @@ capabilities:
     consumes:
       amount: ca/qffp_foreclosure_gain_or_loss
       less: ca/t657_part_2_excluded_h
-    # A blank on either side blanks the result.
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a blank here).
     blank:
       amount: pass_on
       less: pass_on
@@ -536,7 +536,7 @@ capabilities:
     consumes:
       amount: ca/chart_2025_part_2_amount_k
       less: ca/t657_part_2_amount_l
-    # A blank on either side blanks the result.
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a blank here).
     blank:
       amount: pass_on
       less: pass_on

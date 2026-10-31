@@ -87,6 +87,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_1_amount_a",
             "less": "ca/chart_2023_total_carried",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2024_period_1_amount_c"},
     ),
     # Chart 2024 Period 1 "Capital gains deduction available for dispositions of QFFP and/or QSBCS:
@@ -138,6 +139,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_1_amount_i",
             "less": "ca/t657_chart_2024_period_1_amount_j",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2024_period_1_amount_k"},
     ),
     # Chart 2024 Period 1 "Enter whichever is less: amount E or amount K." L.
@@ -198,6 +200,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_2_amount_a",
             "less": "ca/chart_2024_period_1_amount_n",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2024_period_2_amount_c"},
     ),
     # Chart 2024 Period 2 "Amount C minus amount D (if negative, enter "0")" E (D "Capital gains
@@ -245,6 +248,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_2_amount_i",
             "less": "ca/t657_chart_2024_period_2_amount_j",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2024_period_2_amount_k"},
     ),
     # Chart 2024 Period 2 "Enter whichever is less: amount E or amount K." L.

@@ -175,6 +175,7 @@ STEPS = {
             "amount": "ca/chart_2021_part_1_amount_a",
             "less": "ca/chart_2020_total_carried",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2021_part_1_amount_c"},
     ),
     # Chart 2021 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
@@ -445,6 +446,7 @@ STEPS = {
             "amount": "ca/chart_2022_part_1_amount_a",
             "less": "ca/chart_2021_total_carried",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2022_part_1_amount_c"},
     ),
     # Chart 2022 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
@@ -703,6 +705,7 @@ STEPS = {
             "amount": "ca/chart_2023_part_1_amount_a",
             "less": "ca/chart_2022_total_carried",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2023_part_1_amount_c"},
     ),
     # Chart 2023 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
