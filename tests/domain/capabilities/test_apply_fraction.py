@@ -20,9 +20,14 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capability import CapabilityRegistry
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -33,7 +38,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
-from tax_engine.domain.trace import FractionAppliedLine
+from tax_engine.domain.trace import BlankPassedOnLine, FractionAppliedLine
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -320,3 +325,41 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank base ---------------------------------------------------------------------------
+
+
+def test_allows_a_blank_only_in_its_base() -> None:
+    assert ApplyFraction.BLANK_ALLOWED == frozenset({"base"})
+
+
+def test_a_blank_base_with_no_rule_is_refused_naming_the_line() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'earned_income'.*'base'"):
+        capability().run((Artifact(EARNED, BLANK),))
+
+
+def test_a_blank_base_passed_on_gives_a_blank_output_and_no_rounding() -> None:
+    # A rounding rule that would raise on any figure shows that nothing is rounded.
+    wired = capability(fraction(rounding=CENT)).with_blank_rules({"base": PASS_ON})
+
+    result = wired.run((Artifact(EARNED, BLANK),))
+
+    assert result.outputs == (Artifact(PORTION, BLANK),)
+    assert result.trace == (BlankPassedOnLine(PORTION, (EARNED,)),)
+
+
+def test_a_filled_base_is_the_same_with_or_without_the_blank_rule() -> None:
+    plain = capability().run((Artifact(EARNED, D("60000")),))
+    ruled = capability().with_blank_rules({"base": PASS_ON}).run((Artifact(EARNED, D("60000")),))
+
+    assert plain == ruled
+    assert plain.outputs == (Artifact(PORTION, D("40000")),)
+    assert len(plain.trace) == 1
+    assert isinstance(plain.trace[0], FractionAppliedLine)
+
+
+def test_a_zero_base_is_not_blank() -> None:
+    wired = capability().with_blank_rules({"base": PASS_ON})
+
+    assert wired.run((Artifact(EARNED, D(0)),)).outputs == (Artifact(PORTION, D(0)),)

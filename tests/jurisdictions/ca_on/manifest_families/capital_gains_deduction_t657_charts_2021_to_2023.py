@@ -236,6 +236,7 @@ STEPS = {
             "base": "ca/t657_chart_2021_amount_i",
         },
         produces={"output": "ca/chart_2021_part_1_amount_i"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2021 Part 1 "Amount H plus amount I" J.
     CapabilitySelection(
@@ -335,6 +336,7 @@ STEPS = {
             "base": "ca/t657_chart_2021_part_2_amount_g",
         },
         produces={"output": "ca/chart_2021_part_2_amount_g"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2021 Part 2 "Amount F plus amount G" H.
     CapabilitySelection(
@@ -498,6 +500,7 @@ STEPS = {
             "base": "ca/t657_chart_2022_amount_i",
         },
         produces={"output": "ca/chart_2022_part_1_amount_i"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2022 Part 1 "Amount H plus amount I" J.
     CapabilitySelection(
@@ -596,6 +599,7 @@ STEPS = {
             "base": "ca/t657_chart_2022_part_2_amount_g",
         },
         produces={"output": "ca/chart_2022_part_2_amount_g"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2022 Part 2 "Amount F plus amount G" H.
     CapabilitySelection(
@@ -756,6 +760,7 @@ STEPS = {
             "base": "ca/t657_chart_2023_amount_i",
         },
         produces={"output": "ca/chart_2023_part_1_amount_i"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2023 Part 1 "Amount H plus amount I" J.
     CapabilitySelection(
@@ -854,6 +859,7 @@ STEPS = {
             "base": "ca/t657_chart_2023_part_2_amount_g",
         },
         produces={"output": "ca/chart_2023_part_2_amount_g"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2023 Part 2 "Amount F plus amount G" H.
     CapabilitySelection(
