@@ -19,6 +19,7 @@ from typing import Any, ClassVar, assert_type
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry, Money
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.capability_builder import CapabilityBuilder
 from tax_engine.domain.errors import (
@@ -653,3 +654,64 @@ def test_a_constructor_rejection_names_which_of_two_selections_of_one_class_fail
         CapabilityBuilder().build(bad, total, {}, registry())
 
     assert_names_the_constructors_rejection(excinfo, "ex/total_up (produces ex/source)", "Total")
+
+
+class ScaleBlank(Scale):
+    """`Scale`, whose `source` may be blank."""
+
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"source"})
+
+
+def build_blank(blank: Mapping[str, str]) -> Capability:
+    chosen = CapabilitySelection(
+        name="ex/scale",
+        params={"factor": "ex/factor"},
+        consumes={"source": "ex/source"},
+        produces={"target": "ex/target"},
+        blank=blank,
+    )
+    return CapabilityBuilder().build(chosen, ScaleBlank, datasets(), registry())
+
+
+def test_a_selection_without_blank_rules_builds_a_capability_that_refuses_a_blank() -> None:
+    built = build_blank({})
+
+    with pytest.raises(DomainError, match="may not be blank"):
+        built.run((Artifact(SOURCE, BLANK),))
+
+
+def test_a_blank_fallback_is_read_as_the_slots_value_type_and_applied() -> None:
+    built = build_blank({"source": "2"})
+
+    result = built.run((Artifact(SOURCE, BLANK),))
+
+    assert result.outputs == (Artifact(TARGET, D("6")),)
+
+
+def test_pass_on_makes_the_output_blank() -> None:
+    built = build_blank({"source": "pass_on"})
+
+    assert built.run((Artifact(SOURCE, BLANK),)).outputs == (Artifact(TARGET, BLANK),)
+
+
+def test_a_fallback_that_is_not_a_number_is_an_invalid_selection() -> None:
+    with pytest.raises(InvalidSelectionError, match="blank rule for slot 'source'.*'lots'"):
+        build_blank({"source": "lots"})
+
+
+def test_a_blank_rule_for_a_slot_that_is_not_consumed_is_an_invalid_selection() -> None:
+    with pytest.raises(InvalidSelectionError, match="'target' is given under blank"):
+        build_blank({"target": "0"})
+
+
+def test_a_blank_rule_for_a_slot_the_class_does_not_allow_is_an_invalid_selection() -> None:
+    chosen = CapabilitySelection(
+        name="ex/scale",
+        params={"factor": "ex/factor"},
+        consumes={"source": "ex/source"},
+        produces={"target": "ex/target"},
+        blank={"source": "0"},
+    )
+
+    with pytest.raises(InvalidSelectionError, match="slot 'source' may not be blank"):
+        CapabilityBuilder().build(chosen, Scale, datasets(), registry())

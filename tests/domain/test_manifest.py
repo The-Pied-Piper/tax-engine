@@ -45,13 +45,25 @@ def test_has_no_params_family() -> None:
         "params",
         "consumes",
         "produces",
+        "blank",
     ]
+
+
+def test_blank_rules_default_to_none_and_are_read_only() -> None:
+    assert selection().blank == {}
+    chosen = CapabilitySelection(
+        name="ex/x", params={}, consumes={}, produces={"output": "ex/y"}, blank={"less": "0"}
+    )
+
+    assert chosen.blank == {"less": "0"}
+    assert isinstance(chosen.blank, MappingProxyType)
+    assert hash(chosen) != hash(selection())
 
 
 def test_slot_bindings_are_read_only() -> None:
     chosen = selection()
 
-    for bindings in (chosen.params, chosen.consumes, chosen.produces):
+    for bindings in (chosen.params, chosen.consumes, chosen.produces, chosen.blank):
         assert isinstance(bindings, MappingProxyType)
         with pytest.raises(TypeError):
             cast(Any, bindings)["extra"] = "ex/other"

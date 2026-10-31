@@ -1722,3 +1722,58 @@ def test_a_flat_manifest_file_still_takes_no_form_key_so_no_limits(tmp_path: Pat
 
     with pytest.raises(InvalidManifestError, match="unknown keys"):
         source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_parses_the_blank_rules_of_a_selection(tmp_path: Path) -> None:
+    write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        """\
+        jurisdiction: EX-ON
+        version: 1
+        valid_from_tax_year: 2025
+        inputs: [ex/income, ex/deduction]
+        outputs: [ex/net]
+        capabilities:
+          - name: ex/subtract
+            consumes:
+              amount: ex/income
+              less: ex/deduction
+            blank:
+              less: "0"
+              amount: pass_on
+            produces:
+              output: ex/net
+        """,
+    )
+
+    manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
+
+    (selection,) = returned(manifest).capabilities
+    assert selection.blank == {"less": "0", "amount": "pass_on"}
+
+
+def test_a_selection_without_blank_rules_has_none(tmp_path: Path) -> None:
+    write(tmp_path, "ex-on/manifests/v1.yaml", EX_ON_V1)
+
+    manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
+
+    assert all(not each.blank for each in returned(manifest).capabilities)
+
+
+def test_blank_rules_must_be_a_mapping_of_strings(tmp_path: Path) -> None:
+    write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        HEADER
+        + """\
+capabilities:
+  - name: ex/subtract
+    consumes: {amount: ex/x}
+    blank: [less]
+    produces: {output: ex/y}
+""",
+    )
+
+    with pytest.raises(InvalidManifestError, match="blank"):
+        source(tmp_path).get_jurisdiction(EX_ON)

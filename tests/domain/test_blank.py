@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from decimal import Decimal
-from types import MappingProxyType
 from typing import Any, ClassVar
 
 import pytest
@@ -51,10 +50,13 @@ NON_NEGATIVE = ArtifactKind("ex/count_of_things", int, non_negative=True)
 
 
 class SubtractCompute(Capability):
-    """The shared compute: `output` = `amount` less `less`. The parent declares no blank rules."""
+    """The one compute: `output` = `amount` less `less`. Either slot may be blank, as the
+    manifest allows; with no rules given, a blank is refused.
+    """
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "less": Decimal}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"amount", "less"})
     computed = 0
 
     def __init__(self, amount: Money, less: Money, output: Money) -> None:
@@ -70,20 +72,21 @@ class SubtractCompute(Capability):
         return CapabilityResult((Artifact(self._output, result),), (line,))
 
 
-class SubtractStrict(SubtractCompute):
-    """No slot may be blank."""
+def strict(amount: Money, less: Money, output: Money) -> SubtractCompute:
+    """No blank rules: a blank in either slot is refused."""
+    return SubtractCompute(amount, less, output)
 
 
-class SubtractLessZero(SubtractCompute):
+def less_zero(amount: Money, less: Money, output: Money) -> SubtractCompute:
     """A blank `less` is 0; a blank `amount` is refused."""
+    return SubtractCompute(amount, less, output).with_blank_rules({"less": D(0)})
 
-    BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"less": D(0)}
 
-
-class SubtractPassOn(SubtractCompute):
+def pass_on(amount: Money, less: Money, output: Money) -> SubtractCompute:
     """A blank in either slot makes the output blank."""
-
-    BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"amount": PASS_ON, "less": PASS_ON}
+    return SubtractCompute(amount, less, output).with_blank_rules(
+        {"amount": PASS_ON, "less": PASS_ON}
+    )
 
 
 def blank(kind: ArtifactKind[Any]) -> Artifact[Any]:
@@ -141,41 +144,60 @@ def test_a_negative_value_is_still_refused_for_a_non_negative_kind() -> None:
         Artifact(NON_NEGATIVE, -1)
 
 
-# --- declaring blank rules --------------------------------------------------------------------
+# --- declaring what may be blank, and giving the rules ----------------------------------------
 
 
-def test_blank_rules_are_read_only_and_inherited() -> None:
-    assert SubtractCompute.BLANK_RULES == {}
-    assert SubtractStrict.BLANK_RULES == {}
-    assert SubtractLessZero.BLANK_RULES == {"less": D(0)}
-    assert isinstance(SubtractLessZero.BLANK_RULES, MappingProxyType)
+def test_blank_allowed_is_a_frozen_set_and_inherited() -> None:
+    assert SubtractCompute.BLANK_ALLOWED == frozenset({"amount", "less"})
+    assert Capability.BLANK_ALLOWED == frozenset()
 
-    class Child(SubtractLessZero):
+    class Child(SubtractCompute):
         pass
 
-    assert Child.BLANK_RULES == {"less": D(0)}
+    class Narrower(SubtractCompute):
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = {"less"}  # type: ignore[assignment]
+
+    assert Child.BLANK_ALLOWED == frozenset({"amount", "less"})
+    assert Narrower.BLANK_ALLOWED == frozenset({"less"})
+    assert isinstance(Narrower.BLANK_ALLOWED, frozenset)
 
 
-def test_a_rule_for_a_slot_that_is_not_consumed_is_refused() -> None:
-    with pytest.raises(InvalidCapabilityError, match="BLANK_RULES slot 'output'"):
+def test_an_allowed_slot_that_is_not_consumed_is_refused() -> None:
+    with pytest.raises(InvalidCapabilityError, match="BLANK_ALLOWED slot 'output'"):
 
         class Bad(SubtractCompute):
-            BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"output": PASS_ON}
+            BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"output"})
+
+
+def test_with_blank_rules_returns_the_capability_and_works_once() -> None:
+    capability = strict(INCOME, DEDUCTION, TAXABLE)
+
+    assert capability.with_blank_rules({"less": D(0)}) is capability
+    with pytest.raises(InvalidCapabilityError, match="already given"):
+        capability.with_blank_rules({"less": D(1)})
+
+
+def test_a_rule_for_a_slot_that_is_not_allowed_to_be_blank_is_refused() -> None:
+    class OnlyLess(SubtractCompute):
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"less"})
+
+    with pytest.raises(InvalidCapabilityError, match="slot 'amount' may not be blank"):
+        OnlyLess(INCOME, DEDUCTION, TAXABLE).with_blank_rules({"amount": PASS_ON})
+    with pytest.raises(InvalidCapabilityError, match="slot 'output' may not be blank"):
+        strict(INCOME, DEDUCTION, TAXABLE).with_blank_rules({"output": PASS_ON})
 
 
 @pytest.mark.parametrize("fallback", [1, D("NaN"), D("Infinity"), True])
 def test_a_fallback_of_the_wrong_type_or_not_finite_is_refused(fallback: BlankRule) -> None:
-    with pytest.raises(InvalidCapabilityError, match="BLANK_RULES slot 'less'"):
-
-        class Bad(SubtractCompute):
-            BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"less": fallback}
+    with pytest.raises(InvalidCapabilityError, match="blank rule for slot 'less'"):
+        strict(INCOME, DEDUCTION, TAXABLE).with_blank_rules({"less": fallback})
 
 
 def test_a_count_slot_takes_an_int_fallback() -> None:
     class Count(Capability):
         CONSUMES: ClassVar[Mapping[str, type]] = {"count": int}
         PRODUCES: ClassVar[Mapping[str, type]] = {"output": int}
-        BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"count": 0}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count"})
 
         def __init__(self, count: ArtifactKind[int], output: ArtifactKind[int]) -> None:
             super().__init__(count=count, output=output)
@@ -183,14 +205,18 @@ def test_a_count_slot_takes_an_int_fallback() -> None:
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
             raise NotImplementedError
 
-    assert Count.BLANK_RULES == {"count": 0}
+    counted = ArtifactKind("ex/counted", int)
+    total = ArtifactKind("ex/counted_total", int)
+    Count(counted, total).with_blank_rules({"count": 0})
+    with pytest.raises(InvalidCapabilityError, match="blank rule for slot 'count'"):
+        Count(counted, total).with_blank_rules({"count": D(0)})
 
 
 def test_a_fallback_for_a_list_slot_is_the_type_of_its_kinds() -> None:
     class Total(Capability):
         CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal]}
         PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
-        BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"parts": D(0)}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"parts"})
 
         def __init__(self, parts: tuple[Money, ...], output: Money) -> None:
             super().__init__(parts=parts, output=output)
@@ -200,7 +226,11 @@ def test_a_fallback_for_a_list_slot_is_the_type_of_its_kinds() -> None:
             total = sum((a.value for a in parts), D(0))
             return CapabilityResult((Artifact(NET, total),), (SumLine(NET, (), total),))
 
-    result = Total((INCOME, OTHER), NET).run((blank(INCOME), Artifact(OTHER, D(5))))
+    result = (
+        Total((INCOME, OTHER), NET)
+        .with_blank_rules({"parts": D(0)})
+        .run((blank(INCOME), Artifact(OTHER, D(5))))
+    )
 
     assert result.outputs == (Artifact(NET, D(5)),)
     assert result.trace[0] == BlankFallbackLine(INCOME, D(0))
@@ -211,14 +241,12 @@ def test_a_fallback_for_a_list_slot_is_the_type_of_its_kinds() -> None:
 
 def test_a_slot_with_no_rule_refuses_a_blank_naming_the_line_and_slot() -> None:
     with pytest.raises(BlankNotAllowedError, match="'chart_gain' was left blank.*'amount'"):
-        SubtractStrict(CHART_GAIN, LIMIT, NET).run((blank(CHART_GAIN), Artifact(LIMIT, D(1))))
+        strict(CHART_GAIN, LIMIT, NET).run((blank(CHART_GAIN), Artifact(LIMIT, D(1))))
 
 
 def test_a_slot_with_a_fallback_takes_it_and_says_so() -> None:
     SubtractCompute.computed = 0
-    result = SubtractLessZero(INCOME, DEDUCTION, TAXABLE).run(
-        (Artifact(INCOME, D(500)), blank(DEDUCTION))
-    )
+    result = less_zero(INCOME, DEDUCTION, TAXABLE).run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
 
     assert result.outputs == (Artifact(TAXABLE, D(500)),)
     assert result.trace == (
@@ -229,14 +257,12 @@ def test_a_slot_with_a_fallback_takes_it_and_says_so() -> None:
 
 def test_a_blank_in_a_slot_without_a_fallback_is_refused_by_a_sibling_that_has_one() -> None:
     with pytest.raises(BlankNotAllowedError, match="'income' was left blank.*'amount'"):
-        SubtractLessZero(INCOME, DEDUCTION, TAXABLE).run((blank(INCOME), Artifact(DEDUCTION, D(1))))
+        less_zero(INCOME, DEDUCTION, TAXABLE).run((blank(INCOME), Artifact(DEDUCTION, D(1))))
 
 
 def test_pass_on_makes_every_output_blank_and_does_not_compute() -> None:
     SubtractCompute.computed = 0
-    result = SubtractPassOn(CHART_GAIN, LIMIT, DEDUCTION).run(
-        (blank(CHART_GAIN), Artifact(LIMIT, D(1)))
-    )
+    result = pass_on(CHART_GAIN, LIMIT, DEDUCTION).run((blank(CHART_GAIN), Artifact(LIMIT, D(1))))
 
     assert result.outputs == (blank(DEDUCTION),)
     assert result.trace == (BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)),)
@@ -244,18 +270,16 @@ def test_pass_on_makes_every_output_blank_and_does_not_compute() -> None:
 
 
 def test_a_refusal_comes_before_a_pass_on() -> None:
-    class Mixed(SubtractCompute):
-        BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"amount": PASS_ON}
+    mixed = SubtractCompute(INCOME, LIMIT, NET).with_blank_rules({"amount": PASS_ON})
 
     with pytest.raises(BlankNotAllowedError, match="'less'"):
-        Mixed(INCOME, LIMIT, NET).run((blank(INCOME), blank(LIMIT)))
+        mixed.run((blank(INCOME), blank(LIMIT)))
 
 
 def test_with_no_blank_the_rules_change_nothing() -> None:
     inputs = (Artifact(INCOME, D(9)), Artifact(DEDUCTION, D(4)))
     results = [
-        cls(INCOME, DEDUCTION, TAXABLE).run(inputs)
-        for cls in (SubtractStrict, SubtractLessZero, SubtractPassOn)
+        build(INCOME, DEDUCTION, TAXABLE).run(inputs) for build in (strict, less_zero, pass_on)
     ]
 
     assert all(result == results[0] for result in results)
@@ -265,16 +289,11 @@ def test_with_no_blank_the_rules_change_nothing() -> None:
 def test_one_parent_gives_different_results_on_the_same_blank() -> None:
     inputs = (Artifact(INCOME, D(500)), blank(DEDUCTION))
 
-    refused = pytest.raises(BlankNotAllowedError)
-    with refused:
-        SubtractStrict(INCOME, DEDUCTION, TAXABLE).run(inputs)
-    assert SubtractLessZero(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (
-        Artifact(TAXABLE, D(500)),
-    )
-    assert SubtractPassOn(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (blank(TAXABLE),)
-    assert all(
-        "compute" not in vars(cls) for cls in (SubtractStrict, SubtractLessZero, SubtractPassOn)
-    )
+    with pytest.raises(BlankNotAllowedError):
+        strict(INCOME, DEDUCTION, TAXABLE).run(inputs)
+    assert less_zero(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (Artifact(TAXABLE, D(500)),)
+    assert pass_on(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (blank(TAXABLE),)
+    assert type(strict(INCOME, DEDUCTION, TAXABLE)) is type(pass_on(INCOME, DEDUCTION, TAXABLE))
 
 
 # --- through a worksheet and a composition ----------------------------------------------------
@@ -288,7 +307,7 @@ def test_a_blank_starting_artifact_is_traced_as_left_blank() -> None:
 
 
 def test_an_upstream_blank_is_passed_on_taken_as_zero_or_refused_by_the_consumer() -> None:
-    upstream = SubtractPassOn(CHART_GAIN, LIMIT, DEDUCTION)
+    upstream = pass_on(CHART_GAIN, LIMIT, DEDUCTION)
     start = (blank(CHART_GAIN), Artifact(LIMIT, D(1)), Artifact(INCOME, D(500)))
 
     def worksheet_with(consumer: Capability) -> Worksheet:
@@ -297,14 +316,14 @@ def test_an_upstream_blank_is_passed_on_taken_as_zero_or_refused_by_the_consumer
         worksheet.apply(consumer)
         return worksheet
 
-    passed = worksheet_with(SubtractPassOn(INCOME, DEDUCTION, TAXABLE))
+    passed = worksheet_with(pass_on(INCOME, DEDUCTION, TAXABLE))
     assert passed.get(TAXABLE).is_blank
 
-    fell_back = worksheet_with(SubtractLessZero(INCOME, DEDUCTION, TAXABLE))
+    fell_back = worksheet_with(less_zero(INCOME, DEDUCTION, TAXABLE))
     assert fell_back.get(TAXABLE).value == D(500)
 
     with pytest.raises(BlankNotAllowedError, match="'deduction' was left blank"):
-        worksheet_with(SubtractStrict(INCOME, DEDUCTION, TAXABLE))
+        worksheet_with(strict(INCOME, DEDUCTION, TAXABLE))
 
 
 def test_a_skipped_chart_leaves_the_deduction_blank_and_the_tax_base_unchanged() -> None:
@@ -312,8 +331,8 @@ def test_a_skipped_chart_leaves_the_deduction_blank_and_the_tax_base_unchanged()
     deduction, which that line takes as 0, is the unchanged $50,000.
     """
     capabilities = [
-        SubtractPassOn(CHART_GAIN, LIMIT, DEDUCTION),
-        SubtractLessZero(INCOME, DEDUCTION, TAXABLE),
+        pass_on(CHART_GAIN, LIMIT, DEDUCTION),
+        less_zero(INCOME, DEDUCTION, TAXABLE),
     ]
     composition = Composition(
         capabilities,
@@ -338,7 +357,7 @@ def test_a_skipped_chart_leaves_the_deduction_blank_and_the_tax_base_unchanged()
 
 def composition(*blank_inputs: ArtifactKind[Any]) -> Composition:
     return Composition(
-        [SubtractLessZero(INCOME, DEDUCTION, TAXABLE)],
+        [less_zero(INCOME, DEDUCTION, TAXABLE)],
         inputs=frozenset({INCOME, DEDUCTION}),
         outputs=frozenset({TAXABLE}),
         blank_inputs=frozenset(blank_inputs),
@@ -365,7 +384,7 @@ def test_a_declared_blank_input_must_be_an_input() -> None:
 
 def test_a_composition_declares_no_blank_input_by_default() -> None:
     plain = Composition(
-        [SubtractStrict(INCOME, DEDUCTION, TAXABLE)],
+        [strict(INCOME, DEDUCTION, TAXABLE)],
         inputs=frozenset({INCOME, DEDUCTION}),
         outputs=frozenset({TAXABLE}),
     )
@@ -374,20 +393,17 @@ def test_a_composition_declares_no_blank_input_by_default() -> None:
         plain.compute(Artifact(INCOME, D(7)), blank(DEDUCTION))
 
 
-def test_a_fallback_a_kind_cannot_hold_is_refused_when_the_capability_is_built() -> None:
-    class Negative(SubtractCompute):
-        BLANK_RULES: ClassVar[Mapping[str, BlankRule]] = {"less": D(-5)}
-
+def test_a_fallback_a_kind_cannot_hold_is_refused_when_the_rules_are_given() -> None:
     floor = ArtifactKind("ex/floor", Decimal, non_negative=True)
 
-    Negative(INCOME, LIMIT, NET)
+    SubtractCompute(INCOME, LIMIT, NET).with_blank_rules({"less": D(-5)})
     with pytest.raises(InvalidCapabilityError, match="fallback -5 for slot 'less'.*'ex/floor'"):
-        Negative(INCOME, floor, NET)
+        SubtractCompute(INCOME, floor, NET).with_blank_rules({"less": D(-5)})
 
 
 def test_with_several_blank_slots_the_refusal_names_the_first_by_identifier() -> None:
     with pytest.raises(BlankNotAllowedError, match="'income'"):
-        SubtractStrict(LIMIT, INCOME, NET).run((blank(LIMIT), blank(INCOME)))
+        strict(LIMIT, INCOME, NET).run((blank(LIMIT), blank(INCOME)))
 
 
 def test_a_compute_that_returns_a_blank_breaks_its_contract() -> None:
