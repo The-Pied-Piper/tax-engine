@@ -27,7 +27,7 @@ from tax_engine.domain.errors import (
     InvalidCompositionError,
     NegativeArtifactError,
 )
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import (
     BlankFallbackLine,
     BlankPassedOnLine,
@@ -413,3 +413,36 @@ def test_a_compute_that_returns_a_blank_breaks_its_contract() -> None:
 
     with pytest.raises(CapabilityContractError, match="returned 'net' blank from compute"):
         Leaky(INCOME, LIMIT, NET).run((Artifact(INCOME, D(1)), Artifact(LIMIT, D(1))))
+
+
+def test_a_fallback_for_a_slot_that_is_not_a_number_is_refused_but_pass_on_is_allowed() -> None:
+    notes = ArtifactKind("ex/notes", RecordList)
+
+    class Listing(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"rows": RecordList}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"rows"})
+
+        def __init__(self, rows: ArtifactKind[RecordList], output: Money) -> None:
+            super().__init__(rows=rows, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    Listing(notes, NET).with_blank_rules({"rows": PASS_ON})
+    with pytest.raises(InvalidCapabilityError, match="can only be passed on"):
+        Listing(notes, NET).with_blank_rules({"rows": D(0)})
+
+
+def test_blank_rules_given_empty_still_count_as_given() -> None:
+    capability = strict(INCOME, DEDUCTION, TAXABLE).with_blank_rules({})
+
+    with pytest.raises(InvalidCapabilityError, match="already given"):
+        capability.with_blank_rules({"less": D(0)})
+
+
+def test_a_blank_allowed_that_is_not_a_set_is_an_invalid_capability() -> None:
+    with pytest.raises(InvalidCapabilityError, match="BLANK_ALLOWED must be a set"):
+
+        class Bad(SubtractCompute):
+            BLANK_ALLOWED: ClassVar[frozenset[str]] = 5  # type: ignore[assignment]

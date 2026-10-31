@@ -11,7 +11,9 @@ rejection naming the selection, and never calls ports.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable, Mapping
+from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
@@ -27,6 +29,10 @@ _SLOT_NOUNS = {
     "CONSUMES": "consumed slot",
     "PRODUCES": "produced slot",
 }
+
+
+_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
+_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
 
 
 class CapabilityBuilder:
@@ -84,13 +90,14 @@ class CapabilityBuilder:
                     f"{capability.__name__}"
                 )
             value_type = capability.slot_value_type(slot)
-            try:
-                rules[slot] = value_type(text)
-            except (ValueError, ArithmeticError):
+            pattern = _WHOLE_NUMBER if value_type is int else _DECIMAL_NUMBER
+            if value_type not in (Decimal, int) or not pattern.fullmatch(text):
                 raise InvalidSelectionError(
-                    f"{who}: blank rule for slot {slot!r} must be pass_on or a "
-                    f"{value_type.__name__}, got {text!r}"
-                ) from None
+                    f"{who}: blank rule for slot {slot!r} must be pass_on or "
+                    f"{'a whole number' if value_type is int else 'a plain decimal number'} "
+                    f"for a {value_type.__name__} slot, got {text!r}"
+                )
+            rules[slot] = value_type(text)
         return rules
 
     def _parameter_arguments(

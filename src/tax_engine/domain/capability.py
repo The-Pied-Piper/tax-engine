@@ -99,7 +99,12 @@ class Capability(ABC):
                     )
                 setattr(cls, mapping, MappingProxyType(dict(declared)))
         if "BLANK_ALLOWED" in vars(cls):
-            cls.BLANK_ALLOWED = frozenset(cls.BLANK_ALLOWED)
+            try:
+                cls.BLANK_ALLOWED = frozenset(cls.BLANK_ALLOWED)
+            except TypeError:
+                raise InvalidCapabilityError(
+                    f"{cls.__name__}: BLANK_ALLOWED must be a set of slot names"
+                ) from None
         cls._check_slots()
 
     @classmethod
@@ -219,6 +224,7 @@ class Capability(ABC):
                 filled_by[kind] = slot
         self._wired_kinds = wired
         self._blank_rules: Mapping[str, BlankRule] = MappingProxyType({})
+        self._blank_rules_given = False
         self._slot_of = {kind: slot for slot in self.CONSUMES for kind in wired[slot]}
         self._consumes = frozenset(kind for slot in self.CONSUMES for kind in wired[slot])
         self._produces = frozenset(kind for slot in self.PRODUCES for kind in wired[slot])
@@ -234,7 +240,7 @@ class Capability(ABC):
         negative one for a non-negative kind.
         """
         name = type(self).__name__
-        if self._blank_rules:
+        if self._blank_rules_given:
             raise InvalidCapabilityError(f"{name}: blank rules are already given")
         for slot, rule in rules.items():
             if slot not in self.BLANK_ALLOWED:
@@ -242,6 +248,11 @@ class Capability(ABC):
             if isinstance(rule, PassOn):
                 continue
             value_type = self.slot_value_type(slot)
+            if value_type not in (Decimal, int):
+                raise InvalidCapabilityError(
+                    f"{name}: slot {slot!r} takes {value_type.__name__} kinds, so a blank there "
+                    "can only be passed on, not replaced by a fallback"
+                )
             if type(rule) is not value_type or (isinstance(rule, Decimal) and not rule.is_finite()):
                 raise InvalidCapabilityError(
                     f"{name}: blank rule for slot {slot!r} must be PASS_ON or a finite "
@@ -256,6 +267,7 @@ class Capability(ABC):
                         f"{kind.identifier!r}: {error}"
                     ) from error
         self._blank_rules = MappingProxyType(dict(rules))
+        self._blank_rules_given = True
         return self
 
     def _slot_kinds(

@@ -715,3 +715,38 @@ def test_a_blank_rule_for_a_slot_the_class_does_not_allow_is_an_invalid_selectio
 
     with pytest.raises(InvalidSelectionError, match="slot 'source' may not be blank"):
         CapabilityBuilder().build(chosen, Scale, datasets(), registry())
+
+
+@pytest.mark.parametrize("text", [" 0", "0 ", "1_0", "+5", "1e3", "٣", "", "0x10", "1,5", "NaN"])
+def test_a_fallback_must_be_a_plain_decimal_number(text: str) -> None:
+    with pytest.raises(InvalidSelectionError, match="plain decimal number"):
+        build_blank({"source": text})
+
+
+def test_a_fallback_for_a_whole_number_slot_must_be_a_whole_number() -> None:
+    class Counted(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"count": int}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": int}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count"})
+
+        def __init__(self, count: ArtifactKind[int], output: ArtifactKind[int]) -> None:
+            super().__init__(count=count, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    counted, total = ArtifactKind("ex/counted", int), ArtifactKind("ex/counted_total", int)
+    artifacts = registry({"ex/counted": counted, "ex/counted_total": total})
+
+    def chosen(text: str) -> CapabilitySelection:
+        return CapabilitySelection(
+            name="ex/counted",
+            params={},
+            consumes={"count": "ex/counted"},
+            produces={"output": "ex/counted_total"},
+            blank={"count": text},
+        )
+
+    CapabilityBuilder().build(chosen("2"), Counted, {}, artifacts)
+    with pytest.raises(InvalidSelectionError, match="whole number"):
+        CapabilityBuilder().build(chosen("2.5"), Counted, {}, artifacts)
