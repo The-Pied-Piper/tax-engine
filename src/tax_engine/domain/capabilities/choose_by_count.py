@@ -5,7 +5,8 @@ applies (one amount when there are none, another when there are any): the output
 when the count is 0 and `when_any` for any other count, the chosen value unchanged with its scale
 kept. It has no dataset, so it never rounds, and no floor; the count only chooses, it never
 scales. `compute` reads only the chosen candidate, but a blank in either candidate meets its rule
-first, so a blank unchosen candidate is refused unless its slot has a rule.
+first: a blank unchosen candidate is refused unless its slot has a rule, and with `pass_on` it
+blanks the output.
 
 Any of its three inputs may be left blank: the count (the box not ticked, the part left blank), a
 candidate (a skipped line). The class only allows it (`BLANK_ALLOWED`); what a blank does at each

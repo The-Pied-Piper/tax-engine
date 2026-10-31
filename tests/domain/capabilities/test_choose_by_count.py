@@ -409,7 +409,7 @@ def test_a_blank_count_with_a_zero_fallback_chooses_the_first_candidate() -> Non
     assert result.trace[1].count == 0
 
 
-def test_a_blank_count_with_a_zero_fallback_does_not_read_a_blank_unchosen_candidate() -> None:
+def test_a_blank_unchosen_candidate_with_a_zero_fallback_leaves_the_chosen_one_alone() -> None:
     rules: dict[str, BlankRule] = {"count": 0, "when_any": D("0")}
 
     result = capability().with_blank_rules(rules).run(blank_inputs(count=None, when_any=None))
@@ -457,3 +457,13 @@ def test_a_candidate_fallback_replaces_the_blank_by_the_fallback_value() -> None
 
     assert result.outputs == (Artifact(CHOSEN, D("0")),)
     assert result.trace[0] == BlankFallbackLine(WITH_FAMILY, D("0"))
+
+
+def test_a_blank_unchosen_candidate_with_pass_on_blanks_the_output() -> None:
+    # The base applies a slot's rule before `compute` knows which candidate it will choose.
+    rules: dict[str, BlankRule] = {"when_any": PASS_ON}
+
+    result = capability().with_blank_rules(rules).run(blank_inputs(count=0, when_any=None))
+
+    (output,) = result.outputs
+    assert output.is_blank
