@@ -17,11 +17,17 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capability import CapabilityRegistry
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import SubtractedLine
+from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 
 D = Decimal
 
@@ -261,3 +267,71 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank in either slot ---------------------------------------------------------------------
+
+
+def blank_input(kind: ArtifactKind[Decimal]) -> Artifact[Any]:
+    return Artifact(kind, BLANK)
+
+
+def test_declares_that_either_slot_may_be_blank() -> None:
+    assert Subtract.BLANK_ALLOWED == frozenset({"amount", "less"})
+
+
+def test_without_rules_a_blank_amount_is_refused_naming_the_line_and_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'gross_amount'.*'amount'"):
+        capability().run((blank_input(GROSS), Artifact(REDUCTION, D(1))))
+
+
+def test_without_rules_a_blank_less_is_refused_naming_the_line_and_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'reduction'.*'less'"):
+        capability().run((Artifact(GROSS, D(1)), blank_input(REDUCTION)))
+
+
+def test_pass_on_in_either_slot_blanks_the_difference() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON, "less": PASS_ON})
+
+    for given in (
+        (blank_input(GROSS), Artifact(REDUCTION, D(1))),
+        (Artifact(GROSS, D(1)), blank_input(REDUCTION)),
+    ):
+        result = passing.run(given)
+        assert result.outputs == (Artifact(NET, BLANK),)
+        assert isinstance(result.trace[0], BlankPassedOnLine)
+
+
+def test_a_declared_zero_for_less_reads_zero_and_the_trace_says_so() -> None:
+    carried = capability().with_blank_rules({"less": D(0)})
+
+    result = carried.run((Artifact(GROSS, D(508418)), blank_input(REDUCTION)))
+
+    assert result.outputs == (Artifact(NET, D(508418)),)
+    assert result.trace == (
+        BlankFallbackLine(REDUCTION, D(0)),
+        SubtractedLine(NET, GROSS, D(508418), REDUCTION, D(0), D(508418)),
+    )
+
+
+def test_a_zero_for_less_does_not_cover_a_blank_amount() -> None:
+    carried = capability().with_blank_rules({"less": D(0)})
+
+    with pytest.raises(BlankNotAllowedError, match="'amount'"):
+        carried.run((blank_input(GROSS), Artifact(REDUCTION, D(1))))
+
+
+def test_one_class_serves_both_uses_with_different_rules() -> None:
+    given = (Artifact(GROSS, D(10)), blank_input(REDUCTION))
+
+    assert capability().with_blank_rules({"less": D(0)}).run(given).outputs == (
+        Artifact(NET, D(10)),
+    )
+    assert capability().with_blank_rules({"less": PASS_ON}).run(given).outputs == (
+        Artifact(NET, BLANK),
+    )
+
+
+def test_a_rule_for_a_slot_that_is_not_consumed_is_refused() -> None:
+    with pytest.raises(InvalidCapabilityError, match="'output'"):
+        capability().with_blank_rules({"output": PASS_ON})
