@@ -382,6 +382,9 @@ capabilities:
       count: ca/cpp_part_5_completed
       when_none: ca/cpp_part_3_base_contributions_on_return
       when_any: ca/cpp_part_5_line_57
+    # Part 5 left blank ("If not, leave this part blank") reads as not completed (0).
+    blank:
+      count: "0"
     produces:
       output: ca/schedule_8_cpp_base_contributions_on_return
   # T1 line 22215: Schedule 8 Part 5 line 69 when Part 5 is completed, else the Part 3a or Part
@@ -391,6 +394,9 @@ capabilities:
       count: ca/cpp_part_5_completed
       when_none: ca/cpp_part_3_enhanced_contributions_on_return
       when_any: ca/cpp_part_5_line_69
+    # Part 5 left blank ("If not, leave this part blank") reads as not completed (0).
+    blank:
+      count: "0"
     produces:
       output: ca/schedule_8_cpp_enhanced_contributions_on_return
   # T1 line 44800: Schedule 8 Part 5 line 50 when Part 5 is completed, else the Part 3a line 29
@@ -400,5 +406,8 @@ capabilities:
       count: ca/cpp_part_5_completed
       when_none: ca/cpp_part_3_overpayment
       when_any: ca/cpp_part_5_line_50
+    # Part 5 left blank ("If not, leave this part blank") reads as not completed (0).
+    blank:
+      count: "0"
     produces:
       output: ca/schedule_8_cpp_overpayment

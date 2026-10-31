@@ -20,11 +20,21 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
 from tax_engine.domain.capability import CapabilityRegistry
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.trace import ChosenByCountLine, TimesCountLine
+from tax_engine.domain.trace import (
+    BlankFallbackLine,
+    BlankPassedOnLine,
+    ChosenByCountLine,
+    TimesCountLine,
+)
 
 D = Decimal
 
@@ -353,3 +363,91 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- blank ------------------------------------------------------------------------------------
+
+
+def blank_inputs(
+    count: int | None = 0, when_none: str | None = "1633", when_any: str | None = "2813"
+) -> tuple[Artifact[Any], ...]:
+    """The made-up inputs with None for a blank one."""
+    return (
+        Artifact(DEPENDANTS, BLANK if count is None else count),
+        Artifact(ALONE, BLANK if when_none is None else D(when_none)),
+        Artifact(WITH_FAMILY, BLANK if when_any is None else D(when_any)),
+    )
+
+
+def test_allows_a_blank_count_and_either_candidate_and_nothing_else() -> None:
+    assert ChooseByCount.BLANK_ALLOWED == frozenset({"count", "when_none", "when_any"})
+
+
+def test_refuses_a_blank_in_any_input_when_the_manifest_gives_no_rule() -> None:
+    for blanked in ({"count": None}, {"when_none": None}, {"when_any": None}):
+        with pytest.raises(BlankNotAllowedError):
+            capability().run(blank_inputs(**{"count": 0, **blanked}))
+
+
+def test_refuses_a_blank_rule_on_the_output() -> None:
+    with pytest.raises(InvalidCapabilityError, match="output"):
+        capability().with_blank_rules({"output": PASS_ON})
+
+
+def test_a_blank_count_with_a_zero_fallback_chooses_the_first_candidate() -> None:
+    result = capability().with_blank_rules({"count": 0}).run(blank_inputs(count=None))
+
+    assert result.outputs == (Artifact(CHOSEN, D("1633")),)
+    assert result.trace[0] == BlankFallbackLine(DEPENDANTS, 0)
+    assert isinstance(result.trace[1], ChosenByCountLine)
+    assert result.trace[1].chosen_kind == ALONE
+    assert result.trace[1].count == 0
+
+
+def test_a_blank_count_with_a_zero_fallback_does_not_read_a_blank_unchosen_candidate() -> None:
+    rules = {"count": 0, "when_any": D("0")}
+
+    result = capability().with_blank_rules(rules).run(blank_inputs(count=None, when_any=None))
+
+    assert result.outputs == (Artifact(CHOSEN, D("1633")),)
+
+
+def test_a_blank_chosen_candidate_passes_on_to_a_blank_output() -> None:
+    rules = {"when_none": PASS_ON, "when_any": PASS_ON}
+
+    result = capability().with_blank_rules(rules).run(blank_inputs(count=0, when_none=None))
+
+    (output,) = result.outputs
+    assert output.is_blank
+    assert result.trace == (BlankPassedOnLine(CHOSEN, (ALONE,)),)
+
+
+def test_a_blank_count_and_a_blank_chosen_candidate_give_a_blank_output() -> None:
+    rules = {"count": 0, "when_none": PASS_ON, "when_any": PASS_ON}
+
+    result = capability().with_blank_rules(rules).run(blank_inputs(count=None, when_none=None))
+
+    (output,) = result.outputs
+    assert output.is_blank
+    assert result.trace[0] == BlankFallbackLine(DEPENDANTS, 0)
+    assert result.trace[1] == BlankPassedOnLine(CHOSEN, (ALONE,))
+
+
+def test_a_blank_second_candidate_is_chosen_by_a_count_of_one() -> None:
+    rules = {"when_none": D("0"), "when_any": PASS_ON}
+
+    result = capability().with_blank_rules(rules).run(blank_inputs(count=1, when_any=None))
+
+    (output,) = result.outputs
+    assert output.is_blank
+
+
+def test_a_candidate_fallback_replaces_the_blank_by_the_fallback_value() -> None:
+    result = (
+        capability()
+        .with_blank_rules({"when_any": D("0")})
+        .run(blank_inputs(count=1, when_any=None))
+    )
+
+    assert result.outputs == (Artifact(CHOSEN, D("0")),)
+    assert result.trace[0] == BlankFallbackLine(WITH_FAMILY, D("0"))
