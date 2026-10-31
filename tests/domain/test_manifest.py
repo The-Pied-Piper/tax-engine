@@ -568,8 +568,10 @@ def test_a_default_that_suits_its_kind_is_accepted(
 @pytest.mark.parametrize(
     ("kind", "value", "problem"),
     [
-        (AMOUNT, "abc", "must be a decimal number"),
-        (AMOUNT, "NaN", "must be a finite number"),
+        (AMOUNT, "abc", "must be a plain decimal number"),
+        (AMOUNT, "NaN", "must be a plain decimal number"),
+        (AMOUNT, "1e5", "must be a plain decimal number"),
+        (AMOUNT, " 5", "must be a plain decimal number"),
         (AMOUNT, (), "must be a quoted number"),
         (LEVY, "-1", "must not be below zero"),
         (COUNT, "1.5", "must be a whole number"),

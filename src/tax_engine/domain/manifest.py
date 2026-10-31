@@ -24,7 +24,9 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.registry import Namespace
 
-_WHOLE_NUMBER = re.compile(r"-?(0|[1-9][0-9]*)")
+# A number's spelling in manifest text, the same as a blank rule's fallback (capability_builder).
+_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
+_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
 
 
 @dataclass(frozen=True, slots=True)
@@ -134,17 +136,13 @@ class InputDeclaration:
     def _decimal_problem(value: str | tuple[()], non_negative: bool, *, whole: bool) -> str | None:
         if not isinstance(value, str):
             return "must be a quoted number"
-        if whole:
-            if not _WHOLE_NUMBER.fullmatch(value):
-                return "must be a whole number"
+        pattern = _WHOLE_NUMBER if whole else _DECIMAL_NUMBER
+        if not pattern.fullmatch(value):
+            return "must be a whole number" if whole else "must be a plain decimal number"
+        try:
             number = Decimal(value)
-        else:
-            try:
-                number = Decimal(value)
-            except InvalidOperation:
-                return "must be a decimal number"
-            if not number.is_finite():
-                return "must be a finite number"
+        except (InvalidOperation, ValueError):
+            return "is too long to read as a number"
         if non_negative and number < 0:
             return "must not be below zero"
         return None
