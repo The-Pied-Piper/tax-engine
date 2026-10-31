@@ -160,7 +160,7 @@ capabilities:
       when_any: ca/chart_2016_part_2_amount_j
     # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
     # amount is passed on, so a skipped chart leaves its total blank; what the next chart's line B
-    # does with it ("enter 0") is the line B steps' own blank rule (#98, #99, #101).
+    # does with it ("enter 0") is that line B step's own blank rule.
     blank:
       count: "0"
       when_none: pass_on
@@ -343,7 +343,7 @@ capabilities:
       when_any: ca/chart_2017_part_2_amount_j
     # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
     # amount is passed on, so a skipped chart leaves its total blank; what the next chart's line B
-    # does with it ("enter 0") is the line B steps' own blank rule (#98, #99, #101).
+    # does with it ("enter 0") is that line B step's own blank rule.
     blank:
       count: "0"
       when_none: pass_on
@@ -526,7 +526,7 @@ capabilities:
       when_any: ca/chart_2018_part_2_amount_j
     # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
     # amount is passed on, so a skipped chart leaves its total blank; what the next chart's line B
-    # does with it ("enter 0") is the line B steps' own blank rule (#98, #99, #101).
+    # does with it ("enter 0") is that line B step's own blank rule.
     blank:
       count: "0"
       when_none: pass_on
