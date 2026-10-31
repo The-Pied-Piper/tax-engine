@@ -656,6 +656,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_1_amount_a",
             "less": "ca/chart_2024_period_2_amount_n",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2025_part_1_amount_c"},
     ),
     # Chart 2025 Part 1 amount E "Capital gains deduction available for QFFP and/or QSBCS ...:
@@ -707,6 +708,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_1_amount_k",
             "less": "ca/t657_part_1_amount_l",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2025_part_1_amount_m"},
     ),
     # Chart 2025 Part 1 amount N "Enter whichever is less: amount E or amount M.".
@@ -767,6 +769,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_2_amount_a",
             "less": "ca/chart_2025_part_1_amount_p",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2025_part_2_amount_c"},
     ),
     # Chart 2025 Part 2 amount E "Capital gains deduction available for QFFP and/or QSBCS ...:
@@ -791,6 +794,7 @@ STEPS = {
             "amount": "ca/qsbcs_gain_or_loss",
             "less": "ca/t657_part_2_excluded_f",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2025_part_2_amount_f"},
     ),
     # Chart 2025 Part 2 amount G "Amount from line 11000 of Schedule 3 (do not include capital gains
@@ -802,6 +806,7 @@ STEPS = {
             "amount": "ca/qffp_gain_or_loss",
             "less": "ca/t657_part_2_excluded_g",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2025_part_2_amount_g"},
     ),
     # Chart 2025 Part 2 amount H "Amount from line 12400 of Schedule 3 (do not include capital gains
@@ -813,6 +818,7 @@ STEPS = {
             "amount": "ca/qffp_foreclosure_gain_or_loss",
             "less": "ca/t657_part_2_excluded_h",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2025_part_2_amount_h"},
     ),
     # Chart 2025 Part 2 "Add amounts F to J (if negative, enter "0")" (I "Amount from line 6 of Form
@@ -852,6 +858,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_2_amount_k",
             "less": "ca/t657_part_2_amount_l",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2025_part_2_amount_m"},
     ),
     # Chart 2025 Part 2 amount N "Enter whichever is less: amount E or amount M.".

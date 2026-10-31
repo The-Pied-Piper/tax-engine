@@ -12,6 +12,9 @@ capabilities:
     consumes:
       amount: ca/chart_2019_part_1_amount_a
       less: ca/chart_2018_total_carried
+    # B: "If you did not complete charts for 2016 to 2018, enter "0"." A blank B reads 0.
+    blank:
+      less: "0"
     produces:
       output: ca/chart_2019_part_1_amount_c
   # Chart 2019 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
@@ -184,6 +187,9 @@ capabilities:
     consumes:
       amount: ca/chart_2020_part_1_amount_a
       less: ca/chart_2019_total_carried
+    # B: "If you did not complete charts for 2016 to 2019, enter "0"." A blank B reads 0.
+    blank:
+      less: "0"
     produces:
       output: ca/chart_2020_part_1_amount_c
   # Chart 2020 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
