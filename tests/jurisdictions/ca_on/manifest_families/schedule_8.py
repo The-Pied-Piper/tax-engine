@@ -757,6 +757,7 @@ FORM_STEPS = {
             "when_none": "ca/cpp_part_3_base_contributions_on_return",
             "when_any": "ca/cpp_part_5_line_57",
         },
+        blank={"count": "0"},
         produces={"output": "ca/schedule_8_cpp_base_contributions_on_return"},
     ),
     # T1 line 22215: Schedule 8 Part 5 line 69 when Part 5 is completed, else the Part 3a or
@@ -769,6 +770,7 @@ FORM_STEPS = {
             "when_none": "ca/cpp_part_3_enhanced_contributions_on_return",
             "when_any": "ca/cpp_part_5_line_69",
         },
+        blank={"count": "0"},
         produces={"output": "ca/schedule_8_cpp_enhanced_contributions_on_return"},
     ),
     # T1 line 44800: Schedule 8 Part 5 line 50 when Part 5 is completed, else the Part 3a line
@@ -781,6 +783,7 @@ FORM_STEPS = {
             "when_none": "ca/cpp_part_3_overpayment",
             "when_any": "ca/cpp_part_5_line_50",
         },
+        blank={"count": "0"},
         produces={"output": "ca/schedule_8_cpp_overpayment"},
     ),
     # Schedule 8 Part 3, each contribution on employment income: line 11 (base, 4.95% of the

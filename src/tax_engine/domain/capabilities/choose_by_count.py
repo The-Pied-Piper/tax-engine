@@ -4,7 +4,12 @@ For a line computed once for each of two columns, where a count of persons decid
 applies (one amount when there are none, another when there are any): the output is `when_none`
 when the count is 0 and `when_any` for any other count, the chosen value unchanged with its scale
 kept. It has no dataset, so it never rounds, and no floor; the count only chooses, it never
-scales. Only the chosen candidate is read.
+scales. Only the chosen candidate is read by `compute`.
+
+Any of its three inputs may be left blank: the count (the box not ticked, the part left blank), a
+candidate (a skipped line). The class only allows it (`BLANK_ALLOWED`); what a blank does at each
+step, a fallback such as "0" or passing the blank on, is the manifest's `blank:` line, so one class
+serves every use. A blank in an input without such a line is refused.
 """
 
 from __future__ import annotations
@@ -28,6 +33,7 @@ class ChooseByCount(Capability):
         "when_any": Decimal,
     }
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count", "when_none", "when_any"})
 
     def __init__(
         self, count: ArtifactKind[int], when_none: Money, when_any: Money, output: Money
