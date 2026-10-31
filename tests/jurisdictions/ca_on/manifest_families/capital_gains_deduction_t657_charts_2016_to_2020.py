@@ -394,7 +394,7 @@ STEPS = {
             "when_none": "ca/chart_2016_part_1_amount_g",
             "when_any": "ca/chart_2016_part_2_amount_j",
         },
-        blank={"count": "0", "when_none": "pass_on", "when_any": "pass_on"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2016_total_carried"},
     ),
     # Chart 2017 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS
@@ -630,7 +630,7 @@ STEPS = {
             "when_none": "ca/chart_2017_part_1_amount_k",
             "when_any": "ca/chart_2017_part_2_amount_j",
         },
-        blank={"count": "0", "when_none": "pass_on", "when_any": "pass_on"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2017_total_carried"},
     ),
     # Chart 2018 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS
@@ -866,7 +866,7 @@ STEPS = {
             "when_none": "ca/chart_2018_part_1_amount_k",
             "when_any": "ca/chart_2018_part_2_amount_j",
         },
-        blank={"count": "0", "when_none": "pass_on", "when_any": "pass_on"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2018_total_carried"},
     ),
     # Chart 2019 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS
@@ -1102,7 +1102,7 @@ STEPS = {
             "when_none": "ca/chart_2019_part_1_amount_k",
             "when_any": "ca/chart_2019_part_2_amount_j",
         },
-        blank={"count": "0", "when_none": "pass_on", "when_any": "pass_on"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2019_total_carried"},
     ),
     # Chart 2020 Part 1 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS
@@ -1338,7 +1338,7 @@ STEPS = {
             "when_none": "ca/chart_2020_part_1_amount_k",
             "when_any": "ca/chart_2020_part_2_amount_j",
         },
-        blank={"count": "0", "when_none": "pass_on", "when_any": "pass_on"},
+        blank={"count": "0"},
         produces={"output": "ca/chart_2020_total_carried"},
     ),
 }
