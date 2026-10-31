@@ -97,7 +97,13 @@ class CapabilityBuilder:
                     f"{'a whole number' if value_type is int else 'a plain decimal number'} "
                     f"for a {value_type.__name__} slot, got {text!r}"
                 )
-            rules[slot] = value_type(text)
+            try:
+                rules[slot] = value_type(text)
+            except ValueError:
+                # Python refuses a whole number of more than 4300 digits.
+                raise InvalidSelectionError(
+                    f"{who}: blank rule for slot {slot!r} is too long to read as a number"
+                ) from None
         return rules
 
     def _parameter_arguments(

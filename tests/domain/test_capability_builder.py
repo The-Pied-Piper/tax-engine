@@ -750,3 +750,30 @@ def test_a_fallback_for_a_whole_number_slot_must_be_a_whole_number() -> None:
     CapabilityBuilder().build(chosen("2"), Counted, {}, artifacts)
     with pytest.raises(InvalidSelectionError, match="whole number"):
         CapabilityBuilder().build(chosen("2.5"), Counted, {}, artifacts)
+
+
+def test_a_fallback_too_long_to_read_as_a_whole_number_is_an_invalid_selection() -> None:
+    class Counted(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"count": int}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": int}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count"})
+
+        def __init__(self, count: ArtifactKind[int], output: ArtifactKind[int]) -> None:
+            super().__init__(count=count, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    counted, total = ArtifactKind("ex/counted", int), ArtifactKind("ex/counted_total", int)
+    chosen = CapabilitySelection(
+        name="ex/counted",
+        params={},
+        consumes={"count": "ex/counted"},
+        produces={"output": "ex/counted_total"},
+        blank={"count": "9" * 5000},
+    )
+
+    with pytest.raises(InvalidSelectionError, match="too long to read as a number"):
+        CapabilityBuilder().build(
+            chosen, Counted, {}, registry({"ex/counted": counted, "ex/counted_total": total})
+        )
