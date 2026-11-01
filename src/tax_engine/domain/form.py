@@ -33,7 +33,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from decimal import Decimal
 from typing import Any
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
@@ -45,7 +45,7 @@ from tax_engine.domain.errors import (
     NotFoundError,
     ValidationError,
 )
-from tax_engine.domain.manifest import Form
+from tax_engine.domain.manifest import Form, Manifest
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
@@ -219,12 +219,29 @@ class FormSet:
     always have instances, an input that is a form's derived `<form>.<export>` kind, an import that
     no form exports, a cycle of imports, or an input that no form reads (an instances kind is read
     by its form). A form's read of its own derived export is not a cycle: see `FormComposition`.
+
+    Given the `manifest` the forms are wired from, and the `artifacts` its identifiers resolve in,
+    construction first refuses (InvalidManifestError) what `Manifest.check_artifacts` refuses: a
+    default that does not suit its input's kind, `fields` that are not those of the form's
+    instances kind, a `required_when` that is not a yes/no.
     """
 
     def __init__(
-        self, forms: Iterable[FormComposition], *, inputs: frozenset[ArtifactKind[Any]]
+        self,
+        forms: Iterable[FormComposition],
+        *,
+        inputs: frozenset[ArtifactKind[Any]],
+        manifest: Manifest | None = None,
+        artifacts: ArtifactRegistry | None = None,
     ) -> None:
-        """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`."""
+        """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`.
+
+        `manifest` and `artifacts` are given together or not at all.
+        """
+        if (manifest is None) != (artifacts is None):
+            raise ValueError("manifest and artifacts are given together")
+        if manifest is not None and artifacts is not None:
+            manifest.check_artifacts(artifacts)
         listed = tuple(forms)
         self._check_names(listed)
         self._check_instances(listed, inputs)

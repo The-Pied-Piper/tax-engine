@@ -316,7 +316,7 @@ class Manifest:
     supplies with the rest. Each form's own inputs are derived from its selections. The
     `required_when` of an optional form names a required input, an artifact one of the manifest's
     selections produces; that it is a yes/no
-    is checked with the artifact kinds by `check_artifacts`.
+    is checked with the artifact kinds by `check_artifacts`, which `FormSet` calls when built.
     """
 
     jurisdiction: JurisdictionCode

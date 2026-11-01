@@ -30,7 +30,7 @@ from typing import Any, ClassVar
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
@@ -43,11 +43,14 @@ from tax_engine.domain.errors import (
     DomainError,
     DuplicateArtifactError,
     InvalidCompositionError,
+    InvalidManifestError,
     MissingArtifactError,
     NotFoundError,
     ValidationError,
 )
 from tax_engine.domain.form import FormComposition, FormSet
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Default, Form, InputDeclaration, Manifest
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
@@ -1769,3 +1772,72 @@ def test_a_form_set_refuses_a_blank_starting_artifact() -> None:
 
     with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):
         forms.compute(Artifact(SALES, BLANK), Artifact(COSTS, Decimal(1)))
+
+
+def manifest_of(*declarations: InputDeclaration, required_when: str | None = None) -> Manifest:
+    """A manifest with the form `ex-on/return` that exports `ex/profit`, and these inputs."""
+    return Manifest(
+        jurisdiction=JurisdictionCode("EX-ON"),
+        version=1,
+        valid_from_tax_year=2025,
+        inputs={declaration.name: declaration for declaration in declarations},
+        forms=(
+            Form(
+                required=required_when is None,
+                name=RETURN,
+                instances=None,
+                exports=("ex/profit",),
+                capabilities=(),
+                required_when=required_when,
+                basis=None if required_when is None else "Complete this form if you claim relief",
+            ),
+        ),
+    )
+
+
+def checked_set(manifest: Manifest, *kinds: ArtifactKind[Any]) -> FormSet:
+    known = ArtifactRegistry()
+    for kind in kinds:
+        known.register(kind.identifier, kind)
+    default = FormComposition(
+        RETURN,
+        [Subtract(SALES, COSTS, PROFIT)],
+        exports=[PROFIT],
+        starting=frozenset({SALES, COSTS}),
+    )
+    return FormSet([default], inputs=frozenset({SALES, COSTS}), manifest=manifest, artifacts=known)
+
+
+def test_a_form_set_refuses_a_default_that_does_not_suit_its_input() -> None:
+    bad = InputDeclaration(name="ex/sales", required=False, default=Default("x"), basis="Line 1")
+    manifest = manifest_of(bad, InputDeclaration(name="ex/costs", required=True))
+
+    with pytest.raises(InvalidManifestError, match="input 'ex/sales': default"):
+        checked_set(manifest, SALES, COSTS, PROFIT)
+
+
+def test_a_form_set_refuses_a_predicate_that_is_not_a_yes_no() -> None:
+    manifest = manifest_of(
+        InputDeclaration(name="ex/sales", required=True),
+        InputDeclaration(name="ex/costs", required=True),
+        required_when="ex/sales",
+    )
+
+    with pytest.raises(InvalidManifestError, match="required_when 'ex/sales' is not a yes/no"):
+        checked_set(manifest, SALES, COSTS, PROFIT)
+
+
+def test_a_form_set_built_from_a_checked_manifest_is_accepted() -> None:
+    manifest = manifest_of(
+        InputDeclaration(name="ex/sales", required=True),
+        InputDeclaration(name="ex/costs", required=True),
+    )
+
+    assert [form.name for form in checked_set(manifest, SALES, COSTS, PROFIT).forms] == [RETURN]
+
+
+def test_a_form_set_is_given_a_manifest_and_its_artifacts_together() -> None:
+    manifest = manifest_of(InputDeclaration(name="ex/sales", required=True))
+
+    with pytest.raises(ValueError, match="together"):
+        FormSet([], inputs=frozenset(), manifest=manifest)
