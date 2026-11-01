@@ -247,7 +247,7 @@ class FormSet:
         self._check_not_derived(inputs)
         self._check_imports(listed)
         self._check_inputs_are_read(listed, inputs)
-        self._defaults = self._checked_defaults(defaults, inputs)
+        self._defaults = self._index_defaults(defaults, inputs)
         self._inputs = inputs
         self._forms = self._order(listed)
 
@@ -345,8 +345,18 @@ class FormSet:
 
     @staticmethod
     def _export_of(derived: RecordListKind, ran: Sequence[Worksheet]) -> Artifact[Any]:
-        """The derived kind as a record list of its export over the worksheets `ran`, in order."""
+        """The derived kind as a record list of its export over the worksheets `ran`, in order.
+
+        A blank export has no place in a record, so it is a BlankNotAllowedError naming the
+        instance.
+        """
         (export,) = derived.fields
+        for position, worksheet in enumerate(ran, start=1):
+            if worksheet.get(export).is_blank:
+                raise BlankNotAllowedError(
+                    f"{derived.identifier.partition('.')[0]}, instance {position}: "
+                    f"{export.label!r} is blank, and a form cannot export a blank"
+                )
         listed = [{export: worksheet.get(export).value} for worksheet in ran]
         return Artifact(derived, RecordList(derived.fields, listed))
 
@@ -364,7 +374,7 @@ class FormSet:
         # The form set itself reads each instances list, so it cannot take a blank one; any other
         # blank goes on to the composition of each form that reads it, which checks its own.
         listed = {form.instances for form in self._forms if form.instances is not None}
-        blank = [kind for kind in listed if given[kind].is_blank]
+        blank = [kind for kind in sorted(listed, key=Composition.sort_key) if given[kind].is_blank]
         if blank:
             raise BlankNotAllowedError(
                 f"{ArtifactKind.labels(blank)} may not be left blank: "
@@ -372,7 +382,7 @@ class FormSet:
             )
 
     @staticmethod
-    def _checked_defaults(
+    def _index_defaults(
         defaults: Iterable[Artifact[Any]], inputs: frozenset[ArtifactKind[Any]]
     ) -> dict[ArtifactKind[Any], Artifact[Any]]:
         found: dict[ArtifactKind[Any], Artifact[Any]] = {}

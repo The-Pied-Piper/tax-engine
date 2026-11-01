@@ -147,12 +147,10 @@ class InputDeclaration:
 
         `None` for a required input, which has no default. Blank for `Default(None)`; otherwise
         the declared value read as the kind's own value type (a number for an amount or a count,
-        an empty record list, or the text). The default is checked against the kind first, as
-        `check_kind` does, so a default that no value of the kind could be is refused here too.
+        an empty record list, or the text). `check_kind` has already vouched for the default.
         """
         if self.default is None:
             return None
-        self.check_kind(kind)
         value = self.default.value
         if value is None:
             return Artifact(kind, BLANK)
@@ -396,6 +394,17 @@ class Manifest:
                         f"form {form.name!r}: required_when {form.required_when!r} is not a "
                         "yes/no: it must be a count, 1 for yes and 0 for no"
                     )
+
+    def default_artifacts(self, artifacts: ArtifactRegistry) -> tuple[Artifact[Any], ...]:
+        """The artifact each optional input is read as when the request leaves it out.
+
+        Called after `check_artifacts`, which has checked every default against its kind.
+        """
+        found = (
+            declaration.default_artifact(artifacts.kind(name))
+            for name, declaration in self.inputs.items()
+        )
+        return tuple(artifact for artifact in found if artifact is not None)
 
     @staticmethod
     def _check_fields(form: Form, instances: ArtifactKind[Any]) -> None:

@@ -78,11 +78,7 @@ class TaxComputationService:
         # Resolved before any capability is built, so a bad identifier is reported first.
         inputs = frozenset(self._artifacts.kind(identifier) for identifier in manifest.inputs)
         manifest.check_artifacts(self._artifacts)
-        defaults = [
-            artifact
-            for name, declaration in manifest.inputs.items()
-            if (artifact := declaration.default_artifact(self._artifacts.kind(name))) is not None
-        ]
+        defaults = manifest.default_artifacts(self._artifacts)
         blank = frozenset(artifact.kind for artifact in defaults if artifact.is_blank)
         return FormSet(
             [

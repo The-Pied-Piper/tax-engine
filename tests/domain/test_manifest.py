@@ -620,11 +620,6 @@ def test_a_required_input_has_no_default_artifact() -> None:
     assert required.default_artifact(AMOUNT) is None
 
 
-def test_a_default_artifact_for_a_default_that_does_not_suit_the_kind_is_refused() -> None:
-    with pytest.raises(InvalidManifestError, match="input 'ex/credit': default 'abc'"):
-        optional(default=Default("abc")).default_artifact(AMOUNT)
-
-
 def optional_form(**changes: Any) -> Form:
     fields: dict[str, Any] = {
         "name": "ex/relief",

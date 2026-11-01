@@ -1924,3 +1924,13 @@ def test_a_default_for_a_kind_that_is_not_an_input_is_refused() -> None:
 def test_two_defaults_for_one_kind_are_refused() -> None:
     with pytest.raises(InvalidCompositionError, match="two defaults for 'costs'"):
         less_set([Artifact(COSTS, D(1)), Artifact(COSTS, BLANK)])
+
+
+def test_a_form_that_exports_a_blank_input_is_refused_naming_the_form_and_instance() -> None:
+    fact = FormComposition(
+        "ex/fact", [], exports=[FEE], starting=frozenset({FEE}), blank_inputs=frozenset({FEE})
+    )
+    forms = FormSet([fact], inputs=frozenset({FEE}), defaults=[Artifact(FEE, BLANK)])
+
+    with pytest.raises(BlankNotAllowedError, match=r"^ex/fact, instance 1: 'fee' is blank"):
+        forms.compute()
