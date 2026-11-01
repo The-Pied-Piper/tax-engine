@@ -40,7 +40,8 @@ class CapabilitySelection:
     `params` maps parameter slots to families; `consumes` and `produces` map artifact slots to
     artifact identifiers, and a consumed slot may instead map to a list of identifiers, kept in
     order as a tuple. `blank` maps a consumed slot to what a blank in it does: the text of the
-    fallback value taken in its place, or `pass_on`; a slot not named refuses a blank. Each is
+    fallback value taken in its place, `pass_on`, or `compute` (the class decides in code); a slot
+    not named refuses a blank. Each is
     kept as a read-only copy of what it was given.
     """
 

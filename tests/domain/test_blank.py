@@ -15,7 +15,7 @@ from typing import Any, ClassVar
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.blank import BLANK, PASS_ON, Blank, BlankRule
+from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, Blank, BlankRule, Compute, PassOn
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.digits import DigitsKind
@@ -294,6 +294,98 @@ def test_one_parent_gives_different_results_on_the_same_blank() -> None:
     assert less_zero(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (Artifact(TAXABLE, D(500)),)
     assert pass_on(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (blank(TAXABLE),)
     assert type(strict(INCOME, DEDUCTION, TAXABLE)) is type(pass_on(INCOME, DEDUCTION, TAXABLE))
+
+
+# --- the compute rule -------------------------------------------------------------------------
+
+
+class BlankAware(SubtractCompute):
+    """`SubtractCompute` whose own call for a blank `less` is to take 7 off."""
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        less = self._input(inputs, self._less)
+        taken = D(7) if less.is_blank else less.value
+        total = self._input(inputs, self._amount).value - taken
+        return CapabilityResult((Artifact(self._output, total),), ())
+
+
+def test_compute_is_one_rule_distinct_from_pass_on() -> None:
+    assert isinstance(COMPUTE, Compute)
+    assert not isinstance(COMPUTE, PassOn)
+    assert not isinstance(PASS_ON, Compute)
+
+
+def test_a_compute_slot_hands_the_blank_to_compute_which_decides() -> None:
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE})
+
+    result = capability.run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
+
+    assert result.outputs == (Artifact(NET, D(493)),)
+    assert result.trace == ()
+
+
+def test_with_no_blank_a_compute_slot_changes_nothing() -> None:
+    inputs = (Artifact(INCOME, D(500)), Artifact(DEDUCTION, D(4)))
+
+    result = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE}).run(inputs)
+
+    assert result.outputs == (Artifact(NET, D(496)),)
+
+
+def test_a_slot_without_a_compute_rule_still_refuses_while_another_slot_has_one() -> None:
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE})
+
+    with pytest.raises(BlankNotAllowedError, match="'income' was left blank.*'amount'"):
+        capability.run((blank(INCOME), Artifact(DEDUCTION, D(1))))
+
+
+def test_a_compute_rule_for_a_slot_that_is_not_allowed_to_be_blank_is_refused() -> None:
+    class OnlyLess(SubtractCompute):
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"less"})
+
+    with pytest.raises(InvalidCapabilityError, match="slot 'amount' may not be blank"):
+        OnlyLess(INCOME, DEDUCTION, NET).with_blank_rules({"amount": COMPUTE})
+    with pytest.raises(InvalidCapabilityError, match="slot 'output' may not be blank"):
+        strict(INCOME, DEDUCTION, NET).with_blank_rules({"output": COMPUTE})
+
+
+def test_a_compute_rule_is_allowed_on_a_slot_that_takes_no_number() -> None:
+    notes = ArtifactKind("ex/notes", RecordList)
+
+    class Listing(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"rows": RecordList}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"rows"})
+
+        def __init__(self, rows: ArtifactKind[RecordList], output: Money) -> None:
+            super().__init__(rows=rows, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    Listing(notes, NET).with_blank_rules({"rows": COMPUTE})
+
+
+def test_compute_may_still_never_return_a_blank() -> None:
+    class Leaky(SubtractCompute):
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            return CapabilityResult((blank(self._output),), ())
+
+    capability = Leaky(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE})
+
+    with pytest.raises(CapabilityContractError, match="only a PASS_ON rule"):
+        capability.run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
+
+
+def test_pass_on_in_one_slot_wins_over_compute_in_another() -> None:
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules(
+        {"amount": PASS_ON, "less": COMPUTE}
+    )
+
+    result = capability.run((blank(INCOME), blank(DEDUCTION)))
+
+    assert result.outputs == (blank(NET),)
+    assert result.trace == (BlankPassedOnLine(NET, (INCOME,)),)
 
 
 # --- through a worksheet and a composition ----------------------------------------------------
