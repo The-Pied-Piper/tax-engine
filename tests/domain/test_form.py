@@ -1942,3 +1942,12 @@ def test_a_form_that_exports_a_blank_input_is_refused_naming_the_form_and_instan
 
     with pytest.raises(BlankNotAllowedError, match=r"^ex/fact, instance 1: 'fee' is blank"):
         forms.compute()
+
+
+def test_a_blank_instances_list_with_an_empty_list_default_is_read_as_no_instances() -> None:
+    empty = Artifact(SHOPS, RecordList(SHOPS.fields, ()))
+    forms = FormSet([shop(), audit()], inputs=frozenset({SHOPS, AUDITS}), defaults=[empty])
+
+    result = forms.compute(Artifact(SHOPS, BLANK), TWO_AUDITS)
+
+    assert result["ex/shop"] == ()

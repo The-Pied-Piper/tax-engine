@@ -234,8 +234,9 @@ class FormSet:
     ) -> None:
         """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`.
 
-        `defaults` are the artifacts a caller who leaves out an input of that kind is read as
-        giving (blank among them); each is of one of the `inputs`, once.
+        `defaults` are the artifacts a caller who leaves out an input of that kind, or gives it
+        blank when the default is a value, is read as giving (a blank default among them);
+        each is of one of the `inputs`, once.
         """
         listed = tuple(forms)
         self._check_names(listed)

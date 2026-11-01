@@ -107,8 +107,9 @@ class TaxComputationService:
         """The worksheets of every form, by form name, from `artifacts`.
 
         `artifacts` are the starting artifacts of the manifest: one of each declared input kind,
-        among them each form's instances. An optional input left out is read as its manifest
-        default (blank for `default: null`); a required one left out is refused, naming it.
+        among them each form's instances. An optional input left out, or given blank where
+        its default is a value, is read as its manifest default (blank for `default: null`);
+        a required one left out is refused, naming it.
         A form's worksheets are one per instance, in instance order; a form without an instances
         list has one instance.
         """
