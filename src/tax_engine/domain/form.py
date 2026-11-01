@@ -220,10 +220,10 @@ class FormSet:
     no form exports, a cycle of imports, or an input that no form reads (an instances kind is read
     by its form). A form's read of its own derived export is not a cycle: see `FormComposition`.
 
-    Given the `manifest` the forms are wired from, and the `artifacts` its identifiers resolve in,
-    construction first refuses (InvalidManifestError) what `Manifest.check_artifacts` refuses: a
-    default that does not suit its input's kind, `fields` that are not those of the form's
-    instances kind, a `required_when` that is not a yes/no.
+    Construction first refuses (InvalidManifestError) what `Manifest.check_artifacts` refuses of the
+    `manifest` the forms are wired from, whose identifiers resolve in `artifacts`: a default that
+    does not suit its input's kind, `fields` that are not those of the form's instances kind, a
+    `required_when` that is not a yes/no.
     """
 
     def __init__(
@@ -231,17 +231,11 @@ class FormSet:
         forms: Iterable[FormComposition],
         *,
         inputs: frozenset[ArtifactKind[Any]],
-        manifest: Manifest | None = None,
-        artifacts: ArtifactRegistry | None = None,
+        manifest: Manifest,
+        artifacts: ArtifactRegistry,
     ) -> None:
-        """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`.
-
-        `manifest` and `artifacts` are given together or not at all.
-        """
-        if (manifest is None) != (artifacts is None):
-            raise ValueError("manifest and artifacts are given together")
-        if manifest is not None and artifacts is not None:
-            manifest.check_artifacts(artifacts)
+        """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`."""
+        manifest.check_artifacts(artifacts)
         listed = tuple(forms)
         self._check_names(listed)
         self._check_instances(listed, inputs)

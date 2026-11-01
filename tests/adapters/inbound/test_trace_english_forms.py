@@ -16,6 +16,7 @@ from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
+from tests.manifest_support import declared_artifacts, declared_manifest
 
 D = Decimal
 
@@ -75,6 +76,8 @@ def test_the_trace_of_a_form_without_an_instances_list_reads_as_instance_1() -> 
             )
         ],
         inputs=frozenset({GROSS_RENT, EXPENSES}),
+        manifest=declared_manifest(),
+        artifacts=declared_artifacts(),
     )
     worksheets = forms.compute(Artifact(GROSS_RENT, D("12000")), Artifact(EXPENSES, D("2000")))
 
