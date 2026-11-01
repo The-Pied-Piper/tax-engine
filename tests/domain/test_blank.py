@@ -299,28 +299,14 @@ def test_one_parent_gives_different_results_on_the_same_blank() -> None:
 # --- the compute rule -------------------------------------------------------------------------
 
 
-class BlankAware(Capability):
-    """`output` = `amount` plus `extra`; the class's own call for a blank `extra` is to add 7."""
-
-    CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "extra": Decimal}
-    PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
-    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"amount", "extra"})
-
-    def __init__(self, amount: Money, extra: Money, output: Money) -> None:
-        super().__init__(amount=amount, extra=extra, output=output)
-        self._amount, self._extra, self._output = amount, extra, output
+class BlankAware(SubtractCompute):
+    """`SubtractCompute` whose own call for a blank `less` is to take 7 off."""
 
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
-        extra = self._input(inputs, self._extra)
-        total = self._input(inputs, self._amount).value + (D(7) if extra.is_blank else extra.value)
+        less = self._input(inputs, self._less)
+        taken = D(7) if less.is_blank else less.value
+        total = self._input(inputs, self._amount).value - taken
         return CapabilityResult((Artifact(self._output, total),), ())
-
-
-class ReturnsBlank(BlankAware):
-    """A broken `compute`: it returns the blank it was handed."""
-
-    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
-        return CapabilityResult((Artifact(self._output, BLANK),), ())
 
 
 def test_compute_is_one_rule_distinct_from_pass_on() -> None:
@@ -330,37 +316,37 @@ def test_compute_is_one_rule_distinct_from_pass_on() -> None:
 
 
 def test_a_compute_slot_hands_the_blank_to_compute_which_decides() -> None:
-    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE})
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE})
 
     result = capability.run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
 
-    assert result.outputs == (Artifact(NET, D(507)),)
+    assert result.outputs == (Artifact(NET, D(493)),)
     assert result.trace == ()
 
 
 def test_with_no_blank_a_compute_slot_changes_nothing() -> None:
     inputs = (Artifact(INCOME, D(500)), Artifact(DEDUCTION, D(4)))
 
-    result = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE}).run(inputs)
+    result = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE}).run(inputs)
 
-    assert result.outputs == (Artifact(NET, D(504)),)
+    assert result.outputs == (Artifact(NET, D(496)),)
 
 
 def test_a_slot_without_a_compute_rule_still_refuses_while_another_slot_has_one() -> None:
-    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE})
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE})
 
     with pytest.raises(BlankNotAllowedError, match="'income' was left blank.*'amount'"):
         capability.run((blank(INCOME), Artifact(DEDUCTION, D(1))))
 
 
 def test_a_compute_rule_for_a_slot_that_is_not_allowed_to_be_blank_is_refused() -> None:
-    class OnlyExtra(BlankAware):
-        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"extra"})
+    class OnlyLess(SubtractCompute):
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"less"})
 
     with pytest.raises(InvalidCapabilityError, match="slot 'amount' may not be blank"):
-        OnlyExtra(INCOME, DEDUCTION, NET).with_blank_rules({"amount": COMPUTE})
+        OnlyLess(INCOME, DEDUCTION, NET).with_blank_rules({"amount": COMPUTE})
     with pytest.raises(InvalidCapabilityError, match="slot 'output' may not be blank"):
-        BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"output": COMPUTE})
+        strict(INCOME, DEDUCTION, NET).with_blank_rules({"output": COMPUTE})
 
 
 def test_a_compute_rule_is_allowed_on_a_slot_that_takes_no_number() -> None:
@@ -381,7 +367,11 @@ def test_a_compute_rule_is_allowed_on_a_slot_that_takes_no_number() -> None:
 
 
 def test_compute_may_still_never_return_a_blank() -> None:
-    capability = ReturnsBlank(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE})
+    class Leaky(SubtractCompute):
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            return CapabilityResult((blank(self._output),), ())
+
+    capability = Leaky(INCOME, DEDUCTION, NET).with_blank_rules({"less": COMPUTE})
 
     with pytest.raises(CapabilityContractError, match="only a PASS_ON rule"):
         capability.run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
@@ -389,7 +379,7 @@ def test_compute_may_still_never_return_a_blank() -> None:
 
 def test_pass_on_in_one_slot_wins_over_compute_in_another() -> None:
     capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules(
-        {"amount": PASS_ON, "extra": COMPUTE}
+        {"amount": PASS_ON, "less": COMPUTE}
     )
 
     result = capability.run((blank(INCOME), blank(DEDUCTION)))
