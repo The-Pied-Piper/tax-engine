@@ -132,12 +132,13 @@ class FormComposition:
                 f"form {name!r}: instance field {kind.label!r} is also a starting artifact"
             )
         self._inputs = fields | frozenset(read & starting)
+        self._blank_inputs = blank_inputs & self._inputs
         try:
             self._composition = Composition(
                 wired,
                 inputs=self._inputs | self._imports | self._earlier,
                 outputs=frozenset(listed),
-                blank_inputs=blank_inputs & self._inputs,
+                blank_inputs=self._blank_inputs,
             )
         except InvalidCompositionError as exc:
             raise InvalidCompositionError(f"form {name!r}: {exc}") from exc
@@ -208,6 +209,11 @@ class FormComposition:
     def earlier(self) -> frozenset[RecordListKind]:
         """The form's own derived kinds that it reads; a run gets the earlier runs' values."""
         return self._earlier
+
+    @property
+    def blank_inputs(self) -> frozenset[ArtifactKind[Any]]:
+        """The starting kinds this form's composition may take blank."""
+        return self._blank_inputs
 
     @property
     def composition(self) -> Composition:
@@ -382,6 +388,16 @@ class FormSet:
             raise BlankNotAllowedError(
                 f"{ArtifactKind.labels(blank)} may not be left blank: "
                 "the forms need its list of instances"
+            )
+        # A form with no instances never runs, so its composition cannot refuse a blank; no form
+        # taking a blank input is a refusal here.
+        accepted = {kind for form in self._forms for kind in form.blank_inputs}
+        refused = [
+            kind for kind, artifact in given.items() if artifact.is_blank and kind not in accepted
+        ]
+        if refused:
+            raise BlankNotAllowedError(
+                f"{ArtifactKind.labels(refused)} may not be left blank in this computation"
             )
 
     @staticmethod

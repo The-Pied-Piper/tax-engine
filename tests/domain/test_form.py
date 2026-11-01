@@ -1860,7 +1860,9 @@ def test_a_blank_the_caller_gives_for_a_blank_default_stays_blank_for_the_forms_
 def test_a_form_that_does_not_declare_the_blank_input_refuses_it() -> None:
     forms = less_set([Artifact(COSTS, BLANK)])
 
-    with pytest.raises(BlankNotAllowedError, match=r"ex-on/return, instance 1: 'costs' may not"):
+    with pytest.raises(
+        BlankNotAllowedError, match=r"^'costs' may not be left blank in this computation"
+    ):
         forms.compute(Artifact(SALES, D(100)))
 
 
@@ -1951,3 +1953,20 @@ def test_a_blank_instances_list_with_an_empty_list_default_is_read_as_no_instanc
     result = forms.compute(Artifact(SHOPS, BLANK), TWO_AUDITS)
 
     assert result["ex/shop"] == ()
+
+
+def test_a_blank_nothing_accepts_is_refused_even_when_the_form_reading_it_has_no_instances() -> (
+    None
+):
+    fee_less = FormComposition(
+        "ex/audit",
+        [Subtract(SALES, FEE, AUDITED)],
+        instances=AUDITS,
+        exports=[AUDITED],
+        starting=frozenset({SALES}),
+    )
+    forms = FormSet([fee_less], inputs=frozenset({SALES, AUDITS}))
+    no_audits = Artifact(AUDITS, RecordList(AUDITS.fields, ()))
+
+    with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):
+        forms.compute(Artifact(SALES, BLANK), no_audits)
