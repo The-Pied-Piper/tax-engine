@@ -48,7 +48,7 @@ needed: a required input or an artifact a selection produces, never one of its o
 `instances` lists `fields`, one mapping per field of the instances kind, declared like inputs
 (`name`, `required`, and for an optional one `default` and `basis`); a form without `instances` has
 none. Which fields the instances kind has, that defaults suit their kinds and that a predicate is a
-yes/no count are checked when the manifest is composed (`Manifest.check_artifacts`), where the
+yes/no count are checked when the form set is built (`Manifest.check_artifacts`), where the
 kinds are known.
 Any of these keys in a part that does not declare `exports` is rejected. The default form is
 always required.

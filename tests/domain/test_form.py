@@ -30,7 +30,7 @@ from typing import Any, ClassVar
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
@@ -43,14 +43,18 @@ from tax_engine.domain.errors import (
     DomainError,
     DuplicateArtifactError,
     InvalidCompositionError,
+    InvalidManifestError,
     MissingArtifactError,
     NotFoundError,
     ValidationError,
 )
 from tax_engine.domain.form import FormComposition, FormSet
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.manifest import Default, Form, InputDeclaration, Manifest
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
+from tests.manifest_support import declared_artifacts, declared_manifest
 
 D = Decimal
 
@@ -158,7 +162,12 @@ def flat(
         exports=sorted(outputs, key=lambda kind: kind.identifier),
         starting=inputs,
     )
-    return FormSet([*forms, default], inputs=inputs)
+    return FormSet(
+        [*forms, default],
+        inputs=inputs,
+        manifest=declared_manifest(),
+        artifacts=declared_artifacts(),
+    )
 
 
 def form_set(*forms: FormComposition) -> FormSet:
@@ -459,7 +468,12 @@ def test_an_instance_field_that_is_also_a_starting_artifact_is_refused_naming_th
 
 
 def test_each_instance_runs_on_the_starting_artifacts_and_its_own_record() -> None:
-    forms = FormSet([levy_each(frozenset({SALES}))], inputs=frozenset({SALES, AUDITS}))
+    forms = FormSet(
+        [levy_each(frozenset({SALES}))],
+        inputs=frozenset({SALES, AUDITS}),
+        manifest=declared_manifest(),
+        artifacts=declared_artifacts(),
+    )
 
     first, second = forms.compute(Artifact(SALES, D(500)), TWO_AUDITS)["ex/levy"]
 
@@ -469,7 +483,12 @@ def test_each_instance_runs_on_the_starting_artifacts_and_its_own_record() -> No
 
 
 def test_a_starting_artifact_is_still_required_when_only_a_form_with_instances_reads_it() -> None:
-    forms = FormSet([levy_each(frozenset({SALES}))], inputs=frozenset({SALES, AUDITS}))
+    forms = FormSet(
+        [levy_each(frozenset({SALES}))],
+        inputs=frozenset({SALES, AUDITS}),
+        manifest=declared_manifest(),
+        artifacts=declared_artifacts(),
+    )
 
     with pytest.raises(InvalidCompositionError, match="missing input 'sales'"):
         forms.compute(TWO_AUDITS)
@@ -494,7 +513,12 @@ def test_a_cycle_between_forms_without_instances_is_refused_naming_them() -> Non
     )
 
     with pytest.raises(InvalidCompositionError, match="cycle") as caught:
-        FormSet([first, second], inputs=frozenset())
+        FormSet(
+            [first, second],
+            inputs=frozenset(),
+            manifest=declared_manifest(),
+            artifacts=declared_artifacts(),
+        )
 
     assert "ex/first" in str(caught.value) and "ex/second" in str(caught.value)
 
@@ -507,7 +531,12 @@ def test_an_import_no_form_exports_is_refused_for_a_form_without_instances() -> 
     with pytest.raises(
         InvalidCompositionError, match="ex/lonely.*no form exports 'second.profit_total'"
     ):
-        FormSet([lonely], inputs=frozenset())
+        FormSet(
+            [lonely],
+            inputs=frozenset(),
+            manifest=declared_manifest(),
+            artifacts=declared_artifacts(),
+        )
 
 
 def test_an_input_no_form_reads_is_refused() -> None:
@@ -633,6 +662,8 @@ def test_a_form_without_instances_exports_one_record_that_other_forms_read() -> 
     forms = FormSet(
         [*form_set(shop(), audit()).forms, summary],
         inputs=frozenset({SHOPS, AUDITS}),
+        manifest=declared_manifest(),
+        artifacts=declared_artifacts(),
     )
 
     result = forms.compute(TWO_SHOPS, TWO_AUDITS)
@@ -877,7 +908,12 @@ def once_form() -> FormComposition:
 
 
 def test_a_run_error_in_a_form_without_an_instances_list_names_it_and_instance_1() -> None:
-    forms = FormSet([once_form()], inputs=frozenset({SALES, COSTS}))
+    forms = FormSet(
+        [once_form()],
+        inputs=frozenset({SALES, COSTS}),
+        manifest=declared_manifest(),
+        artifacts=declared_artifacts(),
+    )
 
     with pytest.raises(CapabilityContractError, match=r"^ex/once, instance 1: ") as caught:
         forms.compute(Artifact(SALES, D(1)), Artifact(COSTS, D(2)))  # a loss: PROFIT is >= 0
@@ -898,7 +934,12 @@ def test_a_wiring_error_in_a_form_without_an_instances_list_names_the_form_only(
 
 
 def test_the_trace_of_a_form_without_an_instances_list_has_one_line_at_position_1() -> None:
-    forms = FormSet([once_form()], inputs=frozenset({SALES, COSTS}))
+    forms = FormSet(
+        [once_form()],
+        inputs=frozenset({SALES, COSTS}),
+        manifest=declared_manifest(),
+        artifacts=declared_artifacts(),
+    )
     result = forms.compute(Artifact(SALES, D(5)), Artifact(COSTS, D(2)))
 
     (line,) = forms.trace(result)
@@ -1769,3 +1810,90 @@ def test_a_form_set_refuses_a_blank_starting_artifact() -> None:
 
     with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):
         forms.compute(Artifact(SALES, BLANK), Artifact(COSTS, Decimal(1)))
+
+
+def manifest_of(*declarations: InputDeclaration, required_when: str | None = None) -> Manifest:
+    """A manifest with the form `ex-on/return` that exports `ex/profit`, and these inputs."""
+    return Manifest(
+        jurisdiction=JurisdictionCode("EX-ON"),
+        version=1,
+        valid_from_tax_year=2025,
+        inputs={declaration.name: declaration for declaration in declarations},
+        forms=(
+            Form(
+                required=required_when is None,
+                name=RETURN,
+                instances=None,
+                exports=("ex/profit",),
+                capabilities=(),
+                required_when=required_when,
+                basis=None if required_when is None else "Complete this form if you claim relief",
+            ),
+        ),
+    )
+
+
+def checked_set(manifest: Manifest, *kinds: ArtifactKind[Any]) -> FormSet:
+    """The form `ex-on/return` as a form set built from `manifest`, with `kinds` registered."""
+    known = ArtifactRegistry()
+    for kind in kinds:
+        known.register(kind.identifier, kind)
+    default = FormComposition(
+        RETURN,
+        [Subtract(SALES, COSTS, PROFIT)],
+        exports=[PROFIT],
+        starting=frozenset({SALES, COSTS}),
+    )
+    return FormSet([default], inputs=frozenset({SALES, COSTS}), manifest=manifest, artifacts=known)
+
+
+def test_a_form_set_refuses_a_default_that_does_not_suit_its_input() -> None:
+    bad = InputDeclaration(name="ex/sales", required=False, default=Default("x"), basis="Line 1")
+    manifest = manifest_of(bad, InputDeclaration(name="ex/costs", required=True))
+
+    with pytest.raises(InvalidManifestError, match="input 'ex/sales': default"):
+        checked_set(manifest, SALES, COSTS, PROFIT)
+
+
+def test_a_form_set_refuses_a_predicate_that_is_not_a_yes_no() -> None:
+    manifest = manifest_of(
+        InputDeclaration(name="ex/sales", required=True),
+        InputDeclaration(name="ex/costs", required=True),
+        required_when="ex/sales",
+    )
+
+    with pytest.raises(InvalidManifestError, match="required_when 'ex/sales' is not a yes/no"):
+        checked_set(manifest, SALES, COSTS, PROFIT)
+
+
+def test_a_form_set_built_from_a_checked_manifest_is_accepted() -> None:
+    manifest = manifest_of(
+        InputDeclaration(name="ex/sales", required=True),
+        InputDeclaration(name="ex/costs", required=True),
+    )
+
+    assert [form.name for form in checked_set(manifest, SALES, COSTS, PROFIT).forms] == [RETURN]
+
+
+def test_a_form_set_refuses_fields_that_are_not_those_of_the_instances_kind() -> None:
+    rows = RecordListKind("ex/rows", fields=(SALES, COSTS))
+    declared = (InputDeclaration(name="ex/sales", required=True),)
+    manifest = Manifest(
+        jurisdiction=JurisdictionCode("EX-ON"),
+        version=1,
+        valid_from_tax_year=2025,
+        inputs={"ex/rows": InputDeclaration(name="ex/rows", required=True)},
+        forms=(
+            Form(
+                required=True,
+                name=RETURN,
+                instances="ex/rows",
+                exports=("ex/profit",),
+                capabilities=(),
+                fields=declared,
+            ),
+        ),
+    )
+
+    with pytest.raises(InvalidManifestError, match="field 'ex/costs' of 'ex/rows' is not declared"):
+        checked_set(manifest, SALES, COSTS, PROFIT, rows)
