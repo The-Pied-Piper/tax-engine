@@ -83,12 +83,15 @@ class FormComposition:
         max_instances: int | None = None,
         min_instances: int | None = None,
         exclusive_group: str | None = None,
+        blank_inputs: frozenset[ArtifactKind[Any]] = frozenset(),
     ) -> None:
         """Wire `capabilities` as the form `name`, exporting `exports`, over `instances` if any.
 
         At most `max_instances` and at least `min_instances` instances (no limit for `None`) may be
         given, and at most one form of the `exclusive_group` may have any. A form without
-        `instances` has one instance.
+        `instances` has one instance. `blank_inputs` are the starting artifacts of the computation
+        that may arrive blank; the form's own composition may take a blank for those of them it
+        reads, and refuses a blank in any other input.
         """
         if instances is not None and not isinstance(instances, RecordListKind):
             raise InvalidCompositionError(
@@ -134,6 +137,7 @@ class FormComposition:
                 wired,
                 inputs=self._inputs | self._imports | self._earlier,
                 outputs=frozenset(listed),
+                blank_inputs=blank_inputs & self._inputs,
             )
         except InvalidCompositionError as exc:
             raise InvalidCompositionError(f"form {name!r}: {exc}") from exc
@@ -222,9 +226,17 @@ class FormSet:
     """
 
     def __init__(
-        self, forms: Iterable[FormComposition], *, inputs: frozenset[ArtifactKind[Any]]
+        self,
+        forms: Iterable[FormComposition],
+        *,
+        inputs: frozenset[ArtifactKind[Any]],
+        defaults: Iterable[Artifact[Any]] = (),
     ) -> None:
-        """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`."""
+        """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`.
+
+        `defaults` are the artifacts a caller who leaves out an input of that kind is read as
+        giving (blank among them); each is of one of the `inputs`, once.
+        """
         listed = tuple(forms)
         self._check_names(listed)
         self._check_instances(listed, inputs)
@@ -235,6 +247,7 @@ class FormSet:
         self._check_not_derived(inputs)
         self._check_imports(listed)
         self._check_inputs_are_read(listed, inputs)
+        self._defaults = self._checked_defaults(defaults, inputs)
         self._inputs = inputs
         self._forms = self._order(listed)
 
@@ -271,6 +284,8 @@ class FormSet:
             if counts[kind] > 1:
                 raise DuplicateArtifactError(f"two starting values for {kind.label!r}")
         given = {artifact.kind: artifact for artifact in artifacts}
+        for kind, default in self._defaults.items():
+            given.setdefault(kind, default)
         self._check_given(given)
         self._check_limits(given)
         store: dict[ArtifactKind[Any], Artifact[Any]] = {}
@@ -346,11 +361,30 @@ class FormSet:
     def _check_given(self, given: Mapping[ArtifactKind[Any], Artifact[Any]]) -> None:
         self._check_not_derived(given.keys())
         Composition.check_starting_kinds(given.keys(), self._inputs)
-        blank = [kind for kind, artifact in given.items() if artifact.is_blank]
+        # The form set itself reads each instances list, so it cannot take a blank one; any other
+        # blank goes on to the composition of each form that reads it, which checks its own.
+        listed = {form.instances for form in self._forms if form.instances is not None}
+        blank = [kind for kind in listed if given[kind].is_blank]
         if blank:
             raise BlankNotAllowedError(
-                f"{ArtifactKind.labels(blank)} may not be left blank: a form set takes none"
+                f"{ArtifactKind.labels(blank)} may not be left blank: "
+                "the forms need its list of instances"
             )
+
+    @staticmethod
+    def _checked_defaults(
+        defaults: Iterable[Artifact[Any]], inputs: frozenset[ArtifactKind[Any]]
+    ) -> dict[ArtifactKind[Any], Artifact[Any]]:
+        found: dict[ArtifactKind[Any], Artifact[Any]] = {}
+        for artifact in defaults:
+            if artifact.kind not in inputs:
+                raise InvalidCompositionError(
+                    f"default for {artifact.kind.label!r}, which is not an input of the computation"
+                )
+            if artifact.kind in found:
+                raise InvalidCompositionError(f"two defaults for {artifact.kind.label!r}")
+            found[artifact.kind] = artifact
+        return found
 
     def _check_not_derived(self, kinds: Iterable[ArtifactKind[Any]]) -> None:
         derived = set(kinds) & self._producers.keys()

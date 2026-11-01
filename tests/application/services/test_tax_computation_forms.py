@@ -25,10 +25,12 @@ import pytest
 
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     CapabilityContractError,
     DuplicateRegistrationError,
     InvalidCompositionError,
@@ -116,6 +118,24 @@ class DoubleUnits(Capability):
         return CapabilityResult(
             outputs=(Artifact(self._doubled, value),), trace=(StepLine("doubled", D(len(records))),)
         )
+
+
+class Less(Capability):
+    """Produces `target`: `source` less `cost`; `cost` may be blank, as the manifest says."""
+
+    CONSUMES: ClassVar[Mapping[str, type]] = {"source": Decimal, "cost": Decimal}
+    PRODUCES: ClassVar[Mapping[str, type]] = {"target": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"cost"})
+
+    def __init__(
+        self, source: ArtifactKind[Decimal], cost: ArtifactKind[Decimal], target: ArtifactKind[Any]
+    ) -> None:
+        super().__init__(source=source, cost=cost, target=target)
+        self._source, self._cost, self._target = source, cost, target
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        value = self._input(inputs, self._source).value - self._input(inputs, self._cost).value
+        return CapabilityResult(outputs=(Artifact(self._target, value),), trace=())
 
 
 class CountRecords(Capability):
@@ -370,6 +390,7 @@ def capability_registry() -> CapabilityRegistry:
     registry.register("ex/count_records", CountRecords)
     registry.register("ex/describe", Describe)
     registry.register("ex/scale", Scale)
+    registry.register("ex/less", Less)
     return registry
 
 
@@ -1187,3 +1208,71 @@ def test_an_optional_form_gated_by_a_money_amount_is_refused_at_compose(
 
     with pytest.raises(InvalidManifestError, match="required_when 'ex/.*' is not a yes/no"):
         service(manifest).compose(EX_ON, 2025)
+
+
+# --- inputs the request leaves out take their manifest default --------------------------------
+
+
+def optional_manifest(default: Default, *, blank: dict[str, str] | None = None) -> Manifest:
+    """`ex/spare` less the optional `ex/other_amount`, which takes `default` when left out."""
+    less = CapabilitySelection(
+        name="ex/less",
+        params={},
+        consumes={"source": "ex/spare", "cost": "ex/other_amount"},
+        produces={"target": "ex/total_net_income"},
+        blank=blank or {},
+    )
+    manifest = manifest_of(
+        (less,), inputs=frozenset({"ex/spare"}), outputs=frozenset({"ex/total_net_income"})
+    )
+    inputs = {
+        **manifest.inputs,
+        "ex/other_amount": InputDeclaration(
+            "ex/other_amount", False, default, "Line 5 of the form"
+        ),
+    }
+    return replace(manifest, inputs=inputs)
+
+
+def left_out(manifest: Manifest, *given: Artifact[Any]) -> Decimal:
+    worksheet = service(manifest).compute(EX_ON, 2025, *given)[RETURN][0]
+    return worksheet.get(TOTAL_NET_INCOME).value
+
+
+def test_an_optional_input_left_out_takes_its_manifest_default() -> None:
+    manifest = optional_manifest(Default("30"))
+
+    assert left_out(manifest, Artifact(SPARE, D(100))) == D(70)
+
+
+def test_an_optional_input_the_request_gives_is_not_replaced_by_the_default() -> None:
+    manifest = optional_manifest(Default("30"))
+
+    assert left_out(manifest, Artifact(SPARE, D(100)), Artifact(OTHER_AMOUNT, D(10))) == D(90)
+
+
+def test_a_blank_default_reaches_the_form_and_the_manifests_blank_rule_applies() -> None:
+    manifest = optional_manifest(Default(None), blank={"cost": "0"})
+
+    assert left_out(manifest, Artifact(SPARE, D(100))) == D(100)
+
+
+def test_a_blank_default_is_refused_where_the_manifest_gives_the_slot_no_blank_rule() -> None:
+    manifest = optional_manifest(Default(None))
+
+    with pytest.raises(BlankNotAllowedError, match="'other_amount' was left blank"):
+        left_out(manifest, Artifact(SPARE, D(100)))
+
+
+def test_a_default_that_is_not_blank_does_not_let_the_request_give_a_blank() -> None:
+    manifest = optional_manifest(Default("30"), blank={"cost": "0"})
+
+    with pytest.raises(BlankNotAllowedError, match="'other_amount' may not be left blank"):
+        left_out(manifest, Artifact(SPARE, D(100)), Artifact(OTHER_AMOUNT, BLANK))
+
+
+def test_a_required_input_left_out_is_refused_naming_it() -> None:
+    manifest = optional_manifest(Default("30"))
+
+    with pytest.raises(InvalidCompositionError, match="missing input 'spare'"):
+        left_out(manifest)

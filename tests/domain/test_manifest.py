@@ -17,7 +17,8 @@ from typing import Any, cast
 
 import pytest
 
-from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidManifestError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -28,7 +29,7 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.record_list import RecordList, RecordListKind
 from tests.manifest_support import required_inputs
 
 
@@ -592,6 +593,36 @@ def test_a_default_that_does_not_suit_its_kind_is_refused_naming_the_input(
 ) -> None:
     with pytest.raises(InvalidManifestError, match=f"input 'ex/credit': default .* {problem}"):
         optional(default=Default(value)).check_kind(kind)
+
+
+@pytest.mark.parametrize(
+    ("kind", "value", "expected"),
+    [
+        (AMOUNT, "12.50", Artifact(AMOUNT, Decimal("12.50"))),
+        (LEVY, "375.03", Artifact(LEVY, Decimal("375.03"))),
+        (COUNT, "2", Artifact(COUNT, 2)),
+        (ROWS, (), Artifact(ROWS, RecordList(ROWS.fields, ()))),
+        (NOTE, "", Artifact(NOTE, "")),
+        (BUSINESS_NUMBER, "123456789", Artifact(BUSINESS_NUMBER, "123456789")),
+        (AMOUNT, None, Artifact(AMOUNT, BLANK)),
+        (ROWS, None, Artifact(ROWS, BLANK)),
+    ],
+)
+def test_the_default_is_read_as_an_artifact_of_the_kind(
+    kind: ArtifactKind[Any], value: str | tuple[()] | None, expected: Artifact[Any]
+) -> None:
+    assert optional(default=Default(value)).default_artifact(kind) == expected
+
+
+def test_a_required_input_has_no_default_artifact() -> None:
+    required = InputDeclaration(name="ex/credit", required=True)
+
+    assert required.default_artifact(AMOUNT) is None
+
+
+def test_a_default_artifact_for_a_default_that_does_not_suit_the_kind_is_refused() -> None:
+    with pytest.raises(InvalidManifestError, match="input 'ex/credit': default 'abc'"):
+        optional(default=Default("abc")).default_artifact(AMOUNT)
 
 
 def optional_form(**changes: Any) -> Form:

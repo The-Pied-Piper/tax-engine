@@ -18,7 +18,8 @@ from decimal import Decimal, InvalidOperation
 from types import MappingProxyType
 from typing import Any
 
-from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import (
     InvalidManifestError,
     InvalidRegistrationError,
@@ -140,6 +141,28 @@ class InputDeclaration:
             raise InvalidManifestError(
                 f"input {self.name!r}: default {value!r} {problem} for the kind {kind.identifier!r}"
             )
+
+    def default_artifact(self, kind: ArtifactKind[Any]) -> Artifact[Any] | None:
+        """The artifact of `kind` that a request leaving this input out is read as.
+
+        `None` for a required input, which has no default. Blank for `Default(None)`; otherwise
+        the declared value read as the kind's own value type (a number for an amount or a count,
+        an empty record list, or the text). The default is checked against the kind first, as
+        `check_kind` does, so a default that no value of the kind could be is refused here too.
+        """
+        if self.default is None:
+            return None
+        self.check_kind(kind)
+        value = self.default.value
+        if value is None:
+            return Artifact(kind, BLANK)
+        if isinstance(kind, RecordListKind):
+            return Artifact(kind, RecordList(kind.fields, ()))
+        if kind.value_type is int and isinstance(value, str):
+            return Artifact(kind, int(value))
+        if issubclass(kind.value_type, Decimal) and isinstance(value, str):
+            return Artifact(kind, Decimal(value))
+        return Artifact(kind, value)
 
     @staticmethod
     def _decimal_problem(value: str | tuple[()], non_negative: bool, *, whole: bool) -> str | None:

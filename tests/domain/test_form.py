@@ -1769,3 +1769,158 @@ def test_a_form_set_refuses_a_blank_starting_artifact() -> None:
 
     with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):
         forms.compute(Artifact(SALES, BLANK), Artifact(COSTS, Decimal(1)))
+
+
+# --- inputs the caller leaves out take their manifest default --------------------------------
+
+
+class Less(Capability):
+    """`target` = `source` less `cost`; a blank `cost` is read as the rule says, a blank `source`
+    is refused.
+    """
+
+    CONSUMES: ClassVar[Mapping[str, type]] = {"source": Decimal, "cost": Decimal}
+    PRODUCES: ClassVar[Mapping[str, type]] = {"target": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"cost"})
+
+    def __init__(
+        self, source: ArtifactKind[Decimal], cost: ArtifactKind[Decimal], target: ArtifactKind[Any]
+    ) -> None:
+        super().__init__(source=source, cost=cost, target=target)
+        self._source, self._cost, self._target = source, cost, target
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        value = self._input(inputs, self._source).value - self._input(inputs, self._cost).value
+        return CapabilityResult(outputs=(Artifact(self._target, value),), trace=())
+
+
+def less_form(*, blank_inputs: frozenset[ArtifactKind[Any]]) -> FormComposition:
+    return FormComposition(
+        RETURN,
+        [Less(SALES, COSTS, LEVY).with_blank_rules({"cost": D(0)})],
+        exports=[LEVY],
+        starting=frozenset({SALES, COSTS}),
+        blank_inputs=blank_inputs,
+    )
+
+
+def less_set(
+    defaults: Iterable[Artifact[Any]], *, blank_inputs: frozenset[ArtifactKind[Any]] = frozenset()
+) -> FormSet:
+    return FormSet(
+        [less_form(blank_inputs=blank_inputs)],
+        inputs=frozenset({SALES, COSTS}),
+        defaults=defaults,
+    )
+
+
+def levy(forms: FormSet, *given: Artifact[Any]) -> Decimal:
+    return forms.compute(*given)[RETURN][0].get(LEVY).value
+
+
+def test_an_input_the_caller_leaves_out_takes_its_default() -> None:
+    forms = less_set([Artifact(COSTS, D(30))])
+
+    assert levy(forms, Artifact(SALES, D(100))) == D(70)
+
+
+def test_an_input_the_caller_gives_beats_its_default() -> None:
+    forms = less_set([Artifact(COSTS, D(30))])
+
+    assert levy(forms, Artifact(SALES, D(100)), Artifact(COSTS, D(10))) == D(90)
+
+
+def test_a_required_input_left_out_is_refused_naming_it() -> None:
+    forms = less_set([Artifact(COSTS, D(30))])
+
+    with pytest.raises(InvalidCompositionError, match="missing input 'sales'"):
+        forms.compute(Artifact(COSTS, D(1)))
+
+
+def test_a_default_blank_reaches_the_form_that_declares_it_and_its_own_rule_applies() -> None:
+    forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
+
+    assert levy(forms, Artifact(SALES, D(100))) == D(100)
+
+
+def test_a_blank_the_caller_gives_is_handled_like_a_default_blank() -> None:
+    forms = less_set([Artifact(COSTS, D(30))], blank_inputs=frozenset({COSTS}))
+
+    assert levy(forms, Artifact(SALES, D(100)), Artifact(COSTS, BLANK)) == D(100)
+
+
+def test_a_form_that_does_not_declare_the_blank_input_refuses_it() -> None:
+    forms = less_set([Artifact(COSTS, BLANK)])
+
+    with pytest.raises(BlankNotAllowedError, match=r"ex-on/return, instance 1: 'costs' may not"):
+        forms.compute(Artifact(SALES, D(100)))
+
+
+def test_each_form_has_its_own_blank_inputs() -> None:
+    open_form = less_form(blank_inputs=frozenset({COSTS}))
+    strict_form = FormComposition(
+        "ex/strict",
+        [Subtract(SALES, COSTS, PROFIT)],
+        exports=[PROFIT],
+        starting=frozenset({SALES, COSTS}),
+    )
+    forms = FormSet(
+        [open_form, strict_form],
+        inputs=frozenset({SALES, COSTS}),
+        defaults=[Artifact(COSTS, BLANK)],
+    )
+
+    with pytest.raises(BlankNotAllowedError, match=r"^ex/strict, instance 1: 'costs'"):
+        forms.compute(Artifact(SALES, D(100)))
+
+
+def test_a_blank_the_form_does_not_read_is_not_its_to_refuse() -> None:
+    reads_sales_only = FormComposition(
+        RETURN, [Reject(SALES, LEVY)], exports=[LEVY], starting=frozenset({SALES})
+    )
+    other = FormComposition(
+        "ex/other",
+        [Less(SALES, COSTS, PROFIT).with_blank_rules({"cost": D(0)})],
+        exports=[PROFIT],
+        starting=frozenset({SALES, COSTS}),
+        blank_inputs=frozenset({COSTS}),
+    )
+    forms = FormSet(
+        [reads_sales_only, other],
+        inputs=frozenset({SALES, COSTS}),
+        defaults=[Artifact(COSTS, BLANK)],
+    )
+
+    assert levy(forms, Artifact(SALES, D(100))) == D(100)
+
+
+def test_a_blank_instances_list_is_refused_naming_it_before_any_form_runs() -> None:
+    forms = form_set(shop(), audit())
+    audits_blank = Artifact(AUDITS, BLANK)
+
+    with pytest.raises(BlankNotAllowedError, match="'audits' may not be left blank"):
+        forms.compute(TWO_SHOPS, audits_blank)
+
+
+def test_a_default_instances_list_is_an_empty_list() -> None:
+    empty = Artifact(SHOPS, RecordList(SHOPS.fields, ()))
+    forms = FormSet(
+        [shop(), audit()],
+        inputs=frozenset({SHOPS, AUDITS}),
+        defaults=[empty],
+    )
+
+    result = forms.compute(TWO_AUDITS)
+
+    assert result["ex/shop"] == ()
+    assert len(result["ex/audit"]) == 2
+
+
+def test_a_default_for_a_kind_that_is_not_an_input_is_refused() -> None:
+    with pytest.raises(InvalidCompositionError, match="default for 'fee', which is not an input"):
+        less_set([Artifact(FEE, D(1))])
+
+
+def test_two_defaults_for_one_kind_are_refused() -> None:
+    with pytest.raises(InvalidCompositionError, match="two defaults for 'costs'"):
+        less_set([Artifact(COSTS, D(1)), Artifact(COSTS, BLANK)])
