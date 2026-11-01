@@ -694,6 +694,13 @@ def test_pass_on_makes_the_output_blank() -> None:
     assert built.run((Artifact(SOURCE, BLANK),)).outputs == (Artifact(TARGET, BLANK),)
 
 
+def test_compute_hands_the_blank_to_the_class_which_decides() -> None:
+    built = build_blank({"source": "compute"})
+
+    with pytest.raises(DomainError, match="was left blank, so it has no value"):
+        built.run((Artifact(SOURCE, BLANK),))
+
+
 def test_a_fallback_that_is_not_a_number_is_an_invalid_selection() -> None:
     with pytest.raises(InvalidSelectionError, match="blank rule for slot 'source'.*'lots'"):
         build_blank({"source": "lots"})
@@ -704,13 +711,16 @@ def test_a_blank_rule_for_a_slot_that_is_not_consumed_is_an_invalid_selection() 
         build_blank({"target": "0"})
 
 
-def test_a_blank_rule_for_a_slot_the_class_does_not_allow_is_an_invalid_selection() -> None:
+@pytest.mark.parametrize("rule", ["0", "pass_on", "compute"])
+def test_a_blank_rule_for_a_slot_the_class_does_not_allow_is_an_invalid_selection(
+    rule: str,
+) -> None:
     chosen = CapabilitySelection(
         name="ex/scale",
         params={"factor": "ex/factor"},
         consumes={"source": "ex/source"},
         produces={"target": "ex/target"},
-        blank={"source": "0"},
+        blank={"source": rule},
     )
 
     with pytest.raises(InvalidSelectionError, match="slot 'source' may not be blank"):

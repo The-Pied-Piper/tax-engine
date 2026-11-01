@@ -5,8 +5,9 @@ says to leave a part blank, or not to complete the rest of the form, leaves thos
 zero. Any artifact can be blank, so
 every capability states, for each artifact slot it consumes, what it does with a blank there: it
 refuses it (the default), takes a fallback value the capability itself supplies, or passes the
-blank on to everything it produces. The rule is the consuming capability's, whether the blank
-came from the request or from an upstream capability.
+blank on to everything it produces, or leaves the decision to its own code (`COMPUTE`). The rule
+is the consuming capability's, whether the blank came from the request or from an upstream
+capability.
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ from __future__ import annotations
 from decimal import Decimal
 from enum import Enum
 
-__all__ = ["BLANK", "PASS_ON", "Blank", "BlankRule", "PassOn"]
+__all__ = ["BLANK", "COMPUTE", "PASS_ON", "Blank", "BlankRule", "Compute", "PassOn"]
 
 
 class Blank(Enum):
@@ -38,8 +39,20 @@ class PassOn(Enum):
 PASS_ON = PassOn.PASS_ON
 """A blank rule: a blank in this slot makes everything the capability produces blank too."""
 
-type BlankRule = Decimal | int | PassOn
+
+class Compute(Enum):
+    """The type of the one rule `COMPUTE`."""
+
+    COMPUTE = "compute"
+
+
+COMPUTE = Compute.COMPUTE
+"""A blank rule: a blank in this slot reaches the capability's `compute` as a blank artifact, and
+the class decides in code what it means. `compute` may still never return a blank.
+"""
+
+type BlankRule = Decimal | int | PassOn | Compute
 """What a capability does with a blank in one consumed slot, when it may be blank: the fallback
-value it takes in its place (a `Decimal`, or an `int` for a count), or `PASS_ON`. A slot with no
-rule refuses a blank.
+value it takes in its place (a `Decimal`, or an `int` for a count), `PASS_ON`, or `COMPUTE`. A
+slot with no rule refuses a blank.
 """

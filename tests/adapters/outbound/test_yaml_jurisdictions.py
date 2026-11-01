@@ -1802,6 +1802,7 @@ def test_parses_the_blank_rules_of_a_selection(tmp_path: Path) -> None:
             blank:
               less: "0"
               amount: pass_on
+              other: compute
             produces:
               output: ex/net
         """,
@@ -1810,7 +1811,7 @@ def test_parses_the_blank_rules_of_a_selection(tmp_path: Path) -> None:
     manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
 
     (selection,) = returned(manifest).capabilities
-    assert selection.blank == {"less": "0", "amount": "pass_on"}
+    assert selection.blank == {"less": "0", "amount": "pass_on", "other": "compute"}
 
 
 def test_a_selection_without_blank_rules_has_none(tmp_path: Path) -> None:

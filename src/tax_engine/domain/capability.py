@@ -8,8 +8,8 @@ inputs can be left to the manifest. An instance consumes and produces the artifa
 built with, and the worksheet holds it to that. The vocabulary is consume / produce only: there
 is no "modify". Any artifact can be blank (blank.py), so a class declares in `BLANK_ALLOWED` which
 of its consumed slots may ever be blank; the manifest says what a blank does in each of those
-(`with_blank_rules`), and the base applies it before `compute` runs, so `compute` never sees a
-blank.
+(`with_blank_rules`), and the base applies it before `compute` runs, so `compute` sees a blank
+only in a slot whose rule is `COMPUTE`, where the class decides in code what the blank means.
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ from types import MappingProxyType
 from typing import Any, ClassVar, Self, cast, get_args, get_origin
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.blank import BLANK, BlankRule, PassOn
+from tax_engine.domain.blank import BLANK, BlankRule, Compute, PassOn
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     CapabilityContractError,
@@ -78,9 +78,10 @@ class Capability(ABC):
 
     BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset()
     """The consumed slots that may be blank. The manifest gives each of them a rule
-    (`with_blank_rules`): the fallback value taken in its place, or pass the blank on to
-    everything produced. A consumed slot not listed here, or listed without a rule, refuses a
-    blank. A subclass inherits its parent's slots unless it declares its own.
+    (`with_blank_rules`): the fallback value taken in its place, pass the blank on to
+    everything produced, or hand it to `compute` to decide. A consumed slot not listed here, or
+    listed without a rule, refuses a blank. A subclass inherits its parent's slots unless it
+    declares its own.
     """
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
@@ -231,8 +232,8 @@ class Capability(ABC):
 
     def with_blank_rules(self, rules: Mapping[str, BlankRule]) -> Self:
         """Give this capability what a blank does in each consumed slot named in `rules`, and
-        return it: the fallback value taken in its place, or `PASS_ON`. A slot without a rule
-        refuses a blank.
+        return it: the fallback value taken in its place, `PASS_ON`, or `COMPUTE`. A slot without
+        a rule refuses a blank.
 
         Raises InvalidCapabilityError naming the class and the slot if rules were already given,
         a slot is not in `BLANK_ALLOWED`, or a fallback is not a finite `Decimal` or `int` of
@@ -245,7 +246,7 @@ class Capability(ABC):
         for slot, rule in rules.items():
             if slot not in self.BLANK_ALLOWED:
                 raise InvalidCapabilityError(f"{name}: slot {slot!r} may not be blank")
-            if isinstance(rule, PassOn):
+            if isinstance(rule, PassOn | Compute):
                 continue
             value_type = self.slot_value_type(slot)
             if value_type not in (Decimal, int):
@@ -255,7 +256,7 @@ class Capability(ABC):
                 )
             if type(rule) is not value_type or (isinstance(rule, Decimal) and not rule.is_finite()):
                 raise InvalidCapabilityError(
-                    f"{name}: blank rule for slot {slot!r} must be PASS_ON or a finite "
+                    f"{name}: blank rule for slot {slot!r} must be PASS_ON, COMPUTE or a finite "
                     f"{value_type.__name__}, got {rule!r}"
                 )
             for kind in self._wired_kinds[slot]:
@@ -335,7 +336,8 @@ class Capability(ABC):
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         """Compute this capability's output artifacts from the artifacts of the kinds it consumes.
 
-        Only `run` calls this in a real computation, with no blank among `inputs`.
+        Only `run` calls this in a real computation. A blank among `inputs` is in a slot whose
+        rule is `COMPUTE`, never in any other: this decides what it means, and may not return it.
         """
 
     def run(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
@@ -345,8 +347,9 @@ class Capability(ABC):
         trace says so first. A blank in a slot with no rule is a BlankNotAllowedError naming the
         line and the slot; that refusal comes before anything else. Otherwise a blank in a
         `PASS_ON` slot gives a blank artifact for every produced kind, with a trace line each and
-        `compute` not called; with no blank left, `compute` runs as usual, and a blank among its
-        outputs is a CapabilityContractError, since only a `PASS_ON` rule makes an output blank.
+        `compute` not called, even when another slot is `COMPUTE`. Otherwise `compute` runs, and a
+        blank in a `COMPUTE` slot reaches it as the blank artifact; a blank among its outputs is
+        a CapabilityContractError, since only a `PASS_ON` rule makes an output blank.
         """
         name = type(self).__name__
         kept: list[Artifact[Any]] = []
@@ -362,7 +365,9 @@ class Capability(ABC):
                 raise BlankNotAllowedError(
                     f"{name}: {artifact.kind.label!r} was left blank, and {slot!r} may not be blank"
                 )
-            if isinstance(rule, PassOn):
+            if isinstance(rule, Compute):
+                kept.append(artifact)
+            elif isinstance(rule, PassOn):
                 passed_on.append(artifact.kind)
             else:
                 kept.append(Artifact(artifact.kind, rule))

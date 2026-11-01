@@ -28,9 +28,9 @@ so two with one local id (`ex/x` and `ca/x`, both `<ns>/return.x`) are rejected 
 A single manifest file is not a part and takes no `form:` key: all of it is the default form.
 Each selection names a capability and fills its slots: `params` (slot -> family, optional),
 `consumes` (slot -> artifact identifier, or a list of them kept in order as a tuple, optional)
-`blank` (consumed slot -> what a blank in it does: the text of a fallback value, or `pass_on`;
-optional, a slot not named refuses a blank) and `produces` (slot -> artifact identifier,
-required, at least one). Slot names, and whether a
+`blank` (consumed slot -> what a blank in it does: the text of a fallback value, `pass_on`, or
+`compute`, which leaves it to the class; optional, a slot not named refuses a blank) and
+`produces` (slot -> artifact identifier, required, at least one). Slot names, and whether a
 slot takes one identifier or a list, are not checked against capability classes here.
 The top-level `outputs` list the default form's exports: a required, non-empty list of non-empty
 strings without duplicates (an identifier in both `inputs` and `outputs` is an input carried onto

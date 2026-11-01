@@ -15,7 +15,7 @@ from typing import Any, ClassVar
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.blank import BLANK, PASS_ON, Blank, BlankRule
+from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, Blank, BlankRule, Compute, PassOn
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.digits import DigitsKind
@@ -294,6 +294,108 @@ def test_one_parent_gives_different_results_on_the_same_blank() -> None:
     assert less_zero(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (Artifact(TAXABLE, D(500)),)
     assert pass_on(INCOME, DEDUCTION, TAXABLE).run(inputs).outputs == (blank(TAXABLE),)
     assert type(strict(INCOME, DEDUCTION, TAXABLE)) is type(pass_on(INCOME, DEDUCTION, TAXABLE))
+
+
+# --- the compute rule -------------------------------------------------------------------------
+
+
+class BlankAware(Capability):
+    """`output` = `amount` plus `extra`; the class's own call for a blank `extra` is to add 7."""
+
+    CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "extra": Decimal}
+    PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"amount", "extra"})
+
+    def __init__(self, amount: Money, extra: Money, output: Money) -> None:
+        super().__init__(amount=amount, extra=extra, output=output)
+        self._amount, self._extra, self._output = amount, extra, output
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        extra = self._input(inputs, self._extra)
+        total = self._input(inputs, self._amount).value + (D(7) if extra.is_blank else extra.value)
+        return CapabilityResult((Artifact(self._output, total),), ())
+
+
+class ReturnsBlank(BlankAware):
+    """A broken `compute`: it returns the blank it was handed."""
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        return CapabilityResult((Artifact(self._output, BLANK),), ())
+
+
+def test_compute_is_one_rule_distinct_from_pass_on() -> None:
+    assert isinstance(COMPUTE, Compute)
+    assert not isinstance(COMPUTE, PassOn)
+    assert not isinstance(PASS_ON, Compute)
+
+
+def test_a_compute_slot_hands_the_blank_to_compute_which_decides() -> None:
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE})
+
+    result = capability.run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
+
+    assert result.outputs == (Artifact(NET, D(507)),)
+    assert result.trace == ()
+
+
+def test_with_no_blank_a_compute_slot_changes_nothing() -> None:
+    inputs = (Artifact(INCOME, D(500)), Artifact(DEDUCTION, D(4)))
+
+    result = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE}).run(inputs)
+
+    assert result.outputs == (Artifact(NET, D(504)),)
+
+
+def test_a_slot_without_a_compute_rule_still_refuses_while_another_slot_has_one() -> None:
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE})
+
+    with pytest.raises(BlankNotAllowedError, match="'income' was left blank.*'amount'"):
+        capability.run((blank(INCOME), Artifact(DEDUCTION, D(1))))
+
+
+def test_a_compute_rule_for_a_slot_that_is_not_allowed_to_be_blank_is_refused() -> None:
+    class OnlyExtra(BlankAware):
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"extra"})
+
+    with pytest.raises(InvalidCapabilityError, match="slot 'amount' may not be blank"):
+        OnlyExtra(INCOME, DEDUCTION, NET).with_blank_rules({"amount": COMPUTE})
+    with pytest.raises(InvalidCapabilityError, match="slot 'output' may not be blank"):
+        BlankAware(INCOME, DEDUCTION, NET).with_blank_rules({"output": COMPUTE})
+
+
+def test_a_compute_rule_is_allowed_on_a_slot_that_takes_no_number() -> None:
+    notes = ArtifactKind("ex/notes", RecordList)
+
+    class Listing(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"rows": RecordList}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"rows"})
+
+        def __init__(self, rows: ArtifactKind[RecordList], output: Money) -> None:
+            super().__init__(rows=rows, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    Listing(notes, NET).with_blank_rules({"rows": COMPUTE})
+
+
+def test_compute_may_still_never_return_a_blank() -> None:
+    capability = ReturnsBlank(INCOME, DEDUCTION, NET).with_blank_rules({"extra": COMPUTE})
+
+    with pytest.raises(CapabilityContractError, match="only a PASS_ON rule"):
+        capability.run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
+
+
+def test_pass_on_in_one_slot_wins_over_compute_in_another() -> None:
+    capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules(
+        {"amount": PASS_ON, "extra": COMPUTE}
+    )
+
+    result = capability.run((blank(INCOME), blank(DEDUCTION)))
+
+    assert result.outputs == (blank(NET),)
+    assert result.trace == (BlankPassedOnLine(NET, (INCOME,)),)
 
 
 # --- through a worksheet and a composition ----------------------------------------------------
