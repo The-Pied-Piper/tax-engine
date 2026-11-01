@@ -223,7 +223,8 @@ class FormSet:
     Construction first refuses (InvalidManifestError) what `Manifest.check_artifacts` refuses of the
     `manifest` the forms are wired from, whose identifiers resolve in `artifacts`: a default that
     does not suit its input's kind, `fields` that are not those of the form's instances kind, a
-    `required_when` that is not a yes/no.
+    `required_when` that is not a yes/no. That `forms` and `inputs` are those of `manifest` is the
+    caller's to keep: the service builds both from the one manifest.
     """
 
     def __init__(
