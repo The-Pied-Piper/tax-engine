@@ -14,6 +14,7 @@ entered, such as "012345678", or `""` for a box left blank. `WorkedReturn.load` 
 shape and resolves each identifier through an artifact registry; every failure is a
 WorkedReturnError naming the file and the key, except a value its kind refuses, such as a
 negative amount, a rate above 1 or digits of the wrong length, which is the kind's own error.
+An input given as `null` is a blank line, which the engine reads as the manifest's default.
 A line or input the file leaves out is blank: `with_blanks` fills it in against the manifest's
 declared inputs and outputs (a record list left out is no records, as an input and as an
 expected line).
@@ -37,6 +38,7 @@ import yaml
 
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     InvalidJurisdictionCodeError,
@@ -303,7 +305,9 @@ class WorkedReturn:
                 raise YamlShapeError(
                     f"{value.where}: unknown artifact identifier {identifier!r} ({exc})"
                 ) from None
-            if kind.value_type is Decimal:
+            if inputs and value.value is None:
+                result.append(Artifact(kind, BLANK))  # `null`: the line left blank
+            elif kind.value_type is Decimal:
                 result.append(Artifact(kind, value.parse_decimal()))
             elif kind.value_type is int:
                 result.append(Artifact(kind, WorkedReturn._count(value)))

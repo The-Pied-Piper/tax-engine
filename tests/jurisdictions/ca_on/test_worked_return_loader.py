@@ -13,6 +13,7 @@ from pathlib import Path
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidRateError, InvalidTextError, NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -139,6 +140,15 @@ def test_loads_a_valid_file(tmp_path: Path, artifacts: ArtifactRegistry) -> None
     assert worked.sources == ("T1 arithmetic.",)
     assert worked.inputs == (Artifact(TAXABLE_INCOME, D("115000")),)
     assert worked.expected == (Artifact(FEDERAL_BASIC_TAX, D("20146.25")),)
+
+
+def test_a_null_input_is_a_blank_line(tmp_path: Path, artifacts: ArtifactRegistry) -> None:
+    text = VALID.replace(
+        f'  {TAXABLE_INCOME.identifier}: "115000"', f"  {TAXABLE_INCOME.identifier}: null"
+    )
+    worked = WorkedReturn.load(write(tmp_path, text, "null.yaml"), artifacts)
+
+    assert worked.inputs == (Artifact(TAXABLE_INCOME, BLANK),)
 
 
 @pytest.mark.parametrize(
@@ -864,7 +874,6 @@ def test_digits_load_beside_a_count_and_keep_the_files_order(
         ("1_234_567", "int"),
         ("12345.678", "float"),
         ("true", "bool"),
-        ("", "NoneType"),  # an empty box is `""`, never a missing value
         ("[]", "list"),
     ],
 )

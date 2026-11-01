@@ -1264,11 +1264,17 @@ def test_a_blank_default_is_refused_where_the_manifest_gives_the_slot_no_blank_r
         left_out(manifest, Artifact(SPARE, D(100)))
 
 
-def test_a_default_that_is_not_blank_does_not_let_the_request_give_a_blank() -> None:
+def test_a_blank_given_for_an_input_with_a_default_is_read_as_the_default() -> None:
     manifest = optional_manifest(Default("30"), blank={"cost": "0"})
 
-    with pytest.raises(BlankNotAllowedError, match="'other_amount' may not be left blank"):
-        left_out(manifest, Artifact(SPARE, D(100)), Artifact(OTHER_AMOUNT, BLANK))
+    assert left_out(manifest, Artifact(SPARE, D(100)), Artifact(OTHER_AMOUNT, BLANK)) == D(70)
+
+
+def test_a_blank_given_for_a_required_input_is_refused_naming_it() -> None:
+    manifest = optional_manifest(Default("30"))
+
+    with pytest.raises(BlankNotAllowedError, match="'spare' may not be left blank"):
+        left_out(manifest, Artifact(SPARE, BLANK))
 
 
 def test_a_required_input_left_out_is_refused_naming_it() -> None:

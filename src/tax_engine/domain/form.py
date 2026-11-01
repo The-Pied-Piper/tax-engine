@@ -285,7 +285,9 @@ class FormSet:
                 raise DuplicateArtifactError(f"two starting values for {kind.label!r}")
         given = {artifact.kind: artifact for artifact in artifacts}
         for kind, default in self._defaults.items():
-            given.setdefault(kind, default)
+            # Left out, or given blank where the default is a value: the default is what is read.
+            if kind not in given or (given[kind].is_blank and not default.is_blank):
+                given[kind] = default
         self._check_given(given)
         self._check_limits(given)
         store: dict[ArtifactKind[Any], Artifact[Any]] = {}

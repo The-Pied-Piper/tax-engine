@@ -1843,8 +1843,16 @@ def test_a_default_blank_reaches_the_form_that_declares_it_and_its_own_rule_appl
     assert levy(forms, Artifact(SALES, D(100))) == D(100)
 
 
-def test_a_blank_the_caller_gives_is_handled_like_a_default_blank() -> None:
-    forms = less_set([Artifact(COSTS, D(30))], blank_inputs=frozenset({COSTS}))
+def test_a_blank_the_caller_gives_for_an_input_with_a_value_default_is_read_as_the_default() -> (
+    None
+):
+    forms = less_set([Artifact(COSTS, D(30))])
+
+    assert levy(forms, Artifact(SALES, D(100)), Artifact(COSTS, BLANK)) == D(70)
+
+
+def test_a_blank_the_caller_gives_for_a_blank_default_stays_blank_for_the_forms_rule() -> None:
+    forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
 
     assert levy(forms, Artifact(SALES, D(100)), Artifact(COSTS, BLANK)) == D(100)
 
