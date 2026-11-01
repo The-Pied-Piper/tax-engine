@@ -78,6 +78,8 @@ class TaxComputationService:
         # Resolved before any capability is built, so a bad identifier is reported first.
         inputs = frozenset(self._artifacts.kind(identifier) for identifier in manifest.inputs)
         manifest.check_artifacts(self._artifacts)
+        defaults = manifest.default_artifacts(self._artifacts)
+        blank = frozenset(artifact.kind for artifact in defaults if artifact.is_blank)
         return FormSet(
             [
                 FormComposition(
@@ -91,10 +93,12 @@ class TaxComputationService:
                     max_instances=form.max_instances,
                     min_instances=form.min_instances,
                     exclusive_group=form.exclusive_group,
+                    blank_inputs=blank,
                 )
                 for form in manifest.forms
             ],
             inputs=inputs,
+            defaults=defaults,
         )
 
     def compute(
@@ -103,8 +107,11 @@ class TaxComputationService:
         """The worksheets of every form, by form name, from `artifacts`.
 
         `artifacts` are the starting artifacts of the manifest: one of each declared input kind,
-        among them each form's instances. A form's worksheets are one per instance, in instance
-        order; a form without an instances list has one instance.
+        among them each form's instances. An optional input left out, or given blank where
+        its default is a value, is read as its manifest default (blank for `default: null`);
+        a required one left out is refused, naming it.
+        A form's worksheets are one per instance, in instance order; a form without an instances
+        list has one instance.
         """
         return self.compose(code, tax_year).compute(*artifacts)
 
