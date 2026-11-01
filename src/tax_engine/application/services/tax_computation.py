@@ -77,6 +77,7 @@ class TaxComputationService:
                 self._artifacts.register_kind(kind)
         # Resolved before any capability is built, so a bad identifier is reported first.
         inputs = frozenset(self._artifacts.kind(identifier) for identifier in manifest.inputs)
+        manifest.check_artifacts(self._artifacts)
         return FormSet(
             [
                 FormComposition(
