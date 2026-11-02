@@ -1,7 +1,9 @@
 """The CA-ON manifest entries of Form T657 Charts 2021, 2022 and 2023, Part 1 and Part 2 each
 (`test_manifest.py`).
 
-The steps are in the manifest part `06d_capital_gains_deduction_t657_charts_2021_to_2023.yaml`.
+The steps are in the manifest parts `06d_capital_gains_deduction_t657_charts_2021_to_2023.yaml`
+(Charts 2021 and 2022) and `06k_capital_gains_deduction_t657_chart_2023.yaml` (Chart 2023, split
+out to keep each part under 30 KB).
 The charts are computed in the form's year order: each chart's amount B is the last total carried
 in from the chart before it (Chart 2021 reads Chart 2020's total carried,
 `ca/chart_2020_total_carried`; Chart 2022
@@ -175,6 +177,7 @@ STEPS = {
             "amount": "ca/chart_2021_part_1_amount_a",
             "less": "ca/chart_2020_total_carried",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2021_part_1_amount_c"},
     ),
     # Chart 2021 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
@@ -190,6 +193,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2021_amount_d_instead",
         },
+        blank={"count": "0", "when_none": "compute", "when_any": "compute"},
         produces={"output": "ca/chart_2021_amount_d"},
     ),
     # Chart 2021 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2021
@@ -237,6 +241,7 @@ STEPS = {
             "base": "ca/t657_chart_2021_amount_i",
         },
         produces={"output": "ca/chart_2021_part_1_amount_i"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2021 Part 1 "Amount H plus amount I" J.
     CapabilitySelection(
@@ -339,6 +344,7 @@ STEPS = {
             "base": "ca/t657_chart_2021_part_2_amount_g",
         },
         produces={"output": "ca/chart_2021_part_2_amount_g"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2021 Part 2 "Amount F plus amount G" H.
     CapabilitySelection(
@@ -433,6 +439,7 @@ STEPS = {
             "when_none": "ca/chart_2021_part_1_amount_m",
             "when_any": "ca/chart_2021_part_2_amount_l",
         },
+        blank={"count": "0", "when_none": "compute", "when_any": "compute"},
         produces={"output": "ca/chart_2021_total_carried"},
     ),
     # --- Chart 2022 Part 1 ---
@@ -452,6 +459,7 @@ STEPS = {
             "amount": "ca/chart_2022_part_1_amount_a",
             "less": "ca/chart_2021_total_carried",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2022_part_1_amount_c"},
     ),
     # Chart 2022 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
@@ -464,6 +472,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2022_amount_d_instead",
         },
+        blank={"count": "0", "when_none": "compute", "when_any": "compute"},
         produces={"output": "ca/chart_2022_amount_d"},
     ),
     # Chart 2022 Part 1 amount E "amount C minus amount D (if negative, enter "0")".
@@ -506,6 +515,7 @@ STEPS = {
             "base": "ca/t657_chart_2022_amount_i",
         },
         produces={"output": "ca/chart_2022_part_1_amount_i"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2022 Part 1 "Amount H plus amount I" J.
     CapabilitySelection(
@@ -607,6 +617,7 @@ STEPS = {
             "base": "ca/t657_chart_2022_part_2_amount_g",
         },
         produces={"output": "ca/chart_2022_part_2_amount_g"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2022 Part 2 "Amount F plus amount G" H.
     CapabilitySelection(
@@ -698,6 +709,7 @@ STEPS = {
             "when_none": "ca/chart_2022_part_1_amount_m",
             "when_any": "ca/chart_2022_part_2_amount_l",
         },
+        blank={"count": "0", "when_none": "compute", "when_any": "compute"},
         produces={"output": "ca/chart_2022_total_carried"},
     ),
     # --- Chart 2023 Part 1 ---
@@ -717,6 +729,7 @@ STEPS = {
             "amount": "ca/chart_2023_part_1_amount_a",
             "less": "ca/chart_2022_total_carried",
         },
+        blank={"less": "0"},
         produces={"output": "ca/chart_2023_part_1_amount_c"},
     ),
     # Chart 2023 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
@@ -729,6 +742,7 @@ STEPS = {
             "when_none": "ca/chart_2_line_19",
             "when_any": "ca/t657_chart_2023_amount_d_instead",
         },
+        blank={"count": "0", "when_none": "compute", "when_any": "compute"},
         produces={"output": "ca/chart_2023_amount_d"},
     ),
     # Chart 2023 Part 1 amount E "amount C minus amount D (if negative, enter "0")".
@@ -771,6 +785,7 @@ STEPS = {
             "base": "ca/t657_chart_2023_amount_i",
         },
         produces={"output": "ca/chart_2023_part_1_amount_i"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2023 Part 1 "Amount H plus amount I" J.
     CapabilitySelection(
@@ -872,6 +887,7 @@ STEPS = {
             "base": "ca/t657_chart_2023_part_2_amount_g",
         },
         produces={"output": "ca/chart_2023_part_2_amount_g"},
+        blank={"base": "pass_on"},
     ),
     # Chart 2023 Part 2 "Amount F plus amount G" H.
     CapabilitySelection(
@@ -962,6 +978,7 @@ STEPS = {
             "when_none": "ca/chart_2023_part_1_amount_m",
             "when_any": "ca/chart_2023_part_2_amount_l",
         },
+        blank={"count": "0", "when_none": "compute", "when_any": "compute"},
         produces={"output": "ca/chart_2023_total_carried"},
     ),
 }
