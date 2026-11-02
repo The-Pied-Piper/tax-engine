@@ -48,7 +48,13 @@ class ChooseByCount(Capability):
         self._output = output
 
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
-        count = self._input(inputs, self._count).value
+        count_artifact = self._input(inputs, self._count)
+        if count_artifact.is_blank:
+            raise BlankNotAllowedError(
+                f"{type(self).__name__}: {self._count.label!r} was left blank, so it cannot choose "
+                f"{self._output.label!r}"
+            )
+        count = count_artifact.value
         chosen_kind = self._when_none if count == 0 else self._when_any
         chosen_artifact = self._input(inputs, chosen_kind)
         if chosen_artifact.is_blank:

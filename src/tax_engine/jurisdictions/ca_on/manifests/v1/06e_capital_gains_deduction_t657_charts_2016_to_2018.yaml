@@ -27,7 +27,8 @@ capabilities:
       count: ca/t657_chart_2016_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2016_amount_b_instead
-    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). A blank
+    # "If you claimed a capital gains deduction for other eligible capital gains ... complete the
+    # following calculation instead": a blank count reads as no claim (0). A blank
     # amount that is not the one chosen is ignored; the form gives no value for a chosen one, so
     # that refuses.
     blank:
@@ -227,7 +228,8 @@ capabilities:
       count: ca/t657_chart_2017_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2017_amount_d_instead
-    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). A blank
+    # "If you claimed a capital gains deduction for other eligible capital gains ... complete the
+    # following calculation instead": a blank count reads as no claim (0). A blank
     # amount that is not the one chosen is ignored; the form gives no value for a chosen one, so
     # that refuses.
     blank:
@@ -447,7 +449,8 @@ capabilities:
       count: ca/t657_chart_2018_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2018_amount_d_instead
-    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). A blank
+    # "If you claimed a capital gains deduction for other eligible capital gains ... complete the
+    # following calculation instead": a blank count reads as no claim (0). A blank
     # amount that is not the one chosen is ignored; the form gives no value for a chosen one, so
     # that refuses.
     blank:

@@ -6,6 +6,9 @@ no parameter slots. The output is `when_none` when the count is 0 and `when_any`
 count, the chosen value unchanged with its scale; it has no dataset, so it never rounds. It records
 one `ChosenByCountLine` holding the count's kind, the count, and the chosen candidate's kind and
 value.
+
+Any input may be blank (`BLANK_ALLOWED`); what a blank does at a step is its manifest `blank:`
+line, given here through `with_blank_rules`.
 """
 
 from __future__ import annotations
@@ -494,7 +497,8 @@ def test_a_compute_candidate_that_is_blank_and_not_chosen_is_ignored_for_the_sec
 def test_a_compute_candidate_that_is_blank_and_chosen_is_refused_naming_the_line(
     count: int, when_none: str | None, when_any: str | None
 ) -> None:
-    with pytest.raises(BlankNotAllowedError, match="chosen"):
+    named = ALONE.label if when_none is None and count == 0 else WITH_FAMILY.label
+    with pytest.raises(BlankNotAllowedError, match=named):
         capability().with_blank_rules(COMPUTE_BOTH).run(blank_inputs(count, when_none, when_any))
 
 
@@ -514,3 +518,10 @@ def test_pass_on_on_a_candidate_wins_over_compute_on_the_other() -> None:
 
     (output,) = result.outputs
     assert output.is_blank
+
+
+def test_a_blank_count_with_a_compute_rule_is_refused_naming_the_count() -> None:
+    rules: dict[str, BlankRule] = {"count": COMPUTE, **COMPUTE_BOTH}
+
+    with pytest.raises(BlankNotAllowedError, match=DEPENDANTS.label):
+        capability().with_blank_rules(rules).run(blank_inputs(count=None))
