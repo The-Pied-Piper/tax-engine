@@ -66,6 +66,7 @@ STEPS = {
             "count": "ca/cpp_part_4_completed_yes_or_no_checked",
             "records": "ca/rc381_instances",
         },
+        blank={"count": "pass_on"},
         produces={"output": "ca/cpp_part_4_completed_checked"},
     ),
     CapabilitySelection(
@@ -75,6 +76,7 @@ STEPS = {
             "count": "ca/cpp_part_5_completed_yes_or_no_checked",
             "records": "ca/rc381_instances",
         },
+        blank={"count": "pass_on"},
         produces={"output": "ca/cpp_part_5_completed_checked"},
     ),
     # Schedule 8 Part 4 and Part 5 completed, each checked above: the count of the two both above 0,
