@@ -40,5 +40,8 @@ jobs:
       - name: Type check
         run: uv run --locked --extra dev mypy src tests
 
+      - name: Check import layers
+        run: uv run --locked --extra dev lint-imports
+
       - name: Test
         run: uv run --locked --extra dev python -m pytest
