@@ -20,7 +20,7 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.blank import BLANK, PASS_ON, BlankRule
+from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
@@ -427,15 +427,17 @@ def test_a_blank_chosen_candidate_passes_on_to_a_blank_output() -> None:
     assert result.trace == (BlankPassedOnLine(CHOSEN, (ALONE,)),)
 
 
-def test_a_blank_count_and_a_blank_chosen_candidate_give_a_blank_output() -> None:
+def test_a_blank_count_and_a_blank_chosen_candidate_give_a_blank_output_without_the_fallback() -> (
+    None
+):
     rules: dict[str, BlankRule] = {"count": 0, "when_none": PASS_ON, "when_any": PASS_ON}
 
     result = capability().with_blank_rules(rules).run(blank_inputs(count=None, when_none=None))
 
     (output,) = result.outputs
     assert output.is_blank
-    assert result.trace[0] == BlankFallbackLine(DEPENDANTS, 0)
-    assert result.trace[1] == BlankPassedOnLine(CHOSEN, (ALONE,))
+    # A pass_on blank wins: the count's fallback is not used, so the trace does not say it was.
+    assert result.trace == (BlankPassedOnLine(CHOSEN, (ALONE,)),)
 
 
 def test_a_blank_second_candidate_is_chosen_by_a_count_of_one() -> None:
@@ -462,6 +464,51 @@ def test_a_candidate_fallback_replaces_the_blank_by_the_fallback_value() -> None
 def test_a_blank_unchosen_candidate_with_pass_on_blanks_the_output() -> None:
     # The base applies a slot's rule before `compute` knows which candidate it will choose.
     rules: dict[str, BlankRule] = {"when_any": PASS_ON}
+
+    result = capability().with_blank_rules(rules).run(blank_inputs(count=0, when_any=None))
+
+    (output,) = result.outputs
+    assert output.is_blank
+
+
+COMPUTE_BOTH: dict[str, BlankRule] = {"when_none": COMPUTE, "when_any": COMPUTE}
+
+
+def test_a_compute_candidate_that_is_blank_and_not_chosen_is_ignored() -> None:
+    result = capability().with_blank_rules(COMPUTE_BOTH).run(blank_inputs(count=0, when_any=None))
+
+    assert result.outputs == (Artifact(CHOSEN, D("1633")),)
+    assert isinstance(result.trace[0], ChosenByCountLine)
+    assert result.trace[0].chosen_kind == ALONE
+
+
+def test_a_compute_candidate_that_is_blank_and_not_chosen_is_ignored_for_the_second_too() -> None:
+    result = capability().with_blank_rules(COMPUTE_BOTH).run(blank_inputs(count=2, when_none=None))
+
+    assert result.outputs == (Artifact(CHOSEN, D("2813")),)
+
+
+@pytest.mark.parametrize(
+    ("count", "when_none", "when_any"), [(0, None, "2813"), (1, "1633", None), (0, None, None)]
+)
+def test_a_compute_candidate_that_is_blank_and_chosen_is_refused_naming_the_line(
+    count: int, when_none: str | None, when_any: str | None
+) -> None:
+    with pytest.raises(BlankNotAllowedError, match="chosen"):
+        capability().with_blank_rules(COMPUTE_BOTH).run(blank_inputs(count, when_none, when_any))
+
+
+def test_a_blank_count_with_a_zero_fallback_and_compute_candidates_takes_the_first() -> None:
+    rules: dict[str, BlankRule] = {"count": 0, **COMPUTE_BOTH}
+
+    result = capability().with_blank_rules(rules).run(blank_inputs(count=None, when_any=None))
+
+    assert result.outputs == (Artifact(CHOSEN, D("1633")),)
+    assert result.trace[0] == BlankFallbackLine(DEPENDANTS, 0)
+
+
+def test_pass_on_on_a_candidate_wins_over_compute_on_the_other() -> None:
+    rules: dict[str, BlankRule] = {"when_none": COMPUTE, "when_any": PASS_ON}
 
     result = capability().with_blank_rules(rules).run(blank_inputs(count=0, when_any=None))
 

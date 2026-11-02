@@ -25,10 +25,13 @@ capabilities:
       count: ca/t657_chart_2021_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2021_amount_d_instead
-    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). The form
-    # gives no value for a blank in either amount, so those still refuse.
+    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). A blank
+    # amount that is not the one chosen is ignored; the form gives no value for a chosen one, so
+    # that refuses.
     blank:
       count: "0"
+      when_none: compute
+      when_any: compute
     produces:
       output: ca/chart_2021_amount_d
   # Chart 2021 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2021
@@ -244,10 +247,11 @@ capabilities:
       when_none: ca/chart_2021_part_1_amount_m
       when_any: ca/chart_2021_part_2_amount_l
     # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
-    # amount in either part still refuses: passing it on would blank the total even when the other
-    # part is the one chosen.
+    # amount in the part chosen refuses; one in the other part is ignored.
     blank:
       count: "0"
+      when_none: compute
+      when_any: compute
     produces:
       output: ca/chart_2021_total_carried
   # --- Chart 2022 Part 1 ---
@@ -275,10 +279,13 @@ capabilities:
       count: ca/t657_chart_2022_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2022_amount_d_instead
-    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). The form
-    # gives no value for a blank in either amount, so those still refuse.
+    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). A blank
+    # amount that is not the one chosen is ignored; the form gives no value for a chosen one, so
+    # that refuses.
     blank:
       count: "0"
+      when_none: compute
+      when_any: compute
     produces:
       output: ca/chart_2022_amount_d
   # Chart 2022 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2022
@@ -494,10 +501,11 @@ capabilities:
       when_none: ca/chart_2022_part_1_amount_m
       when_any: ca/chart_2022_part_2_amount_l
     # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
-    # amount in either part still refuses: passing it on would blank the total even when the other
-    # part is the one chosen.
+    # amount in the part chosen refuses; one in the other part is ignored.
     blank:
       count: "0"
+      when_none: compute
+      when_any: compute
     produces:
       output: ca/chart_2022_total_carried
   # --- Chart 2023 Part 1 ---
@@ -525,10 +533,13 @@ capabilities:
       count: ca/t657_chart_2023_uses_d_instead_checked
       when_none: ca/chart_2_line_19
       when_any: ca/t657_chart_2023_amount_d_instead
-    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). The form
-    # gives no value for a blank in either amount, so those still refuse.
+    # The "use the (YYYY-1) calculation instead" box left blank reads as not ticked (0). A blank
+    # amount that is not the one chosen is ignored; the form gives no value for a chosen one, so
+    # that refuses.
     blank:
       count: "0"
+      when_none: compute
+      when_any: compute
     produces:
       output: ca/chart_2023_amount_d
   # Chart 2023 Part 1 "Capital gains deduction available for QFFP and/or QSBCS disposed of in 2023
@@ -744,9 +755,10 @@ capabilities:
       when_none: ca/chart_2023_part_1_amount_m
       when_any: ca/chart_2023_part_2_amount_l
     # Part 2 left blank reads as not completed (0): Part 1 is the last amount calculated. A blank
-    # amount in either part still refuses: passing it on would blank the total even when the other
-    # part is the one chosen.
+    # amount in the part chosen refuses; one in the other part is ignored.
     blank:
       count: "0"
+      when_none: compute
+      when_any: compute
     produces:
       output: ca/chart_2023_total_carried
