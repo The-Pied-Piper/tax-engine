@@ -21,13 +21,12 @@ cold (jurisdiction, tax year) makes concurrent callers wait.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 from threading import Lock
 from typing import Any
 
 from tax_engine.application.ports.jurisdiction_source import JurisdictionSource
 from tax_engine.application.ports.parameter_source import ParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.capability_builder import CapabilityBuilder
 from tax_engine.domain.form import FormComposition, FormSet
@@ -80,7 +79,6 @@ class TaxComputationService:
         inputs = frozenset(self._artifacts.kind(identifier) for identifier in manifest.inputs)
         manifest.check_artifacts(self._artifacts)
         defaults = manifest.default_artifacts(self._artifacts)
-        blank = self._blank_fields(defaults)
         fields = {
             form.name: manifest.field_default_artifacts(form, self._artifacts)
             for form in manifest.forms
@@ -98,7 +96,7 @@ class TaxComputationService:
                     max_instances=form.max_instances,
                     min_instances=form.min_instances,
                     exclusive_group=form.exclusive_group,
-                    blank_inputs=blank | self._blank_fields(fields[form.name]),
+                    defaults=defaults,
                     field_defaults=fields[form.name],
                 )
                 for form in manifest.forms
@@ -120,10 +118,6 @@ class TaxComputationService:
         list has one instance.
         """
         return self.compose(code, tax_year).compute(*artifacts)
-
-    @staticmethod
-    def _blank_fields(defaults: Iterable[Artifact[Any]]) -> frozenset[ArtifactKind[Any]]:
-        return frozenset(artifact.kind for artifact in defaults if artifact.is_blank)
 
     def _capability(self, selection: CapabilitySelection, tax_year: int) -> Capability:
         cls = self._capabilities.get(selection.name)

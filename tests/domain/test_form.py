@@ -1801,7 +1801,7 @@ def less_form(*, blank_inputs: frozenset[ArtifactKind[Any]]) -> FormComposition:
         [Less(SALES, COSTS, LEVY).with_blank_rules({"cost": D(0)})],
         exports=[LEVY],
         starting=frozenset({SALES, COSTS}),
-        blank_inputs=blank_inputs,
+        defaults=[Artifact(kind, BLANK) for kind in blank_inputs],
     )
 
 
@@ -1894,7 +1894,7 @@ def test_a_blank_the_form_does_not_read_is_not_its_to_refuse() -> None:
         [Less(SALES, COSTS, PROFIT).with_blank_rules({"cost": D(0)})],
         exports=[PROFIT],
         starting=frozenset({SALES, COSTS}),
-        blank_inputs=frozenset({COSTS}),
+        defaults=[Artifact(COSTS, BLANK)],
     )
     forms = FormSet(
         [reads_sales_only, other],
@@ -1939,7 +1939,7 @@ def test_two_defaults_for_one_kind_are_refused() -> None:
 
 def test_a_form_that_exports_a_blank_gives_a_record_with_a_blank_field() -> None:
     fact = FormComposition(
-        "ex/fact", [], exports=[FEE], starting=frozenset({FEE}), blank_inputs=frozenset({FEE})
+        "ex/fact", [], exports=[FEE], starting=frozenset({FEE}), defaults=[Artifact(FEE, BLANK)]
     )
     total = FormComposition(
         RETURN,
@@ -1963,7 +1963,7 @@ def test_a_blank_field_of_a_record_reaches_the_form_and_its_rule_applies() -> No
         [Less(SALES, COSTS, PROFIT).with_blank_rules({"cost": D(0)})],
         instances=SHOPS,
         exports=[PROFIT],
-        blank_inputs=frozenset({COSTS}),
+        field_defaults=[Artifact(COSTS, BLANK)],
     )
     forms = FormSet([shop_form], inputs=frozenset({SHOPS}))
 

@@ -84,19 +84,18 @@ class FormComposition:
         max_instances: int | None = None,
         min_instances: int | None = None,
         exclusive_group: str | None = None,
-        blank_inputs: frozenset[ArtifactKind[Any]] = frozenset(),
+        defaults: Iterable[Artifact[Any]] = (),
         field_defaults: Iterable[Artifact[Any]] = (),
     ) -> None:
         """Wire `capabilities` as the form `name`, exporting `exports`, over `instances` if any.
 
         At most `max_instances` and at least `min_instances` instances (no limit for `None`) may be
         given, and at most one form of the `exclusive_group` may have any. A form without
-        `instances` has one instance. `blank_inputs` are the starting artifacts of the computation
-        that may arrive blank; the form's own composition may take a blank for those of them it
-        reads, and refuses a blank in any other input. A field of `instances` is among them if
-        listed. `field_defaults` are the artifacts a record's field is read as when the record
-        leaves it blank and the default is a value, each of a field of `instances`; a field whose
-        default is blank must also be in `blank_inputs` for the form to take the blank.
+        `instances` has one instance. `defaults` are the artifacts a starting artifact is read as
+        when it is left out, and `field_defaults` the same for a field of `instances` when a record
+        leaves it blank. An input or field whose default is blank may arrive blank: the form's own
+        composition takes a blank for those of them it reads, and refuses a blank in any other
+        input.
         """
         if instances is not None and not isinstance(instances, RecordListKind):
             raise InvalidCompositionError(
@@ -137,8 +136,9 @@ class FormComposition:
                 f"form {name!r}: instance field {kind.label!r} is also a starting artifact"
             )
         self._inputs = fields | frozenset(read & starting)
-        self._blank_inputs = blank_inputs & self._inputs
         self._field_defaults = {artifact.kind: artifact for artifact in field_defaults}
+        blank = {a.kind for a in (*defaults, *self._field_defaults.values()) if a.is_blank}
+        self._blank_inputs = frozenset(blank) & self._inputs
         stray = self._field_defaults.keys() - fields
         if stray:
             kind = min(stray, key=Composition.sort_key)
@@ -310,8 +310,7 @@ class FormSet:
         given = {artifact.kind: artifact for artifact in artifacts}
         for kind, default in self._defaults.items():
             # Left out, or given blank where the default is a value: the default is what is read.
-            if kind not in given or (given[kind].is_blank and not default.is_blank):
-                given[kind] = default
+            given[kind] = self._read_as(given.get(kind), default)
         self._check_given(given)
         self._check_limits(given)
         store: dict[ArtifactKind[Any], Artifact[Any]] = {}
@@ -365,10 +364,19 @@ class FormSet:
     def _field(form: FormComposition, record: Record, kind: ArtifactKind[Any]) -> Artifact[Any]:
         """The field `kind` of `record` as a starting artifact: blank, or the form's default for
         it if the default is a value, when the record leaves it blank."""
-        if not record.is_blank(kind):
-            return Artifact(kind, record[kind])
-        default = form.field_defaults.get(kind)
-        return default if default is not None and not default.is_blank else Artifact(kind, BLANK)
+        given = Artifact(kind, BLANK if record.is_blank(kind) else record[kind])
+        return FormSet._read_as(given, form.field_defaults.get(kind))
+
+    @staticmethod
+    def _read_as(given: Artifact[Any] | None, default: Artifact[Any] | None) -> Artifact[Any]:
+        """What is read for an input or field: the default when it is left out, or given blank
+        where the default is a value; else what was given."""
+        if given is not None and not (
+            given.is_blank and default is not None and not default.is_blank
+        ):
+            return given
+        assert default is not None  # nothing given and no default: callers only pass one of them
+        return default
 
     @staticmethod
     def _earlier_runs(form: FormComposition, done: Sequence[Worksheet]) -> list[Artifact[Any]]:
