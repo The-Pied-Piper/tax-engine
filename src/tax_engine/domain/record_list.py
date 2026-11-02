@@ -20,7 +20,9 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind
+from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
+    BlankValueError,
     InvalidRecordError,
     InvalidRegistrationError,
     NegativeArtifactError,
@@ -31,16 +33,25 @@ class Record(Mapping[ArtifactKind[Any], "Decimal | int | RecordList"]):
     """One record of a record list: a frozen mapping of its field kinds to their values.
 
     Built by `RecordList`, which checks it against the list's fields; equal to any mapping of the
-    same items, and hashable.
+    same items, and hashable. A field may be blank (`is_blank`); reading its value is then a
+    BlankValueError naming the field, as for a blank artifact.
     """
 
     __slots__ = ("_values",)
 
-    def __init__(self, values: Mapping[ArtifactKind[Any], Decimal | int | RecordList]) -> None:
+    def __init__(
+        self, values: Mapping[ArtifactKind[Any], Decimal | int | RecordList | Blank]
+    ) -> None:
         self._values: dict[ArtifactKind[Any], object] = dict(values)
+
+    def is_blank(self, kind: ArtifactKind[Any]) -> bool:
+        """Whether the field `kind` of this record was left blank."""
+        return self._values[kind] is BLANK
 
     def __getitem__[V](self, kind: ArtifactKind[V]) -> V:
         value = self._values[kind]
+        if value is BLANK:
+            raise BlankValueError(f"{kind.label} was left blank, so it has no value")
         # `RecordList` built the record with each value an instance of its kind's value type.
         if not isinstance(value, kind.value_type):
             raise TypeError(f"{kind.identifier} holds a {type(value).__name__}")
@@ -51,6 +62,13 @@ class Record(Mapping[ArtifactKind[Any], "Decimal | int | RecordList"]):
 
     def __len__(self) -> int:
         return len(self._values)
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Record):
+            return self._values == other._values
+        if isinstance(other, Mapping):
+            return self._values == dict(other.items())
+        return NotImplemented
 
     def __hash__(self) -> int:
         return hash(frozenset(self._values.items()))
@@ -125,9 +143,12 @@ class RecordList:
             if key not in self.fields:
                 name = key.identifier if isinstance(key, ArtifactKind) else repr(key)
                 raise InvalidRecordError(f"{item}: unknown field {name}")
-        values: dict[ArtifactKind[Any], Decimal | int | RecordList] = {}
+        values: dict[ArtifactKind[Any], Decimal | int | RecordList | Blank] = {}
         for kind in self.fields:
             value = given[kind]
+            if value is BLANK:
+                values[kind] = BLANK
+                continue
             # `bool` is a subclass of `int` but not a count, so a count field refuses it.
             if not isinstance(value, kind.value_type) or isinstance(value, bool):
                 raise TypeError(

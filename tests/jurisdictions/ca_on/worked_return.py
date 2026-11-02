@@ -14,6 +14,7 @@ entered, such as "012345678", or `""` for a box left blank. `WorkedReturn.load` 
 shape and resolves each identifier through an artifact registry; every failure is a
 WorkedReturnError naming the file and the key, except a value its kind refuses, such as a
 negative amount, a rate above 1 or digits of the wrong length, which is the kind's own error.
+An input given as `null` is a blank line, which the engine reads as the manifest's default.
 A line or input the file leaves out is blank: `with_blanks` fills it in against the manifest's
 declared inputs and outputs (a record list left out is no records, as an input and as an
 expected line).
@@ -37,6 +38,7 @@ import yaml
 
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     InvalidJurisdictionCodeError,
@@ -250,17 +252,19 @@ class WorkedReturn:
             raise YamlShapeError(f"{node.where} is not a count: {text!r}") from None
 
     @staticmethod
-    def _records(node: YamlNode, kind: RecordListKind) -> RecordList:
+    def _records(node: YamlNode, kind: RecordListKind, *, inputs: bool) -> RecordList:
         """`node` read as a list of records of `kind`'s fields; a nested list reads the same."""
         keys = frozenset(field.identifier for field in kind.fields)
-        records: list[dict[ArtifactKind[Any], Decimal | int | RecordList]] = []
+        records: list[dict[ArtifactKind[Any], Decimal | int | RecordList | Blank]] = []
         for item in node.items():
             item.require_mapping(keys)
-            record: dict[ArtifactKind[Any], Decimal | int | RecordList] = {}
+            record: dict[ArtifactKind[Any], Decimal | int | RecordList | Blank] = {}
             for field in kind.fields:
                 value = item.field(field.identifier)
-                if isinstance(field, RecordListKind):
-                    record[field] = WorkedReturn._records(value, field)
+                if value.value is None and inputs:
+                    record[field] = BLANK  # `null`: the field left blank
+                elif isinstance(field, RecordListKind):
+                    record[field] = WorkedReturn._records(value, field, inputs=inputs)
                 elif field.value_type is int:
                     record[field] = WorkedReturn._count(value)
                 else:
@@ -303,12 +307,14 @@ class WorkedReturn:
                 raise YamlShapeError(
                     f"{value.where}: unknown artifact identifier {identifier!r} ({exc})"
                 ) from None
-            if kind.value_type is Decimal:
+            if inputs and value.value is None:
+                result.append(Artifact(kind, BLANK))  # `null`: the line left blank
+            elif kind.value_type is Decimal:
                 result.append(Artifact(kind, value.parse_decimal()))
             elif kind.value_type is int:
                 result.append(Artifact(kind, WorkedReturn._count(value)))
             elif isinstance(kind, RecordListKind):
-                result.append(Artifact(kind, WorkedReturn._records(value, kind)))
+                result.append(Artifact(kind, WorkedReturn._records(value, kind, inputs=inputs)))
             elif isinstance(kind, DigitsKind):
                 result.append(Artifact(kind, value.require_string()))
             elif not inputs and kind.value_type is Rate:
