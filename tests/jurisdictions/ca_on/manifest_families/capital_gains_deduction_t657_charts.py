@@ -140,7 +140,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_1_amount_i",
             "less": "ca/t657_chart_2024_period_1_amount_j",
         },
-        blank={"amount": "pass_on", "less": "pass_on"},
+        blank={"amount": "pass_on", "less": "0"},
         produces={"output": "ca/chart_2024_period_1_amount_k"},
     ),
     # Chart 2024 Period 1 "Enter whichever is less: amount E or amount K." L.
@@ -252,7 +252,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_2_amount_i",
             "less": "ca/t657_chart_2024_period_2_amount_j",
         },
-        blank={"amount": "pass_on", "less": "pass_on"},
+        blank={"amount": "pass_on", "less": "0"},
         produces={"output": "ca/chart_2024_period_2_amount_k"},
     ),
     # Chart 2024 Period 2 "Enter whichever is less: amount E or amount K." L.

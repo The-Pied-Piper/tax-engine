@@ -1,8 +1,9 @@
 """The `blank:` lines of the `core/subtract` steps in the CA-ON manifest (T657).
 
 Form T657 line B of Charts 2017 to 2025 prints "If you did not complete charts for ..., enter
-"0"", so at each of those steps a blank B reads 0. The seven T657 inputs the form lets the filer
-leave out (amounts J, L and the Part 2 excluded amounts) blank the line they are taken off from.
+"0"", so at each of those steps a blank B reads 0. On the seven lines that take off an amount J, L
+or a Part 2 excluded amount, the form prints no sentence for a blank: a filer with nothing to take
+off takes off nothing, so a blank there reads 0, and a blank amount blanks the result.
 Every other `core/subtract` step names no blank rule, so it refuses a blank.
 """
 
@@ -95,15 +96,26 @@ def test_a_carry_line_reads_a_blank_b_as_zero(less: str) -> None:
 
 
 @pytest.mark.parametrize("less", sorted(INPUT_LESS))
-def test_a_blank_t657_input_blanks_the_line(less: str) -> None:
+def test_a_blank_t657_take_off_line_takes_off_nothing(less: str) -> None:
     (step,) = (each for each in subtract_steps() if less_of(each) == less)
-    assert dict(step.blank) == {"amount": "pass_on", "less": "pass_on"}
+    assert dict(step.blank) == {"amount": "pass_on", "less": "0"}
 
     subtract, gross, reduction = wired(step)
-    result = subtract.run((Artifact(gross, D(100)), Artifact(reduction, BLANK)))
+    result = subtract.run((Artifact(gross, D(10000)), Artifact(reduction, BLANK)))
+
+    assert result.outputs[0].value == D(10000)
+    assert result.trace[0] == BlankFallbackLine(reduction, D(0))
+
+
+@pytest.mark.parametrize("less", sorted(INPUT_LESS))
+def test_a_blank_amount_on_a_t657_take_off_line_blanks_the_result(less: str) -> None:
+    (step,) = (each for each in subtract_steps() if less_of(each) == less)
+
+    subtract, gross, reduction = wired(step)
+    result = subtract.run((Artifact(gross, BLANK), Artifact(reduction, D(5))))
 
     assert result.outputs[0].is_blank
-    assert result.trace == (BlankPassedOnLine(result.outputs[0].kind, (reduction,)),)
+    assert result.trace == (BlankPassedOnLine(result.outputs[0].kind, (gross,)),)
 
 
 def test_every_other_subtract_step_refuses_a_blank() -> None:
