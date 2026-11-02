@@ -254,6 +254,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2021_part_1_amount_j"},
+        blank={"ca/chart_2021_part_1_amount_i": "pass_on"},
     ),
     # Chart 2021 Part 1 "Enter whichever is less: amount E or amount J." K.
     CapabilitySelection(
@@ -279,6 +280,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2021_part_1_amount_m"},
+        blank={"ca/chart_2021_part_1_amount_k": "pass_on"},
     ),
     # Chart 2021 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
     # above." N, the maximum for line 25400 if no other reserve is reported.
@@ -357,6 +359,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2021_part_2_amount_h"},
+        blank={"ca/chart_2021_part_2_amount_g": "pass_on"},
     ),
     # Chart 2021 Part 2 "Enter whichever is less: amount E or amount H." I.
     CapabilitySelection(
@@ -382,6 +385,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2021_part_2_amount_k"},
+        blank={"ca/chart_2021_part_2_amount_i": "pass_on"},
     ),
     # Chart 2021 Part 2 "Enter whichever is less: amount H or amount K." L.
     CapabilitySelection(
@@ -528,6 +532,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2022_part_1_amount_j"},
+        blank={"ca/chart_2022_part_1_amount_i": "pass_on"},
     ),
     # Chart 2022 Part 1 "Enter whichever is less: amount E or amount J." K.
     CapabilitySelection(
@@ -553,6 +558,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2022_part_1_amount_m"},
+        blank={"ca/chart_2022_part_1_amount_k": "pass_on"},
     ),
     # Chart 2022 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
     # above." N.
@@ -630,6 +636,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2022_part_2_amount_h"},
+        blank={"ca/chart_2022_part_2_amount_g": "pass_on"},
     ),
     # Chart 2022 Part 2 "Enter whichever is less: amount E or amount H." I.
     CapabilitySelection(
@@ -655,6 +662,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2022_part_2_amount_k"},
+        blank={"ca/chart_2022_part_2_amount_i": "pass_on"},
     ),
     # Chart 2022 Part 2 "Enter whichever is less: amount H or amount K." L.
     CapabilitySelection(
@@ -798,6 +806,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2023_part_1_amount_j"},
+        blank={"ca/chart_2023_part_1_amount_i": "pass_on"},
     ),
     # Chart 2023 Part 1 "Enter whichever is less: amount E or amount J." K.
     CapabilitySelection(
@@ -823,6 +832,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2023_part_1_amount_m"},
+        blank={"ca/chart_2023_part_1_amount_k": "pass_on"},
     ),
     # Chart 2023 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
     # above." N.
@@ -900,6 +910,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2023_part_2_amount_h"},
+        blank={"ca/chart_2023_part_2_amount_g": "pass_on"},
     ),
     # Chart 2023 Part 2 "Enter whichever is less: amount E or amount H." I.
     CapabilitySelection(
@@ -925,6 +936,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2023_part_2_amount_k"},
+        blank={"ca/chart_2023_part_2_amount_i": "pass_on"},
     ),
     # Chart 2023 Part 2 "Enter whichever is less: amount H or amount K." L.
     CapabilitySelection(

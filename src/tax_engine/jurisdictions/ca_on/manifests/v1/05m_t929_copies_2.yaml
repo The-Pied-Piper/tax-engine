@@ -157,6 +157,11 @@ capabilities:
         - ca/cpp_deduction_on_self_employment
         - ca/cpp_part_5_deduction_on_self_employment
         - ca/rc381_cpp_deduction_on_self_employment_and_other_earnings
+    # Schedule 8 Part 4 and Part 5: "If not, leave this part blank." The total adds the lines that apply
+    # ("Complete only the lines that apply to you", 5006-R page 3), so a part left blank adds 0.
+    blank:
+      ca/cpp_deduction_on_self_employment: "0"
+      ca/cpp_part_5_deduction_on_self_employment: "0"
     produces:
       output: ca/cpp_deduction_on_self_employment_and_other_earnings
   # Form T778 Part B line 1 "Number of eligible children born in 2019 or later whom the
@@ -643,20 +648,3 @@ capabilities:
       records: ca/t1_m.moving_expenses_claim
     produces:
       output: ca/moving_expenses_deduction
-  # Form T1206 Part 1 line 1 (68330) "Part of the taxable amount of dividends (eligible and other
-  # than eligible) described in the information section received from taxable Canadian corporations"
-  # is at most the taxable amount of dividends on line 12000 of the return.
-  - name: core/at_most
-    consumes:
-      amount: ca/split_income_dividends_total
-      bound: ca/taxable_dividends
-    produces:
-      output: ca/split_income_dividends_checked
-  # Schedule 3 line 4 and line 13200 "Total gain or loss (add all the amounts under column 5)" is
-  # the share gain or loss, which may be a loss; line 4 counted as a gain only, a loss counts 0.
-  - name: core/sum_not_below_zero
-    consumes:
-      parts:
-        - ca/share_gain_or_loss
-    produces:
-      output: ca/share_gain_not_below_zero

@@ -737,6 +737,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2025_part_1_amount_p"},
+        blank={"ca/chart_2025_part_1_amount_n": "pass_on"},
     ),
     # Chart 2025 Part 1 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
     # amount P above. If you are not disposing of any other QFFP or QSBCS in 2025, this is the
@@ -890,6 +891,7 @@ STEPS = {
             ),
         },
         produces={"output": "ca/chart_2025_part_2_amount_p"},
+        blank={"ca/chart_2025_part_2_amount_n": "pass_on"},
     ),
     # Chart 2025 Part 2 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
     # amount P above. This is the maximum amount you can claim on line 25400 of your 2025 return.

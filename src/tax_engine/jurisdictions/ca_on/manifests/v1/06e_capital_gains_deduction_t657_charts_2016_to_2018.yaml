@@ -142,6 +142,10 @@ capabilities:
       parts:
         - ca/chart_2016_part_2_amount_g
         - ca/chart_2016_part_1_amount_g
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2016_part_2_amount_g: pass_on
+      ca/chart_2016_part_1_amount_g: pass_on
     produces:
       output: ca/chart_2016_part_2_amount_i
   # Chart 2016 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
@@ -293,6 +297,9 @@ capabilities:
       parts:
         - ca/chart_2017_part_1_amount_i
         - ca/chart_2016_total_carried
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2017_part_1_amount_i: pass_on
     produces:
       output: ca/chart_2017_part_1_amount_k
   # Chart 2017 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
@@ -366,6 +373,9 @@ capabilities:
       parts:
         - ca/chart_2017_part_2_amount_g
         - ca/chart_2017_part_1_amount_k
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2017_part_2_amount_g: pass_on
     produces:
       output: ca/chart_2017_part_2_amount_i
   # Chart 2017 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
@@ -517,6 +527,9 @@ capabilities:
       parts:
         - ca/chart_2018_part_1_amount_i
         - ca/chart_2017_total_carried
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2018_part_1_amount_i: pass_on
     produces:
       output: ca/chart_2018_part_1_amount_k
   # Chart 2018 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
@@ -590,6 +603,9 @@ capabilities:
       parts:
         - ca/chart_2018_part_2_amount_g
         - ca/chart_2018_part_1_amount_k
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2018_part_2_amount_g: pass_on
     produces:
       output: ca/chart_2018_part_2_amount_i
   # Chart 2018 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of

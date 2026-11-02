@@ -87,6 +87,9 @@ capabilities:
       parts:
         - ca/chart_2023_part_1_amount_h
         - ca/chart_2023_part_1_amount_i
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2023_part_1_amount_i: pass_on
     produces:
       output: ca/chart_2023_part_1_amount_j
   # Chart 2023 Part 1 "Enter whichever is less: amount E or amount J." K.
@@ -109,6 +112,9 @@ capabilities:
       parts:
         - ca/chart_2023_part_1_amount_k
         - ca/chart_2022_total_carried
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2023_part_1_amount_k: pass_on
     produces:
       output: ca/chart_2023_part_1_amount_m
   # Chart 2023 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
@@ -183,6 +189,9 @@ capabilities:
       parts:
         - ca/chart_2023_part_2_amount_f
         - ca/chart_2023_part_2_amount_g
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2023_part_2_amount_g: pass_on
     produces:
       output: ca/chart_2023_part_2_amount_h
   # Chart 2023 Part 2 "Enter whichever is less: amount E or amount H." I.
@@ -204,6 +213,9 @@ capabilities:
       parts:
         - ca/chart_2023_part_2_amount_i
         - ca/chart_2023_part_1_amount_m
+    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    blank:
+      ca/chart_2023_part_2_amount_i: pass_on
     produces:
       output: ca/chart_2023_part_2_amount_k
   # Chart 2023 Part 2 "Enter whichever is less: amount H or amount K." L.

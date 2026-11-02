@@ -238,6 +238,70 @@ def test_a_fallback_for_a_list_slot_is_the_type_of_its_kinds() -> None:
     assert result.trace[0] == BlankFallbackLine(INCOME, D(0))
 
 
+def test_blank_per_item_names_the_list_slots_that_take_a_rule_for_one_kind() -> None:
+    class Listed(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal], "base": Decimal}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"parts", "base"})
+        BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset({"parts"})
+
+        def __init__(self, parts: tuple[Money, ...], base: Money, output: Money) -> None:
+            super().__init__(parts=parts, base=base, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    capability = Listed((INCOME, OTHER), LIMIT, NET)
+
+    assert Capability.BLANK_PER_ITEM == frozenset()
+    assert Listed.BLANK_PER_ITEM == frozenset({"parts"})
+    assert capability.with_blank_rules({}, {INCOME: PASS_ON}) is capability
+    again = Listed((INCOME, OTHER), LIMIT, NET)
+    with pytest.raises(InvalidCapabilityError, match="slot 'base' takes one blank rule"):
+        again.with_blank_rules({}, {LIMIT: D(0)})
+
+
+def test_a_class_without_blank_per_item_takes_one_rule_for_every_kind_in_a_list() -> None:
+    class Plain(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal]}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"parts"})
+
+        def __init__(self, parts: tuple[Money, ...], output: Money) -> None:
+            super().__init__(parts=parts, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    with pytest.raises(InvalidCapabilityError, match="slot 'parts' takes one blank rule"):
+        Plain((INCOME, OTHER), NET).with_blank_rules({}, {INCOME: PASS_ON})
+
+
+def test_blank_per_item_must_name_list_slots_that_may_be_blank() -> None:
+    with pytest.raises(InvalidCapabilityError, match="BLANK_PER_ITEM slot 'amount'"):
+
+        class NotAList(SubtractCompute):
+            BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset({"amount"})
+
+    with pytest.raises(InvalidCapabilityError, match="BLANK_PER_ITEM slot 'parts'"):
+
+        class NotAllowed(Capability):
+            CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal]}
+            PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+            BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset({"parts"})
+
+            def __init__(self, parts: tuple[Money, ...], output: Money) -> None:
+                super().__init__(parts=parts, output=output)
+
+            def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+                raise NotImplementedError
+
+    with pytest.raises(InvalidCapabilityError, match="BLANK_PER_ITEM must be a set"):
+
+        class NotASet(SubtractCompute):
+            BLANK_PER_ITEM: ClassVar[frozenset[str]] = 1  # type: ignore[assignment]
+
+
 # --- what a capability does with a blank ------------------------------------------------------
 
 
