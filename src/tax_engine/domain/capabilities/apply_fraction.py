@@ -5,6 +5,10 @@ output is `rounding.apply(base × numerator / denominator)`, the division done a
 so nothing is rounded before the rule. It is rounded only with the `fraction` dataset's rule, which
 defaults to no rounding; under no rounding a quotient with no finite decimal expansion raises
 `decimal.Inexact`.
+
+A blank `base` is allowed. What it does is the manifest step's `blank:` rule: `pass_on` gives a
+blank `output` (a fraction of a line left blank is blank, and there is nothing to round); with no
+rule it is refused. `compute` never sees a blank.
 """
 
 from __future__ import annotations
@@ -28,6 +32,7 @@ class ApplyFraction(Capability):
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[Fraction]]] = {"fraction": FRACTION}
     CONSUMES: ClassVar[Mapping[str, type]] = {"base": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"base"})
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
 
     def __init__(self, fraction: ParameterDataset[Fraction], base: Money, output: Money) -> None:
