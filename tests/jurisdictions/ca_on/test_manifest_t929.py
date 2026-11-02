@@ -211,6 +211,7 @@ def test_guard_every_copied_step_is_its_original_on_the_return_except_the_line_2
                 params=step.params,
                 consumes={**step.consumes, "count": CHECKED_COUNTS[count]},
                 produces=step.produces,
+                blank=step.blank,
             )
             in selected
         )

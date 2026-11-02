@@ -6,9 +6,7 @@ capabilities:
     consumes:
       amount: ca/self_employed_cpp_base_credit
       count: ca/cpp_part_4_completed_checked
-    # Schedule 8 "Parts you have to complete": "Part 4 ... If not, leave this part blank." (Part 5
-    # likewise). A part left blank, or an amount that is itself blank, blanks the result; a filled
-    # count of 0 still gives 0.
+    # Schedule 8 Part 4: "If not, leave this part blank." A blank part or amount blanks the result.
     blank:
       amount: pass_on
       count: pass_on
@@ -19,9 +17,7 @@ capabilities:
     consumes:
       amount: ca/cpp_part_5_line_70
       count: ca/cpp_part_5_completed_checked
-    # Schedule 8 "Parts you have to complete": "Part 4 ... If not, leave this part blank." (Part 5
-    # likewise). A part left blank, or an amount that is itself blank, blanks the result; a filled
-    # count of 0 still gives 0.
+    # Schedule 8 Part 5: "If not, leave this part blank." A blank part or amount blanks the result.
     blank:
       amount: pass_on
       count: pass_on
