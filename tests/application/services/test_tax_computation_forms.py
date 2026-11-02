@@ -1282,3 +1282,37 @@ def test_a_required_input_left_out_is_refused_naming_it() -> None:
 
     with pytest.raises(InvalidCompositionError, match="missing input 'spare'"):
         left_out(manifest)
+
+
+def test_a_blank_field_of_a_record_is_read_as_the_fields_manifest_default() -> None:
+    fields = tuple(
+        InputDeclaration("ex/expenses", False, Default("0"), "Line 7 of the form")
+        if declared.name == "ex/expenses"
+        else declared
+        for declared in required_fields(RENTALS)
+    )
+    manifest = rental_manifest(replace(RENTAL, fields=fields))
+    blank_expenses = Artifact(
+        RENTALS,
+        RecordList(
+            RENTALS.fields,
+            [{GROSS_RENT: D("12000"), EXPENSES: BLANK, UNITS: units()}],
+        ),
+    )
+
+    worksheet = service(manifest).compute(EX_ON, 2025, blank_expenses)["ex-on/return"][0]
+
+    assert worksheet.get(TOTAL_NET_INCOME).value == D("12000")
+
+
+def test_a_blank_field_with_no_default_is_refused_naming_the_form_and_instance() -> None:
+    blank_expenses = Artifact(
+        RENTALS,
+        RecordList(
+            RENTALS.fields,
+            [{GROSS_RENT: D("12000"), EXPENSES: BLANK, UNITS: units()}],
+        ),
+    )
+
+    with pytest.raises(BlankNotAllowedError, match=r"^ex/rental, instance 1: 'expenses' may not"):
+        service(rental_manifest()).compute(EX_ON, 2025, blank_expenses)

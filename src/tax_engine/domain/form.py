@@ -34,6 +34,7 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
@@ -46,7 +47,7 @@ from tax_engine.domain.errors import (
     ValidationError,
 )
 from tax_engine.domain.manifest import Form
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import Record, RecordList, RecordListKind
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
 
@@ -84,6 +85,7 @@ class FormComposition:
         min_instances: int | None = None,
         exclusive_group: str | None = None,
         blank_inputs: frozenset[ArtifactKind[Any]] = frozenset(),
+        field_defaults: Iterable[Artifact[Any]] = (),
     ) -> None:
         """Wire `capabilities` as the form `name`, exporting `exports`, over `instances` if any.
 
@@ -91,7 +93,9 @@ class FormComposition:
         given, and at most one form of the `exclusive_group` may have any. A form without
         `instances` has one instance. `blank_inputs` are the starting artifacts of the computation
         that may arrive blank; the form's own composition may take a blank for those of them it
-        reads, and refuses a blank in any other input.
+        reads, and refuses a blank in any other input. A field of `instances` is among them if
+        listed. `field_defaults` are the artifacts a record's field is read as when the record
+        leaves it blank and the default is a value, each of a field of `instances`.
         """
         if instances is not None and not isinstance(instances, RecordListKind):
             raise InvalidCompositionError(
@@ -133,6 +137,13 @@ class FormComposition:
             )
         self._inputs = fields | frozenset(read & starting)
         self._blank_inputs = blank_inputs & self._inputs
+        self._field_defaults = {artifact.kind: artifact for artifact in field_defaults}
+        stray = self._field_defaults.keys() - fields
+        if stray:
+            kind = min(stray, key=Composition.sort_key)
+            raise InvalidCompositionError(
+                f"form {name!r}: default for {kind.label!r}, which is not a field of its instances"
+            )
         try:
             self._composition = Composition(
                 wired,
@@ -209,6 +220,11 @@ class FormComposition:
     def earlier(self) -> frozenset[RecordListKind]:
         """The form's own derived kinds that it reads; a run gets the earlier runs' values."""
         return self._earlier
+
+    @property
+    def field_defaults(self) -> Mapping[ArtifactKind[Any], Artifact[Any]]:
+        """The artifact each field is read as when a record leaves it blank, by field kind."""
+        return self._field_defaults
 
     @property
     def blank_inputs(self) -> frozenset[ArtifactKind[Any]]:
@@ -338,11 +354,20 @@ class FormSet:
             yield self._run(form, 1, [*shared, *imported, *self._earlier_runs(form, done)])
             return
         for position, record in enumerate(given[instances].value.records, start=1):
-            starting = [Artifact(kind, record[kind]) for kind in fields]
+            starting = [self._field(form, record, kind) for kind in fields]
             earlier = self._earlier_runs(form, done)
             worksheet = self._run(form, position, [*shared, *starting, *imported, *earlier])
             done.append(worksheet)
             yield worksheet
+
+    @staticmethod
+    def _field(form: FormComposition, record: Record, kind: ArtifactKind[Any]) -> Artifact[Any]:
+        """The field `kind` of `record` as a starting artifact: blank, or the form's default for
+        it if the default is a value, when the record leaves it blank."""
+        if not record.is_blank(kind):
+            return Artifact(kind, record[kind])
+        default = form.field_defaults.get(kind)
+        return default if default is not None and not default.is_blank else Artifact(kind, BLANK)
 
     @staticmethod
     def _earlier_runs(form: FormComposition, done: Sequence[Worksheet]) -> list[Artifact[Any]]:
@@ -356,17 +381,13 @@ class FormSet:
     def _export_of(derived: RecordListKind, ran: Sequence[Worksheet]) -> Artifact[Any]:
         """The derived kind as a record list of its export over the worksheets `ran`, in order.
 
-        A blank export has no place in a record, so it is a BlankNotAllowedError naming the
-        instance.
+        A blank export is a blank field of its record, and the step that reads it decides.
         """
         (export,) = derived.fields
-        for position, worksheet in enumerate(ran, start=1):
-            if worksheet.get(export).is_blank:
-                raise BlankNotAllowedError(
-                    f"{derived.identifier.partition('.')[0]}, instance {position}: "
-                    f"{export.label!r} is blank, and a form cannot export a blank"
-                )
-        listed = [{export: worksheet.get(export).value} for worksheet in ran]
+        listed: list[dict[ArtifactKind[Any], object]] = []
+        for worksheet in ran:
+            made = worksheet.get(export)
+            listed.append({export: BLANK if made.is_blank else made.value})
         return Artifact(derived, RecordList(derived.fields, listed))
 
     @staticmethod

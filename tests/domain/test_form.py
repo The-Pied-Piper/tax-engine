@@ -39,6 +39,7 @@ from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
+    BlankValueError,
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
@@ -1936,14 +1937,72 @@ def test_two_defaults_for_one_kind_are_refused() -> None:
         less_set([Artifact(COSTS, D(1)), Artifact(COSTS, BLANK)])
 
 
-def test_a_form_that_exports_a_blank_input_is_refused_naming_the_form_and_instance() -> None:
+def test_a_form_that_exports_a_blank_gives_a_record_with_a_blank_field() -> None:
     fact = FormComposition(
         "ex/fact", [], exports=[FEE], starting=frozenset({FEE}), blank_inputs=frozenset({FEE})
     )
-    forms = FormSet([fact], inputs=frozenset({FEE}), defaults=[Artifact(FEE, BLANK)])
+    total = FormComposition(
+        RETURN,
+        [RecordTotal(FACT_FEE, FEE_TOTAL)],
+        exports=[FEE_TOTAL],
+        starting=frozenset({FEE}),
+    )
+    forms = FormSet([fact, total], inputs=frozenset({FEE}), defaults=[Artifact(FEE, BLANK)])
 
-    with pytest.raises(BlankNotAllowedError, match=r"^ex/fact, instance 1: 'fee' is blank"):
+    with pytest.raises(BlankValueError, match="fee was left blank"):
         forms.compute()
+
+
+def test_a_blank_field_of_a_record_reaches_the_form_and_its_rule_applies() -> None:
+    blank_costs = Artifact(
+        SHOPS,
+        RecordList(SHOPS.fields, [{SALES: D("100"), COSTS: BLANK}, {SALES: D(50), COSTS: D(20)}]),
+    )
+    shop_form = FormComposition(
+        "ex/shop",
+        [Less(SALES, COSTS, PROFIT).with_blank_rules({"cost": D(0)})],
+        instances=SHOPS,
+        exports=[PROFIT],
+        blank_inputs=frozenset({COSTS}),
+    )
+    forms = FormSet([shop_form], inputs=frozenset({SHOPS}))
+
+    result = forms.compute(blank_costs)
+
+    assert [w.get(PROFIT).value for w in result["ex/shop"]] == [D(100), D(30)]
+
+
+def test_a_blank_field_the_form_does_not_accept_is_refused_naming_the_instance() -> None:
+    blank_costs = Artifact(SHOPS, RecordList(SHOPS.fields, [{SALES: D(1), COSTS: BLANK}]))
+    forms = FormSet([shop()], inputs=frozenset({SHOPS}))
+
+    with pytest.raises(BlankNotAllowedError, match=r"^ex/shop, instance 1: 'costs' may not"):
+        forms.compute(blank_costs)
+
+
+def test_a_blank_field_where_the_default_is_a_value_is_read_as_the_default() -> None:
+    blank_costs = Artifact(SHOPS, RecordList(SHOPS.fields, [{SALES: D(100), COSTS: BLANK}]))
+    shop_form = FormComposition(
+        "ex/shop",
+        [Subtract(SALES, COSTS, PROFIT)],
+        instances=SHOPS,
+        exports=[PROFIT],
+        field_defaults=[Artifact(COSTS, D(30))],
+    )
+    forms = FormSet([shop_form], inputs=frozenset({SHOPS}))
+
+    assert forms.compute(blank_costs)["ex/shop"][0].get(PROFIT).value == D(70)
+
+
+def test_a_default_for_something_that_is_not_a_field_is_refused() -> None:
+    with pytest.raises(InvalidCompositionError, match="default for 'fee', which is not a field"):
+        FormComposition(
+            "ex/shop",
+            [Subtract(SALES, COSTS, PROFIT)],
+            instances=SHOPS,
+            exports=[PROFIT],
+            field_defaults=[Artifact(FEE, D(1))],
+        )
 
 
 def test_a_blank_instances_list_with_an_empty_list_default_is_read_as_no_instances() -> None:

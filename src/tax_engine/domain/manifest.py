@@ -406,6 +406,23 @@ class Manifest:
         )
         return tuple(artifact for artifact in found if artifact is not None)
 
+    def field_default_artifacts(
+        self, form: Form, artifacts: ArtifactRegistry
+    ) -> tuple[Artifact[Any], ...]:
+        """The artifact each optional field of `form`'s records is read as when a record leaves
+        it blank, in the form's order. Called after `check_artifacts`.
+        """
+        if form.instances is None:
+            return ()
+        instances = artifacts.kind(form.instances)
+        if not isinstance(instances, RecordListKind):
+            return ()
+        kinds = {kind.identifier: kind for kind in instances.fields}
+        found = (
+            declaration.default_artifact(kinds[declaration.name]) for declaration in form.fields
+        )
+        return tuple(artifact for artifact in found if artifact is not None)
+
     @staticmethod
     def _check_fields(form: Form, instances: ArtifactKind[Any]) -> None:
         if not isinstance(instances, RecordListKind):

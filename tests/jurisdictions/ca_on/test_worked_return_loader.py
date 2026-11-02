@@ -663,6 +663,21 @@ def test_a_record_list_input_loads_its_records_in_order(
     assert type(loaded[1][months]) is int
 
 
+def test_a_null_field_of_an_input_record_is_a_blank_field(
+    tmp_path: Path, records: ArtifactRegistry
+) -> None:
+    text = DEPENDANTS.replace('"5000.50"', "null")
+    worked = WorkedReturn.load(write(tmp_path, with_section("inputs", text), "ok.yaml"), records)
+    net_income = records.kind("ex/dependant_net_income")
+    months = records.kind("ex/months_resident")
+
+    loaded = worked.inputs[0].value.records
+
+    assert loaded[0].is_blank(net_income) is False
+    assert loaded[1].is_blank(net_income) is True
+    assert loaded[1][months] == 6
+
+
 def test_an_empty_record_list_loads_as_no_records(
     tmp_path: Path, records: ArtifactRegistry
 ) -> None:
