@@ -17,7 +17,7 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.blank import PASS_ON, BlankRule
+from tax_engine.domain.blank import COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidSelectionError
 from tax_engine.domain.manifest import CapabilitySelection
@@ -76,13 +76,16 @@ class CapabilityBuilder:
     def _blank_rules(
         cls, selection: CapabilitySelection, capability: type[Capability], who: str
     ) -> dict[str, BlankRule]:
-        """What a blank does in each slot the selection names: `pass_on`, else the fallback text
-        read as the slot's own value type (a `Decimal`, or an `int` for a count slot).
+        """What a blank does in each slot the selection names: `pass_on`, `compute`, else the
+        fallback text read as the slot's own value type (a `Decimal`, or an `int` for a count slot).
         """
         rules: dict[str, BlankRule] = {}
         for slot, text in selection.blank.items():
             if text == "pass_on":
                 rules[slot] = PASS_ON
+                continue
+            if text == "compute":
+                rules[slot] = COMPUTE
                 continue
             if slot not in capability.CONSUMES:
                 raise InvalidSelectionError(
@@ -93,7 +96,7 @@ class CapabilityBuilder:
             pattern = _WHOLE_NUMBER if value_type is int else _DECIMAL_NUMBER
             if value_type not in (Decimal, int) or not pattern.fullmatch(text):
                 raise InvalidSelectionError(
-                    f"{who}: blank rule for slot {slot!r} must be pass_on or "
+                    f"{who}: blank rule for slot {slot!r} must be pass_on, compute or "
                     f"{'a whole number' if value_type is int else 'a plain decimal number'} "
                     f"for a {value_type.__name__} slot, got {text!r}"
                 )
