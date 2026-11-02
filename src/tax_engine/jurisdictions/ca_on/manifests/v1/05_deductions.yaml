@@ -152,6 +152,12 @@ capabilities:
     consumes:
       amount: ca/self_employed_cpp_deduction
       count: ca/cpp_part_4_completed_checked
+    # Schedule 8 "Parts you have to complete": "Part 4 ... If not, leave this part blank." (Part 5
+    # likewise). A part left blank, or an amount that is itself blank, blanks the result; a filled
+    # count of 0 still gives 0.
+    blank:
+      amount: pass_on
+      count: pass_on
     produces:
       output: ca/cpp_deduction_on_self_employment
   # T1 line 22200 from Part 5 line 88, once for each Part 5 completed, 1 or 0.
@@ -159,6 +165,12 @@ capabilities:
     consumes:
       amount: ca/cpp_part_5_line_88
       count: ca/cpp_part_5_completed_checked
+    # Schedule 8 "Parts you have to complete": "Part 4 ... If not, leave this part blank." (Part 5
+    # likewise). A part left blank, or an amount that is itself blank, blanks the result; a filled
+    # count of 0 still gives 0.
+    blank:
+      amount: pass_on
+      count: pass_on
     produces:
       output: ca/cpp_part_5_deduction_on_self_employment
   # T1 line 22200: the Part 4 amount plus the Part 5 amount, plus Form RC381 Part 4 line 129

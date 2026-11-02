@@ -5,6 +5,10 @@ amount is itself an artifact (a dataset's per-unit amount is `core/per_unit_amou
 is `amount × count`, exact and with the amount's scale kept (a product that needs more digits
 than the Decimal context holds raises); it has no dataset, so it never rounds, and no floor. A
 count of 0 gives a plain zero, without the amount's scale; a zero product is never a signed zero.
+
+Either consumed slot may be blank (`BLANK_ALLOWED`). What a blank does there is the manifest
+step's `blank:` line: pass it on (the output is blank too; a blank count is not a count of 0) or
+take a fallback in its place, after which the product is formed as usual.
 """
 
 from __future__ import annotations
@@ -24,6 +28,7 @@ class TimesCount(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "count": int}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"amount", "count"})
 
     def __init__(self, amount: Money, count: ArtifactKind[int], output: Money) -> None:
         """Wire the capability: the amount for each unit, the count it reads, the kind produced."""

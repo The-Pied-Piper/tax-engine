@@ -161,6 +161,12 @@ capabilities:
     consumes:
       amount: ca/self_employed_cpp_contributions_payable
       count: ca/cpp_part_4_completed_checked
+    # Schedule 8 "Parts you have to complete": "Part 4 ... If not, leave this part blank." (Part 5
+    # likewise). A part left blank, or an amount that is itself blank, blanks the result; a filled
+    # count of 0 still gives 0.
+    blank:
+      amount: pass_on
+      count: pass_on
     produces:
       output: ca/cpp_payable_on_self_employment
   # Schedule 8 Part 5 line 49 "If positive, enter the amount (in dollars and cents) on line
@@ -176,6 +182,12 @@ capabilities:
     consumes:
       amount: ca/cpp_part_5_line_49_if_positive
       count: ca/cpp_part_5_completed_checked
+    # Schedule 8 "Parts you have to complete": "Part 4 ... If not, leave this part blank." (Part 5
+    # likewise). A part left blank, or an amount that is itself blank, blanks the result; a filled
+    # count of 0 still gives 0.
+    blank:
+      amount: pass_on
+      count: pass_on
     produces:
       output: ca/cpp_part_5_payable_on_self_employment
   # T1 line 42100: the Part 4 amount plus the Part 5 amount, plus Form RC381 Part 4 line 90 "If
