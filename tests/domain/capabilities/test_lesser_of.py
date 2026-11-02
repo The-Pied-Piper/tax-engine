@@ -5,6 +5,9 @@ no lesser of nothing), one produced slot `output`, no parameter slots. The outpu
 of the amounts' values, exact, with no rounding (it has no dataset); when two amounts are equal
 the first listed is produced, keeping its scale. It records one `LesserOfLine` holding each
 amount in the order it was wired.
+
+The `amounts` slot may be blank (`BLANK_ALLOWED`); the rules the manifest gives decide what a
+blank does there.
 """
 
 from __future__ import annotations
@@ -373,8 +376,8 @@ def test_pass_on_names_every_blank_amount_once() -> None:
 
     result = passing.run((blank_input(PART_ONE), blank_input(PART_TWO)))
 
-    assert len(result.outputs) == 1
-    assert len(result.trace) == 1
+    assert result.outputs == (Artifact(LESSER_AMOUNT, BLANK),)
+    assert result.trace == (BlankPassedOnLine(LESSER_AMOUNT, (PART_ONE, PART_TWO)),)
 
 
 def test_filled_amounts_are_unchanged_when_pass_on_is_declared() -> None:
@@ -392,8 +395,10 @@ def test_a_fallback_stands_in_for_a_blank_amount_before_the_least_is_found() -> 
     result = carried.run((blank_input(PART_ONE), Artifact(PART_TWO, D(7))))
 
     assert result.outputs == (Artifact(LESSER_AMOUNT, D(0)),)
-    assert isinstance(result.trace[0], BlankFallbackLine)
-    assert isinstance(result.trace[1], LesserOfLine)
+    assert result.trace == (
+        BlankFallbackLine(PART_ONE, D(0)),
+        LesserOfLine(LESSER_AMOUNT, ((PART_ONE, D(0)), (PART_TWO, D(7))), D(0)),
+    )
 
 
 def test_a_rule_for_a_slot_that_is_not_consumed_is_refused() -> None:
