@@ -21,7 +21,9 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import (
+    BlankValueError,
     DomainError,
     DuplicateRegistrationError,
     InvalidRecordError,
@@ -602,3 +604,27 @@ def test_a_catalog_cannot_declare_a_dotted_record_list_kind() -> None:
 
     with pytest.raises(InvalidRegistrationError, match="invalid local id"):
         RecordListKind.declare(ArtifactCatalog(Namespace("ex")), "rental.net_income", (amount,))
+
+
+def test_a_field_of_a_record_may_be_blank_and_reading_it_is_a_blank_value_error() -> None:
+    kinds = (ArtifactKind("ex/amount", Decimal), ArtifactKind("ex/months", int))
+    amount, months = kinds
+    listed = RecordList(kinds, [{amount: BLANK, months: 3}])
+    (record,) = listed.records
+
+    assert record.is_blank(amount) is True
+    assert record.is_blank(months) is False
+    assert record[months] == 3
+    with pytest.raises(BlankValueError, match="amount was left blank"):
+        _ = record[amount]
+
+
+def test_records_with_a_blank_field_compare_and_hash_by_their_items() -> None:
+    amount = ArtifactKind("ex/amount", Decimal)
+    first = RecordList((amount,), [{amount: BLANK}]).records[0]
+    second = RecordList((amount,), [{amount: BLANK}]).records[0]
+    filled = RecordList((amount,), [{amount: Decimal(1)}]).records[0]
+
+    assert first == second
+    assert first != filled
+    assert len({first, second}) == 1
