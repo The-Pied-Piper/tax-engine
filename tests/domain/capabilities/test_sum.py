@@ -2,7 +2,9 @@
 
 Its slots: one consumed list slot `parts` (a tuple of money kinds, possibly empty), one produced
 slot `output`, no parameter slots. It adds the parts' values exactly, with no rounding (a sum has
-no dataset), and records one `SumLine` holding each part in the order it was wired.
+no dataset), and records one `SumLine` holding each part in the order it was wired. Any part may be
+blank (`BLANK_ALLOWED`), and the rules the manifest gives decide what a blank does, for the whole
+list or for one part (`BLANK_PER_ITEM`).
 """
 
 from __future__ import annotations
