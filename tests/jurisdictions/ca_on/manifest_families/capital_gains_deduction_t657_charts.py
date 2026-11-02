@@ -151,6 +151,7 @@ STEPS = {
                 "ca/chart_2024_period_1_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2024_period_1_amount_l"},
     ),
     # Chart 2024 Period 1 "Amount L plus amount M" N (M "Enter amount B from above.", Chart 2023's
@@ -178,6 +179,7 @@ STEPS = {
                 "ca/chart_2024_period_1_amount_n",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2024_period_1_amount_o"},
     ),
     # Chart 2024 Period 2 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS disposed
@@ -259,6 +261,7 @@ STEPS = {
                 "ca/chart_2024_period_2_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2024_period_2_amount_l"},
     ),
     # Chart 2024 Period 2 "Amount L plus amount M" N (M "Enter amount B from above.", Period 1's N).
@@ -286,6 +289,7 @@ STEPS = {
                 "ca/chart_2024_period_2_amount_n",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2024_period_2_amount_o"},
     ),
 }

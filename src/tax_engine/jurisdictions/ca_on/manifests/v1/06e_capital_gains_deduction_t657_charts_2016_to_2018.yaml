@@ -54,6 +54,11 @@ capabilities:
       amounts:
         - ca/chart_2016_part_1_amount_c
         - ca/chart_2016_part_1_amount_f
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2016_part_1_amount_g
   # Chart 2016 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount G
@@ -64,6 +69,11 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2016_part_1_amount_g
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2016_part_1_amount_h
   # Chart 2016 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2016"
@@ -110,6 +120,11 @@ capabilities:
       amounts:
         - ca/chart_2016_part_2_amount_e
         - ca/chart_2016_part_2_amount_f
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2016_part_2_amount_g
   # Chart 2016 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -128,6 +143,11 @@ capabilities:
       amounts:
         - ca/chart_2016_part_2_amount_f
         - ca/chart_2016_part_2_amount_i
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2016_part_2_amount_j
   # Chart 2016 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -138,6 +158,11 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2016_part_2_amount_j
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2016_part_2_amount_k
   # Chart 2016 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
@@ -229,6 +254,11 @@ capabilities:
       amounts:
         - ca/chart_2017_part_1_amount_e
         - ca/chart_2017_part_1_amount_h
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2017_part_1_amount_i
   # Chart 2017 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
@@ -248,6 +278,11 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2017_part_1_amount_k
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2017_part_1_amount_l
   # Chart 2017 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2017"
@@ -292,6 +327,11 @@ capabilities:
       amounts:
         - ca/chart_2017_part_2_amount_e
         - ca/chart_2017_part_2_amount_f
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2017_part_2_amount_g
   # Chart 2017 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -310,6 +350,11 @@ capabilities:
       amounts:
         - ca/chart_2017_part_2_amount_f
         - ca/chart_2017_part_2_amount_i
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2017_part_2_amount_j
   # Chart 2017 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -320,6 +365,11 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2017_part_2_amount_j
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2017_part_2_amount_k
   # Chart 2017 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
@@ -411,6 +461,11 @@ capabilities:
       amounts:
         - ca/chart_2018_part_1_amount_e
         - ca/chart_2018_part_1_amount_h
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2018_part_1_amount_i
   # Chart 2018 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
@@ -430,6 +485,11 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2018_part_1_amount_k
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2018_part_1_amount_l
   # Chart 2018 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2018"
@@ -474,6 +534,11 @@ capabilities:
       amounts:
         - ca/chart_2018_part_2_amount_e
         - ca/chart_2018_part_2_amount_f
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2018_part_2_amount_g
   # Chart 2018 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -492,6 +557,11 @@ capabilities:
       amounts:
         - ca/chart_2018_part_2_amount_f
         - ca/chart_2018_part_2_amount_i
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2018_part_2_amount_j
   # Chart 2018 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -502,6 +572,11 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2018_part_2_amount_j
+    # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
+    # here, and the other operands come from outside the chart); the least of the rest is never
+    # taken in its place.
+    blank:
+      amounts: pass_on
     produces:
       output: ca/chart_2018_part_2_amount_k
   # Chart 2018 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
