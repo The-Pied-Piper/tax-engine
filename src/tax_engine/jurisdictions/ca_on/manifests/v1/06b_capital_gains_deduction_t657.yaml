@@ -440,9 +440,11 @@ capabilities:
       parts:
         - ca/chart_2025_part_1_amount_n
         - ca/chart_2024_period_2_amount_n
-    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
     blank:
       ca/chart_2025_part_1_amount_n: pass_on
+      ca/chart_2024_period_2_amount_n: "0"
     produces:
       output: ca/chart_2025_part_1_amount_p
   # Chart 2025 Part 1 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
@@ -590,9 +592,11 @@ capabilities:
       parts:
         - ca/chart_2025_part_2_amount_n
         - ca/chart_2025_part_1_amount_p
-    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
     blank:
       ca/chart_2025_part_2_amount_n: pass_on
+      ca/chart_2025_part_1_amount_p: "0"
     produces:
       output: ca/chart_2025_part_2_amount_p
   # Chart 2025 Part 2 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or

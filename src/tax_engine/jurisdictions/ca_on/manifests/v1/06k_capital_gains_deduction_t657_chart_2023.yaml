@@ -87,7 +87,8 @@ capabilities:
       parts:
         - ca/chart_2023_part_1_amount_h
         - ca/chart_2023_part_1_amount_i
-    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
     blank:
       ca/chart_2023_part_1_amount_i: pass_on
     produces:
@@ -112,7 +113,8 @@ capabilities:
       parts:
         - ca/chart_2023_part_1_amount_k
         - ca/chart_2022_total_carried
-    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
     blank:
       ca/chart_2023_part_1_amount_k: pass_on
     produces:
@@ -189,7 +191,8 @@ capabilities:
       parts:
         - ca/chart_2023_part_2_amount_f
         - ca/chart_2023_part_2_amount_g
-    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
     blank:
       ca/chart_2023_part_2_amount_g: pass_on
     produces:
@@ -213,7 +216,8 @@ capabilities:
       parts:
         - ca/chart_2023_part_2_amount_i
         - ca/chart_2023_part_1_amount_m
-    # T657 Step 3: a chart that is not completed is left blank, so its amount blanks this total.
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
     blank:
       ca/chart_2023_part_2_amount_i: pass_on
     produces:

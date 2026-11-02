@@ -573,11 +573,11 @@ STEPS = {
                 "ca/rc381_cpp_deduction_on_self_employment_and_other_earnings",
             ),
         },
-        produces={"output": "ca/cpp_deduction_on_self_employment_and_other_earnings"},
         blank={
             "ca/cpp_deduction_on_self_employment": "0",
             "ca/cpp_part_5_deduction_on_self_employment": "0",
         },
+        produces={"output": "ca/cpp_deduction_on_self_employment_and_other_earnings"},
     ),
     # Schedule 13 line 1 "Enter the total amount from line 1 1 plus line 27 of your return. If
     # you received a T4 slip for self-employment income with EI premiums in box 18, do not

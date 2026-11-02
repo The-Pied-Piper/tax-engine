@@ -280,11 +280,11 @@ STEPS = {
                 "ca/rc381_cpp_payable_on_self_employment",
             ),
         },
-        produces={"output": "ca/cpp_payable_on_self_employment_and_other_earnings"},
         blank={
             "ca/cpp_payable_on_self_employment": "0",
             "ca/cpp_part_5_payable_on_self_employment": "0",
         },
+        produces={"output": "ca/cpp_payable_on_self_employment_and_other_earnings"},
     ),
     # T1 line 145 and line 42120, entered from Schedule 13 line 9, counted once for each
     # agreement with the Canada Employment Insurance Commission, 1 or 0.

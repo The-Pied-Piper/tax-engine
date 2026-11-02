@@ -340,11 +340,11 @@ STEPS = {
                 "ca/chart_2016_part_1_amount_g",
             ),
         },
-        produces={"output": "ca/chart_2016_part_2_amount_i"},
         blank={
             "ca/chart_2016_part_2_amount_g": "pass_on",
             "ca/chart_2016_part_1_amount_g": "pass_on",
         },
+        produces={"output": "ca/chart_2016_part_2_amount_i"},
     ),
     # Chart 2016 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
     # capital gains included in 2025 income eligible for capital gains deduction.
@@ -504,8 +504,8 @@ STEPS = {
                 "ca/chart_2016_total_carried",
             ),
         },
-        produces={"output": "ca/chart_2017_part_1_amount_k"},
         blank={"ca/chart_2017_part_1_amount_i": "pass_on"},
+        produces={"output": "ca/chart_2017_part_1_amount_k"},
     ),
     # Chart 2017 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
     # above." L, the maximum for line 25400 if no other reserve is reported (nothing reads it).
@@ -589,8 +589,8 @@ STEPS = {
                 "ca/chart_2017_part_1_amount_k",
             ),
         },
-        produces={"output": "ca/chart_2017_part_2_amount_i"},
         blank={"ca/chart_2017_part_2_amount_g": "pass_on"},
+        produces={"output": "ca/chart_2017_part_2_amount_i"},
     ),
     # Chart 2017 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
     # capital gains included in 2025 income eligible for capital gains deduction.
@@ -750,8 +750,8 @@ STEPS = {
                 "ca/chart_2017_total_carried",
             ),
         },
-        produces={"output": "ca/chart_2018_part_1_amount_k"},
         blank={"ca/chart_2018_part_1_amount_i": "pass_on"},
+        produces={"output": "ca/chart_2018_part_1_amount_k"},
     ),
     # Chart 2018 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
     # above." L, the maximum for line 25400 if no other reserve is reported (nothing reads it).
@@ -835,8 +835,8 @@ STEPS = {
                 "ca/chart_2018_part_1_amount_k",
             ),
         },
-        produces={"output": "ca/chart_2018_part_2_amount_i"},
         blank={"ca/chart_2018_part_2_amount_g": "pass_on"},
+        produces={"output": "ca/chart_2018_part_2_amount_i"},
     ),
     # Chart 2018 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
     # capital gains included in 2025 income eligible for capital gains deduction.
@@ -996,8 +996,8 @@ STEPS = {
                 "ca/chart_2018_total_carried",
             ),
         },
-        produces={"output": "ca/chart_2019_part_1_amount_k"},
         blank={"ca/chart_2019_part_1_amount_i": "pass_on"},
+        produces={"output": "ca/chart_2019_part_1_amount_k"},
     ),
     # Chart 2019 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
     # above." L, the maximum for line 25400 if no other reserve is reported (nothing reads it).
@@ -1081,8 +1081,8 @@ STEPS = {
                 "ca/chart_2019_part_1_amount_k",
             ),
         },
-        produces={"output": "ca/chart_2019_part_2_amount_i"},
         blank={"ca/chart_2019_part_2_amount_g": "pass_on"},
+        produces={"output": "ca/chart_2019_part_2_amount_i"},
     ),
     # Chart 2019 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
     # capital gains included in 2025 income eligible for capital gains deduction.
@@ -1242,8 +1242,8 @@ STEPS = {
                 "ca/chart_2019_total_carried",
             ),
         },
-        produces={"output": "ca/chart_2020_part_1_amount_k"},
         blank={"ca/chart_2020_part_1_amount_i": "pass_on"},
+        produces={"output": "ca/chart_2020_part_1_amount_k"},
     ),
     # Chart 2020 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
     # above." L, the maximum for line 25400 if no other reserve is reported (nothing reads it).
@@ -1327,8 +1327,8 @@ STEPS = {
                 "ca/chart_2020_part_1_amount_k",
             ),
         },
-        produces={"output": "ca/chart_2020_part_2_amount_i"},
         blank={"ca/chart_2020_part_2_amount_g": "pass_on"},
+        produces={"output": "ca/chart_2020_part_2_amount_i"},
     ),
     # Chart 2020 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
     # capital gains included in 2025 income eligible for capital gains deduction.

@@ -438,11 +438,11 @@ STEPS = {
                 "ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings",
             ),
         },
-        produces={"output": "ca/cpp_base_contributions_on_self_employment_and_other_earnings"},
         blank={
             "ca/cpp_base_contributions_on_self_employment": "0",
             "ca/cpp_part_5_base_contributions_on_self_employment": "0",
         },
+        produces={"output": "ca/cpp_base_contributions_on_self_employment_and_other_earnings"},
     ),
     # "Enter the amount from line 9 or line 10, whichever applies, on line 31217 and line 42120
     # of your return.": Schedule 13 is completed only with an agreement with the Canada

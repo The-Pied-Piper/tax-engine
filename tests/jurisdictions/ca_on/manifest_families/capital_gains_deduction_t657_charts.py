@@ -167,8 +167,8 @@ STEPS = {
                 "ca/chart_2023_total_carried",
             ),
         },
-        produces={"output": "ca/chart_2024_period_1_amount_n"},
         blank={"ca/chart_2024_period_1_amount_l": "pass_on"},
+        produces={"output": "ca/chart_2024_period_1_amount_n"},
     ),
     # Chart 2024 Period 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount N
     # above." O, the maximum for line 25400 when no later reserve or disposition is reported.
@@ -279,8 +279,11 @@ STEPS = {
                 "ca/chart_2024_period_1_amount_n",
             ),
         },
+        blank={
+            "ca/chart_2024_period_2_amount_l": "pass_on",
+            "ca/chart_2024_period_1_amount_n": "0",
+        },
         produces={"output": "ca/chart_2024_period_2_amount_n"},
-        blank={"ca/chart_2024_period_2_amount_l": "pass_on"},
     ),
     # Chart 2024 Period 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2, or amount
     # N
