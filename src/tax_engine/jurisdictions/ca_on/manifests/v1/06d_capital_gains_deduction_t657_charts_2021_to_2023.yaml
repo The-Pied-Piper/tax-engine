@@ -70,6 +70,10 @@ capabilities:
       base: ca/t657_chart_2021_amount_i
     produces:
       output: ca/chart_2021_part_1_amount_i
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." A chart not
+    # completed leaves this line blank, and a fraction of a blank is blank.
+    blank:
+      base: pass_on
   # Chart 2021 Part 1 "Amount H plus amount I" J.
   - name: core/sum
     consumes:
@@ -162,6 +166,10 @@ capabilities:
       base: ca/t657_chart_2021_part_2_amount_g
     produces:
       output: ca/chart_2021_part_2_amount_g
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." A chart not
+    # completed leaves this line blank, and a fraction of a blank is blank.
+    blank:
+      base: pass_on
   # Chart 2021 Part 2 "Amount F plus amount G" H.
   - name: core/sum
     consumes:
@@ -314,6 +322,10 @@ capabilities:
       base: ca/t657_chart_2022_amount_i
     produces:
       output: ca/chart_2022_part_1_amount_i
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." A chart not
+    # completed leaves this line blank, and a fraction of a blank is blank.
+    blank:
+      base: pass_on
   # Chart 2022 Part 1 "Amount H plus amount I" J.
   - name: core/sum
     consumes:
@@ -406,6 +418,10 @@ capabilities:
       base: ca/t657_chart_2022_part_2_amount_g
     produces:
       output: ca/chart_2022_part_2_amount_g
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." A chart not
+    # completed leaves this line blank, and a fraction of a blank is blank.
+    blank:
+      base: pass_on
   # Chart 2022 Part 2 "Amount F plus amount G" H.
   - name: core/sum
     consumes:
