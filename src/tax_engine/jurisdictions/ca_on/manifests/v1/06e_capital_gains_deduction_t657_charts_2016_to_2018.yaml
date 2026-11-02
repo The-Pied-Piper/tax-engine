@@ -12,6 +12,11 @@ capabilities:
     consumes:
       amount: ca/chart_2016_part_1_amount_a
       less: ca/chart_2016_amount_b
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a
+    # blank here); the 0 floor is not applied to a blank.
+    blank:
+      amount: pass_on
+      less: pass_on
     produces:
       output: ca/chart_2016_part_1_amount_c
   # Chart 2016 Part 1 amount B: "Capital gains deductions from previous years from line 19 of
@@ -83,6 +88,11 @@ capabilities:
     consumes:
       amount: ca/chart_2016_part_2_amount_c
       less: ca/chart_2016_amount_b
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a
+    # blank here); the 0 floor is not applied to a blank.
+    blank:
+      amount: pass_on
+      less: pass_on
     produces:
       output: ca/chart_2016_part_2_amount_e
   # Chart 2016 Part 2 "Amount from line 6 of Form T2017 ... × 1/2 =" F (the line 6 amount,
@@ -187,6 +197,11 @@ capabilities:
     consumes:
       amount: ca/chart_2017_part_1_amount_c
       less: ca/chart_2017_amount_d
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a
+    # blank here); the 0 floor is not applied to a blank.
+    blank:
+      amount: pass_on
+      less: pass_on
     produces:
       output: ca/chart_2017_part_1_amount_e
   # Chart 2017 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in
@@ -256,6 +271,11 @@ capabilities:
     consumes:
       amount: ca/chart_2017_part_2_amount_c
       less: ca/chart_2017_amount_d
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a
+    # blank here); the 0 floor is not applied to a blank.
+    blank:
+      amount: pass_on
+      less: pass_on
     produces:
       output: ca/chart_2017_part_2_amount_e
   # Chart 2017 Part 2 "Amount from line 6 of Form T2017 ... × 1/2 = F" (Part 1's F input, halved).
@@ -359,6 +379,11 @@ capabilities:
     consumes:
       amount: ca/chart_2018_part_1_amount_c
       less: ca/chart_2018_amount_d
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a
+    # blank here); the 0 floor is not applied to a blank.
+    blank:
+      amount: pass_on
+      less: pass_on
     produces:
       output: ca/chart_2018_part_1_amount_e
   # Chart 2018 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in
@@ -428,6 +453,11 @@ capabilities:
     consumes:
       amount: ca/chart_2018_part_2_amount_c
       less: ca/chart_2018_amount_d
+    # A blank on either side blanks the result (a project rule: the form prints no sentence for a
+    # blank here); the 0 floor is not applied to a blank.
+    blank:
+      amount: pass_on
+      less: pass_on
     produces:
       output: ca/chart_2018_part_2_amount_e
   # Chart 2018 Part 2 "Amount from line 6 of Form T2017 ... × 1/2 = F" (Part 1's F input, halved).

@@ -99,6 +99,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_1_amount_c",
             "less": "ca/chart_2_line_19",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2024_period_1_amount_e"},
     ),
     # Chart 2024 Period 1 "Add amounts F to H (if negative, enter "0")": F "Amount from line 6 of
@@ -209,6 +210,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_2_amount_c",
             "less": "ca/chart_2_line_19",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2024_period_2_amount_e"},
     ),
     # Chart 2024 Period 2 "Add amounts F to H (if negative, enter "0")": F, G and H as Period 1's,
