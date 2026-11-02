@@ -77,7 +77,7 @@ def given(
 ) -> tuple[Artifact[Decimal], ...]:
     """Each part 10, except the one in `blanked`, which is left blank."""
     return tuple(
-        Artifact(kind, BLANK if identifier == blanked else D(10))  # type: ignore[arg-type]
+        Artifact(kind, BLANK if identifier == blanked else D(10))
         for identifier, kind in kinds.items()
     )
 
