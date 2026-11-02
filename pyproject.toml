@@ -17,6 +17,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "build>=1.2",
+    "import-linter>=2.0",
     "mypy>=1.11",
     "pytest>=8.3",
     "ruff>=0.6",
@@ -46,3 +47,41 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
+
+[tool.importlinter]
+root_package = "tax_engine"
+
+[[tool.importlinter.contracts]]
+id = "layers"
+name = "Layers point inward"
+type = "layers"
+layers = [
+    "tax_engine.factory",
+    "tax_engine.registrations",
+    "tax_engine.adapters",
+    "tax_engine.application",
+    "tax_engine.domain",
+]
+
+[[tool.importlinter.contracts]]
+id = "jurisdictions"
+name = "Jurisdictions never use the application layer or wiring"
+type = "forbidden"
+source_modules = ["tax_engine.jurisdictions"]
+forbidden_modules = [
+    "tax_engine.application",
+    "tax_engine.factory",
+    "tax_engine.registrations",
+    "tax_engine.adapters.outbound",
+]
+
+[[tool.importlinter.contracts]]
+id = "core"
+name = "Core never imports a jurisdiction"
+type = "forbidden"
+source_modules = [
+    "tax_engine.domain",
+    "tax_engine.application",
+    "tax_engine.adapters",
+]
+forbidden_modules = ["tax_engine.jurisdictions"]
