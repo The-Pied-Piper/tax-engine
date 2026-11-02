@@ -419,8 +419,8 @@ capabilities:
         - ca/chart_2025_part_1_amount_e
         - ca/chart_2025_part_1_amount_m
     # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
-    # here, and the other operands come from outside the chart); the least of the rest is never
-    # taken in its place.
+    # here; a skipped chart has no figures, and the Step 1 and Step 2 limits are not part of it);
+    # the least of the rest is never taken in its place.
     blank:
       amounts: pass_on
     produces:
@@ -444,8 +444,8 @@ capabilities:
         - ca/cumulative_gains_limit_2025
         - ca/chart_2025_part_1_amount_p
     # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
-    # here, and the other operands come from outside the chart); the least of the rest is never
-    # taken in its place.
+    # here; a skipped chart has no figures, and the Step 1 and Step 2 limits are not part of it);
+    # the least of the rest is never taken in its place.
     blank:
       amounts: pass_on
     produces:
@@ -543,8 +543,8 @@ capabilities:
         - ca/chart_2025_part_2_amount_e
         - ca/chart_2025_part_2_amount_m
     # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
-    # here, and the other operands come from outside the chart); the least of the rest is never
-    # taken in its place.
+    # here; a skipped chart has no figures, and the Step 1 and Step 2 limits are not part of it);
+    # the least of the rest is never taken in its place.
     blank:
       amounts: pass_on
     produces:
@@ -568,8 +568,8 @@ capabilities:
         - ca/cumulative_gains_limit_2025
         - ca/chart_2025_part_2_amount_p
     # A blank operand blanks the result (a project rule: the form prints no sentence for a blank
-    # here, and the other operands come from outside the chart); the least of the rest is never
-    # taken in its place.
+    # here; a skipped chart has no figures, and the Step 1 and Step 2 limits are not part of it);
+    # the least of the rest is never taken in its place.
     blank:
       amounts: pass_on
     produces:
