@@ -63,6 +63,13 @@ class Record(Mapping[ArtifactKind[Any], "Decimal | int | RecordList"]):
     def __len__(self) -> int:
         return len(self._values)
 
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Record):
+            return self._values == other._values
+        if isinstance(other, Mapping):
+            return self._values == dict(other.items())
+        return NotImplemented
+
     def __hash__(self) -> int:
         return hash(frozenset(self._values.items()))
 

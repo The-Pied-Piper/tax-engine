@@ -617,3 +617,14 @@ def test_a_field_of_a_record_may_be_blank_and_reading_it_is_a_blank_value_error(
     assert record[months] == 3
     with pytest.raises(BlankValueError, match="amount was left blank"):
         _ = record[amount]
+
+
+def test_records_with_a_blank_field_compare_and_hash_by_their_items() -> None:
+    amount = ArtifactKind("ex/amount", Decimal)
+    first = RecordList((amount,), [{amount: BLANK}]).records[0]
+    second = RecordList((amount,), [{amount: BLANK}]).records[0]
+    filled = RecordList((amount,), [{amount: Decimal(1)}]).records[0]
+
+    assert first == second
+    assert first != filled
+    assert len({first, second}) == 1

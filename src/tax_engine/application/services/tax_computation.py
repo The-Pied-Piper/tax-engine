@@ -80,7 +80,7 @@ class TaxComputationService:
         inputs = frozenset(self._artifacts.kind(identifier) for identifier in manifest.inputs)
         manifest.check_artifacts(self._artifacts)
         defaults = manifest.default_artifacts(self._artifacts)
-        blank = frozenset(artifact.kind for artifact in defaults if artifact.is_blank)
+        blank = self._blank_fields(defaults)
         fields = {
             form.name: manifest.field_default_artifacts(form, self._artifacts)
             for form in manifest.forms

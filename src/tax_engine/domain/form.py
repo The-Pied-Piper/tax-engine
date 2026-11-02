@@ -95,7 +95,8 @@ class FormComposition:
         that may arrive blank; the form's own composition may take a blank for those of them it
         reads, and refuses a blank in any other input. A field of `instances` is among them if
         listed. `field_defaults` are the artifacts a record's field is read as when the record
-        leaves it blank and the default is a value, each of a field of `instances`.
+        leaves it blank and the default is a value, each of a field of `instances`; a field whose
+        default is blank must also be in `blank_inputs` for the form to take the blank.
         """
         if instances is not None and not isinstance(instances, RecordListKind):
             raise InvalidCompositionError(
