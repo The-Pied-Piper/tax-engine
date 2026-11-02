@@ -12,6 +12,7 @@ uv sync --extra dev --locked
 uv run --extra dev --locked ruff check .
 uv run --extra dev --locked ruff format --check .
 uv run --extra dev --locked mypy src tests
+uv run --extra dev --locked lint-imports
 uv run --extra dev --locked python -m pytest
 uv build
 ```
@@ -41,6 +42,7 @@ python -m pip install -e ".[dev]"
 python -m ruff check .
 python -m ruff format --check .
 python -m mypy src tests
+lint-imports
 python -m pytest
 python -m build
 ```

@@ -14,6 +14,9 @@ capabilities:
     consumes:
       amount: ca/chart_2023_part_1_amount_a
       less: ca/chart_2022_total_carried
+    # B: "If you did not complete charts for 2016 to 2022, enter "0"." A blank B reads 0.
+    blank:
+      less: "0"
     produces:
       output: ca/chart_2023_part_1_amount_c
   # Chart 2023 amount D: "Capital gains deductions from previous years from line 19 of Chart 2
@@ -74,6 +77,10 @@ capabilities:
       base: ca/t657_chart_2023_amount_i
     produces:
       output: ca/chart_2023_part_1_amount_i
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." A chart not
+    # completed leaves this line blank, and a fraction of a blank is blank.
+    blank:
+      base: pass_on
   # Chart 2023 Part 1 "Amount H plus amount I" J.
   - name: core/sum
     consumes:
@@ -166,6 +173,10 @@ capabilities:
       base: ca/t657_chart_2023_part_2_amount_g
     produces:
       output: ca/chart_2023_part_2_amount_g
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." A chart not
+    # completed leaves this line blank, and a fraction of a blank is blank.
+    blank:
+      base: pass_on
   # Chart 2023 Part 2 "Amount F plus amount G" H.
   - name: core/sum
     consumes:
