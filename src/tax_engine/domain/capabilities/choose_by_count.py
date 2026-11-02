@@ -4,7 +4,13 @@ For a line computed once for each of two columns, where a count of persons decid
 applies (one amount when there are none, another when there are any): the output is `when_none`
 when the count is 0 and `when_any` for any other count, the chosen value unchanged with its scale
 kept. It has no dataset, so it never rounds, and no floor; the count only chooses, it never
-scales. Only the chosen candidate is read.
+scales.
+
+Any of its three inputs may be left blank, and the manifest's `blank:` line says what that does at
+each step (`BLANK_ALLOWED` only allows it). A blank count is usually given a fallback. A candidate
+given `compute` is read only if chosen: a blank one that was not chosen is ignored, and a blank one
+that was chosen is refused, naming the line. A blank in an input with no `blank:` line is refused
+before `compute`, and `pass_on` on a candidate blanks the output even if it was not chosen.
 """
 
 from __future__ import annotations
@@ -15,6 +21,7 @@ from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
+from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.trace import ChosenByCountLine
 
 
@@ -28,6 +35,7 @@ class ChooseByCount(Capability):
         "when_any": Decimal,
     }
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count", "when_none", "when_any"})
 
     def __init__(
         self, count: ArtifactKind[int], when_none: Money, when_any: Money, output: Money
@@ -40,9 +48,21 @@ class ChooseByCount(Capability):
         self._output = output
 
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
-        count = self._input(inputs, self._count).value
+        count_artifact = self._input(inputs, self._count)
+        if count_artifact.is_blank:
+            raise BlankNotAllowedError(
+                f"{type(self).__name__}: {self._count.label!r} was left blank, so it cannot choose "
+                f"{self._output.label!r}"
+            )
+        count = count_artifact.value
         chosen_kind = self._when_none if count == 0 else self._when_any
-        chosen = self._input(inputs, chosen_kind).value
+        chosen_artifact = self._input(inputs, chosen_kind)
+        if chosen_artifact.is_blank:
+            raise BlankNotAllowedError(
+                f"{type(self).__name__}: {chosen_kind.label!r} was left blank and was the one "
+                f"chosen for {self._output.label!r}"
+            )
+        chosen = chosen_artifact.value
         return CapabilityResult(
             outputs=(Artifact(self._output, chosen),),
             trace=(
