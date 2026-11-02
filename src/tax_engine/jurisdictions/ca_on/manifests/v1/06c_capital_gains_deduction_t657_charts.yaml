@@ -201,7 +201,7 @@ capabilities:
     blank:
       ca/chart_2024_period_2_amount_l: pass_on
       # Line B (the part added as "Enter amount B from above."): "If you did not complete charts for
-      # 2016 to 2024, enter "0"." (2025 for Part 2)
+      # 2016 to 2024, enter "0"."
       ca/chart_2024_period_1_amount_n: "0"
     produces:
       output: ca/chart_2024_period_2_amount_n
