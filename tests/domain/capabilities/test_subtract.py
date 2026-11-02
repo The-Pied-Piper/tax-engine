@@ -48,10 +48,6 @@ def inputs(amount: str, less: str) -> tuple[Artifact[Decimal], ...]:
     return (Artifact(GROSS, D(amount)), Artifact(REDUCTION, D(less)))
 
 
-def blank_input(kind: ArtifactKind[Decimal]) -> Artifact[Any]:
-    return Artifact(kind, BLANK)
-
-
 def compute(amount: str, less: str) -> Artifact[Any]:
     (output,) = capability().compute(inputs(amount, less)).outputs
     return output
@@ -276,6 +272,10 @@ def test_trace_holds_no_text() -> None:
 
 
 # --- a blank in either slot ---------------------------------------------------------------------
+
+
+def blank_input(kind: ArtifactKind[Decimal]) -> Artifact[Any]:
+    return Artifact(kind, BLANK)
 
 
 def test_declares_that_either_slot_may_be_blank() -> None:
