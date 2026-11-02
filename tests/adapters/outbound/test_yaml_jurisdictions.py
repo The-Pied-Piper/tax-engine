@@ -2148,3 +2148,60 @@ def test_fields_on_a_form_without_instances_are_refused(tmp_path: Path) -> None:
         {"01-inputs.yaml": PREDICATE_INPUT, "02-form.yaml": text},
         "form 'ex/relief': fields belong to a form with instances",
     )
+
+
+# What the kinds can say is checked when the manifest is loaded, and the error names the file.
+
+
+@pytest.mark.parametrize(
+    ("replacement", "problem"),
+    [
+        ("{name: ex/x, required: false, default: abc, basis: B}", "must be a plain decimal number"),
+        ("{name: ex/x, required: false, default: [], basis: B}", "must be a quoted number"),
+        ("{name: ex/nowhere, required: true}", "nothing is registered as"),
+    ],
+)
+def test_a_manifest_the_kinds_cannot_read_is_refused_at_load_naming_the_file(
+    tmp_path: Path, replacement: str, problem: str
+) -> None:
+    path = write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        HEADER.replace("{name: ex/x, required: true}", replacement) + "capabilities: []\n",
+    )
+
+    kinds = ArtifactRegistry() if "nowhere" in replacement else manifest_kinds()
+    with pytest.raises(InvalidManifestError, match=problem) as raised:
+        YamlJurisdictionSource(roots(tmp_path), kinds).get_jurisdiction(EX_ON)
+
+    assert str(path) in str(raised.value)
+
+
+def test_a_form_whose_gate_is_not_a_yes_no_is_refused_at_load_naming_the_file(
+    tmp_path: Path,
+) -> None:
+    parts = {
+        "01-return.yaml": """\
+            jurisdiction: EX-ON
+            version: 1
+            valid_from_tax_year: 2025
+            inputs: [{name: ex/x, required: true}]
+            outputs: [ex/y]
+            capabilities: []
+            """,
+        "02-form.yaml": """\
+            form:
+              name: ex-on/extra
+              required: false
+              required_when: ex/x
+              basis: B
+              exports: [ex/z]
+            """,
+    }
+    for name, content in parts.items():
+        write(tmp_path, f"ex-on/manifests/v1/{name}", content.replace("            ", ""))
+
+    with pytest.raises(InvalidManifestError, match="not a yes/no") as raised:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert "v1" in str(raised.value)

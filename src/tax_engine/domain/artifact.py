@@ -130,7 +130,7 @@ class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
             except InvalidTextError as exc:
                 raise InvalidTextError(f"is not a value of the kind: {exc}") from None
             return Artifact(self, text)
-        raise InvalidTextError(f"has no spelling as text for a {value_type.__name__} kind")
+        raise InvalidTextError(f"has no spelling as text ({value_type.__name__} values)")
 
     def read_default(self: ArtifactKind[Any], declared: str | tuple[()] | None) -> Artifact[Any]:
         """The artifact a manifest's declared default is read as: `None` is blank, `()` an empty

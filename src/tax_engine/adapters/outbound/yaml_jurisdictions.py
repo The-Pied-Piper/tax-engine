@@ -48,8 +48,8 @@ needed: a required input or an artifact a selection produces, never one of its o
 `instances` lists `fields`, one mapping per field of the instances kind, declared like inputs
 (`name`, `required`, and for an optional one `default` and `basis`); a form without `instances` has
 none. Which fields the instances kind has, that defaults suit their kinds and that a predicate is a
-yes/no count are checked when the manifest is composed (when the `Manifest` is built), where the
-kinds are known.
+yes/no count are checked when the manifest is loaded (the `Manifest` is built with the kinds), and
+an artifact the kinds do not have is an InvalidManifestError naming the file.
 Any of these keys in a part that does not declare `exports` is rejected. The default form is
 always required.
 Parsing is strict because a manifest must stay selection plus slot bindings
@@ -71,7 +71,9 @@ from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import (
     InvalidJurisdictionCodeError,
     InvalidManifestError,
+    InvalidRegistrationError,
     NotFoundError,
+    UnknownRegistrationError,
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -200,7 +202,12 @@ class YamlJurisdictionSource:
             raise InvalidManifestError(f"{path}: {exc}") from exc
         try:
             return self._manifest(document)
-        except (InvalidManifestError, YamlShapeError) as exc:
+        except (
+            InvalidManifestError,
+            YamlShapeError,
+            UnknownRegistrationError,
+            InvalidRegistrationError,
+        ) as exc:
             raise InvalidManifestError(f"{path}: {exc}") from exc
 
     @staticmethod
@@ -241,7 +248,12 @@ class YamlJurisdictionSource:
                     for name, selections in form_selections.items()
                 ),
             )
-        except (InvalidManifestError, YamlShapeError) as exc:
+        except (
+            InvalidManifestError,
+            YamlShapeError,
+            UnknownRegistrationError,
+            InvalidRegistrationError,
+        ) as exc:
             raise InvalidManifestError(f"{folder}: {exc}") from exc
 
     @classmethod

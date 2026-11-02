@@ -3,8 +3,7 @@
 An `ArtifactKind[V]` names a kind of artifact by a namespaced identifier and states the type of
 its values; an `Artifact[V]` is one value of a kind in one computation. `ArtifactCatalog` only
 records the kinds a package declares; `ArtifactRegistry.register_catalog` registers them. Names are
-made up; the catalog tests point `ArtifactRegistry.shared` at a fresh registry with monkeypatch,
-so the shared registry stays clean and declaring can be seen to register nothing.
+made up; the catalog tests use a fresh registry, so declaring can be seen to register nothing.
 """
 
 from __future__ import annotations
