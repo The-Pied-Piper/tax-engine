@@ -668,6 +668,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_1_amount_c",
             "less": "ca/chart_2_line_19",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2025_part_1_amount_e"},
     ),
     # Chart 2025 Part 1 "Add amounts F to J (if negative, enter "0")" (F box 57 of a T3 slip or box
@@ -779,6 +780,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_2_amount_c",
             "less": "ca/chart_2_line_19",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2025_part_2_amount_e"},
     ),
     # Chart 2025 Part 2 amount F "Amount from line 10700 of Schedule 3 (do not include capital gains

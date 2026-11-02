@@ -201,6 +201,7 @@ STEPS = {
             "amount": "ca/chart_2021_part_1_amount_c",
             "less": "ca/chart_2021_amount_d",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2021_part_1_amount_e"},
     ),
     # Chart 2021 Part 1 "Taxable capital gains from a reserve on QFFP and/or QSBCS disposed of in
@@ -316,6 +317,7 @@ STEPS = {
             "amount": "ca/chart_2021_part_2_amount_c",
             "less": "ca/chart_2021_amount_d",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2021_part_2_amount_e"},
     ),
     # Chart 2021 Part 2 "Amount from line 6 of Form T2017 ... × 1/2 = F" (Part 1's F input).
@@ -467,6 +469,7 @@ STEPS = {
             "amount": "ca/chart_2022_part_1_amount_c",
             "less": "ca/chart_2022_amount_d",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2022_part_1_amount_e"},
     ),
     # Chart 2022 Part 1 "amount F plus amount G (if negative, enter "0")".
@@ -577,6 +580,7 @@ STEPS = {
             "amount": "ca/chart_2022_part_2_amount_c",
             "less": "ca/chart_2022_amount_d",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2022_part_2_amount_e"},
     ),
     # Chart 2022 Part 2 "× 1/2 = F" (Part 1's F input).
@@ -725,6 +729,7 @@ STEPS = {
             "amount": "ca/chart_2023_part_1_amount_c",
             "less": "ca/chart_2023_amount_d",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2023_part_1_amount_e"},
     ),
     # Chart 2023 Part 1 "amount F plus amount G (if negative, enter "0")".
@@ -835,6 +840,7 @@ STEPS = {
             "amount": "ca/chart_2023_part_2_amount_c",
             "less": "ca/chart_2023_amount_d",
         },
+        blank={"amount": "pass_on", "less": "pass_on"},
         produces={"output": "ca/chart_2023_part_2_amount_e"},
     ),
     # Chart 2023 Part 2 "× 1/2 = F" (Part 1's F input).
