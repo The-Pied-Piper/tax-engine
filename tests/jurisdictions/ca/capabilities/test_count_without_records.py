@@ -19,9 +19,12 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     DomainError,
     InputAboveBoundError,
     InputBelowBoundError,
@@ -29,7 +32,7 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.record_list import RecordList, RecordListKind
-from tax_engine.domain.trace import CountWithoutRecordsLine
+from tax_engine.domain.trace import BlankPassedOnLine, CountWithoutRecordsLine
 from tax_engine.jurisdictions.ca.capabilities.count_without_records import CountWithoutRecords
 
 D = Decimal
@@ -287,3 +290,57 @@ def test_trace_amount_is_the_count() -> None:
 def test_trace_holds_no_text() -> None:
     for line in capability().compute(inputs(3)).trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank count ------------------------------------------------------------------------------
+
+
+def blank_inputs(*amounts: str) -> tuple[Artifact[Any], ...]:
+    return (Artifact(COUNT, BLANK), records(*amounts))
+
+
+def test_declares_that_only_the_count_may_be_blank() -> None:
+    assert CountWithoutRecords.BLANK_ALLOWED == frozenset({"count"})
+
+
+def test_a_blank_count_is_refused_without_a_blank_rule() -> None:
+    with pytest.raises(BlankNotAllowedError, match="may not be blank"):
+        capability().run(blank_inputs())
+
+
+@pytest.mark.parametrize("amounts", [(), ("1",), ("1", "2")])
+def test_a_blank_count_passes_on_as_a_blank_output_with_or_without_records(
+    amounts: tuple[str, ...],
+) -> None:
+    result = capability().with_blank_rules({"count": PASS_ON}).run(blank_inputs(*amounts))
+
+    assert result.outputs == (Artifact(OUTPUT, BLANK),)
+    assert result.trace == (BlankPassedOnLine(OUTPUT, (COUNT,)),)
+
+
+def test_the_blank_trace_says_which_line_was_left_blank() -> None:
+    result = capability().with_blank_rules({"count": PASS_ON}).run(blank_inputs("1"))
+
+    assert EnglishTraceRenderer().render_all(result.trace) == (
+        "widget_checked: blank because widget_count was blank",
+    )
+
+
+@pytest.mark.parametrize(("count", "amounts"), [(0, ()), (0, ("1",)), (3, ())])
+def test_a_filled_count_is_unchanged_when_blank_is_passed_on(
+    count: int, amounts: tuple[str, ...]
+) -> None:
+    result = capability().with_blank_rules({"count": PASS_ON}).run(inputs(count, *amounts))
+
+    assert result.outputs == (Artifact(OUTPUT, count),)
+    assert isinstance(result.trace[0], CountWithoutRecordsLine)
+
+
+def test_a_filled_count_above_zero_with_records_is_still_refused_when_blank_is_passed_on() -> None:
+    with pytest.raises(InputAboveBoundError, match="is above 0 while"):
+        capability().with_blank_rules({"count": PASS_ON}).run(inputs(1, "1"))
+
+
+def test_the_records_slot_refuses_a_blank_rule() -> None:
+    with pytest.raises(InvalidCapabilityError):
+        capability().with_blank_rules({"records": PASS_ON})

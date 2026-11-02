@@ -5,6 +5,10 @@ count and which is the record list of the copies. It is the mirror of `CountAtLe
 or a list with no records, is produced as is; a count above 0 with at least one record is not
 produced but is an input error, `InputAboveBoundError`, naming both kinds. It records one
 `CountWithoutRecordsLine`, and none when it raises.
+
+The count may be blank (`BLANK_ALLOWED`); what a blank does is the manifest step's `blank:` line,
+which passes it on here: a part left blank gives a blank count and cannot clash with the copies of
+the form, so the guard fires only on a filled count above 0.
 """
 
 from __future__ import annotations
@@ -25,6 +29,7 @@ class CountWithoutRecords(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"count": int, "records": RecordList}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": int}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count"})
 
     def __init__(
         self,
