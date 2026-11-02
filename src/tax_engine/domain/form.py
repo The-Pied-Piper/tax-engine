@@ -95,7 +95,7 @@ class FormComposition:
         when it is left out, and `field_defaults` the same for a field of `instances` when a record
         leaves it blank. An input or field whose default is blank may arrive blank: the form's own
         composition takes a blank for those of them it reads, and refuses a blank in any other
-        input.
+        input. A default that is a value is what is read when the input or field is blank.
         """
         if instances is not None and not isinstance(instances, RecordListKind):
             raise InvalidCompositionError(
@@ -137,8 +137,9 @@ class FormComposition:
             )
         self._inputs = fields | frozenset(read & starting)
         self._field_defaults = {artifact.kind: artifact for artifact in field_defaults}
-        blank = {a.kind for a in (*defaults, *self._field_defaults.values()) if a.is_blank}
-        self._blank_inputs = frozenset(blank) & self._inputs
+        self._blank_inputs = (
+            self._blank_kinds(defaults, self._field_defaults.values()) & self._inputs
+        )
         stray = self._field_defaults.keys() - fields
         if stray:
             kind = min(stray, key=Composition.sort_key)
@@ -154,6 +155,11 @@ class FormComposition:
             )
         except InvalidCompositionError as exc:
             raise InvalidCompositionError(f"form {name!r}: {exc}") from exc
+
+    @staticmethod
+    def _blank_kinds(*defaults: Iterable[Artifact[Any]]) -> frozenset[ArtifactKind[Any]]:
+        """The kinds whose default is blank: those may arrive blank."""
+        return frozenset(a.kind for group in defaults for a in group if a.is_blank)
 
     @staticmethod
     def derive(name: str, exports: Iterable[ArtifactKind[Any]]) -> tuple[RecordListKind, ...]:

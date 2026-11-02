@@ -1795,13 +1795,13 @@ class Less(Capability):
         return CapabilityResult(outputs=(Artifact(self._target, value),), trace=())
 
 
-def less_form(*, blank_inputs: frozenset[ArtifactKind[Any]]) -> FormComposition:
+def less_form(*, defaults: Iterable[Artifact[Any]]) -> FormComposition:
     return FormComposition(
         RETURN,
         [Less(SALES, COSTS, LEVY).with_blank_rules({"cost": D(0)})],
         exports=[LEVY],
         starting=frozenset({SALES, COSTS}),
-        defaults=[Artifact(kind, BLANK) for kind in blank_inputs],
+        defaults=defaults,
     )
 
 
@@ -1809,7 +1809,7 @@ def less_set(
     defaults: Iterable[Artifact[Any]], *, blank_inputs: frozenset[ArtifactKind[Any]] = frozenset()
 ) -> FormSet:
     return FormSet(
-        [less_form(blank_inputs=blank_inputs)],
+        [less_form(defaults=[Artifact(kind, BLANK) for kind in blank_inputs])],
         inputs=frozenset({SALES, COSTS}),
         defaults=defaults,
     )
@@ -1868,7 +1868,7 @@ def test_a_form_that_does_not_declare_the_blank_input_refuses_it() -> None:
 
 
 def test_each_form_has_its_own_blank_inputs() -> None:
-    open_form = less_form(blank_inputs=frozenset({COSTS}))
+    open_form = less_form(defaults=[Artifact(COSTS, BLANK)])
     strict_form = FormComposition(
         "ex/strict",
         [Subtract(SALES, COSTS, PROFIT)],
