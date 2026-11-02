@@ -260,6 +260,7 @@ STEPS = {
                 "ca/chart_2021_part_1_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2021_part_1_amount_k"},
     ),
     # Chart 2021 Part 1 "Amount K plus amount L" M (L "Enter amount B from above.").
@@ -286,6 +287,7 @@ STEPS = {
                 "ca/chart_2021_part_1_amount_m",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2021_part_1_amount_n"},
     ),
     # --- Chart 2021 Part 2 ---
@@ -360,6 +362,7 @@ STEPS = {
                 "ca/chart_2021_part_2_amount_h",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2021_part_2_amount_i"},
     ),
     # Chart 2021 Part 2 "Amount I plus amount J" K (J "Enter amount B from above.", Part 1's M).
@@ -384,6 +387,7 @@ STEPS = {
                 "ca/chart_2021_part_2_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2021_part_2_amount_l"},
     ),
     # Chart 2021 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount L
@@ -398,6 +402,7 @@ STEPS = {
                 "ca/chart_2021_part_2_amount_l",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2021_part_2_amount_m"},
     ),
     # Chart 2021 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
@@ -524,6 +529,7 @@ STEPS = {
                 "ca/chart_2022_part_1_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2022_part_1_amount_k"},
     ),
     # Chart 2022 Part 1 "Amount K plus amount L" M (L is Chart 2021's total carried).
@@ -550,6 +556,7 @@ STEPS = {
                 "ca/chart_2022_part_1_amount_m",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2022_part_1_amount_n"},
     ),
     # --- Chart 2022 Part 2 ---
@@ -623,6 +630,7 @@ STEPS = {
                 "ca/chart_2022_part_2_amount_h",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2022_part_2_amount_i"},
     ),
     # Chart 2022 Part 2 "Amount I plus amount J" K (J "Enter amount B from above.", Part 1's M).
@@ -647,6 +655,7 @@ STEPS = {
                 "ca/chart_2022_part_2_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2022_part_2_amount_l"},
     ),
     # Chart 2022 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount L
@@ -661,6 +670,7 @@ STEPS = {
                 "ca/chart_2022_part_2_amount_l",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2022_part_2_amount_m"},
     ),
     # Chart 2022 gate: Part 2 is completed on the same conditions as Chart 2021's (the
@@ -784,6 +794,7 @@ STEPS = {
                 "ca/chart_2023_part_1_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2023_part_1_amount_k"},
     ),
     # Chart 2023 Part 1 "Amount K plus amount L" M (L is Chart 2022's total carried).
@@ -810,6 +821,7 @@ STEPS = {
                 "ca/chart_2023_part_1_amount_m",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2023_part_1_amount_n"},
     ),
     # --- Chart 2023 Part 2 ---
@@ -883,6 +895,7 @@ STEPS = {
                 "ca/chart_2023_part_2_amount_h",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2023_part_2_amount_i"},
     ),
     # Chart 2023 Part 2 "Amount I plus amount J" K (J "Enter amount B from above.", Part 1's M).
@@ -907,6 +920,7 @@ STEPS = {
                 "ca/chart_2023_part_2_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2023_part_2_amount_l"},
     ),
     # Chart 2023 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount L
@@ -921,6 +935,7 @@ STEPS = {
                 "ca/chart_2023_part_2_amount_l",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2023_part_2_amount_m"},
     ),
     # Chart 2023 gate (the `t657_chart_2023_part_2_conditions` dataset, as Chart 2021's).

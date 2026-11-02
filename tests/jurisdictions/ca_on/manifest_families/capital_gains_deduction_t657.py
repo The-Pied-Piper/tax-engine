@@ -720,6 +720,7 @@ STEPS = {
                 "ca/chart_2025_part_1_amount_m",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2025_part_1_amount_n"},
     ),
     # Chart 2025 Part 1 "Amount N plus amount O" P (O "Enter amount B from above.", Chart 2024
@@ -748,6 +749,7 @@ STEPS = {
                 "ca/chart_2025_part_1_amount_p",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2025_part_1_amount_q"},
     ),
     # Chart 2025 Part 2 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS"
@@ -866,6 +868,7 @@ STEPS = {
                 "ca/chart_2025_part_2_amount_m",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2025_part_2_amount_n"},
     ),
     # Chart 2025 Part 2 "Amount N plus amount O" P (O "Enter amount B from above.", B being Part 1
@@ -894,6 +897,7 @@ STEPS = {
                 "ca/chart_2025_part_2_amount_p",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2025_part_2_amount_q"},
     ),
     # Guide T4037 "Claiming the capital gains deduction": "You can claim any amount of the capital
