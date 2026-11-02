@@ -3,6 +3,10 @@
 For a form line that reads "whichever is less": the manifest decides which amounts are compared,
 and in which order they are listed in the trace. It has no dataset, so it never rounds; when two
 amounts are equal, the first listed is produced, keeping its scale.
+
+Any amount may be blank (`BLANK_ALLOWED`). What a blank does there is the manifest step's `blank:`
+line: pass it on (the output is blank too, and the least of the other amounts is never taken in its
+place) or take a fallback in its place, after which the least is found as usual.
 """
 
 from __future__ import annotations
@@ -23,6 +27,7 @@ class LesserOf(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"amounts": list[Decimal]}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"amounts"})
 
     def __init__(self, amounts: tuple[Money, ...], output: Money) -> None:
         """Wire the capability: the kinds it compares, in manifest order, and the kind it produces.

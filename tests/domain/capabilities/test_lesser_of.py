@@ -5,6 +5,9 @@ no lesser of nothing), one produced slot `output`, no parameter slots. The outpu
 of the amounts' values, exact, with no rounding (it has no dataset); when two amounts are equal
 the first listed is produced, keeping its scale. It records one `LesserOfLine` holding each
 amount in the order it was wired.
+
+The `amounts` slot may be blank (`BLANK_ALLOWED`); the rules the manifest gives decide what a
+blank does there.
 """
 
 from __future__ import annotations
@@ -19,11 +22,17 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.lesser_of import LesserOf
 from tax_engine.domain.capability import CapabilityRegistry
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import LesserOfLine
+from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 
 D = Decimal
 
@@ -321,3 +330,77 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank amount -----------------------------------------------------------------------------
+
+
+def blank_input(kind: ArtifactKind[Decimal]) -> Artifact[Any]:
+    return Artifact(kind, BLANK)
+
+
+def test_declares_that_the_amounts_may_be_blank() -> None:
+    assert LesserOf.BLANK_ALLOWED == frozenset({"amounts"})
+
+
+def test_without_rules_a_blank_amount_is_refused_naming_the_line_and_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'amounts'"):
+        capability().run((blank_input(PART_ONE), Artifact(PART_TWO, D(1))))
+
+
+def test_pass_on_blanks_the_output_whichever_amount_is_blank() -> None:
+    passing = capability().with_blank_rules({"amounts": PASS_ON})
+
+    for inputs in (
+        (blank_input(PART_ONE), Artifact(PART_TWO, D(1))),
+        (Artifact(PART_ONE, D(1)), blank_input(PART_TWO)),
+    ):
+        result = passing.run(inputs)
+        assert result.outputs == (Artifact(LESSER_AMOUNT, BLANK),)
+        assert isinstance(result.trace[0], BlankPassedOnLine)
+
+
+def test_pass_on_never_takes_the_least_of_the_rest() -> None:
+    three = LesserOf((PART_ONE, PART_TWO, PART_THREE), LESSER_AMOUNT)
+    passing = three.with_blank_rules({"amounts": PASS_ON})
+
+    result = passing.run(
+        (Artifact(PART_ONE, D(4)), blank_input(PART_TWO), Artifact(PART_THREE, D(9)))
+    )
+
+    assert result.outputs == (Artifact(LESSER_AMOUNT, BLANK),)
+
+
+def test_pass_on_names_every_blank_amount_once() -> None:
+    passing = capability().with_blank_rules({"amounts": PASS_ON})
+
+    result = passing.run((blank_input(PART_ONE), blank_input(PART_TWO)))
+
+    assert result.outputs == (Artifact(LESSER_AMOUNT, BLANK),)
+    assert result.trace == (BlankPassedOnLine(LESSER_AMOUNT, (PART_ONE, PART_TWO)),)
+
+
+def test_filled_amounts_are_unchanged_when_pass_on_is_declared() -> None:
+    passing = capability().with_blank_rules({"amounts": PASS_ON})
+
+    result = passing.run((Artifact(PART_ONE, D("5.50")), Artifact(PART_TWO, D(3))))
+
+    assert result.outputs == (Artifact(LESSER_AMOUNT, D(3)),)
+    assert isinstance(result.trace[0], LesserOfLine)
+
+
+def test_a_fallback_stands_in_for_a_blank_amount_before_the_least_is_found() -> None:
+    carried = capability().with_blank_rules({"amounts": D(0)})
+
+    result = carried.run((blank_input(PART_ONE), Artifact(PART_TWO, D(7))))
+
+    assert result.outputs == (Artifact(LESSER_AMOUNT, D(0)),)
+    assert result.trace == (
+        BlankFallbackLine(PART_ONE, D(0)),
+        LesserOfLine(LESSER_AMOUNT, ((PART_ONE, D(0)), (PART_TWO, D(7))), D(0)),
+    )
+
+
+def test_a_rule_for_a_slot_that_is_not_consumed_is_refused() -> None:
+    with pytest.raises(InvalidCapabilityError, match="'output'"):
+        capability().with_blank_rules({"output": PASS_ON})

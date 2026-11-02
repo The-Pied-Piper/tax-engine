@@ -253,6 +253,7 @@ STEPS = {
                 "ca/chart_2016_part_1_amount_f",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2016_part_1_amount_g"},
     ),
     # Chart 2016 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount G
@@ -267,6 +268,7 @@ STEPS = {
                 "ca/chart_2016_part_1_amount_g",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2016_part_1_amount_h"},
     ),
     # Chart 2016 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2016"
@@ -323,6 +325,7 @@ STEPS = {
                 "ca/chart_2016_part_2_amount_f",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2016_part_2_amount_g"},
     ),
     # Chart 2016 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -349,6 +352,7 @@ STEPS = {
                 "ca/chart_2016_part_2_amount_i",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2016_part_2_amount_j"},
     ),
     # Chart 2016 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -364,6 +368,7 @@ STEPS = {
                 "ca/chart_2016_part_2_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2016_part_2_amount_k"},
     ),
     # Chart 2016 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
@@ -477,6 +482,7 @@ STEPS = {
                 "ca/chart_2017_part_1_amount_h",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2017_part_1_amount_i"},
     ),
     # Chart 2017 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
@@ -504,6 +510,7 @@ STEPS = {
                 "ca/chart_2017_part_1_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2017_part_1_amount_l"},
     ),
     # Chart 2017 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2017"
@@ -559,6 +566,7 @@ STEPS = {
                 "ca/chart_2017_part_2_amount_f",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2017_part_2_amount_g"},
     ),
     # Chart 2017 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -585,6 +593,7 @@ STEPS = {
                 "ca/chart_2017_part_2_amount_i",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2017_part_2_amount_j"},
     ),
     # Chart 2017 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -600,6 +609,7 @@ STEPS = {
                 "ca/chart_2017_part_2_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2017_part_2_amount_k"},
     ),
     # Chart 2017 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
@@ -713,6 +723,7 @@ STEPS = {
                 "ca/chart_2018_part_1_amount_h",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2018_part_1_amount_i"},
     ),
     # Chart 2018 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
@@ -740,6 +751,7 @@ STEPS = {
                 "ca/chart_2018_part_1_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2018_part_1_amount_l"},
     ),
     # Chart 2018 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2018"
@@ -795,6 +807,7 @@ STEPS = {
                 "ca/chart_2018_part_2_amount_f",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2018_part_2_amount_g"},
     ),
     # Chart 2018 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -821,6 +834,7 @@ STEPS = {
                 "ca/chart_2018_part_2_amount_i",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2018_part_2_amount_j"},
     ),
     # Chart 2018 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -836,6 +850,7 @@ STEPS = {
                 "ca/chart_2018_part_2_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2018_part_2_amount_k"},
     ),
     # Chart 2018 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
@@ -949,6 +964,7 @@ STEPS = {
                 "ca/chart_2019_part_1_amount_h",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2019_part_1_amount_i"},
     ),
     # Chart 2019 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
@@ -976,6 +992,7 @@ STEPS = {
                 "ca/chart_2019_part_1_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2019_part_1_amount_l"},
     ),
     # Chart 2019 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2019"
@@ -1031,6 +1048,7 @@ STEPS = {
                 "ca/chart_2019_part_2_amount_f",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2019_part_2_amount_g"},
     ),
     # Chart 2019 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -1057,6 +1075,7 @@ STEPS = {
                 "ca/chart_2019_part_2_amount_i",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2019_part_2_amount_j"},
     ),
     # Chart 2019 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -1072,6 +1091,7 @@ STEPS = {
                 "ca/chart_2019_part_2_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2019_part_2_amount_k"},
     ),
     # Chart 2019 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
@@ -1185,6 +1205,7 @@ STEPS = {
                 "ca/chart_2020_part_1_amount_h",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2020_part_1_amount_i"},
     ),
     # Chart 2020 Part 1 "Amount I plus amount J" K (J "Enter amount B from above.": the last total
@@ -1212,6 +1233,7 @@ STEPS = {
                 "ca/chart_2020_part_1_amount_k",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2020_part_1_amount_l"},
     ),
     # Chart 2020 Part 2 amount A: "Maximum capital gains deduction for QFFP disposed of in 2020"
@@ -1267,6 +1289,7 @@ STEPS = {
                 "ca/chart_2020_part_2_amount_f",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2020_part_2_amount_g"},
     ),
     # Chart 2020 Part 2 "Amount G plus amount H" I (H "Enter amount B from above.": Part 1 amount
@@ -1293,6 +1316,7 @@ STEPS = {
                 "ca/chart_2020_part_2_amount_i",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2020_part_2_amount_j"},
     ),
     # Chart 2020 Part 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount J
@@ -1308,6 +1332,7 @@ STEPS = {
                 "ca/chart_2020_part_2_amount_j",
             ),
         },
+        blank={"amounts": "pass_on"},
         produces={"output": "ca/chart_2020_part_2_amount_k"},
     ),
     # Chart 2020 Part 2 is completed only when the filer reports a QFFP reserve and "you want to
