@@ -15,12 +15,22 @@ capabilities:
     consumes:
       count: ca/cpp_part_4_completed_yes_or_no_checked
       records: ca/rc381_instances
+    # Schedule 8 "Parts you have to complete": "Part 4 - ... If not, leave this part blank." A
+    # count left blank is passed on as blank; a filled count above 0 with a copy of Form RC381 is
+    # still refused.
+    blank:
+      count: pass_on
     produces:
       output: ca/cpp_part_4_completed_checked
   - name: ca/count_without_records
     consumes:
       count: ca/cpp_part_5_completed_yes_or_no_checked
       records: ca/rc381_instances
+    # Schedule 8 "Parts you have to complete": "Part 5 - ... If not, leave this part blank." A
+    # count left blank is passed on as blank; a filled count above 0 with a copy of Form RC381 is
+    # still refused.
+    blank:
+      count: pass_on
     produces:
       output: ca/cpp_part_5_completed_checked
   # T1 line 30800 and ON428 line 58240. Schedule 8 line 57 (Part 5, or Part 3a line 25 / Part 3b

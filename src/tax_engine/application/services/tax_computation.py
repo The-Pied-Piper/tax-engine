@@ -15,7 +15,7 @@ and returns each form's worksheets by form name: one per instance, in instance o
 The composed `FormSet` is kept per (jurisdiction code, tax year). Sharing it is safe because
 `FormSet.compute` builds its own store and worksheets and never writes to the forms; nothing
 invalidates it because manifests and datasets are static files. A lock guards the cache because
-Connexion runs synchronous handlers in a thread pool. The lock is held for a whole compose, so a
+the service may be called from several threads at once. The lock is held for a whole compose, so a
 cold (jurisdiction, tax year) makes concurrent callers wait.
 """
 
