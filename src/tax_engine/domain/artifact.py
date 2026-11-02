@@ -15,9 +15,10 @@ system's.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 from dataclasses import dataclass
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from typing import Any, Generic, TypeVar
 
 from tax_engine.domain.blank import BLANK, Blank
@@ -26,9 +27,14 @@ from tax_engine.domain.errors import (
     DuplicateRegistrationError,
     InvalidAmountError,
     InvalidRegistrationError,
+    InvalidTextError,
     NegativeArtifactError,
 )
 from tax_engine.domain.registry import Namespace, Registry
+
+# A number's spelling in text: an optional minus sign and digits, a decimal point and digits.
+_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
+_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
 
 # Invariant on purpose. PEP 695 syntax would infer covariance from `value_type: type[V]`, and
 # mypy would then accept, say, an ArtifactKind[int] wired where an ArtifactKind[Decimal] is
@@ -93,6 +99,50 @@ class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
         `RecordListKind` does for a record list of other fields and `DigitsKind` for text that is
         not its digits.
         """
+
+    def read(self: ArtifactKind[Any], text: str) -> Artifact[Any]:
+        """The artifact of this kind that `text` spells, as a manifest or a request writes it.
+
+        A `Decimal` kind reads a plain decimal number, an `int` kind a whole number (neither
+        below zero if the kind is non-negative) and a kind of text the text itself, which the
+        kind's own `check_value` must accept. Text the kind cannot read is an InvalidTextError
+        saying what it must be, without naming the kind; a caller adds where the text came from.
+        """
+        value_type = self.value_type
+        if value_type is Decimal or value_type is int:
+            whole = value_type is int
+            pattern = _WHOLE_NUMBER if whole else _DECIMAL_NUMBER
+            if not pattern.fullmatch(text):
+                raise InvalidTextError(
+                    "must be a whole number" if whole else "must be a plain decimal number"
+                )
+            try:
+                number = Decimal(int(text)) if whole else Decimal(text)
+            except (InvalidOperation, ValueError):
+                # Python refuses a whole number of more than 4300 digits.
+                raise InvalidTextError("is too long to read as a number") from None
+            if self.non_negative and number < 0:
+                raise InvalidTextError("must not be below zero")
+            return Artifact(self, int(number) if whole else number)
+        if value_type is str:
+            try:
+                self.check_value(text)  # a digits kind takes only its own digits, or blank
+            except InvalidTextError as exc:
+                raise InvalidTextError(f"is not a value of the kind: {exc}") from None
+            return Artifact(self, text)
+        raise InvalidTextError(f"has no spelling as text for a {value_type.__name__} kind")
+
+    def read_default(self: ArtifactKind[Any], declared: str | tuple[()] | None) -> Artifact[Any]:
+        """The artifact a manifest's declared default is read as: `None` is blank, `()` an empty
+        list (only a record-list kind has one) and a string is read by `read`.
+        """
+        if declared is None:
+            return Artifact(self, BLANK)
+        if isinstance(declared, str):
+            return self.read(declared)
+        raise InvalidTextError(
+            "must be a quoted number" if self.value_type is not str else "must be a string"
+        )
 
 
 type Money = ArtifactKind[Decimal]
@@ -166,15 +216,20 @@ class ArtifactRegistry(Registry[object]):
         for kind in pending:
             self.register(kind.identifier, kind)
 
-    def register_kind(self, kind: ArtifactKind[Any]) -> None:
-        """Register `kind` under its own identifier.
+    def extended(self, kinds: Iterable[ArtifactKind[Any]]) -> ArtifactRegistry:
+        """A new registry of every kind of this one and `kinds`, which this one is not changed by.
 
-        The same kind again (equal to the one registered) is skipped and the first stays; another
-        kind under that identifier is the registry's DuplicateRegistrationError.
+        A kind equal to one already registered is skipped and the first stays; another kind under
+        that identifier is the registry's DuplicateRegistrationError.
         """
-        if kind.identifier in self.identifiers() and self.kind(kind.identifier) == kind:
-            return
-        self.register(kind.identifier, kind)
+        extended = ArtifactRegistry()
+        for identifier in sorted(self.identifiers()):
+            extended.register(identifier, self.get(identifier))
+        for kind in kinds:
+            if kind.identifier in extended.identifiers() and extended.kind(kind.identifier) == kind:
+                continue
+            extended.register(kind.identifier, kind)
+        return extended
 
     def kind(self, identifier: str) -> ArtifactKind[Any]:
         """The artifact kind registered as `identifier`.

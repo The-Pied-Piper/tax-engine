@@ -357,6 +357,9 @@ def service() -> TaxComputationService:
         consumes={"rows": "ca/t657_chart_1_rows"},
         produces={"total": "ex/column_g_total"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (T657_CHART_1_ROWS, TOTAL):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -371,15 +374,12 @@ def service() -> TaxComputationService:
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (T657_CHART_1_ROWS, TOTAL):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _NoParameters(),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

@@ -22,7 +22,6 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Form, Manifest
@@ -36,6 +35,7 @@ from tests.jurisdictions.ca_on.manifest_support import (
     lists,
     required_entries,
 )
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1" / "03c_t2042.yaml"
@@ -53,7 +53,7 @@ VEHICLE_CONSTANTS = frozenset(
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
@@ -226,7 +226,7 @@ def test_the_sixteen_chart_b_amounts_are_computed_exports_and_no_longer_statemen
 def test_the_catalog_registers_the_statements_kind_beside_the_other_record_lists() -> None:
     build_tax_computation()
 
-    assert ArtifactRegistry.shared().kind("ca/t2042_statements") is T2042_STATEMENTS
+    assert ca_on_kinds().kind("ca/t2042_statements") is T2042_STATEMENTS
 
 
 def test_the_presence_is_nine_counts_and_nine_statement_counted_amounts_of_each_statement() -> None:

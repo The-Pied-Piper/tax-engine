@@ -29,7 +29,6 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.form import FormComposition
@@ -55,6 +54,7 @@ from tests.jurisdictions.ca_on.manifest_support import (
     lists,
     required_entries,
 )
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 PARTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
@@ -97,7 +97,7 @@ CHECKED_TO_RAW = {
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
@@ -336,7 +336,7 @@ def test_the_instances_kind_is_a_record_list_with_no_fields() -> None:
 def test_the_catalog_registers_the_instances_kind_beside_the_other_record_lists() -> None:
     build_tax_computation()
 
-    assert ArtifactRegistry.shared().kind("ca/t929_instances") is T929_INSTANCES
+    assert ca_on_kinds().kind("ca/t929_instances") is T929_INSTANCES
 
 
 # --- the form and the return ----------------------------------------------------------------------

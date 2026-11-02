@@ -1305,6 +1305,9 @@ def service(dataset: ParameterDataset[RoundingOnly] | None = None) -> TaxComputa
         },
         produces={"total": "ex/provincial_credit"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (SHEETS, NET_INCOME, PROVINCIAL_TAX, MINIMUM_TAX, LINE_7, LINE_8, LINE_11, CREDIT):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -1331,15 +1334,12 @@ def service(dataset: ParameterDataset[RoundingOnly] | None = None) -> TaxComputa
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (SHEETS, NET_INCOME, PROVINCIAL_TAX, MINIMUM_TAX, LINE_7, LINE_8, LINE_11, CREDIT):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset, limit, rate_dataset),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

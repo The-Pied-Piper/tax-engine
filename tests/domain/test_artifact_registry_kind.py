@@ -16,6 +16,7 @@ import pytest
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.errors import InvalidRegistrationError, UnknownRegistrationError
 from tax_engine.domain.registry import Namespace
+from tests.kinds import ca_on_kinds
 
 BASE = ArtifactKind("ex/taxable_base", Decimal)
 COUNT = ArtifactKind("ex/count", int)
@@ -84,7 +85,7 @@ def test_an_entry_that_is_not_an_artifact_kind_is_an_invalid_registration(item: 
 def test_kind_looks_in_that_registry_only() -> None:
     artifacts = registry()
 
-    assert "ex/taxable_base" not in ArtifactRegistry.shared().identifiers()
+    assert "ex/taxable_base" not in ca_on_kinds().identifiers()
     assert artifacts.kind("ex/taxable_base") is BASE
     with pytest.raises(UnknownRegistrationError):
         ArtifactRegistry().kind("ex/taxable_base")

@@ -21,6 +21,7 @@ from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.trace.blank import BlankPassedOnLine
+from tests.kinds import bundled_kinds
 
 D = Decimal
 CA_ON = JurisdictionCode("CA-ON")
@@ -28,7 +29,7 @@ CA_ON = JurisdictionCode("CA-ON")
 
 def steps() -> list[CapabilitySelection]:
     (manifest,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )

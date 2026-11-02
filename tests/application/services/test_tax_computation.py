@@ -49,6 +49,7 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import TraceLine
 from tax_engine.domain.worksheet import Worksheet
+from tests.kinds import ca_on_kinds
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -203,6 +204,7 @@ def manifest(
     outputs: frozenset[str] = frozenset({"ex-on/result"}),
     version: int = 1,
     valid_from_tax_year: int = 2025,
+    artifacts: ArtifactRegistry | None = None,
 ) -> Manifest:
     return Manifest(
         jurisdiction=EX_ON,
@@ -219,6 +221,7 @@ def manifest(
                 capabilities=selections or (SHIFT, SCALE),
             ),
         ),
+        artifacts=artifact_registry() if artifacts is None else artifacts,
     )
 
 
@@ -229,9 +232,10 @@ def capability_registry() -> CapabilityRegistry:
     return registry
 
 
-def artifact_registry() -> ArtifactRegistry:
+def artifact_registry(*extra: ArtifactKind[Any]) -> ArtifactRegistry:
+    """The kinds the made-up manifests share, and `extra`."""
     registry = ArtifactRegistry()
-    for kind in (BASE, SCALED, RESULT, EXTRA):
+    for kind in (BASE, SCALED, RESULT, EXTRA, *extra):
         registry.register(kind.identifier, kind)
     return registry
 
@@ -240,7 +244,6 @@ def service(
     *manifests: Manifest,
     parameters: ParameterSource | None = None,
     capabilities: CapabilityRegistry | None = None,
-    artifacts: ArtifactRegistry | None = None,
 ) -> TaxComputationService:
     jurisdictions: JurisdictionSource = FakeJurisdictions(
         Jurisdiction(code=EX_ON, manifests=manifests or (manifest(),))
@@ -249,7 +252,6 @@ def service(
         jurisdictions,
         parameters if parameters is not None else FakeParameters(factor_data(), offset_data()),
         capabilities if capabilities is not None else capability_registry(),
-        artifacts if artifacts is not None else artifact_registry(),
     )
 
 
@@ -302,7 +304,6 @@ def test_compose_returns_the_same_forms_for_the_same_jurisdiction_and_year() -> 
         jurisdictions,
         FakeParameters(factor_data(), offset_data()),
         capability_registry(),
-        artifact_registry(),
     )
 
     assert computation.compose(EX_ON, 2025) is computation.compose(EX_ON, 2025)
@@ -327,7 +328,6 @@ def test_compose_keeps_a_separate_form_set_per_jurisdiction() -> None:
         ),
         FakeParameters(factor_data(), offset_data()),
         capability_registry(),
-        artifact_registry(),
     )
 
     assert computation.compose(EX_ON, 2025) is not computation.compose(other, 2025)
@@ -339,7 +339,6 @@ def test_a_failed_compose_is_not_cached() -> None:
         jurisdictions,
         FakeParameters(factor_data()),
         capability_registry(),
-        artifact_registry(),
     )
 
     for _ in range(2):
@@ -379,7 +378,7 @@ def test_asks_for_each_dataset_with_its_slots_kind() -> None:
 
 def test_resolves_through_the_registries_it_was_given_not_the_shared_ones() -> None:
     assert "ex/scale" not in CapabilityRegistry.shared().identifiers()
-    assert "ex/base" not in ArtifactRegistry.shared().identifiers()
+    assert "ex/base" not in ca_on_kinds().identifiers()
 
     assert len(service().compose(EX_ON, 2025).form("ex-on/return").composition.order) == 2
 
@@ -561,9 +560,7 @@ def test_an_identifier_registered_as_something_other_than_a_kind_is_an_invalid_r
     artifacts.register("ex/stray", object())
 
     with pytest.raises(InvalidRegistrationError, match="'ex/stray'.*not as an artifact kind"):
-        service(
-            manifest(outputs=frozenset({"ex-on/result", "ex/stray"})), artifacts=artifacts
-        ).compose(EX_ON, 2025)
+        manifest(outputs=frozenset({"ex-on/result", "ex/stray"}), artifacts=artifacts)
 
 
 def test_an_identifier_in_a_selection_registered_as_something_other_than_a_kind_is_invalid() -> (
@@ -579,7 +576,7 @@ def test_an_identifier_in_a_selection_registered_as_something_other_than_a_kind_
     )
 
     with pytest.raises(InvalidRegistrationError, match="'ex/stray'.*not as an artifact kind"):
-        service(manifest(stray, SHIFT), artifacts=artifacts).compose(EX_ON, 2025)
+        service(manifest(stray, SHIFT, artifacts=artifacts)).compose(EX_ON, 2025)
 
 
 # --- list slots: a consumed slot filled with a list of identifiers ------------------------------
@@ -590,6 +587,11 @@ def test_an_identifier_in_a_selection_registered_as_something_other_than_a_kind_
 PART_ONE = ArtifactKind("ex/part_one", Decimal)
 PART_TWO = ArtifactKind("ex/part_two", Decimal)
 PART_THREE = ArtifactKind("ex/part_three", Decimal)
+
+
+def parts_registry() -> ArtifactRegistry:
+    """The shared kinds and the three made-up parts."""
+    return artifact_registry(PART_ONE, PART_TWO, PART_THREE)
 
 
 @dataclass(frozen=True)
@@ -651,16 +653,13 @@ def list_slot_manifest(parts: Any, *producers: CapabilitySelection) -> Manifest:
         consumes={"parts": parts},
         produces={"total": "ex-on/result"},
     )
-    return manifest(total, *(producers or (to_three, to_two, to_one)))
+    return manifest(total, *(producers or (to_three, to_two, to_one)), artifacts=parts_registry())
 
 
 def list_slot_service(*manifests: Manifest) -> TaxComputationService:
     capabilities = capability_registry()
     capabilities.register("ex/total_up", total_class())
-    artifacts = artifact_registry()
-    for kind in (PART_ONE, PART_TWO, PART_THREE):
-        artifacts.register(kind.identifier, kind)
-    return service(*manifests, capabilities=capabilities, artifacts=artifacts)
+    return service(*manifests, capabilities=capabilities)
 
 
 def test_a_list_slot_receives_its_kinds_in_manifest_order() -> None:
@@ -800,16 +799,13 @@ def sum_manifest(parts: tuple[str, ...]) -> Manifest:
         consumes={"parts": parts},
         produces={"output": "ex-on/result"},
     )
-    return manifest(total, to_three, to_two, to_one)
+    return manifest(total, to_three, to_two, to_one, artifacts=parts_registry())
 
 
 def sum_service(*manifests: Manifest) -> TaxComputationService:
     capabilities = capability_registry()
     capabilities.register("core/sum", sum_class())
-    artifacts = artifact_registry()
-    for kind in (PART_ONE, PART_TWO, PART_THREE):
-        artifacts.register(kind.identifier, kind)
-    return service(*manifests, capabilities=capabilities, artifacts=artifacts)
+    return service(*manifests, capabilities=capabilities)
 
 
 def test_computes_core_sum_end_to_end() -> None:
@@ -865,13 +861,14 @@ def sum_not_below_zero_service(parts: tuple[str, ...]) -> TaxComputationService:
         consumes={"parts": parts},
         produces={"output": "ex-on/result"},
     )
-    built = manifest(total, *(c for c in base.forms[0].capabilities if c.name != "core/sum"))
+    built = manifest(
+        total,
+        *(c for c in base.forms[0].capabilities if c.name != "core/sum"),
+        artifacts=parts_registry(),
+    )
     capabilities = capability_registry()
     capabilities.register("core/sum_not_below_zero", sum_not_below_zero_class())
-    artifacts = artifact_registry()
-    for kind in (PART_ONE, PART_TWO, PART_THREE):
-        artifacts.register(kind.identifier, kind)
-    return service(built, capabilities=capabilities, artifacts=artifacts)
+    return service(built, capabilities=capabilities)
 
 
 def test_computes_core_sum_not_below_zero_end_to_end() -> None:
@@ -1220,15 +1217,13 @@ def credit_amount_service() -> tuple[TaxComputationService, FakeParameters]:
     capabilities = capability_registry()
     capabilities.register("core/sum", sum_class())
     capabilities.register("core/credit_amount", credit_amount_class())
-    artifacts = artifact_registry()
-    for kind in (PART_ONE, PART_TWO):
-        artifacts.register(kind.identifier, kind)
     parameters = FakeParameters(factor_data(), offset_data(), personal_credit_data())
     built = service(
-        manifest(total, CREDIT_AMOUNT, to_one),  # authored out of order on purpose
+        manifest(
+            total, CREDIT_AMOUNT, to_one, artifacts=artifact_registry(PART_ONE, PART_TWO)
+        ),  # authored out of order on purpose
         parameters=parameters,
         capabilities=capabilities,
-        artifacts=artifacts,
     )
     return built, parameters
 
@@ -1439,16 +1434,13 @@ def lesser_of_manifest(amounts: tuple[str, ...]) -> Manifest:
     producers = {"ex/part_one": to_one, "ex/part_two": to_two, "ex/part_three": to_three}
     wired = set(amounts) | ({"ex/part_one"} if "ex/part_three" in amounts else set())
     selected = [selection for part, selection in producers.items() if part in wired]
-    return manifest(lesser, *reversed(selected))
+    return manifest(lesser, *reversed(selected), artifacts=parts_registry())
 
 
 def lesser_of_service(*manifests: Manifest) -> TaxComputationService:
     capabilities = capability_registry()
     capabilities.register("core/lesser_of", lesser_of_class())
-    artifacts = artifact_registry()
-    for kind in (PART_ONE, PART_TWO, PART_THREE):
-        artifacts.register(kind.identifier, kind)
-    return service(*manifests, capabilities=capabilities, artifacts=artifacts)
+    return service(*manifests, capabilities=capabilities)
 
 
 def test_computes_core_lesser_of_three_amounts_end_to_end() -> None:
@@ -1553,16 +1545,13 @@ def greater_of_manifest(amounts: tuple[str, ...]) -> Manifest:
     producers = {"ex/part_one": to_one, "ex/part_two": to_two, "ex/part_three": to_three}
     wired = set(amounts) | ({"ex/part_one"} if "ex/part_three" in amounts else set())
     selected = [selection for part, selection in producers.items() if part in wired]
-    return manifest(greater, *reversed(selected))
+    return manifest(greater, *reversed(selected), artifacts=parts_registry())
 
 
 def greater_of_service(*manifests: Manifest) -> TaxComputationService:
     capabilities = capability_registry()
     capabilities.register("core/greater_of", greater_of_class())
-    artifacts = artifact_registry()
-    for kind in (PART_ONE, PART_TWO, PART_THREE):
-        artifacts.register(kind.identifier, kind)
-    return service(*manifests, capabilities=capabilities, artifacts=artifacts)
+    return service(*manifests, capabilities=capabilities)
 
 
 def test_computes_core_greater_of_three_amounts_end_to_end() -> None:
@@ -2122,14 +2111,13 @@ PER_UNIT_AMOUNT = CapabilitySelection(
 def per_unit_amount_service() -> tuple[TaxComputationService, FakeParameters]:
     capabilities = capability_registry()
     capabilities.register("core/per_unit_amount", per_unit_amount_class())
-    artifacts = artifact_registry()
-    artifacts.register(COUNT.identifier, COUNT)
     parameters = FakeParameters(factor_data(), offset_data(), some_amount_per_unit_data())
     built = service(
-        manifest(PER_UNIT_AMOUNT, inputs=frozenset({"ex/count"})),
+        manifest(
+            PER_UNIT_AMOUNT, inputs=frozenset({"ex/count"}), artifacts=artifact_registry(COUNT)
+        ),
         parameters=parameters,
         capabilities=capabilities,
-        artifacts=artifacts,
     )
     return built, parameters
 
@@ -2236,14 +2224,15 @@ AMOUNT_BY_COUNT_SELECTION = CapabilitySelection(
 def amount_by_count_service() -> tuple[TaxComputationService, FakeParameters]:
     capabilities = capability_registry()
     capabilities.register("core/amount_by_count", amount_by_count_class())
-    artifacts = artifact_registry()
-    artifacts.register(COUNT.identifier, COUNT)
     parameters = FakeParameters(factor_data(), offset_data(), some_amount_by_count_data())
     built = service(
-        manifest(AMOUNT_BY_COUNT_SELECTION, inputs=frozenset({"ex/count"})),
+        manifest(
+            AMOUNT_BY_COUNT_SELECTION,
+            inputs=frozenset({"ex/count"}),
+            artifacts=artifact_registry(COUNT),
+        ),
         parameters=parameters,
         capabilities=capabilities,
-        artifacts=artifacts,
     )
     return built, parameters
 
@@ -2467,19 +2456,19 @@ def per_unit_into_multiple_over_service() -> TaxComputationService:
     capabilities = capability_registry()
     capabilities.register("core/per_unit_amount", per_unit_amount_class())
     capabilities.register("core/multiple_over", multiple_over_class())
-    artifacts = artifact_registry()
-    for kind in (COUNT, PART_ONE):
-        artifacts.register(kind.identifier, kind)
     parameters = FakeParameters(
         factor_data(), offset_data(), some_amount_per_unit_data(), some_factor_data()
     )
     return service(
         manifest(  # authored out of order on purpose
-            multiple, SCALE, per_unit, inputs=frozenset({"ex/base", "ex/count"})
+            multiple,
+            SCALE,
+            per_unit,
+            inputs=frozenset({"ex/base", "ex/count"}),
+            artifacts=artifact_registry(COUNT, PART_ONE),
         ),
         parameters=parameters,
         capabilities=capabilities,
-        artifacts=artifacts,
     )
 
 
@@ -2756,13 +2745,15 @@ def apply_ratio_service(
     capabilities = capability_registry()
     capabilities.register("core/apply_ratio", apply_ratio_class())
     parameters = FakeParameters(factor_data(), offset_data(), ratio_rounding_data(rounding))
-    artifacts = artifact_registry()
-    artifacts.register(PERSON_COUNT.identifier, PERSON_COUNT)
     built = service(
-        manifest(selection, SCALE, inputs=frozenset({"ex/base", "ex/extra"})),  # out of order
+        manifest(
+            selection,
+            SCALE,
+            inputs=frozenset({"ex/base", "ex/extra"}),
+            artifacts=artifact_registry(PERSON_COUNT),
+        ),  # out of order
         parameters=parameters,
         capabilities=capabilities,
-        artifacts=artifacts,
     )
     return built, parameters
 
@@ -2899,17 +2890,14 @@ def times_count_service(
     """`ex/scale` (base × 3) and `core/times_count` producing `ex-on/result` = scaled × count."""
     capabilities = capability_registry()
     capabilities.register("core/times_count", times_count_class())
-    artifacts = artifact_registry()
-    for kind in (COUNT, PERSON_COUNT):
-        artifacts.register(kind.identifier, kind)
     return service(  # authored out of order on purpose
         manifest(
             selection or times_count_selection(),
             SCALE,
             inputs=frozenset({"ex/base", "ex/count"}),
+            artifacts=artifact_registry(COUNT, PERSON_COUNT),
         ),
         capabilities=capabilities,
-        artifacts=artifacts,
     )
 
 
@@ -3015,17 +3003,14 @@ def choose_by_count_service(
     count is 0, extra otherwise."""
     capabilities = capability_registry()
     capabilities.register("core/choose_by_count", choose_by_count_class())
-    artifacts = artifact_registry()
-    for kind in (COUNT, PERSON_COUNT):
-        artifacts.register(kind.identifier, kind)
     return service(  # authored out of order on purpose
         manifest(
             selection or choose_by_count_selection(),
             SCALE,
             inputs=frozenset({"ex/base", "ex/extra", "ex/count"}),
+            artifacts=artifact_registry(COUNT, PERSON_COUNT),
         ),
         capabilities=capabilities,
-        artifacts=artifacts,
     )
 
 
@@ -3198,16 +3183,14 @@ def per_item_claim_service(
     amount and the maximum: each record's claim from 0 up to the maximum, summed."""
     capabilities = capability_registry()
     capabilities.register("ex/per_item_claim", per_item_claim_class())
-    artifacts = artifact_registry()
-    for kind in (dependants_kind(), DEPENDANT_NET_INCOME, BASE_AMOUNT, MAXIMUM_AMOUNT):
-        artifacts.register(kind.identifier, kind)
+    kinds = artifact_registry(dependants_kind(), DEPENDANT_NET_INCOME, BASE_AMOUNT, MAXIMUM_AMOUNT)
     return service(
         manifest(
             selection or per_item_claim_selection(),
             inputs=frozenset({"ex/dependants", "ex/base_amount", "ex/maximum_amount"}),
+            artifacts=kinds,
         ),
         capabilities=capabilities,
-        artifacts=artifacts,
     )
 
 
@@ -3364,9 +3347,6 @@ def choose_by_range_service(
     otherwise."""
     capabilities = capability_registry()
     capabilities.register("ca-on/choose_by_range", choose_by_range_class())
-    artifacts = artifact_registry()
-    for kind in (FIRST_LIMIT, SECOND_LIMIT, LAST, PERSON_COUNT):
-        artifacts.register(kind.identifier, kind)
     return service(  # authored out of order on purpose
         manifest(
             selection or choose_by_range_selection(),
@@ -3374,9 +3354,9 @@ def choose_by_range_service(
             inputs=frozenset(
                 {"ex/base", "ex/extra", "ex/last", "ex/first_limit", "ex/second_limit"}
             ),
+            artifacts=artifact_registry(FIRST_LIMIT, SECOND_LIMIT, LAST, PERSON_COUNT),
         ),
         capabilities=capabilities,
-        artifacts=artifacts,
     )
 
 
@@ -3492,14 +3472,12 @@ def business_number_kind() -> Any:
 
 def business_number_service() -> TaxComputationService:
     """The default manifest, also carrying `ex/business_number` onto the return as entered."""
-    artifacts = artifact_registry()
-    artifacts.register(business_number_kind().identifier, business_number_kind())
     return service(
         manifest(
             inputs=frozenset({"ex/base", "ex/business_number"}),
             outputs=frozenset({"ex-on/result", "ex/business_number"}),
+            artifacts=artifact_registry(business_number_kind()),
         ),
-        artifacts=artifacts,
     )
 
 

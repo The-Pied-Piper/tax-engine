@@ -8,7 +8,7 @@ from typing import Any
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
@@ -45,6 +45,7 @@ from tests.jurisdictions.ca_on.end_to_end.support import (
     return_f_with_credits,
     routed_statement,
 )
+from tests.kinds import ca_on_kinds
 
 
 def test_return_ys_supporting_person_lowers_the_care_credit_to_1650() -> None:
@@ -159,7 +160,7 @@ def test_return_y_business_investment_loss_multiplies_the_1990_to_1999_amount_by
     # 13333.00; line 18 is 20000 less 13333.00, 6667.00; and line 20 is 6667.00 x 50%, 3333.50. The
     # deduction is 1666.50 less than the 5000.00 that reading 10000 as printed gave, so the refund,
     # -6456.35, is 538.21 less negative than the -6994.56 of that reading.
-    line_4 = ArtifactRegistry.shared().kind("ca/capital_gains_deductions_line_4")
+    line_4 = ca_on_kinds().kind("ca/capital_gains_deductions_line_4")
     worksheet = compute(
         "60000",
         (),

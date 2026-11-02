@@ -11,27 +11,20 @@ optional input or field declares its default and basis; the YAML spelling is the
 from __future__ import annotations
 
 import dataclasses
-import re
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from decimal import Decimal, InvalidOperation
 from types import MappingProxyType
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import (
     InvalidManifestError,
     InvalidRegistrationError,
     InvalidTextError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordListKind, derive_form_kinds
 from tax_engine.domain.registry import Namespace
-
-# A number's spelling in manifest text, the same as a blank rule's fallback (capability_builder).
-_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
-_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
 
 
 @dataclass(frozen=True, slots=True)
@@ -115,69 +108,23 @@ class InputDeclaration:
         if not self.basis:
             raise InvalidManifestError(f"input {self.name!r}: an optional input needs a basis")
 
-    def check_kind(self, kind: ArtifactKind[Any]) -> None:
-        """Refuse a default that no value of `kind` could be: blank is any kind's.
-
-        A `Decimal` kind takes a decimal string (not below zero if the kind is non-negative), an
-        `int` kind a whole-number string, a record-list kind `()` and any other kind a string.
-        """
-        if self.default is None or self.default.value is None:
-            return
-        value = self.default.value
-        problem: str | None = None
-        if kind.value_type is Decimal:
-            problem = self._decimal_problem(value, kind.non_negative, whole=False)
-        elif kind.value_type is int:
-            problem = self._decimal_problem(value, kind.non_negative, whole=True)
-        elif kind.value_type is RecordList:
-            problem = None if value == () else "must be an empty list"
-        elif not isinstance(value, str):
-            problem = "must be a string"
-        else:
-            try:
-                kind.check_value(value)  # a digits kind takes only its own digits, or blank
-            except InvalidTextError as exc:
-                problem = f"is not a value of the kind: {exc}"
-        if problem is not None:
-            raise InvalidManifestError(
-                f"input {self.name!r}: default {value!r} {problem} for the kind {kind.identifier!r}"
-            )
-
     def default_artifact(self, kind: ArtifactKind[Any]) -> Artifact[Any] | None:
         """The artifact of `kind` that a request leaving this input out is read as.
 
-        `None` for a required input, which has no default. Blank for `Default(None)`; otherwise
-        the declared value read as the kind's own value type (a number for an amount or a count,
-        an empty record list, or the text). `check_kind` has already vouched for the default.
+        `None` for a required input, which has no default. Otherwise the declared default read by
+        the kind (`ArtifactKind.read_default`): blank for `Default(None)`, else the value of the
+        kind the text spells. A default no value of the kind could be is an InvalidManifestError
+        naming the input.
         """
         if self.default is None:
             return None
         value = self.default.value
-        if value is None:
-            return Artifact(kind, BLANK)
-        if isinstance(kind, RecordListKind):
-            return Artifact(kind, RecordList(kind.fields, ()))
-        if kind.value_type is int and isinstance(value, str):
-            return Artifact(kind, int(value))
-        if issubclass(kind.value_type, Decimal) and isinstance(value, str):
-            return Artifact(kind, Decimal(value))
-        return Artifact(kind, value)
-
-    @staticmethod
-    def _decimal_problem(value: str | tuple[()], non_negative: bool, *, whole: bool) -> str | None:
-        if not isinstance(value, str):
-            return "must be a quoted number"
-        pattern = _WHOLE_NUMBER if whole else _DECIMAL_NUMBER
-        if not pattern.fullmatch(value):
-            return "must be a whole number" if whole else "must be a plain decimal number"
         try:
-            number = Decimal(int(value)) if whole else Decimal(value)
-        except (InvalidOperation, ValueError):
-            # Python refuses a whole number of more than 4300 digits.
-            return "is too long to read as a number"
-        if non_negative and number < 0:
-            return "must not be below zero"
-        return None
+            return kind.read_default(value)
+        except InvalidTextError as exc:
+            raise InvalidManifestError(
+                f"input {self.name!r}: default {value!r} {exc} for the kind {kind.identifier!r}"
+            ) from None
 
 
 @dataclass(frozen=True, slots=True)
@@ -337,8 +284,17 @@ class Manifest:
     once each: a non-empty mapping, among them the instances kind of each form, which the caller
     supplies with the rest. Each form's own inputs are derived from its selections. The
     `required_when` of an optional form names a required input, an artifact one of the manifest's
-    selections produces; that it is a yes/no
-    is checked with the artifact kinds by `check_artifacts`.
+    selections produces.
+
+    A manifest is built with `artifacts`, the kinds the application declared, and is checked
+    against them when it is built: a manifest that exists is correct. The forms' exports are
+    resolved in `artifacts`; `kinds` is `artifacts` and the `<form>.<export>` kinds the forms
+    derive, the lookup for everything the manifest names. Every default is read through its kind
+    (`defaults`, and `field_defaults` by form name for the fields of a form's records); a default
+    no value of its kind could be, fields that are not those of the record-list kind a form takes
+    as instances, and a `required_when` that is not a yes/no (a count, 1 for yes and 0 for no)
+    are an InvalidManifestError. An identifier `artifacts` does not have is its
+    UnknownRegistrationError.
     """
 
     jurisdiction: JurisdictionCode
@@ -346,6 +302,12 @@ class Manifest:
     valid_from_tax_year: int
     inputs: Mapping[str, InputDeclaration]
     forms: tuple[Form, ...]
+    artifacts: ArtifactRegistry = dataclasses.field(compare=False)
+    kinds: ArtifactRegistry = dataclasses.field(init=False, compare=False)
+    defaults: tuple[Artifact[Any], ...] = dataclasses.field(init=False, compare=False)
+    field_defaults: Mapping[str, tuple[Artifact[Any], ...]] = dataclasses.field(
+        init=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "inputs", MappingProxyType(dict(self.inputs)))
@@ -362,6 +324,28 @@ class Manifest:
             if declaration.name != name:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
+        derived = [
+            kind
+            for form in self.forms
+            for kind in derive_form_kinds(
+                form.name, [self.artifacts.kind(identifier) for identifier in form.exports]
+            )
+        ]
+        kinds = self.artifacts.extended(derived)
+        object.__setattr__(self, "kinds", kinds)
+        self._check_artifacts(kinds)
+        found = (
+            declaration.default_artifact(kinds.kind(name))
+            for name, declaration in self.inputs.items()
+        )
+        object.__setattr__(
+            self, "defaults", tuple(artifact for artifact in found if artifact is not None)
+        )
+        object.__setattr__(
+            self,
+            "field_defaults",
+            MappingProxyType({form.name: self._field_defaults(form, kinds) for form in self.forms}),
+        )
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mapping is unhashable."""
@@ -375,52 +359,34 @@ class Manifest:
             )
         )
 
-    def check_artifacts(self, artifacts: ArtifactRegistry) -> None:
-        """Refuse what only the artifact kinds can say, naming the input or form.
-
-        Every default must suit its input's kind; the fields of a form must be, both ways, those
-        of the record-list kind it takes as instances, with defaults to suit them; and the
-        `required_when` of a form must be a yes/no, a non-negative count (1 for yes, 0 for no).
-        The forms' exports are registered before this is called.
-        """
-        for name, declaration in self.inputs.items():
-            declaration.check_kind(artifacts.kind(name))
+    def _check_artifacts(self, kinds: ArtifactRegistry) -> None:
+        """Refuse what only the artifact kinds can say, naming the input or form."""
+        for name in self.inputs:
+            kinds.kind(name)
         for form in self.forms:
             if form.instances is not None:
-                self._check_fields(form, artifacts.kind(form.instances))
+                self._check_fields(form, kinds.kind(form.instances))
             if form.required_when is not None:
-                kind = artifacts.kind(form.required_when)
+                kind = kinds.kind(form.required_when)
                 if kind.value_type is not int or not kind.non_negative:
                     raise InvalidManifestError(
                         f"form {form.name!r}: required_when {form.required_when!r} is not a "
                         "yes/no: it must be a count, 1 for yes and 0 for no"
                     )
 
-    def default_artifacts(self, artifacts: ArtifactRegistry) -> tuple[Artifact[Any], ...]:
-        """The artifact each optional input is read as when the request leaves it out.
-
-        Called after `check_artifacts`, which has checked every default against its kind.
-        """
-        found = (
-            declaration.default_artifact(artifacts.kind(name))
-            for name, declaration in self.inputs.items()
-        )
-        return tuple(artifact for artifact in found if artifact is not None)
-
-    def field_default_artifacts(
-        self, form: Form, artifacts: ArtifactRegistry
-    ) -> tuple[Artifact[Any], ...]:
+    @staticmethod
+    def _field_defaults(form: Form, kinds: ArtifactRegistry) -> tuple[Artifact[Any], ...]:
         """The artifact each optional field of `form`'s records is read as when a record leaves
-        it blank, in the form's order. Called after `check_artifacts`.
+        it blank, in the form's order.
         """
         if form.instances is None:
             return ()
-        instances = artifacts.kind(form.instances)
+        instances = kinds.kind(form.instances)
         if not isinstance(instances, RecordListKind):
             return ()
-        kinds = {kind.identifier: kind for kind in instances.fields}
+        by_name = {kind.identifier: kind for kind in instances.fields}
         found = (
-            declaration.default_artifact(kinds[declaration.name]) for declaration in form.fields
+            declaration.default_artifact(by_name[declaration.name]) for declaration in form.fields
         )
         return tuple(artifact for artifact in found if artifact is not None)
 
@@ -439,8 +405,6 @@ class Manifest:
             raise InvalidManifestError(
                 f"form {form.name!r}: field {name!r} is not a field of {instances.identifier!r}"
             )
-        for name, declaration in declared.items():
-            declaration.check_kind(kinds[name])
 
     def _check_predicates(self) -> None:
         """Refuse a `required_when` that names nothing the manifest has or an optional input."""

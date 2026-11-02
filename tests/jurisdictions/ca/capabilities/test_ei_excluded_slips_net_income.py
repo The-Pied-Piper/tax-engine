@@ -281,6 +281,9 @@ def service() -> TaxComputationService:
         consumes={"slips": "ca/ei_excluded_slips"},
         produces={"output": "ca/ei_excluded_slips_net_income"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (EI_EXCLUDED_SLIPS, EI_EXCLUDED_SLIPS_NET_INCOME):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -295,15 +298,12 @@ def service() -> TaxComputationService:
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (EI_EXCLUDED_SLIPS, EI_EXCLUDED_SLIPS_NET_INCOME):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _NoParameters(),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

@@ -19,12 +19,13 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any
 
-from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind
+from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind
 from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
     BlankValueError,
     InvalidRecordError,
     InvalidRegistrationError,
+    InvalidTextError,
     NegativeArtifactError,
 )
 
@@ -212,6 +213,18 @@ class RecordListKind(ArtifactKind[RecordList]):
         catalog.add(kind)
         return kind
 
+    def read(self, text: str) -> Artifact[RecordList]:
+        """Refuse any text: a record list is not spelled as text, only as an empty list default."""
+        raise InvalidTextError("must be an empty list")
+
+    def read_default(self, declared: str | tuple[()] | None) -> Artifact[RecordList]:
+        """Blank for `None`, an empty list of this kind's fields for `()`, else `read`'s refusal."""
+        if declared is None:
+            return Artifact(self, BLANK)
+        if isinstance(declared, str):
+            return self.read(declared)
+        return Artifact(self, RecordList(self.fields, ()))
+
     def check_value(self, value: RecordList) -> None:
         """Refuse a record list built with other fields than this kind's, as a TypeError."""
         if value.fields != self.fields:
@@ -220,3 +233,22 @@ class RecordListKind(ArtifactKind[RecordList]):
                 f"{[kind.identifier for kind in self.fields]}, "
                 f"got fields {[kind.identifier for kind in value.fields]}"
             )
+
+
+def derive_form_kinds(
+    name: str, exports: Iterable[ArtifactKind[Any]]
+) -> tuple[RecordListKind, ...]:
+    """The kind `<form>.<export>` of each of the form `name`'s `exports` a record can hold.
+
+    Each is a record list of the export's one field, in the order of the exports. An export that
+    is not an amount, a count or a record list (a rate, say, or digits) has none: no other form
+    reads it.
+    """
+    namespace, _, form_id = name.partition("/")
+    return tuple(
+        RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
+        for export in exports
+        if issubclass(export.value_type, Decimal)
+        or export.value_type is int
+        or isinstance(export, RecordListKind)
+    )

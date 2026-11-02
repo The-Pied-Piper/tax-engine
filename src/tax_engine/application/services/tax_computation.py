@@ -1,15 +1,16 @@
 """Tax computation: a jurisdiction's manifest for a tax year built into a set of forms, run.
 
 The service does the I/O only: it reads the jurisdiction through its port, asks it for the
-manifest of the tax year, resolves each selection's capability class and datasets and the
-manifest's input and output kinds through the ports and registries it was given, and hands them
-with the artifact registry to the domain (`CapabilityBuilder`, which resolves the selection's
-artifact kinds, and `FormSet`, which wires every form), which decides. Resolution errors
-propagate unchanged. Composed on the first call for a jurisdiction and tax year, then shared.
+manifest of the tax year, resolves each selection's capability class and datasets through the
+ports and registries it was given, and hands them with the manifest's own kinds to the domain
+(`CapabilityBuilder`, which resolves the selection's artifact kinds, and `FormSet`, which wires
+every form), which decides. It converts nothing and checks no manifest: a manifest the source
+returns was read through its kinds and checked when it was built. Resolution errors propagate
+unchanged. Composed on the first call for a jurisdiction and tax year, then shared.
 
 A manifest is a flat set of forms, peers that together are the return. Each form exports the
-`<form>.<export>` kinds that every form reads. Those kinds are registered into the artifact
-registry before any selection is built. `compose` returns the wired `FormSet`; `compute` runs it
+`<form>.<export>` kinds that every form reads; the manifest carries them with the kinds it was
+built with. `compose` returns the wired `FormSet`; `compute` runs it
 and returns each form's worksheets by form name: one per instance, in instance order.
 
 The composed `FormSet` is kept per (jurisdiction code, tax year). Sharing it is safe because
@@ -44,13 +45,11 @@ class TaxComputationService:
         jurisdictions: JurisdictionSource,
         parameters: ParameterSource,
         capabilities: CapabilityRegistry,
-        artifacts: ArtifactRegistry,
     ) -> None:
-        """Resolve manifests, datasets, capability classes and artifact kinds through these."""
+        """Resolve manifests, datasets and capability classes through these."""
         self._jurisdictions = jurisdictions
         self._parameters = parameters
         self._capabilities = capabilities
-        self._artifacts = artifacts
         self._builder = CapabilityBuilder()
         self._composed: dict[tuple[JurisdictionCode, int], FormSet] = {}
         self._lock = Lock()
@@ -68,41 +67,33 @@ class TaxComputationService:
 
     def _compose(self, code: JurisdictionCode, tax_year: int) -> FormSet:
         manifest = self._jurisdictions.get_jurisdiction(code).manifest_for(tax_year)
+        kinds = manifest.kinds
         exports = {
-            form.name: [self._artifacts.kind(identifier) for identifier in form.exports]
+            form.name: [kinds.kind(identifier) for identifier in form.exports]
             for form in manifest.forms
         }
-        for form in manifest.forms:
-            for kind in FormComposition.derive(form.name, exports[form.name]):
-                self._artifacts.register_kind(kind)
-        # Resolved before any capability is built, so a bad identifier is reported first.
-        inputs = frozenset(self._artifacts.kind(identifier) for identifier in manifest.inputs)
-        manifest.check_artifacts(self._artifacts)
-        defaults = manifest.default_artifacts(self._artifacts)
-        fields = {
-            form.name: manifest.field_default_artifacts(form, self._artifacts)
-            for form in manifest.forms
-        }
+        inputs = frozenset(kinds.kind(identifier) for identifier in manifest.inputs)
         return FormSet(
             [
                 FormComposition(
                     form.name,
-                    [self._capability(selection, tax_year) for selection in form.capabilities],
+                    [
+                        self._capability(selection, tax_year, kinds)
+                        for selection in form.capabilities
+                    ],
                     exports=exports[form.name],
-                    instances=None
-                    if form.instances is None
-                    else self._artifacts.kind(form.instances),
+                    instances=None if form.instances is None else kinds.kind(form.instances),
                     starting=inputs,
                     max_instances=form.max_instances,
                     min_instances=form.min_instances,
                     exclusive_group=form.exclusive_group,
-                    defaults=defaults,
-                    field_defaults=fields[form.name],
+                    defaults=manifest.defaults,
+                    field_defaults=manifest.field_defaults[form.name],
                 )
                 for form in manifest.forms
             ],
             inputs=inputs,
-            defaults=defaults,
+            defaults=manifest.defaults,
         )
 
     def compute(
@@ -119,7 +110,9 @@ class TaxComputationService:
         """
         return self.compose(code, tax_year).compute(*artifacts)
 
-    def _capability(self, selection: CapabilitySelection, tax_year: int) -> Capability:
+    def _capability(
+        self, selection: CapabilitySelection, tax_year: int, kinds: ArtifactRegistry
+    ) -> Capability:
         cls = self._capabilities.get(selection.name)
         # Only slots the class declares are fetched; the builder reports any other key.
         datasets: dict[str, ParameterDataset[Any]] = {
@@ -127,4 +120,4 @@ class TaxComputationService:
             for slot, family in selection.params.items()
             if slot in cls.PARAMETERS
         }
-        return self._builder.build(selection, cls, datasets, self._artifacts)
+        return self._builder.build(selection, cls, datasets, kinds)

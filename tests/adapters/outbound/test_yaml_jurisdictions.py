@@ -23,6 +23,7 @@ from types import MappingProxyType
 import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -33,10 +34,25 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
+from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.registry import Namespace
+from tests.kinds import AutoKinds
 from tests.manifest_support import required_inputs
 
 EX_ON = JurisdictionCode("EX-ON")
+
+# The made-up artifacts the manifests below name are amounts, except these.
+COUNTS = ("ex/relief_applies",)
+
+
+def manifest_kinds() -> ArtifactRegistry:
+    """The kinds the made-up manifests name: an amount for any identifier, a count for the yes/no
+    `COUNTS`, text for `ex/note` and an empty record list for `ex/rows`."""
+    kinds = AutoKinds(COUNTS)
+    kinds.register("ex/note", ArtifactKind("ex/note", str))
+    kinds.register("ex/rows", RecordListKind("ex/rows", fields=()))
+    return kinds
+
 
 EX_ON_V1 = """\
 jurisdiction: EX-ON
@@ -82,7 +98,7 @@ def roots(directory: Path) -> Mapping[Namespace, Path]:
 
 
 def source(directory: Path) -> YamlJurisdictionSource:
-    return YamlJurisdictionSource(roots(directory))
+    return YamlJurisdictionSource(roots(directory), manifest_kinds())
 
 
 def write(directory: Path, name: str, content: str) -> Path:
@@ -112,6 +128,7 @@ def test_parses_manifest_into_domain_objects(tmp_path: Path) -> None:
         code=EX_ON,
         manifests=(
             Manifest(
+                artifacts=manifest_kinds(),
                 jurisdiction=EX_ON,
                 version=1,
                 valid_from_tax_year=2025,
@@ -296,7 +313,8 @@ def test_reads_only_the_manifests_directory_of_the_jurisdictions_namespace(
     write(tmp_path, "pkg_on/parameters/stray.yaml", EX_ON_V1.replace("version: 1", "version: 9"))
     write(tmp_path, "pkg_zz/manifests/v1.yaml", EX_ON_V1.replace("EX-ON", "EX-ZZ"))
     two = YamlJurisdictionSource(
-        {Namespace("ex-on"): tmp_path / "pkg_on", Namespace("ex-zz"): tmp_path / "pkg_zz"}
+        {Namespace("ex-on"): tmp_path / "pkg_on", Namespace("ex-zz"): tmp_path / "pkg_zz"},
+        manifest_kinds(),
     )
 
     on = two.get_jurisdiction(EX_ON)
@@ -310,9 +328,9 @@ def test_reads_only_the_manifests_directory_of_the_jurisdictions_namespace(
 def test_a_country_code_maps_to_its_lowercase_namespace(tmp_path: Path) -> None:
     write(tmp_path, "ex/manifests/v1.yaml", EX_ON_V1.replace("EX-ON", "EX"))
 
-    result = YamlJurisdictionSource({Namespace("ex"): tmp_path / "ex"}).get_jurisdiction(
-        JurisdictionCode("EX")
-    )
+    result = YamlJurisdictionSource(
+        {Namespace("ex"): tmp_path / "ex"}, manifest_kinds()
+    ).get_jurisdiction(JurisdictionCode("EX"))
 
     assert result.code == JurisdictionCode("EX")
 
@@ -333,7 +351,9 @@ def test_package_without_manifests_is_not_found(tmp_path: Path) -> None:
 
 def test_missing_package_directory_is_rejected(tmp_path: Path) -> None:
     with pytest.raises(InvalidManifestError, match="directory not found"):
-        YamlJurisdictionSource({Namespace("ex-on"): tmp_path / "nope"}).get_jurisdiction(EX_ON)
+        YamlJurisdictionSource(
+            {Namespace("ex-on"): tmp_path / "nope"}, manifest_kinds()
+        ).get_jurisdiction(EX_ON)
 
 
 def test_a_manifest_for_another_jurisdiction_in_the_package_is_rejected(tmp_path: Path) -> None:
@@ -733,6 +753,7 @@ def test_a_folder_is_one_manifest_merged_from_its_parts(tmp_path: Path) -> None:
     )
 
     assert only_manifest(tmp_path) == Manifest(
+        artifacts=manifest_kinds(),
         jurisdiction=EX_ON,
         version=1,
         valid_from_tax_year=2025,
@@ -768,8 +789,12 @@ def test_a_folder_loads_the_same_manifest_as_the_flat_file(tmp_path: Path) -> No
         {"00.yaml": head, "01.yaml": inputs, "02.yaml": "capabilities:\n" + capabilities},
     )
 
-    flat = YamlJurisdictionSource({Namespace("ex-on"): tmp_path / "flat" / "ex-on"})
-    split = YamlJurisdictionSource({Namespace("ex-on"): tmp_path / "split" / "ex-on"})
+    flat = YamlJurisdictionSource(
+        {Namespace("ex-on"): tmp_path / "flat" / "ex-on"}, manifest_kinds()
+    )
+    split = YamlJurisdictionSource(
+        {Namespace("ex-on"): tmp_path / "split" / "ex-on"}, manifest_kinds()
+    )
 
     assert split.get_jurisdiction(EX_ON) == flat.get_jurisdiction(EX_ON)
 

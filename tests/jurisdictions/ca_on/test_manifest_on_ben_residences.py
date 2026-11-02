@@ -21,6 +21,7 @@ from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca_on.catalog import ON_BEN_RESIDENCES
 from tests.jurisdictions.ca_on.manifest_families import on_ben_residences
 from tests.jurisdictions.ca_on.manifest_support import instance_fields, required_entries
+from tests.kinds import bundled_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 FORM = "ca-on/on_ben_residences"
@@ -35,7 +36,7 @@ PART = (
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )

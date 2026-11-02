@@ -16,7 +16,6 @@ from typing import Any
 
 import pytest
 
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InputAboveBoundError, UnknownRegistrationError
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
@@ -28,6 +27,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TAXABLE_CAPITAL_GAINS,
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute, service
+from tests.kinds import ca_on_kinds
 
 # A line 27 row (the four-year kind): gain 10,000, payable 5,000 of proceeds 10,000, the year of
 # disposition, so the maximum is the lesser of 5,000 and 80% of 10,000, which is 5,000.
@@ -121,4 +121,4 @@ def test_the_typed_reserve_and_t657_inputs_are_no_longer_registered() -> None:
 
     for identifier in ("ca/capital_gains_reserves", "ca/t657_t2017_line_13"):
         with pytest.raises(UnknownRegistrationError):
-            ArtifactRegistry.shared().get(identifier)
+            ca_on_kinds().get(identifier)

@@ -300,6 +300,9 @@ def service() -> TaxComputationService:
         },
         produces={"output": MOTOR_VEHICLE_EXPENSES.identifier},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (VEHICLES, SALES_TAX_RATE, FISCAL_PERIOD_DAYS, MOTOR_VEHICLE_EXPENSES):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -318,13 +321,10 @@ def service() -> TaxComputationService:
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (VEHICLES, SALES_TAX_RATE, FISCAL_PERIOD_DAYS, MOTOR_VEHICLE_EXPENSES):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters({dataset.family: dataset for dataset in found.values()}),
         CapabilityRegistry.shared(),
-        artifacts,
     )

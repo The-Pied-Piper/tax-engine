@@ -32,6 +32,7 @@ from tax_engine.domain.record_list import RecordListKind
 from tests.jurisdictions.ca_on.manifest_families import capital_gains_deduction_t657, t2048
 from tests.jurisdictions.ca_on.manifest_families import t936 as family
 from tests.jurisdictions.ca_on.manifest_support import input_names, inputs_text, lists
+from tests.kinds import bundled_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
@@ -53,7 +54,7 @@ T657_LINES = {
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )

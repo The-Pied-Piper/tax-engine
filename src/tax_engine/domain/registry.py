@@ -33,22 +33,13 @@ _LOCAL_ID = re.compile(r"[a-z][a-z0-9]*(_[a-z0-9]+)*")
 class Registry[T]:
     """A store of items of one kind under unique string keys.
 
-    Construct one directly for a private registry, or use `shared()` for the application-wide one.
+    Construct one directly: a registry is a plain value that whoever wires the application builds
+    and hands on. `SharedRegistry` adds the application-wide instance, for the registries that
+    decorators fill on import.
     """
-
-    _shared: ClassVar[dict[type[object], object]] = {}
 
     def __init__(self) -> None:
         self._items: dict[str, T] = {}
-
-    @classmethod
-    def shared(cls) -> Self:
-        """The application-wide instance of this registry class, created on first use."""
-        instance = Registry._shared.get(cls)
-        if not isinstance(instance, cls):
-            instance = cls()
-            Registry._shared[cls] = instance
-        return instance
 
     def register(self, key: str, item: T) -> None:
         """Store `item` under `key`; a key already taken is an error, never an override."""
@@ -70,6 +61,25 @@ class Registry[T]:
     def identifier_of(self, item: T) -> str | None:
         """The key `item` itself is registered under (matched by identity), else `None`."""
         return next((key for key, found in self._items.items() if found is item), None)
+
+
+class SharedRegistry[T](Registry[T]):
+    """A registry with one application-wide instance, `shared()`, that decorators fill on import.
+
+    Artifact kinds are not kept in one: they are built once at wiring and handed to what needs
+    them.
+    """
+
+    _shared: ClassVar[dict[type[object], object]] = {}
+
+    @classmethod
+    def shared(cls) -> Self:
+        """The application-wide instance of this registry class, created on first use."""
+        instance = SharedRegistry._shared.get(cls)
+        if not isinstance(instance, cls):
+            instance = cls()
+            SharedRegistry._shared[cls] = instance
+        return instance
 
 
 @dataclass(frozen=True)

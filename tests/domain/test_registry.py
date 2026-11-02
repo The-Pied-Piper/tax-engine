@@ -22,7 +22,7 @@ from tax_engine.domain.errors import (
     InvalidRegistrationError,
     UnknownRegistrationError,
 )
-from tax_engine.domain.registry import Namespace, Registry
+from tax_engine.domain.registry import Namespace, Registry, SharedRegistry
 from tests.domain.registration_fixtures.bad_namespace.oddities import Oddity
 from tests.domain.registration_fixtures.nonstring_namespace import oddities as nonstring
 from tests.domain.registration_fixtures.with_namespace.gadgets import Gadget, Sprocket
@@ -269,11 +269,11 @@ def test_snake_case_local_ids_are_accepted(local_id: str) -> None:
 # --- one shared instance per registry subclass ---------------------------------------------
 
 
-class ExampleRegistry(Registry[type[object]]):
+class ExampleRegistry(SharedRegistry[type[object]]):
     """A made-up registry subclass, so these tests never touch a real shared registry."""
 
 
-class OtherExampleRegistry(Registry[type[object]]):
+class OtherExampleRegistry(SharedRegistry[type[object]]):
     """A second made-up registry subclass."""
 
 

@@ -45,18 +45,17 @@ class JurisdictionPackages:
         """Each package's namespace mapped to its package directory."""
         return self._roots
 
-    def register(self, registry: ArtifactRegistry | None = None) -> None:
+    def register(self, registry: ArtifactRegistry) -> None:
         """Register every package's catalog, its `catalog` module's `CATALOG`, into `registry`.
 
-        `None` means the shared ArtifactRegistry. Registering again is idempotent. Every catalog
+        Registering again is idempotent. Every catalog
         is looked up first, so a package without a catalog in its own namespace registers
         nothing; an identifier clashing with one already in `registry` is an error, which can
         leave the catalogs registered before it in place.
         """
-        target = ArtifactRegistry.shared() if registry is None else registry
         catalogs = [self._catalog(name, namespace) for name, namespace in self._namespaces.items()]
         for catalog in catalogs:
-            target.register_catalog(catalog)
+            registry.register_catalog(catalog)
 
     @staticmethod
     def _catalog(package: str, namespace: Namespace) -> ArtifactCatalog:

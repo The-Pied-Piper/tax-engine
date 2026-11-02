@@ -25,8 +25,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     FEDERAL_BASIC_TAX,
     TAXABLE_INCOME,
 )
-from tax_engine.registrations import JURISDICTIONS
 from tests.jurisdictions.ca_on.worked_return import FormExpectation, WorkedReturn, WorkedReturnError
+from tests.kinds import ca_on_kinds
 
 D = Decimal
 RETURNS = Path(__file__).parent / "returns"
@@ -60,8 +60,7 @@ DEPENDANTS = (
 
 @pytest.fixture
 def artifacts() -> ArtifactRegistry:
-    JURISDICTIONS.register()
-    return ArtifactRegistry.shared()
+    return ca_on_kinds()
 
 
 @pytest.fixture

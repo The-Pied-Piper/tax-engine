@@ -30,7 +30,6 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
-from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
@@ -47,7 +46,7 @@ from tax_engine.domain.errors import (
     ValidationError,
 )
 from tax_engine.domain.manifest import Form
-from tax_engine.domain.record_list import Record, RecordList, RecordListKind
+from tax_engine.domain.record_list import Record, RecordList, RecordListKind, derive_form_kinds
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
 
@@ -169,14 +168,7 @@ class FormComposition:
         that is not an amount, a count or a record list (a rate, say, or digits) has none: no
         other form reads it.
         """
-        namespace, _, form_id = name.partition("/")
-        return tuple(
-            RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
-            for export in exports
-            if issubclass(export.value_type, Decimal)
-            or export.value_type is int
-            or isinstance(export, RecordListKind)
-        )
+        return derive_form_kinds(name, exports)
 
     @property
     def name(self) -> str:

@@ -2,14 +2,14 @@
 
 Checked generically, so a package added under `tax_engine/jurisdictions/` but not registered
 fails here.
-Catalogs register only when `JURISDICTIONS.register()` is called; importing registers no kind.
+Catalogs register only when `JURISDICTIONS.register(registry)` is called, which
+`artifact_kinds()` does into a registry of its own; importing registers no kind.
 """
 
 from __future__ import annotations
 
 import importlib
 import inspect
-import subprocess
 import sys
 from decimal import Decimal
 from pathlib import Path
@@ -775,35 +775,13 @@ def test_registering_twice_is_idempotent() -> None:
     assert registry.identifiers() == first
 
 
-_IMPORT_EVERYTHING = """
-import pkgutil, importlib
-import tax_engine
-import tax_engine.adapters.outbound.parameter_parsers
-import tax_engine.domain.capabilities
-import tax_engine.jurisdictions
-import tax_engine.registrations
-from tax_engine.domain.artifact import ArtifactRegistry
-for info in pkgutil.walk_packages(
-    tax_engine.jurisdictions.__path__,
-    "tax_engine.jurisdictions.",
-):
-    importlib.import_module(info.name)
-print(sorted(ArtifactRegistry.shared().identifiers()))
-"""
+def test_artifact_kinds_builds_a_fresh_registry_of_every_listed_catalog_each_call() -> None:
+    first = tax_engine.registrations.artifact_kinds()
+    second = tax_engine.registrations.artifact_kinds()
 
-
-def test_importing_the_packages_and_registrations_registers_no_artifact_kind() -> None:
-    # A fresh interpreter, so modules this test session already imported are imported again.
-    result = subprocess.run(
-        [sys.executable, "-c", _IMPORT_EVERYTHING],
-        cwd=Path(tax_engine.__file__).parent.parent,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-
-    assert result.returncode == 0, result.stderr
-    assert result.stdout.strip() == "[]"
+    assert first is not second
+    assert first.identifiers() == second.identifiers()
+    assert first.identifiers()
 
 
 def test_importing_the_federal_package_registers_the_count_at_least_capability() -> None:

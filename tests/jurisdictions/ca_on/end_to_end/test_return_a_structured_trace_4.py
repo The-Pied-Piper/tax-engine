@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.contribution_tier import ContributionTier
 from tax_engine.domain.parameters.rate import Rate
@@ -1272,6 +1271,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
 )
 from tax_engine.jurisdictions.ca_on.trace import PlacementCreditLine
 from tests.jurisdictions.ca_on.end_to_end.support import CENT, D, return_a, run_a
+from tests.kinds import ca_on_kinds
 
 
 def test_the_trace_records_each_total_as_a_structured_line() -> None:
@@ -1290,7 +1290,7 @@ def test_the_trace_records_each_total_as_a_structured_line() -> None:
     summed_floored = {line.output: line for line in trace if isinstance(line, SumNotBelowZeroLine)}
     by_count = {line.output: line for line in trace if isinstance(line, AmountByCountLine)}
     tiers = {line.output: line for line in trace if isinstance(line, ContributionTierLine)}
-    amount_a = ArtifactRegistry.shared().kind("ca/capital_gains_deductions_1988_and_1989_amount_a")
+    amount_a = ca_on_kinds().kind("ca/capital_gains_deductions_1988_and_1989_amount_a")
     lesser = {line.output: line for line in trace if isinstance(line, LesserOfLine)}
     at_most = {line.output: line for line in trace if isinstance(line, AtMostLine)}
     surcharged = [
@@ -3416,7 +3416,7 @@ def test_the_trace_records_each_total_as_a_structured_line() -> None:
         # Form T1436 line 2 amount (a), "if negative, enter "0"": 0 less 0.
         amount_a: SubtractedNotBelowZeroLine(
             output=amount_a,
-            minuend=ArtifactRegistry.shared().kind(
+            minuend=ca_on_kinds().kind(
                 "ca/capital_gains_deductions_1988_and_1989_other_than_eligible_capital_property"
             ),
             minuend_amount=D("0"),

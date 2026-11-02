@@ -25,12 +25,22 @@ EX_ON = JurisdictionCode("EX-ON")
 PACKAGES = JurisdictionPackages((ex_on,))
 
 
+def ex_on_kinds() -> ArtifactRegistry:
+    registry = ArtifactRegistry()
+    PACKAGES.register(registry)
+    return registry
+
+
+def source() -> YamlJurisdictionSource:
+    return YamlJurisdictionSource(PACKAGES.roots(), ex_on_kinds())
+
+
 def test_the_package_directory_is_its_root() -> None:
     assert PACKAGES.roots() == {Namespace("ex-on"): Path(ex_on.__file__).parent}
 
 
 def test_its_manifest_is_read_from_the_package() -> None:
-    (manifest,) = YamlJurisdictionSource(PACKAGES.roots()).get_jurisdiction(EX_ON).manifests
+    (manifest,) = source().get_jurisdiction(EX_ON).manifests
 
     assert manifest.inputs.keys() == frozenset({"ex-on/levy_base"})
     (default,) = manifest.forms
@@ -56,7 +66,7 @@ def test_its_datasets_are_read_from_the_package() -> None:
 
 
 def test_every_parameter_slot_has_a_dataset() -> None:
-    (manifest,) = YamlJurisdictionSource(PACKAGES.roots()).get_jurisdiction(EX_ON).manifests
+    (manifest,) = source().get_jurisdiction(EX_ON).manifests
     parameters = YamlParameterSource(PACKAGES.roots())
 
     assert CORE_PACKAGES  # importing them filled the capability and parser registries
@@ -69,7 +79,7 @@ def test_every_parameter_slot_has_a_dataset() -> None:
 
 
 def test_every_artifact_slot_names_a_kind_of_its_catalog() -> None:
-    (manifest,) = YamlJurisdictionSource(PACKAGES.roots()).get_jurisdiction(EX_ON).manifests
+    (manifest,) = source().get_jurisdiction(EX_ON).manifests
     declared = {"ex-on/levy_base", "ex-on/levy"}  # see the catalog test below
 
     for selection in manifest.forms[0].capabilities:

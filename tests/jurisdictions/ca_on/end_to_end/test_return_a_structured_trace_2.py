@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.trace import (
     SumLine,
     SumNotBelowZeroLine,
@@ -1146,6 +1145,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     TAX_REDUCTION_FOR_DEPENDANTS,
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, run_a
+from tests.kinds import ca_on_kinds
 
 
 def test_the_trace_records_each_total_as_a_structured_line() -> None:
@@ -1155,7 +1155,7 @@ def test_the_trace_records_each_total_as_a_structured_line() -> None:
     # The Form T1436 lines 1 to 6, their sums and the Schedule 3 lines 543 and 544, by identifier:
     # looked up when the test runs, so that this module loads before they are declared.
     kinds = {
-        identifier: ArtifactRegistry.shared().kind(identifier)
+        identifier: ca_on_kinds().kind(identifier)
         for identifier in (
             "ca/schedule_3_line_543",
             "ca/schedule_3_line_544",

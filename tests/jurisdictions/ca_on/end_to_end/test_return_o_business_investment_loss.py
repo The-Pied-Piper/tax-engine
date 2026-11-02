@@ -7,7 +7,7 @@ from decimal import Decimal
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.jurisdictions.ca.catalog import (
     ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
     BUSINESS_INVESTMENT_LOSS_AFTER_REDUCTION,
@@ -18,12 +18,13 @@ from tax_engine.jurisdictions.ca.catalog import (
     OTHER_BUSINESS_INVESTMENT_LOSS_REDUCTIONS_1986_TO_2024,
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, step_3
+from tests.kinds import ca_on_kinds
 
 
 def _kind(identifier: str) -> ArtifactKind[Decimal]:
     """A T1436 kind by its identifier, looked up when a test runs, so that the module loads before
     the lines 1 to 6 and their inputs are declared as catalog kinds."""
-    return ArtifactRegistry.shared().kind(identifier)
+    return ca_on_kinds().kind(identifier)
 
 
 @pytest.mark.parametrize(

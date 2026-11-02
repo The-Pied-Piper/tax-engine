@@ -54,6 +54,7 @@ from tax_engine.jurisdictions.ca.catalog import (
 )
 from tests.jurisdictions.ca_on.end_to_end.support import run_a
 from tests.jurisdictions.ca_on.manifest_support import inputs_text, required_entries
+from tests.kinds import bundled_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 V1 = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
@@ -72,7 +73,7 @@ POSITIVE_READERS = ("05k_t929.yaml", "05k_t1_m.yaml", "13_refundable_credits.yam
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )

@@ -34,7 +34,7 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.registry import Namespace, Registry
+from tax_engine.domain.registry import Namespace, SharedRegistry
 from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, TraceLine
 
 
@@ -409,7 +409,7 @@ class Capability(ABC):
         return cast(Artifact[V], found[0])
 
 
-class CapabilityRegistry(Registry[type[Capability]]):
+class CapabilityRegistry(SharedRegistry[type[Capability]]):
     """The capability classes packages contribute, by full identifier (`core/progressive_tax`).
 
     Register through `register_class` or `@capability`; the inherited `register` takes the key

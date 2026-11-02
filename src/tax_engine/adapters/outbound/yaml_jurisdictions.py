@@ -48,7 +48,7 @@ needed: a required input or an artifact a selection produces, never one of its o
 `instances` lists `fields`, one mapping per field of the instances kind, declared like inputs
 (`name`, `required`, and for an optional one `default` and `basis`); a form without `instances` has
 none. Which fields the instances kind has, that defaults suit their kinds and that a predicate is a
-yes/no count are checked when the manifest is composed (`Manifest.check_artifacts`), where the
+yes/no count are checked when the manifest is composed (when the `Manifest` is built), where the
 kinds are known.
 Any of these keys in a part that does not declare `exports` is rejected. The default form is
 always required.
@@ -67,6 +67,7 @@ from typing import NamedTuple
 import yaml
 
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
+from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import (
     InvalidJurisdictionCodeError,
     InvalidManifestError,
@@ -143,9 +144,13 @@ class _Declaration(NamedTuple):
 class YamlJurisdictionSource:
     """Jurisdictions read from the `manifests/` directory of each jurisdiction package."""
 
-    def __init__(self, roots: Mapping[Namespace, Path]) -> None:
-        """Read manifests under each namespace's package directory in `roots`."""
+    def __init__(self, roots: Mapping[Namespace, Path], kinds: ArtifactRegistry) -> None:
+        """Read manifests under each namespace's package directory in `roots`.
+
+        Each manifest is built with `kinds`, which reads and checks what it declares.
+        """
         self._roots = dict(roots)
+        self._kinds = kinds
 
     def get_jurisdiction(self, code: JurisdictionCode) -> Jurisdiction:
         """The jurisdiction with every manifest in its package; see JurisdictionSource."""
@@ -177,26 +182,24 @@ class YamlJurisdictionSource:
             )
         return self._roots[namespace] / "manifests"
 
-    @classmethod
-    def _load_for(cls, code: JurisdictionCode, path: Path) -> Manifest:
-        manifest = cls.load(path)
+    def _load_for(self, code: JurisdictionCode, path: Path) -> Manifest:
+        manifest = self.load(path)
         if manifest.jurisdiction != code:
             raise InvalidManifestError(
                 f"{path}: manifest is for {manifest.jurisdiction}, but its package is {code}'s"
             )
         return manifest
 
-    @classmethod
-    def load(cls, path: Path) -> Manifest:
+    def load(self, path: Path) -> Manifest:
         """The manifest in the file `path`, or merged from the parts in the folder `path`."""
         if path.is_dir():
-            return cls._load_folder(path)
+            return self._load_folder(path)
         try:
             document = YamlNode.load(path, "manifest")
         except (OSError, yaml.YAMLError) as exc:
             raise InvalidManifestError(f"{path}: {exc}") from exc
         try:
-            return cls._manifest(document)
+            return self._manifest(document)
         except (InvalidManifestError, YamlShapeError) as exc:
             raise InvalidManifestError(f"{path}: {exc}") from exc
 
@@ -205,9 +208,8 @@ class YamlJurisdictionSource:
         """The `*.yaml` / `*.yml` files under `folder`, in sorted path order."""
         return sorted(p for pattern in _PATTERNS for p in folder.rglob(pattern) if p.is_file())
 
-    @classmethod
-    def _load_folder(cls, folder: Path) -> Manifest:
-        parts = cls._parts(folder)
+    def _load_folder(self, folder: Path) -> Manifest:
+        parts = self._parts(folder)
         merged: dict[str, object] = {}
         scalar_owners: dict[str, Path] = {}
         lists: dict[str, list[object]] = {}
@@ -215,9 +217,9 @@ class YamlJurisdictionSource:
         declarations: dict[str, tuple[Path, _Declaration]] = {}
         identifier_owners: dict[str, dict[str, Path]] = {key: {} for key in _IDENTIFIER_LISTS}
         for part in parts:
-            contents = cls._part(part)
+            contents = self._part(part)
             if "form" in contents:
-                cls._join_form(part, contents, form_selections, declarations)
+                self._join_form(part, contents, form_selections, declarations)
             for key, node in contents.items():
                 if key in _SCALAR_KEYS:
                     if key in scalar_owners:
@@ -227,15 +229,15 @@ class YamlJurisdictionSource:
                     scalar_owners[key] = part
                     merged[key] = node.value
                 else:
-                    cls._claim_identifiers(key, node, part, identifier_owners.get(key, {}))
+                    self._claim_identifiers(key, node, part, identifier_owners.get(key, {}))
                     lists.setdefault(key, []).extend(item.value for item in node.items())
         if form_selections:
             lists.setdefault("capabilities", [])  # the default form may have none beside the others
         try:
-            return cls._manifest(
+            return self._manifest(
                 YamlNode.root({**merged, **lists}, "manifest"),
                 lambda default: tuple(
-                    cls._form(name, selections, declarations, default)
+                    self._form(name, selections, declarations, default)
                     for name, selections in form_selections.items()
                 ),
             )
@@ -383,9 +385,8 @@ class YamlJurisdictionSource:
                 )
             owners[identifier] = part
 
-    @classmethod
     def _manifest(
-        cls,
+        self,
         document: YamlNode,
         forms_beside: Callable[[str], tuple[Form, ...]] = lambda _: (),
     ) -> Manifest:
@@ -394,9 +395,9 @@ class YamlJurisdictionSource:
         `forms_beside` gives the other forms, from the name the default form takes.
         """
         doc = document.require_mapping(_MANIFEST_KEYS)
-        code = cls._code(doc.field("jurisdiction"))
-        inputs = cls._declarations(doc.field("inputs"))
-        outputs = cls._identifiers(doc.field("outputs"))
+        code = self._code(doc.field("jurisdiction"))
+        inputs = self._declarations(doc.field("inputs"))
+        outputs = self._identifiers(doc.field("outputs"))
         if not outputs:
             raise InvalidManifestError("outputs must name at least one artifact")
         Form.check_exports("outputs", sorted(outputs))
@@ -406,13 +407,14 @@ class YamlJurisdictionSource:
             version=doc.field("version").require_integer(),
             valid_from_tax_year=doc.field("valid_from_tax_year").require_integer(),
             inputs={declaration.name: declaration for declaration in inputs},
+            artifacts=self._kinds,
             forms=(
                 Form(
                     name=default,
                     instances=None,
                     exports=tuple(sorted(outputs)),
                     capabilities=tuple(
-                        cls._selection(entry) for entry in doc.field("capabilities").items()
+                        self._selection(entry) for entry in doc.field("capabilities").items()
                     ),
                     required=True,
                 ),

@@ -20,7 +20,7 @@ import pytest
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.digits import DigitsKind
-from tax_engine.domain.errors import InvalidManifestError
+from tax_engine.domain.errors import InvalidManifestError, UnknownRegistrationError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import (
     CapabilitySelection,
@@ -30,6 +30,7 @@ from tax_engine.domain.manifest import (
     Manifest,
 )
 from tax_engine.domain.record_list import RecordList, RecordListKind
+from tests.kinds import AutoKinds
 from tests.manifest_support import required_inputs
 
 
@@ -134,6 +135,7 @@ def manifest(
                 capabilities=(selection(),),
             ),
         ),
+        artifacts=AutoKinds(),
     )
 
 
@@ -154,6 +156,10 @@ def test_manifest_fields_in_order() -> None:
         "valid_from_tax_year",
         "inputs",
         "forms",
+        "artifacts",
+        "kinds",
+        "defaults",
+        "field_defaults",
     ]
 
 
@@ -442,8 +448,10 @@ def test_a_minimum_above_one_without_instances_is_refused_naming_the_form() -> N
         form(instances=None, min_instances=2)
 
 
-def test_manifest_fields_end_with_forms() -> None:
-    assert [field.name for field in dataclasses.fields(Manifest)][-1] == "forms"
+def test_manifest_fields_put_forms_before_the_artifacts_it_is_built_with() -> None:
+    names = [field.name for field in dataclasses.fields(Manifest)]
+
+    assert names[names.index("forms") + 1] == "artifacts"
 
 
 def test_a_manifest_holds_its_forms_as_a_tuple_in_order() -> None:
@@ -567,7 +575,7 @@ BUSINESS_NUMBER = DigitsKind("ex/business_number", digits=9)
 def test_a_default_that_suits_its_kind_is_accepted(
     kind: ArtifactKind[Any], value: str | tuple[()] | None
 ) -> None:
-    optional(default=Default(value)).check_kind(kind)
+    assert optional(default=Default(value)).default_artifact(kind) is not None
 
 
 @pytest.mark.parametrize(
@@ -592,7 +600,7 @@ def test_a_default_that_does_not_suit_its_kind_is_refused_naming_the_input(
     kind: ArtifactKind[Any], value: str | tuple[()], problem: str
 ) -> None:
     with pytest.raises(InvalidManifestError, match=f"input 'ex/credit': default .* {problem}"):
-        optional(default=Default(value)).check_kind(kind)
+        assert optional(default=Default(value)).default_artifact(kind) is not None
 
 
 @pytest.mark.parametrize(
@@ -676,7 +684,11 @@ def test_fields_belong_to_a_form_with_instances_and_are_declared_once() -> None:
         optional_form(instances="ex/rows", fields=(optional("ex/amount"), optional("ex/amount")))
 
 
-def with_forms(*forms: Form, inputs: dict[str, InputDeclaration] | None = None) -> Manifest:
+def with_forms(
+    *forms: Form,
+    inputs: dict[str, InputDeclaration] | None = None,
+    artifacts: ArtifactRegistry | None = None,
+) -> Manifest:
     default = Form(
         required=True,
         name="ex-on/return",
@@ -692,6 +704,7 @@ def with_forms(*forms: Form, inputs: dict[str, InputDeclaration] | None = None) 
         if inputs is None
         else inputs,
         forms=(default, *forms),
+        artifacts=AutoKinds(["ex/relief_applies"]) if artifacts is None else artifacts,
     )
 
 
@@ -737,47 +750,93 @@ def test_equal_manifests_with_declarations_hash_alike() -> None:
 
 
 def registry(*kinds: ArtifactKind[Any]) -> ArtifactRegistry:
-    found = ArtifactRegistry()
+    """The kinds an application declared: these, and an amount (or, for `ex/relief_applies`, a
+    count) for any other identifier the manifest names.
+    """
+    found = AutoKinds(["ex/relief_applies"])
     for kind in kinds:
         found.register(kind.identifier, kind)
     return found
 
 
-def test_the_artifacts_are_checked_for_defaults_fields_and_predicates() -> None:
-    applies = ArtifactKind("ex/relief_applies", int, non_negative=True)
-    amount = ArtifactKind("ex/relief_amount", Decimal)
-    rows = RecordListKind("ex/rows", fields=(AMOUNT, COUNT))
-    gated = optional_form(instances="ex/rows", fields=(optional("ex/amount"), optional("ex/count")))
-    inputs = required_inputs(["ex/relief_applies"]) | {"ex/amount": optional("ex/amount")}
-    known = registry(applies, amount, rows, AMOUNT, COUNT)
+COUNT_APPLIES = ArtifactKind("ex/relief_applies", int, non_negative=True)
 
-    with_forms(gated, inputs=inputs).check_artifacts(known)
+
+def test_the_manifest_is_checked_and_its_defaults_converted_when_it_is_built() -> None:
+    gated = optional_form(
+        instances="ex/rows",
+        fields=(optional("ex/amount", Default("2.50")), optional("ex/count", Default(None))),
+    )
+    inputs = required_inputs(["ex/relief_applies"]) | {"ex/amount": optional("ex/amount")}
+
+    built = with_forms(gated, inputs=inputs, artifacts=registry(COUNT_APPLIES, ROWS, AMOUNT, COUNT))
+
+    assert built.defaults == (Artifact(AMOUNT, Decimal(0)),)
+    assert built.field_defaults["ex/relief"] == (
+        Artifact(AMOUNT, Decimal("2.50")),
+        Artifact(COUNT, BLANK),
+    )
+    assert built.field_defaults["ex-on/return"] == ()
+
+
+def test_the_kinds_are_the_artifacts_and_those_the_forms_derive() -> None:
+    artifacts = registry()
+    built = with_forms(optional_form(), artifacts=artifacts)
+    added = built.kinds.identifiers() - artifacts.identifiers()
+
+    assert built.artifacts is artifacts
+    assert artifacts.identifiers() <= built.kinds.identifiers()
+    assert added
+    assert any(built.kinds.kind(identifier).is_form_export for identifier in added)
+
+
+def test_an_export_the_artifacts_do_not_have_is_refused_when_the_manifest_is_built() -> None:
+    with pytest.raises(UnknownRegistrationError, match="ex/levy"):
+        with_forms(optional_form(), artifacts=ArtifactRegistry())
 
 
 def test_a_field_of_the_instances_kind_the_form_does_not_declare_is_refused() -> None:
     gated = optional_form(instances="ex/rows", fields=(optional("ex/amount"),))
-    known = registry(ArtifactKind("ex/relief_applies", int, non_negative=True), ROWS)
 
     with pytest.raises(InvalidManifestError, match="field 'ex/count' of 'ex/rows' is not declared"):
-        with_forms(gated, inputs=required_inputs(["ex/relief_applies"])).check_artifacts(known)
+        with_forms(
+            gated,
+            inputs=required_inputs(["ex/relief_applies"]),
+            artifacts=registry(COUNT_APPLIES, ROWS),
+        )
 
 
 def test_a_declared_field_the_instances_kind_does_not_have_is_refused() -> None:
     extra = (optional("ex/amount"), optional("ex/count"), optional("ex/ghost"))
     gated = optional_form(instances="ex/rows", fields=extra)
-    known = registry(ArtifactKind("ex/relief_applies", int, non_negative=True), ROWS)
 
     with pytest.raises(InvalidManifestError, match="field 'ex/ghost' is not a field of 'ex/rows'"):
-        with_forms(gated, inputs=required_inputs(["ex/relief_applies"])).check_artifacts(known)
+        with_forms(
+            gated,
+            inputs=required_inputs(["ex/relief_applies"]),
+            artifacts=registry(COUNT_APPLIES, ROWS),
+        )
 
 
 def test_a_field_default_must_suit_the_field_kind() -> None:
     bad = optional("ex/count", Default("1.5"))
     gated = optional_form(instances="ex/rows", fields=(optional("ex/amount"), bad))
-    known = registry(ArtifactKind("ex/relief_applies", int, non_negative=True), ROWS)
 
     with pytest.raises(InvalidManifestError, match="input 'ex/count': default .* whole number"):
-        with_forms(gated, inputs=required_inputs(["ex/relief_applies"])).check_artifacts(known)
+        with_forms(
+            gated,
+            inputs=required_inputs(["ex/relief_applies"]),
+            artifacts=registry(COUNT_APPLIES, ROWS),
+        )
+
+
+def test_an_input_default_must_suit_its_kind() -> None:
+    inputs = required_inputs(["ex/relief_applies"]) | {
+        "ex/amount": optional("ex/amount", Default("x"))
+    }
+
+    with pytest.raises(InvalidManifestError, match="input 'ex/amount': default .* plain decimal"):
+        with_forms(optional_form(), inputs=inputs, artifacts=registry(COUNT_APPLIES, AMOUNT))
 
 
 @pytest.mark.parametrize(
@@ -786,6 +845,8 @@ def test_a_field_default_must_suit_the_field_kind() -> None:
 )
 def test_a_predicate_that_is_not_a_yes_no_count_is_refused(kind: ArtifactKind[Any]) -> None:
     with pytest.raises(InvalidManifestError, match="required_when 'ex/relief_applies' is not a"):
-        with_forms(optional_form(), inputs=required_inputs(["ex/relief_applies"])).check_artifacts(
-            registry(kind)
+        with_forms(
+            optional_form(),
+            inputs=required_inputs(["ex/relief_applies"]),
+            artifacts=registry(kind),
         )
