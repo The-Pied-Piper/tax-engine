@@ -1,6 +1,6 @@
 """Snapshot of the `ca/` artifact kind identifiers, as the application registers them.
 
-Identifiers are stored with results and exposed by the API, so changing or removing one is a
+Identifiers appear in stored results and in what callers receive, so changing or removing one is a
 breaking change: update this snapshot only on purpose. Each package snapshots its own namespace;
 declaring a kind in this package's catalog adds it here. The kinds are registered explicitly,
 as the composition root does, into a fresh registry. The snapshot itself is `REGISTERED` in
