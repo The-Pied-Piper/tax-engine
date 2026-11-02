@@ -344,11 +344,13 @@ class Capability(ABC):
         """Apply the blank rules to `inputs`, then compute; only `Worksheet.apply` calls this.
 
         A blank input in a slot with a fallback is replaced by an artifact of the fallback, and the
-        trace says so first. A blank in a slot with no rule is a BlankNotAllowedError naming the
-        line and the slot; that refusal comes before anything else. Otherwise a blank in a
-        `PASS_ON` slot gives a blank artifact for every produced kind, with a trace line each and
-        `compute` not called, even when another slot is `COMPUTE`. Otherwise `compute` runs, and a
-        blank in a `COMPUTE` slot reaches it as the blank artifact; a blank among its outputs is
+        trace says so first, unless a `PASS_ON` slot is also blank: that wins over a fallback as
+        over `COMPUTE`, so the fallback is never used and the trace does not say it was. A blank
+        in a slot with no rule is a BlankNotAllowedError naming the line and the slot; that
+        refusal comes before anything else. Otherwise a blank in a `PASS_ON` slot gives a blank
+        artifact for every produced kind, with a trace line each and `compute` not called.
+        Otherwise `compute` runs, and a blank in a `COMPUTE` slot reaches it as the blank
+        artifact; a blank among its outputs is
         a CapabilityContractError, since only a `PASS_ON` rule makes an output blank.
         """
         name = type(self).__name__
@@ -377,10 +379,7 @@ class Capability(ABC):
             produced = sorted(self.produces, key=lambda kind: kind.identifier)
             return CapabilityResult(
                 outputs=tuple(Artifact(kind, BLANK) for kind in produced),
-                trace=(
-                    *fallbacks,
-                    *(BlankPassedOnLine(kind, because) for kind in produced),
-                ),
+                trace=tuple(BlankPassedOnLine(kind, because) for kind in produced),
             )
         result = self.compute(tuple(kept))
         # A non-Artifact output is the worksheet's TypeError to raise, not this check's.

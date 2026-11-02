@@ -377,6 +377,19 @@ def test_compute_may_still_never_return_a_blank() -> None:
         capability.run((Artifact(INCOME, D(500)), blank(DEDUCTION)))
 
 
+def test_pass_on_in_one_slot_wins_over_a_fallback_in_another() -> None:
+    SubtractCompute.computed = 0
+    capability = SubtractCompute(INCOME, DEDUCTION, NET).with_blank_rules(
+        {"amount": PASS_ON, "less": D(0)}
+    )
+
+    result = capability.run((blank(INCOME), blank(DEDUCTION)))
+
+    assert result.outputs == (blank(NET),)
+    assert result.trace == (BlankPassedOnLine(NET, (INCOME,)),)
+    assert SubtractCompute.computed == 0
+
+
 def test_pass_on_in_one_slot_wins_over_compute_in_another() -> None:
     capability = BlankAware(INCOME, DEDUCTION, NET).with_blank_rules(
         {"amount": PASS_ON, "less": COMPUTE}
