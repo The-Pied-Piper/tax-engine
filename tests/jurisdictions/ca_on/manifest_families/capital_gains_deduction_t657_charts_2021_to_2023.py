@@ -1,7 +1,8 @@
 """The CA-ON manifest entries of Form T657 Charts 2021, 2022 and 2023, Part 1 and Part 2 each
 (`test_manifest.py`).
 
-The steps are in the manifest part `06d_capital_gains_deduction_t657_charts_2021_to_2023.yaml`.
+The steps are in the manifest parts `06d_capital_gains_deduction_t657_charts_2021_to_2022.yaml` and
+`06k_capital_gains_deduction_t657_chart_2023.yaml`.
 The charts are computed in the form's year order: each chart's amount B is the last total carried
 in from the chart before it (Chart 2021 reads Chart 2020's total carried,
 `ca/chart_2020_total_carried`; Chart 2022
