@@ -5,6 +5,8 @@ and `count` (an `int` artifact, the number of persons), one produced slot `outpu
 slots. The output is `amount × count`, exact, with the amount's scale kept; it has no dataset, so
 it never rounds. A count of 0 gives a plain zero (no scale, never a signed zero). It records one
 `TimesCountLine` holding the amount's kind and value, the count's kind, the count and the result.
+Either consumed slot may be blank (`BLANK_ALLOWED`); the rules the manifest gives decide what a
+blank does there.
 """
 
 from __future__ import annotations
@@ -19,11 +21,17 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.capability import CapabilityRegistry
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import PerUnitAmountLine, TimesCountLine
+from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 
 D = Decimal
 
@@ -314,3 +322,95 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank in either slot ---------------------------------------------------------------------
+
+
+def blank_amount() -> Artifact[Any]:
+    return Artifact(EACH, BLANK)
+
+
+def blank_count() -> Artifact[Any]:
+    return Artifact(PERSONS, BLANK)
+
+
+def test_declares_that_either_slot_may_be_blank() -> None:
+    assert TimesCount.BLANK_ALLOWED == frozenset({"amount", "count"})
+
+
+def test_without_rules_a_blank_count_is_refused_naming_the_line_and_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'person_count'.*'count'"):
+        capability().run((Artifact(EACH, D(5)), blank_count()))
+
+
+def test_without_rules_a_blank_amount_is_refused_naming_the_line_and_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'amount_each'.*'amount'"):
+        capability().run((blank_amount(), Artifact(PERSONS, 1)))
+
+
+def test_pass_on_in_either_slot_blanks_the_output() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON, "count": PASS_ON})
+
+    for given in (
+        (blank_amount(), Artifact(PERSONS, 1)),
+        (Artifact(EACH, D(5)), blank_count()),
+    ):
+        result = passing.run(given)
+        assert result.outputs == (Artifact(CLAIMED, BLANK),)
+        assert isinstance(result.trace[0], BlankPassedOnLine)
+        assert not any(isinstance(line, TimesCountLine) for line in result.trace)
+
+
+def test_a_blank_count_is_not_a_count_of_zero() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON, "count": PASS_ON})
+
+    assert passing.run((Artifact(EACH, D(5)), blank_count())).outputs == (Artifact(CLAIMED, BLANK),)
+    assert passing.run((Artifact(EACH, D(5)), Artifact(PERSONS, 0))).outputs == (
+        Artifact(CLAIMED, D(0)),
+    )
+
+
+def test_a_blank_in_both_slots_passes_on_once() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON, "count": PASS_ON})
+
+    result = passing.run((blank_amount(), blank_count()))
+
+    assert result.outputs == (Artifact(CLAIMED, BLANK),)
+    assert result.trace == (BlankPassedOnLine(CLAIMED, (EACH, PERSONS)),)
+
+
+def test_a_fallback_for_count_is_applied_and_the_product_formed() -> None:
+    carried = capability().with_blank_rules({"count": 1})
+
+    result = carried.run((Artifact(EACH, D(5)), blank_count()))
+
+    assert result.outputs == (Artifact(CLAIMED, D(5)),)
+    assert result.trace[0] == BlankFallbackLine(PERSONS, 1)
+    assert isinstance(result.trace[1], TimesCountLine)
+
+
+def test_a_fallback_for_count_does_not_cover_a_blank_amount() -> None:
+    carried = capability().with_blank_rules({"count": 1})
+
+    with pytest.raises(BlankNotAllowedError, match="'amount'"):
+        carried.run((blank_amount(), Artifact(PERSONS, 1)))
+
+
+def test_pass_on_wins_over_a_fallback_in_the_other_slot() -> None:
+    mixed = capability().with_blank_rules({"amount": PASS_ON, "count": 0})
+
+    result = mixed.run((blank_amount(), blank_count()))
+
+    assert result.outputs == (Artifact(CLAIMED, BLANK),)
+
+
+def test_filled_values_are_multiplied_as_before_when_pass_on_is_declared() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON, "count": PASS_ON})
+
+    assert passing.run(inputs("5.25", 2)).outputs == (Artifact(CLAIMED, D("10.50")),)
+
+
+def test_a_rule_for_a_slot_that_is_not_consumed_is_refused() -> None:
+    with pytest.raises(InvalidCapabilityError, match="'output'"):
+        capability().with_blank_rules({"output": PASS_ON})

@@ -240,6 +240,7 @@ STEPS = {
             "amount": "ca/self_employed_cpp_contributions_payable",
             "count": "ca/cpp_part_4_completed_checked",
         },
+        blank={"amount": "pass_on", "count": "pass_on"},
         produces={"output": "ca/cpp_payable_on_self_employment"},
     ),
     # Schedule 8 Part 5 line 49 "If positive, enter the amount (in dollars and cents) on line
@@ -262,6 +263,7 @@ STEPS = {
             "amount": "ca/cpp_part_5_line_49_if_positive",
             "count": "ca/cpp_part_5_completed_checked",
         },
+        blank={"amount": "pass_on", "count": "pass_on"},
         produces={"output": "ca/cpp_part_5_payable_on_self_employment"},
     ),
     # T1 line 144 and line 42100: the Part 4 amount plus the Part 5 amount; both are added

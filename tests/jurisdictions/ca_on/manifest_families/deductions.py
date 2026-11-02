@@ -543,6 +543,7 @@ STEPS = {
             "amount": "ca/self_employed_cpp_deduction",
             "count": "ca/cpp_part_4_completed_checked",
         },
+        blank={"amount": "pass_on", "count": "pass_on"},
         produces={"output": "ca/cpp_deduction_on_self_employment"},
     ),
     # T1 line 47 (22200), entered from Part 5 line 88: Part 5 is completed when the filer
@@ -555,6 +556,7 @@ STEPS = {
             "amount": "ca/cpp_part_5_line_88",
             "count": "ca/cpp_part_5_completed_checked",
         },
+        blank={"amount": "pass_on", "count": "pass_on"},
         produces={"output": "ca/cpp_part_5_deduction_on_self_employment"},
     ),
     # T1 line 47 (22200): the Part 4 amount plus the Part 5 amount; both are added when both

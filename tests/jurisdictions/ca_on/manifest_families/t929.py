@@ -1114,12 +1114,14 @@ COPIED_STEPS = {
         name="core/times_count",
         params={},
         consumes={"amount": "ca/self_employed_cpp_deduction", "count": "ca/cpp_part_4_completed"},
+        blank={"amount": "pass_on", "count": "pass_on"},
         produces={"output": "ca/cpp_deduction_on_self_employment"},
     ),
     CapabilitySelection(
         name="core/times_count",
         params={},
         consumes={"amount": "ca/cpp_part_5_line_88", "count": "ca/cpp_part_5_completed"},
+        blank={"amount": "pass_on", "count": "pass_on"},
         produces={"output": "ca/cpp_part_5_deduction_on_self_employment"},
     ),
     CapabilitySelection(
