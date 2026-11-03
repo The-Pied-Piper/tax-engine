@@ -819,3 +819,14 @@ def test_is_below_floor_only_for_a_non_negative_kind_and_a_value_below_zero() ->
     assert COUNT.is_below_floor(-1)
     assert not COUNT.is_below_floor(0)
     assert not CountKind("ex/c").is_below_floor(-1)
+
+
+def test_a_rate_kind_reads_no_text() -> None:
+    with pytest.raises(InvalidTextError, match="has no spelling as text"):
+        RateKind("ex/credit_rate").read("0.15")
+
+
+def test_a_text_kind_reads_the_text_as_written() -> None:
+    kind = TextKind("ex/person_name")
+
+    assert kind.read("  Ada  ").value == "  Ada  "

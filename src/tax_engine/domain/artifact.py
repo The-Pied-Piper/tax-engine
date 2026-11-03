@@ -100,8 +100,8 @@ class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
     def read(self, text: str) -> Artifact[V]:
         """The artifact of this kind that `text` spells, as a manifest or a request writes it.
 
-        Text the kind cannot read is an InvalidTextError saying what it must be, without naming
-        the kind; a caller adds where the text came from.
+        Text the kind cannot read is an InvalidTextError saying what it must be; a caller adds
+        where the text came from.
         """
 
     def read_default(self, declared: str | tuple[()] | None) -> Artifact[V]:

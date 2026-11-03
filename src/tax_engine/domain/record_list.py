@@ -118,7 +118,7 @@ class RecordList:
             if not kind.is_record_field:
                 raise InvalidRecordError(
                     f"the field {kind.identifier!r} holds a {kind.value_type.__name__}: "
-                    f"a field must be a Decimal, int or record-list kind"
+                    f"a record cannot hold a field of this kind"
                 )
         checked = tuple(
             self._checked(position, given) for position, given in enumerate(self.records, start=1)
@@ -151,11 +151,10 @@ class RecordList:
                     f"{item}: {kind.identifier} must be a {kind.value_type.__name__}, "
                     f"got {type(value).__name__}"
                 )
-            if isinstance(kind, RecordListKind):
-                try:
-                    kind.check_value(value)
-                except TypeError as exc:
-                    raise TypeError(f"{item}: {exc}") from None
+            try:
+                kind.check_value(value)
+            except TypeError as exc:
+                raise TypeError(f"{item}: {exc}") from None
             if isinstance(value, Decimal) and not value.is_finite():
                 raise InvalidRecordError(f"{item}: {kind.identifier} must be finite, got {value}")
             if kind.is_below_floor(value):
