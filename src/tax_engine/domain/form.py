@@ -56,19 +56,18 @@ class FormComposition:
 
     Built from the manifest's `Form` (name, limits, `exports`, `instances`) and the kinds that
     resolve its names; the `instances` kind must be a record list, else an InvalidCompositionError.
-    The inner composition returns the exports. Its inputs are the kinds of
-    `starting` (the starting artifacts of the computation) that the form's capabilities consume or
-    export, plus the fields of `instances` if it has any, plus, always, its imports. A form that
-    reads its own `<form>.<export>` gets, in each run, a record list of that export over the runs
-    before it, in run order (empty in the first). A field of `instances` that is also among
-    `starting` is an InvalidCompositionError: one kind, two values.
+    The inner composition returns the exports. Its inputs are the kinds of `starting` (the
+    starting artifacts of the computation) that the form's capabilities consume or export, plus
+    the fields of `instances` if it has any, plus, always, its imports. A form that reads its own
+    `<form>.<export>` gets, in each run, a record list of that export over the runs before it, in
+    run order (empty in the first). A field of `instances` that is also among `starting` is an
+    InvalidCompositionError: one kind, two values.
     An export of a `Decimal` or `int` kind or a record-list kind is also readable by every form as
     `<form>.<export>`; one of another kind (a rate, digits) is only on the form's worksheets.
-    Any breach of the rules of `Composition`, an empty `exports`, an export that is another form's,
-    a `max_instances` below 1, a `min_instances` below 0 or above `max_instances`, or a
-    `min_instances` above 1 on a form without an instances list (its default list has one instance)
-    or a malformed `exclusive_group` is an InvalidCompositionError. The form is always named in the
-    message (`form 'x': ...`).
+    Any breach of the rules of `Composition` is an InvalidCompositionError naming the form
+    (`form 'x': ...`). The rules of the `Form` itself (exports that are not empty and not another
+    form's, the limits, a well-formed `exclusive_group`) were checked when it was declared and are
+    an InvalidManifestError there.
     `max_instances`, `min_instances` and `exclusive_group` are the limits the `FormSet` enforces on
     the instances.
     """

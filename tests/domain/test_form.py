@@ -30,7 +30,7 @@ from typing import Any, ClassVar
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
@@ -47,6 +47,7 @@ from tax_engine.domain.errors import (
     InvalidManifestError,
     MissingArtifactError,
     NotFoundError,
+    UnknownRegistrationError,
     ValidationError,
 )
 from tax_engine.domain.form import FormComposition, FormSet
@@ -281,6 +282,19 @@ def test_an_export_that_is_another_forms_export_is_refused() -> None:
 def test_a_form_must_export_something() -> None:
     with pytest.raises(InvalidManifestError, match="ex/shop.*exports"):
         composition("ex/shop", [Subtract(SALES, COSTS, PROFIT)], instances=SHOPS, exports=[])
+
+
+def test_a_name_the_kinds_lack_is_refused() -> None:
+    declared = Form(
+        name="ex/shop",
+        instances=None,
+        exports=("ex/profit",),
+        capabilities=(),
+        required=True,
+    )
+
+    with pytest.raises(UnknownRegistrationError, match="ex/profit"):
+        FormComposition(declared, [], kinds=ArtifactRegistry())
 
 
 def test_instances_that_are_not_a_record_list_are_refused_naming_the_form() -> None:
