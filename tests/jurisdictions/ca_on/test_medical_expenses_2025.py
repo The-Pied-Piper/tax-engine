@@ -29,9 +29,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.claim_reduction import CLAIM_REDUCTION, ClaimReduction
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -57,9 +58,9 @@ D1_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-
 
 # Made up for this test and not registered: the net income (line 23600), the share of it on
 # line 108 and the threshold of line 109.
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-SHARE = ArtifactKind("ex/share", Decimal)
-THRESHOLD = ArtifactKind("ex/threshold", Decimal)
+NET_INCOME = AmountKind("ex/net_income")
+SHARE = AmountKind("ex/share")
+THRESHOLD = AmountKind("ex/threshold")
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 

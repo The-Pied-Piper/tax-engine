@@ -26,9 +26,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -50,14 +51,14 @@ D1_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-
 
 # Made up for this test and not registered: the four amounts the conditions read in their order,
 # the count, the adjusted net income of line 15 and line 18 (15% of line 17).
-LINE_11900 = ArtifactKind("ex/line_11900", Decimal)
-LINE_23400 = ArtifactKind("ex/line_23400", Decimal)
-LINE_11300 = ArtifactKind("ex/line_11300", Decimal)
-LINE_14600 = ArtifactKind("ex/line_14600", Decimal)
-APPLIES = ArtifactKind("ex/chart_applies", int)
-LINE_17 = ArtifactKind("ex/line_17", Decimal)
-LINE_18 = ArtifactKind("ex/line_18", Decimal)
-BASE = ArtifactKind("ex/oas_base", Decimal)
+LINE_11900 = AmountKind("ex/line_11900")
+LINE_23400 = AmountKind("ex/line_23400")
+LINE_11300 = AmountKind("ex/line_11300")
+LINE_14600 = AmountKind("ex/line_14600")
+APPLIES = CountKind("ex/chart_applies")
+LINE_17 = AmountKind("ex/line_17")
+LINE_18 = AmountKind("ex/line_18")
+BASE = AmountKind("ex/oas_base")
 
 AMOUNTS = (LINE_11900, LINE_23400, LINE_11300, LINE_14600)
 

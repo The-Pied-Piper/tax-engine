@@ -22,8 +22,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -52,10 +53,10 @@ REFUSED_TEXT = (
 
 # Made up for this test and not registered: the spouse count, the dependant count, the count of
 # both and its checked count.
-SPOUSES = ArtifactKind("ex/spouses_claimed", int)
-DEPENDANTS = ArtifactKind("ex/eligible_dependants_checked", int)
-BOTH = ArtifactKind("ex/spouse_and_dependant_both", int)
-BOTH_CHECKED = ArtifactKind("ex/spouse_and_dependant_both_checked", int)
+SPOUSES = CountKind("ex/spouses_claimed")
+DEPENDANTS = CountKind("ex/eligible_dependants_checked")
+BOTH = CountKind("ex/spouse_and_dependant_both")
+BOTH_CHECKED = CountKind("ex/spouse_and_dependant_both_checked")
 
 
 def _more_than_0(position: int) -> ConditionPart:

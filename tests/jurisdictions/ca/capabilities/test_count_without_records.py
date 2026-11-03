@@ -31,17 +31,18 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import BlankPassedOnLine, CountWithoutRecordsLine
 from tax_engine.jurisdictions.ca.capabilities.count_without_records import CountWithoutRecords
 
 D = Decimal
 
-WIDGET_AMOUNT = ArtifactKind("ex/widget_amount", Decimal, non_negative=True)
-COUNT = ArtifactKind("ex/widget_count", int)
+WIDGET_AMOUNT = AmountKind("ex/widget_amount", non_negative=True)
+COUNT = CountKind("ex/widget_count")
 RECORDS = RecordListKind("ex/widget_records", fields=(WIDGET_AMOUNT,))
-OUTPUT = ArtifactKind("ex/widget_checked", int)
-MONEY = ArtifactKind("ex/money", Decimal)
+OUTPUT = CountKind("ex/widget_checked")
+MONEY = AmountKind("ex/money")
 
 
 def capability() -> CountWithoutRecords:
@@ -202,7 +203,7 @@ def test_a_record_of_zero_amount_is_still_a_record_and_refuses_a_count() -> None
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", int), 9)
+    other = Artifact(CountKind("ex/other"), 9)
 
     assert capability().compute((other, *inputs(4))).outputs == (Artifact(OUTPUT, 4),)
 

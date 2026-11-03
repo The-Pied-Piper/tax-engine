@@ -28,7 +28,7 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.capabilities as canada
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
@@ -38,6 +38,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -61,7 +62,7 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 MESSAGE = r"This total cannot be more than \$1,200\."
 
 # Made up for this test and not registered: the total the capability produces.
-TOTAL = ArtifactKind("ex/allocated_total", Decimal)
+TOTAL = AmountKind("ex/allocated_total")
 
 
 def maximum(value: str = "1200") -> ParameterDataset[Amount]:
@@ -306,14 +307,14 @@ def test_records_each_individuals_row_c_by_its_position_then_the_total() -> None
 
 def test_refuses_a_money_kind_for_its_record_list() -> None:
     with pytest.raises(InvalidCapabilityError, match="ChartARowCTotal") as raised:
-        ChartARowCTotal(maximum(), ArtifactKind("ex/not_a_list", Decimal), TOTAL)  # type: ignore[arg-type]
+        ChartARowCTotal(maximum(), AmountKind("ex/not_a_list"), TOTAL)  # type: ignore[arg-type]
 
     assert "'individuals'" in str(raised.value)
 
 
 def test_refuses_a_count_kind_for_its_total() -> None:
     with pytest.raises(InvalidCapabilityError, match="ChartARowCTotal") as raised:
-        ChartARowCTotal(maximum(), TRAVEL_INDIVIDUALS, ArtifactKind("ex/a_count", int))  # type: ignore[arg-type]
+        ChartARowCTotal(maximum(), TRAVEL_INDIVIDUALS, CountKind("ex/a_count"))  # type: ignore[arg-type]
 
     assert "'total'" in str(raised.value)
 

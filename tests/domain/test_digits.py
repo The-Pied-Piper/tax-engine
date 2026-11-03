@@ -26,6 +26,7 @@ from tax_engine.domain.errors import (
     InvalidRegistrationError,
     InvalidTextError,
 )
+from tax_engine.domain.kinds import CountKind, TextKind
 from tax_engine.domain.registry import Namespace
 
 NUMBER = DigitsKind("ex/business_number", digits=9)
@@ -119,7 +120,7 @@ def test_an_invalid_text_is_a_domain_error() -> None:
 
 def test_a_plain_str_kind_is_not_checked_for_digits() -> None:
     # Only a DigitsKind checks its text; the base kind accepts every instance of its value type.
-    assert Artifact(ArtifactKind("ex/note", str), "anything").value == "anything"
+    assert Artifact(TextKind("ex/note"), "anything").value == "anything"
 
 
 # --- DigitsKind and DigitsKind.declare ------------------------------------------------------
@@ -158,7 +159,8 @@ def test_digits_kinds_are_told_apart_by_their_number_of_digits() -> None:
 
 
 def test_a_digits_kind_is_not_a_plain_str_kind_of_the_same_identifier() -> None:
-    assert NUMBER != ArtifactKind("ex/business_number", str)
+    other: ArtifactKind[Any] = TextKind("ex/business_number")
+    assert NUMBER != other
 
 
 def test_declaring_a_digits_kind_registers_nothing(fresh: ArtifactRegistry) -> None:
@@ -169,7 +171,7 @@ def test_declaring_a_digits_kind_registers_nothing(fresh: ArtifactRegistry) -> N
 
 def test_a_declared_digits_kind_registers_with_its_catalog(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    count = catalog.declare("partner_count", int)
+    count = CountKind.declare(catalog, "partner_count")
     kind = DigitsKind.declare(catalog, "business_number", digits=9)
     registry = ArtifactRegistry()
 
@@ -214,7 +216,7 @@ def test_a_digits_kind_built_directly_refuses_a_number_of_digits_that_is_not_a_p
 
 def test_declare_refuses_a_local_id_already_declared(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    first = catalog.declare("business_number", int)
+    first = CountKind.declare(catalog, "business_number")
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/business_number'"):
         DigitsKind.declare(catalog, "business_number", digits=9)

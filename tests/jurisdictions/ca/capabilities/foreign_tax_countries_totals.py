@@ -22,6 +22,7 @@ from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -35,7 +36,7 @@ from tests.manifest_support import required_inputs
 D = Decimal
 
 # Made up for this test and not registered: the total a capability produces.
-TOTAL = ArtifactKind("ex/foreign_tax_countries_total", Decimal)
+TOTAL = AmountKind("ex/foreign_tax_countries_total")
 
 
 def country(field: ArtifactKind[Any], amount: str) -> dict[Any, Any]:
@@ -198,13 +199,13 @@ class ForeignTaxCountriesTotalCases:
 
     def test_refuses_a_money_kind_for_its_record_list(self) -> None:
         with pytest.raises(InvalidCapabilityError, match=self.CAPABILITY.__name__) as raised:
-            self.CAPABILITY(ArtifactKind("ex/not_a_list", Decimal), TOTAL)
+            self.CAPABILITY(AmountKind("ex/not_a_list"), TOTAL)
 
         assert "'countries'" in str(raised.value)
 
     def test_refuses_a_count_kind_for_its_output(self) -> None:
         with pytest.raises(InvalidCapabilityError, match=self.CAPABILITY.__name__) as raised:
-            self.CAPABILITY(FOREIGN_TAX_COUNTRIES, ArtifactKind("ex/a_count", int))
+            self.CAPABILITY(FOREIGN_TAX_COUNTRIES, CountKind("ex/a_count"))
 
         assert "'output'" in str(raised.value)
 

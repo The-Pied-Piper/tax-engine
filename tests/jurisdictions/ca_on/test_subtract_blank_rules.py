@@ -20,6 +20,7 @@ from tax_engine.domain.blank import BLANK, PASS_ON, BlankRule
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 from tests.kinds import bundled_kinds
@@ -71,9 +72,9 @@ def rules(step: CapabilitySelection) -> dict[str, BlankRule]:
 def wired(
     step: CapabilitySelection,
 ) -> tuple[Subtract, ArtifactKind[Decimal], ArtifactKind[Decimal]]:
-    gross = ArtifactKind("ex/gross", Decimal)
-    reduction = ArtifactKind("ex/reduction", Decimal)
-    net = ArtifactKind("ex/net", Decimal)
+    gross = AmountKind("ex/gross")
+    reduction = AmountKind("ex/reduction")
+    net = AmountKind("ex/net")
     return Subtract(gross, reduction, net).with_blank_rules(rules(step)), gross, reduction
 
 

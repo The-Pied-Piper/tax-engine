@@ -24,9 +24,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.contribution_tier import TieredContribution
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import Rate
@@ -44,8 +45,8 @@ RATES_PAGE = (
 HALF_UP_TO_THE_CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for this test and not registered: the earnings the tier reads, and its premium.
-EARNINGS = ArtifactKind("ex/earnings", Decimal)
-AMOUNT = ArtifactKind("ex/amount", Decimal)
+EARNINGS = AmountKind("ex/earnings")
+AMOUNT = AmountKind("ex/amount")
 
 
 def test_2025_tier_is_1_64_percent_of_up_to_65700_at_most_1077_48() -> None:

@@ -30,11 +30,12 @@ import pytest
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.capabilities as canada
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -56,7 +57,7 @@ from tests.manifest_support import required_inputs
 D = Decimal
 
 # Made up for this test and not registered: the total the capability produces.
-TOTAL = ArtifactKind("ex/column_g_total", Decimal)
+TOTAL = AmountKind("ex/column_g_total")
 
 
 def year_row(a: str = "0", b: str = "0", c: str = "0", d: str = "0") -> dict[Any, Any]:
@@ -153,14 +154,14 @@ def test_is_not_generic_over_artifacts() -> None:
 
 def test_refuses_a_money_kind_for_its_record_list() -> None:
     with pytest.raises(InvalidCapabilityError, match="Chart1ColumnGTotal") as raised:
-        Chart1ColumnGTotal(ArtifactKind("ex/not_a_list", Decimal), TOTAL)  # type: ignore[arg-type]
+        Chart1ColumnGTotal(AmountKind("ex/not_a_list"), TOTAL)  # type: ignore[arg-type]
 
     assert "'rows'" in str(raised.value)
 
 
 def test_refuses_a_count_kind_for_its_total() -> None:
     with pytest.raises(InvalidCapabilityError, match="Chart1ColumnGTotal") as raised:
-        Chart1ColumnGTotal(T657_CHART_1_ROWS, ArtifactKind("ex/a_count", int))  # type: ignore[arg-type]
+        Chart1ColumnGTotal(T657_CHART_1_ROWS, CountKind("ex/a_count"))  # type: ignore[arg-type]
 
     assert "'total'" in str(raised.value)
 

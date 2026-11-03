@@ -34,9 +34,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
@@ -294,10 +295,10 @@ CREDITS = {
 ROUNDING_FAMILIES = ("ca/t657_chart_2_line_16_rounding",)
 
 # Made up for this test and not registered.
-BASE = ArtifactKind("ex/base", Decimal)
-PRODUCT = ArtifactKind("ex/product", Decimal)
-NUMERATOR = ArtifactKind("ex/numerator", Decimal)
-DENOMINATOR = ArtifactKind("ex/denominator", Decimal)
+BASE = AmountKind("ex/base")
+PRODUCT = AmountKind("ex/product")
+NUMERATOR = AmountKind("ex/numerator")
+DENOMINATOR = AmountKind("ex/denominator")
 
 
 def test_2025_the_2_of_2_x_ir_is_an_exact_fraction_of_2_over_1_with_no_rounding() -> None:

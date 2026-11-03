@@ -48,10 +48,11 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.contribution_tier import TieredContribution
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT
 from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
@@ -87,8 +88,8 @@ SELF_EMPLOYED_SECOND_ADDITIONAL = "ca/cpp_self_employed_second_additional_contri
 SELF_EMPLOYED_CREDIT_RATE = "ca/cpp_self_employed_base_credit_rate"
 
 # Made up for this test and not registered.
-EARNINGS = ArtifactKind("ex/earnings", Decimal)
-CONTRIBUTION = ArtifactKind("ex/contribution", Decimal)
+EARNINGS = AmountKind("ex/earnings")
+CONTRIBUTION = AmountKind("ex/contribution")
 
 # Part 2's "Monthly proration for 2025" table as printed, by number of months: maximum
 # pensionable earnings, maximum amount subject to second additional contributions, additional

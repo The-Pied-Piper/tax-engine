@@ -7,13 +7,13 @@ from decimal import Decimal
 import tax_engine.adapters.inbound.trace_english.blank as english_blank
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.inbound.trace_english.registry import EnglishRendererRegistry
-from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, LeftBlankLine, TraceLine
 
-CHART_GAIN = ArtifactKind("ex/chart_gain", Decimal)
-LIMIT = ArtifactKind("ex/limit", Decimal)
-DEDUCTION = ArtifactKind("ex/deduction", Decimal)
-HOUSEHOLD = ArtifactKind("ex/household_count", int)
+CHART_GAIN = AmountKind("ex/chart_gain")
+LIMIT = AmountKind("ex/limit")
+DEDUCTION = AmountKind("ex/deduction")
+HOUSEHOLD = CountKind("ex/household_count")
 
 
 def render(line: TraceLine) -> str:

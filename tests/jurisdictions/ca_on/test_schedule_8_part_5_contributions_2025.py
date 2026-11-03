@@ -37,10 +37,11 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.contribution_tier import TieredContribution
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -68,11 +69,11 @@ FIRST_ADDITIONAL_TIER = "ca/cpp_self_employed_first_additional_contribution"
 SECOND_ADDITIONAL_TIER = "ca/cpp_self_employed_second_additional_contribution"
 
 # Made up for this test and not registered.
-AMOUNT_1 = ArtifactKind("ex/amount_1", Decimal)
-AMOUNT_2 = ArtifactKind("ex/amount_2", Decimal)
-APPLIES = ArtifactKind("ex/applies", int)
-LINE_IN = ArtifactKind("ex/line_in", Decimal)
-LINE_OUT = ArtifactKind("ex/line_out", Decimal)
+AMOUNT_1 = AmountKind("ex/amount_1")
+AMOUNT_2 = AmountKind("ex/amount_2")
+APPLIES = CountKind("ex/applies")
+LINE_IN = AmountKind("ex/line_in")
+LINE_OUT = AmountKind("ex/line_out")
 
 
 def conditions_dataset(family: str) -> Any:

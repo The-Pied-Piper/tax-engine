@@ -23,7 +23,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
@@ -47,12 +48,12 @@ LINE_1_FAMILY = "ca/t2204_line_1_conditions"
 LINE_15_FAMILY = "ca/t2204_line_15_conditions"
 
 # Made up for this test and not registered: the amounts and the counts the capabilities read.
-SELF_EMPLOYMENT = ArtifactKind("ex/t2204_self_employment_earnings", Decimal)
-EXEMPTION = ArtifactKind("ex/t2204_exemption", Decimal)
-INSURABLE = ArtifactKind("ex/t2204_insurable_earnings", Decimal)
-HAS_NOTE_1 = ArtifactKind("ex/t2204_line_1_count", int)
-LINE_15 = ArtifactKind("ex/t2204_line_15", Decimal)
-LINE_15_IS_OVER_1 = ArtifactKind("ex/t2204_line_15_count", int)
+SELF_EMPLOYMENT = AmountKind("ex/t2204_self_employment_earnings")
+EXEMPTION = AmountKind("ex/t2204_exemption")
+INSURABLE = AmountKind("ex/t2204_insurable_earnings")
+HAS_NOTE_1 = CountKind("ex/t2204_line_1_count")
+LINE_15 = AmountKind("ex/t2204_line_15")
+LINE_15_IS_OVER_1 = CountKind("ex/t2204_line_15_count")
 
 
 def test_2025_the_exemption_is_2000_claimed_whole() -> None:

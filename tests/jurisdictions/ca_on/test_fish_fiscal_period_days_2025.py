@@ -37,8 +37,9 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.class_rates import CLASS_RATES
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.capabilities.cca_claim_prorated import CcaClaimProrated
@@ -65,9 +66,9 @@ RATES = SOURCE.get("ca/cca_class_rates", 2025, CLASS_RATES)
 
 # Made up for this test and not registered: the days entered, the days of the fiscal period, the
 # claim and the closing UCC.
-ENTERED = ArtifactKind("ex/fish_fiscal_period_days_entered", int)
-DAYS = ArtifactKind("ex/fish_fiscal_period_days", int)
-CLAIM = ArtifactKind("ex/fish_cca_claim", Decimal)
+ENTERED = CountKind("ex/fish_fiscal_period_days_entered")
+DAYS = CountKind("ex/fish_fiscal_period_days")
+CLAIM = AmountKind("ex/fish_cca_claim")
 
 FISH = {"fish_products": "49150", "vehicle_sales_tax_rate": "13"}
 

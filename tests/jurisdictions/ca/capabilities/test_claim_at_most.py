@@ -28,14 +28,15 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import ClaimAtMostLine
 from tax_engine.jurisdictions.ca.capabilities.claim_at_most import ClaimAtMost
 
 D = Decimal
 
-CLAIM = ArtifactKind("ex/widget_claim", Decimal)
-MAXIMUM = ArtifactKind("ex/widget_maximum", Decimal)
-OUTPUT = ArtifactKind("ex/widget_claimed", Decimal)
+CLAIM = AmountKind("ex/widget_claim")
+MAXIMUM = AmountKind("ex/widget_maximum")
+OUTPUT = AmountKind("ex/widget_claimed")
 
 
 def capability() -> ClaimAtMost:
@@ -130,7 +131,7 @@ def test_rejects_a_list_of_kinds_for_its_claim() -> None:
 
 
 def test_mypy_rejects_wiring_a_count_kind_for_a_maximum() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not an ArtifactKind[Decimal]; the ignore fails under mypy
     # (warn_unused_ignores) if it is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="ClaimAtMost.*'maximum'"):
@@ -168,7 +169,7 @@ def test_a_zero_claim_keeps_its_scale_against_a_negative_maximum() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     assert capability().compute((other, *inputs("1", "4"))).outputs == (Artifact(OUTPUT, D("1")),)
 

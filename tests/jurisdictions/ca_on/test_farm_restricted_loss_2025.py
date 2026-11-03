@@ -26,8 +26,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -45,9 +46,9 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for this test and not registered: the figure a credit dataset gives, the amount the
 # percentage is taken of and the result.
-FIGURE = ArtifactKind("ex/printed_figure", Decimal)
-EXCESS = ArtifactKind("ex/excess", Decimal)
-HALF = ArtifactKind("ex/half", Decimal)
+FIGURE = AmountKind("ex/printed_figure")
+EXCESS = AmountKind("ex/excess")
+HALF = AmountKind("ex/half")
 FIGURES = [
     (BASE_AMOUNT, "2500"),
     (FULL_THRESHOLD, "32500"),

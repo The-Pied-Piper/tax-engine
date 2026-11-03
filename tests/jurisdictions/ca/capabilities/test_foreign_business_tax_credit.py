@@ -45,6 +45,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -125,8 +126,7 @@ BY_LINE = {line: (cls, local_id, trace) for line, cls, local_id, trace in LINES}
 
 # Line 10 is "Line 8 minus line 9" and is signed; the other outputs are not.
 OUTPUTS: dict[int, ArtifactKind[Decimal]] = {
-    line: ArtifactKind(f"ex/business_line_{line}", Decimal, non_negative=line != 10)
-    for line in LINE_NUMBERS
+    line: AmountKind(f"ex/business_line_{line}", non_negative=line != 10) for line in LINE_NUMBERS
 }
 
 by_line = pytest.mark.parametrize("line", LINE_NUMBERS, ids=[f"line_{n}" for n in LINE_NUMBERS])
@@ -561,7 +561,7 @@ def test_a_zero_net_income_is_worked_when_computing_not_when_wiring(line: int) -
 
 @by_line
 def test_ignores_artifacts_it_does_not_consume(line: int) -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = capability(line).compute((other, *sheets_given(SHEET_A)))
 

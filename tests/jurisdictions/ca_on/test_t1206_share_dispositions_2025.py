@@ -22,9 +22,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.amount_by_count import AmountForCount
 from tax_engine.domain.errors import NoAmountForCountError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
@@ -47,8 +48,8 @@ AGED_18_OR_OLDER_PRINTED = {0: "0", 1: "50"}
 
 # Made up for this test and not registered: the count and the output the capability reads and
 # produces.
-YEARS = ArtifactKind("ex/years_after_sale", int)
-OUTPUT = ArtifactKind("ex/percentage", Decimal)
+YEARS = CountKind("ex/years_after_sale")
+OUTPUT = AmountKind("ex/percentage")
 
 
 def rows_of(name: str) -> dict[int, Decimal]:

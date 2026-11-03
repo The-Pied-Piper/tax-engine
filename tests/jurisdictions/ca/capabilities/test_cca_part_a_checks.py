@@ -25,9 +25,10 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.cca_part_a_checks import CcaPartAChecks
 from tax_engine.jurisdictions.ca.catalog import (
@@ -210,4 +211,4 @@ def test_is_built_from_its_slot_names_as_keywords() -> None:
 
 def test_rejects_a_money_kind_for_its_output() -> None:
     with pytest.raises(InvalidCapabilityError, match="CcaPartAChecks.*'output'"):
-        CcaPartAChecks(CLASSES, ArtifactKind("ex/other_amount", Decimal))  # type: ignore[arg-type]
+        CcaPartAChecks(CLASSES, AmountKind("ex/other_amount"))  # type: ignore[arg-type]

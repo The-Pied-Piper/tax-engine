@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rate_table import RATE_TABLE, RateTable, RateTableRow
@@ -18,7 +18,7 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule
 
 D = Decimal
 
-FAMILY_INCOME = ArtifactKind("ex/family_adjusted_income", Decimal)
+FAMILY_INCOME = AmountKind("ex/family_adjusted_income")
 
 # (more than, not more than, rate), as printed: "more than $0 but not more than $20,000: 75%", ...
 ON479A_ROWS: tuple[tuple[str, str | None, str], ...] = (

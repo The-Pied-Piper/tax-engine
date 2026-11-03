@@ -52,6 +52,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.class_rates import CLASS_RATES
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import (
@@ -71,10 +72,10 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 DOLLAR = RoundTo(D("1"), RoundingMode.HALF_UP)
 
-LIMIT = ArtifactKind("ex/limit", Decimal)
-DAYS = ArtifactKind("ex/fiscal_period_days", int)
-SHORT_YEAR = ArtifactKind("ex/short_year_days", Decimal)
-PRORATED = ArtifactKind("ex/limit_prorated", Decimal)
+LIMIT = AmountKind("ex/limit")
+DAYS = CountKind("ex/fiscal_period_days")
+SHORT_YEAR = AmountKind("ex/short_year_days")
+PRORATED = AmountKind("ex/limit_prorated")
 
 
 def rounding(rule: RoundingRule = CENT) -> ParameterDataset[RoundingOnly]:
@@ -186,14 +187,14 @@ def test_is_built_from_its_slot_names_as_keywords() -> None:
 
 
 def test_rejects_an_int_kind_for_the_amount() -> None:
-    int_kind = cast("Money", ArtifactKind("ex/count", int))
+    int_kind = cast("Money", CountKind("ex/count"))
 
     with pytest.raises(InvalidCapabilityError, match="ProratedByFiscalPeriodDays.*'amount'"):
         ProratedByFiscalPeriodDays(rounding(), class_rates(), int_kind, DAYS, SHORT_YEAR, PRORATED)
 
 
 def test_rejects_a_money_kind_for_the_days() -> None:
-    money_kind = cast("ArtifactKind[int]", ArtifactKind("ex/money", Decimal))
+    money_kind = cast("ArtifactKind[int]", AmountKind("ex/money"))
 
     with pytest.raises(
         InvalidCapabilityError, match="ProratedByFiscalPeriodDays.*'fiscal_period_days'"
@@ -204,7 +205,7 @@ def test_rejects_a_money_kind_for_the_days() -> None:
 
 
 def test_rejects_an_int_kind_for_the_short_year_days() -> None:
-    int_kind = cast("Money", ArtifactKind("ex/short_count", int))
+    int_kind = cast("Money", CountKind("ex/short_count"))
 
     with pytest.raises(
         InvalidCapabilityError, match="ProratedByFiscalPeriodDays.*'short_year_days'"

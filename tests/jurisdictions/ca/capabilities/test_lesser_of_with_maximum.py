@@ -36,6 +36,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
@@ -54,10 +55,10 @@ from tests.manifest_support import required_inputs
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
-PART_ONE = ArtifactKind("ex/part_one", Decimal)
-PART_TWO = ArtifactKind("ex/part_two", Decimal)
-PART_THREE = ArtifactKind("ex/part_three", Decimal)
-OUTPUT = ArtifactKind("ex/out", Decimal)
+PART_ONE = AmountKind("ex/part_one")
+PART_TWO = AmountKind("ex/part_two")
+PART_THREE = AmountKind("ex/part_three")
+OUTPUT = AmountKind("ex/out")
 
 
 def maximum(value: str = "2000", rounding: RoundingRule = NO_ROUNDING) -> ParameterDataset[Amount]:
@@ -171,7 +172,7 @@ def test_rejects_a_single_kind_for_its_amounts() -> None:
 
 
 def test_rejects_an_amount_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="LesserOfWithMaximum.*'amounts'"):
         LesserOfWithMaximum(maximum(), (PART_ONE, count), OUTPUT)  # type: ignore[arg-type]
@@ -309,7 +310,7 @@ def test_a_negative_amount_is_the_lesser() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("1"))
+    other = Artifact(AmountKind("ex/other"), D("1"))
 
     result = capability().compute((other, *inputs((PART_ONE, "150"), (PART_TWO, "80"))))
 

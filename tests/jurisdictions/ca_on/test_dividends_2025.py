@@ -28,9 +28,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -54,10 +55,10 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 # Made up for this test and not registered: the actual dividends received (Federal Worksheet lines
 # 11 and 14) and their grossed-up amount (lines 13 and 16), and the amount a credit rate is
 # applied to (lines B and C) and its credit.
-RECEIVED = ArtifactKind("ex/received", Decimal)
-GROSSED_UP = ArtifactKind("ex/grossed_up", Decimal)
-BASE = ArtifactKind("ex/base", Decimal)
-CREDIT = ArtifactKind("ex/credit", Decimal)
+RECEIVED = AmountKind("ex/received")
+GROSSED_UP = AmountKind("ex/grossed_up")
+BASE = AmountKind("ex/base")
+CREDIT = AmountKind("ex/credit")
 
 
 def test_2025_eligible_dividend_gross_up_is_138_over_100() -> None:

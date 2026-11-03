@@ -37,6 +37,7 @@ from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBe
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -50,24 +51,24 @@ OTHER_CREDIT_RATE = "ca/split_income_dividend_credit_rate_other_than_eligible"
 ELIGIBLE_CREDIT_RATE = "ca/split_income_dividend_credit_rate_eligible"
 
 # Made up for this test and not registered: the form's lines, by number.
-LINE_1 = ArtifactKind("ex/line_1", Decimal)
-LINE_2 = ArtifactKind("ex/line_2", Decimal)
-LINE_3 = ArtifactKind("ex/line_3", Decimal)
-LINE_4 = ArtifactKind("ex/line_4", Decimal)
-LINE_8 = ArtifactKind("ex/line_8", Decimal)
-LINE_9 = ArtifactKind("ex/line_9", Decimal)
-LINE_10 = ArtifactKind("ex/line_10", Decimal)
-LINE_13 = ArtifactKind("ex/line_13", Decimal)
-LINE_14 = ArtifactKind("ex/line_14", Decimal)
-LINE_15 = ArtifactKind("ex/line_15", Decimal)
-LINE_18 = ArtifactKind("ex/line_18", Decimal)
-LINE_19 = ArtifactKind("ex/line_19", Decimal)
-LINE_20 = ArtifactKind("ex/line_20", Decimal)
-LINE_21 = ArtifactKind("ex/line_21", Decimal)
-LINE_22 = ArtifactKind("ex/line_22", Decimal)
-LINE_24 = ArtifactKind("ex/line_24", Decimal)
-LINE_29 = ArtifactKind("ex/line_29", Decimal)
-LINE_30 = ArtifactKind("ex/line_30", Decimal)
+LINE_1 = AmountKind("ex/line_1")
+LINE_2 = AmountKind("ex/line_2")
+LINE_3 = AmountKind("ex/line_3")
+LINE_4 = AmountKind("ex/line_4")
+LINE_8 = AmountKind("ex/line_8")
+LINE_9 = AmountKind("ex/line_9")
+LINE_10 = AmountKind("ex/line_10")
+LINE_13 = AmountKind("ex/line_13")
+LINE_14 = AmountKind("ex/line_14")
+LINE_15 = AmountKind("ex/line_15")
+LINE_18 = AmountKind("ex/line_18")
+LINE_19 = AmountKind("ex/line_19")
+LINE_20 = AmountKind("ex/line_20")
+LINE_21 = AmountKind("ex/line_21")
+LINE_22 = AmountKind("ex/line_22")
+LINE_24 = AmountKind("ex/line_24")
+LINE_29 = AmountKind("ex/line_29")
+LINE_30 = AmountKind("ex/line_30")
 
 
 def only(result: CapabilityResult) -> Artifact[Decimal]:

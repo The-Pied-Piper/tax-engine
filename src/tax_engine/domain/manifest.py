@@ -179,9 +179,7 @@ class Form:
         return tuple(
             RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
             for export in exports
-            if issubclass(export.value_type, Decimal)
-            or export.value_type is int
-            or isinstance(export, RecordListKind)
+            if export.is_record_field
         )
 
     def __post_init__(self) -> None:
@@ -386,7 +384,7 @@ class Manifest:
                 self._check_fields(form, kinds.kind(form.instances))
             if form.required_when is not None:
                 kind = kinds.kind(form.required_when)
-                if kind.value_type is not int or not kind.non_negative:
+                if not kind.is_yes_no:
                     raise InvalidManifestError(
                         f"form {form.name!r}: required_when {form.required_when!r} is not a "
                         "yes/no: it must be a count, 1 for yes and 0 for no"

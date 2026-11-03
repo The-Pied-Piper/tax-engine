@@ -34,6 +34,7 @@ from tax_engine.domain.errors import (
     InvalidCompositionError,
     NegativeArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -42,11 +43,11 @@ from tax_engine.domain.trace import BracketColumnLine, RoundedTotalLine, TraceLi
 from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
-A = ArtifactKind("ex/a", Decimal)
-B = ArtifactKind("ex/b", Decimal)
-C = ArtifactKind("ex/c", Decimal)
-E = ArtifactKind("ex/e", Decimal)
-F = ArtifactKind("ex/f", Decimal)
+A = AmountKind("ex/a")
+B = AmountKind("ex/b")
+C = AmountKind("ex/c")
+E = AmountKind("ex/e")
+F = AmountKind("ex/f")
 ZERO = D(0)
 
 
@@ -210,8 +211,8 @@ def test_accepts_any_iterable_of_capabilities() -> None:
 
 
 def test_wires_by_kind_equality_not_identity() -> None:
-    first = Link(A, ArtifactKind("ex/b", Decimal))
-    second = Link(ArtifactKind("ex/b", Decimal), C)
+    first = Link(A, AmountKind("ex/b"))
+    second = Link(AmountKind("ex/b"), C)
 
     composition = Composition([second, first], inputs=kinds(A), outputs=kinds(C))
 
@@ -224,7 +225,7 @@ def test_rejects_a_consumed_kind_nothing_produces() -> None:
 
 
 def test_rejects_a_consumed_kind_produced_only_with_another_value_type() -> None:
-    b_as_int = ArtifactKind("ex/b", int)
+    b_as_int = CountKind("ex/b")
     producer = IntLink(A, b_as_int)
     consumer = Link(B, C)
 
@@ -470,7 +471,7 @@ def test_ties_between_instances_of_one_class_are_broken_by_what_they_produce() -
 
 
 def test_ties_between_kinds_sharing_an_identifier_are_broken_by_value_type() -> None:
-    b_as_int = ArtifactKind("ex/b", int)
+    b_as_int = CountKind("ex/b")
     to_decimal, to_int = Link(A, B), IntLink(A, b_as_int)
 
     for given in ([to_decimal, to_int], [to_int, to_decimal]):
@@ -570,7 +571,7 @@ def test_compute_names_the_value_type_of_a_starting_artifact_of_the_wrong_type()
     composition, _, _ = chain_composition()
 
     with pytest.raises(InvalidCompositionError, match="'a'") as raised:
-        composition.compute(Artifact(ArtifactKind("ex/a", int), 2))
+        composition.compute(Artifact(CountKind("ex/a"), 2))
 
     message = str(raised.value)
     assert "int" in message
@@ -578,7 +579,7 @@ def test_compute_names_the_value_type_of_a_starting_artifact_of_the_wrong_type()
 
 
 def test_sort_key_orders_by_identifier_then_value_type_name() -> None:
-    as_int = ArtifactKind("ex/a", int)
+    as_int = CountKind("ex/a")
 
     unordered: list[ArtifactKind[Any]] = [B, as_int, A]
 
@@ -627,7 +628,7 @@ def test_check_starting_kinds_reports_extra_before_missing() -> None:
 
 
 def test_value_type_hints_name_the_type_the_input_takes() -> None:
-    as_int = ArtifactKind("ex/a", int)
+    as_int = CountKind("ex/a")
 
     hints = Composition.value_type_hints([as_int, E], kinds(A))
 
@@ -654,8 +655,8 @@ def test_compute_rejects_two_values_for_one_input() -> None:
 
 # --- non-negative kinds ------------------------------------------------------------------------
 
-NON_NEGATIVE_A = ArtifactKind("ex/g", Decimal, non_negative=True)
-NON_NEGATIVE_B = ArtifactKind("ex/h", Decimal, non_negative=True)
+NON_NEGATIVE_A = AmountKind("ex/g", non_negative=True)
+NON_NEGATIVE_B = AmountKind("ex/h", non_negative=True)
 
 
 def test_compute_rejects_a_negative_input_for_a_non_negative_kind_naming_the_kind() -> None:
@@ -777,11 +778,11 @@ def test_compute_lets_an_unconstrained_kind_go_negative() -> None:
 
 # --- end to end, with made-up data ---------------------------------------------------------------
 
-TAXABLE_BASE = ArtifactKind("ex/taxable_base", Decimal)
-BASIC_TAX = ArtifactKind("ex/basic_tax", Decimal)
-TAX_AFTER_CREDIT = ArtifactKind("ex/tax_after_credit", Decimal)
-CREDIT_AMOUNTS = ArtifactKind("ex/credit_amounts", Decimal)
-CREDIT = ArtifactKind("ex/credit", Decimal)
+TAXABLE_BASE = AmountKind("ex/taxable_base")
+BASIC_TAX = AmountKind("ex/basic_tax")
+TAX_AFTER_CREDIT = AmountKind("ex/tax_after_credit")
+CREDIT_AMOUNTS = AmountKind("ex/credit_amounts")
+CREDIT = AmountKind("ex/credit")
 
 SOURCES = ("https://example.org/2025",)
 SCHEDULE = ParameterDataset(

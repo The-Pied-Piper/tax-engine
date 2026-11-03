@@ -44,6 +44,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -65,9 +66,9 @@ from tests.manifest_support import required_inputs
 D = Decimal
 FIVE_DECIMALS_DOWN = RoundTo(D("0.00001"), RoundingMode.DOWN)
 
-DIVIDEND = ArtifactKind("ex/part_earned", Decimal)
-DIVISOR = ArtifactKind("ex/all_earned", Decimal)
-OUTPUT = ArtifactKind("ex/earned_share", Rate)
+DIVIDEND = AmountKind("ex/part_earned")
+DIVISOR = AmountKind("ex/all_earned")
+OUTPUT = RateKind("ex/earned_share")
 
 
 def rounding(rule: RoundingRule = FIVE_DECIMALS_DOWN) -> ParameterDataset[RoundingOnly]:
@@ -202,7 +203,7 @@ def test_rejects_a_list_of_kinds_for_its_dividend() -> None:
 
 
 def test_mypy_rejects_wiring_a_count_kind_for_the_divisor() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # The ignore fails under mypy (warn_unused_ignores) if an ArtifactKind[int] is ever accepted
     # as money. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="RatioTruncated.*'divisor'"):
@@ -351,7 +352,7 @@ def test_cap_at_one_does_not_change_a_ratio_below_one() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = capability().compute((other, *inputs("1", "2")))
 

@@ -30,13 +30,15 @@ from tax_engine.domain.errors import (
     InvalidRegistrationError,
     NegativeArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.registry import Namespace
+from tests.kinds import OddKind
 
 D = Decimal
-NET_INCOME = ArtifactKind("ex/dependant_net_income", Decimal, non_negative=True)
-MONTHS = ArtifactKind("ex/months_resident", int, non_negative=True)
-ADJUSTMENT = ArtifactKind("ex/adjustment", Decimal)
+NET_INCOME = AmountKind("ex/dependant_net_income", non_negative=True)
+MONTHS = CountKind("ex/months_resident", non_negative=True)
+ADJUSTMENT = AmountKind("ex/adjustment")
 FIELDS = (NET_INCOME, MONTHS)
 
 
@@ -275,7 +277,7 @@ def test_an_unknown_field_is_refused_naming_the_item_and_field() -> None:
 
 def test_a_field_of_the_same_identifier_but_another_value_type_is_unknown() -> None:
     # Fields are kinds: `ex/months_resident` as a Decimal is not the `int` field of that name.
-    impostor = ArtifactKind("ex/months_resident", Decimal)
+    impostor = AmountKind("ex/months_resident")
     bad = {NET_INCOME: D("1"), impostor: D("6")}
 
     with pytest.raises(InvalidRecordError, match=r"item 1: "):
@@ -325,7 +327,7 @@ def test_the_fields_keep_their_declared_order(fresh: ArtifactRegistry) -> None:
 
 def test_a_field_may_come_from_another_packages_catalog(fresh: ArtifactRegistry) -> None:
     parent = ArtifactCatalog(Namespace("ex"))
-    net_income = parent.declare("dependant_net_income", Decimal, non_negative=True)
+    net_income = AmountKind.declare(parent, "dependant_net_income", non_negative=True)
     child = ArtifactCatalog(Namespace("ex-on"))
 
     kind = RecordListKind.declare(child, "dependants", fields=(net_income,))
@@ -357,7 +359,7 @@ def test_declaring_a_record_list_registers_nothing(fresh: ArtifactRegistry) -> N
 
 def test_a_declared_record_list_kind_registers_with_its_catalog(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    count = catalog.declare("person_count", int)
+    count = CountKind.declare(catalog, "person_count")
     kind = RecordListKind.declare(catalog, "dependants", fields=FIELDS)
     registry = ArtifactRegistry()
 
@@ -396,7 +398,7 @@ def test_declare_refuses_a_field_that_is_not_decimal_or_int(
 ) -> None:
     # `bool` is a subclass of `int` but not a count, as for a non-negative kind.
     catalog = ArtifactCatalog(Namespace("ex"))
-    field = ArtifactKind("ex/odd_field", value_type)
+    field = OddKind("ex/odd_field", value_type)
 
     with pytest.raises(InvalidRegistrationError, match=rf"ex/dependants.*ex/odd_field.*{name}"):
         RecordListKind.declare(catalog, "dependants", fields=(NET_INCOME, field))
@@ -406,7 +408,7 @@ def test_declare_refuses_a_field_that_is_not_decimal_or_int(
 
 def test_declare_refuses_a_local_id_already_declared(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    first = catalog.declare("dependants", int)
+    first = CountKind.declare(catalog, "dependants")
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/dependants'"):
         RecordListKind.declare(catalog, "dependants", fields=FIELDS)
@@ -421,7 +423,7 @@ def test_declare_refuses_a_local_id_already_declared_as_a_record_list(
     first = RecordListKind.declare(catalog, "dependants", fields=FIELDS)
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/dependants'"):
-        catalog.declare("dependants", int)
+        CountKind.declare(catalog, "dependants")
 
     assert catalog.kinds == (first,)
 
@@ -501,10 +503,10 @@ def test_declare_refuses_a_field_that_is_not_an_artifact_kind(
 
 # --- a field that is itself a record list ---------------------------------------------------
 
-RENT = ArtifactKind("ex/unit_rent", Decimal, non_negative=True)
+RENT = AmountKind("ex/unit_rent", non_negative=True)
 UNIT_FIELDS = (RENT,)
 UNITS = RecordListKind("ex/units", fields=UNIT_FIELDS)
-FLOOR = ArtifactKind("ex/floor", int)
+FLOOR = CountKind("ex/floor")
 PROPERTY_FIELDS = (FLOOR, UNITS)
 
 
@@ -587,7 +589,7 @@ def test_an_artifact_holds_a_record_list_with_a_nested_list(fresh: ArtifactRegis
 
 def test_a_record_list_kind_may_carry_the_dotted_identifier_of_a_form_export() -> None:
     # The engine derives `<form>.<export>` kinds as record-list kinds of the export's one field.
-    amount = ArtifactKind("ex/net_income", Decimal)
+    amount = AmountKind("ex/net_income")
 
     kind = RecordListKind("ex/rental.net_income", fields=(amount,))
     value = RecordList(kind.fields, [{amount: Decimal("10000")}, {amount: Decimal("4000")}])
@@ -598,14 +600,14 @@ def test_a_record_list_kind_may_carry_the_dotted_identifier_of_a_form_export() -
 
 
 def test_a_catalog_cannot_declare_a_dotted_record_list_kind() -> None:
-    amount = ArtifactKind("ex/net_income", Decimal)
+    amount = AmountKind("ex/net_income")
 
     with pytest.raises(InvalidRegistrationError, match="invalid local id"):
         RecordListKind.declare(ArtifactCatalog(Namespace("ex")), "rental.net_income", (amount,))
 
 
 def test_a_field_of_a_record_may_be_blank_and_reading_it_is_a_blank_value_error() -> None:
-    kinds = (ArtifactKind("ex/amount", Decimal), ArtifactKind("ex/months", int))
+    kinds = (AmountKind("ex/amount"), CountKind("ex/months"))
     amount, months = kinds
     listed = RecordList(kinds, [{amount: BLANK, months: 3}])
     (record,) = listed.records
@@ -618,7 +620,7 @@ def test_a_field_of_a_record_may_be_blank_and_reading_it_is_a_blank_value_error(
 
 
 def test_records_with_a_blank_field_compare_and_hash_by_their_items() -> None:
-    amount = ArtifactKind("ex/amount", Decimal)
+    amount = AmountKind("ex/amount")
     first = RecordList((amount,), [{amount: BLANK}]).records[0]
     second = RecordList((amount,), [{amount: BLANK}]).records[0]
     filled = RecordList((amount,), [{amount: Decimal(1)}]).records[0]

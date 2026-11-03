@@ -35,7 +35,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -56,18 +57,18 @@ ON428_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/500
 
 # Made up for this test and not registered: the five counts of line 80 in the form's order, line
 # 72, the gate, the rule's two counts, the two net incomes and the rule's count.
-NOT_RESIDENT_CANADA = ArtifactKind("ex/not_resident_of_canada", int)
-NOT_RESIDENT_ONTARIO = ArtifactKind("ex/not_resident_of_ontario", int)
-BANKRUPT = ArtifactKind("ex/bankrupt", int)
-TRUSTEE = ArtifactKind("ex/filed_by_trustee", int)
-NOT_CLAIMING = ArtifactKind("ex/not_claiming", int)
-LINE_72 = ArtifactKind("ex/line_72", Decimal)
-GATE = ArtifactKind("ex/gate", int)
-SPOUSE = ArtifactKind("ex/spouse_on_december_31", int)
-CLAIMS_AT_TIE = ArtifactKind("ex/claims_at_tie", int)
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-SPOUSE_INCOME = ArtifactKind("ex/spouse_net_income", Decimal)
-CLAIMABLE = ArtifactKind("ex/claimable", int)
+NOT_RESIDENT_CANADA = CountKind("ex/not_resident_of_canada")
+NOT_RESIDENT_ONTARIO = CountKind("ex/not_resident_of_ontario")
+BANKRUPT = CountKind("ex/bankrupt")
+TRUSTEE = CountKind("ex/filed_by_trustee")
+NOT_CLAIMING = CountKind("ex/not_claiming")
+LINE_72 = AmountKind("ex/line_72")
+GATE = CountKind("ex/gate")
+SPOUSE = CountKind("ex/spouse_on_december_31")
+CLAIMS_AT_TIE = CountKind("ex/claims_at_tie")
+NET_INCOME = AmountKind("ex/net_income")
+SPOUSE_INCOME = AmountKind("ex/spouse_net_income")
+CLAIMABLE = CountKind("ex/claimable")
 
 FIVE_COUNTS = (NOT_RESIDENT_CANADA, NOT_RESIDENT_ONTARIO, BANKRUPT, TRUSTEE, NOT_CLAIMING)
 

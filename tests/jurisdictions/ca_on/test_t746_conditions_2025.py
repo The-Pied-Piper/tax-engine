@@ -17,7 +17,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -41,9 +42,9 @@ TEXT = (
 )
 
 # Made up for this test and not registered: the two answers and the count.
-EXPECTED = ArtifactKind("ex/expected_to_fully_deduct", int)
-NOT_INTENDING = ArtifactKind("ex/did_not_intend_to_withdraw", int)
-MET = ArtifactKind("ex/conditions_met", int)
+EXPECTED = CountKind("ex/expected_to_fully_deduct")
+NOT_INTENDING = CountKind("ex/did_not_intend_to_withdraw")
+MET = CountKind("ex/conditions_met")
 
 
 def met(expected: int, not_intending: int) -> int:

@@ -17,7 +17,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -34,12 +35,12 @@ FAMILY = "ca/t1032_note_1_applies_conditions"
 T1032_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032-25e.pdf"
 
 # Made up for this test and not registered: the counts and amounts tested, and the count given.
-RECEIVING_UNDER_65 = ArtifactKind("ex/t1032_receiving_spouse_under_65", int)
-TRANSFERRING_65_OR_OLDER = ArtifactKind("ex/t1032_transferring_spouse_65_or_older", int)
-LINE_32 = ArtifactKind("ex/t1032_line_32", Decimal)
-LINE_32_LIMIT = ArtifactKind("ex/t1032_line_32_limit", Decimal)
-PAYMENTS = ArtifactKind("ex/t1032_payments", Decimal)
-APPLIES = ArtifactKind("ex/t1032_note_1_applies", int)
+RECEIVING_UNDER_65 = CountKind("ex/t1032_receiving_spouse_under_65")
+TRANSFERRING_65_OR_OLDER = CountKind("ex/t1032_transferring_spouse_65_or_older")
+LINE_32 = AmountKind("ex/t1032_line_32")
+LINE_32_LIMIT = AmountKind("ex/t1032_line_32_limit")
+PAYMENTS = AmountKind("ex/t1032_payments")
+APPLIES = CountKind("ex/t1032_note_1_applies")
 
 
 def test_2025_the_four_conditions_of_the_form_are_one_condition_of_four_parts() -> None:

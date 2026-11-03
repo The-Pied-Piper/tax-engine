@@ -25,8 +25,9 @@ from decimal import Decimal
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -45,8 +46,8 @@ RELOCATION_MAXIMUM = "ca/t777_relocation_maximum"
 LINE_11_MAXIMUM = "ca/t777_line_11_maximum"
 
 # Made up for this test and not registered: the base and the figure a rate produces.
-BASE = ArtifactKind("ex/base", Decimal)
-OUTPUT = ArtifactKind("ex/output", Decimal)
+BASE = AmountKind("ex/base")
+OUTPUT = AmountKind("ex/output")
 
 
 def test_2025_meals_rate_is_fifty_percent_rounded_to_the_cent() -> None:

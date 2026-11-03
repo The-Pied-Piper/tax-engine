@@ -29,6 +29,7 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -54,11 +55,11 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for this test and not registered: a count of days, the amount for them, a net income, a
 # deduction, and the total of Chart A.
-DAYS = ArtifactKind("ex/days", int)
-FOR_DAYS = ArtifactKind("ex/amount_for_days", Decimal)
-INCOME = ArtifactKind("ex/income", Decimal)
-LIMIT = ArtifactKind("ex/limit", Decimal)
-ALLOCATED = ArtifactKind("ex/allocated", Decimal)
+DAYS = CountKind("ex/days")
+FOR_DAYS = AmountKind("ex/amount_for_days")
+INCOME = AmountKind("ex/income")
+LIMIT = AmountKind("ex/limit")
+ALLOCATED = AmountKind("ex/allocated")
 
 
 def test_2025_zone_a_daily_amount_is_11_00() -> None:

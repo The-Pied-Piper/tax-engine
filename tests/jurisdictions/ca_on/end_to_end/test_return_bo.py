@@ -7807,7 +7807,7 @@ def test_a_return_with_no_quebec_figures_is_unchanged_and_rc381_part_3_matches_s
     # Quebec earnings being absent) and the second additional contributions; those below are the
     # CPP lines on the 60,000 of box 26 (60,000 less the 3,500.00 exemption is 56,500.00, 4.95% of
     # it 2,796.75 and 1% of it 565.00, the required 3,361.75 that the box 16 total is).
-    on_the_earnings = {
+    on_the_earnings: dict[ArtifactKind[Decimal], Decimal] = {
         RC381_PART_3_LINE_3: D("60000"),
         RC381_PART_3_LINE_7: D("81200.00"),
         RC381_PART_3_LINE_8: D("71300.00"),

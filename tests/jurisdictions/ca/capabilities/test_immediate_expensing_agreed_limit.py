@@ -42,7 +42,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
@@ -50,6 +50,7 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     ValidationError,
 )
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
     ImmediateExpensingAgreedLimit,
@@ -58,8 +59,8 @@ from tax_engine.jurisdictions.ca.trace import ImmediateExpensingAgreedLimitLine
 
 D = Decimal
 
-CLAIM = ArtifactKind("ex/statement_claim", Decimal, non_negative=True)
-LIMIT = ArtifactKind("ex/statement_limit", Decimal, non_negative=True)
+CLAIM = AmountKind("ex/statement_claim", non_negative=True)
+LIMIT = AmountKind("ex/statement_limit", non_negative=True)
 RENTAL_CLAIMS = RecordListKind("ex/rental_claims", fields=(CLAIM,))
 RENTAL_LIMITS = RecordListKind("ex/rental_limits", fields=(LIMIT,))
 BUSINESS_CLAIMS = RecordListKind("ex/business_claims", fields=(CLAIM,))
@@ -68,7 +69,7 @@ FARM_CLAIMS = RecordListKind("ex/farm_claims", fields=(CLAIM,))
 FARM_LIMITS = RecordListKind("ex/farm_limits", fields=(LIMIT,))
 FISH_CLAIMS = RecordListKind("ex/fish_claims", fields=(CLAIM,))
 FISH_LIMITS = RecordListKind("ex/fish_limits", fields=(LIMIT,))
-AGREED = ArtifactKind("ex/immediate_expensing_agreed_limit", Decimal, non_negative=True)
+AGREED = AmountKind("ex/immediate_expensing_agreed_limit", non_negative=True)
 
 KINDS = (
     RENTAL_CLAIMS,

@@ -6,13 +6,15 @@ A test that registers its own kinds builds a private `ArtifactRegistry` instead.
 """
 
 from collections.abc import Iterable
-from decimal import Decimal
+from dataclasses import dataclass
 from functools import cache
 from typing import Any
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.errors import InvalidTextError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
 
@@ -44,9 +46,9 @@ class AutoKinds(ArtifactRegistry):
     def kind(self, identifier: str) -> ArtifactKind[Any]:
         if identifier not in self.identifiers():
             if identifier in self._counts:
-                self.register(identifier, ArtifactKind(identifier, int, non_negative=True))
+                self.register(identifier, CountKind(identifier, non_negative=True))
             else:
-                self.register(identifier, ArtifactKind(identifier, Decimal))
+                self.register(identifier, AmountKind(identifier))
         return super().kind(identifier)
 
     def extended(self, kinds: Iterable[ArtifactKind[Any]]) -> ArtifactRegistry:
@@ -56,3 +58,18 @@ class AutoKinds(ArtifactRegistry):
         for kind in kinds:
             extended.register(kind.identifier, kind)
         return extended
+
+
+@dataclass(frozen=True)
+class OddKind(ArtifactKind[Any]):
+    """A kind of any value type, for tests that a value type is refused or left unread. It reads
+    no text.
+    """
+
+    def __init__(self, identifier: str, value_type: type[Any]) -> None:
+        object.__setattr__(self, "identifier", identifier)
+        object.__setattr__(self, "value_type", value_type)
+        self.__post_init__()
+
+    def read(self, text: str) -> Artifact[Any]:
+        raise InvalidTextError(f"a {self.value_type.__name__} has no spelling as text")

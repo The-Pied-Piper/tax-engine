@@ -23,7 +23,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities  # noqa: F401  (registers the federal capabilities)
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     CapabilityContractError,
@@ -33,6 +33,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -49,9 +50,9 @@ from tests.manifest_support import required_inputs
 D = Decimal
 CENT_HALF_UP = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
-DIVIDEND = ArtifactKind("ex/part_gross", Decimal)
-DIVISOR = ArtifactKind("ex/all_gross", Decimal)
-OUTPUT = ArtifactKind("ex/gross_share_percent", Decimal)
+DIVIDEND = AmountKind("ex/part_gross")
+DIVISOR = AmountKind("ex/all_gross")
+OUTPUT = AmountKind("ex/gross_share_percent")
 
 
 def percentage_of() -> Any:
@@ -198,7 +199,7 @@ def test_an_inexact_percent_under_no_rounding_is_refused() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = capability().compute((other, *inputs("1", "4")))
 

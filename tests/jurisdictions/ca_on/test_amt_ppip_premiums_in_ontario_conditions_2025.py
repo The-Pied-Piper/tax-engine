@@ -20,8 +20,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -47,10 +48,10 @@ REFUSED_TEXT = "line 59 is Quebec only, but the filer lived in Ontario on Decemb
 
 # Made up for this test and not registered: line 59, the not-resident count, the count of line 59
 # for a resident of Ontario and its checked count.
-LINE_59 = ArtifactKind("ex/amt_line_59", Decimal)
-NOT_RESIDENT = ArtifactKind("ex/not_resident_of_ontario", int)
-IN_ONTARIO = ArtifactKind("ex/amt_line_59_in_ontario", int)
-IN_ONTARIO_CHECKED = ArtifactKind("ex/amt_line_59_in_ontario_checked", int)
+LINE_59 = AmountKind("ex/amt_line_59")
+NOT_RESIDENT = CountKind("ex/not_resident_of_ontario")
+IN_ONTARIO = CountKind("ex/amt_line_59_in_ontario")
+IN_ONTARIO_CHECKED = CountKind("ex/amt_line_59_in_ontario_checked")
 
 
 def _test(reads: str, relation: str, than: str) -> ConditionPart:

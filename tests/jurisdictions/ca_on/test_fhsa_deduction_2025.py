@@ -21,9 +21,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -38,11 +39,11 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 # Made up for this test and not registered: the amount a credit dataset gives, the count of
 # maximum participation periods ended in a prior year (0 or 1) and the two annual limits it chooses
 # between (Schedule 15 line 40).
-CLAIMED = ArtifactKind("ex/claimed_amount", Decimal)
-ENDED = ArtifactKind("ex/participation_period_ended", int)
-COMPUTED_LIMIT = ArtifactKind("ex/computed_limit", Decimal)
-ZERO_LIMIT = ArtifactKind("ex/zero_limit", Decimal)
-CHOSEN_LIMIT = ArtifactKind("ex/chosen_limit", Decimal)
+CLAIMED = AmountKind("ex/claimed_amount")
+ENDED = CountKind("ex/participation_period_ended")
+COMPUTED_LIMIT = AmountKind("ex/computed_limit")
+ZERO_LIMIT = AmountKind("ex/zero_limit")
+CHOSEN_LIMIT = AmountKind("ex/chosen_limit")
 
 
 def test_2025_annual_amount_is_8000() -> None:

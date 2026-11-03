@@ -13,7 +13,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
+from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.errors import (
     CapabilityContractError,
@@ -21,14 +21,15 @@ from tax_engine.domain.errors import (
     DuplicateArtifactError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.trace import TraceLine
 from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
-A = ArtifactKind("ex/a", Decimal)
-B = ArtifactKind("ex/b", Decimal)
-C = ArtifactKind("ex/c", Decimal)
-SUM = ArtifactKind("ex/sum", Decimal)
+A = AmountKind("ex/a")
+B = AmountKind("ex/b")
+C = AmountKind("ex/c")
+SUM = AmountKind("ex/sum")
 
 
 @dataclass(frozen=True)
@@ -82,7 +83,7 @@ def test_holds_its_starting_artifacts() -> None:
 
 
 def test_get_matches_by_kind_equality_not_identity() -> None:
-    worksheet = Worksheet(Artifact(ArtifactKind("ex/a", Decimal), D(1)))
+    worksheet = Worksheet(Artifact(AmountKind("ex/a"), D(1)))
 
     assert worksheet.get(A) == Artifact(A, D(1))
 
@@ -98,7 +99,7 @@ def test_rejects_a_starting_value_that_is_not_an_artifact() -> None:
 
 
 def test_rejects_an_artifact_kind_given_as_a_starting_artifact() -> None:
-    with pytest.raises(TypeError, match="must be an Artifact, got ArtifactKind"):
+    with pytest.raises(TypeError, match="must be an Artifact, got AmountKind"):
         Worksheet(cast(Any, A))
 
 

@@ -36,6 +36,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import (
@@ -50,9 +51,9 @@ from tax_engine.jurisdictions.ca.capabilities.more_than_per_unit import MoreThan
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
-TOTAL = ArtifactKind("ex/fee_total", Decimal)
-COUNT = ArtifactKind("ex/fee_count", int)
-OUTPUT = ArtifactKind("ex/fee_checked", Decimal)
+TOTAL = AmountKind("ex/fee_total")
+COUNT = CountKind("ex/fee_count")
+OUTPUT = AmountKind("ex/fee_checked")
 
 
 def per_unit(value: str = "100.00", rounding: RoundingRule = CENT) -> ParameterDataset[Amount]:
@@ -274,7 +275,7 @@ def test_the_output_is_the_total_unchanged() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", int), 9)
+    other = Artifact(CountKind("ex/other"), 9)
 
     assert capability().compute((other, *inputs("101", 1))).outputs == (Artifact(OUTPUT, D("101")),)
 

@@ -42,6 +42,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -73,10 +74,10 @@ class Offset:
 FACTOR = ParameterKind("factor", Factor)
 OFFSET = ParameterKind("offset", Offset)
 
-BASE = ArtifactKind("ex/base", Decimal)
-SCALED = ArtifactKind("ex/scaled", Decimal)
-RESULT = ArtifactKind("ex-on/result", Decimal)
-EXTRA = ArtifactKind("ex/extra", Decimal)
+BASE = AmountKind("ex/base")
+SCALED = AmountKind("ex/scaled")
+RESULT = AmountKind("ex-on/result")
+EXTRA = AmountKind("ex/extra")
 
 
 @dataclass(frozen=True)
@@ -584,9 +585,9 @@ def test_an_identifier_in_a_selection_registered_as_something_other_than_a_kind_
 # The list-slot class is defined inside a cached factory, so a class definition the base rejects
 # fails the tests that use it rather than the collection of this whole module.
 
-PART_ONE = ArtifactKind("ex/part_one", Decimal)
-PART_TWO = ArtifactKind("ex/part_two", Decimal)
-PART_THREE = ArtifactKind("ex/part_three", Decimal)
+PART_ONE = AmountKind("ex/part_one")
+PART_TWO = AmountKind("ex/part_two")
+PART_THREE = AmountKind("ex/part_three")
 
 
 def parts_registry() -> ArtifactRegistry:
@@ -2076,7 +2077,7 @@ def test_core_tapered_amount_asks_for_its_dataset_as_a_taper() -> None:
 # `core/per_unit_amount`. It consumes `ex/count`, a made-up `int` input, and reads a made-up
 # `amount` dataset of 544.5 for each unit, rounded half-up to the cent.
 
-COUNT = ArtifactKind("ex/count", int)
+COUNT = CountKind("ex/count")
 
 
 @cache
@@ -2170,7 +2171,7 @@ def test_core_per_unit_amount_rejects_a_money_input_for_its_count() -> None:
     built, _parameters = per_unit_amount_service()
 
     with pytest.raises(InvalidCompositionError, match="'count' was given as Decimal but the input"):
-        built.compute(EX_ON, 2025, Artifact(ArtifactKind("ex/count", Decimal), D("3")))
+        built.compute(EX_ON, 2025, Artifact(AmountKind("ex/count"), D("3")))
 
 
 def test_core_per_unit_amount_asks_for_its_dataset_as_an_amount() -> None:
@@ -2302,7 +2303,7 @@ def test_core_amount_by_count_rejects_a_money_input_for_its_count() -> None:
     built, _parameters = amount_by_count_service()
 
     with pytest.raises(InvalidCompositionError, match="'count' was given as Decimal but the input"):
-        built.compute(EX_ON, 2025, Artifact(ArtifactKind("ex/count", Decimal), D("3")))
+        built.compute(EX_ON, 2025, Artifact(AmountKind("ex/count"), D("3")))
 
 
 def test_core_amount_by_count_asks_for_its_dataset_as_an_amount_by_count() -> None:
@@ -2863,7 +2864,7 @@ def test_core_apply_ratio_refuses_a_count_kind_for_its_amount_at_wiring() -> Non
 # identifier, `core/times_count`. Its amount is a produced artifact, `ex/scaled` (base × 3), and
 # its count is `ex/count`, a made-up `int` input; it reads no dataset.
 
-PERSON_COUNT = ArtifactKind("ex/person_count", int)
+PERSON_COUNT = CountKind("ex/person_count")
 
 
 @cache
@@ -2950,9 +2951,7 @@ def test_core_times_count_rejects_a_money_input_for_its_count() -> None:
     built = times_count_service()
 
     with pytest.raises(InvalidCompositionError, match="'count' was given as Decimal but the input"):
-        built.compute(
-            EX_ON, 2025, Artifact(BASE, D("5")), Artifact(ArtifactKind("ex/count", Decimal), D("1"))
-        )
+        built.compute(EX_ON, 2025, Artifact(BASE, D("5")), Artifact(AmountKind("ex/count"), D("1")))
 
 
 def test_core_times_count_refuses_a_money_kind_for_its_count_at_wiring() -> None:
@@ -3070,7 +3069,7 @@ def test_core_choose_by_count_rejects_a_money_input_for_its_count() -> None:
             2025,
             Artifact(BASE, D("5")),
             Artifact(EXTRA, D("7")),
-            Artifact(ArtifactKind("ex/count", Decimal), D("1")),
+            Artifact(AmountKind("ex/count"), D("1")),
         )
 
 
@@ -3105,9 +3104,9 @@ def test_core_choose_by_count_refuses_a_count_kind_for_its_second_candidate_at_w
 # Like `ChooseByCount` above, `RecordList` and `RecordListKind` are reached inside cached
 # factories so their absence fails only the tests that use them.
 
-DEPENDANT_NET_INCOME = ArtifactKind("ex/dependant_net_income", Decimal, non_negative=True)
-BASE_AMOUNT = ArtifactKind("ex/base_amount", Decimal)
-MAXIMUM_AMOUNT = ArtifactKind("ex/maximum_amount", Decimal)
+DEPENDANT_NET_INCOME = AmountKind("ex/dependant_net_income", non_negative=True)
+BASE_AMOUNT = AmountKind("ex/base_amount")
+MAXIMUM_AMOUNT = AmountKind("ex/maximum_amount")
 
 
 @cache
@@ -3275,7 +3274,7 @@ def test_a_per_item_capability_rejects_a_money_input_for_its_record_list() -> No
         built.compute(
             EX_ON,
             2025,
-            Artifact(ArtifactKind("ex/dependants", Decimal), D("2")),
+            Artifact(AmountKind("ex/dependants"), D("2")),
             Artifact(BASE_AMOUNT, D("28798.00")),
             Artifact(MAXIMUM_AMOUNT, D("8601")),
         )
@@ -3306,9 +3305,9 @@ def test_a_per_item_capability_refuses_a_record_list_kind_for_a_money_slot_at_wi
 # artifact, `ex/scaled` (base × 3), its second is `ex/extra` and its third `ex/last`, made-up
 # inputs; it reads no dataset.
 
-FIRST_LIMIT = ArtifactKind("ex/first_limit", Decimal)
-SECOND_LIMIT = ArtifactKind("ex/second_limit", Decimal)
-LAST = ArtifactKind("ex/last", Decimal)
+FIRST_LIMIT = AmountKind("ex/first_limit")
+SECOND_LIMIT = AmountKind("ex/second_limit")
+LAST = AmountKind("ex/last")
 
 
 @cache

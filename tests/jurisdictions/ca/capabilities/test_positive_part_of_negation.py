@@ -18,9 +18,10 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import PositivePartOfNegationLine
 from tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation import (
     PositivePartOfNegation,
@@ -28,8 +29,8 @@ from tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation import (
 
 D = Decimal
 
-AMOUNT = ArtifactKind("ex/net_result", Decimal)
-OUTPUT = ArtifactKind("ex/shortfall", Decimal)
+AMOUNT = AmountKind("ex/net_result")
+OUTPUT = AmountKind("ex/shortfall")
 
 
 def capability() -> PositivePartOfNegation:
@@ -114,7 +115,7 @@ def test_rejects_a_list_of_kinds_for_its_amount() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="PositivePartOfNegation.*'amount'"):
         PositivePartOfNegation(count, OUTPUT)  # type: ignore[arg-type]
@@ -172,7 +173,7 @@ def test_anything_but_a_negative_amount_gives_a_plain_zero(amount: str) -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = capability().compute((other, Artifact(AMOUNT, D("-2"))))
 

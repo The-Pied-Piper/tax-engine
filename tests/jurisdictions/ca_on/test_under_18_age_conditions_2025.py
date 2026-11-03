@@ -27,6 +27,7 @@ import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -70,13 +71,13 @@ AGED_REFUSED_TEXT = (
 
 # Made up for this test and not registered: the under 18 count, the two other ages, and the count of
 # each pair and its checked count.
-UNDER_18 = ArtifactKind("ex/under_18_on_december_31", int)
-BORN = ArtifactKind("ex/born_in_1960_or_earlier", int)
-AGED = ArtifactKind("ex/aged_18_or_older_at_end_of_2025", int)
-UNDER_18_AND_BORN = ArtifactKind("ex/under_18_and_born_in_1960_or_earlier", int)
-UNDER_18_AND_BORN_CHECKED = ArtifactKind("ex/under_18_and_born_in_1960_or_earlier_checked", int)
-UNDER_18_AND_AGED = ArtifactKind("ex/under_18_and_aged_18_or_older", int)
-UNDER_18_AND_AGED_CHECKED = ArtifactKind("ex/under_18_and_aged_18_or_older_checked", int)
+UNDER_18 = CountKind("ex/under_18_on_december_31")
+BORN = CountKind("ex/born_in_1960_or_earlier")
+AGED = CountKind("ex/aged_18_or_older_at_end_of_2025")
+UNDER_18_AND_BORN = CountKind("ex/under_18_and_born_in_1960_or_earlier")
+UNDER_18_AND_BORN_CHECKED = CountKind("ex/under_18_and_born_in_1960_or_earlier_checked")
+UNDER_18_AND_AGED = CountKind("ex/under_18_and_aged_18_or_older")
+UNDER_18_AND_AGED_CHECKED = CountKind("ex/under_18_and_aged_18_or_older_checked")
 
 
 def _more_than_0(position: int) -> ConditionPart:

@@ -16,8 +16,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -26,8 +27,8 @@ SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 FAMILY = "ca/capital_gains_inclusion_rate"
 
 # Made up for this test and not registered: the gain the rate applies to, and its taxable part.
-GAIN = ArtifactKind("ex/gain", Decimal)
-TAXABLE_PART = ArtifactKind("ex/taxable_part", Decimal)
+GAIN = AmountKind("ex/gain")
+TAXABLE_PART = AmountKind("ex/taxable_part")
 
 
 def test_2025_inclusion_rate_is_half() -> None:

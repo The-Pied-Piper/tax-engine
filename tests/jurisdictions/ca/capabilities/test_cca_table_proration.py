@@ -61,6 +61,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.class_rates import ClassRates
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.record_list import RecordList
@@ -103,7 +104,7 @@ from tests.jurisdictions.ca.capabilities.cca_table_sale import sale_class_rates
 
 D = Decimal
 
-FISCAL_PERIOD_DAYS = ArtifactKind("ex/fiscal_period_days", int)
+FISCAL_PERIOD_DAYS = CountKind("ex/fiscal_period_days")
 
 # Row G of the module docstring: the guide's 3,500.00 maximum. Claims are set with `claiming`.
 GUIDE = row("8", "17500")

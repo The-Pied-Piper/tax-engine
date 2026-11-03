@@ -16,7 +16,7 @@ import pytest
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.capabilities as canada
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
@@ -26,6 +26,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -48,7 +49,7 @@ ZONE_A = 1
 ZONE_B = 2
 
 # Made up for this test and not registered: the total a capability produces.
-TOTAL = ArtifactKind("ex/zone_total", Decimal)
+TOTAL = AmountKind("ex/zone_total")
 
 
 def trip(individual: int, zone: int, column_3: str, column_4: str, column_5: str) -> dict[Any, Any]:
@@ -229,13 +230,13 @@ class ZoneTotalCases:
 
     def test_refuses_a_money_kind_for_its_record_list(self) -> None:
         with pytest.raises(InvalidCapabilityError, match=self.CAPABILITY.__name__) as raised:
-            self.CAPABILITY(ArtifactKind("ex/not_a_list", Decimal), TOTAL)
+            self.CAPABILITY(AmountKind("ex/not_a_list"), TOTAL)
 
         assert "'trips'" in str(raised.value)
 
     def test_refuses_a_count_kind_for_its_total(self) -> None:
         with pytest.raises(InvalidCapabilityError, match=self.CAPABILITY.__name__) as raised:
-            self.CAPABILITY(TRAVEL_TRIPS, ArtifactKind("ex/a_count", int))
+            self.CAPABILITY(TRAVEL_TRIPS, CountKind("ex/a_count"))
 
         assert "'total'" in str(raised.value)
 

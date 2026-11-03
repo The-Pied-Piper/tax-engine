@@ -18,21 +18,22 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.domain.capabilities as core
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import SumLine, SumNotBelowZeroLine
 
 D = Decimal
 
 
-PART_ONE = ArtifactKind("ex/part_one", Decimal)
-PART_TWO = ArtifactKind("ex/part_two", Decimal)
-PART_THREE = ArtifactKind("ex/part_three", Decimal)
-TOTAL = ArtifactKind("ex/total", Decimal)
+PART_ONE = AmountKind("ex/part_one")
+PART_TWO = AmountKind("ex/part_two")
+PART_THREE = AmountKind("ex/part_three")
+TOTAL = AmountKind("ex/total")
 
 
 def capability() -> SumNotBelowZero:
@@ -142,7 +143,7 @@ def test_rejects_a_single_kind_for_its_parts() -> None:
 
 
 def test_rejects_a_part_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="SumNotBelowZero.*'parts'"):
         SumNotBelowZero((PART_ONE, count), TOTAL)  # type: ignore[arg-type]
@@ -257,7 +258,7 @@ def test_the_order_of_the_inputs_does_not_matter() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), *parts("1", "2", "3")))
 

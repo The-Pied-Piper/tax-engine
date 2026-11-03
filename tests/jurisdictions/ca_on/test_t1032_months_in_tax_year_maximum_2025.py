@@ -19,10 +19,11 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.at_most import AtMost
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
@@ -35,9 +36,9 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for these tests and not registered: the months entered, the ceiling and the checked
 # output.
-MONTHS = ArtifactKind("ex/t1032_months_in_tax_year", Decimal)
-BOUND = ArtifactKind("ex/t1032_months_in_tax_year_ceiling", Decimal)
-CHECKED = ArtifactKind("ex/t1032_months_in_tax_year_checked", Decimal)
+MONTHS = AmountKind("ex/t1032_months_in_tax_year")
+BOUND = AmountKind("ex/t1032_months_in_tax_year_ceiling")
+CHECKED = AmountKind("ex/t1032_months_in_tax_year_checked")
 
 
 def dataset_header(family: str) -> str:

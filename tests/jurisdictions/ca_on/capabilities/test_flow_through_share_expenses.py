@@ -19,9 +19,10 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import RecordTotalLine
 from tax_engine.jurisdictions.ca_on.capabilities.flow_through_share_expenses import (
@@ -107,7 +108,7 @@ def test_takes_no_parameter_dataset() -> None:
 
 
 def test_rejects_a_money_kind_for_its_slips() -> None:
-    other = ArtifactKind("ex/not_a_list", Decimal)
+    other = AmountKind("ex/not_a_list")
 
     with pytest.raises(InvalidCapabilityError, match="FlowThroughShareExpenses.*'slips'"):
         FlowThroughShareExpenses(slips=other, output=FLOW_THROUGH_SHARE_EXPENSES)  # type: ignore[arg-type]
@@ -223,7 +224,7 @@ def test_needs_its_slips() -> None:
 
 
 def test_does_not_consume_anything_else() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("1"))
+    other = Artifact(AmountKind("ex/other"), D("1"))
 
     result = capability().compute((other, slips("6000")))
 

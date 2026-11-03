@@ -26,7 +26,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.domain.capabilities as core
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
@@ -34,6 +34,7 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     ValidationError,
 )
+from tax_engine.domain.kinds import AmountKind, RateKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -49,10 +50,10 @@ from tax_engine.domain.trace import RatioAppliedLine
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
-TAX_PAYABLE = ArtifactKind("ex/tax_payable", Decimal)
-FOREIGN_INCOME = ArtifactKind("ex/foreign_income", Decimal)
-WORLD_INCOME = ArtifactKind("ex/worldwide_income", Decimal)
-CREDIT_SHARE = ArtifactKind("ex/credit_share", Decimal)
+TAX_PAYABLE = AmountKind("ex/tax_payable")
+FOREIGN_INCOME = AmountKind("ex/foreign_income")
+WORLD_INCOME = AmountKind("ex/worldwide_income")
+CREDIT_SHARE = AmountKind("ex/credit_share")
 
 
 def rounding(rule: RoundingRule = NO_ROUNDING) -> ParameterDataset[RoundingOnly]:
@@ -176,7 +177,7 @@ def test_rejects_one_kind_as_both_numerator_and_denominator() -> None:
 
 
 def test_rejects_a_rate_kind_for_its_numerator() -> None:
-    rate = ArtifactKind("ex/rate_as_numerator", Rate)
+    rate = RateKind("ex/rate_as_numerator")
 
     with pytest.raises(InvalidCapabilityError, match="ApplyRatio.*'numerator'"):
         ApplyRatio(
@@ -189,7 +190,7 @@ def test_rejects_a_rate_kind_for_its_numerator() -> None:
 
 
 def test_rejects_a_rate_kind_for_its_denominator() -> None:
-    rate = ArtifactKind("ex/rate_as_denominator", Rate)
+    rate = RateKind("ex/rate_as_denominator")
 
     with pytest.raises(InvalidCapabilityError, match="ApplyRatio.*'denominator'"):
         ApplyRatio(
@@ -351,7 +352,7 @@ def test_a_zero_amount_gives_zero() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), *inputs("14000", "10000", "100000")))
 

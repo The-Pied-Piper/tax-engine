@@ -20,7 +20,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.domain.capabilities as core
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.capability import CapabilityRegistry
@@ -29,6 +29,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import PerUnitAmountLine, TimesCountLine
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
@@ -36,9 +37,9 @@ from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 D = Decimal
 
 
-EACH = ArtifactKind("ex/amount_each", Decimal)
-PERSONS = ArtifactKind("ex/person_count", int)
-CLAIMED = ArtifactKind("ex/amount_claimed", Decimal)
+EACH = AmountKind("ex/amount_each")
+PERSONS = CountKind("ex/person_count")
+CLAIMED = AmountKind("ex/amount_claimed")
 
 
 def capability() -> TimesCount:
@@ -134,7 +135,7 @@ def test_rejects_a_list_of_kinds_for_its_count() -> None:
 
 
 def test_mypy_rejects_wiring_a_money_kind_for_its_count() -> None:
-    money = ArtifactKind("ex/money_count", Decimal)
+    money = AmountKind("ex/money_count")
     # An ArtifactKind[Decimal] is not an ArtifactKind[int]; the ignore fails under mypy
     # (warn_unused_ignores) if it is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="TimesCount.*'count'"):
@@ -142,7 +143,7 @@ def test_mypy_rejects_wiring_a_money_kind_for_its_count() -> None:
 
 
 def test_mypy_rejects_wiring_a_count_kind_for_its_amount() -> None:
-    other_count = ArtifactKind("ex/other_count", int)
+    other_count = CountKind("ex/other_count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if it
     # is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="TimesCount.*'amount'"):
@@ -150,7 +151,7 @@ def test_mypy_rejects_wiring_a_count_kind_for_its_amount() -> None:
 
 
 def test_mypy_rejects_wiring_a_count_kind_for_its_output() -> None:
-    other_count = ArtifactKind("ex/other_count", int)
+    other_count = CountKind("ex/other_count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if it
     # is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="TimesCount.*'output'"):
@@ -238,7 +239,7 @@ def test_the_order_of_the_inputs_does_not_matter() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), *inputs("16129", 2)))
 

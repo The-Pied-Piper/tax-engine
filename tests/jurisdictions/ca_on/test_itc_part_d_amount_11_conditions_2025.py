@@ -17,7 +17,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -34,8 +35,8 @@ FAMILY = "ca/itc_part_d_amount_11_conditions"
 T2038_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2038-ind/t2038-ind-25e.pdf"
 
 # Made up for this test and not registered: the amount tested, and the count it gives.
-PART_5_LINE_7 = ArtifactKind("ex/amt_part_5_line_7", Decimal)
-APPLIES = ArtifactKind("ex/itc_part_d_amount_11_applies", int)
+PART_5_LINE_7 = AmountKind("ex/amt_part_5_line_7")
+APPLIES = CountKind("ex/itc_part_d_amount_11_applies")
 
 
 def test_2025_t691_part_5_line_7_is_greater_than_0_is_the_one_condition() -> None:

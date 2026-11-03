@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind
+from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind
 from tax_engine.domain.errors import InvalidRegistrationError, InvalidTextError
 
 
@@ -27,12 +27,13 @@ class DigitsKind(ArtifactKind[str]):
 
     digits: int = field(kw_only=True)
 
+    default_spelling = "a string"
+
     def __init__(self, identifier: str, *, digits: int) -> None:
         # Written by hand, so the dataclass keeps it: the value type is always `str` and never
         # non-negative.
         object.__setattr__(self, "identifier", identifier)
         object.__setattr__(self, "value_type", str)
-        object.__setattr__(self, "non_negative", False)
         object.__setattr__(self, "digits", digits)
         self.__post_init__()
 
@@ -55,6 +56,14 @@ class DigitsKind(ArtifactKind[str]):
         kind = cls(catalog.namespace.identifier(local_id), digits=digits)
         catalog.add(kind)
         return kind
+
+    def read(self, text: str) -> Artifact[str]:
+        """The digits `text` spells: exactly this kind's number of ASCII digits, or blank."""
+        try:
+            self.check_value(text)
+        except InvalidTextError as exc:
+            raise InvalidTextError(f"is not a value of the kind: {exc}") from None
+        return Artifact(self, text)
 
     def check_value(self, value: str) -> None:
         """Refuse a text that is neither blank nor exactly this kind's number of ASCII digits."""

@@ -19,6 +19,7 @@ from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.lesser_of import LesserOf
 from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.trace.blank import BlankPassedOnLine
 from tests.kinds import bundled_kinds
@@ -54,8 +55,8 @@ def chart_steps() -> list[CapabilitySelection]:
 def wired(step: CapabilitySelection) -> tuple[LesserOf, tuple[ArtifactKind[Decimal], ...]]:
     amounts = step.consumes["amounts"]
     assert isinstance(amounts, tuple)
-    kinds = tuple(ArtifactKind(f"ex/amount_{index}", Decimal) for index, _ in enumerate(amounts))
-    output = ArtifactKind("ex/least", Decimal)
+    kinds = tuple(AmountKind(f"ex/amount_{index}") for index, _ in enumerate(amounts))
+    output = AmountKind("ex/least")
     rules = {slot: PASS_ON for slot in step.blank}
     return LesserOf(kinds, output).with_blank_rules(rules), kinds
 

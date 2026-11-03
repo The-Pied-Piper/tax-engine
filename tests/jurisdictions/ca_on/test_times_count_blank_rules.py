@@ -19,6 +19,7 @@ from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.trace.blank import BlankPassedOnLine
 from tests.kinds import bundled_kinds
@@ -60,9 +61,9 @@ def step_id(step: CapabilitySelection) -> str:
 def wired(
     step: CapabilitySelection,
 ) -> tuple[TimesCount, ArtifactKind[Decimal], ArtifactKind[int]]:
-    amount = ArtifactKind("ex/amount", Decimal)
-    count = ArtifactKind("ex/count", int)
-    output = ArtifactKind("ex/output", Decimal)
+    amount = AmountKind("ex/amount")
+    count = CountKind("ex/count")
+    output = AmountKind("ex/output")
     rules = {slot: PASS_ON for slot in step.blank}
     return TimesCount(amount, count, output).with_blank_rules(rules), amount, count
 

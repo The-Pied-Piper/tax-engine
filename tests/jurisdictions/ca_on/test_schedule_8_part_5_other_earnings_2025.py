@@ -22,8 +22,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -38,8 +39,8 @@ LINE_75 = "ca/cpp_part_5_line_75_rate"
 LINE_84 = "ca/cpp_part_5_line_84_rate"
 
 # Made up for this test and not registered.
-LINE_IN = ArtifactKind("ex/line_in", Decimal)
-LINE_OUT = ArtifactKind("ex/line_out", Decimal)
+LINE_IN = AmountKind("ex/line_in")
+LINE_OUT = AmountKind("ex/line_out")
 
 
 @pytest.mark.parametrize(

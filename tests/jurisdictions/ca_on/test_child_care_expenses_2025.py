@@ -23,9 +23,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -40,10 +41,10 @@ T778_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t778/t778-2
 
 # Made up for this test and not registered: a number of eligible children and their limit (T778
 # Part B lines 1 to 3), and the earned income and two-thirds of it (line 6).
-CHILDREN = ArtifactKind("ex/children", int)
-LIMIT = ArtifactKind("ex/limit", Decimal)
-EARNED = ArtifactKind("ex/earned_income", Decimal)
-EARNED_LIMIT = ArtifactKind("ex/earned_income_limit", Decimal)
+CHILDREN = CountKind("ex/children")
+LIMIT = AmountKind("ex/limit")
+EARNED = AmountKind("ex/earned_income")
+EARNED_LIMIT = AmountKind("ex/earned_income_limit")
 
 
 @pytest.mark.parametrize(

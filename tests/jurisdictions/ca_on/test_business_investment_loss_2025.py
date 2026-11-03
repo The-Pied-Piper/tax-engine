@@ -22,8 +22,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -34,8 +35,8 @@ T1436_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436
 
 # Made up for this test and not registered: the loss after the reduction (T1436 line 18) and the
 # allowable part of it (line 20).
-AFTER_REDUCTION = ArtifactKind("ex/after_reduction", Decimal)
-ALLOWABLE = ArtifactKind("ex/allowable", Decimal)
+AFTER_REDUCTION = AmountKind("ex/after_reduction")
+ALLOWABLE = AmountKind("ex/allowable")
 
 
 def test_2025_inclusion_rate_is_half() -> None:

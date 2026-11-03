@@ -31,8 +31,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -58,10 +59,10 @@ D1_SOURCE = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/500
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for these tests and not registered.
-INCOME = ArtifactKind("ex/income", Decimal)
-TAX = ArtifactKind("ex/tax", Decimal)
-OUTPUT = ArtifactKind("ex/out", Decimal)
-CLAIMED = ArtifactKind("ex/spouse_maximum_claimed", Decimal)
+INCOME = AmountKind("ex/income")
+TAX = AmountKind("ex/tax")
+OUTPUT = AmountKind("ex/out")
+CLAIMED = AmountKind("ex/spouse_maximum_claimed")
 
 
 def test_2025_line_7_threshold_is_57375_and_rate_14_5_percent_to_the_cent() -> None:

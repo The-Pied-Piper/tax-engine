@@ -19,6 +19,7 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.errors import MissingArtifactError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.cca_entries_total import CcaEntriesTotal
 from tax_engine.jurisdictions.ca.catalog import (
@@ -46,7 +47,7 @@ ALL_FIELDS = (
 )
 CLASSES = RecordListKind("ex/entries_classes", fields=ALL_FIELDS)
 SHORT = RecordListKind("ex/entries_short_classes", fields=(CCA_CLASS_NUMBER, CCA_CLAIMED))
-TOTAL = ArtifactKind("ex/entries_total", Decimal, non_negative=True)
+TOTAL = AmountKind("ex/entries_total", non_negative=True)
 
 COLUMNS = {
     "ucc": CCA_UCC_AT_START,

@@ -49,6 +49,7 @@ from tax_engine.domain.errors import (
     ValidationError,
 )
 from tax_engine.domain.form import FormComposition, FormSet
+from tax_engine.domain.kinds import AmountKind, TextKind
 from tax_engine.domain.manifest import Form
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
@@ -56,17 +57,17 @@ from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
 
-SALES = ArtifactKind("ex/sales", Decimal)
-COSTS = ArtifactKind("ex/costs", Decimal)
-PROFIT = ArtifactKind("ex/profit", Decimal, non_negative=True)
-FEE = ArtifactKind("ex/fee", Decimal)
-FEE_TOTAL = ArtifactKind("ex/fee_total", Decimal)
-PROFIT_TOTAL = ArtifactKind("ex/profit_total", Decimal)
-AUDITED = ArtifactKind("ex/audited", Decimal)
-LEVY = ArtifactKind("ex/levy", Decimal)
-GRAND = ArtifactKind("ex/grand", Decimal)
-NOTE = ArtifactKind("ex/note", str)
-BROKEN = ArtifactKind("ex/broken", Decimal)
+SALES = AmountKind("ex/sales")
+COSTS = AmountKind("ex/costs")
+PROFIT = AmountKind("ex/profit", non_negative=True)
+FEE = AmountKind("ex/fee")
+FEE_TOTAL = AmountKind("ex/fee_total")
+PROFIT_TOTAL = AmountKind("ex/profit_total")
+AUDITED = AmountKind("ex/audited")
+LEVY = AmountKind("ex/levy")
+GRAND = AmountKind("ex/grand")
+NOTE = TextKind("ex/note")
+BROKEN = AmountKind("ex/broken")
 
 SHOPS = RecordListKind("ex/shops", fields=(SALES, COSTS))
 AUDITS = RecordListKind("ex/audits", fields=(FEE,))
@@ -1513,10 +1514,10 @@ def test_the_limits_are_checked_after_the_instances_are_all_given() -> None:
 
 # --- a form reading its own export: the records of its earlier runs ------------------------------
 
-AMOUNT = ArtifactKind("ex/amount", Decimal)
-CARRIED = ArtifactKind("ex/carried", Decimal)
-STEP_TOTAL = ArtifactKind("ex/total", Decimal)
-CHECKED = ArtifactKind("ex/checked", Decimal)
+AMOUNT = AmountKind("ex/amount")
+CARRIED = AmountKind("ex/carried")
+STEP_TOTAL = AmountKind("ex/total")
+CHECKED = AmountKind("ex/checked")
 STEPS = RecordListKind("ex/steps", fields=(AMOUNT,))
 STEP_TOTALS = RecordListKind("ex/step.total", fields=(STEP_TOTAL,))
 EARLY_TOTALS = RecordListKind("ex/early.total", fields=(STEP_TOTAL,))

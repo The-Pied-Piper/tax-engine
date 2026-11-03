@@ -20,21 +20,23 @@ import pytest
 
 import tax_engine.domain.capabilities as core
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.record_positive_total import RecordPositiveTotal
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import RecordPositiveTotalLine
+from tests.kinds import OddKind
 
 D = Decimal
 
-AMOUNT = ArtifactKind("ex/item_amount", Decimal)
-COUNT = ArtifactKind("ex/item_count", int)
+AMOUNT = AmountKind("ex/item_amount")
+COUNT = CountKind("ex/item_count")
 ITEMS = RecordListKind("ex/items", fields=(AMOUNT,))
 TWO_FIELDS = RecordListKind("ex/pairs", fields=(AMOUNT, COUNT))
 COUNTS_ONLY = RecordListKind("ex/counts", fields=(COUNT,))
-TOTAL = ArtifactKind("ex/items_total", Decimal)
+TOTAL = AmountKind("ex/items_total")
 
 
 def capability() -> RecordPositiveTotal:
@@ -125,7 +127,7 @@ def test_rejects_a_list_kind_whose_one_field_is_a_record_list() -> None:
 
 
 def test_rejects_a_plain_kind_of_record_lists_as_records() -> None:
-    plain = ArtifactKind("ex/plain_list", RecordList)
+    plain = OddKind("ex/plain_list", RecordList)
 
     with pytest.raises(InvalidCapabilityError, match=r"RecordPositiveTotal.*'records'"):
         RecordPositiveTotal(records=plain, output=TOTAL)  # type: ignore[arg-type]

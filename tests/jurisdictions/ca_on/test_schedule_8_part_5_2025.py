@@ -35,8 +35,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -62,13 +63,13 @@ MULTIPLIER = "ca/cpp_part_5_line_20_multiplier"
 DIVISOR_RATE = "ca/cpp_part_5_line_35_rate"
 
 # Made up for this test and not registered.
-AMOUNT_1 = ArtifactKind("ex/amount_1", Decimal)
-AMOUNT_2 = ArtifactKind("ex/amount_2", Decimal)
-APPLIES = ArtifactKind("ex/applies", int)
-LINE_10 = ArtifactKind("ex/line_10", Decimal)
-LINE_20 = ArtifactKind("ex/line_20", Decimal)
-LINE_16 = ArtifactKind("ex/line_16", Decimal)
-LINE_35 = ArtifactKind("ex/line_35", Decimal)
+AMOUNT_1 = AmountKind("ex/amount_1")
+AMOUNT_2 = AmountKind("ex/amount_2")
+APPLIES = CountKind("ex/applies")
+LINE_10 = AmountKind("ex/line_10")
+LINE_20 = AmountKind("ex/line_20")
+LINE_16 = AmountKind("ex/line_16")
+LINE_35 = AmountKind("ex/line_35")
 
 
 def conditions_dataset(family: str) -> Any:

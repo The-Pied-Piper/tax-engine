@@ -17,9 +17,10 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.domain.errors import InvalidCapabilityError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -35,10 +36,10 @@ from tax_engine.domain.trace import BracketColumnLine, RoundedTotalLine
 D = Decimal
 
 
-TAXABLE_BASE = ArtifactKind("ex/taxable_base", Decimal)
-BASIC_TAX = ArtifactKind("ex/basic_tax", Decimal)
-OTHER_BASE = ArtifactKind("ex/other_base", Decimal)
-OTHER_TAX = ArtifactKind("ex/other_tax", Decimal)
+TAXABLE_BASE = AmountKind("ex/taxable_base")
+BASIC_TAX = AmountKind("ex/basic_tax")
+OTHER_BASE = AmountKind("ex/other_base")
+OTHER_TAX = AmountKind("ex/other_tax")
 
 
 SCHEDULE = BracketSchedule(
@@ -285,7 +286,7 @@ def test_is_not_generic_over_artifacts() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.
@@ -297,7 +298,7 @@ class Cents(Decimal):
     """A made-up Decimal subtype, to probe ArtifactKind's variance."""
 
 
-CENTS = ArtifactKind("ex/cents", Cents)  # bound to a name: built inline it would infer Decimal
+CENTS = AmountKind("ex/cents", Cents)  # bound to a name: built inline it would infer Decimal
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_a_value_subtype() -> None:
@@ -305,7 +306,7 @@ def test_mypy_rejects_wiring_an_artifact_kind_of_a_value_subtype() -> None:
     # became covariant this ignore would be unused and mypy (strict) would fail. At run time,
     # building it fails too: the value type must match the slot's exactly.
     with pytest.raises(InvalidCapabilityError, match="ProgressiveTax.*'base'"):
-        ProgressiveTax(CENTS, BASIC_TAX, schedule())  # type: ignore[arg-type]
+        ProgressiveTax(CENTS, BASIC_TAX, schedule())
 
 
 def test_mypy_rejects_a_dataset_of_another_kind_for_the_schedule() -> None:

@@ -14,6 +14,7 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_DIEP_ADDITIONS,
@@ -24,9 +25,9 @@ from tests.jurisdictions.ca.capabilities.cca_table import CLASS_FIELDS, D, row
 
 DIEP_FIELDS = (CCA_DIEP_ADDITIONS, CCA_DIEP_PROCEEDS, CCA_IMMEDIATE_EXPENSING)
 DIEP_CLASSES = RecordListKind("ex/cca_diep_classes", fields=(*CLASS_FIELDS, *DIEP_FIELDS))
-LIMIT = ArtifactKind("ex/immediate_expensing_limit", Decimal, non_negative=True)
-INCOME = ArtifactKind("ex/income_before_cca", Decimal)
-IMMEDIATE_EXPENSING = ArtifactKind("ex/immediate_expensing_claim", Decimal, non_negative=True)
+LIMIT = AmountKind("ex/immediate_expensing_limit", non_negative=True)
+INCOME = AmountKind("ex/income_before_cca")
+IMMEDIATE_EXPENSING = AmountKind("ex/immediate_expensing_claim", non_negative=True)
 
 
 def diep_row(

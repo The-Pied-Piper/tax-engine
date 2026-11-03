@@ -1228,7 +1228,7 @@ def squashed(text: str) -> str:
 
 
 def docstring_of(name: str) -> str:
-    """The string right after `NAME = CATALOG.declare("<name>", ...)` in a catalog module."""
+    """The string right after `NAME = <Kind>.declare(CATALOG, "<name>", ...)` in a module."""
     folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
@@ -1237,9 +1237,9 @@ def docstring_of(name: str) -> str:
                 continue
             arguments = statement.value.args
             if not (
-                arguments
-                and isinstance(arguments[0], ast.Constant)
-                and arguments[0].value == name
+                len(arguments) > 1
+                and isinstance(arguments[1], ast.Constant)
+                and arguments[1].value == name
                 and isinstance(following, ast.Expr)
                 and isinstance(following.value, ast.Constant)
             ):

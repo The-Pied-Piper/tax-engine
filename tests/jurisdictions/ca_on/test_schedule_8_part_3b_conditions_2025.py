@@ -36,8 +36,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -65,11 +66,11 @@ LINE_42 = "ca/cpp_line_23_and_line_40_positive_conditions"
 LINE_46 = "ca/cpp_line_20_positive_conditions"
 
 # Made up for this test and not registered.
-AMOUNT_1 = ArtifactKind("ex/amount_1", Decimal)
-AMOUNT_2 = ArtifactKind("ex/amount_2", Decimal)
-COUNT_1 = ArtifactKind("ex/count_1", int)
-APPLIES = ArtifactKind("ex/applies", int)
-ZERO = ArtifactKind("ex/zero", Decimal)
+AMOUNT_1 = AmountKind("ex/amount_1")
+AMOUNT_2 = AmountKind("ex/amount_2")
+COUNT_1 = CountKind("ex/count_1")
+APPLIES = CountKind("ex/applies")
+ZERO = AmountKind("ex/zero")
 
 
 def conditions_dataset(family: str) -> Any:

@@ -17,20 +17,21 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import RecordCountLine
 from tax_engine.jurisdictions.ca_on.capabilities.record_count import RecordCount
 
 D = Decimal
 
-ITEM_AMOUNT = ArtifactKind("ex/item_amount", Decimal, non_negative=True)
-ITEM_MONTHS = ArtifactKind("ex/item_months", int, non_negative=True)
+ITEM_AMOUNT = AmountKind("ex/item_amount", non_negative=True)
+ITEM_MONTHS = CountKind("ex/item_months", non_negative=True)
 ITEMS = RecordListKind("ex/items", fields=(ITEM_AMOUNT,))
 TWO_FIELD_ITEMS = RecordListKind("ex/two_field_items", fields=(ITEM_AMOUNT, ITEM_MONTHS))
-COUNT = ArtifactKind("ex/item_count", int, non_negative=True)
+COUNT = CountKind("ex/item_count", non_negative=True)
 
 
 def capability(records: RecordListKind = ITEMS) -> RecordCount:
@@ -93,14 +94,14 @@ def test_takes_no_parameter_dataset() -> None:
 
 
 def test_rejects_a_money_kind_for_its_records() -> None:
-    other = ArtifactKind("ex/not_a_list", Decimal)
+    other = AmountKind("ex/not_a_list")
 
     with pytest.raises(InvalidCapabilityError, match="RecordCount.*'records'"):
         RecordCount(records=other, output=COUNT)  # type: ignore[arg-type]
 
 
 def test_rejects_a_money_kind_for_its_output() -> None:
-    other = ArtifactKind("ex/not_a_count", Decimal)
+    other = AmountKind("ex/not_a_count")
 
     with pytest.raises(InvalidCapabilityError, match="RecordCount.*'output'"):
         RecordCount(records=ITEMS, output=other)  # type: ignore[arg-type]
@@ -209,7 +210,7 @@ def test_needs_its_list() -> None:
 
 
 def test_does_not_consume_anything_else() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("1"))
+    other = Artifact(AmountKind("ex/other"), D("1"))
 
     result = capability().compute((other, items("8000")))
 

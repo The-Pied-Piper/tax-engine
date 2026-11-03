@@ -29,7 +29,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
@@ -39,6 +39,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -57,10 +58,10 @@ D = Decimal
 
 # --- made-up kinds -----------------------------------------------------------------------------
 
-LINE_CODE = ArtifactKind("ex/line_code", int)
-LINE_CODE_CHECKED = ArtifactKind("ex/line_code_checked", int)
-OTHER_COUNT = ArtifactKind("ex/other_count", int)
-AMOUNT = ArtifactKind("ex/amount", Decimal)
+LINE_CODE = CountKind("ex/line_code")
+LINE_CODE_CHECKED = CountKind("ex/line_code_checked")
+OTHER_COUNT = CountKind("ex/other_count")
+AMOUNT = AmountKind("ex/amount")
 
 # --- made-up datasets ---------------------------------------------------------------------------
 

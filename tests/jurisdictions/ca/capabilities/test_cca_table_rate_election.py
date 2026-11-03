@@ -43,8 +43,9 @@ from typing import Any
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError, InvalidRecordError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_claim import CcaClaim
 from tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22 import (
@@ -76,7 +77,7 @@ from tests.jurisdictions.ca.capabilities.cca_table_rate_election import (
 
 D = Decimal
 
-FISCAL_PERIOD_DAYS = ArtifactKind("ex/fiscal_period_days", int)
+FISCAL_PERIOD_DAYS = CountKind("ex/fiscal_period_days")
 
 Row = dict[Any, Decimal | int]
 

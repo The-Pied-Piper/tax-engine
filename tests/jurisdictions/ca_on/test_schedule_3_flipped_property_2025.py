@@ -29,8 +29,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError, InputOutOfRangeError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -84,11 +85,11 @@ BOX_TEXTS = (
 )
 
 # Made up for this test and not registered: the ten checked answers and the flag.
-DISPOSED_CHECKED = ArtifactKind("ex/schedule_3_disposed_checked", int)
+DISPOSED_CHECKED = CountKind("ex/schedule_3_disposed_checked")
 LIFE_EVENT_CHECKED = tuple(
-    ArtifactKind(f"ex/schedule_3_life_event_{position}_checked", int) for position in range(1, 10)
+    CountKind(f"ex/schedule_3_life_event_{position}_checked") for position in range(1, 10)
 )
-FLAG = ArtifactKind("ex/schedule_3_flipped_property", int)
+FLAG = CountKind("ex/schedule_3_flipped_property")
 
 
 def _ticked(position: int, text: str) -> Condition:
@@ -205,8 +206,8 @@ def test_each_life_event_box_alone_with_line_17905_yes_gives_0(box: int) -> None
 
 # Made up for this test and not registered: the count of the life events ticked without a "Yes"
 # and its checked count.
-WITHOUT_YES = ArtifactKind("ex/schedule_3_ticked_without_yes", int)
-WITHOUT_YES_CHECKED = ArtifactKind("ex/schedule_3_ticked_without_yes_checked", int)
+WITHOUT_YES = CountKind("ex/schedule_3_ticked_without_yes")
+WITHOUT_YES_CHECKED = CountKind("ex/schedule_3_ticked_without_yes_checked")
 
 
 def _answers(disposed: int, boxes: tuple[int, ...]) -> tuple[Artifact[Any], ...]:
@@ -284,8 +285,8 @@ def test_the_check_passes_and_the_flag_is_kept_unless_a_box_is_ticked_with_no(
 def test_a_box_of_2_is_still_refused_by_the_yes_or_no_count_before_the_check() -> None:
     # The answer of a box is checked to be 0 or 1 by `ca/yes_or_no_count` before the count reads
     # it, so a 2 is refused there, as an input above its bound, and never reaches the check.
-    raw = ArtifactKind("ex/schedule_3_box_raw", int)
-    checked = ArtifactKind("ex/schedule_3_box_raw_checked", int)
+    raw = CountKind("ex/schedule_3_box_raw")
+    checked = CountKind("ex/schedule_3_box_raw_checked")
 
     with pytest.raises(InputAboveBoundError, match=re.escape("ex/schedule_3_box_raw 2")):
         YesOrNoCount(raw, checked).compute((Artifact(raw, 2),))

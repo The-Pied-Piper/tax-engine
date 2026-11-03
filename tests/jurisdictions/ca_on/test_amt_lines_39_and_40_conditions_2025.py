@@ -21,8 +21,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -47,10 +48,10 @@ BOTH_TEXT = "line 39 and line 40 are both more than 0"
 REFUSED_TEXT = "line 39 and line 40 are both filled in, but the form says to complete line 39 or 40"
 
 # Made up for this test and not registered: line 39, line 40, the count and its checked count.
-LINE_39 = ArtifactKind("ex/amt_line_39", Decimal)
-LINE_40 = ArtifactKind("ex/amt_line_40", Decimal)
-BOTH = ArtifactKind("ex/amt_lines_39_and_40_both", int)
-BOTH_CHECKED = ArtifactKind("ex/amt_lines_39_and_40_both_checked", int)
+LINE_39 = AmountKind("ex/amt_line_39")
+LINE_40 = AmountKind("ex/amt_line_40")
+BOTH = CountKind("ex/amt_lines_39_and_40_both")
+BOTH_CHECKED = CountKind("ex/amt_lines_39_and_40_both_checked")
 
 
 def _positive(position: int) -> ConditionPart:

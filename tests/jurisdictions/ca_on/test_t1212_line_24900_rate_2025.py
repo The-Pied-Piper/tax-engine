@@ -14,8 +14,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -25,8 +26,8 @@ FAMILY = "ca/t1212_line_24900_rate"
 T1212_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1212/t1212-25e.pdf"
 
 # Made up for this test and not registered: line 2 and the amount for line 24900.
-LINE_2 = ArtifactKind("ex/deferred_benefits_line_2", Decimal)
-AMOUNT = ArtifactKind("ex/deferred_benefits_line_24900", Decimal)
+LINE_2 = AmountKind("ex/deferred_benefits_line_2")
+AMOUNT = AmountKind("ex/deferred_benefits_line_24900")
 
 
 def test_2025_rate_is_50_percent() -> None:

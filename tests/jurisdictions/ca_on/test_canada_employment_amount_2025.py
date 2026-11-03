@@ -17,8 +17,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -27,8 +28,8 @@ SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 FAMILY = "ca/canada_employment_amount"
 
 # Made up for this test and not registered: the income the cap applies to, and its capped amount.
-INCOME = ArtifactKind("ex/income", Decimal)
-CAPPED = ArtifactKind("ex/capped", Decimal)
+INCOME = AmountKind("ex/income")
+CAPPED = AmountKind("ex/capped")
 
 
 def test_2025_cap_is_1471() -> None:

@@ -22,8 +22,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -47,13 +48,13 @@ ROUNDING_FAMILY = "ca/t2203_line_8_rounding"
 RATE_FAMILY = "ca/t2203_federal_surtax_rate"
 
 # Made up for this test and not registered: the amounts, the percentage and the products.
-SPLIT_INCOME_TAX = ArtifactKind("ex/federal_tax_on_split_income", Decimal)
-HAS_SPLIT_INCOME_TAX = ArtifactKind("ex/t2203_has_tax_on_split_income", int)
-LINE_6 = ArtifactKind("ex/t2203_line_6", Decimal)
-PERCENTAGE = ArtifactKind("ex/amt_t2203_column_5_percentage", Decimal)
-LINE_8 = ArtifactKind("ex/t2203_line_8", Decimal)
-LINE_8_BASE = ArtifactKind("ex/t2203_line_8_base", Decimal)
-LINE_10 = ArtifactKind("ex/t2203_line_10", Decimal)
+SPLIT_INCOME_TAX = AmountKind("ex/federal_tax_on_split_income")
+HAS_SPLIT_INCOME_TAX = CountKind("ex/t2203_has_tax_on_split_income")
+LINE_6 = AmountKind("ex/t2203_line_6")
+PERCENTAGE = AmountKind("ex/amt_t2203_column_5_percentage")
+LINE_8 = AmountKind("ex/t2203_line_8")
+LINE_8_BASE = AmountKind("ex/t2203_line_8_base")
+LINE_10 = AmountKind("ex/t2203_line_10")
 
 
 def test_2025_you_have_to_pay_tax_on_split_income_is_the_one_condition() -> None:

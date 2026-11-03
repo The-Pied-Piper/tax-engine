@@ -12,12 +12,12 @@ from decimal import Decimal
 import pytest
 
 import tax_engine.domain.trace
-from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, LeftBlankLine, TraceLine
 from tax_engine.domain.trace import blank as trace_blank
 
-CHART_GAIN = ArtifactKind("ex/chart_gain", Decimal)
-DEDUCTION = ArtifactKind("ex/deduction", Decimal)
+CHART_GAIN = AmountKind("ex/chart_gain")
+DEDUCTION = AmountKind("ex/deduction")
 
 
 def test_the_lines_are_trace_lines_exported_by_their_module_and_the_package() -> None:

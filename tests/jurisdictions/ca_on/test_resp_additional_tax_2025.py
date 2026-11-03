@@ -20,10 +20,11 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -38,12 +39,12 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for this test and not registered: the amount a credit dataset gives, the AIPs the tax is
 # on, the tax of each part, the count that says Part A applies (0 or 1) and the tax chosen.
-CLAIMED = ArtifactKind("ex/claimed_amount", Decimal)
-AIPS = ArtifactKind("ex/aips", Decimal)
-PART_A_TAX = ArtifactKind("ex/part_a_tax", Decimal)
-PART_B_TAX = ArtifactKind("ex/part_b_tax", Decimal)
-PART_A_APPLIES = ArtifactKind("ex/part_a_applies", int)
-TAX = ArtifactKind("ex/tax", Decimal)
+CLAIMED = AmountKind("ex/claimed_amount")
+AIPS = AmountKind("ex/aips")
+PART_A_TAX = AmountKind("ex/part_a_tax")
+PART_B_TAX = AmountKind("ex/part_b_tax")
+PART_A_APPLIES = CountKind("ex/part_a_applies")
+TAX = AmountKind("ex/tax")
 
 
 def test_2025_lifetime_limit_is_50000() -> None:

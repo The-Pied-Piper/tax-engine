@@ -15,7 +15,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import CONDITIONS
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -33,8 +34,8 @@ NAMES = (
     "prison",
     "foreign_officer",
 )
-KINDS = tuple(ArtifactKind(f"ex/{name}", int) for name in NAMES)
-ELIGIBLE = ArtifactKind("ex/cwb_eligible", int)
+KINDS = tuple(CountKind(f"ex/{name}") for name in NAMES)
+ELIGIBLE = CountKind("ex/cwb_eligible")
 
 # The counts that meet every condition: resident, 19 or older, no one resided with, no dependant,
 # not a student, not in prison, not an officer of another country.

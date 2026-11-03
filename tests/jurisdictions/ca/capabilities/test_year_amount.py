@@ -19,7 +19,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities  # noqa: F401  (registers the federal capabilities)
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
@@ -29,6 +29,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -39,8 +40,8 @@ from tests.manifest_support import required_inputs
 
 D = Decimal
 
-YEAR = ArtifactKind("ex/lease_year", int)
-OUTPUT = ArtifactKind("ex/list_price_limit", Decimal)
+YEAR = CountKind("ex/lease_year")
+OUTPUT = AmountKind("ex/list_price_limit")
 
 
 def row(from_year: int | None, amount: str) -> YearAmountsRow:

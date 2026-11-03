@@ -12,11 +12,12 @@ from pathlib import Path
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidRateError, InvalidTextError, NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
 from tax_engine.domain.manifest import CapabilitySelection, Form
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.record_list import RecordList, RecordListKind
@@ -26,7 +27,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TAXABLE_INCOME,
 )
 from tests.jurisdictions.ca_on.worked_return import FormExpectation, WorkedReturn, WorkedReturnError
-from tests.kinds import ca_on_kinds
+from tests.kinds import OddKind, ca_on_kinds
 
 D = Decimal
 RETURNS = Path(__file__).parent / "returns"
@@ -42,10 +43,10 @@ VALID = "".join(SECTIONS.values())
 # The one entry of the return's own form under `expected`, to which a test adds a line.
 RETURN_LINE = SECTIONS["expected"]
 # Made up for the count tests and not registered with the application: a non-negative count.
-COUNT = ArtifactKind("ex/count", int, non_negative=True)
+COUNT = CountKind("ex/count", non_negative=True)
 # Made up for the rate tests and not registered with the application: a rate, which cannot be
 # declared non-negative as only a Decimal or int kind can.
-RATE_KIND = ArtifactKind("ex/rate", Rate)
+RATE_KIND = RateKind("ex/rate")
 # Made up for the record-list tests: a YAML list of two records, each keyed by the identifiers
 # of its fields, an amount and a count, both quoted.
 DEPENDANTS = (
@@ -87,8 +88,8 @@ def records() -> ArtifactRegistry:
     """A registry of made-up `ex/dependants` records (a non-negative amount and count) and the
     federal basic tax `VALID` expects."""
     catalog = ArtifactCatalog(Namespace("ex"))
-    net_income = catalog.declare("dependant_net_income", Decimal, non_negative=True)
-    months = catalog.declare("months_resident", int, non_negative=True)
+    net_income = AmountKind.declare(catalog, "dependant_net_income", non_negative=True)
+    months = CountKind.declare(catalog, "months_resident", non_negative=True)
     RecordListKind.declare(catalog, "dependants", fields=(net_income, months))
     artifacts = ArtifactRegistry()
     artifacts.register_catalog(catalog)
@@ -102,7 +103,7 @@ def digits() -> ArtifactRegistry:
     tax `VALID` expects."""
     catalog = ArtifactCatalog(Namespace("ex"))
     DigitsKind.declare(catalog, "business_number", digits=9)
-    catalog.declare("partnership_member", int, non_negative=True)
+    CountKind.declare(catalog, "partnership_member", non_negative=True)
     artifacts = ArtifactRegistry()
     artifacts.register_catalog(catalog)
     artifacts.register(FEDERAL_BASIC_TAX.identifier, FEDERAL_BASIC_TAX)
@@ -242,7 +243,7 @@ def test_a_malformed_section_names_the_file_and_section(
 
 def test_an_identifier_that_is_not_an_amount_names_the_file_and_key(tmp_path: Path) -> None:
     artifacts = ArtifactRegistry()
-    artifacts.register("ex/flag", ArtifactKind("ex/flag", bool))
+    artifacts.register("ex/flag", OddKind("ex/flag", bool))
     artifacts.register(FEDERAL_BASIC_TAX.identifier, FEDERAL_BASIC_TAX)
     path = write(tmp_path, with_section("inputs", 'inputs:\n  ex/flag: "1"\n'))
 
@@ -1060,8 +1061,8 @@ PROPERTIES = (
 def nested() -> ArtifactRegistry:
     """A registry of the made-up `ex/properties`, whose records hold an `ex/units` list."""
     catalog = ArtifactCatalog(Namespace("ex"))
-    rent = catalog.declare("unit_rent", Decimal, non_negative=True)
-    floor = catalog.declare("floor", int, non_negative=True)
+    rent = AmountKind.declare(catalog, "unit_rent", non_negative=True)
+    floor = CountKind.declare(catalog, "floor", non_negative=True)
     units = RecordListKind.declare(catalog, "units", fields=(rent,))
     RecordListKind.declare(catalog, "properties", fields=(floor, units))
     artifacts = ArtifactRegistry()
@@ -1179,15 +1180,15 @@ def rentals() -> ArtifactRegistry:
     """A registry of the made-up `ex/rentals`: a record per instance of a rental form, holding
     `ex/gross_rent`, `ex/expenses` and a nested `ex/units` list (one amount per record)."""
     catalog = ArtifactCatalog(Namespace("ex"))
-    gross = catalog.declare("gross_rent", Decimal)
-    expenses = catalog.declare("expenses", Decimal)
-    catalog.declare("other_amount", Decimal)
-    catalog.declare("net_income", Decimal)
-    amount = catalog.declare("unit_amount", Decimal)
+    gross = AmountKind.declare(catalog, "gross_rent")
+    expenses = AmountKind.declare(catalog, "expenses")
+    AmountKind.declare(catalog, "other_amount")
+    AmountKind.declare(catalog, "net_income")
+    amount = AmountKind.declare(catalog, "unit_amount")
     units = RecordListKind.declare(catalog, "units", fields=(amount,))
     RecordListKind.declare(catalog, "rentals", fields=(gross, expenses, units))
-    count = catalog.declare("business_count", int, non_negative=True)
-    profit = catalog.declare("profit", Decimal)
+    count = CountKind.declare(catalog, "business_count", non_negative=True)
+    profit = AmountKind.declare(catalog, "profit")
     RecordListKind.declare(catalog, "businesses", fields=(count, profit))
     artifacts = ArtifactRegistry()
     artifacts.register_catalog(catalog)
@@ -1301,7 +1302,7 @@ TWO_INSTANCES = (
 @pytest.fixture
 def lines(rentals: ArtifactRegistry) -> ArtifactRegistry:
     """`rentals` with the total the made-up return expects."""
-    rentals.register("ex/total_net_income", ArtifactKind("ex/total_net_income", Decimal))
+    rentals.register("ex/total_net_income", AmountKind("ex/total_net_income"))
     return rentals
 
 

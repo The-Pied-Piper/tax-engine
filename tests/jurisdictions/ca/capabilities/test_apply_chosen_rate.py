@@ -27,7 +27,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
@@ -35,6 +35,7 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     UnknownRegistrationError,
 )
+from tax_engine.domain.kinds import AmountKind, RateKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -59,9 +60,9 @@ from tests.jurisdictions.ca_on.capabilities.on479a_table import (
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
-CARE_DEDUCTION = ArtifactKind("ex/child_care_deduction", Decimal)
-CARE_RATE = ArtifactKind("ex/care_rate", Rate)
-CARE_CREDIT = ArtifactKind("ex/care_credit", Decimal)
+CARE_DEDUCTION = AmountKind("ex/child_care_deduction")
+CARE_RATE = RateKind("ex/care_rate")
+CARE_CREDIT = AmountKind("ex/care_credit")
 
 
 def rounding(rule: RoundingRule = CENT) -> ParameterDataset[RoundingOnly]:
@@ -163,14 +164,14 @@ def test_rejects_one_kind_as_both_base_and_output() -> None:
 
 
 def test_rejects_a_money_kind_as_its_rate() -> None:
-    money = ArtifactKind("ex/rate_as_money", Decimal)
+    money = AmountKind("ex/rate_as_money")
 
     with pytest.raises(InvalidCapabilityError, match="ApplyChosenRate.*'rate'"):
         ApplyChosenRate(rounding(), CARE_DEDUCTION, money, CARE_CREDIT)  # type: ignore[arg-type]
 
 
 def test_rejects_a_rate_kind_as_its_base() -> None:
-    other_rate = ArtifactKind("ex/other_rate", Rate)
+    other_rate = RateKind("ex/other_rate")
 
     with pytest.raises(InvalidCapabilityError, match="ApplyChosenRate.*'base'"):
         ApplyChosenRate(rounding(), other_rate, CARE_RATE, CARE_CREDIT)  # type: ignore[arg-type]
@@ -267,7 +268,7 @@ def test_the_product_is_exact_under_a_context_that_traps_inexact() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), *inputs("5000", "0.55")))
 

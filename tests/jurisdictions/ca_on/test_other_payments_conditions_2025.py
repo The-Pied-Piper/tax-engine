@@ -15,7 +15,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -33,8 +34,8 @@ OVER_LIMIT = "ca/other_payments_line_9_over_limit_conditions"
 D1_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt"
 
 # Made up for this test and not registered: the amount tested, and the count it gives.
-AMOUNT = ArtifactKind("ex/amount", Decimal)
-COUNT = ArtifactKind("ex/count", int)
+AMOUNT = AmountKind("ex/amount")
+COUNT = CountKind("ex/count")
 
 
 def test_2025_the_worksheet_is_required_when_an_amount_was_entered_on_line_14600() -> None:

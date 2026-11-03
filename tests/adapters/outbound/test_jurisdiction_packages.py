@@ -11,7 +11,6 @@ from __future__ import annotations
 import importlib
 import sys
 from collections.abc import Callable, Iterator
-from decimal import Decimal
 from pathlib import Path
 from types import ModuleType
 
@@ -20,6 +19,7 @@ import pytest
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 
 _MISSING = object()
@@ -59,7 +59,7 @@ def package(monkeypatch: pytest.MonkeyPatch) -> MakePackage:
 def catalog_of(namespace: str, *local_ids: str) -> ArtifactCatalog:
     catalog = ArtifactCatalog(Namespace(namespace))
     for local_id in local_ids:
-        catalog.declare(local_id, Decimal)
+        AmountKind.declare(catalog, local_id)
     return catalog
 
 

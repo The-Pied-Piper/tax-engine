@@ -19,11 +19,12 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.lesser_of import LesserOf
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.sum import Sum
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -37,15 +38,15 @@ ON428_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/500
 
 # Made up for this test and not registered: Schedule 9 lines 12, 13 and 14 (the federal
 # artifacts the Ontario lines read), the $200, and one kind for each ON428 line.
-SCHEDULE_9_LINE_12 = ArtifactKind("ex/schedule_9_line_12", Decimal)
-FIRST_TIER_MAXIMUM = ArtifactKind("ex/first_tier_maximum", Decimal)
-SCHEDULE_9_LINE_13 = ArtifactKind("ex/schedule_9_line_13", Decimal)
-SCHEDULE_9_LINE_14 = ArtifactKind("ex/schedule_9_line_14", Decimal)
-LINE_46 = ArtifactKind("ex/line_46", Decimal)
-LINE_47 = ArtifactKind("ex/line_47", Decimal)
-LINE_48 = ArtifactKind("ex/line_48", Decimal)
-LINE_49 = ArtifactKind("ex/line_49", Decimal)
-LINE_50 = ArtifactKind("ex/line_50", Decimal)
+SCHEDULE_9_LINE_12 = AmountKind("ex/schedule_9_line_12")
+FIRST_TIER_MAXIMUM = AmountKind("ex/first_tier_maximum")
+SCHEDULE_9_LINE_13 = AmountKind("ex/schedule_9_line_13")
+SCHEDULE_9_LINE_14 = AmountKind("ex/schedule_9_line_14")
+LINE_46 = AmountKind("ex/line_46")
+LINE_47 = AmountKind("ex/line_47")
+LINE_48 = AmountKind("ex/line_48")
+LINE_49 = AmountKind("ex/line_49")
+LINE_50 = AmountKind("ex/line_50")
 
 
 def line_47(schedule_9_line_13: str) -> Decimal:

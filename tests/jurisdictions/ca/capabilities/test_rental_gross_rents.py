@@ -29,6 +29,7 @@ from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -124,7 +125,7 @@ def test_takes_no_parameter_dataset() -> None:
 
 
 def test_rejects_a_money_kind_for_its_properties() -> None:
-    other = ArtifactKind("ex/not_a_list", Decimal)
+    other = AmountKind("ex/not_a_list")
 
     with pytest.raises(InvalidCapabilityError, match="RentalGrossRents.*'properties'"):
         RentalGrossRents(properties=other, output=RENTAL_GROSS_RENTS)  # type: ignore[arg-type]
@@ -248,7 +249,7 @@ def test_needs_its_properties() -> None:
 
 
 def test_does_not_consume_anything_else() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("1"))
+    other = Artifact(AmountKind("ex/other"), D("1"))
 
     result = capability().compute((other, properties(*column("24000"))))
 

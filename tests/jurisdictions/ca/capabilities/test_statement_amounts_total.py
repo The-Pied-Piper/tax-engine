@@ -24,13 +24,14 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputOutOfRangeError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.statement_amounts_total import (
@@ -39,14 +40,14 @@ from tax_engine.jurisdictions.ca.capabilities.statement_amounts_total import (
 
 D = Decimal
 
-BUSINESS_NET = ArtifactKind("ex/business_net", Decimal)
-FISHING_NET = ArtifactKind("ex/fishing_net", Decimal)
+BUSINESS_NET = AmountKind("ex/business_net")
+FISHING_NET = AmountKind("ex/fishing_net")
 BUSINESS = RecordListKind("ex/business_statements", fields=(BUSINESS_NET,))
 FISHING = RecordListKind("ex/fishing_statements", fields=(FISHING_NET,))
-STATEMENT = ArtifactKind("ex/statement_number", int)
+STATEMENT = CountKind("ex/statement_number")
 STATEMENTS = RecordListKind("ex/named_statements", fields=(STATEMENT,))
-LINE = ArtifactKind("ex/line_code", int)
-TOTAL = ArtifactKind("ex/statements_total", Decimal)
+LINE = CountKind("ex/line_code")
+TOTAL = AmountKind("ex/statements_total")
 TWO_FIELDS = RecordListKind("ex/pairs", fields=(BUSINESS_NET, STATEMENT))
 AMOUNT_POSITIONS = RecordListKind("ex/amount_positions", fields=(BUSINESS_NET,))
 

@@ -99,7 +99,7 @@ class RecordList:
     def __init__(
         self,
         fields: Iterable[ArtifactKind[Any]],
-        records: Iterable[Mapping[ArtifactKind[Any], object]],
+        records: Iterable[Mapping[Any, object]],
     ) -> None:
         # Written by hand, so the dataclass keeps it: it takes any iterables, and
         # `__post_init__` normalises them.
@@ -115,12 +115,7 @@ class RecordList:
             if kind.identifier in seen:
                 raise InvalidRecordError(f"the field {kind.identifier!r} is named more than once")
             seen.add(kind.identifier)
-            # `bool` is a subclass of `int` but not a count, so the int check is exact.
-            if not (
-                issubclass(kind.value_type, Decimal)
-                or kind.value_type is int
-                or isinstance(kind, RecordListKind)
-            ):
+            if not kind.is_record_field:
                 raise InvalidRecordError(
                     f"the field {kind.identifier!r} holds a {kind.value_type.__name__}: "
                     f"a field must be a Decimal, int or record-list kind"
@@ -163,7 +158,7 @@ class RecordList:
                     raise TypeError(f"{item}: {exc}") from None
             if isinstance(value, Decimal) and not value.is_finite():
                 raise InvalidRecordError(f"{item}: {kind.identifier} must be finite, got {value}")
-            if kind.non_negative and value < 0:
+            if kind.is_below_floor(value):
                 raise NegativeArtifactError(
                     f"{item}: {kind.identifier} cannot be negative, got {value}",
                     identifier=kind.identifier,
@@ -189,7 +184,6 @@ class RecordListKind(ArtifactKind[RecordList]):
         # non-negative, and the fields may be any sequence, which `__post_init__` normalises.
         object.__setattr__(self, "identifier", identifier)
         object.__setattr__(self, "value_type", RecordList)
-        object.__setattr__(self, "non_negative", False)
         object.__setattr__(self, "fields", tuple(fields))
         self.__post_init__()
 
@@ -224,6 +218,11 @@ class RecordListKind(ArtifactKind[RecordList]):
         if isinstance(declared, str):
             return self.read(declared)
         return Artifact(self, RecordList(self.fields, ()))
+
+    @property
+    def is_record_field(self) -> bool:
+        """A record-list kind can be a field of a record: a record may hold a list of records."""
+        return True
 
     def check_value(self, value: RecordList) -> None:
         """Refuse a record list built with other fields than this kind's, as a TypeError."""

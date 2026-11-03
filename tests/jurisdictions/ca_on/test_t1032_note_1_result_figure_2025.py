@@ -15,8 +15,8 @@ from decimal import Decimal
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
@@ -28,7 +28,7 @@ T1032_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for these tests and not registered: the artifact the figure is claimed as.
-CLAIMED = ArtifactKind("ex/t1032_note_1_result_figure", Decimal)
+CLAIMED = AmountKind("ex/t1032_note_1_result_figure")
 
 
 def dataset_header(family: str) -> str:

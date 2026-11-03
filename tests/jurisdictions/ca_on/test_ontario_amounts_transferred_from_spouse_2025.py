@@ -25,9 +25,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -46,9 +47,9 @@ INCOME_LIMIT = "ca-on/spouse_transfer_income_limit"
 S2_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s2/5006-s2-25e.txt"
 
 # Made up for these tests and not registered.
-INCOME = ArtifactKind("ex/income", Decimal)
-TAX = ArtifactKind("ex/tax", Decimal)
-OUTPUT = ArtifactKind("ex/out", Decimal)
+INCOME = AmountKind("ex/income")
+TAX = AmountKind("ex/tax")
+OUTPUT = AmountKind("ex/out")
 
 
 def test_2025_line_5_threshold_is_52886_and_rate_5_05_percent_to_the_cent() -> None:
@@ -167,7 +168,7 @@ def test_the_dataset_header_states_the_half_up_cent_rule(family: str) -> None:
 def test_the_credit_amount_capability_gives_each_spouse_maximum_as_an_artifact(
     family: str, amount: str
 ) -> None:
-    figure = ArtifactKind("ex/spouse_maximum_artifact", Decimal)
+    figure = AmountKind("ex/spouse_maximum_artifact")
     capability = CreditAmount(SOURCE.get(family, 2025, CREDIT), figure)
 
     (output,) = capability.compute(()).outputs

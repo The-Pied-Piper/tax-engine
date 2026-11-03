@@ -18,12 +18,13 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.domain.capabilities as core
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidCompositionError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -40,9 +41,9 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-PERSONAL_AMOUNT = ArtifactKind("ex/personal_amount", Decimal)
-OTHER_AMOUNT = ArtifactKind("ex/other_amount", Decimal)
-TOTAL_AMOUNTS = ArtifactKind("ex/total_amounts", Decimal)
+PERSONAL_AMOUNT = AmountKind("ex/personal_amount")
+OTHER_AMOUNT = AmountKind("ex/other_amount")
+TOTAL_AMOUNTS = AmountKind("ex/total_amounts")
 
 
 def amount(value: str = "1000", rounding: RoundingRule = NO_ROUNDING) -> ParameterDataset[Credit]:
@@ -126,7 +127,7 @@ def test_rejects_a_list_of_kinds_for_its_output() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.

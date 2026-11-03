@@ -18,6 +18,7 @@ import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.class_rates import (
@@ -215,67 +216,67 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FIVE_DECIMALS_DOWN = RoundTo(D("0.00001"), RoundingMode.DOWN)
 
-TAXABLE_BASE = ArtifactKind("ex/taxable_base", Decimal)
-BASIC_TAX = ArtifactKind("ex/basic_tax", Decimal)
-PART_ONE = ArtifactKind("ex/part_one", Decimal)
-PART_TWO = ArtifactKind("ex/part_two", Decimal)
-PART_THREE = ArtifactKind("ex/part_three", Decimal)
-TOTAL = ArtifactKind("ex/total", Decimal)
-GROSS_AMOUNT = ArtifactKind("ex/gross_amount", Decimal)
-RATED_AMOUNT = ArtifactKind("ex/rated_amount", Decimal)
-RATED_AMOUNT_RATE = ArtifactKind("ex/rated_amount", Rate)
-REDUCTION = ArtifactKind("ex/reduction", Decimal)
-NET_AMOUNT = ArtifactKind("ex/net_amount", Decimal)
-PERSONAL_AMOUNT = ArtifactKind("ex/personal_amount", Decimal)
-CAPPED_AMOUNT = ArtifactKind("ex/capped_amount", Decimal)
-LESSER_AMOUNT = ArtifactKind("ex/lesser_amount", Decimal)
-GREATER_AMOUNT = ArtifactKind("ex/greater_amount", Decimal)
-EARNINGS = ArtifactKind("ex/earnings", Decimal)
-CONTRIBUTION = ArtifactKind("ex/contribution", Decimal)
+TAXABLE_BASE = AmountKind("ex/taxable_base")
+BASIC_TAX = AmountKind("ex/basic_tax")
+PART_ONE = AmountKind("ex/part_one")
+PART_TWO = AmountKind("ex/part_two")
+PART_THREE = AmountKind("ex/part_three")
+TOTAL = AmountKind("ex/total")
+GROSS_AMOUNT = AmountKind("ex/gross_amount")
+RATED_AMOUNT = AmountKind("ex/rated_amount")
+RATED_AMOUNT_RATE = RateKind("ex/rated_amount")
+REDUCTION = AmountKind("ex/reduction")
+NET_AMOUNT = AmountKind("ex/net_amount")
+PERSONAL_AMOUNT = AmountKind("ex/personal_amount")
+CAPPED_AMOUNT = AmountKind("ex/capped_amount")
+LESSER_AMOUNT = AmountKind("ex/lesser_amount")
+GREATER_AMOUNT = AmountKind("ex/greater_amount")
+EARNINGS = AmountKind("ex/earnings")
+CONTRIBUTION = AmountKind("ex/contribution")
 TIER = ContributionTier(Rate(D("0.05")), D("3000"), D("50000"), D("2350"))
-SURCHARGE = ArtifactKind("ex/surcharge", Decimal)
-TAX_SO_FAR = ArtifactKind("ex/tax_so_far", Decimal)
-INCOME = ArtifactKind("ex/income", Decimal)
+SURCHARGE = AmountKind("ex/surcharge")
+TAX_SO_FAR = AmountKind("ex/tax_so_far")
+INCOME = AmountKind("ex/income")
 TAPER = Taper(D("1000"), D("500"), D("20000"), D("10000"))
-CHILDREN = ArtifactKind("ex/child_count", int)
-CHILD_AMOUNT = ArtifactKind("ex/child_amount", Decimal)
-REDUCTION_AMOUNTS = ArtifactKind("ex/reduction_amounts", Decimal)
-CLAIMED_AMOUNT = ArtifactKind("ex/claimed_amount", Decimal)
-CLAIM_LIMIT = ArtifactKind("ex/claim_limit", Decimal)
-ALLOWED_AMOUNT = ArtifactKind("ex/allowed_amount", Decimal)
-EARNED_INCOME = ArtifactKind("ex/earned_income", Decimal)
-EARNED_PORTION = ArtifactKind("ex/earned_portion", Decimal)
-AMOUNT_EACH = ArtifactKind("ex/amount_each", Decimal)
-PERSONS = ArtifactKind("ex/person_count", int)
-AMOUNT_CLAIMED = ArtifactKind("ex/amount_claimed", Decimal)
-DEPENDANTS = ArtifactKind("ex/dependant_count", int)
-AMOUNT_ALONE = ArtifactKind("ex/amount_alone", Decimal)
-AMOUNT_WITH_FAMILY = ArtifactKind("ex/amount_with_family", Decimal)
-AMOUNT_CHOSEN = ArtifactKind("ex/amount_chosen", Decimal)
-TAX_PAYABLE = ArtifactKind("ex/tax_payable", Decimal)
-FOREIGN_INCOME = ArtifactKind("ex/foreign_income", Decimal)
-WORLD_INCOME = ArtifactKind("ex/worldwide_income", Decimal)
-CREDIT_SHARE = ArtifactKind("ex/credit_share", Decimal)
-ITEM_AMOUNT = ArtifactKind("ex/item_amount", Decimal)
-GATED_AMOUNT = ArtifactKind("ex/gated_amount", Decimal)
-GATE_AMOUNT = ArtifactKind("ex/gate_amount", Decimal)
-AMOUNT_TESTED = ArtifactKind("ex/amount_tested", Decimal)
-AMOUNT_IN_RANGE = ArtifactKind("ex/amount_in_range", Decimal)
-FAMILY_INCOME = ArtifactKind("ex/family_income", Decimal)
-BAND_RATE = ArtifactKind("ex/band_rate", Rate)
-CARE_EXPENSES = ArtifactKind("ex/care_expenses", Decimal)
-CARE_CREDIT = ArtifactKind("ex/care_credit", Decimal)
-CAREGIVER_AMOUNT = ArtifactKind("ex/caregiver_amount", Decimal)
-ADOPTION_CREDIT = ArtifactKind("ex/adoption_credit", Decimal)
-DEPENDANTS_MEDICAL = ArtifactKind("ex/dependants_medical", Decimal)
-LIMITED_AMOUNT = ArtifactKind("ex/limited_amount", Decimal)
-DIVIDED_AMOUNT = ArtifactKind("ex/divided_amount", Decimal)
-NON_COMPLIANT_EXPENSES = ArtifactKind("ex/non_compliant_expenses", Decimal)
-NON_COMPLIANT_CCA = ArtifactKind("ex/non_compliant_cca", Decimal)
-TRANSFERRED_AMOUNT = ArtifactKind("ex/transferred_amount", Decimal)
-RESIDENCE_GAIN = ArtifactKind("ex/residence_gain", Decimal)
-MONTHS = ArtifactKind("ex/month_count", int)
-MONTHLY_AMOUNT = ArtifactKind("ex/monthly_amount", Decimal)
+CHILDREN = CountKind("ex/child_count")
+CHILD_AMOUNT = AmountKind("ex/child_amount")
+REDUCTION_AMOUNTS = AmountKind("ex/reduction_amounts")
+CLAIMED_AMOUNT = AmountKind("ex/claimed_amount")
+CLAIM_LIMIT = AmountKind("ex/claim_limit")
+ALLOWED_AMOUNT = AmountKind("ex/allowed_amount")
+EARNED_INCOME = AmountKind("ex/earned_income")
+EARNED_PORTION = AmountKind("ex/earned_portion")
+AMOUNT_EACH = AmountKind("ex/amount_each")
+PERSONS = CountKind("ex/person_count")
+AMOUNT_CLAIMED = AmountKind("ex/amount_claimed")
+DEPENDANTS = CountKind("ex/dependant_count")
+AMOUNT_ALONE = AmountKind("ex/amount_alone")
+AMOUNT_WITH_FAMILY = AmountKind("ex/amount_with_family")
+AMOUNT_CHOSEN = AmountKind("ex/amount_chosen")
+TAX_PAYABLE = AmountKind("ex/tax_payable")
+FOREIGN_INCOME = AmountKind("ex/foreign_income")
+WORLD_INCOME = AmountKind("ex/worldwide_income")
+CREDIT_SHARE = AmountKind("ex/credit_share")
+ITEM_AMOUNT = AmountKind("ex/item_amount")
+GATED_AMOUNT = AmountKind("ex/gated_amount")
+GATE_AMOUNT = AmountKind("ex/gate_amount")
+AMOUNT_TESTED = AmountKind("ex/amount_tested")
+AMOUNT_IN_RANGE = AmountKind("ex/amount_in_range")
+FAMILY_INCOME = AmountKind("ex/family_income")
+BAND_RATE = RateKind("ex/band_rate")
+CARE_EXPENSES = AmountKind("ex/care_expenses")
+CARE_CREDIT = AmountKind("ex/care_credit")
+CAREGIVER_AMOUNT = AmountKind("ex/caregiver_amount")
+ADOPTION_CREDIT = AmountKind("ex/adoption_credit")
+DEPENDANTS_MEDICAL = AmountKind("ex/dependants_medical")
+LIMITED_AMOUNT = AmountKind("ex/limited_amount")
+DIVIDED_AMOUNT = AmountKind("ex/divided_amount")
+NON_COMPLIANT_EXPENSES = AmountKind("ex/non_compliant_expenses")
+NON_COMPLIANT_CCA = AmountKind("ex/non_compliant_cca")
+TRANSFERRED_AMOUNT = AmountKind("ex/transferred_amount")
+RESIDENCE_GAIN = AmountKind("ex/residence_gain")
+MONTHS = CountKind("ex/month_count")
+MONTHLY_AMOUNT = AmountKind("ex/monthly_amount")
 
 
 def render(line: TraceLine) -> str:
@@ -1991,7 +1992,7 @@ def test_renders_the_items_total_of_no_children() -> None:
 # wages <salary and wages> and the maximum <maximum> is <amount>", then the rounding rule in
 # brackets. Every money figure prints without trailing zeros.
 
-APPRENTICESHIP_WAGES_TOTAL = ArtifactKind("ex/apprenticeship_wages_total", Decimal)
+APPRENTICESHIP_WAGES_TOTAL = AmountKind("ex/apprenticeship_wages_total")
 
 
 def apprentice_wages(
@@ -2256,7 +2257,7 @@ def test_renders_the_non_compliant_cca_rows_figures_without_trailing_zeros_or_an
 # class's rounded column 7 amounts joined by " + ", then " = " and column 22.
 
 NON_COMPLIANT_CCA_BY_CLASS = RecordListKind(
-    "ex/non_compliant_cca_by_class", fields=(ArtifactKind("ex/column_22", Decimal),)
+    "ex/non_compliant_cca_by_class", fields=(AmountKind("ex/column_22"),)
 )
 
 
@@ -2771,7 +2772,7 @@ def test_renders_the_total_of_no_properties() -> None:
 # less columns 3 and 4; a loss prints with its minus sign. The gain-only line adds the figure
 # counted, a loss counting 0. Every figure prints without trailing zeros.
 
-DISPOSITION_GAINS = ArtifactKind("ex/share_gain_or_loss", Decimal)
+DISPOSITION_GAINS = AmountKind("ex/share_gain_or_loss")
 
 
 def test_renders_a_gain_row() -> None:
@@ -3022,7 +3023,7 @@ def test_renders_a_proceeds_row() -> None:
     assert render(line) == "share_gain_or_loss: disposition 2: proceeds 800"
 
 
-NET_CAPITAL_LOSSES_TOTAL = ArtifactKind("ex/chart_1_column_g_total", Decimal)
+NET_CAPITAL_LOSSES_TOTAL = AmountKind("ex/chart_1_column_g_total")
 
 
 def test_renders_a_chart_1_row_with_columns_e_f_and_g() -> None:
@@ -3080,10 +3081,10 @@ def test_renders_the_total_of_the_dispositions_by_position() -> None:
 # apply". The total line names the positions that applied ("condition 3 applies", "conditions 2, 3
 # apply", "no condition applies") and the count: ", so <count>".
 
-CONDITION_GATE = ArtifactKind("ex/tax_reduction_gate", int)
-CONDITION_FLAG = ArtifactKind("ex/bankrupt_flag", int)
-CONDITION_LINE_72 = ArtifactKind("ex/amount_on_line_72", Decimal)
-CONDITION_OTHER = ArtifactKind("ex/other_income", Decimal)
+CONDITION_GATE = CountKind("ex/tax_reduction_gate")
+CONDITION_FLAG = CountKind("ex/bankrupt_flag")
+CONDITION_LINE_72 = AmountKind("ex/amount_on_line_72")
+CONDITION_OTHER = AmountKind("ex/other_income")
 
 
 def test_renders_a_condition_on_a_count_that_applies() -> None:
@@ -3161,7 +3162,7 @@ def test_renders_a_condition_without_a_namespace_in_any_label() -> None:
 # rounding rule in parentheses.
 
 
-ELECTED_PERCENTAGE = ArtifactKind("ex/elected_percentage", Decimal)
+ELECTED_PERCENTAGE = AmountKind("ex/elected_percentage")
 
 
 def test_renders_a_percentage_applied_rounded() -> None:
@@ -3758,22 +3759,22 @@ def test_render_all_rejects_a_line_class_it_does_not_know() -> None:
         EnglishTraceRenderer().render_all((SumLine(TOTAL, (), D(1)), MadeUpLine(D(1))))
 
 
-DIVIDEND_AMOUNT = ArtifactKind("ex/dividend_amount", Decimal)
+DIVIDEND_AMOUNT = AmountKind("ex/dividend_amount")
 
 
-DIVISOR_AMOUNT = ArtifactKind("ex/divisor_amount", Decimal)
+DIVISOR_AMOUNT = AmountKind("ex/divisor_amount")
 
 
-QUOTIENT_AMOUNT = ArtifactKind("ex/quotient_amount", Decimal)
+QUOTIENT_AMOUNT = AmountKind("ex/quotient_amount")
 
 
-ITEM_COUNT = ArtifactKind("ex/item_count", int)
+ITEM_COUNT = CountKind("ex/item_count")
 
 
 ITEMS = RecordListKind("ex/items", fields=(ITEM_AMOUNT,))
 
 
-REMAINING_SHARE = ArtifactKind("ex/remaining_share", Decimal)
+REMAINING_SHARE = AmountKind("ex/remaining_share")
 
 
 def test_renders_a_quotient() -> None:
@@ -3912,10 +3913,10 @@ def class_rate(
     )
 
 
-CCA_CLAIM = ArtifactKind("ex/cca_claim", Decimal)
-RECAPTURED_CCA = ArtifactKind("ex/recaptured_cca", Decimal)
-TERMINAL_LOSS = ArtifactKind("ex/terminal_loss", Decimal)
-CLOSING_UCC = RecordListKind("ex/closing_ucc", fields=(ArtifactKind("ex/ucc_at_end", Decimal),))
+CCA_CLAIM = AmountKind("ex/cca_claim")
+RECAPTURED_CCA = AmountKind("ex/recaptured_cca")
+TERMINAL_LOSS = AmountKind("ex/terminal_loss")
+CLOSING_UCC = RecordListKind("ex/closing_ucc", fields=(AmountKind("ex/ucc_at_end"),))
 EXCLUDED = RecaptureAndTerminalLoss.EXCLUDED
 
 
@@ -4123,7 +4124,7 @@ def test_renders_the_recapture_case_the_line_records_not_column_7s_sign() -> Non
     )
 
 
-MOTOR_VEHICLE_EXPENSES = ArtifactKind("ex/motor_vehicle_expenses", Decimal)
+MOTOR_VEHICLE_EXPENSES = AmountKind("ex/motor_vehicle_expenses")
 
 
 def business_vehicle_line(
@@ -4600,9 +4601,9 @@ def test_renders_a_zero_count_and_a_negative_minimum() -> None:
 # <rounding>)" (`ca/more_than_per_unit`), for a count above 0;
 # with a count of 0 the line reads "<output>: <total kind> <total>, no <count kind>".
 
-FEE_TOTAL = ArtifactKind("ex/fee_total", Decimal)
-FEE_CHECKED = ArtifactKind("ex/fee_checked", Decimal)
-INSTITUTIONS = ArtifactKind("ex/institution_count", int)
+FEE_TOTAL = AmountKind("ex/fee_total")
+FEE_CHECKED = AmountKind("ex/fee_checked")
+INSTITUTIONS = CountKind("ex/institution_count")
 
 
 def test_renders_a_total_more_than_its_minimum_per_unit() -> None:
@@ -5347,9 +5348,9 @@ def test_a_sheet_without_minimum_tax_keeps_the_federal_credit_wording() -> None:
 
 # T776 Area A "Column 9: Immediate expensing amount for DIEPs (Note 5)": `CcaClaimLine` and
 # `ClosingUccLine` name column 9 only when it is above 0; `ImmediateExpensingLine` is line i's line.
-CCA_CLAIM = ArtifactKind("ex/cca_claim", Decimal)
+CCA_CLAIM = AmountKind("ex/cca_claim")
 CLOSING_UCC = RecordListKind("ex/closing_ucc", fields=(CCA_UCC_AT_END,))
-IMMEDIATE_EXPENSING = ArtifactKind("ex/immediate_expensing_claim", Decimal)
+IMMEDIATE_EXPENSING = AmountKind("ex/immediate_expensing_claim")
 
 
 def claim_line(column_9: str) -> CcaClaimLine:
@@ -5553,7 +5554,7 @@ def test_renders_a_column_8_of_0_when_column_6_is_above_column_4() -> None:
 # tax year". `ImmediateExpensingAgreedLimitLine` says the statements compared (those claiming
 # above 0: the limit list's kind, the position from 1, the claim and the limit) and the agreed
 # limit, which is its amount.
-AGREED_LIMIT = ArtifactKind("ex/immediate_expensing_agreed_limit", Decimal)
+AGREED_LIMIT = AmountKind("ex/immediate_expensing_agreed_limit")
 RENTAL_LIMITS = RecordListKind("ex/rental_limits", fields=(CCA_UCC_AT_END,))
 BUSINESS_LIMITS = RecordListKind("ex/business_limits", fields=(CCA_UCC_AT_END,))
 
@@ -6661,7 +6662,7 @@ def test_the_closing_line_of_a_366_day_dataset_names_the_proration_against_its_d
 # prorate your CCA claim. ... In this case, your fiscal period is 214 days." `FiscalPeriodDaysLine`
 # says the days the caller entered and the days of the fiscal period that the claim is prorated by;
 # no days entered is a full year of the dataset's days.
-FISCAL_PERIOD_DAYS = ArtifactKind("ex/fiscal_period_days", int)
+FISCAL_PERIOD_DAYS = CountKind("ex/fiscal_period_days")
 
 
 def test_renders_the_days_entered_as_the_fiscal_period() -> None:
@@ -6723,9 +6724,9 @@ def test_renders_no_dates_entered_as_a_full_year() -> None:
 # value, the days of the fiscal period with their label, the days of a full year and the result,
 # and says whether the year was prorated: a year below the 357 days of the figure is prorated, any
 # other year is not and its result is the amount.
-UNPRORATED_LIMIT = ArtifactKind("ex/unprorated_limit", Decimal)
-PRORATED_LIMIT = ArtifactKind("ex/prorated_limit", Decimal)
-SHORT_YEAR_DAYS = ArtifactKind("ex/short_year_days", Decimal)
+UNPRORATED_LIMIT = AmountKind("ex/unprorated_limit")
+PRORATED_LIMIT = AmountKind("ex/prorated_limit")
+SHORT_YEAR_DAYS = AmountKind("ex/short_year_days")
 
 
 def test_renders_an_amount_prorated_by_the_days_of_the_fiscal_period() -> None:
@@ -6827,9 +6828,9 @@ def test_renders_a_year_of_51_weeks_or_more_as_not_prorated(days: int) -> None:
 # Form T2043 Chart A amount 8, "Amount 6 multiplied by amount 7." Amount 7 is the days in 2024 over
 # the days of the fiscal period, and it is not printed as a number of its own: the line shows the
 # amount, the days in 2024 and the fiscal period days, then the result.
-CHART_A_AMOUNT_6 = ArtifactKind("ex/chart_a_amount_6", Decimal)
-CHART_A_AMOUNT_8 = ArtifactKind("ex/chart_a_amount_8", Decimal)
-DAYS_IN_2024 = ArtifactKind("ex/days_in_2024", int)
+CHART_A_AMOUNT_6 = AmountKind("ex/chart_a_amount_6")
+CHART_A_AMOUNT_8 = AmountKind("ex/chart_a_amount_8")
+DAYS_IN_2024 = CountKind("ex/days_in_2024")
 
 
 def test_renders_an_amount_prorated_by_the_days_in_2024_over_the_fiscal_period_days() -> None:
@@ -6859,9 +6860,9 @@ def test_renders_an_amount_prorated_by_the_days_in_2024_over_the_fiscal_period_d
 # line 6 <b> = <result>". Each total is the items total under its output's label. Every figure
 # prints without trailing zeros.
 
-HOME_LINE_3 = ArtifactKind("ex/home_renovation_line_3", Decimal)
-HOME_LINE_6 = ArtifactKind("ex/home_renovation_line_6", Decimal)
-HOME_LINE_8 = ArtifactKind("ex/home_renovation_line_8", Decimal)
+HOME_LINE_3 = AmountKind("ex/home_renovation_line_3")
+HOME_LINE_6 = AmountKind("ex/home_renovation_line_6")
+HOME_LINE_8 = AmountKind("ex/home_renovation_line_8")
 
 
 def test_renders_the_first_renovations_line_3_at_the_maximum() -> None:
@@ -6928,7 +6929,7 @@ def test_renders_the_items_total_of_no_renovations() -> None:
 # each with its rounding rule in brackets, and the lesser of them. Figures print without trailing
 # zeros, as the other per-item lines do.
 
-PROVINCES_LOGGING_TAX_CREDIT = ArtifactKind("ex/provinces_logging_tax_credit", Decimal)
+PROVINCES_LOGGING_TAX_CREDIT = AmountKind("ex/provinces_logging_tax_credit")
 
 
 def logging_province(
@@ -6985,16 +6986,16 @@ def test_renders_the_logging_items_total_of_two_provinces() -> None:
 # = <result>%".
 # A zero divisor adds "(zero divisor, so 0)" after the rounding.
 
-PCT_OUTPUT = ArtifactKind("ex/farm_chart_b_row_3_on", Decimal)
-PCT_DIVIDEND = ArtifactKind("ex/farm_chart_b_gross_income_on", Decimal)
-PCT_DIVISOR = ArtifactKind("ex/farm_chart_b_total_gross_income", Decimal)
+PCT_OUTPUT = AmountKind("ex/farm_chart_b_row_3_on")
+PCT_DIVIDEND = AmountKind("ex/farm_chart_b_gross_income_on")
+PCT_DIVISOR = AmountKind("ex/farm_chart_b_total_gross_income")
 PCT_ROUNDING = RoundTo(D("0.000000000001"), RoundingMode.HALF_UP)
 
 
 def test_renders_the_figure_printed_for_the_year_a_lease_was_entered_into() -> None:
     line = YearAmountLine(
-        ArtifactKind("ex/t777_lease_list_price_limit", Decimal),
-        ArtifactKind("ex/t777_lease_year", int),
+        AmountKind("ex/t777_lease_list_price_limit"),
+        CountKind("ex/t777_lease_year"),
         2024,
         D("43529"),
     )
@@ -7088,7 +7089,7 @@ def test_renders_the_provincial_credit_worked_once_on_the_totals() -> None:
 # One item, the first, named by its position 1 with the field's label and its value, then how many
 # items the list has. A count prints as a plain whole number.
 
-FIRST_ITEM_COUNT = ArtifactKind("ex/first_item_count", int)
+FIRST_ITEM_COUNT = CountKind("ex/first_item_count")
 
 
 def test_renders_the_first_value_of_a_count_among_two_items() -> None:

@@ -35,6 +35,7 @@ from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.lesser_of import LesserOf
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
@@ -67,7 +68,7 @@ HEADER_QUOTES = {
 # Made up for this test and not registered: the inputs and the columns of the row "In 2000", and
 # the line 13 left after the row "After 1989 and before 2000".
 def kind(name: str) -> ArtifactKind[Decimal]:
-    return ArtifactKind(f"ex/{name}", Decimal)
+    return AmountKind(f"ex/{name}")
 
 
 UNAPPLIED = kind("unapplied_2000")
