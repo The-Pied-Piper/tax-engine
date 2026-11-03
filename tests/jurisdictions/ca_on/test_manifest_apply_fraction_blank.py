@@ -15,6 +15,7 @@ import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection
+from tests.kinds import bundled_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 BLANK_BASES = {
@@ -26,7 +27,7 @@ BLANK_BASES = {
 
 def apply_fraction_steps() -> list[CapabilitySelection]:
     (manifest,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
