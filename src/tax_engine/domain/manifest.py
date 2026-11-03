@@ -13,7 +13,6 @@ from __future__ import annotations
 import dataclasses
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from decimal import Decimal
 from types import MappingProxyType
 from typing import Any
 
