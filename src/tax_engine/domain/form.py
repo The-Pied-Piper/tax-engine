@@ -55,7 +55,8 @@ class FormComposition:
     """One form wired: the capabilities of form `name` as an inner `Composition`.
 
     Built from the manifest's `Form` (name, limits, `exports`, `instances`) and the kinds that
-    resolve its names; the `instances` kind must be a record list, else an InvalidCompositionError. The inner composition returns the exports. Its inputs are the kinds of
+    resolve its names; the `instances` kind must be a record list, else an InvalidCompositionError.
+    The inner composition returns the exports. Its inputs are the kinds of
     `starting` (the starting artifacts of the computation) that the form's capabilities consume or
     export, plus the fields of `instances` if it has any, plus, always, its imports. A form that
     reads its own `<form>.<export>` gets, in each run, a record list of that export over the runs
