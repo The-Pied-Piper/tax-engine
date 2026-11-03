@@ -254,3 +254,13 @@ def test_a_digits_kind_may_be_declared_in_a_subdivision_namespace(
 
     assert kind.identifier == "ex-on/business_number"
     assert Artifact(kind, "123456789").value == "123456789"
+
+
+def test_a_digits_kind_reads_exactly_its_digits_or_blank_text() -> None:
+    assert NUMBER.read("123456789").value == "123456789"
+    assert NUMBER.read("").value == ""
+
+
+def test_a_digits_kind_refuses_text_that_is_not_its_digits() -> None:
+    with pytest.raises(InvalidTextError, match="is not a value of the kind"):
+        NUMBER.read("12a")
