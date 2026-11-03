@@ -13,6 +13,7 @@ from __future__ import annotations
 import dataclasses
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
+from decimal import Decimal
 from types import MappingProxyType
 from typing import Any
 
@@ -23,7 +24,7 @@ from tax_engine.domain.errors import (
     InvalidTextError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.record_list import RecordListKind, derive_form_kinds
+from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.registry import Namespace
 
 
@@ -165,6 +166,23 @@ class Form:
     required_when: str | None = None
     basis: str | None = None
     fields: tuple[InputDeclaration, ...] = ()
+
+    @staticmethod
+    def derive_kinds(name: str, exports: Iterable[ArtifactKind[Any]]) -> tuple[RecordListKind, ...]:
+        """The kind `<form>.<export>` of each of the form `name`'s `exports` a record can hold.
+
+        Each is a record list of the export's one field, in the order of the exports. An export
+        that is not an amount, a count or a record list (a rate, say, or digits) has none: no
+        other form reads it.
+        """
+        namespace, _, form_id = name.partition("/")
+        return tuple(
+            RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
+            for export in exports
+            if issubclass(export.value_type, Decimal)
+            or export.value_type is int
+            or isinstance(export, RecordListKind)
+        )
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "exports", tuple(self.exports))
@@ -327,7 +345,7 @@ class Manifest:
         derived = [
             kind
             for form in self.forms
-            for kind in derive_form_kinds(
+            for kind in Form.derive_kinds(
                 form.name, [self.artifacts.kind(identifier) for identifier in form.exports]
             )
         ]

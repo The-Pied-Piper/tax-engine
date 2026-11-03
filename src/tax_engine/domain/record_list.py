@@ -233,22 +233,3 @@ class RecordListKind(ArtifactKind[RecordList]):
                 f"{[kind.identifier for kind in self.fields]}, "
                 f"got fields {[kind.identifier for kind in value.fields]}"
             )
-
-
-def derive_form_kinds(
-    name: str, exports: Iterable[ArtifactKind[Any]]
-) -> tuple[RecordListKind, ...]:
-    """The kind `<form>.<export>` of each of the form `name`'s `exports` a record can hold.
-
-    Each is a record list of the export's one field, in the order of the exports. An export that
-    is not an amount, a count or a record list (a rate, say, or digits) has none: no other form
-    reads it.
-    """
-    namespace, _, form_id = name.partition("/")
-    return tuple(
-        RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
-        for export in exports
-        if issubclass(export.value_type, Decimal)
-        or export.value_type is int
-        or isinstance(export, RecordListKind)
-    )
