@@ -17,8 +17,7 @@ from decimal import Decimal
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
+from tax_engine.domain.capability import CapabilityResult
 from tax_engine.domain.errors import ValidationError
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.principal_residence_designation_box import (
@@ -32,6 +31,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     PRINCIPAL_RESIDENCE_PROPERTIES,
 )
 from tax_engine.jurisdictions.ca.trace import PrincipalResidenceDesignationBox
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     Figures,
     properties,
@@ -99,19 +99,12 @@ def the_one_line(*given: Figures) -> PrincipalResidenceDesignationBox:
 
 
 def test_is_registered_under_its_identifier() -> None:
-    registered = CapabilityRegistry.shared().get("ca/principal_residence_designation_box")
+    registered = bundled_capabilities().get("ca/principal_residence_designation_box")
 
     assert registered is CAPABILITY
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.principal_residence_designation_box"
     )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "principal_residence_designation_box" in ca_capabilities.__all__
-    module = ca_capabilities.principal_residence_designation_box
-
-    assert module.PrincipalResidenceDesignationBoxCapability is CAPABILITY
 
 
 def test_is_a_subclass_of_the_shared_rows_base() -> None:

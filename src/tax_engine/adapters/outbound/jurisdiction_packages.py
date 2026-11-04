@@ -3,7 +3,8 @@
 A jurisdiction package declares only `NAMESPACE = "..."` in its `__init__.py`; its directory is
 the one holding that file, with `catalog.py`, `manifests/` and `parameters/` inside. The YAML
 sources read under these directories; `register` imports each `catalog` module and registers its
-`CATALOG` into an artifact registry, when the composition root asks.
+`CATALOG` into an artifact registry, and `register_capabilities` walks each `capabilities` package
+into a capability registry, when the composition root asks.
 """
 
 from __future__ import annotations
@@ -13,7 +14,9 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 from types import MappingProxyType, ModuleType
 
+from tax_engine.adapters.outbound.capability_modules import capabilities_in
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
+from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
 from tax_engine.domain.registry import Namespace
 
@@ -56,6 +59,34 @@ class JurisdictionPackages:
         catalogs = [self._catalog(name, namespace) for name, namespace in self._namespaces.items()]
         for catalog in catalogs:
             registry.register_catalog(catalog)
+
+    def register_capabilities(self, registry: CapabilityRegistry) -> None:
+        """Register the capabilities of every package, found by walking its `capabilities` package.
+
+        A package without a `capabilities` package contributes none. Every package is walked
+        first, so an import error registers nothing. Registering again is idempotent; an
+        identifier taken by another class is an error, which can leave the capabilities
+        registered before it in place.
+        """
+        found = [
+            cls
+            for module in (self._capabilities(name) for name in self._namespaces)
+            if module is not None
+            for cls in capabilities_in(module)
+        ]
+        for cls in found:
+            if registry.identifier_of(cls) != cls.identifier():
+                registry.register_class(cls)
+
+    @staticmethod
+    def _capabilities(package: str) -> ModuleType | None:
+        module_name = f"{package}.capabilities"
+        try:
+            return importlib.import_module(module_name)
+        except ModuleNotFoundError as exc:
+            if exc.name != module_name:
+                raise
+            return None
 
     @staticmethod
     def _catalog(package: str, namespace: Namespace) -> ArtifactCatalog:

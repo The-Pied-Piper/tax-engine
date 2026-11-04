@@ -21,9 +21,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -45,6 +43,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     ITC_APPRENTICESHIP_WAGES_TOTAL,
 )
 from tax_engine.jurisdictions.ca.trace import ApprenticeWagesLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -85,18 +84,7 @@ def total(*salaries: str) -> Decimal:
 
 
 def test_is_registered_as_ca_apprenticeship_wages_total() -> None:
-    assert CapabilityRegistry.shared().get("ca/apprenticeship_wages_total") is (
-        ApprenticeshipWagesTotal
-    )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert ca_capabilities.NAMESPACE == "ca"
-    assert "apprenticeship_wages_total" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.apprenticeship_wages_total.ApprenticeshipWagesTotal
-        is ApprenticeshipWagesTotal
-    )
+    assert bundled_capabilities().get("ca/apprenticeship_wages_total") is (ApprenticeshipWagesTotal)
 
 
 def test_declares_its_contract() -> None:

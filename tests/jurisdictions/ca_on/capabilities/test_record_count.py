@@ -18,12 +18,12 @@ import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import RecordCountLine
 from tax_engine.jurisdictions.ca_on.capabilities.record_count import RecordCount
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -54,15 +54,13 @@ def count_of(*amounts: str) -> int:
 def test_is_registered_as_ca_on_record_count() -> None:
     assert tax_engine.registrations.CORE_PACKAGES  # importing registrations imports the packages
 
-    assert CapabilityRegistry.shared().get("ca-on/record_count") is RecordCount
+    assert bundled_capabilities().get("ca-on/record_count") is RecordCount
 
 
 def test_its_package_declares_the_ca_on_namespace_and_exports_the_module() -> None:
     package = tax_engine.jurisdictions.ca_on.capabilities
 
     assert package.NAMESPACE == tax_engine.jurisdictions.ca_on.NAMESPACE == "ca-on"
-    assert "record_count" in package.__all__
-    assert package.record_count.RecordCount is RecordCount
 
 
 def test_declares_its_contract() -> None:

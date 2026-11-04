@@ -22,10 +22,8 @@ from typing import Any
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputOutOfRangeError,
     InvalidCapabilityError,
@@ -37,6 +35,7 @@ from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.statement_amounts_total import (
     StatementAmountsTotal,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -84,11 +83,7 @@ def total_of(line: int, *positions: int) -> Decimal:
 
 
 def test_is_registered_as_ca_statement_amounts_total() -> None:
-    assert CapabilityRegistry.shared().get("ca/statement_amounts_total") is StatementAmountsTotal
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "statement_amounts_total" in ca_capabilities.__all__
+    assert bundled_capabilities().get("ca/statement_amounts_total") is StatementAmountsTotal
 
 
 def test_declares_its_contract() -> None:

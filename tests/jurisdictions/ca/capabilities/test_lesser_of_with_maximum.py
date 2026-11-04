@@ -25,10 +25,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -50,6 +48,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.trace import LesserOfWithMaximumLine
 from tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
+from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -85,12 +84,7 @@ def compute(wired: LesserOfWithMaximum, one: str, two: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_lesser_of_with_maximum() -> None:
-    assert CapabilityRegistry.shared().get("ca/lesser_of_with_maximum") is LesserOfWithMaximum
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "lesser_of_with_maximum" in ca_capabilities.__all__
-    assert ca_capabilities.lesser_of_with_maximum.LesserOfWithMaximum is LesserOfWithMaximum
+    assert bundled_capabilities().get("ca/lesser_of_with_maximum") is LesserOfWithMaximum
 
 
 def test_declares_its_contract() -> None:
@@ -465,7 +459,7 @@ def service(dataset: ParameterDataset[Amount] | None = None) -> TaxComputationSe
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 

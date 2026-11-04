@@ -28,9 +28,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
@@ -53,6 +51,7 @@ from tax_engine.domain.trace import CountNotRefusedLine
 from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
     CountRefusedByConditions,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -126,15 +125,9 @@ def compute(count: int, values: ParameterDataset[ConditionList] = NOT_1_2_OR_3) 
 
 
 def test_is_registered_as_ca_count_refused_by_conditions() -> None:
-    registered = CapabilityRegistry.shared().get("ca/count_refused_by_conditions")
+    registered = bundled_capabilities().get("ca/count_refused_by_conditions")
 
     assert registered is CountRefusedByConditions
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "count_refused_by_conditions" in ca_capabilities.__all__
-    module = ca_capabilities.count_refused_by_conditions
-    assert module.CountRefusedByConditions is CountRefusedByConditions
 
 
 def test_declares_its_contract() -> None:

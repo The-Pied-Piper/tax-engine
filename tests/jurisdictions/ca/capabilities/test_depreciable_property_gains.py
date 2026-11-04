@@ -23,9 +23,7 @@ from decimal import Decimal
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -44,6 +42,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     SHARE_DISPOSITIONS,
 )
 from tax_engine.jurisdictions.ca.trace import DepreciablePropertyGainLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     GAIN,
     LOSS,
@@ -81,17 +80,7 @@ def total(*given: FlaggedRow | FarmLossRow) -> Decimal:
 
 
 def test_is_registered_as_ca_depreciable_property_gains() -> None:
-    assert (
-        CapabilityRegistry.shared().get("ca/depreciable_property_gains") is DepreciablePropertyGains
-    )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "depreciable_property_gains" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.depreciable_property_gains.DepreciablePropertyGains
-        is DepreciablePropertyGains
-    )
+    assert bundled_capabilities().get("ca/depreciable_property_gains") is DepreciablePropertyGains
 
 
 def test_declares_its_slots_and_contract() -> None:

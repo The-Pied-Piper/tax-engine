@@ -2,7 +2,7 @@
 
 The manifest also selects federal capabilities, whose kinds and data live in
 `tax_engine.jurisdictions.ca`.
-Importing the package imports its `capabilities` package, which registers Ontario's capabilities,
+Importing the package imports its `capabilities` package, which holds Ontario's capabilities,
 its `trace` package of Ontario trace lines, and its `trace_english` package, which registers their
 English renderers.
 """

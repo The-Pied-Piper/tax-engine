@@ -24,8 +24,8 @@ import tax_engine.jurisdictions
 import tax_engine.registrations
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import UnknownRegistrationError
+from tests.capabilities import bundled_capabilities
 
 JURISDICTIONS_DIRECTORY = Path(tax_engine.jurisdictions.__file__).parent
 
@@ -51,14 +51,13 @@ def test_each_root_is_the_directory_of_the_package_declaring_its_namespace() -> 
 
 def test_lists_the_core_packages() -> None:
     assert tax_engine.registrations.CORE_PACKAGES == (
-        tax_engine.domain.capabilities,
         tax_engine.adapters.outbound.parameter_parsers,
         tax_engine.adapters.inbound.trace_english,
     )
 
 
-def test_importing_a_jurisdiction_package_registers_its_capabilities() -> None:
-    registry = CapabilityRegistry.shared()
+def test_a_jurisdiction_package_provides_its_capabilities() -> None:
+    registry = bundled_capabilities()
 
     for name in (
         "capped_record_total",
@@ -72,30 +71,30 @@ def test_importing_a_jurisdiction_package_registers_its_capabilities() -> None:
         assert registered.__module__ == f"tax_engine.jurisdictions.ca_on.capabilities.{name}"
 
 
-def test_importing_the_federal_package_registers_its_capabilities() -> None:
-    registered = CapabilityRegistry.shared().get("ca/caregiver_amount")
+def test_the_federal_package_provides_its_capabilities() -> None:
+    registered = bundled_capabilities().get("ca/caregiver_amount")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.caregiver_amount"
 
 
-def test_importing_the_federal_package_registers_the_home_renovation_capabilities() -> None:
-    registry = CapabilityRegistry.shared()
+def test_the_federal_package_provides_the_home_renovation_capabilities() -> None:
+    registry = bundled_capabilities()
 
     for name in ("home_renovation_line_3", "home_renovation_line_6", "home_renovation_line_7"):
         registered = registry.get(f"ca/{name}")
         assert registered.__module__ == f"tax_engine.jurisdictions.ca.capabilities.{name}"
 
 
-def test_importing_the_federal_package_registers_the_other_dependants_medical_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/other_dependants_medical")
+def test_the_federal_package_provides_the_other_dependants_medical_capability() -> None:
+    registered = bundled_capabilities().get("ca/other_dependants_medical")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.other_dependants_medical"
     )
 
 
-def test_importing_the_federal_package_registers_the_apprenticeship_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/apprenticeship_wages_total")
+def test_the_federal_package_provides_the_apprenticeship_capability() -> None:
+    registered = bundled_capabilities().get("ca/apprenticeship_wages_total")
 
     assert (
         registered.__module__
@@ -103,14 +102,14 @@ def test_importing_the_federal_package_registers_the_apprenticeship_capability()
     )
 
 
-def test_importing_the_federal_package_registers_the_threshold_gate_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/threshold_gate")
+def test_the_federal_package_provides_the_threshold_gate_capability() -> None:
+    registered = bundled_capabilities().get("ca/threshold_gate")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.threshold_gate"
 
 
-def test_importing_the_federal_package_registers_the_principal_residence_gain() -> None:
-    registered = CapabilityRegistry.shared().get("ca/principal_residence_gain")
+def test_the_federal_package_provides_the_principal_residence_gain() -> None:
+    registered = bundled_capabilities().get("ca/principal_residence_gain")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.principal_residence_gain"
@@ -118,10 +117,10 @@ def test_importing_the_federal_package_registers_the_principal_residence_gain() 
 
 
 @pytest.mark.parametrize("line", [27, 29, 30, 32, 33, 38, 39, 42, 44, 45, 48, 51, 53])
-def test_importing_the_federal_package_registers_the_principal_residence_part_2_lines(
+def test_the_federal_package_provides_the_principal_residence_part_2_lines(
     line: int,
 ) -> None:
-    registered = CapabilityRegistry.shared().get(f"ca/principal_residence_line_{line}")
+    registered = bundled_capabilities().get(f"ca/principal_residence_line_{line}")
 
     assert registered.__module__ == (
         f"tax_engine.jurisdictions.ca.capabilities.principal_residence_line_{line}"
@@ -136,7 +135,7 @@ def test_the_principal_residence_rows_base_is_not_registered() -> None:
 
     assert PrincipalResidenceRows.__name__ == "PrincipalResidenceRows"
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("ca/principal_residence_rows")
+        bundled_capabilities().get("ca/principal_residence_rows")
 
 
 @pytest.mark.parametrize(
@@ -144,8 +143,8 @@ def test_the_principal_residence_rows_base_is_not_registered() -> None:
     [3, 6, 16, 17, 18, 19, 21, 23, 24, 26, 27, 30, 32, 33, 35, 36, 40, 41, 44, 46, 47]
     + [50, 53, 55, 58, 59, 61, 63, 64, 66],
 )
-def test_importing_the_federal_package_registers_the_worksheet_lines(line: int) -> None:
-    registered = CapabilityRegistry.shared().get(f"ca/principal_residence_worksheet_line_{line}")
+def test_the_federal_package_provides_the_worksheet_lines(line: int) -> None:
+    registered = bundled_capabilities().get(f"ca/principal_residence_worksheet_line_{line}")
 
     assert registered.__module__ == (
         f"tax_engine.jurisdictions.ca.capabilities.principal_residence_worksheet_line_{line}"
@@ -153,8 +152,8 @@ def test_importing_the_federal_package_registers_the_worksheet_lines(line: int) 
 
 
 @pytest.mark.parametrize("line", [56, 57])
-def test_importing_the_federal_package_registers_the_part_4_lines(line: int) -> None:
-    registered = CapabilityRegistry.shared().get(f"ca/principal_residence_line_{line}")
+def test_the_federal_package_provides_the_part_4_lines(line: int) -> None:
+    registered = bundled_capabilities().get(f"ca/principal_residence_line_{line}")
 
     assert registered.__module__ == (
         f"tax_engine.jurisdictions.ca.capabilities.principal_residence_line_{line}"
@@ -169,27 +168,25 @@ def test_the_worksheet_base_is_not_registered() -> None:
 
     assert PrincipalResidenceWorksheetRows.__name__ == "PrincipalResidenceWorksheetRows"
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("ca/principal_residence_worksheet_rows")
+        bundled_capabilities().get("ca/principal_residence_worksheet_rows")
 
 
-def test_importing_the_federal_package_registers_the_disposition_gains_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/disposition_gains")
+def test_the_federal_package_provides_the_disposition_gains_capability() -> None:
+    registered = bundled_capabilities().get("ca/disposition_gains")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.disposition_gains"
 
 
-def test_importing_the_federal_package_registers_the_disposition_gains_only_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/disposition_gains_only")
+def test_the_federal_package_provides_the_disposition_gains_only_capability() -> None:
+    registered = bundled_capabilities().get("ca/disposition_gains_only")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.disposition_gains_only"
     )
 
 
-def test_importing_the_federal_package_registers_the_depreciable_property_gains_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/depreciable_property_gains")
+def test_the_federal_package_provides_the_depreciable_property_gains_capability() -> None:
+    registered = bundled_capabilities().get("ca/depreciable_property_gains")
 
     assert (
         registered.__module__
@@ -197,14 +194,14 @@ def test_importing_the_federal_package_registers_the_depreciable_property_gains_
     )
 
 
-def test_importing_the_federal_package_registers_the_qffp_gains_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/qffp_gains")
+def test_the_federal_package_provides_the_qffp_gains_capability() -> None:
+    registered = bundled_capabilities().get("ca/qffp_gains")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.qffp_gains"
 
 
-def test_importing_the_federal_package_registers_the_personal_use_gains_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/personal_use_property_gains")
+def test_the_federal_package_provides_the_personal_use_gains_capability() -> None:
+    registered = bundled_capabilities().get("ca/personal_use_property_gains")
 
     assert (
         registered.__module__
@@ -212,16 +209,14 @@ def test_importing_the_federal_package_registers_the_personal_use_gains_capabili
     )
 
 
-def test_importing_the_federal_package_registers_the_disposition_proceeds_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/disposition_proceeds")
+def test_the_federal_package_provides_the_disposition_proceeds_capability() -> None:
+    registered = bundled_capabilities().get("ca/disposition_proceeds")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.disposition_proceeds"
 
 
-def test_importing_the_federal_package_registers_the_ei_excluded_slips_net_income_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/ei_excluded_slips_net_income")
+def test_the_federal_package_provides_the_ei_excluded_slips_net_income_capability() -> None:
+    registered = bundled_capabilities().get("ca/ei_excluded_slips_net_income")
 
     assert (
         registered.__module__
@@ -229,14 +224,14 @@ def test_importing_the_federal_package_registers_the_ei_excluded_slips_net_incom
     )
 
 
-def test_importing_the_federal_package_registers_the_cca_claim_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_claim")
+def test_the_federal_package_provides_the_cca_claim_capability() -> None:
+    registered = bundled_capabilities().get("ca/cca_claim")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_claim"
 
 
-def test_importing_the_federal_package_registers_the_cca_claim_after_column_22_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_claim_after_column_22")
+def test_the_federal_package_provides_the_cca_claim_after_column_22_capability() -> None:
+    registered = bundled_capabilities().get("ca/cca_claim_after_column_22")
 
     assert (
         registered.__module__
@@ -244,16 +239,14 @@ def test_importing_the_federal_package_registers_the_cca_claim_after_column_22_c
     )
 
 
-def test_importing_the_federal_package_registers_the_cca_claim_prorated_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_claim_prorated")
+def test_the_federal_package_provides_the_cca_claim_prorated_capability() -> None:
+    registered = bundled_capabilities().get("ca/cca_claim_prorated")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_claim_prorated"
 
 
-def test_importing_the_federal_package_registers_the_cca_claim_after_22_prorated_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/cca_claim_after_column_22_prorated")
+def test_the_federal_package_provides_the_cca_claim_after_22_prorated_capability() -> None:
+    registered = bundled_capabilities().get("ca/cca_claim_after_column_22_prorated")
 
     assert (
         registered.__module__
@@ -261,26 +254,26 @@ def test_importing_the_federal_package_registers_the_cca_claim_after_22_prorated
     )
 
 
-def test_importing_the_federal_package_registers_the_recaptured_cca_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/recaptured_cca")
+def test_the_federal_package_provides_the_recaptured_cca_capability() -> None:
+    registered = bundled_capabilities().get("ca/recaptured_cca")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.recaptured_cca"
 
 
-def test_importing_the_federal_package_registers_the_cca_opening_ucc_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_opening_ucc_total")
+def test_the_federal_package_provides_the_cca_opening_ucc_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/cca_opening_ucc_total")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_opening_ucc_total"
 
 
-def test_importing_the_federal_package_registers_the_cca_additions_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_additions_total")
+def test_the_federal_package_provides_the_cca_additions_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/cca_additions_total")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_additions_total"
 
 
-def test_importing_the_federal_package_registers_the_cca_personal_part_remaining_total() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_personal_part_remaining_total")
+def test_the_federal_package_provides_the_cca_personal_part_remaining_total() -> None:
+    registered = bundled_capabilities().get("ca/cca_personal_part_remaining_total")
 
     assert (
         registered.__module__
@@ -288,8 +281,8 @@ def test_importing_the_federal_package_registers_the_cca_personal_part_remaining
     )
 
 
-def test_importing_the_federal_package_registers_the_immediate_expensing_claim_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/immediate_expensing_claim")
+def test_the_federal_package_provides_the_immediate_expensing_claim_capability() -> None:
+    registered = bundled_capabilities().get("ca/immediate_expensing_claim")
 
     assert (
         registered.__module__
@@ -297,8 +290,8 @@ def test_importing_the_federal_package_registers_the_immediate_expensing_claim_c
     )
 
 
-def test_importing_the_federal_package_registers_the_agreed_limit_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/immediate_expensing_agreed_limit")
+def test_the_federal_package_provides_the_agreed_limit_capability() -> None:
+    registered = bundled_capabilities().get("ca/immediate_expensing_agreed_limit")
 
     assert (
         registered.__module__
@@ -306,8 +299,8 @@ def test_importing_the_federal_package_registers_the_agreed_limit_capability() -
     )
 
 
-def test_importing_the_federal_package_registers_the_business_vehicle_expenses_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/business_vehicle_expenses")
+def test_the_federal_package_provides_the_business_vehicle_expenses_capability() -> None:
+    registered = bundled_capabilities().get("ca/business_vehicle_expenses")
 
     assert (
         registered.__module__
@@ -315,28 +308,26 @@ def test_importing_the_federal_package_registers_the_business_vehicle_expenses_c
     )
 
 
-def test_importing_the_federal_package_registers_the_cca_vehicle_proceeds_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_vehicle_proceeds")
+def test_the_federal_package_provides_the_cca_vehicle_proceeds_capability() -> None:
+    registered = bundled_capabilities().get("ca/cca_vehicle_proceeds")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.cca_vehicle_proceeds"
 
 
-def test_importing_the_federal_package_registers_the_terminal_loss_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/terminal_loss")
+def test_the_federal_package_provides_the_terminal_loss_capability() -> None:
+    registered = bundled_capabilities().get("ca/terminal_loss")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.terminal_loss"
 
 
-def test_importing_the_federal_package_registers_the_closing_ucc_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/closing_ucc")
+def test_the_federal_package_provides_the_closing_ucc_capability() -> None:
+    registered = bundled_capabilities().get("ca/closing_ucc")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.closing_ucc"
 
 
-def test_importing_the_federal_package_registers_the_closing_ucc_after_column_22_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/closing_ucc_after_column_22")
+def test_the_federal_package_provides_the_closing_ucc_after_column_22_capability() -> None:
+    registered = bundled_capabilities().get("ca/closing_ucc_after_column_22")
 
     assert (
         registered.__module__
@@ -344,16 +335,14 @@ def test_importing_the_federal_package_registers_the_closing_ucc_after_column_22
     )
 
 
-def test_importing_the_federal_package_registers_the_closing_ucc_prorated_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/closing_ucc_prorated")
+def test_the_federal_package_provides_the_closing_ucc_prorated_capability() -> None:
+    registered = bundled_capabilities().get("ca/closing_ucc_prorated")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.closing_ucc_prorated"
 
 
-def test_importing_the_federal_package_registers_the_closing_ucc_after_22_prorated_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/closing_ucc_after_column_22_prorated")
+def test_the_federal_package_provides_the_closing_ucc_after_22_prorated_capability() -> None:
+    registered = bundled_capabilities().get("ca/closing_ucc_after_column_22_prorated")
 
     assert (
         registered.__module__
@@ -361,16 +350,14 @@ def test_importing_the_federal_package_registers_the_closing_ucc_after_22_prorat
     )
 
 
-def test_importing_the_federal_package_registers_the_fiscal_period_days_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/fiscal_period_days")
+def test_the_federal_package_provides_the_fiscal_period_days_capability() -> None:
+    registered = bundled_capabilities().get("ca/fiscal_period_days")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.fiscal_period_days"
 
 
-def test_importing_the_federal_package_registers_the_fiscal_period_days_from_dates_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/fiscal_period_days_from_dates")
+def test_the_federal_package_provides_the_fiscal_period_days_from_dates_capability() -> None:
+    registered = bundled_capabilities().get("ca/fiscal_period_days_from_dates")
 
     assert (
         registered.__module__
@@ -378,8 +365,8 @@ def test_importing_the_federal_package_registers_the_fiscal_period_days_from_dat
     )
 
 
-def test_importing_the_federal_package_registers_the_prorated_by_fiscal_days_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/prorated_by_fiscal_period_days")
+def test_the_federal_package_provides_the_prorated_by_fiscal_days_capability() -> None:
+    registered = bundled_capabilities().get("ca/prorated_by_fiscal_period_days")
 
     assert (
         registered.__module__
@@ -387,8 +374,8 @@ def test_importing_the_federal_package_registers_the_prorated_by_fiscal_days_cap
     )
 
 
-def test_importing_the_federal_package_registers_the_prorated_by_days_in_period() -> None:
-    registered = CapabilityRegistry.shared().get("ca/prorated_by_days_in_period")
+def test_the_federal_package_provides_the_prorated_by_days_in_period() -> None:
+    registered = bundled_capabilities().get("ca/prorated_by_days_in_period")
 
     assert (
         registered.__module__
@@ -396,35 +383,33 @@ def test_importing_the_federal_package_registers_the_prorated_by_days_in_period(
     )
 
 
-def test_importing_the_federal_package_registers_the_statement_amounts_total() -> None:
-    registered = CapabilityRegistry.shared().get("ca/statement_amounts_total")
+def test_the_federal_package_provides_the_statement_amounts_total() -> None:
+    registered = bundled_capabilities().get("ca/statement_amounts_total")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.statement_amounts_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_statement_profits_total() -> None:
-    registered = CapabilityRegistry.shared().get("ca/statement_profits_total")
+def test_the_federal_package_provides_the_statement_profits_total() -> None:
+    registered = bundled_capabilities().get("ca/statement_profits_total")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.statement_profits_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_short_term_rental_expenses_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/short_term_rental_non_compliant_expenses")
+def test_the_federal_package_provides_the_short_term_rental_expenses_capability() -> None:
+    registered = bundled_capabilities().get("ca/short_term_rental_non_compliant_expenses")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_expenses"
     )
 
 
-def test_importing_the_federal_package_registers_the_short_term_rental_cca_capabilities() -> None:
-    total = CapabilityRegistry.shared().get("ca/short_term_rental_non_compliant_cca")
-    by_class = CapabilityRegistry.shared().get("ca/short_term_rental_non_compliant_cca_by_class")
+def test_the_federal_package_provides_the_short_term_rental_cca_capabilities() -> None:
+    total = bundled_capabilities().get("ca/short_term_rental_non_compliant_cca")
+    by_class = bundled_capabilities().get("ca/short_term_rental_non_compliant_cca_by_class")
 
     assert total.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_cca"
@@ -434,30 +419,30 @@ def test_importing_the_federal_package_registers_the_short_term_rental_cca_capab
     )
 
 
-def test_importing_the_federal_package_registers_the_short_term_rental_gross_rents() -> None:
-    registered = CapabilityRegistry.shared().get("ca/short_term_rental_gross_rents")
+def test_the_federal_package_provides_the_short_term_rental_gross_rents() -> None:
+    registered = bundled_capabilities().get("ca/short_term_rental_gross_rents")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.short_term_rental_gross_rents"
     )
 
 
-def test_importing_the_federal_package_registers_the_short_term_rental_related_expenses() -> None:
-    registered = CapabilityRegistry.shared().get("ca/short_term_rental_related_expenses")
+def test_the_federal_package_provides_the_short_term_rental_related_expenses() -> None:
+    registered = bundled_capabilities().get("ca/short_term_rental_related_expenses")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.short_term_rental_related_expenses"
     )
 
 
-def test_importing_the_federal_package_registers_the_rental_gross_rents() -> None:
-    registered = CapabilityRegistry.shared().get("ca/rental_gross_rents")
+def test_the_federal_package_provides_the_rental_gross_rents() -> None:
+    registered = bundled_capabilities().get("ca/rental_gross_rents")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.rental_gross_rents"
 
 
-def test_importing_the_federal_package_registers_the_amount_or_divided_by_rate_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/amount_or_divided_by_rate")
+def test_the_federal_package_provides_the_amount_or_divided_by_rate_capability() -> None:
+    registered = bundled_capabilities().get("ca/amount_or_divided_by_rate")
 
     assert (
         registered.__module__
@@ -465,128 +450,112 @@ def test_importing_the_federal_package_registers_the_amount_or_divided_by_rate_c
     )
 
 
-def test_importing_the_federal_package_registers_the_divided_by_rate_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/divided_by_rate")
+def test_the_federal_package_provides_the_divided_by_rate_capability() -> None:
+    registered = bundled_capabilities().get("ca/divided_by_rate")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.divided_by_rate"
 
 
-def test_importing_the_federal_package_registers_the_sign_chosen_difference_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/sign_chosen_difference")
+def test_the_federal_package_provides_the_sign_chosen_difference_capability() -> None:
+    registered = bundled_capabilities().get("ca/sign_chosen_difference")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.sign_chosen_difference"
     )
 
 
-def test_importing_the_federal_package_registers_the_lesser_of_with_maximum_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/lesser_of_with_maximum")
+def test_the_federal_package_provides_the_lesser_of_with_maximum_capability() -> None:
+    registered = bundled_capabilities().get("ca/lesser_of_with_maximum")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_a_row_c_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_a_row_c_total")
+def test_the_federal_package_provides_the_chart_a_row_c_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_a_row_c_total")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.chart_a_row_c_total"
 
 
-def test_importing_the_federal_package_registers_the_chart_b_zone_a_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_zone_a_total")
+def test_the_federal_package_provides_the_chart_b_zone_a_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_zone_a_total")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.chart_b_zone_a_total"
 
 
-def test_importing_the_federal_package_registers_the_chart_b_zone_b_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_zone_b_total")
+def test_the_federal_package_provides_the_chart_b_zone_b_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_zone_b_total")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.chart_b_zone_b_total"
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_on_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_on_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_on_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_on_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_on_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_mb_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_mb_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_mb_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_mb_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_mb_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_sk_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_sk_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_sk_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_sk_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_sk_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_ab_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_ab_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_ab_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_ab_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_ab_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_ns_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_ns_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_ns_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_ns_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_ns_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_pe_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_pe_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_pe_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_pe_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_pe_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_nl_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_nl_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_nl_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_nl_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_nl_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_gross_income_nb_total_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/chart_b_gross_income_nb_total")
+def test_the_federal_package_provides_the_chart_b_gross_income_nb_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_gross_income_nb_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.chart_b_gross_income_nb_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_on_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_on_total")
+def test_the_federal_package_provides_the_chart_b_salaries_on_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_on_total")
 
     assert (
         registered.__module__
@@ -594,8 +563,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_on_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_mb_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_mb_total")
+def test_the_federal_package_provides_the_chart_b_salaries_mb_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_mb_total")
 
     assert (
         registered.__module__
@@ -603,8 +572,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_mb_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_sk_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_sk_total")
+def test_the_federal_package_provides_the_chart_b_salaries_sk_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_sk_total")
 
     assert (
         registered.__module__
@@ -612,8 +581,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_sk_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_ab_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_ab_total")
+def test_the_federal_package_provides_the_chart_b_salaries_ab_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_ab_total")
 
     assert (
         registered.__module__
@@ -621,8 +590,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_ab_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_ns_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_ns_total")
+def test_the_federal_package_provides_the_chart_b_salaries_ns_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_ns_total")
 
     assert (
         registered.__module__
@@ -630,8 +599,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_ns_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_pe_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_pe_total")
+def test_the_federal_package_provides_the_chart_b_salaries_pe_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_pe_total")
 
     assert (
         registered.__module__
@@ -639,8 +608,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_pe_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_nl_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_nl_total")
+def test_the_federal_package_provides_the_chart_b_salaries_nl_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_nl_total")
 
     assert (
         registered.__module__
@@ -648,8 +617,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_nl_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_chart_b_salaries_nb_total_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/chart_b_salaries_nb_total")
+def test_the_federal_package_provides_the_chart_b_salaries_nb_total_capability() -> None:
+    registered = bundled_capabilities().get("ca/chart_b_salaries_nb_total")
 
     assert (
         registered.__module__
@@ -657,8 +626,8 @@ def test_importing_the_federal_package_registers_the_chart_b_salaries_nb_total_c
     )
 
 
-def test_importing_the_federal_package_registers_the_foreign_non_business_tax_credit() -> None:
-    registered = CapabilityRegistry.shared().get("ca/foreign_non_business_tax_credit")
+def test_the_federal_package_provides_the_foreign_non_business_tax_credit() -> None:
+    registered = bundled_capabilities().get("ca/foreign_non_business_tax_credit")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_credit"
@@ -666,10 +635,10 @@ def test_importing_the_federal_package_registers_the_foreign_non_business_tax_cr
 
 
 @pytest.mark.parametrize("line", [4, 5, 7, 8, 10, 11])
-def test_importing_the_federal_package_registers_the_foreign_business_tax_credit_lines(
+def test_the_federal_package_provides_the_foreign_business_tax_credit_lines(
     line: int,
 ) -> None:
-    registered = CapabilityRegistry.shared().get(f"ca/foreign_business_tax_credit_line_{line}")
+    registered = bundled_capabilities().get(f"ca/foreign_business_tax_credit_line_{line}")
 
     assert registered.__module__ == (
         f"tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_{line}"
@@ -678,11 +647,11 @@ def test_importing_the_federal_package_registers_the_foreign_business_tax_credit
 
 def test_the_foreign_business_tax_credit_base_is_not_registered() -> None:
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("ca/foreign_business_tax_credit_rows")
+        bundled_capabilities().get("ca/foreign_business_tax_credit_rows")
 
 
-def test_importing_the_federal_package_registers_the_disability_transfer_amount() -> None:
-    registered = CapabilityRegistry.shared().get("ca/disability_transfer_amount")
+def test_the_federal_package_provides_the_disability_transfer_amount() -> None:
+    registered = bundled_capabilities().get("ca/disability_transfer_amount")
 
     assert (
         registered.__module__
@@ -690,34 +659,32 @@ def test_importing_the_federal_package_registers_the_disability_transfer_amount(
     )
 
 
-def test_importing_the_federal_package_registers_the_foreign_non_business_tax_paid_total() -> None:
-    registered = CapabilityRegistry.shared().get("ca/foreign_non_business_tax_paid_total")
+def test_the_federal_package_provides_the_foreign_non_business_tax_paid_total() -> None:
+    registered = bundled_capabilities().get("ca/foreign_non_business_tax_paid_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.foreign_non_business_tax_paid_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_foreign_net_non_business_income_total() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/foreign_net_non_business_income_total")
+def test_the_federal_package_provides_the_foreign_net_non_business_income_total() -> None:
+    registered = bundled_capabilities().get("ca/foreign_net_non_business_income_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.foreign_net_non_business_income_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_foreign_business_tax_paid_total() -> None:
-    registered = CapabilityRegistry.shared().get("ca/foreign_business_tax_paid_total")
+def test_the_federal_package_provides_the_foreign_business_tax_paid_total() -> None:
+    registered = bundled_capabilities().get("ca/foreign_business_tax_paid_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_paid_total"
     )
 
 
-def test_importing_the_federal_package_registers_the_foreign_surtax_allocated_total() -> None:
-    registered = CapabilityRegistry.shared().get("ca/foreign_surtax_allocated_total")
+def test_the_federal_package_provides_the_foreign_surtax_allocated_total() -> None:
+    registered = bundled_capabilities().get("ca/foreign_surtax_allocated_total")
 
     assert registered.__module__ == (
         "tax_engine.jurisdictions.ca.capabilities.foreign_surtax_allocated_total"
@@ -784,52 +751,50 @@ def test_artifact_kinds_builds_a_fresh_registry_of_every_listed_catalog_each_cal
     assert first.identifiers()
 
 
-def test_importing_the_federal_package_registers_the_count_at_least_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/count_at_least")
+def test_the_federal_package_provides_the_count_at_least_capability() -> None:
+    registered = bundled_capabilities().get("ca/count_at_least")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.count_at_least"
 
 
-def test_importing_the_federal_package_registers_the_more_than_per_unit_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/more_than_per_unit")
+def test_the_federal_package_provides_the_more_than_per_unit_capability() -> None:
+    registered = bundled_capabilities().get("ca/more_than_per_unit")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.more_than_per_unit"
 
 
-def test_importing_the_federal_package_registers_the_count_at_most_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/count_at_most")
+def test_the_federal_package_provides_the_count_at_most_capability() -> None:
+    registered = bundled_capabilities().get("ca/count_at_most")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.count_at_most"
 
 
-def test_importing_the_federal_package_registers_the_claim_at_most_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/claim_at_most")
+def test_the_federal_package_provides_the_claim_at_most_capability() -> None:
+    registered = bundled_capabilities().get("ca/claim_at_most")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.claim_at_most"
 
 
-def test_importing_the_federal_package_registers_the_qbt_before_qcc_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/qbt_before_qcc")
+def test_the_federal_package_provides_the_qbt_before_qcc_capability() -> None:
+    registered = bundled_capabilities().get("ca/qbt_before_qcc")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.qbt_before_qcc"
 
 
-def test_importing_the_federal_package_registers_the_yes_or_no_count_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/yes_or_no_count")
+def test_the_federal_package_provides_the_yes_or_no_count_capability() -> None:
+    registered = bundled_capabilities().get("ca/yes_or_no_count")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.yes_or_no_count"
 
 
-def test_importing_the_federal_package_registers_the_count_without_records_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/count_without_records")
+def test_the_federal_package_provides_the_count_without_records_capability() -> None:
+    registered = bundled_capabilities().get("ca/count_without_records")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.count_without_records"
 
 
-def test_importing_the_federal_package_registers_the_count_refused_by_conditions_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/count_refused_by_conditions")
+def test_the_federal_package_provides_the_count_refused_by_conditions_capability() -> None:
+    registered = bundled_capabilities().get("ca/count_refused_by_conditions")
 
     assert (
         registered.__module__
@@ -837,46 +802,44 @@ def test_importing_the_federal_package_registers_the_count_refused_by_conditions
     )
 
 
-def test_importing_the_federal_package_registers_the_ratio_truncated_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/ratio_truncated")
+def test_the_federal_package_provides_the_ratio_truncated_capability() -> None:
+    registered = bundled_capabilities().get("ca/ratio_truncated")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.ratio_truncated"
 
 
-def test_importing_the_federal_package_registers_the_ratio_truncated_at_most_one_capability() -> (
-    None
-):
-    registered = CapabilityRegistry.shared().get("ca/ratio_truncated_at_most_one")
+def test_the_federal_package_provides_the_ratio_truncated_at_most_one_capability() -> None:
+    registered = bundled_capabilities().get("ca/ratio_truncated_at_most_one")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.ratio_truncated"
 
 
-def test_importing_the_federal_package_registers_the_percentage_of_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/percentage_of")
+def test_the_federal_package_provides_the_percentage_of_capability() -> None:
+    registered = bundled_capabilities().get("ca/percentage_of")
 
     assert registered.PRODUCES == {"output": Decimal}
 
 
-def test_importing_the_federal_package_registers_the_year_amount_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/year_amount")
+def test_the_federal_package_provides_the_year_amount_capability() -> None:
+    registered = bundled_capabilities().get("ca/year_amount")
 
     assert registered.PRODUCES == {"output": Decimal}
 
 
-def test_importing_the_federal_package_registers_the_apply_chosen_rate_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/apply_chosen_rate")
+def test_the_federal_package_provides_the_apply_chosen_rate_capability() -> None:
+    registered = bundled_capabilities().get("ca/apply_chosen_rate")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate"
 
 
-def test_importing_the_federal_package_registers_the_choose_by_sign_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/choose_by_sign")
+def test_the_federal_package_provides_the_choose_by_sign_capability() -> None:
+    registered = bundled_capabilities().get("ca/choose_by_sign")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.choose_by_sign"
 
 
-def test_importing_the_federal_package_registers_the_positive_part_of_negation_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/positive_part_of_negation")
+def test_the_federal_package_provides_the_positive_part_of_negation_capability() -> None:
+    registered = bundled_capabilities().get("ca/positive_part_of_negation")
 
     assert (
         registered.__module__
@@ -884,23 +847,41 @@ def test_importing_the_federal_package_registers_the_positive_part_of_negation_c
     )
 
 
-def test_importing_the_federal_package_registers_the_lesser_of_when_positive_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/lesser_of_when_positive")
+def test_the_federal_package_provides_the_lesser_of_when_positive_capability() -> None:
+    registered = bundled_capabilities().get("ca/lesser_of_when_positive")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive"
     )
 
 
-def test_importing_the_federal_package_registers_the_in_brackets_lesser_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/lesser_of_when_positive_in_brackets")
+def test_the_federal_package_provides_the_in_brackets_lesser_capability() -> None:
+    registered = bundled_capabilities().get("ca/lesser_of_when_positive_in_brackets")
 
     assert (
         registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive"
     )
 
 
-def test_importing_the_federal_package_registers_the_amount_when_more_capability() -> None:
-    registered = CapabilityRegistry.shared().get("ca/amount_when_more")
+def test_the_federal_package_provides_the_amount_when_more_capability() -> None:
+    registered = bundled_capabilities().get("ca/amount_when_more")
 
     assert registered.__module__ == "tax_engine.jurisdictions.ca.capabilities.amount_when_more"
+
+
+def test_capabilities_builds_a_new_registry_every_call() -> None:
+    first, second = tax_engine.registrations.capabilities(), tax_engine.registrations.capabilities()
+
+    assert first is not second
+    assert first.identifiers() == second.identifiers()
+
+
+def test_capabilities_holds_the_core_and_every_jurisdictions_capabilities() -> None:
+    registry = tax_engine.registrations.capabilities()
+
+    assert {"core/sum", "ca/caregiver_amount", "ca-on/quotient"} <= registry.identifiers()
+    assert {identifier.split("/")[0] for identifier in registry.identifiers()} == {
+        "core",
+        "ca",
+        "ca-on",
+    }

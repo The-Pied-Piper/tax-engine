@@ -65,9 +65,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     InvalidRecordError,
@@ -98,6 +96,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CCA_UCC_AT_START,
 )
 from tax_engine.jurisdictions.ca.trace import CcaVehicleProceedsLine, CcaZepvProceedsLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_vehicle_proceeds import (
     ADJUSTED,
     CENT,
@@ -168,12 +167,7 @@ def only(
 
 
 def test_is_registered_as_ca_cca_vehicle_proceeds() -> None:
-    assert CapabilityRegistry.shared().get("ca/cca_vehicle_proceeds") is CcaVehicleProceeds
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "cca_vehicle_proceeds" in ca_capabilities.__all__
-    assert ca_capabilities.cca_vehicle_proceeds.CcaVehicleProceeds is CcaVehicleProceeds
+    assert bundled_capabilities().get("ca/cca_vehicle_proceeds") is CcaVehicleProceeds
 
 
 def test_declares_its_contract() -> None:

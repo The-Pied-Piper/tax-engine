@@ -24,10 +24,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -36,6 +34,7 @@ from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import SignChosenDifferenceLine
 from tax_engine.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
+from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -64,12 +63,7 @@ def compute(sign: str, reference: str, difference: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_sign_chosen_difference() -> None:
-    assert CapabilityRegistry.shared().get("ca/sign_chosen_difference") is SignChosenDifference
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "sign_chosen_difference" in ca_capabilities.__all__
-    assert ca_capabilities.sign_chosen_difference.SignChosenDifference is SignChosenDifference
+    assert bundled_capabilities().get("ca/sign_chosen_difference") is SignChosenDifference
 
 
 def test_declares_its_contract() -> None:
@@ -430,7 +424,7 @@ def service() -> TaxComputationService:
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 

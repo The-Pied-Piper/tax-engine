@@ -26,9 +26,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -51,6 +49,7 @@ from tax_engine.jurisdictions.ca_on.capabilities.capped_record_total import (
 )
 from tax_engine.jurisdictions.ca_on.catalog import ADOPTION_CREDIT
 from tax_engine.jurisdictions.ca_on.trace import CappedRecordLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -98,15 +97,7 @@ def total(*expenses: str, cap: ParameterDataset[Amount] | None = None) -> Decima
 
 
 def test_is_registered_as_ca_on_capped_record_total() -> None:
-    assert CapabilityRegistry.shared().get("ca-on/capped_record_total") is OntarioCappedRecordTotal
-
-
-def test_is_exported_from_the_ca_on_capabilities_package() -> None:
-    assert ca_on_capabilities.NAMESPACE == "ca-on"
-    assert "capped_record_total" in ca_on_capabilities.__all__
-    assert (
-        ca_on_capabilities.capped_record_total.OntarioCappedRecordTotal is OntarioCappedRecordTotal
-    )
+    assert bundled_capabilities().get("ca-on/capped_record_total") is OntarioCappedRecordTotal
 
 
 def test_declares_its_contract() -> None:

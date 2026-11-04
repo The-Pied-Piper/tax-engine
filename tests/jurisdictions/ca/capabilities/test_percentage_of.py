@@ -24,7 +24,6 @@ import pytest
 import tax_engine.jurisdictions.ca.capabilities  # noqa: F401  (registers the federal capabilities)
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     CapabilityContractError,
     InvalidCapabilityError,
@@ -45,6 +44,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.jurisdictions.ca.trace import PercentageOfLine
+from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -56,7 +56,7 @@ OUTPUT = AmountKind("ex/gross_share_percent")
 
 
 def percentage_of() -> Any:
-    return CapabilityRegistry.shared().get("ca/percentage_of")
+    return bundled_capabilities().get("ca/percentage_of")
 
 
 def rounding(rule: RoundingRule = CENT_HALF_UP) -> ParameterDataset[RoundingOnly]:
@@ -86,7 +86,7 @@ def compute(wired: Any, dividend: str, divisor: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_percentage_of() -> None:
-    assert CapabilityRegistry.shared().get("ca/percentage_of") is percentage_of()
+    assert bundled_capabilities().get("ca/percentage_of") is percentage_of()
 
 
 def test_declares_its_contract() -> None:
@@ -293,7 +293,7 @@ def service(dataset: ParameterDataset[RoundingOnly] | None = None) -> TaxComputa
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 

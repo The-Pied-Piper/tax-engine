@@ -41,9 +41,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -67,6 +65,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     PRINCIPAL_RESIDENCE_PROPERTIES,
 )
 from tax_engine.jurisdictions.ca.trace import PrincipalResidenceGainLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     CENT,
     DOLLAR_FLOOR,
@@ -116,13 +115,7 @@ def total(*given: Figures | Part2Figures) -> Decimal:
 
 
 def test_is_registered_as_ca_principal_residence_gain() -> None:
-    assert CapabilityRegistry.shared().get("ca/principal_residence_gain") is PrincipalResidenceGain
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert ca_capabilities.NAMESPACE == "ca"
-    assert "principal_residence_gain" in ca_capabilities.__all__
-    assert ca_capabilities.principal_residence_gain.PrincipalResidenceGain is PrincipalResidenceGain
+    assert bundled_capabilities().get("ca/principal_residence_gain") is PrincipalResidenceGain
 
 
 def test_declares_its_contract() -> None:

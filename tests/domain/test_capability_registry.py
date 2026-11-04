@@ -1,8 +1,8 @@
-"""Unit tests for capability registration: `@capability` and the shared CapabilityRegistry.
+"""Unit tests for capability registration: `@capability` and the CapabilityRegistry.
 
-Made-up capabilities are never registered in the shared registry. The `@capability` tests
-point `CapabilityRegistry.shared` at a fresh registry with monkeypatch: the decorator keeps
-its one public form, `@capability(identifier=...)`, and the shared registry stays clean.
+`@capability` only gives a class its identifier; a registry is built and filled by whoever wires
+the application. Made-up capabilities are subclasses made on the spot, so no class shared between
+tests is ever stamped.
 """
 
 from __future__ import annotations
@@ -20,18 +20,24 @@ from tax_engine.domain.errors import (
     InvalidRegistrationError,
     UnknownRegistrationError,
 )
-from tax_engine.domain.registry import Namespace, Registry
+from tax_engine.domain.registry import Registry
+from tests.capabilities import bundled_capabilities
 from tests.domain.registration_fixtures.with_namespace.gadgets import GadgetLevy
 
 
-@pytest.fixture
-def fresh(monkeypatch: pytest.MonkeyPatch) -> CapabilityRegistry:
-    """A fresh registry that `@capability` registers into for the duration of one test, with
-    `GadgetLevy` carrying no identifier until the test decorates it."""
-    registry = CapabilityRegistry()
-    monkeypatch.setattr(CapabilityRegistry, "shared", classmethod(lambda cls: registry))
-    monkeypatch.setattr(GadgetLevy, "IDENTIFIER", None)  # restored with the rest afterwards
-    return registry
+def undecorated() -> type[GadgetLevy]:
+    """A new subclass of `GadgetLevy` that claims to come from the `ex` namespace's module."""
+
+    class MadeUpLevy(GadgetLevy):
+        pass
+
+    MadeUpLevy.__module__ = GadgetLevy.__module__
+    return MadeUpLevy
+
+
+def made_up(local_id: str = "gadget_levy") -> type[GadgetLevy]:
+    """A new subclass of `GadgetLevy` in the `ex` namespace, decorated as `local_id`."""
+    return capability(identifier=local_id)(undecorated())
 
 
 # --- the registry ---------------------------------------------------------------------------
@@ -41,119 +47,102 @@ def test_capability_registry_is_a_registry_of_capability_classes() -> None:
     assert issubclass(CapabilityRegistry, Registry)
 
 
-def test_shared_returns_the_same_instance_every_time() -> None:
-    assert CapabilityRegistry.shared() is CapabilityRegistry.shared()
-    assert isinstance(CapabilityRegistry.shared(), CapabilityRegistry)
-
-
 def test_a_directly_constructed_registry_is_separate_and_empty() -> None:
     registry = CapabilityRegistry()
 
-    assert registry is not CapabilityRegistry.shared()
+    assert registry is not CapabilityRegistry()
     with pytest.raises(UnknownRegistrationError):
         registry.get("core/progressive_tax")
 
 
-@pytest.fixture
-def carrying(monkeypatch: pytest.MonkeyPatch) -> type[GadgetLevy]:
-    """`GadgetLevy` carrying its identifier, as `@capability` leaves a class."""
-    monkeypatch.setattr(GadgetLevy, "IDENTIFIER", "ex/gadget_levy")
-    return GadgetLevy
+def test_there_is_no_application_wide_registry() -> None:
+    assert not hasattr(CapabilityRegistry, "shared")
 
 
-def test_register_class_returns_the_class_unchanged(carrying: type[GadgetLevy]) -> None:
-    registered = CapabilityRegistry().register_class(carrying)
+def test_register_class_returns_the_class_unchanged() -> None:
+    cls = made_up()
+    registered = CapabilityRegistry().register_class(cls)
 
     assert_type(registered, type[GadgetLevy])
 
-    assert registered is GadgetLevy
+    assert registered is cls
 
 
-def test_register_class_registers_under_the_identifier_the_class_carries(
-    carrying: type[GadgetLevy],
-) -> None:
+def test_register_class_registers_under_the_identifier_the_class_carries() -> None:
+    cls = made_up()
     registry = CapabilityRegistry()
-    registry.register_class(carrying)
+    registry.register_class(cls)
 
     found = registry.get("ex/gadget_levy")
 
     assert_type(found, type[Capability])
-    assert found is GadgetLevy
-    assert Namespace.of(GadgetLevy).identifier("gadget_levy") == "ex/gadget_levy"
+    assert found is cls
 
 
-def test_register_class_refuses_a_class_that_carries_no_identifier(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    monkeypatch.setattr(GadgetLevy, "IDENTIFIER", None)
-
-    with pytest.raises(InvalidRegistrationError, match="GadgetLevy carries no identifier"):
-        CapabilityRegistry().register_class(GadgetLevy)
-
-
-def test_a_subclass_of_a_registered_class_has_no_identifier(carrying: type[GadgetLevy]) -> None:
-    class Sub(carrying):  # type: ignore[valid-type,misc]
-        pass
-
-    assert Sub.identifier() is None
-
-
-def test_register_class_needs_the_full_identifier_to_look_up(carrying: type[GadgetLevy]) -> None:
+def test_register_class_needs_the_full_identifier_to_look_up() -> None:
     registry = CapabilityRegistry()
-    registry.register_class(carrying)
+    registry.register_class(made_up())
 
     with pytest.raises(UnknownRegistrationError, match="'gadget_levy'"):
         registry.get("gadget_levy")
 
 
-def test_register_class_twice_under_one_identifier_fails(carrying: type[GadgetLevy]) -> None:
+def test_register_class_twice_under_one_identifier_fails() -> None:
     registry = CapabilityRegistry()
-    registry.register_class(carrying)
+    registry.register_class(made_up())
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/gadget_levy'"):
-        registry.register_class(carrying)
+        registry.register_class(made_up())
+
+
+def test_register_class_refuses_a_class_without_an_identifier() -> None:
+    with pytest.raises(InvalidRegistrationError, match="no identifier"):
+        CapabilityRegistry().register_class(GadgetLevy)
 
 
 # --- the decorator --------------------------------------------------------------------------
 
 
-def test_decorator_registers_the_class_under_its_namespaced_identifier(
-    fresh: CapabilityRegistry,
-) -> None:
-    capability(identifier="gadget_levy")(GadgetLevy)
+def test_decorator_gives_the_class_its_namespaced_identifier() -> None:
+    cls = made_up()
 
-    found = fresh.get("ex/gadget_levy")
-
-    assert_type(found, type[Capability])
-    assert found is GadgetLevy
+    assert cls.IDENTIFIER == "ex/gadget_levy"
+    assert cls.identifier() == "ex/gadget_levy"
 
 
-def test_decorator_returns_the_class_unchanged(fresh: CapabilityRegistry) -> None:
-    decorated = capability(identifier="gadget_levy")(GadgetLevy)
+def test_decorator_registers_nothing() -> None:
+    made_up("never_registered")
+
+    with pytest.raises(UnknownRegistrationError):
+        bundled_capabilities().get("ex/never_registered")
+
+
+def test_decorator_returns_the_class_unchanged() -> None:
+    cls = undecorated()
+    decorated = capability(identifier="gadget_levy")(cls)
 
     assert_type(decorated, type[GadgetLevy])
 
-    assert decorated is GadgetLevy
+    assert decorated is cls
 
 
-def test_decorator_leaves_the_identifier_on_the_class(fresh: CapabilityRegistry) -> None:
-    capability(identifier="gadget_levy")(GadgetLevy)
-
-    assert GadgetLevy.identifier() == "ex/gadget_levy"
-
-
-def test_decorator_rejects_a_local_id_that_is_not_snake_case(fresh: CapabilityRegistry) -> None:
+def test_decorator_rejects_a_local_id_that_is_not_snake_case() -> None:
     with pytest.raises(InvalidRegistrationError, match="snake_case"):
-        capability(identifier="GadgetLevy")(GadgetLevy)
-
-    assert GadgetLevy.identifier() is None
+        made_up("GadgetLevy")
 
 
-def test_decorating_two_classes_with_one_identifier_fails(fresh: CapabilityRegistry) -> None:
-    capability(identifier="gadget_levy")(GadgetLevy)
+def test_a_subclass_of_a_decorated_class_carries_no_identifier_of_its_own() -> None:
+    class Parent(GadgetLevy):
+        pass
 
-    with pytest.raises(DuplicateRegistrationError, match="'ex/gadget_levy'"):
-        capability(identifier="gadget_levy")(GadgetLevy)
+    Parent.__module__ = GadgetLevy.__module__
+    capability(identifier="gadget_levy")(Parent)
+
+    class Child(Parent):
+        pass
+
+    assert Child.IDENTIFIER == "ex/gadget_levy"
+    assert Child.identifier() is None
 
 
 # --- core capabilities ----------------------------------------------------------------------
@@ -167,10 +156,10 @@ def test_decorating_two_classes_with_one_identifier_fails(fresh: CapabilityRegis
         ("core/subtract_not_below_zero", SubtractNotBelowZero),
     ],
 )
-def test_core_capabilities_are_registered_in_the_shared_registry(
+def test_core_capabilities_are_registered_by_the_bundled_packages(
     identifier: str, cls: type[Capability]
 ) -> None:
-    assert CapabilityRegistry.shared().get(identifier) is cls
+    assert bundled_capabilities().get(identifier) is cls
 
 
 def test_core_capabilities_declare_the_core_namespace() -> None:

@@ -29,9 +29,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import InvalidCapabilityError, ValidationError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -53,6 +52,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     HOME_RENOVATIONS,
 )
 from tax_engine.jurisdictions.ca.trace import RenovationLine3, RenovationLine6, RenovationLine7
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -118,20 +118,11 @@ REGISTERED_AS = {
 
 @pytest.mark.parametrize("cls", CLASSES, ids=IDS)
 def test_is_registered_under_its_own_identifier(cls: type[HomeRenovationRows]) -> None:
-    assert CapabilityRegistry.shared().get(REGISTERED_AS[cls]) is cls
+    assert bundled_capabilities().get(REGISTERED_AS[cls]) is cls
 
 
-@pytest.mark.parametrize("cls", CLASSES, ids=IDS)
-def test_is_exported_from_the_ca_capabilities_package(cls: type[HomeRenovationRows]) -> None:
-    module = REGISTERED_AS[cls].rsplit("/", 1)[1]
-
-    assert ca_capabilities.NAMESPACE == "ca"
-    assert module in ca_capabilities.__all__
-    assert getattr(ca_capabilities, module).__dict__[cls.__name__] is cls
-
-
-def test_the_base_is_not_exported_or_registered() -> None:
-    assert "home_renovation_rows" not in ca_capabilities.__all__
+def test_the_base_is_not_registered() -> None:
+    assert HomeRenovationRows.identifier() is None
     assert (
         HomeRenovationRows.__module__
         == "tax_engine.jurisdictions.ca.capabilities.home_renovation_rows"

@@ -10,12 +10,12 @@ from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPacka
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
 from tax_engine.domain.registry import Namespace
 from tax_engine.registrations import CORE_PACKAGES
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.registration_fixtures import ex_on
 from tests.jurisdictions.registration_fixtures.ex_on import catalog
 from tests.jurisdictions.registration_fixtures.ex_on.catalog import CATALOG, LEVY, LEVY_BASE
@@ -71,7 +71,7 @@ def test_every_parameter_slot_has_a_dataset() -> None:
 
     assert CORE_PACKAGES  # importing them filled the capability and parser registries
     for selection in manifest.forms[0].capabilities:
-        slots = CapabilityRegistry.shared().get(selection.name).PARAMETERS
+        slots = bundled_capabilities().get(selection.name).PARAMETERS
         assert set(selection.params) == set(slots)
         for slot, family in selection.params.items():
             kind = slots[slot]

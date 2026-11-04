@@ -26,9 +26,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
@@ -47,6 +45,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.trace import MoreThanPerUnitLine, PerUnitAmountLine
 from tax_engine.jurisdictions.ca.capabilities.more_than_per_unit import MoreThanPerUnit
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -82,12 +81,7 @@ def compute(total: str, count: int) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_more_than_per_unit() -> None:
-    assert CapabilityRegistry.shared().get("ca/more_than_per_unit") is MoreThanPerUnit
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "more_than_per_unit" in ca_capabilities.__all__
-    assert ca_capabilities.more_than_per_unit.MoreThanPerUnit is MoreThanPerUnit
+    assert bundled_capabilities().get("ca/more_than_per_unit") is MoreThanPerUnit
 
 
 def test_declares_its_contract() -> None:

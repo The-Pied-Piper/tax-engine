@@ -31,9 +31,7 @@ from typing import assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -52,6 +50,7 @@ from tax_engine.jurisdictions.ca.capabilities.prorated_by_days_in_period import 
     ProratedByDaysInPeriod,
 )
 from tax_engine.jurisdictions.ca.trace import ProratedByDaysInPeriodLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -96,16 +95,9 @@ def prorated(amount: str, days: int, period_days: int = 365, rule: RoundingRule 
 
 
 def test_is_registered_as_ca_prorated_by_days_in_period() -> None:
-    registered = CapabilityRegistry.shared().get("ca/prorated_by_days_in_period")
+    registered = bundled_capabilities().get("ca/prorated_by_days_in_period")
 
     assert registered is ProratedByDaysInPeriod
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "prorated_by_days_in_period" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.prorated_by_days_in_period.ProratedByDaysInPeriod is ProratedByDaysInPeriod
-    )
 
 
 def test_declares_its_contract() -> None:

@@ -18,9 +18,7 @@ from typing import Any
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -35,6 +33,7 @@ from tax_engine.jurisdictions.ca.capabilities.cca_claim_after_column_22 import (
 )
 from tax_engine.jurisdictions.ca.catalog import CCA_CLAIMED
 from tax_engine.jurisdictions.ca.trace import CcaClaimLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_table import (
     CCA_CLAIM,
     CLASSES,
@@ -71,15 +70,9 @@ def total(*rows: dict[Any, Decimal | int], column_22: Artifact[Any] = NO_COLUMN_
 
 
 def test_is_registered_as_ca_cca_claim_after_column_22() -> None:
-    registered = CapabilityRegistry.shared().get("ca/cca_claim_after_column_22")
+    registered = bundled_capabilities().get("ca/cca_claim_after_column_22")
 
     assert registered is CcaClaimAfterColumn22
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "cca_claim_after_column_22" in ca_capabilities.__all__
-    module = ca_capabilities.cca_claim_after_column_22
-    assert module.CcaClaimAfterColumn22 is CcaClaimAfterColumn22
 
 
 def test_is_a_cca_claim() -> None:

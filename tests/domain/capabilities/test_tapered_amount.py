@@ -26,10 +26,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -43,6 +41,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.parameters.taper import TAPER, Taper
 from tax_engine.domain.trace import TaperedAmountLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -83,12 +82,7 @@ def compute(wired: TaperedAmount, income: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_tapered_amount() -> None:
-    assert CapabilityRegistry.shared().get("core/tapered_amount") is TaperedAmount
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "tapered_amount" in core.__all__
-    assert core.tapered_amount.TaperedAmount is TaperedAmount
+    assert bundled_capabilities().get("core/tapered_amount") is TaperedAmount
 
 
 def test_declares_its_contract() -> None:

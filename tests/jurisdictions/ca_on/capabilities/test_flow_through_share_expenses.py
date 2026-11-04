@@ -21,7 +21,6 @@ import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.record_list import RecordList
@@ -34,6 +33,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     FLOW_THROUGH_SHARE_SLIP_EXPENSES,
     FLOW_THROUGH_SHARE_SLIPS,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -63,7 +63,7 @@ def total_of(*expenses: str) -> Decimal:
 
 def test_is_registered_as_ca_on_flow_through_share_expenses() -> None:
     assert tax_engine.registrations.CORE_PACKAGES  # importing registrations imports the packages
-    registered = CapabilityRegistry.shared().get("ca-on/flow_through_share_expenses")
+    registered = bundled_capabilities().get("ca-on/flow_through_share_expenses")
 
     assert registered is FlowThroughShareExpenses
 
@@ -72,8 +72,6 @@ def test_its_package_declares_the_ca_on_namespace_and_exports_the_module() -> No
     package = tax_engine.jurisdictions.ca_on.capabilities
 
     assert package.NAMESPACE == tax_engine.jurisdictions.ca_on.NAMESPACE == "ca-on"
-    assert "flow_through_share_expenses" in package.__all__
-    assert package.flow_through_share_expenses.FlowThroughShareExpenses is FlowThroughShareExpenses
 
 
 def test_declares_its_contract() -> None:

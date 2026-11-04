@@ -25,10 +25,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -46,6 +44,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import RatioAppliedLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -89,12 +88,7 @@ def compute(wired: ApplyRatio, amount: str, numerator: str, denominator: str) ->
 
 
 def test_is_registered_as_core_apply_ratio() -> None:
-    assert CapabilityRegistry.shared().get("core/apply_ratio") is ApplyRatio
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "apply_ratio" in core.__all__
-    assert core.apply_ratio.ApplyRatio is ApplyRatio
+    assert bundled_capabilities().get("core/apply_ratio") is ApplyRatio
 
 
 def test_declares_its_contract() -> None:

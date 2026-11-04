@@ -20,10 +20,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.contribution_tier import TieredContribution
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
@@ -37,6 +35,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import ContributionTierLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -77,12 +76,7 @@ def compute(wired: TieredContribution, earnings: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_contribution_tier() -> None:
-    assert CapabilityRegistry.shared().get("core/contribution_tier") is TieredContribution
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "contribution_tier" in core.__all__
-    assert core.contribution_tier.TieredContribution is TieredContribution
+    assert bundled_capabilities().get("core/contribution_tier") is TieredContribution
 
 
 def test_declares_its_contract() -> None:

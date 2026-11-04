@@ -36,10 +36,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -71,6 +69,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     DISABILITY_DEPENDANTS,
     DISABILITY_TRANSFERRED_AMOUNT,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -134,24 +133,13 @@ def total(*given: Figures) -> Decimal:
 
 def test_is_registered_as_ca_on_disability_transfer_amount() -> None:
     assert (
-        CapabilityRegistry.shared().get("ca-on/disability_transfer_amount")
-        is OntarioDisabilityTransferAmount
-    )
-
-
-def test_is_exported_from_the_ca_on_capabilities_package() -> None:
-    assert ca_on_capabilities.NAMESPACE == "ca-on"
-    assert "disability_transfer_amount" in ca_on_capabilities.__all__
-    assert (
-        ca_on_capabilities.disability_transfer_amount.OntarioDisabilityTransferAmount
+        bundled_capabilities().get("ca-on/disability_transfer_amount")
         is OntarioDisabilityTransferAmount
     )
 
 
 def test_is_not_the_federal_capability() -> None:
-    assert CapabilityRegistry.shared().get("ca/disability_transfer_amount") is (
-        DisabilityTransferAmount
-    )
+    assert bundled_capabilities().get("ca/disability_transfer_amount") is (DisabilityTransferAmount)
 
 
 def test_declares_its_contract() -> None:

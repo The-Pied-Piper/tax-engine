@@ -17,15 +17,14 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import PositivePartOfNegationLine
 from tax_engine.jurisdictions.ca.capabilities.positive_part_of_negation import (
     PositivePartOfNegation,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -43,14 +42,7 @@ def compute(amount: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_positive_part_of_negation() -> None:
-    assert CapabilityRegistry.shared().get("ca/positive_part_of_negation") is PositivePartOfNegation
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "positive_part_of_negation" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.positive_part_of_negation.PositivePartOfNegation is PositivePartOfNegation
-    )
+    assert bundled_capabilities().get("ca/positive_part_of_negation") is PositivePartOfNegation
 
 
 def test_declares_its_contract() -> None:
