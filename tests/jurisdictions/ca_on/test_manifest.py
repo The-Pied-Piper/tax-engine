@@ -95,6 +95,7 @@ from tests.jurisdictions.ca_on.manifest_families import (
     us_social_security_treaty_deduction,
     yes_or_no_flag_checks,
 )
+from tests.kinds import bundled_kinds
 
 FAMILIES: tuple[ModuleType, ...] = (
     income,
@@ -185,7 +186,7 @@ WIRING = set[object]().union(*(family.WIRING for family in FAMILIES))
 
 
 def manifest() -> Manifest:
-    (only,) = YamlJurisdictionSource(ROOTS).get_jurisdiction(CA_ON).manifests
+    (only,) = YamlJurisdictionSource(ROOTS, bundled_kinds()).get_jurisdiction(CA_ON).manifests
     return only
 
 

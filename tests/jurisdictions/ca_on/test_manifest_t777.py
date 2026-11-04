@@ -35,6 +35,7 @@ from tests.jurisdictions.ca_on.manifest_support import (
     instance_fields,
     required_entries,
 )
+from tests.kinds import bundled_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
@@ -95,7 +96,7 @@ NEW_LINE_EXPORTS = (
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )

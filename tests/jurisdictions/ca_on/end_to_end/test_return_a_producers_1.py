@@ -6,7 +6,6 @@ from typing import Any
 
 import pytest
 
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.capabilities.amount_by_count import AmountForCount
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
@@ -1169,6 +1168,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     TAX_REDUCTION_FOR_DEPENDANTS_BEFORE_SPOUSE_RULE,
 )
 from tests.jurisdictions.ca_on.end_to_end.support import return_a, run_a
+from tests.kinds import ca_on_kinds
 
 
 def test_each_amount_is_produced_by_its_capability() -> None:
@@ -1620,7 +1620,7 @@ def test_each_amount_is_produced_by_its_capability() -> None:
     assert worksheet.producer_of(RDSP_INCOME) is None
     # T1 line 12600 "Net" totals the lines 9946 of the statements, which the form exports.
     assert isinstance(worksheet.producer_of(NET_RENTAL_INCOME), RecordTotal)
-    imported = ArtifactRegistry.shared().kind("ca/t776.net_rental_income")
+    imported = ca_on_kinds().kind("ca/t776.net_rental_income")
     assert worksheet.producer_of(imported) is None
     assert worksheet.producer_of(TAXABLE_SUPPORT_PAYMENTS) is None
     assert worksheet.producer_of(RRSP_INCOME) is None
@@ -2047,7 +2047,7 @@ def test_each_amount_is_produced_by_its_capability() -> None:
     # code, as Form T1139's summary form gives them: the statements with no Form T1139 plus the
     # amount G or L of each Form T1139.
     assert isinstance(worksheet.producer_of(BUSINESS_INCOME), RecordTotal)
-    imported = ArtifactRegistry.shared().kind("ca/t1139_return.t1139_business_income_on_return")
+    imported = ca_on_kinds().kind("ca/t1139_return.t1139_business_income_on_return")
     assert worksheet.producer_of(imported) is None
     # T1 lines 23, 24 (13700 and 13900), 25 (14100) and 26 (14300) total the summary form's lines
     # the same way, and the grosses on 13499, 13699 and 13899 total the routed grosses of the
@@ -2064,16 +2064,12 @@ def test_each_amount_is_produced_by_its_capability() -> None:
         "ca/t2125.gross_on_professional_line",
         "ca/t2125.gross_on_commission_line",
     ):
-        assert worksheet.producer_of(ArtifactRegistry.shared().kind(name)) is None, name
+        assert worksheet.producer_of(ca_on_kinds().kind(name)) is None, name
     assert isinstance(worksheet.producer_of(FARMING_INCOME), RecordTotal)
-    imported_farming = ArtifactRegistry.shared().kind(
-        "ca/t1139_return.t1139_farming_income_on_return"
-    )
+    imported_farming = ca_on_kinds().kind("ca/t1139_return.t1139_farming_income_on_return")
     assert worksheet.producer_of(imported_farming) is None
     assert isinstance(worksheet.producer_of(FISHING_INCOME), RecordTotal)
-    imported_fishing = ArtifactRegistry.shared().kind(
-        "ca/t1139_return.t1139_fishing_income_on_return"
-    )
+    imported_fishing = ca_on_kinds().kind("ca/t1139_return.t1139_fishing_income_on_return")
     assert worksheet.producer_of(imported_fishing) is None
     assert isinstance(worksheet.producer_of(NET_SELF_EMPLOYMENT_INCOME), Sum)
     months_tables = {
@@ -2784,7 +2780,7 @@ def test_the_t1436_lines_1_to_6_and_their_sums_are_produced_by_their_capabilitie
     # are each their own step; lines 1, 2, 3, 4, 6 are "x" a printed factor, line 5 "x 1/IR", and
     # line 7 adds the six lines.
     worksheet = return_a()
-    kind = ArtifactRegistry.shared().kind
+    kind = ca_on_kinds().kind
 
     for starting in ("ca/schedule_3_line_543", "ca/schedule_3_line_544"):
         assert worksheet.producer_of(kind(starting)) is None, starting

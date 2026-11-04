@@ -27,6 +27,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Form, Manifest
 from tax_engine.jurisdictions.ca.catalog import T2048_DISPOSITIONS
 from tests.jurisdictions.ca_on.manifest_families import other_property_income
+from tests.kinds import bundled_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 FORM = "ca/other_property_income"
@@ -42,7 +43,7 @@ PART = (
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )

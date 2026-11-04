@@ -1224,6 +1224,9 @@ def service(
         },
         produces={"total": "ex/foreign_credit", "sheets": "ca/foreign_tax_credit_sheets"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (FOREIGN_TAX_COUNTRIES, NET_INCOME, BASIC_TAX, CREDIT, SHEETS):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -1240,15 +1243,12 @@ def service(
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (FOREIGN_TAX_COUNTRIES, NET_INCOME, BASIC_TAX, CREDIT, SHEETS):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset, pooling, limit),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

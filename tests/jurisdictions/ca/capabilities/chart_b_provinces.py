@@ -102,6 +102,9 @@ def service(identifier: str) -> TaxComputationService:
         consumes={"provinces": "ca/farm_chart_b_provinces"},
         produces={"output": "ex/chart_b_province_total"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (FARM_CHART_B_PROVINCES, TOTAL):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -116,15 +119,12 @@ def service(identifier: str) -> TaxComputationService:
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (FARM_CHART_B_PROVINCES, TOTAL):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _NoParameters(),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

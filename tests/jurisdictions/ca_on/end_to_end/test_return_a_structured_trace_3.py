@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from fractions import Fraction as ExactFraction
 
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.credit import Credit
 from tax_engine.domain.parameters.factor import Factor
@@ -864,6 +863,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     TAX_REDUCTION_FOR_DEPENDANTS_BEFORE_SPOUSE_RULE,
 )
 from tests.jurisdictions.ca_on.end_to_end.support import CENT, D, run_a
+from tests.kinds import ca_on_kinds
 
 
 def test_the_trace_records_each_total_as_a_structured_line() -> None:
@@ -872,7 +872,7 @@ def test_the_trace_records_each_total_as_a_structured_line() -> None:
     result = run_a()
     # The Form T1436 lines 1 to 6 and their bases, by identifier: looked up when the test runs.
     kinds = {
-        identifier: ArtifactRegistry.shared().kind(identifier)
+        identifier: ca_on_kinds().kind(identifier)
         for identifier in (
             "ca/capital_gains_deductions_1985_to_1987",
             "ca/capital_gains_deductions_1988_and_1989_amount_a",

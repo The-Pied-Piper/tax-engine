@@ -18,12 +18,12 @@ import yaml
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.registrations import JURISDICTIONS
 from tests.jurisdictions.ca_on.end_to_end.support import service as shared_service
 from tests.jurisdictions.ca_on.test_worked_returns import RETURNS, check_against
 from tests.jurisdictions.ca_on.worked_return import WorkedReturn
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 # Schedule 8's Part 4 and Part 5 choices: a return carrying Form RC381 may not set them.
 SCHEDULE_8_PARTS_COMPLETED = ("ca/cpp_part_4_completed", "ca/cpp_part_5_completed")
@@ -52,11 +52,11 @@ def rc381_instead_of_schedule_8(stem: str, directory: Path) -> Path:
 def test_the_rc381_lines_of_the_return_are_those_of_its_form(stem: str, tmp_path: Path) -> None:
     path = rc381_instead_of_schedule_8(stem, tmp_path)
     service = shared_service()  # registers the catalogs the loader resolves through
-    artifacts = ArtifactRegistry.shared()
+    artifacts = ca_on_kinds()
     build_tax_computation().compose(JurisdictionCode("CA-ON"), 2025)
     worked = WorkedReturn.load(path, artifacts)
     manifest = (
-        YamlJurisdictionSource(JURISDICTIONS.roots())
+        YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(worked.jurisdiction)
         .manifest_for(worked.tax_year)
     )

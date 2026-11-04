@@ -329,6 +329,9 @@ def service() -> TaxComputationService:
         consumes={"classes": CLASSES.identifier, "sales_tax_rate": SALES_TAX_RATE.identifier},
         produces={"output": ADJUSTED.identifier},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (CLASSES, SALES_TAX_RATE, ADJUSTED):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -343,13 +346,10 @@ def service() -> TaxComputationService:
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (CLASSES, SALES_TAX_RATE, ADJUSTED):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset, zepv_dataset),
         CapabilityRegistry.shared(),
-        artifacts,
     )

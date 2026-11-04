@@ -49,6 +49,7 @@ from tax_engine.domain.errors import (
     ValidationError,
 )
 from tax_engine.domain.form import FormComposition, FormSet
+from tax_engine.domain.manifest import Form
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
@@ -196,8 +197,8 @@ def test_an_exports_derived_kind_is_a_record_list_of_that_one_field() -> None:
 
 
 def test_the_derived_kinds_can_be_built_before_any_selection_is() -> None:
-    assert FormComposition.derive("ex/shop", [PROFIT]) == (SHOP_PROFIT,)
-    assert FormComposition.derive("ex/audit", [AUDITED, FEE]) == (AUDIT_AUDITED, AUDIT_FEE)
+    assert Form.derive_kinds("ex/shop", [PROFIT]) == (SHOP_PROFIT,)
+    assert Form.derive_kinds("ex/audit", [AUDITED, FEE]) == (AUDIT_AUDITED, AUDIT_FEE)
 
 
 def test_a_form_has_no_imports_when_it_reads_only_its_instance_fields() -> None:
@@ -259,7 +260,7 @@ def test_an_export_that_is_neither_an_amount_a_count_nor_a_record_list_is_not_im
 
     assert labelled.exports == (NOTE,)
     assert labelled.derived == ()
-    assert FormComposition.derive("ex/labelled", [NOTE, SALES]) == (
+    assert Form.derive_kinds("ex/labelled", [NOTE, SALES]) == (
         RecordListKind("ex/labelled.sales", fields=(SALES,)),
     )
 
@@ -1524,7 +1525,7 @@ STEP_RETURN = RecordTotal(STEP_TOTALS, GRAND)
 
 def step(name: str = "ex/step") -> FormComposition:
     """Each step: the amount plus the total carried from the earlier steps' own totals."""
-    own = FormComposition.derive(name, [STEP_TOTAL])[0]
+    own = Form.derive_kinds(name, [STEP_TOTAL])[0]
     return FormComposition(
         name,
         [RecordTotal(own, CARRIED), Sum((AMOUNT, CARRIED), STEP_TOTAL)],
@@ -1610,7 +1611,7 @@ def test_each_form_sees_only_its_own_earlier_runs() -> None:
     result = step_set(step(), step("ex/zzz")).compute(steps("10", "15", "20"))
 
     assert [w.get(STEP_TOTAL).value for w in result["ex/zzz"]] == [D(10), D(25), D(55)]
-    assert values(result["ex/zzz"][2], FormComposition.derive("ex/zzz", [STEP_TOTAL])[0]) == [
+    assert values(result["ex/zzz"][2], Form.derive_kinds("ex/zzz", [STEP_TOTAL])[0]) == [
         D(10),
         D(25),
     ]
@@ -1657,7 +1658,7 @@ def test_a_form_reading_its_own_export_still_runs_before_the_forms_that_import_i
         exports=[FEE_TOTAL],
     )
     forms = flat(
-        [RecordTotal(FormComposition.derive("ex/aaa", [FEE_TOTAL])[0], GRAND)],
+        [RecordTotal(Form.derive_kinds("ex/aaa", [FEE_TOTAL])[0], GRAND)],
         inputs=frozenset({STEPS, AUDITS}),
         outputs=frozenset({GRAND}),
         forms=[late, step()],
@@ -1692,7 +1693,7 @@ def test_a_cycle_through_a_form_that_reads_its_own_export_names_the_forms_on_it(
         "ex/step",
         [
             RecordTotal(STEP_TOTALS, CARRIED),
-            RecordTotal(FormComposition.derive("ex/back", [FEE_TOTAL])[0], GRAND),
+            RecordTotal(Form.derive_kinds("ex/back", [FEE_TOTAL])[0], GRAND),
             Sum((AMOUNT, CARRIED, GRAND), STEP_TOTAL),
         ],
         instances=STEPS,

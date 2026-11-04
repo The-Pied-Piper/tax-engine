@@ -30,7 +30,6 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
-from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
@@ -124,7 +123,7 @@ class FormComposition:
         self._min_instances = min_instances
         self._exclusive_group = exclusive_group
         self._exports = listed
-        self._derived = self.derive(name, listed)
+        self._derived = Form.derive_kinds(name, listed)
         foreign = frozenset(kind for kind in read - produced if kind.is_form_export)
         self._earlier = frozenset(kind for kind in self._derived if kind in foreign)
         self._imports = foreign - self._earlier
@@ -160,23 +159,6 @@ class FormComposition:
     def _blank_kinds(*defaults: Iterable[Artifact[Any]]) -> frozenset[ArtifactKind[Any]]:
         """The kinds whose default is blank: those may arrive blank."""
         return frozenset(a.kind for group in defaults for a in group if a.is_blank)
-
-    @staticmethod
-    def derive(name: str, exports: Iterable[ArtifactKind[Any]]) -> tuple[RecordListKind, ...]:
-        """The kind `<form>.<export>` of each of the form `name`'s `exports` a record can hold.
-
-        Each is a record list of the export's one field, in the order of the exports. An export
-        that is not an amount, a count or a record list (a rate, say, or digits) has none: no
-        other form reads it.
-        """
-        namespace, _, form_id = name.partition("/")
-        return tuple(
-            RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
-            for export in exports
-            if issubclass(export.value_type, Decimal)
-            or export.value_type is int
-            or isinstance(export, RecordListKind)
-        )
 
     @property
     def name(self) -> str:

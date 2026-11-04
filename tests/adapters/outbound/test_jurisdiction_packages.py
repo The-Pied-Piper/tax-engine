@@ -2,8 +2,8 @@
 
 A package's directory is `Path(package.__file__).parent` and its namespace is its `NAMESPACE`;
 `register` imports each package's `catalog` module and pushes its `CATALOG` (an `ArtifactCatalog`)
-into an artifact registry. Packages here are made-up module objects, put in `sys.modules` (with
-their `catalog` modules) only for the duration of a test.
+into the artifact registry it is given. Packages here are made-up module objects, put in
+`sys.modules` (with their `catalog` modules) only for the duration of a test.
 """
 
 from __future__ import annotations
@@ -63,14 +63,6 @@ def catalog_of(namespace: str, *local_ids: str) -> ArtifactCatalog:
     return catalog
 
 
-@pytest.fixture(autouse=True)
-def shared(monkeypatch: pytest.MonkeyPatch) -> ArtifactRegistry:
-    """A fresh registry standing in for the shared one in every test, so it never sees these."""
-    registry = ArtifactRegistry()
-    monkeypatch.setattr(ArtifactRegistry, "shared", classmethod(lambda cls: registry))
-    return registry
-
-
 def test_maps_each_namespace_to_its_package_directory(tmp_path: Path, package: MakePackage) -> None:
     packages = JurisdictionPackages(
         (package(tmp_path, "ex", "ex"), package(tmp_path, "ex_on", "ex-on"))
@@ -113,7 +105,7 @@ def test_a_package_without_a_file_is_rejected() -> None:
 
 
 def test_registers_each_packages_catalog_into_the_given_registry(
-    tmp_path: Path, shared: ArtifactRegistry, package: MakePackage
+    tmp_path: Path, package: MakePackage
 ) -> None:
     ex = catalog_of("ex", "levy_base", "levy")
     ex_on = catalog_of("ex-on", "surtax")
@@ -127,29 +119,6 @@ def test_registers_each_packages_catalog_into_the_given_registry(
     assert registry.identifiers() == {"ex/levy_base", "ex/levy", "ex-on/surtax"}
     for kind in (*ex.kinds, *ex_on.kinds):
         assert registry.get(kind.identifier) is kind
-    assert shared.identifiers() == frozenset()
-
-
-def test_registers_into_the_shared_registry_by_default(
-    tmp_path: Path, shared: ArtifactRegistry, package: MakePackage
-) -> None:
-    ex = catalog_of("ex", "levy")
-    packages = JurisdictionPackages((package(tmp_path, "ex", "ex", ex),))
-
-    packages.register()
-
-    assert shared.identifiers() == {"ex/levy"}
-    assert shared.get("ex/levy") is ex.kinds[0]
-
-
-def test_none_means_the_shared_registry(
-    tmp_path: Path, shared: ArtifactRegistry, package: MakePackage
-) -> None:
-    packages = JurisdictionPackages((package(tmp_path, "ex", "ex", catalog_of("ex", "levy")),))
-
-    packages.register(None)
-
-    assert shared.identifiers() == {"ex/levy"}
 
 
 def test_registering_twice_is_idempotent(tmp_path: Path, package: MakePackage) -> None:

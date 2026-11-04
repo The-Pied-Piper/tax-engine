@@ -13,7 +13,7 @@ from tax_engine.adapters.outbound.parameter_parsers.parser import ParameterParse
 from tax_engine.adapters.outbound.yaml_support import YamlNode
 from tax_engine.domain.errors import UnknownRegistrationError
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.registry import Registry
+from tax_engine.domain.registry import SharedRegistry
 
 
 class ParserClass[T, P](Protocol):
@@ -34,7 +34,7 @@ class ParserClass[T, P](Protocol):
         ...
 
 
-class ParameterParserRegistry(Registry[object]):
+class ParameterParserRegistry(SharedRegistry[object]):
     """Holds one parser per parameter kind; lookups by `ParameterKind[T]` give `ParameterParser[T]`.
 
     Its string keys are kind names (not namespaced yet); register parsers with `register_class`

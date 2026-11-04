@@ -22,7 +22,6 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Form, Manifest
@@ -30,6 +29,7 @@ from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import RC381_INSTANCES
 from tests.jurisdictions.ca_on.manifest_families import rc381_cpp_qpp
 from tests.jurisdictions.ca_on.manifest_support import instance_fields, required_entries
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 PARTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1"
@@ -64,7 +64,7 @@ COPIED_PRODUCTS = {
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
@@ -170,7 +170,7 @@ def test_the_instances_kind_is_a_record_list_with_no_fields() -> None:
 def test_the_catalog_registers_the_instances_kind_beside_the_other_record_lists() -> None:
     build_tax_computation()
 
-    assert ArtifactRegistry.shared().kind("ca/rc381_instances") is RC381_INSTANCES
+    assert ca_on_kinds().kind("ca/rc381_instances") is RC381_INSTANCES
 
 
 # --- the outputs and the node --------------------------------------------------------------------

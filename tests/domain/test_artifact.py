@@ -3,8 +3,7 @@
 An `ArtifactKind[V]` names a kind of artifact by a namespaced identifier and states the type of
 its values; an `Artifact[V]` is one value of a kind in one computation. `ArtifactCatalog` only
 records the kinds a package declares; `ArtifactRegistry.register_catalog` registers them. Names are
-made up; the catalog tests point `ArtifactRegistry.shared` at a fresh registry with monkeypatch,
-so the shared registry stays clean and declaring can be seen to register nothing.
+made up; the catalog tests use a fresh registry, so declaring can be seen to register nothing.
 """
 
 from __future__ import annotations
@@ -22,15 +21,19 @@ from tax_engine.domain.artifact import (
     ArtifactRegistry,
     Money,
 )
+from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
     InvalidAmountError,
     InvalidRegistrationError,
+    InvalidTextError,
     NegativeArtifactError,
     UnknownRegistrationError,
 )
+from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.registry import Namespace, Registry
+from tests.kinds import ca_on_kinds
 
 D = Decimal
 BASE = ArtifactKind("ex/taxable_base", Decimal)
@@ -39,11 +42,9 @@ NON_NEGATIVE = ArtifactKind("ex/credit_amount", Decimal, non_negative=True)
 
 
 @pytest.fixture
-def fresh(monkeypatch: pytest.MonkeyPatch) -> ArtifactRegistry:
-    """A fresh registry that catalogs register into for the duration of one test."""
-    registry = ArtifactRegistry()
-    monkeypatch.setattr(ArtifactRegistry, "shared", classmethod(lambda cls: registry))
-    return registry
+def fresh() -> ArtifactRegistry:
+    """An empty registry, to see that declaring in a catalog registers nothing in it."""
+    return ArtifactRegistry()
 
 
 # --- ArtifactKind ---------------------------------------------------------------------------
@@ -335,6 +336,103 @@ def test_a_count_still_rejects_a_value_of_another_type() -> None:
         Artifact(COUNT, cast(Any, D("1")))
 
 
+# --- ArtifactKind.read and read_default -----------------------------------------------------
+
+COUNT = ArtifactKind("ex/person_count", int, non_negative=True)
+NUMBER = DigitsKind("ex/business_number", digits=9)
+DEPENDANTS = RecordListKind("ex/dependants", fields=(BASE,))
+
+
+@pytest.mark.parametrize(("text", "expected"), [("12.50", D("12.50")), ("-3", D(-3)), ("0", D(0))])
+def test_a_decimal_kind_reads_a_plain_decimal_number(text: str, expected: Decimal) -> None:
+    assert BASE.read(text) == Artifact(BASE, expected)
+
+
+@pytest.mark.parametrize("text", ["", " 1", "1e3", "1,5", "abc", "NaN", "1."])
+def test_a_decimal_kind_refuses_text_that_is_not_a_plain_decimal_number(text: str) -> None:
+    with pytest.raises(InvalidTextError, match="plain decimal number"):
+        BASE.read(text)
+
+
+def test_an_int_kind_reads_a_whole_number() -> None:
+    assert ArtifactKind("ex/year_count", int).read("-4") == Artifact(
+        ArtifactKind("ex/year_count", int), -4
+    )
+    assert COUNT.read("3") == Artifact(COUNT, 3)
+
+
+@pytest.mark.parametrize("text", ["1.5", "", "two"])
+def test_an_int_kind_refuses_text_that_is_not_a_whole_number(text: str) -> None:
+    with pytest.raises(InvalidTextError, match="whole number"):
+        COUNT.read(text)
+
+
+@pytest.mark.parametrize("kind", [NON_NEGATIVE, COUNT])
+def test_a_non_negative_kind_refuses_a_number_below_zero(kind: ArtifactKind[Any]) -> None:
+    with pytest.raises(InvalidTextError, match="below zero"):
+        kind.read("-1")
+    assert kind.read("0").value == 0
+
+
+def test_a_number_of_more_than_the_digits_python_reads_is_too_long() -> None:
+    with pytest.raises(InvalidTextError, match="too long"):
+        COUNT.read("9" * 5000)
+
+
+def test_a_digits_kind_reads_its_digits_as_entered_and_blank_text() -> None:
+    assert NUMBER.read("012345678") == Artifact(NUMBER, "012345678")
+    assert NUMBER.read("") == Artifact(NUMBER, "")
+
+
+def test_a_digits_kind_refuses_other_text() -> None:
+    with pytest.raises(InvalidTextError, match="not a value of the kind"):
+        NUMBER.read("12345")
+
+
+def test_a_record_list_kind_has_no_spelling_as_text() -> None:
+    with pytest.raises(InvalidTextError, match="empty list"):
+        DEPENDANTS.read("[]")
+
+
+def test_a_kind_with_another_value_type_has_no_spelling_as_text() -> None:
+    kind: ArtifactKind[Any] = ArtifactKind("ex/flag", bool)
+
+    with pytest.raises(InvalidTextError, match="bool"):
+        kind.read("true")
+
+
+def test_read_default_reads_none_as_blank() -> None:
+    for kind in (BASE, COUNT, NUMBER, DEPENDANTS):
+        assert kind.read_default(None).is_blank
+
+
+def test_read_default_reads_a_string_as_read_does() -> None:
+    assert BASE.read_default("5") == BASE.read("5")
+    assert NUMBER.read_default("123456789") == NUMBER.read("123456789")
+    with pytest.raises(InvalidTextError, match="below zero"):
+        NON_NEGATIVE.read_default("-1")
+
+
+def test_read_default_refuses_an_empty_list_for_a_kind_that_is_not_a_record_list() -> None:
+    with pytest.raises(InvalidTextError, match="quoted number"):
+        BASE.read_default(())
+    with pytest.raises(InvalidTextError, match="string"):
+        NUMBER.read_default(())
+
+
+def test_a_record_list_kind_reads_an_empty_list_default() -> None:
+    artifact = DEPENDANTS.read_default(())
+
+    assert not artifact.is_blank
+    assert artifact.value.records == ()
+    assert artifact.value.fields == (BASE,)
+
+
+def test_a_record_list_kind_refuses_a_string_default() -> None:
+    with pytest.raises(InvalidTextError, match="empty list"):
+        DEPENDANTS.read_default("0")
+
+
 # --- ArtifactRegistry and ArtifactCatalog ---------------------------------------------------
 
 
@@ -342,9 +440,9 @@ def test_artifact_registry_is_a_registry() -> None:
     assert issubclass(ArtifactRegistry, Registry)
 
 
-def test_shared_returns_the_same_instance_every_time() -> None:
-    assert ArtifactRegistry.shared() is ArtifactRegistry.shared()
-    assert isinstance(ArtifactRegistry.shared(), ArtifactRegistry)
+def test_the_bundled_kinds_are_built_once_per_process() -> None:
+    assert ca_on_kinds() is ca_on_kinds()
+    assert isinstance(ca_on_kinds(), ArtifactRegistry)
 
 
 def test_catalog_declares_the_namespaced_kind(fresh: ArtifactRegistry) -> None:
@@ -421,36 +519,40 @@ def test_catalog_rejects_a_local_id_that_is_not_snake_case(
     assert fresh.identifiers() == frozenset()
 
 
-# --- ArtifactRegistry.register_kind ---------------------------------------------------------
+# --- ArtifactRegistry.extended --------------------------------------------------------------
 
 
-def test_register_kind_registers_a_new_kind_under_its_own_identifier() -> None:
+def test_extended_is_a_new_registry_of_the_kinds_and_the_added_ones() -> None:
     registry = ArtifactRegistry()
+    registry.register(BASE.identifier, BASE)
     kind = ArtifactKind("ex/rental.net_income", Decimal)
 
-    registry.register_kind(kind)
+    extended = registry.extended([kind])
 
-    assert registry.get("ex/rental.net_income") is kind
+    assert extended is not registry
+    assert extended.get("ex/rental.net_income") is kind
+    assert extended.get("ex/taxable_base") is BASE
+    assert registry.identifiers() == {"ex/taxable_base"}
 
 
-def test_register_kind_skips_an_equal_kind_registered_already_and_keeps_the_first() -> None:
+def test_extended_skips_an_equal_kind_registered_already_and_keeps_the_first() -> None:
     registry = ArtifactRegistry()
     first = ArtifactKind("ex/rental.net_income", Decimal)
-    registry.register_kind(first)
+    registry.register(first.identifier, first)
 
-    registry.register_kind(ArtifactKind("ex/rental.net_income", Decimal))
+    extended = registry.extended([ArtifactKind("ex/rental.net_income", Decimal)])
 
-    assert registry.get("ex/rental.net_income") is first
-    assert registry.identifiers() == {"ex/rental.net_income"}
+    assert extended.get("ex/rental.net_income") is first
+    assert extended.identifiers() == {"ex/rental.net_income"}
 
 
-def test_register_kind_refuses_another_kind_under_that_identifier() -> None:
+def test_extended_refuses_another_kind_under_that_identifier() -> None:
     registry = ArtifactRegistry()
     first = ArtifactKind("ex/rental.net_income", Decimal)
-    registry.register_kind(first)
+    registry.register(first.identifier, first)
 
     with pytest.raises(DuplicateRegistrationError, match=r"'ex/rental\.net_income'"):
-        registry.register_kind(ArtifactKind("ex/rental.net_income", int))
+        registry.extended([ArtifactKind("ex/rental.net_income", int)])
 
     assert registry.get("ex/rental.net_income") is first
 

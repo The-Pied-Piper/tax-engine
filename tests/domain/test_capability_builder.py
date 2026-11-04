@@ -34,6 +34,7 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import TraceLine
+from tests.kinds import ca_on_kinds
 
 D = Decimal
 
@@ -182,7 +183,7 @@ def test_resolves_kinds_through_the_registry_it_is_given() -> None:
     assert isinstance(built, Scale)
     assert built.source is own_source
     assert built.target is own_target
-    assert "ex/source" not in ArtifactRegistry.shared().identifiers()
+    assert "ex/source" not in ca_on_kinds().identifiers()
 
 
 @pytest.mark.parametrize(

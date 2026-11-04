@@ -229,6 +229,9 @@ def service(
         consumes=consumes,
         produces={"output": output.identifier},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (classes_kind, NON_COMPLIANT, output, *extra.values()):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -243,13 +246,10 @@ def service(
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (classes_kind, NON_COMPLIANT, output, *extra.values()):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
         CapabilityRegistry.shared(),
-        artifacts,
     )

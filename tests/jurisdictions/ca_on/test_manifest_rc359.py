@@ -19,7 +19,6 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.form import FormComposition
@@ -39,6 +38,7 @@ from tests.jurisdictions.ca_on.manifest_support import (
     lists,
     required_entries,
 )
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1" / "11a_rc359.yaml"
@@ -48,7 +48,7 @@ INPUTS_PART = PART.with_name("01_inputs.yaml")
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
@@ -156,7 +156,7 @@ def test_the_employers_kind_is_a_record_list_of_the_four_form_inputs_in_order() 
 def test_the_catalog_registers_the_employers_kind_beside_the_other_record_lists() -> None:
     build_tax_computation()
 
-    assert ArtifactRegistry.shared().kind("ca/rc359_employers") is RC359_EMPLOYERS
+    assert ca_on_kinds().kind("ca/rc359_employers") is RC359_EMPLOYERS
 
 
 # --- the outputs and the node --------------------------------------------------------------------

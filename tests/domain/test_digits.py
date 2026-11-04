@@ -6,8 +6,8 @@ exactly that many ASCII digits, kept as entered (a leading zero is a digit), or 
 a box left blank; any other text is an InvalidTextError naming the kind, the number of digits and
 the text given. A value that is not a `str` is the artifact's own TypeError. `DigitsKind.declare`
 declares a digits kind on a catalog; the number of digits is a positive `int`, else an
-InvalidRegistrationError naming the kind. Names are made up; like the record-list tests, the
-catalog tests point `ArtifactRegistry.shared` at a fresh registry.
+InvalidRegistrationError naming the kind. Names are made up; the catalog tests use an empty
+registry to see that declaring registers nothing.
 """
 
 from __future__ import annotations
@@ -33,11 +33,9 @@ SHORT = DigitsKind("ex/filing_number", digits=5)
 
 
 @pytest.fixture
-def fresh(monkeypatch: pytest.MonkeyPatch) -> ArtifactRegistry:
-    """A fresh registry that catalogs register into for the duration of one test."""
-    registry = ArtifactRegistry()
-    monkeypatch.setattr(ArtifactRegistry, "shared", classmethod(lambda cls: registry))
-    return registry
+def fresh() -> ArtifactRegistry:
+    """An empty registry, to see that declaring in a catalog registers nothing in it."""
+    return ArtifactRegistry()
 
 
 def refused(kind: DigitsKind, text: str) -> str:

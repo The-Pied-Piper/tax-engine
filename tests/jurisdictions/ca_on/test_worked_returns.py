@@ -57,6 +57,7 @@ from tests.application.services.test_tax_computation_forms import (
 )
 from tests.jurisdictions.ca_on.end_to_end.support import service as shared_service
 from tests.jurisdictions.ca_on.worked_return import WorkedReturn, WorkedReturnError
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 RETURNS = Path(__file__).parent / "returns"
 
@@ -68,21 +69,20 @@ def load(
 ) -> WorkedReturn:
     """The worked return at `path` with its blank lines and inputs filled in.
 
-    Against the manifest of the file's jurisdiction and tax year and the shared registry, unless a
-    `manifest` and `artifacts` are given. For the shared registry the manifest is composed first,
-    which registers the kinds `<form>.<export>` of its forms, so the file may expect them.
+    Against the manifest of the file's jurisdiction and tax year and its kinds (which include the
+    kinds `<form>.<export>` of its forms, so the file may expect them), unless a `manifest` and
+    `artifacts` are given.
     """
-    if artifacts is None:
-        artifacts = ArtifactRegistry.shared()
-        head = yaml.safe_load(path.read_text())
-        build_tax_computation().compose(JurisdictionCode(head["jurisdiction"]), head["tax_year"])
-    worked = WorkedReturn.load(path, artifacts)
     if manifest is None:
+        head = yaml.safe_load(path.read_text())
         manifest = (
-            YamlJurisdictionSource(JURISDICTIONS.roots())
-            .get_jurisdiction(worked.jurisdiction)
-            .manifest_for(worked.tax_year)
+            YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds())
+            .get_jurisdiction(JurisdictionCode(head["jurisdiction"]))
+            .manifest_for(head["tax_year"])
         )
+    if artifacts is None:
+        artifacts = manifest.kinds
+    worked = WorkedReturn.load(path, artifacts)
     default = worked.jurisdiction.namespace.identifier("return")
     (default_form,) = (form for form in manifest.forms if form.name == default)
     worked = worked.with_blanks(
@@ -728,7 +728,7 @@ def test_the_returns_directory_holds_at_least_one_return() -> None:
 def test_return_q_claims_two_infirm_dependants_on_line_30450() -> None:
     path = RETURNS / "2025_return_q.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (dependants,) = [a for a in worked.inputs if a.kind.identifier == "ca/infirm_dependants"]
     assert [record[DEPENDANT_NET_INCOME] for record in dependants.value.records] == [
@@ -743,7 +743,7 @@ def test_return_q_claims_two_infirm_dependants_on_line_30450() -> None:
 def test_return_w_claims_two_ontario_caregiver_dependants_on_line_58185() -> None:
     path = RETURNS / "2025_return_w.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (dependants,) = [a for a in worked.inputs if a.kind.identifier == "ca-on/caregiver_dependants"]
     assert [
@@ -758,7 +758,7 @@ def test_return_w_claims_two_ontario_caregiver_dependants_on_line_58185() -> Non
 def test_return_x_claims_one_dependant_with_a_disability_on_line_31800() -> None:
     path = RETURNS / "2025_return_ab.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (dependants,) = [a for a in worked.inputs if a.kind.identifier == "ca/disability_dependants"]
     (dependant,) = dependants.value.records
@@ -776,7 +776,7 @@ def test_return_x_claims_one_dependant_with_a_disability_on_line_31800() -> None
 def test_return_ab_claims_the_same_dependant_on_line_58480() -> None:
     path = RETURNS / "2025_return_ab.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (dependants,) = [a for a in worked.inputs if a.kind.identifier == "ca-on/disability_dependants"]
     (dependant,) = dependants.value.records
@@ -794,7 +794,7 @@ def test_return_ab_claims_the_same_dependant_on_line_58480() -> None:
 def test_return_aa_has_a_spouse_at_year_end_and_takes_the_lift_credit_from_part_b() -> None:
     path = RETURNS / "2025_return_aa.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (at_year_end,) = [
         a
@@ -814,7 +814,7 @@ def test_return_aa_has_a_spouse_at_year_end_and_takes_the_lift_credit_from_part_
 def test_return_ae_claims_the_federal_political_contribution_credit_on_line_41000() -> None:
     path = RETURNS / "2025_return_ae.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (contributions,) = [
         a for a in worked.inputs if a.kind.identifier == "ca/political_contributions"
@@ -828,7 +828,7 @@ def test_return_ae_claims_the_federal_political_contribution_credit_on_line_4100
 def test_return_x_claims_two_other_dependants_medical_expenses_on_line_33199() -> None:
     path = RETURNS / "2025_return_x.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (dependants,) = [a for a in worked.inputs if a.kind.identifier == "ca/other_dependants"]
     assert [
@@ -900,7 +900,7 @@ def test_return_af_claims_net_capital_losses_of_other_years_on_line_25300() -> N
 def test_return_ag_claims_the_ontario_seniors_care_at_home_credit_on_line_63095() -> None:
     path = RETURNS / "2025_return_ag.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (claims,) = [
         a for a in worked.inputs if a.kind.identifier == "ca-on/claims_seniors_care_credit"
@@ -931,7 +931,7 @@ def test_return_ag_claims_the_ontario_seniors_care_at_home_credit_on_line_63095(
 def test_return_y_claims_the_care_credit_with_a_supporting_person_on_line_63050() -> None:
     path = RETURNS / "2025_return_y.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     inputs = {a.kind.identifier: a.value for a in worked.inputs}
     assert inputs["ca-on/care_supporting_persons_adjusted_income"] == Decimal("30000")
@@ -949,7 +949,7 @@ def test_return_y_claims_the_care_credit_with_a_supporting_person_on_line_63050(
 def test_return_ah_claims_the_refundable_medical_expense_supplement_on_line_45200() -> None:
     path = RETURNS / "2025_return_ah.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     inputs = {a.kind.identifier: a.value for a in worked.inputs}
     assert inputs["ca/employment_income"] == Decimal("4390")
@@ -1001,7 +1001,7 @@ def test_return_aj_applies_for_the_energy_and_property_tax_credit_on_form_on_ben
 def test_return_ad_reports_rental_income_on_lines_12599_and_12600() -> None:
     path = RETURNS / "2025_return_ad.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (statements,) = [a for a in worked.inputs if a.kind.identifier == "ca/t776_statements"]
     (statement,) = statements.value.records
@@ -1024,7 +1024,7 @@ def test_return_ad_reports_rental_income_on_lines_12599_and_12600() -> None:
 def test_return_ai_enters_the_taxable_gains_of_two_properties_on_line_15800() -> None:
     path = RETURNS / "2025_return_ai.yaml"
     build_tax_computation()  # registers the catalogs the loader resolves through
-    worked = WorkedReturn.load(path, ArtifactRegistry.shared())
+    worked = WorkedReturn.load(path, ca_on_kinds())
 
     (properties,) = [
         a for a in worked.inputs if a.kind.identifier == "ca/principal_residence_properties"
@@ -1145,7 +1145,7 @@ def check_rentals(tmp_path: Path, text: str) -> None:
     path.write_text(text)
     worked = load(path, manifest, artifacts)
 
-    check_against(worked, service(manifest, artifacts))
+    check_against(worked, service(manifest))
 
 
 def test_the_lines_of_each_instance_are_checked_on_that_instances_worksheet(
@@ -1233,4 +1233,4 @@ def test_a_return_with_one_instance_loads_after_the_blanks_are_filled(tmp_path: 
     (instances,) = (a for a in worked.inputs if a.kind.identifier == "ex/rentals")
     assert len(instances.value.records) == 1
     assert [a.kind.identifier for a in worked.inputs] == ["ex/rentals"]
-    check_against(worked, service(manifest, artifacts))
+    check_against(worked, service(manifest))

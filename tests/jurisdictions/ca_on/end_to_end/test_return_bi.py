@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FormInstanceLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import NET_RENTAL_INCOME, TOTAL_INCOME
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, compute, run, service
+from tests.kinds import ca_on_kinds
 
 # T776 line 8230 "Other income": the first rental operation has 12,000 of it and no expenses, so its
 # line 9946 "Your net income (loss)" is 12,000. The second has no income and advertising (line 8521)
@@ -50,7 +50,7 @@ def run_bi(*statements: dict[str, Any]) -> dict[str, tuple[Worksheet, ...]]:
 
 def net_incomes(worksheet: Worksheet) -> list[Any]:
     """Line 9946 of each statement, in statement order, as the return exports it."""
-    kind = ArtifactRegistry.shared().kind("ca/t776.net_rental_income")
+    kind = ca_on_kinds().kind("ca/t776.net_rental_income")
     value = worksheet.get(kind).value
     assert isinstance(value, RecordList)
     return [record[NET_RENTAL_INCOME] for record in value.records]

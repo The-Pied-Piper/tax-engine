@@ -28,7 +28,6 @@ import tax_engine.registrations
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InputAboveBoundError, ValidationError
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -78,6 +77,7 @@ from tests.jurisdictions.ca_on.manifest_support import (
     lists,
     required_entries,
 )
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 ROOTS = tax_engine.registrations.JURISDICTIONS.roots()
@@ -107,7 +107,7 @@ VALUED_EXPORTS = (
 
 
 def manifest() -> Manifest:
-    (only,) = YamlJurisdictionSource(ROOTS).get_jurisdiction(CA_ON).manifests
+    (only,) = YamlJurisdictionSource(ROOTS, bundled_kinds()).get_jurisdiction(CA_ON).manifests
     return only
 
 
@@ -241,7 +241,7 @@ def test_the_dispositions_kind_is_registered_beside_the_other_record_lists() -> 
     build_tax_computation()
 
     assert isinstance(T2048_DISPOSITIONS, RecordListKind)
-    assert ArtifactRegistry.shared().kind("ca/t2048_dispositions") is T2048_DISPOSITIONS
+    assert ca_on_kinds().kind("ca/t2048_dispositions") is T2048_DISPOSITIONS
 
 
 def test_the_dispositions_kind_has_the_nine_inputs_and_no_nested_list() -> None:

@@ -307,6 +307,9 @@ def service() -> TaxComputationService:
         consumes={"properties": "ca/rental_properties"},
         produces={"output": "ca/short_term_rental_gross_rents"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (RENTAL_PROPERTIES, SHORT_TERM_RENTAL_GROSS_RENTS):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -321,15 +324,12 @@ def service() -> TaxComputationService:
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (RENTAL_PROPERTIES, SHORT_TERM_RENTAL_GROSS_RENTS):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _NoParameters(),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

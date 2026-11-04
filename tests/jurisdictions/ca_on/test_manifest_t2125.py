@@ -22,7 +22,6 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
@@ -36,6 +35,7 @@ from tests.jurisdictions.ca_on.manifest_support import (
     lists,
     required_entries,
 )
+from tests.kinds import bundled_kinds, ca_on_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1" / "03b_t2125.yaml"
@@ -52,7 +52,7 @@ VEHICLE_CONSTANTS = frozenset(
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
@@ -179,7 +179,7 @@ def test_the_area_a_list_of_a_statement_is_a_nested_record_list() -> None:
 def test_the_catalog_registers_the_statements_kind_beside_the_other_record_lists() -> None:
     build_tax_computation()
 
-    assert ArtifactRegistry.shared().kind("ca/t2125_statements") is T2125_STATEMENTS
+    assert ca_on_kinds().kind("ca/t2125_statements") is T2125_STATEMENTS
 
 
 # --- the outputs and the node --------------------------------------------------------------------

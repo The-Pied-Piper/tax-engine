@@ -564,6 +564,9 @@ def service(dataset: ParameterDataset[ClaimReduction] | None = None) -> TaxCompu
         consumes={"dependants": "ca/other_dependants"},
         produces={"output": "ca/other_dependants_medical"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (OTHER_DEPENDANTS, OTHER_DEPENDANTS_MEDICAL):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -578,15 +581,12 @@ def service(dataset: ParameterDataset[ClaimReduction] | None = None) -> TaxCompu
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (OTHER_DEPENDANTS, OTHER_DEPENDANTS_MEDICAL):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

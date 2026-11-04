@@ -12,7 +12,7 @@ from typing import Any, Protocol, cast
 
 from tax_engine.adapters.inbound.trace_english.line_renderer import LineRenderer
 from tax_engine.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
-from tax_engine.domain.registry import Registry
+from tax_engine.domain.registry import SharedRegistry
 from tax_engine.domain.trace import TraceLine
 
 
@@ -35,7 +35,7 @@ class RendererClass[L: TraceLine, R](Protocol):
         ...
 
 
-class EnglishRendererRegistry(Registry[object]):
+class EnglishRendererRegistry(SharedRegistry[object]):
     """Holds one renderer per trace line class; lookups by `type[L]` give `LineRenderer[L]`.
 
     Its string keys are line classes' module and qualified names; register renderers with

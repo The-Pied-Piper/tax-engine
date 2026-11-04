@@ -25,6 +25,7 @@ from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Form, Manifest
 from tests.jurisdictions.ca_on.manifest_families import spouse_on_december_31
+from tests.kinds import bundled_kinds
 
 CA_ON = JurisdictionCode("CA-ON")
 FORM = "ca/spouse_on_december_31"
@@ -39,7 +40,7 @@ PART = (
 
 def manifest() -> Manifest:
     (only,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )

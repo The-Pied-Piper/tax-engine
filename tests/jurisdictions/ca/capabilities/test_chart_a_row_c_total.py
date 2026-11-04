@@ -353,6 +353,9 @@ def service(dataset: ParameterDataset[Amount] | None = None) -> TaxComputationSe
         consumes={"individuals": "ca/travel_individuals"},
         produces={"total": "ex/allocated_total"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (TRAVEL_INDIVIDUALS, TOTAL):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -367,15 +370,12 @@ def service(dataset: ParameterDataset[Amount] | None = None) -> TaxComputationSe
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (TRAVEL_INDIVIDUALS, TOTAL):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 

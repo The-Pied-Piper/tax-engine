@@ -362,6 +362,9 @@ def service(dataset: ParameterDataset[Rate] | None = None) -> TaxComputationServ
         consumes={"dividend": "ex/dividend"},
         produces={"output": "ex/out"},
     )
+    artifacts = ArtifactRegistry()
+    for kind in (DIVIDEND, OUTPUT):
+        artifacts.register(kind.identifier, kind)
     manifest = Manifest(
         jurisdiction=code,
         version=1,
@@ -376,15 +379,12 @@ def service(dataset: ParameterDataset[Rate] | None = None) -> TaxComputationServ
                 capabilities=(selection,),
             ),
         ),
+        artifacts=artifacts,
     )
-    artifacts = ArtifactRegistry()
-    for kind in (DIVIDEND, OUTPUT):
-        artifacts.register(kind.identifier, kind)
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
         CapabilityRegistry.shared(),
-        artifacts,
     )
 
 
