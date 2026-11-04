@@ -41,9 +41,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     InvalidRecordError,
@@ -56,6 +54,7 @@ from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit i
     ImmediateExpensingAgreedLimit,
 )
 from tax_engine.jurisdictions.ca.trace import ImmediateExpensingAgreedLimitLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -126,15 +125,7 @@ def agreed(**statements: tuple[Statement, ...]) -> Decimal:
 
 def test_is_registered_as_ca_immediate_expensing_agreed_limit() -> None:
     assert (
-        CapabilityRegistry.shared().get("ca/immediate_expensing_agreed_limit")
-        is ImmediateExpensingAgreedLimit
-    )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "immediate_expensing_agreed_limit" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.immediate_expensing_agreed_limit.ImmediateExpensingAgreedLimit
+        bundled_capabilities().get("ca/immediate_expensing_agreed_limit")
         is ImmediateExpensingAgreedLimit
     )
 

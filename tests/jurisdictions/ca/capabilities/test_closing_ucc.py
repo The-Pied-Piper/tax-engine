@@ -25,9 +25,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -47,6 +45,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CCA_UCC_AT_START,
 )
 from tax_engine.jurisdictions.ca.trace import CcaZeroReason, ClosingUccLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_table import (
     CCA_CLAIM,
     CENT,
@@ -107,12 +106,7 @@ def ucc_line(
 
 
 def test_is_registered_as_ca_closing_ucc() -> None:
-    assert CapabilityRegistry.shared().get("ca/closing_ucc") is ClosingUcc
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "closing_ucc" in ca_capabilities.__all__
-    assert ca_capabilities.closing_ucc.ClosingUcc is ClosingUcc
+    assert bundled_capabilities().get("ca/closing_ucc") is ClosingUcc
 
 
 def test_declares_its_contract() -> None:

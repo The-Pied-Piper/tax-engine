@@ -22,9 +22,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     InvalidRecordError,
@@ -38,6 +36,7 @@ from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.recaptured_cca import RecapturedCca
 from tax_engine.jurisdictions.ca.trace import CcaZeroReason, RecapturedCcaLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_table import (
     CENT,
     CLASS_1,
@@ -86,12 +85,7 @@ def recapture(
 
 
 def test_is_registered_as_ca_recaptured_cca() -> None:
-    assert CapabilityRegistry.shared().get("ca/recaptured_cca") is RecapturedCca
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "recaptured_cca" in ca_capabilities.__all__
-    assert ca_capabilities.recaptured_cca.RecapturedCca is RecapturedCca
+    assert bundled_capabilities().get("ca/recaptured_cca") is RecapturedCca
 
 
 def test_declares_its_contract() -> None:

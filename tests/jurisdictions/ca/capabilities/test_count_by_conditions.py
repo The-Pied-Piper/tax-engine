@@ -34,7 +34,6 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.times_count import TimesCount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
@@ -51,6 +50,7 @@ from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import ConditionLine, ConditionsCountLine
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -224,17 +224,11 @@ def chart_count(flags: tuple[int, int, int], net_income: str) -> int:
 
 
 def test_is_registered_as_ca_count_by_conditions() -> None:
-    assert CapabilityRegistry.shared().get("ca/count_by_conditions") is CountByConditions
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "count_by_conditions" in ca_capabilities.__all__
-    assert ca_capabilities.count_by_conditions.CountByConditions is CountByConditions
+    assert bundled_capabilities().get("ca/count_by_conditions") is CountByConditions
 
 
 def test_its_package_declares_the_ca_namespace() -> None:
     assert ca_capabilities.NAMESPACE == "ca"
-    assert ca_capabilities.__all__[0] == "NAMESPACE"
 
 
 def test_declares_its_contract() -> None:

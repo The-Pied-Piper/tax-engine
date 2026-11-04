@@ -21,9 +21,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, ValidationError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -48,6 +46,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     NET_FOREIGN_PROPERTY_INCOME,
 )
 from tax_engine.jurisdictions.ca.trace import ForeignPropertyTaxLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -114,18 +113,9 @@ def test_its_slots_are_read_only() -> None:
 
 
 def test_is_registered_as_ca_foreign_property_tax_over_limit() -> None:
-    registered = CapabilityRegistry.shared().get("ca/foreign_property_tax_over_limit")
+    registered = bundled_capabilities().get("ca/foreign_property_tax_over_limit")
 
     assert registered is ForeignPropertyTaxOverLimit
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert ca_capabilities.NAMESPACE == "ca"
-    assert "foreign_property_tax_over_limit" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.foreign_property_tax_over_limit.ForeignPropertyTaxOverLimit
-        is ForeignPropertyTaxOverLimit
-    )
 
 
 def test_declares_its_contract() -> None:

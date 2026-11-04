@@ -29,9 +29,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
 from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
@@ -50,6 +48,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T777_VEHICLE_SALES_TAX_RATE,
 )
 from tax_engine.jurisdictions.ca.trace import CcaVehicleNonArmsLengthCheckLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_vehicle_proceeds import prescribed_amounts
 from tests.jurisdictions.ca.capabilities.test_cca_part_b_checks import row as part_b_row
 
@@ -222,15 +221,7 @@ def test_the_output_holds_the_same_fields_as_the_classes_in_the_callers_order() 
 
 def test_is_registered_as_ca_cca_vehicle_non_arms_length_checks() -> None:
     assert (
-        CapabilityRegistry.shared().get("ca/cca_vehicle_non_arms_length_checks")
-        is CcaVehicleNonArmsLengthChecks
-    )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "cca_vehicle_non_arms_length_checks" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.cca_vehicle_non_arms_length_checks.CcaVehicleNonArmsLengthChecks
+        bundled_capabilities().get("ca/cca_vehicle_non_arms_length_checks")
         is CcaVehicleNonArmsLengthChecks
     )
 

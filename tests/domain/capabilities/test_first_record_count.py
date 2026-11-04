@@ -17,11 +17,9 @@ from typing import Any
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.first_record_count import FirstRecordCount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -31,6 +29,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FirstRecordCountLine
+from tests.capabilities import bundled_capabilities
 from tests.kinds import OddKind
 
 D = Decimal
@@ -60,18 +59,12 @@ def first_of(*counts: int) -> int:
 
 
 def test_is_registered_as_core_first_record_count() -> None:
-    assert CapabilityRegistry.shared().get("core/first_record_count") is FirstRecordCount
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "first_record_count" in core.__all__
-    assert core.first_record_count.FirstRecordCount is FirstRecordCount
+    assert bundled_capabilities().get("core/first_record_count") is FirstRecordCount
 
 
 def test_the_count_total_capability_is_gone() -> None:
-    assert "record_count_total" not in core.__all__
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("core/record_count_total")
+        bundled_capabilities().get("core/record_count_total")
 
 
 def test_declares_its_contract() -> None:

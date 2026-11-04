@@ -18,11 +18,9 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     InvalidCapabilityError,
@@ -40,6 +38,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import BlankPassedOnLine, FractionAppliedLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -74,12 +73,7 @@ def compute(wired: ApplyFraction, base: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_apply_fraction() -> None:
-    assert CapabilityRegistry.shared().get("core/apply_fraction") is ApplyFraction
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "apply_fraction" in core.__all__
-    assert core.apply_fraction.ApplyFraction is ApplyFraction
+    assert bundled_capabilities().get("core/apply_fraction") is ApplyFraction
 
 
 def test_declares_its_contract() -> None:

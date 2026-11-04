@@ -30,9 +30,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -43,6 +41,7 @@ from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRates
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
 from tax_engine.jurisdictions.ca.trace import FiscalPeriodDaysLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_table import class_rates
 
 ENTERED = CountKind("ex/fiscal_period_days_entered")
@@ -59,12 +58,7 @@ def days(entered: int, full_year_days: int = 365) -> Any:
 
 
 def test_is_registered_as_ca_fiscal_period_days() -> None:
-    assert CapabilityRegistry.shared().get("ca/fiscal_period_days") is FiscalPeriodDays
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "fiscal_period_days" in ca_capabilities.__all__
-    assert ca_capabilities.fiscal_period_days.FiscalPeriodDays is FiscalPeriodDays
+    assert bundled_capabilities().get("ca/fiscal_period_days") is FiscalPeriodDays
 
 
 def test_declares_its_contract() -> None:

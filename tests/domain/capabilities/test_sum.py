@@ -15,14 +15,13 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import SumLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -47,12 +46,7 @@ def three_parts() -> tuple[Artifact[Decimal], ...]:
 
 
 def test_is_registered_as_core_sum() -> None:
-    assert CapabilityRegistry.shared().get("core/sum") is Sum
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "sum" in core.__all__
-    assert core.sum.Sum is Sum
+    assert bundled_capabilities().get("core/sum") is Sum
 
 
 def test_declares_its_contract() -> None:

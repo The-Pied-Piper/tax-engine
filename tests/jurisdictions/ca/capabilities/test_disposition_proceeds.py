@@ -17,9 +17,7 @@ from decimal import Decimal
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
@@ -32,6 +30,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     SHARE_PROCEEDS,
 )
 from tax_engine.jurisdictions.ca.trace import DispositionProceedsLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     GAIN,
     LOSS,
@@ -57,12 +56,7 @@ def total(*given: Row) -> Decimal:
 
 
 def test_is_registered_as_ca_disposition_proceeds() -> None:
-    assert CapabilityRegistry.shared().get("ca/disposition_proceeds") is DispositionProceeds
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "disposition_proceeds" in ca_capabilities.__all__
-    assert ca_capabilities.disposition_proceeds.DispositionProceeds is DispositionProceeds
+    assert bundled_capabilities().get("ca/disposition_proceeds") is DispositionProceeds
 
 
 def test_declares_its_slots_and_contract() -> None:

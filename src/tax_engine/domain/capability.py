@@ -31,10 +31,11 @@ from tax_engine.domain.errors import (
     DomainError,
     DuplicateArtifactError,
     InvalidCapabilityError,
+    InvalidRegistrationError,
     MissingArtifactError,
 )
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.registry import Namespace, SharedRegistry
+from tax_engine.domain.registry import Namespace, Registry
 from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, TraceLine
 
 
@@ -75,6 +76,11 @@ class Capability(ABC):
 
     PRODUCES: ClassVar[Mapping[str, type]] = MappingProxyType({})
     """Produced artifact slots: slot name -> the value type of the artifact kind it takes."""
+
+    IDENTIFIER: ClassVar[str | None] = None
+    """The full identifier (`ca-on/foo`) `@capability` gave this class, which `register_class`
+    registers it under; None if it has none. A subclass inherits the attribute, so read it through
+    `identifier()`."""
 
     BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset()
     """The consumed slots that may be blank. The manifest gives each of them a rule
@@ -312,6 +318,12 @@ class Capability(ABC):
             )
         return given
 
+    @classmethod
+    def identifier(cls) -> str | None:
+        """The identifier `@capability` gave this very class, else None (a subclass of a
+        decorated class is not decorated by that)."""
+        return cls.__dict__.get("IDENTIFIER")
+
     @property
     def consumes(self) -> frozenset[ArtifactKind[Any]]:
         """The artifact kinds this capability was built to consume."""
@@ -409,22 +421,38 @@ class Capability(ABC):
         return cast(Artifact[V], found[0])
 
 
-class CapabilityRegistry(SharedRegistry[type[Capability]]):
+class CapabilityRegistry(Registry[type[Capability]]):
     """The capability classes packages contribute, by full identifier (`core/progressive_tax`).
 
-    Register through `register_class` or `@capability`; the inherited `register` takes the key
-    as given and skips namespace validation.
+    A plain registry that whoever wires the application builds and fills: `register_class`
+    registers a class under the identifier `@capability` gave it. The inherited `register` takes
+    the key as given and skips namespace validation.
     """
 
-    def register_class[C: Capability](self, local_id: str, cls: type[C]) -> type[C]:
-        """Register `cls` under `local_id` in its package's namespace and return it unchanged."""
-        self.register(Namespace.of(cls).identifier(local_id), cls)
+    def register_class[C: Capability](self, cls: type[C]) -> type[C]:
+        """Register `cls` under the identifier it carries (`Capability.identifier()`); return it.
+
+        A class that carries none is refused.
+        """
+        identifier = cls.identifier()
+        if identifier is None:
+            raise InvalidRegistrationError(
+                f"{cls.__name__} carries no identifier to register under"
+            )
+        self.register(identifier, cls)
         return cls
 
 
 def capability[C: Capability](*, identifier: str) -> Callable[[type[C]], type[C]]:
-    """Class decorator registering a capability in the shared CapabilityRegistry under `identifier`.
+    """Class decorator giving a capability its full identifier, `<namespace>/<identifier>`.
 
     `identifier` is the local id; the namespace comes from the package declaring `NAMESPACE`.
+    The decorator registers nothing: the composition root builds a `CapabilityRegistry` from the
+    packages' capabilities (`tax_engine.registrations.capabilities`).
     """
-    return lambda cls: CapabilityRegistry.shared().register_class(identifier, cls)
+
+    def stamp(cls: type[C]) -> type[C]:
+        cls.IDENTIFIER = Namespace.of(cls).identifier(identifier)
+        return cls
+
+    return stamp

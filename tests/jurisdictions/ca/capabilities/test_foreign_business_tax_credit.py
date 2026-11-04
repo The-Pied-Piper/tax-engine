@@ -33,10 +33,9 @@ from typing import Any, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -83,6 +82,7 @@ from tax_engine.jurisdictions.ca.trace import (
     ForeignBusinessLine10,
     ForeignBusinessLine11,
 )
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.foreign_business_tax_credit import (
     BASIC_TAX,
     CENT,
@@ -156,15 +156,7 @@ def output_of(
 def test_is_registered_under_its_line(line: int) -> None:
     cls, local_id, _ = BY_LINE[line]
 
-    assert CapabilityRegistry.shared().get(f"ca/{local_id}") is cls
-
-
-@by_line
-def test_is_exported_from_the_ca_capabilities_package(line: int) -> None:
-    cls, local_id, _ = BY_LINE[line]
-
-    assert local_id in ca_capabilities.__all__
-    assert getattr(getattr(ca_capabilities, local_id), cls.__name__) is cls
+    assert bundled_capabilities().get(f"ca/{local_id}") is cls
 
 
 @by_line
@@ -177,7 +169,7 @@ def test_is_a_subclass_of_the_shared_base(line: int) -> None:
 
 def test_the_base_is_not_registered() -> None:
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("ca/foreign_business_tax_credit_rows")
+        bundled_capabilities().get("ca/foreign_business_tax_credit_rows")
 
 
 @by_line
@@ -753,7 +745,7 @@ def service(
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 

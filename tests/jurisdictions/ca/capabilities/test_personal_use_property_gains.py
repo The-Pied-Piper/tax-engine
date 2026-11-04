@@ -20,9 +20,7 @@ from decimal import Decimal
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -40,6 +38,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     SHARE_DISPOSITIONS,
 )
 from tax_engine.jurisdictions.ca.trace import PersonalUsePropertyGainLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     GAIN,
     LOSS,
@@ -88,18 +87,7 @@ def total_only(*given: Row) -> Decimal:
 
 
 def test_is_registered_as_ca_personal_use_property_gains() -> None:
-    assert (
-        CapabilityRegistry.shared().get("ca/personal_use_property_gains")
-        is PersonalUsePropertyGains
-    )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "personal_use_property_gains" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.personal_use_property_gains.PersonalUsePropertyGains
-        is PersonalUsePropertyGains
-    )
+    assert bundled_capabilities().get("ca/personal_use_property_gains") is PersonalUsePropertyGains
 
 
 def test_declares_its_slots_and_contract() -> None:

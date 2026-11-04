@@ -20,15 +20,14 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on.capabilities as ontario
 import tax_engine.registrations
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import ChosenByCountLine, ChosenByRangeLine
 from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -75,13 +74,7 @@ def compute(amount: str, **candidates: str) -> Artifact[Any]:
 
 def test_is_registered_as_ca_on_choose_by_range() -> None:
     assert tax_engine.registrations.CORE_PACKAGES  # importing registrations imports the packages
-    assert CapabilityRegistry.shared().get("ca-on/choose_by_range") is ChooseByRange
-
-
-def test_is_exported_from_the_ontario_capabilities_package() -> None:
-    assert ontario.NAMESPACE == "ca-on"
-    assert "choose_by_range" in ontario.__all__
-    assert ontario.choose_by_range.ChooseByRange is ChooseByRange
+    assert bundled_capabilities().get("ca-on/choose_by_range") is ChooseByRange
 
 
 def test_declares_its_contract() -> None:

@@ -24,9 +24,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
 from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
@@ -39,6 +37,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T777_VEHICLE_ROWS,
 )
 from tax_engine.jurisdictions.ca.trace import CcaPartACheckLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CLASSES: RecordListKind = T777_CLASS_8_ROWS
@@ -168,12 +167,7 @@ def test_a_check_line_has_no_amount() -> None:
 
 
 def test_is_registered_as_ca_cca_part_a_checks() -> None:
-    assert CapabilityRegistry.shared().get("ca/cca_part_a_checks") is CcaPartAChecks
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "cca_part_a_checks" in ca_capabilities.__all__
-    assert ca_capabilities.cca_part_a_checks.CcaPartAChecks is CcaPartAChecks
+    assert bundled_capabilities().get("ca/cca_part_a_checks") is CcaPartAChecks
 
 
 def test_declares_its_contract() -> None:

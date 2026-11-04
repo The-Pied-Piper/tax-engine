@@ -33,10 +33,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -125,6 +123,7 @@ from tax_engine.jurisdictions.ca.trace import (
     PrincipalResidenceLine51,
     PrincipalResidenceLine53,
 )
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     CENT,
     DOLLAR_FLOOR,
@@ -426,19 +425,12 @@ def value_of(line: int, *given: Part2Figures, rule: RoundingRule = CENT) -> Deci
 
 @pytest.mark.parametrize("line", LINE_NUMBERS)
 def test_is_registered_under_its_line(line: int) -> None:
-    registered = CapabilityRegistry.shared().get(f"ca/principal_residence_line_{line}")
+    registered = bundled_capabilities().get(f"ca/principal_residence_line_{line}")
 
     assert registered is CAPABILITIES[line]
     assert registered.__module__ == (
         f"tax_engine.jurisdictions.ca.capabilities.principal_residence_line_{line}"
     )
-
-
-@pytest.mark.parametrize("line", LINE_NUMBERS)
-def test_is_exported_from_the_ca_capabilities_package(line: int) -> None:
-    assert f"principal_residence_line_{line}" in ca_capabilities.__all__
-    module = getattr(ca_capabilities, f"principal_residence_line_{line}")
-    assert getattr(module, CAPABILITIES[line].__name__) is CAPABILITIES[line]
 
 
 @pytest.mark.parametrize("line", LINE_NUMBERS)
@@ -825,7 +817,7 @@ def test_the_rounding_rule_comes_from_the_dataset() -> None:
 
 def test_the_base_is_not_registered() -> None:
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("ca/principal_residence_rows")
+        bundled_capabilities().get("ca/principal_residence_rows")
 
 
 def test_mypy_rejects_a_dataset_of_another_parameter_kind() -> None:

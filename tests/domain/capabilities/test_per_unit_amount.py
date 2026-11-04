@@ -18,10 +18,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -35,6 +33,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import PerUnitAmountLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -67,12 +66,7 @@ def compute(wired: PerUnitAmount, count: int) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_per_unit_amount() -> None:
-    assert CapabilityRegistry.shared().get("core/per_unit_amount") is PerUnitAmount
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "per_unit_amount" in core.__all__
-    assert core.per_unit_amount.PerUnitAmount is PerUnitAmount
+    assert bundled_capabilities().get("core/per_unit_amount") is PerUnitAmount
 
 
 def test_declares_its_contract() -> None:

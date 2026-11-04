@@ -29,7 +29,6 @@ import tax_engine.jurisdictions.ca.capabilities as canada
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -55,6 +54,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TRAVEL_INDIVIDUAL,
     TRAVEL_INDIVIDUALS,
 )
+from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -100,13 +100,7 @@ def total(*rows: dict[Any, Any], dataset: ParameterDataset[Amount] | None = None
 
 def test_is_registered_as_ca_chart_a_row_c_total() -> None:
     assert tax_engine.jurisdictions.ca.capabilities is canada
-    assert CapabilityRegistry.shared().get("ca/chart_a_row_c_total") is ChartARowCTotal
-
-
-def test_is_exported_from_the_canada_capabilities_package() -> None:
-    assert canada.NAMESPACE == "ca"
-    assert "chart_a_row_c_total" in canada.__all__
-    assert canada.chart_a_row_c_total.ChartARowCTotal is ChartARowCTotal
+    assert bundled_capabilities().get("ca/chart_a_row_c_total") is ChartARowCTotal
 
 
 def test_declares_its_contract() -> None:
@@ -376,7 +370,7 @@ def service(dataset: ParameterDataset[Amount] | None = None) -> TaxComputationSe
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 

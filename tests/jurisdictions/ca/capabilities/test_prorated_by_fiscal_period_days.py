@@ -43,9 +43,7 @@ from typing import assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InputBelowBoundError,
@@ -66,6 +64,7 @@ from tax_engine.jurisdictions.ca.capabilities.prorated_by_fiscal_period_days imp
     ProratedByFiscalPeriodDays,
 )
 from tax_engine.jurisdictions.ca.trace import ProratedByDaysLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_table import class_rates
 
 D = Decimal
@@ -120,17 +119,9 @@ def prorated(
 
 
 def test_is_registered_as_ca_prorated_by_fiscal_period_days() -> None:
-    registered = CapabilityRegistry.shared().get("ca/prorated_by_fiscal_period_days")
+    registered = bundled_capabilities().get("ca/prorated_by_fiscal_period_days")
 
     assert registered is ProratedByFiscalPeriodDays
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "prorated_by_fiscal_period_days" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.prorated_by_fiscal_period_days.ProratedByFiscalPeriodDays
-        is ProratedByFiscalPeriodDays
-    )
 
 
 def test_declares_its_contract() -> None:

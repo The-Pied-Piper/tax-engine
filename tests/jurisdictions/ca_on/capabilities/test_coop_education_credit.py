@@ -30,7 +30,6 @@ import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DuplicateArtifactError,
     InvalidCapabilityError,
@@ -58,6 +57,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     COOP_EDUCATION_REMAINING_SHARE,
 )
 from tax_engine.jurisdictions.ca_on.trace import PlacementCreditLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -117,7 +117,7 @@ def credit_of(
 def test_is_registered_as_ca_on_coop_education_credit() -> None:
     assert tax_engine.registrations.CORE_PACKAGES  # importing registrations imports the packages
 
-    registered = CapabilityRegistry.shared().get("ca-on/coop_education_credit")
+    registered = bundled_capabilities().get("ca-on/coop_education_credit")
 
     assert registered is CoopEducationCredit
 
@@ -126,8 +126,6 @@ def test_its_package_declares_the_ca_on_namespace_and_exports_the_module() -> No
     package = tax_engine.jurisdictions.ca_on.capabilities
 
     assert package.NAMESPACE == tax_engine.jurisdictions.ca_on.NAMESPACE == "ca-on"
-    assert "coop_education_credit" in package.__all__
-    assert package.coop_education_credit.CoopEducationCredit is CoopEducationCredit
 
 
 def test_declares_its_contract() -> None:

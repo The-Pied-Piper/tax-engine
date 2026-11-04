@@ -23,7 +23,6 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import LesserOfWhenPositiveLine
@@ -31,6 +30,7 @@ from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
     LesserOfWhenPositive,
     LesserOfWhenPositiveInBrackets,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 Wired = LesserOfWhenPositive | LesserOfWhenPositiveInBrackets
@@ -65,7 +65,7 @@ def compute(wired: Wired, **values: str) -> Artifact[Any]:
 
 
 def test_are_registered_under_their_federal_names() -> None:
-    registry = CapabilityRegistry.shared()
+    registry = bundled_capabilities()
 
     assert registry.get("ca/lesser_of_when_positive") is LesserOfWhenPositive
     assert registry.get("ca/lesser_of_when_positive_in_brackets") is LesserOfWhenPositiveInBrackets
@@ -73,7 +73,6 @@ def test_are_registered_under_their_federal_names() -> None:
 
 
 def test_are_exported_from_the_federal_capabilities_package() -> None:
-    assert "lesser_of_when_positive" in ca_capabilities.__all__
     module = ca_capabilities.lesser_of_when_positive
     assert module.LesserOfWhenPositive is LesserOfWhenPositive
     assert module.LesserOfWhenPositiveInBrackets is LesserOfWhenPositiveInBrackets

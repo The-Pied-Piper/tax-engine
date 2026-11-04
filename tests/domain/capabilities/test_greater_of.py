@@ -17,14 +17,13 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capabilities.greater_of import GreaterOf
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import GreaterOfLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -46,12 +45,7 @@ def compute(wired: GreaterOf, *values: tuple[ArtifactKind[Decimal], str]) -> Art
 
 
 def test_is_registered_as_core_greater_of() -> None:
-    assert CapabilityRegistry.shared().get("core/greater_of") is GreaterOf
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "greater_of" in core.__all__
-    assert core.greater_of.GreaterOf is GreaterOf
+    assert bundled_capabilities().get("core/greater_of") is GreaterOf
 
 
 def test_declares_its_contract() -> None:

@@ -18,11 +18,9 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.blank import BLANK, PASS_ON
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     DomainError,
@@ -35,6 +33,7 @@ from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import BlankPassedOnLine, CountWithoutRecordsLine
 from tax_engine.jurisdictions.ca.capabilities.count_without_records import CountWithoutRecords
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -64,12 +63,7 @@ def compute(count: int, *amounts: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_count_without_records() -> None:
-    assert CapabilityRegistry.shared().get("ca/count_without_records") is CountWithoutRecords
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "count_without_records" in ca_capabilities.__all__
-    assert ca_capabilities.count_without_records.CountWithoutRecords is CountWithoutRecords
+    assert bundled_capabilities().get("ca/count_without_records") is CountWithoutRecords
 
 
 def test_declares_its_contract() -> None:

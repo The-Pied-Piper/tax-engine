@@ -17,13 +17,12 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import AmountWhenMoreLine
 from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -47,12 +46,7 @@ def compute(amount: str, more: str, than: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_amount_when_more() -> None:
-    assert CapabilityRegistry.shared().get("ca/amount_when_more") is AmountWhenMore
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "amount_when_more" in ca_capabilities.__all__
-    assert ca_capabilities.amount_when_more.AmountWhenMore is AmountWhenMore
+    assert bundled_capabilities().get("ca/amount_when_more") is AmountWhenMore
 
 
 def test_declares_its_contract() -> None:

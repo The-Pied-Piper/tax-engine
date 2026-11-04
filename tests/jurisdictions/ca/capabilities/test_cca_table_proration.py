@@ -52,9 +52,8 @@ from typing import Any
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
+from tax_engine.domain.capability import CapabilityResult
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InputBelowBoundError,
@@ -83,6 +82,7 @@ from tax_engine.jurisdictions.ca.capabilities.closing_ucc_after_column_22_prorat
 from tax_engine.jurisdictions.ca.capabilities.closing_ucc_prorated import ClosingUccProrated
 from tax_engine.jurisdictions.ca.catalog import CCA_CLAIMED, CCA_CLASS_NUMBER, CCA_UCC_AT_END
 from tax_engine.jurisdictions.ca.trace import CcaClaimLine, ClosingUccLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_table import (
     CCA_CLAIM,
     CLASSES,
@@ -216,9 +216,7 @@ def closing(
     ],
 )
 def test_is_registered_and_exported(capability_class: type, identifier: str, module: str) -> None:
-    assert CapabilityRegistry.shared().get(identifier) is capability_class
-    assert module in ca_capabilities.__all__
-    assert getattr(ca_capabilities, module) is not None
+    assert bundled_capabilities().get(identifier) is capability_class
 
 
 @pytest.mark.parametrize(

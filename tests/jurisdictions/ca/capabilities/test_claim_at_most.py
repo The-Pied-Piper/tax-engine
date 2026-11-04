@@ -18,9 +18,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
@@ -31,6 +29,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import ClaimAtMostLine
 from tax_engine.jurisdictions.ca.capabilities.claim_at_most import ClaimAtMost
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -53,12 +52,7 @@ def compute(claim: str, maximum: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_claim_at_most() -> None:
-    assert CapabilityRegistry.shared().get("ca/claim_at_most") is ClaimAtMost
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "claim_at_most" in ca_capabilities.__all__
-    assert ca_capabilities.claim_at_most.ClaimAtMost is ClaimAtMost
+    assert bundled_capabilities().get("ca/claim_at_most") is ClaimAtMost
 
 
 def test_declares_its_contract() -> None:

@@ -23,7 +23,7 @@ from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.at_most import AtMost
 from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
+from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
     CapabilityContractError,
@@ -439,7 +439,7 @@ def test_order_of_a_diamond_is_the_same_for_every_input_order() -> None:
         assert composition.order == (left, right, join)
 
 
-def test_ties_are_broken_by_class_name_when_unregistered() -> None:
+def test_ties_are_broken_by_class_name_without_an_identifier() -> None:
     apple, zebra = Apple(A, C), Zebra(A, B)
 
     for given in ([apple, zebra], [zebra, apple]):
@@ -448,11 +448,9 @@ def test_ties_are_broken_by_class_name_when_unregistered() -> None:
         assert composition.order == (apple, zebra)
 
 
-def test_ties_are_broken_by_registered_identifier(monkeypatch: pytest.MonkeyPatch) -> None:
-    registry = CapabilityRegistry()
-    registry.register("ex/first", Zebra)
-    registry.register("ex/second", Apple)
-    monkeypatch.setattr(CapabilityRegistry, "shared", classmethod(lambda cls: registry))
+def test_ties_are_broken_by_identifier(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(Zebra, "IDENTIFIER", "ex/first")
+    monkeypatch.setattr(Apple, "IDENTIFIER", "ex/second")
     apple, zebra = Apple(A, C), Zebra(A, B)
 
     for given in ([apple, zebra], [zebra, apple]):

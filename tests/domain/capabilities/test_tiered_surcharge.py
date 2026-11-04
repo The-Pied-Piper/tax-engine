@@ -17,10 +17,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -38,6 +36,7 @@ from tax_engine.domain.parameters.surcharge_tiers import (
     SurchargeTiers,
 )
 from tax_engine.domain.trace import SurchargeTierLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -81,12 +80,7 @@ def trace_of(wired: TieredSurcharge, base: str) -> tuple[Any, ...]:
 
 
 def test_is_registered_as_core_tiered_surcharge() -> None:
-    assert CapabilityRegistry.shared().get("core/tiered_surcharge") is TieredSurcharge
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "tiered_surcharge" in core.__all__
-    assert core.tiered_surcharge.TieredSurcharge is TieredSurcharge
+    assert bundled_capabilities().get("core/tiered_surcharge") is TieredSurcharge
 
 
 def test_declares_its_contract() -> None:

@@ -16,10 +16,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -33,6 +31,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import CappedAmountLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -59,12 +58,7 @@ def compute(wired: CappedAmount, base: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_capped_amount() -> None:
-    assert CapabilityRegistry.shared().get("core/capped_amount") is CappedAmount
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "capped_amount" in core.__all__
-    assert core.capped_amount.CappedAmount is CappedAmount
+    assert bundled_capabilities().get("core/capped_amount") is CappedAmount
 
 
 def test_declares_its_contract() -> None:
