@@ -107,7 +107,10 @@ class Capability(ABC):
     BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset()
     """The consumed record-list slots whose records may have a blank field. The manifest gives each
     field a rule (`with_blank_rules`), as for a slot, and the base applies it to that field in
-    every record before `compute` runs; a blank field with no rule is refused. A slot not listed
+    every record of every list in the slot before `compute` runs, whether or not `compute` reads
+    that record, so a class lists only a slot whose records it all reads; a blank field with no
+    rule is refused, and only the fields of the records themselves are covered, not those of a
+    record list held in a field. A slot not listed
     here reaches `compute` with the blank field, and reading it is a BlankValueError. A subclass
     inherits its parent's slots unless it declares its own.
     """

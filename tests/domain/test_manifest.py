@@ -59,6 +59,7 @@ def test_has_no_params_family() -> None:
         "consumes",
         "produces",
         "blank",
+        "blank_fields",
     ]
 
 

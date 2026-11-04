@@ -36,12 +36,16 @@ class BlankFallbackRenderer:
 
     def render(self, line: BlankFallbackLine) -> str:
         """The English sentence for `line`."""
-        fallback = line.fallback
-        figure = EnglishFigures.money(fallback) if isinstance(fallback, Decimal) else str(fallback)
-        return f"{line.kind.label}: left blank, taken as {figure}"
+        return f"{line.kind.label}: left blank, taken as {_figure(line.fallback)}"
+
+
+def _figure(fallback: Decimal | int) -> str:
+    """The fallback as money for an amount, else as a plain whole number."""
+    return EnglishFigures.money(fallback) if isinstance(fallback, Decimal) else str(fallback)
 
 
 def _where(field: BlankField) -> str:
+    """The field, the record's position and the list, as the trace names a blank record field."""
     return f"{field.kind.label} (item {field.position} of {field.records.label})"
 
 
@@ -53,9 +57,7 @@ class BlankFieldFallbackRenderer:
 
     def render(self, line: BlankFieldFallbackLine) -> str:
         """The English sentence for `line`."""
-        fallback = line.fallback
-        figure = EnglishFigures.money(fallback) if isinstance(fallback, Decimal) else str(fallback)
-        return f"{_where(line.field)}: left blank, taken as {figure}"
+        return f"{_where(line.field)}: left blank, taken as {_figure(line.fallback)}"
 
 
 @english_renderer

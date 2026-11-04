@@ -10,7 +10,6 @@ from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.trace.base import TraceLine
 
 __all__ = [
-    "BlankField",
     "BlankFieldFallbackLine",
     "BlankFallbackLine",
     "BlankPassedOnLine",

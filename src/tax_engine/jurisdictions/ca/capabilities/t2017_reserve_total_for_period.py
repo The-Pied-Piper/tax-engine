@@ -59,7 +59,6 @@ class T2017ReserveTotalForPeriod(Capability):
         "amounts": list[RecordList],
     }
     PRODUCES: ClassVar[Mapping[str, type]] = {"total": Decimal}
-    BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset({"rows", "amounts"})
 
     def __init__(
         self,
