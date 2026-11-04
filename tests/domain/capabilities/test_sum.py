@@ -255,7 +255,7 @@ def test_is_not_generic_over_artifacts() -> None:
 # kind, replaces the slot's rule for that part alone.
 
 
-def with_blank(*blanked: ArtifactKind[Decimal]) -> tuple[Artifact[Any], ...]:
+def with_blank(*blanked: AmountKind) -> tuple[Artifact[Any], ...]:
     """The three made-up parts, with each kind in `blanked` left blank."""
     return tuple(
         Artifact(artifact.kind, BLANK) if artifact.kind in blanked else artifact
@@ -343,7 +343,7 @@ def test_a_typed_zero_is_not_a_blank() -> None:
 
 
 def test_a_rule_for_a_kind_the_sum_does_not_add_is_refused() -> None:
-    elsewhere = ArtifactKind("ex/elsewhere", Decimal)
+    elsewhere = AmountKind("ex/elsewhere")
 
     with pytest.raises(InvalidCapabilityError, match="'ex/elsewhere' is not consumed"):
         capability().with_blank_rules({}, {elsewhere: PASS_ON})

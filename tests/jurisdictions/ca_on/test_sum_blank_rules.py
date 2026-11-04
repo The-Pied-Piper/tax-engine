@@ -12,6 +12,7 @@ not complete charts ..., enter "0""), so that part counts as 0.
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -22,8 +23,10 @@ from tax_engine.domain.blank import BLANK, PASS_ON, BlankRule
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
+from tests.kinds import bundled_kinds
 
 D = Decimal
 CA_ON = JurisdictionCode("CA-ON")
@@ -31,7 +34,7 @@ CA_ON = JurisdictionCode("CA-ON")
 
 def steps() -> list[CapabilitySelection]:
     (manifest,) = (
-        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots())
+        YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
@@ -60,23 +63,21 @@ def is_cpp_total(step: CapabilitySelection) -> bool:
     return output_of(step).startswith("ca/cpp_")
 
 
-def wired(step: CapabilitySelection) -> tuple[Sum, dict[str, ArtifactKind[Decimal]]]:
+def wired(step: CapabilitySelection) -> tuple[Sum, dict[str, AmountKind]]:
     """The step's `Sum` over made-up kinds, one per part, with the step's rules given by part."""
     kinds = {
-        identifier: ArtifactKind(f"ex/part_{position}", Decimal)
+        identifier: AmountKind(f"ex/part_{position}")
         for position, identifier in enumerate(parts_of(step))
     }
-    rules: dict[ArtifactKind[Decimal], BlankRule] = {
+    rules: dict[ArtifactKind[Any], BlankRule] = {
         kinds[identifier]: PASS_ON if text == "pass_on" else D(text)
         for identifier, text in step.blank.items()
     }
-    total = Sum(tuple(kinds.values()), ArtifactKind("ex/total", Decimal))
+    total = Sum(tuple(kinds.values()), AmountKind("ex/total"))
     return total.with_blank_rules({}, rules), kinds
 
 
-def given(
-    kinds: dict[str, ArtifactKind[Decimal]], blanked: str | None
-) -> tuple[Artifact[Decimal], ...]:
+def given(kinds: dict[str, AmountKind], blanked: str | None) -> tuple[Artifact[Decimal], ...]:
     """Each part 10, except the one in `blanked`, which is left blank."""
     return tuple(
         Artifact(kind, BLANK if identifier == blanked else D(10))
@@ -169,10 +170,10 @@ def test_every_other_sum_step_refuses_a_blank() -> None:
     assert others
     for step in others:
         kinds = {
-            identifier: ArtifactKind(f"ex/part_{position}", Decimal)
+            identifier: AmountKind(f"ex/part_{position}")
             for position, identifier in enumerate(parts_of(step))
         }
-        total = Sum(tuple(kinds.values()), ArtifactKind("ex/total", Decimal))
+        total = Sum(tuple(kinds.values()), AmountKind("ex/total"))
         for identifier in kinds:
             with pytest.raises(BlankNotAllowedError):
                 total.run(given(kinds, identifier))
