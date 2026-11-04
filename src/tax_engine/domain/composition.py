@@ -13,7 +13,7 @@ from collections.abc import Iterable
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     CapabilityContractError,
@@ -228,7 +228,7 @@ class Composition:
     def _tie_break_key(cls, capability: Capability) -> tuple[str, tuple[tuple[str, str], ...]]:
         """Its registered identifier, else its class name; then the kinds it produces."""
         capability_class = type(capability)
-        identifier = CapabilityRegistry.shared().identifier_of(capability_class)
+        identifier = capability_class.identifier()
         produced = tuple(sorted(cls.sort_key(kind) for kind in capability.produces))
         return (identifier if identifier is not None else capability_class.__name__, produced)
 

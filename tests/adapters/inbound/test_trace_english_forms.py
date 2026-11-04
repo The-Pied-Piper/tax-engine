@@ -14,9 +14,10 @@ from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.inbound.trace_english.registry import EnglishRendererRegistry
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.form import FormComposition, FormSet
+from tax_engine.domain.form import FormSet
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
+from tests.forms import composition
 
 D = Decimal
 
@@ -68,7 +69,7 @@ def test_a_form_without_instances_is_prefixed_with_its_name_and_instance_1() -> 
 def test_the_trace_of_a_form_without_an_instances_list_reads_as_instance_1() -> None:
     forms = FormSet(
         [
-            FormComposition(
+            composition(
                 "ex/return",
                 [Subtract(GROSS_RENT, EXPENSES, NET_INCOME)],
                 exports=[NET_INCOME],

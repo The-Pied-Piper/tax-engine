@@ -31,6 +31,7 @@ from tax_engine.domain.errors import (
     DomainError,
     DuplicateArtifactError,
     InvalidCapabilityError,
+    InvalidRegistrationError,
     MissingArtifactError,
 )
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -75,6 +76,11 @@ class Capability(ABC):
 
     PRODUCES: ClassVar[Mapping[str, type]] = MappingProxyType({})
     """Produced artifact slots: slot name -> the value type of the artifact kind it takes."""
+
+    IDENTIFIER: ClassVar[str | None] = None
+    """The full identifier (`ca-on/foo`) `@capability` gave this class, which `register_class`
+    registers it under; None if it has none. A subclass inherits the attribute, so read it through
+    `identifier()`."""
 
     BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset()
     """The consumed slots that may be blank. The manifest gives each of them a rule
@@ -312,6 +318,12 @@ class Capability(ABC):
             )
         return given
 
+    @classmethod
+    def identifier(cls) -> str | None:
+        """The identifier this very class was registered under, else None (a subclass of a
+        registered class is not registered by that)."""
+        return cls.__dict__.get("IDENTIFIER")
+
     @property
     def consumes(self) -> frozenset[ArtifactKind[Any]]:
         """The artifact kinds this capability was built to consume."""
@@ -412,13 +424,22 @@ class Capability(ABC):
 class CapabilityRegistry(SharedRegistry[type[Capability]]):
     """The capability classes packages contribute, by full identifier (`core/progressive_tax`).
 
-    Register through `register_class` or `@capability`; the inherited `register` takes the key
-    as given and skips namespace validation.
+    Register through `@capability`, which sets the class's identifier; `register_class` registers
+    a class under the identifier it carries. The inherited `register` takes the key as given and
+    skips namespace validation.
     """
 
-    def register_class[C: Capability](self, local_id: str, cls: type[C]) -> type[C]:
-        """Register `cls` under `local_id` in its package's namespace and return it unchanged."""
-        self.register(Namespace.of(cls).identifier(local_id), cls)
+    def register_class[C: Capability](self, cls: type[C]) -> type[C]:
+        """Register `cls` under the identifier it carries (`Capability.identifier()`); return it.
+
+        A class that carries none is refused.
+        """
+        identifier = cls.identifier()
+        if identifier is None:
+            raise InvalidRegistrationError(
+                f"{cls.__name__} carries no identifier to register under"
+            )
+        self.register(identifier, cls)
         return cls
 
 
@@ -427,4 +448,9 @@ def capability[C: Capability](*, identifier: str) -> Callable[[type[C]], type[C]
 
     `identifier` is the local id; the namespace comes from the package declaring `NAMESPACE`.
     """
-    return lambda cls: CapabilityRegistry.shared().register_class(identifier, cls)
+
+    def register(cls: type[C]) -> type[C]:
+        cls.IDENTIFIER = Namespace.of(cls).identifier(identifier)
+        return CapabilityRegistry.shared().register_class(cls)
+
+    return register

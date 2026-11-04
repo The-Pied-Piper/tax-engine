@@ -32,7 +32,7 @@ from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
 from typing import Any
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.composition import Composition
@@ -41,7 +41,6 @@ from tax_engine.domain.errors import (
     DomainError,
     DuplicateArtifactError,
     InvalidCompositionError,
-    InvalidManifestError,
     NotFoundError,
     ValidationError,
 )
@@ -55,76 +54,57 @@ from tax_engine.domain.worksheet import Worksheet
 class FormComposition:
     """One form wired: the capabilities of form `name` as an inner `Composition`.
 
-    Built with `exports` and, optionally, the `instances` kind (a record list, else an
-    InvalidCompositionError). The inner composition returns the exports. Its inputs are the kinds of
-    `starting` (the starting artifacts of the computation) that the form's capabilities consume or
-    export, plus the fields of `instances` if it has any, plus, always, its imports. A form that
-    reads its own `<form>.<export>` gets, in each run, a record list of that export over the runs
-    before it, in run order (empty in the first). A field of `instances` that is also among
-    `starting` is an InvalidCompositionError: one kind, two values.
+    Built from the manifest's `Form` (name, limits, `exports`, `instances`) and the kinds that
+    resolve its names; the `instances` kind must be a record list, else an InvalidCompositionError.
+    The inner composition returns the exports. Its inputs are the kinds of `starting` (the
+    starting artifacts of the computation) that the form's capabilities consume or export, plus
+    the fields of `instances` if it has any, plus, always, its imports. A form that reads its own
+    `<form>.<export>` gets, in each run, a record list of that export over the runs before it, in
+    run order (empty in the first). A field of `instances` that is also among `starting` is an
+    InvalidCompositionError: one kind, two values.
     An export of a `Decimal` or `int` kind or a record-list kind is also readable by every form as
     `<form>.<export>`; one of another kind (a rate, digits) is only on the form's worksheets.
-    Any breach of the rules of `Composition`, an empty `exports`, an export that is another form's,
-    a `max_instances` below 1, a `min_instances` below 0 or above `max_instances`, or a
-    `min_instances` above 1 on a form without an instances list (its default list has one instance)
-    or a malformed `exclusive_group` is an InvalidCompositionError. The form is always named in the
-    message (`form 'x': ...`).
+    Any breach of the rules of `Composition` is an InvalidCompositionError naming the form
+    (`form 'x': ...`). The rules of the `Form` itself (exports that are not empty and not another
+    form's, the limits, a well-formed `exclusive_group`) were checked when it was declared and are
+    an InvalidManifestError there.
     `max_instances`, `min_instances` and `exclusive_group` are the limits the `FormSet` enforces on
     the instances.
     """
 
     def __init__(
         self,
-        name: str,
+        form: Form,
         capabilities: Iterable[Capability],
         *,
-        exports: Iterable[ArtifactKind[Any]],
-        instances: ArtifactKind[Any] | None = None,
+        kinds: ArtifactRegistry,
         starting: frozenset[ArtifactKind[Any]] = frozenset(),
-        max_instances: int | None = None,
-        min_instances: int | None = None,
-        exclusive_group: str | None = None,
         defaults: Iterable[Artifact[Any]] = (),
         field_defaults: Iterable[Artifact[Any]] = (),
     ) -> None:
-        """Wire `capabilities` as the form `name`, exporting `exports`, over `instances` if any.
+        """Wire `capabilities` as `form`, whose names `kinds` resolves to artifact kinds.
 
-        At most `max_instances` and at least `min_instances` instances (no limit for `None`) may be
-        given, and at most one form of the `exclusive_group` may have any. A form without
-        `instances` has one instance. `defaults` are the artifacts a starting artifact is read as
-        when it is left out, and `field_defaults` the same for a field of `instances` when a record
-        leaves it blank. An input or field whose default is blank may arrive blank: the form's own
+        The name, limits, `instances` and `exports` are the form's own, already checked when it
+        was declared. `defaults` are the artifacts a starting artifact is read as when it is left
+        out, and `field_defaults` the same for a field of `instances` when a record leaves it
+        blank. An input or field whose default is blank may arrive blank: the form's own
         composition takes a blank for those of them it reads, and refuses a blank in any other
         input. A default that is a value is what is read when the input or field is blank.
         """
+        name = form.name
+        instances = None if form.instances is None else kinds.kind(form.instances)
         if instances is not None and not isinstance(instances, RecordListKind):
             raise InvalidCompositionError(
                 f"form {name!r}: instances {instances.identifier!r} is not a record list"
             )
-        listed = tuple(exports)
-        if not listed:
-            raise InvalidCompositionError(f"form {name!r}: exports must name at least one artifact")
-        for export in listed:
-            if export.is_form_export:
-                raise InvalidCompositionError(
-                    f"form {name!r}: export {export.identifier!r} is another form's export"
-                )
-        try:
-            Form.check_limits(max_instances, min_instances, instances is not None)
-            if exclusive_group is not None:
-                Form.check_identifier("exclusive_group", exclusive_group)
-        except InvalidManifestError as exc:
-            raise InvalidCompositionError(f"form {name!r}: {exc}") from None
+        listed = tuple(kinds.kind(identifier) for identifier in form.exports)
         wired = tuple(capabilities)
         produced = {kind for capability in wired for kind in capability.produces}
         read = {kind for capability in wired for kind in capability.consumes} | set(listed)
-        self._name = name
+        self._form = form
         self._instances = instances
-        self._max_instances = max_instances
-        self._min_instances = min_instances
-        self._exclusive_group = exclusive_group
         self._exports = listed
-        self._derived = Form.derive_kinds(name, listed)
+        self._derived = form.derived_kinds(kinds)
         foreign = frozenset(kind for kind in read - produced if kind.is_form_export)
         self._earlier = frozenset(kind for kind in self._derived if kind in foreign)
         self._imports = foreign - self._earlier
@@ -164,7 +144,7 @@ class FormComposition:
     @property
     def name(self) -> str:
         """The form's name, `<namespace>/<snake_case>`."""
-        return self._name
+        return self._form.name
 
     @property
     def instances(self) -> RecordListKind | None:
@@ -174,17 +154,17 @@ class FormComposition:
     @property
     def max_instances(self) -> int | None:
         """The most instances the caller may give; `None` for no maximum."""
-        return self._max_instances
+        return self._form.max_instances
 
     @property
     def min_instances(self) -> int | None:
         """The fewest instances the caller may give; `None` for no minimum."""
-        return self._min_instances
+        return self._form.min_instances
 
     @property
     def exclusive_group(self) -> str | None:
         """The group of which at most one form may have instances; `None` for no group."""
-        return self._exclusive_group
+        return self._form.exclusive_group
 
     @property
     def exports(self) -> tuple[ArtifactKind[Any], ...]:
