@@ -19,7 +19,13 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any
 
-from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind
+from tax_engine.domain.artifact import (
+    Artifact,
+    ArtifactCatalog,
+    ArtifactKind,
+    HasFloor,
+    RecordField,
+)
 from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
     BlankValueError,
@@ -115,7 +121,7 @@ class RecordList:
             if kind.identifier in seen:
                 raise InvalidRecordError(f"the field {kind.identifier!r} is named more than once")
             seen.add(kind.identifier)
-            if not kind.is_record_field:
+            if not isinstance(kind, RecordField):
                 raise InvalidRecordError(
                     f"the field {kind.identifier!r} holds a {kind.value_type.__name__}: "
                     f"a record cannot hold a field of this kind"
@@ -157,7 +163,7 @@ class RecordList:
                 raise TypeError(f"{item}: {exc}") from None
             if isinstance(value, Decimal) and not value.is_finite():
                 raise InvalidRecordError(f"{item}: {kind.identifier} must be finite, got {value}")
-            if kind.is_below_floor(value):
+            if isinstance(kind, HasFloor) and kind.is_below_floor(value):
                 raise NegativeArtifactError(
                     f"{item}: {kind.identifier} cannot be negative, got {value}",
                     identifier=kind.identifier,

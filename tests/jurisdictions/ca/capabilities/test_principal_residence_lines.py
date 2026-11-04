@@ -142,6 +142,7 @@ from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     properties,
     rounding,
 )
+from tests.kinds import non_negative
 
 D = Decimal
 
@@ -572,13 +573,13 @@ def test_a_negative_line_39_is_not_floored_and_line_45_is_not_below_zero() -> No
 @pytest.mark.parametrize("line", [27, 30, 32, 39, 42, 44])
 def test_the_lines_that_may_be_negative_are_signed_kinds(line: int) -> None:
     assert KINDS[line].value_type is Decimal
-    assert KINDS[line].non_negative is False
+    assert non_negative(KINDS[line]) is False
 
 
 @pytest.mark.parametrize("line", [29, 33, 38, 45, 48, 51, 53])
 def test_the_lines_that_are_never_negative_are_non_negative_kinds(line: int) -> None:
     assert KINDS[line].value_type is Decimal
-    assert KINDS[line].non_negative is True
+    assert non_negative(KINDS[line]) is True
 
 
 # --- computing: skipped areas -------------------------------------------------------------------

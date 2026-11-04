@@ -66,6 +66,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
 )
 from tests.jurisdictions.ca.catalog_snapshot import REGISTERED
+from tests.kinds import non_negative
 
 T2204_MONEY = (
     T2204_INSURABLE_EARNINGS,
@@ -213,14 +214,14 @@ def test_the_partnership_credit_tie_kinds_are_non_negative_money() -> None:
         FARM_FUEL_CHARGE_CREDIT_TOTAL_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative, kind.identifier
+        assert non_negative(kind), kind.identifier
 
 
 def test_the_fuel_charge_credit_is_the_5d_total_and_is_signed() -> None:
     # Part 5 line 5D, the total credit of all businesses, which is line 47556 of the return.
     assert FUEL_CHARGE_CREDIT_FARMERS.identifier == "ca/fuel_charge_credit_farmers"
     # The 5D line prints no floor and amounts 5A and 5B can be below zero, so it may be too.
-    assert not FUEL_CHARGE_CREDIT_FARMERS.non_negative
+    assert not non_negative(FUEL_CHARGE_CREDIT_FARMERS)
 
 
 def test_the_fuel_charge_credit_total_is_line_47556_read_into_line_48200() -> None:
@@ -228,7 +229,7 @@ def test_the_fuel_charge_credit_total_is_line_47556_read_into_line_48200() -> No
     # Form's export, totalled by the return), so the total is the line 47556 money kind.
     assert FUEL_CHARGE_CREDIT_FARMERS_TOTAL.identifier == "ca/fuel_charge_credit_farmers_total"
     assert FUEL_CHARGE_CREDIT_FARMERS_TOTAL.value_type is Decimal
-    assert not FUEL_CHARGE_CREDIT_FARMERS_TOTAL.non_negative
+    assert not non_negative(FUEL_CHARGE_CREDIT_FARMERS_TOTAL)
 
 
 def test_the_gross_farming_expenses_line_67061_is_registered_and_signed(
@@ -238,7 +239,7 @@ def test_the_gross_farming_expenses_line_67061_is_registered_and_signed(
         registry.get("ca/fuel_charge_gross_farming_expenses") is FUEL_CHARGE_GROSS_FARMING_EXPENSES
     )
     # Line 67061 adds amount 6 of every Chart A, which prints no floor, so it may be below zero.
-    assert not FUEL_CHARGE_GROSS_FARMING_EXPENSES.non_negative
+    assert not non_negative(FUEL_CHARGE_GROSS_FARMING_EXPENSES)
 
 
 PROVINCE_CODES = ("on", "mb", "sk", "ab", "ns", "pe", "nl", "nb")

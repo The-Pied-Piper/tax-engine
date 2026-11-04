@@ -256,6 +256,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T657_CHART_2024_PERIOD_2_AMOUNT_H,
     T657_CHART_2024_PERIOD_2_AMOUNT_J,
 )
+from tests.kinds import non_negative
 
 
 def test_the_form_t657_chart_2024_kinds_are_the_registered_ones(
@@ -316,7 +317,7 @@ def test_the_form_t657_chart_2024_amounts_are_money_non_negative_except_the_sign
     )
     for kind in signed:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
     for kind in (
         T657_CHART_2024_PERIOD_1_AMOUNT_H,
         T657_CHART_2024_PERIOD_1_AMOUNT_J,
@@ -332,7 +333,7 @@ def test_the_form_t657_chart_2024_amounts_are_money_non_negative_except_the_sign
         CHART_2024_PERIOD_2_AMOUNT_I,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_form_t657_chart_2021_to_2023_kinds_are_the_registered_ones(
@@ -473,7 +474,7 @@ def test_the_form_t657_chart_2021_to_2023_amounts_are_money_counts_and_signed_li
     )
     for kind in signed:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
     for kind in (
         T657_CHART_2021_AMOUNT_D_INSTEAD,
         T657_CHART_2021_AMOUNT_I,
@@ -519,7 +520,7 @@ def test_the_form_t657_chart_2021_to_2023_amounts_are_money_counts_and_signed_li
         CHART_2023_PART_2_AMOUNT_E,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     for count_kind in (
         T657_CHART_2021_USES_D_INSTEAD,
         T657_CHART_2021_CLAIMS_ADDITIONAL_DEDUCTION,
@@ -532,7 +533,7 @@ def test_the_form_t657_chart_2021_to_2023_amounts_are_money_counts_and_signed_li
         CHART_2023_PART_2_APPLIES,
     ):
         assert count_kind.value_type is int, count_kind.identifier
-        assert count_kind.non_negative is True, count_kind.identifier
+        assert non_negative(count_kind) is True, count_kind.identifier
 
 
 def test_the_chart_2024_period_1_amount_b_is_no_longer_a_caller_input(
@@ -709,7 +710,7 @@ def test_the_form_t657_chart_2016_to_2020_amounts_are_money_counts_and_signed_li
         CHART_2020_PART_2_AMOUNT_C,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
     for kind in (
         CHART_2016_PART_1_AMOUNT_A,
         CHART_2016_PART_1_AMOUNT_C,
@@ -767,7 +768,7 @@ def test_the_form_t657_chart_2016_to_2020_amounts_are_money_counts_and_signed_li
         T657_CHART_2020_AMOUNT_D_INSTEAD,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     for count_kind in (
         T657_CHART_2016_USES_D_INSTEAD,
         T657_CHART_2016_CLAIMS_ADDITIONAL_DEDUCTION,
@@ -786,7 +787,7 @@ def test_the_form_t657_chart_2016_to_2020_amounts_are_money_counts_and_signed_li
         CHART_2020_PART_2_APPLIES,
     ):
         assert count_kind.value_type is int, count_kind.identifier
-        assert count_kind.non_negative is True, count_kind.identifier
+        assert non_negative(count_kind) is True, count_kind.identifier
 
 
 def test_the_chart_2021_amount_b_is_no_longer_a_caller_input(
@@ -817,4 +818,4 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True

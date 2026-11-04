@@ -74,6 +74,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_WORKING_INCOME_LESS_SPOUSE,
     WORKING_INCOME,
 )
+from tests.kinds import non_negative
 
 
 def test_the_canada_workers_benefit_kinds_are_the_registered_ones(
@@ -154,7 +155,7 @@ def test_the_line_28_by_spouse_is_registered_and_money(registry: ArtifactRegistr
     # Schedule 6 line 28 for the spouse status alone (lines 21 and 24 "eligible spouse"), the
     # first of two choices; the dependant choice then nests over it.
     assert CWB_LINE_28_BY_SPOUSE.value_type is Decimal
-    assert CWB_LINE_28_BY_SPOUSE.non_negative is True
+    assert non_negative(CWB_LINE_28_BY_SPOUSE) is True
     assert registry.get("ca/cwb_line_28_by_spouse") is CWB_LINE_28_BY_SPOUSE
     assert registry.get("ca/canada_workers_benefit_line_28") is CANADA_WORKERS_BENEFIT_LINE_28
 
@@ -185,7 +186,7 @@ def test_the_cwb_eligible_dependants_checked_is_a_non_negative_count(
     assert registry.get("ca/cwb_eligible_dependants_checked") is CWB_ELIGIBLE_DEPENDANTS_CHECKED
     assert registry.get("ca/cwb_eligible_dependants") is CWB_ELIGIBLE_DEPENDANTS
     assert CWB_ELIGIBLE_DEPENDANTS_CHECKED.value_type is int
-    assert CWB_ELIGIBLE_DEPENDANTS_CHECKED.non_negative is True
+    assert non_negative(CWB_ELIGIBLE_DEPENDANTS_CHECKED) is True
 
 
 def _kind(registry: ArtifactRegistry, identifier: str) -> ArtifactKind[Any]:
@@ -207,7 +208,7 @@ def test_the_eligibility_answers_and_their_checked_kinds_are_non_negative_counts
         for identifier in (f"ca/{name}", f"ca/{name}_checked"):
             kind = _kind(registry, identifier)
             assert kind.value_type is int, identifier
-            assert kind.non_negative is True, identifier
+            assert non_negative(kind) is True, identifier
     assert _kind(registry, "ca/cwb_eligible").value_type is int
 
 
@@ -237,10 +238,10 @@ def test_the_spouse_and_secondary_earner_kinds_have_the_form_types(
         CWB_SPOUSE_FOR_ELIGIBLE_SPOUSE_CHECKED,
     ):
         assert count.value_type is int, count.identifier
-        assert count.non_negative is True, count.identifier
+        assert non_negative(count) is True, count.identifier
     # Signed: the spouse's line 10 and the working income less the spouse's (line 14's sign).
-    assert CWB_SPOUSE_FAMILY_NET_INCOME_LINE_10.non_negative is False
-    assert CWB_WORKING_INCOME_LESS_SPOUSE.non_negative is False
+    assert non_negative(CWB_SPOUSE_FAMILY_NET_INCOME_LINE_10) is False
+    assert non_negative(CWB_WORKING_INCOME_LESS_SPOUSE) is False
     assert CWB_WORKING_INCOME_LESS_SPOUSE.value_type is Decimal
 
 
@@ -257,7 +258,7 @@ def test_the_schedule_6_step_4_lines_are_non_negative_money(registry: ArtifactRe
     ):
         kind = _kind(registry, f"ca/{name}")
         assert kind.value_type is Decimal, name
-        assert kind.non_negative is True, name
+        assert non_negative(kind) is True, name
 
 
 def test_the_tax_exempt_income_election_and_its_amounts_are_registered(
@@ -298,7 +299,7 @@ def test_the_election_and_its_check_are_int_counts_and_the_amounts_are_decimals(
 ) -> None:
     for kind in (CWB_INCLUDE_TAX_EXEMPT_INCOME, CWB_INCLUDE_TAX_EXEMPT_INCOME_CHECKED):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     for amount in (
         CWB_SPOUSE_TAX_EXEMPT_WORKING_INCOME,
         CWB_TAX_EXEMPT_WORKING_INCOME,
@@ -306,7 +307,7 @@ def test_the_election_and_its_check_are_int_counts_and_the_amounts_are_decimals(
         CWB_SPOUSE_TAX_EXEMPT_WORKING_INCOME_ELECTED,
     ):
         assert amount.value_type is Decimal, amount.identifier
-        assert amount.non_negative is True, amount.identifier
+        assert non_negative(amount) is True, amount.identifier
 
 
 def test_the_net_exempt_income_amounts_are_signed_as_the_form_prints_them(
@@ -321,7 +322,7 @@ def test_the_net_exempt_income_amounts_are_signed_as_the_form_prints_them(
         CWB_SPOUSE_TAX_EXEMPT_NET_INCOME_ELECTED,
     ):
         assert amount.value_type is Decimal, amount.identifier
-        assert amount.non_negative is False, amount.identifier
+        assert non_negative(amount) is False, amount.identifier
 
 
 def test_the_disability_supplement_kinds_are_the_registered_ones(
@@ -356,5 +357,5 @@ def test_the_disability_supplement_kinds_are_the_registered_ones(
 def test_the_adjusted_family_net_income_is_signed(registry: ArtifactRegistry) -> None:
     # Schedule 6 line 15 "Line 13 minus line 14" prints no "if negative, enter "0"", unlike lines
     # 12, 18 and 25.
-    assert ADJUSTED_FAMILY_NET_INCOME.non_negative is False
-    assert registry.kind("ca/adjusted_family_net_income").non_negative is False
+    assert non_negative(ADJUSTED_FAMILY_NET_INCOME) is False
+    assert non_negative(registry.kind("ca/adjusted_family_net_income")) is False

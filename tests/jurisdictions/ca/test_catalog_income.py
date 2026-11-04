@@ -490,6 +490,7 @@ from tests.jurisdictions.ca.catalog_snapshot import (
     REGISTERED,
     SIGNED,
 )
+from tests.kinds import non_negative as declared_non_negative
 
 # The Form T2043 Chart A amounts of each Form T2042 statement: amount 5, amount 6, amount 8 and the
 # eight province amounts of amount 8, each an amount computed for each statement.
@@ -521,8 +522,8 @@ def test_the_form_t2043_statement_fields_are_an_int_code_an_int_count_and_an_amo
     assert FARM_DAYS_IN_2024.value_type is int
     assert FARM_NON_ARMS_LENGTH_EXPENSES.value_type is Decimal
     assert {FARM_DESIGNATED_PROVINCE.identifier, FARM_DAYS_IN_2024.identifier} <= COUNTS
-    assert FARM_NON_ARMS_LENGTH_EXPENSES.non_negative
-    assert FARM_DAYS_IN_2024.non_negative
+    assert declared_non_negative(FARM_NON_ARMS_LENGTH_EXPENSES)
+    assert declared_non_negative(FARM_DAYS_IN_2024)
 
 
 def test_the_checked_designated_province_is_a_non_negative_int_count(
@@ -533,7 +534,7 @@ def test_the_checked_designated_province_is_a_non_negative_int_count(
     kind = _kind(registry, "ca/farm_designated_province_checked")
 
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert declared_non_negative(kind) is True
     assert kind.identifier in COUNTS
     assert kind.identifier in REGISTERED
     assert kind is not FARM_DESIGNATED_PROVINCE
@@ -552,7 +553,7 @@ def test_the_chart_a_gross_expenses_is_signed_money() -> None:
     # Amount 6 "Amount 1 minus amount 5" prints no floor and amount 5 no maximum, so it may be below
     # zero.
     assert FARM_CHART_A_GROSS_EXPENSES.value_type is Decimal
-    assert not FARM_CHART_A_GROSS_EXPENSES.non_negative
+    assert not declared_non_negative(FARM_CHART_A_GROSS_EXPENSES)
     assert "ca/farm_chart_a_gross_expenses" in SIGNED
 
 
@@ -579,7 +580,7 @@ def test_the_farm_in_province_counts_are_registered_non_negative_ints(
         assert kind.value_type is int, kind.identifier
         assert kind.identifier in COUNTS, kind.identifier
         assert kind.identifier in REGISTERED, kind.identifier
-        assert kind.non_negative, kind.identifier
+        assert declared_non_negative(kind), kind.identifier
 
 
 # Form T2043 box 67062 (multiple farming businesses in multiple provinces): each statement's
@@ -627,7 +628,7 @@ def test_the_presence_counts_are_registered_non_negative_ints(
     for kind in T2043_PRESENT_IN_PLACE_COUNTS:
         assert registry.get(kind.identifier) is kind, kind.identifier
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative, kind.identifier
+        assert declared_non_negative(kind), kind.identifier
         assert kind.identifier in COUNTS, kind.identifier
         assert kind.identifier in REGISTERED, kind.identifier
 
@@ -638,7 +639,7 @@ def test_the_presence_amounts_are_registered_non_negative_money_and_not_counts(
     for kind in T2043_PRESENT_AMOUNTS:
         assert registry.get(kind.identifier) is kind, kind.identifier
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative, kind.identifier
+        assert declared_non_negative(kind), kind.identifier
         assert kind.identifier in REGISTERED, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
         assert kind.identifier not in COUNTS, kind.identifier
@@ -650,7 +651,7 @@ def test_the_fuel_charge_place_totals_are_registered_non_negative_money(
     for kind in T2043_FUEL_CHARGE_PLACE_TOTALS:
         assert registry.get(kind.identifier) is kind, kind.identifier
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative, kind.identifier
+        assert declared_non_negative(kind), kind.identifier
         assert kind.identifier in REGISTERED, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
@@ -661,7 +662,7 @@ def test_the_statement_count_and_the_box_are_registered_non_negative_ints(
     for kind in (FUEL_CHARGE_FARM_STATEMENT_COUNT, FUEL_CHARGE_MULTIPLE_PROVINCES_BOX):
         assert registry.get(kind.identifier) is kind, kind.identifier
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative, kind.identifier
+        assert declared_non_negative(kind), kind.identifier
         assert kind.identifier in COUNTS, kind.identifier
         assert kind.identifier in REGISTERED, kind.identifier
 
@@ -1180,7 +1181,7 @@ def test_the_previous_years_applied_kind_is_the_checked_non_negative_money_besid
     assert kind is INVESTMENT_INCOME_REPORTED_IN_PREVIOUS_YEARS_APPLIED
     assert kind.identifier == "ca/investment_income_reported_in_previous_years_applied"
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert declared_non_negative(kind) is True
     assert kind is not INVESTMENT_INCOME_REPORTED_IN_PREVIOUS_YEARS
     assert registry.kind("ca/investment_income_reported_in_previous_years").value_type is Decimal
 
@@ -1392,7 +1393,7 @@ def test_the_depreciable_property_answer_is_a_non_negative_int_count_of_the_real
 ) -> None:
     assert DISPOSITION_DEPRECIABLE_PROPERTY.identifier == "ca/disposition_depreciable_property"
     assert DISPOSITION_DEPRECIABLE_PROPERTY.value_type is int
-    assert DISPOSITION_DEPRECIABLE_PROPERTY.non_negative is True
+    assert declared_non_negative(DISPOSITION_DEPRECIABLE_PROPERTY) is True
     assert registry.kind("ca/disposition_depreciable_property") is DISPOSITION_DEPRECIABLE_PROPERTY
     assert REAL_ESTATE_DISPOSITIONS.fields[3] is DISPOSITION_DEPRECIABLE_PROPERTY
     for identifier, kind in DISPOSITION_LISTS:
@@ -1417,7 +1418,7 @@ def test_the_farm_loss_fields_are_non_negative_decimals_of_the_farm_and_real_est
     ):
         assert kind.identifier == identifier
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert declared_non_negative(kind) is True
         assert registry.kind(identifier) is kind
         assert REAL_ESTATE_DISPOSITIONS.fields[position] is kind
         assert QFFP_DISPOSITIONS.fields[position - 1] is kind
@@ -1436,14 +1437,14 @@ def test_the_farm_loss_fields_are_non_negative_decimals_of_the_farm_and_real_est
 def test_the_disposition_fields_are_non_negative_decimals() -> None:
     for kind in (DISPOSITION_PROCEEDS, DISPOSITION_ADJUSTED_COST_BASE, DISPOSITION_OUTLAYS):
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert declared_non_negative(kind) is True
 
 
 def test_the_part_3_and_part_4_lines_that_print_losses_in_brackets_are_signed_decimals() -> None:
     # "Report all negative amounts (losses) using brackets."
     for identifier, kind in SIGNED_LINES:
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is False, identifier
+        assert declared_non_negative(kind) is False, identifier
         assert identifier in SIGNED
 
 
@@ -1452,7 +1453,7 @@ def test_the_gain_only_lines_the_deferral_and_the_unapplied_losses_are_non_negat
     # losses are amounts the filer states.
     for identifier, kind in NON_NEGATIVE_LINES:
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert declared_non_negative(kind) is True, identifier
         assert identifier not in SIGNED
 
 
@@ -1465,7 +1466,7 @@ def test_the_share_gain_not_below_zero_is_a_non_negative_decimal(
     # deferral is checked against. It is a plain non-negative decimal, not a signed line.
     assert registry.get("ca/share_gain_not_below_zero") is SHARE_GAIN_NOT_BELOW_ZERO
     assert SHARE_GAIN_NOT_BELOW_ZERO.value_type is Decimal
-    assert SHARE_GAIN_NOT_BELOW_ZERO.non_negative is True
+    assert declared_non_negative(SHARE_GAIN_NOT_BELOW_ZERO) is True
     assert "ca/share_gain_not_below_zero" not in SIGNED
 
 
@@ -1477,13 +1478,13 @@ def test_the_checked_capital_gains_deferral_is_a_non_negative_decimal(
     # line 4 (`core/at_most`); the subtraction of line 14 reads the checked amount.
     assert registry.get("ca/capital_gains_deferral_checked") is CAPITAL_GAINS_DEFERRAL_CHECKED
     assert CAPITAL_GAINS_DEFERRAL_CHECKED.value_type is Decimal
-    assert CAPITAL_GAINS_DEFERRAL_CHECKED.non_negative is True
+    assert declared_non_negative(CAPITAL_GAINS_DEFERRAL_CHECKED) is True
     assert "ca/capital_gains_deferral_checked" not in SIGNED
 
 
 def test_the_taxable_capital_gains_stay_non_negative() -> None:
     # T1 line 12700 takes line 26 only "If positive".
-    assert TAXABLE_CAPITAL_GAINS.non_negative is True
+    assert declared_non_negative(TAXABLE_CAPITAL_GAINS) is True
     assert "ca/taxable_capital_gains" not in SIGNED
 
 
@@ -1499,7 +1500,7 @@ def test_the_t2125_chart_kinds_are_registered_under_their_names(registry: Artifa
     assert registry.get("ca/business_vehicle_list_price") is BUSINESS_VEHICLE_LIST_PRICE
     assert registry.get("ca/business_vehicle_sales_tax_rate") is BUSINESS_VEHICLE_SALES_TAX_RATE
     assert registry.get("ca/business_vehicles") is BUSINESS_VEHICLES
-    assert BUSINESS_VEHICLE_DAYS_DIVISOR.non_negative is True
+    assert declared_non_negative(BUSINESS_VEHICLE_DAYS_DIVISOR) is True
     for kind in (
         BUSINESS_VEHICLE_DAYS_DIVISOR,
         BUSINESS_VEHICLE_LIST_PRICE,
@@ -1843,7 +1844,7 @@ def test_each_checked_kind_is_registered_and_is_the_output_of_its_check(
     assert kind is constant
     assert kind.identifier == identifier
     assert kind.value_type is value_type
-    assert kind.non_negative is True
+    assert declared_non_negative(kind) is True
     assert registry.kind(input_id) is not kind
     assert registry.kind(input_id).value_type is value_type
 
@@ -1875,7 +1876,7 @@ def test_the_immediate_expensing_total_kinds_are_the_registered_non_negative_mon
         "ca/immediate_expensing_total_claim",
     ]
     assert all(registry.get(kind.identifier) is kind for kind in kinds)
-    assert all(kind.value_type is Decimal and kind.non_negative for kind in kinds)
+    assert all(kind.value_type is Decimal and declared_non_negative(kind) for kind in kinds)
 
 
 # Guide T4036 "Limits on CCA": "you have to calculate your overall net income or loss for the year
@@ -1904,12 +1905,12 @@ def test_the_rental_cca_limit_over_all_statements_kinds_are_registered(
         assert kind.identifier == identifier
         assert registry.get(identifier) is kind
         assert kind.value_type is Decimal
-        assert kind.non_negative is non_negative
+        assert declared_non_negative(kind) is non_negative
     for count_kind, count_identifier in counts:
         assert count_kind.identifier == count_identifier
         assert registry.get(count_identifier) is count_kind
         assert count_kind.value_type is int
-        assert count_kind.non_negative is True
+        assert declared_non_negative(count_kind) is True
 
 
 # Income Tax Regulations 1104(3.5)(b): "where an eligible person or partnership has a taxation year
@@ -1924,7 +1925,7 @@ def test_the_short_year_days_kind_is_the_registered_non_negative_money(
         is IMMEDIATE_EXPENSING_SHORT_YEAR_DAYS
     )
     assert IMMEDIATE_EXPENSING_SHORT_YEAR_DAYS.value_type is Decimal
-    assert IMMEDIATE_EXPENSING_SHORT_YEAR_DAYS.non_negative is True
+    assert declared_non_negative(IMMEDIATE_EXPENSING_SHORT_YEAR_DAYS) is True
 
 
 # --- Schedule 3 Part 1, flipped property: the answer to line 17905 and the nine tick boxes of line
@@ -1974,7 +1975,7 @@ def test_each_flipped_property_kind_is_a_registered_non_negative_int_count(
     assert kind.identifier == identifier
     assert registry.get(identifier) is kind
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert declared_non_negative(kind) is True
 
 
 CHART_B_C_ARTIFACTS = (
@@ -2071,7 +2072,7 @@ def test_the_sixteen_chart_b_starting_amounts_are_registered_non_negative_money(
         assert isinstance(kind, ArtifactKind), identifier
         assert kind.identifier == identifier
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative, identifier
+        assert declared_non_negative(kind), identifier
         assert identifier in REGISTERED, identifier
 
 
@@ -2109,7 +2110,7 @@ def test_the_chart_b_province_list_fields_are_an_int_code_and_two_non_negative_a
 
     province = fields["ca/farm_chart_b_province"]
     assert province.value_type is int
-    assert province.non_negative
+    assert declared_non_negative(province)
     assert "ca/farm_chart_b_province" in COUNTS
     for identifier in (
         "ca/farm_chart_b_province_gross_income",
@@ -2117,7 +2118,7 @@ def test_the_chart_b_province_list_fields_are_an_int_code_and_two_non_negative_a
     ):
         amount = fields[identifier]
         assert amount.value_type is Decimal, identifier
-        assert amount.non_negative, identifier
+        assert declared_non_negative(amount), identifier
         assert identifier in REGISTERED, identifier
         assert identifier not in SIGNED, identifier
 
@@ -2177,7 +2178,7 @@ def _kind(registry: ArtifactRegistry, identifier: str) -> ArtifactKind[Any]:
 def test_the_statement_line_code_is_a_non_negative_int_count(registry: ArtifactRegistry) -> None:
     kind = _kind(registry, "ca/business_income_line")
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert declared_non_negative(kind) is True
 
 
 def test_the_checked_statement_line_code_is_a_non_negative_int_count(
@@ -2187,7 +2188,7 @@ def test_the_checked_statement_line_code_is_a_non_negative_int_count(
     # 1 to 3: the three line flags read this kind, not the raw code.
     kind = _kind(registry, "ca/business_income_line_checked")
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert declared_non_negative(kind) is True
     assert kind.identifier in COUNTS
     assert kind.identifier in REGISTERED
     assert kind is not _kind(registry, "ca/business_income_line")
@@ -2198,7 +2199,7 @@ def test_the_business_income_stays_the_signed_line_9946_kind(registry: ArtifactR
     # keeps its name and meaning inside the form. It prints no floor, so a loss is negative.
     kind = _kind(registry, "ca/business_income")
     assert kind.value_type is Decimal
-    assert kind.non_negative is False
+    assert declared_non_negative(kind) is False
 
 
 def test_the_routed_net_kinds_are_signed_decimals_one_per_line(registry: ArtifactRegistry) -> None:
@@ -2211,7 +2212,7 @@ def test_the_routed_net_kinds_are_signed_decimals_one_per_line(registry: Artifac
     ):
         kind = _kind(registry, identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is False, identifier
+        assert declared_non_negative(kind) is False, identifier
 
 
 def test_the_routed_gross_kinds_are_signed_decimals_like_the_business_gross(
@@ -2227,9 +2228,9 @@ def test_the_routed_gross_kinds_are_signed_decimals_like_the_business_gross(
     ):
         kind = _kind(registry, identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is _kind(registry, "ca/business_gross_income").non_negative, (
-            identifier
-        )
+        assert declared_non_negative(kind) is declared_non_negative(
+            _kind(registry, "ca/business_gross_income")
+        ), identifier
 
 
 def test_the_split_gross_t1_kinds_are_signed_decimals_like_the_business_gross(
@@ -2243,9 +2244,9 @@ def test_the_split_gross_t1_kinds_are_signed_decimals_like_the_business_gross(
     ):
         kind = _kind(registry, identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is _kind(registry, "ca/business_gross_income").non_negative, (
-            identifier
-        )
+        assert declared_non_negative(kind) is declared_non_negative(
+            _kind(registry, "ca/business_gross_income")
+        ), identifier
 
 
 def test_the_routing_flags_are_non_negative_int_counts_of_0_or_1(
@@ -2260,7 +2261,7 @@ def test_the_routing_flags_are_non_negative_int_counts_of_0_or_1(
     ):
         kind = _kind(registry, identifier)
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert declared_non_negative(kind) is True, identifier
 
 
 # T1 income lines that are printed memos: each is a caller's input and a declared output, and no
@@ -2293,7 +2294,7 @@ def test_the_memo_income_kinds_are_non_negative_money() -> None:
         SUPPORT_PAYMENTS_RECEIVED_TOTAL,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert declared_non_negative(kind) is True, kind.identifier
 
 
 def test_the_also_outside_the_eight_answer_is_a_non_negative_int_count_and_its_checked_kind_too(
@@ -2306,7 +2307,7 @@ def test_the_also_outside_the_eight_answer_is_a_non_negative_int_count_and_its_c
     assert registry.get("ca/farm_also_outside_eight") is FARM_ALSO_OUTSIDE_EIGHT
     for kind in (FARM_ALSO_OUTSIDE_EIGHT, checked):
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert declared_non_negative(kind) is True
         assert kind.identifier in COUNTS
         assert kind.identifier in REGISTERED
     assert checked is not FARM_ALSO_OUTSIDE_EIGHT
@@ -2331,9 +2332,9 @@ def test_the_rental_partner_amount_7_kinds_are_registered(registry: ArtifactRegi
         assert kind.identifier == identifier
         assert registry.get(identifier) is kind
         assert kind.value_type is Decimal
-        assert kind.non_negative is non_negative
+        assert declared_non_negative(kind) is non_negative
     for count_kind, count_identifier in counts:
         assert count_kind.identifier == count_identifier
         assert registry.get(count_identifier) is count_kind
         assert count_kind.value_type is int
-        assert count_kind.non_negative is True
+        assert declared_non_negative(count_kind) is True

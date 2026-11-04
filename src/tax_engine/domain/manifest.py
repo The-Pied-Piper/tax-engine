@@ -16,7 +16,13 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import (
+    Artifact,
+    ArtifactKind,
+    ArtifactRegistry,
+    RecordField,
+    YesNo,
+)
 from tax_engine.domain.errors import (
     InvalidManifestError,
     InvalidRegistrationError,
@@ -178,7 +184,7 @@ class Form:
         return tuple(
             RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
             for export in exports
-            if export.is_record_field
+            if isinstance(export, RecordField)
         )
 
     def __post_init__(self) -> None:
@@ -383,7 +389,7 @@ class Manifest:
                 self._check_fields(form, kinds.kind(form.instances))
             if form.required_when is not None:
                 kind = kinds.kind(form.required_when)
-                if not kind.is_yes_no:
+                if not (isinstance(kind, YesNo) and kind.is_yes_no):
                     raise InvalidManifestError(
                         f"form {form.name!r}: required_when {form.required_when!r} is not a "
                         "yes/no: it must be a count, 1 for yes and 0 for no"

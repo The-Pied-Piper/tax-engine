@@ -24,6 +24,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     RESP_AIPS_RRSP_CONTRIBUTIONS,
     RESP_AIPS_SUBJECT_TO_TAX,
 )
+from tests.kinds import non_negative
 
 
 def test_the_resp_aips_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -77,4 +78,4 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True

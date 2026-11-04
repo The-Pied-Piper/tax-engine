@@ -189,6 +189,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     UNDER_18_ON_DECEMBER_31_CHECKED,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 
 def test_the_personal_amounts_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -427,9 +428,9 @@ def test_the_disability_amount_for_self_callers_are_counts_and_the_care_expenses
 ):
     for count in (ELIGIBLE_FOR_DISABILITY_AMOUNT, UNDER_18_ON_DECEMBER_31):
         assert count.value_type is int, count.identifier
-        assert count.non_negative is True, count.identifier
+        assert non_negative(count) is True, count.identifier
     assert DISABILITY_SELF_CARE_EXPENSES.value_type is Decimal
-    assert DISABILITY_SELF_CARE_EXPENSES.non_negative is True
+    assert non_negative(DISABILITY_SELF_CARE_EXPENSES) is True
 
 
 # --- Form T2091(IND) Part 2: the lines of the pre-1982 and post-1981 gains (lines 27 to 53) -------
@@ -468,9 +469,9 @@ def test_the_part_2_lines_that_can_be_negative_are_signed_kinds() -> None:
     # enter "0")"; lines 30, 32, 42 and 44 multiply or divide them, so they can be negative too.
     for line, kind in PART_2_LINE_KINDS:
         if line in SIGNED_PART_2_LINES:
-            assert kind.non_negative is False, line
+            assert non_negative(kind) is False, line
         else:
-            assert kind.non_negative is True, line
+            assert non_negative(kind) is True, line
 
 
 def test_the_part_2_lines_are_in_the_snapshot_with_their_signs() -> None:
@@ -543,7 +544,7 @@ def test_the_worksheet_counts_are_non_negative_int_counts_in_the_snapshot(
 ) -> None:
     for kind in WORKSHEET_COUNTS:
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.get(kind.identifier) is kind
         assert kind.identifier in COUNTS
         assert kind.identifier in REGISTERED
@@ -554,7 +555,7 @@ def test_the_worksheet_money_inputs_are_non_negative_decimals_in_the_snapshot(
 ) -> None:
     for kind in WORKSHEET_MONEY_INPUTS:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.get(kind.identifier) is kind
         assert kind.identifier in REGISTERED
         assert kind.identifier not in COUNTS
@@ -588,7 +589,7 @@ def test_the_worksheet_line_kinds_are_registered_under_their_line(
 
 def test_the_worksheet_lines_that_can_be_negative_are_signed_kinds() -> None:
     for line, kind in WORKSHEET_LINE_KINDS:
-        assert kind.non_negative is (line not in SIGNED_WORKSHEET_LINES), line
+        assert non_negative(kind) is (line not in SIGNED_WORKSHEET_LINES), line
 
 
 def test_the_worksheet_lines_are_in_the_snapshot_with_their_signs() -> None:
@@ -601,13 +602,13 @@ def test_the_part_4_lines_are_registered_with_their_signs(registry: ArtifactRegi
     # Line 56 "Reduction ... (line 66 of Form T2091(IND)-WS)" prints no floor; line 57 is floored.
     assert PRINCIPAL_RESIDENCE_LINE_56.identifier == "ca/principal_residence_line_56"
     assert PRINCIPAL_RESIDENCE_LINE_56.value_type is Decimal
-    assert PRINCIPAL_RESIDENCE_LINE_56.non_negative is False
+    assert non_negative(PRINCIPAL_RESIDENCE_LINE_56) is False
     assert PRINCIPAL_RESIDENCE_LINE_56.identifier in SIGNED
     assert registry.get("ca/principal_residence_line_56") is PRINCIPAL_RESIDENCE_LINE_56
 
     assert PRINCIPAL_RESIDENCE_LINE_57.identifier == "ca/principal_residence_line_57"
     assert PRINCIPAL_RESIDENCE_LINE_57.value_type is Decimal
-    assert PRINCIPAL_RESIDENCE_LINE_57.non_negative is True
+    assert non_negative(PRINCIPAL_RESIDENCE_LINE_57) is True
     assert PRINCIPAL_RESIDENCE_LINE_57.identifier not in SIGNED
     assert registry.get("ca/principal_residence_line_57") is PRINCIPAL_RESIDENCE_LINE_57
 
@@ -653,7 +654,7 @@ def test_the_worksheet_part_2_line_kinds_are_registered_under_their_line(
 
 def test_the_worksheet_part_2_line_kinds_are_signed_as_the_form_has_them() -> None:
     for line, kind in PART_2_WORKSHEET_LINE_KINDS:
-        assert kind.non_negative is (line not in PART_2_SIGNED_LINES), line
+        assert non_negative(kind) is (line not in PART_2_SIGNED_LINES), line
 
 
 def test_the_worksheet_part_2_line_kinds_are_in_the_snapshot_with_their_signs() -> None:
@@ -670,7 +671,7 @@ def test_the_worksheet_cost_base_adjustments_input_is_a_non_negative_money_field
 
     assert kind.identifier == "ca/residence_ws_cost_base_adjustments_to_feb_1994"
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.get(kind.identifier) is kind
     assert kind.identifier in REGISTERED
     assert kind.identifier not in SIGNED
@@ -685,7 +686,7 @@ def test_the_eligible_dependants_checked_is_a_non_negative_count(
     assert registry.get("ca/eligible_dependants_checked") is ELIGIBLE_DEPENDANTS_CHECKED
     assert registry.get("ca/eligible_dependants") is ELIGIBLE_DEPENDANTS
     assert ELIGIBLE_DEPENDANTS_CHECKED.value_type is int
-    assert ELIGIBLE_DEPENDANTS_CHECKED.non_negative is True
+    assert non_negative(ELIGIBLE_DEPENDANTS_CHECKED) is True
 
 
 def test_the_spouse_and_dependant_both_counts_are_registered_non_negative_int_counts(
@@ -700,7 +701,7 @@ def test_the_spouse_and_dependant_both_counts_are_registered_non_negative_int_co
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS
     assert SPOUSE_AND_DEPENDANT_BOTH_CHECKED is not SPOUSE_AND_DEPENDANT_BOTH
 
@@ -728,7 +729,7 @@ def test_the_caregiver_without_its_base_counts_are_registered_non_negative_int_c
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS
     assert (
         SPOUSE_CAREGIVER_WITHOUT_SPOUSE_AMOUNT_CHECKED is not SPOUSE_CAREGIVER_WITHOUT_SPOUSE_AMOUNT
@@ -756,7 +757,7 @@ def test_the_under_18_with_another_age_counts_are_registered_non_negative_int_co
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS
     assert UNDER_18_AND_BORN_IN_1960_OR_EARLIER_CHECKED is not UNDER_18_AND_BORN_IN_1960_OR_EARLIER
     assert UNDER_18_AND_AGED_18_OR_OLDER_CHECKED is not UNDER_18_AND_AGED_18_OR_OLDER
@@ -769,7 +770,7 @@ def test_the_principal_residence_designation_box_is_a_non_negative_int_count(
 
     assert kind.identifier == "ca/principal_residence_designation_box"
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.get(kind.identifier) is kind
     assert kind.identifier in REGISTERED
     assert kind.identifier in COUNTS
@@ -796,4 +797,4 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True

@@ -31,6 +31,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     RENTAL_CCA_CLASSES_CHECKED,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED
+from tests.kinds import non_negative
 
 # (the checked kind, the classes kind it checks, the form named in its docstring)
 CHECKED_LISTS = (
@@ -91,7 +92,7 @@ def test_the_checked_identifiers_are_the_rental_business_farm_and_fish_names() -
 def test_each_checked_list_is_a_record_list_kind_of_no_negative_values() -> None:
     for kind, _, _ in CHECKED_LISTS:
         assert isinstance(kind, RecordListKind), kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
 
 
 def test_each_checked_list_holds_the_fields_of_the_classes_it_checks_in_the_same_order() -> None:

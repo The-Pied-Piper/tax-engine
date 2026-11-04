@@ -37,6 +37,7 @@ from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     properties,
     rounding,
 )
+from tests.kinds import non_negative
 
 D = Decimal
 
@@ -137,7 +138,7 @@ def test_takes_the_rounding_dataset_as_its_only_parameter() -> None:
 
 def test_the_output_kind_is_a_non_negative_int_count() -> None:
     assert PRINCIPAL_RESIDENCE_DESIGNATION_BOX.value_type is int
-    assert PRINCIPAL_RESIDENCE_DESIGNATION_BOX.non_negative is True
+    assert non_negative(PRINCIPAL_RESIDENCE_DESIGNATION_BOX) is True
 
 
 # --- the box -----------------------------------------------------------------------------------

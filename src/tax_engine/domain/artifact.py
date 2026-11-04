@@ -22,7 +22,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, ClassVar, Generic, TypeVar
+from typing import Any, ClassVar, Generic, Protocol, TypeVar, runtime_checkable
 
 from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
@@ -41,6 +41,39 @@ from tax_engine.domain.registry import Namespace, Registry
 V = TypeVar("V")
 
 
+@runtime_checkable
+class HasFloor(Protocol):
+    """A kind with a lowest value it holds, as a non-negative amount or count does.
+
+    Matched by shape: any kind with `is_below_floor` is one; `Artifact` and a record check it
+    before asking, so a kind without a floor says nothing.
+    """
+
+    def is_below_floor(self, value: Any) -> bool:
+        """Whether `value`, already an instance of the value type, is below the floor."""
+        ...
+
+
+@runtime_checkable
+class RecordField(Protocol):
+    """A kind a record can hold as one of its fields: an amount, a count or a record list."""
+
+    @property
+    def is_record_field(self) -> bool:
+        """Always true for a kind that has it: a kind without it cannot be a field."""
+        ...
+
+
+@runtime_checkable
+class YesNo(Protocol):
+    """A kind that may be a yes/no: a count, which is one when declared non-negative."""
+
+    @property
+    def is_yes_no(self) -> bool:
+        """Whether this kind is a yes/no, 1 for yes and 0 for no."""
+        ...
+
+
 @dataclass(frozen=True)
 class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
     """A kind of artifact, named by its identifier `<namespace>/<local id>`, and its value type.
@@ -48,8 +81,8 @@ class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
     Abstract: build one of its subclasses (amount, count, rate and text kinds in kinds.py, the
     record-list and digits kinds); a package declares its own through an `ArtifactCatalog`, with
     the subclass's `declare`. A subclass says how it reads text (`read`) and may refuse values
-    (`check_value`, `is_below_floor`), allow records to hold it (`is_record_field`) or be a
-    yes/no (`is_yes_no`).
+    (`check_value`). What only some kinds have is a Protocol a kind matches by shape: `HasFloor`,
+    `RecordField` and `YesNo`.
     """
 
     identifier: str
@@ -114,29 +147,6 @@ class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
             return self.read(declared)
         raise InvalidTextError(f"must be {self.default_spelling}")
 
-    @property
-    def non_negative(self) -> bool:
-        """Whether no value of this kind is below zero: only an amount or a count kind declared
-        non-negative is; the amount and count kinds override it with their own setting.
-        """
-        return False
-
-    def is_below_floor(self, value: V) -> bool:
-        """Whether `value` is below the lowest value this kind holds; no kind has a floor
-        unless a subclass says so, as the non-negative amount and count kinds do.
-        """
-        return False
-
-    @property
-    def is_record_field(self) -> bool:
-        """Whether a record can hold a value of this kind as one of its fields."""
-        return False
-
-    @property
-    def is_yes_no(self) -> bool:
-        """Whether this kind is a yes/no: a non-negative count, 1 for yes and 0 for no."""
-        return False
-
 
 type Money = ArtifactKind[Decimal]
 """A money kind: its artifacts are exact `Decimal`s in the jurisdiction's currency."""
@@ -168,7 +178,7 @@ class Artifact[T]:
         if isinstance(value, Decimal) and not value.is_finite():
             raise InvalidAmountError(f"{kind.identifier} must be finite, got {value}")
         kind.check_value(value)
-        if kind.is_below_floor(value):
+        if isinstance(kind, HasFloor) and kind.is_below_floor(value):
             raise NegativeArtifactError(
                 f"{kind.identifier} cannot be negative, got {value}",
                 identifier=kind.identifier,

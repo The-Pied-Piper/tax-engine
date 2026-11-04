@@ -37,6 +37,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1043_PREVIOUSLY_CLAIMED_CHECKED,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The amounts the filer enters, non-negative.
 AMOUNT_INPUTS: tuple[ArtifactKind[Decimal], ...] = (
@@ -111,7 +112,7 @@ def test_the_t1043_kinds_are_in_the_snapshot() -> None:
 def test_the_amounts_are_non_negative_decimals() -> None:
     for kind in ALL_KINDS:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
@@ -150,7 +151,7 @@ def test_the_two_conditions_are_yes_or_no_counts_named_by_their_printed_sentence
     }
     for kind in ALL_ANSWERS:
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier in COUNTS, kind.identifier
         assert kind.identifier in REGISTERED, kind.identifier
         assert "T1043" in squashed(docstring_of(kind.identifier)), kind.identifier

@@ -71,6 +71,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     ITC_SRED_REPAYMENT_CREDIT_2014_AND_PRIOR,
     ITC_SRED_REPAYMENT_CREDIT_2015_AND_AFTER,
 )
+from tests.kinds import non_negative
 
 # The caller's lines, as the form takes them: line 67120 (Part A, amount 1), 67130 (amount 2),
 # 67135 (amount 3), 67140 (amount 4), 67170 (Part B, amount B), 67175 (amount C), the T3 box 40
@@ -188,7 +189,7 @@ def test_the_part_d_count_is_the_registered_int_kind(registry: ArtifactRegistry)
     for identifier, kind in PART_D_COUNT:
         assert registry.get(identifier) is kind, identifier
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
 
 
 def test_the_investment_tax_credit_is_the_line_136_kind() -> None:
@@ -213,7 +214,7 @@ def test_every_kind_is_a_non_negative_money_kind(
     # caller enters, a credit at a rate, a sum of such amounts, or a subtotal the form floors at 0.
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
 
 
 @pytest.mark.parametrize(
@@ -228,7 +229,7 @@ def test_the_signed_part_d_amounts_are_money_not_declared_non_negative(
     # and the kinds that take its sign (I, K and the claim limit) are not declared non-negative.
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is False
+    assert non_negative(kind) is False
 
 
 def test_the_total_available_credit_is_not_floored_at_zero(registry: ArtifactRegistry) -> None:
@@ -327,7 +328,7 @@ def test_every_part_e_non_negative_kind_is_a_non_negative_money_kind(
 ) -> None:
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
 
 
 @pytest.mark.parametrize(
@@ -340,7 +341,7 @@ def test_the_signed_part_e_amounts_are_money_not_declared_non_negative(
 ) -> None:
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is False
+    assert non_negative(kind) is False
 
 
 def test_the_refund_is_the_line_45400_kind() -> None:

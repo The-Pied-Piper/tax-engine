@@ -33,7 +33,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList, RecordListKind
 from tax_engine.domain.registry import Namespace
-from tests.kinds import OddKind
+from tests.kinds import OddKind, non_negative
 
 D = Decimal
 NET_INCOME = AmountKind("ex/dependant_net_income", non_negative=True)
@@ -306,7 +306,7 @@ def test_a_catalog_declares_a_record_list_kind_in_its_namespace(fresh: ArtifactR
     assert kind.identifier == "ex/dependants"
     assert kind.label == "dependants"
     assert kind.value_type is RecordList
-    assert kind.non_negative is False
+    assert non_negative(kind) is False
     assert kind.fields == (NET_INCOME, MONTHS)
     assert catalog.kinds == (kind,)
 

@@ -73,3 +73,8 @@ class OddKind(ArtifactKind[Any]):
 
     def read(self, text: str) -> Artifact[Any]:
         raise InvalidTextError(f"a {self.value_type.__name__} has no spelling as text")
+
+
+def non_negative(kind: ArtifactKind[Any]) -> bool:
+    """Whether `kind` is an amount or a count declared non-negative: false for any other kind."""
+    return isinstance(kind, AmountKind | CountKind) and kind.non_negative

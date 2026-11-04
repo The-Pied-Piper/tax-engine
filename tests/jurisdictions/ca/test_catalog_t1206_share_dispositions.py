@@ -46,6 +46,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1206_UNDER_18_PERCENT,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The money kinds: non-negative dollars and cents, one for each printed amount or step of the
 # calculation of reserve (the percentages are the printed percentages as amounts).
@@ -157,18 +158,18 @@ def test_the_row_fields_hold_the_figures_and_the_claim_of_each_disposition() -> 
 def test_the_money_kinds_are_non_negative_decimals() -> None:
     for kind in MONEY:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_line_d_is_a_signed_decimal_as_the_form_prints_no_floor() -> None:
     assert T1206_LINE_D.value_type is Decimal
-    assert T1206_LINE_D.non_negative is False
+    assert non_negative(T1206_LINE_D) is False
 
 
 def test_the_two_counts_are_non_negative_int_kinds() -> None:
     for kind in (T1206_AGED_18_OR_OLDER_CHECKED, T1206_RESERVE_YEARS_AFTER_SALE):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_exports_of_the_two_forms_are_registered_money() -> None:
@@ -188,7 +189,7 @@ def test_the_starting_inputs_are_the_registered_money_of_lines_a_b_and_f() -> No
         T1206_T3_BOX_21_CAPITAL_GAINS,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_each_t1206_kind_has_a_docstring_that_names_the_form() -> None:

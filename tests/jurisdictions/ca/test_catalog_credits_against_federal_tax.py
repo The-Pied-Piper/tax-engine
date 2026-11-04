@@ -67,6 +67,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     POLITICAL_CREDIT_SHORTCUT_THRESHOLD,
     PROVINCES_LOGGING_TAX_CREDIT,
 )
+from tests.kinds import non_negative as declared_non_negative
 
 
 def test_the_credits_against_federal_tax_kinds_are_the_registered_ones(
@@ -112,7 +113,7 @@ def test_the_federal_tax_line_41700_is_a_non_negative_decimal(registry: Artifact
     # return.": the figure entered on line 41700, never below 0.
     assert FEDERAL_TAX_LINE_41700.identifier == "ca/federal_tax_line_41700"
     assert FEDERAL_TAX_LINE_41700.value_type is Decimal
-    assert FEDERAL_TAX_LINE_41700.non_negative is True
+    assert declared_non_negative(FEDERAL_TAX_LINE_41700) is True
     assert registry.kind("ca/federal_tax_line_41700") is FEDERAL_TAX_LINE_41700
 
 
@@ -164,7 +165,7 @@ def test_the_foreign_non_business_tax_paid_is_a_non_negative_decimal(
     # the tax paid minus the part deductible under subsection 20(11) or deducted under 20(12).
     assert FOREIGN_NON_BUSINESS_TAX_PAID.identifier == "ca/foreign_non_business_tax_paid"
     assert FOREIGN_NON_BUSINESS_TAX_PAID.value_type is Decimal
-    assert FOREIGN_NON_BUSINESS_TAX_PAID.non_negative is True
+    assert declared_non_negative(FOREIGN_NON_BUSINESS_TAX_PAID) is True
     assert registry.kind("ca/foreign_non_business_tax_paid") is FOREIGN_NON_BUSINESS_TAX_PAID
 
 
@@ -174,7 +175,7 @@ def test_the_net_foreign_non_business_income_is_a_non_negative_decimal(
     # T2209 line 2 "Net foreign non-business income (2) 43300".
     assert NET_FOREIGN_NON_BUSINESS_INCOME.identifier == "ca/net_foreign_non_business_income"
     assert NET_FOREIGN_NON_BUSINESS_INCOME.value_type is Decimal
-    assert NET_FOREIGN_NON_BUSINESS_INCOME.non_negative is True
+    assert declared_non_negative(NET_FOREIGN_NON_BUSINESS_INCOME) is True
     assert registry.kind("ca/net_foreign_non_business_income") is NET_FOREIGN_NON_BUSINESS_INCOME
 
 
@@ -315,7 +316,7 @@ def test_the_foreign_business_record_fields_are_non_negative_decimals(
     # income allocated to "Other (Outside Canada)"": record fields, not artifacts of their own.
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert declared_non_negative(kind) is True
     assert registry.kind(identifier) is kind
 
 
@@ -326,7 +327,7 @@ def test_the_sheet_line_3_is_a_non_negative_decimal(registry: ArtifactRegistry) 
     # T2209 line 3 "Enter whichever is less: the amount from line 1 or line 2."
     assert FOREIGN_TAX_CREDIT_SHEET_LINE_3.identifier == "ca/foreign_tax_credit_sheet_line_3"
     assert FOREIGN_TAX_CREDIT_SHEET_LINE_3.value_type is Decimal
-    assert FOREIGN_TAX_CREDIT_SHEET_LINE_3.non_negative is True
+    assert declared_non_negative(FOREIGN_TAX_CREDIT_SHEET_LINE_3) is True
     assert registry.kind("ca/foreign_tax_credit_sheet_line_3") is FOREIGN_TAX_CREDIT_SHEET_LINE_3
 
 
@@ -434,7 +435,7 @@ def test_the_business_line_kinds_are_registered_decimals(
     # business foreign tax credit" and 13 "Add lines 11 and 12." "Federal foreign tax credit".
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is non_negative
+    assert declared_non_negative(kind) is non_negative
     assert registry.kind(identifier) is kind
 
 
@@ -457,7 +458,7 @@ def test_the_itc_apprentice_salary_and_wages_is_a_non_negative_decimal(
 
     assert ITC_APPRENTICE_SALARY_AND_WAGES.identifier == "ca/itc_apprentice_salary_and_wages"
     assert ITC_APPRENTICE_SALARY_AND_WAGES.value_type is Decimal
-    assert ITC_APPRENTICE_SALARY_AND_WAGES.non_negative is True
+    assert declared_non_negative(ITC_APPRENTICE_SALARY_AND_WAGES) is True
     assert registry.kind("ca/itc_apprentice_salary_and_wages") is ITC_APPRENTICE_SALARY_AND_WAGES
 
 
@@ -497,7 +498,7 @@ def test_the_itc_apprenticeship_wages_total_is_a_non_negative_decimal(
 
     assert ITC_APPRENTICESHIP_WAGES_TOTAL.identifier == "ca/itc_apprenticeship_wages_total"
     assert ITC_APPRENTICESHIP_WAGES_TOTAL.value_type is Decimal
-    assert ITC_APPRENTICESHIP_WAGES_TOTAL.non_negative is True
+    assert declared_non_negative(ITC_APPRENTICESHIP_WAGES_TOTAL) is True
     assert registry.kind("ca/itc_apprenticeship_wages_total") is ITC_APPRENTICESHIP_WAGES_TOTAL
 
 
@@ -562,7 +563,7 @@ def test_the_logging_fields_are_non_negative_decimals(registry: ArtifactRegistry
     # The tax paid to a province and the net logging income in it are amounts, never below zero.
     for kind in LOGGING_FIELDS:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert declared_non_negative(kind) is True, kind.identifier
 
 
 def test_the_logging_computed_figures_are_non_negative_decimals() -> None:
@@ -570,7 +571,7 @@ def test_the_logging_computed_figures_are_non_negative_decimals() -> None:
     # amount; line 134 is "if negative, enter 0", so it is never below zero either.
     for kind in LOGGING_COMPUTED:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert declared_non_negative(kind) is True, kind.identifier
 
 
 def test_line_134_is_named_federal_tax_and_is_the_federal_tax_of_line_40600() -> None:

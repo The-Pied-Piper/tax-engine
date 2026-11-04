@@ -20,6 +20,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1212_LINE_24900_AMOUNT,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 INPUTS = (T1212_LINE_1_OPENING_BALANCE, T1212_LINE_2_BENEFITS_NO_LONGER_DEFERRED)
 COMPUTED = (T1212_LINE_3_CLOSING_BALANCE, T1212_LINE_24900_AMOUNT)
@@ -74,7 +75,7 @@ def test_the_identifiers_are_the_form_lines() -> None:
 def test_every_kind_is_a_non_negative_decimal_that_is_not_signed() -> None:
     for kind in ALL_KINDS:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 

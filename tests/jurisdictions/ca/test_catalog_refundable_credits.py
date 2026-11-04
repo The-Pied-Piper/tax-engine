@@ -53,6 +53,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT,
     TAX_PAID_BY_INSTALMENTS,
 )
+from tests.kinds import non_negative
 
 
 def test_the_refundable_credits_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -211,7 +212,7 @@ def test_the_home_renovation_fields_are_non_negative_inputs() -> None:
         HOME_RENOVATION_REIMBURSED,
         HOME_RENOVATION_CLAIMED_BY_OTHERS,
     ):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_multigenerational_home_renovation_credit_is_non_negative() -> None:
@@ -219,7 +220,7 @@ def test_the_multigenerational_home_renovation_credit_is_non_negative() -> None:
     assert MULTIGENERATIONAL_HOME_RENOVATION_CREDIT.identifier == (
         "ca/multigenerational_home_renovation_credit"
     )
-    assert MULTIGENERATIONAL_HOME_RENOVATION_CREDIT.non_negative is True
+    assert non_negative(MULTIGENERATIONAL_HOME_RENOVATION_CREDIT) is True
 
 
 def test_the_home_renovations_are_a_record_list_of_three_fields(registry: ArtifactRegistry) -> None:

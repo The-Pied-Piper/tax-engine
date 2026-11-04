@@ -28,6 +28,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.kinds import CountKind, TextKind
 from tax_engine.domain.registry import Namespace
+from tests.kinds import non_negative
 
 NUMBER = DigitsKind("ex/business_number", digits=9)
 SHORT = DigitsKind("ex/filing_number", digits=5)
@@ -131,7 +132,7 @@ def test_a_digits_kind_holds_text_and_its_number_of_digits() -> None:
     assert NUMBER.identifier == "ex/business_number"
     assert NUMBER.label == "business_number"
     assert NUMBER.value_type is str
-    assert NUMBER.non_negative is False
+    assert non_negative(NUMBER) is False
     assert NUMBER.digits == 9
 
 

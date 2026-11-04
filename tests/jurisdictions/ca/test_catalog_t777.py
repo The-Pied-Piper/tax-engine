@@ -51,6 +51,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T777_VEHICLE_SALES_TAX_RATE,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # T777 Part A columns 1 to 6, the ones the form lets the user enter: the class number, UCC at the
 # start of the year (2), cost of additions (3), AIIP or ZEV acquired before 2025 (4), RIIP or ZEV
@@ -162,7 +163,7 @@ def test_the_t777_row_lists_are_record_list_kinds() -> None:
 def test_the_t777_amounts_are_non_negative_money() -> None:
     for kind in MONEY:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_part_a_lists_hold_the_six_input_columns_and_no_computed_column() -> None:
@@ -466,14 +467,14 @@ def test_the_page_1_inputs_are_registered_non_negative_money(registry: ArtifactR
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
 
 
 def test_the_lease_chart_days_and_year_are_non_negative_counts(registry: ArtifactRegistry) -> None:
     for identifier in LEASE_COUNTS:
         kind = registry.kind(identifier)
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
 
 
 def test_the_kilometres_and_the_work_space_use_are_money_not_counts(
@@ -497,7 +498,7 @@ def test_line_3_is_signed_as_the_form_prints_no_floor_on_line_32(
     kind = registry.kind("ca/t777_line_3")
 
     assert kind.value_type is Decimal
-    assert kind.non_negative is False
+    assert non_negative(kind) is False
     assert "ca/t777_line_3" in SIGNED
 
 
@@ -509,7 +510,7 @@ def test_the_line_31_allowances_check_is_registered_beside_its_input(
     kind = registry.kind("ca/t777_vehicle_allowances_checked")
 
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert kind is not registry.kind("ca/t777_vehicle_allowances")
 
 
@@ -529,14 +530,14 @@ def test_the_relocation_form_exports_are_the_line_39_and_line_40_amounts(
     for identifier in ("ca/t777_relocation_deduction", "ca/t777_relocation_carried_forward_out"):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
 
 
 def test_the_work_space_carried_forward_out_is_registered_and_listed(
     registry: ArtifactRegistry,
 ) -> None:
     assert "ca/t777_work_space_carried_forward_out" in REGISTERED
-    assert registry.kind("ca/t777_work_space_carried_forward_out").non_negative is True
+    assert non_negative(registry.kind("ca/t777_work_space_carried_forward_out")) is True
 
 
 def test_the_new_lines_and_inputs_are_in_the_snapshot(registry: ArtifactRegistry) -> None:
@@ -583,5 +584,5 @@ def test_the_rc359_line_7_total_is_registered_money(registry: ArtifactRegistry) 
     kind = registry.kind("ca/rc359_excess_epsp_total")
 
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert "ca/rc359_excess_epsp_total" in REGISTERED

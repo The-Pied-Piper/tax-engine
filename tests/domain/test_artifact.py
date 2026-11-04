@@ -20,6 +20,8 @@ from tax_engine.domain.artifact import (
     ArtifactKind,
     ArtifactRegistry,
     Money,
+    RecordField,
+    YesNo,
 )
 from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
@@ -35,7 +37,7 @@ from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, TextKind
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.registry import Namespace, Registry
-from tests.kinds import OddKind, ca_on_kinds
+from tests.kinds import OddKind, ca_on_kinds, non_negative
 
 D = Decimal
 BASE = AmountKind("ex/taxable_base")
@@ -179,18 +181,18 @@ def test_artifacts_are_immutable() -> None:
 
 
 def test_a_kind_is_unconstrained_by_default() -> None:
-    assert BASE.non_negative is False
+    assert non_negative(BASE) is False
     catalog = ArtifactCatalog(Namespace("ex"))
-    assert AmountKind.declare(catalog, "taxable_base").non_negative is False
-    assert CountKind("ex/person_count").non_negative is False
-    assert TextKind("ex/person_name").non_negative is False
-    assert RateKind("ex/credit_rate").non_negative is False
-    assert OddKind("ex/flag", bool).non_negative is False
+    assert non_negative(AmountKind.declare(catalog, "taxable_base")) is False
+    assert non_negative(CountKind("ex/person_count")) is False
+    assert non_negative(TextKind("ex/person_name")) is False
+    assert non_negative(RateKind("ex/credit_rate")) is False
+    assert non_negative(OddKind("ex/flag", bool)) is False
 
 
 def test_a_kind_may_be_declared_non_negative() -> None:
-    assert_type(NON_NEGATIVE.non_negative, bool)
-    assert NON_NEGATIVE.non_negative is True
+    assert_type(non_negative(NON_NEGATIVE), bool)
+    assert non_negative(NON_NEGATIVE) is True
 
 
 def test_a_catalog_declares_a_non_negative_kind(fresh: ArtifactRegistry) -> None:
@@ -201,7 +203,7 @@ def test_a_catalog_declares_a_non_negative_kind(fresh: ArtifactRegistry) -> None
     assert_type(kind, AmountKind)
     assert kind.identifier == "ex/credit_amount"
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert catalog.kinds == (kind,)
 
 
@@ -271,7 +273,7 @@ def test_a_text_kind_declares_no_non_negative_flag(fresh: ArtifactRegistry) -> N
 def test_a_count_kind_may_be_declared_unconstrained(fresh: ArtifactRegistry) -> None:
     kind = CountKind.declare(ArtifactCatalog(Namespace("ex")), "person_count", non_negative=False)
 
-    assert kind.non_negative is False
+    assert non_negative(kind) is False
     assert Artifact(kind, -1).value == -1
 
 
@@ -290,7 +292,7 @@ def test_an_int_kind_may_be_declared_non_negative() -> None:
 
     assert_type(count, CountKind)
     assert count.value_type is int
-    assert count.non_negative is True
+    assert non_negative(count) is True
 
 
 def test_a_catalog_declares_a_non_negative_int_kind(fresh: ArtifactRegistry) -> None:
@@ -301,7 +303,7 @@ def test_a_catalog_declares_a_non_negative_int_kind(fresh: ArtifactRegistry) -> 
     assert_type(kind, CountKind)
     assert kind.identifier == "ex/person_count"
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert catalog.kinds == (kind,)
 
 
@@ -797,19 +799,21 @@ def test_each_plain_kind_declares_itself_in_the_catalogs_namespace(
 
 
 def test_only_an_amount_a_count_or_a_record_list_is_a_record_field() -> None:
-    assert AmountKind("ex/a").is_record_field
-    assert CountKind("ex/c").is_record_field
-    assert DEPENDANTS.is_record_field
-    assert not TextKind("ex/t").is_record_field
-    assert not NUMBER.is_record_field
-    assert not RateKind("ex/r").is_record_field
+    assert isinstance(AmountKind("ex/a"), RecordField)
+    assert isinstance(CountKind("ex/c"), RecordField)
+    assert isinstance(DEPENDANTS, RecordField)
+    assert not isinstance(TextKind("ex/t"), RecordField)
+    assert not isinstance(NUMBER, RecordField)
+    assert not isinstance(RateKind("ex/r"), RecordField)
 
 
 def test_only_a_non_negative_count_is_yes_no() -> None:
-    assert CountKind("ex/c", non_negative=True).is_yes_no
-    assert not CountKind("ex/c").is_yes_no
-    assert not AmountKind("ex/a", non_negative=True).is_yes_no
-    assert not TextKind("ex/t").is_yes_no
+    counts = CountKind("ex/c", non_negative=True)
+    assert isinstance(counts, YesNo) and counts.is_yes_no
+    unsigned = CountKind("ex/c")
+    assert isinstance(unsigned, YesNo) and not unsigned.is_yes_no
+    assert not isinstance(AmountKind("ex/a", non_negative=True), YesNo)
+    assert not isinstance(TextKind("ex/t"), YesNo)
 
 
 def test_is_below_floor_only_for_a_non_negative_kind_and_a_value_below_zero() -> None:

@@ -40,6 +40,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T90_TOTAL_EXEMPT_INCOME,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The sixteen starting amounts: the printed lines 1, 2, 3, 5 to 13, 10019, 15, 17 and 19, each a
 # non-negative amount as the filer enters it.
@@ -129,7 +130,7 @@ def test_the_three_exports_of_the_form_are_registered_money() -> None:
 def test_the_starting_amounts_are_non_negative_decimals() -> None:
     for kind in INPUTS:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_starting_amounts_are_the_registered_inputs_of_the_form() -> None:
@@ -155,10 +156,10 @@ def test_the_starting_amounts_are_the_registered_inputs_of_the_form() -> None:
 
 def test_the_signed_lines_of_the_form_are_signed_and_the_rest_are_not() -> None:
     for kind in SIGNED_KINDS:
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert kind.identifier in SIGNED, kind.identifier
     for kind in (T90_EXEMPT_WORKING_INCOME, T90_LINE_14, *INPUTS):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 

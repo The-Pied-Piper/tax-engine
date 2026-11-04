@@ -35,6 +35,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T929_WEEKS_ATTENDED,
     WAGE_LOSS_REPLACEMENT_PLAN_INCOME,
 )
+from tests.kinds import non_negative
 
 
 def test_the_other_inputs_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -82,7 +83,7 @@ def test_the_other_inputs_kinds_are_money() -> None:
 
 def test_the_spouse_or_common_law_partner_on_december_31_is_a_non_negative_count() -> None:
     assert SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31.value_type is int
-    assert SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31.non_negative is True
+    assert non_negative(SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31) is True
 
 
 T929_MONEY_INPUTS = (
@@ -118,12 +119,12 @@ def test_the_t929_inputs_are_the_registered_ones(registry: ArtifactRegistry) -> 
 def test_the_t929_money_inputs_are_non_negative_decimals() -> None:
     for kind in T929_MONEY_INPUTS:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_t929_weeks_attended_is_a_non_negative_int_count() -> None:
     assert T929_WEEKS_ATTENDED.value_type is int
-    assert T929_WEEKS_ATTENDED.non_negative is True
+    assert non_negative(T929_WEEKS_ATTENDED) is True
 
 
 # T1 line 26600 "Did you own or hold specified foreign property ... 1 Yes or 2 No": a 0 (No) or 1
@@ -135,7 +136,7 @@ def test_the_specified_foreign_property_answer_is_a_non_negative_int_count(
         SPECIFIED_FOREIGN_PROPERTY_OVER_100K
     )
     assert SPECIFIED_FOREIGN_PROPERTY_OVER_100K.value_type is int
-    assert SPECIFIED_FOREIGN_PROPERTY_OVER_100K.non_negative is True
+    assert non_negative(SPECIFIED_FOREIGN_PROPERTY_OVER_100K) is True
 
 
 def test_the_spouse_or_common_law_partner_on_december_31_checked_is_a_non_negative_count(
@@ -148,7 +149,7 @@ def test_the_spouse_or_common_law_partner_on_december_31_checked_is_a_non_negati
         is SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_CHECKED
     )
     assert SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_CHECKED.value_type is int
-    assert SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_CHECKED.non_negative is True
+    assert non_negative(SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_CHECKED) is True
 
 
 YES_OR_NO_CHECKED = (
@@ -166,7 +167,7 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True
 
 
 def test_the_spouse_or_common_law_partner_on_december_31_total_is_a_non_negative_count(
@@ -179,4 +180,4 @@ def test_the_spouse_or_common_law_partner_on_december_31_total_is_a_non_negative
         is SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_TOTAL
     )
     assert SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_TOTAL.value_type is int
-    assert SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_TOTAL.non_negative is True
+    assert non_negative(SPOUSE_OR_COMMON_LAW_PARTNER_ON_DECEMBER_31_TOTAL) is True

@@ -58,6 +58,7 @@ from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     properties,
     rounding,
 )
+from tests.kinds import non_negative
 
 D = Decimal
 
@@ -202,8 +203,8 @@ def test_has_one_output_of_its_kind(line: int) -> None:
 
 def test_line_56_may_be_negative_and_line_57_is_not() -> None:
     # Line 56 "Reduction ... (line 66 of Form T2091(IND)-WS)" prints no floor; line 57 does.
-    assert KINDS[56].non_negative is False
-    assert KINDS[57].non_negative is True
+    assert non_negative(KINDS[56]) is False
+    assert non_negative(KINDS[57]) is True
 
 
 def test_the_kinds_are_named_after_their_lines() -> None:

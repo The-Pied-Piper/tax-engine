@@ -220,6 +220,7 @@ from tests.jurisdictions.ca.capabilities.principal_residence_figures import (
     properties,
     rounding,
 )
+from tests.kinds import non_negative
 
 D = Decimal
 
@@ -649,12 +650,12 @@ def test_line_66_is_the_lesser_of_lines_64_and_65() -> None:
 
 def test_the_lines_that_may_be_negative_are_signed_kinds() -> None:
     for line in (18, 19, 21, 24, 26, 27, 59, 61, 63, 64, 66):
-        assert KINDS[line].non_negative is False, line
+        assert non_negative(KINDS[line]) is False, line
 
 
 def test_the_lines_that_are_never_negative_are_non_negative_kinds() -> None:
     for line in (3, 6, 16, 17, 23):
-        assert KINDS[line].non_negative is True, line
+        assert non_negative(KINDS[line]) is True, line
 
 
 def test_a_worksheet_line_is_a_decimal_even_for_a_count_of_years() -> None:
