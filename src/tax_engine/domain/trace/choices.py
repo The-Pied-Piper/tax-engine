@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 from tax_engine.domain.artifact import ArtifactKind, Money
+from tax_engine.domain.blank import Blank
 from tax_engine.domain.trace.base import TraceLine
 
 __all__ = [
@@ -88,8 +89,9 @@ class ConditionLine(TraceLine):
     """One condition of a list, the `position` (from 1) of the printed `text`, for `output`.
 
     `reads` holds each figure the condition's tests read, in the order read: the kind and its
-    value, a whole number for a count kind and a Decimal for an amount kind. `applies` is whether
-    the condition holds.
+    value, a whole number for a count kind and a Decimal for an amount kind, or `BLANK` for a figure
+    the filer left blank (a test on a blank does not hold). `applies` is whether the condition
+    holds.
 
     Its own class, not a `SumLine`: a condition is a comparison of figures, not a sum.
     """
@@ -97,7 +99,7 @@ class ConditionLine(TraceLine):
     output: ArtifactKind[int]
     position: int
     text: str
-    reads: tuple[tuple[ArtifactKind[int] | Money, int | Decimal], ...]
+    reads: tuple[tuple[ArtifactKind[int] | Money, int | Decimal | Blank], ...]
     applies: bool
 
     @property

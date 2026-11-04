@@ -94,6 +94,7 @@ STEPS = {
             ),
             "amounts": (),
         },
+        blank={"counts": "0"},
         produces={"output": "ca/cpp_part_4_and_part_5_both"},
     ),
     CapabilitySelection(
@@ -115,6 +116,7 @@ STEPS = {
             "counts": ("ca/cpp_part_4_completed_checked",),
             "amounts": ("ca/t4_cpp_pensionable_earnings_outside_quebec",),
         },
+        blank={"counts": "0"},
         produces={"output": "ca/cpp_part_4_with_employment_earnings"},
     ),
     CapabilitySelection(
