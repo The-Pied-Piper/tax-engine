@@ -69,14 +69,14 @@ class JurisdictionPackages:
         registered before it in place.
         """
         found = [
-            capabilities_in(module)
+            cls
             for module in (self._capabilities(name) for name in self._namespaces)
             if module is not None
+            for cls in capabilities_in(module)
         ]
-        for classes in found:
-            for cls in classes:
-                if registry.identifier_of(cls) != cls.identifier():
-                    registry.register_class(cls)
+        for cls in found:
+            if registry.identifier_of(cls) != cls.identifier():
+                registry.register_class(cls)
 
     @staticmethod
     def _capabilities(package: str) -> ModuleType | None:
