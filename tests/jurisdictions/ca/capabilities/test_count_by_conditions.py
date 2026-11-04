@@ -33,10 +33,15 @@ import pytest
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.composition import Composition
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
@@ -49,7 +54,11 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.trace import ConditionLine, ConditionsCountLine
+from tax_engine.domain.trace import (
+    BlankFallbackLine,
+    ConditionLine,
+    ConditionsCountLine,
+)
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 
 D = Decimal
@@ -769,3 +778,136 @@ def test_line_80_is_0_when_line_72_has_an_amount() -> None:
 
 def test_line_80_is_0_when_the_filer_was_bankrupt() -> None:
     assert gated("0.00", (0, 0, 1, 0, 0)) == D(0)
+
+
+# --- blank -----------------------------------------------------------------------------------
+
+# Form T657 chart style: Part 2 "Complete this chart if" ... amount E "is equal to or less than"
+# the limits and the filer "want[s] to claim the additional deduction"; the conditions are the
+# reverse (0 when any applies), and a skipped chart leaves the amounts blank.
+WANTS = CountKind("ex/wants_additional_deduction")
+AMOUNT_E = AmountKind("ex/amount_e")
+LIMIT = AmountKind("ex/limit")
+PART_2 = CountKind("ex/part_2_applies")
+
+
+def part_2_conditions() -> ParameterDataset[ConditionList]:
+    return dataset(
+        ConditionList(
+            0,
+            (
+                a_condition(
+                    "You do not want to claim the additional deduction",
+                    ConditionTest("count", 1, "equal_to", D(0), None),
+                ),
+                a_condition(
+                    "Amount E in Part 1 is more than the limit",
+                    ConditionTest("amount", 1, "more_than", None, 2),
+                ),
+            ),
+        ),
+        "ex/part_2_conditions",
+    )
+
+
+def part_2() -> CountByConditions:
+    return CountByConditions(part_2_conditions(), (WANTS,), (AMOUNT_E, LIMIT), PART_2)
+
+
+def part_2_inputs(
+    wants: int | None = 1, amount_e: str | None = "100", limit: str | None = "500"
+) -> tuple[Artifact[Any], ...]:
+    return (
+        Artifact(WANTS, BLANK if wants is None else wants),
+        Artifact(AMOUNT_E, BLANK if amount_e is None else D(amount_e)),
+        Artifact(LIMIT, BLANK if limit is None else D(limit)),
+    )
+
+
+def test_allows_a_blank_count_and_a_blank_amount_and_nothing_else() -> None:
+    assert CountByConditions.BLANK_ALLOWED == frozenset({"counts", "amounts"})
+
+
+def test_refuses_a_blank_without_a_manifest_rule() -> None:
+    with pytest.raises(BlankNotAllowedError, match="counts"):
+        part_2().run(part_2_inputs(wants=None))
+    with pytest.raises(BlankNotAllowedError, match="amounts"):
+        part_2().run(part_2_inputs(amount_e=None))
+
+
+def test_refuses_a_blank_rule_on_the_output() -> None:
+    with pytest.raises(InvalidCapabilityError, match="output"):
+        part_2().with_blank_rules({"output": PASS_ON})
+
+
+def test_a_blank_count_with_a_zero_fallback_reads_as_not_ticked() -> None:
+    result = part_2().with_blank_rules({"counts": 0}).run(part_2_inputs(wants=None))
+
+    assert result.outputs == (Artifact(PART_2, 0),)
+    assert result.trace[0] == BlankFallbackLine(WANTS, 0)
+    assert isinstance(result.trace[1], ConditionLine)
+    assert result.trace[1].reads == ((WANTS, 0),)
+    assert result.trace[1].applies is True
+
+
+@pytest.mark.parametrize("which", ["amount_e", "limit"])
+def test_a_blank_amount_with_the_tick_at_yes_is_refused_naming_it(which: str) -> None:
+    rules: dict[str, BlankRule] = {"counts": 0, "amounts": COMPUTE}
+    kind = "amount_e" if which == "amount_e" else "limit"
+
+    with pytest.raises(BlankNotAllowedError, match=f"ex/{kind}|{kind}") as error:
+        part_2().with_blank_rules(rules).run(part_2_inputs(**{which: None}))
+
+    assert "part_2_applies" in str(error.value)
+
+
+def test_a_blank_amount_with_the_tick_at_no_gives_0_and_records_the_blank() -> None:
+    rules: dict[str, BlankRule] = {"counts": 0, "amounts": COMPUTE}
+    result = part_2().with_blank_rules(rules).run(part_2_inputs(wants=0, amount_e=None))
+
+    assert result.outputs == (Artifact(PART_2, 0),)
+    ticked, over_limit = result.trace[0], result.trace[1]
+    assert isinstance(ticked, ConditionLine)
+    assert ticked.applies is True
+    assert isinstance(over_limit, ConditionLine)
+    assert over_limit.applies is False
+    assert (AMOUNT_E, BLANK) in over_limit.reads
+    assert isinstance(result.trace[-1], ConditionsCountLine)
+    assert result.trace[-1].applied == (1,)
+
+
+def test_a_blank_tick_and_a_blank_amount_read_as_not_ticked() -> None:
+    rules: dict[str, BlankRule] = {"counts": 0, "amounts": COMPUTE}
+    result = part_2().with_blank_rules(rules).run(part_2_inputs(wants=None, amount_e=None))
+
+    assert result.outputs == (Artifact(PART_2, 0),)
+    assert result.trace[0] == BlankFallbackLine(WANTS, 0)
+
+
+def test_a_blank_amount_is_not_a_zero() -> None:
+    rules: dict[str, BlankRule] = {"counts": 0, "amounts": COMPUTE}
+    zero = part_2().with_blank_rules(rules).run(part_2_inputs(amount_e="0"))
+
+    assert zero.outputs == (Artifact(PART_2, 1),)
+    with pytest.raises(BlankNotAllowedError):
+        part_2().with_blank_rules(rules).run(part_2_inputs(amount_e=None))
+
+
+def test_a_blank_count_left_to_compute_is_refused() -> None:
+    with pytest.raises(BlankNotAllowedError, match="wants_additional_deduction"):
+        part_2().with_blank_rules({"counts": COMPUTE}).run(part_2_inputs(wants=None))
+
+
+def test_a_pass_on_blank_amount_blanks_the_output() -> None:
+    result = part_2().with_blank_rules({"amounts": PASS_ON}).run(part_2_inputs(limit=None))
+
+    assert result.outputs == (Artifact(PART_2, BLANK),)
+
+
+def test_no_blank_gives_the_ordinary_count() -> None:
+    rules: dict[str, BlankRule] = {"counts": 0, "amounts": COMPUTE}
+
+    assert part_2().with_blank_rules(rules).run(part_2_inputs()).outputs == (Artifact(PART_2, 1),)
+    assert part_2().with_blank_rules(rules).run(part_2_inputs(amount_e="900")).outputs == (
+        Artifact(PART_2, 0),
+    )
