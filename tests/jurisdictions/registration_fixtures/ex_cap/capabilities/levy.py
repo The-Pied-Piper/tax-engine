@@ -18,3 +18,6 @@ class Levy(Capability):
 
 class Undecorated(Levy):
     """A subclass of a decorated class, not itself decorated: the walk leaves it out."""
+
+
+LevyAlias = Levy

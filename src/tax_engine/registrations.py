@@ -8,7 +8,7 @@ artifact kinds and capabilities are not registered by importing: `artifact_kinds
 `capabilities()`, called once each by the composition root, build the registries of every catalog's
 kinds and of every `capabilities` package's classes (found by walking its modules) and hand them
 on. Adding a jurisdiction `<x>` is importing `tax_engine.jurisdictions.<x>` and adding it to
-`JURISDICTIONS`.
+`JURISDICTIONS`. The core package of capabilities is imported here only to be walked.
 """
 
 import tax_engine.adapters.inbound.trace_english

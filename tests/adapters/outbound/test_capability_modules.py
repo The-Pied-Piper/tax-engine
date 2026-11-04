@@ -7,12 +7,14 @@ from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPacka
 from tax_engine.domain.capability import CapabilityRegistry
 from tests.jurisdictions.registration_fixtures import ex_cap, ex_on
 from tests.jurisdictions.registration_fixtures.ex_cap import capabilities
+from tests.jurisdictions.registration_fixtures.ex_cap.capabilities import InInit
+from tests.jurisdictions.registration_fixtures.ex_cap.capabilities import levy as levy_module
 from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.levy import Levy, Undecorated
 from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.more.extra import Extra
 
 
 def test_it_finds_every_decorated_class_in_every_module_below_the_package() -> None:
-    assert capabilities_in(capabilities) == [Extra, Levy]
+    assert capabilities_in(capabilities) == [Extra, InInit, Levy]
 
 
 def test_a_class_imported_into_another_module_is_found_once_where_it_is_defined() -> None:
@@ -28,7 +30,7 @@ def test_a_jurisdiction_package_registers_the_capabilities_it_walks() -> None:
 
     JurisdictionPackages((ex_cap,)).register_capabilities(registry)
 
-    assert registry.identifiers() == {"ex-cap/levy", "ex-cap/extra"}
+    assert registry.identifiers() == {"ex-cap/levy", "ex-cap/extra", "ex-cap/in_init"}
     assert registry.get("ex-cap/levy") is Levy
     assert registry.get("ex-cap/extra") is Extra
 
@@ -39,3 +41,12 @@ def test_a_package_without_a_capabilities_package_contributes_none() -> None:
     JurisdictionPackages((ex_on,)).register_capabilities(registry)
 
     assert registry.identifiers() == frozenset()
+
+
+def test_a_class_bound_to_a_second_name_in_its_module_is_found_once() -> None:
+    assert vars(levy_module)["LevyAlias"] is Levy
+    assert capabilities_in(capabilities).count(Levy) == 1
+
+
+def test_a_capability_defined_in_the_package_init_is_found() -> None:
+    assert InInit in capabilities_in(capabilities)

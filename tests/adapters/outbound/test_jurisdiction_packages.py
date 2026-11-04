@@ -18,6 +18,7 @@ import pytest
 
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
+from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -29,7 +30,7 @@ _UNSET = object()
 """A `catalog` module without a `CATALOG`."""
 
 type MakePackage = Callable[..., ModuleType]
-type MakeOnDisk = Callable[[str, str, str], ModuleType]
+type MakeOnDisk = Callable[..., ModuleType]
 
 
 @pytest.fixture
@@ -249,11 +250,17 @@ def on_disk(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[MakeOnD
     monkeypatch.syspath_prepend(str(tmp_path))
     names: list[str] = []
 
-    def make(name: str, namespace: str, catalog_source: str) -> ModuleType:
+    def make(
+        name: str, namespace: str, catalog_source: str, capabilities_source: str | None = None
+    ) -> ModuleType:
         directory = tmp_path / name
         directory.mkdir()
         (directory / "__init__.py").write_text(f"NAMESPACE = {namespace!r}\n")
         (directory / "catalog.py").write_text(catalog_source)
+        if capabilities_source is not None:
+            (directory / "capabilities").mkdir()
+            (directory / "capabilities" / "__init__.py").write_text("")
+            (directory / "capabilities" / "module.py").write_text(capabilities_source)
         names.append(name)
         return importlib.import_module(name)
 
@@ -282,3 +289,55 @@ def test_a_failing_import_in_a_catalog_module_is_not_hidden(on_disk: MakeOnDisk)
 
     with pytest.raises(ImportError, match="NoSuchThing"):
         packages.register(ArtifactRegistry())
+
+
+# --- capabilities -----------------------------------------------------------------------------
+
+CAPABILITY_SOURCE = """
+from tax_engine.domain.capability import Capability, CapabilityResult, capability
+
+
+@capability(identifier="levy")
+class Levy(Capability):
+    def compute(self, inputs):
+        return CapabilityResult(outputs=(), trace=())
+"""
+
+
+def test_a_capability_clashing_with_one_already_registered_is_rejected(
+    on_disk: MakeOnDisk,
+) -> None:
+    registry = CapabilityRegistry()
+    packages = JurisdictionPackages((on_disk("ex_cap_clash", "ex-cap", "", CAPABILITY_SOURCE),))
+    packages.register_capabilities(registry)
+
+    with pytest.raises(DuplicateRegistrationError, match="'ex-cap/levy'"):
+        packages.register_capabilities(registry)
+
+
+def test_a_missing_dependency_of_a_capability_module_is_not_hidden(on_disk: MakeOnDisk) -> None:
+    packages = JurisdictionPackages(
+        (on_disk("ex_cap_missing", "ex-cap", "", "import made_up_missing_dep\n"),)
+    )
+
+    with pytest.raises(ModuleNotFoundError) as raised:
+        packages.register_capabilities(CapabilityRegistry())
+
+    assert raised.value.name == "made_up_missing_dep"
+
+
+def test_a_failing_import_in_one_package_registers_none_of_the_capabilities(
+    on_disk: MakeOnDisk,
+) -> None:
+    registry = CapabilityRegistry()
+    packages = JurisdictionPackages(
+        (
+            on_disk("ex_cap_good", "ex-cap", "", CAPABILITY_SOURCE),
+            on_disk("ex_cap_bad", "ex-bad", "", "from decimal import NoSuchThing\n"),
+        )
+    )
+
+    with pytest.raises(ImportError, match="NoSuchThing"):
+        packages.register_capabilities(registry)
+
+    assert registry.identifiers() == frozenset()

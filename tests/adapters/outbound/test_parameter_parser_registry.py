@@ -81,7 +81,6 @@ from tax_engine.domain.parameters.taper import TAPER, Taper
 from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
 from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
 from tax_engine.domain.registry import Registry
-from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -390,10 +389,6 @@ def test_a_directly_constructed_registry_is_separate_and_empty() -> None:
     assert registry is not ParameterParserRegistry.shared()
     with pytest.raises(UnknownRegistrationError):
         registry.for_kind(BRACKETS)
-
-
-def test_shared_parser_registry_is_not_the_shared_capability_registry() -> None:
-    assert id(ParameterParserRegistry.shared()) != id(bundled_capabilities())
 
 
 # --- the decorator ----------------------------------------------------------------------------
