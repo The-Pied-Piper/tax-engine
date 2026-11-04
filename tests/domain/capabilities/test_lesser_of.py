@@ -30,6 +30,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import LesserOfLine
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
@@ -37,10 +38,10 @@ from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 D = Decimal
 
 
-PART_ONE = ArtifactKind("ex/part_one", Decimal)
-PART_TWO = ArtifactKind("ex/part_two", Decimal)
-PART_THREE = ArtifactKind("ex/part_three", Decimal)
-LESSER_AMOUNT = ArtifactKind("ex/lesser_amount", Decimal)
+PART_ONE = AmountKind("ex/part_one")
+PART_TWO = AmountKind("ex/part_two")
+PART_THREE = AmountKind("ex/part_three")
+LESSER_AMOUNT = AmountKind("ex/lesser_amount")
 
 
 def capability() -> LesserOf:
@@ -133,7 +134,7 @@ def test_rejects_a_single_kind_for_its_amounts() -> None:
 
 
 def test_rejects_an_amount_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="LesserOf.*'amounts'"):
         LesserOf((PART_ONE, count), LESSER_AMOUNT)  # type: ignore[arg-type]

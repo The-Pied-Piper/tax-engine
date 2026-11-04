@@ -33,14 +33,14 @@ from tax_engine.adapters.inbound.trace_english.registry import (
     english_renderer,
 )
 from tax_engine.adapters.outbound.parameter_parsers.registry import ParameterParserRegistry
-from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Registry
 from tax_engine.domain.trace import SumLine, TraceLine
 
 D = Decimal
 
-EX_TOTAL = ArtifactKind("ex/total", Decimal)
+EX_TOTAL = AmountKind("ex/total")
 
 REAL_SHARED = EnglishRendererRegistry.shared()  # before any test points `shared` elsewhere
 
@@ -486,7 +486,7 @@ def levies(fresh: EnglishRendererRegistry) -> Iterator[ModuleType]:
 def test_a_made_up_packages_line_is_rendered_with_its_own_text(
     levies: ModuleType, fresh: EnglishRendererRegistry
 ) -> None:
-    line = levies.ExLevyLine(ArtifactKind("ex/levy", Decimal), D("12.5"))
+    line = levies.ExLevyLine(AmountKind("ex/levy"), D("12.5"))
 
     assert EnglishTraceRenderer(fresh).render(line) == "levy: levy of 12.5"
 

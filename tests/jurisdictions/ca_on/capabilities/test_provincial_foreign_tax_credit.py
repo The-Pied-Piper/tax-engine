@@ -79,6 +79,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -116,9 +117,9 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # The return-wide figures and the output come with the wiring; the tests use made-up kinds.
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-PROVINCIAL_TAX = ArtifactKind("ex/provincial_tax", Decimal, non_negative=True)
-CREDIT = ArtifactKind("ex/provincial_credit", Decimal, non_negative=True)
+NET_INCOME = AmountKind("ex/net_income")
+PROVINCIAL_TAX = AmountKind("ex/provincial_tax", non_negative=True)
+CREDIT = AmountKind("ex/provincial_credit", non_negative=True)
 SHEETS = FOREIGN_TAX_CREDIT_SHEETS
 
 # A sheet is (line 1 tax paid, income used on line 2, T2209 line 3).
@@ -143,10 +144,10 @@ def rounding(rule: RoundingRule = CENT) -> ParameterDataset[RoundingOnly]:
     )
 
 
-MINIMUM_TAX = ArtifactKind("ex/minimum_tax_applies", int, non_negative=True)
-LINE_7 = ArtifactKind("ex/non_business_tax_two_thirds", Decimal, non_negative=True)
-LINE_8 = ArtifactKind("ex/business_tax_paid", Decimal, non_negative=True)
-LINE_11 = ArtifactKind("ex/special_foreign_tax_credit", Decimal, non_negative=True)
+MINIMUM_TAX = CountKind("ex/minimum_tax_applies", non_negative=True)
+LINE_7 = AmountKind("ex/non_business_tax_two_thirds", non_negative=True)
+LINE_8 = AmountKind("ex/business_tax_paid", non_negative=True)
+LINE_11 = AmountKind("ex/special_foreign_tax_credit", non_negative=True)
 RATE_FIGURE = D("0.666666")
 
 
@@ -190,7 +191,7 @@ def capability(
 
 def sheet_list(*rows: Sheet) -> Artifact[Any]:
     """A `ca/foreign_tax_credit_sheets` artifact of one record per sheet, in order."""
-    records = [
+    records: list[dict[ArtifactKind[Any], object]] = [
         {
             FOREIGN_NON_BUSINESS_TAX_PAID: D(tax),
             NET_FOREIGN_NON_BUSINESS_INCOME: D(income),

@@ -22,9 +22,10 @@ import pytest
 
 import tax_engine.jurisdictions.ca_on.capabilities as ontario
 import tax_engine.registrations
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import ChosenByCountLine, ChosenByRangeLine
 from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseByRange
@@ -32,13 +33,13 @@ from tax_engine.jurisdictions.ca_on.capabilities.choose_by_range import ChooseBy
 D = Decimal
 
 
-TESTED = ArtifactKind("ex/amount_tested", Decimal)
-FIRST_LIMIT = ArtifactKind("ex/first_limit", Decimal)
-SECOND_LIMIT = ArtifactKind("ex/second_limit", Decimal)
-FIRST = ArtifactKind("ex/amount_first", Decimal)
-SECOND = ArtifactKind("ex/amount_second", Decimal)
-THIRD = ArtifactKind("ex/amount_third", Decimal)
-CHOSEN = ArtifactKind("ex/amount_chosen", Decimal)
+TESTED = AmountKind("ex/amount_tested")
+FIRST_LIMIT = AmountKind("ex/first_limit")
+SECOND_LIMIT = AmountKind("ex/second_limit")
+FIRST = AmountKind("ex/amount_first")
+SECOND = AmountKind("ex/amount_second")
+THIRD = AmountKind("ex/amount_third")
+CHOSEN = AmountKind("ex/amount_chosen")
 
 SLOTS = ("amount", "first_limit", "second_limit", "first", "second", "third")
 
@@ -224,14 +225,14 @@ def test_rejects_a_count_kind_for_each_slot(slot: str) -> None:
         "third": THIRD,
         "output": CHOSEN,
     }
-    kinds[slot] = ArtifactKind("ex/some_count", int)
+    kinds[slot] = CountKind("ex/some_count")
 
     with pytest.raises(InvalidCapabilityError, match=f"ChooseByRange.*'{slot}'"):
         ChooseByRange(**kinds)
 
 
 def test_mypy_rejects_wiring_a_count_kind_for_its_tested_amount() -> None:
-    count = ArtifactKind("ex/other_count", int)
+    count = CountKind("ex/other_count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if it
     # is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="ChooseByRange.*'amount'"):
@@ -239,7 +240,7 @@ def test_mypy_rejects_wiring_a_count_kind_for_its_tested_amount() -> None:
 
 
 def test_mypy_rejects_wiring_a_count_kind_for_its_output() -> None:
-    count = ArtifactKind("ex/other_count", int)
+    count = CountKind("ex/other_count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if it
     # is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="ChooseByRange.*'output'"):
@@ -359,7 +360,7 @@ def test_the_order_of_the_inputs_does_not_matter() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), *inputs("300")))
 

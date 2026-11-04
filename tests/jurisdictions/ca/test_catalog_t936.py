@@ -67,6 +67,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T936_TOTAL_INVESTMENT_INCOME,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The five starting amounts, each a non-negative amount as the filer enters it.
 INPUTS = (
@@ -203,27 +204,27 @@ def test_every_t936_kind_is_a_decimal_money_amount() -> None:
 
 def test_the_starting_amounts_are_non_negative_decimals() -> None:
     for kind in INPUTS:
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
 def test_the_signed_lines_of_the_form_are_signed_and_the_rest_are_not() -> None:
     for kind in SIGNED_KINDS:
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert kind.identifier in SIGNED, kind.identifier
     for kind in ALL_KINDS:
         if kind in SIGNED_KINDS:
             continue
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
 def test_the_two_exports_and_chart_a_line_20_are_never_negative() -> None:
     # Chart A line 14 "(if negative, enter "0")", line 20 "(if negative, enter "0")" and line C
     # "(if negative, enter "0")".
-    assert T936_CHART_A_LINE_14.non_negative is True
-    assert T936_CNIL.non_negative is True
-    assert T936_ADDITIONAL_INVESTMENT_INCOME.non_negative is True
+    assert non_negative(T936_CHART_A_LINE_14) is True
+    assert non_negative(T936_CNIL) is True
+    assert non_negative(T936_ADDITIONAL_INVESTMENT_INCOME) is True
 
 
 def test_the_t936_kinds_are_not_counts_or_record_lists() -> None:

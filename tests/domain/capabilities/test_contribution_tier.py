@@ -21,10 +21,11 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.domain.capabilities as core
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.contribution_tier import TieredContribution
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -41,8 +42,8 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-EARNINGS = ArtifactKind("ex/earnings", Decimal)
-CONTRIBUTION = ArtifactKind("ex/contribution", Decimal)
+EARNINGS = AmountKind("ex/earnings")
+CONTRIBUTION = AmountKind("ex/contribution")
 
 
 def values(
@@ -153,7 +154,7 @@ def test_rejects_a_list_of_kinds_for_its_earnings() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.
@@ -340,7 +341,7 @@ def test_rounding_alone_can_reach_the_maximum() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), Artifact(EARNINGS, D("23000"))))
 

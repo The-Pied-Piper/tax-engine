@@ -18,7 +18,6 @@ from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
 from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, Blank, BlankRule, Compute, PassOn
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     BlankValueError,
@@ -27,7 +26,8 @@ from tax_engine.domain.errors import (
     InvalidCompositionError,
     NegativeArtifactError,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import (
     BlankFallbackLine,
     BlankPassedOnLine,
@@ -36,17 +36,18 @@ from tax_engine.domain.trace import (
     SumLine,
 )
 from tax_engine.domain.worksheet import Worksheet
+from tests.kinds import OddKind
 
 D = Decimal
 
-INCOME = ArtifactKind("ex/income", Decimal)
-CHART_GAIN = ArtifactKind("ex/chart_gain", Decimal)
-LIMIT = ArtifactKind("ex/limit", Decimal)
-DEDUCTION = ArtifactKind("ex/deduction", Decimal)
-TAXABLE = ArtifactKind("ex/taxable_income", Decimal)
-OTHER = ArtifactKind("ex/other", Decimal)
-NET = ArtifactKind("ex/net", Decimal)
-NON_NEGATIVE = ArtifactKind("ex/count_of_things", int, non_negative=True)
+INCOME = AmountKind("ex/income")
+CHART_GAIN = AmountKind("ex/chart_gain")
+LIMIT = AmountKind("ex/limit")
+DEDUCTION = AmountKind("ex/deduction")
+TAXABLE = AmountKind("ex/taxable_income")
+OTHER = AmountKind("ex/other")
+NET = AmountKind("ex/net")
+NON_NEGATIVE = CountKind("ex/count_of_things", non_negative=True)
 
 
 class SubtractCompute(Capability):
@@ -126,8 +127,8 @@ def test_any_kind_accepts_blank() -> None:
     kinds: tuple[ArtifactKind[Any], ...] = (
         INCOME,
         NON_NEGATIVE,
-        ArtifactKind("ex/yes_or_no", bool),
-        ArtifactKind("ex/note", str),
+        OddKind("ex/yes_or_no", bool),
+        TextKind("ex/note"),
         DigitsKind("ex/sin", digits=9),
         RecordListKind("ex/people", fields=(INCOME,)),
     )
@@ -135,8 +136,9 @@ def test_any_kind_accepts_blank() -> None:
 
 
 def test_a_wrong_typed_value_is_still_refused() -> None:
+    income_kind: ArtifactKind[Any] = AmountKind("ex/income")
     with pytest.raises(TypeError, match="income must be a Decimal"):
-        Artifact(ArtifactKind[Any]("ex/income", Decimal), "12")
+        Artifact(income_kind, "12")
 
 
 def test_a_negative_value_is_still_refused_for_a_non_negative_kind() -> None:
@@ -205,8 +207,8 @@ def test_a_count_slot_takes_an_int_fallback() -> None:
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
             raise NotImplementedError
 
-    counted = ArtifactKind("ex/counted", int)
-    total = ArtifactKind("ex/counted_total", int)
+    counted = CountKind("ex/counted")
+    total = CountKind("ex/counted_total")
     Count(counted, total).with_blank_rules({"count": 0})
     with pytest.raises(InvalidCapabilityError, match="blank rule for slot 'count'"):
         Count(counted, total).with_blank_rules({"count": D(0)})
@@ -350,7 +352,7 @@ def test_a_compute_rule_for_a_slot_that_is_not_allowed_to_be_blank_is_refused() 
 
 
 def test_a_compute_rule_is_allowed_on_a_slot_that_takes_no_number() -> None:
-    notes = ArtifactKind("ex/notes", RecordList)
+    notes = OddKind("ex/notes", RecordList)
 
     class Listing(Capability):
         CONSUMES: ClassVar[Mapping[str, type]] = {"rows": RecordList}
@@ -499,7 +501,7 @@ def test_a_composition_declares_no_blank_input_by_default() -> None:
 
 
 def test_a_fallback_a_kind_cannot_hold_is_refused_when_the_rules_are_given() -> None:
-    floor = ArtifactKind("ex/floor", Decimal, non_negative=True)
+    floor = AmountKind("ex/floor", non_negative=True)
 
     SubtractCompute(INCOME, LIMIT, NET).with_blank_rules({"less": D(-5)})
     with pytest.raises(InvalidCapabilityError, match="fallback -5 for slot 'less'.*'ex/floor'"):
@@ -521,7 +523,7 @@ def test_a_compute_that_returns_a_blank_breaks_its_contract() -> None:
 
 
 def test_a_fallback_for_a_slot_that_is_not_a_number_is_refused_but_pass_on_is_allowed() -> None:
-    notes = ArtifactKind("ex/notes", RecordList)
+    notes = OddKind("ex/notes", RecordList)
 
     class Listing(Capability):
         CONSUMES: ClassVar[Mapping[str, type]] = {"rows": RecordList}

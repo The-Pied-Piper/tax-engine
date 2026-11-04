@@ -20,18 +20,18 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DomainError, InvalidCapabilityError, MissingArtifactError
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.trace import QuotientLine
 from tax_engine.jurisdictions.ca_on.capabilities.quotient import Quotient
 
 D = Decimal
 
-DIVIDEND = ArtifactKind("ex/dividend_amount", Decimal)
-DIVISOR = ArtifactKind("ex/divisor_amount", Decimal)
-OUTPUT = ArtifactKind("ex/quotient_amount", Decimal)
+DIVIDEND = AmountKind("ex/dividend_amount")
+DIVISOR = AmountKind("ex/divisor_amount")
+OUTPUT = AmountKind("ex/quotient_amount")
 
 
 def capability() -> Quotient:
@@ -101,14 +101,14 @@ def test_rejects_a_record_list_kind_for_its_dividend() -> None:
 
 
 def test_rejects_a_count_kind_for_its_divisor() -> None:
-    other = ArtifactKind("ex/a_count", int)
+    other = CountKind("ex/a_count")
 
     with pytest.raises(InvalidCapabilityError, match="Quotient.*'divisor'"):
         Quotient(dividend=DIVIDEND, divisor=other, output=OUTPUT)  # type: ignore[arg-type]
 
 
 def test_rejects_a_count_kind_for_its_output() -> None:
-    other = ArtifactKind("ex/a_count", int)
+    other = CountKind("ex/a_count")
 
     with pytest.raises(InvalidCapabilityError, match="Quotient.*'output'"):
         Quotient(dividend=DIVIDEND, divisor=DIVISOR, output=other)  # type: ignore[arg-type]
@@ -246,7 +246,7 @@ def test_needs_its_divisor() -> None:
 
 
 def test_does_not_consume_anything_else() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = capability().compute((other, *inputs("1", "4")))
 

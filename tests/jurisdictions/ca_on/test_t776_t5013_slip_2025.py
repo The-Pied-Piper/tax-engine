@@ -31,8 +31,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -83,8 +84,8 @@ REFUSED_TEXT = (
 
 # Made up for this test and not registered: the two checked answers, the amounts the conditions
 # read (position 1 the CCA claim), the count of the conflicts and its checked count.
-PARTNER = ArtifactKind("ex/t776_partner_checked", int)
-SLIP = ArtifactKind("ex/t776_t5013_slip_checked", int)
+PARTNER = CountKind("ex/t776_partner_checked")
+SLIP = CountKind("ex/t776_t5013_slip_checked")
 AMOUNT_NAMES = (
     "cca_table_claim",
     "gross_rents",
@@ -112,10 +113,10 @@ AMOUNT_NAMES = (
     "equipment_additions_total",
     "building_additions_total",
 )
-AMOUNTS = tuple(ArtifactKind(f"ex/t776_{name}", Decimal) for name in AMOUNT_NAMES)
+AMOUNTS = tuple(AmountKind(f"ex/t776_{name}") for name in AMOUNT_NAMES)
 CLAIM = AMOUNTS[0]
-CONFLICT = ArtifactKind("ex/t776_t5013_slip_conflict", int)
-CONFLICT_CHECKED = ArtifactKind("ex/t776_t5013_slip_conflict_checked", int)
+CONFLICT = CountKind("ex/t776_t5013_slip_conflict")
+CONFLICT_CHECKED = CountKind("ex/t776_t5013_slip_conflict_checked")
 
 
 def _conflict(partner: int, slip: int, claim: str = "0", **others: str) -> int:

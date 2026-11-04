@@ -11,8 +11,8 @@ from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBe
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
 from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
 from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
 from tax_engine.jurisdictions.ca.capabilities.count_at_most import CountAtMost

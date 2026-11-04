@@ -26,7 +26,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
@@ -35,10 +35,11 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRate, ClassRates
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
@@ -273,7 +274,7 @@ def test_missing_classes_is_a_missing_artifact() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other_amount", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other_amount"), D("9"))
 
     (output,) = capability().compute((other, classes(WITH_ADDITIONS))).outputs
 

@@ -40,6 +40,7 @@ from tax_engine.domain.capabilities.greater_of import GreaterOf
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -53,21 +54,21 @@ ELIGIBLE_CREDIT_RATE = "ca-on/split_income_dividend_credit_rate_eligible"
 OTHER_CREDIT_RATE = "ca-on/split_income_dividend_credit_rate_other_than_eligible"
 
 # Made up for this test and not registered: the form's lines, by number.
-LINE_4 = ArtifactKind("ex/line_4", Decimal)
-LINE_17 = ArtifactKind("ex/line_17", Decimal)
-LINE_18 = ArtifactKind("ex/line_18", Decimal)
-LINE_33 = ArtifactKind("ex/line_33", Decimal)
-LINE_34 = ArtifactKind("ex/line_34", Decimal)
-LINE_35 = ArtifactKind("ex/line_35", Decimal)
-LINE_36 = ArtifactKind("ex/line_36", Decimal)
-LINE_38 = ArtifactKind("ex/line_38", Decimal)
-LINE_39 = ArtifactKind("ex/line_39", Decimal)
-LINE_42 = ArtifactKind("ex/line_42", Decimal)
-LINE_45 = ArtifactKind("ex/line_45", Decimal)
-LINE_46 = ArtifactKind("ex/line_46", Decimal)
-LINE_47 = ArtifactKind("ex/line_47", Decimal)
-LINE_51 = ArtifactKind("ex/line_51", Decimal)
-LINE_52 = ArtifactKind("ex/line_52", Decimal)
+LINE_4 = AmountKind("ex/line_4")
+LINE_17 = AmountKind("ex/line_17")
+LINE_18 = AmountKind("ex/line_18")
+LINE_33 = AmountKind("ex/line_33")
+LINE_34 = AmountKind("ex/line_34")
+LINE_35 = AmountKind("ex/line_35")
+LINE_36 = AmountKind("ex/line_36")
+LINE_38 = AmountKind("ex/line_38")
+LINE_39 = AmountKind("ex/line_39")
+LINE_42 = AmountKind("ex/line_42")
+LINE_45 = AmountKind("ex/line_45")
+LINE_46 = AmountKind("ex/line_46")
+LINE_47 = AmountKind("ex/line_47")
+LINE_51 = AmountKind("ex/line_51")
+LINE_52 = AmountKind("ex/line_52")
 
 
 def only(result: CapabilityResult) -> Artifact[Decimal]:

@@ -26,8 +26,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import CONDITIONS
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
@@ -163,8 +164,8 @@ def test_a_formula_flag_is_1_for_its_own_number_and_0_for_the_others(family: str
 def test_the_accepted_numbers_pass_and_every_other_number_is_refused(
     family: str, accepted: range
 ) -> None:
-    raw = ArtifactKind("ex/number", int)
-    checked = ArtifactKind("ex/number_checked", int)
+    raw = CountKind("ex/number")
+    checked = CountKind("ex/number_checked")
     data: Any = SOURCE.get(family, 2025, CONDITIONS)
     capability = CountRefusedByConditions(data, raw, checked)
 

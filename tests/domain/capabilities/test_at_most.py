@@ -18,7 +18,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.domain.capabilities as core
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.at_most import AtMost
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
@@ -27,15 +27,16 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import AtMostLine
 
 D = Decimal
 
 
-CLAIMED = ArtifactKind("ex/claimed_amount", Decimal)
-LIMIT = ArtifactKind("ex/claim_limit", Decimal)
-ALLOWED = ArtifactKind("ex/allowed_amount", Decimal)
+CLAIMED = AmountKind("ex/claimed_amount")
+LIMIT = AmountKind("ex/claim_limit")
+ALLOWED = AmountKind("ex/allowed_amount")
 
 
 def capability() -> AtMost:
@@ -148,7 +149,7 @@ def test_rejects_a_list_of_kinds_for_its_bound() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.
@@ -223,7 +224,7 @@ def test_the_order_of_the_inputs_does_not_matter() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("1")), *inputs("40", "100")))
 

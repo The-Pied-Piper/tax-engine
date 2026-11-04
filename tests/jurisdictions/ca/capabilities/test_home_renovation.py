@@ -91,7 +91,7 @@ def capability(cls: type[HomeRenovationRows], value: str = "50000.00") -> HomeRe
 
 def renovations(*records: tuple[str, str, str]) -> Artifact[Any]:
     """An `ca/home_renovations` artifact of one record per renovation, in the order given."""
-    rows = [
+    rows: list[dict[ArtifactKind[Any], object]] = [
         {
             HOME_RENOVATION_EXPENDITURES: D(expenditures),
             HOME_RENOVATION_REIMBURSED: D(reimbursed),

@@ -16,10 +16,10 @@ import pytest
 import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_on.catalog
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
+from tax_engine.domain.kinds import DigitsKind, RecordListKind
 from tax_engine.domain.parameters.rate import Rate
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_CARE_EXPENSES,
     DEPENDANT_NET_INCOME,
@@ -280,6 +280,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     WORKSHEET_ON428_LINE_8,
 )
 from tax_engine.registrations import JURISDICTIONS
+from tests.kinds import non_negative
 
 REGISTERED = frozenset(
     {
@@ -1073,7 +1074,7 @@ def test_the_opportunities_fund_checked_kind_is_registered_beside_the_donation(
     )
     assert OPPORTUNITIES_FUND_DONATION_CHECKED is not OPPORTUNITIES_FUND_DONATION
     assert OPPORTUNITIES_FUND_DONATION_CHECKED.value_type is Decimal
-    assert OPPORTUNITIES_FUND_DONATION_CHECKED.non_negative is True
+    assert non_negative(OPPORTUNITIES_FUND_DONATION_CHECKED) is True
 
 
 def test_the_spouse_maximum_and_checked_kinds_are_registered_beside_their_inputs(
@@ -1096,7 +1097,7 @@ def test_the_spouse_maximum_and_checked_kinds_are_registered_beside_their_inputs
         SPOUSE_RETURN_ONTARIO_DISABILITY_AMOUNT_MAXIMUM,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert (
         registry.kind("ca-on/spouse_return_ontario_age_amount_checked")
         is SPOUSE_RETURN_ONTARIO_AGE_AMOUNT_CHECKED
@@ -1120,7 +1121,7 @@ def test_the_spouse_maximum_and_checked_kinds_are_registered_beside_their_inputs
         SPOUSE_RETURN_ONTARIO_BASIC_PERSONAL_AMOUNT_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert SPOUSE_RETURN_ONTARIO_AGE_AMOUNT_CHECKED is not SPOUSE_RETURN_ONTARIO_AGE_AMOUNT
 
 
@@ -1183,7 +1184,7 @@ def test_the_caregiver_dependants_are_a_record_list_of_net_income_and_whether_cl
     assert CAREGIVER_DEPENDANTS.fields[0] is DEPENDANT_NET_INCOME
     assert CLAIMED_AS_ELIGIBLE_DEPENDANT.identifier == "ca-on/claimed_as_eligible_dependant"
     assert CLAIMED_AS_ELIGIBLE_DEPENDANT.value_type is int
-    assert CLAIMED_AS_ELIGIBLE_DEPENDANT.non_negative is True
+    assert non_negative(CLAIMED_AS_ELIGIBLE_DEPENDANT) is True
 
 
 def test_the_caregiver_amount_is_a_non_negative_decimal(registry: ArtifactRegistry) -> None:
@@ -1191,7 +1192,7 @@ def test_the_caregiver_amount_is_a_non_negative_decimal(registry: ArtifactRegist
     # the worksheet's line 5, each "if negative, enter "0"".
     assert CAREGIVER_AMOUNT.identifier == "ca-on/caregiver_amount"
     assert CAREGIVER_AMOUNT.value_type is Decimal
-    assert CAREGIVER_AMOUNT.non_negative is True
+    assert non_negative(CAREGIVER_AMOUNT) is True
     assert registry.kind("ca-on/caregiver_amount") is CAREGIVER_AMOUNT
 
 
@@ -1207,7 +1208,7 @@ def test_the_adoption_credit_and_pension_income_credit_are_non_negative_amounts(
     ):
         assert kind.identifier == identifier
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
         assert registry.kind(identifier) is kind
 
 
@@ -1220,19 +1221,19 @@ def test_the_co_operative_education_placements_are_a_record_list_of_the_expendit
     assert kind is COOP_EDUCATION_PLACEMENTS
     assert COOP_EDUCATION_PLACEMENTS.fields == (COOP_EDUCATION_PLACEMENT_EXPENDITURES,)
     assert COOP_EDUCATION_PLACEMENT_EXPENDITURES.value_type is Decimal
-    assert COOP_EDUCATION_PLACEMENT_EXPENDITURES.non_negative is True
+    assert non_negative(COOP_EDUCATION_PLACEMENT_EXPENDITURES) is True
 
 
 def test_the_co_operative_education_placement_count_is_a_non_negative_int_kind() -> None:
     assert COOP_EDUCATION_PLACEMENT_COUNT.identifier == "ca-on/coop_education_placement_count"
     assert COOP_EDUCATION_PLACEMENT_COUNT.value_type is int
-    assert COOP_EDUCATION_PLACEMENT_COUNT.non_negative is True
+    assert non_negative(COOP_EDUCATION_PLACEMENT_COUNT) is True
 
 
 def test_the_co_operative_education_payroll_and_credit_are_non_negative_amounts() -> None:
     for kind in (COOP_EDUCATION_PAYROLL, COOP_EDUCATION_CREDIT):
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
 
 
 def test_the_disability_dependants_are_a_record_list_of_the_ontario_worksheets_figures(
@@ -1248,7 +1249,7 @@ def test_the_disability_dependants_are_a_record_list_of_the_ontario_worksheets_f
     assert isinstance(DISABILITY_DEPENDANTS, RecordListKind)
     assert DISABILITY_DEPENDANTS.identifier == "ca-on/disability_dependants"
     assert DISABILITY_DEPENDANTS.value_type is RecordList
-    assert DISABILITY_DEPENDANTS.non_negative is False
+    assert non_negative(DISABILITY_DEPENDANTS) is False
     assert DISABILITY_DEPENDANTS.fields == (
         DEPENDANT_UNDER_18,
         DEPENDANT_CARE_EXPENSES,
@@ -1273,7 +1274,7 @@ def test_the_dependant_on428_line_28_is_a_non_negative_decimal(registry: Artifac
     # Form ON428.": a starting amount from another person's return, a field of each record.
     assert DEPENDANT_ON428_LINE_28.identifier == "ca-on/dependant_on428_line_28"
     assert DEPENDANT_ON428_LINE_28.value_type is Decimal
-    assert DEPENDANT_ON428_LINE_28.non_negative is True
+    assert non_negative(DEPENDANT_ON428_LINE_28) is True
     assert registry.kind("ca-on/dependant_on428_line_28") is DEPENDANT_ON428_LINE_28
     assert DEPENDANT_ON428_LINE_28 in CATALOG.kinds
 
@@ -1403,7 +1404,7 @@ def test_the_disability_transferred_amount_is_a_non_negative_decimal(
     # are at least "0".
     assert DISABILITY_TRANSFERRED_AMOUNT.identifier == "ca-on/disability_transferred_amount"
     assert DISABILITY_TRANSFERRED_AMOUNT.value_type is Decimal
-    assert DISABILITY_TRANSFERRED_AMOUNT.non_negative is True
+    assert non_negative(DISABILITY_TRANSFERRED_AMOUNT) is True
     assert registry.kind("ca-on/disability_transferred_amount") is DISABILITY_TRANSFERRED_AMOUNT
 
 
@@ -1412,7 +1413,7 @@ def test_the_lift_employment_income_is_a_non_negative_decimal(registry: Artifact
     # other employment income (line 10400), the base of the LIFT rate on line 5.
     assert LIFT_EMPLOYMENT_INCOME.identifier == "ca-on/lift_employment_income"
     assert LIFT_EMPLOYMENT_INCOME.value_type is Decimal
-    assert LIFT_EMPLOYMENT_INCOME.non_negative is True
+    assert non_negative(LIFT_EMPLOYMENT_INCOME) is True
     assert registry.kind("ca-on/lift_employment_income") is LIFT_EMPLOYMENT_INCOME
     assert LIFT_EMPLOYMENT_INCOME in CATALOG.kinds
 
@@ -1427,10 +1428,10 @@ def test_the_lift_lines_that_print_no_floor_are_signed(registry: ArtifactRegistr
         LIFT_SPOUSE_NET_INCOME_AND_REPAYMENTS,
     ):
         assert kind.value_type is Decimal
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert registry.kind(kind.identifier) is kind
-    assert LIFT_ADJUSTED_NET_INCOME.non_negative is True
-    assert LIFT_SPOUSE_ADJUSTED_NET_INCOME.non_negative is True
+    assert non_negative(LIFT_ADJUSTED_NET_INCOME) is True
+    assert non_negative(LIFT_SPOUSE_ADJUSTED_NET_INCOME) is True
 
 
 def test_the_lift_spouse_flag_is_not_a_kind_of_its_own(registry: ArtifactRegistry) -> None:
@@ -1454,9 +1455,9 @@ def test_every_kind_but_record_lists_signed_lines_digits_and_rates_is_declared_n
 ) -> None:
     for kind in CATALOG.kinds:
         if kind.identifier not in RECORD_LISTS | SIGNED | DIGITS | RATES:
-            assert kind.non_negative is True, kind.identifier
+            assert non_negative(kind) is True, kind.identifier
     for identifier in REGISTERED - RECORD_LISTS - SIGNED - DIGITS - RATES:
-        assert registry.kind(identifier).non_negative is True, identifier
+        assert non_negative(registry.kind(identifier)) is True, identifier
 
 
 def test_the_seniors_care_at_home_kinds_are_non_negative_amounts_and_a_claim_count() -> None:
@@ -1474,10 +1475,10 @@ def test_the_seniors_care_at_home_kinds_are_non_negative_amounts_and_a_claim_cou
         SENIORS_CARE_CREDIT,
     ):
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
     assert CLAIMS_SENIORS_CARE_CREDIT.identifier == "ca-on/claims_seniors_care_credit"
     assert CLAIMS_SENIORS_CARE_CREDIT.value_type is int
-    assert CLAIMS_SENIORS_CARE_CREDIT.non_negative is True
+    assert non_negative(CLAIMS_SENIORS_CARE_CREDIT) is True
 
 
 def test_the_on_ben_tick_boxes_are_counts_and_its_part_a_lines_amounts() -> None:
@@ -1494,7 +1495,7 @@ def test_the_on_ben_tick_boxes_are_counts_and_its_part_a_lines_amounts() -> None
     ):
         assert kind.identifier == f"ca-on/{identifier}"
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
     # Part A "Line 61100: Enter the total amount of rent paid for your principal residence",
     # "Line 61120: Enter the total amount of property tax paid for your principal residence",
     # "Line 61210: ... enter the total amount of home energy costs (like electricity and heat)
@@ -1508,7 +1509,7 @@ def test_the_on_ben_tick_boxes_are_counts_and_its_part_a_lines_amounts() -> None
     ):
         assert amount_kind.identifier == f"ca-on/{identifier}"
         assert amount_kind.value_type is Decimal
-        assert amount_kind.non_negative is True
+        assert non_negative(amount_kind) is True
 
 
 def test_the_tax_reduction_conditions_are_non_negative_counts() -> None:
@@ -1527,7 +1528,7 @@ def test_the_tax_reduction_conditions_are_non_negative_counts() -> None:
         TAX_REDUCTION_AMOUNTS_CLAIMABLE,
     ):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_line_72_and_line_73_are_non_negative_amounts() -> None:
@@ -1535,7 +1536,7 @@ def test_line_72_and_line_73_are_non_negative_amounts() -> None:
     # "Line 71 plus line 72 =".
     for kind in (ONTARIO_MINIMUM_TAX, ONTARIO_TAX_BEFORE_REDUCTION):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_minimum_tax_carryover_and_worksheet_on428_lines_are_amounts(
@@ -1557,10 +1558,10 @@ def test_the_minimum_tax_carryover_and_worksheet_on428_lines_are_amounts(
         WORKSHEET_ON428_LINE_7,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
     assert WORKSHEET_ON428_LINE_8.value_type is Decimal
-    assert WORKSHEET_ON428_LINE_8.non_negative is False
+    assert non_negative(WORKSHEET_ON428_LINE_8) is False
     assert registry.kind("ca-on/worksheet_on428_line_8") is WORKSHEET_ON428_LINE_8
 
 
@@ -1580,24 +1581,24 @@ def test_the_provincial_foreign_tax_credit_lines_are_non_negative_amounts() -> N
         ONTARIO_TAX_AFTER_FOREIGN_TAX_CREDIT,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_whether_the_tax_reduction_is_claimable_with_zero_on_line_72_is_a_non_negative_count() -> (
     None
 ):
     assert TAX_OTHERWISE_PAYABLE_REDUCTION_CLAIMABLE.value_type is int
-    assert TAX_OTHERWISE_PAYABLE_REDUCTION_CLAIMABLE.non_negative is True
+    assert non_negative(TAX_OTHERWISE_PAYABLE_REDUCTION_CLAIMABLE) is True
 
 
 def test_the_flow_through_share_claimable_is_a_non_negative_count() -> None:
     assert FLOW_THROUGH_SHARE_CLAIMABLE.value_type is int
-    assert FLOW_THROUGH_SHARE_CLAIMABLE.non_negative is True
+    assert non_negative(FLOW_THROUGH_SHARE_CLAIMABLE) is True
 
 
 def test_the_flow_through_share_expenses_claimed_are_non_negative_money() -> None:
     assert FLOW_THROUGH_SHARE_EXPENSES_CLAIMED.value_type is Decimal
-    assert FLOW_THROUGH_SHARE_EXPENSES_CLAIMED.non_negative is True
+    assert non_negative(FLOW_THROUGH_SHARE_EXPENSES_CLAIMED) is True
 
 
 def test_the_co_operative_education_partnership_lines_are_a_yes_no_count_and_nine_digits(
@@ -1611,7 +1612,7 @@ def test_the_co_operative_education_partnership_lines_are_a_yes_no_count_and_nin
         "ca-on/coop_claimed_as_partnership_member"
     )
     assert COOP_CLAIMED_AS_PARTNERSHIP_MEMBER.value_type is int
-    assert COOP_CLAIMED_AS_PARTNERSHIP_MEMBER.non_negative is True
+    assert non_negative(COOP_CLAIMED_AS_PARTNERSHIP_MEMBER) is True
     assert COOP_PARTNERSHIP_BUSINESS_NUMBER.identifier == ("ca-on/coop_partnership_business_number")
     assert isinstance(COOP_PARTNERSHIP_BUSINESS_NUMBER, DigitsKind)
     assert COOP_PARTNERSHIP_BUSINESS_NUMBER.digits == 9
@@ -1631,7 +1632,7 @@ def test_the_t1206_part_3_lines_that_may_be_negative_are_signed(registry: Artifa
     # ON428 line 88.
     for kind in (SPLIT_INCOME_LINE_39, SPLIT_INCOME_LINE_47, SPLIT_INCOME_LINE_50):
         assert kind.value_type is Decimal
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -1664,7 +1665,7 @@ def test_the_other_t1206_part_3_kinds_are_non_negative_amounts(registry: Artifac
         DISABILITY_AMOUNT_FOR_SELF_IF_ELIGIBLE,
     ):
         assert kind.value_type is Decimal
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -1689,7 +1690,7 @@ def test_the_unused_tuition_lines_are_non_negative_amounts(registry: ArtifactReg
         UNUSED_TUITION_CARRIED_FORWARD,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -1717,7 +1718,7 @@ def test_the_schedule_on_s2_lines_are_non_negative_amounts(registry: ArtifactReg
         AMOUNTS_TRANSFERRED_FROM_SPOUSE,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -1751,7 +1752,7 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert checked is not raw
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True
 
 
 def test_the_on_ben_line_61080_checked_and_spouse_answer_kinds_are_non_negative_counts(
@@ -1774,4 +1775,4 @@ def test_the_on_ben_line_61080_checked_and_spouse_answer_kinds_are_non_negative_
         assert kind.identifier == identifier
         assert registry.get(identifier) is kind
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert non_negative(kind) is True

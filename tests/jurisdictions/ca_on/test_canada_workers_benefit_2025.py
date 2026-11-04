@@ -26,8 +26,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.surcharge_tiers import (
@@ -47,10 +48,10 @@ SCHEDULE_6_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-
 # Made up for this test and not registered: the working income the basic amount is on (line 16),
 # the basic amount (line 22), the adjusted family net income the reduction is on (line 23) and the
 # reduction (line 27).
-WORKING_INCOME = ArtifactKind("ex/working_income", Decimal)
-BASIC = ArtifactKind("ex/basic", Decimal)
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-REDUCTION = ArtifactKind("ex/reduction", Decimal)
+WORKING_INCOME = AmountKind("ex/working_income")
+BASIC = AmountKind("ex/basic")
+NET_INCOME = AmountKind("ex/net_income")
+REDUCTION = AmountKind("ex/reduction")
 
 
 def test_2025_basic_amount_is_27_percent_over_3000_at_most_1633() -> None:

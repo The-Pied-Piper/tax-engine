@@ -17,7 +17,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -35,8 +36,8 @@ FAMILY = "ca-on/flow_through_share_conditions"
 T1221_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1221/t1221-25e.pdf"
 
 # Made up for this test and not registered.
-NOT_RESIDENT_ONTARIO = ArtifactKind("ex/not_resident_of_ontario", int)
-GATE = ArtifactKind("ex/gate", int)
+NOT_RESIDENT_ONTARIO = CountKind("ex/not_resident_of_ontario")
+GATE = CountKind("ex/gate")
 
 
 def squashed(text: str) -> str:

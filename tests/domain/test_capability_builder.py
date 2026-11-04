@@ -29,6 +29,7 @@ from tax_engine.domain.errors import (
     InvalidSelectionError,
     UnknownRegistrationError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -56,10 +57,10 @@ class Offset:
 FACTOR = ParameterKind("factor", Factor)
 OFFSET = ParameterKind("offset", Offset)
 
-SOURCE = ArtifactKind("ex/source", Decimal)
-TARGET = ArtifactKind("ex/target", Decimal)
-EXTRA = ArtifactKind("ex/extra", Decimal)
-FACTOR_KIND = ArtifactKind("ex/factor", Decimal)
+SOURCE = AmountKind("ex/source")
+TARGET = AmountKind("ex/target")
+EXTRA = AmountKind("ex/extra")
+FACTOR_KIND = AmountKind("ex/factor")
 
 
 @dataclass(frozen=True)
@@ -174,8 +175,8 @@ def test_builds_an_instance_of_the_class_wired_with_the_registered_kinds() -> No
 
 
 def test_resolves_kinds_through_the_registry_it_is_given() -> None:
-    own_source = ArtifactKind("ex/source", Decimal)  # equal to SOURCE, but another object
-    own_target = ArtifactKind("ex/target", Decimal)
+    own_source = AmountKind("ex/source")  # equal to SOURCE, but another object
+    own_target = AmountKind("ex/target")
     artifacts = registry(replacing={"ex/source": own_source, "ex/target": own_target})
 
     built = build(selection(), artifacts=artifacts)
@@ -323,7 +324,7 @@ def assert_names_the_constructors_rejection(
 
 
 def test_a_kind_of_the_wrong_value_type_is_rejected_naming_the_selection() -> None:
-    wrong = ArtifactKind("ex/target", int)
+    wrong = CountKind("ex/target")
 
     with pytest.raises(InvalidSelectionError) as excinfo:
         build(selection(), artifacts=registry(replacing={"ex/target": wrong}))
@@ -336,7 +337,7 @@ def test_a_kind_of_the_wrong_value_type_is_rejected_naming_the_selection() -> No
 
 
 def test_the_constructor_called_directly_still_raises_invalid_capability() -> None:
-    wrong: Any = ArtifactKind("ex/target", int)  # past mypy, to reach the runtime check
+    wrong: Any = CountKind("ex/target")  # past mypy, to reach the runtime check
 
     with pytest.raises(InvalidCapabilityError, match=re.escape("Scale: artifact slot 'target'")):
         Scale(source=SOURCE, target=wrong, factor=FACTOR_DATA)
@@ -441,10 +442,10 @@ def test_rejects_a_resolved_dataset_for_a_key_that_is_not_a_parameter_slot() -> 
 # The list-slot classes are defined inside cached factories, so a class definition the base
 # rejects fails the tests that use it rather than the collection of this whole module.
 
-PART_A = ArtifactKind("ex/part_a", Decimal)
-PART_B = ArtifactKind("ex/part_b", Decimal)
-PART_C = ArtifactKind("ex/part_c", Decimal)
-TOTAL = ArtifactKind("ex/total", Decimal)
+PART_A = AmountKind("ex/part_a")
+PART_B = AmountKind("ex/part_b")
+PART_C = AmountKind("ex/part_c")
+TOTAL = AmountKind("ex/total")
 
 
 @cache
@@ -516,8 +517,8 @@ def test_builds_a_list_slot_with_the_kinds_in_manifest_order() -> None:
 
 
 def test_a_list_slots_kinds_are_the_registered_objects() -> None:
-    own_a = ArtifactKind("ex/part_a", Decimal)  # equal to PART_A, but another object
-    own_b = ArtifactKind("ex/part_b", Decimal)
+    own_a = AmountKind("ex/part_a")  # equal to PART_A, but another object
+    own_b = AmountKind("ex/part_b")
     artifacts = registry(replacing={"ex/part_a": own_a, "ex/part_b": own_b})
 
     built = build_list(total_class(), {"parts": ("ex/part_b", "ex/part_a")}, artifacts)
@@ -611,7 +612,7 @@ def test_rejects_an_identifier_listed_twice() -> None:
 
 def test_a_listed_kind_of_the_wrong_value_type_is_rejected_naming_the_selection() -> None:
     total = total_class()
-    wrong = ArtifactKind("ex/part_b", int)
+    wrong = CountKind("ex/part_b")
 
     with pytest.raises(InvalidSelectionError) as excinfo:
         build_list(
@@ -746,7 +747,7 @@ def test_a_fallback_for_a_whole_number_slot_must_be_a_whole_number() -> None:
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
             raise NotImplementedError
 
-    counted, total = ArtifactKind("ex/counted", int), ArtifactKind("ex/counted_total", int)
+    counted, total = CountKind("ex/counted"), CountKind("ex/counted_total")
     artifacts = registry({"ex/counted": counted, "ex/counted_total": total})
 
     def chosen(text: str) -> CapabilitySelection:
@@ -775,7 +776,7 @@ def test_a_fallback_too_long_to_read_as_a_whole_number_is_an_invalid_selection()
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
             raise NotImplementedError
 
-    counted, total = ArtifactKind("ex/counted", int), ArtifactKind("ex/counted_total", int)
+    counted, total = CountKind("ex/counted"), CountKind("ex/counted_total")
     chosen = CapabilitySelection(
         name="ex/counted",
         params={},

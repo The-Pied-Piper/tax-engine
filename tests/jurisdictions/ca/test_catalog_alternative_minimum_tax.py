@@ -189,6 +189,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T4_SECURITY_OPTIONS_BOXES_41_AND_92_TOTAL,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, SIGNED
+from tests.kinds import non_negative
 
 PART_1_KINDS: tuple[ArtifactKind[Decimal], ...] = (
     AMT_FILM_PROPERTY_CCA_AND_CARRYING_CHARGES,
@@ -678,7 +679,7 @@ def test_the_line_76_check_is_registered_beside_its_sum(registry: ArtifactRegist
     )
     assert AMT_NON_DEDUCTIBLE_OFFICE_EXPENSES_CHECKED is not AMT_NON_DEDUCTIBLE_OFFICE_EXPENSES
     assert AMT_NON_DEDUCTIBLE_OFFICE_EXPENSES_CHECKED.value_type is Decimal
-    assert AMT_NON_DEDUCTIBLE_OFFICE_EXPENSES_CHECKED.non_negative is True
+    assert non_negative(AMT_NON_DEDUCTIBLE_OFFICE_EXPENSES_CHECKED) is True
 
 
 def test_the_part_2_and_part_8_kinds_are_the_registered_ones(
@@ -756,7 +757,7 @@ def test_the_t2203_column_5_percentage_maximum_and_checked_kinds_are_registered_
     )
     for kind in (AMT_T2203_COLUMN_5_PERCENTAGE_MAXIMUM, AMT_T2203_COLUMN_5_PERCENTAGE_CHECKED):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert AMT_T2203_COLUMN_5_PERCENTAGE_CHECKED is not AMT_T2203_COLUMN_5_PERCENTAGE
 
 
@@ -795,7 +796,7 @@ def test_the_checked_lines_17_39_40_41_and_42_are_registered_beside_their_inputs
     for identifier, checked_kind, input_kind in checked:
         assert registry.kind(identifier) is checked_kind, identifier
         assert checked_kind.value_type is Decimal, identifier
-        assert checked_kind.non_negative is True, identifier
+        assert non_negative(checked_kind) is True, identifier
         assert checked_kind is not input_kind, identifier
 
 
@@ -809,7 +810,7 @@ def test_the_treaty_exempt_gains_within_additional_deductions_kind_is_registered
     kind = registry.kind("ca/amt_treaty_exempt_capital_gains_within_additional_deductions")
     assert kind is AMT_TREATY_EXEMPT_CAPITAL_GAINS_WITHIN_ADDITIONAL_DEDUCTIONS
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert kind is not AMT_TREATY_EXEMPT_CAPITAL_GAINS_CHECKED
 
 
@@ -821,7 +822,7 @@ def test_the_line_15_not_below_zero_kind_is_registered_beside_the_line_17_input(
     kind = registry.kind("ca/amt_capital_gain_not_below_zero")
     assert kind is AMT_CAPITAL_GAIN_NOT_BELOW_ZERO
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
 
 
 def test_the_lines_39_and_40_both_counts_are_registered_non_negative_int_counts(
@@ -835,7 +836,7 @@ def test_the_lines_39_and_40_both_counts_are_registered_non_negative_int_counts(
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS
     assert AMT_LINES_39_AND_40_BOTH_CHECKED is not AMT_LINES_39_AND_40_BOTH
 
@@ -859,7 +860,7 @@ def test_the_line_22100_and_part_9_checks_are_registered_beside_their_inputs(
     for identifier, kind in pairs:
         assert registry.get(identifier) is kind, identifier
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
     assert AMT_EXPENSES_INCLUDED_ON_LINE_22100_CHECKED is not AMT_EXPENSES_INCLUDED_ON_LINE_22100
     assert AMT_RESOURCE_EXPENDITURES_CHECKED is not AMT_RESOURCE_EXPENDITURES
 
@@ -875,7 +876,7 @@ def test_the_ppip_premiums_in_ontario_counts_are_registered_non_negative_int_cou
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS
     assert AMT_PPIP_PREMIUMS_IN_ONTARIO_CHECKED is not AMT_PPIP_PREMIUMS_IN_ONTARIO
 
@@ -884,7 +885,7 @@ def test_the_part_3_counts_are_the_registered_ones(registry: ArtifactRegistry) -
     for kind in PART_3_COUNTS:
         assert registry.get(kind.identifier) is kind
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier in COUNTS
 
 
@@ -944,7 +945,7 @@ def test_the_part_5_line_11_is_positive_count_is_a_non_negative_whole_number() -
     # "line 11 is positive" is a count of 1 or 0, not an amount, and it is never negative.
     assert AMT_PART_5_LINE_11_IS_POSITIVE.identifier == "ca/amt_part_5_line_11_is_positive"
     assert AMT_PART_5_LINE_11_IS_POSITIVE.value_type is int
-    assert AMT_PART_5_LINE_11_IS_POSITIVE.non_negative is True
+    assert non_negative(AMT_PART_5_LINE_11_IS_POSITIVE) is True
     assert Artifact(AMT_PART_5_LINE_11_IS_POSITIVE, 1).value == 1
 
 
@@ -1015,7 +1016,7 @@ def test_the_part_8_kinds_after_line_12_are_the_registered_ones(
     )
     assert AMT_UNAPPLIED_2018_CARRYOVER_CHECKED is not AMT_UNAPPLIED_2018_CARRYOVER
     assert AMT_UNAPPLIED_2018_CARRYOVER_CHECKED.value_type is Decimal
-    assert AMT_UNAPPLIED_2018_CARRYOVER_CHECKED.non_negative is True
+    assert non_negative(AMT_UNAPPLIED_2018_CARRYOVER_CHECKED) is True
     assert registry.get("ca/amt_carryover_available_for_2026") is AMT_CARRYOVER_AVAILABLE_FOR_2026
 
 
@@ -1063,7 +1064,7 @@ def test_the_bracketed_lines_are_signed_and_the_rest_are_not_below_zero() -> Non
         + PART_7_KINDS
         + PART_8_KINDS
     ):
-        assert kind.non_negative is (kind.identifier not in SIGNED), kind.identifier
+        assert non_negative(kind) is (kind.identifier not in SIGNED), kind.identifier
 
 
 def test_the_amt_part_1_subtotal_is_signed_because_its_line_1_is(
@@ -1072,9 +1073,9 @@ def test_the_amt_part_1_subtotal_is_signed_because_its_line_1_is(
     # Form T691 Part 1 line 12 "Add lines 1, 4, 7, and 11." takes
     # line 1, the signed taxable income of `ca/taxable_income_signed`, so the subtotal can be
     # negative and is declared signed.
-    assert AMT_PART_1_SUBTOTAL.non_negative is False
+    assert non_negative(AMT_PART_1_SUBTOTAL) is False
     assert registry.get("ca/amt_part_1_subtotal") is AMT_PART_1_SUBTOTAL
-    assert registry.kind("ca/amt_part_1_subtotal").non_negative is False
+    assert non_negative(registry.kind("ca/amt_part_1_subtotal")) is False
     assert "ca/amt_part_1_subtotal" in SIGNED
 
 
@@ -1167,4 +1168,4 @@ def test_the_amt_non_resident_or_deemed_resident_checked_is_a_non_negative_count
         is AMT_NON_RESIDENT_OR_DEEMED_RESIDENT
     )
     assert AMT_NON_RESIDENT_OR_DEEMED_RESIDENT_CHECKED.value_type is int
-    assert AMT_NON_RESIDENT_OR_DEEMED_RESIDENT_CHECKED.non_negative is True
+    assert non_negative(AMT_NON_RESIDENT_OR_DEEMED_RESIDENT_CHECKED) is True

@@ -25,28 +25,28 @@ entered are refused; a dataset of 366 days with 0 entered is 366, and 366 entere
 from __future__ import annotations
 
 from collections.abc import Mapping
-from decimal import Decimal
 from types import MappingProxyType
 from typing import Any, assert_type, cast
 
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRates
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.jurisdictions.ca.capabilities.fiscal_period_days import FiscalPeriodDays
 from tax_engine.jurisdictions.ca.trace import FiscalPeriodDaysLine
 from tests.jurisdictions.ca.capabilities.cca_table import class_rates
 
-ENTERED = ArtifactKind("ex/fiscal_period_days_entered", int)
-DAYS = ArtifactKind("ex/fiscal_period_days", int)
+ENTERED = CountKind("ex/fiscal_period_days_entered")
+DAYS = CountKind("ex/fiscal_period_days")
 
 
 def capability(full_year_days: int = 365) -> FiscalPeriodDays:
@@ -108,7 +108,7 @@ def test_is_built_from_its_slot_names_as_keywords() -> None:
 
 
 def test_rejects_a_money_kind_for_the_days_entered() -> None:
-    money_kind = cast(Any, ArtifactKind("ex/money", Decimal))
+    money_kind = cast(Any, AmountKind("ex/money"))
 
     with pytest.raises(InvalidCapabilityError, match="FiscalPeriodDays.*'entered'"):
         FiscalPeriodDays(class_rates(), money_kind, DAYS)

@@ -32,6 +32,7 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
@@ -72,19 +73,19 @@ T2036_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2036/t2036
 ON428_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt"
 
 # Made up for this test and not registered.
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-PROVINCIAL_TAX = ArtifactKind("ex/provincial_tax", Decimal, non_negative=True)
-CREDIT = ArtifactKind("ex/provincial_credit", Decimal, non_negative=True)
-MINIMUM_TAX = ArtifactKind("ex/minimum_tax_applies", int, non_negative=True)
-LINE_7 = ArtifactKind("ex/non_business_tax_two_thirds", Decimal, non_negative=True)
-LINE_8 = ArtifactKind("ex/business_tax_paid", Decimal, non_negative=True)
-LINE_11 = ArtifactKind("ex/special_foreign_tax_credit", Decimal, non_negative=True)
-NOT_RESIDENT_CANADA = ArtifactKind("ex/not_resident_of_canada", int)
-NOT_RESIDENT_ONTARIO = ArtifactKind("ex/not_resident_of_ontario", int)
-BANKRUPT = ArtifactKind("ex/bankrupt", int)
-TRUSTEE = ArtifactKind("ex/filed_by_trustee", int)
-NOT_CLAIMING = ArtifactKind("ex/not_claiming", int)
-GATE = ArtifactKind("ex/gate", int)
+NET_INCOME = AmountKind("ex/net_income")
+PROVINCIAL_TAX = AmountKind("ex/provincial_tax", non_negative=True)
+CREDIT = AmountKind("ex/provincial_credit", non_negative=True)
+MINIMUM_TAX = CountKind("ex/minimum_tax_applies", non_negative=True)
+LINE_7 = AmountKind("ex/non_business_tax_two_thirds", non_negative=True)
+LINE_8 = AmountKind("ex/business_tax_paid", non_negative=True)
+LINE_11 = AmountKind("ex/special_foreign_tax_credit", non_negative=True)
+NOT_RESIDENT_CANADA = CountKind("ex/not_resident_of_canada")
+NOT_RESIDENT_ONTARIO = CountKind("ex/not_resident_of_ontario")
+BANKRUPT = CountKind("ex/bankrupt")
+TRUSTEE = CountKind("ex/filed_by_trustee")
+NOT_CLAIMING = CountKind("ex/not_claiming")
+GATE = CountKind("ex/gate")
 FIVE_COUNTS = (NOT_RESIDENT_CANADA, NOT_RESIDENT_ONTARIO, BANKRUPT, TRUSTEE, NOT_CLAIMING)
 
 

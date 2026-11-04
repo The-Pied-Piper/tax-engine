@@ -8,7 +8,7 @@ from typing import Any
 import pytest
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     ADOPTION_CHILD_EXPENSES,
     ADOPTION_CREDIT,
@@ -184,6 +184,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     VOLUNTEER_FIREFIGHTERS_CREDIT,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, SIGNED
+from tests.kinds import non_negative
 
 
 def test_the_non_refundable_credits_kinds_are_the_registered_ones(
@@ -357,7 +358,7 @@ def test_the_spouse_age_and_pension_maximum_and_checked_kinds_are_registered_bes
         SPOUSE_RETURN_PENSION_INCOME_AMOUNT_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert SPOUSE_RETURN_AGE_AMOUNT_CHECKED is not SPOUSE_RETURN_AGE_AMOUNT
     assert SPOUSE_RETURN_PENSION_INCOME_AMOUNT_CHECKED is not SPOUSE_RETURN_PENSION_INCOME_AMOUNT
 
@@ -377,7 +378,7 @@ def test_the_spouse_designated_tuition_maximum_and_checked_kinds_are_registered_
     )
     for kind in (SPOUSE_DESIGNATED_TUITION_MAXIMUM, SPOUSE_DESIGNATED_TUITION_CHECKED):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert SPOUSE_DESIGNATED_TUITION_CHECKED is not SPOUSE_DESIGNATED_TUITION
 
 
@@ -399,7 +400,7 @@ def test_the_spouse_disability_amount_maximum_and_checked_kinds_are_registered_b
     )
     for kind in (SPOUSE_RETURN_DISABILITY_AMOUNT_MAXIMUM, SPOUSE_RETURN_DISABILITY_AMOUNT_CHECKED):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert SPOUSE_RETURN_DISABILITY_AMOUNT_CHECKED is not SPOUSE_RETURN_DISABILITY_AMOUNT
 
 
@@ -413,7 +414,7 @@ def test_the_pension_foreign_income_checked_kind_is_registered_beside_the_input(
     # which the line 5 sum reads in place of the input.
     assert registry.kind("ca/pension_foreign_income_checked") is PENSION_FOREIGN_INCOME_CHECKED
     assert PENSION_FOREIGN_INCOME_CHECKED.value_type is Decimal
-    assert PENSION_FOREIGN_INCOME_CHECKED.non_negative is True
+    assert non_negative(PENSION_FOREIGN_INCOME_CHECKED) is True
     assert PENSION_FOREIGN_INCOME_CHECKED is not PENSION_FOREIGN_INCOME
 
 
@@ -426,7 +427,7 @@ def test_the_pension_chart_line_5_checked_kind_is_registered_beside_the_input(
     # in place of the sum.
     assert registry.kind("ca/pension_chart_line_5_checked") is PENSION_CHART_LINE_5_CHECKED
     assert PENSION_CHART_LINE_5_CHECKED.value_type is Decimal
-    assert PENSION_CHART_LINE_5_CHECKED.non_negative is True
+    assert non_negative(PENSION_CHART_LINE_5_CHECKED) is True
     assert PENSION_CHART_LINE_5_CHECKED is not PENSION_CHART_LINE_5
 
 
@@ -449,7 +450,7 @@ def test_the_spouse_basic_personal_amount_maximum_and_checked_kinds_are_register
         SPOUSE_RETURN_BASIC_PERSONAL_AMOUNT_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert SPOUSE_RETURN_BASIC_PERSONAL_AMOUNT_CHECKED is not SPOUSE_RETURN_BASIC_PERSONAL_AMOUNT
 
 
@@ -466,7 +467,7 @@ def test_the_capital_gift_gains_deduction_checked_kind_is_registered_beside_the_
     )
     assert CAPITAL_GIFT_GAINS_DEDUCTION_CHECKED is not CAPITAL_GIFT_GAINS_DEDUCTION
     assert CAPITAL_GIFT_GAINS_DEDUCTION_CHECKED.value_type is Decimal
-    assert CAPITAL_GIFT_GAINS_DEDUCTION_CHECKED.non_negative is True
+    assert non_negative(CAPITAL_GIFT_GAINS_DEDUCTION_CHECKED) is True
 
 
 def test_the_home_accessibility_claimed_by_others_checked_kind_is_registered_beside_the_input(
@@ -482,7 +483,7 @@ def test_the_home_accessibility_claimed_by_others_checked_kind_is_registered_bes
     )
     assert HOME_ACCESSIBILITY_CLAIMED_BY_OTHERS_CHECKED is not HOME_ACCESSIBILITY_CLAIMED_BY_OTHERS
     assert HOME_ACCESSIBILITY_CLAIMED_BY_OTHERS_CHECKED.value_type is Decimal
-    assert HOME_ACCESSIBILITY_CLAIMED_BY_OTHERS_CHECKED.non_negative is True
+    assert non_negative(HOME_ACCESSIBILITY_CLAIMED_BY_OTHERS_CHECKED) is True
 
 
 def test_the_tuition_transfer_maximum_and_checked_kinds_are_registered_beside_the_input(
@@ -505,7 +506,7 @@ def test_the_tuition_transfer_maximum_and_checked_kinds_are_registered_beside_th
     )
     for kind in (TUITION_TRANSFERRED_FROM_CHILD_MAXIMUM, TUITION_TRANSFERRED_FROM_CHILD_CHECKED):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert TUITION_TRANSFERRED_FROM_CHILD_CHECKED is not TUITION_TRANSFERRED_FROM_CHILD
 
 
@@ -516,7 +517,7 @@ def test_the_tuition_transfer_student_count_is_a_non_negative_int(
     # the number of students the transfer comes from, a whole number that is 0 or more.
     assert registry.kind("ca/tuition_transfer_students") is TUITION_TRANSFER_STUDENTS
     assert TUITION_TRANSFER_STUDENTS.value_type is int
-    assert TUITION_TRANSFER_STUDENTS.non_negative is True
+    assert non_negative(TUITION_TRANSFER_STUDENTS) is True
     assert TUITION_TRANSFER_STUDENTS.identifier in COUNTS
 
 
@@ -530,11 +531,11 @@ def test_the_canadian_tuition_count_and_checked_kinds_are_registered_beside_the_
     # checked amount that lines 2 to 8 read in place of the input (the owner's decision).
     assert registry.kind("ca/canadian_tuition_institutions") is CANADIAN_TUITION_INSTITUTIONS
     assert CANADIAN_TUITION_INSTITUTIONS.value_type is int
-    assert CANADIAN_TUITION_INSTITUTIONS.non_negative is True
+    assert non_negative(CANADIAN_TUITION_INSTITUTIONS) is True
     assert CANADIAN_TUITION_INSTITUTIONS.identifier in COUNTS
     assert registry.kind("ca/canadian_tuition_fees_checked") is CANADIAN_TUITION_FEES_CHECKED
     assert CANADIAN_TUITION_FEES_CHECKED.value_type is Decimal
-    assert CANADIAN_TUITION_FEES_CHECKED.non_negative is True
+    assert non_negative(CANADIAN_TUITION_FEES_CHECKED) is True
     assert CANADIAN_TUITION_FEES_CHECKED is not CANADIAN_TUITION_FEES
 
 
@@ -656,7 +657,7 @@ def test_the_split_income_and_t2203_lines_are_non_negative(registry: ArtifactReg
         T2203_LINE_8,
         T2203_FEDERAL_SURTAX_OUTSIDE_CANADA,
     ):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -710,7 +711,7 @@ def test_the_tuition_and_transfer_kinds_are_non_negative(registry: ArtifactRegis
         SPOUSE_UNUSED_AMOUNTS,
         AMOUNTS_TRANSFERRED_FROM_SPOUSE,
     ):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -720,7 +721,7 @@ def test_the_separation_count_is_a_non_negative_int(registry: ArtifactRegistry) 
     # transfer any unused amounts to you.": a caller's count, 1 when not separated and 0 when
     # separated (to be confirmed on the ticket).
     assert SPOUSE_NOT_SEPARATED_90_DAYS.value_type is int
-    assert SPOUSE_NOT_SEPARATED_90_DAYS.non_negative is True
+    assert non_negative(SPOUSE_NOT_SEPARATED_90_DAYS) is True
     assert registry.kind("ca/spouse_not_separated_90_days") is SPOUSE_NOT_SEPARATED_90_DAYS
 
 
@@ -824,7 +825,7 @@ def test_the_signed_foreign_tax_credit_and_surtax_kinds_are_signed(
         FEDERAL_TAX_LESS_FOREIGN_TAX_CREDIT,
         FEDERAL_TAX_WITH_ITC_RECAPTURE,
     ):
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert registry.kind(kind.identifier) is kind
         assert kind.identifier in SIGNED
 
@@ -844,7 +845,7 @@ def test_the_other_federal_foreign_tax_credit_kinds_are_non_negative(
         FEDERAL_NON_BUSINESS_FOREIGN_TAX_CREDIT,
         FEDERAL_FOREIGN_TAX_CREDIT,
     ):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -892,7 +893,7 @@ def test_the_other_federal_non_refundable_amount_kinds_are_money() -> None:
         PENSION_WORKSHEET_AMOUNT,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_conditions_and_the_annuity_gate_are_non_negative_counts() -> None:
@@ -907,7 +908,7 @@ def test_the_conditions_and_the_annuity_gate_are_non_negative_counts() -> None:
         PENSION_ANNUITY_CONDITIONS_MET,
     ):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_adoption_expense_children_are_a_record_list_of_one_money_field(
@@ -921,7 +922,7 @@ def test_the_adoption_expense_children_are_a_record_list_of_one_money_field(
     assert registry.get("ca/adoption_expense_children") is ADOPTION_EXPENSE_CHILDREN
     assert registry.get("ca/adoption_child_expenses") is ADOPTION_CHILD_EXPENSES
     assert ADOPTION_CHILD_EXPENSES.value_type is Decimal
-    assert ADOPTION_CHILD_EXPENSES.non_negative is True
+    assert non_negative(ADOPTION_CHILD_EXPENSES) is True
 
 
 OTHER_FEDERAL_NON_REFUNDABLE_KINDS: list[tuple[str, ArtifactKind[Any]]] = [
@@ -981,7 +982,7 @@ def test_the_schedule_11_tuition_memo_kinds_are_non_negative_int_counts() -> Non
         TUITION_FULL_TIME_MONTHS,
     ):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 YES_OR_NO_CHECKED = (
@@ -1001,4 +1002,4 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True

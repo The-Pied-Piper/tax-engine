@@ -19,12 +19,13 @@ from __future__ import annotations
 import re
 from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -287,7 +288,9 @@ def test_the_payroll_gives_lines_8_and_11(payroll: str, line_8: str, line_11: st
 
 def credit_for(payroll: str, *expenditures: str) -> Decimal:
     _, line_11 = remaining_share_for(payroll)
-    records = [{COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures
+    ]
     capability = CoopEducationCredit(
         expenditure_rate=SOURCE.get(EXPENDITURE_RATE, 2025, RATE),
         supplement_rate=SOURCE.get(SUPPLEMENT_RATE, 2025, RATE),

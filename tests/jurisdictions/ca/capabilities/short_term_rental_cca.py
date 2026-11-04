@@ -13,10 +13,11 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     NON_COMPLIANT_CCA,
@@ -30,7 +31,7 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # The line 9367 kind and the column 22 list kind come with the wiring; the tests use made-up ones.
-LINE_9367 = ArtifactKind("ex/non_compliant_cca", Decimal, non_negative=True)
+LINE_9367 = AmountKind("ex/non_compliant_cca", non_negative=True)
 BY_CLASS = RecordListKind(
     "ex/non_compliant_cca_by_class", fields=(CCA_CLASS_NUMBER, NON_COMPLIANT_CCA)
 )

@@ -24,8 +24,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -54,10 +55,10 @@ REFUSED_TEXT = (
 
 # Made up for this test and not registered: the Part 4 count, the Part 5 count, the count of both
 # and its checked count.
-PART_4 = ArtifactKind("ex/cpp_part_4_completed_checked", int)
-PART_5 = ArtifactKind("ex/cpp_part_5_completed_checked", int)
-BOTH = ArtifactKind("ex/cpp_part_4_and_part_5_both", int)
-BOTH_CHECKED = ArtifactKind("ex/cpp_part_4_and_part_5_both_checked", int)
+PART_4 = CountKind("ex/cpp_part_4_completed_checked")
+PART_5 = CountKind("ex/cpp_part_5_completed_checked")
+BOTH = CountKind("ex/cpp_part_4_and_part_5_both")
+BOTH_CHECKED = CountKind("ex/cpp_part_4_and_part_5_both_checked")
 
 
 def _more_than_0(position: int) -> ConditionPart:

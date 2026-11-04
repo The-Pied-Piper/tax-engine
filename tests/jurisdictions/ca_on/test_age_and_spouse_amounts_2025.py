@@ -30,11 +30,12 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -56,13 +57,13 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 # income over the threshold (Federal Worksheet line 4) and the reduction (line 6), the count of
 # spouses eligible for the Canada caregiver amount and the supplement (Schedule 5 line 2), and the
 # amount before its maximum and at most it (Schedule 5 line 30425, line 3).
-CLAIMED = ArtifactKind("ex/claimed_amount", Decimal)
-OVER_THRESHOLD = ArtifactKind("ex/over_threshold", Decimal)
-REDUCTION = ArtifactKind("ex/reduction", Decimal)
-ELIGIBLE = ArtifactKind("ex/spouse_eligible", int)
-SUPPLEMENT = ArtifactKind("ex/supplement", Decimal)
-BEFORE_MAXIMUM = ArtifactKind("ex/before_maximum", Decimal)
-LIMIT = ArtifactKind("ex/limit", Decimal)
+CLAIMED = AmountKind("ex/claimed_amount")
+OVER_THRESHOLD = AmountKind("ex/over_threshold")
+REDUCTION = AmountKind("ex/reduction")
+ELIGIBLE = CountKind("ex/spouse_eligible")
+SUPPLEMENT = AmountKind("ex/supplement")
+BEFORE_MAXIMUM = AmountKind("ex/before_maximum")
+LIMIT = AmountKind("ex/limit")
 
 
 def test_2025_age_maximum_is_9028() -> None:

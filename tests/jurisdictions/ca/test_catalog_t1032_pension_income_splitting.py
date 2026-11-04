@@ -120,6 +120,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1032_WORKSHEET_LINE_8_OF_TRANSFERRING_SPOUSE_CHECKED,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, REGISTERED
+from tests.kinds import non_negative
 
 # The money kinds: non-negative dollars and cents, the starting amounts of the form (the lines
 # 1, 2, 4, 18 months, 32, 35, 37 and 40) and every calculated line of the form.
@@ -255,19 +256,19 @@ def test_the_t1032_identifiers_are_named_by_the_form_and_its_lines() -> None:
 def test_the_money_kinds_are_non_negative_decimals() -> None:
     for kind in MONEY:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_line_39_and_its_total_are_decimals_that_may_be_below_0() -> None:
     for kind in SIGNED_MONEY:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
 
 
 def test_the_two_yes_or_no_answers_and_their_checked_forms_are_non_negative_int_counts() -> None:
     for kind in COUNT_KINDS:
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_starting_inputs_are_the_registered_money_and_counts_of_the_form() -> None:
@@ -473,7 +474,7 @@ def test_the_note_1_kinds_are_in_the_snapshot_and_the_counts_are_in_counts() -> 
 def test_the_note_1_counts_are_non_negative_ints() -> None:
     for kind in NOTE_1_COUNT_KINDS:
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 NOTE_1_SIGNED: tuple[ArtifactKind[Decimal], ...] = (
@@ -491,13 +492,13 @@ NOTE_1_SIGNED: tuple[ArtifactKind[Decimal], ...] = (
 def test_the_note_1_figures_the_form_prints_no_floor_for_are_signed_decimals() -> None:
     for kind in NOTE_1_SIGNED:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
 
 
 def test_the_note_1_money_kinds_are_non_negative_decimals() -> None:
     for kind in NOTE_1_MONEY:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_each_note_1_kind_has_a_docstring_that_names_the_form() -> None:

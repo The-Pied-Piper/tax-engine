@@ -29,7 +29,7 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
+from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.lesser_of import LesserOf
@@ -37,6 +37,7 @@ from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import Capability
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -59,47 +60,47 @@ TOP_UP_RATE = "ca/top_up_rate"
 
 # Made up for this test and not registered: one kind for each line of the schedule, the chart
 # lines and the worksheet, named for the line.
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-TAXABLE_INCOME = ArtifactKind("ex/taxable_income", Decimal)
-LINE_1 = ArtifactKind("ex/line_1", Decimal)
-LINE_2 = ArtifactKind("ex/line_2", Decimal)
-LINE_3 = ArtifactKind("ex/line_3", Decimal)
-LINE_4 = ArtifactKind("ex/line_4", Decimal)
-LINE_5 = ArtifactKind("ex/line_5", Decimal)
-LINE_6 = ArtifactKind("ex/line_6", Decimal)
-LINE_7 = ArtifactKind("ex/line_7", Decimal)
-LINE_8 = ArtifactKind("ex/line_8", Decimal)
-LINE_9 = ArtifactKind("ex/line_9", Decimal)
-LINE_10 = ArtifactKind("ex/line_10", Decimal)
-LINE_11 = ArtifactKind("ex/line_11", Decimal)
-LINE_12 = ArtifactKind("ex/line_12", Decimal)
-FIRST_TIER_CAP = ArtifactKind("ex/first_tier_cap", Decimal)
-LINE_13 = ArtifactKind("ex/line_13", Decimal)
-LINE_14 = ArtifactKind("ex/line_14", Decimal)
-LINE_15 = ArtifactKind("ex/line_15", Decimal)
-LINE_16 = ArtifactKind("ex/line_16", Decimal)
-THRESHOLD = ArtifactKind("ex/threshold", Decimal)
-LINE_19 = ArtifactKind("ex/line_19", Decimal)
-LINE_F = ArtifactKind("ex/line_f", Decimal)
-LINE_20 = ArtifactKind("ex/line_20", Decimal)
-LINE_G = ArtifactKind("ex/line_g", Decimal)
-LINE_21 = ArtifactKind("ex/line_21", Decimal)
-LINE_22 = ArtifactKind("ex/line_22", Decimal)
-LINE_23 = ArtifactKind("ex/line_23", Decimal)
-LINE_B = ArtifactKind("ex/line_b", Decimal)
-LINE_C = ArtifactKind("ex/line_c", Decimal)
-LINE_D = ArtifactKind("ex/line_d", Decimal)
-DEPRECIABLE_1 = ArtifactKind("ex/depreciable_line_1", Decimal)
-DEPRECIABLE_2 = ArtifactKind("ex/depreciable_line_2", Decimal)
-DEPRECIABLE_3 = ArtifactKind("ex/depreciable_line_3", Decimal)
-DEPRECIABLE_4 = ArtifactKind("ex/depreciable_line_4", Decimal)
-CAPITAL_1 = ArtifactKind("ex/capital_line_1", Decimal)
-CAPITAL_2 = ArtifactKind("ex/capital_line_2", Decimal)
-CREDITS_AT_RATE = ArtifactKind("ex/credit_amounts_at_credit_rate", Decimal)
-TOP_UP_3 = ArtifactKind("ex/top_up_line_3", Decimal)
-TOP_UP_4 = ArtifactKind("ex/top_up_line_4", Decimal)
-TOP_UP_5 = ArtifactKind("ex/top_up_line_5", Decimal)
-TOP_UP_7 = ArtifactKind("ex/top_up_line_7", Decimal)
+NET_INCOME = AmountKind("ex/net_income")
+TAXABLE_INCOME = AmountKind("ex/taxable_income")
+LINE_1 = AmountKind("ex/line_1")
+LINE_2 = AmountKind("ex/line_2")
+LINE_3 = AmountKind("ex/line_3")
+LINE_4 = AmountKind("ex/line_4")
+LINE_5 = AmountKind("ex/line_5")
+LINE_6 = AmountKind("ex/line_6")
+LINE_7 = AmountKind("ex/line_7")
+LINE_8 = AmountKind("ex/line_8")
+LINE_9 = AmountKind("ex/line_9")
+LINE_10 = AmountKind("ex/line_10")
+LINE_11 = AmountKind("ex/line_11")
+LINE_12 = AmountKind("ex/line_12")
+FIRST_TIER_CAP = AmountKind("ex/first_tier_cap")
+LINE_13 = AmountKind("ex/line_13")
+LINE_14 = AmountKind("ex/line_14")
+LINE_15 = AmountKind("ex/line_15")
+LINE_16 = AmountKind("ex/line_16")
+THRESHOLD = AmountKind("ex/threshold")
+LINE_19 = AmountKind("ex/line_19")
+LINE_F = AmountKind("ex/line_f")
+LINE_20 = AmountKind("ex/line_20")
+LINE_G = AmountKind("ex/line_g")
+LINE_21 = AmountKind("ex/line_21")
+LINE_22 = AmountKind("ex/line_22")
+LINE_23 = AmountKind("ex/line_23")
+LINE_B = AmountKind("ex/line_b")
+LINE_C = AmountKind("ex/line_c")
+LINE_D = AmountKind("ex/line_d")
+DEPRECIABLE_1 = AmountKind("ex/depreciable_line_1")
+DEPRECIABLE_2 = AmountKind("ex/depreciable_line_2")
+DEPRECIABLE_3 = AmountKind("ex/depreciable_line_3")
+DEPRECIABLE_4 = AmountKind("ex/depreciable_line_4")
+CAPITAL_1 = AmountKind("ex/capital_line_1")
+CAPITAL_2 = AmountKind("ex/capital_line_2")
+CREDITS_AT_RATE = AmountKind("ex/credit_amounts_at_credit_rate")
+TOP_UP_3 = AmountKind("ex/top_up_line_3")
+TOP_UP_4 = AmountKind("ex/top_up_line_4")
+TOP_UP_5 = AmountKind("ex/top_up_line_5")
+TOP_UP_7 = AmountKind("ex/top_up_line_7")
 
 
 def rated(family: str, base: Money, output: Money) -> ApplyRate:
@@ -569,7 +570,7 @@ def test_the_top_up_reads_line_22_of_the_schedule_not_line_23() -> None:
     # Net income 60000, donations of 1500: line 22 is 29.00 and line 23 is 406.00. With line 33800
     # of 9000 the worksheet's line 3 is 9029.00, not 9406.00.
     schedule = donations("60000", "55000", line_1="1500")
-    start = {CREDITS_AT_RATE: "9000", LINE_22: str(schedule[LINE_22])}
+    start: dict[Money, str] = {CREDITS_AT_RATE: "9000", LINE_22: str(schedule[LINE_22])}
 
     lines = run(start, *top_up())
 

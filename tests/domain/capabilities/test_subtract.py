@@ -27,6 +27,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import SubtractedLine
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
@@ -34,9 +35,9 @@ from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 D = Decimal
 
 
-GROSS = ArtifactKind("ex/gross_amount", Decimal)
-REDUCTION = ArtifactKind("ex/reduction", Decimal)
-NET = ArtifactKind("ex/net_amount", Decimal)
+GROSS = AmountKind("ex/gross_amount")
+REDUCTION = AmountKind("ex/reduction")
+NET = AmountKind("ex/net_amount")
 
 
 def capability() -> Subtract:
@@ -149,7 +150,7 @@ def test_rejects_a_list_of_kinds_for_what_it_takes_off() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.
@@ -217,7 +218,7 @@ def test_the_order_of_the_inputs_does_not_matter() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), *inputs("10", "4")))
 

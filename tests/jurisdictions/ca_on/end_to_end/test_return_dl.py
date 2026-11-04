@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
@@ -28,7 +30,9 @@ def return_dl(
     the pension on line 11500, the filer's eligible adoption expenses for each child (one record
     each) and the student loan interest on line 31900.
     """
-    records = [{ADOPTION_CHILD_EXPENSES: D(amount)} for amount in adoption_children]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {ADOPTION_CHILD_EXPENSES: D(amount)} for amount in adoption_children
+    ]
     given = (
         Artifact(
             ADOPTION_EXPENSE_CHILDREN,

@@ -66,7 +66,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
@@ -74,11 +74,12 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
-from tax_engine.domain.record_list import Record, RecordList, RecordListKind
+from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_proceeds import CcaVehicleProceeds
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
@@ -243,7 +244,7 @@ def test_rejects_a_money_kind_for_its_output() -> None:
             zepv_prescribed_amounts(),
             CLASSES,
             SALES_TAX_RATE,
-            ArtifactKind("ex/other_amount", Decimal),  # type: ignore[arg-type]
+            AmountKind("ex/other_amount"),  # type: ignore[arg-type]
         )
 
 
@@ -602,7 +603,7 @@ def test_a_missing_sales_tax_rate_is_a_missing_artifact() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other_amount", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other_amount"), D("9"))
 
     (output,) = capability().compute((other, classes(SOLD), sales_tax_rate())).outputs
 

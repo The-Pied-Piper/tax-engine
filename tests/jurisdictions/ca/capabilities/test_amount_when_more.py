@@ -21,15 +21,16 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import AmountWhenMoreLine
 from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
 
 D = Decimal
 
-AMOUNT = ArtifactKind("ex/claimed_amount", Decimal)
-MORE = ArtifactKind("ex/tested_amount", Decimal)
-THAN = ArtifactKind("ex/limit_amount", Decimal)
-OUTPUT = ArtifactKind("ex/passed_amount", Decimal)
+AMOUNT = AmountKind("ex/claimed_amount")
+MORE = AmountKind("ex/tested_amount")
+THAN = AmountKind("ex/limit_amount")
+OUTPUT = AmountKind("ex/passed_amount")
 
 
 def capability() -> AmountWhenMore:
@@ -117,7 +118,7 @@ def test_rejects_a_list_of_kinds_for_its_amount() -> None:
 
 
 def test_rejects_a_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="AmountWhenMore.*'more'"):
         AmountWhenMore(AMOUNT, count, THAN, OUTPUT)  # type: ignore[arg-type]
@@ -179,7 +180,7 @@ def test_a_gated_off_result_is_a_plain_zero() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     assert capability().compute((other, *inputs("5", "2", "1"))).outputs == (
         Artifact(OUTPUT, D("5")),

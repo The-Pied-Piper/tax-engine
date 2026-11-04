@@ -28,7 +28,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
@@ -88,7 +88,7 @@ def capability(dataset: ParameterDataset[ClaimReduction] | None = None) -> Other
 
 def dependants(*claims: tuple[str, str]) -> Artifact[Any]:
     """An `ca/other_dependants` artifact of one record per (expenses, net income), in order."""
-    records = [
+    records: list[dict[ArtifactKind[Any], object]] = [
         {OTHER_DEPENDANT_MEDICAL_EXPENSES: D(expenses), DEPENDANT_NET_INCOME: D(net_income)}
         for expenses, net_income in claims
     ]

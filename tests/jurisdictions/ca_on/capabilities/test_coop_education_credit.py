@@ -21,6 +21,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from decimal import Decimal
 from types import MappingProxyType
+from typing import Any
 
 import pytest
 
@@ -35,6 +36,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -89,7 +91,9 @@ def capability(
 
 def placements(*expenditures: str) -> Artifact[RecordList]:
     """An `ca-on/coop_education_placements` artifact of one record per amount, in order."""
-    records = [{COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures
+    ]
     return Artifact(
         COOP_EDUCATION_PLACEMENTS, RecordList(COOP_EDUCATION_PLACEMENTS.fields, records)
     )
@@ -164,7 +168,7 @@ def test_its_slots_are_read_only() -> None:
 
 
 def test_rejects_a_money_kind_for_its_placements() -> None:
-    other = ArtifactKind("ex/not_a_list", Decimal)
+    other = AmountKind("ex/not_a_list")
 
     with pytest.raises(InvalidCapabilityError, match="CoopEducationCredit.*'placements'"):
         CoopEducationCredit(
@@ -539,7 +543,7 @@ def test_refuses_two_values_for_the_remaining_share() -> None:
 
 
 def test_does_not_consume_anything_else() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("1"))
+    other = Artifact(AmountKind("ex/other"), D("1"))
 
     result = capability().compute((other, placements("8000"), share("1")))
 

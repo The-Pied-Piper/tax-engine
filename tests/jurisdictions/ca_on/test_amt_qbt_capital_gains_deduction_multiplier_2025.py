@@ -14,8 +14,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -27,8 +28,8 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/amt_qbt_capital_gains_deduction_multiplier"
 
 # Made up for this test and not registered: the amount the fraction is applied to, and the product.
-BASE = ArtifactKind("ex/amt_line_25395", Decimal)
-AMOUNT = ArtifactKind("ex/amt_line_89", Decimal)
+BASE = AmountKind("ex/amt_line_25395")
+AMOUNT = AmountKind("ex/amt_line_89")
 
 
 def test_2025_amt_qbt_capital_gains_deduction_multiplier_is_2_over_1() -> None:

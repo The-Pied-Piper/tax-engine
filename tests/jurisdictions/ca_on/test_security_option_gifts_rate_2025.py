@@ -15,8 +15,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -26,8 +27,8 @@ FAMILY = "ca/security_option_gifts_rate"
 T691_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf"
 
 # Made up for this test and not registered: the gifts under a security option plan, and line 31.
-GIFTS = ArtifactKind("ex/security_option_gifts", Decimal)
-DEDUCTION = ArtifactKind("ex/security_option_gifts_deduction", Decimal)
+GIFTS = AmountKind("ex/security_option_gifts")
+DEDUCTION = AmountKind("ex/security_option_gifts_deduction")
 
 
 def test_2025_rate_is_40_percent() -> None:

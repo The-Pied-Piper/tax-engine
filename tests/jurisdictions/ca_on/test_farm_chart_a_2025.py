@@ -25,8 +25,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -157,8 +158,8 @@ def test_the_farm_refused_dataset_rounds_nothing_and_cites_the_pdf_of_the_form()
 
 
 def test_the_farm_accepted_codes_pass_and_every_other_code_is_refused() -> None:
-    raw = ArtifactKind("ex/code", int)
-    checked = ArtifactKind("ex/code_checked", int)
+    raw = CountKind("ex/code")
+    checked = CountKind("ex/code_checked")
     capability = CountRefusedByConditions(farm_refused(), raw, checked)
 
     for code in range(0, 13):

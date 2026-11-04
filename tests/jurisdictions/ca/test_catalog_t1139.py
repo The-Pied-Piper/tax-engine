@@ -16,7 +16,7 @@ from typing import Any
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     T1139_A_STATEMENTS,
     T1139_AMOUNT_2A,
@@ -150,6 +150,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1139_STATEMENTS_ON_PROFESSIONAL_LINE,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The amounts that are never below 0 on the form: figures the filer enters, the lines the form
 # bounds at 0 and the lines the form shows no negative for.
@@ -340,21 +341,21 @@ def test_the_t1139_kinds_are_in_the_snapshot() -> None:
 def test_the_non_negative_amounts_are_non_negative_decimals() -> None:
     for kind in NON_NEGATIVE:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
 def test_the_amounts_the_form_may_show_as_a_loss_are_signed_decimals() -> None:
     for kind in SIGNED_AMOUNTS:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert kind.identifier in SIGNED, kind.identifier
 
 
 def test_the_counts_are_non_negative_whole_numbers_in_the_snapshot() -> None:
     for kind in COUNT_KINDS:
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier in COUNTS, kind.identifier
 
 

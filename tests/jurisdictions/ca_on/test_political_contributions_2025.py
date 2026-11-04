@@ -37,6 +37,7 @@ from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -57,13 +58,13 @@ def family(column: int, line: int) -> str:
 
 # Made up for this test and not registered: the contributions (line 1), each column's lines 2, 3,
 # 5, 6 and 7, the pick (before the maximum) and line 16.
-CONTRIBUTIONS = ArtifactKind("ex/contributions", Decimal)
-BEFORE_MAXIMUM = ArtifactKind("ex/credit_before_maximum", Decimal)
-LINE_16 = ArtifactKind("ex/credit", Decimal)
+CONTRIBUTIONS = AmountKind("ex/contributions")
+BEFORE_MAXIMUM = AmountKind("ex/credit_before_maximum")
+LINE_16 = AmountKind("ex/credit")
 
 
 def line(column: int, number: int) -> ArtifactKind[Decimal]:
-    return ArtifactKind(f"ex/column_{column}_line_{number}", Decimal)
+    return AmountKind(f"ex/column_{column}_line_{number}")
 
 
 def only(result: CapabilityResult) -> Artifact[Decimal]:

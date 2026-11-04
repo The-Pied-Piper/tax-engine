@@ -29,8 +29,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -57,11 +58,11 @@ REFUSED_TEXT = "the $1,000 exemption (line 10105) and the VFA or SRVA are both c
 
 # Made up for this test and not registered: the VFA and SRVA flags (counts 1 and 2), the exemption
 # (amount 1), the count of the conflicts and its checked count.
-VFA = ArtifactKind("ex/volunteer_firefighters_flag", int)
-SRVA = ArtifactKind("ex/search_and_rescue_flag", int)
-EXEMPT = ArtifactKind("ex/emergency_services_volunteer_exempt", Decimal)
-CONFLICT = ArtifactKind("ex/emergency_services_volunteer_conflict", int)
-CONFLICT_CHECKED = ArtifactKind("ex/emergency_services_volunteer_conflict_checked", int)
+VFA = CountKind("ex/volunteer_firefighters_flag")
+SRVA = CountKind("ex/search_and_rescue_flag")
+EXEMPT = AmountKind("ex/emergency_services_volunteer_exempt")
+CONFLICT = CountKind("ex/emergency_services_volunteer_conflict")
+CONFLICT_CHECKED = CountKind("ex/emergency_services_volunteer_conflict_checked")
 
 
 def _conflicts() -> CountByConditions:

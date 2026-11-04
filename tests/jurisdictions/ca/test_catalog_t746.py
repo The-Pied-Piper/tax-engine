@@ -16,7 +16,7 @@ from typing import Any
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     T746_CONDITIONS_MET,
     T746_CONTRIBUTION_YEAR,
@@ -42,6 +42,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T746_YEARS,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The amounts the filer enters: lines 2 and 3 of each year and lines 6 to 10, non-negative.
 AMOUNT_INPUTS: tuple[ArtifactKind[Decimal], ...] = (
@@ -123,14 +124,14 @@ def test_the_t746_kinds_are_in_the_snapshot() -> None:
 def test_the_amounts_are_non_negative_decimals() -> None:
     for kind in (*AMOUNT_INPUTS, *COMPUTED):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
 def test_the_years_are_non_negative_whole_numbers() -> None:
     for kind in YEAR_INPUTS:
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_years_list_holds_lines_1_to_3_of_the_row_form() -> None:
@@ -154,7 +155,7 @@ def test_the_two_years_are_counts_and_the_amounts_are_neither_counts_nor_record_
 def test_the_conditions_are_counts_of_1_or_0() -> None:
     for kind in ANSWER_COUNTS:
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier in COUNTS, kind.identifier
 
 

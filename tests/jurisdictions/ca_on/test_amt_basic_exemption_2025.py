@@ -10,8 +10,9 @@ from decimal import Decimal
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -22,7 +23,7 @@ T691_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # Made up for this test and not registered: the claimed amount the dataset gives.
-CLAIMED = ArtifactKind("ex/amt_basic_exemption_claimed", Decimal)
+CLAIMED = AmountKind("ex/amt_basic_exemption_claimed")
 
 
 def test_2025_basic_exemption_is_177882() -> None:

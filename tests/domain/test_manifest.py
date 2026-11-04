@@ -19,9 +19,9 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidManifestError, UnknownRegistrationError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
     Default,
@@ -29,7 +29,7 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tests.kinds import AutoKinds
 from tests.manifest_support import required_inputs
 
@@ -548,11 +548,11 @@ def test_an_input_is_named_by_an_identifier() -> None:
         InputDeclaration(name="Credit", required=True)
 
 
-AMOUNT = ArtifactKind("ex/amount", Decimal)
-LEVY = ArtifactKind("ex/levy_amount", Decimal, non_negative=True)
-COUNT = ArtifactKind("ex/count", int, non_negative=True)
+AMOUNT = AmountKind("ex/amount")
+LEVY = AmountKind("ex/levy_amount", non_negative=True)
+COUNT = CountKind("ex/count", non_negative=True)
 ROWS = RecordListKind("ex/rows", fields=(AMOUNT, COUNT))
-NOTE = ArtifactKind("ex/note", str)
+NOTE = TextKind("ex/note")
 BUSINESS_NUMBER = DigitsKind("ex/business_number", digits=9)
 
 
@@ -759,7 +759,7 @@ def registry(*kinds: ArtifactKind[Any]) -> ArtifactRegistry:
     return found
 
 
-COUNT_APPLIES = ArtifactKind("ex/relief_applies", int, non_negative=True)
+COUNT_APPLIES = CountKind("ex/relief_applies", non_negative=True)
 
 
 def test_the_manifest_is_checked_and_its_defaults_converted_when_it_is_built() -> None:
@@ -841,7 +841,7 @@ def test_an_input_default_must_suit_its_kind() -> None:
 
 @pytest.mark.parametrize(
     "kind",
-    [ArtifactKind("ex/relief_applies", Decimal), ArtifactKind("ex/relief_applies", int)],
+    [AmountKind("ex/relief_applies"), CountKind("ex/relief_applies")],
 )
 def test_a_predicate_that_is_not_a_yes_no_count_is_refused(kind: ArtifactKind[Any]) -> None:
     with pytest.raises(InvalidManifestError, match="required_when 'ex/relief_applies' is not a"):

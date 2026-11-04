@@ -59,6 +59,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T2205_SPP_PART_TOTAL,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The twelve starting amounts, each a non-negative amount as the filer enters it.
 INPUTS = (
@@ -181,19 +182,19 @@ def test_every_t2205_kind_is_a_decimal() -> None:
 
 def test_the_starting_amounts_are_non_negative() -> None:
     for kind in INPUTS:
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
 def test_the_computed_lines_and_the_unsigned_return_amounts_are_non_negative() -> None:
     for kind in (*COMPUTED, *RETURN_UNSIGNED):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
 def test_line_22_and_the_amounts_routed_from_it_are_signed() -> None:
     for kind in SIGNED_KINDS:
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert kind.identifier in SIGNED, kind.identifier
 
 

@@ -30,6 +30,7 @@ import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -39,7 +40,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.catalog import (
     ADOPTION_CHILD_EXPENSES,
@@ -54,10 +55,10 @@ from tax_engine.jurisdictions.ca_on.trace import CappedRecordLine
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 WHOLE_DOLLAR_DOWN = RoundTo(D("1"), RoundingMode.FLOOR)
-COUNT = ArtifactKind("ex/child_count", int)
+COUNT = CountKind("ex/child_count")
 TWO_AMOUNTS = RecordListKind("ex/two_amounts", fields=(ADOPTION_CHILD_EXPENSES, COUNT))
 COUNT_ONLY = RecordListKind("ex/child_counts", fields=(COUNT,))
-UNRELATED = ArtifactKind("ex/unrelated", Decimal)
+UNRELATED = AmountKind("ex/unrelated")
 
 
 def amount(family: str, value: str, rounding: RoundingRule = CENT) -> ParameterDataset[Amount]:

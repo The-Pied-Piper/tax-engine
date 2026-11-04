@@ -2,9 +2,10 @@
 
 A `RecordList` is the value of a kind such as `ex/dependants`: its `fields`, the artifact kinds
 every record has, and its `records` in the caller's order. A `Record` is a frozen mapping keyed by
-field kind, read by kind and never by position. Every field is a `Decimal` or `int` kind or a
-`RecordListKind`; a record holds each of them, an instance of its value type and, for a kind
-declared non-negative, never below zero, and nothing else. A field of a record-list kind holds a
+field kind, read by kind and never by position. Every field is of a kind a record can hold (the
+`RecordField` Protocol: an amount, a count or a record list); a record holds each of them, an
+instance of its value type and, for a kind declared non-negative, never below zero, and nothing
+else. A field of a record-list kind holds a
 nested `RecordList` of exactly that kind's fields, which may be empty. A list may be empty.
 Packages declare a record-list kind, a `RecordListKind`, on their own catalog with
 `RecordListKind.declare`; an `Artifact` of one holds only a list built with that kind's fields.
@@ -14,18 +15,20 @@ from 1 ("item 2").
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator, Mapping, Sequence
-from dataclasses import dataclass, field
+from collections.abc import Iterable, Iterator, Mapping
+from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
-from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind
+from tax_engine.domain.artifact import (
+    ArtifactKind,
+    HasFloor,
+    RecordField,
+)
 from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
     BlankValueError,
     InvalidRecordError,
-    InvalidRegistrationError,
-    InvalidTextError,
     NegativeArtifactError,
 )
 
@@ -115,15 +118,10 @@ class RecordList:
             if kind.identifier in seen:
                 raise InvalidRecordError(f"the field {kind.identifier!r} is named more than once")
             seen.add(kind.identifier)
-            # `bool` is a subclass of `int` but not a count, so the int check is exact.
-            if not (
-                issubclass(kind.value_type, Decimal)
-                or kind.value_type is int
-                or isinstance(kind, RecordListKind)
-            ):
+            if not isinstance(kind, RecordField):
                 raise InvalidRecordError(
                     f"the field {kind.identifier!r} holds a {kind.value_type.__name__}: "
-                    f"a field must be a Decimal, int or record-list kind"
+                    f"a record cannot hold a field of this kind"
                 )
         checked = tuple(
             self._checked(position, given) for position, given in enumerate(self.records, start=1)
@@ -156,14 +154,13 @@ class RecordList:
                     f"{item}: {kind.identifier} must be a {kind.value_type.__name__}, "
                     f"got {type(value).__name__}"
                 )
-            if isinstance(kind, RecordListKind):
-                try:
-                    kind.check_value(value)
-                except TypeError as exc:
-                    raise TypeError(f"{item}: {exc}") from None
+            try:
+                kind.check_value(value)
+            except TypeError as exc:
+                raise TypeError(f"{item}: {exc}") from None
             if isinstance(value, Decimal) and not value.is_finite():
                 raise InvalidRecordError(f"{item}: {kind.identifier} must be finite, got {value}")
-            if kind.non_negative and value < 0:
+            if isinstance(kind, HasFloor) and kind.is_below_floor(value):
                 raise NegativeArtifactError(
                     f"{item}: {kind.identifier} cannot be negative, got {value}",
                     identifier=kind.identifier,
@@ -171,65 +168,3 @@ class RecordList:
                 )
             values[kind] = value
         return Record(values)
-
-
-@dataclass(frozen=True)
-class RecordListKind(ArtifactKind[RecordList]):
-    """A record-list kind: its values are `RecordList`s of exactly its `fields`, in that order.
-
-    The fields are `Decimal`, `int` or record-list kinds, none or more, no identifier twice, else an
-    InvalidRegistrationError naming the kind; they may come from any package's catalog. Two kinds
-    of one identifier with other fields are not equal. Packages declare theirs with `declare`.
-    """
-
-    fields: tuple[ArtifactKind[Any], ...] = field(kw_only=True)
-
-    def __init__(self, identifier: str, *, fields: Sequence[ArtifactKind[Any]]) -> None:
-        # Written by hand, so the dataclass keeps it: the value type is always `RecordList`, never
-        # non-negative, and the fields may be any sequence, which `__post_init__` normalises.
-        object.__setattr__(self, "identifier", identifier)
-        object.__setattr__(self, "value_type", RecordList)
-        object.__setattr__(self, "non_negative", False)
-        object.__setattr__(self, "fields", tuple(fields))
-        self.__post_init__()
-
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        try:
-            RecordList(self.fields, ())
-        except InvalidRecordError as exc:
-            raise InvalidRegistrationError(f"record list {self.identifier!r}: {exc}") from None
-
-    @classmethod
-    def declare(
-        cls, catalog: ArtifactCatalog, local_id: str, fields: Sequence[ArtifactKind[Any]]
-    ) -> RecordListKind:
-        """Declare the record-list kind `<namespace>/<local_id>` of `fields` on `catalog`.
-
-        The kind lands in the catalog's namespace, e.g. `ex/dependants`; its fields may come from
-        any package's catalog. A local id the catalog already declared is an error.
-        """
-        kind = cls(catalog.namespace.identifier(local_id), fields=fields)
-        catalog.add(kind)
-        return kind
-
-    def read(self, text: str) -> Artifact[RecordList]:
-        """Refuse any text: a record list is not spelled as text, only as an empty list default."""
-        raise InvalidTextError("must be an empty list")
-
-    def read_default(self, declared: str | tuple[()] | None) -> Artifact[RecordList]:
-        """Blank for `None`, an empty list of this kind's fields for `()`, else `read`'s refusal."""
-        if declared is None:
-            return Artifact(self, BLANK)
-        if isinstance(declared, str):
-            return self.read(declared)
-        return Artifact(self, RecordList(self.fields, ()))
-
-    def check_value(self, value: RecordList) -> None:
-        """Refuse a record list built with other fields than this kind's, as a TypeError."""
-        if value.fields != self.fields:
-            raise TypeError(
-                f"{self.identifier} must be a record list of fields "
-                f"{[kind.identifier for kind in self.fields]}, "
-                f"got fields {[kind.identifier for kind in value.fields]}"
-            )

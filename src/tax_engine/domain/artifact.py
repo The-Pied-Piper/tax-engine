@@ -5,21 +5,24 @@ capability-to-capability dependencies (design.md §2). An `ArtifactKind[V]` name
 artifact by a namespaced identifier such as `ex/taxable_income` and states the type of its
 values; an `Artifact[V]` is one value of a kind, produced in one computation. Each package
 declares its kinds through one `ArtifactCatalog`, which only records them; the composition root
-registers each catalog explicitly with `ArtifactRegistry.register_catalog`. A `Decimal` kind, or
-an `int` kind such as a count, may be declared non-negative, and then no artifact of it holds a
-value below zero. A kind that carries more than its value type, such as a record-list kind
-(record_list.py) or a digits kind (digits.py), is built by its own class and recorded with
-`ArtifactCatalog.add`. Names come from the jurisdiction's own law or return, never from another
-system's.
+registers each catalog explicitly with `ArtifactRegistry.register_catalog`.
+
+`ArtifactKind` is abstract: every kind is one of its subclasses, which own what depends on the
+kind of value: how it reads text, how it is declared and what it refuses. What only some kinds
+have is a Protocol a kind matches by shape (`HasFloor`, `RecordField`, `YesNo`). The kinds are in
+kinds.py (amount, count, rate, text, digits and record list). A subclass declares itself on a
+catalog with its own `declare`. An amount or a count may be declared non-negative, and then no
+artifact of it holds a value below zero. Names come from the jurisdiction's own law or return,
+never from another system's.
 """
 
 from __future__ import annotations
 
-import re
+from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from dataclasses import dataclass
-from decimal import Decimal, InvalidOperation
-from typing import Any, Generic, TypeVar
+from decimal import Decimal
+from typing import Any, ClassVar, Generic, Protocol, TypeVar, runtime_checkable
 
 from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
@@ -32,27 +35,69 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.registry import Namespace, Registry
 
-# A number's spelling in text: an optional minus sign and digits, a decimal point and digits.
-_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
-_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
-
 # Invariant on purpose. PEP 695 syntax would infer covariance from `value_type: type[V]`, and
 # mypy would then accept, say, an ArtifactKind[int] wired where an ArtifactKind[Decimal] is
 # expected.
 V = TypeVar("V")
 
 
+@runtime_checkable
+class HasFloor(Protocol):
+    """A kind with a lowest value it holds, as a non-negative amount or count does.
+
+    Matched by shape: any kind with `is_below_floor` is one; `Artifact` and a record check it
+    before asking, so a kind of another sort (text, rate, digits) is never asked. An amount or
+    count kind always matches, whether or not it was declared non-negative; its answer is then
+    always no.
+
+    `value` is `Any` because the amount and count kinds narrow it to `Decimal` and `int`, which a
+    Protocol parameter of a wider type would not accept.
+    """
+
+    def is_below_floor(self, value: Any) -> bool:
+        """Whether `value`, already an instance of the value type, is below the floor."""
+        ...
+
+
+@runtime_checkable
+class RecordField(Protocol):
+    """A kind a record can hold as one of its fields: an amount, a count or a record list.
+
+    Matching is the answer: only those kinds have the member, which is always true.
+    """
+
+    @property
+    def is_record_field(self) -> bool:
+        """Always true for a kind that has it: a kind without it cannot be a field."""
+        ...
+
+
+@runtime_checkable
+class YesNo(Protocol):
+    """A kind that may be a yes/no: a count, which is one when declared non-negative."""
+
+    @property
+    def is_yes_no(self) -> bool:
+        """Whether this kind is a yes/no, 1 for yes and 0 for no."""
+        ...
+
+
 @dataclass(frozen=True)
-class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
+class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
     """A kind of artifact, named by its identifier `<namespace>/<local id>`, and its value type.
 
-    A `Decimal` or `int` kind with `non_negative` set never holds a value below zero. Built
-    directly it is unregistered; packages declare theirs through an `ArtifactCatalog`.
+    Abstract: build one of its subclasses (amount, count, rate, text, digits and record-list kinds,
+    all in kinds.py); a package declares its own through an `ArtifactCatalog`, with
+    the subclass's `declare`. A subclass says how it reads text (`read`) and may refuse values
+    (`check_value`). What only some kinds have is a Protocol a kind matches by shape: `HasFloor`,
+    `RecordField` and `YesNo`.
     """
 
     identifier: str
     value_type: type[V]
-    non_negative: bool = False
+
+    # What `read_default` says a default must be when it is `[]` and the kind has no empty list.
+    default_spelling: ClassVar[str] = "a quoted number"
 
     def __post_init__(self) -> None:
         namespace, _, local_id = self.identifier.partition("/")
@@ -68,14 +113,6 @@ class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
             ) from None
         if not isinstance(self.value_type, type):
             raise TypeError(f"value_type must be a type, got {self.value_type!r}")
-        # `bool` is a subclass of `int` but not a count, so the int check is exact.
-        if self.non_negative and not (
-            issubclass(self.value_type, Decimal) or self.value_type is int
-        ):
-            raise InvalidRegistrationError(
-                f"artifact kind {self.identifier!r} cannot be non-negative: only a Decimal or "
-                f"int kind can, not a {self.value_type.__name__} one"
-            )
 
     @property
     def label(self) -> str:
@@ -100,49 +137,23 @@ class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
         not its digits.
         """
 
-    def read(self: ArtifactKind[Any], text: str) -> Artifact[Any]:
+    @abstractmethod
+    def read(self, text: str) -> Artifact[V]:
         """The artifact of this kind that `text` spells, as a manifest or a request writes it.
 
-        A `Decimal` kind reads a plain decimal number, an `int` kind a whole number (neither
-        below zero if the kind is non-negative) and a kind of text the text itself, which the
-        kind's own `check_value` must accept. Text the kind cannot read is an InvalidTextError
-        saying what it must be, without naming the kind; a caller adds where the text came from.
+        Text the kind cannot read is an InvalidTextError saying what it must be; a caller adds
+        where the text came from.
         """
-        value_type = self.value_type
-        if value_type is Decimal or value_type is int:
-            whole = value_type is int
-            pattern = _WHOLE_NUMBER if whole else _DECIMAL_NUMBER
-            if not pattern.fullmatch(text):
-                raise InvalidTextError(
-                    "must be a whole number" if whole else "must be a plain decimal number"
-                )
-            try:
-                number = Decimal(int(text)) if whole else Decimal(text)
-            except (InvalidOperation, ValueError):
-                # Python refuses a whole number of more than 4300 digits.
-                raise InvalidTextError("is too long to read as a number") from None
-            if self.non_negative and number < 0:
-                raise InvalidTextError("must not be below zero")
-            return Artifact(self, int(number) if whole else number)
-        if value_type is str:
-            try:
-                self.check_value(text)  # a digits kind takes only its own digits, or blank
-            except InvalidTextError as exc:
-                raise InvalidTextError(f"is not a value of the kind: {exc}") from None
-            return Artifact(self, text)
-        raise InvalidTextError(f"has no spelling as text ({value_type.__name__} values)")
 
-    def read_default(self: ArtifactKind[Any], declared: str | tuple[()] | None) -> Artifact[Any]:
-        """The artifact a manifest's declared default is read as: `None` is blank, `()` an empty
-        list (only a record-list kind has one) and a string is read by `read`.
+    def read_default(self, declared: str | tuple[()] | None) -> Artifact[V]:
+        """The artifact a manifest's declared default is read as: `None` is blank, a string is
+        read by `read`, and `()` (an empty list) is refused unless the kind has an empty list.
         """
         if declared is None:
             return Artifact(self, BLANK)
         if isinstance(declared, str):
             return self.read(declared)
-        raise InvalidTextError(
-            "must be a quoted number" if self.value_type is not str else "must be a string"
-        )
+        raise InvalidTextError(f"must be {self.default_spelling}")
 
 
 type Money = ArtifactKind[Decimal]
@@ -175,11 +186,11 @@ class Artifact[T]:
         if isinstance(value, Decimal) and not value.is_finite():
             raise InvalidAmountError(f"{kind.identifier} must be finite, got {value}")
         kind.check_value(value)
-        if kind.non_negative and isinstance(value, Decimal | int) and value < 0:
+        if isinstance(kind, HasFloor) and kind.is_below_floor(value):
             raise NegativeArtifactError(
                 f"{kind.identifier} cannot be negative, got {value}",
                 identifier=kind.identifier,
-                value=value,
+                value=value if isinstance(value, Decimal | int) else None,
             )
 
     @property
@@ -271,20 +282,8 @@ class ArtifactCatalog:
         """Every kind declared so far, in declaration order."""
         return tuple(self._kinds.values())
 
-    def declare[T](
-        self, local_id: str, value_type: type[T], *, non_negative: bool = False
-    ) -> ArtifactKind[T]:
-        """Declare the kind `<namespace>/<local_id>` with values of `value_type` and record it.
-
-        `non_negative` declares that its values are never below zero (a `Decimal` or `int` kind
-        only). A local id this catalog already declared is an error.
-        """
-        kind = ArtifactKind(self._namespace.identifier(local_id), value_type, non_negative)
-        self.add(kind)
-        return kind
-
     def add(self, kind: ArtifactKind[Any]) -> None:
-        """Record `kind`, built by its own class, such as a record-list kind or a digits kind.
+        """Record `kind`, which its own class's `declare` builds and passes here.
 
         A kind outside this catalog's namespace is an InvalidRegistrationError; a local id this
         catalog already declared is an error.

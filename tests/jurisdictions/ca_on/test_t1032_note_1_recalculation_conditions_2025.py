@@ -14,7 +14,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -31,10 +32,10 @@ FAMILY = "ca/t1032_note_1_recalculation_conditions"
 T1032_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032-25e.pdf"
 
 # Made up for this test and not registered: the count tested, the $4,000, the result and the count.
-APPLIES = ArtifactKind("ex/t1032_note_1_applies", int)
-LIMIT = ArtifactKind("ex/t1032_note_1_result_figure", Decimal)
-RESULT = ArtifactKind("ex/t1032_note_1_result", Decimal)
-RECALCULATION = ArtifactKind("ex/t1032_note_1_recalculation", int)
+APPLIES = CountKind("ex/t1032_note_1_applies")
+LIMIT = AmountKind("ex/t1032_note_1_result_figure")
+RESULT = AmountKind("ex/t1032_note_1_result")
+RECALCULATION = CountKind("ex/t1032_note_1_recalculation")
 
 
 def test_2025_note_1_applying_with_a_result_below_4000_is_the_one_condition() -> None:

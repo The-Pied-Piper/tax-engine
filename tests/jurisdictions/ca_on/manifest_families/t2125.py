@@ -23,8 +23,8 @@ from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBe
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 from tax_engine.jurisdictions.ca.capabilities.business_vehicle_expenses import (
     BusinessVehicleExpenses,

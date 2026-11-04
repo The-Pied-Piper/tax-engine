@@ -49,6 +49,7 @@ from tests.jurisdictions.ca.capabilities.test_principal_residence_worksheet_line
     capability,
     value_of,
 )
+from tests.kinds import non_negative
 
 D = Decimal
 
@@ -312,7 +313,7 @@ def test_the_worksheet_line_59_of_a_worked_example_is_still_line_27() -> None:
 def test_worksheet_line_12_is_the_cost_base_adjustments_field() -> None:
     # Line 39 = worksheet line 12 (6,000.00 for property 1), not the T2091 line 13 (10,000.00).
     assert RESIDENCE_WS_COST_BASE_ADJUSTMENTS_TO_FEB_1994.value_type is Decimal
-    assert RESIDENCE_WS_COST_BASE_ADJUSTMENTS_TO_FEB_1994.non_negative is True
+    assert non_negative(RESIDENCE_WS_COST_BASE_ADJUSTMENTS_TO_FEB_1994) is True
     assert value_of(40, PART_2_WORKSHEET_PROPERTY_1) == D("246000.00")
 
 

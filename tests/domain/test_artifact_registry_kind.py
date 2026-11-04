@@ -15,11 +15,12 @@ import pytest
 
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.errors import InvalidRegistrationError, UnknownRegistrationError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tests.kinds import ca_on_kinds
 
-BASE = ArtifactKind("ex/taxable_base", Decimal)
-COUNT = ArtifactKind("ex/count", int)
+BASE = AmountKind("ex/taxable_base")
+COUNT = CountKind("ex/count")
 
 
 def registry(**items: object) -> ArtifactRegistry:
@@ -43,7 +44,7 @@ def test_kind_is_the_kind_registered_under_the_identifier() -> None:
 
 
 def test_kind_returns_the_registered_object_not_an_equal_one() -> None:
-    own = ArtifactKind("ex/own_base", Decimal)
+    own = AmountKind("ex/own_base")
     artifacts = ArtifactRegistry()
     artifacts.register("ex/own_base", own)
 
@@ -52,7 +53,7 @@ def test_kind_returns_the_registered_object_not_an_equal_one() -> None:
 
 def test_kind_finds_kinds_registered_from_a_catalog() -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    declared = catalog.declare("refund", Decimal)
+    declared = AmountKind.declare(catalog, "refund")
     artifacts = ArtifactRegistry()
     artifacts.register_catalog(catalog)
 
@@ -92,7 +93,7 @@ def test_kind_looks_in_that_registry_only() -> None:
 
 
 def test_kind_rejects_an_entry_registered_under_another_identifier_than_its_own() -> None:
-    artifacts = registry(ex__alias=ArtifactKind("ex/elsewhere", Decimal))
+    artifacts = registry(ex__alias=AmountKind("ex/elsewhere"))
 
     with pytest.raises(
         InvalidRegistrationError, match=r"'ex/alias' is registered as .*'ex/elsewhere'"

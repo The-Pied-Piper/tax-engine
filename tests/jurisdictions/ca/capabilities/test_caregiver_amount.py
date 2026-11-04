@@ -24,7 +24,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -71,7 +71,9 @@ def capability(
 
 def dependants(*net_incomes: str) -> Artifact[Any]:
     """An `ca/infirm_dependants` artifact of one record per net income, in the order given."""
-    records = [{DEPENDANT_NET_INCOME: D(net_income)} for net_income in net_incomes]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {DEPENDANT_NET_INCOME: D(net_income)} for net_income in net_incomes
+    ]
     return Artifact(INFIRM_DEPENDANTS, RecordList(INFIRM_DEPENDANTS.fields, records))
 
 

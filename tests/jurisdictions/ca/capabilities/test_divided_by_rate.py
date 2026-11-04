@@ -25,7 +25,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     CapabilityContractError,
@@ -35,6 +35,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -53,8 +54,8 @@ from tests.manifest_support import required_inputs
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
-DIVIDEND = ArtifactKind("ex/dividend", Decimal)
-OUTPUT = ArtifactKind("ex/out", Decimal)
+DIVIDEND = AmountKind("ex/dividend")
+OUTPUT = AmountKind("ex/out")
 
 
 def rate(value: str = "0.145", rounding: RoundingRule = CENT) -> ParameterDataset[Rate]:
@@ -147,7 +148,7 @@ def test_rejects_a_list_of_kinds_for_its_dividend() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.
@@ -262,7 +263,7 @@ def test_an_inexact_division_under_no_rounding_raises_inexact() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = capability(rate("0.5")).compute((other, *inputs("10")))
 

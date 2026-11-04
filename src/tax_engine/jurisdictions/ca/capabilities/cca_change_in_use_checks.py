@@ -26,7 +26,8 @@ from typing import Any, ClassVar
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import InvalidRecordError
-from tax_engine.domain.record_list import Record, RecordList, RecordListKind
+from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_CHANGE_IN_USE,

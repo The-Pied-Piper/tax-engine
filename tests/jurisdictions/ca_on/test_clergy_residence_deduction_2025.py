@@ -17,11 +17,12 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
 from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
 from tax_engine.domain.errors import InvalidCapabilityError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
@@ -43,19 +44,19 @@ PART_B_CONDITIONS = "ca/clergy_residence_part_b_conditions"
 T1223_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1223/t1223-25e.pdf"
 
 # Made up for this test and not registered: the income, the months and the amounts they give.
-INCOME = ArtifactKind("ex/qualifying_income", Decimal)
-LINE_2 = ArtifactKind("ex/line_2", Decimal)
-MONTHS = ArtifactKind("ex/months", int)
-MONTHS_AMOUNT = ArtifactKind("ex/months_amount", Decimal)
-LINE_4 = ArtifactKind("ex/line_4", Decimal)
+INCOME = AmountKind("ex/qualifying_income")
+LINE_2 = AmountKind("ex/line_2")
+MONTHS = CountKind("ex/months")
+MONTHS_AMOUNT = AmountKind("ex/months_amount")
+LINE_4 = AmountKind("ex/line_4")
 
 # Made up for the Part C (B) count: the figures of lines 3, 6 and 7 and the line 1 income that the
 # count must not read, and the count the conditions give.
-PART_B_MONTHS = ArtifactKind("ex/part_b_months", int)
-PART_B_COST = ArtifactKind("ex/part_b_accommodation_cost", Decimal)
-PART_B_CLAIMS = ArtifactKind("ex/part_b_other_accommodation_claims", Decimal)
-PART_B_INCOME = ArtifactKind("ex/part_b_qualifying_income", Decimal)
-PART_B_COMPLETED = ArtifactKind("ex/part_b_completed", int)
+PART_B_MONTHS = CountKind("ex/part_b_months")
+PART_B_COST = AmountKind("ex/part_b_accommodation_cost")
+PART_B_CLAIMS = AmountKind("ex/part_b_other_accommodation_claims")
+PART_B_INCOME = AmountKind("ex/part_b_qualifying_income")
+PART_B_COMPLETED = CountKind("ex/part_b_completed")
 
 
 def test_2025_the_one_third_fraction_is_one_over_three() -> None:

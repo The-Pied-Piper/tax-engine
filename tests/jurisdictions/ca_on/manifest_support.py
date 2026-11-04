@@ -19,7 +19,7 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations  # noqa: F401
 from tax_engine import build_tax_computation
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 
 
 def input_names(document: dict[str, Any]) -> list[str]:

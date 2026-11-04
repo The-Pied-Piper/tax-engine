@@ -19,7 +19,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
@@ -30,11 +30,12 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import BlankPassedOnLine, YesOrNoCountLine
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 
-COUNT = ArtifactKind("ex/yes_or_no", int)
-OUTPUT = ArtifactKind("ex/yes_or_no_checked", int)
+COUNT = CountKind("ex/yes_or_no")
+OUTPUT = CountKind("ex/yes_or_no_checked")
 
 
 def capability() -> YesOrNoCount:
@@ -117,7 +118,7 @@ def test_rejects_a_list_of_kinds_for_its_count() -> None:
 
 
 def test_mypy_rejects_wiring_a_money_kind_for_a_count() -> None:
-    money = ArtifactKind("ex/money", Decimal)
+    money = AmountKind("ex/money")
     # An ArtifactKind[Decimal] is not an ArtifactKind[int]; the ignore fails under mypy
     # (warn_unused_ignores) if it is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="YesOrNoCount.*'count'"):
@@ -147,7 +148,7 @@ def test_a_count_of_1_is_produced_unchanged() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", int), 9)
+    other = Artifact(CountKind("ex/other"), 9)
 
     assert capability().compute((other, *inputs(1))).outputs == (Artifact(OUTPUT, 1),)
 

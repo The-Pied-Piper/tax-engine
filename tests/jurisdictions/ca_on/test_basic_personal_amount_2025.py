@@ -32,11 +32,12 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.brackets import BRACKETS
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -52,11 +53,11 @@ ONTARIO = "ca-on/basic_personal_amount"
 # Made up for this test and not registered: the net income the federal amount is tapered on, the
 # basic personal amount as an artifact, the credit amounts it stands for alone, the credits (the
 # amounts times the rate), whichever basic tax the credits come off, and that tax less the credits.
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-AMOUNT = ArtifactKind("ex/basic_personal_amount", Decimal)
-CREDITS = ArtifactKind("ex/non_refundable_tax_credits", Decimal)
-BASIC_TAX = ArtifactKind("ex/basic_tax", Decimal)
-TAX_AFTER_CREDITS = ArtifactKind("ex/tax_after_credits", Decimal)
+NET_INCOME = AmountKind("ex/net_income")
+AMOUNT = AmountKind("ex/basic_personal_amount")
+CREDITS = AmountKind("ex/non_refundable_tax_credits")
+BASIC_TAX = AmountKind("ex/basic_tax")
+TAX_AFTER_CREDITS = AmountKind("ex/tax_after_credits")
 
 
 def test_2025_federal_amount_is_the_worksheet_taper() -> None:

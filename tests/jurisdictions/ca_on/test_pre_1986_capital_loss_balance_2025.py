@@ -42,6 +42,7 @@ from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
@@ -57,7 +58,7 @@ FORM = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1436/t1436-25e.
 
 
 def kind(name: str) -> ArtifactKind[Decimal]:
-    return ArtifactKind(f"ex/{name}", Decimal)
+    return AmountKind(f"ex/{name}")
 
 
 LINE_1 = kind("line_1")

@@ -34,14 +34,15 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
-IN = ArtifactKind("ex/in", Decimal)
-OTHER = ArtifactKind("ex/other", Decimal)
-OUT = ArtifactKind("ex/out", Decimal)
+IN = AmountKind("ex/in")
+OTHER = AmountKind("ex/other")
+OUT = AmountKind("ex/out")
 FACTOR = ParameterKind("factor", Decimal)
 OFFSET = ParameterKind("offset", Decimal)
 
@@ -134,7 +135,7 @@ def test_input_finds_the_artifact_of_the_kind() -> None:
 
 
 def test_input_matches_by_kind_equality_not_identity() -> None:
-    inputs = (Artifact(ArtifactKind("ex/in", Decimal), D(1)),)
+    inputs = (Artifact(AmountKind("ex/in"), D(1)),)
 
     assert Reader().read(inputs, IN) == Artifact(IN, D(1))
 
@@ -554,7 +555,7 @@ def test_rejects_a_slot_filled_with_something_other_than_an_artifact_kind(filler
 
 def test_rejects_a_kind_of_another_value_type() -> None:
     with pytest.raises(InvalidCapabilityError, match="Scale.*'target'") as raised:
-        scale(target=ArtifactKind("ex/count", int))
+        scale(target=CountKind("ex/count"))
 
     message = str(raised.value)
     assert "int" in message
@@ -564,7 +565,7 @@ def test_rejects_a_kind_of_another_value_type() -> None:
 def test_rejects_a_kind_of_a_value_subtype() -> None:
     # Exact match, like the rest of the engine: a Cents kind is not a Decimal kind.
     with pytest.raises(InvalidCapabilityError, match="Scale.*'source'") as raised:
-        scale(source=ArtifactKind("ex/cents", Cents))
+        scale(source=AmountKind("ex/cents", Cents))
 
     assert "Cents" in str(raised.value)
 
@@ -580,7 +581,7 @@ def test_rejects_consuming_the_kind_it_produces() -> None:
 
 def test_rejects_consuming_a_kind_equal_to_the_one_it_produces() -> None:
     with pytest.raises(InvalidCapabilityError, match="Scale"):
-        scale(source=IN, target=ArtifactKind("ex/in", Decimal))
+        scale(source=IN, target=AmountKind("ex/in"))
 
 
 def test_rejects_producing_one_kind_twice() -> None:
@@ -604,7 +605,7 @@ def test_rejects_consuming_one_kind_twice() -> None:
 def test_rejects_an_int_kind_for_a_decimal_slot_even_when_it_shares_an_identifier() -> None:
     # Only the value type is checked against the slot, so this fails on the type, not as a reuse.
     with pytest.raises(InvalidCapabilityError, match="Scale.*'target'") as raised:
-        scale(source=IN, target=ArtifactKind("ex/in", int))
+        scale(source=IN, target=CountKind("ex/in"))
 
     assert "int" in str(raised.value)
 
@@ -621,7 +622,7 @@ def test_kinds_sharing_an_identifier_but_not_a_value_type_may_fill_two_slots() -
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
             return CapabilityResult(outputs=(), trace=())
 
-    as_decimal, as_int = ArtifactKind("ex/x", Decimal), ArtifactKind("ex/x", int)
+    as_decimal, as_int = AmountKind("ex/x"), CountKind("ex/x")
     count = Count(as_decimal, as_int)
 
     assert count.consumes == frozenset({as_decimal})
@@ -637,9 +638,9 @@ def test_invalid_capability_is_a_domain_error() -> None:
 # The list-slot classes are defined inside cached factories, so a class definition the base
 # rejects fails the tests that use it rather than the collection of this whole module.
 
-PART_A = ArtifactKind("ex/part_a", Decimal)
-PART_B = ArtifactKind("ex/part_b", Decimal)
-PART_C = ArtifactKind("ex/part_c", Decimal)
+PART_A = AmountKind("ex/part_a")
+PART_B = AmountKind("ex/part_b")
+PART_C = AmountKind("ex/part_c")
 
 
 @cache
@@ -813,7 +814,7 @@ def test_rejects_a_listed_kind_of_another_value_type() -> None:
     total = total_class()
 
     with pytest.raises(InvalidCapabilityError, match="Total.*'parts'") as raised:
-        total((PART_A, ArtifactKind("ex/count", int)), OUT)
+        total((PART_A, CountKind("ex/count")), OUT)
 
     message = str(raised.value)
     assert "'ex/count'" in message
@@ -825,7 +826,7 @@ def test_rejects_a_listed_kind_of_a_value_subtype() -> None:
     total = total_class()
 
     with pytest.raises(InvalidCapabilityError, match="Total.*'parts'") as raised:
-        total((PART_A, ArtifactKind("ex/cents", Cents)), OUT)
+        total((PART_A, AmountKind("ex/cents", Cents)), OUT)
 
     assert "Cents" in str(raised.value)
 

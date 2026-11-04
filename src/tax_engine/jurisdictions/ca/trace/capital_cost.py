@@ -9,9 +9,10 @@ from decimal import Decimal
 from enum import Enum
 
 from tax_engine.domain.artifact import ArtifactKind, Money
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.class_rates import ClassRate
 from tax_engine.domain.parameters.rounding import RoundingRule
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace.base import TraceLine
 
 __all__ = [

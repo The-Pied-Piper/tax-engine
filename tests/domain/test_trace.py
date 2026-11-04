@@ -16,7 +16,7 @@ from typing import Any, cast
 
 import pytest
 
-from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, RecordListKind
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.class_rates import (
@@ -34,7 +34,6 @@ from tax_engine.domain.parameters.rate_table import RateTableRow
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.domain.parameters.taper import Taper
 from tax_engine.domain.parameters.threshold_rate import ThresholdRate
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.trace import (
     AmountByCountLine,
     AmountOrDividedByRateLine,
@@ -196,82 +195,82 @@ from tax_engine.jurisdictions.ca_on.trace import (
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
-BASE = ArtifactKind("ex/base", Decimal)
-TAX = ArtifactKind("ex/tax", Decimal)
-PART_ONE = ArtifactKind("ex/part_one", Decimal)
-PART_TWO = ArtifactKind("ex/part_two", Decimal)
-TOTAL = ArtifactKind("ex/total", Decimal)
-RATED = ArtifactKind("ex/rated", Decimal)
-RATED_RATE = ArtifactKind("ex/rated", Rate)
-GROSS = ArtifactKind("ex/gross", Decimal)
-REDUCTION = ArtifactKind("ex/reduction", Decimal)
-NET = ArtifactKind("ex/net", Decimal)
-PERSONAL = ArtifactKind("ex/personal_amount", Decimal)
-CAPPED = ArtifactKind("ex/capped", Decimal)
-LESSER = ArtifactKind("ex/lesser", Decimal)
-GREATER = ArtifactKind("ex/greater", Decimal)
-EARNINGS = ArtifactKind("ex/earnings", Decimal)
-CONTRIBUTION = ArtifactKind("ex/contribution", Decimal)
+BASE = AmountKind("ex/base")
+TAX = AmountKind("ex/tax")
+PART_ONE = AmountKind("ex/part_one")
+PART_TWO = AmountKind("ex/part_two")
+TOTAL = AmountKind("ex/total")
+RATED = AmountKind("ex/rated")
+RATED_RATE = RateKind("ex/rated")
+GROSS = AmountKind("ex/gross")
+REDUCTION = AmountKind("ex/reduction")
+NET = AmountKind("ex/net")
+PERSONAL = AmountKind("ex/personal_amount")
+CAPPED = AmountKind("ex/capped")
+LESSER = AmountKind("ex/lesser")
+GREATER = AmountKind("ex/greater")
+EARNINGS = AmountKind("ex/earnings")
+CONTRIBUTION = AmountKind("ex/contribution")
 TIER = ContributionTier(Rate(D("0.05")), D(3000), D(50000), D(2350))
-SURCHARGE = ArtifactKind("ex/surcharge", Decimal)
-INCOME = ArtifactKind("ex/income", Decimal)
+SURCHARGE = AmountKind("ex/surcharge")
+INCOME = AmountKind("ex/income")
 TAPER = Taper(D(1000), D(500), D(20000), D(10000))
-CHILDREN = ArtifactKind("ex/child_count", int)
-CHILD_AMOUNT = ArtifactKind("ex/child_amount", Decimal)
-CLAIMED = ArtifactKind("ex/claimed_amount", Decimal)
-LIMIT = ArtifactKind("ex/claim_limit", Decimal)
-ALLOWED = ArtifactKind("ex/allowed_amount", Decimal)
-EARNED = ArtifactKind("ex/earned_income", Decimal)
-PORTION = ArtifactKind("ex/earned_portion", Decimal)
-EACH = ArtifactKind("ex/amount_each", Decimal)
-PERSONS = ArtifactKind("ex/person_count", int)
-CLAIMED_FOR_ALL = ArtifactKind("ex/amount_claimed", Decimal)
-DEPENDANTS = ArtifactKind("ex/dependant_count", int)
-ALONE = ArtifactKind("ex/amount_alone", Decimal)
-WITH_FAMILY = ArtifactKind("ex/amount_with_family", Decimal)
-CHOSEN = ArtifactKind("ex/amount_chosen", Decimal)
-TAX_PAYABLE = ArtifactKind("ex/tax_payable", Decimal)
-FOREIGN_INCOME = ArtifactKind("ex/foreign_income", Decimal)
-WORLD_INCOME = ArtifactKind("ex/worldwide_income", Decimal)
-CREDIT_SHARE = ArtifactKind("ex/credit_share", Decimal)
-PERCENTAGE = ArtifactKind("ex/allocated_percentage", Decimal)
-ITEM_AMOUNT = ArtifactKind("ex/item_amount", Decimal)
-GATED = ArtifactKind("ex/gated_amount", Decimal)
-GATE = ArtifactKind("ex/gate_amount", Decimal)
-TESTED = ArtifactKind("ex/amount_tested", Decimal)
-IN_THE_FIRST_RANGE = ArtifactKind("ex/amount_in_the_first_range", Decimal)
-IN_THE_SECOND_RANGE = ArtifactKind("ex/amount_in_the_second_range", Decimal)
-FAMILY_INCOME = ArtifactKind("ex/family_income", Decimal)
-BAND_RATE = ArtifactKind("ex/band_rate", Rate)
+CHILDREN = CountKind("ex/child_count")
+CHILD_AMOUNT = AmountKind("ex/child_amount")
+CLAIMED = AmountKind("ex/claimed_amount")
+LIMIT = AmountKind("ex/claim_limit")
+ALLOWED = AmountKind("ex/allowed_amount")
+EARNED = AmountKind("ex/earned_income")
+PORTION = AmountKind("ex/earned_portion")
+EACH = AmountKind("ex/amount_each")
+PERSONS = CountKind("ex/person_count")
+CLAIMED_FOR_ALL = AmountKind("ex/amount_claimed")
+DEPENDANTS = CountKind("ex/dependant_count")
+ALONE = AmountKind("ex/amount_alone")
+WITH_FAMILY = AmountKind("ex/amount_with_family")
+CHOSEN = AmountKind("ex/amount_chosen")
+TAX_PAYABLE = AmountKind("ex/tax_payable")
+FOREIGN_INCOME = AmountKind("ex/foreign_income")
+WORLD_INCOME = AmountKind("ex/worldwide_income")
+CREDIT_SHARE = AmountKind("ex/credit_share")
+PERCENTAGE = AmountKind("ex/allocated_percentage")
+ITEM_AMOUNT = AmountKind("ex/item_amount")
+GATED = AmountKind("ex/gated_amount")
+GATE = AmountKind("ex/gate_amount")
+TESTED = AmountKind("ex/amount_tested")
+IN_THE_FIRST_RANGE = AmountKind("ex/amount_in_the_first_range")
+IN_THE_SECOND_RANGE = AmountKind("ex/amount_in_the_second_range")
+FAMILY_INCOME = AmountKind("ex/family_income")
+BAND_RATE = RateKind("ex/band_rate")
 BAND = RateTableRow(D(45000), D(50000), Rate(D("0.55")))
 TOP_BAND = RateTableRow(D(150000), None, Rate(D(0)))
-CARE_EXPENSES = ArtifactKind("ex/care_expenses", Decimal)
-CARE_CREDIT = ArtifactKind("ex/care_credit", Decimal)
-CAREGIVER = ArtifactKind("ex/caregiver_amount", Decimal)
-APPRENTICESHIP = ArtifactKind("ex/apprenticeship_wages_total", Decimal)
-MEDICAL = ArtifactKind("ex/dependants_medical", Decimal)
-RENOVATION_3 = ArtifactKind("ex/home_renovation_line_3", Decimal)
-RENOVATION_6 = ArtifactKind("ex/home_renovation_line_6", Decimal)
-RENOVATION_8 = ArtifactKind("ex/home_renovation_line_8", Decimal)
+CARE_EXPENSES = AmountKind("ex/care_expenses")
+CARE_CREDIT = AmountKind("ex/care_credit")
+CAREGIVER = AmountKind("ex/caregiver_amount")
+APPRENTICESHIP = AmountKind("ex/apprenticeship_wages_total")
+MEDICAL = AmountKind("ex/dependants_medical")
+RENOVATION_3 = AmountKind("ex/home_renovation_line_3")
+RENOVATION_6 = AmountKind("ex/home_renovation_line_6")
+RENOVATION_8 = AmountKind("ex/home_renovation_line_8")
 MEDICAL_REDUCTION = ClaimReduction(Rate(D("0.03")), D("2834"), D("15551"))
-LIMITED = ArtifactKind("ex/limited_amount", Decimal)
-DIVIDED = ArtifactKind("ex/divided_amount", Decimal)
+LIMITED = AmountKind("ex/limited_amount")
+DIVIDED = AmountKind("ex/divided_amount")
 THRESHOLD_LIMIT = ThresholdRate(Rate(D("0.0505")), D("52886"))
-NON_COMPLIANT = ArtifactKind("ex/non_compliant_expenses", Decimal)
-NON_COMPLIANT_CCA_TOTAL = ArtifactKind("ex/non_compliant_cca", Decimal)
+NON_COMPLIANT = AmountKind("ex/non_compliant_expenses")
+NON_COMPLIANT_CCA_TOTAL = AmountKind("ex/non_compliant_cca")
 NON_COMPLIANT_CCA_BY_CLASS = RecordListKind(
-    "ex/non_compliant_cca_by_class", fields=(ArtifactKind("ex/column_22", Decimal),)
+    "ex/non_compliant_cca_by_class", fields=(AmountKind("ex/column_22"),)
 )
-RENTAL_ADDITION_TOTAL = ArtifactKind("ex/rental_additions_total", Decimal)
-TRANSFERRED = ArtifactKind("ex/transferred_amount", Decimal)
-RESIDENCE_GAIN = ArtifactKind("ex/residence_gain", Decimal)
-DISPOSITION_GAIN = ArtifactKind("ex/disposition_gain", Decimal)
-COUNT_GATE = ArtifactKind("ex/gate", int)
-FLAG = ArtifactKind("ex/flag", int)
-REDUCTION_BASE = ArtifactKind("ex/reduction_base", Decimal)
-OTHER_BASE = ArtifactKind("ex/other_base", Decimal)
-MONTHS = ArtifactKind("ex/month_count", int)
-MONTHLY = ArtifactKind("ex/monthly_amount", Decimal)
+RENTAL_ADDITION_TOTAL = AmountKind("ex/rental_additions_total")
+TRANSFERRED = AmountKind("ex/transferred_amount")
+RESIDENCE_GAIN = AmountKind("ex/residence_gain")
+DISPOSITION_GAIN = AmountKind("ex/disposition_gain")
+COUNT_GATE = CountKind("ex/gate")
+FLAG = CountKind("ex/flag")
+REDUCTION_BASE = AmountKind("ex/reduction_base")
+OTHER_BASE = AmountKind("ex/other_base")
+MONTHS = CountKind("ex/month_count")
+MONTHLY = AmountKind("ex/monthly_amount")
 
 
 def column_line() -> BracketColumnLine:
@@ -1861,7 +1860,7 @@ def test_per_unit_amount_lines_differ_by_rounding() -> None:
 
 
 def test_per_unit_amount_lines_differ_by_count_kind() -> None:
-    other = ArtifactKind("ex/dependant_count", int)
+    other = CountKind("ex/dependant_count")
 
     assert per_unit_amount_line() != PerUnitAmountLine(
         CHILD_AMOUNT, other, 2, Amount(D(544)), CENT, D(1088)
@@ -2007,7 +2006,7 @@ def test_at_most_lines_differ_by_bound() -> None:
 
 
 def test_at_most_lines_differ_by_the_bounds_kind() -> None:
-    other = ArtifactKind("ex/other_limit", Decimal)
+    other = AmountKind("ex/other_limit")
 
     assert at_most_line() != AtMostLine(ALLOWED, CLAIMED, D("1500.25"), other, D(1926))
 
@@ -2134,7 +2133,7 @@ def test_times_count_lines_differ_by_amount() -> None:
 
 
 def test_times_count_lines_differ_by_the_amounts_kind() -> None:
-    other = ArtifactKind("ex/other_amount", Decimal)
+    other = AmountKind("ex/other_amount")
 
     assert times_count_line() != TimesCountLine(
         CLAIMED_FOR_ALL, other, D("16129.50"), PERSONS, 2, D("32259.00")
@@ -2142,7 +2141,7 @@ def test_times_count_lines_differ_by_the_amounts_kind() -> None:
 
 
 def test_times_count_lines_differ_by_count_kind() -> None:
-    other = ArtifactKind("ex/dependant_count", int)
+    other = CountKind("ex/dependant_count")
 
     assert times_count_line() != TimesCountLine(
         CLAIMED_FOR_ALL, EACH, D("16129.50"), other, 2, D("32259.00")
@@ -2213,13 +2212,13 @@ def test_chosen_by_count_lines_differ_by_the_chosen_value() -> None:
 
 
 def test_chosen_by_count_lines_differ_by_count_kind() -> None:
-    other = ArtifactKind("ex/spouse_count", int)
+    other = CountKind("ex/spouse_count")
 
     assert chosen_by_count_line() != ChosenByCountLine(CHOSEN, other, 1, WITH_FAMILY, D("2813.00"))
 
 
 def test_chosen_by_count_lines_differ_by_output() -> None:
-    other = ArtifactKind("ex/other_amount", Decimal)
+    other = AmountKind("ex/other_amount")
 
     assert chosen_by_count_line() != ChosenByCountLine(
         other, DEPENDANTS, 1, WITH_FAMILY, D("2813.00")
@@ -2299,7 +2298,7 @@ def test_amount_by_count_lines_differ_by_result() -> None:
 
 
 def test_amount_by_count_lines_differ_by_count_kind() -> None:
-    other = ArtifactKind("ex/week_count", int)
+    other = CountKind("ex/week_count")
 
     assert amount_by_count_line() != AmountByCountLine(
         MONTHLY, other, 4, D("400.255"), CENT, D("400.26")
@@ -2364,7 +2363,7 @@ def test_record_total_lines_differ_by_the_total() -> None:
 
 
 def test_record_total_lines_differ_by_the_field() -> None:
-    other = ArtifactKind("ex/other_item_amount", Decimal)
+    other = AmountKind("ex/other_item_amount")
 
     assert record_total_line() != RecordTotalLine(
         TOTAL, other, (D("6000"), D("4000.50")), D("10000.50")
@@ -2372,7 +2371,7 @@ def test_record_total_lines_differ_by_the_field() -> None:
 
 
 def test_record_total_lines_differ_by_the_output() -> None:
-    other = ArtifactKind("ex/other_total", Decimal)
+    other = AmountKind("ex/other_total")
 
     assert record_total_line() != RecordTotalLine(
         other, ITEM_AMOUNT, (D("6000"), D("4000.50")), D("10000.50")
@@ -2436,7 +2435,7 @@ def test_record_positive_total_lines_differ_by_the_total() -> None:
 
 
 def test_record_positive_total_lines_differ_by_the_field() -> None:
-    other = ArtifactKind("ex/other_item_amount", Decimal)
+    other = AmountKind("ex/other_item_amount")
 
     assert record_positive_total_line() != RecordPositiveTotalLine(
         TOTAL, other, (D("6000"), D("-4000.50")), D("6000")
@@ -2444,7 +2443,7 @@ def test_record_positive_total_lines_differ_by_the_field() -> None:
 
 
 def test_record_positive_total_lines_differ_by_the_output() -> None:
-    other = ArtifactKind("ex/other_total", Decimal)
+    other = AmountKind("ex/other_total")
 
     assert record_positive_total_line() != RecordPositiveTotalLine(
         other, ITEM_AMOUNT, (D("6000"), D("-4000.50")), D("6000")
@@ -2504,7 +2503,7 @@ def test_chosen_by_range_lines_differ_by_the_tested_value() -> None:
 
 
 def test_chosen_by_range_lines_differ_by_the_tested_kind() -> None:
-    other = ArtifactKind("ex/other_tested", Decimal)
+    other = AmountKind("ex/other_tested")
 
     assert chosen_by_range_line() != ChosenByRangeLine(
         CHOSEN, other, D("1000.00"), IN_THE_SECOND_RANGE, D("625.01")
@@ -2524,7 +2523,7 @@ def test_chosen_by_range_lines_differ_by_the_chosen_value() -> None:
 
 
 def test_chosen_by_range_lines_differ_by_output() -> None:
-    other = ArtifactKind("ex/other_amount", Decimal)
+    other = AmountKind("ex/other_amount")
 
     assert chosen_by_range_line() != ChosenByRangeLine(
         other, TESTED, D("1000.00"), IN_THE_SECOND_RANGE, D("625.01")
@@ -2606,7 +2605,7 @@ def test_rate_by_income_band_lines_differ_by_income() -> None:
 
 
 def test_rate_by_income_band_lines_differ_by_output() -> None:
-    other = ArtifactKind("ex/other_rate", Rate)
+    other = RateKind("ex/other_rate")
 
     assert rate_by_income_band_line() != RateByIncomeBandLine(
         other, FAMILY_INCOME, D("45500.25"), BAND, Rate(D("0.55"))
@@ -2680,7 +2679,7 @@ def test_chosen_rate_applied_lines_differ_by_rate() -> None:
 
 
 def test_chosen_rate_applied_lines_differ_by_the_rates_kind() -> None:
-    other = ArtifactKind("ex/other_rate", Rate)
+    other = RateKind("ex/other_rate")
 
     assert chosen_rate_applied_line() != ChosenRateAppliedLine(
         CARE_CREDIT, CARE_EXPENSES, D("5000.01"), other, Rate(D("0.55")), CENT, D("2750.01")
@@ -3024,7 +3023,7 @@ def test_short_term_rental_non_compliant_line_is_frozen() -> None:
 
 def test_short_term_rental_non_compliant_lines_differ_by_each_field() -> None:
     line = short_term_rental_non_compliant_line()
-    other_output = ArtifactKind("ex/other_expenses", Decimal)
+    other_output = AmountKind("ex/other_expenses")
 
     assert line != ShortTermRentalNonCompliantLine(
         other_output, 2, D("900.00"), 30, 90, CENT, D("300.00")
@@ -3215,7 +3214,7 @@ def test_rental_addition_line_is_frozen() -> None:
 
 def test_rental_addition_lines_differ_by_each_field() -> None:
     line = rental_addition_line()
-    other_output = ArtifactKind("ex/other_additions", Decimal)
+    other_output = AmountKind("ex/other_additions")
 
     assert line != RentalAdditionLine(
         other_output, 2, D("8"), D("1000.00"), D("250.00"), D("750.00")
@@ -3280,7 +3279,7 @@ def test_foreign_property_tax_line_is_frozen() -> None:
 
 def test_foreign_property_tax_lines_differ_by_each_field() -> None:
     line = foreign_property_tax_line()
-    other_output = ArtifactKind("ex/other_expenses", Decimal)
+    other_output = AmountKind("ex/other_expenses")
     base: list[Any] = [
         NON_COMPLIANT,
         2,
@@ -3350,7 +3349,7 @@ def test_foreign_tax_credit_line_amount_is_the_result() -> None:
 
 def test_foreign_tax_credit_lines_differ_by_each_field() -> None:
     line = foreign_tax_credit_line()
-    other_output = ArtifactKind("ex/other_expenses", Decimal)
+    other_output = AmountKind("ex/other_expenses")
     args: list[Any] = [
         NON_COMPLIANT,
         2,
@@ -3424,7 +3423,7 @@ def test_pooled_foreign_tax_credit_line_amount_is_the_result() -> None:
 
 def test_pooled_foreign_tax_credit_lines_differ_by_each_field() -> None:
     line = pooled_foreign_tax_credit_line()
-    other_output = ArtifactKind("ex/other_expenses", Decimal)
+    other_output = AmountKind("ex/other_expenses")
     args: list[Any] = [
         NON_COMPLIANT,
         2,
@@ -3530,7 +3529,7 @@ def test_foreign_business_lines_differ_by_each_field(
     for index in range(len(args)):
         changed: Any
         if index == 0:
-            changed = ArtifactKind("ex/other_expenses", Decimal)
+            changed = AmountKind("ex/other_expenses")
         elif index == 1:
             changed = 3
         elif args[index] == CENT:
@@ -3644,7 +3643,7 @@ def test_provincial_foreign_tax_credit_line_amount_is_the_result() -> None:
 
 def test_provincial_foreign_tax_credit_lines_differ_by_each_field() -> None:
     line = provincial_foreign_tax_credit_line()
-    other_output = ArtifactKind("ex/other_expenses", Decimal)
+    other_output = AmountKind("ex/other_expenses")
     args: list[Any] = [
         NON_COMPLIANT,
         2,
@@ -4173,7 +4172,7 @@ def test_part_2_lines_differ_by_each_field(cls: type, names: list[str], values: 
     for name, value in zip(["output", "position", *names], args, strict=True):
         changed: Any
         if name == "output":
-            changed = ArtifactKind("ex/other_residence_line", Decimal)
+            changed = AmountKind("ex/other_residence_line")
         elif name == "position":
             changed = 3
         elif isinstance(value, bool):
@@ -4409,7 +4408,7 @@ def test_worksheet_lines_differ_by_each_field(
     for name, value in zip(["output", "position", *names], args, strict=True):
         changed: Any
         if name == "output":
-            changed = ArtifactKind("ex/other_residence_line", Decimal)
+            changed = AmountKind("ex/other_residence_line")
         elif name == "position":
             changed = 3
         elif isinstance(value, bool):
@@ -4756,7 +4755,7 @@ def test_ratio_applied_lines_differ_by_denominator_value() -> None:
 
 
 def test_ratio_applied_lines_differ_by_kind() -> None:
-    other = ArtifactKind("ex/other_amount", Decimal)
+    other = AmountKind("ex/other_amount")
 
     assert ratio_applied_line() != RatioAppliedLine(
         CREDIT_SHARE,
@@ -4831,22 +4830,22 @@ def test_lines_of_different_classes_are_not_equal() -> None:
     )
 
 
-DIVIDEND = ArtifactKind("ex/dividend_amount", Decimal)
+DIVIDEND = AmountKind("ex/dividend_amount")
 
 
-DIVISOR = ArtifactKind("ex/divisor_amount", Decimal)
+DIVISOR = AmountKind("ex/divisor_amount")
 
 
-QUOTIENT = ArtifactKind("ex/quotient_amount", Decimal)
+QUOTIENT = AmountKind("ex/quotient_amount")
 
 
-ITEM_COUNT = ArtifactKind("ex/item_count", int)
+ITEM_COUNT = CountKind("ex/item_count")
 
 
 ITEMS = RecordListKind("ex/items", fields=(ITEM_AMOUNT,))
 
 
-SHARE = ArtifactKind("ex/remaining_share", Decimal)
+SHARE = AmountKind("ex/remaining_share")
 
 
 def quotient_line() -> QuotientLine:
@@ -4905,7 +4904,7 @@ def test_quotient_line_fields_in_order() -> None:
 
 
 def test_quotient_lines_differ_by_the_dividend_and_the_divisor() -> None:
-    other = ArtifactKind("ex/other_amount", Decimal)
+    other = AmountKind("ex/other_amount")
 
     assert quotient_line() != QuotientLine(
         QUOTIENT, other, D("100000.00"), DIVISOR, D("200000.00"), D("0.5")
@@ -4922,7 +4921,7 @@ def test_quotient_lines_differ_by_the_dividend_and_the_divisor() -> None:
 
 
 def test_quotient_lines_differ_by_the_result_and_the_output() -> None:
-    other = ArtifactKind("ex/other_quotient", Decimal)
+    other = AmountKind("ex/other_quotient")
 
     assert quotient_line() != QuotientLine(
         QUOTIENT, DIVIDEND, D("100000.00"), DIVISOR, D("200000.00"), D("0.6")
@@ -4961,7 +4960,7 @@ def test_record_count_line_may_count_no_records() -> None:
 
 def test_record_count_lines_differ_by_the_count_the_list_and_the_output() -> None:
     other_list = RecordListKind("ex/other_items", fields=(ITEM_AMOUNT,))
-    other_count = ArtifactKind("ex/other_count", int)
+    other_count = CountKind("ex/other_count")
 
     assert record_count_line() != RecordCountLine(ITEM_COUNT, ITEMS, 3)
     assert record_count_line() != RecordCountLine(ITEM_COUNT, other_list, 2)
@@ -4972,7 +4971,7 @@ def test_record_count_lines_are_hashable() -> None:
     assert hash(record_count_line()) == hash(record_count_line())
 
 
-FIRST_ITEM_COUNT = ArtifactKind("ex/first_item_count", int)
+FIRST_ITEM_COUNT = CountKind("ex/first_item_count")
 
 
 def first_record_count_line() -> FirstRecordCountLine:
@@ -4995,8 +4994,8 @@ def test_first_record_count_line_fields_in_order() -> None:
 
 
 def test_first_record_count_lines_differ_by_the_value_the_record_count_and_the_kinds() -> None:
-    other_count = ArtifactKind("ex/other_count", int)
-    other_output = ArtifactKind("ex/other_first", int)
+    other_count = CountKind("ex/other_count")
+    other_output = CountKind("ex/other_first")
 
     assert first_record_count_line() != FirstRecordCountLine(FIRST_ITEM_COUNT, ITEM_COUNT, 5, 3)
     assert first_record_count_line() != FirstRecordCountLine(FIRST_ITEM_COUNT, ITEM_COUNT, 4, 2)
@@ -5056,15 +5055,15 @@ def test_a_placement_credit_lines_amount_is_its_line_13() -> None:
 @pytest.mark.parametrize(
     "change",
     [
-        {"output": ArtifactKind("ex/other_total", Decimal)},
+        {"output": AmountKind("ex/other_total")},
         {"position": 2},
-        {"field": ArtifactKind("ex/other_item_amount", Decimal)},
+        {"field": AmountKind("ex/other_item_amount")},
         {"expenditure": D("8000.01")},
         {"line_1": D("2000.01")},
         {"line_3": D("400.01")},
         {"line_12": D("200.01")},
         {"line_13": D("2200.01")},
-        {"remaining_share": ArtifactKind("ex/other_share", Decimal)},
+        {"remaining_share": AmountKind("ex/other_share")},
         {"remaining_share_amount": D("0.6")},
         {"expenditure_rate": Rate(D("0.30"))},
         {"supplement_rate": Rate(D("0.06"))},
@@ -5268,10 +5267,10 @@ OTHER_CLASS = ClassRate(
     Fraction(1, 2),
     HalfYearRuleOnSale.DOES_NOT_APPLY,
 )
-CCA = ArtifactKind("ex/cca_claim", Decimal)
-RECAPTURE = ArtifactKind("ex/recaptured_cca", Decimal)
-TERMINAL_LOSS = ArtifactKind("ex/terminal_loss", Decimal)
-CLOSING_UCC = RecordListKind("ex/closing_ucc", fields=(ArtifactKind("ex/ucc_at_end", Decimal),))
+CCA = AmountKind("ex/cca_claim")
+RECAPTURE = AmountKind("ex/recaptured_cca")
+TERMINAL_LOSS = AmountKind("ex/terminal_loss")
+CLOSING_UCC = RecordListKind("ex/closing_ucc", fields=(AmountKind("ex/ucc_at_end"),))
 
 
 def cca_claim_line() -> CcaClaimLine:
@@ -5394,7 +5393,7 @@ def test_a_cca_claim_lines_amount_is_the_claim() -> None:
 @pytest.mark.parametrize(
     "change",
     [
-        {"output": ArtifactKind("ex/other_cca_claim", Decimal)},
+        {"output": AmountKind("ex/other_cca_claim")},
         {"position": 1},
         {"class_rate": OTHER_CLASS},
         {"no_property_left": 1},
@@ -5453,7 +5452,7 @@ def test_a_recaptured_cca_lines_amount_is_the_result() -> None:
 @pytest.mark.parametrize(
     "change",
     [
-        {"output": ArtifactKind("ex/other_recapture", Decimal)},
+        {"output": AmountKind("ex/other_recapture")},
         {"position": 2},
         {"class_rate": OTHER_CLASS},
         {"column_7": D("-3000.01")},
@@ -5505,7 +5504,7 @@ def test_a_terminal_loss_lines_amount_is_the_result() -> None:
 @pytest.mark.parametrize(
     "change",
     [
-        {"output": ArtifactKind("ex/other_terminal_loss", Decimal)},
+        {"output": AmountKind("ex/other_terminal_loss")},
         {"position": 2},
         {"class_rate": OTHER_CLASS},
         {"no_property_left": 0},
@@ -6292,7 +6291,7 @@ def test_a_cca_line_holds_the_days_in_a_full_year_of_its_dataset(make: Any) -> N
     assert replace(make(), full_year_days=366) != make()
 
 
-FISCAL_PERIOD_DAYS = ArtifactKind("ex/fiscal_period_days", int)
+FISCAL_PERIOD_DAYS = CountKind("ex/fiscal_period_days")
 
 
 def fiscal_period_days_line() -> FiscalPeriodDaysLine:
@@ -6324,7 +6323,7 @@ def test_a_fiscal_period_days_lines_amount_is_the_days_of_the_fiscal_period() ->
 @pytest.mark.parametrize(
     "change",
     [
-        {"output": ArtifactKind("ex/other_fiscal_period_days", int)},
+        {"output": CountKind("ex/other_fiscal_period_days")},
         {"entered": 214},
         {"fiscal_period_days": 214},
         {"full_year_days": 366},
@@ -6369,7 +6368,7 @@ def test_a_fiscal_period_days_from_dates_lines_amount_is_the_days_of_the_fiscal_
 @pytest.mark.parametrize(
     "change",
     [
-        {"output": ArtifactKind("ex/other_fiscal_period_days", int)},
+        {"output": CountKind("ex/other_fiscal_period_days")},
         {"from_date": 20250601},
         {"to_date": 20251231},
         {"fiscal_period_days": 214},
@@ -6389,9 +6388,9 @@ def test_a_fiscal_period_days_from_dates_line_is_not_a_fiscal_period_days_line()
     assert not isinstance(fiscal_period_days_line(), FiscalPeriodDaysFromDatesLine)
 
 
-LIMIT_PRORATED = ArtifactKind("ex/limit_prorated", Decimal)
-UNPRORATED_LIMIT = ArtifactKind("ex/unprorated_limit", Decimal)
-SHORT_YEAR_DAYS = ArtifactKind("ex/short_year_days", Decimal)
+LIMIT_PRORATED = AmountKind("ex/limit_prorated")
+UNPRORATED_LIMIT = AmountKind("ex/unprorated_limit")
+SHORT_YEAR_DAYS = AmountKind("ex/short_year_days")
 
 
 def prorated_by_days_line() -> ProratedByDaysLine:
@@ -6461,15 +6460,13 @@ def test_prorated_by_days_lines_are_hashable() -> None:
 def test_prorated_by_days_lines_differ_by_each_field() -> None:
     line = prorated_by_days_line()
 
-    assert line != replace(line, output=ArtifactKind("ex/other_limit_prorated", Decimal))
-    assert line != replace(line, amount_kind=ArtifactKind("ex/other_unprorated_limit", Decimal))
+    assert line != replace(line, output=AmountKind("ex/other_limit_prorated"))
+    assert line != replace(line, amount_kind=AmountKind("ex/other_unprorated_limit"))
     assert line != replace(line, amount_value=D("600000"))
-    assert line != replace(line, days_kind=ArtifactKind("ex/other_fiscal_period_days", int))
+    assert line != replace(line, days_kind=CountKind("ex/other_fiscal_period_days"))
     assert line != replace(line, fiscal_period_days=154)
     assert line != replace(line, full_year_days=366)
-    assert line != replace(
-        line, short_year_days_kind=ArtifactKind("ex/other_short_year_days", Decimal)
-    )
+    assert line != replace(line, short_year_days_kind=AmountKind("ex/other_short_year_days"))
     assert line != replace(line, short_year_days=D("356"))
     assert line != replace(line, result=D("628767.13"))
 
@@ -6479,7 +6476,7 @@ def test_a_prorated_by_days_line_is_not_a_fiscal_period_days_line() -> None:
     assert not isinstance(fiscal_period_days_line(), ProratedByDaysLine)
 
 
-DAYS_IN_2024 = ArtifactKind("ex/days_in_2024", int)
+DAYS_IN_2024 = CountKind("ex/days_in_2024")
 
 
 def prorated_by_days_in_period_line() -> ProratedByDaysInPeriodLine:
@@ -6545,12 +6542,12 @@ def test_prorated_by_days_in_period_lines_are_hashable() -> None:
 def test_prorated_by_days_in_period_lines_differ_by_each_field() -> None:
     line = prorated_by_days_in_period_line()
 
-    assert line != replace(line, output=ArtifactKind("ex/other_prorated", Decimal))
-    assert line != replace(line, amount_kind=ArtifactKind("ex/other_amount", Decimal))
+    assert line != replace(line, output=AmountKind("ex/other_prorated"))
+    assert line != replace(line, amount_kind=AmountKind("ex/other_amount"))
     assert line != replace(line, amount_value=D("25000"))
-    assert line != replace(line, days_kind=ArtifactKind("ex/other_days", int))
+    assert line != replace(line, days_kind=CountKind("ex/other_days"))
     assert line != replace(line, days=183)
-    assert line != replace(line, period_days_kind=ArtifactKind("ex/other_period_days", int))
+    assert line != replace(line, period_days_kind=CountKind("ex/other_period_days"))
     assert line != replace(line, period_days=366)
     assert line != replace(line, result=D("10082.20"))
 
@@ -6991,7 +6988,7 @@ def test_percentage_applied_lines_differ_by_percentage_value() -> None:
 
 
 def test_percentage_applied_lines_differ_by_kind() -> None:
-    other = ArtifactKind("ex/other_percentage", Decimal)
+    other = AmountKind("ex/other_percentage")
 
     assert percentage_applied_line() != PercentageAppliedLine(
         CREDIT_SHARE, TAX_PAYABLE, D("1000"), other, D("50"), CENT, D("500")
@@ -7523,7 +7520,7 @@ def test_an_amount_when_more_line_is_not_a_threshold_gate_line() -> None:
 
 # --- a vehicle of Form T2125 Charts A to C ------------------------------------------------------
 
-MOTOR_VEHICLE_EXPENSES = ArtifactKind("ex/motor_vehicle_expenses", Decimal)
+MOTOR_VEHICLE_EXPENSES = AmountKind("ex/motor_vehicle_expenses")
 
 
 def business_vehicle_line() -> BusinessVehicleLine:
@@ -7580,7 +7577,7 @@ def test_a_business_vehicle_lines_amount_is_line_16() -> None:
 @pytest.mark.parametrize(
     "change",
     [
-        {"output": ArtifactKind("ex/other_vehicle_expenses", Decimal)},
+        {"output": AmountKind("ex/other_vehicle_expenses")},
         {"position": 2},
         {"line_12": D("5000.01")},
         {"line_13": D("2500.01")},
@@ -7606,8 +7603,8 @@ def test_a_business_vehicle_line_is_not_an_items_total_line() -> None:
 
 def year_amount_line() -> YearAmountLine:
     return YearAmountLine(
-        ArtifactKind("ex/lease_list_price_limit", Decimal),
-        ArtifactKind("ex/lease_year", int),
+        AmountKind("ex/lease_list_price_limit"),
+        CountKind("ex/lease_year"),
         2024,
         D("43529"),
     )
@@ -7631,17 +7628,17 @@ def test_year_amount_lines_differ_by_each_field() -> None:
     line = year_amount_line()
 
     assert hash(line) == hash(year_amount_line())
-    assert line != replace(line, output=ArtifactKind("ex/other", Decimal))
-    assert line != replace(line, year_kind=ArtifactKind("ex/other_year", int))
+    assert line != replace(line, output=AmountKind("ex/other"))
+    assert line != replace(line, year_kind=CountKind("ex/other_year"))
     assert line != replace(line, year_value=2023)
     assert line != replace(line, result=D("42353"))
 
 
 # --- PercentageOfLine (Form T2043 Chart B rows 3 and 6) ------------------------------------------
 
-PCT_OUTPUT = ArtifactKind("ex/farm_chart_b_row_3_on", Decimal)
-PCT_DIVIDEND = ArtifactKind("ex/farm_chart_b_gross_income_on", Decimal)
-PCT_DIVISOR = ArtifactKind("ex/farm_chart_b_total_gross_income", Decimal)
+PCT_OUTPUT = AmountKind("ex/farm_chart_b_row_3_on")
+PCT_DIVIDEND = AmountKind("ex/farm_chart_b_gross_income_on")
+PCT_DIVISOR = AmountKind("ex/farm_chart_b_total_gross_income")
 PCT_ROUNDING = RoundTo(D("0.0001"), RoundingMode.HALF_UP)
 
 
@@ -7694,10 +7691,10 @@ def test_percentage_of_lines_are_hashable() -> None:
 def test_percentage_of_lines_differ_by_each_field() -> None:
     line = percentage_of_line()
 
-    assert line != replace(line, output=ArtifactKind("ex/other_percent", Decimal))
-    assert line != replace(line, dividend=ArtifactKind("ex/other_dividend", Decimal))
+    assert line != replace(line, output=AmountKind("ex/other_percent"))
+    assert line != replace(line, dividend=AmountKind("ex/other_dividend"))
     assert line != replace(line, dividend_amount=D("60001"))
-    assert line != replace(line, divisor=ArtifactKind("ex/other_divisor", Decimal))
+    assert line != replace(line, divisor=AmountKind("ex/other_divisor"))
     assert line != replace(line, divisor_amount=D("100001"))
     assert line != replace(line, rounding=RoundTo(D("0.01"), RoundingMode.HALF_UP))
     assert line != replace(line, result=D("60.0001"))
@@ -7747,7 +7744,7 @@ def test_a_pooled_provincial_foreign_tax_credit_lines_amount_is_its_result() -> 
 
 def test_pooled_provincial_foreign_tax_credit_lines_differ_by_each_field() -> None:
     line = pooled_provincial_foreign_tax_credit_line()
-    other_output = ArtifactKind("ex/other_expenses", Decimal)
+    other_output = AmountKind("ex/other_expenses")
     args: list[Any] = [
         NON_COMPLIANT,
         2,

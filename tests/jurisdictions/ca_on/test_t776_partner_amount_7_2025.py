@@ -23,8 +23,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -54,14 +55,14 @@ NO_SLIP_TEXT = "an amount 7 is entered by a partner who received no T5013 slip"
 REFUSED_TEXT = "amount 7 conflicts with the partner and slip answers"
 
 # Made up for this test and not registered.
-PARTNER = ArtifactKind("ex/t776_partner_checked", int)
-SLIP = ArtifactKind("ex/t776_t5013_slip_checked", int)
-AMOUNT_7 = ArtifactKind("ex/t776_amount_7_typed", Decimal)
-PERCENTAGE = ArtifactKind("ex/t776_percentage", Decimal)
-AMOUNT_6 = ArtifactKind("ex/t776_amount_6", Decimal)
-SHARE = ArtifactKind("ex/t776_share", Decimal)
-CONFLICT = ArtifactKind("ex/t776_amount_7_conflict", int)
-CONFLICT_CHECKED = ArtifactKind("ex/t776_amount_7_conflict_checked", int)
+PARTNER = CountKind("ex/t776_partner_checked")
+SLIP = CountKind("ex/t776_t5013_slip_checked")
+AMOUNT_7 = AmountKind("ex/t776_amount_7_typed")
+PERCENTAGE = AmountKind("ex/t776_percentage")
+AMOUNT_6 = AmountKind("ex/t776_amount_6")
+SHARE = AmountKind("ex/t776_share")
+CONFLICT = CountKind("ex/t776_amount_7_conflict")
+CONFLICT_CHECKED = CountKind("ex/t776_amount_7_conflict_checked")
 
 
 def _test(kind: str, position: int, relation: str, than: str) -> ConditionTest:

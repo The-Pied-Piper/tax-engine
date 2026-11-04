@@ -39,6 +39,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
@@ -56,10 +57,10 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 DOLLAR = RoundTo(D("1"), RoundingMode.HALF_UP)
 
-LIMIT = ArtifactKind("ex/limit", Decimal)
-DAYS = ArtifactKind("ex/days", int)
-PERIOD_DAYS = ArtifactKind("ex/period_days", int)
-PRORATED = ArtifactKind("ex/limit_prorated", Decimal)
+LIMIT = AmountKind("ex/limit")
+DAYS = CountKind("ex/days")
+PERIOD_DAYS = CountKind("ex/period_days")
+PRORATED = AmountKind("ex/limit_prorated")
 
 
 def rounding(rule: RoundingRule = CENT) -> ParameterDataset[RoundingOnly]:
@@ -157,21 +158,21 @@ def test_is_built_from_its_slot_names_as_keywords() -> None:
 
 
 def test_rejects_an_int_kind_for_the_amount() -> None:
-    int_kind = cast("Money", ArtifactKind("ex/count", int))
+    int_kind = cast("Money", CountKind("ex/count"))
 
     with pytest.raises(InvalidCapabilityError, match="ProratedByDaysInPeriod.*'amount'"):
         ProratedByDaysInPeriod(rounding(), int_kind, DAYS, PERIOD_DAYS, PRORATED)
 
 
 def test_rejects_a_money_kind_for_the_days() -> None:
-    money_kind = cast("ArtifactKind[int]", ArtifactKind("ex/money", Decimal))
+    money_kind = cast("ArtifactKind[int]", AmountKind("ex/money"))
 
     with pytest.raises(InvalidCapabilityError, match="ProratedByDaysInPeriod.*'days'"):
         ProratedByDaysInPeriod(rounding(), LIMIT, money_kind, PERIOD_DAYS, PRORATED)
 
 
 def test_rejects_a_money_kind_for_the_period_days() -> None:
-    money_kind = cast("ArtifactKind[int]", ArtifactKind("ex/money", Decimal))
+    money_kind = cast("ArtifactKind[int]", AmountKind("ex/money"))
 
     with pytest.raises(InvalidCapabilityError, match="ProratedByDaysInPeriod.*'period_days'"):
         ProratedByDaysInPeriod(rounding(), LIMIT, DAYS, money_kind, PRORATED)

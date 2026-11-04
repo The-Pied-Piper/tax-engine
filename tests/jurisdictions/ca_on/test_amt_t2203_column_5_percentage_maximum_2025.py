@@ -14,8 +14,8 @@ from decimal import Decimal
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
@@ -60,7 +60,7 @@ def test_2025_percentage_maximum_header_quotes_line_3_and_says_the_limit_is_a_ch
 
 
 def test_the_credit_amount_capability_gives_the_percentage_maximum_as_an_artifact() -> None:
-    figure = ArtifactKind("ex/t2203_percentage_maximum", Decimal)
+    figure = AmountKind("ex/t2203_percentage_maximum")
     capability = CreditAmount(SOURCE.get(FAMILY, 2025, CREDIT), figure)
 
     (output,) = capability.compute(()).outputs

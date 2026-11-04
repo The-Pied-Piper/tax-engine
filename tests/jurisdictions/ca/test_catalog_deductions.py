@@ -9,7 +9,8 @@ import pytest
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.domain.errors import InvalidRecordError
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
     BUSINESS_INVESTMENT_LOSS,
@@ -235,6 +236,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 
 def test_the_deductions_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -557,7 +559,7 @@ def test_the_other_payments_checked_kind_is_registered_beside_the_input(
     )
     assert OTHER_PAYMENTS_DEDUCTION_ABOVE_LIMIT_CHECKED is not OTHER_PAYMENTS_DEDUCTION_ABOVE_LIMIT
     assert OTHER_PAYMENTS_DEDUCTION_ABOVE_LIMIT_CHECKED.value_type is Decimal
-    assert OTHER_PAYMENTS_DEDUCTION_ABOVE_LIMIT_CHECKED.non_negative is True
+    assert non_negative(OTHER_PAYMENTS_DEDUCTION_ABOVE_LIMIT_CHECKED) is True
 
 
 def test_the_t1436_line_1_to_6_kinds_are_registered_money(registry: ArtifactRegistry) -> None:
@@ -586,7 +588,7 @@ def test_the_schedule_3_lines_543_and_544_are_the_non_negative_inputs(
     # Schedule 3 lines 543 and 544 are amounts of the form, with no floor printed and none needed:
     # the two are declared non-negative, as the six capital gains deductions inputs are.
     for identifier in ("ca/schedule_3_line_543", "ca/schedule_3_line_544"):
-        assert registry.kind(identifier).non_negative is True, identifier
+        assert non_negative(registry.kind(identifier)) is True, identifier
 
 
 def test_the_t1436_lines_1_to_6_and_the_amount_a_are_non_negative(
@@ -603,7 +605,7 @@ def test_the_t1436_lines_1_to_6_and_the_amount_a_are_non_negative(
         "ca/capital_gains_deductions_line_5",
         "ca/capital_gains_deductions_line_6",
     ):
-        assert registry.kind(identifier).non_negative is True, identifier
+        assert non_negative(registry.kind(identifier)) is True, identifier
 
 
 def test_the_deductions_kinds_are_money() -> None:
@@ -741,10 +743,10 @@ def test_the_net_income_signed_is_the_signed_twin_of_the_net_income(
     assert NET_INCOME_SIGNED is not NET_INCOME
     assert NET_INCOME_SIGNED is not NET_INCOME_BEFORE_ADJUSTMENTS
     assert NET_INCOME_SIGNED.identifier == "ca/net_income_signed"
-    assert NET_INCOME_SIGNED.non_negative is False
+    assert non_negative(NET_INCOME_SIGNED) is False
     assert registry.kind("ca/net_income_signed") is NET_INCOME_SIGNED
     assert "ca/net_income_signed" in SIGNED
-    assert NET_INCOME.non_negative is True
+    assert non_negative(NET_INCOME) is True
     assert "ca/net_income" not in SIGNED
 
 
@@ -752,7 +754,7 @@ def test_the_tosi_adjusted_net_income_is_signed(registry: ArtifactRegistry) -> N
     # Form T1206 Part 1 line 6 "TOSI-adjusted net income: line 4 plus line 5 If negative, enter
     # the result in brackets" (line 5 may itself be in brackets) prints no "(if negative, enter
     # "0")", so it is signed.
-    assert TOSI_ADJUSTED_NET_INCOME.non_negative is False
+    assert non_negative(TOSI_ADJUSTED_NET_INCOME) is False
     assert registry.kind("ca/tosi_adjusted_net_income") is TOSI_ADJUSTED_NET_INCOME
     assert "ca/tosi_adjusted_net_income" in SIGNED
 
@@ -765,8 +767,8 @@ def test_the_tosi_adjusted_net_income_not_below_zero_is_its_non_negative_twin(
     # second kind for "otherwise use zero", which the basic personal amount, the age amount and
     # Schedule 6 line 7 read.
     assert TOSI_ADJUSTED_NET_INCOME_NOT_BELOW_ZERO is not TOSI_ADJUSTED_NET_INCOME
-    assert TOSI_ADJUSTED_NET_INCOME_NOT_BELOW_ZERO.non_negative is True
-    assert registry.kind("ca/tosi_adjusted_net_income_not_below_zero").non_negative is True
+    assert non_negative(TOSI_ADJUSTED_NET_INCOME_NOT_BELOW_ZERO) is True
+    assert non_negative(registry.kind("ca/tosi_adjusted_net_income_not_below_zero")) is True
     assert "ca/tosi_adjusted_net_income_not_below_zero" not in SIGNED
 
 
@@ -791,7 +793,7 @@ def test_the_checked_split_income_dividends_are_registered_non_negative_decimals
         SPLIT_INCOME_DIVIDENDS_OTHER_THAN_ELIGIBLE_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
@@ -829,7 +831,7 @@ def test_the_checked_t1206_foreign_source_amounts_are_registered_non_negative_de
         SPLIT_INCOME_NON_BUSINESS_FROM_FOREIGN_SOURCES_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert kind.identifier not in SIGNED, kind.identifier
 
 
@@ -842,7 +844,7 @@ def test_the_checked_other_split_income_is_a_registered_non_negative_decimal(
     # stays the bound of the foreign-source part of it.
     assert registry.get("ca/other_split_income_checked") is OTHER_SPLIT_INCOME_CHECKED
     assert OTHER_SPLIT_INCOME_CHECKED.value_type is Decimal
-    assert OTHER_SPLIT_INCOME_CHECKED.non_negative is True
+    assert non_negative(OTHER_SPLIT_INCOME_CHECKED) is True
     assert OTHER_SPLIT_INCOME_CHECKED.identifier not in SIGNED
     assert registry.get("ca/other_split_income_own_checked") is OTHER_SPLIT_INCOME_OWN_CHECKED
     assert registry.get("ca/other_split_income_total") is OTHER_SPLIT_INCOME_TOTAL
@@ -877,7 +879,7 @@ def test_the_t1206_part_1_amounts_are_non_negative_decimals(registry: ArtifactRe
     ):
         assert kind.identifier not in SIGNED, kind.identifier
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -889,8 +891,8 @@ def test_the_net_income_before_adjustments_not_below_zero_is_its_non_negative_tw
     # once line 23500 reduces the net income of line 23600, this line needs its own floored kind.
     assert NET_INCOME_BEFORE_ADJUSTMENTS_NOT_BELOW_ZERO is not NET_INCOME_BEFORE_ADJUSTMENTS
     assert NET_INCOME_BEFORE_ADJUSTMENTS_NOT_BELOW_ZERO is not NET_INCOME
-    assert NET_INCOME_BEFORE_ADJUSTMENTS_NOT_BELOW_ZERO.non_negative is True
-    assert registry.kind("ca/net_income_before_adjustments_not_below_zero").non_negative is True
+    assert non_negative(NET_INCOME_BEFORE_ADJUSTMENTS_NOT_BELOW_ZERO) is True
+    assert non_negative(registry.kind("ca/net_income_before_adjustments_not_below_zero")) is True
     assert "ca/net_income_before_adjustments_not_below_zero" not in SIGNED
 
 
@@ -903,7 +905,7 @@ def test_the_social_benefits_chart_lines_that_print_no_floor_are_signed(
     # income" print no "(if negative, enter "0")".
     for kind in (SOCIAL_BENEFITS_LINE_6, SOCIAL_BENEFITS_LINE_11, SOCIAL_BENEFITS_LINE_15):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert registry.kind(kind.identifier) is kind
         assert kind.identifier in SIGNED
 
@@ -928,7 +930,7 @@ def test_the_other_social_benefits_chart_lines_are_non_negative(
         SOCIAL_BENEFITS_REPAYMENT,
     ):
         assert kind.identifier not in SIGNED, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -941,7 +943,7 @@ def test_the_rdsp_income_repayment_checked_kind_is_registered_beside_the_input(
     # amount is the output of `core/at_most`, which lines 14 and 15 read in place of the input.
     assert registry.kind("ca/rdsp_income_repayment_checked") is RDSP_INCOME_REPAYMENT_CHECKED
     assert RDSP_INCOME_REPAYMENT_CHECKED.value_type is Decimal
-    assert RDSP_INCOME_REPAYMENT_CHECKED.non_negative is True
+    assert non_negative(RDSP_INCOME_REPAYMENT_CHECKED) is True
     assert RDSP_INCOME_REPAYMENT_CHECKED is not RDSP_INCOME_REPAYMENT
     assert RDSP_INCOME_REPAYMENT_CHECKED.identifier in REGISTERED
 
@@ -957,7 +959,7 @@ def test_the_ei_benefits_repayment_checked_kind_is_registered_beside_the_input(
     # input.
     assert registry.kind("ca/ei_benefits_repayment_checked") is EI_BENEFITS_REPAYMENT_CHECKED
     assert EI_BENEFITS_REPAYMENT_CHECKED.value_type is Decimal
-    assert EI_BENEFITS_REPAYMENT_CHECKED.non_negative is True
+    assert non_negative(EI_BENEFITS_REPAYMENT_CHECKED) is True
     assert EI_BENEFITS_REPAYMENT_CHECKED is not EI_BENEFITS_REPAYMENT
     assert EI_BENEFITS_REPAYMENT_CHECKED.identifier in REGISTERED
 
@@ -980,7 +982,7 @@ def test_the_ei_excluded_slips_are_a_record_list_of_the_net_income_of_each_slip(
     assert isinstance(EI_EXCLUDED_SLIPS, RecordListKind)
     assert EI_EXCLUDED_SLIPS.identifier == "ca/ei_excluded_slips"
     assert EI_EXCLUDED_SLIPS.value_type is RecordList
-    assert EI_EXCLUDED_SLIPS.non_negative is False
+    assert non_negative(EI_EXCLUDED_SLIPS) is False
     assert EI_EXCLUDED_SLIPS.fields == (EI_EXCLUDED_SLIP_NET_INCOME,)
     assert registry.get("ca/ei_excluded_slips") is EI_EXCLUDED_SLIPS
     assert "ca/ei_excluded_slips" in RECORD_LISTS
@@ -993,7 +995,7 @@ def test_the_net_income_of_an_excluded_slip_is_a_signed_decimal(
     # "(or net loss)": a slip may report a loss, so the field is not declared non-negative.
     assert EI_EXCLUDED_SLIP_NET_INCOME.identifier == "ca/ei_excluded_slip_net_income"
     assert EI_EXCLUDED_SLIP_NET_INCOME.value_type is Decimal
-    assert EI_EXCLUDED_SLIP_NET_INCOME.non_negative is False
+    assert non_negative(EI_EXCLUDED_SLIP_NET_INCOME) is False
     assert registry.kind("ca/ei_excluded_slip_net_income") is EI_EXCLUDED_SLIP_NET_INCOME
     assert "ca/ei_excluded_slip_net_income" in SIGNED
 
@@ -1024,7 +1026,7 @@ def test_schedule_13_line_1_before_the_slips_is_signed(registry: ArtifactRegistr
     # negative, enter "0")" floor of the finished line 1, so it is not declared non-negative.
     assert EI_SELF_EMPLOYMENT_BEFORE_SLIPS.identifier == "ca/ei_self_employment_before_slips"
     assert EI_SELF_EMPLOYMENT_BEFORE_SLIPS.value_type is Decimal
-    assert EI_SELF_EMPLOYMENT_BEFORE_SLIPS.non_negative is False
+    assert non_negative(EI_SELF_EMPLOYMENT_BEFORE_SLIPS) is False
     assert registry.kind("ca/ei_self_employment_before_slips") is EI_SELF_EMPLOYMENT_BEFORE_SLIPS
     assert "ca/ei_self_employment_before_slips" in SIGNED
 
@@ -1033,7 +1035,7 @@ def test_the_net_income_of_all_the_excluded_slips_is_signed(registry: ArtifactRe
     # The total of the slips' net income (or net loss) may be a loss.
     assert EI_EXCLUDED_SLIPS_NET_INCOME.identifier == "ca/ei_excluded_slips_net_income"
     assert EI_EXCLUDED_SLIPS_NET_INCOME.value_type is Decimal
-    assert EI_EXCLUDED_SLIPS_NET_INCOME.non_negative is False
+    assert non_negative(EI_EXCLUDED_SLIPS_NET_INCOME) is False
     assert registry.kind("ca/ei_excluded_slips_net_income") is EI_EXCLUDED_SLIPS_NET_INCOME
     assert "ca/ei_excluded_slips_net_income" in SIGNED
 
@@ -1041,7 +1043,7 @@ def test_the_net_income_of_all_the_excluded_slips_is_signed(registry: ArtifactRe
 def test_schedule_13_line_1_stays_non_negative_after_the_slips(registry: ArtifactRegistry) -> None:
     # "(if negative, enter "0")" is on the finished line 1, ca/ei_self_employment_earnings.
     assert EI_SELF_EMPLOYMENT_EARNINGS is not EI_SELF_EMPLOYMENT_BEFORE_SLIPS
-    assert EI_SELF_EMPLOYMENT_EARNINGS.non_negative is True
+    assert non_negative(EI_SELF_EMPLOYMENT_EARNINGS) is True
     assert "ca/ei_self_employment_earnings" not in SIGNED
 
 
@@ -1061,7 +1063,7 @@ def test_the_cpp_t4_box_totals_are_non_negative_money_the_filer_enters(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier not in SIGNED, identifier
     assert (
         registry.kind("ca/cpp_t4_base_and_first_additional_contributions")
@@ -1089,7 +1091,7 @@ def test_the_cpp_part_3_lines_that_print_no_brackets_are_non_negative(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier not in SIGNED, identifier
     assert registry.kind("ca/cpp_actual_base_contributions") is CPP_ACTUAL_BASE_CONTRIBUTIONS
 
@@ -1108,7 +1110,7 @@ def test_the_cpp_part_3_difference_lines_are_signed_as_their_brackets_say(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is False, identifier
+        assert non_negative(kind) is False, identifier
         assert identifier in SIGNED, identifier
     assert registry.kind("ca/cpp_contributions_difference") is CPP_CONTRIBUTIONS_DIFFERENCE
 
@@ -1135,7 +1137,7 @@ def test_the_cpp_part_3_routing_counts_are_non_negative_int_kinds(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS, identifier
         assert identifier not in SIGNED, identifier
 
@@ -1157,7 +1159,7 @@ def test_the_cpp_part_3b_whichever_is_less_candidates_are_signed(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is False, identifier
+        assert non_negative(kind) is False, identifier
         assert identifier in SIGNED, identifier
 
 
@@ -1197,7 +1199,7 @@ def test_the_cpp_part_3b_lines_and_the_three_return_lines_are_non_negative_money
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier not in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1213,7 +1215,7 @@ def test_the_cpt20_earnings_shown_on_a_t4_slip_are_a_non_negative_input(
     # never below zero, like line 2 (CPT20 earnings not shown on a T4 slip).
     kind = registry.kind("ca/cpt20_t4_earnings")
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert "ca/cpt20_t4_earnings" not in SIGNED
     assert "ca/cpt20_t4_earnings" in REGISTERED
     assert kind is not CPT20_EARNINGS
@@ -1226,7 +1228,7 @@ def test_part_3_line_2_is_a_non_negative_amount_of_employment_earnings(
     # of two non-negative amounts, read by Part 5 line 32 ("Amount from line 2 of Part 3").
     kind = registry.kind("ca/cpp_part_3_line_2")
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert "ca/cpp_part_3_line_2" not in SIGNED
     assert "ca/cpp_part_3_line_2" in REGISTERED
 
@@ -1245,7 +1247,7 @@ def test_the_cpp_part_5_conditions_are_non_negative_int_counts(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS, identifier
         assert identifier not in SIGNED, identifier
 
@@ -1260,7 +1262,7 @@ def test_the_cpp_part_5_lines_that_cannot_be_negative_are_non_negative_money(
         identifier = f"ca/cpp_part_5_line_{number}"
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier not in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1294,7 +1296,7 @@ def test_the_cpp_part_5_lines_that_print_no_floor_are_signed(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is False, identifier
+        assert non_negative(kind) is False, identifier
         assert identifier in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1315,7 +1317,7 @@ def test_the_cpp_part_5_lines_43_to_69_counts_are_non_negative_int_counts(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier in COUNTS, identifier
         assert identifier not in SIGNED, identifier
 
@@ -1339,7 +1341,7 @@ def test_the_cpp_part_5_line_49_and_the_whichever_is_less_candidates_are_signed(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is False, identifier
+        assert non_negative(kind) is False, identifier
         assert identifier in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1386,7 +1388,7 @@ def test_the_cpp_part_5_lines_43_to_69_that_cannot_be_negative_are_non_negative_
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier not in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1403,7 +1405,7 @@ def test_the_cpp_part_5_completed_input_is_a_non_negative_int_count(
     # contributions on": 1 when the filer completes Part 5, 0 when not, as Part 4's count.
     kind = registry.kind("ca/cpp_part_5_completed")
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert "ca/cpp_part_5_completed" in COUNTS
     assert "ca/cpp_part_5_completed" not in SIGNED
     assert "ca/cpp_part_5_completed" in REGISTERED
@@ -1427,7 +1429,7 @@ def test_each_cpp_part_completed_checked_kind_is_a_registered_non_negative_int_c
     assert kind is constant
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(input_id) is not kind
     assert registry.kind(input_id).value_type is int
     assert identifier in COUNTS
@@ -1452,7 +1454,7 @@ def test_each_cpp_part_completed_yes_or_no_checked_kind_is_a_non_negative_int_co
     assert kind is checked
     assert checked.identifier == f"{raw.identifier}_yes_or_no_checked"
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(raw.identifier) is not kind
     assert registry.kind(raw.identifier).value_type is int
     assert checked.identifier in COUNTS
@@ -1475,7 +1477,7 @@ def test_each_cpp_part_4_and_part_5_both_kind_is_a_registered_non_negative_int_c
     kind = registry.kind(identifier)
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert identifier in COUNTS
     assert identifier not in SIGNED
     assert identifier in REGISTERED
@@ -1507,7 +1509,7 @@ def test_each_cpp_part_4_with_employment_earnings_kind_is_a_registered_non_negat
     kind = registry.kind(identifier)
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert identifier in COUNTS
     assert identifier not in SIGNED
     assert identifier in REGISTERED
@@ -1527,7 +1529,7 @@ def test_the_cpp_part_5_lines_74_and_80_are_signed(registry: ArtifactRegistry) -
     for identifier in ("ca/cpp_part_5_line_74", "ca/cpp_part_5_line_80"):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is False, identifier
+        assert non_negative(kind) is False, identifier
         assert identifier in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1559,7 +1561,7 @@ def test_the_cpp_part_5_lines_70_to_88_that_cannot_be_negative_are_non_negative_
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier not in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1594,7 +1596,7 @@ def test_the_lines_the_part_5_routing_reads_are_non_negative_money(
     ):
         kind = registry.kind(identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert identifier not in SIGNED, identifier
         assert identifier in REGISTERED, identifier
 
@@ -1669,7 +1671,7 @@ def test_the_checked_clergy_other_accommodation_claims_is_a_registered_non_negat
     identifier = "ca/clergy_other_accommodation_claims_checked"
     assert registry.get(identifier) is CLERGY_OTHER_ACCOMMODATION_CLAIMS_CHECKED
     assert CLERGY_OTHER_ACCOMMODATION_CLAIMS_CHECKED.value_type is Decimal
-    assert kind_of(registry, identifier).non_negative is True
+    assert non_negative(kind_of(registry, identifier)) is True
 
 
 def test_the_clergy_residence_counts_are_int_kinds(registry: ArtifactRegistry) -> None:
@@ -1700,7 +1702,7 @@ def test_the_clergy_residence_amounts_on_lines_2_to_5_and_the_inputs_are_not_bel
         CLERGY_RESIDENCE_LINE_5,
         CLERGY_RESIDENCE_DEDUCTION,
     ):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_clergy_residence_lines_8_to_10_and_the_totals_are_signed() -> None:
@@ -1714,7 +1716,7 @@ def test_the_clergy_residence_lines_8_to_10_and_the_totals_are_signed() -> None:
         CLERGY_RESIDENCE_TOTAL,
         CLERGY_RESIDENCE_TOTAL_LIMITED,
     ):
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
 
 
 T929_COMPUTED_NON_NEGATIVE = (
@@ -1736,7 +1738,7 @@ def test_the_disability_supports_deduction_is_computed_and_registered_here(
 ) -> None:
     assert registry.get("ca/disability_supports_deduction") is DISABILITY_SUPPORTS_DEDUCTION
     assert DISABILITY_SUPPORTS_DEDUCTION.value_type is Decimal
-    assert DISABILITY_SUPPORTS_DEDUCTION.non_negative is True
+    assert non_negative(DISABILITY_SUPPORTS_DEDUCTION) is True
 
 
 def test_the_t929_computed_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -1747,12 +1749,12 @@ def test_the_t929_computed_kinds_are_the_registered_ones(registry: ArtifactRegis
 def test_the_t929_computed_amounts_are_non_negative_decimals() -> None:
     for kind in T929_COMPUTED_NON_NEGATIVE:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_t929_line_3_is_signed_as_the_form_does_not_floor_it() -> None:
     assert T929_LINE_3.value_type is Decimal
-    assert T929_LINE_3.non_negative is False
+    assert non_negative(T929_LINE_3) is False
 
 
 def test_the_t929_instances_is_a_record_list_of_no_fields() -> None:
@@ -1837,7 +1839,7 @@ def test_the_moving_inputs_are_decimals_that_cannot_be_negative(registry: Artifa
     for identifier in MOVING_INPUTS:
         kind = kind_of(registry, identifier)
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
 
 
 def test_the_moving_amounts_are_decimals(registry: ArtifactRegistry) -> None:
@@ -1850,9 +1852,9 @@ def test_only_the_distance_difference_of_the_moving_lines_may_be_negative(
 ) -> None:
     # Line 3, "Line 1 minus line 2", prints no floor; every other computed line of the form is a
     # sum, a lesser amount or a floor at 0 ("if negative, enter "0"").
-    assert kind_of(registry, "ca/moving_distance_difference").non_negative is False
+    assert non_negative(kind_of(registry, "ca/moving_distance_difference")) is False
     for identifier in MOVING_COMPUTED[1:]:
-        assert kind_of(registry, identifier).non_negative is True, identifier
+        assert non_negative(kind_of(registry, identifier)) is True, identifier
 
 
 def test_the_amt_moving_expenses_stand_in_is_no_longer_a_kind(registry: ArtifactRegistry) -> None:
@@ -1883,7 +1885,7 @@ def test_the_moving_income_bound_kinds_are_registered_decimals_that_cannot_be_ne
         kind = kind_of(registry, identifier)
         assert kind.identifier == identifier, identifier
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
 
 
 def test_the_checked_line_28_is_a_kind_of_its_own_beside_the_input(
@@ -1905,7 +1907,7 @@ def test_the_support_payments_made_total_is_the_registered_money_kind(
 ) -> None:
     assert registry.get("ca/support_payments_made_total") is SUPPORT_PAYMENTS_MADE_TOTAL
     assert SUPPORT_PAYMENTS_MADE_TOTAL.value_type is Decimal
-    assert SUPPORT_PAYMENTS_MADE_TOTAL.non_negative is True
+    assert non_negative(SUPPORT_PAYMENTS_MADE_TOTAL) is True
 
 
 # T1 line 22000 "Enter on line 22000 of your return the deductible part of the support payments that
@@ -1917,7 +1919,7 @@ def test_the_support_payments_deduction_checked_is_a_registered_money_kind(
     kind = registry.kind("ca/support_payments_deduction_checked")
     assert kind.identifier == "ca/support_payments_deduction_checked"
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert kind is not SUPPORT_PAYMENTS_DEDUCTION
 
 
@@ -1933,7 +1935,7 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True
 
 
 def test_the_t4_security_options_box_totals_are_registered_and_non_negative(
@@ -1955,7 +1957,7 @@ def test_the_t4_security_options_box_totals_are_registered_and_non_negative(
         T4_SECURITY_OPTIONS_BOXES_41_AND_92_TOTAL,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_t4_security_options_boxes_are_not_declared_under_the_amt_names(
@@ -1987,4 +1989,4 @@ def test_the_t4_slip_count_limit_and_checked_kinds_are_registered_and_not_negati
     # The maximum of one slip times the count of slips (Schedule 8 Part 3, Form RC381 Part 3).
     assert registry.get(identifier) is kind
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True

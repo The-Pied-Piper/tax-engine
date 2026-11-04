@@ -18,8 +18,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.contribution_tier import TieredContribution
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -29,8 +30,8 @@ SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
 FAMILY = "ca/ei_premium"
 
 # Made up for this test and not registered: the earnings the tier reads, and its premium.
-EARNINGS = ArtifactKind("ex/earnings", Decimal)
-PREMIUM = ArtifactKind("ex/premium", Decimal)
+EARNINGS = AmountKind("ex/earnings")
+PREMIUM = AmountKind("ex/premium")
 
 
 def test_2025_ei_tier_is_1_64_percent_from_0_to_65700_at_most_1077_48() -> None:

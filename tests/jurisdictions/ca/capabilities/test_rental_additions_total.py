@@ -25,14 +25,15 @@ import pytest
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.capabilities as canada
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.rental_additions_total import RentalAdditionsTotal
 from tax_engine.jurisdictions.ca.catalog import (
@@ -47,7 +48,7 @@ from tax_engine.jurisdictions.ca.trace import RentalAdditionLine
 D = Decimal
 
 # Made up for this test and not registered: the total the capability produces.
-TOTAL = ArtifactKind("ex/rental_additions_total", Decimal)
+TOTAL = AmountKind("ex/rental_additions_total")
 MESSAGE = r"the personal portion \(250\) is above the total cost \(200\)"
 
 
@@ -234,14 +235,14 @@ def test_records_each_addition_by_its_position_then_the_total() -> None:
 
 def test_refuses_a_money_kind_for_its_record_list() -> None:
     with pytest.raises(InvalidCapabilityError, match="RentalAdditionsTotal") as raised:
-        RentalAdditionsTotal(ArtifactKind("ex/not_a_list", Decimal), TOTAL)  # type: ignore[arg-type]
+        RentalAdditionsTotal(AmountKind("ex/not_a_list"), TOTAL)  # type: ignore[arg-type]
 
     assert "'additions'" in str(raised.value)
 
 
 def test_refuses_a_count_kind_for_its_total() -> None:
     with pytest.raises(InvalidCapabilityError, match="RentalAdditionsTotal") as raised:
-        RentalAdditionsTotal(RENTAL_EQUIPMENT_ADDITIONS, ArtifactKind("ex/a_count", int))  # type: ignore[arg-type]
+        RentalAdditionsTotal(RENTAL_EQUIPMENT_ADDITIONS, CountKind("ex/a_count"))  # type: ignore[arg-type]
 
     assert "'total'" in str(raised.value)
 

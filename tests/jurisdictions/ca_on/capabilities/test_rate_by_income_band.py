@@ -26,9 +26,10 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DomainError, InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, RateKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -45,7 +46,7 @@ from tests.jurisdictions.ca_on.capabilities.on479a_table import (
 
 D = Decimal
 
-CARE_RATE = ArtifactKind("ex/care_rate", Rate)
+CARE_RATE = RateKind("ex/care_rate")
 
 
 def capability(table_data: ParameterDataset[RateTable] | None = None) -> RateByIncomeBand:
@@ -133,14 +134,14 @@ def test_takes_no_separate_rounding_argument() -> None:
 
 
 def test_rejects_a_money_kind_as_its_output() -> None:
-    money = ArtifactKind("ex/care_rate_as_money", Decimal)
+    money = AmountKind("ex/care_rate_as_money")
 
     with pytest.raises(InvalidCapabilityError, match="RateByIncomeBand.*'output'"):
         RateByIncomeBand(table(), FAMILY_INCOME, money)  # type: ignore[arg-type]
 
 
 def test_rejects_a_rate_kind_as_its_income() -> None:
-    other_rate = ArtifactKind("ex/other_rate", Rate)
+    other_rate = RateKind("ex/other_rate")
 
     with pytest.raises(InvalidCapabilityError, match="RateByIncomeBand.*'income'"):
         RateByIncomeBand(table(), other_rate, CARE_RATE)  # type: ignore[arg-type]
@@ -294,7 +295,7 @@ def test_a_negative_income_is_refused(income: str) -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), Artifact(FAMILY_INCOME, D("50000"))))
 

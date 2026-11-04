@@ -32,6 +32,7 @@ from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.class_rates import (
     CLASS_RATES,
@@ -46,7 +47,7 @@ from tax_engine.domain.parameters.fraction import Fraction
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_AIIP_ADDITIONS,
@@ -82,9 +83,9 @@ CLASS_FIELDS = (
 )
 CLASSES = RecordListKind("ex/cca_classes", fields=CLASS_FIELDS)
 NON_COMPLIANT = RecordListKind("ex/non_compliant_cca", fields=(CCA_CLASS_NUMBER, NON_COMPLIANT_CCA))
-CCA_CLAIM = ArtifactKind("ex/cca_claim", Decimal, non_negative=True)
-RECAPTURED_CCA = ArtifactKind("ex/recaptured_cca", Decimal, non_negative=True)
-TERMINAL_LOSS = ArtifactKind("ex/terminal_loss", Decimal, non_negative=True)
+CCA_CLAIM = AmountKind("ex/cca_claim", non_negative=True)
+RECAPTURED_CCA = AmountKind("ex/recaptured_cca", non_negative=True)
+TERMINAL_LOSS = AmountKind("ex/terminal_loss", non_negative=True)
 CLOSING_UCC = RecordListKind("ex/closing_ucc", fields=(CCA_CLASS_NUMBER, CCA_UCC_AT_END))
 
 CLASS_1 = ClassRate(D("1"), Rate(D("0.04")), APPLIES, INCLUDED, F(0, 1), F(1, 2), NOT_ON_SALE)

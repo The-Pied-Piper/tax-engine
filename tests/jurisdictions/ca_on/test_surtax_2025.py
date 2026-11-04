@@ -15,8 +15,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.surcharge_tiers import (
@@ -31,8 +32,8 @@ FAMILY = "ca-on/surtax"
 ON428_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt"
 
 # Made up for this test and not registered: the tax the surtax is on, and the surtax.
-TAX = ArtifactKind("ex/tax", Decimal)
-SURTAX = ArtifactKind("ex/surtax", Decimal)
+TAX = AmountKind("ex/tax")
+SURTAX = AmountKind("ex/surtax")
 
 
 def test_2025_tiers_are_20_percent_over_5710_and_36_percent_over_7307() -> None:

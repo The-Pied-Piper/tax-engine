@@ -26,11 +26,12 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import SignChosenDifferenceLine
@@ -39,10 +40,10 @@ from tests.manifest_support import required_inputs
 
 D = Decimal
 
-SIGN = ArtifactKind("ex/sign_amount", Decimal)
-REFERENCE = ArtifactKind("ex/reference", Decimal)
-DIFFERENCE = ArtifactKind("ex/difference", Decimal)
-OUTPUT = ArtifactKind("ex/out", Decimal)
+SIGN = AmountKind("ex/sign_amount")
+REFERENCE = AmountKind("ex/reference")
+DIFFERENCE = AmountKind("ex/difference")
+OUTPUT = AmountKind("ex/out")
 
 
 def capability() -> SignChosenDifference:
@@ -171,7 +172,7 @@ def test_rejects_a_list_of_kinds_for_its_reference() -> None:
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.
@@ -280,7 +281,7 @@ def test_a_positive_difference_is_never_made_negative_by_a_non_negative_sign_amo
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = capability().compute((other, *inputs("100", "30", "70")))
 

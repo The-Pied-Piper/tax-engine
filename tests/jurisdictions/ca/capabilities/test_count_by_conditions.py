@@ -32,11 +32,12 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -55,23 +56,23 @@ D = Decimal
 
 # --- made-up kinds -----------------------------------------------------------------------------
 
-NOT_RESIDENT_CANADA = ArtifactKind("ex/not_resident_of_canada", int)
-NOT_RESIDENT_ONTARIO = ArtifactKind("ex/not_resident_of_ontario", int)
-BANKRUPT = ArtifactKind("ex/bankrupt", int)
-TRUSTEE_FILED = ArtifactKind("ex/filed_by_trustee", int)
-NOT_CLAIMING = ArtifactKind("ex/not_claiming_reduction", int)
-LINE_72 = ArtifactKind("ex/amount_on_line_72", Decimal)
-FILER_INCOME = ArtifactKind("ex/filer_net_income", Decimal)
-SPOUSE_INCOME = ArtifactKind("ex/spouse_net_income", Decimal)
-LINE_11900 = ArtifactKind("ex/amount_on_line_11900", Decimal)
-LINE_11300 = ArtifactKind("ex/amount_on_line_11300", Decimal)
-LINE_14600 = ArtifactKind("ex/amount_on_line_14600", Decimal)
-NET_INCOME = ArtifactKind("ex/net_income_line_23400", Decimal)
-GATE = ArtifactKind("ex/gate", int)
-HIGHER_INCOME = ArtifactKind("ex/higher_income_claims", int)
-CHART = ArtifactKind("ex/chart_applies", int)
-REDUCTION_BEFORE_GATE = ArtifactKind("ex/reduction_before_gate", Decimal)
-REDUCTION = ArtifactKind("ex/reduction", Decimal)
+NOT_RESIDENT_CANADA = CountKind("ex/not_resident_of_canada")
+NOT_RESIDENT_ONTARIO = CountKind("ex/not_resident_of_ontario")
+BANKRUPT = CountKind("ex/bankrupt")
+TRUSTEE_FILED = CountKind("ex/filed_by_trustee")
+NOT_CLAIMING = CountKind("ex/not_claiming_reduction")
+LINE_72 = AmountKind("ex/amount_on_line_72")
+FILER_INCOME = AmountKind("ex/filer_net_income")
+SPOUSE_INCOME = AmountKind("ex/spouse_net_income")
+LINE_11900 = AmountKind("ex/amount_on_line_11900")
+LINE_11300 = AmountKind("ex/amount_on_line_11300")
+LINE_14600 = AmountKind("ex/amount_on_line_14600")
+NET_INCOME = AmountKind("ex/net_income_line_23400")
+GATE = CountKind("ex/gate")
+HIGHER_INCOME = CountKind("ex/higher_income_claims")
+CHART = CountKind("ex/chart_applies")
+REDUCTION_BEFORE_GATE = AmountKind("ex/reduction_before_gate")
+REDUCTION = AmountKind("ex/reduction")
 
 FIVE_COUNTS = (NOT_RESIDENT_CANADA, NOT_RESIDENT_ONTARIO, BANKRUPT, TRUSTEE_FILED, NOT_CLAIMING)
 
@@ -296,7 +297,7 @@ def test_refuses_a_position_beyond_the_list_of_counts() -> None:
 
 
 def test_refuses_a_count_that_no_test_reads() -> None:
-    extra = ArtifactKind("ex/extra_flag", int)
+    extra = CountKind("ex/extra_flag")
 
     with pytest.raises(InvalidCapabilityError, match="CountByConditions.*'counts'.*extra_flag"):
         CountByConditions(LINE_80, (*FIVE_COUNTS, extra), (LINE_72,), GATE)
@@ -371,7 +372,7 @@ def test_refuses_a_money_kind_as_the_output() -> None:
 
 
 def test_refuses_a_rate_kind_as_the_output() -> None:
-    other = ArtifactKind("ex/a_rate", Rate)
+    other = RateKind("ex/a_rate")
 
     with pytest.raises(InvalidCapabilityError, match="CountByConditions.*'output'"):
         CountByConditions(LINE_80, FIVE_COUNTS, (LINE_72,), other)  # type: ignore[arg-type]
@@ -449,7 +450,7 @@ def test_a_count_other_than_1_does_not_apply() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = line_80().compute((Artifact(other, D("9")), *line_80_inputs()))
 

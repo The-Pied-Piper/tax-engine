@@ -29,10 +29,11 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -50,13 +51,13 @@ ON428_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/500
 # Made up for this test and not registered: the number of infirm children and their amount (line
 # 30500), the Ontario base as an artifact (line 14), and the Ontario amount before its maximum
 # and after it (line 16).
-DEPENDANT_ELIGIBLE = ArtifactKind("ex/dependant_caregiver_eligible", int)
-DEPENDANT_SUPPLEMENT = ArtifactKind("ex/dependant_infirmity_supplement", Decimal)
-INFIRM_CHILDREN = ArtifactKind("ex/infirm_children", int)
-INFIRM_AMOUNT = ArtifactKind("ex/infirm_children_amount", Decimal)
-BASE = ArtifactKind("ex/base", Decimal)
-BEFORE_MAXIMUM = ArtifactKind("ex/before_maximum", Decimal)
-BEFORE_COUNT = ArtifactKind("ex/before_count", Decimal)
+DEPENDANT_ELIGIBLE = CountKind("ex/dependant_caregiver_eligible")
+DEPENDANT_SUPPLEMENT = AmountKind("ex/dependant_infirmity_supplement")
+INFIRM_CHILDREN = CountKind("ex/infirm_children")
+INFIRM_AMOUNT = AmountKind("ex/infirm_children_amount")
+BASE = AmountKind("ex/base")
+BEFORE_MAXIMUM = AmountKind("ex/before_maximum")
+BEFORE_COUNT = AmountKind("ex/before_count")
 
 
 def test_2025_amount_per_infirm_child_is_2687() -> None:

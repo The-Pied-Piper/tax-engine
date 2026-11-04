@@ -23,9 +23,10 @@ from typing import Any, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as canada
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.restricted_farm_loss_applied import (
@@ -144,7 +145,7 @@ def test_takes_no_parameter_dataset() -> None:
 def test_refuses_a_money_kind_for_its_record_list() -> None:
     with pytest.raises(InvalidCapabilityError, match="RestrictedFarmLossApplied") as raised:
         RestrictedFarmLossApplied(
-            ArtifactKind("ex/not_a_list", Decimal),  # type: ignore[arg-type]
+            AmountKind("ex/not_a_list"),  # type: ignore[arg-type]
             REAL_ESTATE_RESTRICTED_FARM_LOSS_APPLIED,
         )
 
@@ -153,7 +154,7 @@ def test_refuses_a_money_kind_for_its_record_list() -> None:
 
 def test_refuses_a_count_kind_for_its_output() -> None:
     with pytest.raises(InvalidCapabilityError, match="RestrictedFarmLossApplied") as raised:
-        RestrictedFarmLossApplied(REAL_ESTATE_DISPOSITIONS, ArtifactKind("ex/a_count", int))  # type: ignore[arg-type]
+        RestrictedFarmLossApplied(REAL_ESTATE_DISPOSITIONS, CountKind("ex/a_count"))  # type: ignore[arg-type]
 
     assert "'output'" in str(raised.value)
 

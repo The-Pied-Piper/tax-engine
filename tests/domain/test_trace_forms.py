@@ -14,17 +14,17 @@ from decimal import Decimal
 import pytest
 
 import tax_engine.domain.trace
-from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.trace import forms as trace_forms
 
 D = Decimal
 
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-GROSS_RENT = ArtifactKind("ex/gross_rent", Decimal)
-EXPENSES = ArtifactKind("ex/expenses", Decimal)
-UNIT_AMOUNT = ArtifactKind("ex/unit_amount", Decimal)
-UNIT_TOTAL = ArtifactKind("ex/unit_total", Decimal)
+NET_INCOME = AmountKind("ex/net_income")
+GROSS_RENT = AmountKind("ex/gross_rent")
+EXPENSES = AmountKind("ex/expenses")
+UNIT_AMOUNT = AmountKind("ex/unit_amount")
+UNIT_TOTAL = AmountKind("ex/unit_total")
 
 SUBTRACTED = SubtractedLine(NET_INCOME, GROSS_RENT, D("12000"), EXPENSES, D("2000"), D("10000"))
 TOTAL = RecordTotalLine(UNIT_TOTAL, UNIT_AMOUNT, (D("100"), D("250.50")), D("350.50"))

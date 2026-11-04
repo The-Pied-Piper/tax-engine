@@ -23,10 +23,11 @@ from types import MappingProxyType
 import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
     Default,
@@ -34,7 +35,6 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.registry import Namespace
 from tests.kinds import AutoKinds
 from tests.manifest_support import required_inputs
@@ -49,7 +49,7 @@ def manifest_kinds() -> ArtifactRegistry:
     """The kinds the made-up manifests name: an amount for any identifier, a count for the yes/no
     `COUNTS`, text for `ex/note` and an empty record list for `ex/rows`."""
     kinds = AutoKinds(COUNTS)
-    kinds.register("ex/note", ArtifactKind("ex/note", str))
+    kinds.register("ex/note", TextKind("ex/note"))
     kinds.register("ex/rows", RecordListKind("ex/rows", fields=()))
     return kinds
 

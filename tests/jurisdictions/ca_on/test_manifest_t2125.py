@@ -24,8 +24,8 @@ from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import NET_ON_BUSINESS_LINE, T2125_STATEMENTS
 from tests.jurisdictions.ca_on.manifest_families import t2125
 from tests.jurisdictions.ca_on.manifest_support import (
@@ -35,7 +35,7 @@ from tests.jurisdictions.ca_on.manifest_support import (
     lists,
     required_entries,
 )
-from tests.kinds import bundled_kinds, ca_on_kinds
+from tests.kinds import bundled_kinds, ca_on_kinds, non_negative
 
 CA_ON = JurisdictionCode("CA-ON")
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "v1" / "03b_t2125.yaml"
@@ -234,7 +234,7 @@ def test_the_routed_net_export_is_a_record_list_of_the_signed_net_on_the_busines
 
     assert net == t2125.NET_INCOME_PER_STATEMENT
     assert net.fields == (NET_ON_BUSINESS_LINE,)
-    assert NET_ON_BUSINESS_LINE.non_negative is False
+    assert non_negative(NET_ON_BUSINESS_LINE) is False
 
 
 def test_the_selections_inside_the_form_are_wired_as_they_were_on_the_return() -> None:

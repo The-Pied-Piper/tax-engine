@@ -16,6 +16,7 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
@@ -36,8 +37,8 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # The return-wide figures and the outputs come with the wiring; the tests use made-up kinds.
 # Signed: T2209 note (3) takes line 23600, which can be negative (a net loss).
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-BASIC_TAX = ArtifactKind("ex/basic_federal_tax_with_dividend_credit", Decimal, non_negative=True)
+NET_INCOME = AmountKind("ex/net_income")
+BASIC_TAX = AmountKind("ex/basic_federal_tax_with_dividend_credit", non_negative=True)
 SHEETS = FOREIGN_TAX_CREDIT_SHEETS
 
 # A sheet is (business tax paid for the year, unused business credits, net foreign business income
@@ -115,7 +116,7 @@ def rounding(rule: RoundingRule = CENT) -> ParameterDataset[RoundingOnly]:
 
 def sheet_list(*rows: Sheet) -> Artifact[Any]:
     """A `ca/foreign_tax_credit_sheets` artifact of one record per sheet, in order."""
-    records = [
+    records: list[dict[ArtifactKind[Any], object]] = [
         {
             FOREIGN_NON_BUSINESS_TAX_PAID: D("1500"),
             NET_FOREIGN_NON_BUSINESS_INCOME: D("10000"),

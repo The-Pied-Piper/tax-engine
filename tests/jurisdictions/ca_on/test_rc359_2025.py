@@ -23,10 +23,11 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.amount_by_count import AmountForCount
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.errors import NoAmountForCountError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -61,11 +62,11 @@ PRINTED = {
 
 # Made up for this test and not registered: the province code, the percentage, the amount and
 # the figure the capabilities read and produce.
-COUNT = ArtifactKind("ex/province_code", int)
-PERCENT = ArtifactKind("ex/percentage", Decimal)
-AMOUNT = ArtifactKind("ex/amount", Decimal)
-BASE = ArtifactKind("ex/base", Decimal)
-OUTPUT = ArtifactKind("ex/output", Decimal)
+COUNT = CountKind("ex/province_code")
+PERCENT = AmountKind("ex/percentage")
+AMOUNT = AmountKind("ex/amount")
+BASE = AmountKind("ex/base")
+OUTPUT = AmountKind("ex/output")
 
 
 def test_2025_employment_income_rate_is_twenty_percent_rounded_to_the_cent() -> None:

@@ -57,6 +57,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -95,9 +96,9 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # The return-wide figures and the output come with the wiring; the tests use made-up kinds.
 # Signed: T2209 note (3) takes line 23600, which can be negative (a net loss).
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-BASIC_TAX = ArtifactKind("ex/basic_federal_tax", Decimal, non_negative=True)
-CREDIT = ArtifactKind("ex/foreign_credit", Decimal, non_negative=True)
+NET_INCOME = AmountKind("ex/net_income")
+BASIC_TAX = AmountKind("ex/basic_federal_tax", non_negative=True)
+CREDIT = AmountKind("ex/foreign_credit", non_negative=True)
 SHEETS = FOREIGN_TAX_CREDIT_SHEETS
 
 # A country is (line 1 tax paid, net foreign non-business income), or those two followed by its
@@ -164,7 +165,7 @@ def capability(
 
 def countries(*rows: Country) -> Artifact[Any]:
     """A `ca/foreign_tax_countries` artifact of one record per country, in order."""
-    records = []
+    records: list[dict[ArtifactKind[Any], object]] = []
     for row in rows:
         (
             tax,

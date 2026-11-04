@@ -15,7 +15,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
@@ -28,9 +29,9 @@ CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/amt_multiple_jurisdictions_rounding"
 
 # Made up for this test and not registered: the amount, the percentage and the product.
-AMOUNT = ArtifactKind("ex/amt_line_2", Decimal)
-PERCENTAGE = ArtifactKind("ex/t2203_column_5_percentage", Decimal)
-OUTPUT = ArtifactKind("ex/amt_line_3", Decimal)
+AMOUNT = AmountKind("ex/amt_line_2")
+PERCENTAGE = AmountKind("ex/t2203_column_5_percentage")
+OUTPUT = AmountKind("ex/amt_line_3")
 
 
 def test_2025_amt_multiple_jurisdictions_rounding_is_half_up_to_the_cent() -> None:

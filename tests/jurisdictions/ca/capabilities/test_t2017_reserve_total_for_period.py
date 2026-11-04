@@ -28,13 +28,14 @@ from typing import Any
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
     ValidationError,
 )
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -44,7 +45,7 @@ from tax_engine.domain.parameters.conditions import (
 )
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.t2017_reserve_total_for_period import (
     T2017ReserveTotalForPeriod,
@@ -71,7 +72,7 @@ from tax_engine.jurisdictions.ca.trace.gains import ReserveRowForPeriodLine
 D = Decimal
 
 # Made up for this test and not registered: the total the capability produces.
-TOTAL = ArtifactKind("ex/t2017_total", Decimal)
+TOTAL = AmountKind("ex/t2017_total")
 
 CHANGES_2 = RecordListKind("ex/t2017_line_2_reserve.t2017_row_change", fields=(T2017_ROW_CHANGE,))
 CHANGES_3 = RecordListKind("ex/t2017_line_3_reserve.t2017_row_change", fields=(T2017_ROW_CHANGE,))

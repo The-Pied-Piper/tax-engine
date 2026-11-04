@@ -18,8 +18,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
@@ -32,8 +33,8 @@ FORM_TEXT = Path(__file__).parents[3] / "tests" / "fixtures" / "cra-forms-2025" 
 
 # Made up for this test and not registered: the total expenses (T1221 line 4) and the credit
 # (ON479 line 17).
-EXPENSES = ArtifactKind("ex/expenses", Decimal)
-CREDIT = ArtifactKind("ex/credit", Decimal)
+EXPENSES = AmountKind("ex/expenses")
+CREDIT = AmountKind("ex/credit")
 
 
 def squashed(text: str) -> str:

@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 from tax_engine.domain.artifact import ArtifactKind, Money
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.credit import Credit
 from tax_engine.domain.parameters.factor import Factor
@@ -16,7 +17,6 @@ from tax_engine.domain.parameters.fraction import Fraction
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingRule
 from tax_engine.domain.parameters.threshold_rate import ThresholdRate
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.trace.base import TraceLine
 
 __all__ = [

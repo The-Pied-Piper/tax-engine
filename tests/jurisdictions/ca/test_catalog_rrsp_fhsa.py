@@ -77,6 +77,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     UNUSED_RRSP_CONTRIBUTIONS,
     UNUSED_RRSP_CONTRIBUTIONS_CARRIED_FORWARD,
 )
+from tests.kinds import non_negative
 
 
 def test_the_rrsp_fhsa_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -254,13 +255,13 @@ def test_the_pension_adjustment_and_fhsa_memo_kinds_are_the_registered_ones(
 def test_the_pension_adjustment_and_qualifying_withdrawals_are_non_negative_money() -> None:
     for kind in (PENSION_ADJUSTMENT, FHSA_QUALIFYING_WITHDRAWALS):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_fhsa_ticks_are_non_negative_int_counts() -> None:
     for kind in (FHSA_FIRST_OPENED_IN_YEAR, FHSA_HOME_ADDRESS_SAME):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 # Schedule 15 line 2 is checked against line 1, line 8 against line 7 and line 44 against line 42,
@@ -287,7 +288,7 @@ def test_the_fhsa_checked_amounts_are_the_registered_non_negative_money(
         FHSA_DEDUCTIONS_FOR_2024_AND_PRIOR_YEARS_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     # The checked amounts are not the inputs they check.
     assert (
         FHSA_CONTRIBUTIONS_IN_2025_AFTER_FIRST_QUALIFYING_WITHDRAWAL_CHECKED
@@ -309,4 +310,4 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert checked.identifier == f"{raw.identifier}_checked"
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
-    assert checked.non_negative is True
+    assert non_negative(checked) is True

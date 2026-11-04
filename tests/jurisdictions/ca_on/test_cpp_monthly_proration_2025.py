@@ -20,9 +20,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.amount_by_count import AmountForCount
 from tax_engine.domain.errors import NoAmountForCountError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -41,8 +42,8 @@ FAMILIES = (
 S8_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt"
 
 # Made up for this test and not registered: the months, and the figure the capability reads.
-MONTHS = ArtifactKind("ex/months", int)
-FIGURE = ArtifactKind("ex/figure", Decimal)
+MONTHS = CountKind("ex/months")
+FIGURE = AmountKind("ex/figure")
 
 # The table as printed, one row for each number of months: line B, line C, line D, line E.
 PRINTED = {

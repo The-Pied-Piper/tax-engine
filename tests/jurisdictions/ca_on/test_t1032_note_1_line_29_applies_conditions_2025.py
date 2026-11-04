@@ -13,7 +13,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -30,8 +31,8 @@ FAMILY = "ca/t1032_note_1_line_29_applies_conditions"
 T1032_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032-25e.pdf"
 
 # Made up for this test and not registered: the amount tested and the count given.
-LINE_22 = ArtifactKind("ex/t1032_note_1_line_22", Decimal)
-APPLIES = ArtifactKind("ex/t1032_note_1_line_29_applies", int)
+LINE_22 = AmountKind("ex/t1032_note_1_line_22")
+APPLIES = CountKind("ex/t1032_note_1_line_29_applies")
 
 
 def test_2025_an_amount_on_line_22_above_0_is_the_one_condition() -> None:

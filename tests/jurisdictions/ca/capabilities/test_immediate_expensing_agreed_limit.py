@@ -50,7 +50,8 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     ValidationError,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
     ImmediateExpensingAgreedLimit,
 )
@@ -58,8 +59,8 @@ from tax_engine.jurisdictions.ca.trace import ImmediateExpensingAgreedLimitLine
 
 D = Decimal
 
-CLAIM = ArtifactKind("ex/statement_claim", Decimal, non_negative=True)
-LIMIT = ArtifactKind("ex/statement_limit", Decimal, non_negative=True)
+CLAIM = AmountKind("ex/statement_claim", non_negative=True)
+LIMIT = AmountKind("ex/statement_limit", non_negative=True)
 RENTAL_CLAIMS = RecordListKind("ex/rental_claims", fields=(CLAIM,))
 RENTAL_LIMITS = RecordListKind("ex/rental_limits", fields=(LIMIT,))
 BUSINESS_CLAIMS = RecordListKind("ex/business_claims", fields=(CLAIM,))
@@ -68,7 +69,7 @@ FARM_CLAIMS = RecordListKind("ex/farm_claims", fields=(CLAIM,))
 FARM_LIMITS = RecordListKind("ex/farm_limits", fields=(LIMIT,))
 FISH_CLAIMS = RecordListKind("ex/fish_claims", fields=(CLAIM,))
 FISH_LIMITS = RecordListKind("ex/fish_limits", fields=(LIMIT,))
-AGREED = ArtifactKind("ex/immediate_expensing_agreed_limit", Decimal, non_negative=True)
+AGREED = AmountKind("ex/immediate_expensing_agreed_limit", non_negative=True)
 
 KINDS = (
     RENTAL_CLAIMS,
@@ -92,8 +93,12 @@ def capability() -> ImmediateExpensingAgreedLimit:
 def pair(
     claims_kind: RecordListKind, limits_kind: RecordListKind, statements: tuple[Statement, ...]
 ) -> tuple[Artifact[Any], Artifact[Any]]:
-    claims = [{CLAIM: D(claim)} for claim, _limit in statements]
-    limits = [{LIMIT: D(limit)} for _claim, limit in statements]
+    claims: list[dict[ArtifactKind[Any], object]] = [
+        {CLAIM: D(claim)} for claim, _limit in statements
+    ]
+    limits: list[dict[ArtifactKind[Any], object]] = [
+        {LIMIT: D(limit)} for _claim, limit in statements
+    ]
     return (
         Artifact(claims_kind, RecordList(claims_kind.fields, claims)),
         Artifact(limits_kind, RecordList(limits_kind.fields, limits)),

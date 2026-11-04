@@ -30,14 +30,15 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     ValidationError,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.qbt_before_qcc import QbtBeforeQcc
 from tax_engine.jurisdictions.ca.trace import QbtBeforeQccLine
 
-IS_QBT = ArtifactKind("ex/election_is_qbt", int)
-ANSWER = ArtifactKind("ex/earlier_answer", int)
+IS_QBT = CountKind("ex/election_is_qbt")
+ANSWER = CountKind("ex/earlier_answer")
 EARLIER = RecordListKind("ex/run.earlier_answer", fields=(ANSWER,))
-OUTPUT = ArtifactKind("ex/election_in_order", int)
+OUTPUT = CountKind("ex/election_in_order")
 
 
 def capability() -> QbtBeforeQcc:
@@ -125,7 +126,7 @@ def test_rejects_an_earlier_kind_that_is_not_a_record_list() -> None:
 
 
 def test_rejects_an_earlier_list_of_more_than_one_field() -> None:
-    other = ArtifactKind("ex/other_answer", int)
+    other = CountKind("ex/other_answer")
     two = RecordListKind("ex/run.two", fields=(ANSWER, other))
 
     with pytest.raises(InvalidCapabilityError, match="QbtBeforeQcc.*'earlier'"):
@@ -133,14 +134,14 @@ def test_rejects_an_earlier_list_of_more_than_one_field() -> None:
 
 
 def test_rejects_an_earlier_list_of_an_amount_field() -> None:
-    money = RecordListKind("ex/run.money", fields=(ArtifactKind("ex/money", Decimal),))
+    money = RecordListKind("ex/run.money", fields=(AmountKind("ex/money"),))
 
     with pytest.raises(InvalidCapabilityError, match="QbtBeforeQcc.*'earlier'"):
         QbtBeforeQcc(IS_QBT, money, OUTPUT)
 
 
 def test_rejects_a_money_kind_for_the_answer() -> None:
-    money = ArtifactKind("ex/money", Decimal)
+    money = AmountKind("ex/money")
 
     with pytest.raises(InvalidCapabilityError, match="QbtBeforeQcc.*'is_qbt'"):
         QbtBeforeQcc(money, EARLIER, OUTPUT)  # type: ignore[arg-type]
@@ -175,7 +176,7 @@ def test_the_first_run_sees_an_empty_list_and_is_in_order_whatever_its_answer() 
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", int), 9)
+    other = Artifact(CountKind("ex/other"), 9)
 
     assert capability().compute((other, *inputs(1, 1))).outputs == (Artifact(OUTPUT, 1),)
 

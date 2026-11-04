@@ -22,9 +22,10 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, ValidationError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -50,7 +51,7 @@ from tax_engine.jurisdictions.ca.trace import ForeignPropertyTaxLine
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
-OUTPUT = ArtifactKind("ex/over_limit", Decimal, non_negative=True)
+OUTPUT = AmountKind("ex/over_limit", non_negative=True)
 
 
 def limit_rate(value: str = "0.15") -> ParameterDataset[Rate]:

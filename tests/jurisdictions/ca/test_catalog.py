@@ -18,7 +18,8 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     ADVANCED_CANADA_WORKERS_BENEFIT,
     AGED_18_OR_OLDER_AT_END_OF_2025,
@@ -793,6 +794,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AFTER_WORK_SITE,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RATES, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 
 def test_registered_identifiers_snapshot(registry: ArtifactRegistry) -> None:
@@ -840,30 +842,30 @@ def test_every_kind_but_the_balance_is_declared_non_negative(registry: ArtifactR
     # A record list is not an amount: it is never declared non-negative, its fields are.
     for kind in CATALOG.kinds:
         if kind.identifier not in SIGNED | RECORD_LISTS | RATES:
-            assert kind.non_negative is True, kind.identifier
+            assert non_negative(kind) is True, kind.identifier
     for identifier in REGISTERED - SIGNED - RECORD_LISTS - RATES:
-        assert registry.kind(identifier).non_negative is True, identifier
+        assert non_negative(registry.kind(identifier)) is True, identifier
 
 
 def test_the_refund_or_balance_owing_is_signed(registry: ArtifactRegistry) -> None:
     # T1 line 167 "Line 149 minus line 166 If the amount is negative, enter it on line 48400
     # below. If the amount is positive, enter it on line 48500 below. Refund or balance owing":
     # negative is a refund, so the kind is not declared non-negative.
-    assert REFUND_OR_BALANCE_OWING.non_negative is False
-    assert registry.kind("ca/refund_or_balance_owing").non_negative is False
+    assert non_negative(REFUND_OR_BALANCE_OWING) is False
+    assert non_negative(registry.kind("ca/refund_or_balance_owing")) is False
     assert SIGNED <= REGISTERED
 
 
 def test_the_other_payments_worksheets_lines_5_and_9_are_signed(registry: ArtifactRegistry) -> None:
     # Federal Worksheet "Line 25000 - Other payments deduction": line 5 "Line 1 minus line 4 =" and
     # line 9 "Line 5 plus line 8 =" print no floor, unlike line 1 ("if negative, enter "0"").
-    assert NET_INCOME_LESS_UCCB_AND_RDSP_INCOME.non_negative is False
-    assert OTHER_PAYMENTS_LIMIT_INCOME.non_negative is False
-    assert registry.kind("ca/net_income_less_uccb_and_rdsp_income").non_negative is False
-    assert registry.kind("ca/other_payments_limit_income").non_negative is False
-    assert UCCB_AND_RDSP_INCOME.non_negative is True
-    assert UCCB_AND_RDSP_INCOME_REPAYMENTS.non_negative is True
-    assert OTHER_PAYMENTS_DEDUCTION.non_negative is True
+    assert non_negative(NET_INCOME_LESS_UCCB_AND_RDSP_INCOME) is False
+    assert non_negative(OTHER_PAYMENTS_LIMIT_INCOME) is False
+    assert non_negative(registry.kind("ca/net_income_less_uccb_and_rdsp_income")) is False
+    assert non_negative(registry.kind("ca/other_payments_limit_income")) is False
+    assert non_negative(UCCB_AND_RDSP_INCOME) is True
+    assert non_negative(UCCB_AND_RDSP_INCOME_REPAYMENTS) is True
+    assert non_negative(OTHER_PAYMENTS_DEDUCTION) is True
 
 
 def test_the_total_income_is_signed(registry: ArtifactRegistry) -> None:
@@ -871,9 +873,9 @@ def test_the_total_income_is_signed(registry: ArtifactRegistry) -> None:
     # General Guide for lines 13499 to 14300 says "If you have a loss, show it on the applicable
     # line using brackets": a loss larger than the other income is a negative total income. The
     # floor stays at line 23600 (`ca/net_income`).
-    assert TOTAL_INCOME.non_negative is False
-    assert registry.kind("ca/total_income").non_negative is False
-    assert NET_INCOME.non_negative is True
+    assert non_negative(TOTAL_INCOME) is False
+    assert non_negative(registry.kind("ca/total_income")) is False
+    assert non_negative(NET_INCOME) is True
     assert Artifact(TOTAL_INCOME, Decimal("-2000.00")).value == Decimal("-2000.00")
 
 
@@ -881,19 +883,19 @@ def test_the_net_income_before_adjustments_is_signed(registry: ArtifactRegistry)
     # T1 line 54 and line 23400 "Line 34 minus line 53 (if negative, show in brackets) Net income
     # before adjustments": the brackets are a negative figure, unlike line 56 (line 23600) "Line 54
     # minus line 55 (if negative, enter "0")", which stays the non-negative `ca/net_income`.
-    assert NET_INCOME_BEFORE_ADJUSTMENTS.non_negative is False
-    assert registry.kind("ca/net_income_before_adjustments").non_negative is False
-    assert NET_INCOME.non_negative is True
-    assert DEDUCTIONS_FROM_TOTAL_INCOME.non_negative is True
+    assert non_negative(NET_INCOME_BEFORE_ADJUSTMENTS) is False
+    assert non_negative(registry.kind("ca/net_income_before_adjustments")) is False
+    assert non_negative(NET_INCOME) is True
+    assert non_negative(DEDUCTIONS_FROM_TOTAL_INCOME) is True
 
 
 def test_the_t1436_lines_that_print_no_floor_are_signed(registry: ArtifactRegistry) -> None:
     # Form T1436 line 21700: line 15 "Line 7 minus line 14" and line 17 "Enter whichever is less:
     # amount from line 15 or line 16." print no "(if negative, enter "0")".
-    assert BUSINESS_INVESTMENT_LOSS_REDUCTION_AVAILABLE.non_negative is False
-    assert BUSINESS_INVESTMENT_LOSS_REDUCTION.non_negative is False
-    assert registry.kind("ca/business_investment_loss_reduction_available").non_negative is False
-    assert registry.kind("ca/business_investment_loss_reduction").non_negative is False
+    assert non_negative(BUSINESS_INVESTMENT_LOSS_REDUCTION_AVAILABLE) is False
+    assert non_negative(BUSINESS_INVESTMENT_LOSS_REDUCTION) is False
+    assert non_negative(registry.kind("ca/business_investment_loss_reduction_available")) is False
+    assert non_negative(registry.kind("ca/business_investment_loss_reduction")) is False
 
 
 def test_the_t1436_line_3_lines_that_print_no_floor_are_signed(registry: ArtifactRegistry) -> None:
@@ -906,7 +908,7 @@ def test_the_t1436_line_3_lines_that_print_no_floor_are_signed(registry: Artifac
         "ca/capital_gains_deductions_1988_and_1989_limited",
         "ca/capital_gains_deductions_line_3",
     ):
-        assert registry.kind(identifier).non_negative is False, identifier
+        assert non_negative(registry.kind(identifier)) is False, identifier
 
 
 def test_the_other_t1436_lines_are_non_negative(registry: ArtifactRegistry) -> None:
@@ -919,8 +921,8 @@ def test_the_other_t1436_lines_are_non_negative(registry: ArtifactRegistry) -> N
         BUSINESS_INVESTMENT_LOSS_AFTER_REDUCTION,
         ALLOWABLE_BUSINESS_INVESTMENT_LOSS,
     ):
-        assert kind.non_negative is True, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is True, kind.identifier
 
 
 def test_the_schedule_15_lines_that_print_no_floor_are_signed(registry: ArtifactRegistry) -> None:
@@ -942,8 +944,8 @@ def test_the_schedule_15_lines_that_print_no_floor_are_signed(registry: Artifact
         FHSA_CONTRIBUTIONS_AVAILABLE,
         FHSA_UNUSED_CONTRIBUTIONS_CARRIED_FORWARD,
     ):
-        assert kind.non_negative is False, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is False, kind.identifier
 
 
 def test_the_schedule_15_lines_that_print_a_floor_or_add_non_negative_figures_are_non_negative(
@@ -973,32 +975,32 @@ def test_the_schedule_15_lines_that_print_a_floor_or_add_non_negative_figures_ar
         FHSA_CONTRIBUTIONS_IN_2024_BEFORE_FIRST_QUALIFYING_WITHDRAWAL_CHECKED,
         FHSA_DEDUCTIONS_FOR_2024_AND_PRIOR_YEARS_CHECKED,
     ):
-        assert kind.non_negative is True, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is True, kind.identifier
 
 
 def test_the_fhsa_maximum_participation_period_count_is_a_non_negative_int() -> None:
     # Schedule 15 Step 2: "If your maximum participation period (MPP) ended in a prior year, ...
     # Enter "0" on line 40": a caller's 0 or 1 count.
     assert FHSA_MAXIMUM_PARTICIPATION_PERIOD_ENDED.value_type is int
-    assert FHSA_MAXIMUM_PARTICIPATION_PERIOD_ENDED.non_negative is True
+    assert non_negative(FHSA_MAXIMUM_PARTICIPATION_PERIOD_ENDED) is True
 
 
 def test_the_income_tax_deducted_is_non_negative() -> None:
     # T1 line 150 (line 43700) "Total income tax deducted (amounts from all Canadian slips)".
-    assert INCOME_TAX_DEDUCTED.non_negative is True
+    assert non_negative(INCOME_TAX_DEDUCTED) is True
 
 
 def test_the_rrsp_amount_deducted_is_non_negative() -> None:
     # Schedule 7 line 18 "Enter your RRSP, PRPP, or SPP contributions you are deducting for 2025
     # (cannot be more than the amount on line 17).": an amount the filer states.
-    assert RRSP_AMOUNT_DEDUCTED.non_negative is True
+    assert non_negative(RRSP_AMOUNT_DEDUCTED) is True
 
 
 def test_capital_gain_is_signed_as_schedule_3_line_21_prints_losses_in_brackets() -> None:
     # Schedule 3: "Report all negative amounts (losses) using brackets." Line 21 / 19700
     # "Total capital gains or losses" is computed from Parts 3 and 4, so it can be a loss.
-    assert CAPITAL_GAIN.non_negative is False
+    assert non_negative(CAPITAL_GAIN) is False
     assert "ca/capital_gain" in SIGNED
 
 
@@ -1018,9 +1020,9 @@ def test_the_step_6_credit_lines_are_non_negative(registry: ArtifactRegistry) ->
         REFUND,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is True, kind.identifier
-    assert REFUND_OR_BALANCE_OWING.non_negative is False
+        assert non_negative(kind) is True, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is True, kind.identifier
+    assert non_negative(REFUND_OR_BALANCE_OWING) is False
 
 
 def test_the_infirm_dependants_are_a_record_list_of_their_net_incomes(
@@ -1041,7 +1043,7 @@ def test_the_record_list_reuses_the_dependants_net_income_kind() -> None:
     # Schedule 5 line 4 and ON428 line 15 read the same kind; here it is the field of a record.
     assert INFIRM_DEPENDANTS.fields[0] is DEPENDANT_NET_INCOME
     assert DEPENDANT_NET_INCOME.identifier == "ca/dependant_net_income"
-    assert DEPENDANT_NET_INCOME.non_negative is True
+    assert non_negative(DEPENDANT_NET_INCOME) is True
 
 
 def test_the_infirm_dependants_hold_a_net_income_each_in_the_callers_order() -> None:
@@ -1061,7 +1063,7 @@ def test_the_caregiver_amount_is_a_non_negative_decimal(registry: ArtifactRegist
     # older (complete Schedule 5)": the total of the allowable amounts, each at least "0".
     assert CAREGIVER_AMOUNT.identifier == "ca/caregiver_amount"
     assert CAREGIVER_AMOUNT.value_type is Decimal
-    assert CAREGIVER_AMOUNT.non_negative is True
+    assert non_negative(CAREGIVER_AMOUNT) is True
     assert registry.kind("ca/caregiver_amount") is CAREGIVER_AMOUNT
 
 
@@ -1110,7 +1112,7 @@ def test_the_other_dependant_medical_expenses_are_a_non_negative_decimal(
     # Federal Worksheet, line 33199, line 1 "Medical expenses for other dependant".
     assert OTHER_DEPENDANT_MEDICAL_EXPENSES.identifier == "ca/other_dependant_medical_expenses"
     assert OTHER_DEPENDANT_MEDICAL_EXPENSES.value_type is Decimal
-    assert OTHER_DEPENDANT_MEDICAL_EXPENSES.non_negative is True
+    assert non_negative(OTHER_DEPENDANT_MEDICAL_EXPENSES) is True
     assert registry.kind("ca/other_dependant_medical_expenses") is OTHER_DEPENDANT_MEDICAL_EXPENSES
 
 
@@ -1119,7 +1121,7 @@ def test_the_other_dependants_medical_is_a_non_negative_decimal(registry: Artifa
     # each dependant's line 3, which is "0" when negative.
     assert OTHER_DEPENDANTS_MEDICAL.identifier == "ca/other_dependants_medical"
     assert OTHER_DEPENDANTS_MEDICAL.value_type is Decimal
-    assert OTHER_DEPENDANTS_MEDICAL.non_negative is True
+    assert non_negative(OTHER_DEPENDANTS_MEDICAL) is True
     assert registry.kind("ca/other_dependants_medical") is OTHER_DEPENDANTS_MEDICAL
 
 
@@ -1135,7 +1137,7 @@ def test_the_short_term_rental_units_are_a_record_list_of_chart_a_columns_3_to_5
     assert isinstance(SHORT_TERM_RENTAL_UNITS, RecordListKind)
     assert SHORT_TERM_RENTAL_UNITS.identifier == "ca/short_term_rental_units"
     assert SHORT_TERM_RENTAL_UNITS.value_type is RecordList
-    assert SHORT_TERM_RENTAL_UNITS.non_negative is False
+    assert non_negative(SHORT_TERM_RENTAL_UNITS) is False
     assert SHORT_TERM_RENTAL_UNITS.fields == (
         SHORT_TERM_RENTAL_RELATED_EXPENSES,
         SHORT_TERM_RENTAL_NON_COMPLIANT_DAYS,
@@ -1150,7 +1152,7 @@ def test_the_short_term_rental_related_expenses_are_a_non_negative_decimal(
     # Chart A, column 3 "Related portion of the total from line 9365 of Part 4".
     assert SHORT_TERM_RENTAL_RELATED_EXPENSES.identifier == "ca/short_term_rental_related_expenses"
     assert SHORT_TERM_RENTAL_RELATED_EXPENSES.value_type is Decimal
-    assert SHORT_TERM_RENTAL_RELATED_EXPENSES.non_negative is True
+    assert non_negative(SHORT_TERM_RENTAL_RELATED_EXPENSES) is True
     assert (
         registry.kind("ca/short_term_rental_related_expenses") is SHORT_TERM_RENTAL_RELATED_EXPENSES
     )
@@ -1169,7 +1171,7 @@ def test_the_short_term_rental_days_are_non_negative_int_counts(
     # Chart A, columns 4 and 5: "Number of days ...", whole days.
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
 
 
@@ -1262,7 +1264,7 @@ def test_the_short_term_rental_cca_units_are_a_record_list_of_chart_b_columns_1_
     assert isinstance(SHORT_TERM_RENTAL_CCA_UNITS, RecordListKind)
     assert SHORT_TERM_RENTAL_CCA_UNITS.identifier == "ca/short_term_rental_cca_units"
     assert SHORT_TERM_RENTAL_CCA_UNITS.value_type is RecordList
-    assert SHORT_TERM_RENTAL_CCA_UNITS.non_negative is False
+    assert non_negative(SHORT_TERM_RENTAL_CCA_UNITS) is False
     assert SHORT_TERM_RENTAL_CCA_UNITS.fields == (
         CCA_CLASS_NUMBER,
         SHORT_TERM_RENTAL_RELATED_CCA,
@@ -1278,7 +1280,7 @@ def test_the_short_term_rental_related_cca_is_a_non_negative_decimal(
     # Chart B, column 4 "Related portion of the available CCA from column 21 in Area A".
     assert SHORT_TERM_RENTAL_RELATED_CCA.identifier == "ca/short_term_rental_related_cca"
     assert SHORT_TERM_RENTAL_RELATED_CCA.value_type is Decimal
-    assert SHORT_TERM_RENTAL_RELATED_CCA.non_negative is True
+    assert non_negative(SHORT_TERM_RENTAL_RELATED_CCA) is True
     assert registry.kind("ca/short_term_rental_related_cca") is SHORT_TERM_RENTAL_RELATED_CCA
 
 
@@ -1287,7 +1289,7 @@ def test_the_non_compliant_cca_is_a_non_negative_decimal_field(registry: Artifac
     # by-class list, not an artifact of its own.
     assert NON_COMPLIANT_CCA.identifier == "ca/non_compliant_cca"
     assert NON_COMPLIANT_CCA.value_type is Decimal
-    assert NON_COMPLIANT_CCA.non_negative is True
+    assert non_negative(NON_COMPLIANT_CCA) is True
     assert registry.kind("ca/non_compliant_cca") is NON_COMPLIANT_CCA
 
 
@@ -1362,7 +1364,7 @@ def test_the_rental_properties_are_a_record_list_of_the_part_3_columns(
     assert isinstance(RENTAL_PROPERTIES, RecordListKind)
     assert RENTAL_PROPERTIES.identifier == "ca/rental_properties"
     assert RENTAL_PROPERTIES.value_type is RecordList
-    assert RENTAL_PROPERTIES.non_negative is False
+    assert non_negative(RENTAL_PROPERTIES) is False
     assert RENTAL_PROPERTIES.fields == (
         RENTAL_PROPERTY_UNITS,
         RENTAL_PROPERTY_SHORT_TERM_RENTS,
@@ -1377,7 +1379,7 @@ def test_the_rental_property_units_are_a_non_negative_int_count(
     # Part 3, "Number of units", whole units.
     assert RENTAL_PROPERTY_UNITS.identifier == "ca/rental_property_units"
     assert RENTAL_PROPERTY_UNITS.value_type is int
-    assert RENTAL_PROPERTY_UNITS.non_negative is True
+    assert non_negative(RENTAL_PROPERTY_UNITS) is True
     assert registry.kind("ca/rental_property_units") is RENTAL_PROPERTY_UNITS
 
 
@@ -1394,7 +1396,7 @@ def test_the_rental_property_rents_are_non_negative_decimals(
     # Part 3, "Gross rents for short-term rentals" and "Gross rents for all units".
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
 
 
@@ -1587,7 +1589,7 @@ def test_the_t776_lines_that_print_no_loss_are_non_negative_decimals(
 ) -> None:
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
 
 
@@ -1642,7 +1644,7 @@ def test_a_t776_line_checked_against_its_whole_is_a_non_negative_decimal_named_w
 ) -> None:
     assert checked.identifier == f"{raw.identifier}_checked"
     assert checked.value_type is Decimal
-    assert checked.non_negative is True
+    assert non_negative(checked) is True
     assert registry.kind(checked.identifier) is checked
 
 
@@ -1652,7 +1654,7 @@ def test_the_t776_lines_that_print_a_loss_are_signed_decimals(
 ) -> None:
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is False
+    assert non_negative(kind) is False
     assert registry.kind(identifier) is kind
     assert identifier in SIGNED
 
@@ -1674,7 +1676,7 @@ def test_the_co_owner_partner_and_area_g_counts_are_non_negative_int_counts(
     # "Partners: your share of amount 6": 1 if the filer is one, else 0, as the form takes it.
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
 
 
@@ -1710,7 +1712,7 @@ def test_medical_expenses_is_a_non_negative_decimal(registry: ArtifactRegistry) 
     # your dependent children under 18 years of age": a starting amount.
     assert MEDICAL_EXPENSES.identifier == "ca/medical_expenses"
     assert MEDICAL_EXPENSES.value_type is Decimal
-    assert MEDICAL_EXPENSES.non_negative is True
+    assert non_negative(MEDICAL_EXPENSES) is True
     assert registry.kind("ca/medical_expenses") is MEDICAL_EXPENSES
 
 
@@ -1718,7 +1720,7 @@ def test_medical_net_income_share_is_a_non_negative_decimal(registry: ArtifactRe
     # T1 line 108 "Amount from line 23600" "multiplied by 3%".
     assert MEDICAL_NET_INCOME_SHARE.identifier == "ca/medical_net_income_share"
     assert MEDICAL_NET_INCOME_SHARE.value_type is Decimal
-    assert MEDICAL_NET_INCOME_SHARE.non_negative is True
+    assert non_negative(MEDICAL_NET_INCOME_SHARE) is True
     assert registry.kind("ca/medical_net_income_share") is MEDICAL_NET_INCOME_SHARE
 
 
@@ -1726,7 +1728,7 @@ def test_medical_threshold_is_a_non_negative_decimal(registry: ArtifactRegistry)
     # T1 line 109 "Enter whichever is less: $2,834 or the amount from line 108."
     assert MEDICAL_THRESHOLD.identifier == "ca/medical_threshold"
     assert MEDICAL_THRESHOLD.value_type is Decimal
-    assert MEDICAL_THRESHOLD.non_negative is True
+    assert non_negative(MEDICAL_THRESHOLD) is True
     assert registry.kind("ca/medical_threshold") is MEDICAL_THRESHOLD
 
 
@@ -1736,7 +1738,7 @@ def test_medical_expenses_over_threshold_is_a_non_negative_decimal(
     # T1 line 110 "Line 107 minus line 109 (if negative, enter "0")".
     assert MEDICAL_EXPENSES_OVER_THRESHOLD.identifier == "ca/medical_expenses_over_threshold"
     assert MEDICAL_EXPENSES_OVER_THRESHOLD.value_type is Decimal
-    assert MEDICAL_EXPENSES_OVER_THRESHOLD.non_negative is True
+    assert non_negative(MEDICAL_EXPENSES_OVER_THRESHOLD) is True
     assert registry.kind("ca/medical_expenses_over_threshold") is MEDICAL_EXPENSES_OVER_THRESHOLD
 
 
@@ -1744,7 +1746,7 @@ def test_medical_claim_is_a_non_negative_decimal(registry: ArtifactRegistry) -> 
     # T1 line 112 and line 33200 "Line 110 plus line 111".
     assert MEDICAL_CLAIM.identifier == "ca/medical_claim"
     assert MEDICAL_CLAIM.value_type is Decimal
-    assert MEDICAL_CLAIM.non_negative is True
+    assert non_negative(MEDICAL_CLAIM) is True
     assert registry.kind("ca/medical_claim") is MEDICAL_CLAIM
 
 
@@ -1761,7 +1763,7 @@ def test_the_disability_dependants_are_a_record_list_of_the_worksheets_figures(
     assert isinstance(DISABILITY_DEPENDANTS, RecordListKind)
     assert DISABILITY_DEPENDANTS.identifier == "ca/disability_dependants"
     assert DISABILITY_DEPENDANTS.value_type is RecordList
-    assert DISABILITY_DEPENDANTS.non_negative is False
+    assert non_negative(DISABILITY_DEPENDANTS) is False
     assert DISABILITY_DEPENDANTS.fields == (
         DEPENDANT_UNDER_18,
         DEPENDANT_CARE_EXPENSES,
@@ -1779,14 +1781,14 @@ def test_the_disability_dependants_fields_are_kinds_of_their_own() -> None:
     # Not the net income of line 30400's dependant: another figure of another return.
     assert DEPENDANT_NET_INCOME not in DISABILITY_DEPENDANTS.fields
     for kind in DISABILITY_DEPENDANTS.fields:
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_dependant_under_18_is_a_non_negative_int_count(registry: ArtifactRegistry) -> None:
     # "If the dependant was under 18 years of age on December 31, 2025, ...": a yes or no, taken
     # as a count of 0 or 1 like the forms' other yes or no questions.
     assert DEPENDANT_UNDER_18.value_type is int
-    assert DEPENDANT_UNDER_18.non_negative is True
+    assert non_negative(DEPENDANT_UNDER_18) is True
     assert registry.kind("ca/dependant_under_18") is DEPENDANT_UNDER_18
 
 
@@ -1797,7 +1799,7 @@ def test_the_disability_dependants_amounts_are_non_negative_decimals(
     kind: ArtifactKind[Decimal], registry: ArtifactRegistry
 ) -> None:
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(kind.identifier) is kind
 
 
@@ -1926,7 +1928,7 @@ def test_the_disability_transferred_amount_is_a_non_negative_decimal(
     # that are at least "0".
     assert DISABILITY_TRANSFERRED_AMOUNT.identifier == "ca/disability_transferred_amount"
     assert DISABILITY_TRANSFERRED_AMOUNT.value_type is Decimal
-    assert DISABILITY_TRANSFERRED_AMOUNT.non_negative is True
+    assert non_negative(DISABILITY_TRANSFERRED_AMOUNT) is True
     assert registry.kind("ca/disability_transferred_amount") is DISABILITY_TRANSFERRED_AMOUNT
 
 
@@ -1944,7 +1946,7 @@ def test_the_principal_residence_properties_are_a_record_list_of_the_forms_input
     assert isinstance(PRINCIPAL_RESIDENCE_PROPERTIES, RecordListKind)
     assert PRINCIPAL_RESIDENCE_PROPERTIES.identifier == "ca/principal_residence_properties"
     assert PRINCIPAL_RESIDENCE_PROPERTIES.value_type is RecordList
-    assert PRINCIPAL_RESIDENCE_PROPERTIES.non_negative is False
+    assert non_negative(PRINCIPAL_RESIDENCE_PROPERTIES) is False
     assert PRINCIPAL_RESIDENCE_PROPERTIES.fields == (
         RESIDENCE_YEARS_DESIGNATED_AFTER_1981,
         RESIDENCE_YEARS_DESIGNATED_1972_TO_1981,
@@ -1996,7 +1998,7 @@ def test_the_principal_residence_properties_fields_are_kinds_of_their_own() -> N
         "ca/residence_cost_base_adjustments_after_1981"
     )
     for kind in PRINCIPAL_RESIDENCE_PROPERTIES.fields:
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 @pytest.mark.parametrize(
@@ -2016,7 +2018,7 @@ def test_the_residence_years_and_the_plus_one_are_non_negative_int_counts(
     # Lines 1, 2, 5 and 6 are numbers of tax years; the "plus one" and whether Part 2 applies are
     # yes or no questions, taken as a count of 0 or 1 like the forms' other yes or no questions.
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(kind.identifier) is kind
 
 
@@ -2035,7 +2037,7 @@ def test_the_residence_amounts_are_non_negative_decimals(
     kind: ArtifactKind[Decimal], registry: ArtifactRegistry
 ) -> None:
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(kind.identifier) is kind
 
 
@@ -2239,7 +2241,7 @@ def test_the_principal_residence_gain_is_a_non_negative_decimal(registry: Artifa
     # negative, enter "0")" for each property, totalled here.
     assert PRINCIPAL_RESIDENCE_GAIN.identifier == "ca/principal_residence_gain"
     assert PRINCIPAL_RESIDENCE_GAIN.value_type is Decimal
-    assert PRINCIPAL_RESIDENCE_GAIN.non_negative is True
+    assert non_negative(PRINCIPAL_RESIDENCE_GAIN) is True
     assert registry.kind("ca/principal_residence_gain") is PRINCIPAL_RESIDENCE_GAIN
 
 
@@ -2294,7 +2296,7 @@ def test_the_cca_table_fields_are_non_negative_decimals(
 ) -> None:
     assert kind.identifier == identifier
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
 
 
@@ -2305,7 +2307,7 @@ def test_the_vehicle_passenger_answer_is_a_non_negative_int_count(
     # vehicle is one, else 0, as the other 0 or 1 counts of the forms.
     assert BUSINESS_VEHICLE_PASSENGER_VEHICLE.identifier == "ca/business_vehicle_passenger_vehicle"
     assert BUSINESS_VEHICLE_PASSENGER_VEHICLE.value_type is int
-    assert BUSINESS_VEHICLE_PASSENGER_VEHICLE.non_negative is True
+    assert non_negative(BUSINESS_VEHICLE_PASSENGER_VEHICLE) is True
     assert (
         registry.kind("ca/business_vehicle_passenger_vehicle") is BUSINESS_VEHICLE_PASSENGER_VEHICLE
     )
@@ -2321,7 +2323,7 @@ def test_the_vehicle_lease_repayment_owing_answer_is_a_non_negative_int_count(
         == "ca/business_vehicle_lease_repayment_owing"
     )
     assert BUSINESS_VEHICLE_LEASE_REPAYMENT_OWING.value_type is int
-    assert BUSINESS_VEHICLE_LEASE_REPAYMENT_OWING.non_negative is True
+    assert non_negative(BUSINESS_VEHICLE_LEASE_REPAYMENT_OWING) is True
     assert (
         registry.kind("ca/business_vehicle_lease_repayment_owing")
         is BUSINESS_VEHICLE_LEASE_REPAYMENT_OWING
@@ -2342,13 +2344,13 @@ def test_the_vehicle_lease_deposit_answers_are_non_negative_counts_and_an_amount
     ):
         assert kind.identifier == name
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
         assert registry.kind(name) is kind
     assert BUSINESS_VEHICLE_LEASE_DEPOSITS_TOTAL.identifier == (
         "ca/business_vehicle_lease_deposits_total"
     )
     assert BUSINESS_VEHICLE_LEASE_DEPOSITS_TOTAL.value_type is Decimal
-    assert BUSINESS_VEHICLE_LEASE_DEPOSITS_TOTAL.non_negative is True
+    assert non_negative(BUSINESS_VEHICLE_LEASE_DEPOSITS_TOTAL) is True
     assert (
         registry.kind("ca/business_vehicle_lease_deposits_total")
         is BUSINESS_VEHICLE_LEASE_DEPOSITS_TOTAL
@@ -2363,7 +2365,7 @@ def test_no_property_left_in_the_class_is_a_non_negative_int_count(
     # in the class at the end of the year, else 0, as the other 0 or 1 counts of the forms.
     assert CCA_NO_PROPERTY_LEFT.identifier == "ca/cca_no_property_left"
     assert CCA_NO_PROPERTY_LEFT.value_type is int
-    assert CCA_NO_PROPERTY_LEFT.non_negative is True
+    assert non_negative(CCA_NO_PROPERTY_LEFT) is True
     assert registry.kind("ca/cca_no_property_left") is CCA_NO_PROPERTY_LEFT
 
 
@@ -2374,7 +2376,7 @@ def test_the_half_year_rule_differs_is_a_non_negative_int_flag(registry: Artifac
     # as the class has them (0, or no field): 1 if so, else 0, as the other yes or no questions.
     assert CCA_HALF_YEAR_RULE_DIFFERS.identifier == "ca/cca_half_year_rule_differs"
     assert CCA_HALF_YEAR_RULE_DIFFERS.value_type is int
-    assert CCA_HALF_YEAR_RULE_DIFFERS.non_negative is True
+    assert non_negative(CCA_HALF_YEAR_RULE_DIFFERS) is True
     assert registry.kind("ca/cca_half_year_rule_differs") is CCA_HALF_YEAR_RULE_DIFFERS
 
 
@@ -2388,7 +2390,7 @@ def test_the_rate_election_is_a_non_negative_int_code(registry: ArtifactRegistry
     # 10% (manufacturing or processing); the rates come from the class-rates dataset.
     assert CCA_RATE_ELECTION.identifier == "ca/cca_rate_election"
     assert CCA_RATE_ELECTION.value_type is int
-    assert CCA_RATE_ELECTION.non_negative is True
+    assert non_negative(CCA_RATE_ELECTION) is True
     assert registry.kind("ca/cca_rate_election") is CCA_RATE_ELECTION
 
 
@@ -2399,7 +2401,7 @@ def test_the_vehicle_acquired_year_is_a_non_negative_int_year(registry: Artifact
     # year is the year the vehicle was acquired, or 0 when the rule does not apply to the row.
     assert CCA_VEHICLE_ACQUIRED_YEAR.identifier == "ca/cca_vehicle_acquired_year"
     assert CCA_VEHICLE_ACQUIRED_YEAR.value_type is int
-    assert CCA_VEHICLE_ACQUIRED_YEAR.non_negative is True
+    assert non_negative(CCA_VEHICLE_ACQUIRED_YEAR) is True
     assert registry.kind("ca/cca_vehicle_acquired_year") is CCA_VEHICLE_ACQUIRED_YEAR
 
 
@@ -2408,7 +2410,7 @@ def test_the_vehicle_cost_is_a_non_negative_amount(registry: ArtifactRegistry) -
     # actual cost of the vehicle is entered with the tax.
     assert CCA_VEHICLE_COST.identifier == "ca/cca_vehicle_cost"
     assert CCA_VEHICLE_COST.value_type is Decimal
-    assert CCA_VEHICLE_COST.non_negative is True
+    assert non_negative(CCA_VEHICLE_COST) is True
     assert registry.kind("ca/cca_vehicle_cost") is CCA_VEHICLE_COST
 
 
@@ -2421,7 +2423,7 @@ def test_the_t777_part_b_vehicle_answers_are_non_negative_ints(registry: Artifac
     ):
         assert kind.identifier == identifier
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
         assert registry.kind(identifier) is kind
 
 
@@ -2443,7 +2445,7 @@ def test_the_t777_part_b_vehicle_figures_are_non_negative_amounts(
     ):
         assert kind.identifier == identifier
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
         assert registry.kind(identifier) is kind
 
 
@@ -2454,7 +2456,7 @@ def test_the_t777_part_a_change_in_use_answer_is_a_non_negative_int(
     # 1 like the forms' other yes or no questions.
     assert CCA_CHANGE_IN_USE.identifier == "ca/cca_change_in_use"
     assert CCA_CHANGE_IN_USE.value_type is int
-    assert CCA_CHANGE_IN_USE.non_negative is True
+    assert non_negative(CCA_CHANGE_IN_USE) is True
     assert registry.kind("ca/cca_change_in_use") is CCA_CHANGE_IN_USE
 
 
@@ -2467,7 +2469,7 @@ def test_the_t777_part_a_change_in_use_fair_market_value_is_a_non_negative_amoun
         "ca/cca_change_in_use_fair_market_value"
     )
     assert CCA_CHANGE_IN_USE_FAIR_MARKET_VALUE.value_type is Decimal
-    assert CCA_CHANGE_IN_USE_FAIR_MARKET_VALUE.non_negative is True
+    assert non_negative(CCA_CHANGE_IN_USE_FAIR_MARKET_VALUE) is True
     assert registry.kind("ca/cca_change_in_use_fair_market_value") is (
         CCA_CHANGE_IN_USE_FAIR_MARKET_VALUE
     )
@@ -2479,7 +2481,7 @@ def test_the_vehicle_government_assistance_is_a_signed_amount(registry: Artifact
     # the vehicle": assistance received less assistance repaid, so it can be negative.
     assert CCA_VEHICLE_GOVERNMENT_ASSISTANCE.identifier == "ca/cca_vehicle_government_assistance"
     assert CCA_VEHICLE_GOVERNMENT_ASSISTANCE.value_type is Decimal
-    assert CCA_VEHICLE_GOVERNMENT_ASSISTANCE.non_negative is False
+    assert non_negative(CCA_VEHICLE_GOVERNMENT_ASSISTANCE) is False
     assert (
         registry.kind("ca/cca_vehicle_government_assistance") is CCA_VEHICLE_GOVERNMENT_ASSISTANCE
     )
@@ -2505,7 +2507,7 @@ def test_a_sold_zepvs_proceeds_are_a_non_negative_amount(registry: ArtifactRegis
     # in the year, as entered.
     assert CCA_ZEPV_PROCEEDS.identifier == "ca/cca_zepv_proceeds"
     assert CCA_ZEPV_PROCEEDS.value_type is Decimal
-    assert CCA_ZEPV_PROCEEDS.non_negative is True
+    assert non_negative(CCA_ZEPV_PROCEEDS) is True
     assert registry.kind("ca/cca_zepv_proceeds") is CCA_ZEPV_PROCEEDS
 
 
@@ -2514,7 +2516,7 @@ def test_a_sold_zepvs_diep_proceeds_are_a_non_negative_amount(registry: Artifact
     # DIEP from col. 4)": the part of one vehicle's proceeds that relates to a DIEP.
     assert CCA_ZEPV_DIEP_PROCEEDS.identifier == "ca/cca_zepv_diep_proceeds"
     assert CCA_ZEPV_DIEP_PROCEEDS.value_type is Decimal
-    assert CCA_ZEPV_DIEP_PROCEEDS.non_negative is True
+    assert non_negative(CCA_ZEPV_DIEP_PROCEEDS) is True
     assert registry.kind("ca/cca_zepv_diep_proceeds") is CCA_ZEPV_DIEP_PROCEEDS
 
 
@@ -2538,7 +2540,7 @@ def test_the_sold_zepvs_are_a_record_list_of_the_vehicle_and_its_proceeds(
     assert isinstance(CCA_SOLD_ZEPVS, RecordListKind)
     assert CCA_SOLD_ZEPVS.identifier == "ca/cca_sold_zepvs"
     assert CCA_SOLD_ZEPVS.value_type is RecordList
-    assert CCA_SOLD_ZEPVS.non_negative is False
+    assert non_negative(CCA_SOLD_ZEPVS) is False
     assert CCA_SOLD_ZEPVS.fields == (
         CCA_VEHICLE_ACQUIRED_YEAR,
         CCA_VEHICLE_COST,
@@ -2740,8 +2742,8 @@ def test_the_special_tax_and_credit_lines_are_non_negative(registry: ArtifactReg
         SPECIAL_TAXES,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is True, kind.identifier
 
 
 def test_the_t1172_lines_that_print_no_floor_are_signed(registry: ArtifactRegistry) -> None:
@@ -2749,19 +2751,19 @@ def test_the_t1172_lines_that_print_no_floor_are_signed(registry: ArtifactRegist
     # is less" print no "(if negative, enter "0")", so line 5 above 50,000.00 would make them
     # negative, as the form prints; line 8 "line 1 minus line 7" is never negative as line 7 is at
     # most line 3, which is at most line 1.
-    assert RESP_AIPS_LIMIT_REMAINING.non_negative is False
-    assert RESP_AIPS_REDUCTION.non_negative is False
-    assert registry.kind("ca/resp_aips_limit_remaining").non_negative is False
-    assert registry.kind("ca/resp_aips_reduction").non_negative is False
-    assert RESP_AIPS_CONTRIBUTIONS_COUNTED.non_negative is True
-    assert RESP_AIPS_SUBJECT_TO_TAX.non_negative is True
+    assert non_negative(RESP_AIPS_LIMIT_REMAINING) is False
+    assert non_negative(RESP_AIPS_REDUCTION) is False
+    assert non_negative(registry.kind("ca/resp_aips_limit_remaining")) is False
+    assert non_negative(registry.kind("ca/resp_aips_reduction")) is False
+    assert non_negative(RESP_AIPS_CONTRIBUTIONS_COUNTED) is True
+    assert non_negative(RESP_AIPS_SUBJECT_TO_TAX) is True
 
 
 def test_the_t1172_part_a_count_is_a_non_negative_int() -> None:
     # Form T1172 "Part B - Fill out this part only if Part A does not apply to you": a caller's 0
     # (Part B) or 1 (Part A) count, as the other 0 or 1 counts of the forms.
     assert RESP_AIPS_PART_A_APPLIES.value_type is int
-    assert RESP_AIPS_PART_A_APPLIES.non_negative is True
+    assert non_negative(RESP_AIPS_PART_A_APPLIES) is True
 
 
 def test_the_medical_supplement_counts_are_non_negative_int_counts(
@@ -2772,7 +2774,7 @@ def test_the_medical_supplement_counts_are_non_negative_int_counts(
     # a caller's 0 or 1 count as the other 0 or 1 counts of the forms.
     for kind in (RESIDENT_IN_CANADA_THROUGHOUT_2025, AGED_18_OR_OLDER_AT_END_OF_2025):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
         assert kind.identifier in COUNTS
 
@@ -2793,7 +2795,7 @@ def test_the_medical_supplement_lines_that_print_no_floor_are_signed(
         MEDICAL_SUPPLEMENT_COLUMN_2_LINE_3,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert registry.kind(kind.identifier) is kind
         assert kind.identifier in SIGNED
 
@@ -2848,8 +2850,8 @@ def test_the_other_medical_supplement_lines_are_non_negative_decimals(
     for kind in kinds:
         assert kind.identifier not in signed, kind.identifier
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is True, kind.identifier
 
 
 def test_the_rental_cca_classes_are_a_record_list_of_the_area_a_columns(
@@ -2862,7 +2864,7 @@ def test_the_rental_cca_classes_are_a_record_list_of_the_area_a_columns(
     assert isinstance(RENTAL_CCA_CLASSES, RecordListKind)
     assert RENTAL_CCA_CLASSES.identifier == "ca/rental_cca_classes"
     assert RENTAL_CCA_CLASSES.value_type is RecordList
-    assert RENTAL_CCA_CLASSES.non_negative is False
+    assert non_negative(RENTAL_CCA_CLASSES) is False
     # In the order of the columns (1, 2, 3, 4, 5, 6, 9, 11, 12, 23), the no-property-left question
     # of Note 3, the remaining personal part of Note 9 (column 24), and
     # the half-year rule flag of column 18, last.
@@ -2933,7 +2935,7 @@ def test_the_rental_cca_classes_adjusted_list_is_the_area_a_list_without_the_veh
     assert isinstance(RENTAL_CCA_CLASSES_ADJUSTED, RecordListKind)
     assert RENTAL_CCA_CLASSES_ADJUSTED.identifier == "ca/rental_cca_classes_adjusted"
     assert RENTAL_CCA_CLASSES_ADJUSTED.value_type is RecordList
-    assert RENTAL_CCA_CLASSES_ADJUSTED.non_negative is False
+    assert non_negative(RENTAL_CCA_CLASSES_ADJUSTED) is False
     assert RENTAL_CCA_CLASSES_ADJUSTED.fields == (
         CCA_CLASS_NUMBER,
         CCA_UCC_AT_START,
@@ -3086,7 +3088,7 @@ def test_the_business_cca_classes_adjusted_list_is_the_area_a_list_without_the_v
     assert isinstance(BUSINESS_CCA_CLASSES_ADJUSTED, RecordListKind)
     assert BUSINESS_CCA_CLASSES_ADJUSTED.identifier == "ca/business_cca_classes_adjusted"
     assert BUSINESS_CCA_CLASSES_ADJUSTED.value_type is RecordList
-    assert BUSINESS_CCA_CLASSES_ADJUSTED.non_negative is False
+    assert non_negative(BUSINESS_CCA_CLASSES_ADJUSTED) is False
     assert BUSINESS_CCA_CLASSES_ADJUSTED.fields == (
         CCA_CLASS_NUMBER,
         CCA_UCC_AT_START,
@@ -3117,7 +3119,7 @@ def test_the_rental_vehicle_sales_tax_rate_is_a_percentage_before_the_area_a_lis
     # before the Area A list, which the vehicle's adjustment uses.
     assert RENTAL_VEHICLE_SALES_TAX_RATE.identifier == "ca/rental_vehicle_sales_tax_rate"
     assert RENTAL_VEHICLE_SALES_TAX_RATE.value_type is Decimal
-    assert RENTAL_VEHICLE_SALES_TAX_RATE.non_negative is True
+    assert non_negative(RENTAL_VEHICLE_SALES_TAX_RATE) is True
     assert registry.get("ca/rental_vehicle_sales_tax_rate") is RENTAL_VEHICLE_SALES_TAX_RATE
     fields = T776_STATEMENTS.fields
     assert fields[fields.index(RENTAL_CCA_CLASSES) - 1] is RENTAL_VEHICLE_SALES_TAX_RATE
@@ -3170,7 +3172,7 @@ def test_the_additions_lists_are_record_lists_of_the_class_cost_and_personal_por
     for kind in (RENTAL_EQUIPMENT_ADDITIONS, RENTAL_BUILDING_ADDITIONS):
         assert isinstance(kind, RecordListKind)
         assert kind.value_type is RecordList
-        assert kind.non_negative is False
+        assert non_negative(kind) is False
         assert kind.fields == (
             CCA_CLASS_NUMBER,
             RENTAL_ADDITION_TOTAL_COST,
@@ -3185,7 +3187,7 @@ def test_the_additions_totals_are_non_negative_decimals(registry: ArtifactRegist
     # building additions in the year": each the total of column 5, never below zero.
     for kind in (RENTAL_EQUIPMENT_ADDITIONS_TOTAL, RENTAL_BUILDING_ADDITIONS_TOTAL):
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
         assert registry.get(kind.identifier) is kind
 
 
@@ -3363,7 +3365,7 @@ def test_the_t2125_amounts_are_decimals_that_cannot_be_negative_unless_the_form_
         if kind.identifier in RECORD_LISTS or kind.identifier in COUNTS:
             continue
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is (kind.identifier not in SIGNED), kind.identifier
+        assert non_negative(kind) is (kind.identifier not in SIGNED), kind.identifier
 
 
 def test_the_vehicle_years_are_non_negative_int_counts_that_the_caller_enters() -> None:
@@ -3377,7 +3379,7 @@ def test_the_vehicle_years_are_non_negative_int_counts_that_the_caller_enters() 
     ):
         assert kind.identifier == identifier
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
         assert identifier in COUNTS
         assert identifier in REGISTERED
 
@@ -3396,7 +3398,7 @@ def test_the_t2125_partner_count_is_a_non_negative_int_count() -> None:
     # Part 5 amount 5A "Your share of line 9369 or the amount from your T5013 slip": 1 for a
     # partner, else 0.
     assert BUSINESS_PARTNER.value_type is int
-    assert BUSINESS_PARTNER.non_negative is True
+    assert non_negative(BUSINESS_PARTNER) is True
     assert BUSINESS_PARTNER.identifier in COUNTS
 
 
@@ -3457,7 +3459,7 @@ def test_the_t2125_area_g_counts_are_non_negative_int_counts(
     # as the form takes it.
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
     assert identifier in COUNTS
 
@@ -3470,7 +3472,7 @@ def test_the_t2125_statement_carries_the_t1_line_its_net_and_gross_go_on() -> No
     assert "ca/business_income_line" in fields
     line = fields["ca/business_income_line"]
     assert line.value_type is int
-    assert line.non_negative is True
+    assert non_negative(line) is True
     assert "ca/business_income_line" in COUNTS
     assert "ca/business_income_line" in REGISTERED
 
@@ -3770,14 +3772,14 @@ def test_the_t2042_amounts_are_decimals_that_cannot_be_negative_unless_the_form_
         if kind.identifier in RECORD_LISTS or kind.identifier in COUNTS:
             continue
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is (kind.identifier not in SIGNED), kind.identifier
+        assert non_negative(kind) is (kind.identifier not in SIGNED), kind.identifier
 
 
 def test_the_t2042_partner_count_is_a_non_negative_int_count() -> None:
     # Part 5 amount 5A "Your share of amount 4C or the amount from your T5013 slip, Statement of
     # Partnership Income": 1 for a partner, else 0.
     assert FARM_PARTNER.value_type is int
-    assert FARM_PARTNER.non_negative is True
+    assert non_negative(FARM_PARTNER) is True
     assert FARM_PARTNER.identifier in COUNTS
 
 
@@ -3861,7 +3863,7 @@ def test_the_farm_cca_classes_adjusted_list_is_the_area_a_list_without_the_vehic
     assert isinstance(FARM_CCA_CLASSES_ADJUSTED, RecordListKind)
     assert FARM_CCA_CLASSES_ADJUSTED.identifier == "ca/farm_cca_classes_adjusted"
     assert FARM_CCA_CLASSES_ADJUSTED.value_type is RecordList
-    assert FARM_CCA_CLASSES_ADJUSTED.non_negative is False
+    assert non_negative(FARM_CCA_CLASSES_ADJUSTED) is False
     assert FARM_CCA_CLASSES_ADJUSTED.fields == (
         CCA_CLASS_NUMBER,
         CCA_UCC_AT_START,
@@ -3901,7 +3903,7 @@ def test_the_t2042_area_g_counts_are_non_negative_int_counts(
     # as the form takes it.
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
     assert identifier in COUNTS
 
@@ -4097,14 +4099,14 @@ def test_the_t2121_amounts_are_decimals_that_cannot_be_negative_unless_the_form_
         if kind.identifier in RECORD_LISTS or kind.identifier in COUNTS:
             continue
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is (kind.identifier not in SIGNED), kind.identifier
+        assert non_negative(kind) is (kind.identifier not in SIGNED), kind.identifier
 
 
 def test_the_t2121_partner_count_is_a_non_negative_int_count() -> None:
     # Part 5 amount 5A "Your share of line 9369 or the amount from your T5013 slip, Statement of
     # Partnership Income": 1 for a partner, else 0.
     assert FISH_PARTNER.value_type is int
-    assert FISH_PARTNER.non_negative is True
+    assert non_negative(FISH_PARTNER) is True
     assert FISH_PARTNER.identifier in COUNTS
 
 
@@ -4188,7 +4190,7 @@ def test_the_fish_cca_classes_adjusted_list_is_the_area_a_list_without_the_vehic
     assert isinstance(FISH_CCA_CLASSES_ADJUSTED, RecordListKind)
     assert FISH_CCA_CLASSES_ADJUSTED.identifier == "ca/fish_cca_classes_adjusted"
     assert FISH_CCA_CLASSES_ADJUSTED.value_type is RecordList
-    assert FISH_CCA_CLASSES_ADJUSTED.non_negative is False
+    assert non_negative(FISH_CCA_CLASSES_ADJUSTED) is False
     assert FISH_CCA_CLASSES_ADJUSTED.fields == (
         CCA_CLASS_NUMBER,
         CCA_UCC_AT_START,
@@ -4228,7 +4230,7 @@ def test_the_t2121_area_g_counts_are_non_negative_int_counts(
     # as the form takes it.
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert registry.kind(identifier) is kind
     assert identifier in COUNTS
 
@@ -4321,7 +4323,7 @@ def test_the_record_lists_are_record_list_kinds_with_their_forms_fields(
 def test_the_chart_fields_are_non_negative_counts_and_amounts() -> None:
     for kind in (TRAVEL_INDIVIDUAL, TRIP_ZONE):
         assert kind.value_type is int, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     for amount_kind in (
         TRIP_BENEFIT_OR_STANDARD_AMOUNT,
         TRIP_TRAVEL_EXPENSES,
@@ -4331,7 +4333,7 @@ def test_the_chart_fields_are_non_negative_counts_and_amounts() -> None:
         STANDARD_AMOUNT_ALLOCATED_3,
     ):
         assert amount_kind.value_type is Decimal, amount_kind.identifier
-        assert amount_kind.non_negative is True, amount_kind.identifier
+        assert non_negative(amount_kind) is True, amount_kind.identifier
 
 
 def test_the_step_2_residency_lines_are_non_negative() -> None:
@@ -4346,7 +4348,7 @@ def test_the_step_2_residency_lines_are_non_negative() -> None:
         TRAVEL_DEDUCTION,
         NORTHERN_RESIDENTS_DEDUCTIONS,
     ):
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_self_employment_incomes_and_the_pensionable_earnings_are_signed(
@@ -4364,8 +4366,8 @@ def test_the_self_employment_incomes_and_the_pensionable_earnings_are_signed(
         NET_SELF_EMPLOYMENT_INCOME,
         PENSIONABLE_NET_SELF_EMPLOYMENT_EARNINGS,
     ):
-        assert kind.non_negative is False, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is False, kind.identifier
 
 
 def test_the_lines_after_a_floor_are_non_negative(registry: ArtifactRegistry) -> None:
@@ -4384,8 +4386,8 @@ def test_the_lines_after_a_floor_are_non_negative(registry: ArtifactRegistry) ->
         CPP_PAYABLE_ON_SELF_EMPLOYMENT,
         EI_PAYABLE_ON_SELF_EMPLOYMENT,
     ):
-        assert kind.non_negative is True, kind.identifier
-        assert registry.kind(kind.identifier).non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
+        assert non_negative(registry.kind(kind.identifier)) is True, kind.identifier
 
 
 # Guide T4002 "You were asking?": "Since your fiscal period is less than 365 days, you have to
@@ -4412,7 +4414,7 @@ def test_the_fiscal_period_days_entered_is_a_non_negative_int_count_the_caller_e
     # 0 is no days entered, which is a full fiscal period; the days to prorate by are derived.
     assert entered.identifier == f"ca/{prefix}_fiscal_period_days_entered"
     assert entered.value_type is int
-    assert entered.non_negative is True
+    assert non_negative(entered) is True
     assert registry.get(entered.identifier) is entered
     assert entered.identifier in COUNTS
     assert entered in statements.fields
@@ -4426,7 +4428,7 @@ def test_the_business_fiscal_period_is_entered_as_from_and_to_dates() -> None:
     assert BUSINESS_FISCAL_PERIOD_TO.identifier == "ca/business_fiscal_period_to"
     for each in (BUSINESS_FISCAL_PERIOD_FROM, BUSINESS_FISCAL_PERIOD_TO):
         assert each.value_type is int
-        assert each.non_negative is True
+        assert non_negative(each) is True
         assert each.identifier in COUNTS
         assert each in T2125_STATEMENTS.fields
     assert BUSINESS_FISCAL_PERIOD_DAYS.identifier == "ca/business_fiscal_period_days"
@@ -4470,5 +4472,5 @@ def test_the_t2125_partner_checks_are_non_negative_int_counts(
     kind = registry.kind(identifier)
     assert kind.identifier == identifier
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert identifier in COUNTS

@@ -27,12 +27,13 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import CountAtLeastLine
 from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
 
-COUNT = ArtifactKind("ex/widget_count", int)
-MINIMUM = ArtifactKind("ex/widget_minimum", int)
-OUTPUT = ArtifactKind("ex/widget_checked", int)
+COUNT = CountKind("ex/widget_count")
+MINIMUM = CountKind("ex/widget_minimum")
+OUTPUT = CountKind("ex/widget_checked")
 
 
 def capability() -> CountAtLeast:
@@ -126,7 +127,7 @@ def test_rejects_a_list_of_kinds_for_its_count() -> None:
 
 
 def test_mypy_rejects_wiring_a_money_kind_for_a_count() -> None:
-    money = ArtifactKind("ex/money", Decimal)
+    money = AmountKind("ex/money")
     # An ArtifactKind[Decimal] is not an ArtifactKind[int]; the ignore fails under mypy
     # (warn_unused_ignores) if it is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="CountAtLeast.*'minimum'"):
@@ -161,7 +162,7 @@ def test_a_negative_count_is_compared_like_any_other() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", int), 9)
+    other = Artifact(CountKind("ex/other"), 9)
 
     assert capability().compute((other, *inputs(4, 1))).outputs == (Artifact(OUTPUT, 4),)
 

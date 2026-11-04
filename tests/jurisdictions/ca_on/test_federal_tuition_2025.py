@@ -22,9 +22,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -44,10 +45,10 @@ INCOME_LIMIT = "ca/tuition_income_limit"
 TRANSFER_MAXIMUM = "ca/tuition_transfer_maximum"
 
 # Made up for these tests and not registered.
-FEES = ArtifactKind("ex/fees", Decimal)
-INCOME = ArtifactKind("ex/income", Decimal)
-TAX = ArtifactKind("ex/tax", Decimal)
-OUTPUT = ArtifactKind("ex/out", Decimal)
+FEES = AmountKind("ex/fees")
+INCOME = AmountKind("ex/income")
+TAX = AmountKind("ex/tax")
+OUTPUT = AmountKind("ex/out")
 
 
 def test_2025_canada_training_credit_rate_is_50_percent_to_the_cent() -> None:

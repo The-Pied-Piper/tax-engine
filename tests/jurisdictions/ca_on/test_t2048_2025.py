@@ -27,9 +27,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -87,11 +88,11 @@ ROUNDING_FAMILIES = (
 )
 
 # Made up for this test and not registered.
-BASE = ArtifactKind("ex/base", Decimal)
-PRODUCT = ArtifactKind("ex/product", Decimal)
-NUMERATOR = ArtifactKind("ex/numerator", Decimal)
-DENOMINATOR = ArtifactKind("ex/denominator", Decimal)
-PERCENTAGE = ArtifactKind("ex/percentage", Decimal)
+BASE = AmountKind("ex/base")
+PRODUCT = AmountKind("ex/product")
+NUMERATOR = AmountKind("ex/numerator")
+DENOMINATOR = AmountKind("ex/denominator")
+PERCENTAGE = AmountKind("ex/percentage")
 
 
 @pytest.mark.parametrize("family", RATE_FAMILIES)
@@ -243,7 +244,7 @@ def test_2025_percentage_allocated_maximum_header_quotes_line_2() -> None:
 
 
 def test_the_credit_amount_capability_gives_the_percentage_maximum_as_an_artifact() -> None:
-    figure = ArtifactKind("ex/percentage_maximum", Decimal)
+    figure = AmountKind("ex/percentage_maximum")
     capability = CreditAmount(SOURCE.get(PERCENTAGE_MAXIMUM, 2025, CREDIT), figure)
 
     (output,) = capability.compute(()).outputs
@@ -272,7 +273,7 @@ def test_2025_election_eligible_amount_maximum_header_quotes_line_1() -> None:
 
 
 def test_the_credit_amount_capability_gives_the_eligible_amount_maximum_as_an_artifact() -> None:
-    figure = ArtifactKind("ex/eligible_amount_maximum", Decimal)
+    figure = AmountKind("ex/eligible_amount_maximum")
     capability = CreditAmount(SOURCE.get(ELIGIBLE_AMOUNT_MAXIMUM, 2025, CREDIT), figure)
 
     (output,) = capability.compute(()).outputs

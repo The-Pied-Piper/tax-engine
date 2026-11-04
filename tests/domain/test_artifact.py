@@ -19,9 +19,11 @@ from tax_engine.domain.artifact import (
     ArtifactCatalog,
     ArtifactKind,
     ArtifactRegistry,
+    HasFloor,
     Money,
+    RecordField,
+    YesNo,
 )
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
@@ -31,14 +33,22 @@ from tax_engine.domain.errors import (
     NegativeArtifactError,
     UnknownRegistrationError,
 )
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import (
+    AmountKind,
+    CountKind,
+    DigitsKind,
+    RateKind,
+    RecordListKind,
+    TextKind,
+)
+from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.registry import Namespace, Registry
-from tests.kinds import ca_on_kinds
+from tests.kinds import OddKind, ca_on_kinds, non_negative
 
 D = Decimal
-BASE = ArtifactKind("ex/taxable_base", Decimal)
-TAX = ArtifactKind("ex/basic_tax", Decimal)
-NON_NEGATIVE = ArtifactKind("ex/credit_amount", Decimal, non_negative=True)
+BASE = AmountKind("ex/taxable_base")
+TAX = AmountKind("ex/basic_tax")
+NON_NEGATIVE = AmountKind("ex/credit_amount", non_negative=True)
 
 
 @pytest.fixture
@@ -56,8 +66,10 @@ def test_an_artifact_kind_has_an_identifier_and_a_value_type() -> None:
 
 
 def test_the_value_type_is_known_statically() -> None:
-    assert_type(BASE, ArtifactKind[Decimal])
-    assert_type(ArtifactKind("ex/count", int), ArtifactKind[int])
+    assert_type(BASE, AmountKind)
+    assert_type(CountKind("ex/count"), CountKind)
+    assert_type(BASE.read("1"), Artifact[Decimal])
+    assert_type(CountKind("ex/count").read("1"), Artifact[int])
 
 
 def test_money_is_an_alias_for_decimal_artifact_kinds() -> None:
@@ -67,11 +79,11 @@ def test_money_is_an_alias_for_decimal_artifact_kinds() -> None:
 
 
 def test_artifact_kinds_are_equal_by_identifier_and_value_type() -> None:
-    assert ArtifactKind("ex/taxable_base", Decimal) == BASE
+    assert AmountKind("ex/taxable_base") == BASE
     assert BASE != TAX
-    other_type: ArtifactKind[Any] = ArtifactKind("ex/taxable_base", int)
+    other_type: ArtifactKind[Any] = CountKind("ex/taxable_base")
     assert other_type != BASE
-    assert len({BASE, ArtifactKind("ex/taxable_base", Decimal)}) == 1
+    assert len({BASE, AmountKind("ex/taxable_base")}) == 1
 
 
 def test_artifact_kinds_are_immutable() -> None:
@@ -81,7 +93,7 @@ def test_artifact_kinds_are_immutable() -> None:
 
 def test_label_is_the_local_part_of_the_identifier() -> None:
     assert BASE.label == "taxable_base"
-    assert ArtifactKind("ca-on/basic_tax", Decimal).label == "basic_tax"
+    assert AmountKind("ca-on/basic_tax").label == "basic_tax"
     assert_type(BASE.label, str)
 
 
@@ -106,28 +118,28 @@ def test_label_is_the_local_part_of_the_identifier() -> None:
 )
 def test_rejects_an_identifier_not_namespace_slash_snake_case(identifier: str) -> None:
     with pytest.raises(InvalidRegistrationError, match="invalid artifact kind identifier"):
-        ArtifactKind(identifier, Decimal)
+        AmountKind(identifier)
 
 
 @pytest.mark.parametrize("identifier", ["ex/a", "ca-on/basic_tax", "x1/line_26000", "a-b-c/x2"])
 def test_accepts_namespaced_snake_case_identifiers(identifier: str) -> None:
-    assert ArtifactKind(identifier, Decimal).identifier == identifier
+    assert AmountKind(identifier).identifier == identifier
 
 
 def test_an_invalid_identifier_fails_like_an_invalid_catalog_declaration(
     fresh: ArtifactRegistry,
 ) -> None:
     with pytest.raises(InvalidRegistrationError) as direct:
-        ArtifactKind("ex/Bad", Decimal)
+        AmountKind("ex/Bad")
     with pytest.raises(InvalidRegistrationError) as declared:
-        ArtifactCatalog(Namespace("ex")).declare("Bad", Decimal)
+        AmountKind.declare(ArtifactCatalog(Namespace("ex")), "Bad")
 
     assert type(direct.value) is type(declared.value)
 
 
 def test_value_type_must_be_a_type() -> None:
     with pytest.raises(TypeError, match="value_type must be a type"):
-        ArtifactKind("ex/a", cast(Any, "Decimal"))
+        OddKind("ex/a", cast(Any, "Decimal"))
 
 
 def test_an_artifact_kind_is_invariant_in_its_value_type() -> None:
@@ -175,24 +187,29 @@ def test_artifacts_are_immutable() -> None:
 
 
 def test_a_kind_is_unconstrained_by_default() -> None:
-    assert BASE.non_negative is False
-    assert ArtifactCatalog(Namespace("ex")).declare("taxable_base", Decimal).non_negative is False
+    assert non_negative(BASE) is False
+    catalog = ArtifactCatalog(Namespace("ex"))
+    assert non_negative(AmountKind.declare(catalog, "taxable_base")) is False
+    assert non_negative(CountKind("ex/person_count")) is False
+    assert non_negative(TextKind("ex/person_name")) is False
+    assert non_negative(RateKind("ex/credit_rate")) is False
+    assert non_negative(OddKind("ex/flag", bool)) is False
 
 
 def test_a_kind_may_be_declared_non_negative() -> None:
-    assert_type(NON_NEGATIVE.non_negative, bool)
-    assert NON_NEGATIVE.non_negative is True
+    assert_type(non_negative(NON_NEGATIVE), bool)
+    assert non_negative(NON_NEGATIVE) is True
 
 
 def test_a_catalog_declares_a_non_negative_kind(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
 
-    kind = catalog.declare("credit_amount", Decimal, non_negative=True)
+    kind = AmountKind.declare(catalog, "credit_amount", non_negative=True)
 
-    assert_type(kind, ArtifactKind[Decimal])
+    assert_type(kind, AmountKind)
     assert kind.identifier == "ex/credit_amount"
     assert kind.value_type is Decimal
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert catalog.kinds == (kind,)
 
 
@@ -237,35 +254,32 @@ def test_an_unconstrained_kind_accepts_a_negative_value() -> None:
 def test_a_kind_declared_in_a_catalog_as_non_negative_rejects_a_negative_value(
     fresh: ArtifactRegistry,
 ) -> None:
-    kind = ArtifactCatalog(Namespace("ex")).declare("credit_amount", Decimal, non_negative=True)
+    kind = AmountKind.declare(ArtifactCatalog(Namespace("ex")), "credit_amount", non_negative=True)
 
     with pytest.raises(NegativeArtifactError, match="ex/credit_amount"):
         Artifact(kind, D("-1"))
 
 
-def test_only_a_decimal_or_int_kind_may_be_non_negative_at_declaration(
-    fresh: ArtifactRegistry,
-) -> None:
+@pytest.mark.parametrize("kind_class", [TextKind, RateKind])
+def test_a_text_or_rate_kind_takes_no_non_negative_flag(kind_class: type[Any]) -> None:
+    with pytest.raises(TypeError):
+        kind_class("ex/person_name", non_negative=True)
+
+
+def test_a_text_kind_declares_no_non_negative_flag(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
 
-    with pytest.raises(InvalidRegistrationError, match="ex/person_name"):
-        catalog.declare("person_name", str, non_negative=True)
+    with pytest.raises(TypeError):
+        TextKind.declare(catalog, "person_name", non_negative=True)  # type: ignore[call-arg]
 
     assert catalog.kinds == ()
     assert fresh.identifiers() == frozenset()
 
 
-@pytest.mark.parametrize("value_type", [float, str, bool])
-def test_only_a_decimal_or_int_kind_may_be_non_negative(value_type: type[Any]) -> None:
-    # `bool` is a subclass of `int` but not a count: the flag is still refused on it.
-    with pytest.raises(InvalidRegistrationError, match="ex/person_count"):
-        ArtifactKind("ex/person_count", value_type, non_negative=True)
+def test_a_count_kind_may_be_declared_unconstrained(fresh: ArtifactRegistry) -> None:
+    kind = CountKind.declare(ArtifactCatalog(Namespace("ex")), "person_count", non_negative=False)
 
-
-def test_a_non_decimal_kind_may_be_declared_unconstrained(fresh: ArtifactRegistry) -> None:
-    kind = ArtifactCatalog(Namespace("ex")).declare("person_count", int, non_negative=False)
-
-    assert kind.non_negative is False
+    assert non_negative(kind) is False
     assert Artifact(kind, -1).value == -1
 
 
@@ -276,26 +290,26 @@ def test_a_non_decimal_kind_may_be_declared_unconstrained(fresh: ArtifactRegistr
 # `Artifact` check refuses a flagged count below zero; an unflagged `int` kind accepts any value.
 
 
-COUNT = ArtifactKind("ex/person_count", int, non_negative=True)
+COUNT = CountKind("ex/person_count", non_negative=True)
 
 
 def test_an_int_kind_may_be_declared_non_negative() -> None:
     count = COUNT
 
-    assert_type(count, ArtifactKind[int])
+    assert_type(count, CountKind)
     assert count.value_type is int
-    assert count.non_negative is True
+    assert non_negative(count) is True
 
 
 def test_a_catalog_declares_a_non_negative_int_kind(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
 
-    kind = catalog.declare("person_count", int, non_negative=True)
+    kind = CountKind.declare(catalog, "person_count", non_negative=True)
 
-    assert_type(kind, ArtifactKind[int])
+    assert_type(kind, CountKind)
     assert kind.identifier == "ex/person_count"
     assert kind.value_type is int
-    assert kind.non_negative is True
+    assert non_negative(kind) is True
     assert catalog.kinds == (kind,)
 
 
@@ -321,14 +335,14 @@ def test_a_non_negative_count_rejects_any_int_below_zero(value: int) -> None:
 def test_a_count_declared_in_a_catalog_as_non_negative_rejects_a_negative_int(
     fresh: ArtifactRegistry,
 ) -> None:
-    kind = ArtifactCatalog(Namespace("ex")).declare("person_count", int, non_negative=True)
+    kind = CountKind.declare(ArtifactCatalog(Namespace("ex")), "person_count", non_negative=True)
 
     with pytest.raises(NegativeArtifactError, match="ex/person_count"):
         Artifact(kind, -1)
 
 
 def test_an_unflagged_int_kind_accepts_a_negative_int() -> None:
-    assert Artifact(ArtifactKind("ex/person_count", int), -3).value == -3
+    assert Artifact(CountKind("ex/person_count"), -3).value == -3
 
 
 def test_a_count_still_rejects_a_value_of_another_type() -> None:
@@ -338,7 +352,7 @@ def test_a_count_still_rejects_a_value_of_another_type() -> None:
 
 # --- ArtifactKind.read and read_default -----------------------------------------------------
 
-COUNT = ArtifactKind("ex/person_count", int, non_negative=True)
+COUNT = CountKind("ex/person_count", non_negative=True)
 NUMBER = DigitsKind("ex/business_number", digits=9)
 DEPENDANTS = RecordListKind("ex/dependants", fields=(BASE,))
 
@@ -355,9 +369,7 @@ def test_a_decimal_kind_refuses_text_that_is_not_a_plain_decimal_number(text: st
 
 
 def test_an_int_kind_reads_a_whole_number() -> None:
-    assert ArtifactKind("ex/year_count", int).read("-4") == Artifact(
-        ArtifactKind("ex/year_count", int), -4
-    )
+    assert CountKind("ex/year_count").read("-4") == Artifact(CountKind("ex/year_count"), -4)
     assert COUNT.read("3") == Artifact(COUNT, 3)
 
 
@@ -395,7 +407,7 @@ def test_a_record_list_kind_has_no_spelling_as_text() -> None:
 
 
 def test_a_kind_with_another_value_type_has_no_spelling_as_text() -> None:
-    kind: ArtifactKind[Any] = ArtifactKind("ex/flag", bool)
+    kind: ArtifactKind[Any] = OddKind("ex/flag", bool)
 
     with pytest.raises(InvalidTextError, match="bool"):
         kind.read("true")
@@ -446,16 +458,16 @@ def test_the_bundled_kinds_are_built_once_per_process() -> None:
 
 
 def test_catalog_declares_the_namespaced_kind(fresh: ArtifactRegistry) -> None:
-    kind = ArtifactCatalog(Namespace("ex")).declare("taxable_base", Decimal)
+    kind = AmountKind.declare(ArtifactCatalog(Namespace("ex")), "taxable_base")
 
-    assert_type(kind, ArtifactKind[Decimal])
-    assert kind == ArtifactKind("ex/taxable_base", Decimal)
+    assert_type(kind, AmountKind)
+    assert kind == AmountKind("ex/taxable_base")
 
 
 def test_declaring_registers_nothing(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    catalog.declare("taxable_base", Decimal)
-    catalog.declare("person_count", int)
+    AmountKind.declare(catalog, "taxable_base")
+    CountKind.declare(catalog, "person_count")
 
     assert fresh.identifiers() == frozenset()
     with pytest.raises(UnknownRegistrationError):
@@ -464,9 +476,9 @@ def test_declaring_registers_nothing(fresh: ArtifactRegistry) -> None:
 
 def test_catalog_kinds_are_the_declared_kinds_in_declaration_order(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    base = catalog.declare("taxable_base", Decimal)
-    count = catalog.declare("person_count", int)
-    tax = catalog.declare("basic_tax", Decimal)
+    base = AmountKind.declare(catalog, "taxable_base")
+    count = CountKind.declare(catalog, "person_count")
+    tax = AmountKind.declare(catalog, "basic_tax")
 
     kinds = catalog.kinds
 
@@ -488,10 +500,10 @@ def test_a_new_catalog_has_no_kinds(fresh: ArtifactRegistry) -> None:
 
 def test_catalog_rejects_a_duplicate_local_id_at_declare(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    first = catalog.declare("taxable_base", Decimal)
+    first = AmountKind.declare(catalog, "taxable_base")
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/taxable_base'"):
-        catalog.declare("taxable_base", int)
+        CountKind.declare(catalog, "taxable_base")
 
     assert catalog.kinds == (first,)
     assert fresh.identifiers() == frozenset()
@@ -500,8 +512,8 @@ def test_catalog_rejects_a_duplicate_local_id_at_declare(fresh: ArtifactRegistry
 def test_separate_catalogs_may_declare_the_same_identifier_until_registered(
     fresh: ArtifactRegistry,
 ) -> None:
-    first = ArtifactCatalog(Namespace("ex")).declare("taxable_base", Decimal)
-    second = ArtifactCatalog(Namespace("ex")).declare("taxable_base", int)
+    first = AmountKind.declare(ArtifactCatalog(Namespace("ex")), "taxable_base")
+    second = CountKind.declare(ArtifactCatalog(Namespace("ex")), "taxable_base")
 
     assert first.identifier == second.identifier == "ex/taxable_base"
 
@@ -513,7 +525,7 @@ def test_catalog_rejects_a_local_id_that_is_not_snake_case(
     catalog = ArtifactCatalog(Namespace("ex"))
 
     with pytest.raises(InvalidRegistrationError, match="invalid local id"):
-        catalog.declare(local_id, Decimal)
+        AmountKind.declare(catalog, local_id)
 
     assert catalog.kinds == ()
     assert fresh.identifiers() == frozenset()
@@ -525,7 +537,7 @@ def test_catalog_rejects_a_local_id_that_is_not_snake_case(
 def test_extended_is_a_new_registry_of_the_kinds_and_the_added_ones() -> None:
     registry = ArtifactRegistry()
     registry.register(BASE.identifier, BASE)
-    kind = ArtifactKind("ex/rental.net_income", Decimal)
+    kind = AmountKind("ex/rental.net_income")
 
     extended = registry.extended([kind])
 
@@ -537,10 +549,10 @@ def test_extended_is_a_new_registry_of_the_kinds_and_the_added_ones() -> None:
 
 def test_extended_skips_an_equal_kind_registered_already_and_keeps_the_first() -> None:
     registry = ArtifactRegistry()
-    first = ArtifactKind("ex/rental.net_income", Decimal)
+    first = AmountKind("ex/rental.net_income")
     registry.register(first.identifier, first)
 
-    extended = registry.extended([ArtifactKind("ex/rental.net_income", Decimal)])
+    extended = registry.extended([AmountKind("ex/rental.net_income")])
 
     assert extended.get("ex/rental.net_income") is first
     assert extended.identifiers() == {"ex/rental.net_income"}
@@ -548,11 +560,11 @@ def test_extended_skips_an_equal_kind_registered_already_and_keeps_the_first() -
 
 def test_extended_refuses_another_kind_under_that_identifier() -> None:
     registry = ArtifactRegistry()
-    first = ArtifactKind("ex/rental.net_income", Decimal)
+    first = AmountKind("ex/rental.net_income")
     registry.register(first.identifier, first)
 
     with pytest.raises(DuplicateRegistrationError, match=r"'ex/rental\.net_income'"):
-        registry.extended([ArtifactKind("ex/rental.net_income", int)])
+        registry.extended([CountKind("ex/rental.net_income")])
 
     assert registry.get("ex/rental.net_income") is first
 
@@ -564,8 +576,8 @@ def test_register_catalog_registers_every_declared_kind_under_its_identifier(
     fresh: ArtifactRegistry,
 ) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    base = catalog.declare("taxable_base", Decimal)
-    count = catalog.declare("person_count", int)
+    base = AmountKind.declare(catalog, "taxable_base")
+    count = CountKind.declare(catalog, "person_count")
     registry = ArtifactRegistry()
 
     registry.register_catalog(catalog)
@@ -576,8 +588,8 @@ def test_register_catalog_registers_every_declared_kind_under_its_identifier(
 
 def test_identifiers_lists_every_registered_identifier(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    catalog.declare("taxable_base", Decimal)
-    catalog.declare("person_count", int)
+    AmountKind.declare(catalog, "taxable_base")
+    CountKind.declare(catalog, "person_count")
     registry = ArtifactRegistry()
     registry.register_catalog(catalog)
 
@@ -589,7 +601,7 @@ def test_identifiers_lists_every_registered_identifier(fresh: ArtifactRegistry) 
 
 def test_register_catalog_registers_into_that_registry_only(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    catalog.declare("taxable_base", Decimal)
+    AmountKind.declare(catalog, "taxable_base")
 
     ArtifactRegistry().register_catalog(catalog)
 
@@ -606,7 +618,7 @@ def test_registering_an_empty_catalog_registers_nothing(fresh: ArtifactRegistry)
 
 def test_registering_the_same_catalog_twice_is_idempotent(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    base = catalog.declare("taxable_base", Decimal)
+    base = AmountKind.declare(catalog, "taxable_base")
     registry = ArtifactRegistry()
     registry.register_catalog(catalog)
 
@@ -620,9 +632,9 @@ def test_a_different_catalog_with_a_clashing_identifier_is_rejected(
     fresh: ArtifactRegistry,
 ) -> None:
     first = ArtifactCatalog(Namespace("ex"))
-    base = first.declare("taxable_base", Decimal)
+    base = AmountKind.declare(first, "taxable_base")
     second = ArtifactCatalog(Namespace("ex"))
-    second.declare("taxable_base", Decimal)
+    AmountKind.declare(second, "taxable_base")
     registry = ArtifactRegistry()
     registry.register_catalog(first)
 
@@ -636,9 +648,9 @@ def test_a_catalog_clashing_with_a_directly_registered_kind_is_rejected(
     fresh: ArtifactRegistry,
 ) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    catalog.declare("taxable_base", Decimal)
+    AmountKind.declare(catalog, "taxable_base")
     registry = ArtifactRegistry()
-    registry.register("ex/taxable_base", ArtifactKind("ex/taxable_base", Decimal))
+    registry.register("ex/taxable_base", AmountKind("ex/taxable_base"))
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/taxable_base'"):
         registry.register_catalog(catalog)
@@ -646,9 +658,9 @@ def test_a_catalog_clashing_with_a_directly_registered_kind_is_rejected(
 
 def test_the_same_local_id_may_appear_in_different_namespaces(fresh: ArtifactRegistry) -> None:
     first = ArtifactCatalog(Namespace("ex"))
-    first.declare("basic_tax", Decimal)
+    AmountKind.declare(first, "basic_tax")
     second = ArtifactCatalog(Namespace("ex-sub"))
-    second.declare("basic_tax", Decimal)
+    AmountKind.declare(second, "basic_tax")
     registry = ArtifactRegistry()
 
     registry.register_catalog(first)
@@ -658,7 +670,7 @@ def test_the_same_local_id_may_appear_in_different_namespaces(fresh: ArtifactReg
 
 
 def test_a_directly_built_artifact_kind_is_not_registered(fresh: ArtifactRegistry) -> None:
-    ArtifactKind("ex/taxable_base", Decimal)
+    AmountKind("ex/taxable_base")
 
     with pytest.raises(UnknownRegistrationError):
         fresh.get("ex/taxable_base")
@@ -677,7 +689,7 @@ def test_a_directly_built_artifact_kind_is_not_registered(fresh: ArtifactRegistr
     ["ex/rental.net_income", "ca-on/t2125.business_income", "x1/a1.b2", "ex/a.b", "ex/a_b.c_d"],
 )
 def test_accepts_one_dot_between_two_snake_case_ids(identifier: str) -> None:
-    kind = ArtifactKind(identifier, Decimal)
+    kind = AmountKind(identifier)
 
     assert kind.identifier == identifier
 
@@ -705,11 +717,11 @@ def test_accepts_one_dot_between_two_snake_case_ids(identifier: str) -> None:
 )
 def test_rejects_a_dot_that_is_not_between_two_snake_case_ids(identifier: str) -> None:
     with pytest.raises(InvalidRegistrationError, match="invalid artifact kind identifier"):
-        ArtifactKind(identifier, Decimal)
+        AmountKind(identifier)
 
 
 def test_labels_are_distinct_sorted_quoted_and_comma_separated() -> None:
-    other = ArtifactKind("ex/another", Decimal)
+    other = AmountKind("ex/another")
 
     assert ArtifactKind.labels([BASE, other]) == "'another', 'taxable_base'"
     assert ArtifactKind.labels([]) == ""
@@ -717,8 +729,8 @@ def test_labels_are_distinct_sorted_quoted_and_comma_separated() -> None:
 
 
 def test_labels_collapse_kinds_sharing_a_label() -> None:
-    same_label_as_int = ArtifactKind("ex/taxable_base", int)
-    other_namespace = ArtifactKind("ex2/taxable_base", Decimal)
+    same_label_as_int = CountKind("ex/taxable_base")
+    other_namespace = AmountKind("ex2/taxable_base")
 
     assert ArtifactKind.labels([BASE, same_label_as_int, other_namespace]) == "'taxable_base'"
 
@@ -729,11 +741,11 @@ def test_labels_accept_any_iterable() -> None:
 
 
 def test_the_label_of_a_dotted_identifier_is_its_whole_local_part() -> None:
-    assert ArtifactKind("ex/rental.net_income", Decimal).label == "rental.net_income"
+    assert AmountKind("ex/rental.net_income").label == "rental.net_income"
 
 
 def test_a_dotted_kind_is_registered_and_found_by_its_identifier(fresh: ArtifactRegistry) -> None:
-    kind = ArtifactKind("ex/rental.net_income", Decimal)
+    kind = AmountKind("ex/rental.net_income")
 
     fresh.register(kind.identifier, kind)
 
@@ -745,7 +757,7 @@ def test_a_catalog_still_refuses_a_dot_in_a_local_id(local_id: str) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
 
     with pytest.raises(InvalidRegistrationError, match="invalid local id"):
-        catalog.declare(local_id, Decimal)
+        AmountKind.declare(catalog, local_id)
 
     assert catalog.kinds == ()
 
@@ -756,5 +768,101 @@ def test_a_namespace_still_refuses_a_dot_in_a_local_id() -> None:
 
 
 def test_only_a_dotted_kind_is_a_form_export() -> None:
-    assert ArtifactKind("ex/rental.net_income", Decimal).is_form_export
-    assert not ArtifactKind("ex/net_income", Decimal).is_form_export
+    assert AmountKind("ex/rental.net_income").is_form_export
+    assert not AmountKind("ex/net_income").is_form_export
+
+
+# --- the plain kinds ------------------------------------------------------------------------
+
+
+def test_artifact_kind_is_abstract() -> None:
+    with pytest.raises(TypeError):
+        ArtifactKind("ex/x", Decimal)  # type: ignore[abstract]
+
+
+def test_kinds_of_different_classes_are_never_equal() -> None:
+    amount: ArtifactKind[Any] = AmountKind("ex/x")
+    text: ArtifactKind[Any] = TextKind("ex/x")
+    assert amount != CountKind("ex/x")
+    assert text != OddKind("ex/x", str)
+
+
+@pytest.mark.parametrize(
+    ("kind_class", "value_type"),
+    [(AmountKind, Decimal), (CountKind, int), (RateKind, Rate), (TextKind, str)],
+)
+def test_each_plain_kind_declares_itself_in_the_catalogs_namespace(
+    kind_class: Any, value_type: type[Any]
+) -> None:
+    catalog = ArtifactCatalog(Namespace("ex"))
+
+    kind = kind_class.declare(catalog, "thing")
+
+    assert type(kind) is kind_class
+    assert kind.identifier == "ex/thing"
+    assert kind.value_type is value_type
+    assert catalog.kinds == (kind,)
+
+
+def test_only_an_amount_a_count_or_a_record_list_is_a_record_field() -> None:
+    assert isinstance(AmountKind("ex/a"), RecordField)
+    assert isinstance(CountKind("ex/c"), RecordField)
+    assert isinstance(DEPENDANTS, RecordField)
+    assert not isinstance(TextKind("ex/t"), RecordField)
+    assert not isinstance(NUMBER, RecordField)
+    assert not isinstance(RateKind("ex/r"), RecordField)
+
+
+def test_only_a_non_negative_count_is_yes_no() -> None:
+    counts = CountKind("ex/c", non_negative=True)
+    assert isinstance(counts, YesNo) and counts.is_yes_no
+    unsigned = CountKind("ex/c")
+    assert isinstance(unsigned, YesNo) and not unsigned.is_yes_no
+    assert not isinstance(AmountKind("ex/a", non_negative=True), YesNo)
+    assert not isinstance(TextKind("ex/t"), YesNo)
+
+
+def test_is_below_floor_only_for_a_non_negative_kind_and_a_value_below_zero() -> None:
+    assert NON_NEGATIVE.is_below_floor(D("-0.01"))
+    assert not NON_NEGATIVE.is_below_floor(D(0))
+    assert not BASE.is_below_floor(D(-1))
+    assert COUNT.is_below_floor(-1)
+    assert not COUNT.is_below_floor(0)
+    assert not CountKind("ex/c").is_below_floor(-1)
+
+
+@pytest.mark.parametrize(
+    ("kind", "has_floor", "record_field", "yes_no"),
+    [
+        (AmountKind("ex/a"), True, True, False),
+        (CountKind("ex/c"), True, True, True),
+        (RateKind("ex/r"), False, False, False),
+        (TextKind("ex/t"), False, False, False),
+        (NUMBER, False, False, False),
+        (DEPENDANTS, False, True, False),
+        (OddKind("ex/flag", bool), False, False, False),
+    ],
+    ids=["amount", "count", "rate", "text", "digits", "record list", "odd"],
+)
+def test_each_kind_matches_only_the_protocols_it_has(
+    kind: ArtifactKind[Any], has_floor: bool, record_field: bool, yes_no: bool
+) -> None:
+    assert isinstance(kind, HasFloor) is has_floor
+    assert isinstance(kind, RecordField) is record_field
+    assert isinstance(kind, YesNo) is yes_no
+
+
+def test_a_kind_without_a_floor_holds_a_negative_value() -> None:
+    assert Artifact(AmountKind("ex/a"), D(-1)).value == D(-1)
+    assert Artifact(OddKind("ex/flag", int), -1).value == -1
+
+
+def test_a_rate_kind_reads_no_text() -> None:
+    with pytest.raises(InvalidTextError, match="has no spelling as text"):
+        RateKind("ex/credit_rate").read("0.15")
+
+
+def test_a_text_kind_reads_the_text_as_written() -> None:
+    kind = TextKind("ex/person_name")
+
+    assert kind.read("  Ada  ").value == "  Ada  "

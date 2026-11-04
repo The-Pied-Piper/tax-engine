@@ -22,8 +22,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -52,10 +53,10 @@ REFUSED_TEXT = (
 
 # Made up for this test and not registered: the Part 4 checked count, the T4 pensionable earnings
 # outside Quebec, the count of Part 4 with employment earnings and its checked count.
-PART_4 = ArtifactKind("ex/cpp_part_4_completed_checked", int)
-T4 = ArtifactKind("ex/t4_cpp_pensionable_earnings_outside_quebec", Decimal)
-WITH_EARNINGS = ArtifactKind("ex/cpp_part_4_with_employment_earnings", int)
-WITH_EARNINGS_CHECKED = ArtifactKind("ex/cpp_part_4_with_employment_earnings_checked", int)
+PART_4 = CountKind("ex/cpp_part_4_completed_checked")
+T4 = AmountKind("ex/t4_cpp_pensionable_earnings_outside_quebec")
+WITH_EARNINGS = CountKind("ex/cpp_part_4_with_employment_earnings")
+WITH_EARNINGS_CHECKED = CountKind("ex/cpp_part_4_with_employment_earnings_checked")
 
 
 def _more_than_0_count(position: int) -> ConditionPart:

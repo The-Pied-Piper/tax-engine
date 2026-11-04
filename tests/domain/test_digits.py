@@ -19,14 +19,15 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
     InvalidRegistrationError,
     InvalidTextError,
 )
+from tax_engine.domain.kinds import CountKind, DigitsKind, TextKind
 from tax_engine.domain.registry import Namespace
+from tests.kinds import non_negative
 
 NUMBER = DigitsKind("ex/business_number", digits=9)
 SHORT = DigitsKind("ex/filing_number", digits=5)
@@ -119,7 +120,7 @@ def test_an_invalid_text_is_a_domain_error() -> None:
 
 def test_a_plain_str_kind_is_not_checked_for_digits() -> None:
     # Only a DigitsKind checks its text; the base kind accepts every instance of its value type.
-    assert Artifact(ArtifactKind("ex/note", str), "anything").value == "anything"
+    assert Artifact(TextKind("ex/note"), "anything").value == "anything"
 
 
 # --- DigitsKind and DigitsKind.declare ------------------------------------------------------
@@ -130,7 +131,7 @@ def test_a_digits_kind_holds_text_and_its_number_of_digits() -> None:
     assert NUMBER.identifier == "ex/business_number"
     assert NUMBER.label == "business_number"
     assert NUMBER.value_type is str
-    assert NUMBER.non_negative is False
+    assert non_negative(NUMBER) is False
     assert NUMBER.digits == 9
 
 
@@ -158,7 +159,8 @@ def test_digits_kinds_are_told_apart_by_their_number_of_digits() -> None:
 
 
 def test_a_digits_kind_is_not_a_plain_str_kind_of_the_same_identifier() -> None:
-    assert NUMBER != ArtifactKind("ex/business_number", str)
+    other: ArtifactKind[Any] = TextKind("ex/business_number")
+    assert NUMBER != other
 
 
 def test_declaring_a_digits_kind_registers_nothing(fresh: ArtifactRegistry) -> None:
@@ -169,7 +171,7 @@ def test_declaring_a_digits_kind_registers_nothing(fresh: ArtifactRegistry) -> N
 
 def test_a_declared_digits_kind_registers_with_its_catalog(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    count = catalog.declare("partner_count", int)
+    count = CountKind.declare(catalog, "partner_count")
     kind = DigitsKind.declare(catalog, "business_number", digits=9)
     registry = ArtifactRegistry()
 
@@ -214,7 +216,7 @@ def test_a_digits_kind_built_directly_refuses_a_number_of_digits_that_is_not_a_p
 
 def test_declare_refuses_a_local_id_already_declared(fresh: ArtifactRegistry) -> None:
     catalog = ArtifactCatalog(Namespace("ex"))
-    first = catalog.declare("business_number", int)
+    first = CountKind.declare(catalog, "business_number")
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/business_number'"):
         DigitsKind.declare(catalog, "business_number", digits=9)
@@ -252,3 +254,13 @@ def test_a_digits_kind_may_be_declared_in_a_subdivision_namespace(
 
     assert kind.identifier == "ex-on/business_number"
     assert Artifact(kind, "123456789").value == "123456789"
+
+
+def test_a_digits_kind_reads_exactly_its_digits_or_blank_text() -> None:
+    assert NUMBER.read("123456789").value == "123456789"
+    assert NUMBER.read("").value == ""
+
+
+def test_a_digits_kind_refuses_text_that_is_not_its_digits() -> None:
+    with pytest.raises(InvalidTextError, match="is not a value of the kind"):
+        NUMBER.read("12a")

@@ -39,13 +39,14 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import CapabilityResult
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -65,18 +66,18 @@ WORKING_INCOME_THRESHOLD = "ca/medical_supplement_working_income_threshold"
 # Made up for this test and not registered: the adjusted family net income (line 6), the printed
 # income threshold (line 7), line 8, line 9 plus line 10 (line 11), lines 13, 14, 15 and 16, the
 # working income and the gated line 16.
-LINE_6 = ArtifactKind("ex/line_6", Decimal)
-LINE_7 = ArtifactKind("ex/line_7", Decimal)
-LINE_8 = ArtifactKind("ex/line_8", Decimal)
-LINE_9 = ArtifactKind("ex/line_9", Decimal)
-LINE_10 = ArtifactKind("ex/line_10", Decimal)
-LINE_11 = ArtifactKind("ex/line_11", Decimal)
-LINE_13 = ArtifactKind("ex/line_13", Decimal)
-LINE_14 = ArtifactKind("ex/line_14", Decimal)
-LINE_15 = ArtifactKind("ex/line_15", Decimal)
-LINE_16 = ArtifactKind("ex/line_16", Decimal)
-WORKING_INCOME = ArtifactKind("ex/working_income", Decimal)
-GATED = ArtifactKind("ex/gated_line_16", Decimal)
+LINE_6 = AmountKind("ex/line_6")
+LINE_7 = AmountKind("ex/line_7")
+LINE_8 = AmountKind("ex/line_8")
+LINE_9 = AmountKind("ex/line_9")
+LINE_10 = AmountKind("ex/line_10")
+LINE_11 = AmountKind("ex/line_11")
+LINE_13 = AmountKind("ex/line_13")
+LINE_14 = AmountKind("ex/line_14")
+LINE_15 = AmountKind("ex/line_15")
+LINE_16 = AmountKind("ex/line_16")
+WORKING_INCOME = AmountKind("ex/working_income")
+GATED = AmountKind("ex/gated_line_16")
 
 
 def only(result: CapabilityResult) -> Artifact[Decimal]:

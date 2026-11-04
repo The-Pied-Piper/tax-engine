@@ -27,11 +27,12 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -55,16 +56,16 @@ ON428_A_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5
 # Made up for this test and not registered: the employment income the rate is applied to (line
 # 3), the credit before its maximum and after it (lines 5 and 14), the net income the reduction
 # is on (line 15) and the reduction (line 19).
-INCOME = ArtifactKind("ex/income", Decimal)
-BEFORE_MAXIMUM = ArtifactKind("ex/before_maximum", Decimal)
-CAPPED = ArtifactKind("ex/capped", Decimal)
-NET_INCOME = ArtifactKind("ex/net_income", Decimal)
-REDUCTION = ArtifactKind("ex/reduction", Decimal)
+INCOME = AmountKind("ex/income")
+BEFORE_MAXIMUM = AmountKind("ex/before_maximum")
+CAPPED = AmountKind("ex/capped")
+NET_INCOME = AmountKind("ex/net_income")
+REDUCTION = AmountKind("ex/reduction")
 # Part B: the threshold a credit dataset gives (lines 31 and 36), the larger excess over a
 # threshold (line 38) and the reduction from it (line 40).
-THRESHOLD = ArtifactKind("ex/threshold", Decimal)
-GREATER_EXCESS = ArtifactKind("ex/greater_excess", Decimal)
-FAMILY_REDUCTION = ArtifactKind("ex/family_reduction", Decimal)
+THRESHOLD = AmountKind("ex/threshold")
+GREATER_EXCESS = AmountKind("ex/greater_excess")
+FAMILY_REDUCTION = AmountKind("ex/family_reduction")
 
 
 def test_2025_rate_is_5_05_percent() -> None:

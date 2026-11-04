@@ -22,8 +22,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import CONDITIONS
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -38,13 +39,13 @@ GUIDE_T4044 = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t40
 CONFLICTS_FAMILY = "ca/t777_lease_chart_conflicts"
 REFUSED_FAMILY = "ca/t777_lease_chart_conflict_refused"
 
-PASSENGER = ArtifactKind("ex/passenger_vehicle", int)
-REPAYMENT = ArtifactKind("ex/repayment_owing", int)
-MADE = ArtifactKind("ex/deposits_made", int)
-REFUNDABLE = ArtifactKind("ex/deposits_refundable", int)
-TOTAL = ArtifactKind("ex/deposits_total", Decimal)
-CONFLICT = ArtifactKind("ex/lease_chart_conflict", int)
-CONFLICT_CHECKED = ArtifactKind("ex/lease_chart_conflict_checked", int)
+PASSENGER = CountKind("ex/passenger_vehicle")
+REPAYMENT = CountKind("ex/repayment_owing")
+MADE = CountKind("ex/deposits_made")
+REFUNDABLE = CountKind("ex/deposits_refundable")
+TOTAL = AmountKind("ex/deposits_total")
+CONFLICT = CountKind("ex/lease_chart_conflict")
+CONFLICT_CHECKED = CountKind("ex/lease_chart_conflict_checked")
 
 
 def _conflict(passenger: int, repayment: int, made: int, refundable: int, total: str) -> int:

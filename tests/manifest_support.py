@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import InputDeclaration
-from tax_engine.domain.record_list import RecordListKind
 
 
 def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:

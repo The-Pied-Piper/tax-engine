@@ -24,7 +24,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, RateKind
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rate_table import RATE_TABLE
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
@@ -48,9 +49,9 @@ FORM_TEXT = Path(__file__).parents[3] / "tests" / "fixtures" / "cra-forms-2025" 
 
 # Made up for this test and not registered: line 6 (the child care expenses deduction), line 7
 # (the rate) and line 8 (the credit).
-CHILD_CARE = ArtifactKind("ex/child_care", Decimal)
-RATE_LINE = ArtifactKind("ex/rate", Rate)
-CREDIT = ArtifactKind("ex/credit", Decimal)
+CHILD_CARE = AmountKind("ex/child_care")
+RATE_LINE = RateKind("ex/rate")
+CREDIT = AmountKind("ex/credit")
 
 
 def squashed(text: str) -> str:

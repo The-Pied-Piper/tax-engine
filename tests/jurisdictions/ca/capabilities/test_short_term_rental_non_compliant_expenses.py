@@ -38,6 +38,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -67,7 +68,7 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 # The output kind comes with the wiring; the tests use a made-up one.
-NON_COMPLIANT = ArtifactKind("ex/non_compliant_expenses", Decimal, non_negative=True)
+NON_COMPLIANT = AmountKind("ex/non_compliant_expenses", non_negative=True)
 
 # A row is (column 3, column 4, column 5).
 Row = tuple[str, int, int]

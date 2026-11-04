@@ -43,6 +43,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.form import FormSet
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
     Default,
@@ -50,7 +51,7 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
 from tests.application.services.test_tax_computation import (
     BASE,
@@ -68,19 +69,19 @@ EX_ON = JurisdictionCode("EX-ON")
 
 # --- the made-up rental form: two amounts and a nested list of unit rents per instance ---------
 
-GROSS_RENT = ArtifactKind("ex/gross_rent", Decimal)
-EXPENSES = ArtifactKind("ex/expenses", Decimal)
-NET_INCOME = ArtifactKind("ex/net_income", Decimal, non_negative=True)
-UNIT_AMOUNT = ArtifactKind("ex/unit_amount", Decimal)
+GROSS_RENT = AmountKind("ex/gross_rent")
+EXPENSES = AmountKind("ex/expenses")
+NET_INCOME = AmountKind("ex/net_income", non_negative=True)
+UNIT_AMOUNT = AmountKind("ex/unit_amount")
 UNITS = RecordListKind("ex/units", fields=(UNIT_AMOUNT,))
 UNITS_DOUBLED = RecordListKind("ex/units_doubled", fields=(UNIT_AMOUNT,))
 RENTALS = RecordListKind("ex/rentals", fields=(GROSS_RENT, EXPENSES, UNITS))
-TOTAL_NET_INCOME = ArtifactKind("ex/total_net_income", Decimal)
-OTHER_AMOUNT = ArtifactKind("ex/other_amount", Decimal)
-SPARE = ArtifactKind("ex/spare", Decimal)
-DOUBLED_COUNT = ArtifactKind("ex/doubled_count", int)
-NOTES = ArtifactKind("ex/notes", Decimal)
-NOTE = ArtifactKind("ex/note", str)
+TOTAL_NET_INCOME = AmountKind("ex/total_net_income")
+OTHER_AMOUNT = AmountKind("ex/other_amount")
+SPARE = AmountKind("ex/spare")
+DOUBLED_COUNT = CountKind("ex/doubled_count")
+NOTES = AmountKind("ex/notes")
+NOTE = TextKind("ex/note")
 
 # The kinds the engine derives for the rental form's two exports: one field, a record per instance.
 NET_INCOME_PER_RENTAL = RecordListKind("ex/rental.net_income", fields=(NET_INCOME,))
@@ -88,15 +89,15 @@ UNITS_DOUBLED_PER_RENTAL = RecordListKind("ex/rental.units_doubled", fields=(UNI
 
 # The made-up scaling form: `ex/bases` instances, each scaled by the `ex/factor` dataset.
 BASES = RecordListKind("ex/bases", fields=(BASE,))
-SCALED = ArtifactKind("ex/scaled", Decimal)
-SCALED_TOTAL = ArtifactKind("ex/scaled_total", Decimal)
+SCALED = AmountKind("ex/scaled")
+SCALED_TOTAL = AmountKind("ex/scaled_total")
 SCALED_PER_BASE = RecordListKind("ex/scaling.scaled", fields=(SCALED,))
 
 # The made-up summary form: reads the rental form's net incomes (an import), one record per summary.
 SUMMARIES = RecordListKind("ex/summaries", fields=(OTHER_AMOUNT,))
-RENTAL_TOTAL = ArtifactKind("ex/rental_total", Decimal)
-CYCLE_TOTAL = ArtifactKind("ex/cycle_total", Decimal)
-SPARE_TOTAL = ArtifactKind("ex/spare_total", Decimal)
+RENTAL_TOTAL = AmountKind("ex/rental_total")
+CYCLE_TOTAL = AmountKind("ex/cycle_total")
+SPARE_TOTAL = AmountKind("ex/spare_total")
 SUMMARY_SPARE = RecordListKind("ex/summary.spare", fields=(SPARE,))
 
 
@@ -845,7 +846,7 @@ def test_two_manifests_on_one_registry_agree_on_the_derived_kinds() -> None:
 @pytest.mark.parametrize(
     "other",
     [
-        ArtifactKind("ex/rental.net_income", Decimal),
+        AmountKind("ex/rental.net_income"),
         RecordListKind("ex/rental.net_income", fields=(GROSS_RENT,)),
     ],
     ids=["a-plain-amount", "a-list-of-another-field"],

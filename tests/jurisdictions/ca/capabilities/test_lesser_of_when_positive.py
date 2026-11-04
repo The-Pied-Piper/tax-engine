@@ -25,6 +25,7 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import LesserOfWhenPositiveLine
 from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
     LesserOfWhenPositive,
@@ -34,10 +35,10 @@ from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
 D = Decimal
 Wired = LesserOfWhenPositive | LesserOfWhenPositiveInBrackets
 
-FIRST = ArtifactKind("ex/first_amount", Decimal)
-SECOND = ArtifactKind("ex/second_amount", Decimal)
-THIRD = ArtifactKind("ex/third_amount", Decimal)
-OUTPUT = ArtifactKind("ex/limited_amount", Decimal)
+FIRST = AmountKind("ex/first_amount")
+SECOND = AmountKind("ex/second_amount")
+THIRD = AmountKind("ex/third_amount")
+OUTPUT = AmountKind("ex/limited_amount")
 KINDS = {"first": FIRST, "second": SECOND, "third": THIRD}
 
 BOTH = [LesserOfWhenPositive, LesserOfWhenPositiveInBrackets]
@@ -143,7 +144,7 @@ def test_rejects_a_single_kind_where_a_tuple_is_wanted(cls: type[Wired]) -> None
 
 @pytest.mark.parametrize("cls", BOTH)
 def test_rejects_a_kind_of_another_value_type(cls: type[Wired]) -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match=f"{cls.__name__}.*'amounts'"):
         cls(amounts=(count,), output=OUTPUT)  # type: ignore[arg-type]

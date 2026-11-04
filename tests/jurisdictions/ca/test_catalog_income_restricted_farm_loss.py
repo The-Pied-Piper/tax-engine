@@ -35,6 +35,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     FARMING_INCOME,
     T2042_STATEMENTS,
 )
+from tests.kinds import non_negative as declared_non_negative
 
 # (identifier, constant, value type, non-negative): the signed ones are the lines the form's
 # arithmetic leaves below zero (the net on line 9946, a loss; a difference with a printed figure
@@ -90,7 +91,7 @@ def test_each_restricted_farm_loss_kind_is_registered_under_its_name(
     assert constant.identifier == identifier
     assert registry.get(identifier) is constant
     assert constant.value_type is value_type
-    assert constant.non_negative is non_negative
+    assert declared_non_negative(constant) is non_negative
 
 
 def test_the_answer_is_the_returns_not_a_field_of_a_t2042_statement() -> None:
@@ -108,4 +109,4 @@ def test_the_line_9946_net_is_a_new_signed_kind_beside_the_farming_income_the_re
     assert FARM_NET_INCOME_LINE_9946 is not FARMING_INCOME
     assert registry.get("ca/farming_income") is FARMING_INCOME
     assert FARMING_INCOME.value_type is Decimal
-    assert FARMING_INCOME.non_negative is False
+    assert declared_non_negative(FARMING_INCOME) is False

@@ -19,12 +19,13 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.at_most import AtMost
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT as CREDIT_PARAMETER
 from tax_engine.domain.parameters.credit import Credit
@@ -41,11 +42,11 @@ ON479_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tc/50
 
 # Made up for this test and not registered: the amounts the rates and maximums are applied to
 # and the results.
-EXPENSES = ArtifactKind("ex/expenses", Decimal)
-BEFORE_MAXIMUM = ArtifactKind("ex/before_maximum", Decimal)
-RESULT = ArtifactKind("ex/result", Decimal)
-PAID = ArtifactKind("ex/paid", Decimal)
-CREDIT = ArtifactKind("ex/credit", Decimal)
+EXPENSES = AmountKind("ex/expenses")
+BEFORE_MAXIMUM = AmountKind("ex/before_maximum")
+RESULT = AmountKind("ex/result")
+PAID = AmountKind("ex/paid")
+CREDIT = AmountKind("ex/credit")
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
@@ -133,7 +134,7 @@ def test_the_fertility_credit_is_at_most_5000(credit: str, capped: str) -> None:
     assert result.outputs == (Artifact(RESULT, D(capped)),)
 
 
-MAXIMUM = ArtifactKind("ex/transit_maximum", Decimal)
+MAXIMUM = AmountKind("ex/transit_maximum")
 
 
 def transit_bound(paid: str) -> Artifact[Decimal]:

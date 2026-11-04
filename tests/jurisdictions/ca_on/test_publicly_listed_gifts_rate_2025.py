@@ -14,8 +14,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -25,8 +26,8 @@ FAMILY = "ca/publicly_listed_gifts_rate"
 T691_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf"
 
 # Made up for this test and not registered: the net of line 24 less line 25, and line 26.
-NET = ArtifactKind("ex/gifts_net", Decimal)
-ADJUSTMENT = ArtifactKind("ex/gifts_adjustment", Decimal)
+NET = AmountKind("ex/gifts_net")
+ADJUSTMENT = AmountKind("ex/gifts_adjustment")
 
 
 def test_2025_rate_is_30_percent() -> None:

@@ -18,7 +18,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -36,8 +37,8 @@ T2017_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2017/t2017
 
 # Made up for this test and not registered: the years after the disposition, and the count the
 # condition gives.
-YEARS = ArtifactKind("ex/years_after_disposition", int)
-LATER_YEAR = ArtifactKind("ex/later_year", int)
+YEARS = CountKind("ex/years_after_disposition")
+LATER_YEAR = CountKind("ex/later_year")
 
 
 def test_2025_a_later_year_is_the_one_condition_and_its_count_is_1_when_it_applies() -> None:

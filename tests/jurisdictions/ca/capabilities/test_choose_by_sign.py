@@ -30,19 +30,20 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import ChosenBySignLine
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
 
 D = Decimal
 Kinds = tuple[ArtifactKind[Decimal], ...]
 
-SIGN = ArtifactKind("ex/net_change", Decimal)
-GAIN = ArtifactKind("ex/gain_amount", Decimal)
-EVEN = ArtifactKind("ex/even_amount", Decimal)
-LOSS = ArtifactKind("ex/loss_amount", Decimal)
-NOT_UP = ArtifactKind("ex/not_up_amount", Decimal)
-NOT_DOWN = ArtifactKind("ex/not_down_amount", Decimal)
-OUTPUT = ArtifactKind("ex/chosen_amount", Decimal)
+SIGN = AmountKind("ex/net_change")
+GAIN = AmountKind("ex/gain_amount")
+EVEN = AmountKind("ex/even_amount")
+LOSS = AmountKind("ex/loss_amount")
+NOT_UP = AmountKind("ex/not_up_amount")
+NOT_DOWN = AmountKind("ex/not_down_amount")
+OUTPUT = AmountKind("ex/chosen_amount")
 
 KINDS = {"gain": GAIN, "even": EVEN, "loss": LOSS, "not_up": NOT_UP, "not_down": NOT_DOWN}
 
@@ -200,14 +201,14 @@ def test_rejects_the_output_kind_as_a_candidate() -> None:
 
 
 def test_rejects_more_than_one_kind_for_a_branch() -> None:
-    other = ArtifactKind("ex/other_gain", Decimal)
+    other = AmountKind("ex/other_gain")
 
     with pytest.raises(InvalidCapabilityError, match="ChooseBySign.*'when_positive'"):
         build(positive=(GAIN, other))
 
 
 def test_rejects_a_kind_of_another_value_type_as_a_candidate() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="ChooseBySign.*'when_zero'"):
         build(zero=(count,))  # type: ignore[arg-type]
@@ -219,7 +220,7 @@ def test_rejects_a_single_kind_where_a_tuple_is_wanted() -> None:
 
 
 def test_rejects_a_kind_of_another_value_type_as_the_sign() -> None:
-    count = ArtifactKind("ex/count", int)
+    count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="ChooseBySign.*'sign'"):
         ChooseBySign(sign=count, output=OUTPUT)  # type: ignore[arg-type]
@@ -357,7 +358,7 @@ def test_a_plain_gated_amount_is_one_candidate() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = Artifact(ArtifactKind("ex/other", Decimal), D("9"))
+    other = Artifact(AmountKind("ex/other"), D("9"))
 
     result = three_way().compute((other, *inputs("1", **FULL)))
 

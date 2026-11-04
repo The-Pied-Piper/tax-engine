@@ -27,8 +27,8 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import Form, Manifest
-from tax_engine.domain.record_list import RecordListKind
 from tests.jurisdictions.ca_on.manifest_families import capital_gains_deduction_t657, t2048
 from tests.jurisdictions.ca_on.manifest_families import t936 as family
 from tests.jurisdictions.ca_on.manifest_support import input_names, inputs_text, lists

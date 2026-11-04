@@ -17,9 +17,10 @@ from typing import Any
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import (
     NO_ROUNDING,
@@ -34,9 +35,9 @@ from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPerce
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
-ELECTED = ArtifactKind("ex/elected", Decimal)
-SHARE = ArtifactKind("ex/share", Decimal)
-ALLOCATED = ArtifactKind("ex/allocated", Decimal)
+ELECTED = AmountKind("ex/elected")
+SHARE = AmountKind("ex/share")
+ALLOCATED = AmountKind("ex/allocated")
 
 
 def rounding(rule: RoundingRule = CENT) -> ParameterDataset[RoundingOnly]:

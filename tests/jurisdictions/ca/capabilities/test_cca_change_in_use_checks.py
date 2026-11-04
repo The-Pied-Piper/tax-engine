@@ -30,10 +30,11 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_change_in_use_checks import (
     CcaChangeInUseChecks,
 )
@@ -286,5 +287,5 @@ def test_rejects_a_money_kind_for_its_output() -> None:
     with pytest.raises(InvalidCapabilityError, match="CcaChangeInUseChecks.*'output'"):
         CcaChangeInUseChecks(
             CLASSES,
-            ArtifactKind("ex/other_amount", Decimal),  # type: ignore[arg-type]
+            AmountKind("ex/other_amount"),  # type: ignore[arg-type]
         )

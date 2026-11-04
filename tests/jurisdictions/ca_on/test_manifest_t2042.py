@@ -24,8 +24,8 @@ from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import Form, Manifest
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import FARMING_INCOME, T2042_STATEMENTS
 from tests.jurisdictions.ca_on.manifest_families import t2042
 from tests.jurisdictions.ca_on.manifest_support import (

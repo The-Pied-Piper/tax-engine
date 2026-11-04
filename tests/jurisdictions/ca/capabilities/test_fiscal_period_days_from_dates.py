@@ -30,14 +30,13 @@ are refused.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from decimal import Decimal
 from types import MappingProxyType
 from typing import Any, assert_type, cast
 
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
@@ -46,6 +45,7 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRates
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.jurisdictions.ca.capabilities.fiscal_period_days_from_dates import (
@@ -54,9 +54,9 @@ from tax_engine.jurisdictions.ca.capabilities.fiscal_period_days_from_dates impo
 from tax_engine.jurisdictions.ca.trace import FiscalPeriodDaysFromDatesLine
 from tests.jurisdictions.ca.capabilities.cca_table import class_rates
 
-FROM = ArtifactKind("ex/fiscal_period_from", int)
-TO = ArtifactKind("ex/fiscal_period_to", int)
-DAYS = ArtifactKind("ex/fiscal_period_days", int)
+FROM = CountKind("ex/fiscal_period_from")
+TO = CountKind("ex/fiscal_period_to")
+DAYS = CountKind("ex/fiscal_period_days")
 
 
 def capability(full_year_days: int = 365) -> FiscalPeriodDaysFromDates:
@@ -128,7 +128,7 @@ def test_is_built_from_its_slot_names_as_keywords() -> None:
 
 @pytest.mark.parametrize(("slot", "wired_at"), [("from_date", 1), ("to_date", 2)])
 def test_rejects_a_money_kind_for_either_date(slot: str, wired_at: int) -> None:
-    money_kind = cast(Any, ArtifactKind("ex/money", Decimal))
+    money_kind = cast(Any, AmountKind("ex/money"))
     args: list[Any] = [class_rates(), FROM, TO, DAYS]
     args[wired_at] = money_kind
 

@@ -15,7 +15,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -32,8 +33,8 @@ FAMILY = "ca/amt_line_11_is_positive_conditions"
 T691_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf"
 
 # Made up for this test and not registered: the amount tested, and the count it gives.
-LINE_11 = ArtifactKind("ex/amt_line_11", Decimal)
-IS_POSITIVE = ArtifactKind("ex/line_11_is_positive", int)
+LINE_11 = AmountKind("ex/amt_line_11")
+IS_POSITIVE = CountKind("ex/line_11_is_positive")
 
 
 def test_2025_line_11_is_positive_is_the_one_condition() -> None:

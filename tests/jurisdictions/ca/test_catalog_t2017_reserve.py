@@ -20,7 +20,7 @@ from typing import Any
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     T2017_LINE_1,
     T2017_LINE_2,
@@ -92,6 +92,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T2017_ROW_RESERVE,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, RECORD_LISTS, REGISTERED, SIGNED
+from tests.kinds import non_negative
 
 # The ten lists of the row forms, in the order of their lines.
 ROW_LISTS = (
@@ -287,7 +288,7 @@ def test_the_lists_of_qffp_and_qsbcs_reserves_hold_the_three_answers_form_t657_r
     ]
     for kind in T657_ANSWERS:
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
 
 
 def test_the_row_fields_are_the_reserve_inputs_in_the_printed_order() -> None:
@@ -311,10 +312,10 @@ def test_the_row_fields_are_money_except_the_years_and_the_nine_year_answer() ->
         T2017_RESERVE_PREVIOUS_YEAR_CLAIM,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     for count_kind in (T2017_RESERVE_YEARS_AFTER_DISPOSITION, T2017_RESERVE_NINE_YEAR):
         assert count_kind.value_type is int, count_kind.identifier
-        assert count_kind.non_negative is True, count_kind.identifier
+        assert non_negative(count_kind) is True, count_kind.identifier
 
 
 def test_the_counts_are_registered_as_counts() -> None:
@@ -322,20 +323,20 @@ def test_the_counts_are_registered_as_counts() -> None:
     assert T2017_RESERVE_NINE_YEAR.identifier in COUNTS
     assert T2017_RESERVE_NINE_YEAR_CHECKED.identifier in COUNTS
     assert T2017_RESERVE_NINE_YEAR_CHECKED.value_type is int
-    assert T2017_RESERVE_NINE_YEAR_CHECKED.non_negative is True
+    assert non_negative(T2017_RESERVE_NINE_YEAR_CHECKED) is True
 
 
 def test_the_later_year_count_is_a_whole_number_registered_as_a_count() -> None:
     assert T2017_RESERVE_LATER_YEAR.identifier == "ca/t2017_reserve_later_year"
     assert T2017_RESERVE_LATER_YEAR.identifier in COUNTS
     assert T2017_RESERVE_LATER_YEAR.value_type is int
-    assert T2017_RESERVE_LATER_YEAR.non_negative is True
+    assert non_negative(T2017_RESERVE_LATER_YEAR) is True
 
 
 def test_the_later_year_maximum_and_the_claim_limit_are_money_of_the_row_form() -> None:
     for kind in (T2017_RESERVE_LATER_YEAR_MAXIMUM, T2017_RESERVE_CLAIM_LIMIT):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert T2017_RESERVE_LATER_YEAR_MAXIMUM.identifier == "ca/t2017_reserve_later_year_maximum"
     assert T2017_RESERVE_CLAIM_LIMIT.identifier == "ca/t2017_reserve_claim_limit"
 
@@ -343,26 +344,26 @@ def test_the_later_year_maximum_and_the_claim_limit_are_money_of_the_row_form() 
 def test_the_starting_inputs_and_the_totals_are_non_negative_money() -> None:
     for kind in (*STARTING, *ENTERED, *TOTALS):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_signed_lines_are_signed_money_and_are_in_the_signed_set() -> None:
     for kind in SIGNED_LINES:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
         assert kind.identifier in SIGNED, kind.identifier
 
 
 def test_the_row_reserve_is_the_export_the_row_forms_share() -> None:
     assert T2017_ROW_RESERVE.identifier == "ca/t2017_row_reserve"
     assert T2017_ROW_RESERVE.value_type is Decimal
-    assert T2017_ROW_RESERVE.non_negative is True
+    assert non_negative(T2017_ROW_RESERVE) is True
 
 
 def test_the_intermediate_kinds_of_the_calculation_are_registered_money() -> None:
     for kind in INTERMEDIATE:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_the_intermediate_kinds_are_in_the_registry_beside_the_row_reserve(
@@ -492,8 +493,8 @@ def test_the_checked_answers_and_the_row_reserves_form_t657_reads_are_registered
     # The reserve of the previous year a row carries into 2025, and the change in the reserve that
     # Form T657 reads: previous year's claim less the 2025 reserve, so signed.
     assert T2017_ROW_PREVIOUS_RESERVE.identifier == "ca/t2017_row_previous_reserve"
-    assert T2017_ROW_PREVIOUS_RESERVE.non_negative is True
+    assert non_negative(T2017_ROW_PREVIOUS_RESERVE) is True
     assert T2017_ROW_CHANGE.identifier == "ca/t2017_row_change"
-    assert T2017_ROW_CHANGE.non_negative is False
+    assert non_negative(T2017_ROW_CHANGE) is False
     assert T2017_ROW_CHANGE.identifier in SIGNED
     assert T2017_ROW_CHANGE.identifier in REGISTERED

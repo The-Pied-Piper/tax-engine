@@ -244,6 +244,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T4_QPP_SECOND_ADDITIONAL_BOX_17A,
     T4_QPP_SLIP_COUNT,
 )
+from tests.kinds import non_negative
 
 INPUT_AMOUNTS: tuple[ArtifactKind[Decimal], ...] = (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
@@ -834,7 +835,7 @@ def test_every_rc381_kind_is_non_negative() -> None:
         *RESULT_AMOUNTS,
     )
     for kind in kinds:
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     # A rate kind is bounded by `Rate` itself (0 to 1), as the Ontario CARE credit rate is.
 
 
@@ -867,7 +868,7 @@ def test_the_rc381_lines_that_may_be_negative_are_signed() -> None:
     # ("Line 119 minus line 120" and "Line 122 minus line 123", no floor: each can be a cent below
     # zero when line 116 rounds up) and the earnings subject to contributions (line 70 is signed).
     for kind in SIGNED_AMOUNTS:
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
 
 
 # The words of the form each result's docstring quotes.
@@ -1062,7 +1063,7 @@ def squashed(text: str) -> str:
 
 
 def docstring_of(name: str) -> str:
-    """The string right after `NAME = CATALOG.declare("<name>", ...)` in a catalog module."""
+    """The string right after `NAME = <Kind>.declare(CATALOG, "<name>", ...)` in a module."""
     folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
@@ -1071,9 +1072,9 @@ def docstring_of(name: str) -> str:
                 continue
             arguments = statement.value.args
             if not (
-                arguments
-                and isinstance(arguments[0], ast.Constant)
-                and arguments[0].value == name
+                len(arguments) > 1
+                and isinstance(arguments[1], ast.Constant)
+                and arguments[1].value == name
                 and isinstance(following, ast.Expr)
                 and isinstance(following.value, ast.Constant)
             ):
@@ -1110,4 +1111,4 @@ def test_the_t4_slip_counts_are_registered_whole_numbers_of_0_or_more(
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is int
-        assert kind.non_negative is True
+        assert non_negative(kind) is True

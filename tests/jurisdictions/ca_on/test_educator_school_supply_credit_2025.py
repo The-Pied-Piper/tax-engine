@@ -18,9 +18,10 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
@@ -33,9 +34,9 @@ T1_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r
 
 # Made up for this test and not registered: the supplies paid (line 46800), the part of it that
 # counts and the credit (line 46900).
-PAID = ArtifactKind("ex/paid", Decimal)
-COUNTED = ArtifactKind("ex/counted", Decimal)
-CREDIT = ArtifactKind("ex/credit", Decimal)
+PAID = AmountKind("ex/paid")
+COUNTED = AmountKind("ex/counted")
+CREDIT = AmountKind("ex/credit")
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 

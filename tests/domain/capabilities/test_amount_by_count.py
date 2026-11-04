@@ -23,7 +23,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.domain.capabilities as core
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.amount_by_count import AmountForCount
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
@@ -34,6 +34,7 @@ from tax_engine.domain.errors import (
     NoAmountForCountError,
     ValidationError,
 )
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -50,8 +51,8 @@ D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-MONTHS = ArtifactKind("ex/month_count", int)
-MONTHLY_AMOUNT = ArtifactKind("ex/monthly_amount", Decimal)
+MONTHS = CountKind("ex/month_count")
+MONTHLY_AMOUNT = AmountKind("ex/monthly_amount")
 
 
 def values() -> AmountByCount:
@@ -144,7 +145,7 @@ def test_rejects_a_list_of_kinds_for_its_count() -> None:
 
 
 def test_mypy_rejects_wiring_a_money_kind_for_its_count() -> None:
-    money = ArtifactKind("ex/money_count", Decimal)
+    money = AmountKind("ex/money_count")
     # An ArtifactKind[Decimal] is not an ArtifactKind[int]; the ignore fails under mypy
     # (warn_unused_ignores) if it is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="AmountForCount.*'count'"):
@@ -152,7 +153,7 @@ def test_mypy_rejects_wiring_a_money_kind_for_its_count() -> None:
 
 
 def test_mypy_rejects_wiring_an_int_kind_for_its_output() -> None:
-    other_count = ArtifactKind("ex/other_count", int)
+    other_count = CountKind("ex/other_count")
     # An ArtifactKind[int] is not Money; the ignore fails under mypy (warn_unused_ignores) if it
     # is ever accepted. At run time, building it fails too.
     with pytest.raises(InvalidCapabilityError, match="AmountForCount.*'output'"):
@@ -251,7 +252,7 @@ def test_a_zero_row_is_a_plain_zero_under_a_rounding_rule() -> None:
 
 
 def test_ignores_artifacts_it_does_not_consume() -> None:
-    other = ArtifactKind("ex/other", Decimal)
+    other = AmountKind("ex/other")
 
     result = capability().compute((Artifact(other, D("9")), Artifact(MONTHS, 3)))
 

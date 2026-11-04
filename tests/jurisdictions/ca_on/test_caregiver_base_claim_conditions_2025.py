@@ -26,8 +26,9 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputOutOfRangeError
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -65,16 +66,14 @@ DEPENDANT_REFUSED_TEXT = (
 
 # Made up for this test and not registered: the two caregiver flags, the two claims they build on,
 # and the counts of each pair and their checked counts.
-SPOUSE_CAREGIVER = ArtifactKind("ex/spouse_caregiver_eligible", int)
-SPOUSES = ArtifactKind("ex/spouses_claimed", int)
-DEPENDANT_CAREGIVER = ArtifactKind("ex/dependant_caregiver_eligible", int)
-DEPENDANTS = ArtifactKind("ex/eligible_dependants_checked", int)
-SPOUSE_WITHOUT = ArtifactKind("ex/spouse_caregiver_without_spouse_amount", int)
-SPOUSE_WITHOUT_CHECKED = ArtifactKind("ex/spouse_caregiver_without_spouse_amount_checked", int)
-DEPENDANT_WITHOUT = ArtifactKind("ex/dependant_caregiver_without_dependant_amount", int)
-DEPENDANT_WITHOUT_CHECKED = ArtifactKind(
-    "ex/dependant_caregiver_without_dependant_amount_checked", int
-)
+SPOUSE_CAREGIVER = CountKind("ex/spouse_caregiver_eligible")
+SPOUSES = CountKind("ex/spouses_claimed")
+DEPENDANT_CAREGIVER = CountKind("ex/dependant_caregiver_eligible")
+DEPENDANTS = CountKind("ex/eligible_dependants_checked")
+SPOUSE_WITHOUT = CountKind("ex/spouse_caregiver_without_spouse_amount")
+SPOUSE_WITHOUT_CHECKED = CountKind("ex/spouse_caregiver_without_spouse_amount_checked")
+DEPENDANT_WITHOUT = CountKind("ex/dependant_caregiver_without_dependant_amount")
+DEPENDANT_WITHOUT_CHECKED = CountKind("ex/dependant_caregiver_without_dependant_amount_checked")
 
 
 def _more_than_0(position: int) -> ConditionPart:

@@ -26,6 +26,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     FISH_TOTAL_EXPENSES_DEDUCTIBLE,
     T2121_STATEMENTS,
 )
+from tests.kinds import non_negative as declared_non_negative
 
 # (identifier, constant, value type, non-negative): the two amounts are signed like line 9368, which
 # they are the lesser of or a choice of.
@@ -54,7 +55,7 @@ def test_each_fishing_boat_kind_is_registered_under_its_name(
     assert constant.identifier == identifier
     assert registry.get(identifier) is constant
     assert constant.value_type is value_type
-    assert constant.non_negative is non_negative
+    assert declared_non_negative(constant) is non_negative
 
 
 def test_the_answer_is_the_last_field_of_each_t2121_statement_and_its_check_is_not_a_field() -> (

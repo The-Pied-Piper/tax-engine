@@ -15,7 +15,8 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
@@ -29,10 +30,10 @@ FAMILY = "ca/amt_foreign_taxes_ratio_rounding"
 
 # Made up for this test and not registered: the amount, the numerator, the denominator and the
 # quotient.
-AMOUNT = ArtifactKind("ex/amt_part_7_line_11", Decimal)
-NUMERATOR = ArtifactKind("ex/amt_part_4_line_9", Decimal)
-DENOMINATOR = ArtifactKind("ex/amt_part_7_foreign_taxes_paid", Decimal)
-OUTPUT = ArtifactKind("ex/amt_part_7_line_12", Decimal)
+AMOUNT = AmountKind("ex/amt_part_7_line_11")
+NUMERATOR = AmountKind("ex/amt_part_4_line_9")
+DENOMINATOR = AmountKind("ex/amt_part_7_foreign_taxes_paid")
+OUTPUT = AmountKind("ex/amt_part_7_line_12")
 
 
 def test_2025_amt_foreign_taxes_ratio_rounding_is_half_up_to_the_cent() -> None:

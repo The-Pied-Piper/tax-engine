@@ -31,13 +31,14 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -56,18 +57,18 @@ ON479_FILE = Path(__file__).parents[3] / "tests" / "fixtures" / "cra-forms-2025"
 
 # Made up for this test and not registered: the medical expenses (line 3), the lines that follow
 # from them, the two net incomes (lines 6 and 7) and the lines that follow from those.
-MEDICAL = ArtifactKind("ex/medical", Decimal)
-BEFORE_MAXIMUM = ArtifactKind("ex/before_maximum", Decimal)
-LINE_5 = ArtifactKind("ex/line_5", Decimal)
-OWN_INCOME = ArtifactKind("ex/own_income", Decimal)
-SPOUSE_INCOME = ArtifactKind("ex/spouse_income", Decimal)
-FAMILY_INCOME = ArtifactKind("ex/family_income", Decimal)
-BASE = ArtifactKind("ex/base", Decimal)
-OVER_BASE = ArtifactKind("ex/over_base", Decimal)
-LINE_12 = ArtifactKind("ex/line_12", Decimal)
-LINE_13 = ArtifactKind("ex/line_13", Decimal)
-CLAIMS = ArtifactKind("ex/claims", int)
-CLAIMED = ArtifactKind("ex/claimed", Decimal)
+MEDICAL = AmountKind("ex/medical")
+BEFORE_MAXIMUM = AmountKind("ex/before_maximum")
+LINE_5 = AmountKind("ex/line_5")
+OWN_INCOME = AmountKind("ex/own_income")
+SPOUSE_INCOME = AmountKind("ex/spouse_income")
+FAMILY_INCOME = AmountKind("ex/family_income")
+BASE = AmountKind("ex/base")
+OVER_BASE = AmountKind("ex/over_base")
+LINE_12 = AmountKind("ex/line_12")
+LINE_13 = AmountKind("ex/line_13")
+CLAIMS = CountKind("ex/claims")
+CLAIMED = AmountKind("ex/claimed")
 
 
 def squashed(text: str) -> str:

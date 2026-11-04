@@ -39,6 +39,7 @@ from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import CapabilityResult
 from tax_engine.domain.errors import InputAboveBoundError
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
@@ -57,7 +58,7 @@ def factor(column: str, row: str) -> str:
 # Made up for this test and not registered: column A to G per row, lines 4 and 6, the claim and
 # line 7, and what is left of line 13 after each row.
 def kind(name: str) -> ArtifactKind[Decimal]:
-    return ArtifactKind(f"ex/{name}", Decimal)
+    return AmountKind(f"ex/{name}")
 
 
 TAXABLE_GAINS = kind("taxable_gains")

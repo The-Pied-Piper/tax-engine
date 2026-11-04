@@ -34,11 +34,12 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_additions_checks import (
     CcaVehicleAdditionsChecks,
 )
@@ -288,7 +289,7 @@ def test_rejects_a_money_kind_for_its_output() -> None:
             prescribed_amounts(),
             CLASSES,
             SALES_TAX_RATE,
-            ArtifactKind("ex/other_amount", Decimal),  # type: ignore[arg-type]
+            AmountKind("ex/other_amount"),  # type: ignore[arg-type]
         )
 
 

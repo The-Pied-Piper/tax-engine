@@ -11,7 +11,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     ABIL_AFTER_QBT_REDUCTION,
     ABIL_CLAIMED_AFTER_1984_AND_BEFORE_2025,
@@ -266,6 +266,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     US_SOCIAL_SECURITY_TREATY_DEDUCTION,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, SIGNED
+from tests.kinds import non_negative
 
 
 def test_the_taxable_income_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
@@ -566,7 +567,7 @@ def test_the_us_social_security_treaty_deduction_kinds_are_registered(
     ):
         assert registry.get(kind.identifier) is kind
         assert kind.value_type is Decimal
-        assert kind.non_negative is True
+        assert non_negative(kind) is True
         assert kind.identifier not in SIGNED
     for count in (
         US_SOCIAL_SECURITY_RESIDENT_SINCE_BEFORE_1996,
@@ -588,11 +589,11 @@ def test_the_taxable_income_signed_is_the_signed_twin_of_the_taxable_income(
     assert TAXABLE_INCOME_SIGNED is not TAXABLE_INCOME
     assert TAXABLE_INCOME_SIGNED.identifier == "ca/taxable_income_signed"
     assert TAXABLE_INCOME_SIGNED.value_type is Decimal
-    assert TAXABLE_INCOME_SIGNED.non_negative is False
+    assert non_negative(TAXABLE_INCOME_SIGNED) is False
     assert registry.get("ca/taxable_income_signed") is TAXABLE_INCOME_SIGNED
     assert registry.kind("ca/taxable_income_signed") is TAXABLE_INCOME_SIGNED
     assert "ca/taxable_income_signed" in SIGNED
-    assert TAXABLE_INCOME.non_negative is True
+    assert non_negative(TAXABLE_INCOME) is True
     assert "ca/taxable_income" not in SIGNED
 
 
@@ -602,8 +603,8 @@ def test_the_pre_1986_capital_loss_balance_is_signed_money(registry: ArtifactReg
     # 2025: line 1 minus line 2" (confirmed from the PDF; no .txt published) prints no floor, so
     # the kind is not declared non-negative, as the Federal Worksheet's lines 5 and 9.
     assert PRE_1986_CAPITAL_LOSS_BALANCE.value_type is Decimal
-    assert PRE_1986_CAPITAL_LOSS_BALANCE.non_negative is False
-    assert registry.kind("ca/pre_1986_capital_loss_balance").non_negative is False
+    assert non_negative(PRE_1986_CAPITAL_LOSS_BALANCE) is False
+    assert non_negative(registry.kind("ca/pre_1986_capital_loss_balance")) is False
     assert "ca/pre_1986_capital_loss_balance" in SIGNED
 
 
@@ -642,7 +643,7 @@ def test_the_deductions_the_foreign_tax_credit_subtracts_are_non_negative_money(
         EXEMPT_INCOME_DEDUCTIONS_CHECKED,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
 
 
@@ -655,7 +656,7 @@ def test_the_checked_exempt_income_deductions_are_registered_non_negative_money(
     # of the input `ca/exempt_income_deductions`.
     assert registry.get("ca/exempt_income_deductions_checked") is EXEMPT_INCOME_DEDUCTIONS_CHECKED
     assert EXEMPT_INCOME_DEDUCTIONS_CHECKED.value_type is Decimal
-    assert EXEMPT_INCOME_DEDUCTIONS_CHECKED.non_negative is True
+    assert non_negative(EXEMPT_INCOME_DEDUCTIONS_CHECKED) is True
     assert registry.kind("ca/exempt_income_deductions_checked") is EXEMPT_INCOME_DEDUCTIONS_CHECKED
     assert "ca/exempt_income_deductions_checked" not in SIGNED
 
@@ -757,7 +758,7 @@ def test_the_percentage_allocated_maximum_and_checked_kinds_are_registered_besid
     assert registry.kind("ca/qbt_percentage_allocated_checked") is QBT_PERCENTAGE_ALLOCATED_CHECKED
     for kind in (QBT_PERCENTAGE_ALLOCATED_MAXIMUM, QBT_PERCENTAGE_ALLOCATED_CHECKED):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert QBT_PERCENTAGE_ALLOCATED_CHECKED is not QBT_PERCENTAGE_ALLOCATED
 
 
@@ -778,7 +779,7 @@ def test_the_election_eligible_amount_maximum_and_checked_kinds_are_registered_b
     )
     for kind in (QBT_ELECTION_ELIGIBLE_AMOUNT_MAXIMUM, QBT_ELECTION_ELIGIBLE_AMOUNT_CHECKED):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     assert QBT_ELECTION_ELIGIBLE_AMOUNT_CHECKED is not QBT_ELECTION_ELIGIBLE_AMOUNT
 
 
@@ -844,7 +845,7 @@ def test_the_form_t2048_kinds_are_money_and_counts() -> None:
         QBT_CHART_A_NET_INVESTMENT_LOSS_AFTER_EARLIER,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
     # "election is for a QBT", "gains are QSBCS/QFFP" and "you have investment expenses in 2025"
     # are 0 or 1, the pattern of the other yes/no inputs.
     for count in (
@@ -854,7 +855,7 @@ def test_the_form_t2048_kinds_are_money_and_counts() -> None:
         QBT_ELECTION_IS_QBT_IN_ORDER,
     ):
         assert count.value_type is int, count.identifier
-        assert count.non_negative is True, count.identifier
+        assert non_negative(count) is True, count.identifier
 
 
 def test_the_form_t2048_lines_26_and_27_are_signed_as_the_form_prints_them() -> None:
@@ -868,7 +869,7 @@ def test_the_form_t2048_lines_26_and_27_are_signed_as_the_form_prints_them() -> 
         QBT_INVESTMENT_INCOME,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
 
 
 def test_the_t2048_dispositions_kind_is_a_record_list_of_the_nine_inputs(
@@ -905,7 +906,7 @@ def test_the_shared_investment_facts_are_registered_non_negative_amounts(
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is Decimal, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
         assert kind not in T2048_DISPOSITIONS.fields, identifier
 
 
@@ -921,7 +922,7 @@ def test_the_investment_expenses_answer_is_a_registered_count_and_not_a_disposit
     ):
         assert registry.get(identifier) is kind
         assert kind.value_type is int, identifier
-        assert kind.non_negative is True, identifier
+        assert non_negative(kind) is True, identifier
     assert QBT_HAS_INVESTMENT_EXPENSES not in T2048_DISPOSITIONS.fields
 
 
@@ -1081,7 +1082,7 @@ def test_the_form_t657_amounts_are_money_non_negative_except_the_signed_lines() 
     )
     for kind in signed:
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is False, kind.identifier
+        assert non_negative(kind) is False, kind.identifier
     for kind in (
         T657_NET_NON_ELIGIBLE_TAXABLE_CAPITAL_GAINS,
         T657_GAINS_1985_TO_1991,
@@ -1152,7 +1153,7 @@ def test_the_form_t657_amounts_are_money_non_negative_except_the_signed_lines() 
         T657_CHART_1_COLUMN_D,
     ):
         assert kind.value_type is Decimal, kind.identifier
-        assert kind.non_negative is True, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
 
 
 def test_chart_1_is_a_record_list_of_one_record_for_each_year_row(
@@ -1228,7 +1229,7 @@ def squashed(text: str) -> str:
 
 
 def docstring_of(name: str) -> str:
-    """The string right after `NAME = CATALOG.declare("<name>", ...)` in a catalog module."""
+    """The string right after `NAME = <Kind>.declare(CATALOG, "<name>", ...)` in a module."""
     folder = Path(tax_engine.jurisdictions.ca.catalog.__file__).parent
     for path in sorted(folder.glob("*.py")):
         body = ast.parse(path.read_text()).body
@@ -1237,9 +1238,9 @@ def docstring_of(name: str) -> str:
                 continue
             arguments = statement.value.args
             if not (
-                arguments
-                and isinstance(arguments[0], ast.Constant)
-                and arguments[0].value == name
+                len(arguments) > 1
+                and isinstance(arguments[1], ast.Constant)
+                and arguments[1].value == name
                 and isinstance(following, ast.Expr)
                 and isinstance(following.value, ast.Constant)
             ):
