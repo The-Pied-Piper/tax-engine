@@ -3,6 +3,10 @@
 For the return lines the form prints with "if negative, enter 0" after adding: the manifest
 decides which parts are added, and in which order they are listed in the trace. Like `Sum` it
 has no dataset, so it never rounds; unlike it, a total below zero becomes a plain `Decimal(0)`.
+
+Any part may be blank (`BLANK_ALLOWED`), and the manifest step's `blank:` line says what a blank
+does, for the whole list or for one part by its identifier (`BLANK_PER_ITEM`), as for `Sum`. A
+total that passes a blank on is blank, so the zero floor is applied only to a filled sum.
 """
 
 from __future__ import annotations
@@ -22,6 +26,8 @@ class SumNotBelowZero(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal]}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"parts"})
+    BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset({"parts"})
 
     def __init__(self, parts: tuple[Money, ...], output: Money) -> None:
         """Wire the capability: the kinds it adds, in manifest order, and the kind it produces."""
