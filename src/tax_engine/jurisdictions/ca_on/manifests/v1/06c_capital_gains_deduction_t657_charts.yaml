@@ -45,6 +45,11 @@ capabilities:
         - ca/t657_chart_2024_period_1_amount_f
         - ca/t657_chart_2024_period_1_amount_g
         - ca/t657_chart_2024_period_1_amount_h
+    # H is left blank when the chart is not completed (T657 Step 3: "If you tick Yes, complete the
+    # corresponding chart for that year."). The form prints no sentence for a chart not completed; a
+    # project rule: its blank amount H blanks this total, and the 0 floor is not applied to a blank.
+    blank:
+      ca/t657_chart_2024_period_1_amount_h: pass_on
     produces:
       output: ca/chart_2024_period_1_amounts_f_to_h
   # Chart 2024 Period 1 "= × 1/2 = I" (the amounts F to H, times the 1/2 printed on the form).
@@ -153,6 +158,11 @@ capabilities:
         - ca/t657_chart_2024_period_2_amount_f
         - ca/t657_chart_2024_period_2_amount_g
         - ca/t657_chart_2024_period_2_amount_h
+    # H is left blank when the chart is not completed (T657 Step 3: "If you tick Yes, complete the
+    # corresponding chart for that year."). The form prints no sentence for a chart not completed; a
+    # project rule: its blank amount H blanks this total, and the 0 floor is not applied to a blank.
+    blank:
+      ca/t657_chart_2024_period_2_amount_h: pass_on
     produces:
       output: ca/chart_2024_period_2_amounts_f_to_h
   # Chart 2024 Period 2 "= × 1/2 = I".
