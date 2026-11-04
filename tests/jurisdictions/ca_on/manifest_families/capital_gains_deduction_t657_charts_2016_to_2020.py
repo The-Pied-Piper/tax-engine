@@ -1,7 +1,8 @@
 """The CA-ON manifest entries of Form T657 Charts 2016 to 2020, Part 1 and Part 2 each
 (`test_manifest.py`).
-The steps are in the manifest parts `06e_capital_gains_deduction_t657_charts_2016_to_2018.yaml` and
-`06f_capital_gains_deduction_t657_charts_2019_to_2020.yaml`.
+The steps are in the manifest parts `06e_capital_gains_deduction_t657_charts_2016_to_2018.yaml`
+(Charts 2016 and 2017), `06l_capital_gains_deduction_t657_chart_2018.yaml` (Chart 2018, split out to
+stay under the part size cap) and `06f_capital_gains_deduction_t657_charts_2019_to_2020.yaml`.
 The steps are in the manifest part `06e_capital_gains_deduction_t657_charts_2016_to_2020.yaml`.
 The charts are computed in the form's year order: Chart 2016 reads the amount B choice (the
 line 19 of Chart 2 or the (2016-1) calculation) and nothing carried in; each of Charts 2017 to 2020
