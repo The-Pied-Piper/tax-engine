@@ -253,6 +253,7 @@ STEPS = {
                 "ca/chart_2021_part_1_amount_i",
             ),
         },
+        blank={"ca/chart_2021_part_1_amount_i": "pass_on"},
         produces={"output": "ca/chart_2021_part_1_amount_j"},
     ),
     # Chart 2021 Part 1 "Enter whichever is less: amount E or amount J." K.
@@ -278,6 +279,7 @@ STEPS = {
                 "ca/chart_2020_total_carried",
             ),
         },
+        blank={"ca/chart_2021_part_1_amount_k": "pass_on"},
         produces={"output": "ca/chart_2021_part_1_amount_m"},
     ),
     # Chart 2021 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
@@ -356,6 +358,7 @@ STEPS = {
                 "ca/chart_2021_part_2_amount_g",
             ),
         },
+        blank={"ca/chart_2021_part_2_amount_g": "pass_on"},
         produces={"output": "ca/chart_2021_part_2_amount_h"},
     ),
     # Chart 2021 Part 2 "Enter whichever is less: amount E or amount H." I.
@@ -381,6 +384,7 @@ STEPS = {
                 "ca/chart_2021_part_1_amount_m",
             ),
         },
+        blank={"ca/chart_2021_part_2_amount_i": "pass_on"},
         produces={"output": "ca/chart_2021_part_2_amount_k"},
     ),
     # Chart 2021 Part 2 "Enter whichever is less: amount H or amount K." L.
@@ -528,6 +532,7 @@ STEPS = {
                 "ca/chart_2022_part_1_amount_i",
             ),
         },
+        blank={"ca/chart_2022_part_1_amount_i": "pass_on"},
         produces={"output": "ca/chart_2022_part_1_amount_j"},
     ),
     # Chart 2022 Part 1 "Enter whichever is less: amount E or amount J." K.
@@ -553,6 +558,7 @@ STEPS = {
                 "ca/chart_2021_total_carried",
             ),
         },
+        blank={"ca/chart_2022_part_1_amount_k": "pass_on"},
         produces={"output": "ca/chart_2022_part_1_amount_m"},
     ),
     # Chart 2022 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
@@ -630,6 +636,7 @@ STEPS = {
                 "ca/chart_2022_part_2_amount_g",
             ),
         },
+        blank={"ca/chart_2022_part_2_amount_g": "pass_on"},
         produces={"output": "ca/chart_2022_part_2_amount_h"},
     ),
     # Chart 2022 Part 2 "Enter whichever is less: amount E or amount H." I.
@@ -655,6 +662,7 @@ STEPS = {
                 "ca/chart_2022_part_1_amount_m",
             ),
         },
+        blank={"ca/chart_2022_part_2_amount_i": "pass_on"},
         produces={"output": "ca/chart_2022_part_2_amount_k"},
     ),
     # Chart 2022 Part 2 "Enter whichever is less: amount H or amount K." L.
@@ -799,6 +807,7 @@ STEPS = {
                 "ca/chart_2023_part_1_amount_i",
             ),
         },
+        blank={"ca/chart_2023_part_1_amount_i": "pass_on"},
         produces={"output": "ca/chart_2023_part_1_amount_j"},
     ),
     # Chart 2023 Part 1 "Enter whichever is less: amount E or amount J." K.
@@ -824,6 +833,7 @@ STEPS = {
                 "ca/chart_2022_total_carried",
             ),
         },
+        blank={"ca/chart_2023_part_1_amount_k": "pass_on"},
         produces={"output": "ca/chart_2023_part_1_amount_m"},
     ),
     # Chart 2023 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
@@ -901,6 +911,7 @@ STEPS = {
                 "ca/chart_2023_part_2_amount_g",
             ),
         },
+        blank={"ca/chart_2023_part_2_amount_g": "pass_on"},
         produces={"output": "ca/chart_2023_part_2_amount_h"},
     ),
     # Chart 2023 Part 2 "Enter whichever is less: amount E or amount H." I.
@@ -926,6 +937,7 @@ STEPS = {
                 "ca/chart_2023_part_1_amount_m",
             ),
         },
+        blank={"ca/chart_2023_part_2_amount_i": "pass_on"},
         produces={"output": "ca/chart_2023_part_2_amount_k"},
     ),
     # Chart 2023 Part 2 "Enter whichever is less: amount H or amount K." L.

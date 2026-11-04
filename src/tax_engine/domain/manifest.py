@@ -41,7 +41,8 @@ class CapabilitySelection:
     artifact identifiers, and a consumed slot may instead map to a list of identifiers, kept in
     order as a tuple. `blank` maps a consumed slot to what a blank in it does: the text of the
     fallback value taken in its place, `pass_on`, or `compute` (the class decides in code); a slot
-    not named refuses a blank. Each is
+    not named refuses a blank. For a list slot a class opens to it (`BLANK_PER_ITEM`), the name may
+    instead be the identifier of one artifact in the list, giving the rule for that part. Each is
     kept as a read-only copy of what it was given.
     """
 

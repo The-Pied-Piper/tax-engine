@@ -1,7 +1,8 @@
 """The CA-ON manifest entries of Form T657 Charts 2016 to 2020, Part 1 and Part 2 each
 (`test_manifest.py`).
-The steps are in the manifest parts `06e_capital_gains_deduction_t657_charts_2016_to_2018.yaml` and
-`06f_capital_gains_deduction_t657_charts_2019_to_2020.yaml`.
+The steps are in the manifest parts `06e_capital_gains_deduction_t657_charts_2016_to_2018.yaml`
+(Charts 2016 and 2017), `06l_capital_gains_deduction_t657_chart_2018.yaml` (Chart 2018, split out to
+stay under the part size cap) and `06f_capital_gains_deduction_t657_charts_2019_to_2020.yaml`.
 The steps are in the manifest part `06e_capital_gains_deduction_t657_charts_2016_to_2020.yaml`.
 The charts are computed in the form's year order: Chart 2016 reads the amount B choice (the
 line 19 of Chart 2 or the (2016-1) calculation) and nothing carried in; each of Charts 2017 to 2020
@@ -340,6 +341,10 @@ STEPS = {
                 "ca/chart_2016_part_1_amount_g",
             ),
         },
+        blank={
+            "ca/chart_2016_part_2_amount_g": "pass_on",
+            "ca/chart_2016_part_1_amount_g": "pass_on",
+        },
         produces={"output": "ca/chart_2016_part_2_amount_i"},
     ),
     # Chart 2016 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
@@ -501,6 +506,7 @@ STEPS = {
                 "ca/chart_2016_total_carried",
             ),
         },
+        blank={"ca/chart_2017_part_1_amount_i": "pass_on"},
         produces={"output": "ca/chart_2017_part_1_amount_k"},
     ),
     # Chart 2017 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
@@ -585,6 +591,7 @@ STEPS = {
                 "ca/chart_2017_part_1_amount_k",
             ),
         },
+        blank={"ca/chart_2017_part_2_amount_g": "pass_on"},
         produces={"output": "ca/chart_2017_part_2_amount_i"},
     ),
     # Chart 2017 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
@@ -746,6 +753,7 @@ STEPS = {
                 "ca/chart_2017_total_carried",
             ),
         },
+        blank={"ca/chart_2018_part_1_amount_i": "pass_on"},
         produces={"output": "ca/chart_2018_part_1_amount_k"},
     ),
     # Chart 2018 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
@@ -830,6 +838,7 @@ STEPS = {
                 "ca/chart_2018_part_1_amount_k",
             ),
         },
+        blank={"ca/chart_2018_part_2_amount_g": "pass_on"},
         produces={"output": "ca/chart_2018_part_2_amount_i"},
     ),
     # Chart 2018 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
@@ -991,6 +1000,7 @@ STEPS = {
                 "ca/chart_2018_total_carried",
             ),
         },
+        blank={"ca/chart_2019_part_1_amount_i": "pass_on"},
         produces={"output": "ca/chart_2019_part_1_amount_k"},
     ),
     # Chart 2019 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
@@ -1075,6 +1085,7 @@ STEPS = {
                 "ca/chart_2019_part_1_amount_k",
             ),
         },
+        blank={"ca/chart_2019_part_2_amount_g": "pass_on"},
         produces={"output": "ca/chart_2019_part_2_amount_i"},
     ),
     # Chart 2019 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of
@@ -1236,6 +1247,7 @@ STEPS = {
                 "ca/chart_2019_total_carried",
             ),
         },
+        blank={"ca/chart_2020_part_1_amount_i": "pass_on"},
         produces={"output": "ca/chart_2020_part_1_amount_k"},
     ),
     # Chart 2020 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount K
@@ -1320,6 +1332,7 @@ STEPS = {
                 "ca/chart_2020_part_1_amount_k",
             ),
         },
+        blank={"ca/chart_2020_part_2_amount_g": "pass_on"},
         produces={"output": "ca/chart_2020_part_2_amount_i"},
     ),
     # Chart 2020 Part 2 "Enter whichever is less: amount F or amount I." J, the total amount of

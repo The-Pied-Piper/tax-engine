@@ -167,6 +167,7 @@ STEPS = {
                 "ca/chart_2023_total_carried",
             ),
         },
+        blank={"ca/chart_2024_period_1_amount_l": "pass_on"},
         produces={"output": "ca/chart_2024_period_1_amount_n"},
     ),
     # Chart 2024 Period 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount N
@@ -277,6 +278,10 @@ STEPS = {
                 "ca/chart_2024_period_2_amount_l",
                 "ca/chart_2024_period_1_amount_n",
             ),
+        },
+        blank={
+            "ca/chart_2024_period_2_amount_l": "pass_on",
+            "ca/chart_2024_period_1_amount_n": "0",
         },
         produces={"output": "ca/chart_2024_period_2_amount_n"},
     ),

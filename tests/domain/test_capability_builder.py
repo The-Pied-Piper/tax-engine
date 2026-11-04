@@ -789,3 +789,63 @@ def test_a_fallback_too_long_to_read_as_a_whole_number_is_an_invalid_selection()
         CapabilityBuilder().build(
             chosen, Counted, {}, registry({"ex/counted": counted, "ex/counted_total": total})
         )
+
+
+# --- a blank rule for one kind in a list slot ---------------------------------------------------
+
+
+@cache
+def per_item_class() -> Any:
+    class PerItem(total_class()):  # type: ignore[misc]
+        """`Total`, whose `parts` may be blank, each part with its own rule."""
+
+        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"parts"})
+        BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset({"parts"})
+
+    return PerItem
+
+
+def build_per_item(blank: Mapping[str, str], cls: Any = None) -> Any:
+    chosen = CapabilitySelection(
+        name="ex/total_up",
+        params={},
+        consumes={"parts": ("ex/part_a", "ex/part_b", "ex/part_c")},
+        produces={"total": "ex/total"},
+        blank=blank,
+    )
+    return CapabilityBuilder().build(chosen, cls or per_item_class(), {}, registry())
+
+
+def test_an_identifier_under_blank_gives_the_rule_for_that_one_part() -> None:
+    built = build_per_item({"parts": "pass_on", "ex/part_b": "0"})
+
+    zeroed = built.run((Artifact(PART_A, D(1)), Artifact(PART_B, BLANK), Artifact(PART_C, D(2))))
+    passed = built.run((Artifact(PART_A, BLANK), Artifact(PART_B, D(1)), Artifact(PART_C, D(2))))
+
+    assert zeroed.outputs == (Artifact(TOTAL, D(3)),)
+    assert passed.outputs == (Artifact(TOTAL, BLANK),)
+
+
+def test_a_part_rule_alone_leaves_the_other_parts_refusing_a_blank() -> None:
+    built = build_per_item({"ex/part_b": "pass_on"})
+
+    with pytest.raises(DomainError, match="'part_a'.*may not be blank"):
+        built.run((Artifact(PART_A, BLANK), Artifact(PART_B, D(1)), Artifact(PART_C, D(2))))
+
+
+def test_a_part_fallback_is_read_as_the_value_type_of_its_slot() -> None:
+    with pytest.raises(InvalidSelectionError, match="blank rule for 'ex/part_b'.*'lots'"):
+        build_per_item({"ex/part_b": "lots"})
+
+
+def test_a_part_the_selection_does_not_consume_under_blank_is_an_invalid_selection() -> None:
+    with pytest.raises(InvalidSelectionError, match="'ex/source' is given under blank but is"):
+        build_per_item({"ex/source": "pass_on"})
+
+
+def test_a_part_rule_on_a_class_that_does_not_take_one_is_an_invalid_selection() -> None:
+    class OneRule(per_item_class()):  # type: ignore[misc]
+        BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset()
+
+    with pytest.raises(InvalidSelectionError, match="slot 'parts' takes one blank rule"):
+        build_per_item({"ex/part_b": "pass_on"}, OneRule)
