@@ -21,6 +21,10 @@ capabilities:
         - ca/cpp_part_4_completed_checked
         - ca/cpp_part_5_completed_checked
       amounts: []
+    # "Complete this part if you are reporting ... If not, leave this part blank.": a blank count
+    # reads as the part not completed (0).
+    blank:
+      counts: "0"
     produces:
       output: ca/cpp_part_4_and_part_5_both
   # The count above is refused when it is 1: an input error naming Part 4 and Part 5 both completed
@@ -44,6 +48,10 @@ capabilities:
         - ca/cpp_part_4_completed_checked
       amounts:
         - ca/t4_cpp_pensionable_earnings_outside_quebec
+    # "Complete this part if you are reporting ... If not, leave this part blank.": a blank count
+    # reads as the part not completed (0).
+    blank:
+      counts: "0"
     produces:
       output: ca/cpp_part_4_with_employment_earnings
   - name: ca/count_refused_by_conditions

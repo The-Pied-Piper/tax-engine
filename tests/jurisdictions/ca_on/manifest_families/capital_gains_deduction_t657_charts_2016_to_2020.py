@@ -393,6 +393,7 @@ STEPS = {
                 "ca/chart_2016_part_1_amount_g",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2016_part_2_applies"},
     ),
     # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount G
@@ -639,6 +640,7 @@ STEPS = {
                 "ca/chart_2017_part_1_amount_k",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2017_part_2_applies"},
     ),
     # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K
@@ -885,6 +887,7 @@ STEPS = {
                 "ca/chart_2018_part_1_amount_k",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2018_part_2_applies"},
     ),
     # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K
@@ -1131,6 +1134,7 @@ STEPS = {
                 "ca/chart_2019_part_1_amount_k",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2019_part_2_applies"},
     ),
     # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K
@@ -1377,6 +1381,7 @@ STEPS = {
                 "ca/chart_2020_part_1_amount_k",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2020_part_2_applies"},
     ),
     # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K

@@ -431,6 +431,7 @@ STEPS = {
                 "ca/chart_2021_part_1_amount_m",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2021_part_2_applies"},
     ),
     # The total carried forward: Part 2's amount L when Part 2 is completed, else Part 1's amount M
@@ -706,6 +707,7 @@ STEPS = {
                 "ca/chart_2022_part_1_amount_m",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2022_part_2_applies"},
     ),
     # Chart 2022 total carried: Part 2's amount L when Part 2 is completed, else Part 1's amount M.
@@ -979,6 +981,7 @@ STEPS = {
                 "ca/chart_2023_part_1_amount_m",
             ),
         },
+        blank={"counts": "0", "amounts": "compute"},
         produces={"output": "ca/chart_2023_part_2_applies"},
     ),
     # Chart 2023 total carried: Part 2's amount L when Part 2 is completed, else Part 1's amount M.

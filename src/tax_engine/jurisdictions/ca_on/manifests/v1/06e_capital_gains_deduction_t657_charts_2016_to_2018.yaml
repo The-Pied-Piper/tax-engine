@@ -193,6 +193,13 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2016_part_1_amount_g
+    # Chart 2016 Part 2 is completed only when the filer "want[s] to claim the additional deduction":
+    # a blank tick reads as not ticked (0). A skipped chart leaves Part 1's amounts blank; with
+    # the tick at No that is enough to leave Part 2 alone. A Yes tick on a skipped chart
+    # contradicts itself (Part 2 needs Part 1's figures) and is refused, naming the blank amount.
+    blank:
+      counts: "0"
+      amounts: compute
     produces:
       output: ca/chart_2016_part_2_applies
   # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount G (the
@@ -425,6 +432,13 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2017_part_1_amount_k
+    # Chart 2017 Part 2 is completed only when the filer "want[s] to claim the additional deduction":
+    # a blank tick reads as not ticked (0). A skipped chart leaves Part 1's amounts blank; with
+    # the tick at No that is enough to leave Part 2 alone. A Yes tick on a skipped chart
+    # contradicts itself (Part 2 needs Part 1's figures) and is refused, naming the blank amount.
+    blank:
+      counts: "0"
+      amounts: compute
     produces:
       output: ca/chart_2017_part_2_applies
   # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K (the
@@ -657,6 +671,13 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2018_part_1_amount_k
+    # Chart 2018 Part 2 is completed only when the filer "want[s] to claim the additional deduction":
+    # a blank tick reads as not ticked (0). A skipped chart leaves Part 1's amounts blank; with
+    # the tick at No that is enough to leave Part 2 alone. A Yes tick on a skipped chart
+    # contradicts itself (Part 2 needs Part 1's figures) and is refused, naming the blank amount.
+    blank:
+      counts: "0"
+      amounts: compute
     produces:
       output: ca/chart_2018_part_2_applies
   # The total carried forward: Part 2 amount J when Part 2 is completed, else Part 1 amount K (the
