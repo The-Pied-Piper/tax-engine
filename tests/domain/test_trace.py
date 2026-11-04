@@ -16,7 +16,7 @@ from typing import Any, cast
 
 import pytest
 
-from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, RecordListKind
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.class_rates import (
@@ -34,7 +34,6 @@ from tax_engine.domain.parameters.rate_table import RateTableRow
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.domain.parameters.taper import Taper
 from tax_engine.domain.parameters.threshold_rate import ThresholdRate
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.trace import (
     AmountByCountLine,
     AmountOrDividedByRateLine,

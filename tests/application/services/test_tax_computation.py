@@ -3112,7 +3112,7 @@ MAXIMUM_AMOUNT = AmountKind("ex/maximum_amount")
 @cache
 def dependants_kind() -> Any:
     """The made-up `ex/dependants` record-list kind, declared like any package's."""
-    from tax_engine.domain.record_list import RecordListKind
+    from tax_engine.domain.kinds import RecordListKind
 
     catalog = ArtifactCatalog(Namespace("ex"))
     return RecordListKind.declare(catalog, "dependants", fields=(DEPENDANT_NET_INCOME,))
@@ -3466,7 +3466,7 @@ def test_an_input_that_is_also_an_output_is_carried_onto_the_worksheet_as_entere
 @cache
 def business_number_kind() -> Any:
     """The made-up `ex/business_number` digits kind of nine digits, declared like any package's."""
-    from tax_engine.domain.digits import DigitsKind
+    from tax_engine.domain.kinds import DigitsKind
 
     return DigitsKind.declare(ArtifactCatalog(Namespace("ex")), "business_number", digits=9)
 
@@ -3496,7 +3496,7 @@ def test_a_carried_digits_entry_is_returned_as_entered(text: str) -> None:
 
 
 def test_a_digits_kind_of_another_number_of_digits_is_not_the_carried_entry() -> None:
-    from tax_engine.domain.digits import DigitsKind
+    from tax_engine.domain.kinds import DigitsKind
 
     other = DigitsKind("ex/business_number", digits=5)
 

@@ -18,7 +18,8 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     ADVANCED_CANADA_WORKERS_BENEFIT,
     AGED_18_OR_OLDER_AT_END_OF_2025,

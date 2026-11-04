@@ -39,16 +39,16 @@ import yaml
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK, Blank
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     InvalidJurisdictionCodeError,
     InvalidRegistrationError,
     UnknownRegistrationError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import DigitsKind, RecordListKind
 from tax_engine.domain.manifest import Form
 from tax_engine.domain.parameters.rate import Rate
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 
 _SECTIONS = frozenset({"jurisdiction", "tax_year", "description", "sources", "inputs", "expected"})
 

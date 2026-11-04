@@ -26,10 +26,11 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.class_rates import ClassElection, ClassRate, ClassRates
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rate import Rate
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import CCA_RATE_ELECTION
 from tests.jurisdictions.ca.capabilities.cca_table import (
     ALL_CLASSES,

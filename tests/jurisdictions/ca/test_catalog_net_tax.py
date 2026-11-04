@@ -5,7 +5,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.domain.artifact import ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_INCOME_NOT_BELOW_ZERO,
     COMMISSION_INCOME_NOT_BELOW_ZERO,

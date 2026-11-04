@@ -6,8 +6,7 @@ and journalism credits, instalments and the refundable medical expense supplemen
 
 from __future__ import annotations
 
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 PROVINCIAL_CREDITS = AmountKind.declare(CATALOG, "provincial_credits", non_negative=True)

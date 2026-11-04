@@ -6,8 +6,7 @@ the short-term rental rows of Form T776 Chart A and the business statement of Fo
 
 from __future__ import annotations
 
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     CCA_ADDITIONS,

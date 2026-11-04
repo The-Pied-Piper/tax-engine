@@ -14,8 +14,8 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_DIEP_ADDITIONS,
     CCA_DIEP_PROCEEDS,

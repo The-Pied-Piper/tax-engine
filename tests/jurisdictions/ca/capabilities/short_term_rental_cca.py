@@ -13,11 +13,11 @@ from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     NON_COMPLIANT_CCA,

@@ -19,8 +19,8 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.errors import MissingArtifactError
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_entries_total import CcaEntriesTotal
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,

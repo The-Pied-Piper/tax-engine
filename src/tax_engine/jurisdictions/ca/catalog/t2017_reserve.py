@@ -11,8 +11,7 @@ row (`ca/t2017_row_reserve`) and the lines of the summary are the forms' exports
 
 from __future__ import annotations
 
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 T2017_LINE_1 = AmountKind.declare(CATALOG, "t2017_line_1", non_negative=True)

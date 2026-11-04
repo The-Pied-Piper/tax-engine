@@ -30,8 +30,8 @@ from tax_engine.domain.errors import (
     InvalidRegistrationError,
     NegativeArtifactError,
 )
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.registry import Namespace
 from tests.kinds import OddKind, non_negative
 

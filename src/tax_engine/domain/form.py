@@ -45,8 +45,9 @@ from tax_engine.domain.errors import (
     NotFoundError,
     ValidationError,
 )
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import Form
-from tax_engine.domain.record_list import Record, RecordList, RecordListKind
+from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
 

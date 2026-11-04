@@ -31,8 +31,8 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.errors import InputAboveBoundError, ValidationError
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import Form, Manifest
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.trace.forms import FormInstanceLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (

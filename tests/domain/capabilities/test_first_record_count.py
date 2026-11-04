@@ -28,8 +28,8 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
     ValidationError,
 )
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FirstRecordCountLine
 from tests.kinds import OddKind
 

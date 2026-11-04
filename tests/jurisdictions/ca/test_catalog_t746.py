@@ -16,7 +16,7 @@ from typing import Any
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     T746_CONDITIONS_MET,
     T746_CONTRIBUTION_YEAR,

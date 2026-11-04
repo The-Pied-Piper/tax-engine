@@ -27,7 +27,7 @@ from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import InvalidManifestError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import TextKind
+from tax_engine.domain.kinds import RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
     Default,
@@ -35,7 +35,6 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.registry import Namespace
 from tests.kinds import AutoKinds
 from tests.manifest_support import required_inputs

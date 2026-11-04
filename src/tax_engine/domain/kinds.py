@@ -1,23 +1,34 @@
-"""The plain artifact kinds: amount, count, rate and text.
+"""The artifact kinds: amount, count, rate, text, digits and record list.
 
 Each is an `ArtifactKind` of one value type that says for itself how it reads text, what it
 refuses and what a package declares it with. A package declares one on its catalog with the
 class's own `declare`, e.g. `AmountKind.declare(CATALOG, "taxable_income", non_negative=True)`.
 An amount or a count may be non-negative; a count that is, is also how a yes/no is written, 1
-for yes and 0 for no. A new kind of value is a new subclass of `ArtifactKind`, not an edit here.
+for yes and 0 for no. A digits kind holds a fixed count of ASCII digits as text, a business
+number say; a record-list kind holds a variable number of same-shaped records (the `RecordList`
+value is in record_list.py). A new kind of value is a new subclass of `ArtifactKind`, not an edit
+here.
 """
 
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from decimal import Decimal, InvalidOperation
+from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind
-from tax_engine.domain.errors import InvalidTextError
+from tax_engine.domain.blank import BLANK
+from tax_engine.domain.errors import (
+    InvalidRecordError,
+    InvalidRegistrationError,
+    InvalidTextError,
+)
 from tax_engine.domain.parameters.rate import Rate
+from tax_engine.domain.record_list import RecordList
 
-__all__ = ["AmountKind", "CountKind", "RateKind", "TextKind"]
+__all__ = ["AmountKind", "CountKind", "DigitsKind", "RateKind", "RecordListKind", "TextKind"]
 
 # A number's spelling in text: an optional minus sign and digits, a decimal point and digits.
 _DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
@@ -184,3 +195,126 @@ class TextKind(ArtifactKind[str]):
     def read(self, text: str) -> Artifact[str]:
         """The text itself."""
         return Artifact(self, text)
+
+
+@dataclass(frozen=True)
+class DigitsKind(ArtifactKind[str]):
+    """A digits kind: its values are texts of exactly its `digits` ASCII digits, or blank.
+
+    `digits` is an `int` of at least 1 (a `bool` is not one), else an InvalidRegistrationError
+    naming the kind. Two kinds of one identifier with another number of digits are not equal.
+    Packages declare theirs with `declare`.
+    """
+
+    digits: int = field(kw_only=True)
+
+    default_spelling = "a string"
+
+    def __init__(self, identifier: str, *, digits: int) -> None:
+        # Written by hand, so the dataclass keeps it: the value type is always `str` and never
+        # non-negative.
+        object.__setattr__(self, "identifier", identifier)
+        object.__setattr__(self, "value_type", str)
+        object.__setattr__(self, "digits", digits)
+        self.__post_init__()
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        # `bool` is a subclass of `int` but not a number of digits, so the int check is exact.
+        if type(self.digits) is not int or self.digits < 1:
+            raise InvalidRegistrationError(
+                f"digits kind {self.identifier!r}: the number of digits must be a whole number "
+                f"of at least 1, got {self.digits!r}"
+            )
+
+    @classmethod
+    def declare(cls, catalog: ArtifactCatalog, local_id: str, digits: int) -> DigitsKind:
+        """Declare the digits kind `<namespace>/<local_id>` of `digits` digits on `catalog`.
+
+        The kind lands in the catalog's namespace, e.g. `ex/business_number`. A local id the
+        catalog already declared is an error.
+        """
+        kind = cls(catalog.namespace.identifier(local_id), digits=digits)
+        catalog.add(kind)
+        return kind
+
+    def read(self, text: str) -> Artifact[str]:
+        """The digits `text` spells: exactly this kind's number of ASCII digits, or blank."""
+        try:
+            self.check_value(text)
+        except InvalidTextError as exc:
+            raise InvalidTextError(f"is not a value of the kind: {exc}") from None
+        return Artifact(self, text)
+
+    def check_value(self, value: str) -> None:
+        """Refuse a text that is neither blank nor exactly this kind's number of ASCII digits."""
+        if value and not (len(value) == self.digits and value.isascii() and value.isdigit()):
+            raise InvalidTextError(
+                f"{self.identifier} must be {self.digits} digits, or blank, got {value!r}"
+            )
+
+
+@dataclass(frozen=True)
+class RecordListKind(ArtifactKind[RecordList]):
+    """A record-list kind: its values are `RecordList`s of exactly its `fields`, in that order.
+
+    The fields are `Decimal`, `int` or record-list kinds, none or more, no identifier twice, else an
+    InvalidRegistrationError naming the kind; they may come from any package's catalog. Two kinds
+    of one identifier with other fields are not equal. Packages declare theirs with `declare`.
+    """
+
+    fields: tuple[ArtifactKind[Any], ...] = field(kw_only=True)
+
+    def __init__(self, identifier: str, *, fields: Sequence[ArtifactKind[Any]]) -> None:
+        # Written by hand, so the dataclass keeps it: the value type is always `RecordList`, never
+        # non-negative, and the fields may be any sequence, which `__post_init__` normalises.
+        object.__setattr__(self, "identifier", identifier)
+        object.__setattr__(self, "value_type", RecordList)
+        object.__setattr__(self, "fields", tuple(fields))
+        self.__post_init__()
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        try:
+            RecordList(self.fields, ())
+        except InvalidRecordError as exc:
+            raise InvalidRegistrationError(f"record list {self.identifier!r}: {exc}") from None
+
+    @classmethod
+    def declare(
+        cls, catalog: ArtifactCatalog, local_id: str, fields: Sequence[ArtifactKind[Any]]
+    ) -> RecordListKind:
+        """Declare the record-list kind `<namespace>/<local_id>` of `fields` on `catalog`.
+
+        The kind lands in the catalog's namespace, e.g. `ex/dependants`; its fields may come from
+        any package's catalog. A local id the catalog already declared is an error.
+        """
+        kind = cls(catalog.namespace.identifier(local_id), fields=fields)
+        catalog.add(kind)
+        return kind
+
+    def read(self, text: str) -> Artifact[RecordList]:
+        """Refuse any text: a record list is not spelled as text, only as an empty list default."""
+        raise InvalidTextError("must be an empty list")
+
+    def read_default(self, declared: str | tuple[()] | None) -> Artifact[RecordList]:
+        """Blank for `None`, an empty list of this kind's fields for `()`, else `read`'s refusal."""
+        if declared is None:
+            return Artifact(self, BLANK)
+        if isinstance(declared, str):
+            return self.read(declared)
+        return Artifact(self, RecordList(self.fields, ()))
+
+    @property
+    def is_record_field(self) -> bool:
+        """A record-list kind can be a field of a record: a record may hold a list of records."""
+        return True
+
+    def check_value(self, value: RecordList) -> None:
+        """Refuse a record list built with other fields than this kind's, as a TypeError."""
+        if value.fields != self.fields:
+            raise TypeError(
+                f"{self.identifier} must be a record list of fields "
+                f"{[kind.identifier for kind in self.fields]}, "
+                f"got fields {[kind.identifier for kind in value.fields]}"
+            )

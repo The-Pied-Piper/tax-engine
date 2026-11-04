@@ -6,8 +6,7 @@ employer), net federal tax, total payable and income tax deducted.
 
 from __future__ import annotations
 
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 RC359_EPSP_CONTRIBUTIONS = AmountKind.declare(

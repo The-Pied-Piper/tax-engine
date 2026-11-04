@@ -18,7 +18,6 @@ from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
 from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, Blank, BlankRule, Compute, PassOn
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     BlankValueError,
@@ -27,8 +26,8 @@ from tax_engine.domain.errors import (
     InvalidCompositionError,
     NegativeArtifactError,
 )
-from tax_engine.domain.kinds import AmountKind, CountKind, TextKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import (
     BlankFallbackLine,
     BlankPassedOnLine,

@@ -32,8 +32,8 @@ from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
 )
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.rental_additions_total import RentalAdditionsTotal
 from tax_engine.jurisdictions.ca.catalog import (

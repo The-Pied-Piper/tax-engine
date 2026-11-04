@@ -20,7 +20,7 @@ from typing import Any
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     T2017_LINE_1,
     T2017_LINE_2,

@@ -31,8 +31,8 @@ from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
 from tax_engine.jurisdictions.ca.catalog import (
     CARRYING_CHARGES_INTEREST_EXPENSES_AND_OTHER_EXPENSES,

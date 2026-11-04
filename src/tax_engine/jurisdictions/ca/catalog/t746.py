@@ -13,8 +13,7 @@ count of 1 or 0, and a deduction is allowed when at least one holds."""
 
 from __future__ import annotations
 
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 T746_CONTRIBUTION_YEAR = CountKind.declare(CATALOG, "t746_contribution_year", non_negative=True)

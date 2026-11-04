@@ -13,9 +13,7 @@ kinds come from `tax_engine.jurisdictions.ca.catalog`. Identifiers are stable:
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.digits import DigitsKind
-from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RateKind, RecordListKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_CARE_EXPENSES,

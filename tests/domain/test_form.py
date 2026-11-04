@@ -49,9 +49,9 @@ from tax_engine.domain.errors import (
     ValidationError,
 )
 from tax_engine.domain.form import FormComposition, FormSet
-from tax_engine.domain.kinds import AmountKind, TextKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import Form
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
 

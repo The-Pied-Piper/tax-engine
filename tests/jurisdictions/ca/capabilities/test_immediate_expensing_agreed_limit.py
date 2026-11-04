@@ -50,8 +50,8 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     ValidationError,
 )
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
     ImmediateExpensingAgreedLimit,
 )

@@ -6,8 +6,7 @@ the foreign tax credit with the lines of its business part, and the federal tax 
 
 from __future__ import annotations
 
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 POLITICAL_CREDIT_COLUMN_1_LINE_2 = AmountKind.declare(

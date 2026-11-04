@@ -10,7 +10,8 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidRecordError
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,

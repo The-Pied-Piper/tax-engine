@@ -15,7 +15,7 @@ from pathlib import Path
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,
     CCA_AIIP_ADDITIONS,

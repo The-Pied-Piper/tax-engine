@@ -10,8 +10,8 @@ from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 from tax_engine.jurisdictions.ca.catalog import (

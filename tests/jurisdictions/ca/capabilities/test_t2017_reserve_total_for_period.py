@@ -35,7 +35,7 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     ValidationError,
 )
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -45,7 +45,7 @@ from tax_engine.domain.parameters.conditions import (
 )
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.t2017_reserve_total_for_period import (
     T2017ReserveTotalForPeriod,

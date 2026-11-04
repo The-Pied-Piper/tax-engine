@@ -15,14 +15,12 @@ from 1 ("item 2").
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator, Mapping, Sequence
-from dataclasses import dataclass, field
+from collections.abc import Iterable, Iterator, Mapping
+from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import (
-    Artifact,
-    ArtifactCatalog,
     ArtifactKind,
     HasFloor,
     RecordField,
@@ -31,8 +29,6 @@ from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
     BlankValueError,
     InvalidRecordError,
-    InvalidRegistrationError,
-    InvalidTextError,
     NegativeArtifactError,
 )
 
@@ -172,69 +168,3 @@ class RecordList:
                 )
             values[kind] = value
         return Record(values)
-
-
-@dataclass(frozen=True)
-class RecordListKind(ArtifactKind[RecordList]):
-    """A record-list kind: its values are `RecordList`s of exactly its `fields`, in that order.
-
-    The fields are `Decimal`, `int` or record-list kinds, none or more, no identifier twice, else an
-    InvalidRegistrationError naming the kind; they may come from any package's catalog. Two kinds
-    of one identifier with other fields are not equal. Packages declare theirs with `declare`.
-    """
-
-    fields: tuple[ArtifactKind[Any], ...] = field(kw_only=True)
-
-    def __init__(self, identifier: str, *, fields: Sequence[ArtifactKind[Any]]) -> None:
-        # Written by hand, so the dataclass keeps it: the value type is always `RecordList`, never
-        # non-negative, and the fields may be any sequence, which `__post_init__` normalises.
-        object.__setattr__(self, "identifier", identifier)
-        object.__setattr__(self, "value_type", RecordList)
-        object.__setattr__(self, "fields", tuple(fields))
-        self.__post_init__()
-
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        try:
-            RecordList(self.fields, ())
-        except InvalidRecordError as exc:
-            raise InvalidRegistrationError(f"record list {self.identifier!r}: {exc}") from None
-
-    @classmethod
-    def declare(
-        cls, catalog: ArtifactCatalog, local_id: str, fields: Sequence[ArtifactKind[Any]]
-    ) -> RecordListKind:
-        """Declare the record-list kind `<namespace>/<local_id>` of `fields` on `catalog`.
-
-        The kind lands in the catalog's namespace, e.g. `ex/dependants`; its fields may come from
-        any package's catalog. A local id the catalog already declared is an error.
-        """
-        kind = cls(catalog.namespace.identifier(local_id), fields=fields)
-        catalog.add(kind)
-        return kind
-
-    def read(self, text: str) -> Artifact[RecordList]:
-        """Refuse any text: a record list is not spelled as text, only as an empty list default."""
-        raise InvalidTextError("must be an empty list")
-
-    def read_default(self, declared: str | tuple[()] | None) -> Artifact[RecordList]:
-        """Blank for `None`, an empty list of this kind's fields for `()`, else `read`'s refusal."""
-        if declared is None:
-            return Artifact(self, BLANK)
-        if isinstance(declared, str):
-            return self.read(declared)
-        return Artifact(self, RecordList(self.fields, ()))
-
-    @property
-    def is_record_field(self) -> bool:
-        """A record-list kind can be a field of a record: a record may hold a list of records."""
-        return True
-
-    def check_value(self, value: RecordList) -> None:
-        """Refuse a record list built with other fields than this kind's, as a TypeError."""
-        if value.fields != self.fields:
-            raise TypeError(
-                f"{self.identifier} must be a record list of fields "
-                f"{[kind.identifier for kind in self.fields]}, "
-                f"got fields {[kind.identifier for kind in value.fields]}"
-            )

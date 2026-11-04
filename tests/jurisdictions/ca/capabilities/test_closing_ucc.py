@@ -35,11 +35,11 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.class_rates import CLASS_RATES, ClassRate, ClassRates
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,

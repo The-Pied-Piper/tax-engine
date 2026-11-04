@@ -18,7 +18,7 @@ import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import ArtifactKind
-from tax_engine.domain.kinds import AmountKind, CountKind, RateKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, RecordListKind
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.class_rates import (
@@ -41,7 +41,6 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.parameters.taper import Taper
 from tax_engine.domain.parameters.threshold_rate import ThresholdRate
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.trace import (
     AmountByCountLine,
     AmountOrDividedByRateLine,

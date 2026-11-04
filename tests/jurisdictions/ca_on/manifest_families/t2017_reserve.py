@@ -28,8 +28,8 @@ from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions

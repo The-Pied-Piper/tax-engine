@@ -17,7 +17,8 @@ from typing import Any, ClassVar
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import InvalidCapabilityError, ValidationError
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.trace import QbtBeforeQccLine
 
 

@@ -32,7 +32,7 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.year_amounts import (
@@ -40,7 +40,7 @@ from tax_engine.domain.parameters.year_amounts import (
     YearAmounts,
     YearAmountsRow,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_class_checks import (
     CcaVehicleClassChecks,
 )

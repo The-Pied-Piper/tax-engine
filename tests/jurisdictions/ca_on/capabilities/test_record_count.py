@@ -20,8 +20,8 @@ from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import RecordCountLine
 from tax_engine.jurisdictions.ca_on.capabilities.record_count import RecordCount
 

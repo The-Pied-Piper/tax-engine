@@ -33,8 +33,8 @@ from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
     DISABILITY_SUPPORTS_DEDUCTION,

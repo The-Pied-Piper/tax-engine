@@ -19,14 +19,13 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
     InvalidRegistrationError,
     InvalidTextError,
 )
-from tax_engine.domain.kinds import CountKind, TextKind
+from tax_engine.domain.kinds import CountKind, DigitsKind, TextKind
 from tax_engine.domain.registry import Namespace
 from tests.kinds import non_negative
 

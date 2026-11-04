@@ -29,8 +29,8 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
-from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_part_b_checks import CcaPartBChecks
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,

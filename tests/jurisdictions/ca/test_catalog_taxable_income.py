@@ -11,7 +11,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactRegistry
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.jurisdictions.ca.catalog import (
     ABIL_AFTER_QBT_REDUCTION,
     ABIL_CLAIMED_AFTER_1984_AND_BEFORE_2025,

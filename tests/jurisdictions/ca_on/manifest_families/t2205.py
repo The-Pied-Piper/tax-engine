@@ -23,8 +23,8 @@ from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.times_count import TimesCount
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
 from tax_engine.jurisdictions.ca.catalog import (
     BORN_IN_1960_OR_EARLIER_CHECKED,

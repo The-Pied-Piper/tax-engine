@@ -24,7 +24,6 @@ from tax_engine.domain.artifact import (
     RecordField,
     YesNo,
 )
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import (
     DomainError,
     DuplicateRegistrationError,
@@ -34,9 +33,15 @@ from tax_engine.domain.errors import (
     NegativeArtifactError,
     UnknownRegistrationError,
 )
-from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, TextKind
+from tax_engine.domain.kinds import (
+    AmountKind,
+    CountKind,
+    DigitsKind,
+    RateKind,
+    RecordListKind,
+    TextKind,
+)
 from tax_engine.domain.parameters.rate import Rate
-from tax_engine.domain.record_list import RecordListKind
 from tax_engine.domain.registry import Namespace, Registry
 from tests.kinds import OddKind, ca_on_kinds, non_negative
 

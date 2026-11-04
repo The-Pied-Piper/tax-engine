@@ -16,10 +16,10 @@ import pytest
 import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_on.catalog
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidRecordError, NegativeArtifactError
+from tax_engine.domain.kinds import DigitsKind, RecordListKind
 from tax_engine.domain.parameters.rate import Rate
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_CARE_EXPENSES,
     DEPENDANT_NET_INCOME,

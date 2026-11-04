@@ -19,10 +19,9 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
-from tax_engine.domain.digits import DigitsKind
 from tax_engine.domain.errors import InvalidManifestError, UnknownRegistrationError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind, CountKind, TextKind
+from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
     Default,
@@ -30,7 +29,7 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tests.kinds import AutoKinds
 from tests.manifest_support import required_inputs
 

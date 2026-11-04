@@ -9,8 +9,7 @@ list of the moves with the lines of each move.
 
 from __future__ import annotations
 
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 ELECTED_SPLIT_PENSION_DEDUCTION = AmountKind.declare(

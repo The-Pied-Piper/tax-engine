@@ -26,10 +26,11 @@ from typing import Any, ClassVar
 from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import InvalidCapabilityError, ValidationError
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.conditions import CONDITIONS, ConditionList, ConditionTest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.catalog import (
     T2017_RESERVE_PARTNERSHIP_YEAR_BEGAN_BEFORE_JUNE_25_2024,

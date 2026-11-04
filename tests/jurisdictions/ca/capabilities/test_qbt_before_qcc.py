@@ -30,8 +30,8 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
     ValidationError,
 )
-from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.qbt_before_qcc import QbtBeforeQcc
 from tax_engine.jurisdictions.ca.trace import QbtBeforeQccLine
 

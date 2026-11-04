@@ -18,10 +18,11 @@ from typing import Any, ClassVar
 from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import InvalidCapabilityError
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca_on.trace import CappedRecordLine
 

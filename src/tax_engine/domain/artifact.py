@@ -9,12 +9,11 @@ registers each catalog explicitly with `ArtifactRegistry.register_catalog`.
 
 `ArtifactKind` is abstract: every kind is one of its subclasses, which own what depends on the
 kind of value: how it reads text, how it is declared and what it refuses. What only some kinds
-have is a Protocol a kind matches by shape (`HasFloor`, `RecordField`, `YesNo`). The plain ones
-are in kinds.py (amount, count, rate, text); a record-list kind (record_list.py) and a digits
-kind (digits.py) are their own classes. A subclass declares itself on a catalog with its own
-`declare`. An amount or a count may be declared non-negative, and then no artifact of it holds a
-value below zero. Names come from the
-jurisdiction's own law or return, never from another system's.
+have is a Protocol a kind matches by shape (`HasFloor`, `RecordField`, `YesNo`). The kinds are in
+kinds.py (amount, count, rate, text, digits and record list). A subclass declares itself on a
+catalog with its own `declare`. An amount or a count may be declared non-negative, and then no
+artifact of it holds a value below zero. Names come from the jurisdiction's own law or return,
+never from another system's.
 """
 
 from __future__ import annotations
@@ -87,8 +86,8 @@ class YesNo(Protocol):
 class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
     """A kind of artifact, named by its identifier `<namespace>/<local id>`, and its value type.
 
-    Abstract: build one of its subclasses (amount, count, rate and text kinds in kinds.py, the
-    record-list and digits kinds); a package declares its own through an `ArtifactCatalog`, with
+    Abstract: build one of its subclasses (amount, count, rate, text, digits and record-list kinds,
+    all in kinds.py); a package declares its own through an `ArtifactCatalog`, with
     the subclass's `declare`. A subclass says how it reads text (`read`) and may refuse values
     (`check_value`). What only some kinds have is a Protocol a kind matches by shape: `HasFloor`,
     `RecordField` and `YesNo`.

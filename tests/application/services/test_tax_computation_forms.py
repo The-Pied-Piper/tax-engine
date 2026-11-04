@@ -43,7 +43,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.form import FormSet
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind, CountKind, TextKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
     Default,
@@ -51,7 +51,7 @@ from tax_engine.domain.manifest import (
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
 from tests.application.services.test_tax_computation import (
     BASE,

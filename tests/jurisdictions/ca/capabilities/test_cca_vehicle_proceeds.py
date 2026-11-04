@@ -74,12 +74,12 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
-from tax_engine.domain.record_list import Record, RecordList, RecordListKind
+from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_proceeds import CcaVehicleProceeds
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_ADDITIONS,

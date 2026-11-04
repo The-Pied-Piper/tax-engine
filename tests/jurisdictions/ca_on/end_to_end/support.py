@@ -14,9 +14,10 @@ from tax_engine.application.services.tax_computation import TaxComputationServic
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.errors import MissingArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_engine.domain.record_list import RecordList, RecordListKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import TraceLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
