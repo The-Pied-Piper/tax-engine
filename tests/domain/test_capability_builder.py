@@ -29,11 +29,12 @@ from tax_engine.domain.errors import (
     InvalidSelectionError,
     UnknownRegistrationError,
 )
-from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import TraceLine
 from tests.kinds import ca_on_kinds
 
@@ -849,3 +850,82 @@ def test_a_part_rule_on_a_class_that_does_not_take_one_is_an_invalid_selection()
 
     with pytest.raises(InvalidSelectionError, match="slot 'parts' takes one blank rule"):
         build_per_item({"ex/part_b": "pass_on"}, OneRule)
+
+
+# --- a blank rule for one field of the records of a record list ---------------------------------
+
+SALES_FIELD = AmountKind("ex/sales")
+COSTS_FIELD = AmountKind("ex/costs")
+
+
+class SalesLessCosts(Capability):
+    """`output` is the sales less the costs over the records of `records`."""
+
+    CONSUMES: ClassVar[Mapping[str, type]] = {"records": RecordList}
+    PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset({"records"})
+
+    def __init__(self, records: RecordListKind, output: Money) -> None:
+        super().__init__(records=records, output=output)
+        self._records = records
+        self._output = output
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        found = self._input(inputs, self._records).value.records
+        total = sum((r[SALES_FIELD] - r[COSTS_FIELD] for r in found), Decimal(0))
+        return CapabilityResult(outputs=(Artifact(self._output, total),), trace=())
+
+
+SALES_LINES = RecordListKind("ex/sales_lines", fields=(SALES_FIELD, COSTS_FIELD))
+
+
+def build_fields(blank_fields: Mapping[str, Mapping[str, str]], cls: Any = None) -> Any:
+    chosen = CapabilitySelection(
+        name="ex/sales_net",
+        params={},
+        consumes={"records": "ex/sales_lines"},
+        produces={"output": "ex/total"},
+        blank_fields=blank_fields,
+    )
+    artifacts = registry(
+        {"ex/sales_lines": SALES_LINES, "ex/sales": SALES_FIELD, "ex/costs": COSTS_FIELD}
+    )
+    return CapabilityBuilder().build(chosen, cls or SalesLessCosts, {}, artifacts)
+
+
+def test_field_rules_under_a_slot_are_read_as_the_type_of_each_field() -> None:
+    built = build_fields({"records": {"ex/sales": "0"}}, SalesLessCosts)
+
+    result = built.run(
+        (
+            Artifact(
+                SALES_LINES,
+                RecordList(SALES_LINES.fields, [{SALES_FIELD: BLANK, COSTS_FIELD: D(1)}]),
+            ),
+        )
+    )
+
+    assert result.outputs == (Artifact(TOTAL, D(-1)),)
+
+
+def test_a_field_fallback_that_is_not_a_number_is_an_invalid_selection() -> None:
+    with pytest.raises(InvalidSelectionError, match="blank rule for field 'ex/sales'.*'lots'"):
+        build_fields({"records": {"ex/sales": "lots"}}, SalesLessCosts)
+
+
+def test_a_field_rule_under_a_name_that_is_not_a_slot_is_an_invalid_selection() -> None:
+    with pytest.raises(InvalidSelectionError, match="'rows' is given under blank but is not"):
+        build_fields({"rows": {"ex/sales": "0"}}, SalesLessCosts)
+
+
+def test_a_field_rule_for_a_class_that_does_not_open_the_slot_is_an_invalid_selection() -> None:
+    class Closed(SalesLessCosts):
+        BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset()
+
+    with pytest.raises(InvalidSelectionError, match="slot 'records' may not have a blank field"):
+        build_fields({"records": {"ex/sales": "0"}}, Closed)
+
+
+def test_a_field_that_is_not_in_the_list_is_an_invalid_selection() -> None:
+    with pytest.raises(InvalidSelectionError, match="'ex/source' is not a field of a record list"):
+        build_fields({"records": {"ex/source": "0"}}, SalesLessCosts)

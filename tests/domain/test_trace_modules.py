@@ -23,7 +23,12 @@ CORE = "tax_engine.domain.trace"
 
 CORE_HOMES: dict[str, tuple[str, ...]] = {
     "base": ("TraceLine",),
-    "blank": ("LeftBlankLine", "BlankFallbackLine", "BlankPassedOnLine"),
+    "blank": (
+        "LeftBlankLine",
+        "BlankFallbackLine",
+        "BlankFieldFallbackLine",
+        "BlankPassedOnLine",
+    ),
     "arithmetic": (
         "RoundedTotalLine",
         "SumLine",

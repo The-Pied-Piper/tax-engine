@@ -74,7 +74,8 @@ class CapabilityBuilder:
         constructor: Callable[..., Capability] = cls
         try:
             rules, per_item = self._blank_rules(selection, cls, artifacts, who)
-            return constructor(**arguments).with_blank_rules(rules, per_item)
+            per_field = self._field_blank_rules(selection, cls, artifacts, who)
+            return constructor(**arguments).with_blank_rules(rules, per_item, per_field)
         except InvalidCapabilityError as error:
             raise InvalidSelectionError(f"{who}: {error}") from error
 
@@ -112,28 +113,55 @@ class CapabilityBuilder:
                         f"{who}: {name!r} is given under blank but is neither a consumed slot "
                         f"of {capability.__name__} nor an artifact the selection consumes"
                     )
-            rule: BlankRule
-            if text == "pass_on":
-                rule = PASS_ON
-            elif text == "compute":
-                rule = COMPUTE
-            else:
-                rule = cls._fallback(capability, slot, name, text, who)
+            label = f"slot {name!r}" if name == slot else repr(name)
+            rule = cls._rule(text, capability.slot_value_type(slot), label, who)
             if slot == name:
                 rules[name] = rule
             else:
                 per_item[artifacts.kind(name)] = rule
         return rules, per_item
 
-    @staticmethod
-    def _fallback(
-        capability: type[Capability], slot: str, name: str, text: str, who: str
-    ) -> BlankRule:
-        """The fallback `text` for `name` (a slot, or a kind in `slot`) read as the slot's own
-        value type.
+    @classmethod
+    def _field_blank_rules(
+        cls,
+        selection: CapabilitySelection,
+        capability: type[Capability],
+        artifacts: ArtifactRegistry,
+        who: str,
+    ) -> dict[str, dict[ArtifactKind[Any], BlankRule]]:
+        """What a blank does in each record field the selection names under a slot: `pass_on`,
+        `compute`, else the fallback text read as the field's own value type.
+
+        Each name is the identifier of a field kind; `Capability.with_blank_rules` checks the slot
+        takes record fields and that the kind is a field of its lists.
         """
-        label = f"slot {name!r}" if name == slot else repr(name)
-        value_type = capability.slot_value_type(slot)
+        per_field: dict[str, dict[ArtifactKind[Any], BlankRule]] = {}
+        for slot, fields in selection.blank_fields.items():
+            if slot not in capability.CONSUMES:
+                raise InvalidSelectionError(
+                    f"{who}: {slot!r} is given under blank but is not a consumed slot "
+                    f"of {capability.__name__}"
+                )
+            per_field[slot] = {}
+            for name, text in fields.items():
+                kind = artifacts.kind(name)
+                per_field[slot][kind] = cls._rule(text, kind.value_type, f"field {name!r}", who)
+        return per_field
+
+    @classmethod
+    def _rule(cls, text: str, value_type: type, label: str, who: str) -> BlankRule:
+        """The rule `text` gives: `pass_on`, `compute`, else a fallback of `value_type`."""
+        if text == "pass_on":
+            return PASS_ON
+        if text == "compute":
+            return COMPUTE
+        return cls._fallback(value_type, label, text, who)
+
+    @staticmethod
+    def _fallback(value_type: type, label: str, text: str, who: str) -> BlankRule:
+        """The fallback `text` for `label` (a slot, a kind in one, or a field) read as
+        `value_type`.
+        """
         pattern = _WHOLE_NUMBER if value_type is int else _DECIMAL_NUMBER
         if value_type not in (Decimal, int) or not pattern.fullmatch(text):
             raise InvalidSelectionError(

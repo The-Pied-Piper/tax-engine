@@ -25,6 +25,7 @@ class RecordTotal(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"records": RecordList}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset({"records"})
 
     def __init__(self, records: RecordListKind, output: Money) -> None:
         """Wire the capability: the record-list kind it adds and the kind it produces.

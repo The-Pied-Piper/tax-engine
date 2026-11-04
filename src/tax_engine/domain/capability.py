@@ -11,7 +11,9 @@ of its consumed slots may ever be blank; the manifest says what a blank does in 
 (`with_blank_rules`), and the base applies it before `compute` runs, so `compute` sees a blank
 only in a slot whose rule is `COMPUTE`, where the class decides in code what the blank means. A
 list slot a class lists in `BLANK_PER_ITEM` may also be given a rule for one kind in it, which
-replaces the slot's own rule for that kind.
+replaces the slot's own rule for that kind. A record-list slot a class lists in
+`BLANK_RECORD_FIELDS` may also be given a rule for each field of its records, applied to that field
+in every record before `compute` runs.
 """
 
 from __future__ import annotations
@@ -36,9 +38,12 @@ from tax_engine.domain.errors import (
     InvalidRegistrationError,
     MissingArtifactError,
 )
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.registry import Namespace, SharedRegistry
 from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, TraceLine
+from tax_engine.domain.trace.blank import BlankField, BlankFieldFallbackLine
 
 
 @dataclass(frozen=True)
@@ -99,6 +104,14 @@ class Capability(ABC):
     declares its own.
     """
 
+    BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset()
+    """The consumed record-list slots whose records may have a blank field. The manifest gives each
+    field a rule (`with_blank_rules`), as for a slot, and the base applies it to that field in
+    every record before `compute` runs; a blank field with no rule is refused. A slot not listed
+    here reaches `compute` with the blank field, and reading it is a BlankValueError. A subclass
+    inherits its parent's slots unless it declares its own.
+    """
+
     def __init_subclass__(cls, **kwargs: Any) -> None:
         """Freeze the slot mappings `cls` declares and check every slot it has against `__init__`.
 
@@ -128,6 +141,13 @@ class Capability(ABC):
                 raise InvalidCapabilityError(
                     f"{cls.__name__}: BLANK_PER_ITEM must be a set of slot names"
                 ) from None
+        if "BLANK_RECORD_FIELDS" in vars(cls):
+            try:
+                cls.BLANK_RECORD_FIELDS = frozenset(cls.BLANK_RECORD_FIELDS)
+            except TypeError:
+                raise InvalidCapabilityError(
+                    f"{cls.__name__}: BLANK_RECORD_FIELDS must be a set of slot names"
+                ) from None
         cls._check_slots()
 
     @classmethod
@@ -145,6 +165,7 @@ class Capability(ABC):
                 declared_in[slot] = mapping
         cls._check_blank_allowed()
         cls._check_blank_per_item()
+        cls._check_blank_record_fields()
         # `__init__`'s own signature, not the class's, so a custom `__new__` cannot hide it; its
         # first parameter (`self`) is skipped, so `self` can never fill a slot.
         _self, *parameters = inspect.signature(cls.__init__).parameters.values()
@@ -172,6 +193,16 @@ class Capability(ABC):
                 raise InvalidCapabilityError(
                     f"{cls.__name__}: BLANK_PER_ITEM slot {slot!r} is not a list slot "
                     "listed in BLANK_ALLOWED"
+                )
+
+    @classmethod
+    def _check_blank_record_fields(cls) -> None:
+        """Refuse a `BLANK_RECORD_FIELDS` entry that is not a consumed slot of record lists."""
+        for slot in cls.BLANK_RECORD_FIELDS:
+            if slot not in cls.CONSUMES or cls.slot_value_type(slot) is not RecordList:
+                raise InvalidCapabilityError(
+                    f"{cls.__name__}: BLANK_RECORD_FIELDS slot {slot!r} is not a consumed slot "
+                    "of record lists"
                 )
 
     @classmethod
@@ -259,6 +290,9 @@ class Capability(ABC):
         self._wired_kinds = wired
         self._blank_rules: Mapping[str, BlankRule] = MappingProxyType({})
         self._item_blank_rules: Mapping[ArtifactKind[Any], BlankRule] = MappingProxyType({})
+        self._field_blank_rules: Mapping[str, Mapping[ArtifactKind[Any], BlankRule]] = (
+            MappingProxyType({})
+        )
         self._blank_rules_given = False
         self._slot_of = {kind: slot for slot in self.CONSUMES for kind in wired[slot]}
         self._consumes = frozenset(kind for slot in self.CONSUMES for kind in wired[slot])
@@ -268,6 +302,7 @@ class Capability(ABC):
         self,
         rules: Mapping[str, BlankRule],
         per_item: Mapping[ArtifactKind[Any], BlankRule] | None = None,
+        per_field: Mapping[str, Mapping[ArtifactKind[Any], BlankRule]] | None = None,
     ) -> Self:
         """Give this capability what a blank does in each consumed slot named in `rules`, and
         return it: the fallback value taken in its place, `PASS_ON`, or `COMPUTE`. A slot without
@@ -276,9 +311,15 @@ class Capability(ABC):
         `per_item` gives the rule for one kind in a list slot listed in `BLANK_PER_ITEM`; it
         replaces the slot's own rule for that kind, and the other kinds in the slot keep theirs.
 
+        `per_field` gives, for a record-list slot listed in `BLANK_RECORD_FIELDS`, the rule for
+        each field of its records, which holds for that field in every record of every list in the
+        slot. A field is a `Decimal` or `int` field, so a fallback is of its own type; a record-list
+        field can only be passed on or computed.
+
         Raises InvalidCapabilityError naming the class and the slot if rules were already given,
         a slot is not in `BLANK_ALLOWED`, a kind is not wired to a consumed slot or its slot is not
-        in `BLANK_PER_ITEM`, or a fallback is not a finite `Decimal` or `int` of exactly the
+        in `BLANK_PER_ITEM`, a slot is not in `BLANK_RECORD_FIELDS` or a field is not one of its
+        lists' fields, or a fallback is not a finite `Decimal` or `int` of exactly the
         slot's value type or is not valid for a kind wired to the slot, such as a negative one for
         a non-negative kind.
         """
@@ -288,7 +329,9 @@ class Capability(ABC):
         for slot, rule in rules.items():
             if slot not in self.BLANK_ALLOWED:
                 raise InvalidCapabilityError(f"{name}: slot {slot!r} may not be blank")
-            self._check_blank_rule(slot, rule, None)
+            self._check_blank_rule(
+                f"slot {slot!r}", self.slot_value_type(slot), rule, self._wired_kinds[slot]
+            )
         items = per_item or {}
         for kind, rule in items.items():
             holder = self._slot_of.get(kind)
@@ -299,38 +342,60 @@ class Capability(ABC):
                     f"{name}: slot {holder!r} takes one blank rule for every kind in it, "
                     f"not one for {kind.identifier!r}"
                 )
-            self._check_blank_rule(holder, rule, (kind,))
+            self._check_blank_rule(f"slot {holder!r}", self.slot_value_type(holder), rule, (kind,))
+        fields = per_field or {}
+        for slot, field_rules in fields.items():
+            if slot not in self.BLANK_RECORD_FIELDS:
+                raise InvalidCapabilityError(f"{name}: slot {slot!r} may not have a blank field")
+            for kind, rule in field_rules.items():
+                if not any(
+                    isinstance(listed, RecordListKind) and kind in listed.fields
+                    for listed in self._wired_kinds[slot]
+                ):
+                    raise InvalidCapabilityError(
+                        f"{name}: {kind.identifier!r} is not a field of a record list in slot "
+                        f"{slot!r}"
+                    )
+                self._check_blank_rule(
+                    f"field {kind.identifier!r} of slot {slot!r}", kind.value_type, rule, (kind,)
+                )
         self._blank_rules = MappingProxyType(dict(rules))
         self._item_blank_rules = MappingProxyType(dict(items))
+        self._field_blank_rules = MappingProxyType(
+            {slot: MappingProxyType(dict(field_rules)) for slot, field_rules in fields.items()}
+        )
         self._blank_rules_given = True
         return self
 
     def _check_blank_rule(
-        self, slot: str, rule: BlankRule, kinds: tuple[ArtifactKind[Any], ...] | None
+        self,
+        where: str,
+        value_type: type,
+        rule: BlankRule,
+        kinds: tuple[ArtifactKind[Any], ...],
     ) -> None:
-        """Refuse a fallback `rule` for `slot` that is not a finite value of the slot's type, or
-        that a kind in `kinds` (default: every kind wired to the slot) could not hold.
+        """Refuse a fallback `rule` for `where` (a slot, or a field) that is not a finite value of
+        `value_type`, or that a kind in `kinds` could not hold.
         """
         name = type(self).__name__
         if isinstance(rule, PassOn | Compute):
             return
-        value_type = self.slot_value_type(slot)
         if value_type not in (Decimal, int):
             raise InvalidCapabilityError(
-                f"{name}: slot {slot!r} takes {value_type.__name__} kinds, so a blank there "
+                f"{name}: {where} takes {value_type.__name__} kinds, so a blank there "
                 "can only be passed on, not replaced by a fallback"
             )
         if type(rule) is not value_type or (isinstance(rule, Decimal) and not rule.is_finite()):
             raise InvalidCapabilityError(
-                f"{name}: blank rule for slot {slot!r} must be PASS_ON, COMPUTE or a finite "
+                f"{name}: blank rule for {where} must be PASS_ON, COMPUTE or a finite "
                 f"{value_type.__name__}, got {rule!r}"
             )
-        for kind in self._wired_kinds[slot] if kinds is None else kinds:
+        for kind in kinds:
             try:
                 Artifact(kind, rule)
             except DomainError as error:
                 raise InvalidCapabilityError(
-                    f"{name}: the blank fallback {rule} for slot {slot!r} is not valid for "
+                    f"{name}: the blank fallback {rule} for {where} is not valid for "
                     f"{kind.identifier!r}: {error}"
                 ) from error
 
@@ -419,16 +484,23 @@ class Capability(ABC):
         was. A blank in a slot with no rule is a BlankNotAllowedError naming the line and the
         slot; that refusal comes before anything else. Otherwise a blank in a `PASS_ON` slot gives
         a blank artifact for every produced kind, with a trace line each and `compute` not
-        called. Otherwise `compute` runs, and a blank in a `COMPUTE` slot reaches it as the blank
+        called. A blank field of a record in a `BLANK_RECORD_FIELDS` slot is treated the same way
+        with the rule given for that field, each blank naming its record by position: a fallback
+        replaces it in a new list, `PASS_ON` blanks the outputs, `COMPUTE` leaves it, and a field
+        with no rule is a BlankNotAllowedError naming the field, the record and the list.
+        Otherwise `compute` runs, and a blank in a `COMPUTE` slot reaches it as the blank
         artifact; a blank among its outputs is a CapabilityContractError, since only a `PASS_ON`
         rule makes an output blank.
         """
         name = type(self).__name__
         kept: list[Artifact[Any]] = []
-        fallbacks: list[BlankFallbackLine] = []
+        fallbacks: list[BlankFallbackLine | BlankFieldFallbackLine] = []
         passed_on: list[ArtifactKind[Any]] = []
+        passed_on_fields: list[BlankField] = []
         for artifact in sorted(inputs, key=lambda each: each.kind.identifier):
             if not artifact.is_blank:
+                if self._slot_of[artifact.kind] in self.BLANK_RECORD_FIELDS:
+                    artifact = self._apply_field_rules(artifact, fallbacks, passed_on_fields)
                 kept.append(artifact)
                 continue
             slot = self._slot_of[artifact.kind]
@@ -444,12 +516,14 @@ class Capability(ABC):
             else:
                 kept.append(Artifact(artifact.kind, rule))
                 fallbacks.append(BlankFallbackLine(artifact.kind, rule))
-        if passed_on:
+        if passed_on or passed_on_fields:
             because = tuple(sorted(passed_on, key=lambda kind: kind.identifier))
             produced = sorted(self.produces, key=lambda kind: kind.identifier)
             return CapabilityResult(
                 outputs=tuple(Artifact(kind, BLANK) for kind in produced),
-                trace=tuple(BlankPassedOnLine(kind, because) for kind in produced),
+                trace=tuple(
+                    BlankPassedOnLine(kind, because, tuple(passed_on_fields)) for kind in produced
+                ),
             )
         result = self.compute(tuple(kept))
         # A non-Artifact output is the worksheet's TypeError to raise, not this check's.
@@ -464,6 +538,44 @@ class Capability(ABC):
                 "only a PASS_ON rule makes an output blank"
             )
         return CapabilityResult(outputs=result.outputs, trace=(*fallbacks, *result.trace))
+
+    def _apply_field_rules(
+        self,
+        artifact: Artifact[Any],
+        fallbacks: list[BlankFallbackLine | BlankFieldFallbackLine],
+        passed_on: list[BlankField],
+    ) -> Artifact[Any]:
+        """The record list `artifact` with each blank field that has a fallback replaced by it.
+
+        A blank field passed on is added to `passed_on` and one to compute is left blank; a fallback
+        taken is added to `fallbacks`. A blank field with no rule is a BlankNotAllowedError.
+        """
+        # Safe: the slot is in BLANK_RECORD_FIELDS, so it takes record lists, and an Artifact is
+        # checked against its kind.
+        records = cast(RecordList, artifact.value)
+        rules = self._field_blank_rules.get(self._slot_of[artifact.kind], {})
+        replaced: list[dict[ArtifactKind[Any], object]] = []
+        for position, record in enumerate(records.records, start=1):
+            values: dict[ArtifactKind[Any], object] = {}
+            for kind in records.fields:
+                if not record.is_blank(kind):
+                    values[kind] = record[kind]
+                    continue
+                here = BlankField(kind, artifact.kind, position)
+                rule = rules.get(kind)
+                if rule is None:
+                    raise BlankNotAllowedError(
+                        f"{type(self).__name__}: {kind.label!r} was left blank in item {position} "
+                        f"of {artifact.kind.label!r}, and it may not be blank there"
+                    )
+                values[kind] = BLANK
+                if isinstance(rule, PassOn):
+                    passed_on.append(here)
+                elif not isinstance(rule, Compute):
+                    values[kind] = rule
+                    fallbacks.append(BlankFieldFallbackLine(here, rule))
+            replaced.append(values)
+        return Artifact(artifact.kind, RecordList(records.fields, replaced))
 
     def _input[V](self, inputs: tuple[Artifact[Any], ...], kind: ArtifactKind[V]) -> Artifact[V]:
         """The one artifact of `kind` in `inputs`; `kind` must be one this consumes."""

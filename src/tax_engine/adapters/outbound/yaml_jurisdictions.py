@@ -29,8 +29,9 @@ A single manifest file is not a part and takes no `form:` key: all of it is the 
 Each selection names a capability and fills its slots: `params` (slot -> family, optional),
 `consumes` (slot -> artifact identifier, or a list of them kept in order as a tuple, optional)
 `blank` (consumed slot, or one artifact identifier in a list slot -> what a blank in it does: the
-text of a fallback value, `pass_on`, or `compute`, which leaves it to the class; optional, a slot
-not named refuses a blank) and
+text of a fallback value, `pass_on`, or `compute`, which leaves it to the class; or a record-list
+slot -> a mapping of one field's identifier to the same, for a blank field in the records; optional,
+a slot or field not named refuses a blank) and
 `produces` (slot -> artifact identifier, required, at least one). Slot names, and whether a
 slot takes one identifier or a list, are not checked against capability classes here.
 The top-level `outputs` list the default form's exports: a required, non-empty list of non-empty
@@ -498,13 +499,29 @@ class YamlJurisdictionSource:
     @classmethod
     def _selection(cls, entry: YamlNode) -> CapabilitySelection:
         fields = entry.require_mapping(_CAPABILITY_KEYS, optional=_OPTIONAL_CAPABILITY_KEYS)
+        blank, blank_fields = cls._blank(fields.optional_field("blank"))
         return CapabilitySelection(
             name=fields.field("name").require_string(),
             params=cls._bindings(fields.optional_field("params")),
             consumes=cls._consumed(fields.optional_field("consumes")),
             produces=cls._produced(fields.field("produces")),
-            blank=cls._bindings(fields.optional_field("blank")),
+            blank=blank,
+            blank_fields=blank_fields,
         )
+
+    @classmethod
+    def _blank(cls, node: YamlNode | None) -> tuple[dict[str, str], dict[str, dict[str, str]]]:
+        """The `blank` section: a slot or artifact bound to a rule's text, or a slot bound to a
+        mapping of record field identifiers to rule texts.
+        """
+        rules: dict[str, str] = {}
+        field_rules: dict[str, dict[str, str]] = {}
+        for name, value in [] if node is None else node.fields():
+            if value.is_mapping():
+                field_rules[name] = value.string_mapping()
+            else:
+                rules[name] = value.require_non_empty_string()
+        return rules, field_rules
 
     @classmethod
     def _produced(cls, node: YamlNode) -> dict[str, str]:

@@ -42,6 +42,7 @@ class StatementProfitsTotal(Capability):
         "positions": RecordList,
     }
     PRODUCES: ClassVar[Mapping[str, type]] = {"total": Decimal}
+    BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset({"records"})
 
     def __init__(
         self,

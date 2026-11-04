@@ -8,7 +8,13 @@ from decimal import Decimal
 
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
-from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine, LeftBlankLine
+from tax_engine.domain.trace.blank import (
+    BlankFallbackLine,
+    BlankField,
+    BlankFieldFallbackLine,
+    BlankPassedOnLine,
+    LeftBlankLine,
+)
 
 
 @english_renderer
@@ -35,6 +41,23 @@ class BlankFallbackRenderer:
         return f"{line.kind.label}: left blank, taken as {figure}"
 
 
+def _where(field: BlankField) -> str:
+    return f"{field.kind.label} (item {field.position} of {field.records.label})"
+
+
+@english_renderer
+class BlankFieldFallbackRenderer:
+    """English text for BlankFieldFallbackLine."""
+
+    line_class = BlankFieldFallbackLine
+
+    def render(self, line: BlankFieldFallbackLine) -> str:
+        """The English sentence for `line`."""
+        fallback = line.fallback
+        figure = EnglishFigures.money(fallback) if isinstance(fallback, Decimal) else str(fallback)
+        return f"{_where(line.field)}: left blank, taken as {figure}"
+
+
 @english_renderer
 class BlankPassedOnRenderer:
     """English text for BlankPassedOnLine."""
@@ -43,6 +66,7 @@ class BlankPassedOnRenderer:
 
     def render(self, line: BlankPassedOnLine) -> str:
         """The English sentence for `line`."""
-        causes = ", ".join(kind.label for kind in line.because)
-        verb = "was" if len(line.because) == 1 else "were"
+        named = [kind.label for kind in line.because] + [_where(f) for f in line.because_fields]
+        causes = ", ".join(named)
+        verb = "was" if len(named) == 1 else "were"
         return f"{line.output.label}: blank because {causes} {verb} blank"

@@ -1839,6 +1839,54 @@ def test_parses_the_blank_rules_of_a_selection(tmp_path: Path) -> None:
     assert selection.blank == {"less": "0", "amount": "pass_on", "other": "compute"}
 
 
+def test_a_blank_mapping_under_a_slot_gives_the_rules_of_the_fields_of_its_records(
+    tmp_path: Path,
+) -> None:
+    write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        """\
+        jurisdiction: EX-ON
+        version: 1
+        valid_from_tax_year: 2025
+        inputs: [{name: ex/lines, required: true}]
+        outputs: [ex/total]
+        capabilities:
+          - name: core/record_total
+            consumes:
+              records: ex/lines
+            blank:
+              records: {ex/sales: "0", ex/costs: pass_on}
+            produces:
+              output: ex/total
+        """,
+    )
+
+    manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
+
+    (selection,) = returned(manifest).capabilities
+    assert selection.blank == {}
+    assert selection.blank_fields == {"records": {"ex/sales": "0", "ex/costs": "pass_on"}}
+
+
+def test_a_field_rule_must_be_a_string(tmp_path: Path) -> None:
+    write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        HEADER
+        + """\
+capabilities:
+  - name: core/record_total
+    consumes: {records: ex/x}
+    blank: {records: {ex/sales: [0]}}
+    produces: {output: ex/y}
+""",
+    )
+
+    with pytest.raises(InvalidManifestError, match="blank"):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
 def test_a_selection_without_blank_rules_has_none(tmp_path: Path) -> None:
     write(tmp_path, "ex-on/manifests/v1.yaml", EX_ON_V1)
 
