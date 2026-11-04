@@ -439,7 +439,7 @@ def test_order_of_a_diamond_is_the_same_for_every_input_order() -> None:
         assert composition.order == (left, right, join)
 
 
-def test_ties_are_broken_by_class_name_without_an_identifier() -> None:
+def test_ties_are_broken_by_class_name_when_unregistered() -> None:
     apple, zebra = Apple(A, C), Zebra(A, B)
 
     for given in ([apple, zebra], [zebra, apple]):
@@ -448,7 +448,7 @@ def test_ties_are_broken_by_class_name_without_an_identifier() -> None:
         assert composition.order == (apple, zebra)
 
 
-def test_ties_are_broken_by_identifier(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_ties_are_broken_by_registered_identifier(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(Zebra, "IDENTIFIER", "ex/first")
     monkeypatch.setattr(Apple, "IDENTIFIER", "ex/second")
     apple, zebra = Apple(A, C), Zebra(A, B)
@@ -457,6 +457,18 @@ def test_ties_are_broken_by_identifier(monkeypatch: pytest.MonkeyPatch) -> None:
         composition = Composition(given, inputs=kinds(A), outputs=kinds(B, C))
 
         assert composition.order == (zebra, apple)
+
+
+def test_a_subclass_of_a_registered_class_is_ordered_by_its_class_name(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(Link, "IDENTIFIER", "ex/aaa")
+    apple, zebra = Apple(A, C), Zebra(A, B)
+
+    for given in ([apple, zebra], [zebra, apple]):
+        composition = Composition(given, inputs=kinds(A), outputs=kinds(B, C))
+
+        assert composition.order == (apple, zebra)
 
 
 def test_ties_between_instances_of_one_class_are_broken_by_what_they_produce() -> None:
