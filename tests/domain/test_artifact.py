@@ -19,6 +19,7 @@ from tax_engine.domain.artifact import (
     ArtifactCatalog,
     ArtifactKind,
     ArtifactRegistry,
+    HasFloor,
     Money,
     RecordField,
     YesNo,
@@ -823,6 +824,32 @@ def test_is_below_floor_only_for_a_non_negative_kind_and_a_value_below_zero() ->
     assert COUNT.is_below_floor(-1)
     assert not COUNT.is_below_floor(0)
     assert not CountKind("ex/c").is_below_floor(-1)
+
+
+@pytest.mark.parametrize(
+    ("kind", "has_floor", "record_field", "yes_no"),
+    [
+        (AmountKind("ex/a"), True, True, False),
+        (CountKind("ex/c"), True, True, True),
+        (RateKind("ex/r"), False, False, False),
+        (TextKind("ex/t"), False, False, False),
+        (NUMBER, False, False, False),
+        (DEPENDANTS, False, True, False),
+        (OddKind("ex/flag", bool), False, False, False),
+    ],
+    ids=["amount", "count", "rate", "text", "digits", "record list", "odd"],
+)
+def test_each_kind_matches_only_the_protocols_it_has(
+    kind: ArtifactKind[Any], has_floor: bool, record_field: bool, yes_no: bool
+) -> None:
+    assert isinstance(kind, HasFloor) is has_floor
+    assert isinstance(kind, RecordField) is record_field
+    assert isinstance(kind, YesNo) is yes_no
+
+
+def test_a_kind_without_a_floor_holds_a_negative_value() -> None:
+    assert Artifact(AmountKind("ex/a"), D(-1)).value == D(-1)
+    assert Artifact(OddKind("ex/flag", int), -1).value == -1
 
 
 def test_a_rate_kind_reads_no_text() -> None:

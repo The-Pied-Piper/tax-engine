@@ -8,11 +8,12 @@ declares its kinds through one `ArtifactCatalog`, which only records them; the c
 registers each catalog explicitly with `ArtifactRegistry.register_catalog`.
 
 `ArtifactKind` is abstract: every kind is one of its subclasses, which own what depends on the
-kind of value: how it reads text, how it is declared, what it refuses, and whether a record can
-hold it or it is a yes/no. The plain ones are in kinds.py (amount, count, rate, text); a
-record-list kind (record_list.py) and a digits kind (digits.py) are their own classes. A subclass
-declares itself on a catalog with its own `declare`. An amount or a count may be declared
-non-negative, and then no artifact of it holds a value below zero. Names come from the
+kind of value: how it reads text, how it is declared and what it refuses. What only some kinds
+have is a Protocol a kind matches by shape (`HasFloor`, `RecordField`, `YesNo`). The plain ones
+are in kinds.py (amount, count, rate, text); a record-list kind (record_list.py) and a digits
+kind (digits.py) are their own classes. A subclass declares itself on a catalog with its own
+`declare`. An amount or a count may be declared non-negative, and then no artifact of it holds a
+value below zero. Names come from the
 jurisdiction's own law or return, never from another system's.
 """
 
@@ -46,7 +47,12 @@ class HasFloor(Protocol):
     """A kind with a lowest value it holds, as a non-negative amount or count does.
 
     Matched by shape: any kind with `is_below_floor` is one; `Artifact` and a record check it
-    before asking, so a kind without a floor says nothing.
+    before asking, so a kind of another sort (text, rate, digits) is never asked. An amount or
+    count kind always matches, whether or not it was declared non-negative; its answer is then
+    always no.
+
+    `value` is `Any` because the amount and count kinds narrow it to `Decimal` and `int`, which a
+    Protocol parameter of a wider type would not accept.
     """
 
     def is_below_floor(self, value: Any) -> bool:
@@ -56,7 +62,10 @@ class HasFloor(Protocol):
 
 @runtime_checkable
 class RecordField(Protocol):
-    """A kind a record can hold as one of its fields: an amount, a count or a record list."""
+    """A kind a record can hold as one of its fields: an amount, a count or a record list.
+
+    Matching is the answer: only those kinds have the member, which is always true.
+    """
 
     @property
     def is_record_field(self) -> bool:

@@ -2,9 +2,10 @@
 
 A `RecordList` is the value of a kind such as `ex/dependants`: its `fields`, the artifact kinds
 every record has, and its `records` in the caller's order. A `Record` is a frozen mapping keyed by
-field kind, read by kind and never by position. Every field is a `Decimal` or `int` kind or a
-`RecordListKind`; a record holds each of them, an instance of its value type and, for a kind
-declared non-negative, never below zero, and nothing else. A field of a record-list kind holds a
+field kind, read by kind and never by position. Every field is of a kind a record can hold (the
+`RecordField` Protocol: an amount, a count or a record list); a record holds each of them, an
+instance of its value type and, for a kind declared non-negative, never below zero, and nothing
+else. A field of a record-list kind holds a
 nested `RecordList` of exactly that kind's fields, which may be empty. A list may be empty.
 Packages declare a record-list kind, a `RecordListKind`, on their own catalog with
 `RecordListKind.declare`; an `Artifact` of one holds only a list built with that kind's fields.

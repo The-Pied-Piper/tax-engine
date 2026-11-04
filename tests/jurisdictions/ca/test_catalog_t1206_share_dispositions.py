@@ -152,7 +152,7 @@ def test_the_row_fields_hold_the_figures_and_the_claim_of_each_disposition() -> 
     ]
     assert ROW_FIELDS[3].value_type is int
     assert ROW_FIELDS[4].value_type is Decimal
-    assert ROW_FIELDS[4].non_negative is True
+    assert non_negative(ROW_FIELDS[4]) is True
 
 
 def test_the_money_kinds_are_non_negative_decimals() -> None:
