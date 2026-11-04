@@ -337,7 +337,9 @@ def test_an_export_is_a_plain_namespaced_identifier(bad: str) -> None:
 
 
 def test_a_form_must_export_something() -> None:
-    with pytest.raises(InvalidManifestError, match="exports must name at least one artifact"):
+    with pytest.raises(
+        InvalidManifestError, match=r"form '[^']+': exports must name at least one artifact"
+    ):
         form(exports=())
 
 
@@ -382,7 +384,7 @@ def test_a_maximum_that_is_not_an_integer_is_refused(bad: object) -> None:
 
 @pytest.mark.parametrize("bad", ["", "either", "ex/Either", "ex/a.b", "ex/a/b", "ex/"])
 def test_a_group_is_a_plain_namespaced_identifier(bad: str) -> None:
-    with pytest.raises(InvalidManifestError, match="exclusive_group"):
+    with pytest.raises(InvalidManifestError, match=r"form '[^']+': exclusive_group"):
         form(exclusive_group=bad)
 
 
