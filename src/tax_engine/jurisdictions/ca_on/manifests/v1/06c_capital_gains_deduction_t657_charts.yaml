@@ -45,6 +45,11 @@ capabilities:
         - ca/t657_chart_2024_period_1_amount_f
         - ca/t657_chart_2024_period_1_amount_g
         - ca/t657_chart_2024_period_1_amount_h
+    # H is left blank when the chart is not completed (T657 Step 3: "If you tick Yes, complete the
+    # corresponding chart for that year."). The form prints no sentence for a chart not completed; a
+    # project rule: its blank amount H blanks this total, and the 0 floor is not applied to a blank.
+    blank:
+      ca/t657_chart_2024_period_1_amount_h: pass_on
     produces:
       output: ca/chart_2024_period_1_amounts_f_to_h
   # Chart 2024 Period 1 "= × 1/2 = I" (the amounts F to H, times the 1/2 printed on the form).
@@ -89,6 +94,10 @@ capabilities:
       parts:
         - ca/chart_2024_period_1_amount_l
         - ca/chart_2023_total_carried
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2024_period_1_amount_l: pass_on
     produces:
       output: ca/chart_2024_period_1_amount_n
   # Chart 2024 Period 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount N
@@ -149,6 +158,11 @@ capabilities:
         - ca/t657_chart_2024_period_2_amount_f
         - ca/t657_chart_2024_period_2_amount_g
         - ca/t657_chart_2024_period_2_amount_h
+    # H is left blank when the chart is not completed (T657 Step 3: "If you tick Yes, complete the
+    # corresponding chart for that year."). The form prints no sentence for a chart not completed; a
+    # project rule: its blank amount H blanks this total, and the 0 floor is not applied to a blank.
+    blank:
+      ca/t657_chart_2024_period_2_amount_h: pass_on
     produces:
       output: ca/chart_2024_period_2_amounts_f_to_h
   # Chart 2024 Period 2 "= × 1/2 = I".
@@ -192,6 +206,13 @@ capabilities:
       parts:
         - ca/chart_2024_period_2_amount_l
         - ca/chart_2024_period_1_amount_n
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2024_period_2_amount_l: pass_on
+      # Line B (the part added as "Enter amount B from above."): "If you did not complete charts for
+      # 2016 to 2024, enter "0"."
+      ca/chart_2024_period_1_amount_n: "0"
     produces:
       output: ca/chart_2024_period_2_amount_n
   # Chart 2024 Period 2 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2, or amount N

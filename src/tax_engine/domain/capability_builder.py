@@ -35,6 +35,11 @@ _DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
 _WHOLE_NUMBER = re.compile(r"-?[0-9]+")
 
 
+def _identifiers(named: str | tuple[str, ...]) -> tuple[str, ...]:
+    """The identifiers a consumed slot is filled with: one, or the list."""
+    return (named,) if isinstance(named, str) else named
+
+
 class CapabilityBuilder:
     """Builds a capability of a class from a selection, its resolved datasets and a registry."""
 
@@ -68,46 +73,81 @@ class CapabilityBuilder:
         # `Capability.__init__`.
         constructor: Callable[..., Capability] = cls
         try:
-            return constructor(**arguments).with_blank_rules(self._blank_rules(selection, cls, who))
+            rules, per_item = self._blank_rules(selection, cls, artifacts, who)
+            return constructor(**arguments).with_blank_rules(rules, per_item)
         except InvalidCapabilityError as error:
             raise InvalidSelectionError(f"{who}: {error}") from error
 
     @classmethod
     def _blank_rules(
-        cls, selection: CapabilitySelection, capability: type[Capability], who: str
-    ) -> dict[str, BlankRule]:
-        """What a blank does in each slot the selection names: `pass_on`, `compute`, else the
-        fallback text read as the slot's own value type (a `Decimal`, or an `int` for a count slot).
+        cls,
+        selection: CapabilitySelection,
+        capability: type[Capability],
+        artifacts: ArtifactRegistry,
+        who: str,
+    ) -> tuple[dict[str, BlankRule], dict[ArtifactKind[Any], BlankRule]]:
+        """What a blank does in each slot, or each kind in a list slot, the selection names:
+        `pass_on`, `compute`, else the fallback text read as the slot's own value type (a
+        `Decimal`, or an `int` for a count slot).
+
+        A name that is not a slot is the identifier of a consumed artifact: its rule is for that
+        kind alone, and `Capability.with_blank_rules` checks the slot takes one. Returns the rules
+        by slot and the rules by kind.
         """
         rules: dict[str, BlankRule] = {}
-        for slot, text in selection.blank.items():
+        per_item: dict[ArtifactKind[Any], BlankRule] = {}
+        for name, text in selection.blank.items():
+            slot = name
+            if name not in capability.CONSUMES:
+                slot = next(
+                    (
+                        each
+                        for each, named in selection.consumes.items()
+                        if each in capability.CONSUMES and name in _identifiers(named)
+                    ),
+                    "",
+                )
+                if not slot:
+                    raise InvalidSelectionError(
+                        f"{who}: {name!r} is given under blank but is neither a consumed slot "
+                        f"of {capability.__name__} nor an artifact the selection consumes"
+                    )
+            rule: BlankRule
             if text == "pass_on":
-                rules[slot] = PASS_ON
-                continue
-            if text == "compute":
-                rules[slot] = COMPUTE
-                continue
-            if slot not in capability.CONSUMES:
-                raise InvalidSelectionError(
-                    f"{who}: {slot!r} is given under blank but is not a consumed slot of "
-                    f"{capability.__name__}"
-                )
-            value_type = capability.slot_value_type(slot)
-            pattern = _WHOLE_NUMBER if value_type is int else _DECIMAL_NUMBER
-            if value_type not in (Decimal, int) or not pattern.fullmatch(text):
-                raise InvalidSelectionError(
-                    f"{who}: blank rule for slot {slot!r} must be pass_on, compute or "
-                    f"{'a whole number' if value_type is int else 'a plain decimal number'} "
-                    f"for a {value_type.__name__} slot, got {text!r}"
-                )
-            try:
-                rules[slot] = value_type(text)
-            except ValueError:
-                # Python refuses a whole number of more than 4300 digits.
-                raise InvalidSelectionError(
-                    f"{who}: blank rule for slot {slot!r} is too long to read as a number"
-                ) from None
-        return rules
+                rule = PASS_ON
+            elif text == "compute":
+                rule = COMPUTE
+            else:
+                rule = cls._fallback(capability, slot, name, text, who)
+            if slot == name:
+                rules[name] = rule
+            else:
+                per_item[artifacts.kind(name)] = rule
+        return rules, per_item
+
+    @staticmethod
+    def _fallback(
+        capability: type[Capability], slot: str, name: str, text: str, who: str
+    ) -> BlankRule:
+        """The fallback `text` for `name` (a slot, or a kind in `slot`) read as the slot's own
+        value type.
+        """
+        label = f"slot {name!r}" if name == slot else repr(name)
+        value_type = capability.slot_value_type(slot)
+        pattern = _WHOLE_NUMBER if value_type is int else _DECIMAL_NUMBER
+        if value_type not in (Decimal, int) or not pattern.fullmatch(text):
+            raise InvalidSelectionError(
+                f"{who}: blank rule for {label} must be pass_on, compute or "
+                f"{'a whole number' if value_type is int else 'a plain decimal number'} "
+                f"for a {value_type.__name__} slot, got {text!r}"
+            )
+        try:
+            return value_type(text)
+        except ValueError:
+            # Python refuses a whole number of more than 4300 digits.
+            raise InvalidSelectionError(
+                f"{who}: blank rule for {label} is too long to read as a number"
+            ) from None
 
     def _parameter_arguments(
         self,

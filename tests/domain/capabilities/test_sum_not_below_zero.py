@@ -18,12 +18,18 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import SumLine, SumNotBelowZeroLine
+from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
@@ -337,3 +343,82 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank part ---------------------------------------------------------------------------
+# As for `core/sum`: the list is one slot, `parts`; a rule for one part, by its kind, replaces the
+# slot's rule for that part alone. A blank passed on is a blank total, never floored.
+
+
+def with_blank(*blanked: AmountKind) -> tuple[Artifact[Any], ...]:
+    """The made-up parts 100.25, 40 and 9.75, with each kind in `blanked` left blank."""
+    return tuple(
+        Artifact(artifact.kind, BLANK) if artifact.kind in blanked else artifact
+        for artifact in parts("100.25", "40", "9.75")
+    )
+
+
+def test_declares_that_the_parts_may_be_blank_one_by_one() -> None:
+    assert SumNotBelowZero.BLANK_ALLOWED == frozenset({"parts"})
+    assert SumNotBelowZero.BLANK_PER_ITEM == frozenset({"parts"})
+
+
+def test_without_rules_a_blank_part_is_refused_naming_the_line_and_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'part_two'.*'parts'"):
+        capability().run(with_blank(PART_TWO))
+
+
+def test_a_rule_for_one_part_passes_its_blank_on_as_a_blank_total() -> None:
+    one = capability().with_blank_rules({}, {PART_THREE: PASS_ON})
+
+    result = one.run(with_blank(PART_THREE))
+
+    assert result.outputs == (Artifact(TOTAL, BLANK),)
+    assert result.trace == (BlankPassedOnLine(TOTAL, (PART_THREE,)),)
+
+
+def test_a_rule_for_one_part_leaves_the_other_parts_refusing_a_blank() -> None:
+    one = capability().with_blank_rules({}, {PART_THREE: PASS_ON})
+
+    with pytest.raises(BlankNotAllowedError, match="'part_one'.*'parts'"):
+        one.run(with_blank(PART_ONE))
+
+
+def test_the_floor_is_not_applied_to_a_blank_total() -> None:
+    passing = capability().with_blank_rules({"parts": PASS_ON})
+    negative = (
+        Artifact(PART_ONE, D("-50")),
+        Artifact(PART_TWO, D("-10")),
+        Artifact(PART_THREE, BLANK),
+    )
+
+    assert passing.run(negative).outputs == (Artifact(TOTAL, BLANK),)
+
+
+def test_a_filled_sum_is_still_floored_when_rules_are_declared() -> None:
+    passing = capability().with_blank_rules({}, {PART_THREE: PASS_ON})
+
+    assert passing.run(parts("-50", "10", "9.75")).outputs == (Artifact(TOTAL, D(0)),)
+    assert passing.run(parts("100.25", "40", "9.75")).outputs == (Artifact(TOTAL, D("150.00")),)
+
+
+def test_a_fallback_adds_it_in_place_of_a_blank_part_and_the_floor_applies() -> None:
+    zero = capability().with_blank_rules({}, {PART_THREE: D(0)})
+    given = (Artifact(PART_ONE, D("-5")), Artifact(PART_TWO, D("2")), Artifact(PART_THREE, BLANK))
+
+    result = zero.run(given)
+
+    assert result.outputs == (Artifact(TOTAL, D(0)),)
+    assert result.trace == (
+        BlankFallbackLine(PART_THREE, D(0)),
+        SumNotBelowZeroLine(
+            TOTAL, ((PART_ONE, D("-5")), (PART_TWO, D("2")), (PART_THREE, D(0))), D(0)
+        ),
+    )
+
+
+def test_a_typed_zero_is_not_a_blank() -> None:
+    passing = capability().with_blank_rules({"parts": PASS_ON})
+    given = (Artifact(PART_ONE, D(0)), *parts("0", "40", "9.75")[1:])
+
+    assert passing.run(given).outputs == (Artifact(TOTAL, D("49.75")),)

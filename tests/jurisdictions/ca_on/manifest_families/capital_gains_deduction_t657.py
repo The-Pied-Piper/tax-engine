@@ -736,6 +736,7 @@ STEPS = {
                 "ca/chart_2024_period_2_amount_n",
             ),
         },
+        blank={"ca/chart_2025_part_1_amount_n": "pass_on", "ca/chart_2024_period_2_amount_n": "0"},
         produces={"output": "ca/chart_2025_part_1_amount_p"},
     ),
     # Chart 2025 Part 1 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
@@ -889,6 +890,7 @@ STEPS = {
                 "ca/chart_2025_part_1_amount_p",
             ),
         },
+        blank={"ca/chart_2025_part_2_amount_n": "pass_on", "ca/chart_2025_part_1_amount_p": "0"},
         produces={"output": "ca/chart_2025_part_2_amount_p"},
     ),
     # Chart 2025 Part 2 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or

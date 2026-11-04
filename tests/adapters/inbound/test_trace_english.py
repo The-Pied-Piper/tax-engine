@@ -18,6 +18,7 @@ import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import ArtifactKind
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, RecordListKind
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.claim_reduction import ClaimReduction
@@ -3128,6 +3129,21 @@ def test_renders_a_condition_that_reads_several_figures_in_the_order_read() -> N
     assert render(line) == (
         'tax_reduction_gate: condition 1 "first": '
         "bankrupt_flag 0, amount_on_line_72 82125.5, other_income 1000, applies"
+    )
+
+
+def test_renders_a_condition_that_read_a_blank_amount() -> None:
+    line = ConditionLine(
+        CONDITION_GATE,
+        2,
+        "Amount E is more than the limit",
+        ((CONDITION_LINE_72, BLANK), (CONDITION_OTHER, D("500"))),
+        False,
+    )
+
+    assert render(line) == (
+        'tax_reduction_gate: condition 2 "Amount E is more than the limit": '
+        "amount_on_line_72 left blank, other_income 500, does not apply"
     )
 
 

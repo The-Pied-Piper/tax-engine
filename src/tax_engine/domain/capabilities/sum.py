@@ -3,6 +3,10 @@
 One mechanism for every total on a return: the manifest decides which parts are added, and in
 which order they are listed in the trace. A sum has no dataset, so it never rounds; a form that
 rounds a total does so in a later capability with a rounding rule of its own.
+
+Any part may be blank (`BLANK_ALLOWED`). What a blank does is the manifest step's `blank:` line,
+for the whole list or for one part by its identifier (`BLANK_PER_ITEM`): so a total can pass a
+blank part on while another part, a line that may be left out, counts as zero.
 """
 
 from __future__ import annotations
@@ -22,6 +26,8 @@ class Sum(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal]}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"parts"})
+    BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset({"parts"})
 
     def __init__(self, parts: tuple[Money, ...], output: Money) -> None:
         """Wire the capability: the kinds it adds, in manifest order, and the kind it produces."""

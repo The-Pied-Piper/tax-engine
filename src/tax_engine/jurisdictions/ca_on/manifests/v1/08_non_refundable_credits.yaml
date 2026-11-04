@@ -34,6 +34,11 @@ capabilities:
         - ca/cpp_base_contributions_on_self_employment
         - ca/cpp_part_5_base_contributions_on_self_employment
         - ca/rc381_cpp_base_contributions_on_self_employment_and_other_earnings
+    # Schedule 8 Part 4 and Part 5: "If not, leave this part blank." The total adds the lines that apply
+    # ("Complete only the lines that apply to you", 5006-R page 3), so a part left blank adds 0.
+    blank:
+      ca/cpp_base_contributions_on_self_employment: "0"
+      ca/cpp_part_5_base_contributions_on_self_employment: "0"
     produces:
       output: ca/cpp_base_contributions_on_self_employment_and_other_earnings
   # "Enter the amount from line 9 or line 10, whichever applies, on line 31217 and line

@@ -88,6 +88,10 @@ capabilities:
       parts:
         - ca/chart_2021_part_1_amount_h
         - ca/chart_2021_part_1_amount_i
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2021_part_1_amount_i: pass_on
     produces:
       output: ca/chart_2021_part_1_amount_j
   # Chart 2021 Part 1 "Enter whichever is less: amount E or amount J." K.
@@ -110,6 +114,10 @@ capabilities:
       parts:
         - ca/chart_2021_part_1_amount_k
         - ca/chart_2020_total_carried
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2021_part_1_amount_k: pass_on
     produces:
       output: ca/chart_2021_part_1_amount_m
   # Chart 2021 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
@@ -184,6 +192,10 @@ capabilities:
       parts:
         - ca/chart_2021_part_2_amount_f
         - ca/chart_2021_part_2_amount_g
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2021_part_2_amount_g: pass_on
     produces:
       output: ca/chart_2021_part_2_amount_h
   # Chart 2021 Part 2 "Enter whichever is less: amount E or amount H." I.
@@ -205,6 +217,10 @@ capabilities:
       parts:
         - ca/chart_2021_part_2_amount_i
         - ca/chart_2021_part_1_amount_m
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2021_part_2_amount_i: pass_on
     produces:
       output: ca/chart_2021_part_2_amount_k
   # Chart 2021 Part 2 "Enter whichever is less: amount H or amount K." L.
@@ -249,6 +265,13 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2021_part_1_amount_m
+    # Chart 2021 Part 2 is completed only when the filer "want[s] to claim the additional deduction":
+    # a blank tick reads as not ticked (0). A skipped chart leaves Part 1's amounts blank; with
+    # the tick at No that is enough to leave Part 2 alone. A Yes tick on a skipped chart
+    # contradicts itself (Part 2 needs Part 1's figures) and is refused, naming the blank amount.
+    blank:
+      counts: "0"
+      amounts: compute
     produces:
       output: ca/chart_2021_part_2_applies
   # The total carried forward: Part 2's amount L when Part 2 is completed, else Part 1's amount M
@@ -354,6 +377,10 @@ capabilities:
       parts:
         - ca/chart_2022_part_1_amount_h
         - ca/chart_2022_part_1_amount_i
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2022_part_1_amount_i: pass_on
     produces:
       output: ca/chart_2022_part_1_amount_j
   # Chart 2022 Part 1 "Enter whichever is less: amount E or amount J." K.
@@ -376,6 +403,10 @@ capabilities:
       parts:
         - ca/chart_2022_part_1_amount_k
         - ca/chart_2021_total_carried
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2022_part_1_amount_k: pass_on
     produces:
       output: ca/chart_2022_part_1_amount_m
   # Chart 2022 Part 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount M
@@ -450,6 +481,10 @@ capabilities:
       parts:
         - ca/chart_2022_part_2_amount_f
         - ca/chart_2022_part_2_amount_g
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2022_part_2_amount_g: pass_on
     produces:
       output: ca/chart_2022_part_2_amount_h
   # Chart 2022 Part 2 "Enter whichever is less: amount E or amount H." I.
@@ -471,6 +506,10 @@ capabilities:
       parts:
         - ca/chart_2022_part_2_amount_i
         - ca/chart_2022_part_1_amount_m
+    # T657 Step 3: "If you tick Yes, complete the corresponding chart for that year." The form prints
+    # no sentence for a chart not completed; a project rule: its blank amount blanks this total.
+    blank:
+      ca/chart_2022_part_2_amount_i: pass_on
     produces:
       output: ca/chart_2022_part_2_amount_k
   # Chart 2022 Part 2 "Enter whichever is less: amount H or amount K." L.
@@ -515,6 +554,13 @@ capabilities:
         - ca/annual_gains_limit_2025
         - ca/cumulative_gains_limit_2025
         - ca/chart_2022_part_1_amount_m
+    # Chart 2022 Part 2 is completed only when the filer "want[s] to claim the additional deduction":
+    # a blank tick reads as not ticked (0). A skipped chart leaves Part 1's amounts blank; with
+    # the tick at No that is enough to leave Part 2 alone. A Yes tick on a skipped chart
+    # contradicts itself (Part 2 needs Part 1's figures) and is refused, naming the blank amount.
+    blank:
+      counts: "0"
+      amounts: compute
     produces:
       output: ca/chart_2022_part_2_applies
   # The total carried forward: Part 2's amount L when Part 2 is completed, else Part 1's amount M

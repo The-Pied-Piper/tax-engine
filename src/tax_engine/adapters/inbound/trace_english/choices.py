@@ -4,8 +4,11 @@ per line class, each registered with `@english_renderer`.
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
+from tax_engine.domain.blank import Blank
 from tax_engine.domain.trace.choices import (
     ChosenByCountLine,
     ChosenByRangeLine,
@@ -13,6 +16,13 @@ from tax_engine.domain.trace.choices import (
     ConditionLine,
     ConditionsCountLine,
 )
+
+
+def _figure(value: int | Decimal | Blank) -> str:
+    """A figure a condition read: a count as it is, an amount as money, a blank as left blank."""
+    if isinstance(value, Blank):
+        return "left blank"
+    return str(value) if isinstance(value, int) else EnglishFigures.money(value)
 
 
 @english_renderer
@@ -95,10 +105,7 @@ class ConditionRenderer:
         text = line.text
         reads = line.reads
         applies = line.applies
-        figures = ", ".join(
-            f"{kind.label} {value if isinstance(value, int) else EnglishFigures.money(value)}"
-            for kind, value in reads
-        )
+        figures = ", ".join(f"{kind.label} {_figure(value)}" for kind, value in reads)
         verdict = "applies" if applies else "does not apply"
         return f'{output.label}: condition {position} "{text}": {figures}, {verdict}'
 
