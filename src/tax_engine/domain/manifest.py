@@ -172,18 +172,17 @@ class Form:
     basis: str | None = None
     fields: tuple[InputDeclaration, ...] = ()
 
-    @staticmethod
-    def derive_kinds(name: str, exports: Iterable[ArtifactKind[Any]]) -> tuple[RecordListKind, ...]:
-        """The kind `<form>.<export>` of each of the form `name`'s `exports` a record can hold.
+    def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
+        """The kind `<form>.<export>` of each of this form's exports a record can hold.
 
-        Each is a record list of the export's one field, in the order of the exports. An export
-        that is not an amount, a count or a record list (a rate, say, or digits) has none: no
-        other form reads it.
+        Each is a record list of the export's one field, in the order of the exports; `kinds`
+        resolves the export names. An export that is not an amount, a count or a record list (a
+        rate, say, or digits) has none: no other form reads it.
         """
-        namespace, _, form_id = name.partition("/")
+        namespace, _, form_id = self.name.partition("/")
         return tuple(
             RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
-            for export in exports
+            for export in (kinds.kind(identifier) for identifier in self.exports)
             if isinstance(export, RecordField)
         )
 
@@ -195,14 +194,19 @@ class Form:
         if self.instances is not None:
             self.check_identifier("instances", self.instances)
         if not self.exports:
-            raise InvalidManifestError("exports must name at least one artifact")
+            raise InvalidManifestError(
+                f"form {self.name!r}: exports must name at least one artifact"
+            )
         self.check_exports("exports", self.exports)
         try:
             self.check_limits(self.max_instances, self.min_instances, self.instances is not None)
         except InvalidManifestError as exc:
             raise InvalidManifestError(f"form {self.name!r}: {exc}") from None
         if self.exclusive_group is not None:
-            self.check_identifier("exclusive_group", self.exclusive_group)
+            try:
+                self.check_identifier("exclusive_group", self.exclusive_group)
+            except InvalidManifestError as exc:
+                raise InvalidManifestError(f"form {self.name!r}: {exc}") from None
         self._check_requirement()
         self._check_fields()
 
@@ -345,13 +349,7 @@ class Manifest:
             if declaration.name != name:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
-        derived = [
-            kind
-            for form in self.forms
-            for kind in Form.derive_kinds(
-                form.name, [self.artifacts.kind(identifier) for identifier in form.exports]
-            )
-        ]
+        derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
         kinds = self.artifacts.extended(derived)
         object.__setattr__(self, "kinds", kinds)
         self._check_artifacts(kinds)

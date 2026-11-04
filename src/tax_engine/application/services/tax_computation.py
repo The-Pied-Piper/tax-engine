@@ -68,25 +68,17 @@ class TaxComputationService:
     def _compose(self, code: JurisdictionCode, tax_year: int) -> FormSet:
         manifest = self._jurisdictions.get_jurisdiction(code).manifest_for(tax_year)
         kinds = manifest.kinds
-        exports = {
-            form.name: [kinds.kind(identifier) for identifier in form.exports]
-            for form in manifest.forms
-        }
         inputs = frozenset(kinds.kind(identifier) for identifier in manifest.inputs)
         return FormSet(
             [
                 FormComposition(
-                    form.name,
+                    form,
                     [
                         self._capability(selection, tax_year, kinds)
                         for selection in form.capabilities
                     ],
-                    exports=exports[form.name],
-                    instances=None if form.instances is None else kinds.kind(form.instances),
+                    kinds=kinds,
                     starting=inputs,
-                    max_instances=form.max_instances,
-                    min_instances=form.min_instances,
-                    exclusive_group=form.exclusive_group,
                     defaults=manifest.defaults,
                     field_defaults=manifest.field_defaults[form.name],
                 )
