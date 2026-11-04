@@ -278,7 +278,7 @@ def test_an_unknown_field_is_refused_naming_the_item_and_field() -> None:
 def test_a_field_of_the_same_identifier_but_another_value_type_is_unknown() -> None:
     # Fields are kinds: `ex/months_resident` as a Decimal is not the `int` field of that name.
     impostor = AmountKind("ex/months_resident")
-    bad = {NET_INCOME: D("1"), impostor: D("6")}
+    bad: dict[ArtifactKind[Any], object] = {NET_INCOME: D("1"), impostor: D("6")}
 
     with pytest.raises(InvalidRecordError, match=r"item 1: "):
         RecordList(FIELDS, [bad])

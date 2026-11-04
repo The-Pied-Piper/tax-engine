@@ -28,7 +28,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -80,7 +80,7 @@ def capability(
 def provinces(*pairs: tuple[str, str]) -> Artifact[Any]:
     """A `ca/logging_operations` artifact of one record per (tax paid, net logging income) pair, in
     the order given."""
-    records = [
+    records: list[dict[ArtifactKind[Any], object]] = [
         {LOGGING_TAX_PAID: D(tax_paid), NET_LOGGING_INCOME: D(net_income)}
         for tax_paid, net_income in pairs
     ]

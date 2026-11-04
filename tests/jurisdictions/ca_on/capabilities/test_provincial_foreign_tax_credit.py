@@ -68,7 +68,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
 from tax_engine.domain.errors import (
@@ -191,7 +191,7 @@ def capability(
 
 def sheet_list(*rows: Sheet) -> Artifact[Any]:
     """A `ca/foreign_tax_credit_sheets` artifact of one record per sheet, in order."""
-    records = [
+    records: list[dict[ArtifactKind[Any], object]] = [
         {
             FOREIGN_NON_BUSINESS_TAX_PAID: D(tax),
             NET_FOREIGN_NON_BUSINESS_INCOME: D(income),

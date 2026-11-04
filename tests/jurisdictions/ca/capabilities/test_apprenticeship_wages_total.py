@@ -22,7 +22,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -67,7 +67,9 @@ def capability(maximum: ParameterDataset[Amount] | None = None) -> Apprenticeshi
 
 def apprentices(*salaries: str) -> Artifact[Any]:
     """An `ca/itc_apprentices` artifact of one record per salary and wages, in the order given."""
-    records = [{ITC_APPRENTICE_SALARY_AND_WAGES: D(salary)} for salary in salaries]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {ITC_APPRENTICE_SALARY_AND_WAGES: D(salary)} for salary in salaries
+    ]
     return Artifact(ITC_APPRENTICES, RecordList(ITC_APPRENTICES.fields, records))
 
 

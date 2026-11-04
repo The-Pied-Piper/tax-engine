@@ -21,6 +21,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from decimal import Decimal
 from types import MappingProxyType
+from typing import Any
 
 import pytest
 
@@ -28,7 +29,7 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DuplicateArtifactError,
@@ -90,7 +91,9 @@ def capability(
 
 def placements(*expenditures: str) -> Artifact[RecordList]:
     """An `ca-on/coop_education_placements` artifact of one record per amount, in order."""
-    records = [{COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures
+    ]
     return Artifact(
         COOP_EDUCATION_PLACEMENTS, RecordList(COOP_EDUCATION_PLACEMENTS.fields, records)
     )

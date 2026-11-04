@@ -12,6 +12,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from decimal import Decimal
 from types import MappingProxyType
+from typing import Any
 
 import pytest
 
@@ -19,7 +20,7 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.ca_on.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind
@@ -45,7 +46,9 @@ def capability() -> FlowThroughShareExpenses:
 
 def slips(*expenses: str) -> Artifact[RecordList]:
     """An `ca-on/flow_through_share_slips` artifact of one record per amount, in order."""
-    records = [{FLOW_THROUGH_SHARE_SLIP_EXPENSES: D(amount)} for amount in expenses]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {FLOW_THROUGH_SHARE_SLIP_EXPENSES: D(amount)} for amount in expenses
+    ]
     return Artifact(FLOW_THROUGH_SHARE_SLIPS, RecordList(FLOW_THROUGH_SHARE_SLIPS.fields, records))
 
 

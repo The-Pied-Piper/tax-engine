@@ -106,7 +106,7 @@ class RecordList:
     def __init__(
         self,
         fields: Iterable[ArtifactKind[Any]],
-        records: Iterable[Mapping[Any, object]],
+        records: Iterable[Mapping[ArtifactKind[Any], object]],
     ) -> None:
         # Written by hand, so the dataclass keeps it: it takes any iterables, and
         # `__post_init__` normalises them.

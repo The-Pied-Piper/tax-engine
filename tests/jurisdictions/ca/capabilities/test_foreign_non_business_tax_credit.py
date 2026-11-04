@@ -47,7 +47,7 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
 from tax_engine.domain.errors import (
@@ -165,7 +165,7 @@ def capability(
 
 def countries(*rows: Country) -> Artifact[Any]:
     """A `ca/foreign_tax_countries` artifact of one record per country, in order."""
-    records = []
+    records: list[dict[ArtifactKind[Any], object]] = []
     for row in rows:
         (
             tax,

@@ -15,7 +15,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
@@ -116,7 +116,7 @@ def rounding(rule: RoundingRule = CENT) -> ParameterDataset[RoundingOnly]:
 
 def sheet_list(*rows: Sheet) -> Artifact[Any]:
     """A `ca/foreign_tax_credit_sheets` artifact of one record per sheet, in order."""
-    records = [
+    records: list[dict[ArtifactKind[Any], object]] = [
         {
             FOREIGN_NON_BUSINESS_TAX_PAID: D("1500"),
             NET_FOREIGN_NON_BUSINESS_INCOME: D("10000"),

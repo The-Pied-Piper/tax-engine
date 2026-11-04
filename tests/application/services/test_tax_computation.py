@@ -3123,7 +3123,9 @@ def dependants(*net_incomes: str) -> Artifact[Any]:
     from tax_engine.domain.record_list import RecordList
 
     kind = dependants_kind()
-    records = [{DEPENDANT_NET_INCOME: D(net_income)} for net_income in net_incomes]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {DEPENDANT_NET_INCOME: D(net_income)} for net_income in net_incomes
+    ]
     return Artifact(kind, RecordList(kind.fields, records))
 
 

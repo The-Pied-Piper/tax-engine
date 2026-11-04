@@ -85,7 +85,9 @@ def return_dg(
         artifacts.append(Artifact(kind, int(inputs.get(name, 0))))
     for name, kind in _AMOUNT_INPUTS.items():
         artifacts.append(Artifact(kind, D(str(inputs.get(name, "0")))))
-    records = [{ADOPTION_CHILD_EXPENSES: D(amount)} for amount in adoption_children]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {ADOPTION_CHILD_EXPENSES: D(amount)} for amount in adoption_children
+    ]
     artifacts.append(
         Artifact(ADOPTION_EXPENSE_CHILDREN, RecordList(ADOPTION_EXPENSE_CHILDREN.fields, records))
     )

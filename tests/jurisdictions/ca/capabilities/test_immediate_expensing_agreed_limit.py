@@ -42,7 +42,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
-from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
@@ -93,8 +93,12 @@ def capability() -> ImmediateExpensingAgreedLimit:
 def pair(
     claims_kind: RecordListKind, limits_kind: RecordListKind, statements: tuple[Statement, ...]
 ) -> tuple[Artifact[Any], Artifact[Any]]:
-    claims = [{CLAIM: D(claim)} for claim, _limit in statements]
-    limits = [{LIMIT: D(limit)} for _claim, limit in statements]
+    claims: list[dict[ArtifactKind[Any], object]] = [
+        {CLAIM: D(claim)} for claim, _limit in statements
+    ]
+    limits: list[dict[ArtifactKind[Any], object]] = [
+        {LIMIT: D(limit)} for _claim, limit in statements
+    ]
     return (
         Artifact(claims_kind, RecordList(claims_kind.fields, claims)),
         Artifact(limits_kind, RecordList(limits_kind.fields, limits)),

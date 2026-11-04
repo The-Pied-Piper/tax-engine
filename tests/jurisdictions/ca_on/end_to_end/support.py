@@ -1075,13 +1075,17 @@ def blank_other_federal_credit_inputs() -> list[Artifact[Any]]:
 
 def slips(*expenses: str) -> Artifact[RecordList]:
     """The Form T1221 slips, one record per amount of qualifying expenses, in the order given."""
-    records = [{FLOW_THROUGH_SHARE_SLIP_EXPENSES: D(amount)} for amount in expenses]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {FLOW_THROUGH_SHARE_SLIP_EXPENSES: D(amount)} for amount in expenses
+    ]
     return Artifact(FLOW_THROUGH_SHARE_SLIPS, RecordList(FLOW_THROUGH_SHARE_SLIPS.fields, records))
 
 
 def placement_list(*expenditures: str) -> Artifact[RecordList]:
     """The work placements, one record per amount of eligible expenditures, in the order given."""
-    records = [{COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {COOP_EDUCATION_PLACEMENT_EXPENDITURES: D(amount)} for amount in expenditures
+    ]
     return Artifact(
         COOP_EDUCATION_PLACEMENTS, RecordList(COOP_EDUCATION_PLACEMENTS.fields, records)
     )
@@ -1089,7 +1093,9 @@ def placement_list(*expenditures: str) -> Artifact[RecordList]:
 
 def apprentice_list(*salaries: str) -> Artifact[RecordList]:
     """The Table 1 apprentices of Form T2038(IND), one record per salary and wages, in order."""
-    records = [{ITC_APPRENTICE_SALARY_AND_WAGES: D(amount)} for amount in salaries]
+    records: list[dict[ArtifactKind[Any], object]] = [
+        {ITC_APPRENTICE_SALARY_AND_WAGES: D(amount)} for amount in salaries
+    ]
     return Artifact(ITC_APPRENTICES, RecordList(ITC_APPRENTICES.fields, records))
 
 
