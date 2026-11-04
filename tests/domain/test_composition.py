@@ -23,7 +23,7 @@ from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.at_most import AtMost
 from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
+from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
     CapabilityContractError,
@@ -449,16 +449,26 @@ def test_ties_are_broken_by_class_name_when_unregistered() -> None:
 
 
 def test_ties_are_broken_by_registered_identifier(monkeypatch: pytest.MonkeyPatch) -> None:
-    registry = CapabilityRegistry()
-    registry.register("ex/first", Zebra)
-    registry.register("ex/second", Apple)
-    monkeypatch.setattr(CapabilityRegistry, "shared", classmethod(lambda cls: registry))
+    monkeypatch.setattr(Zebra, "IDENTIFIER", "ex/first")
+    monkeypatch.setattr(Apple, "IDENTIFIER", "ex/second")
     apple, zebra = Apple(A, C), Zebra(A, B)
 
     for given in ([apple, zebra], [zebra, apple]):
         composition = Composition(given, inputs=kinds(A), outputs=kinds(B, C))
 
         assert composition.order == (zebra, apple)
+
+
+def test_a_subclass_of_a_registered_class_is_ordered_by_its_class_name(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(Link, "IDENTIFIER", "ex/aaa")
+    apple, zebra = Apple(A, C), Zebra(A, B)
+
+    for given in ([apple, zebra], [zebra, apple]):
+        composition = Composition(given, inputs=kinds(A), outputs=kinds(B, C))
+
+        assert composition.order == (apple, zebra)
 
 
 def test_ties_between_instances_of_one_class_are_broken_by_what_they_produce() -> None:

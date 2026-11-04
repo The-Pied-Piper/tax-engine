@@ -26,9 +26,11 @@ from tests.domain.registration_fixtures.with_namespace.gadgets import GadgetLevy
 
 @pytest.fixture
 def fresh(monkeypatch: pytest.MonkeyPatch) -> CapabilityRegistry:
-    """A fresh registry that `@capability` registers into for the duration of one test."""
+    """A fresh registry that `@capability` registers into for the duration of one test, with
+    `GadgetLevy` carrying no identifier until the test decorates it."""
     registry = CapabilityRegistry()
     monkeypatch.setattr(CapabilityRegistry, "shared", classmethod(lambda cls: registry))
+    monkeypatch.setattr(GadgetLevy, "IDENTIFIER", None)  # restored with the rest afterwards
     return registry
 
 
@@ -52,17 +54,26 @@ def test_a_directly_constructed_registry_is_separate_and_empty() -> None:
         registry.get("core/progressive_tax")
 
 
-def test_register_class_returns_the_class_unchanged() -> None:
-    registered = CapabilityRegistry().register_class("gadget_levy", GadgetLevy)
+@pytest.fixture
+def carrying(monkeypatch: pytest.MonkeyPatch) -> type[GadgetLevy]:
+    """`GadgetLevy` carrying its identifier, as `@capability` leaves a class."""
+    monkeypatch.setattr(GadgetLevy, "IDENTIFIER", "ex/gadget_levy")
+    return GadgetLevy
+
+
+def test_register_class_returns_the_class_unchanged(carrying: type[GadgetLevy]) -> None:
+    registered = CapabilityRegistry().register_class(carrying)
 
     assert_type(registered, type[GadgetLevy])
 
     assert registered is GadgetLevy
 
 
-def test_register_class_registers_under_the_namespaced_identifier() -> None:
+def test_register_class_registers_under_the_identifier_the_class_carries(
+    carrying: type[GadgetLevy],
+) -> None:
     registry = CapabilityRegistry()
-    registry.register_class("gadget_levy", GadgetLevy)
+    registry.register_class(carrying)
 
     found = registry.get("ex/gadget_levy")
 
@@ -71,25 +82,36 @@ def test_register_class_registers_under_the_namespaced_identifier() -> None:
     assert Namespace.of(GadgetLevy).identifier("gadget_levy") == "ex/gadget_levy"
 
 
-def test_register_class_needs_the_full_identifier_to_look_up() -> None:
+def test_register_class_refuses_a_class_that_carries_no_identifier(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(GadgetLevy, "IDENTIFIER", None)
+
+    with pytest.raises(InvalidRegistrationError, match="GadgetLevy carries no identifier"):
+        CapabilityRegistry().register_class(GadgetLevy)
+
+
+def test_a_subclass_of_a_registered_class_has_no_identifier(carrying: type[GadgetLevy]) -> None:
+    class Sub(carrying):  # type: ignore[valid-type,misc]
+        pass
+
+    assert Sub.identifier() is None
+
+
+def test_register_class_needs_the_full_identifier_to_look_up(carrying: type[GadgetLevy]) -> None:
     registry = CapabilityRegistry()
-    registry.register_class("gadget_levy", GadgetLevy)
+    registry.register_class(carrying)
 
     with pytest.raises(UnknownRegistrationError, match="'gadget_levy'"):
         registry.get("gadget_levy")
 
 
-def test_register_class_twice_under_one_identifier_fails() -> None:
+def test_register_class_twice_under_one_identifier_fails(carrying: type[GadgetLevy]) -> None:
     registry = CapabilityRegistry()
-    registry.register_class("gadget_levy", GadgetLevy)
+    registry.register_class(carrying)
 
     with pytest.raises(DuplicateRegistrationError, match="'ex/gadget_levy'"):
-        registry.register_class("gadget_levy", GadgetLevy)
-
-
-def test_register_class_rejects_a_local_id_that_is_not_snake_case() -> None:
-    with pytest.raises(InvalidRegistrationError, match="snake_case"):
-        CapabilityRegistry().register_class("GadgetLevy", GadgetLevy)
+        registry.register_class(carrying)
 
 
 # --- the decorator --------------------------------------------------------------------------
@@ -112,6 +134,19 @@ def test_decorator_returns_the_class_unchanged(fresh: CapabilityRegistry) -> Non
     assert_type(decorated, type[GadgetLevy])
 
     assert decorated is GadgetLevy
+
+
+def test_decorator_leaves_the_identifier_on_the_class(fresh: CapabilityRegistry) -> None:
+    capability(identifier="gadget_levy")(GadgetLevy)
+
+    assert GadgetLevy.identifier() == "ex/gadget_levy"
+
+
+def test_decorator_rejects_a_local_id_that_is_not_snake_case(fresh: CapabilityRegistry) -> None:
+    with pytest.raises(InvalidRegistrationError, match="snake_case"):
+        capability(identifier="GadgetLevy")(GadgetLevy)
+
+    assert GadgetLevy.identifier() is None
 
 
 def test_decorating_two_classes_with_one_identifier_fails(fresh: CapabilityRegistry) -> None:
