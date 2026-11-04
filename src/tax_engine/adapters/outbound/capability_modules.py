@@ -16,7 +16,7 @@ from tax_engine.domain.capability import Capability
 
 
 def capabilities_in(package: ModuleType) -> list[type[Capability]]:
-    """The capability classes defined in `package` and its submodules, by identifier.
+    """The capability classes defined in `package` and its submodules, sorted by identifier.
 
     Only a class defined in a module is taken from it, so one imported from elsewhere is not
     found twice, nor is one bound to a second name. A subclass of a decorated class that is not

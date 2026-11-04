@@ -22,6 +22,9 @@ from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
+from tests.jurisdictions.registration_fixtures import ex_cap, ex_on
+from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.levy import Levy
+from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.more.extra import Extra
 
 _MISSING = object()
 """No `catalog` module at all."""
@@ -304,15 +307,44 @@ class Levy(Capability):
 """
 
 
+def test_a_jurisdiction_package_registers_the_capabilities_it_walks() -> None:
+    registry = CapabilityRegistry()
+
+    JurisdictionPackages((ex_cap,)).register_capabilities(registry)
+
+    assert registry.identifiers() == {"ex-cap/levy", "ex-cap/extra", "ex-cap/in_init"}
+    assert registry.get("ex-cap/levy") is Levy
+    assert registry.get("ex-cap/extra") is Extra
+
+
+def test_a_package_without_a_capabilities_package_contributes_none() -> None:
+    registry = CapabilityRegistry()
+
+    JurisdictionPackages((ex_on,)).register_capabilities(registry)
+
+    assert registry.identifiers() == frozenset()
+
+
 def test_a_capability_clashing_with_one_already_registered_is_rejected(
     on_disk: MakeOnDisk,
 ) -> None:
     registry = CapabilityRegistry()
+    JurisdictionPackages((ex_cap,)).register_capabilities(registry)
     packages = JurisdictionPackages((on_disk("ex_cap_clash", "ex-cap", "", CAPABILITY_SOURCE),))
-    packages.register_capabilities(registry)
 
     with pytest.raises(DuplicateRegistrationError, match="'ex-cap/levy'"):
         packages.register_capabilities(registry)
+
+
+def test_registering_a_packages_capabilities_again_changes_nothing() -> None:
+    registry = CapabilityRegistry()
+    packages = JurisdictionPackages((ex_cap,))
+    packages.register_capabilities(registry)
+    before = registry.identifiers()
+
+    packages.register_capabilities(registry)
+
+    assert registry.identifiers() == before
 
 
 def test_a_missing_dependency_of_a_capability_module_is_not_hidden(on_disk: MakeOnDisk) -> None:

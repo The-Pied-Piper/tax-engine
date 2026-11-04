@@ -64,8 +64,9 @@ class JurisdictionPackages:
         """Register the capabilities of every package, found by walking its `capabilities` package.
 
         A package without a `capabilities` package contributes none. Every package is walked
-        first, so an import error registers nothing; an identifier clashing with one already in
-        `registry` is an error, which can leave the capabilities registered before it in place.
+        first, so an import error registers nothing. Registering again is idempotent; an
+        identifier taken by another class is an error, which can leave the capabilities
+        registered before it in place.
         """
         found = [
             capabilities_in(module)
@@ -74,7 +75,8 @@ class JurisdictionPackages:
         ]
         for classes in found:
             for cls in classes:
-                registry.register_class(cls)
+                if registry.identifier_of(cls) != cls.identifier():
+                    registry.register_class(cls)
 
     @staticmethod
     def _capabilities(package: str) -> ModuleType | None:
