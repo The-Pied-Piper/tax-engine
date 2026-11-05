@@ -18,8 +18,8 @@ from typing import Any, ClassVar, assert_type
 
 import pytest
 
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry, Money
-from tax_engine.domain.blank import BLANK
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry, Money
+from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.capability_builder import CapabilityBuilder
 from tax_engine.domain.errors import (
@@ -664,7 +664,7 @@ class ScaleBlank(Scale):
     BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"source"})
 
 
-def build_blank(blank: Mapping[str, str]) -> Capability:
+def build_blank(blank: Mapping[str, BlankRule]) -> Capability:
     chosen = CapabilitySelection(
         name="ex/scale",
         params={"factor": "ex/factor"},
@@ -683,7 +683,7 @@ def test_a_selection_without_blank_rules_builds_a_capability_that_refuses_a_blan
 
 
 def test_a_blank_fallback_is_read_as_the_slots_value_type_and_applied() -> None:
-    built = build_blank({"source": "2"})
+    built = build_blank({"source": Decimal(2)})
 
     result = built.run((Artifact(SOURCE, BLANK),))
 
@@ -691,31 +691,26 @@ def test_a_blank_fallback_is_read_as_the_slots_value_type_and_applied() -> None:
 
 
 def test_pass_on_makes_the_output_blank() -> None:
-    built = build_blank({"source": "pass_on"})
+    built = build_blank({"source": PASS_ON})
 
     assert built.run((Artifact(SOURCE, BLANK),)).outputs == (Artifact(TARGET, BLANK),)
 
 
 def test_compute_hands_the_blank_to_the_class_which_decides() -> None:
-    built = build_blank({"source": "compute"})
+    built = build_blank({"source": COMPUTE})
 
     with pytest.raises(DomainError, match="was left blank, so it has no value"):
         built.run((Artifact(SOURCE, BLANK),))
 
 
-def test_a_fallback_that_is_not_a_number_is_an_invalid_selection() -> None:
-    with pytest.raises(InvalidSelectionError, match="blank rule for slot 'source'.*'lots'"):
-        build_blank({"source": "lots"})
-
-
 def test_a_blank_rule_for_a_slot_that_is_not_consumed_is_an_invalid_selection() -> None:
     with pytest.raises(InvalidSelectionError, match="'target' is given under blank"):
-        build_blank({"target": "0"})
+        build_blank({"target": Decimal(0)})
 
 
-@pytest.mark.parametrize("rule", ["0", "pass_on", "compute"])
+@pytest.mark.parametrize("rule", [Decimal(0), PASS_ON, COMPUTE])
 def test_a_blank_rule_for_a_slot_the_class_does_not_allow_is_an_invalid_selection(
-    rule: str,
+    rule: BlankRule,
 ) -> None:
     chosen = CapabilitySelection(
         name="ex/scale",
@@ -727,68 +722,6 @@ def test_a_blank_rule_for_a_slot_the_class_does_not_allow_is_an_invalid_selectio
 
     with pytest.raises(InvalidSelectionError, match="slot 'source' may not be blank"):
         CapabilityBuilder().build(chosen, Scale, datasets(), registry())
-
-
-@pytest.mark.parametrize("text", [" 0", "0 ", "1_0", "+5", "1e3", "٣", "", "0x10", "1,5", "NaN"])
-def test_a_fallback_must_be_a_plain_decimal_number(text: str) -> None:
-    with pytest.raises(InvalidSelectionError, match="plain decimal number"):
-        build_blank({"source": text})
-
-
-def test_a_fallback_for_a_whole_number_slot_must_be_a_whole_number() -> None:
-    class Counted(Capability):
-        CONSUMES: ClassVar[Mapping[str, type]] = {"count": int}
-        PRODUCES: ClassVar[Mapping[str, type]] = {"output": int}
-        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count"})
-
-        def __init__(self, count: ArtifactKind[int], output: ArtifactKind[int]) -> None:
-            super().__init__(count=count, output=output)
-
-        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
-            raise NotImplementedError
-
-    counted, total = CountKind("ex/counted"), CountKind("ex/counted_total")
-    artifacts = registry({"ex/counted": counted, "ex/counted_total": total})
-
-    def chosen(text: str) -> CapabilitySelection:
-        return CapabilitySelection(
-            name="ex/counted",
-            params={},
-            consumes={"count": "ex/counted"},
-            produces={"output": "ex/counted_total"},
-            blank={"count": text},
-        )
-
-    CapabilityBuilder().build(chosen("2"), Counted, {}, artifacts)
-    with pytest.raises(InvalidSelectionError, match="whole number"):
-        CapabilityBuilder().build(chosen("2.5"), Counted, {}, artifacts)
-
-
-def test_a_fallback_too_long_to_read_as_a_whole_number_is_an_invalid_selection() -> None:
-    class Counted(Capability):
-        CONSUMES: ClassVar[Mapping[str, type]] = {"count": int}
-        PRODUCES: ClassVar[Mapping[str, type]] = {"output": int}
-        BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"count"})
-
-        def __init__(self, count: ArtifactKind[int], output: ArtifactKind[int]) -> None:
-            super().__init__(count=count, output=output)
-
-        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
-            raise NotImplementedError
-
-    counted, total = CountKind("ex/counted"), CountKind("ex/counted_total")
-    chosen = CapabilitySelection(
-        name="ex/counted",
-        params={},
-        consumes={"count": "ex/counted"},
-        produces={"output": "ex/counted_total"},
-        blank={"count": "9" * 5000},
-    )
-
-    with pytest.raises(InvalidSelectionError, match="too long to read as a number"):
-        CapabilityBuilder().build(
-            chosen, Counted, {}, registry({"ex/counted": counted, "ex/counted_total": total})
-        )
 
 
 # --- a blank rule for one kind in a list slot ---------------------------------------------------
@@ -805,7 +738,7 @@ def per_item_class() -> Any:
     return PerItem
 
 
-def build_per_item(blank: Mapping[str, str], cls: Any = None) -> Any:
+def build_per_item(blank: Mapping[str, BlankRule], cls: Any = None) -> Any:
     chosen = CapabilitySelection(
         name="ex/total_up",
         params={},
@@ -817,7 +750,7 @@ def build_per_item(blank: Mapping[str, str], cls: Any = None) -> Any:
 
 
 def test_an_identifier_under_blank_gives_the_rule_for_that_one_part() -> None:
-    built = build_per_item({"parts": "pass_on", "ex/part_b": "0"})
+    built = build_per_item({"parts": PASS_ON, "ex/part_b": Decimal(0)})
 
     zeroed = built.run((Artifact(PART_A, D(1)), Artifact(PART_B, BLANK), Artifact(PART_C, D(2))))
     passed = built.run((Artifact(PART_A, BLANK), Artifact(PART_B, D(1)), Artifact(PART_C, D(2))))
@@ -827,20 +760,15 @@ def test_an_identifier_under_blank_gives_the_rule_for_that_one_part() -> None:
 
 
 def test_a_part_rule_alone_leaves_the_other_parts_refusing_a_blank() -> None:
-    built = build_per_item({"ex/part_b": "pass_on"})
+    built = build_per_item({"ex/part_b": PASS_ON})
 
     with pytest.raises(DomainError, match="'part_a'.*may not be blank"):
         built.run((Artifact(PART_A, BLANK), Artifact(PART_B, D(1)), Artifact(PART_C, D(2))))
 
 
-def test_a_part_fallback_is_read_as_the_value_type_of_its_slot() -> None:
-    with pytest.raises(InvalidSelectionError, match="blank rule for 'ex/part_b'.*'lots'"):
-        build_per_item({"ex/part_b": "lots"})
-
-
 def test_a_part_the_selection_does_not_consume_under_blank_is_an_invalid_selection() -> None:
     with pytest.raises(InvalidSelectionError, match="'ex/source' is given under blank but is"):
-        build_per_item({"ex/source": "pass_on"})
+        build_per_item({"ex/source": PASS_ON})
 
 
 def test_a_part_rule_on_a_class_that_does_not_take_one_is_an_invalid_selection() -> None:
@@ -848,4 +776,4 @@ def test_a_part_rule_on_a_class_that_does_not_take_one_is_an_invalid_selection()
         BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset()
 
     with pytest.raises(InvalidSelectionError, match="slot 'parts' takes one blank rule"):
-        build_per_item({"ex/part_b": "pass_on"}, OneRule)
+        build_per_item({"ex/part_b": PASS_ON}, OneRule)

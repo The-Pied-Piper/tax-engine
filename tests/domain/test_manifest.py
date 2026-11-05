@@ -24,12 +24,10 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
-    Default,
     Form,
     InputDeclaration,
     Manifest,
 )
-from tax_engine.domain.record_list import RecordList
 from tests.kinds import AutoKinds
 from tests.manifest_support import required_inputs
 
@@ -65,10 +63,14 @@ def test_has_no_params_family() -> None:
 def test_blank_rules_default_to_none_and_are_read_only() -> None:
     assert selection().blank == {}
     chosen = CapabilitySelection(
-        name="ex/x", params={}, consumes={}, produces={"output": "ex/y"}, blank={"less": "0"}
+        name="ex/x",
+        params={},
+        consumes={},
+        produces={"output": "ex/y"},
+        blank={"less": Decimal("0")},
     )
 
-    assert chosen.blank == {"less": "0"}
+    assert chosen.blank == {"less": Decimal("0")}
     assert isinstance(chosen.blank, MappingProxyType)
     assert hash(chosen) != hash(selection())
 
@@ -503,15 +505,22 @@ def test_a_form_named_return_is_refused_only_as_a_second_of_that_name() -> None:
 #
 # Every input, every field of a form's instances and every form says whether it is required. A
 # required one takes no default; an optional input or field declares its default, written as the
-# value (`Default(None)` is blank), and the printed sentence that justifies it as its `basis`. An
+# value (`None` is blank), and the printed sentence that justifies it as its `basis`. An
 # optional form names a yes/no in `required_when`, with its own basis; a required form has neither.
 
 
-def optional(name: str = "ex/credit", default: Default | None = None) -> InputDeclaration:
+def zero(kind: ArtifactKind[Any]) -> Artifact[Any]:
+    """The default `0` of an amount or a count kind."""
+    return Artifact(kind, Decimal(0) if kind.value_type is Decimal else 0)
+
+
+def optional(name: str = "ex/credit", default: Artifact[Any] | None = None) -> InputDeclaration:
     return InputDeclaration(
         name=name,
         required=False,
-        default=Default("0") if default is None else default,
+        default=zero(KINDS_BY_NAME.get(name) or CountKind(name, non_negative=True))
+        if default is None
+        else default,
         basis="Line 1: enter 0 if none",
     )
 
@@ -520,7 +529,7 @@ def test_a_required_input_takes_no_default_and_no_basis() -> None:
     assert InputDeclaration(name="ex/income", required=True).default is None
 
     with pytest.raises(InvalidManifestError, match="input 'ex/income': a required input takes no"):
-        InputDeclaration(name="ex/income", required=True, default=Default("0"))
+        InputDeclaration(name="ex/income", required=True, default=zero(AMOUNT))
     with pytest.raises(InvalidManifestError, match="input 'ex/income': a required input takes no"):
         InputDeclaration(name="ex/income", required=True, basis="Line 1")
 
@@ -529,20 +538,17 @@ def test_an_optional_input_needs_a_default_and_a_basis() -> None:
     with pytest.raises(InvalidManifestError, match="input 'ex/credit': .* needs a default"):
         InputDeclaration(name="ex/credit", required=False, basis="Line 1")
     with pytest.raises(InvalidManifestError, match="input 'ex/credit': .* needs a basis"):
-        InputDeclaration(name="ex/credit", required=False, default=Default("0"))
+        InputDeclaration(name="ex/credit", required=False, default=zero(AMOUNT))
     with pytest.raises(InvalidManifestError, match="input 'ex/credit': .* needs a basis"):
-        InputDeclaration(name="ex/credit", required=False, default=Default("0"), basis="")
+        InputDeclaration(name="ex/credit", required=False, default=zero(AMOUNT), basis="")
 
 
-@pytest.mark.parametrize("value", [None, "0", "", "375.03", ()])
-def test_a_default_is_blank_text_a_figure_or_an_empty_list(value: str | tuple[()] | None) -> None:
-    assert optional(default=Default(value)).default == Default(value)
+def test_a_declared_blank_is_a_blank_artifact_not_no_default() -> None:
+    blank = Artifact(AMOUNT, BLANK)
 
-
-@pytest.mark.parametrize("value", [0, 1.5, True, ("a",), ["x"]])
-def test_a_default_of_any_other_type_is_refused(value: Any) -> None:
-    with pytest.raises(InvalidManifestError, match="default must be null, a string or an empty"):
-        Default(value)
+    assert optional(default=blank).default == blank
+    assert blank.is_blank
+    assert InputDeclaration("ex/income", True).default is None
 
 
 def test_an_input_is_named_by_an_identifier() -> None:
@@ -556,72 +562,28 @@ COUNT = CountKind("ex/count", non_negative=True)
 ROWS = RecordListKind("ex/rows", fields=(AMOUNT, COUNT))
 NOTE = TextKind("ex/note")
 BUSINESS_NUMBER = DigitsKind("ex/business_number", digits=9)
+KINDS_BY_NAME: dict[str, ArtifactKind[Any]] = {
+    "ex/credit": AMOUNT,
+    "ex/amount": AMOUNT,
+    "ex/count": COUNT,
+}
 
 
-@pytest.mark.parametrize(
-    ("kind", "value"),
-    [
-        (AMOUNT, "0"),
-        (AMOUNT, "-12.50"),
-        (LEVY, "375.03"),
-        (COUNT, "0"),
-        (ROWS, ()),
-        (NOTE, ""),
-        (BUSINESS_NUMBER, ""),
-        (BUSINESS_NUMBER, "123456789"),
-        (AMOUNT, None),
-        (ROWS, None),
-        (COUNT, None),
-    ],
-)
-def test_a_default_that_suits_its_kind_is_accepted(
-    kind: ArtifactKind[Any], value: str | tuple[()] | None
-) -> None:
-    assert optional(default=Default(value)).default_artifact(kind) is not None
+def test_the_default_artifact_is_the_declared_one_when_it_is_of_the_kind() -> None:
+    declared = Artifact(LEVY, Decimal("375.03"))
+
+    assert optional(default=declared).default_artifact(LEVY) == Artifact(LEVY, Decimal("375.03"))
+    assert optional(default=Artifact(ROWS, BLANK)).default_artifact(ROWS) == Artifact(ROWS, BLANK)
 
 
-@pytest.mark.parametrize(
-    ("kind", "value", "problem"),
-    [
-        (AMOUNT, "abc", "must be a plain decimal number"),
-        (AMOUNT, "NaN", "must be a plain decimal number"),
-        (AMOUNT, "1e5", "must be a plain decimal number"),
-        (AMOUNT, " 5", "must be a plain decimal number"),
-        (AMOUNT, (), "must be a quoted number"),
-        (LEVY, "-1", "must not be below zero"),
-        (COUNT, "1.5", "must be a whole number"),
-        (COUNT, "1" * 5000, "is too long to read as a number"),
-        (COUNT, "-1", "must not be below zero"),
-        (ROWS, "0", "must be an empty list"),
-        (NOTE, (), "must be a string"),
-        (BUSINESS_NUMBER, "abc", "must be 9 digits"),
-        (BUSINESS_NUMBER, "12345", "must be 9 digits"),
-    ],
-)
-def test_a_default_that_does_not_suit_its_kind_is_refused_naming_the_input(
-    kind: ArtifactKind[Any], value: str | tuple[()], problem: str
-) -> None:
-    with pytest.raises(InvalidManifestError, match=f"input 'ex/credit': default .* {problem}"):
-        assert optional(default=Default(value)).default_artifact(kind) is not None
+def test_a_default_of_another_kind_is_refused_naming_the_input() -> None:
+    wrong = Artifact(COUNT, 1)
 
-
-@pytest.mark.parametrize(
-    ("kind", "value", "expected"),
-    [
-        (AMOUNT, "12.50", Artifact(AMOUNT, Decimal("12.50"))),
-        (LEVY, "375.03", Artifact(LEVY, Decimal("375.03"))),
-        (COUNT, "2", Artifact(COUNT, 2)),
-        (ROWS, (), Artifact(ROWS, RecordList(ROWS.fields, ()))),
-        (NOTE, "", Artifact(NOTE, "")),
-        (BUSINESS_NUMBER, "123456789", Artifact(BUSINESS_NUMBER, "123456789")),
-        (AMOUNT, None, Artifact(AMOUNT, BLANK)),
-        (ROWS, None, Artifact(ROWS, BLANK)),
-    ],
-)
-def test_the_default_is_read_as_an_artifact_of_the_kind(
-    kind: ArtifactKind[Any], value: str | tuple[()] | None, expected: Artifact[Any]
-) -> None:
-    assert optional(default=Default(value)).default_artifact(kind) == expected
+    with pytest.raises(
+        InvalidManifestError,
+        match="input 'ex/credit': default is an artifact of 'ex/count', not of the kind",
+    ):
+        optional(default=wrong).default_artifact(AMOUNT)
 
 
 def test_a_required_input_has_no_default_artifact() -> None:
@@ -764,10 +726,13 @@ def registry(*kinds: ArtifactKind[Any]) -> ArtifactRegistry:
 COUNT_APPLIES = CountKind("ex/relief_applies", non_negative=True)
 
 
-def test_the_manifest_is_checked_and_its_defaults_converted_when_it_is_built() -> None:
+def test_the_manifest_is_checked_and_its_defaults_collected_when_it_is_built() -> None:
     gated = optional_form(
         instances="ex/rows",
-        fields=(optional("ex/amount", Default("2.50")), optional("ex/count", Default(None))),
+        fields=(
+            optional("ex/amount", Artifact(AMOUNT, Decimal("2.50"))),
+            optional("ex/count", Artifact(COUNT, BLANK)),
+        ),
     )
     inputs = required_inputs(["ex/relief_applies"]) | {"ex/amount": optional("ex/amount")}
 
@@ -821,10 +786,12 @@ def test_a_declared_field_the_instances_kind_does_not_have_is_refused() -> None:
 
 
 def test_a_field_default_must_suit_the_field_kind() -> None:
-    bad = optional("ex/count", Default("1.5"))
+    bad = optional("ex/count", Artifact(AMOUNT, Decimal("1.5")))
     gated = optional_form(instances="ex/rows", fields=(optional("ex/amount"), bad))
 
-    with pytest.raises(InvalidManifestError, match="input 'ex/count': default .* whole number"):
+    with pytest.raises(
+        InvalidManifestError, match="input 'ex/count': default is an artifact of 'ex/amount'"
+    ):
         with_forms(
             gated,
             inputs=required_inputs(["ex/relief_applies"]),
@@ -834,10 +801,12 @@ def test_a_field_default_must_suit_the_field_kind() -> None:
 
 def test_an_input_default_must_suit_its_kind() -> None:
     inputs = required_inputs(["ex/relief_applies"]) | {
-        "ex/amount": optional("ex/amount", Default("x"))
+        "ex/amount": optional("ex/amount", Artifact(COUNT, 1))
     }
 
-    with pytest.raises(InvalidManifestError, match="input 'ex/amount': default .* plain decimal"):
+    with pytest.raises(
+        InvalidManifestError, match="input 'ex/amount': default is an artifact of 'ex/count'"
+    ):
         with_forms(optional_form(), inputs=inputs, artifacts=registry(COUNT_APPLIES, AMOUNT))
 
 

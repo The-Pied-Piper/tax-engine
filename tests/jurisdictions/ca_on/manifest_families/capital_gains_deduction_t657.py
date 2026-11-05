@@ -8,6 +8,9 @@ out of this family.
 
 from __future__ import annotations
 
+from decimal import Decimal
+
+from tax_engine.domain.blank import PASS_ON
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.at_most import AtMost
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
@@ -656,7 +659,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_1_amount_a",
             "less": "ca/chart_2024_period_2_amount_n",
         },
-        blank={"less": "0"},
+        blank={"less": Decimal("0")},
         produces={"output": "ca/chart_2025_part_1_amount_c"},
     ),
     # Chart 2025 Part 1 amount E "Capital gains deduction available for QFFP and/or QSBCS ...:
@@ -669,7 +672,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_1_amount_c",
             "less": "ca/chart_2_line_19",
         },
-        blank={"amount": "pass_on", "less": "pass_on"},
+        blank={"amount": PASS_ON, "less": PASS_ON},
         produces={"output": "ca/chart_2025_part_1_amount_e"},
     ),
     # Chart 2025 Part 1 "Add amounts F to J (if negative, enter "0")" (F box 57 of a T3 slip or box
@@ -709,7 +712,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_1_amount_k",
             "less": "ca/t657_part_1_amount_l",
         },
-        blank={"amount": "pass_on", "less": "0"},
+        blank={"amount": PASS_ON, "less": Decimal("0")},
         produces={"output": "ca/chart_2025_part_1_amount_m"},
     ),
     # Chart 2025 Part 1 amount N "Enter whichever is less: amount E or amount M.".
@@ -722,7 +725,7 @@ STEPS = {
                 "ca/chart_2025_part_1_amount_m",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2025_part_1_amount_n"},
     ),
     # Chart 2025 Part 1 "Amount N plus amount O" P (O "Enter amount B from above.", Chart 2024
@@ -736,7 +739,10 @@ STEPS = {
                 "ca/chart_2024_period_2_amount_n",
             ),
         },
-        blank={"ca/chart_2025_part_1_amount_n": "pass_on", "ca/chart_2024_period_2_amount_n": "0"},
+        blank={
+            "ca/chart_2025_part_1_amount_n": PASS_ON,
+            "ca/chart_2024_period_2_amount_n": Decimal("0"),
+        },
         produces={"output": "ca/chart_2025_part_1_amount_p"},
     ),
     # Chart 2025 Part 1 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
@@ -752,7 +758,7 @@ STEPS = {
                 "ca/chart_2025_part_1_amount_p",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2025_part_1_amount_q"},
     ),
     # Chart 2025 Part 2 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS"
@@ -773,7 +779,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_2_amount_a",
             "less": "ca/chart_2025_part_1_amount_p",
         },
-        blank={"less": "0"},
+        blank={"less": Decimal("0")},
         produces={"output": "ca/chart_2025_part_2_amount_c"},
     ),
     # Chart 2025 Part 2 amount E "Capital gains deduction available for QFFP and/or QSBCS ...:
@@ -786,7 +792,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_2_amount_c",
             "less": "ca/chart_2_line_19",
         },
-        blank={"amount": "pass_on", "less": "pass_on"},
+        blank={"amount": PASS_ON, "less": PASS_ON},
         produces={"output": "ca/chart_2025_part_2_amount_e"},
     ),
     # Chart 2025 Part 2 amount F "Amount from line 10700 of Schedule 3 (do not include capital gains
@@ -799,7 +805,7 @@ STEPS = {
             "amount": "ca/qsbcs_gain_or_loss",
             "less": "ca/t657_part_2_excluded_f",
         },
-        blank={"amount": "pass_on", "less": "0"},
+        blank={"amount": PASS_ON, "less": Decimal("0")},
         produces={"output": "ca/chart_2025_part_2_amount_f"},
     ),
     # Chart 2025 Part 2 amount G "Amount from line 11000 of Schedule 3 (do not include capital gains
@@ -811,7 +817,7 @@ STEPS = {
             "amount": "ca/qffp_gain_or_loss",
             "less": "ca/t657_part_2_excluded_g",
         },
-        blank={"amount": "pass_on", "less": "0"},
+        blank={"amount": PASS_ON, "less": Decimal("0")},
         produces={"output": "ca/chart_2025_part_2_amount_g"},
     ),
     # Chart 2025 Part 2 amount H "Amount from line 12400 of Schedule 3 (do not include capital gains
@@ -823,7 +829,7 @@ STEPS = {
             "amount": "ca/qffp_foreclosure_gain_or_loss",
             "less": "ca/t657_part_2_excluded_h",
         },
-        blank={"amount": "pass_on", "less": "0"},
+        blank={"amount": PASS_ON, "less": Decimal("0")},
         produces={"output": "ca/chart_2025_part_2_amount_h"},
     ),
     # Chart 2025 Part 2 "Add amounts F to J (if negative, enter "0")" (I "Amount from line 6 of Form
@@ -863,7 +869,7 @@ STEPS = {
             "amount": "ca/chart_2025_part_2_amount_k",
             "less": "ca/t657_part_2_amount_l",
         },
-        blank={"amount": "pass_on", "less": "0"},
+        blank={"amount": PASS_ON, "less": Decimal("0")},
         produces={"output": "ca/chart_2025_part_2_amount_m"},
     ),
     # Chart 2025 Part 2 amount N "Enter whichever is less: amount E or amount M.".
@@ -876,7 +882,7 @@ STEPS = {
                 "ca/chart_2025_part_2_amount_m",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2025_part_2_amount_n"},
     ),
     # Chart 2025 Part 2 "Amount N plus amount O" P (O "Enter amount B from above.", B being Part 1
@@ -890,7 +896,10 @@ STEPS = {
                 "ca/chart_2025_part_1_amount_p",
             ),
         },
-        blank={"ca/chart_2025_part_2_amount_n": "pass_on", "ca/chart_2025_part_1_amount_p": "0"},
+        blank={
+            "ca/chart_2025_part_2_amount_n": PASS_ON,
+            "ca/chart_2025_part_1_amount_p": Decimal("0"),
+        },
         produces={"output": "ca/chart_2025_part_2_amount_p"},
     ),
     # Chart 2025 Part 2 amount Q "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or
@@ -906,7 +915,7 @@ STEPS = {
                 "ca/chart_2025_part_2_amount_p",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2025_part_2_amount_q"},
     ),
     # Guide T4037 "Claiming the capital gains deduction": "You can claim any amount of the capital

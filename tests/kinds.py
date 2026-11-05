@@ -11,8 +11,7 @@ from functools import cache
 from typing import Any
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.errors import InvalidTextError
+from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
@@ -62,17 +61,12 @@ class AutoKinds(ArtifactRegistry):
 
 @dataclass(frozen=True)
 class OddKind(ArtifactKind[Any]):
-    """A kind of any value type, for tests that a value type is refused or left unread. It reads
-    no text.
-    """
+    """A kind of any value type, for tests that a value type is refused or left unread."""
 
     def __init__(self, identifier: str, value_type: type[Any]) -> None:
         object.__setattr__(self, "identifier", identifier)
         object.__setattr__(self, "value_type", value_type)
         self.__post_init__()
-
-    def read(self, text: str) -> Artifact[Any]:
-        raise InvalidTextError(f"a {self.value_type.__name__} has no spelling as text")
 
 
 def non_negative(kind: ArtifactKind[Any]) -> bool:

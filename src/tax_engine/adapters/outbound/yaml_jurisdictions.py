@@ -63,24 +63,28 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping
 from pathlib import Path
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
 import yaml
 
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
-from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.adapters.text import read_default, read_number
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
+from tax_engine.domain.blank import COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.errors import (
+    DomainError,
     InvalidJurisdictionCodeError,
     InvalidManifestError,
     InvalidRegistrationError,
+    InvalidTextError,
     NotFoundError,
     UnknownRegistrationError,
 )
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
-    Default,
     Form,
     InputDeclaration,
     Manifest,
@@ -257,9 +261,8 @@ class YamlJurisdictionSource:
         ) as exc:
             raise InvalidManifestError(f"{folder}: {exc}") from exc
 
-    @classmethod
     def _join_form(
-        cls,
+        self,
         part: Path,
         contents: dict[str, YamlNode],
         form_selections: dict[str, list[CapabilitySelection]],
@@ -270,7 +273,7 @@ class YamlJurisdictionSource:
         Takes `form` and `capabilities` out of `contents`; a second part declaring the exports of
         a form is rejected, naming the part that did.
         """
-        name, declared = cls._form_header(contents.pop("form"))
+        name, declared = self._form_header(contents.pop("form"))
         if contents.keys() & set(_IDENTIFIER_LISTS):
             raise InvalidManifestError(
                 f"{part}: form {name!r}: inputs are derived and exports are declared in the "
@@ -285,7 +288,7 @@ class YamlJurisdictionSource:
                 )
             declarations[name] = (part, declared)
         if "capabilities" in contents:
-            chosen.extend(cls._selection(entry) for entry in contents.pop("capabilities").items())
+            chosen.extend(self._selection(entry) for entry in contents.pop("capabilities").items())
 
     @staticmethod
     def _form(
@@ -304,8 +307,7 @@ class YamlJurisdictionSource:
             )
         return declared.form(name, tuple(selections))
 
-    @classmethod
-    def _form_header(cls, node: YamlNode) -> tuple[str, _Declaration | None]:
+    def _form_header(self, node: YamlNode) -> tuple[str, _Declaration | None]:
         """The name of a part's form and, if it declares them, its instances, exports and limits."""
         node.require_mapping(_FORM_KEYS, optional=_OPTIONAL_FORM_KEYS)
         name = node.field("name").require_non_empty_string()
@@ -340,9 +342,10 @@ class YamlJurisdictionSource:
             return name, None
         if required is None:
             raise InvalidManifestError(f"form {name!r}: required must be declared true or false")
-        cls._identifiers(exports)
+        self._identifiers(exports)
+        instances_name = None if instances is None else instances.require_non_empty_string()
         declared = _Declaration(
-            instances=None if instances is None else instances.require_non_empty_string(),
+            instances=instances_name,
             exports=tuple(item.require_string() for item in exports.items()),
             max_instances=None if maximum is None else maximum.require_integer(),
             min_instances=None if minimum is None else minimum.require_integer(),
@@ -352,32 +355,36 @@ class YamlJurisdictionSource:
             if required_when is None
             else required_when.require_non_empty_string(),
             basis=None if basis is None else basis.require_non_empty_string(),
-            fields=() if fields is None else cls._declarations(fields),
+            fields=()
+            if fields is None
+            else self._declarations(
+                fields,
+                lambda field: self._field_kind(name, instances_name, field),
+            ),
         )
         # Built to check the declaration; the form's selections are added when the parts merge.
         declared.form(name, ())
         return name, declared
 
-    @classmethod
-    def _part(cls, part: Path) -> dict[str, YamlNode]:
+    def _part(self, part: Path) -> dict[str, YamlNode]:
         """The keys a part carries, each checked on its own; errors name the part."""
         try:
             doc = YamlNode.load(part, "manifest").require_mapping(frozenset(), optional=_PART_KEYS)
             contents = dict(doc.fields())
             if "form" in contents:
-                cls._form_header(contents["form"])
+                self._form_header(contents["form"])
             if "jurisdiction" in contents:
-                cls._code(contents["jurisdiction"])
+                self._code(contents["jurisdiction"])
             for key in ("version", "valid_from_tax_year"):
                 if key in contents:
                     contents[key].require_integer()
             if "inputs" in contents:
-                cls._declarations(contents["inputs"])
+                self._declarations(contents["inputs"], self._input_kind)
             if "outputs" in contents:
-                cls._identifiers(contents["outputs"])
+                self._identifiers(contents["outputs"])
             if "capabilities" in contents:
                 for entry in contents["capabilities"].items():
-                    cls._selection(entry)
+                    self._selection(entry)
         except (OSError, yaml.YAMLError, InvalidManifestError, YamlShapeError) as exc:
             raise InvalidManifestError(f"{part}: {exc}") from exc
         return contents
@@ -409,7 +416,7 @@ class YamlJurisdictionSource:
         """
         doc = document.require_mapping(_MANIFEST_KEYS)
         code = self._code(doc.field("jurisdiction"))
-        inputs = self._declarations(doc.field("inputs"))
+        inputs = self._declarations(doc.field("inputs"), self._input_kind)
         outputs = self._identifiers(doc.field("outputs"))
         if not outputs:
             raise InvalidManifestError("outputs must name at least one artifact")
@@ -448,10 +455,14 @@ class YamlJurisdictionSource:
             identifiers.add(identifier)
         return frozenset(identifiers)
 
-    @classmethod
-    def _declarations(cls, node: YamlNode) -> tuple[InputDeclaration, ...]:
-        """A list of input declarations, none repeated; an empty list is Manifest's check."""
-        declarations = tuple(cls._declaration(entry) for entry in node.items())
+    def _declarations(
+        self, node: YamlNode, kind_of: Callable[[str], ArtifactKind[Any]]
+    ) -> tuple[InputDeclaration, ...]:
+        """A list of input declarations, none repeated; an empty list is Manifest's check.
+
+        `kind_of` gives the kind a declared name stands for, which reads its default.
+        """
+        declarations = tuple(self._declaration(entry, kind_of) for entry in node.items())
         names: set[str] = set()
         for entry, declaration in zip(node.items(), declarations, strict=True):
             if declaration.name in names:
@@ -461,8 +472,9 @@ class YamlJurisdictionSource:
             names.add(declaration.name)
         return declarations
 
-    @classmethod
-    def _declaration(cls, entry: YamlNode) -> InputDeclaration:
+    def _declaration(
+        self, entry: YamlNode, kind_of: Callable[[str], ArtifactKind[Any]]
+    ) -> InputDeclaration:
         """One input or field: its `name`, whether it is `required`, and for an optional one its
         `default` (written as the value, `null` for blank) and the printed `basis`."""
         fields = entry.require_mapping(
@@ -477,34 +489,129 @@ class YamlJurisdictionSource:
         return InputDeclaration(
             name=name,
             required=required.require_boolean(),
-            default=None if default is None else cls._default(default),
+            default=None if default is None else self._default(name, default, kind_of(name)),
             basis=None if basis is None else basis.require_non_empty_string(),
         )
 
     @staticmethod
-    def _default(node: YamlNode) -> Default:
-        """`null`, a quoted string or an empty list, as the value the default is."""
+    def _default(name: str, node: YamlNode, kind: ArtifactKind[Any]) -> Artifact[Any]:
+        """`null`, a quoted string or an empty list, read as an artifact of `kind`."""
         value = node.value
-        if value is None:
-            return Default(None)
-        if isinstance(value, str):
-            return Default(value)
-        if isinstance(value, list) and not value:
-            return Default(())
-        raise YamlShapeError(
-            f"{node.where} must be null, a quoted string or [], got {type(value).__name__}"
+        declared: str | tuple[()] | None
+        if value is None or isinstance(value, str):
+            declared = value
+        elif isinstance(value, list) and not value:
+            declared = ()
+        else:
+            raise YamlShapeError(
+                f"{node.where} must be null, a quoted string or [], got {type(value).__name__}"
+            )
+        try:
+            return read_default(kind, declared)
+        except DomainError as exc:
+            raise InvalidManifestError(
+                f"input {name!r}: default {declared!r} {exc} for the kind {kind.identifier!r}"
+            ) from None
+
+    def _input_kind(self, name: str) -> ArtifactKind[Any]:
+        """The kind of the input `name`, an artifact the source's kinds register."""
+        try:
+            return self._kinds.kind(name)
+        except UnknownRegistrationError as exc:
+            raise InvalidManifestError(f"input {name!r}: {exc}") from None
+
+    def _field_kind(self, form: str, instances: str | None, name: str) -> ArtifactKind[Any]:
+        """The kind of the field `name` of the records of form `form`'s `instances`."""
+        if instances is None:
+            raise InvalidManifestError(f"form {form!r}: field {name!r} needs the form's instances")
+        try:
+            kind = self._kinds.kind(instances)
+        except UnknownRegistrationError as exc:
+            raise InvalidManifestError(f"form {form!r}: {exc}") from None
+        found = (
+            {field.identifier: field for field in kind.fields}
+            if isinstance(kind, RecordListKind)
+            else {}
+        )
+        if name not in found:
+            raise InvalidManifestError(
+                f"form {form!r}: field {name!r} is not a field of the records of {instances!r}"
+            )
+        return found[name]
+
+    def _selection(self, entry: YamlNode) -> CapabilitySelection:
+        fields = entry.require_mapping(_CAPABILITY_KEYS, optional=_OPTIONAL_CAPABILITY_KEYS)
+        name = fields.field("name").require_string()
+        consumes = self._consumed(fields.optional_field("consumes"))
+        return CapabilitySelection(
+            name=name,
+            params=self._bindings(fields.optional_field("params")),
+            consumes=consumes,
+            produces=self._produced(fields.field("produces")),
+            blank=self._blank_rules(name, fields.optional_field("blank"), consumes),
         )
 
-    @classmethod
-    def _selection(cls, entry: YamlNode) -> CapabilitySelection:
-        fields = entry.require_mapping(_CAPABILITY_KEYS, optional=_OPTIONAL_CAPABILITY_KEYS)
-        return CapabilitySelection(
-            name=fields.field("name").require_string(),
-            params=cls._bindings(fields.optional_field("params")),
-            consumes=cls._consumed(fields.optional_field("consumes")),
-            produces=cls._produced(fields.field("produces")),
-            blank=cls._bindings(fields.optional_field("blank")),
-        )
+    def _blank_rules(
+        self,
+        who: str,
+        node: YamlNode | None,
+        consumes: Mapping[str, str | tuple[str, ...]],
+    ) -> dict[str, BlankRule]:
+        """What a blank does in each slot, or each artifact in a list slot, `node` names: `pass_on`
+        and `compute` are the rules `PASS_ON` and `COMPUTE`, anything else a fallback number read
+        as the value type of the kinds the slot (or the one artifact) takes.
+        """
+        return {
+            name: self._blank_rule(who, name, text, consumes)
+            for name, text in self._bindings(node).items()
+        }
+
+    def _blank_rule(
+        self,
+        who: str,
+        name: str,
+        text: str,
+        consumes: Mapping[str, str | tuple[str, ...]],
+    ) -> BlankRule:
+        """The rule `text` spells for `name`, a consumed slot or an artifact the selection
+        consumes; a fallback that is not a number of that value type is an InvalidManifestError.
+        """
+        if text == "pass_on":
+            return PASS_ON
+        if text == "compute":
+            return COMPUTE
+        label = f"slot {name!r}" if name in consumes else repr(name)
+        named = consumes.get(name, name)
+        identifiers = (named,) if isinstance(named, str) else named
+        listed = {
+            each
+            for value in consumes.values()
+            for each in ((value,) if isinstance(value, str) else value)
+        }
+        if name not in consumes and name not in listed:
+            raise InvalidManifestError(
+                f"{who}: {name!r} is given under blank but is neither a consumed slot "
+                "nor an artifact the selection consumes"
+            )
+        if not identifiers:
+            raise InvalidManifestError(
+                f"{who}: blank rule for {label} must be pass_on or compute: it takes no kinds"
+            )
+        try:
+            value_types = {self._kinds.kind(each).value_type for each in identifiers}
+            if len(value_types) != 1:
+                raise InvalidManifestError(
+                    f"{who}: blank rule for {label} must be pass_on or compute: "
+                    "the kinds it takes are not of one value type"
+                )
+            return read_number(value_types.pop(), text)
+        except UnknownRegistrationError as exc:
+            raise InvalidManifestError(f"{who}: blank rule for {label}: {exc}") from None
+        except InvalidTextError as exc:
+            raise InvalidManifestError(
+                f"{who}: blank rule for {label} must be pass_on, compute or a number, "
+                f"got {text!r}, which {exc}"
+            ) from None
 
     @classmethod
     def _produced(cls, node: YamlNode) -> dict[str, str]:

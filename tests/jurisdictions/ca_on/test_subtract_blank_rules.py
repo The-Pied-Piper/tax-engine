@@ -66,7 +66,7 @@ def less_of(step: CapabilitySelection) -> str:
 
 
 def rules(step: CapabilitySelection) -> dict[str, BlankRule]:
-    return {slot: PASS_ON if text == "pass_on" else D(text) for slot, text in step.blank.items()}
+    return dict(step.blank)
 
 
 def wired(
@@ -88,7 +88,7 @@ def test_the_steps_of_the_carry_lines_and_the_inputs_are_all_found() -> None:
 @pytest.mark.parametrize("less", sorted(CARRY_LESS))
 def test_a_carry_line_reads_a_blank_b_as_zero(less: str) -> None:
     (step,) = (each for each in subtract_steps() if less_of(each) == less)
-    assert dict(step.blank) == {"less": "0"}
+    assert dict(step.blank) == {"less": D("0")}
 
     subtract, gross, reduction = wired(step)
     result = subtract.run((Artifact(gross, D(100)), Artifact(reduction, BLANK)))
@@ -100,7 +100,7 @@ def test_a_carry_line_reads_a_blank_b_as_zero(less: str) -> None:
 @pytest.mark.parametrize("less", sorted(INPUT_LESS))
 def test_a_blank_t657_take_off_line_takes_off_nothing(less: str) -> None:
     (step,) = (each for each in subtract_steps() if less_of(each) == less)
-    assert dict(step.blank) == {"amount": "pass_on", "less": "0"}
+    assert dict(step.blank) == {"amount": PASS_ON, "less": D("0")}
 
     subtract, gross, reduction = wired(step)
     result = subtract.run((Artifact(gross, D(10000)), Artifact(reduction, BLANK)))
