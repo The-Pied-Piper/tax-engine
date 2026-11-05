@@ -81,7 +81,7 @@ class CapabilityBuilder:
         who: str,
     ) -> tuple[dict[str, BlankRule], dict[ArtifactKind[Any], BlankRule]]:
         """What a blank does in each slot, or each kind in a list slot, the selection names:
-        its typed rule, as the manifest's reader gave it.
+        its typed rule, as the YAML loader gave it.
 
         A name that is not a slot is the identifier of a consumed artifact: its rule is for that
         kind alone, and `Capability.with_blank_rules` checks the slot takes one. Returns the rules

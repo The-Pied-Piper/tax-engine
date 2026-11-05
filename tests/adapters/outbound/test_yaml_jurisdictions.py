@@ -1896,6 +1896,7 @@ def test_a_fallback_is_read_as_the_value_type_of_the_kind_it_is_for(tmp_path: Pa
         ("flag", '"' + "9" * 5000 + '"', "too long to read as a number"),
         ("ex/relief_applies", '"x"', "blank rule for 'ex/relief_applies' must be"),
         ("parts", '"0"', "the kinds it takes are not of one value type"),
+        ("typo", '"1"', "'typo' is given under blank but is neither a consumed slot"),
     ],
 )
 def test_a_bad_fallback_fails_at_load_naming_the_file(
@@ -2002,6 +2003,28 @@ def test_an_input_declares_whether_it_is_required_and_optional_ones_a_default_an
         "ex/rows": InputDeclaration("ex/rows", False, finished("ex/rows", ()), "Line 3"),
         "ex/box": InputDeclaration("ex/box", False, finished("ex/box", None), "Line 4"),
     }
+
+
+@pytest.mark.parametrize(
+    ("entry", "message"),
+    [
+        ("{name: ex/credit, required: false, default: 'lots', basis: 'L'}", "plain decimal"),
+        ("{name: ex/credit, required: false, default: '1e5', basis: 'L'}", "plain decimal"),
+        ("{name: ex/credit, required: false, default: [], basis: 'L'}", "quoted number"),
+        ("{name: ex/note, required: false, default: [], basis: 'L'}", "must be a string"),
+        ("{name: ex/rows, required: false, default: '0', basis: 'L'}", "no spelling as text"),
+        ("{name: ex/relief_applies, required: false, default: '-1', basis: 'L'}", "negative"),
+        ("{name: ex/relief_applies, required: false, default: '1.5', basis: 'L'}", "whole number"),
+    ],
+)
+def test_a_bad_default_fails_at_load_naming_the_file_and_the_input(
+    tmp_path: Path, entry: str, message: str
+) -> None:
+    name = entry.split(",")[0].removeprefix("{name: ")
+    text = refused(tmp_path, {"01-inputs.yaml": f"inputs:\n  - {entry}\n"}, message)
+
+    assert f"input '{name}'" in text
+    assert str(part_path(tmp_path, "01-inputs.yaml")) in text
 
 
 def test_an_input_that_omits_required_is_refused_naming_it_and_the_part(tmp_path: Path) -> None:
@@ -2292,3 +2315,63 @@ def test_a_form_whose_gate_is_not_a_yes_no_is_refused_at_load_naming_the_file(
         source(tmp_path).get_jurisdiction(EX_ON)
 
     assert "v1" in str(raised.value)
+
+
+def fields_form(fields: str, instances: str = "instances: ex/rentals\n  ") -> str:
+    return f"""\
+form:
+  name: ex/rental
+  required: true
+  {instances}exports: [ex/n]
+  fields: {fields}
+capabilities:
+  - {{name: ex/a, produces: {{output: ex/n}}}}
+"""
+
+
+def test_a_field_default_for_a_name_the_instances_kind_lacks_is_refused(tmp_path: Path) -> None:
+    fields = "[{name: ex/ghost, required: false, default: '0', basis: 'L'}]"
+    write_parts(
+        tmp_path,
+        {
+            "00-header.yaml": SCALARS + OUTPUTS + "capabilities: []\n",
+            "01-inputs.yaml": INPUTS,
+            "02-form.yaml": fields_form(fields),
+        },
+    )
+    kinds = manifest_kinds()
+    kinds.register("ex/rentals", RENTALS)
+
+    with pytest.raises(
+        InvalidManifestError, match="field 'ex/ghost' is not a field of the records"
+    ):
+        YamlJurisdictionSource(roots(tmp_path), kinds).get_jurisdiction(EX_ON)
+
+
+def test_a_field_default_on_a_form_without_instances_is_refused(tmp_path: Path) -> None:
+    fields = "[{name: ex/expenses, required: false, default: '0', basis: 'L'}]"
+
+    refused(
+        tmp_path,
+        {"01-inputs.yaml": INPUTS, "02-form.yaml": fields_form(fields, instances="")},
+        "field 'ex/expenses' needs the form's instances",
+    )
+
+
+def test_a_field_default_the_kind_refuses_fails_at_load_naming_the_file(tmp_path: Path) -> None:
+    fields = "[{name: ex/expenses, required: false, default: 'lots', basis: 'L'}]"
+    write_parts(
+        tmp_path,
+        {
+            "00-header.yaml": SCALARS + OUTPUTS + "capabilities: []\n",
+            "01-inputs.yaml": INPUTS,
+            "02-form.yaml": fields_form(fields),
+        },
+    )
+    kinds = manifest_kinds()
+    kinds.register("ex/rentals", RENTALS)
+
+    with pytest.raises(InvalidManifestError, match="input 'ex/expenses': default 'lots'") as caught:
+        YamlJurisdictionSource(roots(tmp_path), kinds).get_jurisdiction(EX_ON)
+
+    assert str(part_path(tmp_path, "02-form.yaml")) in str(caught.value)

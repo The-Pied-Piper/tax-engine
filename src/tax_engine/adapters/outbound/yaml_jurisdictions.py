@@ -344,8 +344,9 @@ class YamlJurisdictionSource:
         if required is None:
             raise InvalidManifestError(f"form {name!r}: required must be declared true or false")
         self._identifiers(exports)
+        instances_name = None if instances is None else instances.require_non_empty_string()
         declared = _Declaration(
-            instances=None if instances is None else instances.require_non_empty_string(),
+            instances=instances_name,
             exports=tuple(item.require_string() for item in exports.items()),
             max_instances=None if maximum is None else maximum.require_integer(),
             min_instances=None if minimum is None else minimum.require_integer(),
@@ -359,9 +360,7 @@ class YamlJurisdictionSource:
             if fields is None
             else self._declarations(
                 fields,
-                lambda field: self._field_kind(
-                    name, None if instances is None else instances.require_non_empty_string(), field
-                ),
+                lambda field: self._field_kind(name, instances_name, field),
             ),
         )
         # Built to check the declaration; the form's selections are added when the parts merge.
@@ -585,6 +584,20 @@ class YamlJurisdictionSource:
         label = f"slot {name!r}" if name in consumes else repr(name)
         named = consumes.get(name, name)
         identifiers = (named,) if isinstance(named, str) else named
+        listed = {
+            each
+            for value in consumes.values()
+            for each in ((value,) if isinstance(value, str) else value)
+        }
+        if name not in consumes and name not in listed:
+            raise InvalidManifestError(
+                f"{who}: {name!r} is given under blank but is neither a consumed slot "
+                "nor an artifact the selection consumes"
+            )
+        if not identifiers:
+            raise InvalidManifestError(
+                f"{who}: blank rule for {label} must be pass_on or compute: it takes no kinds"
+            )
         try:
             value_types = {self._kinds.kind(each).value_type for each in identifiers}
             if len(value_types) != 1:

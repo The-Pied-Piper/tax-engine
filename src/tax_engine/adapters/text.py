@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import re
 from decimal import Decimal, InvalidOperation
-from typing import Any
+from typing import cast
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.blank import BLANK
@@ -60,11 +60,10 @@ def read_artifact[V](kind: ArtifactKind[V], text: str) -> Artifact[V]:
     are made by the artifact, which refuses what the kind cannot hold (a negative amount of a
     non-negative kind, text that is not a digits kind's digits).
     """
+    # `kind.value_type` says which `V` it is (checked by `Artifact`), which the type cannot show.
     if kind.value_type is str:
-        value: Any = text
-    else:
-        value = read_number(kind.value_type, text)
-    return Artifact(kind, value)
+        return Artifact(kind, cast(V, text))
+    return Artifact(kind, cast(V, read_number(kind.value_type, text)))
 
 
 def read_default[V](kind: ArtifactKind[V], declared: str | tuple[()] | None) -> Artifact[V]:
@@ -77,6 +76,5 @@ def read_default[V](kind: ArtifactKind[V], declared: str | tuple[()] | None) -> 
     if isinstance(declared, str):
         return read_artifact(kind, declared)
     if isinstance(kind, RecordListKind):
-        empty: Any = RecordList(kind.fields, ())
-        return Artifact(kind, empty)
+        return cast(Artifact[V], Artifact(kind, RecordList(kind.fields, ())))
     raise InvalidTextError(f"must be {'a string' if kind.value_type is str else 'a quoted number'}")
