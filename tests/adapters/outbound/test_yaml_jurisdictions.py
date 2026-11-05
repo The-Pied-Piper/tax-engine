@@ -1916,6 +1916,94 @@ def test_a_list_slot_takes_pass_on_and_compute_whatever_its_kinds(tmp_path: Path
     assert blank_rule(tmp_path, "parts", "compute") is COMPUTE
 
 
+def test_a_blank_mapping_under_a_slot_gives_the_rules_of_the_fields_of_its_records(
+    tmp_path: Path,
+) -> None:
+    write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        """\
+        jurisdiction: EX-ON
+        version: 1
+        valid_from_tax_year: 2025
+        inputs: [{name: ex/lines, required: true}]
+        outputs: [ex/total]
+        capabilities:
+          - name: core/record_total
+            consumes:
+              records: ex/lines
+            blank:
+              records: {ex/sales: "0", ex/costs: pass_on}
+            produces:
+              output: ex/total
+        """,
+    )
+
+    manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
+
+    (selection,) = returned(manifest).capabilities
+    assert selection.blank == {}
+    assert selection.blank_fields == {"records": {"ex/sales": Decimal("0"), "ex/costs": PASS_ON}}
+
+
+def test_a_bad_field_fallback_fails_at_load_naming_the_file(tmp_path: Path) -> None:
+    path = write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        HEADER
+        + """\
+capabilities:
+  - name: core/record_total
+    consumes: {records: ex/x}
+    blank: {records: {ex/sales: "lots"}}
+    produces: {output: ex/y}
+""",
+    )
+
+    with pytest.raises(InvalidManifestError, match="blank rule for field 'ex/sales'") as excinfo:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert str(path) in str(excinfo.value)
+
+
+def test_field_rules_under_a_name_that_is_not_a_consumed_slot_fail_at_load(
+    tmp_path: Path,
+) -> None:
+    write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        HEADER
+        + """\
+capabilities:
+  - name: core/record_total
+    consumes: {records: ex/x}
+    blank: {rows: {ex/sales: "0"}}
+    produces: {output: ex/y}
+""",
+    )
+
+    with pytest.raises(InvalidManifestError, match="'rows' is given under blank with field rules"):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_a_field_rule_must_be_a_string(tmp_path: Path) -> None:
+    write(
+        tmp_path,
+        "ex-on/manifests/v1.yaml",
+        HEADER
+        + """\
+capabilities:
+  - name: core/record_total
+    consumes: {records: ex/x}
+    blank: {records: {ex/sales: [0]}}
+    produces: {output: ex/y}
+""",
+    )
+
+    with pytest.raises(InvalidManifestError, match="blank"):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
 def test_a_selection_without_blank_rules_has_none(tmp_path: Path) -> None:
     write(tmp_path, "ex-on/manifests/v1.yaml", EX_ON_V1)
 

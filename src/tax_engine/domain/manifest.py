@@ -42,8 +42,9 @@ class CapabilitySelection:
     order as a tuple. `blank` maps a consumed slot to what a blank in it does, a `BlankRule`: the
     fallback value taken in its place, `PASS_ON`, or `COMPUTE` (the class decides in code); a slot
     not named refuses a blank. For a list slot a class opens to it (`BLANK_PER_ITEM`), the name may
-    instead be the identifier of one artifact in the list, giving the rule for that part. Each is
-    kept as a read-only copy of what it was given.
+    instead be the identifier of one artifact in the list, giving the rule for that part.
+    `blank_fields` maps a consumed record-list slot to what a blank field in its records does: each
+    field's identifier to a `BlankRule`. Each is kept as a read-only copy of what it was given.
     """
 
     name: str
@@ -51,10 +52,18 @@ class CapabilitySelection:
     consumes: Mapping[str, str | tuple[str, ...]]
     produces: Mapping[str, str]
     blank: Mapping[str, BlankRule] = dataclasses.field(default_factory=dict)
+    blank_fields: Mapping[str, Mapping[str, BlankRule]] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self) -> None:
         for name in ("params", "produces", "blank"):
             object.__setattr__(self, name, MappingProxyType(dict(getattr(self, name))))
+        object.__setattr__(
+            self,
+            "blank_fields",
+            MappingProxyType(
+                {slot: MappingProxyType(dict(rules)) for slot, rules in self.blank_fields.items()}
+            ),
+        )
         # A list of identifiers becomes a tuple, so the selection stays frozen and hashable.
         consumes = {
             slot: named if isinstance(named, str) else tuple(named)
@@ -65,7 +74,10 @@ class CapabilitySelection:
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mappings are unhashable."""
         bindings = (self.params, self.consumes, self.produces, self.blank)
-        return hash((self.name, *(frozenset(mapping.items()) for mapping in bindings)))
+        fields = frozenset(
+            (slot, frozenset(rules.items())) for slot, rules in self.blank_fields.items()
+        )
+        return hash((self.name, *(frozenset(mapping.items()) for mapping in bindings), fields))
 
 
 @dataclass(frozen=True, slots=True)

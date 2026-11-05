@@ -68,7 +68,8 @@ class CapabilityBuilder:
         constructor: Callable[..., Capability] = cls
         try:
             rules, per_item = self._blank_rules(selection, cls, artifacts, who)
-            return constructor(**arguments).with_blank_rules(rules, per_item)
+            per_field = self._field_blank_rules(selection, cls, artifacts, who)
+            return constructor(**arguments).with_blank_rules(rules, per_item, per_field)
         except InvalidCapabilityError as error:
             raise InvalidSelectionError(f"{who}: {error}") from error
 
@@ -110,6 +111,29 @@ class CapabilityBuilder:
             else:
                 per_item[artifacts.kind(name)] = rule
         return rules, per_item
+
+    @staticmethod
+    def _field_blank_rules(
+        selection: CapabilitySelection,
+        capability: type[Capability],
+        artifacts: ArtifactRegistry,
+        who: str,
+    ) -> dict[str, dict[ArtifactKind[Any], BlankRule]]:
+        """What a blank does in each record field the selection names under a slot: its typed
+        rule, as the YAML loader gave it, with the field's identifier looked up as a kind.
+
+        `Capability.with_blank_rules` checks the slot takes record fields and that the kind is a
+        field of its lists.
+        """
+        per_field: dict[str, dict[ArtifactKind[Any], BlankRule]] = {}
+        for slot, rules in selection.blank_fields.items():
+            if slot not in capability.CONSUMES:
+                raise InvalidSelectionError(
+                    f"{who}: {slot!r} is given under blank but is not a consumed slot "
+                    f"of {capability.__name__}"
+                )
+            per_field[slot] = {artifacts.kind(name): rule for name, rule in rules.items()}
+        return per_field
 
     def _parameter_arguments(
         self,

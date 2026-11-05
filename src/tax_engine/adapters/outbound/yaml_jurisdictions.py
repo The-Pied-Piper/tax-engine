@@ -543,12 +543,14 @@ class YamlJurisdictionSource:
         fields = entry.require_mapping(_CAPABILITY_KEYS, optional=_OPTIONAL_CAPABILITY_KEYS)
         name = fields.field("name").require_string()
         consumes = self._consumed(fields.optional_field("consumes"))
+        blank = fields.optional_field("blank")
         return CapabilitySelection(
             name=name,
             params=self._bindings(fields.optional_field("params")),
             consumes=consumes,
             produces=self._produced(fields.field("produces")),
-            blank=self._blank_rules(name, fields.optional_field("blank"), consumes),
+            blank=self._blank_rules(name, blank, consumes),
+            blank_fields=self._field_blank_rules(name, blank, consumes),
         )
 
     def _blank_rules(
@@ -562,9 +564,61 @@ class YamlJurisdictionSource:
         as the value type of the kinds the slot (or the one artifact) takes.
         """
         return {
-            name: self._blank_rule(who, name, text, consumes)
-            for name, text in self._bindings(node).items()
+            name: self._blank_rule(who, name, value.require_non_empty_string(), consumes)
+            for name, value in ([] if node is None else node.fields())
+            if not value.is_mapping()
         }
+
+    def _field_blank_rules(
+        self,
+        who: str,
+        node: YamlNode | None,
+        consumes: Mapping[str, str | tuple[str, ...]],
+    ) -> dict[str, dict[str, BlankRule]]:
+        """What a blank does in each record field `node` names under a slot (a mapping of field
+        identifier to rule): `pass_on` and `compute` are the rules `PASS_ON` and `COMPUTE`,
+        anything else a fallback number read as the value type of the field's kind.
+        """
+        rules: dict[str, dict[str, BlankRule]] = {}
+        for slot, value in [] if node is None else node.fields():
+            if not value.is_mapping():
+                continue
+            if slot not in consumes:
+                raise InvalidManifestError(
+                    f"{who}: {slot!r} is given under blank with field rules but is not a "
+                    "consumed slot of the selection"
+                )
+            rules[slot] = {
+                field: self._field_blank_rule(who, field, text)
+                for field, text in value.string_mapping().items()
+            }
+        return rules
+
+    def _field_blank_rule(self, who: str, field: str, text: str) -> BlankRule:
+        """The rule `text` spells for the record field `field`; a fallback that is not a number of
+        the field's value type is an InvalidManifestError.
+        """
+        keyword = self._keyword_rule(text)
+        if keyword is not None:
+            return keyword
+        try:
+            return read_number(self._kinds.kind(field).value_type, text)
+        except UnknownRegistrationError as exc:
+            raise InvalidManifestError(f"{who}: blank rule for field {field!r}: {exc}") from None
+        except InvalidTextError as exc:
+            raise InvalidManifestError(
+                f"{who}: blank rule for field {field!r} must be pass_on, compute or a number, "
+                f"got {text!r}, which {exc}"
+            ) from None
+
+    @staticmethod
+    def _keyword_rule(text: str) -> BlankRule | None:
+        """`PASS_ON` or `COMPUTE` if `text` is that keyword, else None: it is a fallback."""
+        if text == "pass_on":
+            return PASS_ON
+        if text == "compute":
+            return COMPUTE
+        return None
 
     def _blank_rule(
         self,
@@ -576,10 +630,9 @@ class YamlJurisdictionSource:
         """The rule `text` spells for `name`, a consumed slot or an artifact the selection
         consumes; a fallback that is not a number of that value type is an InvalidManifestError.
         """
-        if text == "pass_on":
-            return PASS_ON
-        if text == "compute":
-            return COMPUTE
+        keyword = self._keyword_rule(text)
+        if keyword is not None:
+            return keyword
         label = f"slot {name!r}" if name in consumes else repr(name)
         named = consumes.get(name, name)
         identifiers = (named,) if isinstance(named, str) else named

@@ -9,7 +9,12 @@ from typing import Any
 from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.trace.base import TraceLine
 
-__all__ = ["BlankFallbackLine", "BlankPassedOnLine", "LeftBlankLine"]
+__all__ = [
+    "BlankFieldFallbackLine",
+    "BlankFallbackLine",
+    "BlankPassedOnLine",
+    "LeftBlankLine",
+]
 
 
 @dataclass(frozen=True)
@@ -38,11 +43,39 @@ class BlankFallbackLine(TraceLine):
 
 
 @dataclass(frozen=True)
+class BlankField:
+    """The field `kind` of the record at `position` (from 1) in the record list `records`, left
+    blank.
+    """
+
+    kind: ArtifactKind[Any]
+    records: ArtifactKind[Any]
+    position: int
+
+
+@dataclass(frozen=True)
+class BlankFieldFallbackLine(TraceLine):
+    """The blank record field `field` that a capability took as `fallback`, the value it supplies
+    for a blank."""
+
+    field: BlankField
+    fallback: Decimal | int
+
+    @property
+    def amount(self) -> Decimal:
+        """The fallback taken."""
+        return Decimal(self.fallback)
+
+
+@dataclass(frozen=True)
 class BlankPassedOnLine(TraceLine):
-    """The `output` left blank because the kinds in `because`, sorted, were blank."""
+    """The `output` left blank because the kinds in `because`, sorted, and the record fields in
+    `because_fields`, in the order of their lists and records, were blank.
+    """
 
     output: ArtifactKind[Any]
     because: tuple[ArtifactKind[Any], ...]
+    because_fields: tuple[BlankField, ...] = ()
 
     @property
     def amount(self) -> Decimal:

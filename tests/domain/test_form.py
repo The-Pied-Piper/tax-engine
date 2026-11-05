@@ -39,7 +39,6 @@ from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
-    BlankValueError,
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
@@ -1963,7 +1962,7 @@ def test_a_form_that_exports_a_blank_gives_a_record_with_a_blank_field() -> None
     )
     forms = FormSet([fact, total], inputs=frozenset({FEE}), defaults=[Artifact(FEE, BLANK)])
 
-    with pytest.raises(BlankValueError, match="fee was left blank"):
+    with pytest.raises(BlankNotAllowedError, match="'fee' was left blank in item 1"):
         forms.compute()
 
 

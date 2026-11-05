@@ -30,7 +30,7 @@ def test_the_lines_are_trace_lines_exported_by_their_module_and_the_package() ->
 def test_a_line_keeps_what_it_was_given() -> None:
     assert [f.name for f in fields(LeftBlankLine)] == ["kind"]
     assert [f.name for f in fields(BlankFallbackLine)] == ["kind", "fallback"]
-    assert [f.name for f in fields(BlankPassedOnLine)] == ["output", "because"]
+    assert [f.name for f in fields(BlankPassedOnLine)] == ["output", "because", "because_fields"]
 
 
 def test_a_line_is_frozen_and_compares_by_value() -> None:

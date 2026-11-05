@@ -148,6 +148,10 @@ class YamlNode:
             result.append((key, self.field(key)))
         return result
 
+    def is_mapping(self) -> bool:
+        """Whether this node's value is a mapping."""
+        return isinstance(self._value, dict)
+
     def is_list(self) -> bool:
         """Whether this node's value is a list."""
         return isinstance(self._value, list)
