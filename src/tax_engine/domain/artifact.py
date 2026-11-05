@@ -7,8 +7,8 @@ values; an `Artifact[V]` is one value of a kind, produced in one computation. Ea
 declares its kinds through one `ArtifactCatalog`, which only records them; the composition root
 registers each catalog explicitly with `ArtifactRegistry.register_catalog`.
 
-`ArtifactKind` is abstract: every kind is one of its subclasses, which own what depends on the
-kind of value: how it reads text, how it is declared and what it refuses. What only some kinds
+Every kind is one of the subclasses of `ArtifactKind`, which own what depends on the
+kind of value: how it is declared and what it refuses. What only some kinds
 have is a Protocol a kind matches by shape (`HasFloor`, `RecordField`, `YesNo`). The kinds are in
 kinds.py (amount, count, rate, text, digits and record list). A subclass declares itself on a
 catalog with its own `declare`. An amount or a count may be declared non-negative, and then no
@@ -18,11 +18,10 @@ never from another system's.
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, ClassVar, Generic, Protocol, TypeVar, runtime_checkable
+from typing import Any, Generic, Protocol, TypeVar, runtime_checkable
 
 from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
@@ -30,7 +29,6 @@ from tax_engine.domain.errors import (
     DuplicateRegistrationError,
     InvalidAmountError,
     InvalidRegistrationError,
-    InvalidTextError,
     NegativeArtifactError,
 )
 from tax_engine.domain.registry import Namespace, Registry
@@ -83,21 +81,18 @@ class YesNo(Protocol):
 
 
 @dataclass(frozen=True)
-class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
+class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
     """A kind of artifact, named by its identifier `<namespace>/<local id>`, and its value type.
 
-    Abstract: build one of its subclasses (amount, count, rate, text, digits and record-list kinds,
-    all in kinds.py); a package declares its own through an `ArtifactCatalog`, with
-    the subclass's `declare`. A subclass says how it reads text (`read`) and may refuse values
-    (`check_value`). What only some kinds have is a Protocol a kind matches by shape: `HasFloor`,
-    `RecordField` and `YesNo`.
+    Build one of its subclasses (amount, count, rate, text, digits and record-list kinds, all in
+    kinds.py); a package declares its own through an `ArtifactCatalog`, with the subclass's
+    `declare`. A subclass may refuse values (`check_value`); it never reads text, which the
+    adapters turn into finished values. What only some kinds have is a Protocol a kind matches by
+    shape: `HasFloor`, `RecordField` and `YesNo`.
     """
 
     identifier: str
     value_type: type[V]
-
-    # What `read_default` says a default must be when it is `[]` and the kind has no empty list.
-    default_spelling: ClassVar[str] = "a quoted number"
 
     def __post_init__(self) -> None:
         namespace, _, local_id = self.identifier.partition("/")
@@ -136,24 +131,6 @@ class ArtifactKind(ABC, Generic[V]):  # noqa: UP046  (invariant V, see above)
         `RecordListKind` does for a record list of other fields and `DigitsKind` for text that is
         not its digits.
         """
-
-    @abstractmethod
-    def read(self, text: str) -> Artifact[V]:
-        """The artifact of this kind that `text` spells, as a manifest or a request writes it.
-
-        Text the kind cannot read is an InvalidTextError saying what it must be; a caller adds
-        where the text came from.
-        """
-
-    def read_default(self, declared: str | tuple[()] | None) -> Artifact[V]:
-        """The artifact a manifest's declared default is read as: `None` is blank, a string is
-        read by `read`, and `()` (an empty list) is refused unless the kind has an empty list.
-        """
-        if declared is None:
-            return Artifact(self, BLANK)
-        if isinstance(declared, str):
-            return self.read(declared)
-        raise InvalidTextError(f"must be {self.default_spelling}")
 
 
 type Money = ArtifactKind[Decimal]

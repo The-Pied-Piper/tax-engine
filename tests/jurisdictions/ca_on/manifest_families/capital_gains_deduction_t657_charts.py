@@ -8,6 +8,9 @@ in the `capital_gains_deduction_t657` family; Period 2's amount B reads Period 1
 
 from __future__ import annotations
 
+from decimal import Decimal
+
+from tax_engine.domain.blank import PASS_ON
 from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.lesser_of import LesserOf
@@ -87,7 +90,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_1_amount_a",
             "less": "ca/chart_2023_total_carried",
         },
-        blank={"less": "0"},
+        blank={"less": Decimal("0")},
         produces={"output": "ca/chart_2024_period_1_amount_c"},
     ),
     # Chart 2024 Period 1 "Capital gains deduction available for dispositions of QFFP and/or QSBCS:
@@ -100,7 +103,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_1_amount_c",
             "less": "ca/chart_2_line_19",
         },
-        blank={"amount": "pass_on", "less": "pass_on"},
+        blank={"amount": PASS_ON, "less": PASS_ON},
         produces={"output": "ca/chart_2024_period_1_amount_e"},
     ),
     # Chart 2024 Period 1 "Add amounts F to H (if negative, enter "0")": F "Amount from line 6 of
@@ -119,7 +122,7 @@ STEPS = {
                 "ca/t657_chart_2024_period_1_amount_h",
             ),
         },
-        blank={"ca/t657_chart_2024_period_1_amount_h": "pass_on"},
+        blank={"ca/t657_chart_2024_period_1_amount_h": PASS_ON},
         produces={"output": "ca/chart_2024_period_1_amounts_f_to_h"},
     ),
     # Chart 2024 Period 1 "× 1/2 = I" (the amounts F to H, times the 1/2 printed on the form).
@@ -141,7 +144,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_1_amount_i",
             "less": "ca/t657_chart_2024_period_1_amount_j",
         },
-        blank={"amount": "pass_on", "less": "0"},
+        blank={"amount": PASS_ON, "less": Decimal("0")},
         produces={"output": "ca/chart_2024_period_1_amount_k"},
     ),
     # Chart 2024 Period 1 "Enter whichever is less: amount E or amount K." L.
@@ -154,7 +157,7 @@ STEPS = {
                 "ca/chart_2024_period_1_amount_k",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2024_period_1_amount_l"},
     ),
     # Chart 2024 Period 1 "Amount L plus amount M" N (M "Enter amount B from above.", Chart 2023's
@@ -168,7 +171,7 @@ STEPS = {
                 "ca/chart_2023_total_carried",
             ),
         },
-        blank={"ca/chart_2024_period_1_amount_l": "pass_on"},
+        blank={"ca/chart_2024_period_1_amount_l": PASS_ON},
         produces={"output": "ca/chart_2024_period_1_amount_n"},
     ),
     # Chart 2024 Period 1 "Enter whichever is less: line 21 of Step 1, line 19 of Step 2 or amount N
@@ -183,7 +186,7 @@ STEPS = {
                 "ca/chart_2024_period_1_amount_n",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2024_period_1_amount_o"},
     ),
     # Chart 2024 Period 2 amount A: "Maximum capital gains deduction for QFFP and/or QSBCS disposed
@@ -205,7 +208,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_2_amount_a",
             "less": "ca/chart_2024_period_1_amount_n",
         },
-        blank={"less": "0"},
+        blank={"less": Decimal("0")},
         produces={"output": "ca/chart_2024_period_2_amount_c"},
     ),
     # Chart 2024 Period 2 "Amount C minus amount D (if negative, enter "0")" E (D "Capital gains
@@ -217,7 +220,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_2_amount_c",
             "less": "ca/chart_2_line_19",
         },
-        blank={"amount": "pass_on", "less": "pass_on"},
+        blank={"amount": PASS_ON, "less": PASS_ON},
         produces={"output": "ca/chart_2024_period_2_amount_e"},
     ),
     # Chart 2024 Period 2 "Add amounts F to H (if negative, enter "0")": F, G and H as Period 1's,
@@ -233,7 +236,7 @@ STEPS = {
                 "ca/t657_chart_2024_period_2_amount_h",
             ),
         },
-        blank={"ca/t657_chart_2024_period_2_amount_h": "pass_on"},
+        blank={"ca/t657_chart_2024_period_2_amount_h": PASS_ON},
         produces={"output": "ca/chart_2024_period_2_amounts_f_to_h"},
     ),
     # Chart 2024 Period 2 "× 1/2 = I".
@@ -255,7 +258,7 @@ STEPS = {
             "amount": "ca/chart_2024_period_2_amount_i",
             "less": "ca/t657_chart_2024_period_2_amount_j",
         },
-        blank={"amount": "pass_on", "less": "0"},
+        blank={"amount": PASS_ON, "less": Decimal("0")},
         produces={"output": "ca/chart_2024_period_2_amount_k"},
     ),
     # Chart 2024 Period 2 "Enter whichever is less: amount E or amount K." L.
@@ -268,7 +271,7 @@ STEPS = {
                 "ca/chart_2024_period_2_amount_k",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2024_period_2_amount_l"},
     ),
     # Chart 2024 Period 2 "Amount L plus amount M" N (M "Enter amount B from above.", Period 1's N).
@@ -282,8 +285,8 @@ STEPS = {
             ),
         },
         blank={
-            "ca/chart_2024_period_2_amount_l": "pass_on",
-            "ca/chart_2024_period_1_amount_n": "0",
+            "ca/chart_2024_period_2_amount_l": PASS_ON,
+            "ca/chart_2024_period_1_amount_n": Decimal("0"),
         },
         produces={"output": "ca/chart_2024_period_2_amount_n"},
     ),
@@ -300,7 +303,7 @@ STEPS = {
                 "ca/chart_2024_period_2_amount_n",
             ),
         },
-        blank={"amounts": "pass_on"},
+        blank={"amounts": PASS_ON},
         produces={"output": "ca/chart_2024_period_2_amount_o"},
     ),
 }

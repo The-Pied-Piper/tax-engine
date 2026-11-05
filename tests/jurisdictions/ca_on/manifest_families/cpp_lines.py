@@ -17,6 +17,7 @@ count of it with those earnings is counted and refused (an input error) when it 
 
 from __future__ import annotations
 
+from tax_engine.domain.blank import PASS_ON
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -66,7 +67,7 @@ STEPS = {
             "count": "ca/cpp_part_4_completed_yes_or_no_checked",
             "records": "ca/rc381_instances",
         },
-        blank={"count": "pass_on"},
+        blank={"count": PASS_ON},
         produces={"output": "ca/cpp_part_4_completed_checked"},
     ),
     CapabilitySelection(
@@ -76,7 +77,7 @@ STEPS = {
             "count": "ca/cpp_part_5_completed_yes_or_no_checked",
             "records": "ca/rc381_instances",
         },
-        blank={"count": "pass_on"},
+        blank={"count": PASS_ON},
         produces={"output": "ca/cpp_part_5_completed_checked"},
     ),
     # Schedule 8 Part 4 and Part 5 completed, each checked above: the count of the two both above 0,
@@ -94,7 +95,7 @@ STEPS = {
             ),
             "amounts": (),
         },
-        blank={"counts": "0"},
+        blank={"counts": 0},
         produces={"output": "ca/cpp_part_4_and_part_5_both"},
     ),
     CapabilitySelection(
@@ -116,7 +117,7 @@ STEPS = {
             "counts": ("ca/cpp_part_4_completed_checked",),
             "amounts": ("ca/t4_cpp_pensionable_earnings_outside_quebec",),
         },
-        blank={"counts": "0"},
+        blank={"counts": 0},
         produces={"output": "ca/cpp_part_4_with_employment_earnings"},
     ),
     CapabilitySelection(

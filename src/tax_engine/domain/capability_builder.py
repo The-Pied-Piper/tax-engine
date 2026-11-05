@@ -11,19 +11,13 @@ rejection naming the selection, and never calls ports.
 
 from __future__ import annotations
 
-import re
 from collections.abc import Callable, Mapping
-from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.blank import COMPUTE, PASS_ON, BlankRule
+from tax_engine.domain.blank import BlankRule
 from tax_engine.domain.capability import Capability
-from tax_engine.domain.errors import (
-    InvalidCapabilityError,
-    InvalidSelectionError,
-    InvalidTextError,
-)
+from tax_engine.domain.errors import InvalidCapabilityError, InvalidSelectionError
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.datasets import ParameterDataset
 
@@ -33,10 +27,6 @@ _SLOT_NOUNS = {
     "CONSUMES": "consumed slot",
     "PRODUCES": "produced slot",
 }
-
-
-_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
-_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
 
 
 def _identifiers(named: str | tuple[str, ...]) -> tuple[str, ...]:
@@ -92,8 +82,7 @@ class CapabilityBuilder:
         who: str,
     ) -> tuple[dict[str, BlankRule], dict[ArtifactKind[Any], BlankRule]]:
         """What a blank does in each slot, or each kind in a list slot, the selection names:
-        `pass_on`, `compute`, else the fallback text read as the slot's own value type (a
-        `Decimal`, or an `int` for a count slot).
+        its typed rule, as the YAML loader gave it.
 
         A name that is not a slot is the identifier of a consumed artifact: its rule is for that
         kind alone, and `Capability.with_blank_rules` checks the slot takes one. Returns the rules
@@ -101,7 +90,7 @@ class CapabilityBuilder:
         """
         rules: dict[str, BlankRule] = {}
         per_item: dict[ArtifactKind[Any], BlankRule] = {}
-        for name, text in selection.blank.items():
+        for name, rule in selection.blank.items():
             slot = name
             if name not in capability.CONSUMES:
                 slot = next(
@@ -117,95 +106,34 @@ class CapabilityBuilder:
                         f"{who}: {name!r} is given under blank but is neither a consumed slot "
                         f"of {capability.__name__} nor an artifact the selection consumes"
                     )
-            label = f"slot {name!r}" if name == slot else repr(name)
-            rule = cls._rule(text, capability.slot_value_type(slot), label, who)
             if slot == name:
                 rules[name] = rule
             else:
                 per_item[artifacts.kind(name)] = rule
         return rules, per_item
 
-    @classmethod
+    @staticmethod
     def _field_blank_rules(
-        cls,
         selection: CapabilitySelection,
         capability: type[Capability],
         artifacts: ArtifactRegistry,
         who: str,
     ) -> dict[str, dict[ArtifactKind[Any], BlankRule]]:
-        """What a blank does in each record field the selection names under a slot: `pass_on`,
-        `compute`, else the fallback text read as the field's own value type.
+        """What a blank does in each record field the selection names under a slot: its typed
+        rule, as the YAML loader gave it, with the field's identifier looked up as a kind.
 
-        Each name is the identifier of a field kind; `Capability.with_blank_rules` checks the slot
-        takes record fields and that the kind is a field of its lists.
+        `Capability.with_blank_rules` checks the slot takes record fields and that the kind is a
+        field of its lists.
         """
         per_field: dict[str, dict[ArtifactKind[Any], BlankRule]] = {}
-        for slot, fields in selection.blank_fields.items():
+        for slot, rules in selection.blank_fields.items():
             if slot not in capability.CONSUMES:
                 raise InvalidSelectionError(
                     f"{who}: {slot!r} is given under blank but is not a consumed slot "
                     f"of {capability.__name__}"
                 )
-            per_field[slot] = {}
-            for name, text in fields.items():
-                kind = artifacts.kind(name)
-                per_field[slot][kind] = cls._field_rule(text, kind, who)
+            per_field[slot] = {artifacts.kind(name): rule for name, rule in rules.items()}
         return per_field
-
-    @staticmethod
-    def _keyword_rule(text: str) -> BlankRule | None:
-        """`PASS_ON` or `COMPUTE` if `text` is that keyword, else None: it is a fallback."""
-        if text == "pass_on":
-            return PASS_ON
-        if text == "compute":
-            return COMPUTE
-        return None
-
-    @classmethod
-    def _field_rule(cls, text: str, kind: ArtifactKind[Any], who: str) -> BlankRule:
-        """The rule `text` gives for the record field `kind`: `pass_on`, `compute`, else the value
-        the field's own kind reads `text` as. `Capability.with_blank_rules` refuses a value no
-        fallback can be, such as a text.
-        """
-        keyword = cls._keyword_rule(text)
-        if keyword is not None:
-            return keyword
-        try:
-            rule: BlankRule = kind.read(text).value
-        except InvalidTextError as error:
-            raise InvalidSelectionError(
-                f"{who}: blank rule for field {kind.identifier!r} must be pass_on, compute or a "
-                f"value the field can hold: {error}"
-            ) from error
-        return rule
-
-    @classmethod
-    def _rule(cls, text: str, value_type: type, label: str, who: str) -> BlankRule:
-        """The rule `text` gives: `pass_on`, `compute`, else a fallback of `value_type`."""
-        keyword = cls._keyword_rule(text)
-        if keyword is not None:
-            return keyword
-        return cls._fallback(value_type, label, text, who)
-
-    @staticmethod
-    def _fallback(value_type: type, label: str, text: str, who: str) -> BlankRule:
-        """The fallback `text` for `label` (a slot, a kind in one, or a field) read as
-        `value_type`.
-        """
-        pattern = _WHOLE_NUMBER if value_type is int else _DECIMAL_NUMBER
-        if value_type not in (Decimal, int) or not pattern.fullmatch(text):
-            raise InvalidSelectionError(
-                f"{who}: blank rule for {label} must be pass_on, compute or "
-                f"{'a whole number' if value_type is int else 'a plain decimal number'} "
-                f"for a {value_type.__name__} slot, got {text!r}"
-            )
-        try:
-            return value_type(text)
-        except ValueError:
-            # Python refuses a whole number of more than 4300 digits.
-            raise InvalidSelectionError(
-                f"{who}: blank rule for {label} is too long to read as a number"
-            ) from None
 
     def _parameter_arguments(
         self,

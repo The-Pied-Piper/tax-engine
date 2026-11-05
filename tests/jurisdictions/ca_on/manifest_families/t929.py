@@ -16,6 +16,9 @@ of $375 and the maximum of $15,000, are `ca/t929_weekly_amount` and `ca/t929_max
 
 from __future__ import annotations
 
+from decimal import Decimal
+
+from tax_engine.domain.blank import PASS_ON
 from tax_engine.domain.capabilities.lesser_of import LesserOf
 from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
 from tax_engine.domain.capabilities.record_total import RecordTotal
@@ -1114,14 +1117,14 @@ COPIED_STEPS = {
         name="core/times_count",
         params={},
         consumes={"amount": "ca/self_employed_cpp_deduction", "count": "ca/cpp_part_4_completed"},
-        blank={"amount": "pass_on", "count": "pass_on"},
+        blank={"amount": PASS_ON, "count": PASS_ON},
         produces={"output": "ca/cpp_deduction_on_self_employment"},
     ),
     CapabilitySelection(
         name="core/times_count",
         params={},
         consumes={"amount": "ca/cpp_part_5_line_88", "count": "ca/cpp_part_5_completed"},
-        blank={"amount": "pass_on", "count": "pass_on"},
+        blank={"amount": PASS_ON, "count": PASS_ON},
         produces={"output": "ca/cpp_part_5_deduction_on_self_employment"},
     ),
     CapabilitySelection(
@@ -1135,8 +1138,8 @@ COPIED_STEPS = {
             )
         },
         blank={
-            "ca/cpp_deduction_on_self_employment": "0",
-            "ca/cpp_part_5_deduction_on_self_employment": "0",
+            "ca/cpp_deduction_on_self_employment": Decimal("0"),
+            "ca/cpp_part_5_deduction_on_self_employment": Decimal("0"),
         },
         produces={"output": "ca/cpp_deduction_on_self_employment_and_other_earnings"},
     ),

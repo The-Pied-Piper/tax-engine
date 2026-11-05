@@ -76,7 +76,7 @@ def test_the_schedule_8_part_steps_are_all_found() -> None:
 
 def test_every_part_step_passes_a_blank_on_in_both_slots() -> None:
     for step in part_steps():
-        assert dict(step.blank) == {"amount": "pass_on", "count": "pass_on"}
+        assert dict(step.blank) == {"amount": PASS_ON, "count": PASS_ON}
 
 
 @pytest.mark.parametrize("step", part_steps(), ids=lambda s: f"{step_id(s)}-{count_of(s)}")

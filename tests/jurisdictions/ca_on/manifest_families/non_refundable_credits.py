@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
+
+from tax_engine.domain.blank import PASS_ON
 from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.capabilities.at_most import AtMost
 from tax_engine.domain.capabilities.capped_amount import CappedAmount
@@ -409,7 +412,7 @@ STEPS = {
             "amount": "ca/self_employed_cpp_base_credit",
             "count": "ca/cpp_part_4_completed_checked",
         },
-        blank={"amount": "pass_on", "count": "pass_on"},
+        blank={"amount": PASS_ON, "count": PASS_ON},
         produces={"output": "ca/cpp_base_contributions_on_self_employment"},
     ),
     # T1 line 87 and line 31000, entered from Schedule 8 Part 5 line 70: counted once for each
@@ -421,7 +424,7 @@ STEPS = {
             "amount": "ca/cpp_part_5_line_70",
             "count": "ca/cpp_part_5_completed_checked",
         },
-        blank={"amount": "pass_on", "count": "pass_on"},
+        blank={"amount": PASS_ON, "count": PASS_ON},
         produces={"output": "ca/cpp_part_5_base_contributions_on_self_employment"},
     ),
     # T1 line 87 and line 31000: the Part 4 amount plus the Part 5 amount; both are added when
@@ -439,8 +442,8 @@ STEPS = {
             ),
         },
         blank={
-            "ca/cpp_base_contributions_on_self_employment": "0",
-            "ca/cpp_part_5_base_contributions_on_self_employment": "0",
+            "ca/cpp_base_contributions_on_self_employment": Decimal("0"),
+            "ca/cpp_part_5_base_contributions_on_self_employment": Decimal("0"),
         },
         produces={"output": "ca/cpp_base_contributions_on_self_employment_and_other_earnings"},
     ),

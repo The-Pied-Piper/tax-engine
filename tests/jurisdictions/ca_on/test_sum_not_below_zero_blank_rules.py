@@ -88,7 +88,7 @@ def given(kinds: dict[str, AmountKind], blanked: str) -> tuple[Artifact[Decimal]
 
 def test_the_steps_with_a_blank_rule_are_the_two_chart_2024_period_totals() -> None:
     assert {output_of(step): dict(step.blank) for step in with_rules()} == {
-        output: {amount_h: "pass_on"} for output, amount_h in AMOUNT_H.items()
+        output: {amount_h: PASS_ON} for output, amount_h in AMOUNT_H.items()
     }
 
 

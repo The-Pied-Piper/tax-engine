@@ -29,7 +29,6 @@ from tax_engine.domain.errors import (
     DuplicateRegistrationError,
     InvalidAmountError,
     InvalidRegistrationError,
-    InvalidTextError,
     NegativeArtifactError,
     UnknownRegistrationError,
 )
@@ -68,8 +67,6 @@ def test_an_artifact_kind_has_an_identifier_and_a_value_type() -> None:
 def test_the_value_type_is_known_statically() -> None:
     assert_type(BASE, AmountKind)
     assert_type(CountKind("ex/count"), CountKind)
-    assert_type(BASE.read("1"), Artifact[Decimal])
-    assert_type(CountKind("ex/count").read("1"), Artifact[int])
 
 
 def test_money_is_an_alias_for_decimal_artifact_kinds() -> None:
@@ -350,99 +347,10 @@ def test_a_count_still_rejects_a_value_of_another_type() -> None:
         Artifact(COUNT, cast(Any, D("1")))
 
 
-# --- ArtifactKind.read and read_default -----------------------------------------------------
+# --- kinds the later sections use ----------------------------------------------------------
 
-COUNT = CountKind("ex/person_count", non_negative=True)
 NUMBER = DigitsKind("ex/business_number", digits=9)
 DEPENDANTS = RecordListKind("ex/dependants", fields=(BASE,))
-
-
-@pytest.mark.parametrize(("text", "expected"), [("12.50", D("12.50")), ("-3", D(-3)), ("0", D(0))])
-def test_a_decimal_kind_reads_a_plain_decimal_number(text: str, expected: Decimal) -> None:
-    assert BASE.read(text) == Artifact(BASE, expected)
-
-
-@pytest.mark.parametrize("text", ["", " 1", "1e3", "1,5", "abc", "NaN", "1."])
-def test_a_decimal_kind_refuses_text_that_is_not_a_plain_decimal_number(text: str) -> None:
-    with pytest.raises(InvalidTextError, match="plain decimal number"):
-        BASE.read(text)
-
-
-def test_an_int_kind_reads_a_whole_number() -> None:
-    assert CountKind("ex/year_count").read("-4") == Artifact(CountKind("ex/year_count"), -4)
-    assert COUNT.read("3") == Artifact(COUNT, 3)
-
-
-@pytest.mark.parametrize("text", ["1.5", "", "two"])
-def test_an_int_kind_refuses_text_that_is_not_a_whole_number(text: str) -> None:
-    with pytest.raises(InvalidTextError, match="whole number"):
-        COUNT.read(text)
-
-
-@pytest.mark.parametrize("kind", [NON_NEGATIVE, COUNT])
-def test_a_non_negative_kind_refuses_a_number_below_zero(kind: ArtifactKind[Any]) -> None:
-    with pytest.raises(InvalidTextError, match="below zero"):
-        kind.read("-1")
-    assert kind.read("0").value == 0
-
-
-def test_a_number_of_more_than_the_digits_python_reads_is_too_long() -> None:
-    with pytest.raises(InvalidTextError, match="too long"):
-        COUNT.read("9" * 5000)
-
-
-def test_a_digits_kind_reads_its_digits_as_entered_and_blank_text() -> None:
-    assert NUMBER.read("012345678") == Artifact(NUMBER, "012345678")
-    assert NUMBER.read("") == Artifact(NUMBER, "")
-
-
-def test_a_digits_kind_refuses_other_text() -> None:
-    with pytest.raises(InvalidTextError, match="not a value of the kind"):
-        NUMBER.read("12345")
-
-
-def test_a_record_list_kind_has_no_spelling_as_text() -> None:
-    with pytest.raises(InvalidTextError, match="empty list"):
-        DEPENDANTS.read("[]")
-
-
-def test_a_kind_with_another_value_type_has_no_spelling_as_text() -> None:
-    kind: ArtifactKind[Any] = OddKind("ex/flag", bool)
-
-    with pytest.raises(InvalidTextError, match="bool"):
-        kind.read("true")
-
-
-def test_read_default_reads_none_as_blank() -> None:
-    for kind in (BASE, COUNT, NUMBER, DEPENDANTS):
-        assert kind.read_default(None).is_blank
-
-
-def test_read_default_reads_a_string_as_read_does() -> None:
-    assert BASE.read_default("5") == BASE.read("5")
-    assert NUMBER.read_default("123456789") == NUMBER.read("123456789")
-    with pytest.raises(InvalidTextError, match="below zero"):
-        NON_NEGATIVE.read_default("-1")
-
-
-def test_read_default_refuses_an_empty_list_for_a_kind_that_is_not_a_record_list() -> None:
-    with pytest.raises(InvalidTextError, match="quoted number"):
-        BASE.read_default(())
-    with pytest.raises(InvalidTextError, match="string"):
-        NUMBER.read_default(())
-
-
-def test_a_record_list_kind_reads_an_empty_list_default() -> None:
-    artifact = DEPENDANTS.read_default(())
-
-    assert not artifact.is_blank
-    assert artifact.value.records == ()
-    assert artifact.value.fields == (BASE,)
-
-
-def test_a_record_list_kind_refuses_a_string_default() -> None:
-    with pytest.raises(InvalidTextError, match="empty list"):
-        DEPENDANTS.read_default("0")
 
 
 # --- ArtifactRegistry and ArtifactCatalog ---------------------------------------------------
@@ -775,11 +683,6 @@ def test_only_a_dotted_kind_is_a_form_export() -> None:
 # --- the plain kinds ------------------------------------------------------------------------
 
 
-def test_artifact_kind_is_abstract() -> None:
-    with pytest.raises(TypeError):
-        ArtifactKind("ex/x", Decimal)  # type: ignore[abstract]
-
-
 def test_kinds_of_different_classes_are_never_equal() -> None:
     amount: ArtifactKind[Any] = AmountKind("ex/x")
     text: ArtifactKind[Any] = TextKind("ex/x")
@@ -855,14 +758,3 @@ def test_each_kind_matches_only_the_protocols_it_has(
 def test_a_kind_without_a_floor_holds_a_negative_value() -> None:
     assert Artifact(AmountKind("ex/a"), D(-1)).value == D(-1)
     assert Artifact(OddKind("ex/flag", int), -1).value == -1
-
-
-def test_a_rate_kind_reads_no_text() -> None:
-    with pytest.raises(InvalidTextError, match="has no spelling as text"):
-        RateKind("ex/credit_rate").read("0.15")
-
-
-def test_a_text_kind_reads_the_text_as_written() -> None:
-    kind = TextKind("ex/person_name")
-
-    assert kind.read("  Ada  ").value == "  Ada  "

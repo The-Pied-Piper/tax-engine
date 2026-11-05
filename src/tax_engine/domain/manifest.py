@@ -23,10 +23,10 @@ from tax_engine.domain.artifact import (
     RecordField,
     YesNo,
 )
+from tax_engine.domain.blank import BlankRule
 from tax_engine.domain.errors import (
     InvalidManifestError,
     InvalidRegistrationError,
-    InvalidTextError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import RecordListKind
@@ -39,21 +39,20 @@ class CapabilitySelection:
 
     `params` maps parameter slots to families; `consumes` and `produces` map artifact slots to
     artifact identifiers, and a consumed slot may instead map to a list of identifiers, kept in
-    order as a tuple. `blank` maps a consumed slot to what a blank in it does: the text of the
-    fallback value taken in its place, `pass_on`, or `compute` (the class decides in code); a slot
+    order as a tuple. `blank` maps a consumed slot to what a blank in it does, a `BlankRule`: the
+    fallback value taken in its place, `PASS_ON`, or `COMPUTE` (the class decides in code); a slot
     not named refuses a blank. For a list slot a class opens to it (`BLANK_PER_ITEM`), the name may
     instead be the identifier of one artifact in the list, giving the rule for that part.
-    `blank_fields` maps a consumed record-list slot to what a blank field in its records does:
-    each field's identifier to the same kind of text. Each is kept as a read-only copy of what it
-    was given.
+    `blank_fields` maps a consumed record-list slot to what a blank field in its records does: each
+    field's identifier to a `BlankRule`. Each is kept as a read-only copy of what it was given.
     """
 
     name: str
     params: Mapping[str, str]
     consumes: Mapping[str, str | tuple[str, ...]]
     produces: Mapping[str, str]
-    blank: Mapping[str, str] = dataclasses.field(default_factory=dict)
-    blank_fields: Mapping[str, Mapping[str, str]] = dataclasses.field(default_factory=dict)
+    blank: Mapping[str, BlankRule] = dataclasses.field(default_factory=dict)
+    blank_fields: Mapping[str, Mapping[str, BlankRule]] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self) -> None:
         for name in ("params", "produces", "blank"):
@@ -82,36 +81,19 @@ class CapabilitySelection:
 
 
 @dataclass(frozen=True, slots=True)
-class Default:
-    """The value an optional input or field takes when the request leaves it out.
-
-    Written in the manifest as the actual value: `None` for blank (carried downstream as a line
-    left out), a quoted decimal such as `"0"` or a printed figure, `()` for an empty list, or
-    text such as `""`. It is the wrapper that tells a declared blank from no default at all.
-    """
-
-    value: str | tuple[()] | None
-
-    def __post_init__(self) -> None:
-        if self.value is not None and not isinstance(self.value, str) and self.value != ():
-            raise InvalidManifestError(
-                f"default must be null, a string or an empty list, got {self.value!r}"
-            )
-
-
-@dataclass(frozen=True, slots=True)
 class InputDeclaration:
     """How a manifest declares one input, or one field of a form's instances list.
 
     `required` says whether every request must give it. A required one takes no `default` and no
-    `basis`; an optional one declares both: `default` is what the request is read as when it
-    leaves the line out (`Default(None)` is blank, not "no default"), and `basis` is the printed
-    sentence of the form that justifies the default, which nothing checks against the form text.
+    `basis`; an optional one declares both: `default` is the finished artifact the request is read
+    as when it leaves the line out (a blank artifact is a declared blank, `None` is no default),
+    and `basis` is the printed sentence of the form that justifies the default, which nothing
+    checks against the form text.
     """
 
     name: str
     required: bool
-    default: Default | None = None
+    default: Artifact[Any] | None = None
     basis: str | None = None
 
     def __post_init__(self) -> None:
@@ -131,20 +113,18 @@ class InputDeclaration:
     def default_artifact(self, kind: ArtifactKind[Any]) -> Artifact[Any] | None:
         """The artifact of `kind` that a request leaving this input out is read as.
 
-        `None` for a required input, which has no default. Otherwise the declared default read by
-        the kind (`ArtifactKind.read_default`): blank for `Default(None)`, else the value of the
-        kind the text spells. A default no value of the kind could be is an InvalidManifestError
-        naming the input.
+        `None` for a required input, which has no default. Otherwise the declared default, which
+        must be an artifact of `kind`, else an InvalidManifestError naming the input.
         """
         if self.default is None:
             return None
-        value = self.default.value
-        try:
-            return kind.read_default(value)
-        except InvalidTextError as exc:
+        found = self.default.kind
+        if found != kind:
             raise InvalidManifestError(
-                f"input {self.name!r}: default {value!r} {exc} for the kind {kind.identifier!r}"
-            ) from None
+                f"input {self.name!r}: default is an artifact of {found.identifier!r}, "
+                f"not of the kind {kind.identifier!r}"
+            )
+        return self.default
 
 
 @dataclass(frozen=True, slots=True)
