@@ -16,6 +16,7 @@ strings without duplicates, and no identifier in both.
 from __future__ import annotations
 
 from collections.abc import Mapping
+from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
 from types import MappingProxyType
@@ -23,11 +24,13 @@ from types import MappingProxyType
 import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.artifact import ArtifactRegistry
+from tax_engine.adapters.text import read_default
+from tax_engine.domain.artifact import Artifact, ArtifactRegistry
+from tax_engine.domain.blank import COMPUTE, PASS_ON
 from tax_engine.domain.errors import InvalidManifestError, NotFoundError
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import RecordListKind, TextKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
     Default,
@@ -43,6 +46,11 @@ EX_ON = JurisdictionCode("EX-ON")
 
 # The made-up artifacts the manifests below name are amounts, except these.
 COUNTS = ("ex/relief_applies",)
+
+
+GROSS_RENT = AmountKind("ex/gross_rent")
+EXPENSES = AmountKind("ex/expenses")
+RENTALS = RecordListKind("ex/rentals", fields=(GROSS_RENT, EXPENSES))
 
 
 def manifest_kinds() -> ArtifactRegistry:
@@ -95,6 +103,11 @@ outputs: [ex/y]
 def roots(directory: Path) -> Mapping[Namespace, Path]:
     """One made-up package, namespace `ex-on`, whose directory is `<directory>/ex-on`."""
     return {Namespace("ex-on"): directory / "ex-on"}
+
+
+def finished(identifier: str, declared: str | tuple[()] | None) -> Default:
+    """The default the loader makes of `declared` for the kind `identifier`."""
+    return Default(read_default(manifest_kinds().kind(identifier), declared))
 
 
 def source(directory: Path) -> YamlJurisdictionSource:
@@ -1836,7 +1849,70 @@ def test_parses_the_blank_rules_of_a_selection(tmp_path: Path) -> None:
     manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
 
     (selection,) = returned(manifest).capabilities
-    assert selection.blank == {"less": "0", "amount": "pass_on", "other": "compute"}
+    assert selection.blank == {"less": Decimal("0"), "amount": PASS_ON, "other": COMPUTE}
+
+
+BLANK_MANIFEST = """\
+jurisdiction: EX-ON
+version: 1
+valid_from_tax_year: 2025
+inputs: [{{name: ex/income, required: true}}, {{name: ex/relief_applies, required: true}}]
+outputs: [ex/net]
+capabilities:
+  - name: ex/subtract
+    consumes:
+      amount: ex/income
+      flag: ex/relief_applies
+      parts: [ex/income, ex/relief_applies]
+    blank:
+      {name}: {text}
+    produces:
+      output: ex/net
+"""
+
+
+def blank_rule(tmp_path: Path, name: str, text: str) -> object:
+    write(tmp_path, "ex-on/manifests/v1.yaml", BLANK_MANIFEST.format(name=name, text=text))
+    manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
+    (selection,) = returned(manifest).capabilities
+    return selection.blank[name]
+
+
+def test_a_fallback_is_read_as_the_value_type_of_the_kind_it_is_for(tmp_path: Path) -> None:
+    amount = blank_rule(tmp_path, "amount", '"2.50"')
+    count = blank_rule(tmp_path, "flag", '"2"')
+    named = blank_rule(tmp_path, "ex/relief_applies", '"0"')
+
+    assert (amount, count, named) == (Decimal("2.50"), 2, 0)
+    assert type(count) is int and type(named) is int
+
+
+@pytest.mark.parametrize(
+    ("name", "text", "message"),
+    [
+        ("amount", '"lots"', "blank rule for slot 'amount' must be pass_on, compute or a number"),
+        ("amount", '"1e3"', "must be a plain decimal number"),
+        ("flag", '"2.5"', "must be a whole number"),
+        ("flag", '"' + "9" * 5000 + '"', "too long to read as a number"),
+        ("ex/relief_applies", '"x"', "blank rule for 'ex/relief_applies' must be"),
+        ("parts", '"0"', "the kinds it takes are not of one value type"),
+    ],
+)
+def test_a_bad_fallback_fails_at_load_naming_the_file(
+    tmp_path: Path, name: str, text: str, message: str
+) -> None:
+    path = write(tmp_path, "ex-on/manifests/v1.yaml", BLANK_MANIFEST.format(name=name, text=text))
+
+    with pytest.raises(InvalidManifestError, match=message) as excinfo:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert str(path) in str(excinfo.value)
+    assert "ex/subtract" in str(excinfo.value)
+
+
+def test_a_list_slot_takes_pass_on_and_compute_whatever_its_kinds(tmp_path: Path) -> None:
+    assert blank_rule(tmp_path, "parts", "pass_on") is PASS_ON
+    assert blank_rule(tmp_path, "parts", "compute") is COMPUTE
 
 
 def test_a_selection_without_blank_rules_has_none(tmp_path: Path) -> None:
@@ -1921,10 +1997,10 @@ def test_an_input_declares_whether_it_is_required_and_optional_ones_a_default_an
 
     assert manifest.inputs == {
         "ex/income": InputDeclaration(name="ex/income", required=True),
-        "ex/credit": InputDeclaration("ex/credit", False, Default("0"), "Line 1"),
-        "ex/note": InputDeclaration("ex/note", False, Default(""), "Line 2"),
-        "ex/rows": InputDeclaration("ex/rows", False, Default(()), "Line 3"),
-        "ex/box": InputDeclaration("ex/box", False, Default(None), "Line 4"),
+        "ex/credit": InputDeclaration("ex/credit", False, finished("ex/credit", "0"), "Line 1"),
+        "ex/note": InputDeclaration("ex/note", False, finished("ex/note", ""), "Line 2"),
+        "ex/rows": InputDeclaration("ex/rows", False, finished("ex/rows", ()), "Line 3"),
+        "ex/box": InputDeclaration("ex/box", False, finished("ex/box", None), "Line 4"),
     }
 
 
@@ -2102,11 +2178,22 @@ capabilities:
   - {name: ex/a, produces: {output: ex/n}}
 """
 
-    (found,) = others(load_parts(tmp_path, {"01-inputs.yaml": INPUTS, "02-form.yaml": text}))
+    write_parts(
+        tmp_path,
+        {
+            "00-header.yaml": SCALARS + OUTPUTS + "capabilities: []\n",
+            "01-inputs.yaml": INPUTS,
+            "02-form.yaml": text,
+        },
+    )
+    kinds = manifest_kinds()
+    kinds.register("ex/rentals", RENTALS)
+    (manifest,) = YamlJurisdictionSource(roots(tmp_path), kinds).get_jurisdiction(EX_ON).manifests
+    (found,) = others(manifest)
 
     assert found.fields == (
         InputDeclaration(name="ex/gross_rent", required=True),
-        InputDeclaration("ex/expenses", False, Default("0"), "Line 2"),
+        InputDeclaration("ex/expenses", False, Default(Artifact(EXPENSES, Decimal(0))), "Line 2"),
     )
 
 

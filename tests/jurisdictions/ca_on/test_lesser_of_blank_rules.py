@@ -67,7 +67,7 @@ def test_the_chart_steps_are_all_found() -> None:
 
 def test_every_chart_step_passes_a_blank_on_for_all_its_amounts() -> None:
     for step in chart_steps():
-        assert dict(step.blank) == {"amounts": "pass_on"}
+        assert dict(step.blank) == {"amounts": PASS_ON}
 
 
 @pytest.mark.parametrize("step", chart_steps(), ids=output_of)

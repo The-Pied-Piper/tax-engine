@@ -11,13 +11,11 @@ rejection naming the selection, and never calls ports.
 
 from __future__ import annotations
 
-import re
 from collections.abc import Callable, Mapping
-from decimal import Decimal
 from typing import Any
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.blank import COMPUTE, PASS_ON, BlankRule
+from tax_engine.domain.blank import BlankRule
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidSelectionError
 from tax_engine.domain.manifest import CapabilitySelection
@@ -29,10 +27,6 @@ _SLOT_NOUNS = {
     "CONSUMES": "consumed slot",
     "PRODUCES": "produced slot",
 }
-
-
-_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
-_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
 
 
 def _identifiers(named: str | tuple[str, ...]) -> tuple[str, ...]:
@@ -87,8 +81,7 @@ class CapabilityBuilder:
         who: str,
     ) -> tuple[dict[str, BlankRule], dict[ArtifactKind[Any], BlankRule]]:
         """What a blank does in each slot, or each kind in a list slot, the selection names:
-        `pass_on`, `compute`, else the fallback text read as the slot's own value type (a
-        `Decimal`, or an `int` for a count slot).
+        its typed rule, as the manifest's reader gave it.
 
         A name that is not a slot is the identifier of a consumed artifact: its rule is for that
         kind alone, and `Capability.with_blank_rules` checks the slot takes one. Returns the rules
@@ -96,7 +89,7 @@ class CapabilityBuilder:
         """
         rules: dict[str, BlankRule] = {}
         per_item: dict[ArtifactKind[Any], BlankRule] = {}
-        for name, text in selection.blank.items():
+        for name, rule in selection.blank.items():
             slot = name
             if name not in capability.CONSUMES:
                 slot = next(
@@ -112,42 +105,11 @@ class CapabilityBuilder:
                         f"{who}: {name!r} is given under blank but is neither a consumed slot "
                         f"of {capability.__name__} nor an artifact the selection consumes"
                     )
-            rule: BlankRule
-            if text == "pass_on":
-                rule = PASS_ON
-            elif text == "compute":
-                rule = COMPUTE
-            else:
-                rule = cls._fallback(capability, slot, name, text, who)
             if slot == name:
                 rules[name] = rule
             else:
                 per_item[artifacts.kind(name)] = rule
         return rules, per_item
-
-    @staticmethod
-    def _fallback(
-        capability: type[Capability], slot: str, name: str, text: str, who: str
-    ) -> BlankRule:
-        """The fallback `text` for `name` (a slot, or a kind in `slot`) read as the slot's own
-        value type.
-        """
-        label = f"slot {name!r}" if name == slot else repr(name)
-        value_type = capability.slot_value_type(slot)
-        pattern = _WHOLE_NUMBER if value_type is int else _DECIMAL_NUMBER
-        if value_type not in (Decimal, int) or not pattern.fullmatch(text):
-            raise InvalidSelectionError(
-                f"{who}: blank rule for {label} must be pass_on, compute or "
-                f"{'a whole number' if value_type is int else 'a plain decimal number'} "
-                f"for a {value_type.__name__} slot, got {text!r}"
-            )
-        try:
-            return value_type(text)
-        except ValueError:
-            # Python refuses a whole number of more than 4300 digits.
-            raise InvalidSelectionError(
-                f"{who}: blank rule for {label} is too long to read as a number"
-            ) from None
 
     def _parameter_arguments(
         self,

@@ -1,8 +1,9 @@
 """The artifact kinds: amount, count, rate, text, digits and record list.
 
-Each is an `ArtifactKind` of one value type that says for itself how it reads text, what it
-refuses and what a package declares it with. A package declares one on its catalog with the
-class's own `declare`, e.g. `AmountKind.declare(CATALOG, "taxable_income", non_negative=True)`.
+Each is an `ArtifactKind` of one value type that says for itself what it refuses and what a
+package declares it with. Text is never read here: the adapters turn it into finished values
+(adapters/text.py). A package declares one on its catalog with the class's own `declare`, e.g.
+`AmountKind.declare(CATALOG, "taxable_income", non_negative=True)`.
 An amount or a count may be non-negative; a count that is, is also how a yes/no is written, 1
 for yes and 0 for no. A digits kind holds a fixed count of ASCII digits as text, a business
 number say; a record-list kind holds a variable number of same-shaped records (the `RecordList`
@@ -12,14 +13,12 @@ here.
 
 from __future__ import annotations
 
-import re
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
 from typing import Any
 
-from tax_engine.domain.artifact import Artifact, ArtifactCatalog, ArtifactKind
-from tax_engine.domain.blank import BLANK
+from tax_engine.domain.artifact import ArtifactCatalog, ArtifactKind
 from tax_engine.domain.errors import (
     InvalidRecordError,
     InvalidRegistrationError,
@@ -29,27 +28,6 @@ from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.record_list import RecordList
 
 __all__ = ["AmountKind", "CountKind", "DigitsKind", "RateKind", "RecordListKind", "TextKind"]
-
-# A number's spelling in text: an optional minus sign and digits, a decimal point and digits.
-_DECIMAL_NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")
-_WHOLE_NUMBER = re.compile(r"-?[0-9]+")
-
-
-def _read_number(text: str, *, whole: bool, non_negative: bool) -> Decimal | int:
-    """`text` as the plain decimal or whole number it spells, or an InvalidTextError."""
-    pattern = _WHOLE_NUMBER if whole else _DECIMAL_NUMBER
-    if not pattern.fullmatch(text):
-        raise InvalidTextError(
-            "must be a whole number" if whole else "must be a plain decimal number"
-        )
-    try:
-        number = int(text) if whole else Decimal(text)
-    except (InvalidOperation, ValueError):
-        # Python refuses a whole number of more than 4300 digits.
-        raise InvalidTextError("is too long to read as a number") from None
-    if non_negative and number < 0:
-        raise InvalidTextError("must not be below zero")
-    return number
 
 
 @dataclass(frozen=True)
@@ -81,11 +59,6 @@ class AmountKind(ArtifactKind[Decimal]):
         kind = cls(catalog.namespace.identifier(local_id), non_negative=non_negative)
         catalog.add(kind)
         return kind
-
-    def read(self, text: str) -> Artifact[Decimal]:
-        """The amount `text` spells, a plain decimal number (not below zero if non-negative)."""
-        number = _read_number(text, whole=False, non_negative=self.non_negative)
-        return Artifact(self, self.value_type(number))
 
     def is_below_floor(self, value: Decimal) -> bool:
         """Whether this kind is non-negative and `value` is below zero."""
@@ -125,11 +98,6 @@ class CountKind(ArtifactKind[int]):
         catalog.add(kind)
         return kind
 
-    def read(self, text: str) -> Artifact[int]:
-        """The count `text` spells, a whole number (not below zero if non-negative)."""
-        number = _read_number(text, whole=True, non_negative=self.non_negative)
-        return Artifact(self, int(number))
-
     def is_below_floor(self, value: int) -> bool:
         """Whether this kind is non-negative and `value` is below zero."""
         return self.non_negative and value < 0
@@ -165,16 +133,10 @@ class RateKind(ArtifactKind[Rate]):
         catalog.add(kind)
         return kind
 
-    def read(self, text: str) -> Artifact[Rate]:
-        """Refuse any text: a rate is computed, never entered."""
-        raise InvalidTextError("has no spelling as text (Rate values)")
-
 
 @dataclass(frozen=True)
 class TextKind(ArtifactKind[str]):
     """A kind of free text: its values are strings, read as written."""
-
-    default_spelling = "a string"
 
     def __init__(self, identifier: str) -> None:
         # Written by hand, so the dataclass keeps it: the value type is always `str`.
@@ -192,10 +154,6 @@ class TextKind(ArtifactKind[str]):
         catalog.add(kind)
         return kind
 
-    def read(self, text: str) -> Artifact[str]:
-        """The text itself."""
-        return Artifact(self, text)
-
 
 @dataclass(frozen=True)
 class DigitsKind(ArtifactKind[str]):
@@ -207,8 +165,6 @@ class DigitsKind(ArtifactKind[str]):
     """
 
     digits: int = field(kw_only=True)
-
-    default_spelling = "a string"
 
     def __init__(self, identifier: str, *, digits: int) -> None:
         # Written by hand, so the dataclass keeps it: the value type is always `str` and never
@@ -237,14 +193,6 @@ class DigitsKind(ArtifactKind[str]):
         kind = cls(catalog.namespace.identifier(local_id), digits=digits)
         catalog.add(kind)
         return kind
-
-    def read(self, text: str) -> Artifact[str]:
-        """The digits `text` spells: exactly this kind's number of ASCII digits, or blank."""
-        try:
-            self.check_value(text)
-        except InvalidTextError as exc:
-            raise InvalidTextError(f"is not a value of the kind: {exc}") from None
-        return Artifact(self, text)
 
     def check_value(self, value: str) -> None:
         """Refuse a text that is neither blank nor exactly this kind's number of ASCII digits."""
@@ -292,18 +240,6 @@ class RecordListKind(ArtifactKind[RecordList]):
         kind = cls(catalog.namespace.identifier(local_id), fields=fields)
         catalog.add(kind)
         return kind
-
-    def read(self, text: str) -> Artifact[RecordList]:
-        """Refuse any text: a record list is not spelled as text, only as an empty list default."""
-        raise InvalidTextError("must be an empty list")
-
-    def read_default(self, declared: str | tuple[()] | None) -> Artifact[RecordList]:
-        """Blank for `None`, an empty list of this kind's fields for `()`, else `read`'s refusal."""
-        if declared is None:
-            return Artifact(self, BLANK)
-        if isinstance(declared, str):
-            return self.read(declared)
-        return Artifact(self, RecordList(self.fields, ()))
 
     @property
     def is_record_field(self) -> bool:

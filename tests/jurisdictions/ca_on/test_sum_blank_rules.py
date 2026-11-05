@@ -70,8 +70,7 @@ def wired(step: CapabilitySelection) -> tuple[Sum, dict[str, AmountKind]]:
         for position, identifier in enumerate(parts_of(step))
     }
     rules: dict[ArtifactKind[Any], BlankRule] = {
-        kinds[identifier]: PASS_ON if text == "pass_on" else D(text)
-        for identifier, text in step.blank.items()
+        kinds[identifier]: rule for identifier, rule in step.blank.items()
     }
     total = Sum(tuple(kinds.values()), AmountKind("ex/total"))
     return total.with_blank_rules({}, rules), kinds
@@ -117,7 +116,7 @@ def charts() -> list[CapabilitySelection]:
 @pytest.mark.parametrize("step", charts(), ids=step_id)
 def test_a_chart_total_passes_a_blank_chart_amount_on(step: CapabilitySelection) -> None:
     total, kinds = wired(step)
-    passing = [identifier for identifier, text in step.blank.items() if text == "pass_on"]
+    passing = [identifier for identifier, rule in step.blank.items() if rule is PASS_ON]
 
     assert passing
     for identifier in passing:
@@ -127,11 +126,11 @@ def test_a_chart_total_passes_a_blank_chart_amount_on(step: CapabilitySelection)
 
 
 def test_only_the_line_b_carry_of_a_chart_total_adds_a_blank_as_zero() -> None:
-    zeroed = {output_of(step): step for step in charts() if "0" in step.blank.values()}
+    zeroed = {output_of(step): step for step in charts() if D(0) in step.blank.values()}
 
     assert set(zeroed) == set(CARRY_PARTS)
     for output, step in zeroed.items():
-        assert [i for i, text in step.blank.items() if text == "0"] == [CARRY_PARTS[output]]
+        assert [i for i, text in step.blank.items() if text == D(0)] == [CARRY_PARTS[output]]
         total, kinds = wired(step)
         result = total.run(given(kinds, CARRY_PARTS[output]))
         assert result.outputs[0].value == D(10)
@@ -141,7 +140,7 @@ def test_only_the_line_b_carry_of_a_chart_total_adds_a_blank_as_zero() -> None:
 @pytest.mark.parametrize("step", [s for s in with_rules() if is_cpp_total(s)], ids=step_id)
 def test_a_cpp_total_adds_a_blank_part_as_zero(step: CapabilitySelection) -> None:
     # Schedule 8 Part 4 and Part 5, each for its own part; the RC381 part refuses a blank.
-    assert set(step.blank.values()) == {"0"}
+    assert set(step.blank.values()) == {D(0)}
     assert len(step.blank) == 2
     total, kinds = wired(step)
     for identifier in step.blank:

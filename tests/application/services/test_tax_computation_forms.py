@@ -25,7 +25,7 @@ import pytest
 
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.blank import BLANK
+from tax_engine.domain.blank import BLANK, BlankRule
 from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
@@ -1170,18 +1170,20 @@ def test_a_declared_field_the_instances_kind_does_not_have_is_refused() -> None:
         service(rental_manifest(form)).compose(EX_ON, 2025)
 
 
-def test_a_field_default_that_does_not_suit_its_kind_is_refused_building_the_manifest() -> None:
-    expenses = InputDeclaration("ex/expenses", False, Default("lots"), "Line 2")
+def test_a_field_default_of_another_kind_is_refused_building_the_manifest() -> None:
+    expenses = InputDeclaration("ex/expenses", False, Default(Artifact(GROSS_RENT, D(1))), "Line 2")
     fields = tuple(
         expenses if field.name == "ex/expenses" else field for field in required_fields(RENTALS)
     )
 
-    with pytest.raises(InvalidManifestError, match="input 'ex/expenses': default 'lots' must be"):
+    with pytest.raises(
+        InvalidManifestError, match="input 'ex/expenses': default is an artifact of 'ex/gross_rent'"
+    ):
         service(rental_manifest(replace(RENTAL, fields=fields))).compose(EX_ON, 2025)
 
 
 def test_an_optional_field_with_a_default_that_suits_its_kind_composes() -> None:
-    expenses = InputDeclaration("ex/expenses", False, Default("0"), "Line 2")
+    expenses = InputDeclaration("ex/expenses", False, Default(Artifact(EXPENSES, D(0))), "Line 2")
     fields = tuple(
         expenses if field.name == "ex/expenses" else field for field in required_fields(RENTALS)
     )
@@ -1189,8 +1191,8 @@ def test_an_optional_field_with_a_default_that_suits_its_kind_composes() -> None
     service(rental_manifest(replace(RENTAL, fields=fields))).compose(EX_ON, 2025)
 
 
-def test_a_field_default_is_converted_when_the_manifest_is_built() -> None:
-    expenses = InputDeclaration("ex/expenses", False, Default("0"), "Line 2")
+def test_a_field_default_is_collected_when_the_manifest_is_built() -> None:
+    expenses = InputDeclaration("ex/expenses", False, Default(Artifact(EXPENSES, D(0))), "Line 2")
     fields = tuple(
         expenses if field.name == "ex/expenses" else field for field in required_fields(RENTALS)
     )
@@ -1200,15 +1202,17 @@ def test_a_field_default_is_converted_when_the_manifest_is_built() -> None:
     assert manifest.field_defaults["ex/rental"] == (Artifact(EXPENSES, D(0)),)
 
 
-def test_an_input_default_that_does_not_suit_its_kind_is_refused_building_the_manifest() -> None:
+def test_an_input_default_of_another_kind_is_refused_building_the_manifest() -> None:
     manifest = rental_manifest()
     inputs = {
         **manifest.inputs,
-        "ex/rentals": InputDeclaration("ex/rentals", False, Default("0"), "Line 1"),
+        "ex/rentals": InputDeclaration(
+            "ex/rentals", False, Default(Artifact(EXPENSES, D(0))), "Line 1"
+        ),
     }
 
     with pytest.raises(
-        InvalidManifestError, match="input 'ex/rentals': default '0' must be an empty"
+        InvalidManifestError, match="input 'ex/rentals': default is an artifact of 'ex/expenses'"
     ):
         service(replace(manifest, inputs=inputs)).compose(EX_ON, 2025)
 
@@ -1229,7 +1233,7 @@ def test_an_optional_form_gated_by_a_money_amount_is_refused_building_the_manife
 # --- inputs the request leaves out take their manifest default --------------------------------
 
 
-def optional_manifest(default: Default, *, blank: dict[str, str] | None = None) -> Manifest:
+def optional_manifest(default: Default, *, blank: dict[str, BlankRule] | None = None) -> Manifest:
     """`ex/spare` less the optional `ex/other_amount`, which takes `default` when left out."""
     less = CapabilitySelection(
         name="ex/less",
@@ -1256,45 +1260,49 @@ def left_out(manifest: Manifest, *given: Artifact[Any]) -> Decimal:
 
 
 def test_an_optional_input_left_out_takes_its_manifest_default() -> None:
-    manifest = optional_manifest(Default("30"))
+    manifest = optional_manifest(Default(Artifact(OTHER_AMOUNT, D(30))))
 
     assert left_out(manifest, Artifact(SPARE, D(100))) == D(70)
 
 
 def test_an_optional_input_the_request_gives_is_not_replaced_by_the_default() -> None:
-    manifest = optional_manifest(Default("30"))
+    manifest = optional_manifest(Default(Artifact(OTHER_AMOUNT, D(30))))
 
     assert left_out(manifest, Artifact(SPARE, D(100)), Artifact(OTHER_AMOUNT, D(10))) == D(90)
 
 
 def test_a_blank_default_reaches_the_form_and_the_manifests_blank_rule_applies() -> None:
-    manifest = optional_manifest(Default(None), blank={"cost": "0"})
+    manifest = optional_manifest(
+        Default(Artifact(OTHER_AMOUNT, BLANK)), blank={"cost": Decimal("0")}
+    )
 
     assert left_out(manifest, Artifact(SPARE, D(100))) == D(100)
 
 
 def test_a_blank_default_is_refused_where_the_manifest_gives_the_slot_no_blank_rule() -> None:
-    manifest = optional_manifest(Default(None))
+    manifest = optional_manifest(Default(Artifact(OTHER_AMOUNT, BLANK)))
 
     with pytest.raises(BlankNotAllowedError, match="'other_amount' was left blank"):
         left_out(manifest, Artifact(SPARE, D(100)))
 
 
 def test_a_blank_given_for_an_input_with_a_default_is_read_as_the_default() -> None:
-    manifest = optional_manifest(Default("30"), blank={"cost": "0"})
+    manifest = optional_manifest(
+        Default(Artifact(OTHER_AMOUNT, D(30))), blank={"cost": Decimal("0")}
+    )
 
     assert left_out(manifest, Artifact(SPARE, D(100)), Artifact(OTHER_AMOUNT, BLANK)) == D(70)
 
 
 def test_a_blank_given_for_a_required_input_is_refused_naming_it() -> None:
-    manifest = optional_manifest(Default("30"))
+    manifest = optional_manifest(Default(Artifact(OTHER_AMOUNT, D(30))))
 
     with pytest.raises(BlankNotAllowedError, match="'spare' may not be left blank"):
         left_out(manifest, Artifact(SPARE, BLANK))
 
 
 def test_a_required_input_left_out_is_refused_naming_it() -> None:
-    manifest = optional_manifest(Default("30"))
+    manifest = optional_manifest(Default(Artifact(OTHER_AMOUNT, D(30))))
 
     with pytest.raises(InvalidCompositionError, match="missing input 'spare'"):
         left_out(manifest)
@@ -1302,7 +1310,9 @@ def test_a_required_input_left_out_is_refused_naming_it() -> None:
 
 def test_a_blank_field_of_a_record_is_read_as_the_fields_manifest_default() -> None:
     fields = tuple(
-        InputDeclaration("ex/expenses", False, Default("0"), "Line 7 of the form")
+        InputDeclaration(
+            "ex/expenses", False, Default(Artifact(EXPENSES, D(0))), "Line 7 of the form"
+        )
         if declared.name == "ex/expenses"
         else declared
         for declared in required_fields(RENTALS)
