@@ -360,6 +360,20 @@ def test_the_mix_is_refused_even_when_a_fallback_would_fill_the_blank() -> None:
         )
 
 
+def test_the_mix_is_refused_under_a_compute_rule_too() -> None:
+    with pytest.raises(BlankMixedError):
+        ChartTotal((INCOME, OTHER, LIMIT), NET).with_blank_rules({"parts": COMPUTE}).run(
+            (Artifact(INCOME, D(5)), blank(OTHER), Artifact(LIMIT, D(7)))
+        )
+
+
+def test_a_subclass_inherits_blank_all_or_none() -> None:
+    class Inherits(ChartTotal):
+        pass
+
+    assert Inherits.BLANK_ALL_OR_NONE == frozenset({"parts"})
+
+
 def test_parts_that_are_all_blank_take_the_rule() -> None:
     result = chart_total().run((blank(INCOME), blank(OTHER), blank(LIMIT)))
 

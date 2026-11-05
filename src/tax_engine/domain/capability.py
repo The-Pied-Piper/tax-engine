@@ -513,11 +513,10 @@ class Capability(ABC):
         and the trace says so first, unless a `PASS_ON` slot is also blank: that wins over a
         fallback as over `COMPUTE`, so the fallback is never used and the trace does not say it
         was. A `BLANK_ALL_OR_NONE` slot with some parts blank and some filled is a
-        BlankMixedError naming both, before any rule is looked at. A blank in a slot with no rule
-        is a BlankNotAllowedError naming the line and the slot; that refusal comes before
-        anything else. Otherwise a blank in a `PASS_ON` slot gives
-        a blank artifact for every produced kind, with a trace line each and `compute` not
-        called. A blank field of a record in a `BLANK_RECORD_FIELDS` slot is treated the same way
+        BlankMixedError naming both; that refusal comes first, before any rule is looked at. Then
+        a blank in a slot with no rule is a BlankNotAllowedError naming the line and the slot.
+        Otherwise a blank in a `PASS_ON` slot gives a blank artifact for every produced kind,
+        with a trace line each and `compute` not called. A blank field of a record in a `BLANK_RECORD_FIELDS` slot is treated the same way
         with the rule given for that field, each blank naming its record by position: a fallback
         replaces it in a new list, `PASS_ON` blanks the outputs, `COMPUTE` leaves it, and a field
         with no rule is a BlankNotAllowedError naming the field, the record and the list.
