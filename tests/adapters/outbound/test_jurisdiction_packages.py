@@ -394,6 +394,8 @@ def test_a_failing_import_in_one_package_registers_none_of_the_capabilities(
     assert registry.identifiers() == frozenset()
 
 
+# --- parameter parsers ------------------------------------------------------------------------
+
 PARSER_SOURCE = """
 from decimal import Decimal
 
