@@ -25,10 +25,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
@@ -49,6 +47,7 @@ from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOn
 from tax_engine.domain.trace import ChosenRateAppliedLine, RateAppliedLine, RateByIncomeBandLine
 from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
 from tax_engine.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca_on.capabilities.on479a_table import (
     FAMILY_INCOME,
     form_row,
@@ -91,12 +90,7 @@ def compute(wired: ApplyChosenRate, base: str, rate: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_apply_chosen_rate() -> None:
-    assert CapabilityRegistry.shared().get("ca/apply_chosen_rate") is ApplyChosenRate
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "apply_chosen_rate" in ca_capabilities.__all__
-    assert ca_capabilities.apply_chosen_rate.ApplyChosenRate is ApplyChosenRate
+    assert bundled_capabilities().get("ca/apply_chosen_rate") is ApplyChosenRate
 
 
 def test_declares_its_contract() -> None:
@@ -407,7 +401,7 @@ def test_a_family_income_above_the_last_bound_gives_no_credit_through_both_lines
 
 def test_is_no_longer_registered_under_the_ontario_namespace() -> None:
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("ca-on/apply_chosen_rate")
+        bundled_capabilities().get("ca-on/apply_chosen_rate")
 
 
 def test_the_ontario_package_holds_no_module_for_it() -> None:

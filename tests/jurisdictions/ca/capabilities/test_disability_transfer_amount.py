@@ -34,9 +34,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -63,6 +61,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     DISABILITY_TRANSFERRED_AMOUNT,
 )
 from tax_engine.jurisdictions.ca.trace import DisabilityTransferLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -125,18 +124,7 @@ def total(*given: Figures) -> Decimal:
 
 
 def test_is_registered_as_ca_disability_transfer_amount() -> None:
-    assert (
-        CapabilityRegistry.shared().get("ca/disability_transfer_amount") is DisabilityTransferAmount
-    )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert ca_capabilities.NAMESPACE == "ca"
-    assert "disability_transfer_amount" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.disability_transfer_amount.DisabilityTransferAmount
-        is DisabilityTransferAmount
-    )
+    assert bundled_capabilities().get("ca/disability_transfer_amount") is DisabilityTransferAmount
 
 
 def test_declares_its_contract() -> None:

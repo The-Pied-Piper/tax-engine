@@ -26,7 +26,6 @@ import pytest
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.capabilities as canada
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -44,6 +43,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     RENTAL_EQUIPMENT_ADDITIONS,
 )
 from tax_engine.jurisdictions.ca.trace import RentalAdditionLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -79,13 +79,7 @@ def total(*rows: dict[Any, Any], kind: RecordListKind = RENTAL_EQUIPMENT_ADDITIO
 
 def test_is_registered_as_ca_rental_additions_total() -> None:
     assert tax_engine.jurisdictions.ca.capabilities is canada
-    assert CapabilityRegistry.shared().get("ca/rental_additions_total") is RentalAdditionsTotal
-
-
-def test_is_exported_from_the_canada_capabilities_package() -> None:
-    assert canada.NAMESPACE == "ca"
-    assert "rental_additions_total" in canada.__all__
-    assert canada.rental_additions_total.RentalAdditionsTotal is RentalAdditionsTotal
+    assert bundled_capabilities().get("ca/rental_additions_total") is RentalAdditionsTotal
 
 
 def test_declares_its_contract() -> None:

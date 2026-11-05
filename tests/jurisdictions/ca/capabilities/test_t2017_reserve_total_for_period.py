@@ -29,7 +29,6 @@ import pytest
 
 import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -68,6 +67,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T2017_ROW_RESERVE,
 )
 from tax_engine.jurisdictions.ca.trace.gains import ReserveRowForPeriodLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -173,7 +173,7 @@ def inputs(
 def test_is_registered_as_ca_t2017_reserve_total_for_period() -> None:
     assert ca_capabilities.t2017_reserve_total_for_period is not None
     assert (
-        CapabilityRegistry.shared().get("ca/t2017_reserve_total_for_period")
+        bundled_capabilities().get("ca/t2017_reserve_total_for_period")
         is T2017ReserveTotalForPeriod
     )
 

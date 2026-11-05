@@ -41,7 +41,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.record_list import RecordList
-from tax_engine.domain.registry import Namespace, SharedRegistry
+from tax_engine.domain.registry import Namespace, Registry
 from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, TraceLine
 from tax_engine.domain.trace.blank import BlankField, BlankFieldFallbackLine
 
@@ -445,8 +445,8 @@ class Capability(ABC):
 
     @classmethod
     def identifier(cls) -> str | None:
-        """The identifier this very class was registered under, else None (a subclass of a
-        registered class is not registered by that)."""
+        """The identifier `@capability` gave this very class, else None (a subclass of a
+        decorated class is not decorated by that)."""
         return cls.__dict__.get("IDENTIFIER")
 
     @property
@@ -594,12 +594,12 @@ class Capability(ABC):
         return cast(Artifact[V], found[0])
 
 
-class CapabilityRegistry(SharedRegistry[type[Capability]]):
+class CapabilityRegistry(Registry[type[Capability]]):
     """The capability classes packages contribute, by full identifier (`core/progressive_tax`).
 
-    Register through `@capability`, which sets the class's identifier; `register_class` registers
-    a class under the identifier it carries. The inherited `register` takes the key as given and
-    skips namespace validation.
+    A plain registry that whoever wires the application builds and fills: `register_class`
+    registers a class under the identifier `@capability` gave it. The inherited `register` takes
+    the key as given and skips namespace validation.
     """
 
     def register_class[C: Capability](self, cls: type[C]) -> type[C]:
@@ -617,13 +617,15 @@ class CapabilityRegistry(SharedRegistry[type[Capability]]):
 
 
 def capability[C: Capability](*, identifier: str) -> Callable[[type[C]], type[C]]:
-    """Class decorator registering a capability in the shared CapabilityRegistry under `identifier`.
+    """Class decorator giving a capability its full identifier, `<namespace>/<identifier>`.
 
     `identifier` is the local id; the namespace comes from the package declaring `NAMESPACE`.
+    The decorator registers nothing: the composition root builds a `CapabilityRegistry` from the
+    packages' capabilities (`tax_engine.registrations.capabilities`).
     """
 
-    def register(cls: type[C]) -> type[C]:
+    def stamp(cls: type[C]) -> type[C]:
         cls.IDENTIFIER = Namespace.of(cls).identifier(identifier)
-        return CapabilityRegistry.shared().register_class(cls)
+        return cls
 
-    return register
+    return stamp

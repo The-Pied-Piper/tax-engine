@@ -50,6 +50,7 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import TraceLine
 from tax_engine.domain.worksheet import Worksheet
+from tests.capabilities import bundled_capabilities
 from tests.kinds import ca_on_kinds
 from tests.manifest_support import required_inputs
 
@@ -378,7 +379,7 @@ def test_asks_for_each_dataset_with_its_slots_kind() -> None:
 
 
 def test_resolves_through_the_registries_it_was_given_not_the_shared_ones() -> None:
-    assert "ex/scale" not in CapabilityRegistry.shared().identifiers()
+    assert "ex/scale" not in bundled_capabilities().identifiers()
     assert "ex/base" not in ca_on_kinds().identifiers()
 
     assert len(service().compose(EX_ON, 2025).form("ex-on/return").composition.order) == 2

@@ -17,11 +17,9 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidCompositionError
 from tax_engine.domain.kinds import AmountKind, CountKind
@@ -36,6 +34,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import CreditAmountLine, SumLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -63,12 +62,7 @@ def compute(wired: CreditAmount) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_credit_amount() -> None:
-    assert CapabilityRegistry.shared().get("core/credit_amount") is CreditAmount
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "credit_amount" in core.__all__
-    assert core.credit_amount.CreditAmount is CreditAmount
+    assert bundled_capabilities().get("core/credit_amount") is CreditAmount
 
 
 def test_declares_its_contract() -> None:

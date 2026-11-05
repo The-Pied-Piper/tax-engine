@@ -15,9 +15,8 @@ from typing import Any
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
@@ -32,6 +31,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CCA_RIIP_ADDITIONS,
     CCA_UCC_AT_START,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -100,13 +100,8 @@ class CcaEntriesTotalCases:
     COLUMNS_TOTALLED: tuple[str, ...]
 
     def test_is_registered_under_its_identifier(self) -> None:
-        assert CapabilityRegistry.shared().get(self.IDENTIFIER) is self.CAPABILITY
+        assert bundled_capabilities().get(self.IDENTIFIER) is self.CAPABILITY
         assert issubclass(self.CAPABILITY, CcaEntriesTotal)
-
-    def test_is_exported_from_the_ca_capabilities_package(self) -> None:
-        assert self.MODULE in ca_capabilities.__all__
-        module = getattr(ca_capabilities, self.MODULE)
-        assert module.__dict__[self.CAPABILITY.__name__] is self.CAPABILITY
 
     def test_declares_its_contract_and_leaves_it_to_the_base(self) -> None:
         assert wired(self.CAPABILITY).consumes == frozenset({CLASSES})

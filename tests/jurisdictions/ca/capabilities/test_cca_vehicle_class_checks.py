@@ -28,9 +28,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
 from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -53,6 +51,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T777_PART_B_CLASS_CHECKED_ROWS,
 )
 from tax_engine.jurisdictions.ca.trace import CcaVehicleClassCheckLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.test_cca_part_b_checks import row as part_b_row
 
 D = Decimal
@@ -217,12 +216,7 @@ def test_the_output_holds_the_same_fields_as_the_classes_in_the_callers_order() 
 
 
 def test_is_registered_as_ca_cca_vehicle_class_checks() -> None:
-    assert CapabilityRegistry.shared().get("ca/cca_vehicle_class_checks") is CcaVehicleClassChecks
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "cca_vehicle_class_checks" in ca_capabilities.__all__
-    assert ca_capabilities.cca_vehicle_class_checks.CcaVehicleClassChecks is CcaVehicleClassChecks
+    assert bundled_capabilities().get("ca/cca_vehicle_class_checks") is CcaVehicleClassChecks
 
 
 def test_declares_its_contract() -> None:

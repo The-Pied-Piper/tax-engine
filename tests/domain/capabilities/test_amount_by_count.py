@@ -22,10 +22,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.amount_by_count import AmountForCount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
     InvalidAmountByCountError,
@@ -46,6 +44,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import AmountByCountLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -84,12 +83,7 @@ def compute(wired: AmountForCount, count: int) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_amount_by_count() -> None:
-    assert CapabilityRegistry.shared().get("core/amount_by_count") is AmountForCount
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "amount_by_count" in core.__all__
-    assert core.amount_by_count.AmountForCount is AmountForCount
+    assert bundled_capabilities().get("core/amount_by_count") is AmountForCount
 
 
 def test_declares_its_contract() -> None:

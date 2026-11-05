@@ -26,13 +26,12 @@ from typing import Any, assert_type
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import ChosenBySignLine
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 Kinds = tuple[ArtifactKind[Decimal], ...]
@@ -84,12 +83,7 @@ def compute(wired: ChooseBySign, sign: str, **candidates: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_choose_by_sign() -> None:
-    assert CapabilityRegistry.shared().get("ca/choose_by_sign") is ChooseBySign
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "choose_by_sign" in ca_capabilities.__all__
-    assert ca_capabilities.choose_by_sign.ChooseBySign is ChooseBySign
+    assert bundled_capabilities().get("ca/choose_by_sign") is ChooseBySign
 
 
 def test_declares_its_contract() -> None:

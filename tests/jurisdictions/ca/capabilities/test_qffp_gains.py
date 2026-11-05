@@ -20,9 +20,7 @@ from decimal import Decimal
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -40,6 +38,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     QFFP_GAIN_OR_LOSS,
 )
 from tax_engine.jurisdictions.ca.trace import QffpGainLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     GAIN,
     LOSS,
@@ -70,12 +69,7 @@ def total(*given: Row | QffpRow) -> Decimal:
 
 
 def test_is_registered_as_ca_qffp_gains() -> None:
-    assert CapabilityRegistry.shared().get("ca/qffp_gains") is QffpGains
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "qffp_gains" in ca_capabilities.__all__
-    assert ca_capabilities.qffp_gains.QffpGains is QffpGains
+    assert bundled_capabilities().get("ca/qffp_gains") is QffpGains
 
 
 def test_declares_its_slots_and_contract() -> None:

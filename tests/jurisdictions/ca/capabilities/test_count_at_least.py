@@ -17,9 +17,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
@@ -30,6 +28,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import CountAtLeastLine
 from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
+from tests.capabilities import bundled_capabilities
 
 COUNT = CountKind("ex/widget_count")
 MINIMUM = CountKind("ex/widget_minimum")
@@ -50,12 +49,7 @@ def compute(count: int, minimum: int) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_count_at_least() -> None:
-    assert CapabilityRegistry.shared().get("ca/count_at_least") is CountAtLeast
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "count_at_least" in ca_capabilities.__all__
-    assert ca_capabilities.count_at_least.CountAtLeast is CountAtLeast
+    assert bundled_capabilities().get("ca/count_at_least") is CountAtLeast
 
 
 def test_declares_its_contract() -> None:

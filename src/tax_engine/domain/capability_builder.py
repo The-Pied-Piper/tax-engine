@@ -19,7 +19,11 @@ from typing import Any
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.capability import Capability
-from tax_engine.domain.errors import InvalidCapabilityError, InvalidSelectionError
+from tax_engine.domain.errors import (
+    InvalidCapabilityError,
+    InvalidSelectionError,
+    InvalidTextError,
+)
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.datasets import ParameterDataset
 
@@ -145,8 +149,31 @@ class CapabilityBuilder:
             per_field[slot] = {}
             for name, text in fields.items():
                 kind = artifacts.kind(name)
-                per_field[slot][kind] = cls._rule(text, kind.value_type, f"field {name!r}", who)
+                per_field[slot][kind] = cls._field_rule(text, kind, who)
         return per_field
+
+    @staticmethod
+    def _field_rule(text: str, kind: ArtifactKind[Any], who: str) -> BlankRule:
+        """The rule `text` gives for the record field `kind`: `pass_on`, `compute`, else the value
+        the field's own kind reads `text` as, which only an amount or a count can be.
+        """
+        if text == "pass_on":
+            return PASS_ON
+        if text == "compute":
+            return COMPUTE
+        try:
+            read = kind.read(text).value
+        except InvalidTextError as error:
+            raise InvalidSelectionError(
+                f"{who}: blank rule for field {kind.identifier!r} must be pass_on, compute or a "
+                f"value the field can hold: {error}"
+            ) from error
+        if not isinstance(read, Decimal | int):
+            raise InvalidSelectionError(
+                f"{who}: field {kind.identifier!r} takes {kind.value_type.__name__} kinds, so a "
+                "blank there can only be passed on or computed, not replaced by a fallback"
+            )
+        return read
 
     @classmethod
     def _rule(cls, text: str, value_type: type, label: str, who: str) -> BlankRule:

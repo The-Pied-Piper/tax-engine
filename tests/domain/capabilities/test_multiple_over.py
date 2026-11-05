@@ -20,10 +20,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.multiple_over import MultipleOver
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -37,6 +35,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.trace import MultipleOverLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -69,12 +68,7 @@ def compute(wired: MultipleOver, amount: str, less: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_multiple_over() -> None:
-    assert CapabilityRegistry.shared().get("core/multiple_over") is MultipleOver
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "multiple_over" in core.__all__
-    assert core.multiple_over.MultipleOver is MultipleOver
+    assert bundled_capabilities().get("core/multiple_over") is MultipleOver
 
 
 def test_declares_its_contract() -> None:

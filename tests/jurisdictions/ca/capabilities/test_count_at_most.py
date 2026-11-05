@@ -17,9 +17,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
@@ -30,6 +28,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.trace import CountAtMostLine
 from tax_engine.jurisdictions.ca.capabilities.count_at_most import CountAtMost
+from tests.capabilities import bundled_capabilities
 
 COUNT = CountKind("ex/widget_count")
 MAXIMUM = CountKind("ex/widget_maximum")
@@ -50,12 +49,7 @@ def compute(count: int, maximum: int) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_count_at_most() -> None:
-    assert CapabilityRegistry.shared().get("ca/count_at_most") is CountAtMost
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "count_at_most" in ca_capabilities.__all__
-    assert ca_capabilities.count_at_most.CountAtMost is CountAtMost
+    assert bundled_capabilities().get("ca/count_at_most") is CountAtMost
 
 
 def test_declares_its_contract() -> None:

@@ -18,15 +18,14 @@ from typing import Any
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.record_positive_total import RecordPositiveTotal
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import RecordPositiveTotalLine
+from tests.capabilities import bundled_capabilities
 from tests.kinds import OddKind
 
 D = Decimal
@@ -55,12 +54,7 @@ def total_of(*amounts: str) -> Decimal:
 
 
 def test_is_registered_as_core_record_positive_total() -> None:
-    assert CapabilityRegistry.shared().get("core/record_positive_total") is RecordPositiveTotal
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "record_positive_total" in core.__all__
-    assert core.record_positive_total.RecordPositiveTotal is RecordPositiveTotal
+    assert bundled_capabilities().get("core/record_positive_total") is RecordPositiveTotal
 
 
 def test_declares_its_contract() -> None:

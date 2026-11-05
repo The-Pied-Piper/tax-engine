@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import pytest
 
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import UnknownRegistrationError
+from tests.capabilities import bundled_capabilities
 
 
 def test_the_base_is_not_registered() -> None:
     with pytest.raises(UnknownRegistrationError):
-        CapabilityRegistry.shared().get("ca/cca_entries_total")
+        bundled_capabilities().get("ca/cca_entries_total")

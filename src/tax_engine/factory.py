@@ -3,8 +3,7 @@
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.capability import CapabilityRegistry
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, capabilities
 
 
 def build_tax_computation() -> TaxComputationService:
@@ -14,5 +13,5 @@ def build_tax_computation() -> TaxComputationService:
     return TaxComputationService(
         YamlJurisdictionSource(roots, kinds),
         YamlParameterSource(roots),
-        CapabilityRegistry.shared(),
+        capabilities(),
     )

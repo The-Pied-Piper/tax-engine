@@ -25,7 +25,6 @@ from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBe
 from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.capabilities.times_count import TimesCount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
@@ -375,6 +374,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     FARMING_INCOME,
     IMMEDIATE_EXPENSING_SHORT_YEAR_DAYS,
 )
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca_on.manifest_families.t1139 import FARMING_INCOME_ON_RETURN_LINES
 
 NET_INCOME_PER_STATEMENT = RecordListKind("ca/t2042.farming_income", fields=(FARMING_INCOME,))
@@ -1877,7 +1877,7 @@ WIRING = {
     (RecordTotal, frozenset({FARMING_INCOME_ON_RETURN_LINES}), frozenset({FARMING_INCOME})),
 }
 
-PERCENTAGE_OF = CapabilityRegistry.shared().get("ca/percentage_of")
+PERCENTAGE_OF = bundled_capabilities().get("ca/percentage_of")
 
 
 # Form T2043 Chart B and Chart C, once for each statement (a business with permanent establishments

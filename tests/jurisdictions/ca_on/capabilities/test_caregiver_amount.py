@@ -29,9 +29,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -60,6 +58,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     ELIGIBLE_DEPENDANT_AMOUNT,
 )
 from tax_engine.jurisdictions.ca_on.trace import CaregiverClaimLessClaimedLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -122,13 +121,7 @@ def total(*given: Dependant, line_58160: str = "0", eligible: int = 1) -> Decima
 
 
 def test_is_registered_as_ca_on_caregiver_amount() -> None:
-    assert CapabilityRegistry.shared().get("ca-on/caregiver_amount") is OntarioCaregiverAmount
-
-
-def test_is_exported_from_the_ca_on_capabilities_package() -> None:
-    assert ca_on_capabilities.NAMESPACE == "ca-on"
-    assert "caregiver_amount" in ca_on_capabilities.__all__
-    assert ca_on_capabilities.caregiver_amount.OntarioCaregiverAmount is OntarioCaregiverAmount
+    assert bundled_capabilities().get("ca-on/caregiver_amount") is OntarioCaregiverAmount
 
 
 def test_declares_its_contract() -> None:

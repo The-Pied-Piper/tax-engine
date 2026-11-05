@@ -21,9 +21,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -38,6 +36,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.trace import ThresholdGateLine
 from tax_engine.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -70,12 +69,7 @@ def compute(wired: ThresholdGate, amount: str, gate: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_threshold_gate() -> None:
-    assert CapabilityRegistry.shared().get("ca/threshold_gate") is ThresholdGate
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "threshold_gate" in ca_capabilities.__all__
-    assert ca_capabilities.threshold_gate.ThresholdGate is ThresholdGate
+    assert bundled_capabilities().get("ca/threshold_gate") is ThresholdGate
 
 
 def test_declares_its_contract() -> None:

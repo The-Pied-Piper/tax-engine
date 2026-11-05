@@ -21,11 +21,9 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.domain.capabilities as core
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
     InvalidCapabilityError,
@@ -39,6 +37,7 @@ from tax_engine.domain.trace import (
     ChosenByCountLine,
     TimesCountLine,
 )
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 
@@ -70,12 +69,7 @@ def compute(count: int, when_none: str = "1633", when_any: str = "2813") -> Arti
 
 
 def test_is_registered_as_core_choose_by_count() -> None:
-    assert CapabilityRegistry.shared().get("core/choose_by_count") is ChooseByCount
-
-
-def test_is_exported_from_the_capabilities_package() -> None:
-    assert "choose_by_count" in core.__all__
-    assert core.choose_by_count.ChooseByCount is ChooseByCount
+    assert bundled_capabilities().get("core/choose_by_count") is ChooseByCount
 
 
 def test_declares_its_contract() -> None:

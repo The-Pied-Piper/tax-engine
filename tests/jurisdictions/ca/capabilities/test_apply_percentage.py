@@ -18,7 +18,6 @@ from typing import Any
 import pytest
 
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -31,6 +30,7 @@ from tax_engine.domain.parameters.rounding import (
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import PercentageAppliedLine
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -66,7 +66,7 @@ def compute(wired: ApplyPercentage, amount: str, percentage: str) -> Artifact[An
 
 
 def test_is_registered_as_ca_apply_percentage() -> None:
-    assert CapabilityRegistry.shared().get("ca/apply_percentage") is ApplyPercentage
+    assert bundled_capabilities().get("ca/apply_percentage") is ApplyPercentage
 
 
 def test_declares_its_slots() -> None:

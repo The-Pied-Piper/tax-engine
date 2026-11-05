@@ -24,9 +24,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.capability import Capability, CapabilityRegistry
+from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine, TraceLine
@@ -41,6 +40,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     SHARE_GAIN_OR_LOSS,
 )
 from tax_engine.jurisdictions.ca.trace import DispositionGainLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     GAIN,
     LOSS,
@@ -67,12 +67,7 @@ def total(*given: Row) -> Decimal:
 
 
 def test_is_registered_as_ca_disposition_gains() -> None:
-    assert CapabilityRegistry.shared().get("ca/disposition_gains") is DispositionGains
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "disposition_gains" in ca_capabilities.__all__
-    assert ca_capabilities.disposition_gains.DispositionGains is DispositionGains
+    assert bundled_capabilities().get("ca/disposition_gains") is DispositionGains
 
 
 def test_shares_an_unregistered_parent_class_with_the_gain_only_capability() -> None:
@@ -81,7 +76,7 @@ def test_shares_an_unregistered_parent_class_with_the_gain_only_capability() -> 
     assert issubclass(DispositionRows, Capability)
     assert not issubclass(DispositionGains, DispositionGainsOnly)
     assert not issubclass(DispositionGainsOnly, DispositionGains)
-    assert CapabilityRegistry.shared().identifier_of(DispositionRows) is None
+    assert bundled_capabilities().identifier_of(DispositionRows) is None
 
 
 def test_declares_its_slots() -> None:

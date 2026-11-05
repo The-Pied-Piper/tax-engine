@@ -27,7 +27,6 @@ import pytest
 
 import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DomainError, InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, RateKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -37,6 +36,7 @@ from tax_engine.domain.parameters.rate_table import RATE_TABLE, RateTable
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import RateByIncomeBandLine
 from tax_engine.jurisdictions.ca_on.capabilities.rate_by_income_band import RateByIncomeBand
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca_on.capabilities.on479a_table import (
     FAMILY_INCOME,
     ON479A_ROWS,
@@ -66,17 +66,11 @@ def rate_for(income: str, wired: RateByIncomeBand | None = None) -> Decimal:
 
 
 def test_is_registered_as_ca_on_rate_by_income_band() -> None:
-    assert CapabilityRegistry.shared().get("ca-on/rate_by_income_band") is RateByIncomeBand
-
-
-def test_is_exported_from_the_ca_on_capabilities_package() -> None:
-    assert "rate_by_income_band" in ca_on_capabilities.__all__
-    assert ca_on_capabilities.rate_by_income_band.RateByIncomeBand is RateByIncomeBand
+    assert bundled_capabilities().get("ca-on/rate_by_income_band") is RateByIncomeBand
 
 
 def test_its_package_declares_the_ca_on_namespace() -> None:
     assert ca_on_capabilities.NAMESPACE == "ca-on"
-    assert ca_on_capabilities.__all__[0] == "NAMESPACE"
 
 
 def test_declares_its_contract() -> None:

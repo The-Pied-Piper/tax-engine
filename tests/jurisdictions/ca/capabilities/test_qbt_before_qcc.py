@@ -20,10 +20,8 @@ from typing import Any, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     DomainError,
     InvalidCapabilityError,
@@ -34,6 +32,7 @@ from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.qbt_before_qcc import QbtBeforeQcc
 from tax_engine.jurisdictions.ca.trace import QbtBeforeQccLine
+from tests.capabilities import bundled_capabilities
 
 IS_QBT = CountKind("ex/election_is_qbt")
 ANSWER = CountKind("ex/earlier_answer")
@@ -59,12 +58,7 @@ def compute(is_qbt: int, *answers: int) -> Artifact[Any]:
 
 
 def test_is_registered_as_ca_qbt_before_qcc() -> None:
-    assert CapabilityRegistry.shared().get("ca/qbt_before_qcc") is QbtBeforeQcc
-
-
-def test_is_exported_from_the_federal_capabilities_package() -> None:
-    assert "qbt_before_qcc" in ca_capabilities.__all__
-    assert ca_capabilities.qbt_before_qcc.QbtBeforeQcc is QbtBeforeQcc
+    assert bundled_capabilities().get("ca/qbt_before_qcc") is QbtBeforeQcc
 
 
 def test_declares_its_contract() -> None:

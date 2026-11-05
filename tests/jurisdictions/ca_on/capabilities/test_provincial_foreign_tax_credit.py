@@ -66,11 +66,10 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on.capabilities as ca_on_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
-from tax_engine.domain.capability import CapabilityRegistry, CapabilityResult
+from tax_engine.domain.capability import CapabilityResult
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -111,6 +110,7 @@ from tax_engine.jurisdictions.ca_on.trace import (
     PooledProvincialForeignTaxCreditLine,
     ProvincialForeignTaxCreditLine,
 )
+from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -296,16 +296,7 @@ def minimum_tax_trace(
 
 def test_is_registered_as_ca_on_provincial_foreign_tax_credit() -> None:
     assert (
-        CapabilityRegistry.shared().get("ca-on/provincial_foreign_tax_credit")
-        is ProvincialForeignTaxCredit
-    )
-
-
-def test_is_exported_from_the_ca_on_capabilities_package() -> None:
-    assert ca_on_capabilities.NAMESPACE == "ca-on"
-    assert "provincial_foreign_tax_credit" in ca_on_capabilities.__all__
-    assert (
-        ca_on_capabilities.provincial_foreign_tax_credit.ProvincialForeignTaxCredit
+        bundled_capabilities().get("ca-on/provincial_foreign_tax_credit")
         is ProvincialForeignTaxCredit
     )
 
@@ -1340,7 +1331,7 @@ def service(dataset: ParameterDataset[RoundingOnly] | None = None) -> TaxComputa
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset, limit, rate_dataset),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 

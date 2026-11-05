@@ -22,9 +22,7 @@ from typing import Any, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as canada
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.record_list import RecordList
@@ -41,6 +39,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     REAL_ESTATE_RESTRICTED_FARM_LOSS_APPLIED,
 )
 from tax_engine.jurisdictions.ca.trace import FarmLossAppliedLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.disposition_rows import (
     FarmLossRow,
     QffpRow,
@@ -84,15 +83,8 @@ def lines(*rows: FarmLossRow) -> tuple[Any, ...]:
 # --- registration and slots -----------------------------------------------------------------
 
 
-def test_is_exported_from_the_canada_capabilities_package() -> None:
-    assert canada.NAMESPACE == "ca"
-    assert "restricted_farm_loss_applied" in canada.__all__
-    module = canada.restricted_farm_loss_applied
-    assert module.__dict__["RestrictedFarmLossApplied"] is RestrictedFarmLossApplied
-
-
 def test_is_registered_under_its_identifier() -> None:
-    assert CapabilityRegistry.shared().get("ca/restricted_farm_loss_applied") is (
+    assert bundled_capabilities().get("ca/restricted_farm_loss_applied") is (
         RestrictedFarmLossApplied
     )
 

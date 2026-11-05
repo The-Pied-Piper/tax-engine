@@ -27,9 +27,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -50,6 +48,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     PROVINCES_LOGGING_TAX_CREDIT,
 )
 from tax_engine.jurisdictions.ca.trace import LoggingTaxCreditLine
+from tests.capabilities import bundled_capabilities
 
 D = Decimal
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
@@ -99,13 +98,7 @@ def total(*pairs: tuple[str, str]) -> Decimal:
 
 
 def test_is_registered_as_ca_logging_tax_credit() -> None:
-    assert CapabilityRegistry.shared().get("ca/logging_tax_credit") is LoggingTaxCredit
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert ca_capabilities.NAMESPACE == "ca"
-    assert "logging_tax_credit" in ca_capabilities.__all__
-    assert ca_capabilities.logging_tax_credit.LoggingTaxCredit is LoggingTaxCredit
+    assert bundled_capabilities().get("ca/logging_tax_credit") is LoggingTaxCredit
 
 
 def test_declares_its_contract() -> None:

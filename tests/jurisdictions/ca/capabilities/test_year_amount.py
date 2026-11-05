@@ -20,7 +20,6 @@ import pytest
 import tax_engine.jurisdictions.ca.capabilities  # noqa: F401  (registers the federal capabilities)
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -36,6 +35,7 @@ from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
 from tax_engine.jurisdictions.ca.trace import YearAmountLine
+from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -61,7 +61,7 @@ def dataset() -> ParameterDataset[YearAmounts]:
 
 
 def year_amount() -> Any:
-    return CapabilityRegistry.shared().get("ca/year_amount")
+    return bundled_capabilities().get("ca/year_amount")
 
 
 def wired() -> Any:
@@ -186,7 +186,7 @@ def service() -> TaxComputationService:
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 

@@ -19,9 +19,7 @@ from typing import Any
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InputAboveBoundError,
     InvalidCapabilityError,
@@ -34,6 +32,7 @@ from tax_engine.jurisdictions.ca.capabilities.closing_ucc_after_column_22 import
     ClosingUccAfterColumn22,
 )
 from tax_engine.jurisdictions.ca.catalog import CCA_CLASS_NUMBER, CCA_UCC_AT_END
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_table import (
     CCA_CLAIM,
     CLASSES,
@@ -75,15 +74,9 @@ def figures(
 
 
 def test_is_registered_as_ca_closing_ucc_after_column_22() -> None:
-    registered = CapabilityRegistry.shared().get("ca/closing_ucc_after_column_22")
+    registered = bundled_capabilities().get("ca/closing_ucc_after_column_22")
 
     assert registered is ClosingUccAfterColumn22
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "closing_ucc_after_column_22" in ca_capabilities.__all__
-    module = ca_capabilities.closing_ucc_after_column_22
-    assert module.ClosingUccAfterColumn22 is ClosingUccAfterColumn22
 
 
 def test_is_a_closing_ucc() -> None:

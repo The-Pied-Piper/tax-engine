@@ -909,7 +909,7 @@ def test_field_rules_under_a_slot_are_read_as_the_type_of_each_field() -> None:
 
 
 def test_a_field_fallback_that_is_not_a_number_is_an_invalid_selection() -> None:
-    with pytest.raises(InvalidSelectionError, match="blank rule for field 'ex/sales'.*'lots'"):
+    with pytest.raises(InvalidSelectionError, match="blank rule for field 'ex/sales'"):
         build_fields({"records": {"ex/sales": "lots"}}, SalesLessCosts)
 
 
@@ -929,3 +929,34 @@ def test_a_field_rule_for_a_class_that_does_not_open_the_slot_is_an_invalid_sele
 def test_a_field_that_is_not_in_the_list_is_an_invalid_selection() -> None:
     with pytest.raises(InvalidSelectionError, match="'ex/source' is not a field of a record list"):
         build_fields({"records": {"ex/source": "0"}}, SalesLessCosts)
+
+
+def test_a_field_fallback_is_read_by_the_fields_own_kind() -> None:
+    copies = CountKind("ex/copies", non_negative=True)
+    lines = RecordListKind("ex/copy_lines", fields=(copies,))
+
+    class CopyCounts(Capability):
+        CONSUMES: ClassVar[Mapping[str, type]] = {"records": RecordList}
+        PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+        BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset({"records"})
+
+        def __init__(self, records: RecordListKind, output: Money) -> None:
+            super().__init__(records=records, output=output)
+
+        def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+            raise NotImplementedError
+
+    def build_copies(text: str) -> Capability:
+        chosen = CapabilitySelection(
+            name="ex/copy_counts",
+            params={},
+            consumes={"records": "ex/copy_lines"},
+            produces={"output": "ex/total"},
+            blank_fields={"records": {"ex/copies": text}},
+        )
+        artifacts = registry({"ex/copy_lines": lines, "ex/copies": copies})
+        return CapabilityBuilder().build(chosen, CopyCounts, {}, artifacts)
+
+    build_copies("2")
+    with pytest.raises(InvalidSelectionError, match="blank rule for field 'ex/copies'"):
+        build_copies("1.5")

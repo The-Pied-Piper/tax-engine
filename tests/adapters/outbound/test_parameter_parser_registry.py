@@ -43,7 +43,6 @@ from tax_engine.adapters.outbound.parameter_parsers.taper import TaperParser
 from tax_engine.adapters.outbound.parameter_parsers.threshold_rate import ThresholdRateParser
 from tax_engine.adapters.outbound.parameter_parsers.year_amounts import YearAmountsParser
 from tax_engine.adapters.outbound.yaml_support import YamlNode
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
@@ -390,10 +389,6 @@ def test_a_directly_constructed_registry_is_separate_and_empty() -> None:
     assert registry is not ParameterParserRegistry.shared()
     with pytest.raises(UnknownRegistrationError):
         registry.for_kind(BRACKETS)
-
-
-def test_shared_parser_registry_is_not_the_shared_capability_registry() -> None:
-    assert id(ParameterParserRegistry.shared()) != id(CapabilityRegistry.shared())
 
 
 # --- the decorator ----------------------------------------------------------------------------

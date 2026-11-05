@@ -17,7 +17,6 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca.capabilities as canada
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     InvalidRecordError,
@@ -42,6 +41,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TRIP_TRAVEL_EXPENSES,
     TRIP_ZONE,
 )
+from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 
 D = Decimal
@@ -150,7 +150,7 @@ def service(identifier: str) -> TaxComputationService:
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _NoParameters(),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 
@@ -171,14 +171,9 @@ class ZoneTotalCases:
 
     # --- registration and slots ---------------------------------------------------------------
 
-    def test_is_exported_from_the_canada_capabilities_package(self) -> None:
-        assert canada.NAMESPACE == "ca"
-        assert self.MODULE in canada.__all__
-        assert getattr(canada, self.MODULE).__dict__[self.CAPABILITY.__name__] is self.CAPABILITY
-
     def test_is_registered_under_its_identifier(self) -> None:
         assert tax_engine.jurisdictions.ca.capabilities is canada
-        assert CapabilityRegistry.shared().get(self.IDENTIFIER) is self.CAPABILITY
+        assert bundled_capabilities().get(self.IDENTIFIER) is self.CAPABILITY
 
     def test_declares_its_contract(self) -> None:
         wired = self.CAPABILITY(TRAVEL_TRIPS, TOTAL)

@@ -23,10 +23,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
-import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
-from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
     MissingArtifactError,
@@ -55,6 +53,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     SHORT_TERM_RENTAL_CCA_UNITS,
 )
 from tax_engine.jurisdictions.ca.trace import ShortTermRentalNonCompliantCcaByClassLine
+from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.short_term_rental_cca import (
     BY_CLASS,
     CENT,
@@ -91,15 +90,7 @@ def by_class(
 
 def test_is_registered_as_ca_short_term_rental_non_compliant_cca_by_class() -> None:
     assert (
-        CapabilityRegistry.shared().get("ca/short_term_rental_non_compliant_cca_by_class")
-        is rental_cca.ShortTermRentalNonCompliantCcaByClass
-    )
-
-
-def test_is_exported_from_the_ca_capabilities_package() -> None:
-    assert "short_term_rental_non_compliant_cca_by_class" in ca_capabilities.__all__
-    assert (
-        ca_capabilities.short_term_rental_non_compliant_cca_by_class.ShortTermRentalNonCompliantCcaByClass
+        bundled_capabilities().get("ca/short_term_rental_non_compliant_cca_by_class")
         is rental_cca.ShortTermRentalNonCompliantCcaByClass
     )
 
@@ -417,7 +408,7 @@ def service() -> TaxComputationService:
     return TaxComputationService(
         _Jurisdictions(Jurisdiction(code=code, manifests=(manifest,))),
         _Parameters(dataset),
-        CapabilityRegistry.shared(),
+        bundled_capabilities(),
     )
 
 
