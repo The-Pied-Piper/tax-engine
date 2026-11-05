@@ -16,8 +16,8 @@ from pathlib import Path
 from types import MappingProxyType, ModuleType
 
 from tax_engine.adapters.outbound.capability_modules import capabilities_in
+from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
 from tax_engine.adapters.outbound.parser_modules import parsers_in
-from tax_engine.adapters.parameter_parser import ParameterParserRegistry
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError

@@ -3,8 +3,8 @@ BracketSchedule."""
 
 from __future__ import annotations
 
-from tax_engine.adapters.parameter_parser import parameter_parser
-from tax_engine.adapters.yaml_support import YamlNode
+from tax_engine.adapters.outbound.parameter_parser import parameter_parser
+from tax_engine.adapters.outbound.yaml_support import YamlNode
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
 
 _BRACKET_KEYS = frozenset({"from", "rate"})

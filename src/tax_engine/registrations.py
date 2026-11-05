@@ -14,7 +14,7 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
-from tax_engine.adapters.parameter_parser import ParameterParserRegistry
+from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 

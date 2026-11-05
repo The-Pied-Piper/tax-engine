@@ -12,7 +12,7 @@ import inspect
 import pkgutil
 from types import ModuleType
 
-from tax_engine.adapters.parameter_parser import is_parser
+from tax_engine.adapters.outbound.parameter_parser import is_parser
 
 
 def parsers_in(package: ModuleType) -> list[type]:

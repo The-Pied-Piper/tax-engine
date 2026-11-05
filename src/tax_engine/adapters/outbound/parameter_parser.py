@@ -3,8 +3,9 @@
 A package contributes parsers in its `parameter_parsers` package; nothing registers on import: the
 composition root builds a `ParameterParserRegistry` by walking each package's parsers
 (`tax_engine.registrations.parameter_parsers`). Parsers are keyed by their kind's name
-(`brackets`, `credit`, `rate`), which is not namespaced yet. The module is neutral on purpose: a
-jurisdiction's parsers extend it without importing the outbound adapters.
+(`brackets`, `credit`, `rate`), which is not namespaced yet. A jurisdiction's parsers are outbound
+adapters that live in its package: the import contract lets them import this module and
+`yaml_support`, and nothing else under `adapters.outbound`.
 """
 
 from __future__ import annotations
@@ -12,7 +13,7 @@ from __future__ import annotations
 import inspect
 from typing import Any, Protocol, cast, runtime_checkable
 
-from tax_engine.adapters.yaml_support import YamlNode
+from tax_engine.adapters.outbound.yaml_support import YamlNode
 from tax_engine.domain.errors import InvalidRegistrationError, UnknownRegistrationError
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.registry import Registry

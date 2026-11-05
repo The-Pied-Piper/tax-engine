@@ -18,8 +18,11 @@ from pathlib import Path
 
 import yaml
 
-from tax_engine.adapters.parameter_parser import OptionalKeysParser, ParameterParserRegistry
-from tax_engine.adapters.yaml_support import YamlNode, YamlShapeError
+from tax_engine.adapters.outbound.parameter_parser import (
+    OptionalKeysParser,
+    ParameterParserRegistry,
+)
+from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.domain.errors import DomainError, InvalidParameterDataError, NotFoundError
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind

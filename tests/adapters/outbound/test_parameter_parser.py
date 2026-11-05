@@ -17,12 +17,12 @@ from typing import assert_type
 import pytest
 
 import tax_engine.registrations
-from tax_engine.adapters.parameter_parser import (
+from tax_engine.adapters.outbound.parameter_parser import (
     ParameterParser,
     ParameterParserRegistry,
     parameter_parser,
 )
-from tax_engine.adapters.yaml_support import YamlNode
+from tax_engine.adapters.outbound.yaml_support import YamlNode
 from tax_engine.domain.errors import (
     DuplicateRegistrationError,
     InvalidRegistrationError,

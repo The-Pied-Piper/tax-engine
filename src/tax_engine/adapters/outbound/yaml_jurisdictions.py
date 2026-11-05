@@ -67,8 +67,8 @@ from typing import Any, NamedTuple
 
 import yaml
 
+from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.adapters.text import read_default, read_number
-from tax_engine.adapters.yaml_support import YamlNode, YamlShapeError
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.errors import (

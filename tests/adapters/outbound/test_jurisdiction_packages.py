@@ -18,8 +18,8 @@ from types import ModuleType
 import pytest
 
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
-from tax_engine.adapters.parameter_parser import ParameterParserRegistry, parameter_parser
-from tax_engine.adapters.yaml_support import YamlNode
+from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry, parameter_parser
+from tax_engine.adapters.outbound.yaml_support import YamlNode
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
@@ -399,7 +399,7 @@ def test_a_failing_import_in_one_package_registers_none_of_the_capabilities(
 PARSER_SOURCE = """
 from decimal import Decimal
 
-from tax_engine.adapters.parameter_parser import parameter_parser
+from tax_engine.adapters.outbound.parameter_parser import parameter_parser
 from tax_engine.domain.parameters.kind import ParameterKind
 
 

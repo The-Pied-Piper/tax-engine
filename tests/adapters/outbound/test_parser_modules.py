@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from tax_engine.adapters.outbound.parameter_parser import is_parser
 from tax_engine.adapters.outbound.parser_modules import parsers_in
-from tax_engine.adapters.parameter_parser import is_parser
 from tests.jurisdictions.registration_fixtures.ex_parse import parameter_parsers
 from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers import InInitParser
 from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers import flat as flat_module

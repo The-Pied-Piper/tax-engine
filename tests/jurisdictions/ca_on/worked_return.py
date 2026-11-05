@@ -36,7 +36,7 @@ from typing import Any
 
 import yaml
 
-from tax_engine.adapters.yaml_support import YamlNode, YamlShapeError
+from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK, Blank
 from tax_engine.domain.errors import (
