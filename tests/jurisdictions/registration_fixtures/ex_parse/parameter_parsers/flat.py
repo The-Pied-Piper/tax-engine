@@ -18,8 +18,13 @@ class FlatParser:
         return document.field("rate").parse_decimal()
 
 
-class NotAParser:
-    """Declares no kind, so the walk leaves it out."""
+class Undecorated:
+    """Declares a kind but is not decorated, so the walk leaves it out."""
+
+    kind = FLAT
+
+
+FlatAlias = FlatParser
 
 
 class UndecoratedSubclass(FlatParser):

@@ -113,6 +113,9 @@ class ParameterParserRegistry(Registry[object]):
         self.register(kind.name, cls())
 
 
+PARSER_MARK = "IS_PARAMETER_PARSER"
+
+
 def parameter_parser[T, P: ParameterParser[Any]](cls: ParserClass[T, P]) -> type[P]:
     """Class decorator marking a parser class, and type-checking it; it registers nothing.
 
@@ -124,9 +127,6 @@ def parameter_parser[T, P: ParameterParser[Any]](cls: ParserClass[T, P]) -> type
     parser_class = type(cls())
     setattr(parser_class, PARSER_MARK, True)  # noqa: B010  (a class's own mark, read by `is_parser`)
     return parser_class
-
-
-PARSER_MARK = "IS_PARAMETER_PARSER"
 
 
 def is_parser(cls: type) -> bool:

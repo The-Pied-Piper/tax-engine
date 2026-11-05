@@ -1,10 +1,9 @@
 """The jurisdiction packages: where each keeps its data, and registering their catalogs.
 
 A package declares only `NAMESPACE = "..."` in its `__init__.py`; its directory is the one holding
-that file, with `catalog.py`, `manifests/` and `parameters/` inside (core has no manifests or
-parameters).
-The YAML sources read under these directories; `register` imports each `catalog` module and
-registers its `CATALOG` into an artifact registry, `register_capabilities` walks each
+that file, with `catalog.py`, `manifests/` and `parameters/` inside (core has no manifests
+or parameters). The YAML sources read under these directories; `register` imports each `catalog`
+module and registers its `CATALOG` into an artifact registry, `register_capabilities` walks each
 `capabilities` package into a capability registry and `register_parameter_parsers` walks each
 `parameter_parsers` package into a parser registry, when the composition root asks.
 """
@@ -55,10 +54,10 @@ class JurisdictionPackages:
     def register(self, registry: ArtifactRegistry) -> None:
         """Register every package's catalog, its `catalog` module's `CATALOG`, into `registry`.
 
-        Registering again is idempotent. Every catalog
-        is looked up first, so a package without a catalog in its own namespace registers
-        nothing; an identifier clashing with one already in `registry` is an error, which
-        can leave the catalogs registered before it in place.
+        Registering again is idempotent. Every catalog is looked up first, so a package without
+        a catalog in its own namespace registers nothing; an identifier clashing with one
+        already in `registry` is an error, which can leave the catalogs registered before it in
+        place.
         """
         catalogs = [self._catalog(name, namespace) for name, namespace in self._namespaces.items()]
         for catalog in catalogs:
