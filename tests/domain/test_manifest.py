@@ -24,7 +24,6 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
-    Default,
     Form,
     InputDeclaration,
     Manifest,
@@ -506,16 +505,16 @@ def test_a_form_named_return_is_refused_only_as_a_second_of_that_name() -> None:
 #
 # Every input, every field of a form's instances and every form says whether it is required. A
 # required one takes no default; an optional input or field declares its default, written as the
-# value (`Default(None)` is blank), and the printed sentence that justifies it as its `basis`. An
+# value (`None` is blank), and the printed sentence that justifies it as its `basis`. An
 # optional form names a yes/no in `required_when`, with its own basis; a required form has neither.
 
 
-def zero(kind: ArtifactKind[Any]) -> Default:
+def zero(kind: ArtifactKind[Any]) -> Artifact[Any]:
     """The default `0` of an amount or a count kind."""
-    return Default(Artifact(kind, Decimal(0) if kind.value_type is Decimal else 0))
+    return Artifact(kind, Decimal(0) if kind.value_type is Decimal else 0)
 
 
-def optional(name: str = "ex/credit", default: Default | None = None) -> InputDeclaration:
+def optional(name: str = "ex/credit", default: Artifact[Any] | None = None) -> InputDeclaration:
     return InputDeclaration(
         name=name,
         required=False,
@@ -544,11 +543,12 @@ def test_an_optional_input_needs_a_default_and_a_basis() -> None:
         InputDeclaration(name="ex/credit", required=False, default=zero(AMOUNT), basis="")
 
 
-def test_a_default_holds_the_finished_artifact_a_declared_blank_included() -> None:
-    blank = Default(Artifact(AMOUNT, BLANK))
+def test_a_declared_blank_is_a_blank_artifact_not_no_default() -> None:
+    blank = Artifact(AMOUNT, BLANK)
 
     assert optional(default=blank).default == blank
-    assert blank.artifact.is_blank
+    assert blank.is_blank
+    assert InputDeclaration("ex/income", True).default is None
 
 
 def test_an_input_is_named_by_an_identifier() -> None:
@@ -570,16 +570,14 @@ KINDS_BY_NAME: dict[str, ArtifactKind[Any]] = {
 
 
 def test_the_default_artifact_is_the_declared_one_when_it_is_of_the_kind() -> None:
-    declared = Default(Artifact(LEVY, Decimal("375.03")))
+    declared = Artifact(LEVY, Decimal("375.03"))
 
     assert optional(default=declared).default_artifact(LEVY) == Artifact(LEVY, Decimal("375.03"))
-    assert optional(default=Default(Artifact(ROWS, BLANK))).default_artifact(ROWS) == Artifact(
-        ROWS, BLANK
-    )
+    assert optional(default=Artifact(ROWS, BLANK)).default_artifact(ROWS) == Artifact(ROWS, BLANK)
 
 
 def test_a_default_of_another_kind_is_refused_naming_the_input() -> None:
-    wrong = Default(Artifact(COUNT, 1))
+    wrong = Artifact(COUNT, 1)
 
     with pytest.raises(
         InvalidManifestError,
@@ -732,8 +730,8 @@ def test_the_manifest_is_checked_and_its_defaults_collected_when_it_is_built() -
     gated = optional_form(
         instances="ex/rows",
         fields=(
-            optional("ex/amount", Default(Artifact(AMOUNT, Decimal("2.50")))),
-            optional("ex/count", Default(Artifact(COUNT, BLANK))),
+            optional("ex/amount", Artifact(AMOUNT, Decimal("2.50"))),
+            optional("ex/count", Artifact(COUNT, BLANK)),
         ),
     )
     inputs = required_inputs(["ex/relief_applies"]) | {"ex/amount": optional("ex/amount")}
@@ -788,7 +786,7 @@ def test_a_declared_field_the_instances_kind_does_not_have_is_refused() -> None:
 
 
 def test_a_field_default_must_suit_the_field_kind() -> None:
-    bad = optional("ex/count", Default(Artifact(AMOUNT, Decimal("1.5"))))
+    bad = optional("ex/count", Artifact(AMOUNT, Decimal("1.5")))
     gated = optional_form(instances="ex/rows", fields=(optional("ex/amount"), bad))
 
     with pytest.raises(
@@ -803,7 +801,7 @@ def test_a_field_default_must_suit_the_field_kind() -> None:
 
 def test_an_input_default_must_suit_its_kind() -> None:
     inputs = required_inputs(["ex/relief_applies"]) | {
-        "ex/amount": optional("ex/amount", Default(Artifact(COUNT, 1)))
+        "ex/amount": optional("ex/amount", Artifact(COUNT, 1))
     }
 
     with pytest.raises(

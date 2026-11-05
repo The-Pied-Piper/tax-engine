@@ -69,31 +69,19 @@ class CapabilitySelection:
 
 
 @dataclass(frozen=True, slots=True)
-class Default:
-    """The artifact an optional input or field takes when the request leaves it out.
-
-    The manifest writes it as the actual value (`null` for blank, carried downstream as a line
-    left out, a quoted decimal such as `"0"` or a printed figure, `[]` for an empty list, or text
-    such as `""`); the adapter that reads the manifest turns that into this finished artifact. It
-    is the wrapper that tells a declared blank from no default at all.
-    """
-
-    artifact: Artifact[Any]
-
-
-@dataclass(frozen=True, slots=True)
 class InputDeclaration:
     """How a manifest declares one input, or one field of a form's instances list.
 
     `required` says whether every request must give it. A required one takes no `default` and no
-    `basis`; an optional one declares both: `default` is what the request is read as when it
-    leaves the line out (`Default(None)` is blank, not "no default"), and `basis` is the printed
-    sentence of the form that justifies the default, which nothing checks against the form text.
+    `basis`; an optional one declares both: `default` is the finished artifact the request is read
+    as when it leaves the line out (a blank artifact is a declared blank, `None` is no default),
+    and `basis` is the printed sentence of the form that justifies the default, which nothing
+    checks against the form text.
     """
 
     name: str
     required: bool
-    default: Default | None = None
+    default: Artifact[Any] | None = None
     basis: str | None = None
 
     def __post_init__(self) -> None:
@@ -118,13 +106,13 @@ class InputDeclaration:
         """
         if self.default is None:
             return None
-        found = self.default.artifact.kind
+        found = self.default.kind
         if found != kind:
             raise InvalidManifestError(
                 f"input {self.name!r}: default is an artifact of {found.identifier!r}, "
                 f"not of the kind {kind.identifier!r}"
             )
-        return self.default.artifact
+        return self.default
 
 
 @dataclass(frozen=True, slots=True)

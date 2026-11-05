@@ -20,6 +20,7 @@ from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
 from types import MappingProxyType
+from typing import Any
 
 import pytest
 
@@ -33,7 +34,6 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
-    Default,
     Form,
     InputDeclaration,
     Manifest,
@@ -105,9 +105,9 @@ def roots(directory: Path) -> Mapping[Namespace, Path]:
     return {Namespace("ex-on"): directory / "ex-on"}
 
 
-def finished(identifier: str, declared: str | tuple[()] | None) -> Default:
+def finished(identifier: str, declared: str | tuple[()] | None) -> Artifact[Any]:
     """The default the loader makes of `declared` for the kind `identifier`."""
-    return Default(read_default(manifest_kinds().kind(identifier), declared))
+    return read_default(manifest_kinds().kind(identifier), declared)
 
 
 def source(directory: Path) -> YamlJurisdictionSource:
@@ -2216,7 +2216,7 @@ capabilities:
 
     assert found.fields == (
         InputDeclaration(name="ex/gross_rent", required=True),
-        InputDeclaration("ex/expenses", False, Default(Artifact(EXPENSES, Decimal(0))), "Line 2"),
+        InputDeclaration("ex/expenses", False, Artifact(EXPENSES, Decimal(0)), "Line 2"),
     )
 
 

@@ -69,7 +69,7 @@ import yaml
 
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.adapters.text import read_default, read_number
-from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
+from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import COMPUTE, PASS_ON, BlankRule
 from tax_engine.domain.errors import (
     DomainError,
@@ -85,7 +85,6 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import (
     CapabilitySelection,
-    Default,
     Form,
     InputDeclaration,
     Manifest,
@@ -495,7 +494,7 @@ class YamlJurisdictionSource:
         )
 
     @staticmethod
-    def _default(name: str, node: YamlNode, kind: ArtifactKind[Any]) -> Default:
+    def _default(name: str, node: YamlNode, kind: ArtifactKind[Any]) -> Artifact[Any]:
         """`null`, a quoted string or an empty list, read as an artifact of `kind`."""
         value = node.value
         declared: str | tuple[()] | None
@@ -508,7 +507,7 @@ class YamlJurisdictionSource:
                 f"{node.where} must be null, a quoted string or [], got {type(value).__name__}"
             )
         try:
-            return Default(read_default(kind, declared))
+            return read_default(kind, declared)
         except DomainError as exc:
             raise InvalidManifestError(
                 f"input {name!r}: default {declared!r} {exc} for the kind {kind.identifier!r}"
