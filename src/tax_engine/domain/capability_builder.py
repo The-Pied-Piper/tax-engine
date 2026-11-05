@@ -153,35 +153,38 @@ class CapabilityBuilder:
         return per_field
 
     @staticmethod
-    def _field_rule(text: str, kind: ArtifactKind[Any], who: str) -> BlankRule:
-        """The rule `text` gives for the record field `kind`: `pass_on`, `compute`, else the value
-        the field's own kind reads `text` as, which only an amount or a count can be.
-        """
+    def _keyword_rule(text: str) -> BlankRule | None:
+        """`PASS_ON` or `COMPUTE` if `text` is that keyword, else None: it is a fallback."""
         if text == "pass_on":
             return PASS_ON
         if text == "compute":
             return COMPUTE
+        return None
+
+    @classmethod
+    def _field_rule(cls, text: str, kind: ArtifactKind[Any], who: str) -> BlankRule:
+        """The rule `text` gives for the record field `kind`: `pass_on`, `compute`, else the value
+        the field's own kind reads `text` as. `Capability.with_blank_rules` refuses a value no
+        fallback can be, such as a text.
+        """
+        keyword = cls._keyword_rule(text)
+        if keyword is not None:
+            return keyword
         try:
-            read = kind.read(text).value
+            rule: BlankRule = kind.read(text).value
         except InvalidTextError as error:
             raise InvalidSelectionError(
                 f"{who}: blank rule for field {kind.identifier!r} must be pass_on, compute or a "
                 f"value the field can hold: {error}"
             ) from error
-        if not isinstance(read, Decimal | int):
-            raise InvalidSelectionError(
-                f"{who}: field {kind.identifier!r} takes {kind.value_type.__name__} kinds, so a "
-                "blank there can only be passed on or computed, not replaced by a fallback"
-            )
-        return read
+        return rule
 
     @classmethod
     def _rule(cls, text: str, value_type: type, label: str, who: str) -> BlankRule:
         """The rule `text` gives: `pass_on`, `compute`, else a fallback of `value_type`."""
-        if text == "pass_on":
-            return PASS_ON
-        if text == "compute":
-            return COMPUTE
+        keyword = cls._keyword_rule(text)
+        if keyword is not None:
+            return keyword
         return cls._fallback(value_type, label, text, who)
 
     @staticmethod
