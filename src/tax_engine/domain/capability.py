@@ -516,8 +516,8 @@ class Capability(ABC):
         BlankMixedError naming both; that refusal comes first, before any rule is looked at. Then
         a blank in a slot with no rule is a BlankNotAllowedError naming the line and the slot.
         Otherwise a blank in a `PASS_ON` slot gives a blank artifact for every produced kind,
-        with a trace line each and `compute` not called. A blank field of a record in a `BLANK_RECORD_FIELDS` slot is treated the same way
-        with the rule given for that field, each blank naming its record by position: a fallback
+        with a trace line each and `compute` not called. A blank field of a record in a `BLANK_RECORD_FIELDS` slot is treated
+        the same way with the rule given for that field, each blank naming its record by position: a fallback
         replaces it in a new list, `PASS_ON` blanks the outputs, `COMPUTE` leaves it, and a field
         with no rule is a BlankNotAllowedError naming the field, the record and the list.
         Otherwise `compute` runs, and a blank in a `COMPUTE` slot reaches it as the blank
