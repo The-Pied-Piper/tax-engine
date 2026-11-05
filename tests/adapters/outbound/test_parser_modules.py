@@ -2,18 +2,14 @@
 
 from __future__ import annotations
 
-from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.adapters.outbound.parser_modules import parsers_in
-from tax_engine.adapters.parameter_parser import ParameterParserRegistry
-from tests.jurisdictions.registration_fixtures import ex_on, ex_parse
 from tests.jurisdictions.registration_fixtures.ex_parse import parameter_parsers
 from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers.flat import (
-    FLAT,
     FlatParser,
     NotAParser,
+    UndecoratedSubclass,
 )
 from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers.more.double import (
-    DOUBLE,
     DoubleParser,
 )
 
@@ -30,19 +26,5 @@ def test_a_class_declaring_no_kind_is_left_out() -> None:
     assert NotAParser not in parsers_in(parameter_parsers)
 
 
-def test_a_package_registers_the_parsers_it_walks() -> None:
-    registry = ParameterParserRegistry()
-
-    JurisdictionPackages((ex_parse,)).register_parameter_parsers(registry)
-
-    assert registry.identifiers() == {"flat", "double"}
-    assert isinstance(registry.for_kind(FLAT), FlatParser)
-    assert isinstance(registry.for_kind(DOUBLE), DoubleParser)
-
-
-def test_a_package_without_a_parameter_parsers_package_contributes_none() -> None:
-    registry = ParameterParserRegistry()
-
-    JurisdictionPackages((ex_on,)).register_parameter_parsers(registry)
-
-    assert registry.identifiers() == frozenset()
+def test_an_undecorated_subclass_of_a_decorated_class_is_left_out() -> None:
+    assert UndecoratedSubclass not in parsers_in(parameter_parsers)

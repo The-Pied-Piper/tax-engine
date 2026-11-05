@@ -11,20 +11,31 @@ from __future__ import annotations
 import importlib
 import sys
 from collections.abc import Callable, Iterator
+from decimal import Decimal
 from pathlib import Path
 from types import ModuleType
 
 import pytest
 
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
+from tax_engine.adapters.parameter_parser import ParameterParserRegistry, parameter_parser
+from tax_engine.adapters.yaml_support import YamlNode
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
-from tests.jurisdictions.registration_fixtures import ex_cap, ex_on
+from tests.jurisdictions.registration_fixtures import ex_cap, ex_on, ex_parse
 from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.levy import Levy
 from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.more.extra import Extra
+from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers.flat import (
+    FLAT,
+    FlatParser,
+)
+from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers.more.double import (
+    DOUBLE,
+    DoubleParser,
+)
 
 _MISSING = object()
 """No `catalog` module at all."""
@@ -153,20 +164,21 @@ def test_an_empty_catalog_registers_nothing(tmp_path: Path, package: MakePackage
     assert registry.identifiers() == frozenset()
 
 
-def test_a_package_without_a_catalog_registers_nothing_and_the_others_still_register(
+def test_a_package_without_a_catalog_is_rejected_by_name_and_nothing_is_registered(
     tmp_path: Path, package: MakePackage
 ) -> None:
     packages = JurisdictionPackages(
         (
             package(tmp_path, "ex", "ex", catalog_of("ex", "levy")),
-            package(tmp_path, "ex_core", "ex-core"),
+            package(tmp_path, "ex_on", "ex-on"),
         )
     )
     registry = ArtifactRegistry()
 
-    packages.register(registry)
+    with pytest.raises(InvalidRegistrationError, match="ex_on"):
+        packages.register(registry)
 
-    assert registry.identifiers() == frozenset({"ex/levy"})
+    assert registry.identifiers() == frozenset()
 
 
 @pytest.mark.parametrize(
@@ -372,3 +384,50 @@ def test_a_failing_import_in_one_package_registers_none_of_the_capabilities(
         packages.register_capabilities(registry)
 
     assert registry.identifiers() == frozenset()
+
+
+@parameter_parser
+class OtherFlat:
+    """Another class's parser for the kind `FlatParser` reads."""
+
+    kind = FLAT
+    body_keys = frozenset({"rate"})
+
+    def parse(self, document: YamlNode) -> Decimal:
+        return document.field("rate").parse_decimal()
+
+
+def test_a_jurisdiction_package_registers_the_parsers_it_walks() -> None:
+    registry = ParameterParserRegistry()
+
+    JurisdictionPackages((ex_parse,)).register_parameter_parsers(registry)
+
+    assert registry.identifiers() == {"flat", "double"}
+    assert isinstance(registry.for_kind(FLAT), FlatParser)
+    assert isinstance(registry.for_kind(DOUBLE), DoubleParser)
+
+
+def test_a_package_without_a_parameter_parsers_package_contributes_none() -> None:
+    registry = ParameterParserRegistry()
+
+    JurisdictionPackages((ex_on,)).register_parameter_parsers(registry)
+
+    assert registry.identifiers() == frozenset()
+
+
+def test_registering_a_packages_parsers_again_changes_nothing() -> None:
+    registry = ParameterParserRegistry()
+    packages = JurisdictionPackages((ex_parse,))
+    packages.register_parameter_parsers(registry)
+
+    packages.register_parameter_parsers(registry)
+
+    assert registry.identifiers() == {"flat", "double"}
+
+
+def test_a_parser_clashing_with_another_class_for_its_kind_is_rejected() -> None:
+    registry = ParameterParserRegistry()
+    registry.register_class(OtherFlat)
+
+    with pytest.raises(DuplicateRegistrationError, match="'flat'"):
+        JurisdictionPackages((ex_parse,)).register_parameter_parsers(registry)

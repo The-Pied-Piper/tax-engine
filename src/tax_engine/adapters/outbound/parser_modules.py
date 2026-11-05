@@ -12,13 +12,13 @@ import inspect
 import pkgutil
 from types import ModuleType
 
-from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.adapters.parameter_parser import is_parser
 
 
 def parsers_in(package: ModuleType) -> list[type]:
     """The parser classes defined in `package` and its submodules, sorted by class name.
 
-    A parser class is a class that declares a `ParameterKind` as its own `kind` attribute. Only a
+    A parser class is one decorated with `@parameter_parser` itself, not a subclass of one. Only a
     class defined in a module is taken from it, so one imported from elsewhere is not found twice.
     """
     modules = [package]
@@ -29,10 +29,6 @@ def parsers_in(package: ModuleType) -> list[type]:
     found: list[type] = []
     for module in modules:
         for _, member in inspect.getmembers(module, inspect.isclass):
-            if (
-                isinstance(inspect.getattr_static(member, "kind", None), ParameterKind)
-                and member.__module__ == module.__name__
-                and member not in found
-            ):
+            if is_parser(member) and member.__module__ == module.__name__ and member not in found:
                 found.append(member)
     return sorted(found, key=lambda cls: cls.__name__)

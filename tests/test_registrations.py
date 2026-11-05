@@ -706,8 +706,6 @@ def test_has_no_side_effect_only_imports() -> None:
 
 def test_every_listed_package_exposes_its_catalog() -> None:
     for directory in tax_engine.registrations.JURISDICTIONS.roots().values():
-        if directory.name == "core":  # core has no artifact catalog
-            continue
         catalog = importlib.import_module(f"tax_engine.jurisdictions.{directory.name}.catalog")
 
         assert isinstance(getattr(catalog, "CATALOG", None), ArtifactCatalog), catalog.__name__
@@ -720,8 +718,6 @@ def test_register_fills_a_fresh_registry_with_every_listed_catalog() -> None:
 
     expected = set()
     for directory in tax_engine.registrations.JURISDICTIONS.roots().values():
-        if directory.name == "core":  # core has no artifact catalog
-            continue
         catalog = importlib.import_module(
             f"tax_engine.jurisdictions.{directory.name}.catalog"
         ).CATALOG

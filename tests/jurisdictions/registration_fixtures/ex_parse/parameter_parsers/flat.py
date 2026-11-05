@@ -20,3 +20,7 @@ class FlatParser:
 
 class NotAParser:
     """Declares no kind, so the walk leaves it out."""
+
+
+class UndecoratedSubclass(FlatParser):
+    """Inherits a decorated parser's kind but is not decorated itself, so the walk leaves it out."""

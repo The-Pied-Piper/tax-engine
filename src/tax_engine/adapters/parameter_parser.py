@@ -92,6 +92,15 @@ class ParameterParserRegistry(Registry[object]):
         # Safe: the found object's kind equals `kind`, value type included.
         return cast(ParameterParser[T], found)
 
+    def holds(self, cls: type) -> bool:
+        """Whether a parser of exactly the class `cls` is already registered."""
+        kind = inspect.getattr_static(cls, "kind", None)
+        return (
+            isinstance(kind, ParameterKind)
+            and kind.name in self.identifiers()
+            and type(self.get(kind.name)) is cls
+        )
+
     def register_class(self, cls: type) -> None:
         """Register an instance of the parser class `cls` under its kind's name.
 
@@ -105,10 +114,21 @@ class ParameterParserRegistry(Registry[object]):
 
 
 def parameter_parser[T, P: ParameterParser[Any]](cls: ParserClass[T, P]) -> type[P]:
-    """Class decorator that type-checks a parser class and registers nothing.
+    """Class decorator marking a parser class, and type-checking it; it registers nothing.
 
     A parser whose `parse` returns another type than its kind's values fails `mypy .` here
-    with "Cannot infer value of type parameter". The composition root finds the decorated
-    classes by walking each package's `parameter_parsers` (`parsers_in`).
+    with "Cannot infer value of type parameter". The composition root finds the marked classes
+    by walking each package's `parameter_parsers` (`parsers_in`); a subclass is not marked until
+    it is decorated itself.
     """
-    return type(cls())
+    parser_class = type(cls())
+    setattr(parser_class, PARSER_MARK, True)  # noqa: B010  (a class's own mark, read by `is_parser`)
+    return parser_class
+
+
+PARSER_MARK = "IS_PARAMETER_PARSER"
+
+
+def is_parser(cls: type) -> bool:
+    """Whether `cls` itself, not a base class, was decorated with `@parameter_parser`."""
+    return vars(cls).get(PARSER_MARK) is True
