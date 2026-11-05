@@ -51,7 +51,6 @@ from decimal import Decimal
 from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -75,6 +74,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     NET_FOREIGN_NON_BUSINESS_INCOME,
 )
 from tax_engine.jurisdictions.ca.trace import ForeignTaxCreditLine, PooledForeignTaxCreditLine
+from tax_engine.jurisdictions.core.capabilities.apply_ratio import ApplyRatio
 
 
 @dataclass(frozen=True)

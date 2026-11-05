@@ -40,7 +40,9 @@ from tests.jurisdictions.ca_on.capabilities.on479a_table import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 TABLE_FAMILY = "ca-on/care_credit_rate"
 ROUNDING_FAMILY = "ca-on/care_credit_rounding"

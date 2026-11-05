@@ -18,9 +18,8 @@ import pytest
 
 import tax_engine
 import tax_engine.adapters.inbound.trace_english
-import tax_engine.adapters.outbound.parameter_parsers
-import tax_engine.domain.capabilities
 import tax_engine.jurisdictions
+import tax_engine.jurisdictions.core.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
@@ -50,10 +49,7 @@ def test_each_root_is_the_directory_of_the_package_declaring_its_namespace() -> 
 
 
 def test_lists_the_core_packages() -> None:
-    assert tax_engine.registrations.CORE_PACKAGES == (
-        tax_engine.adapters.outbound.parameter_parsers,
-        tax_engine.adapters.inbound.trace_english,
-    )
+    assert tax_engine.registrations.CORE_PACKAGES == (tax_engine.adapters.inbound.trace_english,)
 
 
 def test_a_jurisdiction_package_provides_its_capabilities() -> None:
@@ -710,6 +706,8 @@ def test_has_no_side_effect_only_imports() -> None:
 
 def test_every_listed_package_exposes_its_catalog() -> None:
     for directory in tax_engine.registrations.JURISDICTIONS.roots().values():
+        if directory.name == "core":  # core has no artifact catalog
+            continue
         catalog = importlib.import_module(f"tax_engine.jurisdictions.{directory.name}.catalog")
 
         assert isinstance(getattr(catalog, "CATALOG", None), ArtifactCatalog), catalog.__name__
@@ -722,6 +720,8 @@ def test_register_fills_a_fresh_registry_with_every_listed_catalog() -> None:
 
     expected = set()
     for directory in tax_engine.registrations.JURISDICTIONS.roots().values():
+        if directory.name == "core":  # core has no artifact catalog
+            continue
         catalog = importlib.import_module(
             f"tax_engine.jurisdictions.{directory.name}.catalog"
         ).CATALOG

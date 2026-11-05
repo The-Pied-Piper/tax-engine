@@ -30,7 +30,9 @@ from tax_engine.domain.parameters.conditions import (
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 BOX_CONDITIONS = "ca/fuel_charge_multiple_provinces_box_conditions"
 PLACES = ("on", "mb", "sk", "ab", "ns", "pe", "nl", "nb", "outside_eight")
 

@@ -31,7 +31,9 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 FAMILY = "ca-on/flow_through_share_conditions"
 T1221_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1221/t1221-25e.pdf"
 

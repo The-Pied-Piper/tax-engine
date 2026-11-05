@@ -18,9 +18,6 @@ statement, 0 for a partner statement) when above that limit.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
     RENTAL_CCA_CLAIMS_TOTAL,
@@ -28,6 +25,9 @@ from tax_engine.jurisdictions.ca.catalog import (
     RENTAL_CCA_TOTAL_CLAIM,
     RENTAL_INCOME_BEFORE_CCA_TOTAL,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 from tests.jurisdictions.ca_on.manifest_families import t776
 
 INPUTS: frozenset[str] = frozenset()

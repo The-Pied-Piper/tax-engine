@@ -11,11 +11,6 @@ nothing on this return (line 22900 is wired separately), so the return declares 
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.amount_by_count import AmountForCount
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
@@ -31,6 +26,11 @@ from tax_engine.jurisdictions.ca.catalog import (
     RC359_TAX_ON_EXCESS_EPSP,
     RC359_TAX_TOTAL,
 )
+from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 
 # The form's export line 9, read by the return as `ca/rc359.<export label>`: a record list of the
 # export's one field, one record for each copy of the form.

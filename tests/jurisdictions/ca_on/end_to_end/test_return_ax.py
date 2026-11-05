@@ -5,8 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
     EiExcludedSlipsNetIncome,
@@ -26,6 +24,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     SELF_EMPLOYED_EI_PREMIUMS,
     TOTAL_PAYABLE,
 )
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 # Return AX's inputs beyond the all-zero ones `compute` defaults: Return U's net business income

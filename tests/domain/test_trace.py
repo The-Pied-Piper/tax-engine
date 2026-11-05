@@ -18,7 +18,6 @@ import pytest
 
 from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, RecordListKind
 from tax_engine.domain.parameters.amount import Amount
-from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.class_rates import (
     ClassRate,
     HalfYearRule,
@@ -90,6 +89,7 @@ from tax_engine.domain.trace import (
     TraceLine,
     YesOrNoCountLine,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import ClaimReduction
 from tax_engine.jurisdictions.ca.trace import (
     ApprenticeWagesLine,
     BusinessVehicleLine,

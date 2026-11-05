@@ -43,7 +43,9 @@ from tax_engine.jurisdictions.ca.catalog import (
 from tests.jurisdictions.ca.capabilities.short_term_rental_cca import Row, units
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/short_term_rental_non_compliant_cca_rounding"
 T776_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt"

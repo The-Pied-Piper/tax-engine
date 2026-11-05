@@ -29,7 +29,9 @@ from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T1206_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf"
 TOSI_TAXABLE_INCOME_RATE = "ca-on/tosi_taxable_income_rate"

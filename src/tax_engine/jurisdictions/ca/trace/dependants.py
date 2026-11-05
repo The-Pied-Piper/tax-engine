@@ -9,9 +9,9 @@ from decimal import Decimal
 
 from tax_engine.domain.artifact import Money
 from tax_engine.domain.parameters.amount import Amount
-from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.rounding import RoundingRule
 from tax_engine.domain.trace.base import TraceLine
+from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import ClaimReduction
 
 __all__ = ["CaregiverClaimLine", "OtherDependantMedicalLine", "DisabilityTransferLine"]
 

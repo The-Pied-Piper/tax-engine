@@ -22,11 +22,6 @@ The entries of the return are listed in `manifest_families/other_employment_expe
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
@@ -53,6 +48,11 @@ from tax_engine.jurisdictions.ca.catalog import (
     T777_VEHICLE_CHECKED_ROWS,
     T777_VEHICLE_CLOSING_UCC,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 
 # The inputs of the form, in `01c_t777_inputs.yaml`. The page 1 expenses, the line 3 chart and the
 # line 16 chart are scalar inputs; the labour mobility relocations are a record list (one record for

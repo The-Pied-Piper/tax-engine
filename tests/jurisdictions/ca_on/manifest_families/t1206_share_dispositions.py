@@ -15,12 +15,6 @@ The return selects no step of the forms; it totals two of the dispositions form'
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.amount_by_count import AmountForCount
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
@@ -54,6 +48,12 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1206_UNDER_18_DIVIDEND_AMOUNT,
     T1206_UNDER_18_PERCENT,
 )
+from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 DISPOSITIONS_FORM = "ca/t1206_share_dispositions"
 RESERVE_FORM = "ca/t1206_share_reserve"

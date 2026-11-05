@@ -13,11 +13,6 @@ The return selects none of the steps of the forms and declares no output for the
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
@@ -41,6 +36,11 @@ from tax_engine.jurisdictions.ca.catalog import (
     T746_UNUSED_CONTRIBUTIONS_OF_YEAR,
     T746_WITHDRAWALS,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 YEAR_FORM = "ca/t746_year"
 SUMMARY_FORM = "ca/t746"

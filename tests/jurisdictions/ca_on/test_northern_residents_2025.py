@@ -27,8 +27,6 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -42,9 +40,13 @@ from tax_engine.jurisdictions.ca.catalog import (
     TRAVEL_INDIVIDUAL,
     TRAVEL_INDIVIDUALS,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 ZONE_A_DAILY = "ca/northern_zone_a_daily_amount"
 ZONE_B_DAILY = "ca/northern_zone_b_daily_amount"
 RESIDENCY_RATE = "ca/northern_residency_rate"

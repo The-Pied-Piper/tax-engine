@@ -27,7 +27,6 @@ from decimal import Decimal
 from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -43,6 +42,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     FOREIGN_TAX_CREDIT_SHEET_LINE_3,
     NET_FOREIGN_BUSINESS_INCOME,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_ratio import ApplyRatio
 
 
 @dataclass(frozen=True)

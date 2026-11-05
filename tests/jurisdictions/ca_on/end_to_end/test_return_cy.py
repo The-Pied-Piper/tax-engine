@@ -8,7 +8,6 @@ from typing import Any
 import pytest
 
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.lesser_of import LesserOf
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
@@ -31,6 +30,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     MEDICAL_SUPPLEMENT_EMPLOYMENT_DEDUCTIONS,
     NET_INCOME,
 )
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 

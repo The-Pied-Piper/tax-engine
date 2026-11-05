@@ -20,14 +20,6 @@ The starting inputs (the 2024 figures, and line 14, which no step reads) and the
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.amount_by_count import AmountForCount
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
@@ -103,6 +95,14 @@ from tax_engine.jurisdictions.ca.catalog import (
     T2017_ROW_PREVIOUS_RESERVE,
     T2017_ROW_RESERVE,
 )
+from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 SUMMARY_FORM = "ca/t2017"
 

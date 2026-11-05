@@ -22,7 +22,9 @@ from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 BASE = "ca/disability_self_base_amount"
 SUPPLEMENT_MAXIMUM = "ca/disability_self_supplement_maximum"
 CARE_THRESHOLD = "ca/disability_self_care_threshold"

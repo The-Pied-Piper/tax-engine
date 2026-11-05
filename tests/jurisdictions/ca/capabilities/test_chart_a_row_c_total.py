@@ -210,9 +210,9 @@ def test_refuses_a_row_c_one_cent_above_1200() -> None:
 
 
 def test_the_form_text_is_the_real_datasets_message() -> None:
-    from tax_engine.registrations import JURISDICTIONS
+    from tax_engine.registrations import JURISDICTIONS, parameter_parsers
 
-    dataset = YamlParameterSource(JURISDICTIONS.roots()).get(
+    dataset = YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers()).get(
         "ca/northern_travel_standard_amount", 2025, AMOUNT
     )
 

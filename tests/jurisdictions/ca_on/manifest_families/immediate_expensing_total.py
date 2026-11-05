@@ -20,9 +20,6 @@ input; the check refuses a total above the limit and never picks the claim.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.immediate_expensing_agreed_limit import (
     ImmediateExpensingAgreedLimit,
@@ -36,6 +33,9 @@ from tax_engine.jurisdictions.ca.catalog import (
     IMMEDIATE_EXPENSING_TOTAL_CLAIM,
     RENTAL_IMMEDIATE_EXPENSING_CLAIMS_TOTAL,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.jurisdictions.ca_on.manifest_families import t776, t2042, t2121, t2125
 
 INPUTS: frozenset[str] = frozenset()

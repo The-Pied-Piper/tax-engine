@@ -20,12 +20,12 @@ import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.blank import BLANK, PASS_ON, BlankRule
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.kinds import bundled_kinds
 
 D = Decimal

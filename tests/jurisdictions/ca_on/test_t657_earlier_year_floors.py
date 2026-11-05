@@ -24,10 +24,10 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca import catalog
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 from tests.jurisdictions.ca_on.manifest_families.t657_chart_amounts_from_t2017 import CHARTS
 
 D = Decimal

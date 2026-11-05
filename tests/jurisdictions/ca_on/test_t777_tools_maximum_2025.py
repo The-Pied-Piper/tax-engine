@@ -30,7 +30,9 @@ from tax_engine.jurisdictions.ca.catalog import (
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, service, starting
 from tests.jurisdictions.ca_on.end_to_end.test_return_hi import t777_form
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 THRESHOLD = "ca/t777_tradespersons_tools_threshold"
 T4044_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt"
 TRADESPERSON_CERTIFIED = "tradesperson_tools_certified_on_t2200_question_12"

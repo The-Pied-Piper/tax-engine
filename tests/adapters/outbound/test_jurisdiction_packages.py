@@ -153,21 +153,20 @@ def test_an_empty_catalog_registers_nothing(tmp_path: Path, package: MakePackage
     assert registry.identifiers() == frozenset()
 
 
-def test_a_package_without_a_catalog_is_rejected_by_name_and_nothing_is_registered(
+def test_a_package_without_a_catalog_registers_nothing_and_the_others_still_register(
     tmp_path: Path, package: MakePackage
 ) -> None:
     packages = JurisdictionPackages(
         (
             package(tmp_path, "ex", "ex", catalog_of("ex", "levy")),
-            package(tmp_path, "ex_on", "ex-on"),
+            package(tmp_path, "ex_core", "ex-core"),
         )
     )
     registry = ArtifactRegistry()
 
-    with pytest.raises(InvalidRegistrationError, match="ex_on"):
-        packages.register(registry)
+    packages.register(registry)
 
-    assert registry.identifiers() == frozenset()
+    assert registry.identifiers() == frozenset({"ex/levy"})
 
 
 @pytest.mark.parametrize(

@@ -22,10 +22,16 @@ import tax_engine.jurisdictions.ca
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import (
+    YEAR_AMOUNTS,
+    YearAmounts,
+    YearAmountsRow,
+)
 from tests.jurisdictions.ca_on.end_to_end.support import D
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/cca_class_10_1_conditions"
 

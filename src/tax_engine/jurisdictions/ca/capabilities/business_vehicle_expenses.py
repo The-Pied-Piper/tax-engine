@@ -118,7 +118,6 @@ from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingRule
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.catalog import (
@@ -147,6 +146,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_VEHICLE_SUPPLEMENTARY_INSURANCE,
     BUSINESS_VEHICLE_TOTAL_KILOMETRES,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_engine.jurisdictions.ca.trace import BusinessVehicleLine
 
 

@@ -5,12 +5,11 @@ add typed entry points under their own names. `Namespace` builds namespaced iden
 package declares its namespace once, as `NAMESPACE = "..."` in its `__init__.py`, and each piece
 is identified as `<namespace>/<local id>`. Nothing here discovers or imports anything.
 
-Decorator registries (capabilities, parameter parsers) register when the decorated module is
-imported, so the namespace is resolved then: resolving it while a package without `NAMESPACE`
-is still being imported fails, so declare `NAMESPACE` at the top of its `__init__.py` (repeat the
-parent's to inherit it), before importing any registering module. Artifact catalogs register
-nothing on import: only `ArtifactRegistry.register_catalog`, called through
-`JurisdictionPackages.register`, puts their kinds in a registry.
+`@capability` stamps a class with its identifier when its module is imported, so the namespace is
+resolved then: resolving it while a package without `NAMESPACE` is still being imported fails, so
+declare `NAMESPACE` at the top of its `__init__.py` (repeat the parent's to inherit it), before
+importing any module that stamps. Nothing registers on import: the composition root builds each
+registry from what the packages contribute (`tax_engine.registrations`).
 """
 
 from __future__ import annotations

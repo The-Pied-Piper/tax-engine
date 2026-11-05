@@ -40,7 +40,9 @@ from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, service, star
 from tests.jurisdictions.ca_on.end_to_end.test_return_ee import rows
 from tests.jurisdictions.ca_on.end_to_end.test_return_hi import t777_form
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 MAXIMUM = "ca/t777_artists_employment_expenses_maximum"
 RATE_DATASET = "ca/t777_artists_employment_expenses_rate"
 T4044_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt"

@@ -61,7 +61,9 @@ from tests.jurisdictions.ca.capabilities.cca_table import CLASSES, CLOSING_UCC, 
 from tests.jurisdictions.ca_on.end_to_end.support import run
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 RATES = SOURCE.get("ca/cca_class_rates", 2025, CLASS_RATES)
 
 # Made up for this test and not registered: the days entered, the days of the fiscal period, the

@@ -37,7 +37,9 @@ from tax_engine.jurisdictions.ca.catalog import (
 from tests.jurisdictions.ca_on.end_to_end.support import CA_ON, D, service, starting
 from tests.jurisdictions.ca_on.end_to_end.test_return_hi import run_hi, t777_form
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 BASE = "ca/t777_apprentice_mechanic_tools_base"
 RATE_DATASET = "ca/t777_apprentice_mechanic_tools_rate"
 T4044_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4044/t4044-25e.txt"

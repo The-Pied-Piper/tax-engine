@@ -11,15 +11,6 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.domain.blank import PASS_ON
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 from tax_engine.jurisdictions.ca.capabilities.chart_1_column_g_total import Chart1ColumnGTotal
@@ -133,6 +124,15 @@ from tax_engine.jurisdictions.ca.catalog import (
     T657_T2048_LINE_17217_FOR_2024,
     TOTAL_LOSSES_FOR_ANNUAL_GAINS_LIMIT,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 from tests.jurisdictions.ca_on.manifest_families.t936 import CHART_A_LINE_14_EXPORT, CNIL_EXPORT
 from tests.jurisdictions.ca_on.manifest_families.t2017_reserve import T2017_LINE_13_EXPORT
 

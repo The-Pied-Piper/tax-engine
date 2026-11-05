@@ -22,7 +22,9 @@ from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 LIMIT_RATE = "ca/foreign_property_income_credit_limit_rate"
 T2209_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2209/t2209-25e.pdf"

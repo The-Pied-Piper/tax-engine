@@ -32,7 +32,6 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import Rate
@@ -42,9 +41,12 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
     AmountOrDividedByRate,
 )
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 INCOME_LIMIT = "ca/spouse_transfer_income_limit"
 AGE_MAXIMUM = "ca/spouse_return_age_amount_maximum"
 PENSION_MAXIMUM = "ca/spouse_return_pension_income_amount_maximum"

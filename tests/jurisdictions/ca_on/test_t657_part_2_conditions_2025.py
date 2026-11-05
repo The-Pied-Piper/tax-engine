@@ -32,7 +32,9 @@ from tax_engine.domain.parameters.conditions import (
 )
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 T657_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf"
 YEARS = (2021, 2022, 2023)
 # Charts 2016 to 2020: the amount read as Part 1's amount C (2016) or E (2017 to 2020), and the

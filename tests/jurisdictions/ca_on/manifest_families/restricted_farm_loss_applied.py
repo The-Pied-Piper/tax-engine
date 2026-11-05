@@ -18,8 +18,6 @@ amounts in `02_outputs.yaml` are.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.restricted_farm_loss_applied import (
     RestrictedFarmLossApplied,
@@ -37,6 +35,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     RESTRICTED_FARM_LOSS_APPLIED_TOTAL,
     UNAPPLIED_RESTRICTED_FARM_LOSS_TAXES_AND_INTEREST,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 # The one input of the part: the unapplied balance of the property taxes and interest part, entered
 # once for the return.

@@ -55,7 +55,9 @@ from tax_engine.jurisdictions.ca.catalog import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 THRESHOLD = "ca/foreign_tax_pooling_threshold"
 ROUNDING = "ca/foreign_non_business_tax_credit_rounding"

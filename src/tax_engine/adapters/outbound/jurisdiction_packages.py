@@ -1,10 +1,11 @@
 """The jurisdiction packages: where each keeps its data, and registering their catalogs.
 
-A jurisdiction package declares only `NAMESPACE = "..."` in its `__init__.py`; its directory is
-the one holding that file, with `catalog.py`, `manifests/` and `parameters/` inside. The YAML
-sources read under these directories; `register` imports each `catalog` module and registers its
-`CATALOG` into an artifact registry, and `register_capabilities` walks each `capabilities` package
-into a capability registry, when the composition root asks.
+A package declares only `NAMESPACE = "..."` in its `__init__.py`; its directory is the one holding
+that file, with `catalog.py`, `manifests/` and `parameters/` inside, each optional (core has none).
+The YAML sources read under these directories; `register` imports each `catalog` module and
+registers its `CATALOG` into an artifact registry, `register_capabilities` walks each
+`capabilities` package into a capability registry and `register_parameter_parsers` walks each
+`parameter_parsers` package into a parser registry, when the composition root asks.
 """
 
 from __future__ import annotations
@@ -15,6 +16,8 @@ from pathlib import Path
 from types import MappingProxyType, ModuleType
 
 from tax_engine.adapters.outbound.capability_modules import capabilities_in
+from tax_engine.adapters.outbound.parser_modules import parsers_in
+from tax_engine.adapters.parameter_parser import ParameterParserRegistry
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
@@ -51,14 +54,14 @@ class JurisdictionPackages:
     def register(self, registry: ArtifactRegistry) -> None:
         """Register every package's catalog, its `catalog` module's `CATALOG`, into `registry`.
 
-        Registering again is idempotent. Every catalog
-        is looked up first, so a package without a catalog in its own namespace registers
-        nothing; an identifier clashing with one already in `registry` is an error, which can
-        leave the catalogs registered before it in place.
+        Registering again is idempotent. Every catalog is looked up first, so a package without
+        a `catalog` module registers nothing; an identifier clashing with one already in
+        `registry` is an error, which can leave the catalogs registered before it in place.
         """
         catalogs = [self._catalog(name, namespace) for name, namespace in self._namespaces.items()]
         for catalog in catalogs:
-            registry.register_catalog(catalog)
+            if catalog is not None:
+                registry.register_catalog(catalog)
 
     def register_capabilities(self, registry: CapabilityRegistry) -> None:
         """Register the capabilities of every package, found by walking its `capabilities` package.
@@ -78,9 +81,28 @@ class JurisdictionPackages:
             if registry.identifier_of(cls) != cls.identifier():
                 registry.register_class(cls)
 
+    def register_parameter_parsers(self, registry: ParameterParserRegistry) -> None:
+        """Register the parsers of every package, found by walking its `parameter_parsers` package.
+
+        A package without a `parameter_parsers` package contributes none. Every package is walked
+        first, so an import error registers nothing; a kind two parsers claim is an error.
+        """
+        found = [
+            cls
+            for module in (self._subpackage(name, "parameter_parsers") for name in self._namespaces)
+            if module is not None
+            for cls in parsers_in(module)
+        ]
+        for cls in found:
+            registry.register_class(cls)
+
     @staticmethod
     def _capabilities(package: str) -> ModuleType | None:
-        module_name = f"{package}.capabilities"
+        return JurisdictionPackages._subpackage(package, "capabilities")
+
+    @staticmethod
+    def _subpackage(package: str, name: str) -> ModuleType | None:
+        module_name = f"{package}.{name}"
         try:
             return importlib.import_module(module_name)
         except ModuleNotFoundError as exc:
@@ -89,17 +111,14 @@ class JurisdictionPackages:
             return None
 
     @staticmethod
-    def _catalog(package: str, namespace: Namespace) -> ArtifactCatalog:
+    def _catalog(package: str, namespace: Namespace) -> ArtifactCatalog | None:
         module_name = f"{package}.catalog"
         try:
             module = importlib.import_module(module_name)
         except ModuleNotFoundError as exc:
             if exc.name != module_name:
                 raise
-            raise InvalidRegistrationError(
-                f"jurisdiction package {package} has no catalog module: declare its artifact "
-                "kinds in catalog.py as CATALOG = ArtifactCatalog(...)"
-            ) from None
+            return None
         catalog = getattr(module, "CATALOG", None)
         if not isinstance(catalog, ArtifactCatalog):
             raise InvalidRegistrationError(

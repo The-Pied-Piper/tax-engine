@@ -9,11 +9,6 @@ from typing import Any
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.multiple_over import MultipleOver
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine, SubtractedLine, SumLine
@@ -80,6 +75,11 @@ from tax_engine.jurisdictions.ca_on.trace import (
     PooledProvincialForeignTaxCreditLine,
     ProvincialForeignTaxCreditLine,
 )
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.multiple_over import MultipleOver
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 from tests.jurisdictions.ca_on.end_to_end.support import (
     CENT,
     D,

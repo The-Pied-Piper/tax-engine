@@ -19,12 +19,6 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.domain.blank import PASS_ON
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
@@ -59,6 +53,12 @@ from tax_engine.jurisdictions.ca.catalog import (
     T929_WEEKS_ATTENDED,
     TAXABLE_SCHOLARSHIPS,
 )
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.jurisdictions.ca_on.manifest_families.t1139 import (
     BUSINESS_PROFIT_ON_RETURN_LINES,
     COMMISSION_PROFIT_ON_RETURN_LINES,

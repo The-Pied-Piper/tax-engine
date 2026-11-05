@@ -26,7 +26,9 @@ from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 FAMILY = "ca-on/unused_tuition_limit"
 S11_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s11/5006-s11-25e.txt"
 

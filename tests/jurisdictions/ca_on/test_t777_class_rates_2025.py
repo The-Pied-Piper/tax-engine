@@ -35,7 +35,9 @@ from tax_engine.domain.parameters.class_rates import (
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tests.jurisdictions.ca_on.end_to_end.support import D
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T777_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t777/t777-25e.pdf"
 CLASS_8 = "ca/t777_class_8_rates"

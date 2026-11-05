@@ -770,7 +770,7 @@ def test_a_list_for_a_single_slot_is_an_invalid_selection() -> None:
 
 @cache
 def sum_class() -> Any:
-    from tax_engine.domain.capabilities.sum import Sum
+    from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
     return Sum
 
@@ -849,7 +849,7 @@ def test_core_sum_runs_after_all_its_parts() -> None:
 
 @cache
 def sum_not_below_zero_class() -> Any:
-    from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
+    from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 
     return SumNotBelowZero
 
@@ -944,7 +944,7 @@ def test_core_sum_not_below_zero_refuses_a_single_kind_for_its_parts_at_wiring()
 
 @cache
 def apply_rate_class() -> Any:
-    from tax_engine.domain.capabilities.apply_rate import ApplyRate
+    from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 
     return ApplyRate
 
@@ -1035,7 +1035,7 @@ def test_core_apply_rate_asks_for_its_dataset_as_a_rate() -> None:
 
 @cache
 def subtract_class() -> Any:
-    from tax_engine.domain.capabilities.subtract import Subtract
+    from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 
     return Subtract
 
@@ -1104,7 +1104,9 @@ def test_core_subtract_runs_after_what_it_consumes_is_produced() -> None:
 
 @cache
 def subtract_not_below_zero_class() -> Any:
-    from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+    from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
+        SubtractNotBelowZero,
+    )
 
     return SubtractNotBelowZero
 
@@ -1175,7 +1177,7 @@ def test_core_subtract_not_below_zero_runs_after_what_it_consumes_is_produced() 
 
 @cache
 def credit_amount_class() -> Any:
-    from tax_engine.domain.capabilities.credit_amount import CreditAmount
+    from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 
     return CreditAmount
 
@@ -1285,7 +1287,7 @@ def test_core_credit_amount_asks_for_its_dataset_as_a_credit() -> None:
 
 @cache
 def capped_amount_class() -> Any:
-    from tax_engine.domain.capabilities.capped_amount import CappedAmount
+    from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
 
     return CappedAmount
 
@@ -1398,7 +1400,7 @@ def test_core_capped_amount_asks_for_its_dataset_as_an_amount() -> None:
 
 @cache
 def lesser_of_class() -> Any:
-    from tax_engine.domain.capabilities.lesser_of import LesserOf
+    from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
 
     return LesserOf
 
@@ -1509,7 +1511,7 @@ def test_core_lesser_of_with_no_amounts_is_an_invalid_selection() -> None:
 
 @cache
 def greater_of_class() -> Any:
-    from tax_engine.domain.capabilities.greater_of import GreaterOf
+    from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
 
     return GreaterOf
 
@@ -1622,7 +1624,7 @@ def test_core_greater_of_with_no_amounts_is_an_invalid_selection() -> None:
 
 @cache
 def tiered_contribution_class() -> Any:
-    from tax_engine.domain.capabilities.contribution_tier import TieredContribution
+    from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 
     return TieredContribution
 
@@ -1755,7 +1757,7 @@ def test_core_contribution_tier_asks_for_its_dataset_as_a_contribution_tier() ->
 
 @cache
 def tiered_surcharge_class() -> Any:
-    from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
+    from tax_engine.jurisdictions.core.capabilities.tiered_surcharge import TieredSurcharge
 
     return TieredSurcharge
 
@@ -1962,7 +1964,7 @@ def test_computes_core_tiered_surcharge_under_every_maximum_end_to_end() -> None
 
 @cache
 def tapered_amount_class() -> Any:
-    from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
+    from tax_engine.jurisdictions.core.capabilities.tapered_amount import TaperedAmount
 
     return TaperedAmount
 
@@ -2083,7 +2085,7 @@ COUNT = CountKind("ex/count")
 
 @cache
 def per_unit_amount_class() -> Any:
-    from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
+    from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
 
     return PerUnitAmount
 
@@ -2196,7 +2198,7 @@ def test_core_per_unit_amount_asks_for_its_dataset_as_an_amount() -> None:
 
 @cache
 def amount_by_count_class() -> Any:
-    from tax_engine.domain.capabilities.amount_by_count import AmountForCount
+    from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 
     return AmountForCount
 
@@ -2328,7 +2330,7 @@ def test_core_amount_by_count_asks_for_its_dataset_as_an_amount_by_count() -> No
 
 @cache
 def multiple_over_class() -> Any:
-    from tax_engine.domain.capabilities.multiple_over import MultipleOver
+    from tax_engine.jurisdictions.core.capabilities.multiple_over import MultipleOver
 
     return MultipleOver
 
@@ -2505,7 +2507,7 @@ def test_computes_core_per_unit_amount_into_core_multiple_over_with_no_units() -
 
 @cache
 def at_most_class() -> Any:
-    from tax_engine.domain.capabilities.at_most import AtMost
+    from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 
     return AtMost
 
@@ -2582,7 +2584,7 @@ def test_core_at_most_runs_after_what_it_consumes_is_produced() -> None:
 
 @cache
 def apply_fraction_class() -> Any:
-    from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
+    from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
 
     return ApplyFraction
 
@@ -2714,7 +2716,7 @@ def test_core_apply_fraction_asks_for_its_dataset_as_a_fraction() -> None:
 
 @cache
 def apply_ratio_class() -> Any:
-    from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
+    from tax_engine.jurisdictions.core.capabilities.apply_ratio import ApplyRatio
 
     return ApplyRatio
 
@@ -2870,7 +2872,7 @@ PERSON_COUNT = CountKind("ex/person_count")
 
 @cache
 def times_count_class() -> Any:
-    from tax_engine.domain.capabilities.times_count import TimesCount
+    from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
     return TimesCount
 
@@ -2980,7 +2982,7 @@ def test_core_times_count_refuses_a_count_kind_for_its_amount_at_wiring() -> Non
 
 @cache
 def choose_by_count_class() -> Any:
-    from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
+    from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
 
     return ChooseByCount
 

@@ -11,9 +11,6 @@ from typing import assert_type
 
 import pytest
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capability import Capability, CapabilityRegistry, capability
 from tax_engine.domain.errors import (
     DuplicateRegistrationError,
@@ -21,6 +18,9 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
 )
 from tax_engine.domain.registry import Registry
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tests.capabilities import bundled_capabilities
 from tests.domain.registration_fixtures.with_namespace.gadgets import GadgetLevy
 
@@ -163,6 +163,6 @@ def test_core_capabilities_are_registered_by_the_bundled_packages(
 
 
 def test_core_capabilities_declare_the_core_namespace() -> None:
-    import tax_engine.domain.capabilities as core
+    import tax_engine.jurisdictions.core.capabilities as core
 
     assert core.NAMESPACE == "core"

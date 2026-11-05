@@ -17,28 +17,9 @@ from textwrap import dedent
 
 import pytest
 
-from tax_engine.adapters.outbound.parameter_parsers.amount import AmountParser
-from tax_engine.adapters.outbound.parameter_parsers.amount_by_count import AmountByCountParser
-from tax_engine.adapters.outbound.parameter_parsers.brackets import BracketsParser
-from tax_engine.adapters.outbound.parameter_parsers.claim_reduction import ClaimReductionParser
-from tax_engine.adapters.outbound.parameter_parsers.class_rates import ClassRatesParser
-from tax_engine.adapters.outbound.parameter_parsers.conditions import ConditionsParser
-from tax_engine.adapters.outbound.parameter_parsers.contribution_tier import (
-    ContributionTierParser,
-)
-from tax_engine.adapters.outbound.parameter_parsers.credit import CreditParser
-from tax_engine.adapters.outbound.parameter_parsers.factor import FactorParser
-from tax_engine.adapters.outbound.parameter_parsers.fraction import FractionParser
-from tax_engine.adapters.outbound.parameter_parsers.rate import RateParser
-from tax_engine.adapters.outbound.parameter_parsers.rate_table import RateTableParser
-from tax_engine.adapters.outbound.parameter_parsers.registry import ParameterParserRegistry
-from tax_engine.adapters.outbound.parameter_parsers.rounding_only import RoundingOnlyParser
-from tax_engine.adapters.outbound.parameter_parsers.surcharge_tiers import SurchargeTiersParser
-from tax_engine.adapters.outbound.parameter_parsers.taper import TaperParser
-from tax_engine.adapters.outbound.parameter_parsers.threshold_rate import ThresholdRateParser
-from tax_engine.adapters.outbound.parameter_parsers.year_amounts import YearAmountsParser
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.adapters.outbound.yaml_support import YamlNode
+from tax_engine.adapters.parameter_parser import ParameterParserRegistry
+from tax_engine.adapters.yaml_support import YamlNode
 from tax_engine.domain.errors import (
     DomainError,
     InvalidAmountByCountError,
@@ -63,7 +44,6 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
-from tax_engine.domain.parameters.claim_reduction import CLAIM_REDUCTION, ClaimReduction
 from tax_engine.domain.parameters.class_rates import (
     CLASS_RATES,
     ClassElection,
@@ -97,8 +77,35 @@ from tax_engine.domain.parameters.surcharge_tiers import (
 )
 from tax_engine.domain.parameters.taper import TAPER, Taper
 from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
 from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca.parameter_parsers.claim_reduction import ClaimReductionParser
+from tax_engine.jurisdictions.ca.parameter_parsers.year_amounts import YearAmountsParser
+from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import (
+    CLAIM_REDUCTION,
+    ClaimReduction,
+)
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import (
+    YEAR_AMOUNTS,
+    YearAmounts,
+    YearAmountsRow,
+)
+from tax_engine.jurisdictions.core.parameter_parsers.amount import AmountParser
+from tax_engine.jurisdictions.core.parameter_parsers.amount_by_count import AmountByCountParser
+from tax_engine.jurisdictions.core.parameter_parsers.brackets import BracketsParser
+from tax_engine.jurisdictions.core.parameter_parsers.class_rates import ClassRatesParser
+from tax_engine.jurisdictions.core.parameter_parsers.conditions import ConditionsParser
+from tax_engine.jurisdictions.core.parameter_parsers.contribution_tier import (
+    ContributionTierParser,
+)
+from tax_engine.jurisdictions.core.parameter_parsers.credit import CreditParser
+from tax_engine.jurisdictions.core.parameter_parsers.factor import FactorParser
+from tax_engine.jurisdictions.core.parameter_parsers.fraction import FractionParser
+from tax_engine.jurisdictions.core.parameter_parsers.rate import RateParser
+from tax_engine.jurisdictions.core.parameter_parsers.rate_table import RateTableParser
+from tax_engine.jurisdictions.core.parameter_parsers.rounding_only import RoundingOnlyParser
+from tax_engine.jurisdictions.core.parameter_parsers.surcharge_tiers import SurchargeTiersParser
+from tax_engine.jurisdictions.core.parameter_parsers.taper import TaperParser
+from tax_engine.jurisdictions.core.parameter_parsers.threshold_rate import ThresholdRateParser
 
 D = Decimal
 
@@ -506,7 +513,9 @@ def test_reads_an_amount_dataset_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_amount_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/amount_cap/2025.yaml", AMOUNT_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/amount_cap", 2025, AMOUNT)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/amount_cap", 2025, AMOUNT
+    )
 
     assert result.values == Amount(D("1471"))
 
@@ -577,7 +586,7 @@ def test_by_default_the_contribution_tier_parser_comes_from_the_shared_registry(
 ) -> None:
     write(tmp_path, "ex/parameters/contribution_tier/2025.yaml", CONTRIBUTION_TIER_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get(
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
         "ex/contribution_tier", 2025, CONTRIBUTION_TIER
     )
 
@@ -644,7 +653,9 @@ def test_by_default_the_surcharge_tiers_parser_comes_from_the_shared_registry(
 ) -> None:
     write(tmp_path, "ex/parameters/surcharge_tiers/2025.yaml", SURCHARGE_TIERS_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/surcharge_tiers", 2025, SURCHARGE_TIERS)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/surcharge_tiers", 2025, SURCHARGE_TIERS
+    )
 
     assert result.values.tiers[0] == SurchargeTier(D("100"), Rate(D("0.10")))
 
@@ -711,7 +722,7 @@ def test_reads_a_taper_datasets_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_taper_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/taper/2025.yaml", TAPER_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/taper", 2025, TAPER)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get("ex/taper", 2025, TAPER)
 
     assert result.values == Taper(D("1000"), D("500"), D("20000"), D("10000"))
 
@@ -802,7 +813,9 @@ def test_by_default_the_amount_by_count_parser_comes_from_the_shared_registry(
 ) -> None:
     write(tmp_path, "ex/parameters/amount_by_count/2025.yaml", AMOUNT_BY_COUNT_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/amount_by_count", 2025, AMOUNT_BY_COUNT)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/amount_by_count", 2025, AMOUNT_BY_COUNT
+    )
 
     assert sorted(result.values.rows) == [
         (1, D("100")),
@@ -855,7 +868,7 @@ def test_reads_a_factor_datasets_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_factor_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/factor/2025.yaml", FACTOR_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/factor", 2025, FACTOR)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get("ex/factor", 2025, FACTOR)
 
     assert result.values == Factor(D("2"))
 
@@ -909,7 +922,9 @@ def test_reads_a_fraction_datasets_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_fraction_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/fraction/2025.yaml", FRACTION_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/fraction", 2025, FRACTION)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/fraction", 2025, FRACTION
+    )
 
     assert result.values == Fraction(2, 3)
 
@@ -1092,7 +1107,9 @@ def test_by_default_parsers_come_from_the_shared_registry(tmp_path: Path) -> Non
     # The built-in parsers registered themselves in the shared registry when imported.
     write(tmp_path, "ex/parameters/brackets/2025.yaml", BRACKETS_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/brackets", 2025, BRACKETS)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/brackets", 2025, BRACKETS
+    )
 
     assert result.values == BracketSchedule(
         (Bracket(D("0"), D("0.10")), Bracket(D("100"), D("0.20")))
@@ -1597,7 +1614,9 @@ def test_by_default_the_claim_reduction_parser_comes_from_the_shared_registry(
 ) -> None:
     write(tmp_path, "ex/parameters/claim_reduction/2025.yaml", CLAIM_REDUCTION_WITH_MAXIMUM_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/claim_reduction", 2025, CLAIM_REDUCTION)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/claim_reduction", 2025, CLAIM_REDUCTION
+    )
 
     assert result.values == ClaimReduction(Rate(D("0.03")), D("2834"), D("15551"))
 
@@ -1744,7 +1763,9 @@ def test_by_default_the_threshold_rate_parser_comes_from_the_shared_registry(
 ) -> None:
     write(tmp_path, "ex/parameters/threshold_rate/2025.yaml", THRESHOLD_RATE_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/threshold_rate", 2025, THRESHOLD_RATE)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/threshold_rate", 2025, THRESHOLD_RATE
+    )
 
     assert result.values == ThresholdRate(Rate(D("0.0505")), D("52886"))
 
@@ -1909,7 +1930,9 @@ def test_reads_a_year_amounts_datasets_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_year_amounts_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/year_amounts/2025.yaml", YEAR_AMOUNTS_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/year_amounts", 2025, YEAR_AMOUNTS)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/year_amounts", 2025, YEAR_AMOUNTS
+    )
 
     assert result.values.row_for(2010) == YearAmountsRow(
         2001, {"interest_limit": D("300"), "other_limit": D("9")}
@@ -3234,7 +3257,9 @@ def test_reads_a_rate_table_datasets_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_rate_table_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/rate_table/2025.yaml", RATE_TABLE_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/rate_table", 2025, RATE_TABLE)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/rate_table", 2025, RATE_TABLE
+    )
 
     assert result.values == RateTable(Rate(D("0.30")), RATE_TABLE_ROWS)
 
@@ -3593,7 +3618,9 @@ def test_reads_a_class_rates_datasets_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_class_rates_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/class_rates/2025.yaml", CLASS_RATES_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/class_rates", 2025, CLASS_RATES)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/class_rates", 2025, CLASS_RATES
+    )
 
     assert result.values == ClassRates(CLASS_RATES_CLASSES, 365, 366)
 
@@ -4035,7 +4062,9 @@ def test_by_default_the_rounding_only_parser_comes_from_the_shared_registry(
 ) -> None:
     write(tmp_path, "ex/parameters/rounding_only/2025.yaml", ROUNDING_ONLY_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/rounding_only", 2025, ROUNDING_ONLY)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/rounding_only", 2025, ROUNDING_ONLY
+    )
 
     assert result.values == RoundingOnly()
 
@@ -4204,7 +4233,9 @@ def test_reads_a_conditions_datasets_rounding_rule(tmp_path: Path) -> None:
 def test_by_default_the_conditions_parser_comes_from_the_shared_registry(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/conditions/2025.yaml", CONDITIONS_2025)
 
-    result = YamlParameterSource(roots(tmp_path)).get("ex/conditions", 2025, CONDITIONS)
+    result = YamlParameterSource(roots(tmp_path), built_in_parsers()).get(
+        "ex/conditions", 2025, CONDITIONS
+    )
 
     assert result.values == CONDITIONS_VALUES
 

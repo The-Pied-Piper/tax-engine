@@ -19,8 +19,6 @@ import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations
 from tax_engine import build_tax_computation
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import RecordListKind
@@ -31,6 +29,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     RC359_TAX_TOTAL,
     SPECIAL_TAXES,
 )
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.jurisdictions.ca_on.manifest_families import rc359
 from tests.jurisdictions.ca_on.manifest_support import (
     inputs_text,
