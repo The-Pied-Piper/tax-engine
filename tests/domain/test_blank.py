@@ -21,6 +21,7 @@ from tax_engine.domain.capabilities.record_total import RecordTotal
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
+    BlankMixedError,
     BlankNotAllowedError,
     BlankValueError,
     CapabilityContractError,
@@ -303,6 +304,113 @@ def test_blank_per_item_must_name_list_slots_that_may_be_blank() -> None:
 
         class NotASet(SubtractCompute):
             BLANK_PER_ITEM: ClassVar[frozenset[str]] = 1  # type: ignore[assignment]
+
+
+# --- a list of parts that must be all blank or all filled (`BLANK_ALL_OR_NONE`) ----------------
+
+
+class ChartTotal(Capability):
+    """Adds the parts of a chart line; the parts are all blank or all filled."""
+
+    CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal]}
+    PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"parts"})
+    BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset({"parts"})
+    BLANK_ALL_OR_NONE: ClassVar[frozenset[str]] = frozenset({"parts"})
+
+    def __init__(self, parts: tuple[Money, ...], output: Money) -> None:
+        super().__init__(parts=parts, output=output)
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        total = sum((a.value for a in inputs), D(0))
+        return CapabilityResult((Artifact(NET, total),), (SumLine(NET, (), total),))
+
+
+def chart_total() -> ChartTotal:
+    return ChartTotal((INCOME, OTHER, LIMIT), NET).with_blank_rules({"parts": PASS_ON})
+
+
+def test_blank_all_or_none_names_the_list_slots_that_refuse_a_mix() -> None:
+    assert Capability.BLANK_ALL_OR_NONE == frozenset()
+    assert ChartTotal.BLANK_ALL_OR_NONE == frozenset({"parts"})
+    assert SubtractCompute.BLANK_ALL_OR_NONE == frozenset()
+
+
+def test_a_mix_of_blank_and_filled_parts_is_refused_naming_both() -> None:
+    with pytest.raises(BlankMixedError) as raised:
+        chart_total().run((Artifact(INCOME, D(5)), blank(OTHER), Artifact(LIMIT, D(7))))
+
+    message = str(raised.value)
+    assert "ChartTotal" in message
+    assert "'other' was left blank" in message
+    assert "'income', 'limit' were filled" in message
+
+
+def test_the_mix_is_refused_even_when_a_rule_would_pass_the_blank_on() -> None:
+    with pytest.raises(BlankMixedError):
+        ChartTotal((INCOME, OTHER, LIMIT), NET).with_blank_rules({}, {OTHER: PASS_ON}).run(
+            (Artifact(INCOME, D(5)), blank(OTHER), Artifact(LIMIT, D(7)))
+        )
+
+
+def test_the_mix_is_refused_even_when_a_fallback_would_fill_the_blank() -> None:
+    with pytest.raises(BlankMixedError):
+        ChartTotal((INCOME, OTHER, LIMIT), NET).with_blank_rules({"parts": D(0)}).run(
+            (Artifact(INCOME, D(5)), blank(OTHER), Artifact(LIMIT, D(7)))
+        )
+
+
+def test_parts_that_are_all_blank_take_the_rule() -> None:
+    result = chart_total().run((blank(INCOME), blank(OTHER), blank(LIMIT)))
+
+    assert result.outputs[0].is_blank
+
+
+def test_parts_that_are_all_filled_are_computed() -> None:
+    result = chart_total().run(
+        (Artifact(INCOME, D(5)), Artifact(OTHER, D(6)), Artifact(LIMIT, D(7)))
+    )
+
+    assert result.outputs == (Artifact(NET, D(18)),)
+
+
+class TotalWithPerPartRule(ChartTotal):
+    BLANK_ALL_OR_NONE: ClassVar[frozenset[str]] = frozenset()
+
+
+def test_a_class_without_blank_all_or_none_takes_a_mix_by_its_rules() -> None:
+    other = TotalWithPerPartRule((INCOME, OTHER, LIMIT), NET).with_blank_rules(
+        {}, {OTHER: PASS_ON, INCOME: D(0), LIMIT: D(0)}
+    )
+
+    run = other.run((Artifact(INCOME, D(5)), blank(OTHER), Artifact(LIMIT, D(7))))
+
+    assert run.outputs[0].is_blank
+
+
+def test_blank_all_or_none_must_name_list_slots_that_may_be_blank() -> None:
+    with pytest.raises(InvalidCapabilityError, match="BLANK_ALL_OR_NONE slot 'amount'"):
+
+        class NotAList(SubtractCompute):
+            BLANK_ALL_OR_NONE: ClassVar[frozenset[str]] = frozenset({"amount"})
+
+    with pytest.raises(InvalidCapabilityError, match="BLANK_ALL_OR_NONE slot 'parts'"):
+
+        class NotAllowed(Capability):
+            CONSUMES: ClassVar[Mapping[str, type]] = {"parts": list[Decimal]}
+            PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+            BLANK_ALL_OR_NONE: ClassVar[frozenset[str]] = frozenset({"parts"})
+
+            def __init__(self, parts: tuple[Money, ...], output: Money) -> None:
+                super().__init__(parts=parts, output=output)
+
+            def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+                raise NotImplementedError
+
+    with pytest.raises(InvalidCapabilityError, match="BLANK_ALL_OR_NONE must be a set"):
+
+        class NotASet(SubtractCompute):
+            BLANK_ALL_OR_NONE: ClassVar[frozenset[str]] = 1  # type: ignore[assignment]
 
 
 # --- what a capability does with a blank ------------------------------------------------------

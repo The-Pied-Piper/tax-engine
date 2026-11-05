@@ -13,7 +13,8 @@ only in a slot whose rule is `COMPUTE`, where the class decides in code what the
 list slot a class lists in `BLANK_PER_ITEM` may also be given a rule for one kind in it, which
 replaces the slot's own rule for that kind. A record-list slot a class lists in
 `BLANK_RECORD_FIELDS` may also be given a rule for each field of its records, applied to that field
-in every record before `compute` runs.
+in every record before `compute` runs. A list slot a class lists in `BLANK_ALL_OR_NONE` is refused
+when some of its parts are blank and some are filled.
 """
 
 from __future__ import annotations
@@ -30,6 +31,7 @@ from typing import Any, ClassVar, Self, cast, get_args, get_origin
 from tax_engine.domain.artifact import Artifact, ArtifactKind
 from tax_engine.domain.blank import BLANK, BlankRule, Compute, PassOn
 from tax_engine.domain.errors import (
+    BlankMixedError,
     BlankNotAllowedError,
     CapabilityContractError,
     DomainError,
@@ -104,6 +106,14 @@ class Capability(ABC):
     declares its own.
     """
 
+    BLANK_ALL_OR_NONE: ClassVar[frozenset[str]] = frozenset()
+    """The `BLANK_ALLOWED` list slots whose parts must be all blank or all filled: a form part
+    completed or skipped as a whole contradicts itself with some of its lines blank and some
+    filled. The base refuses the mix before any blank rule is applied, naming the blank and the
+    filled kinds (BlankMixedError), so the rules only ever see a slot that is entirely blank or
+    entirely filled. A subclass inherits its parent's slots unless it declares its own.
+    """
+
     BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset()
     """The consumed record-list slots whose records may have a blank field. The manifest gives each
     field a rule (`with_blank_rules`), as for a slot, and the base applies it to that field in
@@ -144,6 +154,13 @@ class Capability(ABC):
                 raise InvalidCapabilityError(
                     f"{cls.__name__}: BLANK_PER_ITEM must be a set of slot names"
                 ) from None
+        if "BLANK_ALL_OR_NONE" in vars(cls):
+            try:
+                cls.BLANK_ALL_OR_NONE = frozenset(cls.BLANK_ALL_OR_NONE)
+            except TypeError:
+                raise InvalidCapabilityError(
+                    f"{cls.__name__}: BLANK_ALL_OR_NONE must be a set of slot names"
+                ) from None
         if "BLANK_RECORD_FIELDS" in vars(cls):
             try:
                 cls.BLANK_RECORD_FIELDS = frozenset(cls.BLANK_RECORD_FIELDS)
@@ -168,6 +185,7 @@ class Capability(ABC):
                 declared_in[slot] = mapping
         cls._check_blank_allowed()
         cls._check_blank_per_item()
+        cls._check_blank_all_or_none()
         cls._check_blank_record_fields()
         # `__init__`'s own signature, not the class's, so a custom `__new__` cannot hide it; its
         # first parameter (`self`) is skipped, so `self` can never fill a slot.
@@ -195,6 +213,16 @@ class Capability(ABC):
             if not cls.is_list_slot(slot) or slot not in cls.BLANK_ALLOWED:
                 raise InvalidCapabilityError(
                     f"{cls.__name__}: BLANK_PER_ITEM slot {slot!r} is not a list slot "
+                    "listed in BLANK_ALLOWED"
+                )
+
+    @classmethod
+    def _check_blank_all_or_none(cls) -> None:
+        """Refuse a `BLANK_ALL_OR_NONE` entry that is not a list slot listed in `BLANK_ALLOWED`."""
+        for slot in cls.BLANK_ALL_OR_NONE:
+            if not cls.is_list_slot(slot) or slot not in cls.BLANK_ALLOWED:
+                raise InvalidCapabilityError(
+                    f"{cls.__name__}: BLANK_ALL_OR_NONE slot {slot!r} is not a list slot "
                     "listed in BLANK_ALLOWED"
                 )
 
@@ -484,8 +512,10 @@ class Capability(ABC):
         else its slot's. A blank input with a fallback is replaced by an artifact of the fallback,
         and the trace says so first, unless a `PASS_ON` slot is also blank: that wins over a
         fallback as over `COMPUTE`, so the fallback is never used and the trace does not say it
-        was. A blank in a slot with no rule is a BlankNotAllowedError naming the line and the
-        slot; that refusal comes before anything else. Otherwise a blank in a `PASS_ON` slot gives
+        was. A `BLANK_ALL_OR_NONE` slot with some parts blank and some filled is a
+        BlankMixedError naming both, before any rule is looked at. A blank in a slot with no rule
+        is a BlankNotAllowedError naming the line and the slot; that refusal comes before
+        anything else. Otherwise a blank in a `PASS_ON` slot gives
         a blank artifact for every produced kind, with a trace line each and `compute` not
         called. A blank field of a record in a `BLANK_RECORD_FIELDS` slot is treated the same way
         with the rule given for that field, each blank naming its record by position: a fallback
@@ -496,6 +526,7 @@ class Capability(ABC):
         rule makes an output blank.
         """
         name = type(self).__name__
+        self._refuse_mixed_slots(inputs)
         kept: list[Artifact[Any]] = []
         fallbacks: list[BlankFallbackLine | BlankFieldFallbackLine] = []
         passed_on: list[ArtifactKind[Any]] = []
@@ -541,6 +572,20 @@ class Capability(ABC):
                 "only a PASS_ON rule makes an output blank"
             )
         return CapabilityResult(outputs=result.outputs, trace=(*fallbacks, *result.trace))
+
+    def _refuse_mixed_slots(self, inputs: tuple[Artifact[Any], ...]) -> None:
+        """Refuse a `BLANK_ALL_OR_NONE` slot that has both a blank part and a filled one."""
+        for slot in sorted(self.BLANK_ALL_OR_NONE):
+            parts = [artifact for artifact in inputs if self._slot_of[artifact.kind] == slot]
+            blank = [artifact.kind for artifact in parts if artifact.is_blank]
+            filled = [artifact.kind for artifact in parts if not artifact.is_blank]
+            if blank and filled:
+                raise BlankMixedError(
+                    f"{type(self).__name__}: {slot!r} must be all blank or all filled, but "
+                    f"{ArtifactKind.labels(blank)} {'was' if len(blank) == 1 else 'were'} left "
+                    f"blank and {ArtifactKind.labels(filled)} "
+                    f"{'was' if len(filled) == 1 else 'were'} filled"
+                )
 
     def _apply_field_rules(
         self,
