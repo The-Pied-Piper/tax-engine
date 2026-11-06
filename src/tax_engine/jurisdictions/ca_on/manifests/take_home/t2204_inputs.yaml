@@ -1,0 +1,9 @@
+# T2204 (2025) inputs a salary-only caller does not give.
+# Line 2: "Total self-employment and other earnings eligible for the EI program for access to EI
+# special benefits". A salary-only caller has none, so a request that leaves the line out is read
+# as blank, and the line 1 part reads that blank as 0.
+inputs:
+  - name: ca/t2204_self_employment_earnings
+    required: false
+    default: null
+    basis: 'Total self-employment and other earnings eligible for the EI program for access to EI special benefits'

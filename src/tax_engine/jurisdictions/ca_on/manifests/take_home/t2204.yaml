@@ -1,0 +1,13 @@
+# Form T2204 (Employee Overpayment of Employment Insurance Premiums, 2025). This part names the
+# form and its exports; each line's capability goes in a part of its own with the same `form.name`.
+# Exports: what the return reads from the form. Line 16 is entered on T1 line 31200 (and ON428
+# line 58300); line 15 is the overpayment refunded on T1 line 45000 "if this amount is more than
+# $1", so the line 15 figure and its more-than-$1 count are exported for the return to read.
+form:
+  name: ca/t2204
+  required: true
+  exports:
+    - ca/t2204_line_15
+    - ca/t2204_line_15_count
+    - ca/t2204_line_16
+capabilities: []
