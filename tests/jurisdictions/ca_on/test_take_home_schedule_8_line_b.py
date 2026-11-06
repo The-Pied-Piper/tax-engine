@@ -59,9 +59,9 @@ FORM = dedent("""\
 def service(tmp_path: Path) -> TaxComputationService:
     parts = tmp_path / "manifests" / "take_home"
     parts.mkdir(parents=True)
-    (parts / "a_header.yaml").write_text(HEADER)
-    (parts / "b_form.yaml").write_text(FORM)
-    shutil.copy(PART, parts / "c_line_b.yaml")
+    (parts / "00_header.yaml").write_text(HEADER)
+    (parts / "01_form.yaml").write_text(FORM)
+    shutil.copy(PART, parts / "02_line_b.yaml")
     roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
     parameter_roots = dict(roots)
     roots[Namespace("ca-on")] = tmp_path
