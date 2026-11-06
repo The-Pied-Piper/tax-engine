@@ -24,9 +24,6 @@ from types import MappingProxyType
 from typing import Any, assert_type, cast
 
 import pytest
-from tax_engine.jurisdictions.ca.capabilities.given_or_contribution_tier import (
-    GivenOrTieredContribution,
-)
 
 import tax_engine.jurisdictions.ca.trace_english  # noqa: F401  (registers the renderers)
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
@@ -49,6 +46,9 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
+from tax_engine.jurisdictions.ca.capabilities.given_or_contribution_tier import (
+    GivenOrTieredContribution,
+)
 from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
     CONTRIBUTION_TIER,
     ContributionTier,
