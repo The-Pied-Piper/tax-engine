@@ -87,7 +87,18 @@ def test_register_class_needs_the_full_identifier_to_look_up() -> None:
         registry.get("gadget_levy")
 
 
-def test_register_class_twice_under_one_identifier_fails() -> None:
+def test_registering_the_same_class_again_changes_nothing() -> None:
+    registry = CapabilityRegistry()
+    cls = made_up()
+    registry.register_class(cls)
+
+    registry.register_class(cls)
+
+    assert registry.identifiers() == {"ex/gadget_levy"}
+    assert registry.get("ex/gadget_levy") is cls
+
+
+def test_another_class_under_one_identifier_fails() -> None:
     registry = CapabilityRegistry()
     registry.register_class(made_up())
 

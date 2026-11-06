@@ -78,8 +78,7 @@ class JurisdictionPackages:
             for cls in capabilities_in(module)
         ]
         for cls in found:
-            if registry.identifier_of(cls) != cls.identifier():
-                registry.register_class(cls)
+            registry.register_class(cls)
 
     def register_parameter_parsers(self, registry: ParameterParserRegistry) -> None:
         """Register the parsers of every package, found by walking its `parameter_parsers` package.
