@@ -1,7 +1,7 @@
 """Amount H of Form T657 Chart 2024 Period 1 and Period 2, a T3 box 30 reserve amount, may be left
 out of a request: the chart is for a filer with a T2017 reserve or a T3 amount, so she often has no
-H, and the form's "Add amounts F to H" then adds the lines she has. An H left out is read as 0, so
-the total of F and G is not lost as it was when a left-out H blanked the whole total.
+H, and the form's "Add amounts F to H" then adds the lines she has. An H left out, or given blank,
+is read as 0, so the total keeps F and G.
 """
 
 from __future__ import annotations

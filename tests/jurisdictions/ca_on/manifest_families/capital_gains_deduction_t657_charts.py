@@ -122,7 +122,6 @@ STEPS = {
                 "ca/t657_chart_2024_period_1_amount_h",
             ),
         },
-        blank={"ca/t657_chart_2024_period_1_amount_h": PASS_ON},
         produces={"output": "ca/chart_2024_period_1_amounts_f_to_h"},
     ),
     # Chart 2024 Period 1 "× 1/2 = I" (the amounts F to H, times the 1/2 printed on the form).
@@ -236,7 +235,6 @@ STEPS = {
                 "ca/t657_chart_2024_period_2_amount_h",
             ),
         },
-        blank={"ca/t657_chart_2024_period_2_amount_h": PASS_ON},
         produces={"output": "ca/chart_2024_period_2_amounts_f_to_h"},
     ),
     # Chart 2024 Period 2 "× 1/2 = I".
