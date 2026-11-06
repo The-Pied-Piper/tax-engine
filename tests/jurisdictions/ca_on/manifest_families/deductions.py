@@ -5,23 +5,6 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.domain.blank import PASS_ON
-from tax_engine.domain.capabilities.amount_by_count import AmountForCount
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.contribution_tier import TieredContribution
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.greater_of import GreaterOf
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
@@ -269,6 +252,23 @@ from tax_engine.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AMOUNT,
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
+from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 # The derived kinds of the two shared facts (`security_options_boxes_39_and_91.py` and
 # `security_options_boxes_41_and_92.py`): the form exports its input, one record of one field.

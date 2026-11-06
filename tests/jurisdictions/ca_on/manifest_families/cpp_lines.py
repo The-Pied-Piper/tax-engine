@@ -18,7 +18,6 @@ count of it with those earnings is counted and refused (an input error) when it 
 from __future__ import annotations
 
 from tax_engine.domain.blank import PASS_ON
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import (
@@ -46,6 +45,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     SCHEDULE_8_CPP_OVERPAYMENT,
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 INPUTS = frozenset[str]()
 

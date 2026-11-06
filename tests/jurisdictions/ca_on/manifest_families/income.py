@@ -2,14 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -344,6 +336,14 @@ from tax_engine.jurisdictions.ca.catalog import (
     VOLUNTEER_FIREFIGHTERS_CONDITIONS_MET_CHECKED,
     WORKERS_COMPENSATION_BENEFITS,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 from tests.jurisdictions.ca_on.manifest_families.t2017_reserve import T2017_LINE_31_EXPORT
 
 # The exports of the form ca/t1206_share_dispositions that the return adds: the under-18 dividend

@@ -48,7 +48,9 @@ from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 T776_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt"
 T4036_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4036/t4036-25e.pdf"
 

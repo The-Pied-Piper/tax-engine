@@ -14,7 +14,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
 from tax_engine.domain.registry import Namespace
-from tax_engine.registrations import CORE_PACKAGES
+from tax_engine.registrations import CORE_PACKAGES, parameter_parsers
 from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.registration_fixtures import ex_on
 from tests.jurisdictions.registration_fixtures.ex_on import catalog
@@ -58,7 +58,9 @@ def test_its_manifest_is_read_from_the_package() -> None:
 
 
 def test_its_datasets_are_read_from_the_package() -> None:
-    dataset = YamlParameterSource(PACKAGES.roots()).get("ex-on/brackets", 2025, BRACKETS)
+    dataset = YamlParameterSource(PACKAGES.roots(), parameter_parsers()).get(
+        "ex-on/brackets", 2025, BRACKETS
+    )
 
     assert dataset.values == BracketSchedule(
         (Bracket(D("0"), D("0.10")), Bracket(D("100"), D("0.20")))
@@ -67,9 +69,9 @@ def test_its_datasets_are_read_from_the_package() -> None:
 
 def test_every_parameter_slot_has_a_dataset() -> None:
     (manifest,) = source().get_jurisdiction(EX_ON).manifests
-    parameters = YamlParameterSource(PACKAGES.roots())
+    parameters = YamlParameterSource(PACKAGES.roots(), parameter_parsers())
 
-    assert CORE_PACKAGES  # importing them filled the capability and parser registries
+    assert CORE_PACKAGES  # importing them filled the trace renderer registry
     for selection in manifest.forms[0].capabilities:
         slots = bundled_capabilities().get(selection.name).PARAMETERS
         assert set(selection.params) == set(slots)

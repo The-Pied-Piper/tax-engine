@@ -11,8 +11,6 @@ steps of the form.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
     T1212_LINE_1_OPENING_BALANCE,
@@ -20,6 +18,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1212_LINE_3_CLOSING_BALANCE,
     T1212_LINE_24900_AMOUNT,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 
 FORM = "ca/t1212"
 

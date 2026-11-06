@@ -21,18 +21,6 @@ return's line 12700, line 21700 or Chart A line 20 reads the corrected figure. T
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.first_record_count import FirstRecordCount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
@@ -257,6 +245,18 @@ from tax_engine.jurisdictions.ca.catalog import (
     UNAPPLIED_NET_CAPITAL_LOSSES_2000,
     UNAPPLIED_NET_CAPITAL_LOSSES_2001_TO_2024,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.first_record_count import FirstRecordCount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 from tests.jurisdictions.ca_on.manifest_families.t776 import NET_RENTAL_INCOME_PER_STATEMENT
 from tests.jurisdictions.ca_on.manifest_families.t2017_reserve import T2017_LINE_31_EXPORT
 

@@ -23,7 +23,9 @@ from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T2043_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf"
 PAYMENT_RATE = "ca/fuel_charge_payment_rate"

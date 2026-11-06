@@ -18,7 +18,9 @@ from tax_engine.domain.parameters.factor import FACTOR, Factor
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/principal_residence_chart_1_factor"
 WORKSHEET_PDF = (

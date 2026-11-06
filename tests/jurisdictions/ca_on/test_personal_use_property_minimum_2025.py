@@ -20,7 +20,9 @@ from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 FAMILY = "ca/personal_use_property_minimum"
 T4037_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4037/t4037-25e.pdf"
 

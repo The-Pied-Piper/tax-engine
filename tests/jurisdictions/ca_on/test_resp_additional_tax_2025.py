@@ -21,16 +21,18 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 LIFETIME_LIMIT = "ca/resp_aips_lifetime_limit"
 PART_A_RATE = "ca/resp_aips_part_a_rate"
 PART_B_RATE = "ca/resp_aips_part_b_rate"

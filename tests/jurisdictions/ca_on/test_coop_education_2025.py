@@ -26,8 +26,6 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -50,9 +48,13 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     COOP_EDUCATION_PLACEMENTS,
     COOP_EDUCATION_REMAINING_SHARE,
 )
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 EXPENDITURE_RATE = "ca-on/coop_education_expenditure_rate"
 SUPPLEMENT_RATE = "ca-on/coop_education_supplement_rate"

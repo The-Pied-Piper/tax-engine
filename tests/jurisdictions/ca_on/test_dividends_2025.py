@@ -29,15 +29,17 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 ELIGIBLE_GROSS_UP = "ca/eligible_dividend_gross_up"
 OTHER_GROSS_UP = "ca/other_dividend_gross_up"
 OTHER_CREDIT_RATE = "ca/dividend_credit_rate_other_than_eligible"

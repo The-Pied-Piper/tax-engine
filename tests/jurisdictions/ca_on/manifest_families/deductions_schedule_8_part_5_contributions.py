@@ -8,14 +8,6 @@ computes something, so there are no copy lines.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.contribution_tier import TieredContribution
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.catalog import (
@@ -77,6 +69,14 @@ from tax_engine.jurisdictions.ca.catalog import (
     CPP_T4_SECOND_ADDITIONAL_CONTRIBUTIONS,
     CPP_ZERO,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 INPUTS = frozenset[str]()
 

@@ -2,15 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 from tax_engine.jurisdictions.ca.capabilities.lesser_of_with_maximum import LesserOfWithMaximum
@@ -94,6 +85,15 @@ from tax_engine.jurisdictions.ca.catalog import (
     UNAPPLIED_NET_CAPITAL_LOSSES_2000,
     UNAPPLIED_NET_CAPITAL_LOSSES_2001_TO_2024,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.apply_ratio import ApplyRatio
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 
 INPUTS = frozenset(
     {

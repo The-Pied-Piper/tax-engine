@@ -28,10 +28,6 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
@@ -42,9 +38,15 @@ from tax_engine.domain.parameters.surcharge_tiers import (
     SurchargeTier,
     SurchargeTiers,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.tiered_surcharge import TieredSurcharge
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 RATE_FAMILY = "ca-on/lift_rate"
 MAXIMUM = "ca-on/lift_maximum"
 REDUCTION_FAMILY = "ca-on/lift_reduction"

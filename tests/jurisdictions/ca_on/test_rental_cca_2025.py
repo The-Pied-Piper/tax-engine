@@ -58,7 +58,9 @@ from tax_engine.jurisdictions.ca.catalog import (
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/cca_class_rates"
 T776_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t776/t776-25e.txt"

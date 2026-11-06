@@ -35,17 +35,19 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.greater_of import GreaterOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import CapabilityResult
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T1206_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1206/t1206-25e.pdf"
 SPLIT_INCOME_RATE = "ca-on/split_income_rate"

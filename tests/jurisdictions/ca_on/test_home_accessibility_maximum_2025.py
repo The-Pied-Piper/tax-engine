@@ -18,7 +18,9 @@ from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 HOME_ACCESSIBILITY_MAXIMUM = "ca/home_accessibility_maximum"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.txt"
 

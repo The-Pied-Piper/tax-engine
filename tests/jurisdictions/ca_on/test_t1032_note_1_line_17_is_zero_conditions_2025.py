@@ -26,7 +26,9 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 FAMILY = "ca/t1032_note_1_line_17_is_zero_conditions"
 T1032_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t1032/t1032-25e.pdf"
 

@@ -2,17 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.jurisdictions.ca.capabilities.foreign_business_tax_credit_line_4 import (
     ForeignBusinessTaxCreditLine4,
 )
@@ -164,6 +153,17 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     SENIORS_CARE_REDUCTION,
     SENIORS_TRANSIT_CREDIT,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 from tests.jurisdictions.ca_on.end_to_end.support import (
     FEDERAL_POLITICAL_COLUMN_LINES,
     POLITICAL_COLUMN_LINES,

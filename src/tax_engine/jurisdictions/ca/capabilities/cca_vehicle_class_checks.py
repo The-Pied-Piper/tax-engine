@@ -36,13 +36,13 @@ from tax_engine.domain.errors import InvalidRecordError
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_VEHICLE_ACQUIRED_YEAR,
     CCA_VEHICLE_COST,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_engine.jurisdictions.ca.trace import CcaVehicleClassCheckLine
 
 CLASS_10_1 = Decimal("10.1")

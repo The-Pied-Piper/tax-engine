@@ -605,14 +605,16 @@ class CapabilityRegistry(Registry[type[Capability]]):
     def register_class[C: Capability](self, cls: type[C]) -> type[C]:
         """Register `cls` under the identifier it carries (`Capability.identifier()`); return it.
 
-        A class that carries none is refused.
+        A class that carries none is refused. Registering the same class again changes nothing;
+        an identifier another class holds is an error.
         """
         identifier = cls.identifier()
         if identifier is None:
             raise InvalidRegistrationError(
                 f"{cls.__name__} carries no identifier to register under"
             )
-        self.register(identifier, cls)
+        if self.identifier_of(cls) != identifier:
+            self.register(identifier, cls)
         return cls
 
 

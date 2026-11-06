@@ -34,15 +34,17 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CAP = "ca/fish_immediate_expensing_cap"
 PERCENTAGE_MAXIMUM = "ca/fish_epop_percentage_maximum"
 ROUNDING = "ca/fish_immediate_expensing_rounding"

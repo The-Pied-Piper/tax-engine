@@ -19,7 +19,9 @@ from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 FAMILY = "ca/itc_apprentice_wages_maximum"
 T2038_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2038-ind/t2038-ind-25e.pdf"
 

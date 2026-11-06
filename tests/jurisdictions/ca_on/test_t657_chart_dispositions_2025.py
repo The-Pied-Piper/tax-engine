@@ -34,7 +34,9 @@ from tax_engine.domain.parameters.conditions import (
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 T657_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t657/t657-25e.pdf"
 
 # The datasets and the counts each condition requires, as (position, figure) in order, one tuple for

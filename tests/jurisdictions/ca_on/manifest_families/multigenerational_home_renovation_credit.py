@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_3 import HomeRenovationLine3
 from tax_engine.jurisdictions.ca.capabilities.home_renovation_line_6 import HomeRenovationLine6
@@ -15,6 +14,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     HOME_RENOVATIONS,
     MULTIGENERATIONAL_HOME_RENOVATION_CREDIT,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 
 INPUTS = frozenset({"ca/home_renovations"})
 

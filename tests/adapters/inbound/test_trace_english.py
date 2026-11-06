@@ -21,7 +21,6 @@ from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, RecordListKind
 from tax_engine.domain.parameters.amount import Amount
-from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.class_rates import (
     ClassRate,
     HalfYearRule,
@@ -103,6 +102,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     RENTAL_BUILDING_ADDITIONS_TOTAL,
     RENTAL_EQUIPMENT_ADDITIONS_TOTAL,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import ClaimReduction
 from tax_engine.jurisdictions.ca.trace import (
     ApprenticeWagesLine,
     BusinessVehicleLine,

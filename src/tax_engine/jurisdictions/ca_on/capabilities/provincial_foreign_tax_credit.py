@@ -60,7 +60,6 @@ from fractions import Fraction as ExactFraction
 from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import ValidationError
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
@@ -80,6 +79,7 @@ from tax_engine.jurisdictions.ca_on.trace import (
     PooledProvincialForeignTaxCreditLine,
     ProvincialForeignTaxCreditLine,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_ratio import ApplyRatio
 
 ONE_CENT = Decimal("0.01")
 """How far line 2 may top line 1 before the inputs are refused (T691 figures are in cents)."""

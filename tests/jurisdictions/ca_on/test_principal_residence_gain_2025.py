@@ -61,7 +61,9 @@ from tax_engine.jurisdictions.ca.catalog import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 FAMILY = "ca/principal_residence_gain_rounding"
 T2091_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2091ind/t2091ind-25e.pdf"

@@ -20,14 +20,16 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.contribution_tier import TieredContribution
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 FAMILY = "ca/cpp_second_additional_contribution"
 
 # Made up for this test and not registered: the earnings the tier reads, and its contribution.

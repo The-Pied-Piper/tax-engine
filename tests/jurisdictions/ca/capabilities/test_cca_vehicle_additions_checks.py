@@ -36,7 +36,6 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
 from tax_engine.domain.kinds import AmountKind, RecordListKind
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
 from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_additions_checks import (
     CcaVehicleAdditionsChecks,
@@ -49,6 +48,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CCA_CLASS_NUMBER,
     CCA_UCC_AT_START,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import YEAR_AMOUNTS
 from tax_engine.jurisdictions.ca.trace import CcaVehicleAdditionsCheckLine
 from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_vehicle_proceeds import (

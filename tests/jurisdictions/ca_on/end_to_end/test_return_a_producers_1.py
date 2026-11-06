@@ -6,28 +6,6 @@ from typing import Any
 
 import pytest
 
-from tax_engine.domain.capabilities.amount_by_count import AmountForCount
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.contribution_tier import TieredContribution
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.first_record_count import FirstRecordCount
-from tax_engine.domain.capabilities.greater_of import GreaterOf
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.multiple_over import MultipleOver
-from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
-from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.errors import MissingArtifactError
 from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
 from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
@@ -1167,6 +1145,28 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     TAX_REDUCTION_FOR_DEPENDANTS,
     TAX_REDUCTION_FOR_DEPENDANTS_BEFORE_SPOUSE_RULE,
 )
+from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.first_record_count import FirstRecordCount
+from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.multiple_over import MultipleOver
+from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.tapered_amount import TaperedAmount
+from tax_engine.jurisdictions.core.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 from tests.jurisdictions.ca_on.end_to_end.support import return_a, run_a
 from tests.kinds import ca_on_kinds
 

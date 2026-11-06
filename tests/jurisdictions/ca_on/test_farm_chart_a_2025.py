@@ -41,7 +41,9 @@ from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T2043_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2043/t2043-25e.pdf"
 AMOUNT_8_ROUNDING = "ca/farm_chart_a_amount_8_rounding"

@@ -32,7 +32,6 @@ from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactErro
 from tax_engine.domain.jurisdiction import Jurisdiction
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
-from tax_engine.domain.parameters.claim_reduction import CLAIM_REDUCTION, ClaimReduction
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import Rate
@@ -52,6 +51,10 @@ from tax_engine.jurisdictions.ca.catalog import (
     OTHER_DEPENDANT_MEDICAL_EXPENSES,
     OTHER_DEPENDANTS,
     OTHER_DEPENDANTS_MEDICAL,
+)
+from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import (
+    CLAIM_REDUCTION,
+    ClaimReduction,
 )
 from tax_engine.jurisdictions.ca.trace import OtherDependantMedicalLine
 from tests.capabilities import bundled_capabilities

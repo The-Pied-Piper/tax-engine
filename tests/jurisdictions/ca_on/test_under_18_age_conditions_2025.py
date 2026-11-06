@@ -42,7 +42,9 @@ from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 BASE_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg"
 WORKSHEET_TXT = f"{BASE_URL}/5006-d/5006-d-25e.txt"
 FORM_TXT = f"{BASE_URL}/5006-c/5006-c-25e.txt"

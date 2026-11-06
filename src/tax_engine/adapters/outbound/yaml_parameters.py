@@ -18,8 +18,10 @@ from pathlib import Path
 
 import yaml
 
-from tax_engine.adapters.outbound.parameter_parsers.parser import OptionalKeysParser
-from tax_engine.adapters.outbound.parameter_parsers.registry import ParameterParserRegistry
+from tax_engine.adapters.outbound.parameter_parser import (
+    OptionalKeysParser,
+    ParameterParserRegistry,
+)
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
 from tax_engine.domain.errors import DomainError, InvalidParameterDataError, NotFoundError
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -33,13 +35,11 @@ _ENVELOPE_KEYS = frozenset({"family", "tax_year", "kind", "sources", "rounding"}
 class YamlParameterSource:
     """Parameter datasets read from the `parameters/` directory of each jurisdiction package."""
 
-    def __init__(
-        self, roots: Mapping[Namespace, Path], parsers: ParameterParserRegistry | None = None
-    ) -> None:
+    def __init__(self, roots: Mapping[Namespace, Path], parsers: ParameterParserRegistry) -> None:
         """Read datasets under each namespace's package directory in `roots`, parsing each with
-        its kind's parser from `parsers` (by default the shared ParameterParserRegistry)."""
+        its kind's parser from `parsers`, which whoever wires the application builds."""
         self._roots = dict(roots)
-        self._parsers = parsers if parsers is not None else ParameterParserRegistry.shared()
+        self._parsers = parsers
 
     def get[T](self, family: str, tax_year: int, kind: ParameterKind[T]) -> ParameterDataset[T]:
         """Read `<root>/parameters/<family rest>/<tax_year>.yaml`; parse it with `kind`'s parser.

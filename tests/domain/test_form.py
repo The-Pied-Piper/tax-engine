@@ -32,9 +32,6 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
@@ -55,6 +52,9 @@ from tax_engine.domain.manifest import Form
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.forms import composition, derived
 
 D = Decimal

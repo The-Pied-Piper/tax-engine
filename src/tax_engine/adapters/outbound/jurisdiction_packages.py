@@ -1,10 +1,11 @@
 """The jurisdiction packages: where each keeps its data, and registering their catalogs.
 
-A jurisdiction package declares only `NAMESPACE = "..."` in its `__init__.py`; its directory is
-the one holding that file, with `catalog.py`, `manifests/` and `parameters/` inside. The YAML
-sources read under these directories; `register` imports each `catalog` module and registers its
-`CATALOG` into an artifact registry, and `register_capabilities` walks each `capabilities` package
-into a capability registry, when the composition root asks.
+A package declares only `NAMESPACE = "..."` in its `__init__.py`; its directory is the one holding
+that file, with `catalog.py`, `manifests/` and `parameters/` inside (core has no manifests
+or parameters). The YAML sources read under these directories; `register` imports each `catalog`
+module and registers its `CATALOG` into an artifact registry, `register_capabilities` walks each
+`capabilities` package into a capability registry and `register_parameter_parsers` walks each
+`parameter_parsers` package into a parser registry, when the composition root asks.
 """
 
 from __future__ import annotations
@@ -15,6 +16,8 @@ from pathlib import Path
 from types import MappingProxyType, ModuleType
 
 from tax_engine.adapters.outbound.capability_modules import capabilities_in
+from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
+from tax_engine.adapters.outbound.parser_modules import parsers_in
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
@@ -51,10 +54,10 @@ class JurisdictionPackages:
     def register(self, registry: ArtifactRegistry) -> None:
         """Register every package's catalog, its `catalog` module's `CATALOG`, into `registry`.
 
-        Registering again is idempotent. Every catalog
-        is looked up first, so a package without a catalog in its own namespace registers
-        nothing; an identifier clashing with one already in `registry` is an error, which can
-        leave the catalogs registered before it in place.
+        Registering again is idempotent. Every catalog is looked up first, so a package without
+        a catalog in its own namespace registers nothing; an identifier clashing with one
+        already in `registry` is an error, which can leave the catalogs registered before it in
+        place.
         """
         catalogs = [self._catalog(name, namespace) for name, namespace in self._namespaces.items()]
         for catalog in catalogs:
@@ -70,17 +73,32 @@ class JurisdictionPackages:
         """
         found = [
             cls
-            for module in (self._capabilities(name) for name in self._namespaces)
+            for module in (self._subpackage(name, "capabilities") for name in self._namespaces)
             if module is not None
             for cls in capabilities_in(module)
         ]
         for cls in found:
-            if registry.identifier_of(cls) != cls.identifier():
-                registry.register_class(cls)
+            registry.register_class(cls)
+
+    def register_parameter_parsers(self, registry: ParameterParserRegistry) -> None:
+        """Register the parsers of every package, found by walking its `parameter_parsers` package.
+
+        A package without a `parameter_parsers` package contributes none. Every package is walked
+        first, so an import error registers nothing. Registering again is idempotent; a kind another
+        class's parser holds is an error.
+        """
+        found = [
+            cls
+            for module in (self._subpackage(name, "parameter_parsers") for name in self._namespaces)
+            if module is not None
+            for cls in parsers_in(module)
+        ]
+        for cls in found:
+            registry.register_class(cls)
 
     @staticmethod
-    def _capabilities(package: str) -> ModuleType | None:
-        module_name = f"{package}.capabilities"
+    def _subpackage(package: str, name: str) -> ModuleType | None:
+        module_name = f"{package}.{name}"
         try:
             return importlib.import_module(module_name)
         except ModuleNotFoundError as exc:

@@ -46,7 +46,9 @@ from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 GUIDE_5000_G = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/5000-g/5000-g-25e.txt"
 
 CONFLICTS_FAMILY = "ca/emergency_services_volunteer_conflicts"

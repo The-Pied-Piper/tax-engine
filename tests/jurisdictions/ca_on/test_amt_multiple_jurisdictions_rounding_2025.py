@@ -22,7 +22,9 @@ from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 T691_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t691/t691-25e.pdf"
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 

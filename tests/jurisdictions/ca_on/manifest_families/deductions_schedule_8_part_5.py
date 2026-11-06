@@ -7,12 +7,6 @@ you also have employment income", and Part 3 line 2. The copy lines (Part 5 line
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
@@ -63,6 +57,12 @@ from tax_engine.jurisdictions.ca.catalog import (
     PENSIONABLE_NET_SELF_EMPLOYMENT_EARNINGS,
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 INPUTS = frozenset({"ca/cpt20_t4_earnings"})
 

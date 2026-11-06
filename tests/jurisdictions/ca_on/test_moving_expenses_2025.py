@@ -61,7 +61,9 @@ from tax_engine.jurisdictions.ca.catalog import (
 )
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 DISTANCE_THRESHOLD = "ca/moving_distance_threshold"
 MAINTENANCE_CAP = "ca/moving_old_home_maintenance_cap"
 

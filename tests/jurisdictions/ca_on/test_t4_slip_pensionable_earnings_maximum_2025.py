@@ -15,7 +15,9 @@ from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 FAMILY = "ca/t4_slip_pensionable_earnings_maximum"
 BASE = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/"
 

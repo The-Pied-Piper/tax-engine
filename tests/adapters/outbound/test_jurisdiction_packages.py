@@ -11,20 +11,31 @@ from __future__ import annotations
 import importlib
 import sys
 from collections.abc import Callable, Iterator
+from decimal import Decimal
 from pathlib import Path
 from types import ModuleType
 
 import pytest
 
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
+from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry, parameter_parser
+from tax_engine.adapters.outbound.yaml_support import YamlNode
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
-from tests.jurisdictions.registration_fixtures import ex_cap, ex_on
+from tests.jurisdictions.registration_fixtures import ex_cap, ex_on, ex_parse
 from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.levy import Levy
 from tests.jurisdictions.registration_fixtures.ex_cap.capabilities.more.extra import Extra
+from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers.flat import (
+    FLAT,
+    FlatParser,
+)
+from tests.jurisdictions.registration_fixtures.ex_parse.parameter_parsers.more.double import (
+    DOUBLE,
+    DoubleParser,
+)
 
 _MISSING = object()
 """No `catalog` module at all."""
@@ -254,7 +265,11 @@ def on_disk(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[MakeOnD
     names: list[str] = []
 
     def make(
-        name: str, namespace: str, catalog_source: str, capabilities_source: str | None = None
+        name: str,
+        namespace: str,
+        catalog_source: str,
+        capabilities_source: str | None = None,
+        parsers_source: str | None = None,
     ) -> ModuleType:
         directory = tmp_path / name
         directory.mkdir()
@@ -264,6 +279,10 @@ def on_disk(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[MakeOnD
             (directory / "capabilities").mkdir()
             (directory / "capabilities" / "__init__.py").write_text("")
             (directory / "capabilities" / "module.py").write_text(capabilities_source)
+        if parsers_source is not None:
+            (directory / "parameter_parsers").mkdir()
+            (directory / "parameter_parsers" / "__init__.py").write_text("")
+            (directory / "parameter_parsers" / "module.py").write_text(parsers_source)
         names.append(name)
         return importlib.import_module(name)
 
@@ -371,5 +390,99 @@ def test_a_failing_import_in_one_package_registers_none_of_the_capabilities(
 
     with pytest.raises(ImportError, match="NoSuchThing"):
         packages.register_capabilities(registry)
+
+    assert registry.identifiers() == frozenset()
+
+
+# --- parameter parsers ------------------------------------------------------------------------
+
+PARSER_SOURCE = """
+from decimal import Decimal
+
+from tax_engine.adapters.outbound.parameter_parser import parameter_parser
+from tax_engine.domain.parameters.kind import ParameterKind
+
+
+@parameter_parser
+class Made:
+    kind = ParameterKind("made", Decimal)
+    body_keys = frozenset()
+
+    def parse(self, document):
+        return Decimal(0)
+"""
+
+
+@parameter_parser
+class OtherFlat:
+    """Another class's parser for the kind `FlatParser` reads."""
+
+    kind = FLAT
+    body_keys = frozenset({"rate"})
+
+    def parse(self, document: YamlNode) -> Decimal:
+        return document.field("rate").parse_decimal()
+
+
+def test_a_jurisdiction_package_registers_the_parsers_it_walks() -> None:
+    registry = ParameterParserRegistry()
+
+    JurisdictionPackages((ex_parse,)).register_parameter_parsers(registry)
+
+    assert registry.identifiers() == {"flat", "double", "in_init"}
+    assert isinstance(registry.for_kind(FLAT), FlatParser)
+    assert isinstance(registry.for_kind(DOUBLE), DoubleParser)
+
+
+def test_a_package_without_a_parameter_parsers_package_contributes_none() -> None:
+    registry = ParameterParserRegistry()
+
+    JurisdictionPackages((ex_on,)).register_parameter_parsers(registry)
+
+    assert registry.identifiers() == frozenset()
+
+
+def test_registering_a_packages_parsers_again_changes_nothing() -> None:
+    registry = ParameterParserRegistry()
+    packages = JurisdictionPackages((ex_parse,))
+    packages.register_parameter_parsers(registry)
+
+    packages.register_parameter_parsers(registry)
+
+    assert registry.identifiers() == {"flat", "double", "in_init"}
+
+
+def test_a_parser_clashing_with_another_class_for_its_kind_is_rejected() -> None:
+    registry = ParameterParserRegistry()
+    registry.register_class(OtherFlat)
+
+    with pytest.raises(DuplicateRegistrationError, match="'flat'"):
+        JurisdictionPackages((ex_parse,)).register_parameter_parsers(registry)
+
+
+def test_a_missing_dependency_of_a_parser_module_is_not_hidden(on_disk: MakeOnDisk) -> None:
+    packages = JurisdictionPackages(
+        (on_disk("ex_parse_missing", "ex-parse", "", None, "import made_up_missing_dep\n"),)
+    )
+
+    with pytest.raises(ModuleNotFoundError) as raised:
+        packages.register_parameter_parsers(ParameterParserRegistry())
+
+    assert raised.value.name == "made_up_missing_dep"
+
+
+def test_a_failing_import_in_one_package_registers_none_of_the_parsers(
+    on_disk: MakeOnDisk,
+) -> None:
+    registry = ParameterParserRegistry()
+    packages = JurisdictionPackages(
+        (
+            on_disk("ex_parse_good", "ex-parse", "", None, PARSER_SOURCE),
+            on_disk("ex_parse_bad", "ex-bad", "", None, "from decimal import NoSuchThing\n"),
+        )
+    )
+
+    with pytest.raises(ImportError, match="NoSuchThing"):
+        packages.register_parameter_parsers(registry)
 
     assert registry.identifiers() == frozenset()

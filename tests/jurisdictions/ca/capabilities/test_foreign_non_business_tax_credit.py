@@ -47,7 +47,6 @@ import pytest
 
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
-from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.capability import CapabilityResult
 from tax_engine.domain.errors import (
     InvalidCapabilityError,
@@ -88,6 +87,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     NET_FOREIGN_PROPERTY_INCOME,
 )
 from tax_engine.jurisdictions.ca.trace import ForeignTaxCreditLine, PooledForeignTaxCreditLine
+from tax_engine.jurisdictions.core.capabilities.apply_ratio import ApplyRatio
 from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs
 

@@ -2,13 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
     FHSA_ANNUAL_AMOUNT,
@@ -74,6 +67,13 @@ from tax_engine.jurisdictions.ca.catalog import (
     UNUSED_RRSP_CONTRIBUTIONS,
     UNUSED_RRSP_CONTRIBUTIONS_CARRIED_FORWARD,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 INPUTS = frozenset(
     {

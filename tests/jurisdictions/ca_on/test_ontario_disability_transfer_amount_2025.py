@@ -41,7 +41,9 @@ from tax_engine.jurisdictions.ca_on.catalog import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 BASE = "ca-on/disability_transfer_base_amount"
 SUPPLEMENT = "ca-on/disability_transfer_supplement_maximum"
 THRESHOLD = "ca-on/disability_transfer_care_threshold"

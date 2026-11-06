@@ -2,16 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.tapered_amount import TaperedAmount
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.caregiver_amount import CaregiverAmount
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -101,6 +91,16 @@ from tax_engine.jurisdictions.ca.catalog import (
     UNDER_18_AND_BORN_IN_1960_OR_EARLIER_CHECKED,
     UNDER_18_ON_DECEMBER_31_CHECKED,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.tapered_amount import TaperedAmount
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 INPUTS = frozenset(
     {

@@ -20,7 +20,6 @@ from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
-from tax_engine.domain.parameters.claim_reduction import CLAIM_REDUCTION, ClaimReduction
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.record_list import RecordList
@@ -28,6 +27,10 @@ from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.catalog import (
     DEPENDANT_NET_INCOME,
     OTHER_DEPENDANT_MEDICAL_EXPENSES,
+)
+from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import (
+    CLAIM_REDUCTION,
+    ClaimReduction,
 )
 from tax_engine.jurisdictions.ca.trace import OtherDependantMedicalLine
 

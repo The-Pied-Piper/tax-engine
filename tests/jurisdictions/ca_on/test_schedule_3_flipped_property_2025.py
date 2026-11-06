@@ -47,7 +47,9 @@ from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 S3_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s3/5000-s3-25e.txt"
 
 CONDITIONS_FAMILY = "ca/schedule_3_flipped_property_conditions"
