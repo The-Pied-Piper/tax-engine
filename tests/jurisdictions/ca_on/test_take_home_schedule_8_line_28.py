@@ -1,6 +1,7 @@
 """Schedule 8 (5000-S8, 2025) Part 3 line 28, as the Ontario take-home manifest part wires it.
 
-Form text: Line 28: Line 26 plus line 27 (CRA 5000-S8 2025).
+Form text: Line 28: Line 26 plus line 27 (CRA 5000-S8 2025). The line's export is
+`ca/schedule_8_cpp_enhanced_contributions_on_return`, which carries to T1 line 22215.
 
 Lines 26 and 27 are pure copies of lines 12 and 22, so the part sums lines 12 and 22 directly.
 The manifest part is loaded from the package. The header and the form's export are made up here,
@@ -27,7 +28,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.deductions import (
     CPP_PART_3_LINE_12,
     CPP_PART_3_LINE_22,
-    CPP_PART_3_LINE_28,
+    SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
 )
 
 D = Decimal
@@ -55,7 +56,7 @@ FORM = dedent("""\
       name: ca/schedule_8
       required: true
       exports:
-        - ca/cpp_part_3_line_28
+        - ca/schedule_8_cpp_enhanced_contributions_on_return
     """)
 
 
@@ -83,7 +84,7 @@ def line_28(tmp_path: Path, line_12: str, line_22: str) -> Decimal:
         Artifact(CPP_PART_3_LINE_22, D(line_22)),
     )
     (sheet,) = worksheets["ca/schedule_8"]
-    return sheet.get(CPP_PART_3_LINE_28).value
+    return sheet.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value
 
 
 def test_line_28_is_line_12_when_line_22_is_zero(tmp_path: Path) -> None:
