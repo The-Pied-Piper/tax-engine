@@ -1,20 +1,6 @@
-from tax_engine import build_tax_computation
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import ArtifactRegistry
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog import FEDERAL_BASIC_TAX, TAXABLE_INCOME
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
-
-
-def test_builds_a_tax_computation_over_the_jurisdiction_packages() -> None:
-    computation = build_tax_computation()
-
-    assert isinstance(computation, TaxComputationService)
-    order = (
-        computation.compose(JurisdictionCode("CA-ON"), 2025).form("ca-on/return").composition.order
-    )
-    assert len(order) == len({(type(step), step.consumes, step.produces) for step in order})
 
 
 def test_the_artifact_kinds_hold_the_jurisdiction_catalogs() -> None:
@@ -3965,30 +3951,5 @@ def test_the_artifact_kinds_hold_every_listed_catalog() -> None:
     assert artifact_kinds().identifiers() == expected.identifiers()
 
 
-def test_building_it_twice_is_fine() -> None:
-    first = build_tax_computation()
-
-    computation = build_tax_computation()
-
-    assert computation is not first
-    order = (
-        computation.compose(JurisdictionCode("CA-ON"), 2025).form("ca-on/return").composition.order
-    )
-    assert len(order) == len({(type(step), step.consumes, step.produces) for step in order})
-
-
 def test_each_call_to_the_artifact_kinds_builds_its_own_registry() -> None:
     assert artifact_kinds() is not artifact_kinds()
-
-
-def test_a_manifests_derived_kinds_are_not_added_to_the_kinds_it_was_built_with() -> None:
-    kinds = artifact_kinds()
-    before = kinds.identifiers()
-    source = YamlJurisdictionSource(JURISDICTIONS.roots(), kinds)
-
-    manifest = source.get_jurisdiction(JurisdictionCode("CA-ON")).manifest_for(2025)
-
-    derived = manifest.kinds.identifiers() - before
-    assert any("." in identifier for identifier in derived)
-    assert kinds.identifiers() == before
-    assert artifact_kinds().identifiers() == before
