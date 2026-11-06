@@ -1,0 +1,9 @@
+# Ontario 2025 take-home manifest: the return's identity and its exports. Each form's lines are
+# in a part of their own beside this one. Until the T1 General lines are built, the one export is
+# the Schedule 8 line A months carried onto the return as entered.
+jurisdiction: CA-ON
+version: 1
+valid_from_tax_year: 2025
+outputs:
+  - ca/cpp_months
+capabilities: []
