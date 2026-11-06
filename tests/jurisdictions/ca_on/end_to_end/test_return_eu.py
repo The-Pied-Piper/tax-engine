@@ -864,3 +864,21 @@ def test_step_2_line_18_below_zero_stays_negative_and_raises_line_19() -> None:
 
     assert worksheet.get(CUMULATIVE_LOSSES_AND_DEDUCTIONS).value == D("-1000.00")
     assert worksheet.get(CUMULATIVE_GAINS_LIMIT_2025).value == D("750000.00")
+
+
+def test_a_chart_2024_amount_h_left_blank_is_read_as_0() -> None:
+    # Amount H (a T3 box 30 reserve amount) is optional: a request that gives it blank, as one
+    # that leaves it out, gets the same chart as H = 0, so "Add amounts F to H" adds F and G.
+    blank = return_eu(
+        t657_chart_2024_period_1_amount_h=None, t657_chart_2024_period_2_amount_h=None
+    )
+    zero = return_eu(t657_chart_2024_period_1_amount_h="0", t657_chart_2024_period_2_amount_h="0")
+
+    for kind in (
+        CHART_2024_PERIOD_1_AMOUNTS_F_TO_H,
+        CHART_2024_PERIOD_1_AMOUNT_O,
+        CHART_2024_PERIOD_2_AMOUNTS_F_TO_H,
+        CHART_2024_PERIOD_2_AMOUNT_O,
+        CAPITAL_GAINS_DEDUCTION,
+    ):
+        assert blank.get(kind).value == zero.get(kind).value
