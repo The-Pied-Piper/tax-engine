@@ -1992,7 +1992,7 @@ of it."""
 
 CPP_PART_3_LINE_11 = AmountKind.declare(CATALOG, "cpp_part_3_line_11", non_negative=True)
 """Part 3 line 11 "amount from line 7 multiplied by 4.95% (maximum $3,356.10)": the required base
-contributions. Line 15 copies it, and lines 25 and 36 carry that amount on."""
+contributions. Line 15 copies it, and line 25 (or line 36, by line 30) carries it to the return."""
 
 CPP_PART_5_LINE_20_NEGATIVE_LINE_23_POSITIVE = CountKind.declare(
     CATALOG, "cpp_part_5_line_20_negative_line_23_positive", non_negative=True
