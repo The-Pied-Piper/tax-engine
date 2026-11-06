@@ -95,8 +95,7 @@ class JurisdictionPackages:
             for cls in parsers_in(module)
         ]
         for cls in found:
-            if not registry.holds(cls):
-                registry.register_class(cls)
+            registry.register_class(cls)
 
     @staticmethod
     def _subpackage(package: str, name: str) -> ModuleType | None:

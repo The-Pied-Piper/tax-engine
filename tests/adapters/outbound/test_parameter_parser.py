@@ -125,6 +125,16 @@ def test_register_class_registers_an_instance_under_its_kind() -> None:
     assert isinstance(found, FlatRateParser)
 
 
+def test_registering_the_same_class_again_changes_nothing() -> None:
+    registry = ParameterParserRegistry()
+    registry.register_class(FlatRateParser)
+    first = registry.for_kind(FLAT_RATE)
+
+    registry.register_class(FlatRateParser)
+
+    assert registry.for_kind(FLAT_RATE) is first
+
+
 def test_register_class_refuses_a_class_without_a_kind() -> None:
     with pytest.raises(InvalidRegistrationError, match="declares no parameter kind"):
         ParameterParserRegistry().register_class(Decimal)
@@ -343,13 +353,13 @@ def test_parsers_are_keyed_by_their_kind_name() -> None:
     assert isinstance(registry.get("flat_rate"), FlatRateParser)  # the inherited lookup
 
 
-def test_registering_two_parsers_for_one_kind_fails() -> None:
+def test_registering_another_class_for_a_kind_fails() -> None:
     registry = ParameterParserRegistry()
     registry.register_class(FlatRateParser)
     first = registry.for_kind(FLAT_RATE)
 
     with pytest.raises(DuplicateRegistrationError, match="'flat_rate'"):
-        registry.register_class(FlatRateParser)
+        registry.register_class(OtherFlatRateParser)
 
     assert registry.for_kind(FLAT_RATE) is first  # never silently overridden
 

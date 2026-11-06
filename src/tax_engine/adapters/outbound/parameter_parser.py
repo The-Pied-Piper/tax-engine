@@ -93,17 +93,10 @@ class ParameterParserRegistry(Registry[object]):
         # Safe: the found object's kind equals `kind`, value type included.
         return cast(ParameterParser[T], found)
 
-    def holds(self, cls: type) -> bool:
-        """Whether a parser of exactly the class `cls` is already registered."""
-        kind = inspect.getattr_static(cls, "kind", None)
-        return (
-            isinstance(kind, ParameterKind)
-            and kind.name in self.identifiers()
-            and type(self.get(kind.name)) is cls
-        )
-
     def register_class(self, cls: type) -> None:
         """Register an instance of the parser class `cls` under its kind's name.
+
+        Registering the same class again changes nothing; another class for the kind is an error.
 
         `cls` must declare a `ParameterKind` as its `kind` class attribute; whether its `parse`
         returns that kind's values is checked by `@parameter_parser` when mypy runs.
@@ -111,7 +104,13 @@ class ParameterParserRegistry(Registry[object]):
         kind = inspect.getattr_static(cls, "kind", None)
         if not isinstance(kind, ParameterKind):
             raise InvalidRegistrationError(f"{cls.__name__} declares no parameter kind as `kind`")
+        if self._holds(kind, cls):
+            return
         self.register(kind.name, cls())
+
+    def _holds(self, kind: ParameterKind[object], cls: type) -> bool:
+        """Whether a parser of exactly the class `cls` is already registered for `kind`."""
+        return kind.name in self.identifiers() and type(self.get(kind.name)) is cls
 
 
 PARSER_MARK = "IS_PARAMETER_PARSER"
