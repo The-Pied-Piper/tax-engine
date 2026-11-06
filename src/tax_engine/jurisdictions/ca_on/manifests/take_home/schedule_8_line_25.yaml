@@ -1,0 +1,15 @@
+# Form Schedule 8, Canada Pension Plan Contributions and Overpayment (ca/schedule_8), Part 3a
+# line 25. The form's declaration and exports are a part of the manifest's own, not this one.
+form:
+  name: ca/schedule_8
+capabilities:
+  # Line 25 is "Enter the amount from line 15. Enter this amount (in dollars and cents) on line
+  # 30800 of your return and line 58240 of your Form 428." Line 15 is "Amount from line 11". No
+  # capability copies an amount, so a one-part sum carries line 11 on (a sum is built even with
+  # one part).
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/cpp_part_3_line_11
+    produces:
+      output: ca/schedule_8_cpp_base_contributions_on_return

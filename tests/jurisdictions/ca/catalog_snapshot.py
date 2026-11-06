@@ -2024,6 +2024,7 @@ REGISTERED = frozenset(
         "ca/cpp_part_3_enhanced_contributions_on_return",
         "ca/cpp_part_3_overpayment",
         "ca/cpp_part_3_line_2",
+        "ca/cpp_part_3_line_11",
         "ca/cpp_part_5_line_20_negative_line_23_positive",
         "ca/cpp_part_5_line_20_positive_line_23_negative",
         "ca/cpp_part_5_line_33_more_than_line_17",
