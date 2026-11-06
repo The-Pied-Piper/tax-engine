@@ -462,10 +462,18 @@ self-employment and other earnings eligible for the EI program for access to EI 
 a starting amount, nil when there is no agreement with the Canada Employment Insurance
 Commission."""
 
+T2204_PREMIUMS_DEDUCTED_GIVEN = AmountKind.declare(
+    CATALOG, "t2204_premiums_deducted_given", non_negative=True
+)
+"""Total premiums deducted as given, Form T2204 line 4 "Total premiums deducted: Residents of other
+than Quebec (box 18 and box 55 of your T4 slips)": the figure the caller gives, from the T4 slips;
+blank when the caller does not give it, and line 4 is then computed."""
+
 T2204_PREMIUMS_DEDUCTED = AmountKind.declare(CATALOG, "t2204_premiums_deducted", non_negative=True)
 """Total premiums deducted, Form T2204 line 4 "Total premiums deducted: Residents of other than
-Quebec (box 18 and box 55 of your T4 slips)": a starting amount, taken as typed. Lines 6 and 9 read
-it as typed; the form prints no limit on line 4."""
+Quebec (box 18 and box 55 of your T4 slips)": the given figure (`ca/t2204_premiums_deducted_given`)
+or, when none is given, 1.64% of the EI insurable earnings of line 1 (maximum $1,077.48), computed
+as line 10 is. Lines 6 and 9 read it as typed; the form prints no limit on line 4."""
 
 T2204_PPIP_PREMIUMS = AmountKind.declare(CATALOG, "t2204_ppip_premiums", non_negative=True)
 """Quebec parental insurance plan (PPIP) premiums, the box 55 part of Form T2204 line 4 "Total

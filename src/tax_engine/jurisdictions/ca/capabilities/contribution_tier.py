@@ -7,7 +7,8 @@ too) contribute nothing and earnings above it count only up to the band. The out
 which defaults to no rounding; the maximum applies after rounding and as given.
 
 The class is `TieredContribution` so that it does not share a name with the `ContributionTier`
-value object it reads.
+value object it reads. The calculation lives in `_TierCalculation`, a parent class with no
+identifier, so the capabilities that compute a tier result share it and each names its own slots.
 """
 
 from __future__ import annotations
@@ -27,8 +28,39 @@ from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
 from tax_engine.jurisdictions.ca.trace import ContributionTierLine
 
 
+class _TierCalculation(Capability):
+    """The tier calculation shared by the capabilities that compute a tier result on earnings.
+
+    Has no identifier, so it is not registered; a subclass is decorated with `@capability`, names
+    its own slots in `__init__`, and calls `_tier_result` with the earnings it read.
+    """
+
+    def _tier_result(
+        self,
+        tier: ParameterDataset[ContributionTier],
+        earnings_kind: Money,
+        output: Money,
+        earnings: Decimal,
+    ) -> CapabilityResult:
+        """Produce `output`: the `tier` rate on the part of `earnings` inside its band, rounded and
+        capped, with the `ContributionTierLine` that records it."""
+        values, rounding = tier.values, tier.rounding
+        inside = min(earnings, values.upper) - values.lower
+        # Like the floored subtraction: a tie at zero produces a plain 0, never a signed one.
+        contributory = inside if inside > 0 else Decimal(0)
+        result = min(rounding.apply(contributory * values.rate.value), values.maximum)
+        return CapabilityResult(
+            outputs=(Artifact(output, result),),
+            trace=(
+                ContributionTierLine(
+                    output, earnings_kind, earnings, values, rounding, contributory, result
+                ),
+            ),
+        )
+
+
 @capability(identifier="contribution_tier")
-class TieredContribution(Capability):
+class TieredContribution(_TierCalculation):
     """Produces `output`: the `tier` rate on the `earnings` inside its band, rounded and capped."""
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[ContributionTier]]] = {
@@ -48,16 +80,4 @@ class TieredContribution(Capability):
 
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         earnings = self._input(inputs, self._earnings).value
-        tier, rounding = self._tier.values, self._tier.rounding
-        inside = min(earnings, tier.upper) - tier.lower
-        # Like the floored subtraction: a tie at zero produces a plain 0, never a signed one.
-        contributory = inside if inside > 0 else Decimal(0)
-        result = min(rounding.apply(contributory * tier.rate.value), tier.maximum)
-        return CapabilityResult(
-            outputs=(Artifact(self._output, result),),
-            trace=(
-                ContributionTierLine(
-                    self._output, self._earnings, earnings, tier, rounding, contributory, result
-                ),
-            ),
-        )
+        return self._tier_result(self._tier, self._earnings, self._output, earnings)

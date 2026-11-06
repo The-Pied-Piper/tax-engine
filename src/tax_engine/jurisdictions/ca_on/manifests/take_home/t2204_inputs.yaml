@@ -7,3 +7,10 @@ inputs:
     required: false
     default: null
     basis: 'Total self-employment and other earnings eligible for the EI program for access to EI special benefits'
+# Line 4: "Total premiums deducted: Residents of other than Quebec (box 18 and box 55 of your T4
+# slips)". A salary-only caller has no T4 slip, so a request that leaves the line out is read as
+# blank, and the line 4 part computes it from line 1.
+  - name: ca/t2204_premiums_deducted_given
+    required: false
+    default: null
+    basis: 'Total premiums deducted: Residents of other than Quebec (box 18 and box 55 of your T4 slips)'
