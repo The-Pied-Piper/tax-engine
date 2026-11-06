@@ -1,0 +1,41 @@
+# T2204 (2025) line 1: "Total EI insurable earnings (box 24 or, if blank, box 14 of your T4 slips)
+# (1)". The take-home caller has no T4, so the salary typed once (T1 line 10100) is the earnings, in
+# place of box 24 or box 14 of the one slip a salaried filer has.
+#
+# Note (1): "If you have no self-employment earnings and your total EI insurable earnings on your
+# T4 slips are less than $2,000, enter "0". However, if you have self-employment earnings and have
+# an agreement with the Canada Employment Insurance Commission through Service Canada to participate
+# in the EI program for access to EI special benefits, enter the total EI insurable earnings from
+# your T4 slips."
+#
+# Step 1 counts the note: 0 when line 2 is 0 and the $2,000 of line 7 is more than the salary, else
+# 1. Its amounts are in position order: line 2 (position 1), the $2,000 (position 2) and the salary
+# (position 3). The `blank` rule is set on the whole amounts slot, because CountByConditions takes
+# one blank rule for the slot: a blank line 2 reads as 0, as the note needs. A blank salary or
+# exemption also reads as 0 in this build. That is acceptable here: the salary is always typed,
+# and the exemption is produced by the line 7 ticket (#209) before this step runs.
+#
+# Step 2 multiplies the salary by that count: the salary when the note does not apply, "0" when
+# it does.
+form:
+  name: ca/t2204
+capabilities:
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t2204_line_1_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/t2204_self_employment_earnings
+        - ca/t2204_exemption
+        - ca/employment_income
+    blank:
+      amounts: "0"
+    produces:
+      output: ca/t2204_line_1_count
+  - name: core/times_count
+    consumes:
+      amount: ca/employment_income
+      count: ca/t2204_line_1_count
+    produces:
+      output: ca/t2204_line_1

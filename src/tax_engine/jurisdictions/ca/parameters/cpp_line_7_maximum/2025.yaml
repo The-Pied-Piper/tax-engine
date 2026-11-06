@@ -1,0 +1,12 @@
+# Maximum of Schedule 8 Part 3 line 7, 2025 tax year (T1-2025 Schedule 8, form 5000-S8). Part 3
+# line 7 "Line 5 minus line 6 (if negative, enter "0") (maximum $67,800)".
+# The figure is taken as printed. It is the bound line 7 caps the difference at, so it is an
+# amount for the capped_amount capability: a difference above it is produced as this figure.
+# Dollars and cents, so half-up to the cent.
+family: ca/cpp_line_7_maximum
+tax_year: 2025
+kind: amount
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "67800"

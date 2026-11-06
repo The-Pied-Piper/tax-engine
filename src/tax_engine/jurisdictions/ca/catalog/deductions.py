@@ -1990,6 +1990,35 @@ CPP_PART_3_LINE_4 = AmountKind.declare(CATALOG, "cpp_part_3_line_4", non_negativ
 line 3 (if negative, enter "0")": line 2 (`ca/cpp_part_3_line_2`) less line 3, "Amount from line B
 of Part 2" (the maximum pensionable earnings), not below zero. Line 5 and line 22 read it."""
 
+CPP_PART_3_LINE_5 = AmountKind.declare(CATALOG, "cpp_part_3_line_5", non_negative=True)
+"""Part 3 line 5 "Line 5: Line 2 minus line 4 (if negative, enter "0")": the employment earnings
+(line 2) less line 4, not below zero. Line 7 is "Line 5 minus line 6"."""
+
+CPP_PART_3_LINE_7_DIFFERENCE = AmountKind.declare(
+    CATALOG, "cpp_part_3_line_7_difference", non_negative=True
+)
+"""Part 3 line 7 before its maximum, "Line 5 minus line 6 (if negative, enter "0")": line 5 less
+line 6 ("Amount from line E of Part 2"), not below zero. Line 7 caps it at its printed maximum."""
+
+CPP_PART_3_LINE_7 = AmountKind.declare(CATALOG, "cpp_part_3_line_7", non_negative=True)
+"""Earnings subject to base and first additional contributions, Schedule 8 Part 3 line 7 "Line 5
+minus line 6 (if negative, enter "0") (maximum $67,800)": the lesser of the difference and the
+maximum. Lines 11 and 12 take their rates of it."""
+
+CPP_PART_3_LINE_11 = AmountKind.declare(CATALOG, "cpp_part_3_line_11", non_negative=True)
+"""Part 3 line 11 "amount from line 7 multiplied by 4.95% (maximum $3,356.10)": the required base
+contributions. Line 15 copies it, and line 25 (or line 36, by line 30) carries it to the return."""
+
+CPP_PART_3_LINE_22 = AmountKind.declare(CATALOG, "cpp_part_3_line_22", non_negative=True)
+"""Required second additional CPP contributions, Schedule 8 Part 3 line 22 "amount from line 4
+multiplied by 4% (maximum $396.00)": line 27 is "Amount from line 22 (if any)", and line 28 is
+line 26 plus line 27."""
+
+
+CPP_PART_3_LINE_12 = AmountKind.declare(CATALOG, "cpp_part_3_line_12", non_negative=True)
+"""Schedule 8 Part 3 line 12 "amount from line 7 multiplied by 1% (maximum $678.00)": the required
+first additional contributions on the earnings of line 7."""
+
 CPP_PART_5_LINE_20_NEGATIVE_LINE_23_POSITIVE = CountKind.declare(
     CATALOG, "cpp_part_5_line_20_negative_line_23_positive", non_negative=True
 )
