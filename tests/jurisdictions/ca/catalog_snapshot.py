@@ -2028,6 +2028,7 @@ REGISTERED = frozenset(
         "ca/cpp_part_3_line_5",
         "ca/cpp_part_3_line_7_difference",
         "ca/cpp_part_3_line_7",
+        "ca/cpp_part_3_line_11",
         "ca/cpp_part_3_line_22",
         "ca/cpp_part_3_line_12",
         "ca/cpp_part_5_line_20_negative_line_23_positive",

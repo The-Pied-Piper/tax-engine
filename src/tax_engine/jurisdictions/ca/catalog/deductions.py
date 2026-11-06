@@ -2005,6 +2005,10 @@ CPP_PART_3_LINE_7 = AmountKind.declare(CATALOG, "cpp_part_3_line_7", non_negativ
 minus line 6 (if negative, enter "0") (maximum $67,800)": the lesser of the difference and the
 maximum. Lines 11 and 12 take their rates of it."""
 
+CPP_PART_3_LINE_11 = AmountKind.declare(CATALOG, "cpp_part_3_line_11", non_negative=True)
+"""Part 3 line 11 "amount from line 7 multiplied by 4.95% (maximum $3,356.10)": the required base
+contributions. Line 15 copies it, and line 25 (or line 36, by line 30) carries it to the return."""
+
 CPP_PART_3_LINE_22 = AmountKind.declare(CATALOG, "cpp_part_3_line_22", non_negative=True)
 """Required second additional CPP contributions, Schedule 8 Part 3 line 22 "amount from line 4
 multiplied by 4% (maximum $396.00)": line 27 is "Amount from line 22 (if any)", and line 28 is
