@@ -1,0 +1,15 @@
+# Form Schedule 8, Canada Pension Plan Contributions and Overpayment (ca/schedule_8), Part 3
+# line 11. The form's declaration and exports are a part of the manifest's own, not this one.
+form:
+  name: ca/schedule_8
+capabilities:
+  # Line 11 is "amount from line 7 multiplied by 4.95% (maximum $3,356.10)": line 7 is the
+  # earnings subject to the base contributions, read here as it is. The 4.95% and the maximum are
+  # dataset figures as printed; the tier starts at 0 because line 7 is already net of the exemption.
+  - name: ca/contribution_tier
+    params:
+      tier: ca/cpp_line_11_base_contribution
+    consumes:
+      earnings: ca/cpp_part_3_line_7
+    produces:
+      output: ca/cpp_part_3_line_11
