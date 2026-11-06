@@ -1,0 +1,21 @@
+# Required base CPP contributions, Schedule 8 Part 3 line 11 (T1-2025 Schedule 8, form 5000-S8):
+# "amount from line 7 multiplied by 4.95% (maximum $3,356.10)". Line 7 is "Line 5 minus line 6
+# (if negative, enter "0") (maximum $67,800)", so line 7 already holds the earnings above the
+# basic exemption and the tier starts at 0, not at the $3,500 exemption. Its upper bound is line
+# 7's printed maximum, $67,800, the finite top the tier needs above its lower bound.
+# The lines of Part 2 and Part 3 before line 7 (lines 2 to 6, and Part 2's B and E) are not folded
+# in here: each is its own line with its own part, so this tier reads line 7 alone, unlike
+# ca/cpp_base_contribution, which folds them into one step from $3,500 to $71,300.
+# Part 3a line 25 "Enter the amount from line 15. Enter this amount (in dollars and cents) on line
+# 30800 of your return and line 58240 of your Form 428.", so the tier rounds half-up to the cent.
+# The rate, the upper bound and the maximum are the dataset figures as printed.
+family: ca/cpp_line_11_base_contribution
+tax_year: 2025
+kind: contribution_tier
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.0495"
+lower: "0"
+upper: "67800"
+maximum: "3356.10"

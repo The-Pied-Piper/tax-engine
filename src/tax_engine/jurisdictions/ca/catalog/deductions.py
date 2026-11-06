@@ -1985,6 +1985,15 @@ CPP_PART_3_LINE_2 = AmountKind.declare(CATALOG, "cpp_part_3_line_2", non_negativ
 lesser of the additional maximum pensionable earnings (Part 2 line D) and the employment income
 (line 1), the amount Part 5 line 32 takes as "Amount from line 2 of Part 3"."""
 
+CPP_PART_3_LINE_7 = AmountKind.declare(CATALOG, "cpp_part_3_line_7", non_negative=True)
+"""Part 3 line 7 "Line 5 minus line 6 (if negative, enter "0") (maximum $67,800)": the earnings
+subject to the base and the first additional contributions. Lines 11 and 12 take their rates
+of it."""
+
+CPP_PART_3_LINE_11 = AmountKind.declare(CATALOG, "cpp_part_3_line_11", non_negative=True)
+"""Part 3 line 11 "amount from line 7 multiplied by 4.95% (maximum $3,356.10)": the required base
+contributions. Line 15 copies it, and line 25 reads it."""
+
 CPP_PART_5_LINE_20_NEGATIVE_LINE_23_POSITIVE = CountKind.declare(
     CATALOG, "cpp_part_5_line_20_negative_line_23_positive", non_negative=True
 )
