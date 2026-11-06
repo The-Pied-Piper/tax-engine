@@ -1,0 +1,12 @@
+# Schedule 8 (form 5000-S8, 2025) Part 3 line 4: "Line 2 minus line 3 (if negative, enter "0")",
+# the earnings subject to second additional contributions. Line 3 is the amount from line B of
+# Part 2, read from its source line, not copied.
+form:
+  name: ca/schedule_8
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cpp_part_3_line_2
+      less: ca/cpp_maximum_pensionable_earnings
+    produces:
+      output: ca/cpp_part_3_line_4
