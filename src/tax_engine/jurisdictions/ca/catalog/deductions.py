@@ -2019,10 +2019,6 @@ CPP_PART_3_LINE_12 = AmountKind.declare(CATALOG, "cpp_part_3_line_12", non_negat
 """Schedule 8 Part 3 line 12 "amount from line 7 multiplied by 1% (maximum $678.00)": the required
 first additional contributions on the earnings of line 7."""
 
-CPP_PART_3_LINE_28 = AmountKind.declare(CATALOG, "cpp_part_3_line_28", non_negative=True)
-"""Part 3 line 28 "Line 28: Line 26 plus line 27": the deduction for CPP enhanced contributions,
-T1 line 22215 (line 12 plus line 22)."""
-
 CPP_PART_5_LINE_20_NEGATIVE_LINE_23_POSITIVE = CountKind.declare(
     CATALOG, "cpp_part_5_line_20_negative_line_23_positive", non_negative=True
 )
