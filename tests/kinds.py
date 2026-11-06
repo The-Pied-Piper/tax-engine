@@ -10,11 +10,9 @@ from dataclasses import dataclass
 from functools import cache
 from typing import Any
 
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tax_engine.registrations import artifact_kinds
 
 
 @cache
@@ -23,13 +21,9 @@ def bundled_kinds() -> ArtifactRegistry:
     return artifact_kinds()
 
 
-@cache
 def ca_on_kinds() -> ArtifactRegistry:
-    """The kinds of the bundled packages and the `<form>.<export>` kinds the 2025 Ontario
-    manifest derives: what its manifest names. Never register into it.
-    """
-    source = YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds())
-    return source.get_jurisdiction(JurisdictionCode("CA-ON")).manifest_for(2025).kinds
+    """The kinds of the bundled packages; no Ontario manifest derives more kinds today."""
+    return bundled_kinds()
 
 
 class AutoKinds(ArtifactRegistry):
