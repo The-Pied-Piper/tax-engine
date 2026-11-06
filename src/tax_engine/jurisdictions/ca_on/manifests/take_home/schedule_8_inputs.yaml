@@ -1,8 +1,9 @@
 # Schedule 8 (CPP contributions) inputs a salary-only caller does not give.
 inputs:
-  # Part 2 line A: the number of months CPP applied. A full-year salaried filer aged 18 to 64
-  # meets none of conditions a) to h), so the form's own instruction gives 12.
+  # Part 2 line A: the number of months CPP applied. A full-year salaried filer who turned 18
+  # before 2025 and is under 65 meets none of conditions a) to h), so the form's own instruction
+  # gives 12.
   - name: ca/cpp_months
     required: false
     default: "12"
-    basis: 'Enter "12" on line A below unless any of the following conditions apply'
+    basis: 'Enter "12" on line A below unless any of the following conditions apply:'
