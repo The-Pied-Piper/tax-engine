@@ -487,7 +487,7 @@ inputs:
   - name: ca/t657_chart_2024_period_2_amount_h
     required: false
     default: "0"
-    basis: "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates it is a reserve from property disposed of in Period 2 of 2024. Add amounts F to H (if negative, enter \"0\")"
+    basis: "Amount included in box 30 of a 2025 T3 slip and the footnote area indicates it is a reserve from property disposed of in Period 2 of 2024 Add amounts F to H (if negative, enter \"0\")"
   - name: ca/t657_chart_2024_period_2_amount_j
     required: true
   - name: ca/t657_part_1_amount_f
