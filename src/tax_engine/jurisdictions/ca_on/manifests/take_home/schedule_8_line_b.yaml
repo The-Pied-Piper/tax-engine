@@ -1,0 +1,12 @@
+# Schedule 8 (form 5000-S8, 2025) Part 2 line B: "Your maximum pensionable earnings for 2025
+# (maximum $71,300)", the row of the "Monthly proration for 2025" table for the months on line A.
+form:
+  name: ca/schedule_8
+capabilities:
+  - name: ca/amount_by_count
+    params:
+      table: ca/cpp_maximum_pensionable_earnings
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_maximum_pensionable_earnings
