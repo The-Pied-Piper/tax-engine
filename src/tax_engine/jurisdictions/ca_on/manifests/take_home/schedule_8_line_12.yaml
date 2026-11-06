@@ -1,0 +1,14 @@
+# Form Schedule 8, Canada Pension Plan Contributions and Overpayment (ca/schedule_8), Part 3
+# line 12. The form's declaration and exports are a part of the manifest's own, not this one.
+form:
+  name: ca/schedule_8
+capabilities:
+  # Schedule 8 Part 3 line 12 "amount from line 7 multiplied by 1% (maximum $678.00)": 1% of the
+  # earnings of line 7, to the cent and at most the printed maximum. Line 7 is another ticket's part.
+  - name: ca/contribution_tier
+    params:
+      tier: ca/cpp_line_12_first_additional_contribution
+    consumes:
+      earnings: ca/cpp_part_3_line_7
+    produces:
+      output: ca/cpp_part_3_line_12
