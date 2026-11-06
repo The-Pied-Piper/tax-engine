@@ -1,0 +1,12 @@
+# Schedule 8 (form 5000-S8, 2025) Part 3 line 22: "amount from line 4 multiplied by 4% (maximum
+# $396.00)", the required second additional contributions. Line 28 reads it (line 27 is a copy).
+form:
+  name: ca/schedule_8
+capabilities:
+  - name: ca/contribution_tier
+    params:
+      tier: ca/cpp_line_22_second_additional_contribution
+    consumes:
+      earnings: ca/cpp_part_3_line_4
+    produces:
+      output: ca/cpp_part_3_line_22
