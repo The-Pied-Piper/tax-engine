@@ -1,0 +1,14 @@
+# Form Schedule 8, Canada Pension Plan Contributions and Overpayment (ca/schedule_8), Part 2
+# line D. The form's declaration and exports are a part of the manifest's own, not this one.
+form:
+  name: ca/schedule_8
+capabilities:
+  # Schedule 8 Part 2 line D "Your additional maximum pensionable earnings for 2025 (maximum
+  # $81,200)": the row of the monthly proration table for the months on line A.
+  - name: ca/amount_by_count
+    params:
+      table: ca/cpp_additional_maximum_pensionable_earnings
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_additional_maximum_pensionable_earnings
