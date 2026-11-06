@@ -41,7 +41,9 @@ from tax_engine.jurisdictions.ca.capabilities.count_refused_by_conditions import
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 SCHEDULE_8_TXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt"
 
 BOTH_FAMILY = "ca/cpp_part_4_and_part_5_both_conditions"

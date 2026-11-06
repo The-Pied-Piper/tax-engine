@@ -12,10 +12,6 @@ the forms naming amounts "included on line 25600" read.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 from tax_engine.jurisdictions.ca.catalog import (
@@ -30,6 +26,10 @@ from tax_engine.jurisdictions.ca.catalog import (
     US_SOCIAL_SECURITY_RESIDENT_SINCE_BEFORE_1996_CHECKED,
     US_SOCIAL_SECURITY_TREATY_DEDUCTION,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 INPUTS = frozenset(
     {

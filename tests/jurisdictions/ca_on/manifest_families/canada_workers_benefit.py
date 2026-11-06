@@ -2,15 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
@@ -124,6 +115,15 @@ from tax_engine.jurisdictions.ca.catalog import (
     UCCB_AND_RDSP_INCOME_REPAYMENTS,
     WORKING_INCOME,
 )
+from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.tiered_surcharge import TieredSurcharge
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 # The record kinds read by the two record totals: the one record of each export of Form T90.
 T90_EXEMPT_WORKING_INCOME_PER_FORM = RecordListKind(

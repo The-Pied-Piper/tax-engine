@@ -974,7 +974,7 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     SENIORS_TRANSIT_PAID,
     SEPARATE_RESIDENCES_FOR_MEDICAL_REASONS,
 )
-from tax_engine.registrations import JURISDICTIONS
+from tax_engine.registrations import JURISDICTIONS, parameter_parsers
 
 D = Decimal
 
@@ -3321,7 +3321,7 @@ def foreign_tax_countries(*rows: tuple[str, ...]) -> Artifact[RecordList]:
 CPP_BASE_TIER = "ca/cpp_base_contribution"
 CPP_FIRST_ADDITIONAL_TIER = "ca/cpp_first_additional_contribution"
 CPP_SECOND_ADDITIONAL_TIER = "ca/cpp_second_additional_contribution"
-_PARAMETERS = YamlParameterSource(JURISDICTIONS.roots())
+_PARAMETERS = YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers())
 
 
 # Slips counted when a test leaves the counts out: enough that the per-slip maximums never bind, so

@@ -34,7 +34,9 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 LINE_23_ROUNDING = "ca/split_income_line_23_rounding"
 LINE_49_ROUNDING = "ca-on/split_income_line_49_rounding"

@@ -78,12 +78,12 @@ from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.jurisdictions.ca.capabilities.business_vehicle_expenses import (
     BusinessVehicleExpenses,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import YEAR_AMOUNTS
 from tax_engine.jurisdictions.ca.trace import BusinessVehicleLine
 from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.vehicles_table import (

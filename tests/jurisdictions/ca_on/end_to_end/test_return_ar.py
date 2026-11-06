@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
     CAPITAL_GAIN,
@@ -18,6 +17,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TOTAL_INCOME,
     TOTAL_PAYABLE,
 )
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute
 
 

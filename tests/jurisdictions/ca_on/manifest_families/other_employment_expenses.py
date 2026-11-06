@@ -14,8 +14,6 @@ The return declares no output for the line: it is read by the return's own steps
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
@@ -25,6 +23,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     T777_LINE_17,
     T777_LINE_17_TOTAL,
 )
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 # The record kinds read by the two record totals: one record for each copy of Form RC359 (its line 7
 # field) and the one record of the export `ca/t777.t777_line_17` of Form T777.

@@ -10,8 +10,6 @@ and exports them with the amount; rows are not added. The return reads nothing o
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 from tax_engine.jurisdictions.ca_on.catalog import (
@@ -22,6 +20,8 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     ON_BEN_RESIDENCE_MONTHS,
     ON_BEN_RESIDENCE_MONTHS_CHECKED,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 
 # The instances input: the rows of the return, any number.
 INPUTS = frozenset({"ca-on/on_ben_residence_rows"})

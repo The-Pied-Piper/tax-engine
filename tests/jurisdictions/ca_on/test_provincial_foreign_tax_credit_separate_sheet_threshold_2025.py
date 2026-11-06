@@ -24,7 +24,9 @@ from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.registry import Namespace
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 T2036_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2036/t2036-25e.pdf"
 
 FAMILY = "ca-on/provincial_foreign_tax_credit_separate_sheet_threshold"

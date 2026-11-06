@@ -26,10 +26,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -108,6 +104,10 @@ from tax_engine.jurisdictions.ca.catalog import (
     FUEL_CHARGE_PARTNERSHIP_CREDIT_TOTAL,
 )
 from tax_engine.jurisdictions.ca_on.capabilities.record_count import RecordCount
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.jurisdictions.ca_on.manifest_families.t2042 import (
     FARM_AMOUNT_8_AB_PER_STATEMENT,
     FARM_AMOUNT_8_MB_PER_STATEMENT,

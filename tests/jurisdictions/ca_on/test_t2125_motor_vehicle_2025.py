@@ -54,17 +54,23 @@ from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
 from tax_engine.domain.trace import ItemsTotalLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_MOTOR_VEHICLE_EXPENSES,
     BUSINESS_TOTAL_EXPENSES,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import (
+    YEAR_AMOUNTS,
+    YearAmounts,
+    YearAmountsRow,
+)
 from tax_engine.jurisdictions.ca.trace import BusinessVehicleLine
 from tests.jurisdictions.ca_on.end_to_end.support import D, run
 
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T2125_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25e.pdf"
 T4002_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t4002/t4002-25e.pdf"

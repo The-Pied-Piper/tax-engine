@@ -11,14 +11,6 @@ the total of the gross rental income that is T1 line 12599 (`STEPS` and `WIRING`
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities import (
@@ -221,6 +213,14 @@ from tax_engine.jurisdictions.ca.catalog import (
     SHORT_TERM_RENTAL_RELATED_EXPENSES_TOTAL_CHECKED,
     SHORT_TERM_RENTAL_UNITS,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 NET_RENTAL_INCOME_PER_STATEMENT = RecordListKind(
     "ca/t776.net_rental_income", fields=(NET_RENTAL_INCOME,)

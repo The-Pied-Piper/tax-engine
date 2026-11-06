@@ -47,7 +47,6 @@ from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundingRule, RoundTo
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
 from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_proceeds import CcaVehicleProceeds
 from tax_engine.jurisdictions.ca.catalog import (
@@ -74,6 +73,11 @@ from tax_engine.jurisdictions.ca.catalog import (
     CCA_VEHICLE_GOVERNMENT_ASSISTANCE,
     CCA_ZEPV_DIEP_PROCEEDS,
     CCA_ZEPV_PROCEEDS,
+)
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import (
+    YEAR_AMOUNTS,
+    YearAmounts,
+    YearAmountsRow,
 )
 from tax_engine.jurisdictions.ca.trace import CcaVehicleProceedsLine, CcaZepvProceedsLine
 from tests.capabilities import bundled_capabilities

@@ -35,7 +35,6 @@ from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import RoundingRule
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_proceeds import (
     prescribed_amount_with_tax,
@@ -47,6 +46,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CCA_VEHICLE_NON_ARMS_LENGTH_FAIR_MARKET_VALUE,
     CCA_VEHICLE_SELLER_COST,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_engine.jurisdictions.ca.trace import CcaVehicleNonArmsLengthCheckLine
 
 CLASS_10_1 = Decimal("10.1")

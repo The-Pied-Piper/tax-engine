@@ -13,8 +13,6 @@ and line 74), so the slip values flow as typed.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
@@ -26,6 +24,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     T4_QPP_PENSIONABLE_EARNINGS_SLIP_LIMIT,
     T4_QPP_SLIP_COUNT,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
 
 INPUTS = frozenset(
     {

@@ -12,13 +12,6 @@ every move and declares no output for the line 30 that nothing reads (`OUTPUTS` 
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.threshold_gate import ThresholdGate
@@ -69,6 +62,13 @@ from tax_engine.jurisdictions.ca.catalog import (
     OTHER_EMPLOYMENT_INCOME,
     TAXABLE_SCHOLARSHIPS,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.jurisdictions.ca_on.manifest_families.t1139 import (
     BUSINESS_PROFIT_ON_RETURN_LINES,
     COMMISSION_PROFIT_ON_RETURN_LINES,

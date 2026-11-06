@@ -37,7 +37,9 @@ from tax_engine.jurisdictions.ca_on.catalog import (
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 BASE = "ca-on/caregiver_base_amount"
 MAXIMUM = "ca-on/caregiver_maximum_amount"
 WORKSHEET_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.txt"

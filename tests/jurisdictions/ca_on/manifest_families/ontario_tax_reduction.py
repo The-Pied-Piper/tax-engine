@@ -2,14 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.first_record_count import FirstRecordCount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.multiple_over import MultipleOver
-from tax_engine.domain.capabilities.per_unit_amount import PerUnitAmount
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -69,6 +61,14 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     TAX_REDUCTION_FOR_DEPENDANTS,
     TAX_REDUCTION_FOR_DEPENDANTS_BEFORE_SPOUSE_RULE,
 )
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.first_record_count import FirstRecordCount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.multiple_over import MultipleOver
+from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAmount
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 # The shared fact of the form `ca/spouse_on_december_31`, exported as the checked kind: the
 # kind `<form>.<export>` that the return reads, a record list of the one checked count.

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.parameters.claim_reduction import ClaimReduction
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import ItemsTotalLine
@@ -35,6 +34,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import ClaimReduction
 from tax_engine.jurisdictions.ca.trace import OtherDependantMedicalLine
 from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tax_engine.jurisdictions.ca_on.catalog import (

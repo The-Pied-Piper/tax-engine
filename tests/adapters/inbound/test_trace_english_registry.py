@@ -32,7 +32,6 @@ from tax_engine.adapters.inbound.trace_english.registry import (
     EnglishRendererRegistry,
     english_renderer,
 )
-from tax_engine.adapters.outbound.parameter_parsers.registry import ParameterParserRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Registry
@@ -159,10 +158,6 @@ def test_a_directly_constructed_registry_is_separate_and_empty() -> None:
     assert registry is not EnglishRendererRegistry.shared()
     with pytest.raises(UnknownRegistrationError):
         registry.for_line_class(SumLine)
-
-
-def test_shared_renderer_registry_is_not_the_shared_parser_registry() -> None:
-    assert id(EnglishRendererRegistry.shared()) != id(ParameterParserRegistry.shared())
 
 
 def test_the_shared_registry_holds_exactly_the_built_in_renderers() -> None:

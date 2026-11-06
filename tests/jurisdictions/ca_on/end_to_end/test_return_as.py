@@ -8,14 +8,6 @@ from typing import Any
 import pytest
 
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -58,6 +50,14 @@ from tax_engine.jurisdictions.ca.catalog import (
     TOTAL_PAYABLE,
 )
 from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 from tests.jurisdictions.ca_on.end_to_end.support import D, compute, routed_statement
 
 

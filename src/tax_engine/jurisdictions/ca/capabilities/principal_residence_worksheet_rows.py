@@ -28,7 +28,6 @@ from decimal import Decimal
 from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
-from tax_engine.domain.capabilities.apply_ratio import ApplyRatio
 from tax_engine.domain.errors import ValidationError
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.factor import FACTOR, Factor
@@ -52,6 +51,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     RESIDENCE_WS_YEARS_DESIGNATED_AFTER_1981,
     RESIDENCE_WS_YEARS_OWNED_AFTER_1981,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_ratio import ApplyRatio
 
 
 @dataclass(frozen=True)

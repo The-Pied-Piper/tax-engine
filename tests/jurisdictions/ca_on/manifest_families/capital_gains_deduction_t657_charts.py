@@ -11,13 +11,6 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.domain.blank import PASS_ON
-from tax_engine.domain.capabilities.apply_fraction import ApplyFraction
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.lesser_of import LesserOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
     ANNUAL_GAINS_LIMIT_2025,
@@ -51,6 +44,13 @@ from tax_engine.jurisdictions.ca.catalog import (
     T657_CHART_2024_PERIOD_2_AMOUNT_H,
     T657_CHART_2024_PERIOD_2_AMOUNT_J,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
 
 INPUTS = frozenset(
     {

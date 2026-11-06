@@ -20,13 +20,15 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.domain.parameters.brackets import BRACKETS, BracketSchedule
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.jurisdictions.ca.catalog import FEDERAL_BASIC_TAX, TAXABLE_INCOME
+from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 
 FEDERAL_SOURCES = (
     "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/last-year.html",

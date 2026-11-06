@@ -26,7 +26,6 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
@@ -39,10 +38,13 @@ from tax_engine.jurisdictions.ca.capabilities.amount_or_divided_by_rate import (
     AmountOrDividedByRate,
 )
 from tax_engine.jurisdictions.ca_on import catalog as ontario
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 from tests.jurisdictions.ca_on.end_to_end.support import compute
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 INCOME_LIMIT = "ca-on/spouse_transfer_income_limit"
 S2_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-s2/5006-s2-25e.txt"
 

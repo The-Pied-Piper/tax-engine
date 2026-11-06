@@ -62,7 +62,9 @@ from tax_engine.jurisdictions.ca_on.capabilities.provincial_foreign_tax_credit i
 )
 
 D = Decimal
-SOURCE = YamlParameterSource(tax_engine.registrations.JURISDICTIONS.roots())
+SOURCE = YamlParameterSource(
+    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+)
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 ROUNDING = "ca-on/provincial_foreign_tax_credit_rounding"
 THRESHOLD = "ca-on/provincial_foreign_tax_credit_separate_sheet_threshold"

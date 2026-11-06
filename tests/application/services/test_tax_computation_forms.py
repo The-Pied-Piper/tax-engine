@@ -26,8 +26,6 @@ import pytest
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.blank import BLANK, BlankRule
-from tax_engine.domain.capabilities.record_total import RecordTotal
-from tax_engine.domain.capabilities.subtract import Subtract
 from tax_engine.domain.capability import Capability, CapabilityRegistry, CapabilityResult
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
@@ -52,6 +50,8 @@ from tax_engine.domain.manifest import (
 )
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
+from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tests.application.services.test_tax_computation import (
     BASE,
     FACTOR,

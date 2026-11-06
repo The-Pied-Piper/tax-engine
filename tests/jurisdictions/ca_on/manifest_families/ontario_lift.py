@@ -2,14 +2,6 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.capped_amount import CappedAmount
-from tax_engine.domain.capabilities.choose_by_count import ChooseByCount
-from tax_engine.domain.capabilities.credit_amount import CreditAmount
-from tax_engine.domain.capabilities.greater_of import GreaterOf
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.tiered_surcharge import TieredSurcharge
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
     EMPLOYMENT_INCOME,
@@ -36,6 +28,14 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     ONTARIO_TAX_AFTER_FOREIGN_TAX_CREDIT,
     ONTARIO_TAX_AFTER_LIFT_CREDIT,
 )
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
+from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
+from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.tiered_surcharge import TieredSurcharge
 
 # Schedule ON428-A asks no input of its own: the spouse or common-law partner on December 31 is the
 # shared fact of the form `ca/spouse_on_december_31`, read as the total below.

@@ -22,7 +22,7 @@ from tax_engine.domain.capability import Capability, CapabilityResult, capabilit
 from tax_engine.domain.errors import InputAboveBoundError, InvalidYearAmountsError
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import YEAR_AMOUNTS, YearAmounts
 from tax_engine.jurisdictions.ca.trace import YearAmountLine
 
 AMOUNT_NAME = "amount"

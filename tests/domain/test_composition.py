@@ -19,10 +19,6 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.progressive_tax import ProgressiveTax
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.domain.capability import Capability, CapabilityResult
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
@@ -41,6 +37,10 @@ from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import BracketColumnLine, RoundedTotalLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 
 D = Decimal
 A = AmountKind("ex/a")

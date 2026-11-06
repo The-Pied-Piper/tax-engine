@@ -14,9 +14,6 @@ declares no output for it, as the section of Form T1206 does.
 
 from __future__ import annotations
 
-from tax_engine.domain.capabilities.at_most import AtMost
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.sum import Sum
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.catalog import (
     T90_COVID_19_PAYMENTS,
@@ -42,6 +39,9 @@ from tax_engine.jurisdictions.ca.catalog import (
     T90_T4_BOX_71_EMPLOYMENT_INCOME,
     T90_TOTAL_EXEMPT_INCOME,
 )
+from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
 
 FORM = "ca/t90"
 

@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+from decimal import Decimal
+
+from tax_engine.adapters.outbound.parameter_parser import parameter_parser
+from tax_engine.adapters.outbound.yaml_support import YamlNode
+from tax_engine.domain.parameters.kind import ParameterKind
+
+FLAT = ParameterKind("flat", Decimal)
+
+
+@parameter_parser
+class FlatParser:
+    kind = FLAT
+    body_keys = frozenset({"rate"})
+
+    def parse(self, document: YamlNode) -> Decimal:
+        return document.field("rate").parse_decimal()
+
+
+class Undecorated:
+    """Declares a kind but is not decorated, so the walk leaves it out."""
+
+    kind = FLAT
+
+
+FlatAlias = FlatParser
+
+
+class UndecoratedSubclass(FlatParser):
+    """Inherits a decorated parser's kind but is not decorated itself, so the walk leaves it out."""

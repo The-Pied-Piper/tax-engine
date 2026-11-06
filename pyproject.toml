@@ -65,7 +65,7 @@ layers = [
 
 [[tool.importlinter.contracts]]
 id = "jurisdictions"
-name = "Jurisdictions never use the application layer or wiring"
+name = "Jurisdictions never use the application layer, wiring or outbound adapters"
 type = "forbidden"
 source_modules = ["tax_engine.jurisdictions"]
 forbidden_modules = [
@@ -73,6 +73,12 @@ forbidden_modules = [
     "tax_engine.factory",
     "tax_engine.registrations",
     "tax_engine.adapters.outbound",
+]
+# The one exception: a jurisdiction's parameter parsers extend the parser base class and read
+# their dataset through YamlNode.
+ignore_imports = [
+    "tax_engine.jurisdictions.*.parameter_parsers.** -> tax_engine.adapters.outbound.parameter_parser",
+    "tax_engine.jurisdictions.*.parameter_parsers.** -> tax_engine.adapters.outbound.yaml_support",
 ]
 
 [[tool.importlinter.contracts]]

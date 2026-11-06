@@ -32,7 +32,6 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCapabilityError, InvalidRecordError
 from tax_engine.domain.kinds import AmountKind, RecordListKind
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS
 from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.capabilities.cca_vehicle_non_arms_length_checks import (
     CcaVehicleNonArmsLengthChecks,
@@ -47,6 +46,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     T777_PART_B_NON_ARMS_LENGTH_CHECKED_ROWS,
     T777_VEHICLE_SALES_TAX_RATE,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import YEAR_AMOUNTS
 from tax_engine.jurisdictions.ca.trace import CcaVehicleNonArmsLengthCheckLine
 from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca.capabilities.cca_vehicle_proceeds import prescribed_amounts

@@ -33,7 +33,11 @@ from tax_engine.domain.manifest import CapabilitySelection, Form, Manifest
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.parameters.year_amounts import YEAR_AMOUNTS, YearAmounts, YearAmountsRow
+from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import (
+    YEAR_AMOUNTS,
+    YearAmounts,
+    YearAmountsRow,
+)
 from tax_engine.jurisdictions.ca.trace import YearAmountLine
 from tests.capabilities import bundled_capabilities
 from tests.manifest_support import required_inputs

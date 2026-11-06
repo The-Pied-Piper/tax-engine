@@ -5,12 +5,6 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.domain.blank import PASS_ON
-from tax_engine.domain.capabilities.apply_rate import ApplyRate
-from tax_engine.domain.capabilities.greater_of import GreaterOf
-from tax_engine.domain.capabilities.subtract import Subtract
-from tax_engine.domain.capabilities.subtract_not_below_zero import SubtractNotBelowZero
-from tax_engine.domain.capabilities.sum import Sum
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.manifest import CapabilitySelection
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 from tax_engine.jurisdictions.ca.catalog import (
@@ -60,6 +54,12 @@ from tax_engine.jurisdictions.ca.catalog import (
     TOTAL_PAYABLE,
 )
 from tax_engine.jurisdictions.ca_on.catalog import ONTARIO_TAX
+from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
+from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
+from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
+from tax_engine.jurisdictions.core.capabilities.sum import Sum
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 INPUTS = frozenset(
     {

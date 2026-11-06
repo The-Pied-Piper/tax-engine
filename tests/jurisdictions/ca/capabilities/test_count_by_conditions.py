@@ -34,7 +34,6 @@ import tax_engine.jurisdictions.ca.capabilities as ca_capabilities
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK, COMPUTE, PASS_ON, BlankRule
-from tax_engine.domain.capabilities.times_count import TimesCount
 from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
     BlankNotAllowedError,
@@ -59,6 +58,7 @@ from tax_engine.domain.trace import (
     ConditionsCountLine,
 )
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 from tests.capabilities import bundled_capabilities
 
 D = Decimal

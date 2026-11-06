@@ -18,9 +18,8 @@ import pytest
 
 import tax_engine
 import tax_engine.adapters.inbound.trace_english
-import tax_engine.adapters.outbound.parameter_parsers
-import tax_engine.domain.capabilities
 import tax_engine.jurisdictions
+import tax_engine.jurisdictions.core.capabilities
 import tax_engine.registrations
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
@@ -50,10 +49,7 @@ def test_each_root_is_the_directory_of_the_package_declaring_its_namespace() -> 
 
 
 def test_lists_the_core_packages() -> None:
-    assert tax_engine.registrations.CORE_PACKAGES == (
-        tax_engine.adapters.outbound.parameter_parsers,
-        tax_engine.adapters.inbound.trace_english,
-    )
+    assert tax_engine.registrations.CORE_PACKAGES == (tax_engine.adapters.inbound.trace_english,)
 
 
 def test_a_jurisdiction_package_provides_its_capabilities() -> None:
