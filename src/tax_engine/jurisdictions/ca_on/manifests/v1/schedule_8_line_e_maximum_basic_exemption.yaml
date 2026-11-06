@@ -1,0 +1,12 @@
+# Schedule 8 (form 5000-S8, 2025) Part 2 line E: "Your maximum basic exemption for 2025 (maximum
+# $3,500)", the row of the "Monthly proration for 2025" table for the months on line A.
+form:
+  name: ca/schedule_8
+capabilities:
+  - name: ca/amount_by_count
+    params:
+      table: ca/cpp_basic_exemption
+    consumes:
+      count: ca/cpp_months
+    produces:
+      output: ca/cpp_basic_exemption
