@@ -50,12 +50,6 @@ class BlankNotAllowedError(ValidationError):
     """
 
 
-class BlankMixedError(ValidationError):
-    """A list of parts that must be all blank or all filled has some of each: the form contradicts
-    itself, such as a chart completed on some lines and skipped on others.
-    """
-
-
 class DuplicateArtifactError(DomainError):
     """An artifact was given more than one value."""
 

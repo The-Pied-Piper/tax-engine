@@ -479,11 +479,15 @@ inputs:
   - name: ca/t657_chart_2023_claims_additional_deduction
     required: true
   - name: ca/t657_chart_2024_period_1_amount_h
-    required: true
+    required: false
+    default: "0"
+    basis: "Complete this chart if you disposed of QFFP or QSBCS in Period 1 of 2024, and claimed a capital gains reserve on Form T2017, or are reporting an amount included in a 2025 T3 slip at box 30"
   - name: ca/t657_chart_2024_period_1_amount_j
     required: true
   - name: ca/t657_chart_2024_period_2_amount_h
-    required: true
+    required: false
+    default: "0"
+    basis: "Complete this chart if you disposed of QFFP or QSBCS in Period 2 of 2024 and claimed a capital gains reserve on Form T2017, or are reporting an amount included in box 30 of a 2025 T3 slip"
   - name: ca/t657_chart_2024_period_2_amount_j
     required: true
   - name: ca/t657_part_1_amount_f
