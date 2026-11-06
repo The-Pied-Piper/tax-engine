@@ -1,0 +1,11 @@
+# Schedule 8 (CPP contributions), form 5000-S8, short route (Part 3a). This part names the form and
+# its exports; each line's capability goes in a part of its own with the same `form.name`.
+# Exports: line 25, the base contributions for T1 line 30800 and ON428 line 58240, and line 28, the
+# deduction for the enhanced contributions for T1 line 22215.
+form:
+  name: ca/schedule_8
+  required: true
+  exports:
+    - ca/schedule_8_cpp_base_contributions_on_return
+    - ca/schedule_8_cpp_enhanced_contributions_on_return
+capabilities: []
