@@ -1,0 +1,10 @@
+# Schedule 8 (form 5000-S8, 2025) Part 3 line 28: "Line 26 plus line 27" (lines 26 and 27 copy line 12
+# and line 22, so line 28 reads them directly).
+form:
+  name: ca/schedule_8
+capabilities:
+  - name: core/sum
+    consumes:
+      parts: [ca/cpp_part_3_line_12, ca/cpp_part_3_line_22]
+    produces:
+      output: ca/cpp_part_3_line_28
