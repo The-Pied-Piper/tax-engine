@@ -1,5 +1,5 @@
 # Form Schedule 8, Canada Pension Plan Contributions and Overpayment (ca/schedule_8), Part 2
-# line D. The form's declaration and exports are in schedule_8.yaml.
+# line D. The form's declaration and exports are a part of the manifest's own, not this one.
 form:
   name: ca/schedule_8
 capabilities:
