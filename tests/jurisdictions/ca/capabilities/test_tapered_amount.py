@@ -1,4 +1,4 @@
-"""Unit tests for the TaperedAmount capability (`core/tapered_amount`), made-up values.
+"""Unit tests for the TaperedAmount capability (`ca/tapered_amount`), made-up values.
 
 Its slots: one parameter slot `taper` (a `taper` dataset), one consumed slot `base` (the figure the
 taper is measured against) and one produced slot `output`. The reduction is
@@ -38,9 +38,9 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
-from tax_engine.domain.parameters.taper import TAPER, Taper
-from tax_engine.domain.trace import TaperedAmountLine
-from tax_engine.jurisdictions.core.capabilities.tapered_amount import TaperedAmount
+from tax_engine.jurisdictions.ca.capabilities.tapered_amount import TaperedAmount
+from tax_engine.jurisdictions.ca.parameter_shapes.taper import TAPER, Taper
+from tax_engine.jurisdictions.ca.trace import TaperedAmountLine
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
@@ -82,7 +82,7 @@ def compute(wired: TaperedAmount, income: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_tapered_amount() -> None:
-    assert bundled_capabilities().get("core/tapered_amount") is TaperedAmount
+    assert bundled_capabilities().get("ca/tapered_amount") is TaperedAmount
 
 
 def test_declares_its_contract() -> None:

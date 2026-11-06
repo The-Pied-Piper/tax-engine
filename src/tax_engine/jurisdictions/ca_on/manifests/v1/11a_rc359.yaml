@@ -48,7 +48,7 @@ capabilities:
   # Form RC359 line 8 "Enter the rate for your province or territory of residence at the end of the
   # year using the charts below. (If you were not a resident of a province or territory in Canada,
   # enter the rate for "Other".)": the printed percentage of the province code the filer enters.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/rc359_province_percentage
     consumes:

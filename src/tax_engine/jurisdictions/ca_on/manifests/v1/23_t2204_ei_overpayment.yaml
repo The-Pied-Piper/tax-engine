@@ -89,7 +89,7 @@ capabilities:
       output: ca/t2204_line_9
   # T2204 line 10 "Residents of other than Quebec Amount from line 1 × 1.64% = (maximum $1,077.48)":
   # the EI premium tier, on line 1 (not line 3).
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/ei_premium
     consumes:

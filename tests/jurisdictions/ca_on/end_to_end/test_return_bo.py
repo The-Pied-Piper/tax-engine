@@ -17,9 +17,11 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
 from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
 from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
 from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
@@ -243,10 +245,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     SELF_EMPLOYED_CPP_DEDUCTION,
     TOTAL_PAYABLE,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero

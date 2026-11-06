@@ -25,7 +25,6 @@ from typing import Any
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.conditions import (
     CONDITIONS,
     Condition,
@@ -34,6 +33,10 @@ from tax_engine.domain.parameters.conditions import (
 )
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import (
+    AMOUNT_BY_COUNT,
+    AmountByCount,
+)
 
 D = Decimal
 SOURCE = YamlParameterSource(

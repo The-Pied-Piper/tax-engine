@@ -14,6 +14,7 @@ from tax_engine.jurisdictions.ca.capabilities.disability_transfer_amount import 
 from tax_engine.jurisdictions.ca.capabilities.other_dependants_medical import (
     OtherDependantsMedical,
 )
+from tax_engine.jurisdictions.ca.capabilities.tapered_amount import TaperedAmount
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
 from tax_engine.jurisdictions.ca.catalog import (
     AGE_AMOUNT,
@@ -99,7 +100,6 @@ from tax_engine.jurisdictions.core.capabilities.per_unit_amount import PerUnitAm
 from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.jurisdictions.core.capabilities.sum import Sum
-from tax_engine.jurisdictions.core.capabilities.tapered_amount import TaperedAmount
 from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 
 INPUTS = frozenset(
@@ -147,7 +147,7 @@ STEPS = {
     # net income (line 23600), not below zero ("use line 6 of this form at line 3 of your Federal
     # Worksheet for line 30000"), the first part of the T1's total of credit amounts.
     CapabilitySelection(
-        name="core/tapered_amount",
+        name="ca/tapered_amount",
         params={"taper": "ca/basic_personal_amount"},
         consumes={"base": "ca/tosi_adjusted_net_income_not_below_zero"},
         produces={"output": "ca/basic_personal_amount"},

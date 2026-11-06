@@ -4,28 +4,28 @@ capabilities:
   # (maximum pensionable earnings), line C (maximum amount subject to second additional
   # contributions), line D (additional maximum pensionable earnings) and line E (maximum
   # basic exemption), each the figure of the row for the months in box A.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_maximum_pensionable_earnings
     consumes:
       count: ca/cpp_months
     produces:
       output: ca/cpp_maximum_pensionable_earnings
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_second_additional_earnings_maximum
     consumes:
       count: ca/cpp_months
     produces:
       output: ca/cpp_second_additional_earnings_maximum
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_additional_maximum_pensionable_earnings
     consumes:
       count: ca/cpp_months
     produces:
       output: ca/cpp_additional_maximum_pensionable_earnings
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_basic_exemption
     consumes:
@@ -89,21 +89,21 @@ capabilities:
   # 6 multiplied by 8% (maximum $792.00)": the self-employed person's base, first additional
   # and second additional contributions, each the tier on the earnings of its line (lines 9,
   # 9 and 6).
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_base_contribution
     consumes:
       earnings: ca/cpp_earnings_subject_to_base_and_first_additional
     produces:
       output: ca/self_employed_cpp_base_contributions
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_first_additional_contribution
     consumes:
       earnings: ca/cpp_earnings_subject_to_base_and_first_additional
     produces:
       output: ca/self_employed_cpp_first_additional_contributions
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_second_additional_contribution
     consumes:
@@ -232,7 +232,7 @@ capabilities:
         - ca/ei_insurable_earnings_remaining
     produces:
       output: ca/ei_earnings_subject_to_premium
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/ei_self_employed_premium
     consumes:

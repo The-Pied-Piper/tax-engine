@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 
 from tax_engine.domain.errors import MissingArtifactError
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
 from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
@@ -21,6 +22,7 @@ from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartB
 from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_b_total import ChartBZoneBTotal
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
 from tax_engine.jurisdictions.ca.capabilities.closing_ucc import ClosingUcc
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.capabilities.disability_transfer_amount import (
@@ -60,6 +62,7 @@ from tax_engine.jurisdictions.ca.capabilities.short_term_rental_non_compliant_ex
     ShortTermRentalNonCompliantExpenses,
 )
 from tax_engine.jurisdictions.ca.capabilities.sign_chosen_difference import SignChosenDifference
+from tax_engine.jurisdictions.ca.capabilities.tapered_amount import TaperedAmount
 from tax_engine.jurisdictions.ca.capabilities.terminal_loss import TerminalLoss
 from tax_engine.jurisdictions.ca.catalog import (
     ADDITIONAL_DEDUCTIONS,
@@ -1145,13 +1148,11 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     TAX_REDUCTION_FOR_DEPENDANTS,
     TAX_REDUCTION_FOR_DEPENDANTS_BEFORE_SPOUSE_RULE,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
 from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 from tax_engine.jurisdictions.core.capabilities.first_record_count import FirstRecordCount
 from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
@@ -1164,7 +1165,6 @@ from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tax_engine.jurisdictions.core.capabilities.sum_not_below_zero import SumNotBelowZero
-from tax_engine.jurisdictions.core.capabilities.tapered_amount import TaperedAmount
 from tax_engine.jurisdictions.core.capabilities.tiered_surcharge import TieredSurcharge
 from tax_engine.jurisdictions.core.capabilities.times_count import TimesCount
 from tests.jurisdictions.ca_on.end_to_end.support import return_a, run_a

@@ -19,10 +19,13 @@ from typing import Any, ClassVar
 from tax_engine.domain.artifact import Artifact, ArtifactKind, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.errors import NoAmountForCountError
-from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.trace import AmountByCountLine
+from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import (
+    AMOUNT_BY_COUNT,
+    AmountByCount,
+)
+from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 
 
 @capability(identifier="amount_by_count")

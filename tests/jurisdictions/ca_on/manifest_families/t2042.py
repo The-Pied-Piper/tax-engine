@@ -15,6 +15,7 @@ from typing import Any
 
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 from tax_engine.jurisdictions.ca.capabilities.business_vehicle_expenses import (
     BusinessVehicleExpenses,
@@ -362,7 +363,6 @@ from tax_engine.jurisdictions.ca.catalog import (
     FARMING_INCOME,
     IMMEDIATE_EXPENSING_SHORT_YEAR_DAYS,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
 from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
@@ -2067,7 +2067,7 @@ FARM_CHART_B_CHART_C_STEPS = {
     # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province.
     # Row 7 multiplied by 50%.": 50 when note 9 does not apply, 100 when it does.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/farm_chart_b_row_8_percentage_table"},
         consumes={"count": "ca/farm_chart_b_note_9_applies"},
         produces={"output": "ca/farm_chart_b_row_8_percentage"},

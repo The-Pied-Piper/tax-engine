@@ -27,7 +27,6 @@ from tax_engine.domain.parameters.class_rates import (
     HalfYearRuleOnSale,
     RecaptureAndTerminalLoss,
 )
-from tax_engine.domain.parameters.contribution_tier import ContributionTier
 from tax_engine.domain.parameters.credit import Credit
 from tax_engine.domain.parameters.factor import Factor
 from tax_engine.domain.parameters.fraction import Fraction
@@ -39,10 +38,8 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
-from tax_engine.domain.parameters.taper import Taper
 from tax_engine.domain.parameters.threshold_rate import ThresholdRate
 from tax_engine.domain.trace import (
-    AmountByCountLine,
     AmountOrDividedByRateLine,
     AmountWhenMoreLine,
     AtMostLine,
@@ -55,7 +52,6 @@ from tax_engine.domain.trace import (
     ClaimAtMostLine,
     ConditionLine,
     ConditionsCountLine,
-    ContributionTierLine,
     CountAtLeastLine,
     CountAtMostLine,
     CountNotRefusedLine,
@@ -91,7 +87,6 @@ from tax_engine.domain.trace import (
     SumLine,
     SumNotBelowZeroLine,
     SurchargeTierLine,
-    TaperedAmountLine,
     ThresholdGateLine,
     TimesCountLine,
     TraceLine,
@@ -103,7 +98,10 @@ from tax_engine.jurisdictions.ca.catalog import (
     RENTAL_EQUIPMENT_ADDITIONS_TOTAL,
 )
 from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import ClaimReduction
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import ContributionTier
+from tax_engine.jurisdictions.ca.parameter_shapes.taper import Taper
 from tax_engine.jurisdictions.ca.trace import (
+    AmountByCountLine,
     ApprenticeWagesLine,
     BusinessVehicleLine,
     CaregiverClaimLine,
@@ -119,6 +117,7 @@ from tax_engine.jurisdictions.ca.trace import (
     CcaZepvProceedsLine,
     CcaZeroReason,
     ClosingUccLine,
+    ContributionTierLine,
     DepreciablePropertyGainLine,
     DisabilityTransferLine,
     DispositionGainLine,
@@ -200,6 +199,7 @@ from tax_engine.jurisdictions.ca.trace import (
     ShortTermRentalNonCompliantCcaByClassLine,
     ShortTermRentalNonCompliantCcaLine,
     ShortTermRentalNonCompliantLine,
+    TaperedAmountLine,
     TerminalLossLine,
     YearAmountLine,
 )

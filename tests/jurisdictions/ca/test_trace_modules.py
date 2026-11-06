@@ -22,6 +22,9 @@ PACKAGE = "tax_engine.jurisdictions.ca.trace"
 RENDERERS = "tax_engine.jurisdictions.ca.trace_english"
 
 HOMES: dict[str, tuple[str, ...]] = {
+    "amount_by_count": ("AmountByCountLine",),
+    "contribution_tier": ("ContributionTierLine",),
+    "tapered_amount": ("TaperedAmountLine",),
     "capital_cost": (
         "CcaZeroReason",
         "CcaClaimLine",

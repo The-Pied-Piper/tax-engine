@@ -2,15 +2,8 @@
 
 from __future__ import annotations
 
-from tax_engine.domain.parameters.contribution_tier import ContributionTier
 from tax_engine.domain.parameters.rate import Rate
-from tax_engine.domain.trace import (
-    AmountByCountLine,
-    ContributionTierLine,
-    LesserOfLine,
-    SubtractedNotBelowZeroLine,
-    SumNotBelowZeroLine,
-)
+from tax_engine.domain.trace import LesserOfLine, SubtractedNotBelowZeroLine, SumNotBelowZeroLine
 from tax_engine.jurisdictions.ca.catalog import (
     CPP_BASIC_EXEMPTION,
     CPP_MAXIMUM_PENSIONABLE_EARNINGS,
@@ -87,6 +80,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
     T4_QPP_PENSIONABLE_EARNINGS_IN_QUEBEC,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import ContributionTier
+from tax_engine.jurisdictions.ca.trace import AmountByCountLine, ContributionTierLine
 from tests.jurisdictions.ca_on.end_to_end.support import CENT, D, rc381_own_trace, run_a
 
 

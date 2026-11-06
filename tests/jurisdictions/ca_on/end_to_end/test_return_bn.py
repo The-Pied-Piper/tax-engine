@@ -16,7 +16,6 @@ from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.trace import (
     ChosenByCountLine,
-    ContributionTierLine,
     DividedByRateLine,
     FractionAppliedLine,
     LesserOfLine,
@@ -183,6 +182,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     TOTAL_CREDITS,
     TOTAL_PAYABLE,
 )
+from tax_engine.jurisdictions.ca.trace import ContributionTierLine
 from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tests.jurisdictions.ca_on.end_to_end.support import (
     D,

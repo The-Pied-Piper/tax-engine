@@ -6,7 +6,7 @@ capabilities:
   # amount from line 30 multiplied by 9.9% (maximum $6,712.20) =": the base contribution tier on
   # line 30 (Part 5 line 30, the self-employment earnings subject to base and first additional
   # contributions), the same tier Part 4 line 10 uses.
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_base_contribution
     consumes:
@@ -16,7 +16,7 @@ capabilities:
   # Schedule 8 Part 5 line 44 "Required first additional contributions on CPP pensionable
   # earnings: Line 44: amount from line 30 multiplied by 2% (maximum $1,356.00) =": the first
   # additional contribution tier on line 30.
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_first_additional_contribution
     consumes:
@@ -27,7 +27,7 @@ capabilities:
   # earnings: Line 45: amount from line 42 multiplied by 8% (maximum $792.00) =": the second
   # additional contribution tier on line 42. Line 42 prints no floor and is negative for a loss
   # with a box 26 total above $71,300; the tier floors the band at 0, so line 45 is 0 then.
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_second_additional_contribution
     consumes:

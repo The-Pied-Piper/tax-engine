@@ -1,4 +1,4 @@
-"""Unit tests for the AmountForCount capability (`core/amount_by_count`), made-up values.
+"""Unit tests for the AmountForCount capability (`ca/amount_by_count`), made-up values.
 
 Its slots: one parameter slot `table` (an `amount_by_count` dataset, the amounts a form prints
 against counts), one consumed slot `count` (an `int` artifact) and one produced slot `output`.
@@ -33,7 +33,6 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
-from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import (
@@ -42,8 +41,12 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
-from tax_engine.domain.trace import AmountByCountLine
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import (
+    AMOUNT_BY_COUNT,
+    AmountByCount,
+)
+from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
@@ -83,7 +86,7 @@ def compute(wired: AmountForCount, count: int) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_amount_by_count() -> None:
-    assert bundled_capabilities().get("core/amount_by_count") is AmountForCount
+    assert bundled_capabilities().get("ca/amount_by_count") is AmountForCount
 
 
 def test_declares_its_contract() -> None:

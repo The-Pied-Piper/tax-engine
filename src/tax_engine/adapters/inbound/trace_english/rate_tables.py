@@ -7,13 +7,10 @@ from __future__ import annotations
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.trace.rate_tables import (
-    AmountByCountLine,
     BracketColumnLine,
     ChosenRateAppliedLine,
-    ContributionTierLine,
     RateByIncomeBandLine,
     SurchargeTierLine,
-    TaperedAmountLine,
 )
 
 
@@ -32,27 +29,6 @@ class BracketColumnRenderer:
         return (
             f"{EnglishFigures.percent(rate)}% on {EnglishFigures.money(excess)} "
             f"over {EnglishFigures.money(lower)} plus {EnglishFigures.money(tax_at_start)}"
-        )
-
-
-@english_renderer
-class ContributionTierRenderer:
-    """English text for ContributionTierLine."""
-
-    line_class = ContributionTierLine
-
-    def render(self, line: ContributionTierLine) -> str:
-        """The English sentence for `line`."""
-        output = line.output
-        earnings = line.earnings
-        tier = line.tier
-        rule = line.rounding
-        contributory = line.contributory
-        return (
-            f"{output.label}: {EnglishFigures.percent(tier.rate.value)}% of {earnings.label} "
-            f"between {EnglishFigures.money(tier.lower)} and {EnglishFigures.money(tier.upper)} "
-            f"({EnglishFigures.money(contributory)}), "
-            f"at most {EnglishFigures.money(tier.maximum)} ({EnglishFigures.rounding(rule)})"
         )
 
 
@@ -76,30 +52,6 @@ class SurchargeTierRenderer:
             f"{output.label}: {EnglishFigures.percent(rate.value)}% of {base.label} "
             f"{EnglishFigures.money(amount)} over {EnglishFigures.money(threshold)}{at_most} "
             f"({EnglishFigures.rounding(rule)})"
-        )
-
-
-@english_renderer
-class TaperedAmountRenderer:
-    """English text for TaperedAmountLine."""
-
-    line_class = TaperedAmountLine
-
-    def render(self, line: TaperedAmountLine) -> str:
-        """The English sentence for `line`."""
-        output = line.output
-        base = line.base
-        amount = line.base_amount
-        taper = line.taper
-        rule = line.rounding
-        reduction = line.reduction
-        return (
-            f"{output.label}: {EnglishFigures.money(taper.base)} "
-            f"plus {EnglishFigures.money(taper.supplement)} less {EnglishFigures.exact(reduction)} "
-            f"for {base.label} {EnglishFigures.money(amount)} "
-            f"over {EnglishFigures.money(taper.threshold)} (range "
-            f"{EnglishFigures.money(taper.range)}), "
-            f"not below {EnglishFigures.money(taper.base)} ({EnglishFigures.rounding(rule)})"
         )
 
 
@@ -148,23 +100,4 @@ class ChosenRateAppliedRenderer:
         return (
             f"{output.label}: {rate_kind.label} {EnglishFigures.percent(rate.value)}% of "
             f"{base.label} {EnglishFigures.money(amount)} ({EnglishFigures.rounding(rule)})"
-        )
-
-
-@english_renderer
-class AmountByCountRenderer:
-    """English text for AmountByCountLine."""
-
-    line_class = AmountByCountLine
-
-    def render(self, line: AmountByCountLine) -> str:
-        """The English sentence for `line`."""
-        output = line.output
-        count_kind = line.count_kind
-        count = line.count
-        row = line.row
-        rule = line.rounding
-        return (
-            f"{output.label}: {EnglishFigures.money(row)} for {count_kind.label} {count} "
-            f"({EnglishFigures.rounding(rule)})"
         )

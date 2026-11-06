@@ -8,7 +8,6 @@ from tax_engine.domain.trace import (
     CappedAmountLine,
     ChosenByCountLine,
     ChosenByRangeLine,
-    ContributionTierLine,
     CreditAmountLine,
     FractionAppliedLine,
     ItemsTotalLine,
@@ -25,7 +24,6 @@ from tax_engine.domain.trace import (
     SubtractedNotBelowZeroLine,
     SumLine,
     SurchargeTierLine,
-    TaperedAmountLine,
     ThresholdGateLine,
     TimesCountLine,
 )
@@ -185,6 +183,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     US_SOCIAL_SECURITY_DEDUCTION_AT_RESIDENT_RATE,
     US_SOCIAL_SECURITY_DEDUCTION_AT_STANDARD_RATE,
 )
+from tax_engine.jurisdictions.ca.trace import ContributionTierLine, TaperedAmountLine
 from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tax_engine.jurisdictions.ca_on.catalog import (
     COMMUNITY_FOOD_PROGRAM_CREDIT,

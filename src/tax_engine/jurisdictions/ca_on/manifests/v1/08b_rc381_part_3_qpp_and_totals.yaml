@@ -107,7 +107,7 @@ capabilities:
       output: ca/rc381_part_3_line_41
   # Line 42 "Required base contributions on QPP pensionable earnings: amount from line 38 x
   # 5.4% = (maximum $3,661.20)".
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/rc381_required_qpp_base
     consumes:
@@ -116,7 +116,7 @@ capabilities:
       output: ca/rc381_part_3_line_42
   # Line 43 "Required first additional contributions on QPP pensionable earnings: amount from
   # line 38 x 1% = (maximum $678.00)", the figures of line 23, so the same dataset.
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/rc381_required_first_additional
     consumes:
@@ -134,7 +134,7 @@ capabilities:
       output: ca/rc381_part_3_line_44
   # Line 46 "Required second additional contributions on QPP pensionable earnings: amount from
   # line 35 x 4% = (maximum $396.00)", the figures of line 26, so the same dataset.
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/rc381_required_second_additional
     consumes:

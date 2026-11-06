@@ -8,8 +8,10 @@ registering its renderers with `@english_renderer`; this package imports every o
 from __future__ import annotations
 
 from tax_engine.jurisdictions.ca.trace_english import (
+    amount_by_count,
     apprenticeship,
     capital_cost,
+    contribution_tier,
     dependants,
     farm_chart,
     foreign_tax,
@@ -17,12 +19,15 @@ from tax_engine.jurisdictions.ca.trace_english import (
     home_renovation,
     logging_tax_credit,
     rentals,
+    tapered_amount,
     vehicles,
 )
 
 __all__ = [
+    "amount_by_count",
     "apprenticeship",
     "capital_cost",
+    "contribution_tier",
     "dependants",
     "farm_chart",
     "foreign_tax",
@@ -30,5 +35,6 @@ __all__ = [
     "home_renovation",
     "logging_tax_credit",
     "rentals",
+    "tapered_amount",
     "vehicles",
 ]

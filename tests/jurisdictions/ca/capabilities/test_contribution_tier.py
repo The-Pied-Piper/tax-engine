@@ -1,4 +1,4 @@
-"""Unit tests for the TieredContribution capability (`core/contribution_tier`), made-up values.
+"""Unit tests for the TieredContribution capability (`ca/contribution_tier`), made-up values.
 
 Its slots: one parameter slot `tier` (a `contribution_tier` dataset), one consumed slot `earnings`
 and one produced slot `output`. The contributory earnings are the part of `earnings` inside the
@@ -23,7 +23,6 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -33,8 +32,12 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
-from tax_engine.domain.trace import ContributionTierLine
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
+    CONTRIBUTION_TIER,
+    ContributionTier,
+)
+from tax_engine.jurisdictions.ca.trace import ContributionTierLine
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
@@ -76,7 +79,7 @@ def compute(wired: TieredContribution, earnings: str) -> Artifact[Any]:
 
 
 def test_is_registered_as_core_contribution_tier() -> None:
-    assert bundled_capabilities().get("core/contribution_tier") is TieredContribution
+    assert bundled_capabilities().get("ca/contribution_tier") is TieredContribution
 
 
 def test_declares_its_contract() -> None:

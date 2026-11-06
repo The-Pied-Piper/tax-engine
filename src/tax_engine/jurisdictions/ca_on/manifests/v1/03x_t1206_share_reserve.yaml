@@ -43,7 +43,7 @@ capabilities:
       output: ca/t1206_reserve_by_payment
   # "Applicable percentage for year of sale or year after sale (1)": 80%, 60%, 40%, 20% and 0%, by the
   # years after the sale.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/t1206_reserve_percentage
     consumes:
