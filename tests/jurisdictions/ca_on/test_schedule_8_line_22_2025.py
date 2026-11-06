@@ -2,7 +2,7 @@
 
 Line 22 "amount from line 4 multiplied by 4% (maximum $396.00)". The part file is composed here
 under a test-local header and form declaration (the real ones belong to the manifest's other
-parts), with line 4 given as a starting amount because its own part is another ticket's.
+parts), with line 4 given as a starting amount because its own part file is not part of this one.
 """
 
 from __future__ import annotations
