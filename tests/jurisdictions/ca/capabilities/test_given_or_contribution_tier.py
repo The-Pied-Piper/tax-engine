@@ -16,6 +16,7 @@ capability's own contract is tested here, the calculation in `test_contribution_
 
 from __future__ import annotations
 
+from abc import ABC
 from collections.abc import Mapping
 from dataclasses import fields
 from decimal import Decimal
@@ -149,7 +150,7 @@ def test_its_slots_are_typed_as_read_only_mappings() -> None:
 
 def test_shares_a_parent_class_with_tiered_contribution() -> None:
     shared = set(GivenOrTieredContribution.__mro__) & set(TieredContribution.__mro__)
-    parents = shared - {GivenOrTieredContribution, TieredContribution, Capability, object}
+    parents = shared - {GivenOrTieredContribution, TieredContribution, Capability, ABC, object}
 
     assert len(parents) == 1
     (parent,) = parents
@@ -159,7 +160,7 @@ def test_shares_a_parent_class_with_tiered_contribution() -> None:
 
 def test_the_shared_parent_is_not_a_registered_capability() -> None:
     shared = set(GivenOrTieredContribution.__mro__) & set(TieredContribution.__mro__)
-    parents = shared - {GivenOrTieredContribution, TieredContribution, Capability, object}
+    parents = shared - {GivenOrTieredContribution, TieredContribution, Capability, ABC, object}
 
     (parent,) = parents
     assert getattr(parent, "IDENTIFIER", None) is None
