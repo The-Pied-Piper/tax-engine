@@ -37,3 +37,12 @@ def test_schedule_8_is_a_required_form_without_instances() -> None:
 
     assert schedule_8.required
     assert schedule_8.instances is None
+
+
+def test_schedule_8_exports_the_cpp_figures_the_t1_and_on428_read() -> None:
+    (schedule_8,) = (form for form in _manifest().forms if form.name == "ca/schedule_8")
+
+    assert set(schedule_8.exports) == {
+        "ca/schedule_8_cpp_base_contributions_on_return",
+        "ca/schedule_8_cpp_enhanced_contributions_on_return",
+    }
