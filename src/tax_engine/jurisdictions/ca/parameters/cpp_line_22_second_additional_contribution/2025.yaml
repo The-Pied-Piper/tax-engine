@@ -2,7 +2,8 @@
 # $396.00)", the required second additional CPP contributions. Line 4 is already the earnings above
 # line B, so the band starts at 0; the upper bound is the $9,900 printed on Part 2 line C ("maximum
 # $9,900"), which line 4 (at most 81,200 - 71,300) never exceeds. The figure is in dollars and
-# cents, so it rounds half-up to the cent.
+# cents (Part 3a line 28, Part 3b line 48: "in dollars and cents"), so it rounds half-up to the
+# cent. The rate, upper bound and maximum are the dataset figures as printed.
 family: ca/cpp_line_22_second_additional_contribution
 tax_year: 2025
 kind: contribution_tier

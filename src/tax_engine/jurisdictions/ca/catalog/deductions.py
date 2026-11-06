@@ -1992,7 +1992,8 @@ of Part 2" (the maximum pensionable earnings), not below zero. Line 5 and line 2
 
 CPP_PART_3_LINE_22 = AmountKind.declare(CATALOG, "cpp_part_3_line_22", non_negative=True)
 """Required second additional CPP contributions, Schedule 8 Part 3 line 22 "amount from line 4
-multiplied by 4% (maximum $396.00)": line 28 adds it to line 12."""
+multiplied by 4% (maximum $396.00)": line 27 is "Amount from line 22 (if any)", and line 28 is
+line 26 plus line 27."""
 
 CPP_PART_5_LINE_20_NEGATIVE_LINE_23_POSITIVE = CountKind.declare(
     CATALOG, "cpp_part_5_line_20_negative_line_23_positive", non_negative=True
