@@ -25,7 +25,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NoAmountForCountError
+from tax_engine.domain.errors import NegativeArtifactError, NoAmountForCountError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
@@ -109,20 +109,50 @@ def figures(sheet: Worksheet) -> dict[str, Decimal]:
 
 
 FULL_YEAR_70K = {
-    "B": "71300.00", "D": "81200.00", "E": "3500.00", "1": "70000.00", "2": "70000.00",
-    "4": "0", "5": "70000.00", "7": "66500.00", "11": "3291.75", "12": "665.00",
-    "22": "0.00", "25": "3291.75", "28": "665.00",
-}  # fmt: skip
+    "B": "71300.00",
+    "D": "81200.00",
+    "E": "3500.00",
+    "1": "70000.00",
+    "2": "70000.00",
+    "4": "0",
+    "5": "70000.00",
+    "7": "66500.00",
+    "11": "3291.75",
+    "12": "665.00",
+    "22": "0.00",
+    "25": "3291.75",
+    "28": "665.00",
+}
 FULL_YEAR_90K = {
-    "B": "71300.00", "D": "81200.00", "E": "3500.00", "1": "81200.00", "2": "81200.00",
-    "4": "9900.00", "5": "71300.00", "7": "67800.00", "11": "3356.10", "12": "678.00",
-    "22": "396.00", "25": "3356.10", "28": "1074.00",
-}  # fmt: skip
+    "B": "71300.00",
+    "D": "81200.00",
+    "E": "3500.00",
+    "1": "81200.00",
+    "2": "81200.00",
+    "4": "9900.00",
+    "5": "71300.00",
+    "7": "67800.00",
+    "11": "3356.10",
+    "12": "678.00",
+    "22": "396.00",
+    "25": "3356.10",
+    "28": "1074.00",
+}
 SIX_MONTHS_70K = {
-    "B": "35650.00", "D": "40600.00", "E": "1750.00", "1": "70000.00", "2": "40600.00",
-    "4": "4950.00", "5": "35650.00", "7": "33900.00", "11": "1678.05", "12": "339.00",
-    "22": "198.00", "25": "1678.05", "28": "537.00",
-}  # fmt: skip
+    "B": "35650.00",
+    "D": "40600.00",
+    "E": "1750.00",
+    "1": "70000.00",
+    "2": "40600.00",
+    "4": "4950.00",
+    "5": "35650.00",
+    "7": "33900.00",
+    "11": "1678.05",
+    "12": "339.00",
+    "22": "198.00",
+    "25": "1678.05",
+    "28": "537.00",
+}
 
 
 @pytest.mark.parametrize(
@@ -168,5 +198,5 @@ def test_a_zero_month_request_is_refused(tmp_path: Path) -> None:
 
 
 def test_a_negative_salary_is_refused(tmp_path: Path) -> None:
-    with pytest.raises(Exception, match="employment_income"):
+    with pytest.raises(NegativeArtifactError, match="ca/employment_income cannot be negative"):
         schedule_8(tmp_path, "-1")
