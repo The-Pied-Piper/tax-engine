@@ -28,8 +28,8 @@ D = Decimal
 PART = (
     Path(tax_engine.jurisdictions.ca_on.__file__).parent
     / "manifests"
-    / "v1"
-    / "schedule_8_line_e_maximum_basic_exemption.yaml"
+    / "take_home"
+    / "schedule_8_line_e.yaml"
 )
 
 SCAFFOLD = dedent("""\
@@ -54,7 +54,7 @@ FORM = dedent("""\
 
 
 def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "v1"
+    parts = tmp_path / "manifests" / "take_home"
     parts.mkdir(parents=True)
     (parts / "00_header.yaml").write_text(SCAFFOLD)
     (parts / "01_form.yaml").write_text(FORM)
