@@ -1,0 +1,13 @@
+# T2204 (2025) line 10: "Required premiums: Residents of other than Quebec. Amount from line 1 × 1.64%
+# = (maximum $1,077.48)". The premium is 1.64% of the line 1 amount, to the cent and at most the
+# printed maximum. Line 1 is another ticket's part.
+form:
+  name: ca/t2204
+capabilities:
+  - name: ca/contribution_tier
+    params:
+      tier: ca/ei_premium
+    consumes:
+      earnings: ca/t2204_line_1
+    produces:
+      output: ca/t2204_line_10
