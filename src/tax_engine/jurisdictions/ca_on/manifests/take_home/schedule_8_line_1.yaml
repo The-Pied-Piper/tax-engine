@@ -1,0 +1,15 @@
+# Schedule 8 (CPP contributions) Part 3 line 1 and line 50339: "Total CPP pensionable earnings from
+# box 26 of all of your T4 slips (if box 26 is blank, enter the amount from box 14) (maximum
+# $81,200 per slip)". The take-home caller has no T4, so the salary typed once (T1 line 10100) is
+# the earnings, capped at the printed per-slip maximum: the clip stands in for box 26 of the one
+# slip a single salaried filer has.
+form:
+  name: ca/schedule_8
+capabilities:
+  - name: core/capped_amount
+    params:
+      cap: ca/cpp_pensionable_earnings_per_slip_maximum
+    consumes:
+      base: ca/employment_income
+    produces:
+      output: ca/t4_cpp_pensionable_earnings_outside_quebec
