@@ -7,10 +7,12 @@ from decimal import Decimal
 from tax_engine.domain.blank import PASS_ON
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 from tax_engine.jurisdictions.ca.capabilities.chart_a_row_c_total import ChartARowCTotal
 from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_a_total import ChartBZoneATotal
 from tax_engine.jurisdictions.ca.capabilities.chart_b_zone_b_total import ChartBZoneBTotal
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_at_most import CountAtMost
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.capabilities.ei_excluded_slips_net_income import (
@@ -252,13 +254,11 @@ from tax_engine.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AMOUNT,
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
 from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
@@ -382,25 +382,25 @@ STEPS = {
     # contributions), line D (additional maximum pensionable earnings) and line E (maximum
     # basic exemption), each the figure of the row for the months in box A.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_maximum_pensionable_earnings"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_maximum_pensionable_earnings"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_second_additional_earnings_maximum"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_second_additional_earnings_maximum"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_additional_maximum_pensionable_earnings"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_additional_maximum_pensionable_earnings"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_basic_exemption"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_basic_exemption"},
@@ -473,19 +473,19 @@ STEPS = {
     # and second additional contributions, each the tier on the earnings of its line (lines 9,
     # 9 and 6).
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_base_contribution"},
         consumes={"earnings": "ca/cpp_earnings_subject_to_base_and_first_additional"},
         produces={"output": "ca/self_employed_cpp_base_contributions"},
     ),
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_first_additional_contribution"},
         consumes={"earnings": "ca/cpp_earnings_subject_to_base_and_first_additional"},
         produces={"output": "ca/self_employed_cpp_first_additional_contributions"},
     ),
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_second_additional_contribution"},
         consumes={"earnings": "ca/cpp_earnings_subject_to_second_additional"},
         produces={"output": "ca/self_employed_cpp_second_additional_contributions"},
@@ -656,7 +656,7 @@ STEPS = {
         produces={"output": "ca/ei_earnings_subject_to_premium"},
     ),
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/ei_self_employed_premium"},
         consumes={"earnings": "ca/ei_earnings_subject_to_premium"},
         produces={"output": "ca/self_employed_ei_premiums"},

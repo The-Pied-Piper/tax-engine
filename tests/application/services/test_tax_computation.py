@@ -1613,29 +1613,29 @@ def test_core_greater_of_with_no_amounts_is_an_invalid_selection() -> None:
         built.compose(EX_ON, 2025)
 
 
-# --- core/contribution_tier: a rate on a band of earnings, capped, by a made-up manifest -------
+# --- ca/contribution_tier: a rate on a band of earnings, capped, by a made-up manifest -------
 #
 # `TieredContribution` is imported inside a cached factory, like `Sum` above, so its absence fails
 # only the tests that use it. It is registered in a private registry under its shared identifier,
-# `core/contribution_tier`, consumes `ex/scaled` (base × 3) as its earnings, and reads a made-up
+# `ca/contribution_tier`, consumes `ex/scaled` (base × 3) as its earnings, and reads a made-up
 # `contribution_tier` dataset: 10% of the earnings between 10 and 40, at most 2.5, rounded half-up
 # to the cent.
 
 
 @cache
 def tiered_contribution_class() -> Any:
-    from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
+    from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 
     return TieredContribution
 
 
 def some_tier_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_engine.domain.parameters.contribution_tier import (
+    from tax_engine.domain.parameters.rate import Rate
+    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
         CONTRIBUTION_TIER,
         ContributionTier,
     )
-    from tax_engine.domain.parameters.rate import Rate
-    from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
     return ParameterDataset(
         family="ex/some_tier",
@@ -1648,7 +1648,7 @@ def some_tier_data(tax_year: int = 2025) -> ParameterDataset[Any]:
 
 
 CONTRIBUTION_TIER_SELECTION = CapabilitySelection(
-    name="core/contribution_tier",
+    name="ca/contribution_tier",
     params={"tier": "ex/some_tier"},
     consumes={"earnings": "ex/scaled"},
     produces={"output": "ex-on/result"},
@@ -1657,7 +1657,7 @@ CONTRIBUTION_TIER_SELECTION = CapabilitySelection(
 
 def tiered_contribution_service() -> tuple[TaxComputationService, FakeParameters]:
     capabilities = capability_registry()
-    capabilities.register("core/contribution_tier", tiered_contribution_class())
+    capabilities.register("ca/contribution_tier", tiered_contribution_class())
     parameters = FakeParameters(factor_data(), offset_data(), some_tier_data())
     built = service(
         manifest(CONTRIBUTION_TIER_SELECTION, SCALE),  # authored out of order on purpose
@@ -1668,10 +1668,10 @@ def tiered_contribution_service() -> tuple[TaxComputationService, FakeParameters
 
 
 def test_computes_core_contribution_tier_inside_the_band_end_to_end() -> None:
-    from tax_engine.domain.parameters.contribution_tier import ContributionTier
     from tax_engine.domain.parameters.rate import Rate
     from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_engine.domain.trace import ContributionTierLine
+    from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import ContributionTier
+    from tax_engine.jurisdictions.ca.trace import ContributionTierLine
 
     built, _parameters = tiered_contribution_service()
 
@@ -1695,10 +1695,10 @@ def test_computes_core_contribution_tier_inside_the_band_end_to_end() -> None:
 
 
 def test_computes_core_contribution_tier_above_the_band_end_to_end() -> None:
-    from tax_engine.domain.parameters.contribution_tier import ContributionTier
     from tax_engine.domain.parameters.rate import Rate
     from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_engine.domain.trace import ContributionTierLine
+    from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import ContributionTier
+    from tax_engine.jurisdictions.ca.trace import ContributionTierLine
 
     built, _parameters = tiered_contribution_service()
 
@@ -1738,7 +1738,7 @@ def test_core_contribution_tier_runs_after_its_earnings_are_produced() -> None:
 
 
 def test_core_contribution_tier_asks_for_its_dataset_as_a_contribution_tier() -> None:
-    from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER
+    from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import CONTRIBUTION_TIER
 
     built, parameters = tiered_contribution_service()
 
@@ -1953,25 +1953,25 @@ def test_computes_core_tiered_surcharge_under_every_maximum_end_to_end() -> None
     assert worksheet.get(RESULT).value == D("0.10")
 
 
-# --- core/tapered_amount: a base plus a supplement tapered by a figure, by a made-up manifest --
+# --- ca/tapered_amount: a base plus a supplement tapered by a figure, by a made-up manifest --
 #
 # Like `Sum` above, `TaperedAmount` is imported inside a cached factory so its absence fails only
 # the tests that use it, and is registered in a private registry under its shared identifier,
-# `core/tapered_amount`. It consumes `ex/scaled` (base × 3) and reads a made-up `taper` dataset:
+# `ca/tapered_amount`. It consumes `ex/scaled` (base × 3) and reads a made-up `taper` dataset:
 # 10 plus 5, the 5 reduced to nothing as the scaled figure goes from 20 to 30, rounded half-up to
 # the cent.
 
 
 @cache
 def tapered_amount_class() -> Any:
-    from tax_engine.jurisdictions.core.capabilities.tapered_amount import TaperedAmount
+    from tax_engine.jurisdictions.ca.capabilities.tapered_amount import TaperedAmount
 
     return TaperedAmount
 
 
 def some_taper_data(tax_year: int = 2025) -> ParameterDataset[Any]:
     from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_engine.domain.parameters.taper import TAPER, Taper
+    from tax_engine.jurisdictions.ca.parameter_shapes.taper import TAPER, Taper
 
     return ParameterDataset(
         family="ex/some_taper",
@@ -1984,7 +1984,7 @@ def some_taper_data(tax_year: int = 2025) -> ParameterDataset[Any]:
 
 
 TAPERED_AMOUNT = CapabilitySelection(
-    name="core/tapered_amount",
+    name="ca/tapered_amount",
     params={"taper": "ex/some_taper"},
     consumes={"base": "ex/scaled"},
     produces={"output": "ex-on/result"},
@@ -1993,7 +1993,7 @@ TAPERED_AMOUNT = CapabilitySelection(
 
 def tapered_amount_service() -> tuple[TaxComputationService, FakeParameters]:
     capabilities = capability_registry()
-    capabilities.register("core/tapered_amount", tapered_amount_class())
+    capabilities.register("ca/tapered_amount", tapered_amount_class())
     parameters = FakeParameters(factor_data(), offset_data(), some_taper_data())
     built = service(
         manifest(TAPERED_AMOUNT, SCALE),  # authored out of order on purpose
@@ -2005,8 +2005,8 @@ def tapered_amount_service() -> tuple[TaxComputationService, FakeParameters]:
 
 def test_computes_core_tapered_amount_inside_the_range_end_to_end() -> None:
     from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_engine.domain.parameters.taper import Taper
-    from tax_engine.domain.trace import TaperedAmountLine
+    from tax_engine.jurisdictions.ca.parameter_shapes.taper import Taper
+    from tax_engine.jurisdictions.ca.trace import TaperedAmountLine
 
     built, _parameters = tapered_amount_service()
 
@@ -2030,7 +2030,7 @@ def test_computes_core_tapered_amount_inside_the_range_end_to_end() -> None:
 
 
 def test_computes_core_tapered_amount_above_the_range_end_to_end() -> None:
-    from tax_engine.domain.trace import TaperedAmountLine
+    from tax_engine.jurisdictions.ca.trace import TaperedAmountLine
 
     built, _parameters = tapered_amount_service()
 
@@ -2064,7 +2064,7 @@ def test_core_tapered_amount_runs_after_its_base_is_produced() -> None:
 
 
 def test_core_tapered_amount_asks_for_its_dataset_as_a_taper() -> None:
-    from tax_engine.domain.parameters.taper import TAPER
+    from tax_engine.jurisdictions.ca.parameter_shapes.taper import TAPER
 
     built, parameters = tapered_amount_service()
 
@@ -2187,25 +2187,28 @@ def test_core_per_unit_amount_asks_for_its_dataset_as_an_amount() -> None:
     assert ("ex/some_amount_per_unit", 2025, AMOUNT) in parameters.requests
 
 
-# --- core/amount_by_count: a table's amount for a count, by a made-up manifest -----------------
+# --- ca/amount_by_count: a table's amount for a count, by a made-up manifest -----------------
 #
 # Like `PerUnitAmount` above, `AmountForCount` is imported inside a cached factory so its absence
 # fails only the tests that use it, and is registered in a private registry under its shared
-# identifier, `core/amount_by_count`. It consumes `ex/count`, a made-up `int` input, and reads a
+# identifier, `ca/amount_by_count`. It consumes `ex/count`, a made-up `int` input, and reads a
 # made-up `amount_by_count` dataset with a row for each count from 1 to 4, rounded half-up to the
 # cent.
 
 
 @cache
 def amount_by_count_class() -> Any:
-    from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+    from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 
     return AmountForCount
 
 
 def some_amount_by_count_data(tax_year: int = 2025) -> ParameterDataset[Any]:
-    from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
     from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+    from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import (
+        AMOUNT_BY_COUNT,
+        AmountByCount,
+    )
 
     return ParameterDataset(
         family="ex/some_amount_by_count",
@@ -2218,7 +2221,7 @@ def some_amount_by_count_data(tax_year: int = 2025) -> ParameterDataset[Any]:
 
 
 AMOUNT_BY_COUNT_SELECTION = CapabilitySelection(
-    name="core/amount_by_count",
+    name="ca/amount_by_count",
     params={"table": "ex/some_amount_by_count"},
     consumes={"count": "ex/count"},
     produces={"output": "ex-on/result"},
@@ -2227,7 +2230,7 @@ AMOUNT_BY_COUNT_SELECTION = CapabilitySelection(
 
 def amount_by_count_service() -> tuple[TaxComputationService, FakeParameters]:
     capabilities = capability_registry()
-    capabilities.register("core/amount_by_count", amount_by_count_class())
+    capabilities.register("ca/amount_by_count", amount_by_count_class())
     parameters = FakeParameters(factor_data(), offset_data(), some_amount_by_count_data())
     built = service(
         manifest(
@@ -2243,7 +2246,7 @@ def amount_by_count_service() -> tuple[TaxComputationService, FakeParameters]:
 
 def test_computes_core_amount_by_count_end_to_end() -> None:
     from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_engine.domain.trace import AmountByCountLine
+    from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 
     built, _parameters = amount_by_count_service()
 
@@ -2268,7 +2271,7 @@ def test_computes_core_amount_by_count_end_to_end() -> None:
 
 def test_computes_core_amount_by_count_rounding_the_row_end_to_end() -> None:
     from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-    from tax_engine.domain.trace import AmountByCountLine
+    from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 
     built, _parameters = amount_by_count_service()
 
@@ -2310,7 +2313,7 @@ def test_core_amount_by_count_rejects_a_money_input_for_its_count() -> None:
 
 
 def test_core_amount_by_count_asks_for_its_dataset_as_an_amount_by_count() -> None:
-    from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT
+    from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import AMOUNT_BY_COUNT
 
     built, parameters = amount_by_count_service()
 

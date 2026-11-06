@@ -7,7 +7,7 @@ form:
 capabilities:
   # Schedule 8 Part 3 line 12 "amount from line 7 multiplied by 1%": the required first additional
   # contributions on the box 26 total (line 1 of Part 3, the T4 CPP pensionable earnings).
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_first_additional_contribution
     consumes:
@@ -16,7 +16,7 @@ capabilities:
       output: ca/cpp_first_additional_contributions
   # Schedule 8 Part 3 line 22 "amount from line 4 multiplied by 4% (maximum $396.00)": the required
   # second additional contributions on the box 26 total (line 1 of Part 3).
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_second_additional_contribution
     consumes:
@@ -37,7 +37,7 @@ capabilities:
   # earnings between the $3,500 exemption and the $71,300 ceiling, lines 2 to 7), line 12
   # (first additional, 1% of the same band) and line 22 (second additional, 4% of the
   # earnings between the $71,300 and $81,200 ceilings, lines 2 to 4).
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_base_contribution
     consumes:
@@ -49,7 +49,7 @@ capabilities:
   # (maximum pensionable earnings), line C (maximum amount subject to second additional
   # contributions), line D (additional maximum pensionable earnings) and line E (maximum
   # basic exemption), each the figure of the row for the months in box A.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_maximum_pensionable_earnings
     consumes:
@@ -57,7 +57,7 @@ capabilities:
     produces:
       output: ca/cpp_maximum_pensionable_earnings
   # Schedule 8 Part 2 line C (maximum amount subject to second additional contributions), the row for the months in box A.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_second_additional_earnings_maximum
     consumes:
@@ -65,7 +65,7 @@ capabilities:
     produces:
       output: ca/cpp_second_additional_earnings_maximum
   # Schedule 8 Part 2 line D (additional maximum pensionable earnings), the row for the months in box A.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_additional_maximum_pensionable_earnings
     consumes:
@@ -73,7 +73,7 @@ capabilities:
     produces:
       output: ca/cpp_additional_maximum_pensionable_earnings
   # Schedule 8 Part 2 line E (maximum basic exemption), the row for the months in box A.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_basic_exemption
     consumes:

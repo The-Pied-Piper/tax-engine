@@ -18,10 +18,13 @@ from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
-from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.trace import ContributionTierLine
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
+    CONTRIBUTION_TIER,
+    ContributionTier,
+)
+from tax_engine.jurisdictions.ca.trace import ContributionTierLine
 
 
 @capability(identifier="contribution_tier")

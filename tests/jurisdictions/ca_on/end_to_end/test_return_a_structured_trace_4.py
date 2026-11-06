@@ -3,16 +3,13 @@
 from __future__ import annotations
 
 from tax_engine.domain.parameters.amount import Amount
-from tax_engine.domain.parameters.contribution_tier import ContributionTier
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import (
-    AmountByCountLine,
     AtMostLine,
     ChosenByCountLine,
     ConditionLine,
     ConditionsCountLine,
-    ContributionTierLine,
     GreaterOfLine,
     ItemLesserOfLine,
     ItemsTotalLine,
@@ -1226,6 +1223,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     ZONE_B_RESIDENCY_AMOUNT,
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import ContributionTier
+from tax_engine.jurisdictions.ca.trace import AmountByCountLine, ContributionTierLine
 from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tax_engine.jurisdictions.ca_on.catalog import (
     CARE_ADJUSTED_INCOME,

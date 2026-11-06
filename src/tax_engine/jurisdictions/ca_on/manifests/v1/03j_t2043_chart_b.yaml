@@ -89,7 +89,7 @@ capabilities:
       output: ca/farm_chart_b_note_9_applies
   # Form T2043 Chart B row 8 "Percentage (%) of expenses allocated to the designated province. Row 7
   # multiplied by 50%. See note 9.": 50 when note 9 does not apply, 100 when it does.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/farm_chart_b_row_8_percentage_table
     consumes:

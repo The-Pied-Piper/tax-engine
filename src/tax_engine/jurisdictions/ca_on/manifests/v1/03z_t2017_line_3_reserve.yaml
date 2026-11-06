@@ -58,7 +58,7 @@ capabilities:
       output: ca/t2017_reserve_by_payment
   # "Enter the applicable percentage from the table", by the years after the disposition (0 for the
   # year of disposition, then the years after it in the table).
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/t2017_nine_year_percentage
     consumes:

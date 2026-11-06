@@ -16,7 +16,6 @@ from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import MissingArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import RecordListKind
-from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import TraceLine
@@ -943,6 +942,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     ZONE_B_DAYS_LIVED,
     ZONE_B_SPECIAL_WORK_SITE_BENEFITS,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import CONTRIBUTION_TIER
 from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tax_engine.jurisdictions.ca_on.catalog import (
     APPLIES_FOR_ENERGY_AND_PROPERTY_TAX_CREDIT,

@@ -41,9 +41,11 @@ from __future__ import annotations
 
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.amount_when_more import AmountWhenMore
 from tax_engine.jurisdictions.ca.capabilities.apply_chosen_rate import ApplyChosenRate
 from tax_engine.jurisdictions.ca.capabilities.choose_by_sign import ChooseBySign
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_at_least import CountAtLeast
 from tax_engine.jurisdictions.ca.capabilities.divided_by_rate import DividedByRate
 from tax_engine.jurisdictions.ca.capabilities.lesser_of_when_positive import (
@@ -271,10 +273,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     T4_QPP_PENSIONABLE_EARNINGS_IN_QUEBEC,
     T4_QPP_SECOND_ADDITIONAL_BOX_17A,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
@@ -327,25 +327,25 @@ FORM_STEPS = {
     # (maximum $3,500)": the row of the table for line B's months, the table of Schedule 8
     # Part 2 (lines C to F are the same table read with line A, the existing artifacts).
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_maximum_pensionable_earnings"},
         consumes={"count": "ca/rc381_part_2_line_b"},
         produces={"output": "ca/rc381_part_2_line_g"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_second_additional_earnings_maximum"},
         consumes={"count": "ca/rc381_part_2_line_b"},
         produces={"output": "ca/rc381_part_2_line_h"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_additional_maximum_pensionable_earnings"},
         consumes={"count": "ca/rc381_part_2_line_b"},
         produces={"output": "ca/rc381_part_2_line_i"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_basic_exemption"},
         consumes={"count": "ca/rc381_part_2_line_b"},
         produces={"output": "ca/rc381_part_2_line_j"},
@@ -494,7 +494,7 @@ FORM_STEPS = {
     # Line 22 "Required base contributions on CPP pensionable earnings: amount from line 18 x
     # 4.95% = (maximum $3,356.10)".
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/rc381_required_cpp_base"},
         consumes={"earnings": "ca/rc381_part_3_line_18"},
         produces={"output": "ca/rc381_part_3_line_22"},
@@ -502,7 +502,7 @@ FORM_STEPS = {
     # Line 23 "Required first additional contributions on CPP pensionable earnings: amount from
     # line 18 x 1% = (maximum $678.00)".
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/rc381_required_first_additional"},
         consumes={"earnings": "ca/rc381_part_3_line_18"},
         produces={"output": "ca/rc381_part_3_line_23"},
@@ -518,7 +518,7 @@ FORM_STEPS = {
     # Line 26 "Required second additional contributions on CPP pensionable earnings: amount from
     # line 15 x 4% = (maximum $396.00)".
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/rc381_required_second_additional"},
         consumes={"earnings": "ca/rc381_part_3_line_15"},
         produces={"output": "ca/rc381_part_3_line_26"},
@@ -626,7 +626,7 @@ FORM_STEPS = {
     # Line 42 "Required base contributions on QPP pensionable earnings: amount from line 38 x
     # 5.4% = (maximum $3,661.20)".
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/rc381_required_qpp_base"},
         consumes={"earnings": "ca/rc381_part_3_line_38"},
         produces={"output": "ca/rc381_part_3_line_42"},
@@ -634,7 +634,7 @@ FORM_STEPS = {
     # Line 43 "Required first additional contributions on QPP pensionable earnings: amount from
     # line 38 x 1% = (maximum $678.00)", the figures of line 23, so the same dataset.
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/rc381_required_first_additional"},
         consumes={"earnings": "ca/rc381_part_3_line_38"},
         produces={"output": "ca/rc381_part_3_line_43"},
@@ -650,7 +650,7 @@ FORM_STEPS = {
     # Line 46 "Required second additional contributions on QPP pensionable earnings: amount from
     # line 35 x 4% = (maximum $396.00)", the figures of line 26, so the same dataset.
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/rc381_required_second_additional"},
         consumes={"earnings": "ca/rc381_part_3_line_35"},
         produces={"output": "ca/rc381_part_3_line_46"},
@@ -1694,7 +1694,7 @@ FORM_STEPS = {
     # (maximum $792.00)": the self-employed person's tiers of Schedule 8 Part 4 (the same
     # figures), on the earnings of lines 70 and 83. A line 70 below zero contributes nothing.
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_base_contribution"},
         consumes={
             "earnings": "ca/rc381_part_4_line_70",
@@ -1702,7 +1702,7 @@ FORM_STEPS = {
         produces={"output": "ca/rc381_part_4_line_84"},
     ),
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_first_additional_contribution"},
         consumes={
             "earnings": "ca/rc381_part_4_line_70",
@@ -1710,7 +1710,7 @@ FORM_STEPS = {
         produces={"output": "ca/rc381_part_4_line_85"},
     ),
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_second_additional_contribution"},
         consumes={
             "earnings": "ca/rc381_part_4_line_83",
@@ -2243,25 +2243,25 @@ FORM_STEPS = {
     # Form RC381 Part 2 lines C to F, the "Monthly proration table" read with line A (box A of
     # Schedule 8 Part 2): the form's own copy of the four steps, which the return keeps.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_maximum_pensionable_earnings"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_maximum_pensionable_earnings"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_second_additional_earnings_maximum"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_second_additional_earnings_maximum"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_additional_maximum_pensionable_earnings"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_additional_maximum_pensionable_earnings"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_basic_exemption"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_basic_exemption"},

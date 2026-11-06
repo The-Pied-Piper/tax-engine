@@ -4,8 +4,11 @@ from __future__ import annotations
 
 from tax_engine.adapters.outbound.parameter_parser import parameter_parser
 from tax_engine.adapters.outbound.yaml_support import YamlNode
-from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.rate import Rate
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
+    CONTRIBUTION_TIER,
+    ContributionTier,
+)
 
 
 @parameter_parser

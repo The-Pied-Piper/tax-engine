@@ -285,7 +285,7 @@ def test_lines_3_4_9_10_17_21_and_24_use_the_nine_year_table_only() -> None:
         table = [
             each.params["table"]
             for each in family.ROW_STEPS[line]
-            if each.name == "core/amount_by_count"
+            if each.name == "ca/amount_by_count"
         ]
 
         assert table == ["ca/t2017_nine_year_percentage"], line
@@ -293,7 +293,7 @@ def test_lines_3_4_9_10_17_21_and_24_use_the_nine_year_table_only() -> None:
 
 def test_line_27_uses_the_four_year_table_only() -> None:
     table = [
-        each.params["table"] for each in family.ROW_STEPS[27] if each.name == "core/amount_by_count"
+        each.params["table"] for each in family.ROW_STEPS[27] if each.name == "ca/amount_by_count"
     ]
 
     assert table == ["ca/t2017_four_year_percentage"]

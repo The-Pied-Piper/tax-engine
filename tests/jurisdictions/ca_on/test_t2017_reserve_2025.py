@@ -27,10 +27,13 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NoAmountForCountError
 from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import (
+    AMOUNT_BY_COUNT,
+    AmountByCount,
+)
 
 D = Decimal
 SOURCE = YamlParameterSource(

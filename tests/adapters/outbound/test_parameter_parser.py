@@ -29,7 +29,6 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
 )
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
-from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
 from tax_engine.domain.parameters.class_rates import (
     CLASS_RATES,
@@ -47,7 +46,6 @@ from tax_engine.domain.parameters.conditions import (
     ConditionPart,
     ConditionTest,
 )
-from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.factor import FACTOR, Factor
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
@@ -60,25 +58,34 @@ from tax_engine.domain.parameters.surcharge_tiers import (
     SurchargeTier,
     SurchargeTiers,
 )
-from tax_engine.domain.parameters.taper import TAPER, Taper
 from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
 from tax_engine.domain.registry import Registry
+from tax_engine.jurisdictions.ca.parameter_parsers.amount_by_count import AmountByCountParser
 from tax_engine.jurisdictions.ca.parameter_parsers.claim_reduction import ClaimReductionParser
+from tax_engine.jurisdictions.ca.parameter_parsers.contribution_tier import (
+    ContributionTierParser,
+)
+from tax_engine.jurisdictions.ca.parameter_parsers.taper import TaperParser
 from tax_engine.jurisdictions.ca.parameter_parsers.year_amounts import YearAmountsParser
+from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import (
+    AMOUNT_BY_COUNT,
+    AmountByCount,
+)
 from tax_engine.jurisdictions.ca.parameter_shapes.claim_reduction import CLAIM_REDUCTION
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
+    CONTRIBUTION_TIER,
+    ContributionTier,
+)
+from tax_engine.jurisdictions.ca.parameter_shapes.taper import TAPER, Taper
 from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import (
     YEAR_AMOUNTS,
     YearAmounts,
     YearAmountsRow,
 )
 from tax_engine.jurisdictions.core.parameter_parsers.amount import AmountParser
-from tax_engine.jurisdictions.core.parameter_parsers.amount_by_count import AmountByCountParser
 from tax_engine.jurisdictions.core.parameter_parsers.brackets import BracketsParser
 from tax_engine.jurisdictions.core.parameter_parsers.class_rates import ClassRatesParser
 from tax_engine.jurisdictions.core.parameter_parsers.conditions import ConditionsParser
-from tax_engine.jurisdictions.core.parameter_parsers.contribution_tier import (
-    ContributionTierParser,
-)
 from tax_engine.jurisdictions.core.parameter_parsers.credit import CreditParser
 from tax_engine.jurisdictions.core.parameter_parsers.factor import FactorParser
 from tax_engine.jurisdictions.core.parameter_parsers.fraction import FractionParser
@@ -86,7 +93,6 @@ from tax_engine.jurisdictions.core.parameter_parsers.rate import RateParser
 from tax_engine.jurisdictions.core.parameter_parsers.rate_table import RateTableParser
 from tax_engine.jurisdictions.core.parameter_parsers.rounding_only import RoundingOnlyParser
 from tax_engine.jurisdictions.core.parameter_parsers.surcharge_tiers import SurchargeTiersParser
-from tax_engine.jurisdictions.core.parameter_parsers.taper import TaperParser
 from tax_engine.jurisdictions.core.parameter_parsers.threshold_rate import ThresholdRateParser
 
 D = Decimal

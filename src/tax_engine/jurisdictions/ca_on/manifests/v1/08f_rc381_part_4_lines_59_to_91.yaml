@@ -138,21 +138,21 @@ capabilities:
   # additional contributions on CPP pensionable earnings: amount from line 83 × 8% = (maximum
   # $792.00)": the self-employed person's tiers of Schedule 8 Part 4 (the same figures), on the
   # earnings of lines 70 and 83. A line 70 below zero contributes nothing.
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_base_contribution
     consumes:
       earnings: ca/rc381_part_4_line_70
     produces:
       output: ca/rc381_part_4_line_84
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_first_additional_contribution
     consumes:
       earnings: ca/rc381_part_4_line_70
     produces:
       output: ca/rc381_part_4_line_85
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/cpp_self_employed_second_additional_contribution
     consumes:

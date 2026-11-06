@@ -647,21 +647,21 @@ capabilities:
   # (maximum pensionable earnings), line C (maximum amount subject to second additional
   # contributions), line D (additional maximum pensionable earnings) and line E (maximum
   # basic exemption), each the figure of the row for the months in box A.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_maximum_pensionable_earnings
     consumes:
       count: ca/cpp_months
     produces:
       output: ca/cpp_maximum_pensionable_earnings
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_additional_maximum_pensionable_earnings
     consumes:
       count: ca/cpp_months
     produces:
       output: ca/cpp_additional_maximum_pensionable_earnings
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_basic_exemption
     consumes:

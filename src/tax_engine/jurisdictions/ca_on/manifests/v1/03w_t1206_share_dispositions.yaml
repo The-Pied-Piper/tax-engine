@@ -70,7 +70,7 @@ capabilities:
     produces:
       output: ca/t1206_line_g
   # Under 18: "Multiply the amount from line G by 1.15", the percentage of the age answer.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/t1206_under_18_percentage
     consumes:
@@ -88,7 +88,7 @@ capabilities:
     produces:
       output: ca/t1206_under_18_dividend_amount
   # 18 or older: "multiply the capital gain ... by 50%", the percentage of the age answer.
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/t1206_aged_18_or_older_percentage
     consumes:

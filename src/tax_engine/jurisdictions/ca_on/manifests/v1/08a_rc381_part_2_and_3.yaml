@@ -46,28 +46,28 @@ capabilities:
   # earnings for 2025 (maximum $81,200)" and line J "Your maximum basic exemption for 2025
   # (maximum $3,500)": the row of the table for line B's months, the table of Schedule 8
   # Part 2 (lines C to F are the same table read with line A, the existing artifacts).
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_maximum_pensionable_earnings
     consumes:
       count: ca/rc381_part_2_line_b
     produces:
       output: ca/rc381_part_2_line_g
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_second_additional_earnings_maximum
     consumes:
       count: ca/rc381_part_2_line_b
     produces:
       output: ca/rc381_part_2_line_h
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_additional_maximum_pensionable_earnings
     consumes:
       count: ca/rc381_part_2_line_b
     produces:
       output: ca/rc381_part_2_line_i
-  - name: core/amount_by_count
+  - name: ca/amount_by_count
     params:
       table: ca/cpp_basic_exemption
     consumes:
@@ -203,7 +203,7 @@ capabilities:
       output: ca/rc381_part_3_line_21
   # Line 22 "Required base contributions on CPP pensionable earnings: amount from line 18 x
   # 4.95% = (maximum $3,356.10)".
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/rc381_required_cpp_base
     consumes:
@@ -212,7 +212,7 @@ capabilities:
       output: ca/rc381_part_3_line_22
   # Line 23 "Required first additional contributions on CPP pensionable earnings: amount from
   # line 18 x 1% = (maximum $678.00)".
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/rc381_required_first_additional
     consumes:
@@ -230,7 +230,7 @@ capabilities:
       output: ca/rc381_part_3_line_24
   # Line 26 "Required second additional contributions on CPP pensionable earnings: amount from
   # line 15 x 4% = (maximum $396.00)".
-  - name: core/contribution_tier
+  - name: ca/contribution_tier
     params:
       tier: ca/rc381_required_second_additional
     consumes:

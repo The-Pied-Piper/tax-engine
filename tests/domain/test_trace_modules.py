@@ -67,12 +67,9 @@ CORE_HOMES: dict[str, tuple[str, ...]] = {
     ),
     "rate_tables": (
         "BracketColumnLine",
-        "ContributionTierLine",
         "SurchargeTierLine",
-        "TaperedAmountLine",
         "RateByIncomeBandLine",
         "ChosenRateAppliedLine",
-        "AmountByCountLine",
     ),
     "choices": (
         "ChosenByCountLine",

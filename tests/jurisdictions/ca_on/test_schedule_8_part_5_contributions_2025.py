@@ -46,14 +46,14 @@ from tax_engine.domain.parameters.conditions import (
     ConditionPart,
     ConditionTest,
 )
-from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import CONTRIBUTION_TIER
 from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 
 D = Decimal
 SOURCE = YamlParameterSource(

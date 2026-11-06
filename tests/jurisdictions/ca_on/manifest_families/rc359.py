@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 from tax_engine.jurisdictions.ca.catalog import (
     RC359_EMPLOYMENT_INCOME,
@@ -26,7 +27,6 @@ from tax_engine.jurisdictions.ca.catalog import (
     RC359_TAX_ON_EXCESS_EPSP,
     RC359_TAX_TOTAL,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
@@ -88,7 +88,7 @@ FORM_STEPS = {
     # Form RC359 line 8 "Enter the rate for your province or territory of residence at the end of
     # the year using the charts below.": the printed rate for the province code of the copy.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/rc359_province_percentage"},
         consumes={"count": "ca/rc359_province"},
         produces={"output": "ca/rc359_line_8"},

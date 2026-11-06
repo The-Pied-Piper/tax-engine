@@ -12,7 +12,7 @@ capabilities:
   # worksheet's taper on the TOSI-adjusted net income of Form T1206 Part 1 line 6 in place of the
   # net income (line 23600), not below zero ("use line 6 of this form at line 3 of your Federal
   # Worksheet for line 30000"), the first part of the T1's total of credit amounts.
-  - name: core/tapered_amount
+  - name: ca/tapered_amount
     params:
       taper: ca/basic_personal_amount
     consumes:

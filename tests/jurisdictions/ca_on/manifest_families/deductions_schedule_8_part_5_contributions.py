@@ -9,6 +9,7 @@ computes something, so there are no copy lines.
 from __future__ import annotations
 
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.catalog import (
     CPP_ACTUAL_BASE_CONTRIBUTIONS,
@@ -72,7 +73,6 @@ from tax_engine.jurisdictions.ca.catalog import (
 from tax_engine.jurisdictions.core.capabilities.apply_fraction import ApplyFraction
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
@@ -90,7 +90,7 @@ FORM_STEPS = {
     # 43: amount from line 30 multiplied by 9.9% (maximum $6,712.20) =": the tier of Part 4 line
     # 10 on line 30, which is the earnings of Part 4 line 9 here.
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_base_contribution"},
         consumes={"earnings": "ca/cpp_part_5_line_30"},
         produces={"output": "ca/cpp_part_5_line_43"},
@@ -98,7 +98,7 @@ FORM_STEPS = {
     # Schedule 8 Part 5 line 44 "Required first additional contributions on CPP pensionable
     # earnings: Line 44: amount from line 30 multiplied by 2% (maximum $1,356.00) =".
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_first_additional_contribution"},
         consumes={"earnings": "ca/cpp_part_5_line_30"},
         produces={"output": "ca/cpp_part_5_line_44"},
@@ -108,7 +108,7 @@ FORM_STEPS = {
     # prints no floor and is negative for a loss with employment income above $71,300, which the
     # tier floors to a band of 0 (so line 45 is 0).
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_self_employed_second_additional_contribution"},
         consumes={"earnings": "ca/cpp_part_5_line_42"},
         produces={"output": "ca/cpp_part_5_line_45"},

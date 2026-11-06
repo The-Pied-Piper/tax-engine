@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
@@ -95,7 +96,6 @@ from tax_engine.jurisdictions.ca.catalog import (
     T2017_ROW_PREVIOUS_RESERVE,
     T2017_ROW_RESERVE,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
@@ -378,13 +378,13 @@ def row_steps(line: int) -> set[CapabilitySelection]:
 def period_steps(line: int) -> set[CapabilitySelection]:
     """The selections that give the applicable percentage of a row, by the line's period."""
     four_year = CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/t2017_four_year_percentage"},
         consumes={"count": "ca/t2017_reserve_years_after_disposition"},
         produces={"output": "ca/t2017_reserve_four_year_percentage"},
     )
     nine_year = CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/t2017_nine_year_percentage"},
         consumes={"count": "ca/t2017_reserve_years_after_disposition"},
         produces={"output": "ca/t2017_reserve_nine_year_percentage"},

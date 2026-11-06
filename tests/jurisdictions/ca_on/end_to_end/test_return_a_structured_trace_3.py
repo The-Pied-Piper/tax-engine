@@ -10,7 +10,6 @@ from tax_engine.domain.parameters.factor import Factor
 from tax_engine.domain.parameters.fraction import Fraction
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.parameters.taper import Taper
 from tax_engine.domain.trace import (
     CappedAmountLine,
     CreditAmountLine,
@@ -21,7 +20,6 @@ from tax_engine.domain.trace import (
     PerUnitAmountLine,
     SignChosenDifferenceLine,
     SubtractedLine,
-    TaperedAmountLine,
     ThresholdGateLine,
     TimesCountLine,
 )
@@ -830,6 +828,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     ZONE_B_BASIC_RESIDENCY_AMOUNT,
     ZONE_B_DAYS_LIVED,
 )
+from tax_engine.jurisdictions.ca.parameter_shapes.taper import Taper
+from tax_engine.jurisdictions.ca.trace import TaperedAmountLine
 from tax_engine.jurisdictions.ca_on import catalog as ontario
 from tax_engine.jurisdictions.ca_on.catalog import (
     CLAIMS_SENIORS_CARE_CREDIT_CHECKED,

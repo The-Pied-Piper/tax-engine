@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_INCOME,
@@ -86,7 +87,6 @@ from tax_engine.jurisdictions.ca.catalog import (
 )
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 from tax_engine.jurisdictions.core.capabilities.greater_of import GreaterOf
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
@@ -208,7 +208,7 @@ STEPS = {
     # T2204 line 10 "Residents of other than Quebec Amount from line 1 × 1.64% = (maximum
     # $1,077.48)": the EI premium tier, on line 1 (not line 3).
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/ei_premium"},
         consumes={"earnings": "ca/t2204_line_1"},
         produces={"output": "ca/t2204_line_10"},

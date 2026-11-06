@@ -15,6 +15,8 @@ from __future__ import annotations
 from tax_engine.domain.blank import COMPUTE
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountByConditions
 from tax_engine.jurisdictions.ca.catalog import (
     BUSINESS_INCOME,
@@ -94,10 +96,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     SCHEDULE_8_CPP_OVERPAYMENT,
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.choose_by_count import ChooseByCount
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
@@ -240,13 +240,13 @@ WIRING = {
 # return keeps.
 FORM_STEPS = {
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_first_additional_contribution"},
         consumes={"earnings": "ca/t4_cpp_pensionable_earnings_outside_quebec"},
         produces={"output": "ca/cpp_first_additional_contributions"},
     ),
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_second_additional_contribution"},
         consumes={"earnings": "ca/t4_cpp_pensionable_earnings_outside_quebec"},
         produces={"output": "ca/cpp_second_additional_contributions"},
@@ -792,7 +792,7 @@ FORM_STEPS = {
     # (first additional, 1% of the same band) and line 22 (second additional, 4% of the
     # earnings between the $71,300 and $81,200 ceilings, lines 2 to 4).
     CapabilitySelection(
-        name="core/contribution_tier",
+        name="ca/contribution_tier",
         params={"tier": "ca/cpp_base_contribution"},
         consumes={"earnings": "ca/t4_cpp_pensionable_earnings_outside_quebec"},
         produces={"output": "ca/cpp_base_contributions"},
@@ -803,25 +803,25 @@ FORM_STEPS = {
     # contributions), line D (additional maximum pensionable earnings) and line E (maximum
     # basic exemption), each the figure of the row for the months in box A.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_maximum_pensionable_earnings"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_maximum_pensionable_earnings"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_second_additional_earnings_maximum"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_second_additional_earnings_maximum"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_additional_maximum_pensionable_earnings"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_additional_maximum_pensionable_earnings"},
     ),
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/cpp_basic_exemption"},
         consumes={"count": "ca/cpp_months"},
         produces={"output": "ca/cpp_basic_exemption"},

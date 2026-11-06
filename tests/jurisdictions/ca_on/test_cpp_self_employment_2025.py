@@ -28,11 +28,14 @@ import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.parameters.contribution_tier import CONTRIBUTION_TIER, ContributionTier
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TieredContribution
+from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
+    CONTRIBUTION_TIER,
+    ContributionTier,
+)
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
-from tax_engine.jurisdictions.core.capabilities.contribution_tier import TieredContribution
 
 D = Decimal
 SOURCE = YamlParameterSource(

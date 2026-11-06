@@ -17,8 +17,11 @@ from typing import Any, cast
 import pytest
 
 from tax_engine.domain.errors import DomainError, InvalidAmountByCountError
-from tax_engine.domain.parameters.amount_by_count import AMOUNT_BY_COUNT, AmountByCount
 from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.jurisdictions.ca.parameter_shapes.amount_by_count import (
+    AMOUNT_BY_COUNT,
+    AmountByCount,
+)
 
 D = Decimal
 

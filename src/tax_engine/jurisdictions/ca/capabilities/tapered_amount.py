@@ -24,8 +24,8 @@ from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.parameters.taper import TAPER, Taper
-from tax_engine.domain.trace import TaperedAmountLine
+from tax_engine.jurisdictions.ca.parameter_shapes.taper import TAPER, Taper
+from tax_engine.jurisdictions.ca.trace import TaperedAmountLine
 
 
 @capability(identifier="tapered_amount")

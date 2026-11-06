@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection
+from tax_engine.jurisdictions.ca.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.ca.capabilities.apply_percentage import ApplyPercentage
 from tax_engine.jurisdictions.ca.capabilities.apply_ratio_or_zero import ApplyRatioOrZero
 from tax_engine.jurisdictions.ca.capabilities.yes_or_no_count import YesOrNoCount
@@ -48,7 +49,6 @@ from tax_engine.jurisdictions.ca.catalog import (
     T1206_UNDER_18_DIVIDEND_AMOUNT,
     T1206_UNDER_18_PERCENT,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_count import AmountForCount
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 from tax_engine.jurisdictions.core.capabilities.lesser_of import LesserOf
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
@@ -180,7 +180,7 @@ DISPOSITIONS_STEPS = {
     ),
     # Under 18: "Multiply the amount from line G by 1.15", the percentage of the age answer.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/t1206_under_18_percentage"},
         consumes={"count": "ca/t1206_aged_18_or_older_checked"},
         produces={"output": "ca/t1206_under_18_percent"},
@@ -194,7 +194,7 @@ DISPOSITIONS_STEPS = {
     ),
     # 18 or older: "multiply the capital gain ... by 50%", the percentage of the age answer.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/t1206_aged_18_or_older_percentage"},
         consumes={"count": "ca/t1206_aged_18_or_older_checked"},
         produces={"output": "ca/t1206_part_1_line_3_percent"},
@@ -235,7 +235,7 @@ RESERVE_STEPS = {
     ),
     # "Applicable percentage for year of sale or year after sale (1)": 80%, 60%, 40%, 20%, 0%.
     CapabilitySelection(
-        name="core/amount_by_count",
+        name="ca/amount_by_count",
         params={"table": "ca/t1206_reserve_percentage"},
         consumes={"count": "ca/t1206_reserve_years_after_sale"},
         produces={"output": "ca/t1206_reserve_applicable_percentage"},
