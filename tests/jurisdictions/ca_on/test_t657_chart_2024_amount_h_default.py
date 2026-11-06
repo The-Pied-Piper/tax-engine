@@ -16,7 +16,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.capabilities.sum_not_below_zero import SumNotBelowZero
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.manifest import InputDeclaration
+from tax_engine.domain.manifest import InputDeclaration, Manifest
 from tests.kinds import bundled_kinds
 
 D = Decimal
@@ -27,13 +27,17 @@ AMOUNT_H = (
 )
 
 
-def declared() -> dict[str, InputDeclaration]:
-    (manifest,) = (
+def manifest() -> Manifest:
+    (loaded,) = (
         YamlJurisdictionSource(tax_engine.registrations.JURISDICTIONS.roots(), bundled_kinds())
         .get_jurisdiction(CA_ON)
         .manifests
     )
-    return dict(manifest.inputs)
+    return loaded
+
+
+def declared() -> dict[str, InputDeclaration]:
+    return dict(manifest().inputs)
 
 
 @pytest.mark.parametrize("name", AMOUNT_H)
@@ -56,3 +60,10 @@ def test_a_total_of_f_and_g_is_kept_when_h_is_left_out() -> None:
     )
 
     assert result.outputs == (Artifact(total, D(10000)),)
+
+
+@pytest.mark.parametrize("name", AMOUNT_H)
+def test_the_manifest_reads_a_left_out_amount_h_as_a_zero_artifact(name: str) -> None:
+    defaults = {artifact.kind.identifier: artifact for artifact in manifest().defaults}
+
+    assert defaults[name].value == D(0)
