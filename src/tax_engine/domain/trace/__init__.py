@@ -1,7 +1,7 @@
 """The structured trace: what each capability did, recorded as facts.
 
 A trace line holds the domain objects and amounts involved (`ArtifactKind`, `Rate`, `Credit`,
-`Amount`, `ContributionTier`, `Taper`, `Factor`, `Fraction`, `RateTableRow`, `ClassRate`,
+`Amount`, `Factor`, `Fraction`, `RateTableRow`, `ClassRate`,
 `RoundingRule`), never text; its `amount` is the figure the line is about. A count is an `int`
 artifact kind and its `int` value; a chosen rate is a `Rate` artifact kind and its `Rate` value.
 Lines in a jurisdiction's own vocabulary live in that jurisdiction's package

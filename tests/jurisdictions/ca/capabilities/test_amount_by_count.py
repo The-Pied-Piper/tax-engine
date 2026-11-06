@@ -85,7 +85,7 @@ def compute(wired: AmountForCount, count: int) -> Artifact[Any]:
     return output
 
 
-def test_is_registered_as_core_amount_by_count() -> None:
+def test_is_registered_as_ca_amount_by_count() -> None:
     assert bundled_capabilities().get("ca/amount_by_count") is AmountForCount
 
 

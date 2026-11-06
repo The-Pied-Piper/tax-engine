@@ -81,7 +81,7 @@ def compute(wired: TaperedAmount, income: str) -> Artifact[Any]:
     return output
 
 
-def test_is_registered_as_core_tapered_amount() -> None:
+def test_is_registered_as_ca_tapered_amount() -> None:
     assert bundled_capabilities().get("ca/tapered_amount") is TaperedAmount
 
 

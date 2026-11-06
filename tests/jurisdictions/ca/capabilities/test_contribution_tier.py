@@ -78,7 +78,7 @@ def compute(wired: TieredContribution, earnings: str) -> Artifact[Any]:
     return output
 
 
-def test_is_registered_as_core_contribution_tier() -> None:
+def test_is_registered_as_ca_contribution_tier() -> None:
     assert bundled_capabilities().get("ca/contribution_tier") is TieredContribution
 
 
