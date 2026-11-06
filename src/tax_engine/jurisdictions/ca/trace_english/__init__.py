@@ -9,32 +9,8 @@ from __future__ import annotations
 
 from tax_engine.jurisdictions.ca.trace_english import (
     amount_by_count,
-    apprenticeship,
-    capital_cost,
     contribution_tier,
-    dependants,
-    farm_chart,
-    foreign_tax,
-    gains,
-    home_renovation,
-    logging_tax_credit,
-    rentals,
     tapered_amount,
-    vehicles,
 )
 
-__all__ = [
-    "amount_by_count",
-    "apprenticeship",
-    "capital_cost",
-    "contribution_tier",
-    "dependants",
-    "farm_chart",
-    "foreign_tax",
-    "gains",
-    "home_renovation",
-    "logging_tax_credit",
-    "rentals",
-    "tapered_amount",
-    "vehicles",
-]
+__all__ = ["amount_by_count", "contribution_tier", "tapered_amount"]

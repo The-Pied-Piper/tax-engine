@@ -1,14 +1,11 @@
-"""Ontario (`CA-ON`): its artifact catalog, the CA-ON manifest and the `ca-on/...` datasets.
+"""Ontario (`CA-ON`): its artifact catalog and the `ca-on/...` datasets.
 
-The manifest also selects federal capabilities, whose kinds and data live in
-`tax_engine.jurisdictions.ca`.
-Importing the package imports its `capabilities` package, which holds Ontario's capabilities,
-its `trace` package of Ontario trace lines, and its `trace_english` package, which registers their
-English renderers.
+Importing the package imports its `capabilities` package, which holds Ontario's capabilities
+(none today).
 """
 
 NAMESPACE = "ca-on"
 
-from tax_engine.jurisdictions.ca_on import capabilities, trace, trace_english  # noqa: E402
+from tax_engine.jurisdictions.ca_on import capabilities  # noqa: E402
 
-__all__ = ["NAMESPACE", "capabilities", "trace", "trace_english"]
+__all__ = ["NAMESPACE", "capabilities"]
