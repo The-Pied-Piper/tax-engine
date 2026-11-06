@@ -7,7 +7,8 @@
 # in here: each is its own line with its own part, so this tier reads line 7 alone, unlike
 # ca/cpp_base_contribution, which folds them into one step from $3,500 to $71,300.
 # Part 3a line 25 "Enter the amount from line 15. Enter this amount (in dollars and cents) on line
-# 30800 of your return and line 58240 of your Form 428.", so the tier rounds half-up to the cent.
+# 30800 of your return and line 58240 of your Form 428." Line 15 copies line 11, so the figure is
+# in dollars and cents; the form names no rounding mode, and half-up is the engine's convention.
 # The rate, the upper bound and the maximum are the dataset figures as printed.
 family: ca/cpp_line_11_base_contribution
 tax_year: 2025
