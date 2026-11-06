@@ -1,0 +1,19 @@
+# T2204 (2025) line 7: "Amount from line 3 – $2,000 = (if negative, enter "0") – 7". The $2,000 is
+# the printed exemption, a dataset figure, so step 1 claims it whole through core/credit_amount.
+#
+# Step 2 subtracts that exemption from line 3, the capped insurable earnings, and keeps the result
+# at or above 0: a line 3 under $2,000 gives "0", as the form says.
+form:
+  name: ca/t2204
+capabilities:
+  - name: core/credit_amount
+    params:
+      amount: ca/t2204_exemption
+    produces:
+      output: ca/t2204_exemption
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t2204_line_3
+      less: ca/t2204_exemption
+    produces:
+      output: ca/t2204_line_7
