@@ -12,8 +12,6 @@ import shutil
 from decimal import Decimal
 from pathlib import Path
 
-import pytest
-
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -52,33 +50,39 @@ form:
 """
 
 
-def line_25(tmp_path: Path, line_11: str) -> Decimal:
-    manifest = tmp_path / "manifests" / "test"
-    manifest.mkdir(parents=True)
-    (manifest / "00_header.yaml").write_text(HEADER)
-    (manifest / "01_form.yaml").write_text(FORM)
-    shutil.copy(PART, manifest / "02_line_25.yaml")
-    service = TaxComputationService(
-        YamlJurisdictionSource({ONTARIO.namespace: tmp_path}, artifact_kinds()),
-        YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers()),
+def service(tmp_path: Path) -> TaxComputationService:
+    parts = tmp_path / "manifests" / "take_home"
+    parts.mkdir(parents=True)
+    (parts / "00_header.yaml").write_text(HEADER)
+    (parts / "01_form.yaml").write_text(FORM)
+    shutil.copy(PART, parts / "02_line_25.yaml")
+    roots = dict(JURISDICTIONS.roots())
+    parser_roots = dict(roots)
+    roots[ONTARIO.namespace] = tmp_path
+    return TaxComputationService(
+        YamlJurisdictionSource(roots, artifact_kinds()),
+        YamlParameterSource(parser_roots, parameter_parsers()),
         capabilities(),
     )
-    (worksheet,) = service.compute(ONTARIO, 2025, Artifact(CPP_PART_3_LINE_11, Decimal(line_11)))[
-        "ca/schedule_8"
-    ]
-    return worksheet.get(SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN).value
 
 
-@pytest.mark.parametrize(
-    "line_11",
-    [
-        # The ticket's $70,000 salary: line 11 is 3,291.75.
-        "3291.75",
-        # $90,000, above the $81,200 ceiling: line 11 is the printed maximum 3,356.10.
-        "3356.10",
-        "0.00",
-        "0.01",
-    ],
-)
-def test_line_25_is_the_amount_from_line_11(tmp_path: Path, line_11: str) -> None:
-    assert line_25(tmp_path, line_11) == Decimal(line_11)
+def line_25(tmp_path: Path, line_11: str) -> Decimal:
+    artifact = Artifact(CPP_PART_3_LINE_11, Decimal(line_11))
+    (sheet,) = service(tmp_path).compute(ONTARIO, 2025, artifact)["ca/schedule_8"]
+    return sheet.get(SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN).value
+
+
+def test_line_25_is_line_11_at_a_70000_salary(tmp_path: Path) -> None:
+    assert line_25(tmp_path, "3291.75") == Decimal("3291.75")
+
+
+def test_line_25_is_line_11_at_its_printed_maximum_for_a_90000_salary(tmp_path: Path) -> None:
+    assert line_25(tmp_path, "3356.10") == Decimal("3356.10")
+
+
+def test_line_25_carries_zero_unchanged(tmp_path: Path) -> None:
+    assert line_25(tmp_path, "0.00") == Decimal("0.00")
+
+
+def test_line_25_carries_one_cent_unchanged(tmp_path: Path) -> None:
+    assert line_25(tmp_path, "0.01") == Decimal("0.01")
