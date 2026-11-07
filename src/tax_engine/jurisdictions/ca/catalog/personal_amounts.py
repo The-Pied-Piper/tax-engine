@@ -10,11 +10,16 @@ from __future__ import annotations
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
-FEDERAL_BASIC_TAX = AmountKind.declare(CATALOG, "federal_basic_tax", non_negative=True)
-"""Federal tax on taxable income from the bracket schedule, before non-refundable credits.
+FEDERAL_TAX_TAXABLE_INCOME_LINE_70 = AmountKind.declare(
+    CATALOG, "federal_tax_taxable_income_line_70", non_negative=True
+)
+"""T1 line 70 "Amount from line 26000": taxable income read from the T1 taxable income export (line
+26000) into Step 5 Part A, Federal tax on taxable income.
+"""
 
-Its T1 line reference is still to be confirmed: design.md §2 marks federal line semantics
-UNVERIFIED.
+FEDERAL_BASIC_TAX = AmountKind.declare(CATALOG, "federal_basic_tax", non_negative=True)
+"""T1 line 76 "Federal tax on taxable income" ("Line 74 plus line 75"): the federal tax on taxable
+income from the bracket schedule (`ca/brackets`), before non-refundable credits.
 """
 
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
