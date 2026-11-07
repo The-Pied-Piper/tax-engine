@@ -44,6 +44,12 @@ ON428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Bracket lower bound, ON428 line 3 (each column prints "Line 3:" with 0.00, 52,886.00, 105,775.00,
 150,000.00 or 220,000.00): the printed lower bound of the column that line 1 falls in."""
 
+ON428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "on428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, ON428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero."""
+
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )
