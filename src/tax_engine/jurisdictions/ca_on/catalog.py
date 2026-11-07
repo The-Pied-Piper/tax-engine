@@ -50,6 +50,12 @@ ON428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
 """Taxable income over the lower bound, ON428 line 4 "Line 4: Line 2 minus line 3 (cannot be
 negative) =": line 1 minus line 3, not below zero."""
 
+ON428_BRACKET_COLUMN_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "on428_bracket_column_rate_line_5", non_negative=True
+)
+"""Bracket column rate, ON428 line 5 (each column prints "Line 5: Rate" with 5.05%, 9.15%, 11.16%,
+12.16% or 13.16%): the printed rate of the column that line 1 falls in."""
+
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )
