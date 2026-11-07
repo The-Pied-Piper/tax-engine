@@ -7,7 +7,8 @@ composed from the salary. Line 15000 builds its own step in the form's parts
 (`t1_taxable_income*.yaml`), so its test composes those with the salary and the real parts, line
 10400's optional input among them. The real header is not used because
 its output, T1 line 167, is not built yet. This is not a worked return: no return file, no slips,
-one form.
+one form. The expected figures hold when the CPP actually deducted equals the CPP required (the
+employer took it all off), the premise of Schedule 8's short route.
 
 Form text: T1 (CRA 5006-R, 2025) "Line 33 and line 15000: Line 28 plus line 32 Total income";
 "Line 48 and line 22215: Deduction for CPP or QPP enhanced contributions on employment income
@@ -58,14 +59,6 @@ HEADER = dedent("""\
 # The real Schedule 8 declaration (`schedule_8.yaml`) carries the form and its two exports to the
 # return, so the fixture's own form text is an empty mapping.
 FORM = "{}\n"
-HEADER_15000 = dedent("""\
-    jurisdiction: CA-ON
-    version: 1
-    valid_from_tax_year: 2025
-    outputs:
-      - ca/employment_income
-    capabilities: []
-    """)
 # The form's lines compose together: every T1 part beside the salary and the real Schedule 8 whose
 # export line 23300 reads.
 PARTS_15000 = (
@@ -99,12 +92,21 @@ def test_line_22215_is_the_schedule_8_enhanced_contributions(
     assert line_22215(take_home_service, salary) == D(expected)
 
 
-def line_15000(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
+def compute(take_home_service: TakeHomeService, salary: str) -> dict[str, tuple[Worksheet, ...]]:
+    """Every worksheet of the composed parts, computed from the salary alone."""
+    return take_home_service(HEADER, FORM, *PARTS_15000).compute(
         JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
-    (sheet,) = worksheets["ca/t1_taxable_income"]
-    return sheet.get(TOTAL_INCOME).value
+
+
+def salary_only(take_home_service: TakeHomeService, salary: str) -> Worksheet:
+    """The `ca/t1_taxable_income` worksheet computed from the salary alone, every part composed."""
+    (sheet,) = compute(take_home_service, salary)["ca/t1_taxable_income"]
+    return sheet
+
+
+def line_15000(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    return salary_only(take_home_service, salary).get(TOTAL_INCOME).value
 
 
 @pytest.mark.parametrize(
@@ -118,11 +120,7 @@ def test_line_15000_is_the_salary_when_line_10400_is_left_out(
 
 
 def line_23300(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
-    (sheet,) = worksheets["ca/t1_taxable_income"]
-    return sheet.get(DEDUCTIONS_FROM_TOTAL_INCOME).value
+    return salary_only(take_home_service, salary).get(DEDUCTIONS_FROM_TOTAL_INCOME).value
 
 
 @pytest.mark.parametrize(("salary", "expected"), [("70000", "665.00"), ("90000", "1074.00")])
@@ -133,11 +131,7 @@ def test_line_23300_is_the_schedule_8_enhanced_contributions_read_as_line_22215(
 
 
 def line_23400(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
-    (sheet,) = worksheets["ca/t1_taxable_income"]
-    return sheet.get(NET_INCOME_BEFORE_ADJUSTMENTS).value
+    return salary_only(take_home_service, salary).get(NET_INCOME_BEFORE_ADJUSTMENTS).value
 
 
 @pytest.mark.parametrize(("salary", "expected"), [("70000", "69335.00"), ("90000", "88926.00")])
@@ -145,15 +139,6 @@ def test_line_23400_is_total_income_less_the_deductions_from_it(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert line_23400(take_home_service, salary) == D(expected)
-
-
-def salary_only(take_home_service: TakeHomeService, salary: str) -> Worksheet:
-    """The `ca/t1_taxable_income` worksheet computed from the salary alone, every part composed."""
-    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
-    (sheet,) = worksheets["ca/t1_taxable_income"]
-    return sheet
 
 
 @pytest.mark.parametrize(
@@ -169,8 +154,11 @@ def salary_only(take_home_service: TakeHomeService, salary: str) -> Worksheet:
 def test_every_line_from_10100_to_26000_chains_from_the_salary_alone(
     take_home_service: TakeHomeService, salary: str, line_22215: str, net_income: str
 ) -> None:
-    sheet = salary_only(take_home_service, salary)
+    worksheets = compute(take_home_service, salary)
+    (sheet,) = worksheets["ca/t1_taxable_income"]
+    (schedule_8,) = worksheets["ca/schedule_8"]
 
+    assert schedule_8.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value == D(line_22215)
     assert sheet.get(EMPLOYMENT_INCOME).value == D(salary)  # line 10100
     assert sheet.get(OTHER_EMPLOYMENT_INCOME).value == D("0")  # line 10400, left out
     assert sheet.get(TOTAL_INCOME).value == D(salary)  # line 15000
@@ -209,3 +197,17 @@ def test_line_23400_is_signed_and_lines_23600_and_26000_are_floored_at_zero(
 def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> None:
     with pytest.raises(NegativeArtifactError, match="ca/employment_income cannot be negative"):
         salary_only(take_home_service, "-1")
+
+
+def test_the_money_lines_have_exactly_two_decimals_at_70000(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = salary_only(take_home_service, "70000")
+
+    for kind in (
+        DEDUCTIONS_FROM_TOTAL_INCOME,
+        NET_INCOME_BEFORE_ADJUSTMENTS,
+        NET_INCOME,
+        TAXABLE_INCOME,
+    ):
+        assert sheet.get(kind).value.as_tuple().exponent == -2, kind
