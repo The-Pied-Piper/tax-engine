@@ -5,7 +5,7 @@ Form text (Form ON428, CRA 5006-c-25e.txt): "(Line 65 minus $5,710) multiplied b
 enter "0") =". One calculation: 20% of line 65 above $5,710, never below 0, rounded half-up to the
 cent. The input is `ca-on/on428_surtax_base_line_65` (line 65), produced by another part, so this
 test declares it as an input in a header of its own and loads the take-home folder's
-`on428/on428_line_66.yaml` beside it. The output is `ca-on/on428_surtax_20_percent_tier_line_66`,
+`on428_line_66.yaml` beside it. The output is `ca-on/on428_surtax_20_percent_tier_line_66`,
 exported by the form.
 """
 

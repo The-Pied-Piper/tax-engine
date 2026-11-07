@@ -24,7 +24,7 @@ Only the line 72 condition is in this part. The form's other printed conditions 
 
 The inputs are lines 78, 73 and 72, produced by other parts or given by the caller. This test
 declares them as the inputs of its header (line 72 optional, as its real inputs part declares it)
-and loads the take-home folder's `on428/on428_line_80.yaml` beside it. The output and the two
+and loads the take-home folder's `on428_line_80.yaml` beside it. The output and the two
 intermediate steps are exported by the test's form, so each can be read from the worksheet.
 """
 

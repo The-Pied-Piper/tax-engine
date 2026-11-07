@@ -1,6 +1,6 @@
 # Form ON428 line 19 (58240) "Amount from line 30800 of your return" is a copy; the amount is read from
 # Schedule 8 line 25, which arrives as a record list, so the one step is core/record_total over those
-# records (same as take_home/t1_taxable_income/t1_taxable_income_line_23300.yaml).
+# records (same as take_home/t1_taxable_income_line_23300.yaml).
 form:
   name: ca-on/on428
 capabilities:

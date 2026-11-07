@@ -6,7 +6,7 @@ Line 46 and line 58840: Line 44 multiplied by the percentage from line 45 =". Li
 rate, held in the `ca-on/credit_rate` dataset, so line 46 is one calculation: 5.05% of line 44,
 rounded half-up to the cent. The input is `ca-on/on428_total_credit_amounts_line_44` (line 44),
 produced by another part, so this test declares it as an input in a header of its own and loads
-the take-home folder's `on428/on428_line_46.yaml` beside it. The output is
+the take-home folder's `on428_line_46.yaml` beside it. The output is
 `ca-on/on428_credit_amounts_at_credit_rate_line_46`, exported by the form.
 """
 

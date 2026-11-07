@@ -11,7 +11,7 @@ are split out of this ticket and are not computed here.
 
 The test composes the real salary, Schedule 8, T1 taxable income, T2204, Schedule 6, ON428 parts,
 the real line 42000 chain, and the parts of lines 43500, 48200 and the part under test. The header
-and the form are the real files: `manifest.yaml` and `t1_tax_and_credits/t1_tax_and_credits.yaml`.
+and the form are the real files: `manifest.yaml` and `t1_tax_and_credits.yaml`.
 The salary is the only input. Ontario resident, single filer, salary the only income, tax withheld
 0, basic credits only.
 """

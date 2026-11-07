@@ -13,7 +13,7 @@ another form reads it only as a record list. Line 89 reads line 1 as its base. T
 The T1 side is the real `ca/t1_taxable_income` form and its parts, read from the salary through
 the real Schedule 8 and T1 lines, as in the ON428-A line 13 test. The salary is the only input the
 caller gives. This test declares lines 1 and 89 as the exports of its form, since the form's
-header does not, and loads the take-home folder's `on428/on428_line_89.yaml` beside it.
+header does not, and loads the take-home folder's `on428_line_89.yaml` beside it.
 """
 
 from __future__ import annotations
