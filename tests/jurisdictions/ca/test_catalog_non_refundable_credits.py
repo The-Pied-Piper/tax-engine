@@ -26,6 +26,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CANADIAN_TUITION_INSTITUTIONS,
     CAPITAL_GIFT_GAINS_DEDUCTION,
     CAPITAL_GIFT_GAINS_DEDUCTION_CHECKED,
+    CREDIT_AMOUNTS_LINE_84,
     CREDIT_AMOUNTS_SUBTOTAL,
     CURRENT_YEAR_TUITION_AVAILABLE,
     CURRENT_YEAR_TUITION_CLAIMED,
@@ -356,6 +357,17 @@ def test_the_split_income_and_t2203_lines_are_non_negative(registry: ArtifactReg
     ):
         assert non_negative(kind) is True, kind.identifier
         assert registry.kind(kind.identifier) is kind
+
+
+def test_the_credit_amounts_line_84_kind_is_registered_and_non_negative(
+    registry: ArtifactRegistry,
+) -> None:
+    # T1 line 84 "Add lines 77 to 83. =" is a sum of credit amounts, each non-negative (line 77 is
+    # the basic personal amount), so the kind is non-negative and registered beside the subtotal.
+    assert CREDIT_AMOUNTS_LINE_84.identifier == "ca/credit_amounts_line_84"
+    assert registry.kind("ca/credit_amounts_line_84") is CREDIT_AMOUNTS_LINE_84
+    assert CREDIT_AMOUNTS_LINE_84.value_type is Decimal
+    assert non_negative(CREDIT_AMOUNTS_LINE_84) is True
 
 
 def test_the_tuition_and_transfer_kinds_are_non_negative(registry: ArtifactRegistry) -> None:

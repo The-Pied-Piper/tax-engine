@@ -213,6 +213,11 @@ TUITION_INCOME_WITH_TOSI = AmountKind.declare(
 plus Form T1206 line 8A "If you are completing a federal Schedule 11, calculate line 8A and add it
 to the amount on line 11 of Schedule 11": the amount that line 13 "Line 11 minus line 12" reads."""
 
+CREDIT_AMOUNTS_LINE_84 = AmountKind.declare(CATALOG, "credit_amounts_line_84", non_negative=True)
+"""Credit amounts through line 84, T1 line 84 "Add lines 77 to 83. =": the basic personal amount
+(line 77, line 30000) alone for the take-home filer, since lines 78 to 83 are 0 and are left out.
+Line 98 reads it, and line 85 copies it."""
+
 CREDIT_AMOUNTS_SUBTOTAL = AmountKind.declare(CATALOG, "credit_amounts_subtotal", non_negative=True)
 """Credit amounts subtotal, T1 line 101 "Add lines 98 to 100. =", which Schedule 11 line 12 "Enter
 the amount from line 101 of your return" reads: the credit amounts of the lines wired up to line
