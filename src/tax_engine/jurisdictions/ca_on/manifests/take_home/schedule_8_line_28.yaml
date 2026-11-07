@@ -1,0 +1,12 @@
+# Form Schedule 8 (form 5000-S8, 2025), Canada Pension Plan Contributions and Overpayment (ca/schedule_8),
+# Part 3 line 28: "Line 26 plus line 27" (lines 26 and 27 copy line 12 and line 22, so line 28 reads them
+# directly). Line 28 is the form's export to T1 line 22215: "Enter this amount (in dollars and cents) on
+# line 22215 of your return."
+form:
+  name: ca/schedule_8
+capabilities:
+  - name: core/sum
+    consumes:
+      parts: [ca/cpp_part_3_line_12, ca/cpp_part_3_line_22]
+    produces:
+      output: ca/schedule_8_cpp_enhanced_contributions_on_return
