@@ -20,6 +20,7 @@ from tax_engine.jurisdictions.ca.parameter_parsers.contribution_tier import (
 from tax_engine.jurisdictions.ca.parameter_parsers.taper import TaperParser
 from tax_engine.jurisdictions.ca.parameter_parsers.year_amounts import YearAmountsParser
 from tax_engine.jurisdictions.core.parameter_parsers.amount import AmountParser
+from tax_engine.jurisdictions.core.parameter_parsers.amount_by_band import AmountByBandParser
 from tax_engine.jurisdictions.core.parameter_parsers.brackets import BracketsParser
 from tax_engine.jurisdictions.core.parameter_parsers.class_rates import ClassRatesParser
 from tax_engine.jurisdictions.core.parameter_parsers.conditions import ConditionsParser
@@ -44,6 +45,7 @@ def core_parsers() -> ParameterParserRegistry:
     registry.register_class(AmountParser)
     registry.register_class(ThresholdRateParser)
     registry.register_class(SurchargeTiersParser)
+    registry.register_class(AmountByBandParser)
     registry.register_class(FactorParser)
     registry.register_class(FractionParser)
     registry.register_class(RateTableParser)

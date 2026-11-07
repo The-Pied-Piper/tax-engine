@@ -62,7 +62,6 @@ from tax_engine.domain.parameters.surcharge_tiers import (
     SurchargeTiers,
 )
 from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
-from tax_engine.jurisdictions.core.parameter_parsers.amount_by_band import AmountByBandParser
 from tests.parameter_source_support import (
     AMOUNT_2025,
     BRACKETS_2025,
@@ -79,13 +78,6 @@ from tests.parameter_source_support import (
 
 def source(directory: Path) -> YamlParameterSource:
     return YamlParameterSource(roots(directory), parsers=built_in_parsers())
-
-
-def bands_source(directory: Path) -> YamlParameterSource:
-    """The core parsers plus the `amount_by_band` parser, in a fresh registry."""
-    parsers = built_in_parsers()
-    parsers.register_class(AmountByBandParser)
-    return YamlParameterSource(roots(directory), parsers=parsers)
 
 
 THRESHOLD_RATE_2025 = """\
@@ -3107,7 +3099,7 @@ def test_a_conditions_dataset_is_not_a_rate_table_dataset(tmp_path: Path) -> Non
 def test_reads_an_amount_by_band_dataset(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/amount_by_band/2025.yaml", AMOUNT_BY_BAND_2025)
 
-    result = bands_source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
+    result = source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
 
     assert result == ParameterDataset(
         family="ex/amount_by_band",
@@ -3133,7 +3125,7 @@ def test_reads_amount_by_band_figures_exactly(tmp_path: Path) -> None:
         AMOUNT_BY_BAND_2025.replace('amount: "12"', 'amount: "12.50"'),
     )
 
-    bands = bands_source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND).values.bands
+    bands = source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND).values.bands
 
     assert str(bands[2].amount) == "12.50"  # exact, scale kept
     assert str(bands[3].minus) == "300.50"
@@ -3151,7 +3143,7 @@ def test_reads_a_sloped_band_written_as_a_block_mapping(tmp_path: Path) -> None:
         ),
     )
 
-    bands = bands_source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND).values.bands
+    bands = source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND).values.bands
 
     assert bands[1] == AmountBand(D("100"), minus=D("100"), rate=Rate(D("0.10")), plus=D("0"))
 
@@ -3165,7 +3157,7 @@ def test_reads_an_amount_by_band_rounding_rule(tmp_path: Path) -> None:
         ),
     )
 
-    result = bands_source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
+    result = source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
 
     assert result.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
@@ -3186,14 +3178,14 @@ def test_an_amount_by_band_dataset_is_not_a_surcharge_tiers_dataset(tmp_path: Pa
     write(tmp_path, "ex/parameters/amount_by_band/2025.yaml", AMOUNT_BY_BAND_2025)
 
     with pytest.raises(InvalidParameterDataError, match="kind 'amount_by_band' does not match"):
-        bands_source(tmp_path).get("ex/amount_by_band", 2025, SURCHARGE_TIERS)
+        source(tmp_path).get("ex/amount_by_band", 2025, SURCHARGE_TIERS)
 
 
 def test_a_surcharge_tiers_dataset_is_not_an_amount_by_band_dataset(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/surcharge_tiers/2025.yaml", SURCHARGE_TIERS_2025)
 
     with pytest.raises(InvalidParameterDataError, match="kind 'surcharge_tiers' does not match"):
-        bands_source(tmp_path).get("ex/surcharge_tiers", 2025, AMOUNT_BY_BAND)
+        source(tmp_path).get("ex/surcharge_tiers", 2025, AMOUNT_BY_BAND)
 
 
 @pytest.mark.parametrize(
@@ -3256,7 +3248,7 @@ def test_rejects_a_malformed_amount_by_band_row_naming_the_row(
     write(tmp_path, "ex/parameters/amount_by_band/2025.yaml", content)
 
     with pytest.raises(InvalidParameterDataError, match=message) as excinfo:
-        bands_source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
+        source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
 
     assert "2025.yaml" in str(excinfo.value)
 
@@ -3289,7 +3281,7 @@ def test_an_invalid_amount_by_band_chart_is_reported_as_an_amount_by_band_error(
     write(tmp_path, "ex/parameters/amount_by_band/2025.yaml", content)
 
     with pytest.raises(InvalidParameterDataError) as excinfo:
-        bands_source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
+        source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
 
     assert isinstance(excinfo.value.__cause__, InvalidAmountByBandError)
 
@@ -3304,6 +3296,6 @@ def test_a_row_with_neither_a_flat_nor_a_sloped_shape_is_an_amount_by_band_error
     )
 
     with pytest.raises(InvalidParameterDataError, match=r"rows\[2\]") as excinfo:
-        bands_source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
+        source(tmp_path).get("ex/amount_by_band", 2025, AMOUNT_BY_BAND)
 
     assert isinstance(excinfo.value.__cause__, InvalidAmountByBandError)
