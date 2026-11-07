@@ -1,0 +1,22 @@
+# T2204 (2025) line 4: "Total premiums deducted: Residents of other than Quebec (box 18 and box 55
+# of your T4 slips)". The take-home caller has no T4, so the figure is an optional input: a request
+# that gives it has that figure as line 4, unchanged; a request that leaves it out has line 4
+# computed from line 1 at the EI rate, the same as line 10 of the form.
+#
+# Step 1 is the line itself. Its `given` slot is blank when the caller leaves the input out, and
+# the `compute` rule hands that blank to the capability, which computes the tier result on line 1
+# (1.64% of 0 to $65,700, at most $1,077.48, half-up to the cent, from the `ca/ei_premium` dataset).
+# Line 1 is 0 under note (1), so line 4 is 0 too. A given figure is produced unchanged.
+form:
+  name: ca/t2204
+capabilities:
+  - name: ca/given_or_contribution_tier
+    params:
+      tier: ca/ei_premium
+    consumes:
+      given: ca/t2204_premiums_deducted_given
+      earnings: ca/t2204_line_1
+    blank:
+      given: compute
+    produces:
+      output: ca/t2204_premiums_deducted
