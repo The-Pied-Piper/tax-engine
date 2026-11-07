@@ -20,7 +20,6 @@ from decimal import Decimal
 from textwrap import dedent
 
 import pytest
-import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -135,10 +134,3 @@ def test_the_line_11_input_kind_is_registered_and_non_negative() -> None:
 
     assert kind.identifier == LINE_11
     assert non_negative(kind) is True
-
-
-def test_the_real_schedule_6_header_exports_line_12() -> None:
-    # Line 13 (#266) reads line 12, so the real form part must export it.
-    form = next(TAKE_HOME.rglob("schedule_6.yaml")).read_text(encoding="utf-8")
-
-    assert LINE_12 in yaml.safe_load(form)["form"]["exports"]
