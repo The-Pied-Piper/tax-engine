@@ -1,0 +1,20 @@
+# Schedule 6 (5000-S6, 2025) line 25, the net income over the base amount. The form prints:
+# "Line 25: Line 23 minus line 24 (if negative, enter "0")" (docs/cra-forms-2025/5000-s6-25e.txt,
+# line 304).
+#
+# Line 23 is "Adjusted family net income from line 15", a copy of line 15, so step 1 reads line 15
+# directly (`ca/adjusted_family_net_income`, from schedule_6_line_15.yaml), not a copy of it. Line 24
+# is the reduction threshold (`ca/cwb_reduction_threshold`, from schedule_6_line_24.yaml). The
+# result is not below zero. The form prints no rounding rule, so the cent rounding
+# (`ca/cent_rounding`) is the owner's decision, as on line 18.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      amount: ca/adjusted_family_net_income
+      less: ca/cwb_reduction_threshold
+    produces:
+      output: ca/cwb_net_income_over_base_amount

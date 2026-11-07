@@ -9,9 +9,10 @@
 # (`ca/adjusted_family_net_income`, "Line 13 minus line 14", line 14 blank as 0), line 17
 # (`ca/cwb_base_amount`), line 18 (`ca/cwb_working_income_over_base_amount`, "Line 16 minus line
 # 17", floored at zero), line 20 (`ca/cwb_working_income_rate_line_20`, line 18 times the 27% of
-# line 19) and line 22 (`ca/cwb_basic_benefit_line_22`, "Enter whichever is less: amount from line
-# 20 or line 21", the lesser of lines 20 and 21). The export that matters is line 28, the figure T1
-# line 45300 reads; it will replace this list.
+# line 19), line 22 (`ca/cwb_basic_benefit_line_22`, "Enter whichever is less: amount from line
+# 20 or line 21", the lesser of lines 20 and 21) and line 25 (`ca/cwb_net_income_over_base_amount`,
+# "Line 23 minus line 24", floored at zero). The export that matters is line 28, the figure T1 line
+# 45300 reads; it will replace this list.
 form:
   name: ca/schedule_6
   required: true
@@ -30,4 +31,5 @@ form:
     - ca/cwb_maximum
     - ca/cwb_basic_benefit_line_22
     - ca/cwb_reduction_threshold
+    - ca/cwb_net_income_over_base_amount
 capabilities: []

@@ -2994,6 +2994,7 @@ REGISTERED = frozenset(
         "ca/cwb_working_income_over_base_amount",
         "ca/cwb_working_income_rate_line_20",
         "ca/cwb_basic_benefit_line_22",
+        "ca/cwb_net_income_over_base_amount",
         "ca/cwb_family_net_income_line_13",
         "ca/cwb_working_income_less_spouse",
         "ca/cwb_secondary_earner_yours",
