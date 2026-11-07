@@ -22,6 +22,28 @@ FEDERAL_BASIC_TAX = AmountKind.declare(CATALOG, "federal_basic_tax", non_negativ
 income from the bracket schedule (`ca/brackets`), before non-refundable credits.
 """
 
+CPP_BASE_CONTRIBUTIONS_LINE_86 = AmountKind.declare(
+    CATALOG, "cpp_base_contributions_line_86", non_negative=True
+)
+"""T1 line 86 "Line 86 and line 30800: through employment income" (base CPP or QPP contributions,
+through employment): a copy of Schedule 8 line 25, read from the Schedule 8 export
+(`ca/schedule_8.schedule_8_cpp_base_contributions_on_return`) into Step 5 Part B, line 96.
+"""
+
+EI_PREMIUMS_LINE_88 = AmountKind.declare(CATALOG, "ei_premiums_line_88", non_negative=True)
+"""T1 line 88 "Line 88 and line 31200: through employment (boxes 18 and 55 of all T4 slips)"
+(employment insurance premiums, maximum $1,077.48): a copy of T2204 line 16, read from the T2204
+export (`ca/t2204.t2204_line_16`) into Step 5 Part B, line 96.
+"""
+
+CREDITS_SUBTOTAL_LINE_96 = AmountKind.declare(
+    CATALOG, "credits_subtotal_line_96", non_negative=True
+)
+"""T1 line 96 "Line 96: Add lines 86 to 95. =", the subtotal of Step 5 Part B: the base CPP
+contributions, the EI premiums and the Canada employment amount for the take-home filer (lines 87,
+89 to 91 and 93 to 95 are 0 and are left out). It feeds line 98.
+"""
+
 BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
     CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
 )
