@@ -5,7 +5,8 @@
 # (`ca/cwb_family_working_income`), line 7 (`ca/cwb_net_income_line_7`), line 10
 # (`ca/cwb_family_net_income_line_10`, "Add lines 7 to 9.", the sum of line 7 alone for the
 # take-home filer), line 12 (`ca/cwb_family_net_income_line_12`, "Line 10 minus line 11"), line 13
-# (`ca/cwb_family_net_income_line_13`, "Add the amounts from line 12", column 1 alone), line 17
+# (`ca/cwb_family_net_income_line_13`, "Add the amounts from line 12", column 1 alone), line 15
+# (`ca/adjusted_family_net_income`, "Line 13 minus line 14", line 14 blank as 0), line 17
 # (`ca/cwb_base_amount`), line 18 (`ca/cwb_working_income_over_base_amount`, "Line 16 minus line
 # 17", floored at zero), line 20 (`ca/cwb_working_income_rate_line_20`, line 18 times the 27% of
 # line 19) and line 22 (`ca/cwb_basic_benefit_line_22`, "Enter whichever is less: amount from line
@@ -22,6 +23,7 @@ form:
     - ca/cwb_family_net_income_line_10
     - ca/cwb_family_net_income_line_12
     - ca/cwb_family_net_income_line_13
+    - ca/adjusted_family_net_income
     - ca/cwb_base_amount
     - ca/cwb_working_income_over_base_amount
     - ca/cwb_working_income_rate_line_20

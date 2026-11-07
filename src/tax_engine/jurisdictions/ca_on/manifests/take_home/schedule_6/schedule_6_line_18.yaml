@@ -9,6 +9,8 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/cwb_family_working_income
       less: ca/cwb_base_amount

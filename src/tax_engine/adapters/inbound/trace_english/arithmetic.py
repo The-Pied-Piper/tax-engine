@@ -197,7 +197,8 @@ class SubtractedNotBelowZeroRenderer:
         return (
             f"{output.label}: {minuend.label} {EnglishFigures.money(minuend_amount)} "
             f"less {subtrahend.label} {EnglishFigures.money(subtrahend_amount)}, "
-            f"not below 0 = {EnglishFigures.money(result)}"
+            f"not below 0 = {EnglishFigures.money(result)} "
+            f"({EnglishFigures.rounding(line.rounding)})"
         )
 
 

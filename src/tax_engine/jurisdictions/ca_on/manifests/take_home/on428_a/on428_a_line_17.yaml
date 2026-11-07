@@ -9,6 +9,8 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/subtract_not_below_zero
+    params:
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/lift_adjusted_net_income
       less: ca-on/lift_individual_income_threshold
