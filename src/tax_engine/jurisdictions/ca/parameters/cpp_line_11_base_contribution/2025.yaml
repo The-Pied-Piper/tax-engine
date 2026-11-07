@@ -4,8 +4,7 @@
 # basic exemption and the tier starts at 0, not at the $3,500 exemption. Its upper bound is line
 # 7's printed maximum, $67,800, the finite top the tier needs above its lower bound.
 # The lines of Part 2 and Part 3 before line 7 (lines 2 to 6, and Part 2's B and E) are not folded
-# in here: each is its own line with its own part, so this tier reads line 7 alone, unlike
-# ca/cpp_base_contribution, which folds them into one step from $3,500 to $71,300.
+# in here: each is its own line with its own part, so this tier reads line 7 alone.
 # Part 3a line 25 "Enter the amount from line 15. Enter this amount (in dollars and cents) on line
 # 30800 of your return and line 58240 of your Form 428." Line 15 copies line 11, so the figure is
 # in dollars and cents; the form names no rounding mode, and half-up is the engine's convention.
