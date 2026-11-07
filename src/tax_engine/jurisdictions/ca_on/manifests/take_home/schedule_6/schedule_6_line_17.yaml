@@ -1,0 +1,11 @@
+# Schedule 6 (5000-S6, 2025) line 17: "Line 17: Base amount 3,000.00". The $3,000 is the printed
+# base amount, a dataset figure, so step 1 claims it whole through core/credit_amount. No salary
+# reaches this line.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/credit_amount
+    params:
+      amount: ca/cwb_base_amount
+    produces:
+      output: ca/cwb_base_amount
