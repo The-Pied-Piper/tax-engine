@@ -8,33 +8,21 @@ salary typed once (T1 line 10100) in place of box 26.
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = (
-    Path(tax_engine.jurisdictions.ca_on.__file__).parent
-    / "manifests"
-    / "take_home"
-    / "schedule_8_line_1.yaml"
-)
+PART = "schedule_8_line_1.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -55,24 +43,8 @@ FORM = dedent("""\
     """)
 
 
-def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
-    parts.mkdir(parents=True)
-    (parts / "a_header.yaml").write_text(HEADER)
-    (parts / "b_form.yaml").write_text(FORM)
-    shutil.copy(PART, parts / "c_line_1.yaml")
-    roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
-    parameter_roots = dict(roots)
-    roots[Namespace("ca-on")] = tmp_path
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, tax_engine.registrations.artifact_kinds()),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
-        tax_engine.registrations.capabilities(),
-    )
-
-
-def line_1(tmp_path: Path, salary: str) -> Decimal:
-    worksheets = service(tmp_path).compute(
+def line_1(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    worksheets = take_home_service(HEADER, FORM, PART).compute(
         JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca/schedule_8"]
@@ -94,9 +66,9 @@ def line_1(tmp_path: Path, salary: str) -> Decimal:
     ],
 )
 def test_line_1_is_the_salary_capped_at_the_per_slip_maximum(
-    tmp_path: Path, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    result = line_1(tmp_path, salary)
+    result = line_1(take_home_service, salary)
 
     assert result == D(expected)
     # Dollars and cents, from the cap dataset's rounding rule.
