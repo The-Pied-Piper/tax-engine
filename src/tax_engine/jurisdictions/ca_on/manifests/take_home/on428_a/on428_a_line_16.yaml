@@ -1,0 +1,11 @@
+# ON428-A (2025) line 16: "Individual income threshold 32,500.00". The $32,500.00 is the printed
+# figure, a dataset figure, so step 1 claims it whole through core/credit_amount and no salary
+# reaches this line.
+form:
+  name: ca-on/on428_a
+capabilities:
+  - name: core/credit_amount
+    params:
+      amount: ca-on/lift_individual_income_threshold
+    produces:
+      output: ca-on/lift_individual_income_threshold
