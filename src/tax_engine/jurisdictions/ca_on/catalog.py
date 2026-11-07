@@ -191,6 +191,18 @@ ON428)": Worksheet ON428 line 6 "Add the amounts from line 5 of columns 1, 2, an
 any)", each line 5 "Allowable amount for this dependant: line 3 minus line 4 (if negative, enter
 "0")", a part of the total of the Ontario credit amounts."""
 
+ON428_CPP_BASE_CREDIT_AMOUNT_LINE_19 = AmountKind.declare(
+    CATALOG, "on428_cpp_base_credit_amount_line_19", non_negative=True
+)
+"""CPP base contributions credit amount, ON428 line 19 and line 58240 "Amount from line 30800 of
+your return": a copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+ON428_EI_CREDIT_AMOUNT_LINE_21 = AmountKind.declare(
+    CATALOG, "on428_ei_credit_amount_line_21", non_negative=True
+)
+"""EI premiums credit amount, ON428 line 21 and line 58300: a copy of T2204 line 16, the EI
+premiums credit amount."""
+
 ADOPTION_CREDIT = AmountKind.declare(CATALOG, "adoption_credit", non_negative=True)
 """Ontario adoption expenses, ON428 line 23 and line 58330 "Adoption expenses": the total of each
 child's eligible expenses, each capped at the Ontario maximum for one child, a part of the total of
@@ -200,6 +212,19 @@ PENSION_INCOME_CREDIT = AmountKind.declare(CATALOG, "pension_income_credit", non
 """Ontario pension income amount, ON428 line 27 and line 58360 "Pension income amount (maximum
 $1,762)": the lesser of that maximum and the federal line 31400 amount, a part of the total of the
 Ontario credit amounts."""
+
+ON428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "on428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, ON428 line 27 "Line 27 and line 58360: Pension income amount (maximum
+$1,762)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
+
+ON428_CREDITS_WITH_PENSION_LINE_28 = AmountKind.declare(
+    CATALOG, "on428_credits_with_pension_line_28", non_negative=True
+)
+"""Ontario credits with the pension income amount, ON428 line 28 "Line 28: Line 26 plus line 27 =":
+line 26 "Amount from line 25 of the previous page" (a copy of line 25) plus line 27 (the pension
+income amount)."""
 
 DEPENDANT_ON428_LINE_28 = AmountKind.declare(CATALOG, "dependant_on428_line_28", non_negative=True)
 """Amount from line 28 of the dependant's Form ON428, Worksheet ON428 "Line 58480 - Disability
@@ -230,6 +255,12 @@ DISABILITY_TRANSFERRED_AMOUNT = AmountKind.declare(
 amount transferred from a dependant (use Worksheet ON428)": "the total of allowable amounts
 claimed for all dependants", each line 12 "Enter whichever is less: amount from line 7 or line
 11. Allowable amount for this dependant", a part of the total of the Ontario credit amounts."""
+
+ON428_CREDITS_WITH_DISABILITY_LINE_31 = AmountKind.declare(
+    CATALOG, "on428_credits_with_disability_line_31", non_negative=True
+)
+"""Total of the credits with the disability amounts, ON428 line 31 "Add lines 28 to 30.": the sum
+of line 28 with the disability amounts of lines 29 and 30."""
 
 DISABILITY_SELF_BASE_AMOUNT = AmountKind.declare(
     CATALOG, "disability_self_base_amount", non_negative=True

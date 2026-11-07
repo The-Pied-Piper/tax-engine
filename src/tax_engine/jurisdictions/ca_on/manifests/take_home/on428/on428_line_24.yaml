@@ -1,0 +1,13 @@
+# Form ON428 (CRA 5006-c-25e) line 24: "Line 24: Add lines 19 to 23." Lines 20, 22 and 23 (self-employed
+# CPP and EI, adoption) are left out: a salary-only filer has none of them. Step 1 adds lines 19 and 21
+# with core/sum.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        - ca-on/on428_cpp_base_credit_amount_line_19
+        - ca-on/on428_ei_credit_amount_line_21
+    produces:
+      output: ca-on/on428_cpp_ei_credit_amounts_line_24
