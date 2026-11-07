@@ -19,6 +19,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     NET_FEDERAL_TAX,
     NET_RENTAL_INCOME_NOT_BELOW_ZERO,
     PROFESSIONAL_INCOME_NOT_BELOW_ZERO,
+    PROVINCIAL_TAX_LINE_42800,
     RC359_EMPLOYERS,
     RC359_EMPLOYMENT_INCOME,
     RC359_EPSP_CONTRIBUTIONS,
@@ -144,6 +145,7 @@ def test_the_net_tax_kinds_are_the_registered_ones(registry: ArtifactRegistry) -
     assert registry.get("ca/ei_payable_on_self_employment") is EI_PAYABLE_ON_SELF_EMPLOYMENT
     assert registry.get("ca/social_benefits_repayment_payable") is SOCIAL_BENEFITS_REPAYMENT_PAYABLE
     assert registry.get("ca/total_payable") is TOTAL_PAYABLE
+    assert registry.get("ca/provincial_tax_line_42800") is PROVINCIAL_TAX_LINE_42800
     assert registry.get("ca/income_tax_deducted") is INCOME_TAX_DEDUCTED
     assert registry.get("ca/split_income_line_10") is SPLIT_INCOME_LINE_10
     assert registry.get("ca/split_income_line_13") is SPLIT_INCOME_LINE_13
@@ -168,6 +170,7 @@ def test_the_net_tax_kinds_are_money() -> None:
         EI_PAYABLE_ON_SELF_EMPLOYMENT,
         SOCIAL_BENEFITS_REPAYMENT_PAYABLE,
         TOTAL_PAYABLE,
+        PROVINCIAL_TAX_LINE_42800,
         INCOME_TAX_DEDUCTED,
         SPLIT_INCOME_LINE_10,
         SPLIT_INCOME_LINE_13,
