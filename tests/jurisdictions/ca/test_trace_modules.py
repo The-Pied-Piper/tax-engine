@@ -24,6 +24,7 @@ RENDERERS = "tax_engine.jurisdictions.ca.trace_english"
 HOMES: dict[str, tuple[str, ...]] = {
     "amount_by_count": ("AmountByCountLine",),
     "contribution_tier": ("ContributionTierLine",),
+    "given_amount": ("GivenAmountLine",),
     "tapered_amount": ("TaperedAmountLine",),
 }
 

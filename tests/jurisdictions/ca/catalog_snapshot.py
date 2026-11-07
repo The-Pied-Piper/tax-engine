@@ -3193,6 +3193,7 @@ REGISTERED = frozenset(
         "ca/t2204_insurable_earnings",
         "ca/t2204_self_employment_earnings",
         "ca/t2204_premiums_deducted",
+        "ca/t2204_premiums_deducted_given",
         "ca/t2204_ppip_premiums",
         "ca/t2204_ppip_premiums_checked",
         "ca/t2204_line_1_count",
