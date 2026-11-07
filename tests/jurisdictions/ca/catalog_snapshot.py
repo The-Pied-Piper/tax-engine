@@ -3084,6 +3084,8 @@ REGISTERED = frozenset(
         "ca/t2204_line_15_count",
         "ca/t2204_line_16",
         "ca/ei_overpayment",
+        "ca/ei_overpayment_line_45000",
+        "ca/cwb_line_45300",
         "ca/charitable_donations",
         "ca/government_donations",
         "ca/university_donations_outside_canada",

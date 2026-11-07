@@ -6,7 +6,9 @@ from decimal import Decimal
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.jurisdictions.ca.catalog import (
+    CWB_LINE_45300,
     EI_OVERPAYMENT,
+    EI_OVERPAYMENT_LINE_45000,
     FARM_FUEL_CHARGE_CREDIT_TOTAL,
     FARM_FUEL_CHARGE_CREDIT_TOTAL_CHECKED,
     FUEL_CHARGE_CREDIT_AB,
@@ -112,6 +114,21 @@ def test_the_t2204_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> 
 def test_the_t2204_kinds_are_money() -> None:
     for kind in T2204_MONEY:
         assert kind.value_type is Decimal, kind.identifier
+
+
+def test_the_t1_line_48200_part_kinds_are_the_registered_money_ones(
+    registry: ArtifactRegistry,
+) -> None:
+    # T1 line 45000 (the EI overpayment, T2204 line 15) and line 45300 (the Canada workers benefit,
+    # Schedule 6 line 28), the two parts of T1 line 48200.
+    for kind in (EI_OVERPAYMENT_LINE_45000, CWB_LINE_45300):
+        assert registry.get(kind.identifier) is kind, kind.identifier
+        assert kind.value_type is Decimal, kind.identifier
+        assert non_negative(kind) is True, kind.identifier
+
+
+def test_the_total_credits_kind_stays_signed() -> None:
+    assert non_negative(TOTAL_CREDITS) is False
 
 
 def test_the_t2204_counts_are_int_kinds() -> None:
