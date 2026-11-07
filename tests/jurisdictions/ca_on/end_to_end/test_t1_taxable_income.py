@@ -35,23 +35,10 @@ HEADER = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
-FORM = dedent("""\
-    form:
-      name: ca/schedule_8
-      required: true
-      exports:
-        - ca/schedule_8_cpp_base_contributions_on_return
-        - ca/schedule_8_cpp_enhanced_contributions_on_return
-    """)
-# The salary part and every Schedule 8 part but the form declaration, which FORM stands in for.
-PARTS = (
-    "salary.yaml",
-    *(
-        part.name
-        for part in sorted(TAKE_HOME.glob("schedule_8*.yaml"))
-        if part.name != "schedule_8.yaml"
-    ),
-)
+# The real Schedule 8 declaration (`schedule_8.yaml`) carries the form and its two exports to the
+# return, so the fixture's own form text is an empty mapping.
+FORM = "{}\n"
+PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.glob("schedule_8*.yaml"))))
 
 
 def line_22215(take_home_service: TakeHomeService, salary: str) -> Decimal:
