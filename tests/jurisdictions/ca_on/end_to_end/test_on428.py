@@ -282,7 +282,7 @@ def test_the_health_premium_is_the_printed_row_for_the_taxable_income(
 def test_the_cent_lines_have_exactly_two_decimals_when_above_zero(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # A line floored to "0" (lines 66, 67, 80, 85, 86 and 88 under their thresholds or past the
+    # A line floored to "0" (lines 80, 85, 86 and 88 under their thresholds or past the
     # credit) comes back as a bare 0 with no cents, so only the lines above zero are pinned to two
     # decimals. Line 5 is a rate and is not a cent line.
     sheet = on428(take_home_service, salary)
