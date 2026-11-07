@@ -1,0 +1,15 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 88, "Line 88: Line 86 minus line 87 (if negative,
+# enter "0") =": the Ontario tax after the farmers' food donation credit. Line 86 is read from its
+# source part, and line 87 is an optional input that a salary-only caller leaves out, read as blank
+# and then as 0 by the blank rule of core/subtract_not_below_zero.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/on428_tax_after_lift_credit_line_86
+      less: ca-on/on428_farmers_food_donation_credit_line_87
+    blank:
+      less: "0"
+    produces:
+      output: ca-on/on428_tax_after_farmers_food_donation_credit_line_88
