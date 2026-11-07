@@ -1,10 +1,12 @@
 # T1 General 2025, Ontario edition (form 5006-R), taxable income, lines 10100 to 26000. This part names
 # the form and its exports; each line's capability goes in a part of its own with the same `form.name`.
-# Exports: what the return reads from the form. Line 23300 (total deductions from total income,
-# `ca/deductions_from_total_income`) is exported for the return to read.
+# Exports: what the return reads from the form. Line 15000 (total income, `ca/total_income`) and line
+# 23300 (total deductions from total income, `ca/deductions_from_total_income`) are exported for the
+# return to read.
 form:
   name: ca/t1_taxable_income
   required: true
   exports:
+    - ca/total_income
     - ca/deductions_from_total_income
 capabilities: []
