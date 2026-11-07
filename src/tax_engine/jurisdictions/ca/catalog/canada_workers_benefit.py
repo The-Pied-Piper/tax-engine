@@ -102,6 +102,13 @@ This is column 1 ("You") only; line 6 "Add the amounts from line 5 in columns 1 
 amount on line 16. Family working income" adds column 2 (`ca/cwb_spouse_working_income`), see
 `ca/cwb_family_working_income`."""
 
+CWB_NET_INCOME_LINE_7 = AmountKind.declare(CATALOG, "cwb_net_income_line_7", non_negative=False)
+"""Your column, Schedule 6 line 7 "Net income from line 23600 of the return (or the amount you would
+have entered if the instructions on line 23600 said "if negative, show in brackets")": the net
+income of the T1 return, read from the T1 net income export (line 23600). Column 1 ("You") only;
+line 7 of column 2 is for the eligible spouse. The form asks for the amount with a negative shown in
+brackets, so the kind is signed."""
+
 CWB_FAMILY_NET_INCOME_LINE_10 = AmountKind.declare(CATALOG, "cwb_family_net_income_line_10")
 """Your column, Schedule 6 Part B line 10 "Add lines 7 to 9.": line 7 "Net income from line 23600 of
 the return (or the amount you would have entered if the instructions on line 23600 said "if
