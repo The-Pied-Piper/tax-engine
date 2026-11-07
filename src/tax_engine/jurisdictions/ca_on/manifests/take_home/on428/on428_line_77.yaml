@@ -1,0 +1,12 @@
+# Form ON428 (CRA 5006-c-25e) line 77: "Line 77: Add lines 74 to 76. =". Lines 75 and 76 (the reduction
+# for dependent children and for dependants with an impairment) are left out: a single filer with no
+# such dependants has none of them. Line 77 is the sum of line 74 alone, with core/sum.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        - ca-on/on428_basic_reduction_line_74
+    produces:
+      output: ca-on/on428_tax_reduction_line_77
