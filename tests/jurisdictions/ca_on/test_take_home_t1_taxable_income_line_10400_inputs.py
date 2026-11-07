@@ -22,7 +22,7 @@ D = Decimal
 OTHER_EMPLOYMENT_INCOME = "ca/other_employment_income"
 PRINTED_BASIS = "Line 2 and line 10400: Other employment income"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/t1_taxable_income_line_10400_inputs.yaml"
+    "manifests/take_home/t1_taxable_income/t1_taxable_income_line_10400_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

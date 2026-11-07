@@ -22,7 +22,7 @@ from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 LINE_25700 = "ca/deductions_from_net_income"
 PRINTED_BASIS = "Line 68 and line 25700: Add lines 58 to 67."
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/t1_taxable_income_line_25700_inputs.yaml"
+    "manifests/take_home/t1_taxable_income/t1_taxable_income_line_25700_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON
