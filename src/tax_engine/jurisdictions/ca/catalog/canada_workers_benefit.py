@@ -90,13 +90,13 @@ quote is from Schedule 6 (5000-S6)."""
 
 WORKING_INCOME = AmountKind.declare(CATALOG, "working_income", non_negative=True)
 """Working income, Schedule 6 line 5 "Add lines 1 to 4. Enter the result, even if it is "0".
-Working income": line 1 "Employment income and other employment income from line 10100 and line
-10400 of the return" (the employment income and the other employment income, see
-CWB_EMPLOYMENT_INCOME), line 2 "Taxable scholarships, fellowships, bursaries, and artists' project
-grants from line 13010 of the return", and line 3 "Total self-employment income from lines 13500,
-13700, 13900, 14100, and 14300 of the return (excluding losses) (Note 2)". Line 4 "Tax-exempt
-working income earned on a reserve" is `ca/cwb_tax_exempt_working_income`, zero unless the election
-of line 38105 is yes, and is added here as a line of column 1.
+Working income". The take-home sum has line 1 only: line 1 "Employment income and other employment
+income from line 10100 and line 10400 of the return" (the employment income and the other
+employment income, see CWB_EMPLOYMENT_INCOME). Lines 2 "Taxable scholarships, fellowships,
+bursaries, and artists' project grants from line 13010 of the return", 3 "Total self-employment
+income from lines 13500, 13700, 13900, 14100, and 14300 of the return (excluding losses) (Note 2)",
+and 4 "Tax-exempt working income earned on a reserve" (`ca/cwb_tax_exempt_working_income`) are not
+built, so they are not added here.
 
 This is column 1 ("You") only; line 6 "Add the amounts from line 5 in columns 1 and 2. Enter this
 amount on line 16. Family working income" adds column 2 (`ca/cwb_spouse_working_income`), see
