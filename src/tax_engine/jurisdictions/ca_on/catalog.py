@@ -58,9 +58,9 @@ lines 31 to 34.": the sum of line 31 with lines 32 to 34."""
 ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
     CATALOG, "on428_medical_expenses_line_43", non_negative=True
 )
-"""Allowable medical expenses, ON428 line 43 "Line 43 and line 58769: Line 41 plus line 42": the
-filer's own group plus the allowable amount for other dependants, a part of the total of the
-Ontario credit amounts (line 58800)."""
+"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 "Line 36 minus
+line 40 (if negative, enter "0")" plus line 42 "Allowable amount of medical expenses for other
+dependants", a part of line 44."""
 
 ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
     CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
