@@ -1,11 +1,11 @@
 """ON428 (2025) lines 1 and 3, from the salary alone, real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, repo copy docs/cra-forms-2025/5006-c-25e.txt): line 3
-(per column) is 0.00 / 52,886.00 / 105,775.00 / 150,000.00 / 220,000.00, with "Use column 1 if
-line 1 is $52,886 or less; column 2 if more than $52,886 but not more than $105,775; column 3 if
-more than $105,775 but not more than $150,000; column 4 if more than $150,000 but not more than
-$220,000; column 5 if more than $220,000." Line 3 is the printed lower bound of the column that
-taxable income falls in.
+Form text (Form ON428, CRA 5006-c-25e.txt, repo copy docs/cra-forms-2025/5006-c-25e.txt): each of
+the five columns prints "Line 3:" with its lower bound, 0.00, 52,886.00, 105,775.00, 150,000.00 and
+220,000.00. The Transcriber's Note says: "Use the amount from column 1 if the amount on line 1 is
+$52,886 or less. Use the amount from column 2 if the amount on line 1 is more than $52,886 but not
+more than $105,775." (columns 3 to 5 follow the same wording). Line 3 is the printed lower bound of
+the column that taxable income falls in.
 
 Line 1 is the T1 taxable income (line 26000). The T1 form exports it as `ca/taxable_income`,
 which reaches this form only as the record list `ca/t1_taxable_income.taxable_income`, so line 1
@@ -19,7 +19,7 @@ inputs, and `on428_line_3.yaml`. The ON428 form declaration is test-local: it ex
 3, because the real header exports lines whose parts are not composed here.
 
 Figures: T1 line 26000 is 19,835.00 at a $20,000 salary, 69,335.00 at $70,000 and 148,926.00 at
-$150,000 (the worked figures of the ticket).
+$150,000 (the worked figures).
 """
 
 from __future__ import annotations
