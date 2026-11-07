@@ -1,0 +1,9 @@
+# ON428 (2025) line 60's input, which a salary-only caller does not give.
+# Line 60: "Line 60 and line 61540: Enter whichever is less: amount from line 58 or line 59." A
+# salary-only caller has no Ontario minimum tax carryover, so a request that leaves the line out is
+# read as blank, and the line 61 part reads that blank as 0.
+inputs:
+  - name: ca-on/on428_minimum_tax_carryover_line_60
+    required: false
+    default: null
+    basis: 'Line 60 and line 61540: Enter whichever is less: amount from line 58 or line 59'
