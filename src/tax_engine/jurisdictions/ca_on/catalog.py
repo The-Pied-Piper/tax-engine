@@ -120,6 +120,12 @@ ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
 """Ontario tax after the minimum tax carryover, ON428 line 61 "Line 61: Line 55 minus line 60 (if
 negative, enter "0") =": line 55 minus line 60, not below zero."""
 
+ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
+    CATALOG, "on428_surtax_base_line_65", non_negative=True
+)
+"""Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
+less line 54, never below zero."""
+
 ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
     CATALOG, "on428_basic_reduction_line_74", non_negative=True
 )
