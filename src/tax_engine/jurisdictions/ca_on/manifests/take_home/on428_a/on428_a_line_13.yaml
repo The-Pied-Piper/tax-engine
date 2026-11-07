@@ -4,7 +4,8 @@
 # "0") Your adjusted net income", is the form's floored sum. Line 9, "Add lines 6 to 8.", is the
 # only line of the sum the take-home filer has a figure for: line 6 (net income from T1 line 23600),
 # since lines 7, 8, 10, 11 and 12 are not built. Line 13 is therefore a core/sum_not_below_zero over
-# the one part, line 6, because a sum line is built even with one part.
+# the one part, line 6, because a sum line is built even with one part. The floored sum is rounded
+# once, half-up to the cent, through the shared ca-on/cent_rounding dataset, so a zero prints as 0.00.
 #
 # Line 6 is a step of its own, not a read: the T1 form exports the net income before its floor
 # (`ca/net_income_signed`, line 23600 unfloored), and another form reads an export only as a record
@@ -20,6 +21,8 @@ capabilities:
     produces:
       output: ca-on/lift_net_income
   - name: core/sum_not_below_zero
+    params:
+      rounding: ca-on/cent_rounding
     consumes:
       parts: [ca-on/lift_net_income]
     produces:
