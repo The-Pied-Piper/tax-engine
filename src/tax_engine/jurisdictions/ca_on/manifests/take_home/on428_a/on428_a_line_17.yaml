@@ -1,0 +1,16 @@
+# ON428-A (2025, Ontario LIFT credit) line 17: "Line 15 minus line 16 (if negative, enter "0")". Line 15
+# is "Amount from line 13 above", a copy of line 13 (`ca-on/lift_adjusted_net_income`), so step 1 reads
+# line 13 directly, not a copy of it. Line 16 "Individual income threshold 32,500.00" is
+# `ca-on/lift_individual_income_threshold`.
+#
+# Step 1 takes the threshold off the adjusted net income and keeps the result at or above 0: an adjusted
+# net income under the threshold gives "0", as the form says.
+form:
+  name: ca-on/on428_a
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/lift_adjusted_net_income
+      less: ca-on/lift_individual_income_threshold
+    produces:
+      output: ca-on/lift_single_excess_over_threshold
