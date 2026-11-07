@@ -2940,6 +2940,7 @@ REGISTERED = frozenset(
         "ca/ei_payable_on_self_employment",
         "ca/social_benefits_repayment_payable",
         "ca/total_payable",
+        "ca/provincial_tax_line_42800",
         "ca/income_tax_deducted",
         "ca/income_tax_deducted_after_election",
         "ca/net_rental_income_not_below_zero",
