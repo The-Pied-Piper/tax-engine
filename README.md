@@ -86,6 +86,14 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 
 Roadmap: more forms and lines, the 2026 tax year, and other provinces and territories. Forms are added one at a time, each checked against the CRA's own text.
 
+## Disclaimer and limits
+
+tax-engine is not tax advice and is not an official CRA product. It comes with no warranty, as the Apache-2.0 license says.
+
+It covers tax year 2025, Canada (federal) and Ontario only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
+
+Check any result against the CRA's own forms or with a professional before relying on it.
+
 ## Contributing
 
 Issues and pull requests are welcome. Developer setup, checks and the CRA reference archive are in [CONTRIBUTING.md](CONTRIBUTING.md).
