@@ -14,14 +14,16 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
+import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
-from tests.jurisdictions.ca_on.conftest import TEST_PARTS
 
 PRINTED_BASIS = "Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)"
 LINE_57 = "ca-on/on428_dividend_tax_credit_line_57"
-PART = TEST_PARTS / "on428_line_57_inputs.yaml"
+PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
+    "manifests/take_home/on428/on428_line_57_inputs.yaml"
+)
 HEADER = """\
 jurisdiction: CA-ON
 version: 1
