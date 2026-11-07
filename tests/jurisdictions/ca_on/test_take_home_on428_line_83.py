@@ -8,9 +8,9 @@ input with blank fallback 0: a salary-only caller has no foreign tax credit, so 
 leaves line 82 out is read as blank, and the line 83 part reads that blank as 0. The output is
 `ca-on/on428_tax_after_foreign_tax_credit_line_83`, exported by the form.
 
-Line 81 is built by another part, so this test declares it as a required input of its header as a
-temporary stand-in. Line 82 is declared as its real inputs part declares it, and the test loads the
-test data folder's `on428_line_83.yaml` beside it.
+Line 81 is built by another part, so this test declares it as a required input of its header, as
+the ON428 line tests do. Line 82 is declared as its real inputs part
+declares it, and the test loads the test data folder's `on428_line_83.yaml` beside it.
 """
 
 from __future__ import annotations
