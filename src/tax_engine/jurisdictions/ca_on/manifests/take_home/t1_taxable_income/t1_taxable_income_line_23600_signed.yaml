@@ -7,8 +7,9 @@
 #
 # Step 1 subtracts the repayment from the net income before adjustments through core/subtract, and
 # the difference is rounded to the cent by the ca/cent_rounding dataset. There is no floor: a
-# repayment above line 23400 gives a negative figure, which the form shows in brackets. The floored
-# net income is `t1_taxable_income_line_23600.yaml`, which this step does not replace.
+# repayment above line 23400 gives a negative figure, which Schedule 6 line 7 reads as its "show in
+# brackets" wording asks. The floored net income is `t1_taxable_income_line_23600.yaml`, which this
+# step does not replace.
 form:
   name: ca/t1_taxable_income
 capabilities:

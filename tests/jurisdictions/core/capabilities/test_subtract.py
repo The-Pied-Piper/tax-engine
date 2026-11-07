@@ -242,8 +242,8 @@ def test_does_not_round_the_difference() -> None:
     assert compute("0.005", "0.0049") == Artifact(NET, D("0.0001"))
 
 
-def test_keeps_the_scale_of_the_exact_difference() -> None:
-    assert str(compute("100.00", "40").value) == "60.00"
+def test_keeps_the_value_of_the_exact_difference() -> None:
+    assert compute("100.00", "40").value == D("60")
 
 
 def test_the_order_of_the_inputs_does_not_matter() -> None:

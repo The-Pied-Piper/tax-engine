@@ -100,7 +100,7 @@ AMOUNT_LINES: dict[str, AmountKind] = {
     "27": CWB_REDUCTION_LINE_27,
     "28": CWB_BENEFIT_LINE_28,
 }
-CENT_LINES = ("20", "22", "27", "28")
+CENT_LINES = ("15", "20", "22", "27", "28")
 
 
 # Each salary's figures by form line, hand-computed from the printed lines. Net income (lines 7, 10,
@@ -180,9 +180,9 @@ def test_the_benefit_at_seventy_thousand_is_zero(take_home_service: TakeHomeServ
 def test_the_cent_lines_have_exactly_two_decimals(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # A floored or capped line (22 at a low salary, 27 under the threshold, 28 past the phase-out)
-    # rounds through its own dataset, so it prints 0.00 and every cent line is pinned to two
-    # decimals, zero included.
+    # Line 15 (a plain difference) and the floored or capped lines (22 at a low salary, 27 under the
+    # threshold, 28 past the phase-out) round through a dataset, so each prints two decimals, zero
+    # included.
     sheet = schedule_6(take_home_service, salary)
 
     for line in CENT_LINES:

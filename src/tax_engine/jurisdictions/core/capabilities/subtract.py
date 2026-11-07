@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from decimal import Decimal
+from fractions import Fraction as ExactFraction
 from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, Money
@@ -28,7 +29,7 @@ from tax_engine.domain.trace import SubtractedLine
 @capability(identifier="subtract")
 class Subtract(Capability):
     """Produces `output`: the consumed `amount` less the consumed `less`, rounded by the dataset's
-    rule, which may be negative."""
+    rule; the result may be negative."""
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[RoundingOnly]]] = {"rounding": ROUNDING_ONLY}
     CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "less": Decimal}
@@ -54,9 +55,7 @@ class Subtract(Capability):
         amount = self._input(inputs, self._amount).value
         less = self._input(inputs, self._less).value
         rounding = self._rounding.rounding
-        # Decimal subtraction keeps the scale of the amounts (100.00 less 40 is 60.00 under no
-        # rounding); the engine's context traps Inexact, so it is exact or it raises.
-        result = rounding.apply(amount - less)
+        result = rounding.apply(ExactFraction(amount) - ExactFraction(less))
         return CapabilityResult(
             outputs=(Artifact(self._output, result),),
             trace=(
