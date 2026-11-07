@@ -25,8 +25,8 @@ sources:
   - https://data.ontario.ca/en/dataset/personal-income-tax-rates-and-credits/resource/60f84727-7e12-4fd4-ba06-30955d31b2ae
 rounding: {increment: "0.01", mode: half_up}
 brackets:
-  - {from: "0", rate: "0.0505", tax_at_start: "0.00"}
-  - {from: "52886", rate: "0.0915", tax_at_start: "2670.74"}
-  - {from: "105775", rate: "0.1116", tax_at_start: "7510.09"}
-  - {from: "150000", rate: "0.1216", tax_at_start: "12445.60"}
-  - {from: "220000", rate: "0.1316", tax_at_start: "20957.60"}
+  - {from: "0.00", rate: "0.0505", tax_at_start: "0.00"}
+  - {from: "52886.00", rate: "0.0915", tax_at_start: "2670.74"}
+  - {from: "105775.00", rate: "0.1116", tax_at_start: "7510.09"}
+  - {from: "150000.00", rate: "0.1216", tax_at_start: "12445.60"}
+  - {from: "220000.00", rate: "0.1316", tax_at_start: "20957.60"}

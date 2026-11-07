@@ -3,8 +3,8 @@
 For the return lines the form prints as an amount "multiplied by" a factor, then "minus" another
 line, "if negative, enter 0": the manifest decides which artifact is multiplied (`amount`) and
 which is taken off (`less`). The output is `rounding.apply(max(factor × amount − less, 0))`,
-rounded once after the floor with the `factor` dataset's rule, which defaults to no rounding; like
-`core/subtract_not_below_zero`, a difference at or below zero is a plain `Decimal(0)`.
+rounded once after the floor with the `factor` dataset's rule, which defaults to no rounding; a
+difference at or below zero is a plain `Decimal(0)`.
 """
 
 from __future__ import annotations
