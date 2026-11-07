@@ -1,11 +1,15 @@
-# T1 General 2025, Ontario edition (form 5006-R), Step 5 Part A line 76, "Line 74 plus line 75
-# Federal tax on taxable income" (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Part A starts
-# with "Use the amount from line 26000 to complete the appropriate column below." Line 70 is "Amount
-# from line 26000", a copy of T1 line 26000, so it is a step: another form's export is read only as a
-# record list (`ca/t1_taxable_income.taxable_income`), and core/record_total totals
-# the one amount into line 70. Lines 71 to 75 are inside core/progressive_tax: the printed column
-# figures (lower bound, rate and constant) are the `ca/brackets` dataset, and the step gives line 76
-# rounded once, half-up to the cent.
+# T1 General 2025, Ontario edition (form 5006-R), Step 5 Part A lines 70 to 76, "Federal tax on
+# taxable income" (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Part A starts with "Use the
+# amount from line 26000 to complete the appropriate column below." Line 70 is "Amount from line
+# 26000", a copy of T1 line 26000, so it is a step: another form's export is read only as a record
+# list (`ca/t1_taxable_income.taxable_income`), and core/record_total totals the one amount into
+# line 70. Lines 71 to 76 follow the printed column, one capability per line, as ON428 lines 3 to 8
+# do: the bracket columns are the `ca/brackets` dataset, and the dollars-and-cents boxes (lines 72,
+# 74 and 76) are rounded half-up to the cent by `ca/cent_rounding`. Line 75 is the printed constant
+# of the column, carried as printed, so it is not rounded again.
+#
+# Line 74 is rounded to the cent before line 75 is added, as the form's box does: at a line 26000 of
+# 114,750.00, line 74 is 11,761.875, printed 11,761.88, and line 76 is 20,081.26.
 form:
   name: ca/t1_tax_and_credits
 capabilities:
@@ -14,10 +18,48 @@ capabilities:
       records: ca/t1_taxable_income.taxable_income
     produces:
       output: ca/federal_tax_taxable_income_line_70
-  - name: core/progressive_tax
+  - name: core/bracket_column_lower_bound
     params:
       schedule: ca/brackets
     consumes:
       base: ca/federal_tax_taxable_income_line_70
+    produces:
+      output: ca/federal_bracket_lower_bound_line_71
+  - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      amount: ca/federal_tax_taxable_income_line_70
+      less: ca/federal_bracket_lower_bound_line_71
+    produces:
+      output: ca/federal_taxable_income_over_lower_bound_line_72
+  - name: core/bracket_column_rate
+    params:
+      schedule: ca/brackets
+    consumes:
+      base: ca/federal_tax_taxable_income_line_70
+    produces:
+      output: ca/federal_bracket_column_rate_line_73
+  - name: core/multiply_by_rate
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      base: ca/federal_taxable_income_over_lower_bound_line_72
+      rate: ca/federal_bracket_column_rate_line_73
+    produces:
+      output: ca/federal_excess_times_column_rate_line_74
+  - name: core/bracket_column_tax_at_start
+    params:
+      schedule: ca/brackets
+    consumes:
+      base: ca/federal_tax_taxable_income_line_70
+    produces:
+      output: ca/federal_tax_at_column_start_line_75
+  - name: core/sum
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts:
+        [ca/federal_excess_times_column_rate_line_74, ca/federal_tax_at_column_start_line_75]
     produces:
       output: ca/federal_basic_tax

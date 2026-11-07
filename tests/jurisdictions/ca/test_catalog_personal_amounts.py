@@ -165,7 +165,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     UNDER_18_ON_DECEMBER_31_CHECKED,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, REGISTERED, SIGNED
-from tests.kinds import non_negative
+from tests.kinds import bundled_kinds, non_negative
 
 
 def test_the_personal_amounts_kinds_are_money() -> None:
@@ -617,3 +617,25 @@ def test_each_yes_or_no_checked_kind_is_a_non_negative_count_named_after_its_inp
     assert registry.get(checked.identifier) is checked
     assert checked.value_type is int
     assert non_negative(checked) is True
+
+
+# T1 General 2025 Step 5 Part A, lines 71 to 75, the printed column figures of line 76 ("Federal tax
+# on taxable income"). Each is a non-negative money kind in the snapshot; line 76 is checked with
+# the family's other kinds.
+T1_PART_A_LINE_KINDS = (
+    (71, "ca/federal_bracket_lower_bound_line_71"),
+    (72, "ca/federal_taxable_income_over_lower_bound_line_72"),
+    (73, "ca/federal_bracket_column_rate_line_73"),
+    (74, "ca/federal_excess_times_column_rate_line_74"),
+    (75, "ca/federal_tax_at_column_start_line_75"),
+)
+
+
+def test_the_part_a_lines_71_to_75_are_registered_non_negative_money_kinds() -> None:
+    for line, identifier in T1_PART_A_LINE_KINDS:
+        kind = bundled_kinds().kind(identifier)
+
+        assert kind.identifier == identifier, line
+        assert kind.value_type is Decimal, line
+        assert non_negative(kind) is True, line
+        assert identifier in REGISTERED, line
