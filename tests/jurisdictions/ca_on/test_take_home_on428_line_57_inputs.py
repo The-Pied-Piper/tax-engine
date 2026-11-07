@@ -17,10 +17,10 @@ from pathlib import Path
 import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
+from tax_engine.jurisdictions.ca_on.catalog import ON428_DIVIDEND_TAX_CREDIT_LINE_57
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
 PRINTED_BASIS = "Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)"
-LINE_57 = "ca-on/on428_dividend_tax_credit_line_57"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
     "manifests/take_home/on428/on428_line_57_inputs.yaml"
 )
@@ -43,8 +43,9 @@ def _manifest(tmp_path: Path) -> Manifest:
 
 def test_a_request_that_leaves_out_line_57_is_read_as_blank(tmp_path: Path) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_57]
-    default = declaration.default_artifact(kinds.kind(LINE_57))
+    identifier = ON428_DIVIDEND_TAX_CREDIT_LINE_57.identifier
+    declaration = _manifest(tmp_path).inputs[identifier]
+    default = declaration.default_artifact(kinds.kind(identifier))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
     assert default is not None and default.is_blank

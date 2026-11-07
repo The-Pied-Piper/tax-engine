@@ -129,7 +129,7 @@ tax credit (use Worksheet ON428)": an optional input that a salary-only caller l
 ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
     CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
 )
-"""TEMPORARY COPY, owned by the line 69 PR (#285); drop when that merges. Tax with surtax, ON428
+"""TEMPORARY COPY, owned by the line 69 PR; drop when that merges. Tax with surtax, ON428
 line 69: the amount that line 71 subtracts from."""
 
 ON428_TAX_AFTER_DIVIDEND_CREDIT_LINE_71 = AmountKind.declare(
