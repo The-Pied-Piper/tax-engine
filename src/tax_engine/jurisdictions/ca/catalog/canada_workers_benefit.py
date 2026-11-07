@@ -236,8 +236,9 @@ CWB_FAMILY_WORKING_INCOME = AmountKind.declare(
     CATALOG, "cwb_family_working_income", non_negative=True
 )
 """Family working income, Schedule 6 Part A line 6 "Add the amounts from line 5 in columns 1 and 2.
-Enter this amount on line 16. Family working income": line 5 of column 1 (`ca/working_income`) and
-of column 2 (`ca/cwb_spouse_working_income`), which is 0 with no eligible spouse."""
+Enter this amount on line 16. Family working income". The take-home sum has line 5 of column 1
+(`ca/working_income`) only; column 2 (`ca/cwb_spouse_working_income`) is not built, so it is not
+added here."""
 
 CWB_SPOUSE_FAMILY_NET_INCOME_LINE_10 = AmountKind.declare(
     CATALOG, "cwb_spouse_family_net_income_line_10"
