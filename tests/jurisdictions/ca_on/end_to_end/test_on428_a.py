@@ -144,16 +144,16 @@ def test_the_form_exports_exactly_line_20(take_home_service: TakeHomeService) ->
 
 
 @pytest.mark.parametrize("salary", [case[0] for case in CASES])
-def test_the_cent_lines_have_exactly_two_decimals_when_above_zero(
+def test_the_cent_lines_have_exactly_two_decimals(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # A line floored to "0" (lines 17, 19 and 20 under the threshold or past the credit) comes back
-    # as a bare 0 with no cents, so only the lines above zero are pinned to two decimals.
+    # A floored line (lines 17, 19 and 20 under the threshold or past the credit) rounds through its
+    # own dataset, so it prints 0.00 and every cent line is pinned to two decimals, zero included.
     sheet = on428_a(take_home_service, salary)
 
     for line in CENT_LINES:
         value = sheet.get(AMOUNT_LINES[line]).value
-        assert value == 0 or value.as_tuple().exponent == -2, line
+        assert value.as_tuple().exponent == -2, line
 
 
 def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> None:

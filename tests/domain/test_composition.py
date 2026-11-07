@@ -35,6 +35,7 @@ from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSche
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import BracketColumnLine, RoundedTotalLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
@@ -810,12 +811,15 @@ SCHEDULE = ParameterDataset(
     SOURCES,
 )
 CREDIT_RATE = ParameterDataset("ex/credit_rate", 2025, RATE, Rate(D("0.15")), NO_ROUNDING, SOURCES)
+FLOOR_ROUNDING = ParameterDataset(
+    "ex/tax_after_credit_rounding", 2025, ROUNDING_ONLY, RoundingOnly(), NO_ROUNDING, SOURCES
+)
 
 
 def test_end_to_end_three_real_capabilities_given_in_the_wrong_order() -> None:
     tax = ProgressiveTax(TAXABLE_BASE, BASIC_TAX, SCHEDULE)
     credit = ApplyRate(CREDIT_RATE, CREDIT_AMOUNTS, CREDIT)  # 15% of 400 = 60
-    less = SubtractNotBelowZero(BASIC_TAX, CREDIT, TAX_AFTER_CREDIT)
+    less = SubtractNotBelowZero(FLOOR_ROUNDING, BASIC_TAX, CREDIT, TAX_AFTER_CREDIT)
     composition = Composition(
         [less, credit, tax],
         inputs=kinds(TAXABLE_BASE, CREDIT_AMOUNTS),

@@ -3,7 +3,8 @@ real engine.
 
 Form text (Form ON428, CRA 5006-c-25e.txt): "Line 78: Amount from line 77 above multiplied by 2 =".
 One calculation: line 77 times 2, from the `ca-on/tax_reduction_multiplier` fraction dataset (2 over
-1). The fraction is whole, so there is no rounding and no division. The input is
+1). The product is a dollars-and-cents box, so the dataset rounds it half-up to the cent (increment
+0.01), and line 78 prints 588.00 with its cents. The input is
 `ca-on/on428_tax_reduction_line_77` (line 77), produced by another part, so this test
 declares it as an input in a header of its own and loads the take-home folder's
 `on428/on428_line_78.yaml` beside it. The output is `ca-on/on428_tax_reduction_doubled_line_78`,

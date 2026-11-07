@@ -36,8 +36,10 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.brackets import BRACKETS
 from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.jurisdictions.ca.capabilities.tapered_amount import TaperedAmount
 from tax_engine.jurisdictions.ca.parameter_shapes.taper import TAPER, Taper
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
@@ -45,6 +47,15 @@ from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmoun
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 
 D = Decimal
+# The floor's rounding rule, made up: half-up to the cent, as the credits are.
+FLOOR_ROUNDING = ParameterDataset(
+    "ex/tax_after_credits_rounding",
+    2025,
+    ROUNDING_ONLY,
+    RoundingOnly(),
+    RoundTo(Decimal("0.01"), RoundingMode.HALF_UP),
+    ("https://example.org/rounding",),
+)
 SOURCE = YamlParameterSource(
     tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
 )
@@ -195,7 +206,9 @@ def test_federal_amount_applies_to_basic_tax(net_income: str, basic_tax: str, af
         .outputs
     )
     (credits,) = ApplyRate(rate, base=AMOUNT, output=CREDITS).compute((claimed,)).outputs
-    less = SubtractNotBelowZero(amount=BASIC_TAX, less=CREDITS, output=TAX_AFTER_CREDITS)
+    less = SubtractNotBelowZero(
+        rounding=FLOOR_ROUNDING, amount=BASIC_TAX, less=CREDITS, output=TAX_AFTER_CREDITS
+    )
 
     result = less.compute((Artifact(BASIC_TAX, D(basic_tax)), credits))
 
@@ -212,7 +225,9 @@ def test_ontario_amount_applies_to_basic_tax() -> None:
     # 8,539.60) less 12,747 × 5.05% = 643.7235, rounded half-up to 643.72.
     (claimed,) = CreditAmount(amount, AMOUNT).compute(()).outputs
     (credits,) = ApplyRate(rate, base=AMOUNT, output=CREDITS).compute((claimed,)).outputs
-    less = SubtractNotBelowZero(amount=BASIC_TAX, less=CREDITS, output=TAX_AFTER_CREDITS)
+    less = SubtractNotBelowZero(
+        rounding=FLOOR_ROUNDING, amount=BASIC_TAX, less=CREDITS, output=TAX_AFTER_CREDITS
+    )
 
     result = less.compute((Artifact(BASIC_TAX, D("8539.60")), credits))
 

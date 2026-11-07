@@ -157,14 +157,8 @@ AMOUNT_LINES: dict[str, AmountKind] = {
     "89": ON428_ONTARIO_HEALTH_PREMIUM_LINE_89,
     "90": ON428_ONTARIO_TAX_LINE_90,
 }
-# Every amount line but 5 (a rate). Lines 3 and 78 and the floored zeros are a known gap (see
-# `test_every_cent_line_has_two_decimals_known_gap`), so the passing test below pins the rest.
-ALL_CENT_LINES = tuple(line for line in AMOUNT_LINES if line != "5")
-CENT_LINES = (
-    "1", "4", "6", "7", "8", "9", "18", "19", "21", "24", "25", "28", "31", "35", "44", "46",
-    "50", "53", "55", "61", "65", "66", "67", "68", "69", "71", "73", "74", "77", "80", "81",
-    "83", "85", "86", "88", "89", "90",
-)  # fmt: skip
+# Every amount line but 5 (a rate). Each is held to the cent, zeros included.
+CENT_LINES = tuple(line for line in AMOUNT_LINES if line != "5")
 
 # Each salary's figures by form line, hand-computed from the printed lines and the datasets they
 # cite. Line 1 is the salary less the Schedule 8 enhanced contributions: 20,000 less 165 (1% of
@@ -217,6 +211,17 @@ HEALTH_PREMIUM_ROWS: list[tuple[str, str, str]] = [
     ("70000", "69335.00", "600.00"),
     ("150000", "148926.00", "750.00"),
 ]
+
+# The cents check runs at every CASES salary, at zero, and at a few hundred dollars either side of
+# each bracket edge on line 1 (52,886; 105,775; 150,000; 220,000). Line 1 is the salary less the
+# Schedule 8 enhanced contributions, so for these salaries it is about 0.99 times the salary below
+# 71,300 and the salary less 1,074 above 81,200: 53,000 gives line 1 of 52,505 and 53,500 gives
+# 53,000; 106,500 gives 105,426 and 107,000 gives 105,926; 150,500 gives 149,426 and 151,500 gives
+# 150,426; 220,500 gives 219,426 and 221,500 gives 220,426.
+BRACKET_EDGE_SALARIES = (
+    "53000", "53500", "106500", "107000", "150500", "151500", "220500", "221500",
+)  # fmt: skip
+CENT_SALARIES = (*(case[0] for case in CASES), *BRACKET_EDGE_SALARIES)
 
 # The base and the lower bound, rate and tax at start the printed column gives lines 3, 5 and 7.
 BRACKET_COLUMN_TRACE: list[tuple[str, str, str, str, str]] = [
@@ -305,36 +310,15 @@ def test_the_health_premium_is_the_printed_row_for_the_taxable_income(
     assert sheet.get(ON428_ONTARIO_HEALTH_PREMIUM_LINE_89).value == D(premium)
 
 
-@pytest.mark.parametrize("salary", [case[0] for case in CASES])
-def test_the_cent_lines_have_exactly_two_decimals_when_above_zero(
+@pytest.mark.parametrize("salary", CENT_SALARIES)
+def test_the_cent_lines_have_exactly_two_decimals(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # A line floored to "0" (lines 80, 85, 86 and 88 under their thresholds or past the
-    # credit) comes back as a bare 0 with no cents, so only the lines above zero are pinned to two
-    # decimals. Line 5 is a rate and is not a cent line.
+    # Every amount line but line 5 (a rate) prints to the cent, a line floored to zero included:
+    # its zero is 0.00, not a bare 0.
     sheet = on428(take_home_service, salary)
 
     for line in CENT_LINES:
-        value = sheet.get(AMOUNT_LINES[line]).value
-        assert value == 0 or value.as_tuple().exponent == -2, line
-
-
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "Known gap, follow-up ticket: line 3 comes back 52886 / 105775 (brackets dataset stores "
-        "whole dollars), line 78 comes back 588 (apply_fraction, no rounding), and floored zeros "
-        "(lines 3, 86 and 88 at 20,000) come back as a bare 0. The values equal the printed cents; "
-        "only the decimal places differ. Strict, so it fails the suite once the gap is closed."
-    ),
-)
-@pytest.mark.parametrize("salary", [case[0] for case in CASES])
-def test_every_cent_line_has_two_decimals_known_gap(
-    take_home_service: TakeHomeService, salary: str
-) -> None:
-    sheet = on428(take_home_service, salary)
-
-    for line in ALL_CENT_LINES:
         assert sheet.get(AMOUNT_LINES[line]).value.as_tuple().exponent == -2, line
 
 
