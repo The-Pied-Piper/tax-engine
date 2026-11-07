@@ -1,8 +1,9 @@
 """ON428 (2025) line 54's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 54: Ontario tax on split income
-(Form T1206)" is the line's basis as the take-home part prints it. A caller with no split income
-leaves the line out, so the request is read as blank, and the line 55 part reads that blank as 0.
+Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 54 and line 61510: Ontario tax
+on split income (complete Form T1206)" is the line's basis in the take-home part. A caller with no
+split income leaves the line out, so the request is read as blank, and the line 55 part reads that
+blank as 0.
 
 The real part is loaded under a test-local header, as the take-home header is another part's.
 """

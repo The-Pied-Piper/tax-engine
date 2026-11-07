@@ -82,14 +82,12 @@ ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
 """Tax minus credits, ON428 line 53 "Line 53: Line 51 minus line 52 (if negative, enter "0") =":
 line 51 minus line 52, not below zero."""
 
-ON428_TAX_ON_SPLIT_INCOME_LINE_54 = AmountKind.declare(
-    CATALOG, "on428_tax_on_split_income_line_54", non_negative=True
-)
+ON428_TAX_ON_SPLIT_INCOME_LINE_54 = AmountKind.declare(CATALOG, "on428_tax_on_split_income_line_54")
 """Ontario tax on split income, ON428 line 54 "Line 54 and line 61510: Ontario tax on split income
 (complete Form T1206)": the tax from Form T1206."""
 
 ON428_TAX_WITH_SPLIT_INCOME_LINE_55 = AmountKind.declare(
-    CATALOG, "on428_tax_with_split_income_line_55", non_negative=True
+    CATALOG, "on428_tax_with_split_income_line_55"
 )
 """Tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus line 54."""
 
