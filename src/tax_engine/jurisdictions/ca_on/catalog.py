@@ -74,6 +74,18 @@ ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
 """Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
 the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 
+ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
+    CATALOG, "on428_surtax_base_line_65", non_negative=True
+)
+"""Surtax base, ON428 line 65 "Line 63 minus line 64 (if negative, enter "0")": the surtax base.
+TEMPORARY COPY declared here until ticket #281, which owns it, merges."""
+
+ON428_SURTAX_20_PERCENT_TIER_LINE_66 = AmountKind.declare(
+    CATALOG, "on428_surtax_20_percent_tier_line_66", non_negative=True
+)
+"""Surtax 20% tier, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20% (if negative, enter
+"0") =": 20% of line 65 above $5,710, never below 0."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
