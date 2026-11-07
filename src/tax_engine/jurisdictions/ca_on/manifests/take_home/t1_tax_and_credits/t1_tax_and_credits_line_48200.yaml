@@ -1,0 +1,46 @@
+# T1 General 2025, Ontario edition (form 5006-R), line 48200 "Total credits" (CRA 5006-R-25E,
+# docs/cra-forms-2025/5006-r-25e.txt): "Line 166 and line 48200: Add lines 150 to 165. Total
+# credits". Lines 150 to 165 are summed; the take-home filer has two of them.
+#
+# Line 45000 "Employment insurance (EI) overpayment" is T2204 line 15: "If this amount is more than
+# $1, enter it on line 45000 of your return." The T2204 export (`ca/ei_overpayment`) is that amount,
+# 0 when line 15 is not more than $1. Another form's export is read only as a record list
+# (`ca/t2204.ei_overpayment`), so core/record_total totals the one amount into line 45000.
+#
+# Line 45300 "Canada workers benefit (CWB)" is Schedule 6 line 28: "If you are not completing Step 3,
+# enter this amount on line 45300 of your return." It is read the same way, through
+# core/record_total on `ca/schedule_6.cwb_benefit_line_28`.
+#
+# The sum of the two is rounded once, half-up to the cent, through the shared ca/cent_rounding
+# dataset. The result is signed, as the line prints no floor.
+#
+# Lines left out, for the take-home filer (Ontario, single, salary only, no T4, basic credits only):
+#   - 150 (43700, tax deducted) is always 0 with no T4 slip.
+#   - 151 (44000, the Quebec abatement) applies to Quebec only.
+#   - 152 (44800, the CPP overpayment) is 0 because CPP is computed from salary, not overpaid.
+#   - 165 (47900, Form ON479 for Ontario) has credits that all need inputs the filer never has, so
+#     it is 0.
+#   - The other lines (153 to 164 other than 45000 and 45300) need slips, receipts or expenses the
+#     filer does not have.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t2204.ei_overpayment
+    produces:
+      output: ca/ei_overpayment_line_45000
+  - name: core/record_total
+    consumes:
+      records: ca/schedule_6.cwb_benefit_line_28
+    produces:
+      output: ca/cwb_line_45300
+  - name: core/sum
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts:
+        - ca/ei_overpayment_line_45000
+        - ca/cwb_line_45300
+    produces:
+      output: ca/total_credits
