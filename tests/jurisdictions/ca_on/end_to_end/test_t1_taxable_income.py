@@ -12,7 +12,8 @@ Form text: T1 (CRA 5006-R, 2025) "Line 33 and line 15000: Line 28 plus line 32 T
 "Line 48 and line 22215: Deduction for CPP or QPP enhanced contributions on employment income
 (complete Schedule 8 or Form RC381, whichever applies) (maximum $1,074.00)"; Schedule 8 (CRA
 5000-S8, 2025) Part 3a line 28 "Enter this amount (in dollars and cents) on line 22215 of your
-return."
+return."; "Line 53 and line 23300: Add lines 35 to 52." Line 23300 reads Schedule 8's export as
+the kind `ca/schedule_8.<export>`, so its test composes the real Schedule 8 with the T1 parts.
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import (
+    DEDUCTIONS_FROM_TOTAL_INCOME,
     SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, TOTAL_INCOME
@@ -55,8 +57,11 @@ HEADER_15000 = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
+# The form's lines compose together: every T1 part beside the salary and the real Schedule 8 whose
+# export line 23300 reads.
 PARTS_15000 = (
     "salary.yaml",
+    *(part.name for part in sorted(TAKE_HOME.glob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.glob("t1_taxable_income*.yaml"))),
 )
 PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.glob("schedule_8*.yaml"))))
@@ -98,3 +103,18 @@ def test_line_15000_is_the_salary_when_line_10400_is_left_out(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert line_15000(take_home_service, salary) == D(expected)
+
+
+def line_23300(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+    )
+    (sheet,) = worksheets["ca/t1_taxable_income"]
+    return sheet.get(DEDUCTIONS_FROM_TOTAL_INCOME).value
+
+
+@pytest.mark.parametrize(("salary", "expected"), [("70000", "665.00"), ("90000", "1074.00")])
+def test_line_23300_is_the_schedule_8_enhanced_contributions_read_as_line_22215(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert line_23300(take_home_service, salary) == D(expected)
