@@ -1,0 +1,14 @@
+# Ontario surtax tier, line 67, 2025 tax year (Form ON428, form 5006-C): line 67 "(Line 65 minus
+# $7,307) multiplied by 36% (if negative, enter "0")" is the 36% tier of the surtax, on line 65,
+# the surtax base. Line 66 (the 20% tier over $5,710) is its own part, and line 68 "Line 66 plus
+# line 67" adds the two.
+# Line 67 is a dollars-and-cents box, so the tier rounds half-up to the cent before line 68 adds
+# it, the owner's decision, as the form states no rounding rule.
+family: ca-on/surtax_line_67
+tax_year: 2025
+kind: surcharge_tiers
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+tiers:
+  - {threshold: "7307", rate: "0.36"}
