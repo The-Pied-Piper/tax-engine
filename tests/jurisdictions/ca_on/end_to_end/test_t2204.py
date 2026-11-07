@@ -7,8 +7,7 @@ folder beside a test-only header, and types in only the gross salary (`ca/employ
 the given line 4 figure in one case. The real header is not used because its output, T1 line 167,
 is not built yet. This is not a worked return: no return file, no slips, one form.
 
-The form's exports are read as declared today (lines 15, 15 count, 45000 amount and 16); line 4
-joins them once the form exports it.
+The form's exports are line 4 (the premiums deducted), the T1 line 45000 amount and line 16.
 
 Form text: CRA T2204 (2025), line 1 "Total EI insurable earnings (box 24 or, if blank, box 14 of
 your T4 slips)"; line 3 "Line 1 plus line 2 (maximum $65,700)"; line 7 "Amount from line 3 –
@@ -216,13 +215,13 @@ def test_a_given_line_4_figure_is_the_premiums_deducted_and_the_overpayment_foll
     assert counts(sheet, {"15": 1}) == {"15": 1}
 
 
-def test_the_exports_read_the_return_lines_at_70000(take_home_service: TakeHomeService) -> None:
-    # The exports the form declares: line 15, its more-than-$1 count, the T1 line 45000 amount and
-    # line 16. Line 4 joins them once the form exports it.
+def test_the_exports_read_the_calculator_and_return_lines_at_70000(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The exports the form declares: line 4, the T1 line 45000 amount and line 16.
     sheet = salary_only(take_home_service, "70000")
 
-    assert sheet.get(T2204_LINE_15).value == D("0")
-    assert sheet.get(T2204_LINE_15_COUNT).value == 0
+    assert sheet.get(T2204_PREMIUMS_DEDUCTED).value == D("1077.48")
     assert sheet.get(EI_OVERPAYMENT).value == D("0")
     assert sheet.get(T2204_LINE_16).value == D("1077.48")
 
