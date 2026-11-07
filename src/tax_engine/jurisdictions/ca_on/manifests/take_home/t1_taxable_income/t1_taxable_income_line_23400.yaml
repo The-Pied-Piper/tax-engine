@@ -1,0 +1,17 @@
+# T1 (ca/t1_taxable_income) line 23400: "Line 54 and line 23400: Line 34 minus line 53 (if negative,
+# show in brackets) Net income before adjustments" (5006-R page 4). Line 34 copies line 33, which is
+# line 15000 (total income); line 53 is line 23300 (deductions from total income). The form's
+# declaration and exports are a part of the manifest's own, not this one.
+#
+# Step 1 takes line 53 off line 34 through core/subtract. There is no floor: a deduction above
+# income gives a negative figure, which the form shows in brackets. A subtraction has no dataset,
+# so nothing here rounds.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/subtract
+    consumes:
+      amount: ca/total_income
+      less: ca/deductions_from_total_income
+    produces:
+      output: ca/net_income_before_adjustments

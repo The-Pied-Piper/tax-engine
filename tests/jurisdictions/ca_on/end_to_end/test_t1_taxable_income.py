@@ -3,8 +3,8 @@
 This module grows one line at a time. Line 22215 is the first: its step is Schedule 8's own export,
 so the form builds nothing for it and this test reads that export from the real Schedule 8 parts
 composed from the salary. Line 15000 builds its own step in the form's parts
-(`t1_taxable_income*.yaml`), so its test composes those with the salary; line 10400 is declared
-optional in that test's header until its own declaration ships. The real header is not used because
+(`t1_taxable_income*.yaml`), so its test composes those with the salary and the real parts, line
+10400's optional input among them. The real header is not used because
 its output, T1 line 167, is not built yet. This is not a worked return: no return file, no slips,
 one form.
 
@@ -27,6 +27,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
+    NET_INCOME_BEFORE_ADJUSTMENTS,
     SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, TOTAL_INCOME
@@ -48,16 +49,6 @@ HEADER_15000 = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/other_employment_income
-        required: false
-        default: "0"
-        basis: 'Other employment income (T1 line 10400)'
-      # Line 23400 is built by ticket #217; until then line 23600 reads it from this header.
-      - name: ca/net_income_before_adjustments
-        required: false
-        default: "0"
-        basis: 'Net income before adjustments (T1 line 23400)'
     outputs:
       - ca/employment_income
     capabilities: []
@@ -67,7 +58,7 @@ HEADER_15000 = dedent("""\
 PARTS_15000 = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
-    *(part.name for part in sorted(TAKE_HOME.glob("t1_taxable_income*.yaml"))),
+    *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
 )
 PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))))
 
@@ -103,7 +94,10 @@ def line_15000(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(TOTAL_INCOME).value
 
 
-@pytest.mark.parametrize(("salary", "expected"), [("70000", "70000.00"), ("90000", "90000.00")])
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [("70000", "70000.00"), ("90000", "90000.00"), ("1000", "1000.00")],
+)
 def test_line_15000_is_the_salary_when_line_10400_is_left_out(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
@@ -123,3 +117,18 @@ def test_line_23300_is_the_schedule_8_enhanced_contributions_read_as_line_22215(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert line_23300(take_home_service, salary) == D(expected)
+
+
+def line_23400(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+    )
+    (sheet,) = worksheets["ca/t1_taxable_income"]
+    return sheet.get(NET_INCOME_BEFORE_ADJUSTMENTS).value
+
+
+@pytest.mark.parametrize(("salary", "expected"), [("70000", "69335.00"), ("90000", "88926.00")])
+def test_line_23400_is_total_income_less_the_deductions_from_it(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert line_23400(take_home_service, salary) == D(expected)
