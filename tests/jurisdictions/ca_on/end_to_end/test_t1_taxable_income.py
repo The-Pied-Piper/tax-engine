@@ -211,15 +211,30 @@ def test_every_line_matches_the_printed_form(
     )
 
 
-def test_the_exports_read_the_return_lines_at_70000(take_home_service: TakeHomeService) -> None:
-    # Net income (23600) and taxable income (26000) are 69,335.00; the others the form exports are
-    # total income (15000) and the deductions from it (23300).
-    sheet = salary_only(take_home_service, "70000")
+def test_the_form_exports_the_return_lines_and_the_worksheet_holds_them_at_70000(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The exports the form declares: total income (15000), the deductions from it (23300), net
+    # income (23600) and taxable income (26000).
+    service = take_home_service(HEADER, FORM, *PARTS_15000)
+    code = JurisdictionCode("CA-ON")
+    (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca/t1_taxable_income")
+    assert form.exports == (
+        TOTAL_INCOME,
+        DEDUCTIONS_FROM_TOTAL_INCOME,
+        NET_INCOME,
+        TAXABLE_INCOME,
+    )
 
-    assert sheet.get(TOTAL_INCOME).value == D("70000")
-    assert sheet.get(DEDUCTIONS_FROM_TOTAL_INCOME).value == D("665.00")
-    assert sheet.get(NET_INCOME).value == D("69335.00")
-    assert sheet.get(TAXABLE_INCOME).value == D("69335.00")
+    worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
+    (sheet,) = worksheets["ca/t1_taxable_income"]
+
+    assert [sheet.get(kind).value for kind in form.exports] == [
+        D("70000"),
+        D("665.00"),
+        D("69335.00"),
+        D("69335.00"),
+    ]
 
 
 def test_the_kinds_declare_23400_signed_and_23600_and_26000_non_negative(
