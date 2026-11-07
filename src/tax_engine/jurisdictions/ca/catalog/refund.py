@@ -9,14 +9,23 @@ from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 TOTAL_CREDITS = AmountKind.declare(CATALOG, "total_credits")
-"""Total credits, T1 line 166 (line 48200) "Add lines 150 to 165. Total credits": here line 150
-(43700), line 152 (44800), line 153 (45000, the EI overpayment), line 154 (45200), line 155
-(45300), line 156 (45350), line 157 (45355), line 158 (45400), line 159 (45600), line 160 (45700,
-a caller input), line 161 (46900), line 162 (47555), line 47556, line 164 (47600) and line 165
-(47900), in line order. Signed, as the line prints no floor.
-
-Line 151 (44000, a Quebec abatement that does not apply to an Ontario return) is left out.
+"""Total credits, T1 line 48200 (line 166) "Add lines 150 to 165. Total credits", as built for the
+take-home return: the sum of line 45000 (the EI overpayment, `ca/ei_overpayment_line_45000`) and
+line 45300 (the Canada workers benefit, `ca/cwb_line_45300`). Signed, as the line prints no floor.
 """
+
+EI_OVERPAYMENT_LINE_45000 = AmountKind.declare(
+    CATALOG, "ei_overpayment_line_45000", non_negative=True
+)
+"""T1 line 45000 "Employment insurance (EI) overpayment", read from Form T2204 line 15: "Enter
+whichever is less: amount from line 9 or line 14. If this amount is more than $1, enter it on line
+45000 of your return." The amount is line 15 when it is more than $1, else 0."""
+
+CWB_LINE_45300 = AmountKind.declare(CATALOG, "cwb_line_45300", non_negative=True)
+"""T1 line 45300 "Canada workers benefit (CWB)", read from Schedule 6 line 28: "If you are not
+completing Step 3, enter this amount on line 45300 of your return." The amount is Schedule 6 line
+28 (`ca/cwb_benefit_line_28`)."""
+
 
 FUEL_CHARGE_GROSS_FARMING_EXPENSES = AmountKind.declare(
     CATALOG, "fuel_charge_gross_farming_expenses"

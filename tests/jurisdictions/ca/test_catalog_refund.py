@@ -6,7 +6,9 @@ from decimal import Decimal
 
 from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.jurisdictions.ca.catalog import (
+    CWB_LINE_45300,
     EI_OVERPAYMENT,
+    EI_OVERPAYMENT_LINE_45000,
     FARM_FUEL_CHARGE_CREDIT_TOTAL,
     FARM_FUEL_CHARGE_CREDIT_TOTAL_CHECKED,
     FUEL_CHARGE_CREDIT_AB,
@@ -96,6 +98,8 @@ def test_the_refund_kinds_are_the_registered_ones(registry: ArtifactRegistry) ->
 def test_the_refund_kinds_are_money() -> None:
     for kind in (
         TOTAL_CREDITS,
+        EI_OVERPAYMENT_LINE_45000,
+        CWB_LINE_45300,
         REFUND_OR_BALANCE_OWING,
         REFUND,
     ):

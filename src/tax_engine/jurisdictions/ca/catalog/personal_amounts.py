@@ -44,6 +44,14 @@ contributions, the EI premiums and the Canada employment amount for the take-hom
 89 to 91 and 93 to 95 are 0 and are left out). It feeds line 98.
 """
 
+BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3 = AmountKind.declare(
+    CATALOG, "basic_personal_amount_net_income_line_3", non_negative=True
+)
+"""Federal Worksheet 5000-D1, line 30000 line 3 "Amount from line 23600 of your return": the floored
+net income, read from the T1 taxable income export (`ca/net_income`, line 23600) into the taper of
+the basic personal amount.
+"""
+
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, T1 line 30000 "If the amount on line 23600 is $177,882 or less, enter
 $16,129. If the amount on line 23600 is $253,414 or more, enter $14,538. Otherwise, use the
