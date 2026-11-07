@@ -559,7 +559,9 @@ return.": 1 when line 15 is more than $1 and 0 otherwise, the factor of line 450
 
 T2204_LINE_16 = AmountKind.declare(CATALOG, "t2204_line_16", non_negative=True)
 """Line 16 of Form T2204, "Enter whichever amount is the least: line 7, line 9 or line 12.": the
-least of lines 7, 9 and 12. It is entered on line 31200 of the return (`ca/ei_premiums`)."""
+least of lines 7, 9 and 12. The form says to enter it on line 31200 of the return and on line 58300
+of Form 428; the take-home build exports it from Form T2204 and T1 line 96 and ON428 line 24 read
+it there. No step produces `ca/ei_premiums` for line 31200 (a pure read of this line)."""
 
 EI_OVERPAYMENT = AmountKind.declare(CATALOG, "ei_overpayment", non_negative=True)
 """Employment insurance (EI) overpayment, T1 line 45000 "Employment insurance (EI) overpayment":
