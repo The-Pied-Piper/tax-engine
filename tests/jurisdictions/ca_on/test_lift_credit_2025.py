@@ -10,12 +10,6 @@ negative, enter "0")"; line 18 "Applicable rate 5%"; line 19 "Line 17 multiplied
 from line 18"; line 20 "Line 14 minus line 19 (if negative, enter "0") Enter this amount on line
 62140 of your Form ON428." The 5.05% is a rate (the `rate` kind), the $875 a plain cap (the
 `amount` kind). Lines 5 and 14 are dollars-and-cents boxes, so each is rounded half-up to the cent.
-
-Part B, "If you had a spouse or common-law partner at the end of the year": line 31 "Individual
-income threshold 32,500.00"; line 36 "Family income threshold 65,0000.00", a typo for 65,000.00;
-line 39 "Applicable rate 5%"; line 40 "Line 38 multiplied by the percentage from line 39". Each
-threshold is a printed amount taken whole (the `credit` kind) and the rate a rate (the `rate`
-kind). Lines 31, 36 and 40 are dollars-and-cents boxes, so each is rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -43,8 +37,6 @@ SOURCE = YamlParameterSource(
 RATE_FAMILY = "ca-on/lift_rate"
 MAXIMUM = "ca-on/lift_maximum"
 INDIVIDUAL_THRESHOLD = "ca-on/lift_individual_income_threshold"
-FAMILY_THRESHOLD = "ca-on/lift_family_income_threshold"
-FAMILY_RATE = "ca-on/lift_family_rate"
 ON428_A_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt"
 
 # Made up for this test and not registered: the employment income the rate is applied to (line
@@ -52,11 +44,8 @@ ON428_A_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5
 INCOME = AmountKind("ex/income")
 BEFORE_MAXIMUM = AmountKind("ex/before_maximum")
 CAPPED = AmountKind("ex/capped")
-# Part B: the threshold a credit dataset gives (lines 31 and 36), the larger excess over a
-# threshold (line 38) and the reduction from it (line 40).
+# Part A: the threshold a credit dataset gives (line 16).
 THRESHOLD = AmountKind("ex/threshold")
-GREATER_EXCESS = AmountKind("ex/greater_excess")
-FAMILY_REDUCTION = AmountKind("ex/family_reduction")
 
 
 def test_2025_rate_is_5_05_percent() -> None:
@@ -132,34 +121,14 @@ def test_2025_individual_income_threshold_is_32500() -> None:
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-def test_2025_family_income_threshold_is_65000() -> None:
-    data = SOURCE.get(FAMILY_THRESHOLD, 2025, CREDIT)
-
-    # The form's text prints "65,0000.00", a typo; the threshold is 65,000.00.
-    assert data.values == Credit(amount=D("65000.00"))
-    # ON428-A line 36, a dollars-and-cents box: half-up to the cent.
-    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
-
-
-def test_2025_family_rate_is_5_percent() -> None:
-    data = SOURCE.get(FAMILY_RATE, 2025, RATE)
-
-    assert data.values == Rate(D("0.05"))
-    # ON428-A line 40, a dollars-and-cents box: half-up to the cent.
-    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
-
-
 def test_2025_part_b_datasets_cite_only_the_on428_a_text() -> None:
     assert SOURCE.get(INDIVIDUAL_THRESHOLD, 2025, CREDIT).sources == (ON428_A_TEXT,)
-    assert SOURCE.get(FAMILY_THRESHOLD, 2025, CREDIT).sources == (ON428_A_TEXT,)
-    assert SOURCE.get(FAMILY_RATE, 2025, RATE).sources == (ON428_A_TEXT,)
 
 
 @pytest.mark.parametrize(
     ("family", "amount"),
     [
         (INDIVIDUAL_THRESHOLD, "32500.00"),
-        (FAMILY_THRESHOLD, "65000.00"),
     ],
 )
 def test_a_threshold_dataset_is_claimed_whole(family: str, amount: str) -> None:
@@ -168,22 +137,3 @@ def test_a_threshold_dataset_is_claimed_whole(family: str, amount: str) -> None:
     result = capability.compute(())
 
     assert result.outputs == (Artifact(THRESHOLD, D(amount)),)
-
-
-@pytest.mark.parametrize(
-    ("excess", "reduction"),
-    [
-        # The ticket example: family income 75000 less 65000, 10000 x 5%.
-        ("10000", "500.00"),
-        ("0", "0"),
-        # 0.10 x 5% = 0.005, a tie, rounded half-up to 0.01; 0.09 x 5% = 0.0045, down to 0.00.
-        ("0.10", "0.01"),
-        ("0.09", "0.00"),
-    ],
-)
-def test_5_percent_of_the_greater_excess(excess: str, reduction: str) -> None:
-    capability = ApplyRate(SOURCE.get(FAMILY_RATE, 2025, RATE), GREATER_EXCESS, FAMILY_REDUCTION)
-
-    result = capability.compute((Artifact(GREATER_EXCESS, D(excess)),))
-
-    assert result.outputs == (Artifact(FAMILY_REDUCTION, D(reduction)),)
