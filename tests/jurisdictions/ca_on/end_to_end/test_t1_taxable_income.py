@@ -7,18 +7,19 @@ composed from the salary. Line 15000 builds its own step in the form's parts
 (`t1_taxable_income*.yaml`), so its test composes those with the salary and the real parts, line
 10400's optional input among them. The real header is not used because
 its output, T1 line 167, is not built yet. This is not a worked return: no return file, no slips,
-one form. The expected figures hold when the contributions deducted (T4 boxes 16 and 16A) are at least the
-required amounts, so Schedule 8 line 24 is positive or "0"; the engine computes the required
-contributions and reads no box 16.
+one form. The expected figures hold when the contributions deducted (T4 boxes 16 and 16A) are at
+least the required amounts, so Schedule 8 line 24 is positive or "0"; the engine computes the
+required contributions and reads no box 16.
 
 Form text: T1 (CRA 5006-R, 2025) "Line 33 and line 15000: Line 28 plus line 32 Total income";
 "Line 48 and line 22215: Deduction for CPP or QPP enhanced contributions on employment income
 (complete Schedule 8 or Form RC381, whichever applies) (maximum $1,074.00)"; Schedule 8 (CRA
 5000-S8, 2025) Part 3a line 28 "Enter this amount (in dollars and cents) on line 22215 of your
-return."; "Line 53 and line 23300: Add lines 35 to 52."; "Line 54 and line 23400: Line 34 minus line 53
-(if negative, show in brackets)"; "Line 56 and line 23600: Line 54 minus line 55 (if negative, enter
-"0")"; "Line 69 and line 26000: Line 57 minus line 68 (if negative, enter "0")". Line 23300 reads
-Schedule 8's export as the kind `ca/schedule_8.<export>`, so its test composes the real Schedule 8 with the T1 parts.
+return."; "Line 53 and line 23300: Add lines 35 to 52."; "Line 54 and line 23400: Line 34 minus
+line 53 (if negative, show in brackets)"; "Line 56 and line 23600: Line 54 minus line 55 (if
+negative, enter "0")"; "Line 69 and line 26000: Line 57 minus line 68 (if negative, enter "0")".
+Line 23300 reads Schedule 8's export as the kind `ca/schedule_8.<export>`, so its test composes the
+real Schedule 8 with the T1 parts.
 """
 
 from __future__ import annotations
