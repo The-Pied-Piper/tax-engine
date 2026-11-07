@@ -80,6 +80,12 @@ ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
 line 6 plus line 7. Temporary copy until the line 8 part is on main."""
 
+ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
+    CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True
+)
+"""36% surtax tier, ON428 line 67 "(Line 65 minus $7,307) multiplied by 36% (if negative, enter
+"0") =": 36% of line 65 above $7,307, never below 0."""
+
 ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
     CATALOG, "on428_donations_credit_line_49", non_negative=True
 )
@@ -120,6 +126,23 @@ ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
 """Ontario tax after the minimum tax carryover, ON428 line 61 "Line 61: Line 55 minus line 60 (if
 negative, enter "0") =": line 55 minus line 60, not below zero."""
 
+ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
+    CATALOG, "on428_surtax_base_line_65", non_negative=True
+)
+"""Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
+less line 54, never below zero."""
+
+ON428_SURTAX_20_PERCENT_TIER_LINE_66 = AmountKind.declare(
+    CATALOG, "on428_surtax_20_percent_tier_line_66", non_negative=True
+)
+"""Surtax 20% tier, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20% (if negative, enter
+"0") =": 20% of line 65 above $5,710, never below 0."""
+
+ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
+    CATALOG, "on428_surtax_total_line_68", non_negative=True
+)
+"""Ontario surtax, ON428 line 68 "Line 66 plus line 67 =": line 66 plus line 67."""
+
 ON428_DIVIDEND_TAX_CREDIT_LINE_57 = AmountKind.declare(
     CATALOG, "on428_dividend_tax_credit_line_57", non_negative=True
 )
@@ -129,8 +152,13 @@ tax credit (use Worksheet ON428)": an optional input that a salary-only caller l
 ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
     CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
 )
-"""TEMPORARY COPY, owned by the line 69 PR; drop when that merges. Tax with surtax, ON428
-line 69: the amount that line 71 subtracts from."""
+"""ON428 line 69 "Line 69: Line 62 plus line 68 =": line 61 plus line 68."""
+
+ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
+    CATALOG, "on428_basic_reduction_line_74", non_negative=True
+)
+"""Basic reduction, ON428 line 74 "Basic reduction 294.00": the amount claimed, the first part of
+line 77."""
 
 ON428_TAX_AFTER_DIVIDEND_CREDIT_LINE_71 = AmountKind.declare(
     CATALOG, "on428_tax_after_dividend_credit_line_71", non_negative=True

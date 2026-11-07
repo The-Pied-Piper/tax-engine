@@ -1,0 +1,13 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 69, "Line 69: Line 62 plus line 68 =": the Ontario
+# tax with the surtax. Line 62 is a copy of line 61, so the step reads line 61 and line 68 from
+# their source parts and adds them with core/sum.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        - ca-on/on428_tax_after_minimum_tax_carryover_line_61
+        - ca-on/on428_surtax_total_line_68
+    produces:
+      output: ca-on/on428_tax_with_surtax_line_69
