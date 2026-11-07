@@ -1,0 +1,9 @@
+# T1 line 10400 (2025) input a salary-only caller does not give.
+# Line 2 and line 10400: "Line 2 and line 10400: Other employment income" (5006-R page 3). A salary-only
+# caller has no slips, tips or other employment income, so a request that leaves the line out is read
+# as 0, not blank.
+inputs:
+  - name: ca/other_employment_income
+    required: false
+    default: "0"
+    basis: 'Line 2 and line 10400: Other employment income'
