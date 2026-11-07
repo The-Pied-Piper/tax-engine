@@ -1,0 +1,17 @@
+# T1 General 2025, Ontario edition (form 5006-R), Step 5 Part B line 106 "Add lines 101 to 105."
+# (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Line 101 is `ca/credit_amounts_subtotal`.
+# Lines 102 to 105 (student loan interest, tuition, tuition transferred, amounts transferred from a
+# spouse) are 0 for the take-home filer and are left out. The sum is built even with its one part
+# present: core/sum adds line 101 and rounds the total once, half-up to the cent, through the
+# shared `ca/cent_rounding` dataset, producing `ca/credit_amounts_line_106`.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts:
+        - ca/credit_amounts_subtotal
+    produces:
+      output: ca/credit_amounts_line_106

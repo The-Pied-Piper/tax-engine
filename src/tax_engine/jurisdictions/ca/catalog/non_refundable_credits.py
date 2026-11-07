@@ -228,6 +228,12 @@ CREDIT_AMOUNTS_SUBTOTAL = AmountKind.declare(CATALOG, "credit_amounts_subtotal",
 the amount from line 101 of your return" reads: the credit amounts of the lines wired up to line
 100 (line 31800), in line order, before line 102 (the tuition amount)."""
 
+CREDIT_AMOUNTS_LINE_106 = AmountKind.declare(CATALOG, "credit_amounts_line_106", non_negative=True)
+"""Credit amounts through line 106, T1 line 106 "Add lines 101 to 105. =": the credit amounts
+subtotal of line 101 alone for the take-home filer, since lines 102 to 105 (student loan interest,
+tuition, tuition transferred, amounts transferred from a spouse) are 0 and are left out. Line
+33500 reads it."""
+
 TUITION_INCOME_LESS_CREDITS = AmountKind.declare(
     CATALOG, "tuition_income_less_credits", non_negative=True
 )

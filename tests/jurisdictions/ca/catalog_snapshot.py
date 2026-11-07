@@ -2733,6 +2733,7 @@ REGISTERED = frozenset(
         "ca/credit_amounts_line_84",
         "ca/credit_amounts_line_98",
         "ca/credit_amounts_subtotal",
+        "ca/credit_amounts_line_106",
         "ca/tuition_income_less_credits",
         "ca/unused_tuition_claimed",
         "ca/tuition_income_remaining",
