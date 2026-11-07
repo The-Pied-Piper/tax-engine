@@ -158,7 +158,7 @@ AMOUNT_LINES: dict[str, AmountKind] = {
     "90": ON428_ONTARIO_TAX_LINE_90,
 }
 # Every amount line but 5 (a rate). Each is held to the cent, zeros included.
-ALL_CENT_LINES = tuple(line for line in AMOUNT_LINES if line != "5")
+CENT_LINES = tuple(line for line in AMOUNT_LINES if line != "5")
 
 # Each salary's figures by form line, hand-computed from the printed lines and the datasets they
 # cite. Line 1 is the salary less the Schedule 8 enhanced contributions: 20,000 less 165 (1% of
@@ -311,12 +311,14 @@ def test_the_health_premium_is_the_printed_row_for_the_taxable_income(
 
 
 @pytest.mark.parametrize("salary", CENT_SALARIES)
-def test_every_cent_line_has_two_decimals(take_home_service: TakeHomeService, salary: str) -> None:
+def test_the_cent_lines_have_exactly_two_decimals(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
     # Every amount line but line 5 (a rate) prints to the cent, a line floored to zero included:
     # its zero is 0.00, not a bare 0.
     sheet = on428(take_home_service, salary)
 
-    for line in ALL_CENT_LINES:
+    for line in CENT_LINES:
         assert sheet.get(AMOUNT_LINES[line]).value.as_tuple().exponent == -2, line
 
 

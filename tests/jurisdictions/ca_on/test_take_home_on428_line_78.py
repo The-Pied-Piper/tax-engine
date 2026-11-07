@@ -81,11 +81,3 @@ def test_line_78_is_line_77_multiplied_by_2(
     take_home_service: TakeHomeService, line_77: str, line_78: str
 ) -> None:
     assert _line_78(take_home_service, line_77) == D(line_78)
-
-
-def test_line_78_is_held_to_the_cent(take_home_service: TakeHomeService) -> None:
-    # Line 77 is 294.00; the doubled figure prints 588.00, not a bare 588.
-    value = _line_78(take_home_service, "294.00")
-
-    assert value == D("588.00")
-    assert value.as_tuple().exponent == -2
