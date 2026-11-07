@@ -275,13 +275,6 @@ ON428_CREDITS_WITH_DISABILITY_LINE_31 = AmountKind.declare(
 """Total of the credits with the disability amounts, ON428 line 31 "Add lines 28 to 30.": the sum
 of line 28 with the disability amounts of lines 29 and 30."""
 
-ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
-    CATALOG, "on428_credit_amounts_at_credit_rate_line_46", non_negative=True
-)
-"""Ontario credits at the rate, ON428 line 46 "Line 44 multiplied by the percentage from line 45 =":
-the starting input of line 50. Line 46 is computed by its own part; until that part is in the
-manifest, the line 50 part reads this kind as a plain input."""
-
 ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
     CATALOG, "on428_donations_credit_line_49", non_negative=True
 )

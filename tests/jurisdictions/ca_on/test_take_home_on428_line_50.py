@@ -6,7 +6,7 @@ plus line 49 Enter this amount on line 52. Ontario non-refundable tax credits ="
 0, in its own part file (on428_line_49_inputs.yaml). Line 50 is one core/sum over line 46 then
 line 49.
 
-Line 46 is `ca-on/on428_credit_amounts_at_credit_rate_line_46` (produced by another ticket), a plain
+Line 46 is `ca-on/on428_credit_amounts_at_credit_rate_line_46` (produced by another part), a plain
 starting input here. The header and the form's export are made up here, because the shared
 scaffold owns them.
 """
