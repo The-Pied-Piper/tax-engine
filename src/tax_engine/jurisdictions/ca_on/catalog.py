@@ -143,6 +143,11 @@ ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
 )
 """Ontario surtax, ON428 line 68 "Line 66 plus line 67 =": line 66 plus line 67."""
 
+ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
+    CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
+)
+"""ON428 line 69 "Line 69: Line 62 plus line 68 =": line 61 plus line 68."""
+
 ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
     CATALOG, "on428_basic_reduction_line_74", non_negative=True
 )
