@@ -8,16 +8,20 @@ part into a temporary manifest folder beside a test-only header, and types in on
 (`ca/employment_income`). The real header is not used because its output, T1 line 167, is not built
 yet. This is not a worked return: no return file, no slips, one form.
 
-Line 1 is the salary itself, the input, so the form builds no step for it. Lines 14 and 15 are
-copies of lines 5 and 13 and have no step. Lines 2, 7 to 12 and Part B are not built.
+Line 1 is the salary itself, the input, so the form builds no step for it. Line 2 (T1 line 10400,
+other employment income) is read as 0 when not given, is never typed in here and has no pin of its
+own: line 3 equal to the salary is its only evidence. Lines 14 and 15 are copies of lines 5 and 13
+and have no step. Lines 7 to 12 and Part B are not built.
 
 Form text: Schedule ON428-A (CRA 5006-A, 2025), "Line 3: Line 1 plus line 2"; "Line 4: Applicable
-rate 5.05%"; "Line 5: Line 3 multiplied by the percentage from line 4 (maximum $875)"; "Line 13:
+rate 5.05%"; "Line 6: Net income from line 23600 of your return"; "Line 5: Line 3 multiplied by the percentage from line 4 (maximum $875)"; "Line 13:
 Line 9 minus line 12 (if negative, enter "0") Your adjusted net income"; "Line 16: Individual
 income threshold 32,500.00"; "Line 17: Line 15 minus line 16 (if negative, enter "0")"; "Line 19:
 Line 17 multiplied by the percentage from line 18"; "Line 20: Line 14 minus line 19 (if negative,
-enter "0") Enter this amount on line 62140 of your Form ON428." Eligibility for the credit is not
-printed on the form and is assumed true.
+enter "0") Enter this amount on line 62140 of your Form ON428." Net income at line 23600 is the
+salary less the Schedule 8 (CRA 5000-S8, 2025) "Line 28: Line 26 plus line 27", which the form
+sends to line 22215 of the return. Eligibility for the credit is not printed on the form and is
+assumed true.
 """
 
 from __future__ import annotations
@@ -65,8 +69,10 @@ PARTS = (
     *(part.name for part in sorted(TAKE_HOME.rglob("on428_a*.yaml"))),
 )
 
-# Amount lines by form line. Line 4's printed rate is a dataset figure, so its line is read as the
-# rate's product, the credit before the $875 maximum; line 18's rate likewise feeds line 19.
+# Amount lines by form line. Line 4's printed rate (5.05%) is a dataset figure with no figure of its
+# own, so the "4" entry is not a printed line: it is line 5's first operation, line 3 times that
+# rate before the $875 maximum, the one direct pin of the rate. Line 18's 5% is pinned only through
+# line 19.
 AMOUNT_LINES: dict[str, AmountKind] = {
     "3": LIFT_EMPLOYMENT_INCOME,
     "4": LIFT_CREDIT_BEFORE_MAXIMUM,
@@ -81,7 +87,7 @@ AMOUNT_LINES: dict[str, AmountKind] = {
 CENT_LINES = ("5", "17", "19", "20")
 
 # Each salary's figures by form line, hand-computed from the printed lines. Line 6 is the salary
-# less the Schedule 8 enhanced contributions (T1 line 22215); line 19 is line 18's 5% of line 17.
+# less the Schedule 8 enhanced contributions (T1 line 22215, Schedule 8 line 28); line 19 is line 18's 5% of line 17.
 CASES: list[tuple[str, dict[str, str]]] = [
     ("70000", {"3": "70000", "4": "3535.00", "5": "875.00", "6": "69335.00", "13": "69335.00",
                "16": "32500", "17": "36835.00", "19": "1841.75", "20": "0.00"}),
