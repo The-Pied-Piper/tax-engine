@@ -30,9 +30,8 @@ class EnglishFigures:
 
     @staticmethod
     def money(amount: Decimal) -> str:
-        """`amount` as a plain figure without trailing zeros, e.g. 115000.00 -> "115000"."""
-        text = format(amount, "f")  # fixed-point, every digit; never an exponent
-        return text.rstrip("0").rstrip(".") if "." in text else text
+        """`amount` at the precision it is stored, e.g. 115000.00 -> "115000.00"."""
+        return format(amount, "f")  # fixed-point, every digit; never an exponent
 
     @staticmethod
     def exact(amount: ExactFraction) -> str:

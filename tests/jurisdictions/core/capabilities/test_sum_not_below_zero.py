@@ -502,7 +502,7 @@ def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(parts("100.25", "40", "9.75"))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "total: part_one 100.25 + part_two 40 + part_three 9.75, not below 0 = 150 "
+        "total: part_one 100.25 + part_two 40 + part_three 9.75, not below 0 = 150.00 "
         "(half-up to 0.01)",
     )
 
@@ -511,7 +511,7 @@ def test_the_floored_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(parts("10", "-25.5", "5"))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "total: part_one 10 + part_two -25.5 + part_three 5, not below 0 = 0 (half-up to 0.01)",
+        "total: part_one 10 + part_two -25.5 + part_three 5, not below 0 = 0.00 (half-up to 0.01)",
     )
 
 

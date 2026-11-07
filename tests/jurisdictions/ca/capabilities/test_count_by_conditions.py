@@ -713,7 +713,7 @@ def test_renders_the_line_80_gate_in_english() -> None:
         "not_resident_of_canada 0, does not apply",
         'gate: condition 2 "You were not a resident of Ontario on December 31, 2025": '
         "not_resident_of_ontario 0, does not apply",
-        'gate: condition 3 "There is an amount on line 72": amount_on_line_72 120, applies',
+        'gate: condition 3 "There is an amount on line 72": amount_on_line_72 120.00, applies',
         'gate: condition 4 "You were bankrupt at any time in 2025": bankrupt 1, applies',
         'gate: condition 5 "Your return is filed for you by a trustee in bankruptcy": '
         "filed_by_trustee 0, does not apply",
