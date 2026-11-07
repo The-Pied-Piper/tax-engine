@@ -41,16 +41,22 @@ class AmountBand:
                 f"a band from {self.over} gives either amount alone or minus, rate and plus "
                 "together"
             )
+        # A zero figure is a plain zero (its scale kept), never a negative zero.
+        if not self.over:
+            object.__setattr__(self, "over", self.over.copy_abs())
         if self.amount is not None and not self.amount:
-            # A zero amount is a plain zero (its scale kept), never a negative zero.
             object.__setattr__(self, "amount", self.amount.copy_abs())
+        if self.minus is not None and not self.minus:
+            object.__setattr__(self, "minus", self.minus.copy_abs())
+        if self.plus is not None and not self.plus:
+            object.__setattr__(self, "plus", self.plus.copy_abs())
 
     def _has_flat_shape(self) -> bool:
         return (
             self.amount is not None
             and self.minus is None
             and self.rate is None
-            and (self.plus is None)
+            and self.plus is None
         )
 
     def _has_sloped_shape(self) -> bool:

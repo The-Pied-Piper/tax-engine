@@ -123,7 +123,7 @@ class AmountByBandRenderer:
             figure = (
                 f"({EnglishFigures.money(income)} minus {EnglishFigures.money(line.minus)}) "
                 f"x {EnglishFigures.percent(line.rate.value)}% "
-                f"plus {EnglishFigures.money(line.plus)}"
+                f"plus {EnglishFigures.money(line.plus)} = {EnglishFigures.money(line.result)}"
             )
         else:
             figure = EnglishFigures.money(line.result)
