@@ -1,0 +1,9 @@
+# ON428 (2025) line 49's input, a donations and gifts credit a salary-only caller does not give.
+# Line 49 and line 58969: "Line 49 and line 58969: Line 47 plus line 48" (5006-c-25e). Lines 47 and
+# 48 are the donations and gifts amounts; a salary-only caller has none, so a request that leaves
+# the line out is read as 0, not blank.
+inputs:
+  - name: ca-on/on428_donations_credit_line_49
+    required: false
+    default: "0"
+    basis: 'Line 49 and line 58969: Line 47 plus line 48'

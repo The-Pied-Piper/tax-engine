@@ -49,6 +49,55 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
+ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
+    CATALOG, "on428_credits_with_transfers_line_35", non_negative=True
+)
+"""Total of the credits with the student loan, tuition and transfer amounts, ON428 line 35 "Add
+lines 31 to 34.": the sum of line 31 with lines 32 to 34."""
+
+ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 "Line 36 minus
+line 40 (if negative, enter "0")" plus line 42 "Allowable amount of medical expenses for other
+dependants", a part of line 44."""
+
+ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
+    CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
+)
+"""Total credit amounts, ON428 line 44 "Line 44 and line 58800: Line 35 plus line 43 =": line 35
+plus line 43."""
+
+ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
+    CATALOG, "on428_credit_amounts_at_credit_rate_line_46", non_negative=True
+)
+"""Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
+the percentage from line 45 =": line 44 times the 5.05% of line 45."""
+
+ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "on428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
+line 6 plus line 7. Temporary copy until the line 8 part is on main."""
+
+ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
+    CATALOG, "on428_donations_credit_line_49", non_negative=True
+)
+"""Donations and gifts credit, ON428 line 49 "Line 49 and line 58969: Line 47 plus line 48": a
+caller input, read as 0 when the filer has no donations or gifts."""
+
+ON428_NON_REFUNDABLE_CREDITS_LINE_50 = AmountKind.declare(
+    CATALOG, "on428_non_refundable_credits_line_50", non_negative=True
+)
+"""Ontario non-refundable tax credits, ON428 line 50 "Line 50 and line 61500: Line 46 plus line 49":
+line 46 (the credits at the rate) plus line 49 (the donations and gifts credit)."""
+
+ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_credits_line_53", non_negative=True
+)
+"""Tax minus credits, ON428 line 53 "Line 51 minus line 52 (if negative, enter "0") =": line 8
+(copied to line 51) minus line 50 (copied to line 52), not below 0."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
@@ -178,6 +227,18 @@ CAREGIVER_AMOUNT = AmountKind.declare(CATALOG, "caregiver_amount", non_negative=
 ON428)": Worksheet ON428 line 6 "Add the amounts from line 5 of columns 1, 2, and 3 (and others, if
 any)", each line 5 "Allowable amount for this dependant: line 3 minus line 4 (if negative, enter
 "0")", a part of the total of the Ontario credit amounts."""
+
+ON428_CPP_BASE_CREDIT_AMOUNT_LINE_19 = AmountKind.declare(
+    CATALOG, "on428_cpp_base_credit_amount_line_19", non_negative=True
+)
+"""CPP base contributions credit amount, ON428 line 19 and line 58240 "Amount from line 30800 of
+your return": a copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+ON428_EI_CREDIT_AMOUNT_LINE_21 = AmountKind.declare(
+    CATALOG, "on428_ei_credit_amount_line_21", non_negative=True
+)
+"""EI premiums credit amount, ON428 line 21 and line 58300: a copy of T2204 line 16, the EI
+premiums credit amount."""
 
 ADOPTION_CREDIT = AmountKind.declare(CATALOG, "adoption_credit", non_negative=True)
 """Ontario adoption expenses, ON428 line 23 and line 58330 "Adoption expenses": the total of each

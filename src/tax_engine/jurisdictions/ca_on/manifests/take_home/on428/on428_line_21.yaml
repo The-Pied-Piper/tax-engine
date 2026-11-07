@@ -1,0 +1,10 @@
+# Form ON428 line 21 (58300) is a copy of T2204 line 16, the EI premiums credit amount. The amount
+# arrives as a record list from T2204, so the one step is core/record_total over those records.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca-on/on428_ei_credit_amount_line_21
