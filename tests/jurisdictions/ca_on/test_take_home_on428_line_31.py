@@ -1,5 +1,5 @@
-"""ON428 (2025) line 31, the total of the credits with the disability amounts, as the Ontario take-home
-manifest part wires it.
+"""ON428 (2025) line 31, the total of the credits with the disability amounts, as the Ontario
+take-home manifest part wires it.
 
 Form text (Form ON428, CRA 5006-c-25e.txt): "Line 31: Add lines 28 to 30." Line 28 is the
 `ca-on/on428_credits_with_pension_line_28` input here, a plain starting input. Lines 29 and 30 (the
