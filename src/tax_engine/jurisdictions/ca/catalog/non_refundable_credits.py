@@ -495,16 +495,10 @@ credit amounts on the T1 (line 33500)."""
 NON_REFUNDABLE_CREDIT_AMOUNTS = AmountKind.declare(
     CATALOG, "non_refundable_credit_amounts", non_negative=True
 )
-"""Total of the non-refundable credit amounts, T1 line 33500 "Line 106 plus line 112": the sum
-of the credit amounts the rate is applied to once, here, in line order, the basic personal amount
-(line 30000), the age amount (line 78, 30100), the spouse or common-law partner amount (line 79,
-30300), the amount for an eligible dependant (line 80, 30400), the Canada caregiver amount for a
-spouse or common-law partner (line 81, 30425), the Canada caregiver amount for infirm children
-(line 83, 30500), the base CPP contributions (line 30800), the base CPP contributions on
-self-employment income (line 31000), the EI premiums (line 31200), the EI premiums on
-self-employment income (line 31217), the Canada employment amount (line 31260), the federal
-tuition amount (line 32300), the tuition amount transferred from a child or grandchild (line
-32400) and the amounts transferred from a spouse or common-law partner (line 32600)."""
+"""Total of the non-refundable credit amounts, T1 line 113 and line 33500 "Line 106 plus line 112":
+the credit amounts through line 106 (`credit_amounts_line_106`) plus the medical expenses amount of
+line 112 (line 33200, line 110 plus line 111). The take-home filer has no medical expenses, so the
+total is line 106 alone. Line 33800 (line 115) reads it."""
 
 CHARITABLE_DONATIONS = AmountKind.declare(CATALOG, "charitable_donations", non_negative=True)
 """Charitable donations, Schedule 9 line 1 "Donations to registered charities and similar
