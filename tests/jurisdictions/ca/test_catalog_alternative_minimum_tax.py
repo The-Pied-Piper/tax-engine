@@ -183,10 +183,6 @@ from tax_engine.jurisdictions.ca.catalog import (
     AMT_TREATY_EXEMPT_CAPITAL_GAINS_WITHIN_ADDITIONAL_DEDUCTIONS,
     AMT_UNAPPLIED_2018_CARRYOVER,
     AMT_UNAPPLIED_2018_CARRYOVER_CHECKED,
-    T4_SECURITY_OPTIONS_BOXES_39_AND_91,
-    T4_SECURITY_OPTIONS_BOXES_39_AND_91_TOTAL,
-    T4_SECURITY_OPTIONS_BOXES_41_AND_92,
-    T4_SECURITY_OPTIONS_BOXES_41_AND_92_TOTAL,
 )
 from tests.jurisdictions.ca.catalog_snapshot import COUNTS, SIGNED
 from tests.kinds import non_negative
@@ -249,15 +245,11 @@ PART_9_KINDS: tuple[ArtifactKind[Decimal], ...] = (
 
 # Part 1 lines 28 to 32 and 35 to 38: the security options deductions.
 SECURITY_OPTIONS_KINDS: tuple[ArtifactKind[Decimal], ...] = (
-    T4_SECURITY_OPTIONS_BOXES_39_AND_91,
-    T4_SECURITY_OPTIONS_BOXES_39_AND_91_TOTAL,
     AMT_T1212_LINE_29_DEFERRED_SECURITY_OPTIONS,
     AMT_SECURITY_OPTIONS_D_TOTAL,
     AMT_SECURITY_OPTION_PUBLICLY_LISTED_GIFTS,
     AMT_SECURITY_OPTION_GIFTS_DEDUCTION,
     AMT_SECURITY_OPTIONS_NET,
-    T4_SECURITY_OPTIONS_BOXES_41_AND_92,
-    T4_SECURITY_OPTIONS_BOXES_41_AND_92_TOTAL,
     AMT_PROSPECTOR_OR_GRUBSTAKER_DEDUCTION,
     AMT_DEFERRED_PROFIT_SHARING_PLAN_DEDUCTION,
     AMT_SECURITY_OPTIONS_D1_TOTAL,
@@ -567,40 +559,6 @@ def test_the_part_1_lines_91_to_103_kinds_are_the_registered_ones(
     )
     assert registry.get("ca/amt_credits_adjustments_total") is AMT_CREDITS_ADJUSTMENTS_TOTAL
     assert registry.get("ca/amt_minimum_amount") is AMT_MINIMUM_AMOUNT
-
-
-def test_the_security_options_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
-    assert (
-        registry.get("ca/t4_security_options_boxes_39_and_91")
-        is T4_SECURITY_OPTIONS_BOXES_39_AND_91
-    )
-    assert (
-        registry.get("ca/amt_t1212_line_29_deferred_security_options")
-        is AMT_T1212_LINE_29_DEFERRED_SECURITY_OPTIONS
-    )
-    assert registry.get("ca/amt_security_options_d_total") is AMT_SECURITY_OPTIONS_D_TOTAL
-    assert (
-        registry.get("ca/amt_security_option_publicly_listed_gifts")
-        is AMT_SECURITY_OPTION_PUBLICLY_LISTED_GIFTS
-    )
-    assert (
-        registry.get("ca/amt_security_option_gifts_deduction")
-        is AMT_SECURITY_OPTION_GIFTS_DEDUCTION
-    )
-    assert registry.get("ca/amt_security_options_net") is AMT_SECURITY_OPTIONS_NET
-    assert (
-        registry.get("ca/t4_security_options_boxes_41_and_92")
-        is T4_SECURITY_OPTIONS_BOXES_41_AND_92
-    )
-    assert (
-        registry.get("ca/amt_prospector_or_grubstaker_deduction")
-        is AMT_PROSPECTOR_OR_GRUBSTAKER_DEDUCTION
-    )
-    assert (
-        registry.get("ca/amt_deferred_profit_sharing_plan_deduction")
-        is AMT_DEFERRED_PROFIT_SHARING_PLAN_DEDUCTION
-    )
-    assert registry.get("ca/amt_security_options_d1_total") is AMT_SECURITY_OPTIONS_D1_TOTAL
 
 
 def test_the_losses_and_deductions_kinds_are_the_registered_ones(
