@@ -217,8 +217,8 @@ def test_a_given_line_4_figure_is_the_premiums_deducted_and_the_overpayment_foll
 
 
 def test_the_exports_read_the_return_lines_at_70000(take_home_service: TakeHomeService) -> None:
-    # The four exports on main: line 15, its more-than-$1 count, the T1 line 45000 amount and
-    # line 16. The line 4 export is added with #367.
+    # The exports the form declares: line 15, its more-than-$1 count, the T1 line 45000 amount and
+    # line 16. Line 4 joins them once the form exports it.
     sheet = salary_only(take_home_service, "70000")
 
     assert sheet.get(T2204_LINE_15).value == D("0")
