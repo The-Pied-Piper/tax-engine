@@ -180,6 +180,30 @@ def test_line_30000_is_the_printed_worksheet_between_the_thresholds(
     assert sheet.get(bundled_kinds().kind(LINE_30000)).value == _printed_worksheet(line_3)
 
 
+@pytest.mark.parametrize(
+    ("salary", "line_23600", "reduction", "expected"),
+    [
+        # Line 23600 of 69,335.00 is below the threshold: no reduction, the maximum.
+        ("70000", "69335.00", "0.00", "16129.00"),
+        # Line 23600 of 198,926.00: the reduction 443.27 (1,591.00 times 21,044.00 over 75,532.00).
+        ("200000", "198926.00", "443.27", "15685.73"),
+    ],
+)
+def test_line_30000_names_its_base_and_its_rounded_reduction_in_the_trace(
+    take_home_service: TakeHomeService, salary: str, line_23600: str, reduction: str, expected: str
+) -> None:
+    _, sheet = _sheets(take_home_service, salary)
+    kinds = bundled_kinds()
+    output = kinds.kind(LINE_30000)
+    line_3 = kinds.kind(LINE_3)
+
+    assert sheet.get(output).value == D(expected)
+    assert (
+        f"{output.label}: 14538 plus 1591 less {reduction} for {line_3.label} {line_23600} "
+        f"over 177882 (range 75532), not below 14538 = {expected} (half-up to 0.01)"
+    ) in EnglishTraceRenderer().render_all(sheet.trace)
+
+
 def test_line_3_is_the_line_23600_amount_at_70000(take_home_service: TakeHomeService) -> None:
     _, sheet = _sheets(take_home_service, "70000")
 
@@ -205,12 +229,11 @@ def test_the_line_30000_kind_is_registered_and_non_negative() -> None:
 def test_line_30000_names_line_3_and_the_range_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
-    # The sentence as the tapered-amount renderer prints it today (the reduction as a fraction is
-    # a known wording issue; update this pin where that is fixed).
+    # The sentence as the tapered-amount renderer prints it: the reduction rounded, then the result.
     _, sheet = _sheets(take_home_service, "70000")
     kinds = bundled_kinds()
 
     assert (
-        f"{kinds.kind(LINE_30000).label}: 14538 plus 1591 less 0 for {kinds.kind(LINE_3).label} "
-        "69335.00 over 177882 (range 75532), not below 14538 (half-up to 0.01)"
+        f"{kinds.kind(LINE_30000).label}: 14538 plus 1591 less 0.00 for {kinds.kind(LINE_3).label} "
+        "69335.00 over 177882 (range 75532), not below 14538 = 16129.00 (half-up to 0.01)"
     ) in EnglishTraceRenderer().render_all(sheet.trace)
