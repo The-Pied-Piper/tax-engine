@@ -7,7 +7,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     consumes:
-      amount: ca-on/on428_tax_after_reduction_line_81
+      amount: ca-on/on428_tax_after_tax_reduction_line_81
       less: ca-on/on428_provincial_foreign_tax_credit_line_82
     blank:
       less: "0"

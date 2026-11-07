@@ -185,8 +185,8 @@ ON428_TAX_REDUCTION_LINE_77 = AmountKind.declare(
 """Tax reduction, ON428 line 77 "Add lines 74 to 76": the sum of the reduction parts, which for a
 single filer with no dependants is the basic reduction on line 74 alone."""
 
-ON428_TAX_AFTER_REDUCTION_LINE_81 = AmountKind.declare(
-    CATALOG, "on428_tax_after_reduction_line_81", non_negative=True
+ON428_TAX_AFTER_TAX_REDUCTION_LINE_81 = AmountKind.declare(
+    CATALOG, "on428_tax_after_tax_reduction_line_81", non_negative=True
 )
 """STAND-IN copy of the kind declared by the line 81 PR, so that line 83 can read it before that PR
 merges. ON428 line 81 "Line 81: Line 73 minus line 80 (if negative, enter "0") =": line 73 minus

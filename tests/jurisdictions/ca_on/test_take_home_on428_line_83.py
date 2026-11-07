@@ -2,7 +2,7 @@
 
 Form text (Form ON428, CRA 5006-c-25e.txt): "Line 83: Line 81 minus line 82 (if negative, enter
 "0") =". Line 83 is one core/subtract_not_below_zero: line 81
-(`ca-on/on428_tax_after_reduction_line_81`, required) less line 82, the provincial foreign tax
+(`ca-on/on428_tax_after_tax_reduction_line_81`, required) less line 82, the provincial foreign tax
 credit (`ca-on/on428_provincial_foreign_tax_credit_line_82`, Form T2036). Line 82 is an optional
 input with blank fallback 0: a salary-only caller has no foreign tax credit, so a request that
 leaves line 82 out is read as blank, and the line 83 part reads that blank as 0. The output is
@@ -26,7 +26,7 @@ from tests.kinds import bundled_kinds
 
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
-LINE_81 = "ca-on/on428_tax_after_reduction_line_81"
+LINE_81 = "ca-on/on428_tax_after_tax_reduction_line_81"
 LINE_82 = "ca-on/on428_provincial_foreign_tax_credit_line_82"
 LINE_83 = "ca-on/on428_tax_after_foreign_tax_credit_line_83"
 PART = "on428_line_83.yaml"
