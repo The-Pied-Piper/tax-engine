@@ -220,7 +220,7 @@ def test_a_floored_zero_keeps_the_exponent_of_the_difference(amount: str, less: 
     difference = D(amount) - D(less)
     value = compute(amount, less).value
 
-    assert difference < 0
+    assert difference <= 0
     assert value == D("0")
     assert value.as_tuple().exponent == difference.as_tuple().exponent
     assert not value.is_signed()

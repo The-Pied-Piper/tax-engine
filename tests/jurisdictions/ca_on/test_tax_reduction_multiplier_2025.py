@@ -1,12 +1,14 @@
 """The 2025 `ca-on/tax_reduction_multiplier` dataset: the one fraction of ON428 line 78, line 77
-multiplied by 2 (numerator 2, denominator 1), with no rounding."""
+multiplied by 2 (numerator 2, denominator 1), rounded half-up to the cent."""
 
 from __future__ import annotations
+
+from decimal import Decimal
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.fraction import FRACTION, Fraction
-from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 SOURCE = YamlParameterSource(
     tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
@@ -18,7 +20,7 @@ def test_2025_tax_reduction_multiplier_is_2_over_1() -> None:
     data = SOURCE.get(FAMILY, 2025, FRACTION)
 
     assert data.values == Fraction(numerator=2, denominator=1)
-    assert data.rounding == NO_ROUNDING
+    assert data.rounding == RoundTo(Decimal("0.01"), RoundingMode.HALF_UP)
 
 
 def test_2025_tax_reduction_multiplier_cites_only_the_on428_text() -> None:
