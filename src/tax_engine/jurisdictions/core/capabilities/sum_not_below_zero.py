@@ -1,8 +1,8 @@
 """SumNotBelowZero: adds the values of a list of money artifacts, floored at zero, exactly.
 
 For the return lines the form prints with "if negative, enter 0" after adding: the manifest
-decides which parts are added, and in which order they are listed in the trace. Like `Sum` it
-has no dataset, so it never rounds; unlike it, a total below zero becomes a plain `Decimal(0)`.
+decides which parts are added, and in which order they are listed in the trace. Unlike `Sum`,
+it has no dataset, so it never rounds; and a total below zero becomes a plain `Decimal(0)`.
 
 Any part may be blank (`BLANK_ALLOWED`), and the manifest step's `blank:` line says what a blank
 does, for the whole list or for one part by its identifier (`BLANK_PER_ITEM`), as for `Sum`. A

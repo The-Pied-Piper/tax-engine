@@ -3,7 +3,7 @@
 For an amount computed once and claimed for each of a counted number of persons, where the
 amount is itself an artifact (a dataset's per-unit amount is `core/per_unit_amount`): the output
 is `rounding.apply(amount × count)`. The product is formed exactly, on `Fraction`s, and rounded
-once with the `rounding_only` dataset's rule, which defaults to no rounding; the dataset says what
+once with the `rounding_only` dataset's rule; the dataset says what
 scale the product takes, and this capability adds none of its own. A count of 0 is not special:
 it gives the rule's zero. A zero product is never a signed zero.
 
