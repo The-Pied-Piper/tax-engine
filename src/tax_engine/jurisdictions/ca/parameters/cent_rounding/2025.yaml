@@ -2,7 +2,8 @@
 # dollars-and-cents box and is read from an "(if negative, enter "0")" difference: Schedule 8
 # (5000-s8-25e) lines 4, 5 and 7, Schedule 6 (5000-s6-25e) lines 12 and 18, T2204 lines 7, 8 and
 # 13, and T1 taxable income lines 23600 and 26000 (5006-r-25e). The forms state no rounding rule,
-# so half-up to the cent is the owner's decision. A line that needs a different rule gets a dataset of its own.
+# so half-up to the cent is the owner's decision. A line that needs a different rule gets a
+# dataset of its own.
 family: ca/cent_rounding
 tax_year: 2025
 kind: rounding_only
