@@ -28,6 +28,7 @@ from typing import Any
 
 import pytest
 
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -175,3 +176,16 @@ def test_the_line_96_kinds_are_registered_and_non_negative(kind_identifier: str)
 
     assert kind.identifier == kind_identifier
     assert non_negative(kind) is True
+
+
+def test_line_96_names_its_three_parts_and_its_rounding_in_the_trace(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet, _, _ = _sheets(take_home_service, "70000")
+    kinds = bundled_kinds()
+
+    assert (
+        f"{kinds.kind(LINE_96).label}: {kinds.kind(LINE_86).label} 3291.75 + "
+        f"{kinds.kind(LINE_88).label} 1077.48 + {kinds.kind(CANADA_EMPLOYMENT_AMOUNT).label} "
+        "1471.00 = 5840.23 (half-up to 0.01)"
+    ) in EnglishTraceRenderer().render_all(sheet.trace)

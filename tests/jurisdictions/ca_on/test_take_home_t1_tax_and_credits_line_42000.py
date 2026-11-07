@@ -31,7 +31,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
-from tests.kinds import bundled_kinds
+from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
@@ -143,3 +143,10 @@ def test_line_42000_names_line_139_and_its_rounding_in_the_trace(
     assert (
         f"{output.label}: {line_139.label} 7585.64 = 7585.64 (half-up to 0.01)"
     ) in EnglishTraceRenderer().render_all(sheet.trace)
+
+
+def test_the_42000_kind_is_registered_and_non_negative() -> None:
+    kind = bundled_kinds().kind(LINE_142)
+
+    assert kind.identifier == LINE_142
+    assert non_negative(kind) is True
