@@ -1,7 +1,8 @@
 """T1 General (5006-R, 2025) lines 10100 to 26000 from the salary alone, one module for the form.
 
 The module pins each line alone and then the whole chain (10100 to 26000) from the salary.
-Line 22215 is the first: its step is Schedule 8's own export, so the form builds nothing for it and this test reads that export from the real Schedule 8 parts
+Line 22215 is the first: its step is Schedule 8's own export, so the form builds nothing for it
+and this test reads that export from the real Schedule 8 parts
 composed from the salary. Line 15000 builds its own step in the form's parts
 (`t1_taxable_income*.yaml`), so its test composes those with the salary and the real parts, line
 10400's optional input among them. The real header is not used because
