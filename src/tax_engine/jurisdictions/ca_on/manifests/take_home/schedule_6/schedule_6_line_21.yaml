@@ -1,0 +1,12 @@
+# Schedule 6 (2025) line 21: "If you had an eligible spouse or an eligible dependant, enter $2,813.
+# If not, enter $1,633." The $1,633 is the printed figure, a dataset figure, so step 1 claims it
+# whole through core/credit_amount and no salary reaches this line. The $2,813 branch is not part
+# of take-home.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/credit_amount
+    params:
+      amount: ca/cwb_maximum
+    produces:
+      output: ca/cwb_maximum
