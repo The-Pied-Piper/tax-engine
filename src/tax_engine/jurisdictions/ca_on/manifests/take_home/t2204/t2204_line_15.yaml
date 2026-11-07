@@ -33,6 +33,8 @@ capabilities:
     produces:
       output: ca/t2204_line_15_count
   - name: core/times_count
+    params:
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/t2204_line_15
       count: ca/t2204_line_15_count

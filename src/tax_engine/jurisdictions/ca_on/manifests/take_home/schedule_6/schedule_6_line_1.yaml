@@ -8,6 +8,8 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/sum
+    params:
+      rounding: ca/cent_rounding
     consumes:
       parts: [ca/employment_income]
     produces:

@@ -49,6 +49,9 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.kinds import AmountKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import Form
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
@@ -1525,6 +1528,14 @@ def test_the_limits_are_checked_after_the_instances_are_all_given() -> None:
 
 # --- a form reading its own export: the records of its earlier runs ------------------------------
 
+EXACT_TOTAL = ParameterDataset(
+    "ex/total_rounding",
+    2025,
+    ROUNDING_ONLY,
+    RoundingOnly(),
+    NO_ROUNDING,
+    ("https://example.org/rounding",),
+)
 AMOUNT = AmountKind("ex/amount")
 CARRIED = AmountKind("ex/carried")
 STEP_TOTAL = AmountKind("ex/total")
@@ -1540,7 +1551,7 @@ def step(name: str = "ex/step") -> FormComposition:
     own = derived(name, [STEP_TOTAL])[0]
     return composition(
         name,
-        [RecordTotal(own, CARRIED), Sum((AMOUNT, CARRIED), STEP_TOTAL)],
+        [RecordTotal(own, CARRIED), Sum(EXACT_TOTAL, (AMOUNT, CARRIED), STEP_TOTAL)],
         instances=STEPS,
         exports=[STEP_TOTAL],
     )
@@ -1601,7 +1612,7 @@ def test_the_first_run_of_a_form_reading_its_own_export_sees_an_empty_list() -> 
 def test_a_form_without_an_instances_list_reading_its_own_export_sees_an_empty_list() -> None:
     once = composition(
         "ex/step",
-        [RecordTotal(STEP_TOTALS, CARRIED), Sum((AMOUNT, CARRIED), STEP_TOTAL)],
+        [RecordTotal(STEP_TOTALS, CARRIED), Sum(EXACT_TOTAL, (AMOUNT, CARRIED), STEP_TOTAL)],
         exports=[STEP_TOTAL],
         starting=frozenset({AMOUNT}),
     )
@@ -1646,7 +1657,7 @@ def test_a_form_reading_its_own_export_still_runs_after_the_form_it_imports_from
         [
             RecordTotal(EARLY_TOTALS, CARRIED),
             RecordTotal(SHOP_PROFIT, PROFIT_TOTAL),
-            Sum((AMOUNT, CARRIED, PROFIT_TOTAL), STEP_TOTAL),
+            Sum(EXACT_TOTAL, (AMOUNT, CARRIED, PROFIT_TOTAL), STEP_TOTAL),
         ],
         instances=STEPS,
         exports=[STEP_TOTAL],
@@ -1665,7 +1676,7 @@ def test_a_form_reading_its_own_export_still_runs_after_the_form_it_imports_from
 def test_a_form_reading_its_own_export_still_runs_before_the_forms_that_import_it() -> None:
     late = composition(
         "ex/aaa",
-        [RecordTotal(STEP_TOTALS, PROFIT_TOTAL), Sum((FEE, PROFIT_TOTAL), FEE_TOTAL)],
+        [RecordTotal(STEP_TOTALS, PROFIT_TOTAL), Sum(EXACT_TOTAL, (FEE, PROFIT_TOTAL), FEE_TOTAL)],
         instances=AUDITS,
         exports=[FEE_TOTAL],
     )
@@ -1686,7 +1697,7 @@ def test_a_cycle_between_two_forms_is_still_refused_when_one_reads_its_own_expor
             Subtract(SALES, COSTS, PROFIT),
             RecordTotal(AUDIT_AUDITED, FEE_TOTAL),
             RecordTotal(SHOP_PROFIT, PROFIT_TOTAL),
-            Sum((PROFIT_TOTAL, FEE_TOTAL), GRAND),
+            Sum(EXACT_TOTAL, (PROFIT_TOTAL, FEE_TOTAL), GRAND),
         ],
         instances=SHOPS,
         exports=[PROFIT, GRAND],
@@ -1706,14 +1717,14 @@ def test_a_cycle_through_a_form_that_reads_its_own_export_names_the_forms_on_it(
         [
             RecordTotal(STEP_TOTALS, CARRIED),
             RecordTotal(derived("ex/back", [FEE_TOTAL])[0], GRAND),
-            Sum((AMOUNT, CARRIED, GRAND), STEP_TOTAL),
+            Sum(EXACT_TOTAL, (AMOUNT, CARRIED, GRAND), STEP_TOTAL),
         ],
         instances=STEPS,
         exports=[STEP_TOTAL],
     )
     back = composition(
         "ex/back",
-        [RecordTotal(STEP_TOTALS, PROFIT_TOTAL), Sum((FEE, PROFIT_TOTAL), FEE_TOTAL)],
+        [RecordTotal(STEP_TOTALS, PROFIT_TOTAL), Sum(EXACT_TOTAL, (FEE, PROFIT_TOTAL), FEE_TOTAL)],
         instances=AUDITS,
         exports=[FEE_TOTAL],
     )
@@ -1734,7 +1745,7 @@ def test_reading_an_export_the_form_does_not_have_is_still_refused_as_exported_b
         "ex/step",
         [
             RecordTotal(RecordListKind("ex/step.nothing", fields=(AMOUNT,)), CARRIED),
-            Sum((AMOUNT, CARRIED), STEP_TOTAL),
+            Sum(EXACT_TOTAL, (AMOUNT, CARRIED), STEP_TOTAL),
         ],
         instances=STEPS,
         exports=[STEP_TOTAL],
@@ -1750,7 +1761,7 @@ def test_a_failing_run_of_a_form_reading_its_own_export_names_the_form_and_insta
         [
             Reject(AMOUNT, CHECKED),
             RecordTotal(STEP_TOTALS, CARRIED),
-            Sum((CHECKED, CARRIED), STEP_TOTAL),
+            Sum(EXACT_TOTAL, (CHECKED, CARRIED), STEP_TOTAL),
         ],
         instances=STEPS,
         exports=[STEP_TOTAL],

@@ -38,6 +38,7 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     EI_OVERPAYMENT,
     T2204_LINE_1,
     T2204_LINE_1_COUNT,
+    T2204_LINE_1_PLUS_2,
     T2204_LINE_3,
     T2204_LINE_6,
     T2204_LINE_7,
@@ -271,3 +272,24 @@ def test_line_4_at_12345_67_is_202_47(take_home_service: TakeHomeService) -> Non
 def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> None:
     with pytest.raises(NegativeArtifactError, match="ca/employment_income cannot be negative"):
         salary_only(take_home_service, "-1")
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_1", "line_1_plus_2"),
+    [("70000", "70000.00", "70000.00"), ("20000", "20000.00", "20000.00")],
+)
+def test_the_cent_figures_print_cents_at_70000_and_20000(
+    take_home_service: TakeHomeService, salary: str, line_1: str, line_1_plus_2: str
+) -> None:
+    # Line 1 (times count), line 3's sum (core/sum) and the EI overpayment (times count, a count of
+    # 0 at salary only) each take the cent rule of their rounding dataset.
+    sheet = salary_only(take_home_service, salary)
+
+    for artifact, printed in (
+        (T2204_LINE_1, line_1),
+        (T2204_LINE_1_PLUS_2, line_1_plus_2),
+        (EI_OVERPAYMENT, "0.00"),
+    ):
+        value = sheet.get(artifact).value
+        assert str(value) == printed
+        assert value.as_tuple().exponent == -2

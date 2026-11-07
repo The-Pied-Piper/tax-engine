@@ -1,10 +1,12 @@
 """Unit tests for the Sum capability (`core/sum`), with made-up kinds.
 
-Its slots: one consumed list slot `parts` (a tuple of money kinds, possibly empty), one produced
-slot `output`, no parameter slots. It adds the parts' values exactly, with no rounding (a sum has
-no dataset), and records one `SumLine` holding each part in the order it was wired. Any part may be
-blank (`BLANK_ALLOWED`), and the rules the manifest gives decide what a blank does, for the whole
-list or for one part (`BLANK_PER_ITEM`).
+Its slots: one parameter slot `rounding` (a `rounding_only` dataset, which carries only its rounding
+rule), one consumed list slot `parts` (a tuple of money kinds, possibly empty), and one produced
+slot `output`. It adds the parts' values exactly, forming the sum on `Fraction`s, and rounds the
+total once with the dataset's rule, which defaults to no rounding. It records one `SumLine` holding
+each part in the order it was wired, the rounding and the total. Any part may be blank
+(`BLANK_ALLOWED`), and the rules the manifest gives decide what a blank does, for the whole list or
+for one part (`BLANK_PER_ITEM`).
 """
 
 from __future__ import annotations
@@ -17,6 +19,7 @@ from typing import Any, assert_type, cast
 
 import pytest
 
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.errors import (
@@ -25,14 +28,22 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import (
+    NO_ROUNDING,
+    RoundingMode,
+    RoundingRule,
+    RoundTo,
+)
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 from tax_engine.jurisdictions.core.capabilities.sum import Sum
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
-
+CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 PART_ONE = AmountKind("ex/part_one")
 PART_TWO = AmountKind("ex/part_two")
@@ -40,9 +51,26 @@ PART_THREE = AmountKind("ex/part_three")
 TOTAL = AmountKind("ex/total")
 
 
-def capability() -> Sum:
-    """By default the three made-up parts, in order one, two, three."""
-    return Sum((PART_ONE, PART_TWO, PART_THREE), TOTAL)
+def rounding(rule: RoundingRule = NO_ROUNDING) -> ParameterDataset[RoundingOnly]:
+    """By default no rounding."""
+    return ParameterDataset(
+        "ex/total_rounding",
+        2025,
+        ROUNDING_ONLY,
+        RoundingOnly(),
+        rule,
+        ("https://example.org/rounding",),
+    )
+
+
+def capability(rounding_data: ParameterDataset[RoundingOnly] | None = None) -> Sum:
+    """By default the three made-up parts, in order one, two, three, summed exactly."""
+    return Sum(rounding_data or rounding(), (PART_ONE, PART_TWO, PART_THREE), TOTAL)
+
+
+def cents() -> Sum:
+    """The made-up three parts with the dataset's rounding half-up to the cent."""
+    return capability(rounding(CENT))
 
 
 def three_parts() -> tuple[Artifact[Decimal], ...]:
@@ -68,7 +96,8 @@ def test_leaves_its_contract_to_the_base() -> None:
 
 
 def test_declares_its_slots() -> None:
-    assert Sum.PARAMETERS == {}
+    assert Sum.PARAMETERS == {"rounding": ROUNDING_ONLY}
+    assert Sum.PARAMETERS["rounding"] is ROUNDING_ONLY
     assert Sum.CONSUMES == {"parts": list[Decimal]}
     assert Sum.PRODUCES == {"output": Decimal}
     assert Sum.is_list_slot("parts")
@@ -81,7 +110,7 @@ def test_its_slots_are_read_only() -> None:
 
 
 def test_its_slots_are_typed_as_read_only_mappings() -> None:
-    assert_type(Sum.PARAMETERS, Mapping[str, ParameterKind[Any]])
+    assert_type(Sum.PARAMETERS, Mapping[str, ParameterKind[RoundingOnly]])
     assert_type(Sum.CONSUMES, Mapping[str, type])
     assert_type(Sum.PRODUCES, Mapping[str, type])
 
@@ -93,21 +122,28 @@ def test_its_slots_cannot_be_changed() -> None:
 
 
 def test_is_built_from_its_slot_names_as_keywords() -> None:
-    wired = Sum(parts=(PART_ONE, PART_TWO, PART_THREE), output=TOTAL)
+    wired = Sum(
+        rounding=rounding(),
+        parts=(PART_ONE, PART_TWO, PART_THREE),
+        output=TOTAL,
+    )
 
     result = wired.compute(three_parts())
 
     assert result.outputs == (Artifact(TOTAL, D("150.00")),)
 
 
-def test_takes_no_parameter_dataset() -> None:
-    with pytest.raises(TypeError):
-        Sum((PART_ONE,), TOTAL, object())  # type: ignore[call-arg]
+def test_takes_its_rounding_dataset_first_then_the_parts_and_the_output() -> None:
+    wired = Sum(rounding(CENT), (PART_ONE,), TOTAL)
+
+    result = wired.compute((Artifact(PART_ONE, D("0.005")),))
+
+    assert result.outputs == (Artifact(TOTAL, D("0.01")),)
 
 
 def test_rejects_one_kind_as_both_a_part_and_the_output() -> None:
     with pytest.raises(InvalidCapabilityError, match="Sum") as raised:
-        Sum((PART_ONE, TOTAL), TOTAL)
+        Sum(rounding(), (PART_ONE, TOTAL), TOTAL)
 
     message = str(raised.value)
     assert "'parts'" in message
@@ -116,32 +152,32 @@ def test_rejects_one_kind_as_both_a_part_and_the_output() -> None:
 
 def test_rejects_a_part_listed_twice() -> None:
     with pytest.raises(InvalidCapabilityError, match="Sum.*'parts'"):
-        Sum((PART_ONE, PART_TWO, PART_ONE), TOTAL)
+        Sum(rounding(), (PART_ONE, PART_TWO, PART_ONE), TOTAL)
 
 
 def test_rejects_a_single_kind_for_its_parts() -> None:
     with pytest.raises(InvalidCapabilityError, match="Sum.*'parts'"):
-        Sum(PART_ONE, TOTAL)  # type: ignore[arg-type]
+        Sum(rounding(), PART_ONE, TOTAL)  # type: ignore[arg-type]
 
 
 def test_rejects_a_part_of_another_value_type() -> None:
     count = CountKind("ex/count")
 
     with pytest.raises(InvalidCapabilityError, match="Sum.*'parts'"):
-        Sum((PART_ONE, count), TOTAL)  # type: ignore[arg-type]
+        Sum(rounding(), (PART_ONE, count), TOTAL)  # type: ignore[arg-type]
 
 
-# --- computing --------------------------------------------------------------------------------
+# --- computing, with no rounding --------------------------------------------------------------
 
 
 def test_adds_three_parts() -> None:
     result = capability().compute(three_parts())
 
-    assert result.outputs == (Artifact(TOTAL, D("150.00")),)
+    assert result.outputs == (Artifact(TOTAL, D("150")),)
 
 
 def test_one_part_is_its_own_total() -> None:
-    wired = Sum((PART_TWO,), TOTAL)
+    wired = Sum(rounding(), (PART_TWO,), TOTAL)
 
     result = wired.compute((Artifact(PART_TWO, D("40.5")),))
 
@@ -149,7 +185,7 @@ def test_one_part_is_its_own_total() -> None:
 
 
 def test_zero_parts_sum_to_zero() -> None:
-    wired = Sum((), TOTAL)
+    wired = Sum(rounding(), (), TOTAL)
 
     result = wired.compute(())
 
@@ -159,9 +195,7 @@ def test_zero_parts_sum_to_zero() -> None:
 
 
 def test_adds_exactly_with_many_decimals() -> None:
-    wired = Sum((PART_ONE, PART_TWO, PART_THREE), TOTAL)
-
-    result = wired.compute(
+    result = capability().compute(
         (
             Artifact(PART_ONE, D("0.1")),
             Artifact(PART_TWO, D("0.2")),
@@ -172,8 +206,8 @@ def test_adds_exactly_with_many_decimals() -> None:
     assert result.outputs == (Artifact(TOTAL, D("1234567.3000000000000001")),)
 
 
-def test_does_not_round_the_total() -> None:
-    wired = Sum((PART_ONE, PART_TWO), TOTAL)
+def test_does_not_round_the_total_without_a_rule() -> None:
+    wired = Sum(rounding(), (PART_ONE, PART_TWO), TOTAL)
 
     result = wired.compute((Artifact(PART_ONE, D("0.005")), Artifact(PART_TWO, D("0.0049"))))
 
@@ -183,7 +217,7 @@ def test_does_not_round_the_total() -> None:
 def test_the_order_of_the_inputs_does_not_matter() -> None:
     result = capability().compute(tuple(reversed(three_parts())))
 
-    assert result.outputs == (Artifact(TOTAL, D("150.00")),)
+    assert result.outputs == (Artifact(TOTAL, D("150")),)
 
 
 def test_a_missing_part_is_a_missing_artifact() -> None:
@@ -191,23 +225,133 @@ def test_a_missing_part_is_a_missing_artifact() -> None:
         capability().compute(three_parts()[:2])
 
 
+# --- computing, under the dataset's rounding rule ---------------------------------------------
+
+
+def test_a_total_is_rounded_half_up_to_the_cent_by_the_dataset() -> None:
+    wired = Sum(rounding(CENT), (PART_ONE,), TOTAL)
+
+    output = wired.compute((Artifact(PART_ONE, D("0.005")),)).outputs[0]
+
+    assert output == Artifact(TOTAL, D("0.01"))
+    assert str(output.value) == "0.01"
+
+
+def test_a_whole_dollar_total_takes_the_cent_scale() -> None:
+    wired = Sum(rounding(CENT), (PART_ONE, PART_TWO), TOTAL)
+
+    output = wired.compute((Artifact(PART_ONE, D("69000")), Artifact(PART_TWO, D("1000"))))
+
+    assert output.outputs == (Artifact(TOTAL, D("70000.00")),)
+    assert str(output.outputs[0].value) == "70000.00"
+    assert output.outputs[0].value.as_tuple().exponent == -2
+
+
+def test_a_total_of_20000_takes_the_cent_scale() -> None:
+    wired = Sum(rounding(CENT), (PART_ONE,), TOTAL)
+
+    (output,) = wired.compute((Artifact(PART_ONE, D("20000")),)).outputs
+
+    assert str(output.value) == "20000.00"
+    assert output.value.as_tuple().exponent == -2
+
+
+def test_the_cent_total_of_three_parts_is_150_00() -> None:
+    (output,) = cents().compute(three_parts()).outputs
+
+    assert str(output.value) == "150.00"
+
+
+def test_the_total_is_rounded_once_not_each_part() -> None:
+    # Each part is under half a cent and would round to 0.00; the exact total 0.008 is 0.01.
+    wired = Sum(rounding(CENT), (PART_ONE, PART_TWO), TOTAL)
+
+    (output,) = wired.compute(
+        (Artifact(PART_ONE, D("0.004")), Artifact(PART_TWO, D("0.004")))
+    ).outputs
+
+    assert output == Artifact(TOTAL, D("0.01"))
+
+
+def test_a_sub_cent_total_under_the_half_rounds_down() -> None:
+    wired = Sum(rounding(CENT), (PART_ONE,), TOTAL)
+
+    (output,) = wired.compute((Artifact(PART_ONE, D("0.0049")),)).outputs
+
+    assert str(output.value) == "0.00"
+
+
+def test_a_total_exactly_on_a_half_cent_is_rounded_by_the_rule_alone() -> None:
+    # 0.005 sits on the tie: half-up to 0.01, half-even to 0.00.
+    half_even = RoundTo(D("0.01"), RoundingMode.HALF_EVEN)
+    given = (Artifact(PART_ONE, D("0.005")),)
+
+    assert Sum(rounding(CENT), (PART_ONE,), TOTAL).compute(given).outputs == (
+        Artifact(TOTAL, D("0.01")),
+    )
+    assert Sum(rounding(half_even), (PART_ONE,), TOTAL).compute(given).outputs == (
+        Artifact(TOTAL, D("0.00")),
+    )
+
+
+def test_zero_parts_under_the_cent_rule_give_0_00() -> None:
+    (output,) = Sum(rounding(CENT), (), TOTAL).compute(()).outputs
+
+    assert output == Artifact(TOTAL, D("0.00"))
+    assert str(output.value) == "0.00"
+    assert output.value.as_tuple().exponent == -2
+
+
+def test_a_zero_total_under_the_cent_rule_is_never_signed() -> None:
+    # A total of -0.004 rounds to zero: a zero, never -0.00.
+    (output,) = (
+        Sum(rounding(CENT), (PART_ONE,), TOTAL).compute((Artifact(PART_ONE, D("-0.004")),)).outputs
+    )
+
+    assert str(output.value) == "0.00"
+    assert not output.value.is_signed()
+
+
+def test_rounds_with_another_rule_of_the_dataset() -> None:
+    ceiling = Sum(rounding(RoundTo(D("1"), RoundingMode.CEILING)), (PART_ONE,), TOTAL)
+
+    assert ceiling.compute((Artifact(PART_ONE, D("10.2")),)).outputs == (Artifact(TOTAL, D("11")),)
+
+
 # --- trace ------------------------------------------------------------------------------------
 
 
-def test_traces_one_line_with_each_part_and_the_total() -> None:
+def test_traces_one_line_with_each_part_the_rounding_and_the_total() -> None:
     trace = capability().compute(three_parts()).trace
 
     assert trace == (
         SumLine(
             output=TOTAL,
             parts=((PART_ONE, D("100.25")), (PART_TWO, D("40")), (PART_THREE, D("9.75"))),
-            total=D("150.00"),
+            rounding=NO_ROUNDING,
+            total=D("150"),
         ),
     )
 
 
+def test_traces_the_cent_rounding_and_the_rounded_total() -> None:
+    trace = cents().compute(three_parts()).trace
+
+    assert trace == (
+        SumLine(
+            output=TOTAL,
+            parts=((PART_ONE, D("100.25")), (PART_TWO, D("40")), (PART_THREE, D("9.75"))),
+            rounding=CENT,
+            total=D("150.00"),
+        ),
+    )
+    (line,) = trace
+    assert isinstance(line, SumLine)
+    assert str(line.total) == "150.00"
+
+
 def test_traces_the_parts_in_the_order_they_were_wired() -> None:
-    wired = Sum((PART_THREE, PART_ONE, PART_TWO), TOTAL)
+    wired = Sum(rounding(), (PART_THREE, PART_ONE, PART_TWO), TOTAL)
 
     trace = wired.compute(three_parts()).trace
 
@@ -215,28 +359,43 @@ def test_traces_the_parts_in_the_order_they_were_wired() -> None:
         SumLine(
             TOTAL,
             ((PART_THREE, D("9.75")), (PART_ONE, D("100.25")), (PART_TWO, D("40"))),
-            D("150.00"),
+            NO_ROUNDING,
+            D("150"),
         ),
     )
 
 
 def test_traces_zero_parts() -> None:
-    trace = Sum((), TOTAL).compute(()).trace
+    trace = Sum(rounding(CENT), (), TOTAL).compute(()).trace
 
-    assert trace == (SumLine(TOTAL, (), D(0)),)
+    assert trace == (SumLine(TOTAL, (), CENT, D("0.00")),)
 
 
 def test_trace_amount_is_the_total() -> None:
-    trace = capability().compute(three_parts()).trace
+    trace = cents().compute(three_parts()).trace
 
     assert [line.amount for line in trace] == [D("150.00")]
 
 
 def test_trace_holds_no_text() -> None:
-    trace = capability().compute(three_parts()).trace
+    trace = cents().compute(three_parts()).trace
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
+    result = cents().compute(three_parts())
+
+    assert EnglishTraceRenderer().render_all(result.trace) == (
+        "total: part_one 100.25 + part_two 40 + part_three 9.75 = 150 (half-up to 0.01)",
+    )
+
+
+def test_the_trace_reads_in_english_for_no_parts_with_no_rounding() -> None:
+    result = Sum(rounding(), (), TOTAL).compute(())
+
+    assert EnglishTraceRenderer().render_all(result.trace) == ("total: no parts = 0 (no rounding)",)
 
 
 def test_is_not_generic_over_artifacts() -> None:
@@ -283,7 +442,10 @@ def test_a_fallback_for_the_slot_adds_it_in_place_of_each_blank_part() -> None:
         BlankFallbackLine(PART_TWO, D(0)),
     )
     assert result.trace[2] == SumLine(
-        TOTAL, ((PART_ONE, D("100.25")), (PART_TWO, D(0)), (PART_THREE, D(0))), D("100.25")
+        TOTAL,
+        ((PART_ONE, D("100.25")), (PART_TWO, D(0)), (PART_THREE, D(0))),
+        NO_ROUNDING,
+        D("100.25"),
     )
 
 
@@ -326,7 +488,7 @@ def test_a_rule_for_a_part_replaces_the_slots_rule_for_that_part_only() -> None:
 def test_filled_parts_are_added_as_before_when_rules_are_declared() -> None:
     mixed = capability().with_blank_rules({"parts": PASS_ON}, {PART_TWO: D(0)})
 
-    assert mixed.run(three_parts()).outputs == (Artifact(TOTAL, D("150.00")),)
+    assert mixed.run(three_parts()).outputs == (Artifact(TOTAL, D("150")),)
 
 
 def test_a_typed_zero_is_not_a_blank() -> None:
@@ -334,6 +496,15 @@ def test_a_typed_zero_is_not_a_blank() -> None:
     given = (Artifact(PART_ONE, D(0)), *three_parts()[1:])
 
     assert passing.run(given).outputs == (Artifact(TOTAL, D("49.75")),)
+
+
+def test_a_blank_part_under_the_cent_rule_takes_the_cent_scale_of_its_fallback() -> None:
+    carried = cents().with_blank_rules({"parts": D(0)})
+
+    (output,) = carried.run(with_blank(PART_TWO)).outputs
+
+    assert output == Artifact(TOTAL, D("110.00"))
+    assert str(output.value) == "110.00"
 
 
 def test_a_rule_for_a_kind_the_sum_does_not_add_is_refused() -> None:

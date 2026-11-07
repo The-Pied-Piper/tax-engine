@@ -6,6 +6,8 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: core/sum
+    params:
+      rounding: ca/cent_rounding
     consumes:
       parts: [ca/cpp_part_3_line_12, ca/cpp_part_3_line_22]
     produces:

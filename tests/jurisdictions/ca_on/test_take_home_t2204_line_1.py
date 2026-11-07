@@ -136,3 +136,18 @@ def test_self_employment_earnings_switch_the_note_off(take_home_service: TakeHom
 
     assert sheet.get(T2204_LINE_1).value == D("1500.00")
     assert sheet.get(T2204_LINE_1_COUNT).value == 1
+
+
+@pytest.mark.parametrize(
+    ("salary", "printed"),
+    [("70000", "70000.00"), ("20000", "20000.00")],
+)
+def test_line_1_prints_cents_at_70000_and_20000(
+    take_home_service: TakeHomeService, salary: str, printed: str
+) -> None:
+    # The times-count step takes its cent rule from the shared rounding dataset, so the figure
+    # keeps its two decimals rather than printing 70000 or 20000.
+    line_1 = t2204(take_home_service, salary).get(T2204_LINE_1).value
+
+    assert str(line_1) == printed
+    assert line_1.as_tuple().exponent == -2

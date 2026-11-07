@@ -34,6 +34,8 @@ capabilities:
     produces:
       output: ca/t2204_line_1_count
   - name: core/times_count
+    params:
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/employment_income
       count: ca/t2204_line_1_count

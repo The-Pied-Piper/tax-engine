@@ -31,6 +31,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import CreditAmountLine, SumLine
 from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 from tax_engine.jurisdictions.core.capabilities.sum import Sum
@@ -240,10 +241,22 @@ def test_trace_holds_no_text() -> None:
 # --- in a composition: no incoming edges ------------------------------------------------------
 
 
+def exact_total() -> ParameterDataset[RoundingOnly]:
+    """The made-up total's rounding dataset: no rounding."""
+    return ParameterDataset(
+        "ex/total_rounding",
+        2025,
+        ROUNDING_ONLY,
+        RoundingOnly(),
+        NO_ROUNDING,
+        ("https://example.org/rounding",),
+    )
+
+
 def credit_and_sum() -> tuple[CreditAmount, Sum, Composition]:
     """The credit amount and an input summed into `ex/total_amounts`, given in the wrong order."""
     credit = capability(amount("1000.005", CENT))
-    total = Sum((OTHER_AMOUNT, PERSONAL_AMOUNT), TOTAL_AMOUNTS)
+    total = Sum(exact_total(), (OTHER_AMOUNT, PERSONAL_AMOUNT), TOTAL_AMOUNTS)
     composition = Composition(
         [total, credit], inputs=frozenset({OTHER_AMOUNT}), outputs=frozenset({TOTAL_AMOUNTS})
     )
@@ -269,6 +282,7 @@ def test_its_output_is_a_part_of_a_sum() -> None:
         SumLine(
             TOTAL_AMOUNTS,
             ((OTHER_AMOUNT, D("250.5")), (PERSONAL_AMOUNT, D("1000.01"))),
+            NO_ROUNDING,
             D("1250.51"),
         ),
     )
@@ -285,7 +299,7 @@ def test_its_output_may_be_a_declared_output() -> None:
 
 
 def test_its_output_consumed_by_nothing_is_an_orphan() -> None:
-    total = Sum((OTHER_AMOUNT,), TOTAL_AMOUNTS)
+    total = Sum(exact_total(), (OTHER_AMOUNT,), TOTAL_AMOUNTS)
 
     with pytest.raises(InvalidCompositionError, match="orphan output 'personal_amount'"):
         Composition(

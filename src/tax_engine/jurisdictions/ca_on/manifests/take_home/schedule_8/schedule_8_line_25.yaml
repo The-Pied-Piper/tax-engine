@@ -13,6 +13,8 @@ capabilities:
   # figure; the project builds the Part 3a line and not Part 3b (Umar, 6 Nov 2026 21:34Z,
   # "agreed. stick with short for now").
   - name: core/sum
+    params:
+      rounding: ca/cent_rounding
     consumes:
       parts:
         - ca/cpp_part_3_line_11
