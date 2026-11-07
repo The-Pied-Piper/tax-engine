@@ -16,6 +16,9 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.trace import SubtractedLine
+from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.deductions import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
     NET_INCOME_BEFORE_ADJUSTMENTS,
@@ -24,6 +27,7 @@ from tax_engine.jurisdictions.ca.catalog.income import TOTAL_INCOME
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
+CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 ONTARIO = JurisdictionCode("CA-ON")
 PART = "t1_taxable_income_line_23400.yaml"
 HEADER = """\
@@ -48,7 +52,9 @@ form:
 """
 
 
-def line_23400(take_home_service: TakeHomeService, total_income: str, deductions: str) -> Decimal:
+def sheet_23400(
+    take_home_service: TakeHomeService, total_income: str, deductions: str
+) -> Worksheet:
     service = take_home_service(HEADER, FORM, PART)
     (worksheet,) = service.compute(
         ONTARIO,
@@ -56,7 +62,15 @@ def line_23400(take_home_service: TakeHomeService, total_income: str, deductions
         Artifact(TOTAL_INCOME, D(total_income)),
         Artifact(DEDUCTIONS_FROM_TOTAL_INCOME, D(deductions)),
     )["ca/t1_taxable_income"]
-    return worksheet.get(NET_INCOME_BEFORE_ADJUSTMENTS).value
+    return worksheet
+
+
+def line_23400(take_home_service: TakeHomeService, total_income: str, deductions: str) -> Decimal:
+    return (
+        sheet_23400(take_home_service, total_income, deductions)
+        .get(NET_INCOME_BEFORE_ADJUSTMENTS)
+        .value
+    )
 
 
 @pytest.mark.parametrize(
@@ -80,3 +94,38 @@ def test_line_23400_is_line_34_less_line_53_not_floored(
     take_home_service: TakeHomeService, total_income: str, deductions: str, expected: str
 ) -> None:
     assert line_23400(take_home_service, total_income, deductions) == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("total_income", "deductions", "printed"),
+    [
+        # The ticket's $70,000 salary: whole dollars print their cents.
+        ("70000", "665.00", "69335.00"),
+        ("1000", "1000", "0.00"),
+        ("1000", "1500", "-500.00"),
+        # Rounded once, half-up, on the exact difference: 1,000.005 less 0 is 1,000.01.
+        ("1000.005", "0", "1000.01"),
+        # 1,000.014 less 0.005 is 1,000.009, so 1,000.01 (rounding each first gives 1,000.00).
+        ("1000.014", "0.005", "1000.01"),
+        ("1000.004", "0.001", "1000.00"),
+    ],
+)
+def test_line_23400_prints_cents_through_the_shared_rounding_dataset(
+    take_home_service: TakeHomeService, total_income: str, deductions: str, printed: str
+) -> None:
+    value = line_23400(take_home_service, total_income, deductions)
+
+    assert str(value) == printed
+    assert value.as_tuple().exponent == -2
+
+
+def test_the_line_23400_step_traces_the_cent_rounding(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = sheet_23400(take_home_service, "70000", "665.00")
+
+    (line,) = [line for line in sheet.trace if isinstance(line, SubtractedLine)]
+
+    assert line.output == NET_INCOME_BEFORE_ADJUSTMENTS
+    assert line.rounding == CENT
+    assert str(line.result) == "69335.00"

@@ -25,10 +25,14 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.trace import SubtractedLine
+from tax_engine.domain.worksheet import Worksheet
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
+CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 CODE = JurisdictionCode("CA-ON")
 FORM = "ca/t1_taxable_income"
 LINE_23400 = "ca/net_income_before_adjustments"
@@ -57,16 +61,26 @@ capabilities: []
 """
 
 
-def _line_23600_signed(
+def _sheet(
     take_home_service: TakeHomeService, line_23400: str, line_23500: str | None
-) -> Decimal:
+) -> Worksheet:
     kinds = bundled_kinds()
     starting = [Artifact(kinds.kind(LINE_23400), D(line_23400))]
     if line_23500 is not None:
         starting.append(Artifact(kinds.kind(LINE_23500), D(line_23500)))
     worksheets = take_home_service(HEADER, FORM_TEXT, *PARTS).compute(CODE, 2025, *starting)
     (sheet,) = worksheets[FORM]
-    value = sheet.get(kinds.kind(LINE_23600_SIGNED)).value
+    return sheet
+
+
+def _line_23600_signed(
+    take_home_service: TakeHomeService, line_23400: str, line_23500: str | None
+) -> Decimal:
+    value = (
+        _sheet(take_home_service, line_23400, line_23500)
+        .get(bundled_kinds().kind(LINE_23600_SIGNED))
+        .value
+    )
     assert isinstance(value, Decimal)
     return value
 
@@ -100,3 +114,35 @@ def test_the_line_23600_signed_kind_is_registered_and_signed() -> None:
 
     assert kind.identifier == LINE_23600_SIGNED
     assert non_negative(kind) is False
+
+
+@pytest.mark.parametrize(
+    ("line_23400", "line_23500", "printed"),
+    [
+        ("69335.00", None, "69335.00"),
+        ("1000.00", "5000", "-4000.00"),
+        ("-500.00", None, "-500.00"),
+        # Rounded half-up to the cent on the exact difference, negative results included.
+        ("1000.00", "0.006", "999.99"),
+        ("0.00", "0.005", "-0.01"),
+        ("0.00", "0.004", "0.00"),
+    ],
+)
+def test_line_23600_signed_prints_cents_through_the_shared_rounding_dataset(
+    take_home_service: TakeHomeService, line_23400: str, line_23500: str | None, printed: str
+) -> None:
+    value = _line_23600_signed(take_home_service, line_23400, line_23500)
+
+    assert str(value) == printed
+    assert value.as_tuple().exponent == -2
+
+
+def test_the_line_23600_signed_step_traces_the_cent_rounding(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = _sheet(take_home_service, "69335.00", "1000")
+
+    (line,) = [line for line in sheet.trace if isinstance(line, SubtractedLine)]
+
+    assert line.rounding == CENT
+    assert str(line.result) == "68335.00"
