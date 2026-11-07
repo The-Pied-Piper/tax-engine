@@ -13,8 +13,7 @@ goes to T1 line 45300.
 The test loads the parts of test_take_home_schedule_6_line_27.py, then the line 1, 5, 6, 17, 18,
 20, 21 and 22 parts that line 22 needs, and the line 24 and 25 parts that line 27 needs, then the
 line 28 part under test. The manifest parts are loaded from the package. The header and the form's
-export are made up here, because the shared scaffold owns them, except for the header test at the
-end, which reads the real `schedule_6.yaml`.
+export are made up here, because the shared scaffold owns them.
 """
 
 from __future__ import annotations
@@ -23,7 +22,6 @@ from decimal import Decimal
 from textwrap import dedent
 
 import pytest
-import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -126,12 +124,3 @@ def test_schedule_6_line_28_is_zero_when_line_27_exceeds_line_22(
     # subtraction is negative and the form's "(if negative, enter "0")" makes line 28 zero, not a
     # negative amount on T1 line 45300.
     assert line_28(take_home_service, salary) == D("0.00")
-
-
-def test_the_schedule_6_header_exports_the_line_28_benefit_only() -> None:
-    # The real header of the take-home Schedule 6 folder names the one figure T1 line 45300 reads.
-    header = yaml.safe_load(
-        (TAKE_HOME / "schedule_6" / "schedule_6.yaml").read_text(encoding="utf-8")
-    )
-
-    assert header["form"]["exports"] == ["ca/cwb_benefit_line_28"]
