@@ -7,6 +7,7 @@ from __future__ import annotations
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.trace.rate_tables import (
+    BracketColumnFigureLine,
     BracketColumnLine,
     ChosenRateAppliedLine,
     RateByIncomeBandLine,
@@ -30,6 +31,23 @@ class BracketColumnRenderer:
             f"{EnglishFigures.percent(rate)}% on {EnglishFigures.money(excess)} "
             f"over {EnglishFigures.money(lower)} plus {EnglishFigures.money(tax_at_start)}"
         )
+
+
+@english_renderer
+class BracketColumnFigureRenderer:
+    """English text for BracketColumnFigureLine: a rate as a percentage, else a plain figure."""
+
+    line_class = BracketColumnFigureLine
+
+    def render(self, line: BracketColumnFigureLine) -> str:
+        """The English sentence for `line`."""
+        base = EnglishFigures.money(line.base_amount)
+        figure = (
+            f"{EnglishFigures.percent(line.figure)}%"
+            if line.name == "rate"
+            else EnglishFigures.money(line.figure)
+        )
+        return f"bracket {line.name} for {base}: {figure}"
 
 
 @english_renderer

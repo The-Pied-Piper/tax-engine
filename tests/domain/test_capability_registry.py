@@ -19,6 +19,11 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.registry import Registry
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
+from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
+    BracketColumnLowerBound,
+    BracketColumnRate,
+    BracketColumnTaxAtStart,
+)
 from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tests.capabilities import bundled_capabilities
@@ -165,6 +170,9 @@ def test_a_subclass_of_a_decorated_class_carries_no_identifier_of_its_own() -> N
         ("core/progressive_tax", ProgressiveTax),
         ("core/apply_rate", ApplyRate),
         ("core/subtract_not_below_zero", SubtractNotBelowZero),
+        ("core/bracket_column_lower_bound", BracketColumnLowerBound),
+        ("core/bracket_column_rate", BracketColumnRate),
+        ("core/bracket_column_tax_at_start", BracketColumnTaxAtStart),
     ],
 )
 def test_core_capabilities_are_registered_by_the_bundled_packages(
