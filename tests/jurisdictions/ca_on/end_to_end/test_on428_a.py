@@ -14,14 +14,14 @@ own: line 3 equal to the salary is its only evidence. Lines 14 and 15 are copies
 and have no step. Lines 7 to 12 and Part B are not built.
 
 Form text: Schedule ON428-A (CRA 5006-A, 2025), "Line 3: Line 1 plus line 2"; "Line 4: Applicable
-rate 5.05%"; "Line 6: Net income from line 23600 of your return"; "Line 5: Line 3 multiplied by the percentage from line 4 (maximum $875)"; "Line 13:
-Line 9 minus line 12 (if negative, enter "0") Your adjusted net income"; "Line 16: Individual
-income threshold 32,500.00"; "Line 17: Line 15 minus line 16 (if negative, enter "0")"; "Line 19:
-Line 17 multiplied by the percentage from line 18"; "Line 20: Line 14 minus line 19 (if negative,
-enter "0") Enter this amount on line 62140 of your Form ON428." Net income at line 23600 is the
-salary less the Schedule 8 (CRA 5000-S8, 2025) "Line 28: Line 26 plus line 27", which the form
-sends to line 22215 of the return. Eligibility for the credit is not printed on the form and is
-assumed true.
+rate 5.05%"; "Line 6: Net income from line 23600 of your return"; "Line 5: Line 3 multiplied by
+the percentage from line 4 (maximum $875)"; "Line 13: Line 9 minus line 12 (if negative, enter
+"0") Your adjusted net income"; "Line 16: Individual income threshold 32,500.00"; "Line 17: Line
+15 minus line 16 (if negative, enter "0")"; "Line 19: Line 17 multiplied by the percentage from
+line 18"; "Line 20: Line 14 minus line 19 (if negative, enter "0") Enter this amount on line
+62140 of your Form ON428." Net income at line 23600 is the salary less the Schedule 8 (CRA
+5000-S8, 2025) "Line 28: Line 26 plus line 27", which the form sends to line 22215 of the
+return. Eligibility for the credit is not printed on the form and is assumed true.
 """
 
 from __future__ import annotations
@@ -87,7 +87,8 @@ AMOUNT_LINES: dict[str, AmountKind] = {
 CENT_LINES = ("5", "17", "19", "20")
 
 # Each salary's figures by form line, hand-computed from the printed lines. Line 6 is the salary
-# less the Schedule 8 enhanced contributions (T1 line 22215, Schedule 8 line 28); line 19 is line 18's 5% of line 17.
+# less the Schedule 8 enhanced contributions (T1 line 22215, Schedule 8 line 28); line 19 is line
+# 18's 5% of line 17.
 CASES: list[tuple[str, dict[str, str]]] = [
     ("70000", {"3": "70000", "4": "3535.00", "5": "875.00", "6": "69335.00", "13": "69335.00",
                "16": "32500", "17": "36835.00", "19": "1841.75", "20": "0.00"}),
