@@ -16,6 +16,9 @@ parts, so net income comes from the salary through the real lines. The engine do
 form read another form's plain amounts, only its exports as record lists, which is why line 6
 reads `ca/t1_taxable_income.net_income`.
 
+ON428-A lines 16 and 17 are composed with line 13, because the form's export is line 17, the
+first line that reads line 13; its declaration here exports only that.
+
 The salary is the only input the caller gives. Ontario's eligibility for the LIFT credit is not
 printed on the form ("go to canada.ca/on-tax-info"), so it is assumed true and not tested here.
 
@@ -44,7 +47,7 @@ FORM = "ca-on/on428_a"
 LINE_6 = "ca-on/lift_net_income"
 LINE_13 = "ca-on/lift_adjusted_net_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
-# taxable-income lines and inputs, and the real ON428-A form declaration and line 13 part.
+# taxable-income lines and inputs, and and ON428-A lines 13, 16 and 17.
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
@@ -55,27 +58,33 @@ PARTS = (
     "t1_taxable_income_line_23600.yaml",
     "t1_taxable_income_line_25700_inputs.yaml",
     "t1_taxable_income_line_26000.yaml",
-    "on428_a.yaml",
+    "t1_taxable_income.yaml",
+    "t1_taxable_income_line_10400_inputs.yaml",
     "on428_a_line_13.yaml",
+    "on428_a_line_16.yaml",
+    "on428_a_line_17.yaml",
 )
 HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/other_employment_income
-        required: false
-        default: "0"
-        basis: 'Other employment income (T1 line 10400)'
     outputs:
       - ca/employment_income
     capabilities: []
     """)
-T1 = (TAKE_HOME / "t1_taxable_income.yaml").read_text(encoding="utf-8")
+# The ON428-A declaration, test-local: lines 13, 16 and 17 are composed, so its one export is line
+# 17, which reads line 13. The real header exports lines whose parts are not composed here.
+ON428_A = dedent("""\
+    form:
+      name: ca-on/on428_a
+      required: true
+      exports:
+        - ca-on/lift_single_excess_over_threshold
+    """)
 
 
 def _on428_a(take_home_service: TakeHomeService, salary: str) -> Worksheet:
-    worksheets = take_home_service(HEADER, T1, *PARTS).compute(
+    worksheets = take_home_service(HEADER, ON428_A, *PARTS).compute(
         ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets[FORM]

@@ -1,0 +1,14 @@
+# Schedule ON428-A (2025) Part A line 19 "Line 17 multiplied by the percentage from line 18", the
+# single-filer LIFT reduction. Line 18 "Applicable rate 5%" is a printed figure, held in the
+# `ca-on/lift_single_rate` dataset, so line 19 is one calculation: 5% of line 17. Line 17
+# ("Line 15 minus line 16 (if negative, enter "0")") is read from its source part, not copied.
+form:
+  name: ca-on/on428_a
+capabilities:
+  - name: core/apply_rate
+    params:
+      rate: ca-on/lift_single_rate
+    consumes:
+      base: ca-on/lift_single_excess_over_threshold
+    produces:
+      output: ca-on/lift_reduction
