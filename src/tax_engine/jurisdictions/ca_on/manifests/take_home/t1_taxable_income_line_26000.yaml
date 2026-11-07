@@ -3,7 +3,7 @@
 # page"), so step 1 reads the net income (`ca/net_income`) directly, not a copy of it.
 #
 # Line 68 and line 25700 "Add lines 58 to 67" are the deductions from net income, an optional input
-# (t1_taxable_income_inputs.yaml, default "0"): none of lines 58 to 67 applies to a salary-only filer.
+# (t1_taxable_income_line_25700_inputs.yaml, default "0"): none of lines 58 to 67 applies to a salary-only filer.
 #
 # Step 1 takes the deductions off the net income and keeps the result at or above 0: a deduction above
 # net income gives "0", as the form says.

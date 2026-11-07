@@ -25,7 +25,7 @@ from tax_engine.jurisdictions.ca.catalog.taxable_income import (
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 ONTARIO = JurisdictionCode("CA-ON")
-PARTS = ("t1_taxable_income_inputs.yaml", "t1_taxable_income_line_26000.yaml")
+PARTS = ("t1_taxable_income_line_25700_inputs.yaml", "t1_taxable_income_line_26000.yaml")
 HEADER = """\
 jurisdiction: CA-ON
 version: 1
