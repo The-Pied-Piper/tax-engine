@@ -276,8 +276,8 @@ CWB_FAMILY_NET_INCOME_LINE_13 = AmountKind.declare(
 )
 """Schedule 6 Part B line 13 "Add the amounts from line 12 in columns 1 and 2. If you had an
 eligible spouse, continue at line 14; if not, continue at line 15.": the line 12 of column 1
-(`ca/cwb_family_net_income_line_12`) and of column 2 (`ca/cwb_spouse_family_net_income_line_12`)
-added, the column 2 amount being 0 with no eligible spouse."""
+(`ca/cwb_family_net_income_line_12`) alone. Column 2, the eligible spouse's line 12
+(`ca/cwb_spouse_family_net_income_line_12`), is not built: the take-home calculator is single."""
 
 CWB_WORKING_INCOME_LESS_SPOUSE = AmountKind.declare(CATALOG, "cwb_working_income_less_spouse")
 """Schedule 6 line 14 "If your working income (line 5) is less than your eligible spouse's working
