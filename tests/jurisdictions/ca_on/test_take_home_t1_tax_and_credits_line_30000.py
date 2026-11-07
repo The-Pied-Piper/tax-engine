@@ -224,3 +224,17 @@ def test_the_line_30000_kind_is_registered_and_non_negative() -> None:
 
     assert kind.identifier == LINE_30000
     assert non_negative(kind) is True
+
+
+def test_line_30000_names_line_3_and_the_range_in_the_trace(
+    take_home_service: TakeHomeService,
+) -> None:
+    # The sentence as the tapered-amount renderer prints it today (the reduction as a fraction is
+    # a known wording issue; update this pin where that is fixed).
+    _, sheet = _sheets(take_home_service, "70000")
+    kinds = bundled_kinds()
+
+    assert (
+        f"{kinds.kind(LINE_30000).label}: 14538 plus 1591 less 0 for {kinds.kind(LINE_3).label} "
+        "69335.00 over 177882 (range 75532), not below 14538 (half-up to 0.01)"
+    ) in EnglishTraceRenderer().render_all(sheet.trace)

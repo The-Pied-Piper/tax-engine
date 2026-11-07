@@ -52,6 +52,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
@@ -271,3 +272,15 @@ def test_the_part_a_kinds_are_registered_and_non_negative(identifier: str) -> No
 
     assert kind.identifier == identifier
     assert non_negative(kind) is True
+
+
+def test_line_76_names_lines_74_and_75_and_its_rounding_in_the_trace(
+    take_home_service: TakeHomeService,
+) -> None:
+    _, sheet = _sheets(take_home_service, "70000")
+    kinds = bundled_kinds()
+
+    assert (
+        f"{kinds.kind(LINE_76).label}: {kinds.kind(LINE_74).label} 2451.80 + "
+        f"{kinds.kind(LINE_75).label} 8319.38 = 10771.18 (half-up to 0.01)"
+    ) in EnglishTraceRenderer().render_all(sheet.trace)

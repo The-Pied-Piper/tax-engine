@@ -34,7 +34,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
-from tests.kinds import bundled_kinds
+from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
@@ -181,3 +181,10 @@ def test_line_134_is_never_below_zero(take_home_service: TakeHomeService) -> Non
 
     assert sheet.get(kinds.kind(LINE_132)).value == D("158.09")
     assert sheet.get(kinds.kind(LINE_134)).value == D("0.00")
+
+
+def test_the_40600_kind_is_registered_and_non_negative() -> None:
+    kind = bundled_kinds().kind(LINE_134)
+
+    assert kind.identifier == LINE_134
+    assert non_negative(kind) is True
