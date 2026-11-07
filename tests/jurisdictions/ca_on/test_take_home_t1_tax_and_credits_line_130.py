@@ -74,7 +74,7 @@ PARTS = (
     "t1_tax_and_credits_line_40400.yaml",
     "t1_tax_and_credits_line_42900.yaml",
     "t1_tax_and_credits_line_128.yaml",
-    "t1_tax_and_credits_line_130_inputs.yaml",
+    "t1_tax_and_credits_line_40500_inputs.yaml",
     "t1_tax_and_credits_line_130.yaml",
 )
 HEADER = dedent("""\
