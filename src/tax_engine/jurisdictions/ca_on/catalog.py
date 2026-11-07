@@ -35,8 +35,19 @@ amount claimed, the first part of the total of the Ontario credit amounts."""
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )
-"""ON428 line 18 "Add lines 9, 10, 13, 16, and 17.": the total of lines 9, 10, 13, 16 and 17. The
-take-home build sums line 9 only."""
+"""Personal amounts subtotal, ON428 line 18 "Add lines 9, 10, 13, 16, and 17.": the sum of lines
+9, 10, 13, 16 and 17."""
+
+ON428_CPP_EI_CREDIT_AMOUNTS_LINE_24 = AmountKind.declare(
+    CATALOG, "on428_cpp_ei_credit_amounts_line_24", non_negative=True
+)
+"""CPP and EI credit amounts subtotal, ON428 line 24 "Add lines 19 to 23.": the sum of lines 19
+to 23."""
+
+ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
+    CATALOG, "on428_credits_subtotal_line_25", non_negative=True
+)
+"""Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
