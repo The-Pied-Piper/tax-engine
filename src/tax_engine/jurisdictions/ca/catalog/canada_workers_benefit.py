@@ -340,6 +340,12 @@ working income on line 6 is more than $3,000." Eligibility is the return's to st
 here. The basic amount only: the disability supplement is Step 3 (`ca/cwb_disability_supplement`)
 and the advance payments are Step 4."""
 
+CWB_REDUCTION_THRESHOLD = AmountKind.declare(CATALOG, "cwb_reduction_threshold", non_negative=True)
+"""Canada workers benefit reduction threshold, Schedule 6 line 24 "If you had an eligible spouse or
+an eligible dependant, enter $30,639. If not, enter $26,855.": the base amount for a filer with no
+eligible spouse and no eligible dependant, here $26,855, the printed figure taken whole. Line 25
+takes it as line 24, "Line 23 minus line 24 (if negative, enter "0")"."""
+
 CWB_REDUCTION_WITHOUT_DEPENDANT = AmountKind.declare(
     CATALOG, "cwb_reduction_without_dependant", non_negative=True
 )
@@ -698,3 +704,12 @@ line 42 when Schedule 6 line 38103 "Are you eligible for the disability tax cred
 the disability amount of line 31600), else line 28 when Step 2 is completed ("If you are not
 completing Step 3, enter this amount on line 45300 of your return."), which is line 41 and is 0 when
 line 38102 says the basic CWB is not claimed."""
+
+CWB_BASE_AMOUNT = AmountKind.declare(CATALOG, "cwb_base_amount", non_negative=True)
+"""Schedule 6 line 17 "Base amount 3,000.00": the $3,000 base amount of the Canada workers benefit,
+a dataset figure, claimed whole."""
+
+CWB_MAXIMUM = AmountKind.declare(CATALOG, "cwb_maximum", non_negative=True)
+"""Schedule 6 line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If not,
+enter $1,633.": the $1,633 maximum benefit for a filer with no eligible spouse or dependant, claimed
+whole, a dataset figure."""

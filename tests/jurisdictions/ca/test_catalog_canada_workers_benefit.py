@@ -44,7 +44,9 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_INCLUDE_TAX_EXEMPT_INCOME,
     CWB_INCLUDE_TAX_EXEMPT_INCOME_CHECKED,
     CWB_LINE_28_BY_SPOUSE,
+    CWB_MAXIMUM,
     CWB_NET_INCOME_LINE_7,
+    CWB_REDUCTION_THRESHOLD,
     CWB_REDUCTION_WITH_DEPENDANT,
     CWB_REDUCTION_WITHOUT_DEPENDANT,
     CWB_SECONDARY_EARNER_EXEMPTION,
@@ -93,6 +95,7 @@ def test_the_canada_workers_benefit_kinds_are_the_registered_ones(
         is CWB_BEFORE_REDUCTION_WITHOUT_DEPENDANT
     )
     assert registry.get("ca/cwb_reduction_without_dependant") is CWB_REDUCTION_WITHOUT_DEPENDANT
+    assert registry.get("ca/cwb_reduction_threshold") is CWB_REDUCTION_THRESHOLD
     assert (
         registry.get("ca/canada_workers_benefit_without_dependant")
         is CANADA_WORKERS_BENEFIT_WITHOUT_DEPENDANT
@@ -162,6 +165,14 @@ def test_the_line_28_by_spouse_is_registered_and_money(registry: ArtifactRegistr
     assert registry.get("ca/canada_workers_benefit_line_28") is CANADA_WORKERS_BENEFIT_LINE_28
 
 
+def test_the_cwb_maximum_is_registered_money_and_non_negative(registry: ArtifactRegistry) -> None:
+    # Schedule 6 line 21 "If not, enter $1,633": the printed maximum of the basic benefit for a
+    # filer with no eligible spouse or dependant, a dataset figure taken whole.
+    assert CWB_MAXIMUM.value_type is Decimal
+    assert non_negative(CWB_MAXIMUM) is True
+    assert registry.get("ca/cwb_maximum") is CWB_MAXIMUM
+
+
 def test_the_canada_workers_benefit_kinds_are_money() -> None:
     for kind in (
         CWB_EMPLOYMENT_INCOME,
@@ -171,6 +182,7 @@ def test_the_canada_workers_benefit_kinds_are_money() -> None:
         CWB_FAMILY_NET_INCOME_LINE_12,
         ADJUSTED_FAMILY_NET_INCOME,
         CWB_BEFORE_REDUCTION_WITHOUT_DEPENDANT,
+        CWB_REDUCTION_THRESHOLD,
         CWB_REDUCTION_WITHOUT_DEPENDANT,
         CANADA_WORKERS_BENEFIT_WITHOUT_DEPENDANT,
         CWB_BEFORE_REDUCTION_WITH_DEPENDANT,
@@ -369,3 +381,13 @@ def test_the_schedule_6_line_7_net_income_is_signed(registry: ArtifactRegistry) 
     # (You): the form shows a negative figure, so the kind is signed.
     assert non_negative(CWB_NET_INCOME_LINE_7) is False
     assert non_negative(registry.kind("ca/cwb_net_income_line_7")) is False
+
+
+def test_the_base_amount_of_schedule_6_line_17_is_a_non_negative_money_kind(
+    registry: ArtifactRegistry,
+) -> None:
+    # Schedule 6 line 17 "Base amount 3,000.00": the printed amount, a dataset figure (no salary),
+    # declared non-negative like the other claimed amounts of the schedule.
+    kind = _kind(registry, "ca/cwb_base_amount")
+    assert kind.value_type is Decimal
+    assert non_negative(kind) is True
