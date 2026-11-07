@@ -34,9 +34,11 @@ OTHER_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "other_employment_income",
 CREDITS_AGAINST_BASIC_FEDERAL_TAX = AmountKind.declare(
     CATALOG, "credits_against_basic_federal_tax", non_negative=True
 )
-"""Credits against the basic federal tax, T1 line 125 "Add lines 122 to 124.": line 122 "Amount from
-line 35000", line 123 (40425), the federal dividend tax credit, and line 124 (40427), the minimum
-tax carryover applied on Form T691 Part 8 line 12, in line order."""
+"""Credits against the basic federal tax, T1 line 125 "Add lines 122 to 124.", as built for the
+take-home return: the sum of one part, line 122 (`non_refundable_tax_credits`, line 35000, "Amount
+from line 35000"). Lines 123 (40425) and 124 (40427) are absent for the take-home filer and are left
+out.
+"""
 
 
 CCA_SOLD_ZEPVS = RecordListKind.declare(

@@ -1,7 +1,8 @@
 # T1 line 133 (2025) input a salary-only caller does not give.
-# Line 133 and line 40600: "Line 133: Federal logging tax credit" (5006-R, Step 5). A salary-only caller has
-# no logging tax credit, so a request that leaves the line out is read as 0, not blank, and line 134 is
-# line 132 floored at 0.
+# Line 133, "Line 133: Federal logging tax credit" (5006-R, Step 5; the form prints no five-digit
+# number on it), which line 134 reads (line 40600). A salary-only caller has no logging tax credit,
+# so a request that leaves the line out is read as 0, not blank, and line 134 is line 132 floored
+# at 0.
 inputs:
   - name: ca/federal_logging_tax_credit
     required: false

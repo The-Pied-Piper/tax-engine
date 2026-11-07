@@ -169,20 +169,9 @@ from line 24 or line 29.": the greater of line 24 and line 29, the floor under t
 split income."""
 
 NET_FEDERAL_TAX = AmountKind.declare(CATALOG, "net_federal_tax", non_negative=True)
-"""Net federal tax, T1 line 142 (line 42000) "Add lines 139 to 141. Net federal tax": by Form T1206
-Part 2 "Add the amount from line 30 to the amount from line 41800 of your return, and enter the
-result on line 42000 of your return.", line 30 (`split_income_line_30`, the more of line 24 and line
-29, line 29 being line 41700, `federal_tax_line_41700`, plus line 140, the advanced Canada workers
-benefit) plus the special taxes (`special_taxes`, line 141), in line order. With no split income,
-line 24 is at most line 29, so line 30 is line 29 and the sum is lines 139 to 141.
-
-Line 126 (42900) is "Line 121 minus line 125 (if negative, enter "0") Basic federal tax", line 121
-(40400) "Line 119 plus line 120" and line 125 "Add lines 122 to 124.", line 122 being "Amount from
-line 35000", line 123 the federal dividend tax credit and line 124 the minimum tax carryover: the
-federal tax after credits. Line 127 is added to it on line 128 (`federal_tax_with_surtax`), line 129
-comes off on line 130 (`federal_tax_less_foreign_tax_credit`), and line 131 (`itc_recapture`) is
-added on line 132. Line 134 (40600) "Line 132 minus line 133 (if negative, enter "0") Federal tax"
-is `federal_tax` (line 133 is `federal_logging_tax_credit`).
+"""Net federal tax, T1 line 142 (line 42000) "Add lines 139 to 141. Net federal tax", as built for
+the take-home return: the sum of one part, line 139 (`federal_tax_less_credits`, line 41700). Lines
+140 (41500) and 141 (41800) are absent for the take-home filer and are left out.
 """
 
 CPP_PAYABLE_ON_SELF_EMPLOYMENT = AmountKind.declare(
@@ -207,14 +196,10 @@ SOCIAL_BENEFITS_REPAYMENT_PAYABLE = AmountKind.declare(
 line 23500)": the amount of line 23500, carried."""
 
 TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable", non_negative=True)
-"""Total payable, T1 line 148 (line 43500) "Add lines 143 to 147. Total payable": the net federal
-tax, the CPP contributions and EI premiums payable on self-employment income, the social benefits
-repayment and the provincial tax, in line order.
-
-Line 143 is "Amount from line 42000"; line 144 (42100) and line 145 (42120) are the Schedule 8
-Part 4 and Schedule 13 amounts; line 147 (42800) "Provincial or territorial tax (complete and
-attach your provincial or territorial Form 428, even if the result is "0")". Line 146 (42200) is
-"Social benefits repayment (amount from line 23500)".
+"""Total payable, T1 line 148 (line 43500) "Add lines 143 to 147. Total payable", as built for the
+take-home return: the sum of two parts, line 143 (`net_federal_tax`, line 42000) and line 147
+(`provincial_tax_line_42800`, the Ontario tax from ON428 line 90, entered on line 42800). Lines 144
+(42100), 145 (42120) and 146 (42200) are absent for the take-home filer and are left out.
 """
 
 PROVINCIAL_TAX_LINE_42800 = AmountKind.declare(

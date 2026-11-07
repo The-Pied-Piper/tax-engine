@@ -39,9 +39,9 @@ FORM = "ca/t1_tax_and_credits"
 LINE_139 = "ca/federal_tax_less_credits"
 LINE_142 = "ca/net_federal_tax"
 # The real parts composed beside the test's header: the salary, the real Schedule 8 and T2204
-# parts, the real T1 taxable-income lines and inputs, lines 30000, 76, 84, 31260, 96, 98, 101, 106,
-# 33500, 33800, 35000, 40400, 125, 42900, 128, 130 and 132, lines 40600 and 41600 with the input of
-# line 40600, line 41700 and the part under test.
+# parts, the real T1 taxable-income lines and inputs, lines 30000, 76, 31260, 84, 96, 98, 101, 106,
+# 33500, 33800, 35000, 125, 40400, 42900, 128, 130 and 132, the input of line 40600, lines 40600 and
+# 41600, line 41700 and the part under test.
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
