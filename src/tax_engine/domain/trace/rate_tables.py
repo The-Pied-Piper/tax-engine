@@ -41,13 +41,16 @@ class BracketColumnLine(TraceLine):
 
 @dataclass(frozen=True)
 class BracketColumnFigureLine(TraceLine):
-    """One figure of the bracket column that `base_amount` falls in: `figure`, which is the
-    figure called `name` ("lower bound", "rate" or "tax at start"), printed unrounded.
+    """One figure of the bracket column that `base` (worth `base_amount`) falls in, produced as
+    `output`: `figure`, which is the figure called `name` ("lower bound", "rate" or "tax at
+    start"), printed unrounded.
 
     Its own class, not a `BracketColumnLine`: the line names one figure of the column and
     rounds nothing, where the column line gives the whole tax.
     """
 
+    output: Money
+    base: Money
     base_amount: Decimal
     name: str
     figure: Decimal

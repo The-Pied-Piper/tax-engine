@@ -1,9 +1,24 @@
-# Form ON428 (2025, CRA 5006-c-25e) line 80, "Line 80: Line 78 minus line 79 (if negative,
-# enter "0") Ontario tax reduction =": the Ontario tax reduction. Line 78 is read from its source
-# part (`ca-on/on428_tax_reduction_doubled_line_78`), and line 79 is a copy of line 73, read directly
-# as `ca-on/on428_tax_with_minimum_tax_addition_line_73`. Both are produced by other parts, so there
-# is no blank rule: the result is line 78 minus line 73, not below zero, through
-# core/subtract_not_below_zero.
+# Form ON428 (2025, CRA 5006-c-25e) line 80, the Ontario tax reduction. Two printed instructions
+# make it: "Enter "0" on line 80 if any of the following applies to you:" followed by the six
+# conditions, of which "There is an amount on line 72" is the one the take-home reads; and "Line 80:
+# Line 78 minus line 79 (if negative, enter "0") Ontario tax reduction =".
+#
+# Line 79 is a copy of line 73, read directly as `ca-on/on428_tax_with_minimum_tax_addition_line_73`.
+# Line 78 comes from its source part (`ca-on/on428_tax_reduction_doubled_line_78`). Both are produced
+# by other parts, so step 1 has no blank rule.
+#
+# Step 1 is the line 80 box: line 78 less line 79, not below zero, through
+# core/subtract_not_below_zero (`ca-on/on428_tax_reduction_before_conditions_line_80`).
+#
+# Step 2 counts the printed condition: 0 when there is an amount on line 72, else 1
+# (`ca-on/on428_line_80_conditions`). Line 72 is an optional input that a salary-only caller leaves
+# out (`ca-on/on428_additional_tax_for_minimum_tax_line_72`); the `blank` rule reads that blank as
+# "0", so the condition does not apply and the count is 1. The count is
+# `ca-on/on428_tax_reduction_conditions_count_line_80`.
+#
+# Step 3 multiplies the box by that count: the box when there is no amount on line 72, "0" when
+# there is one. The product is the line 80 output `ca-on/on428_ontario_tax_reduction_line_80`, read
+# by line 81 and exported by the form.
 form:
   name: ca-on/on428
 capabilities:
@@ -13,5 +28,22 @@ capabilities:
     consumes:
       amount: ca-on/on428_tax_reduction_doubled_line_78
       less: ca-on/on428_tax_with_minimum_tax_addition_line_73
+    produces:
+      output: ca-on/on428_tax_reduction_before_conditions_line_80
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca-on/on428_line_80_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca-on/on428_additional_tax_for_minimum_tax_line_72
+    blank:
+      amounts: "0"
+    produces:
+      output: ca-on/on428_tax_reduction_conditions_count_line_80
+  - name: core/times_count
+    consumes:
+      amount: ca-on/on428_tax_reduction_before_conditions_line_80
+      count: ca-on/on428_tax_reduction_conditions_count_line_80
     produces:
       output: ca-on/on428_ontario_tax_reduction_line_80

@@ -6,7 +6,8 @@ produces one printed figure of that column, unrounded: BracketColumnLowerBound i
 BracketColumnRate its rate, BracketColumnTaxAtStart its tax at the start (which the schedule
 already rounds by its own rule). The three share the undecorated base class BracketColumnFigure.
 Slots: parameter `schedule`, consumed `base`, produced `output`. The trace is one
-BracketColumnFigureLine: the base, the figure's name as text and the figure.
+BracketColumnFigureLine: the output and base kinds, the base amount, the figure's name as text
+and the figure.
 """
 
 from __future__ import annotations
@@ -216,22 +217,38 @@ def test_traces_one_line_with_the_base_the_figures_name_and_the_figure(
     result = cls(TAXABLE_BASE, FIGURE, schedule()).compute((Artifact(TAXABLE_BASE, D(250)),))
 
     assert result.trace == (
-        BracketColumnFigureLine(base_amount=D(250), name=name, figure=expected),
+        BracketColumnFigureLine(
+            output=FIGURE,
+            base=TAXABLE_BASE,
+            base_amount=D(250),
+            name=name,
+            figure=expected,
+        ),
     )
 
 
 def test_the_trace_line_amount_is_the_figure() -> None:
-    line = BracketColumnFigureLine(base_amount=D(250), name="lower bound", figure=D(100))
+    line = BracketColumnFigureLine(
+        output=FIGURE, base=TAXABLE_BASE, base_amount=D(250), name="lower bound", figure=D(100)
+    )
 
     assert line.amount == D(100)
 
 
 def test_the_trace_line_has_these_fields_in_order() -> None:
-    assert [f.name for f in fields(BracketColumnFigureLine)] == ["base_amount", "name", "figure"]
+    assert [f.name for f in fields(BracketColumnFigureLine)] == [
+        "output",
+        "base",
+        "base_amount",
+        "name",
+        "figure",
+    ]
 
 
 def test_the_trace_line_is_frozen() -> None:
-    line = BracketColumnFigureLine(base_amount=D(250), name="rate", figure=D("0.2"))
+    line = BracketColumnFigureLine(
+        output=FIGURE, base=TAXABLE_BASE, base_amount=D(250), name="rate", figure=D("0.2")
+    )
 
     with pytest.raises(AttributeError):
         line.figure = D(1)  # type: ignore[misc]
@@ -243,9 +260,9 @@ def test_the_trace_line_is_frozen() -> None:
 @pytest.mark.parametrize(
     ("cls", "text"),
     [
-        (BracketColumnLowerBound, "bracket lower bound for 250: 100"),
-        (BracketColumnRate, "bracket rate for 250: 20%"),
-        (BracketColumnTaxAtStart, "bracket tax at start for 250: 10"),
+        (BracketColumnLowerBound, "column_figure: bracket lower bound for taxable_base 250: 100"),
+        (BracketColumnRate, "column_figure: bracket rate for taxable_base 250: 20%"),
+        (BracketColumnTaxAtStart, "column_figure: bracket tax at start for taxable_base 250: 10"),
     ],
 )
 def test_the_trace_reads_in_english(cls: type[BracketColumnFigure], text: str) -> None:

@@ -6,8 +6,7 @@ lines that print no "(if negative, enter "0")" (lines 39, 47 and 50), which are 
 ON428, ON479 or ON479-A amount here can be negative; the counts of dependent children and
 dependants are int, the T1221 slips and the co-operative education work placements record lists,
 the ON479 line 63270 business number digits, and the ON479-A line 7 percentage a Rate. Federal
-kinds come from `tax_engine.jurisdictions.ca.catalog`. Identifiers are stable:
-`tests/jurisdictions/ca_on/test_catalog.py` snapshots them.
+kinds come from `tax_engine.jurisdictions.ca.catalog`. Identifiers are stable.
 """
 
 from __future__ import annotations
@@ -26,7 +25,8 @@ from tax_engine.jurisdictions.ca_on import NAMESPACE
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
 ONTARIO_BASIC_TAX = AmountKind.declare(CATALOG, "ontario_basic_tax", non_negative=True)
-"""Ontario tax on taxable income, 2025 ON428 line 8 (Part A), before non-refundable credits."""
+"""Ontario tax on taxable income, 2025 ON428 line 8 (Part A), before non-refundable credits.
+Replaced by `ca-on/on428_tax_on_taxable_income_line_8`; kept only until the old kinds are swept."""
 
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, ON428 line 9 (line 58040) "Basic personal amount Claim $12,747": the
@@ -228,11 +228,26 @@ ON428_TAX_REDUCTION_DOUBLED_LINE_78 = AmountKind.declare(
 """Doubled tax reduction, ON428 line 78 "Amount from line 77 above multiplied by 2 =": line 77
 multiplied by 2."""
 
+ON428_TAX_REDUCTION_BEFORE_CONDITIONS_LINE_80 = AmountKind.declare(
+    CATALOG, "on428_tax_reduction_before_conditions_line_80", non_negative=True
+)
+"""Ontario tax reduction before the conditions, ON428 line 80 "Line 80: Line 78 minus line 79 (if
+negative, enter "0") Ontario tax reduction =": line 78 minus line 79 (a copy of line 73), not below
+zero, before the printed "Enter "0" on line 80 if any of the following applies to you" rule."""
+
+ON428_TAX_REDUCTION_CONDITIONS_COUNT_LINE_80 = CountKind.declare(
+    CATALOG, "on428_tax_reduction_conditions_count_line_80", non_negative=True
+)
+"""Conditions count for ON428 line 80, "Enter "0" on line 80 if any of the following applies to
+you:" "There is an amount on line 72": 0 when there is an amount on line 72, else 1."""
+
 ON428_ONTARIO_TAX_REDUCTION_LINE_80 = AmountKind.declare(
     CATALOG, "on428_ontario_tax_reduction_line_80", non_negative=True
 )
 """Ontario tax reduction, ON428 line 80 "Line 80: Line 78 minus line 79 (if negative, enter "0")
-Ontario tax reduction =": line 78 minus line 79 (a copy of line 73), not below zero."""
+Ontario tax reduction =": the line 78 minus line 79 box, not below zero, or "0" when the printed
+"Enter "0" on line 80 if any of the following applies to you" rule applies (take-home: there is
+an amount on line 72)."""
 
 ON428_TAX_AFTER_TAX_REDUCTION_LINE_81 = AmountKind.declare(
     CATALOG, "on428_tax_after_tax_reduction_line_81", non_negative=True
@@ -265,12 +280,19 @@ ON428_TAX_AFTER_LIFT_CREDIT_LINE_86 = AmountKind.declare(
 """Ontario tax after the LIFT credit, ON428 line 86 "Line 86: Line 84 minus line 85 (if negative,
 enter "0") =": line 84 minus the LIFT credit, not below zero."""
 
+ON428_QUALIFYING_FOOD_DONATIONS_LINE_87 = AmountKind.declare(
+    CATALOG, "on428_qualifying_food_donations_line_87", non_negative=True
+)
+"""Qualifying food donations, ON428 line 87 "Line 87 and line 62150: Enter the amount of qualifying
+donations that have also been claimed as a charitable donation": an optional input that a
+salary-only caller leaves out, read as 0."""
+
 ON428_FARMERS_FOOD_DONATION_CREDIT_LINE_87 = AmountKind.declare(
     CATALOG, "on428_farmers_food_donation_credit_line_87", non_negative=True
 )
 """Farmers' food donation credit, ON428 line 87 "Line 87 and line 62150: Enter the amount of
-qualifying donations that have also been claimed as a charitable donation. multiplied by 25%": an
-optional input that a salary-only caller leaves out."""
+qualifying donations that have also been claimed as a charitable donation. multiplied by 25% =":
+calculated, the qualifying donations multiplied by 25%."""
 
 ON428_TAX_AFTER_FARMERS_FOOD_DONATION_CREDIT_LINE_88 = AmountKind.declare(
     CATALOG, "on428_tax_after_farmers_food_donation_credit_line_88", non_negative=True
