@@ -702,3 +702,8 @@ line 38102 says the basic CWB is not claimed."""
 CWB_BASE_AMOUNT = AmountKind.declare(CATALOG, "cwb_base_amount", non_negative=True)
 """Schedule 6 line 17 "Base amount 3,000.00": the $3,000 base amount of the Canada workers benefit,
 a dataset figure, claimed whole."""
+
+CWB_MAXIMUM = AmountKind.declare(CATALOG, "cwb_maximum", non_negative=True)
+"""Schedule 6 line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If not,
+enter $1,633.": the $1,633 maximum benefit for a filer with no eligible spouse or dependant, claimed
+whole, a dataset figure."""

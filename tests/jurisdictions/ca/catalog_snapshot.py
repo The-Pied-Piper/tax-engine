@@ -2997,6 +2997,7 @@ REGISTERED = frozenset(
         "ca/cwb_secondary_earner_exemption_before_maximum",
         "ca/cwb_secondary_earner_exemption",
         "ca/cwb_line_28_by_spouse",
+        "ca/cwb_maximum",
         "ca/aged_19_or_older_at_end_of_2025",
         "ca/aged_19_or_older_at_end_of_2025_checked",
         "ca/resided_with_spouse_or_child_at_end_of_2025",
