@@ -1,0 +1,20 @@
+# T1 (2025) line 23600: "Line 54 minus line 55 (if negative, enter "0")" (5006-R, page 4), before its
+# floor. Schedule 6 line 7 and ON428-A line 6 read the amount as the form prints it: "Net income from
+# line 23600 of the return (or the amount you would have entered if the instructions on line 23600
+# said "if negative, show in brackets")" (5000-s6-25e.txt lines 193-197; 5006-a-25e.txt line 27).
+# Line 54 is net income before adjustments (line 23400) and line 55 is the social benefits repayment
+# (line 23500).
+#
+# Step 1 subtracts the repayment from the net income before adjustments through core/subtract. There
+# is no floor and no rounding parameter: a repayment above line 23400 gives a negative figure, which
+# the form shows in brackets. The floored net income is `t1_taxable_income_line_23600.yaml`, which
+# this step does not replace.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/subtract
+    consumes:
+      amount: ca/net_income_before_adjustments
+      less: ca/social_benefits_repayment
+    produces:
+      output: ca/net_income_signed
