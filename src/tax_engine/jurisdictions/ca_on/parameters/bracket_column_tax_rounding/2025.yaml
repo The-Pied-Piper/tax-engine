@@ -1,8 +1,7 @@
 # Ontario bracket column tax rounding, 2025 tax year (Form ON428, form 5006-C): line 6 "Line 4
 # multiplied by the percentage from line 5 =". Line 6 is a dollars-and-cents box, so the product
-# rounds half-up to the cent. The form states no rounding rule, so this is the owner's decision,
-# the same rule `ca-on/brackets` already applies to line 8: every line 7 figure is in whole cents,
-# so rounding line 6 here gives the same result as rounding line 8 there.
+# rounds half-up to the cent. The form states no rounding rule, so this is the owner's decision.
+# `ca-on/brackets` has no rounding rule: line 7 is in whole cents, so line 8 is already in cents.
 family: ca-on/bracket_column_tax_rounding
 tax_year: 2025
 kind: rounding_only
