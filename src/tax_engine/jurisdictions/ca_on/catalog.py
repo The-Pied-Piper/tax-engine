@@ -179,6 +179,18 @@ ON428)": Worksheet ON428 line 6 "Add the amounts from line 5 of columns 1, 2, an
 any)", each line 5 "Allowable amount for this dependant: line 3 minus line 4 (if negative, enter
 "0")", a part of the total of the Ontario credit amounts."""
 
+ON428_CPP_BASE_CREDIT_AMOUNT_LINE_19 = AmountKind.declare(
+    CATALOG, "on428_cpp_base_credit_amount_line_19", non_negative=True
+)
+"""CPP base contributions credit amount, ON428 line 19 and line 58240 "Amount from line 30800 of
+your return": a copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+ON428_EI_CREDIT_AMOUNT_LINE_21 = AmountKind.declare(
+    CATALOG, "on428_ei_credit_amount_line_21", non_negative=True
+)
+"""EI premiums credit amount, ON428 line 21 and line 58300: a copy of T2204 line 16, the EI
+premiums credit amount."""
+
 ADOPTION_CREDIT = AmountKind.declare(CATALOG, "adoption_credit", non_negative=True)
 """Ontario adoption expenses, ON428 line 23 and line 58330 "Adoption expenses": the total of each
 child's eligible expenses, each capped at the Ontario maximum for one child, a part of the total of
