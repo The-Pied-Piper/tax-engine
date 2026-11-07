@@ -1,0 +1,25 @@
+# ON428-A (2025, CRA 5006-A-25E) lines 6 and 13. Line 6: "Net income from line 23600 of your return (or the
+# amount you would have entered if the instructions on line 23600 said "if negative, show in
+# brackets")" (5006-a-25e.txt, line 27). Line 13, "Line 9 minus line 12 (if negative, enter
+# "0") Your adjusted net income", is the form's floored sum. Line 9, "Add lines 6 to 8.", is the
+# only line of the sum the take-home filer has a figure for: line 6 (net income from T1 line 23600),
+# since lines 7, 8, 10, 11 and 12 are not built. Line 13 is therefore a core/sum_not_below_zero over
+# the one part, line 6, because a sum line is built even with one part.
+#
+# Line 6 is a step of its own, not a read: the T1 form exports net income (`ca/net_income`) for the
+# return, and another form reads an export only as a record list (`ca/t1_taxable_income.net_income`),
+# so the one amount is totalled by core/record_total, the same way T1 line 23300 reads Schedule 8.
+# The output of line 6 is the sum's one part, so the line 6 kind, not the record list, feeds line 13.
+form:
+  name: ca-on/on428_a
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca-on/lift_net_income
+  - name: core/sum_not_below_zero
+    consumes:
+      parts: [ca-on/lift_net_income]
+    produces:
+      output: ca-on/lift_adjusted_net_income
