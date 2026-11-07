@@ -64,21 +64,21 @@ def _line_77(take_home_service: TakeHomeService, line_74: str) -> Decimal:
 
 
 @pytest.mark.parametrize(
-    ("salary", "line_74", "line_77"),
+    ("line_74", "line_77"),
     [
         # A $20,000 salary: line 74 is the $294.00 basic reduction, so line 77 is 294.00.
-        pytest.param("20000", "294.00", "294.00", id="salary-20000"),
+        ("294.00", "294.00"),
         # A $70,000 salary: line 74 is the $294.00 basic reduction, so line 77 is 294.00.
-        pytest.param("70000", "294.00", "294.00", id="salary-70000"),
+        ("294.00", "294.00"),
         # A $150,000 salary: line 74 is the $294.00 basic reduction, so line 77 is 294.00.
-        pytest.param("150000", "294.00", "294.00", id="salary-150000"),
+        ("294.00", "294.00"),
         # Line 74 at zero: 0 is the sum of line 74 alone, so line 77 is 0.00.
-        pytest.param("20000", "0", "0.00", id="line-74-zero"),
+        ("0", "0.00"),
         # Line 77 is the sum of the single part, not a fixed figure: 100.00 gives 100.00.
-        pytest.param("20000", "100.00", "100.00", id="line-74-100"),
+        ("100.00", "100.00"),
     ],
 )
 def test_line_77_is_line_74_with_lines_75_and_76_left_out(
-    take_home_service: TakeHomeService, salary: str, line_74: str, line_77: str
+    take_home_service: TakeHomeService, line_74: str, line_77: str
 ) -> None:
     assert _line_77(take_home_service, line_74) == D(line_77)
