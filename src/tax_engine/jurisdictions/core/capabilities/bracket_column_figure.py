@@ -58,7 +58,13 @@ class BracketColumnFigure(Capability):
         column = self._schedule.values.column_for(base)
         figure = self._figure(column)
         trace: tuple[TraceLine, ...] = (
-            BracketColumnFigureLine(base_amount=base, name=self.FIGURE_NAME, figure=figure),
+            BracketColumnFigureLine(
+                output=self._output,
+                base=self._base,
+                base_amount=base,
+                name=self.FIGURE_NAME,
+                figure=figure,
+            ),
         )
         return CapabilityResult(outputs=(Artifact(self._output, figure),), trace=trace)
 
