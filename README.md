@@ -106,4 +106,4 @@ Issues and pull requests are welcome. Developer setup, checks and the CRA refere
 
 Licensed under the [Apache License, Version 2.0](LICENSE).
 
-The Canada Revenue Agency publications in [docs/cra-forms-2025](docs/cra-forms-2025/README.md) (forms, guides and bulletins, plus text extracts of some) are copies, owned by the Government of Canada and protected by Crown copyright. They are reproduced for non-commercial purposes under the [Government of Canada terms](https://www.canada.ca/en/transparency/terms.html), are not official versions, and are not covered by this licence.
+The Canada Revenue Agency publications in [docs/cra-forms-2025](docs/cra-forms-2025/README.md) (forms and guides as downloaded, plus saved web pages and text extracts) are copies, owned by the Government of Canada and protected by Crown copyright. They are reproduced for non-commercial purposes under the [Government of Canada terms](https://www.canada.ca/en/transparency/terms.html), are not official versions, and are not covered by this licence.

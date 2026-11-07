@@ -2,9 +2,10 @@
 
 > **Source and copyright notice.** The files in this folder are copies of publications of the Canada
 > Revenue Agency (CRA), kept here as the source for the tax data in this repository. The CRA forms,
-> guides and bulletins are stored as downloaded, byte for byte, and their sha256 is recorded below to
-> show this. The exceptions are the files the tables below mark as derived: text extracts of a
-> PDF (`*.pdf.txt`) and the plain-text conversions of web pages (`web/*.txt`). This README is the
+> guides are stored as downloaded, byte for byte (the saved web pages are the raw HTML), and the
+> tables below record a sha256 for most files. The exceptions are the files the tables below mark as
+> derived: text extracts of a PDF (`*.pdf.txt`) and plain-text conversions of web pages (`web/*.txt`,
+> which include the archived bulletin IT-195R4). This README is the
 > repository's own text. None of it is an official version: the originals are at the source URLs given
 > below, and the current edition of a publication may differ (for example, canada.ca now shows the
 > 2026 payroll formulas), so check canada.ca before relying on any figure.
@@ -15,14 +16,18 @@
 > provided on this site", confirmed 2026-11-07). Unless otherwise specified, those terms allow
 > reproduction in whole or in part, in any format, without charge or further permission, provided the
 > reproducer (1) exercises due diligence in ensuring the accuracy of the materials reproduced (here:
-> each file was checked against its download by sha256), (2) indicates the complete title and the
+> for the batches whose tables say so, the sha256 was checked against the download, and for the others
+> it was computed on the file as saved; the derived files have no download to compare with), (2) indicates the complete title and the
 > author of the material (the author is the Canada Revenue Agency; the complete title is printed at
 > the top of each file, and the tables below use short names), and (3) indicates that the reproduction
 > is a copy of the version available at the original URL (each file's source URL is given below; the
 > five web pages whose URL is not in the tables are listed after this notice). Reproduction for
 > commercial redistribution needs prior written permission from the copyright administrator. The terms
 > also say that the official symbols of the Government of Canada (including the Canada wordmark and the
-> flag symbol) may not be reproduced without prior written authorization. The Apache-2.0 licence of
+> flag symbol) may not be reproduced, whether for commercial or non-commercial purposes, without prior
+> written authorization. The unmodified PDFs in this folder contain the Government of Canada signature
+> (flag symbol) and the Canada wordmark as published by the CRA; no written authorization for them has
+> been obtained. The Apache-2.0 licence of
 > this repository does not cover these files.
 >
 > Source URLs of the five web pages (the canonical address stored in each saved `.html` file):
