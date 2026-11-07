@@ -74,6 +74,12 @@ ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
 """Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
 the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 
+ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "on428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
+line 6 plus line 7. Temporary copy until the line 8 part is on main."""
+
 ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
     CATALOG, "on428_donations_credit_line_49", non_negative=True
 )
@@ -85,6 +91,12 @@ ON428_NON_REFUNDABLE_CREDITS_LINE_50 = AmountKind.declare(
 )
 """Ontario non-refundable tax credits, ON428 line 50 "Line 50 and line 61500: Line 46 plus line 49":
 line 46 (the credits at the rate) plus line 49 (the donations and gifts credit)."""
+
+ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_credits_line_53", non_negative=True
+)
+"""Tax minus credits, ON428 line 53 "Line 51 minus line 52 (if negative, enter "0") =": line 8
+(copied to line 51) minus line 50 (copied to line 52), not below 0."""
 
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
