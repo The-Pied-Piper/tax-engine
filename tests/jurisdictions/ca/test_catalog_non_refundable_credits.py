@@ -359,17 +359,6 @@ def test_the_split_income_and_t2203_lines_are_non_negative(registry: ArtifactReg
         assert registry.kind(kind.identifier) is kind
 
 
-def test_the_credit_amounts_line_84_kind_is_registered_and_non_negative(
-    registry: ArtifactRegistry,
-) -> None:
-    # T1 line 84 "Add lines 77 to 83. =" is a sum of credit amounts, each non-negative (line 77 is
-    # the basic personal amount), so the kind is non-negative and registered beside the subtotal.
-    assert CREDIT_AMOUNTS_LINE_84.identifier == "ca/credit_amounts_line_84"
-    assert registry.kind("ca/credit_amounts_line_84") is CREDIT_AMOUNTS_LINE_84
-    assert CREDIT_AMOUNTS_LINE_84.value_type is Decimal
-    assert non_negative(CREDIT_AMOUNTS_LINE_84) is True
-
-
 def test_the_tuition_and_transfer_kinds_are_non_negative(registry: ArtifactRegistry) -> None:
     # Schedule 11 and Schedule 2 take amounts the forms never show below zero: the lines that
     # subtract say "(if negative, enter "0")" or are bounded by the line they come off.
@@ -392,6 +381,7 @@ def test_the_tuition_and_transfer_kinds_are_non_negative(registry: ArtifactRegis
         TUITION_INCOME_BASE,
         TOSI_ADJUSTED_TAXABLE_INCOME,
         TUITION_INCOME_WITH_TOSI,
+        CREDIT_AMOUNTS_LINE_84,
         CREDIT_AMOUNTS_SUBTOTAL,
         TUITION_INCOME_LESS_CREDITS,
         UNUSED_TUITION_CLAIMED,
