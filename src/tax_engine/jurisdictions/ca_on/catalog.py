@@ -203,6 +203,18 @@ ON428_TAX_AFTER_TAX_REDUCTION_LINE_81 = AmountKind.declare(
 """Ontario tax after the tax reduction, ON428 line 81 "Line 81: Line 73 minus line 80 (if negative,
 enter "0") =": line 73 minus the Ontario tax reduction, not below zero."""
 
+ON428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_82 = AmountKind.declare(
+    CATALOG, "on428_provincial_foreign_tax_credit_line_82", non_negative=True
+)
+"""Provincial foreign tax credit, ON428 line 82 "Line 82: Provincial foreign tax credit (complete
+Form T2036)": an optional input that a salary-only caller leaves out."""
+
+ON428_TAX_AFTER_FOREIGN_TAX_CREDIT_LINE_83 = AmountKind.declare(
+    CATALOG, "on428_tax_after_foreign_tax_credit_line_83", non_negative=True
+)
+"""Ontario tax after the foreign tax credit, ON428 line 83 "Line 83: Line 81 minus line 82 (if
+negative, enter "0") =": line 81 minus line 82, not below zero."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
