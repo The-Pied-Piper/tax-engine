@@ -26,6 +26,8 @@ from typing import Any, assert_type, cast
 
 import pytest
 
+import tax_engine.jurisdictions.ca.trace_english  # noqa: F401  (registers the renderers)
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
 from tax_engine.domain.kinds import AmountKind, CountKind
@@ -466,3 +468,43 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- English trace ----------------------------------------------------------------------------
+#
+# The sentence shows the reduction rounded by the line's own rounding rule, never as a fraction,
+# and ends with the result and the rule.
+
+
+def test_the_english_sentence_without_rounding_shows_the_reduction_and_the_result() -> None:
+    trace = capability().compute((Artifact(INCOME, D("22000")),)).trace
+
+    assert EnglishTraceRenderer().render_all(trace) == (
+        "personal_amount: 1000 plus 500 less 100 for income 22000 over 20000 (range 10000), "
+        "not below 1000 = 1400 (no rounding)",
+    )
+
+
+def test_the_english_sentence_shows_a_reduction_above_the_supplement_before_the_floor() -> None:
+    trace = capability().compute((Artifact(INCOME, D("80000")),)).trace
+
+    assert EnglishTraceRenderer().render_all(trace) == (
+        "personal_amount: 1000 plus 500 less 3000 for income 80000 over 20000 (range 10000), "
+        "not below 1000 = 1000 (no rounding)",
+    )
+
+
+def test_the_english_sentence_rounds_an_exact_fraction_by_the_cent_rule_not_as_a_fraction() -> None:
+    # 500 × 1000 / 7000 = 500/7 = 71.428…, shown as 71.43; the result 1428.57 is the rounded sum.
+    trace = (
+        capability(taper(values(range="7000"), rounding=CENT))
+        .compute((Artifact(INCOME, D("21000")),))
+        .trace
+    )
+
+    (sentence,) = EnglishTraceRenderer().render_all(trace)
+    assert sentence == (
+        "personal_amount: 1000 plus 500 less 71.43 for income 21000 over 20000 (range 7000), "
+        "not below 1000 = 1428.57 (half-up to 0.01)"
+    )
+    assert "/" not in sentence

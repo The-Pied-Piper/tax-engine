@@ -25,9 +25,11 @@ class TaperedAmountRenderer:
         reduction = line.reduction
         return (
             f"{output.label}: {EnglishFigures.money(taper.base)} "
-            f"plus {EnglishFigures.money(taper.supplement)} less {EnglishFigures.exact(reduction)} "
+            f"plus {EnglishFigures.money(taper.supplement)} "
+            f"less {EnglishFigures.money(rule.apply(reduction))} "
             f"for {base.label} {EnglishFigures.money(amount)} "
             f"over {EnglishFigures.money(taper.threshold)} (range "
             f"{EnglishFigures.money(taper.range)}), "
-            f"not below {EnglishFigures.money(taper.base)} ({EnglishFigures.rounding(rule)})"
+            f"not below {EnglishFigures.money(taper.base)} = {EnglishFigures.money(line.result)} "
+            f"({EnglishFigures.rounding(rule)})"
         )
