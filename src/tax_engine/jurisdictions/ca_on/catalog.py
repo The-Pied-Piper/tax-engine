@@ -68,6 +68,12 @@ ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
 """Total credit amounts, ON428 line 44 "Line 44 and line 58800: Line 35 plus line 43 =": line 35
 plus line 43."""
 
+ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
+    CATALOG, "on428_credit_amounts_at_credit_rate_line_46", non_negative=True
+)
+"""Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
+the percentage from line 45 =": line 44 times the 5.05% of line 45."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
