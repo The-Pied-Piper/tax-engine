@@ -17,9 +17,45 @@ FEDERAL_TAX_TAXABLE_INCOME_LINE_70 = AmountKind.declare(
 26000) into Step 5 Part A, Federal tax on taxable income.
 """
 
+FEDERAL_BRACKET_LOWER_BOUND_LINE_71 = AmountKind.declare(
+    CATALOG, "federal_bracket_lower_bound_line_71", non_negative=True
+)
+"""Bracket lower bound, T1 line 71 "Line 71:" (each column prints "Line 71:" with 0.00, 57,375.00,
+114,750.00, 177,882.00 or 253,414.00): the printed lower bound of the column that line 70 falls in.
+"""
+
+FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_72 = AmountKind.declare(
+    CATALOG, "federal_taxable_income_over_lower_bound_line_72", non_negative=True
+)
+"""Taxable income over the lower bound, T1 line 72 "Line 72: Line 70 minus line 71 (cannot be
+negative) =": line 70 minus line 71, not below zero.
+"""
+
+FEDERAL_BRACKET_COLUMN_RATE_LINE_73 = AmountKind.declare(
+    CATALOG, "federal_bracket_column_rate_line_73", non_negative=True
+)
+"""Bracket column rate, T1 line 73 "Line 73: Rate" (each column prints "Line 73: Rate" with 14.5%,
+20.5%, 26%, 29% or 33%): the printed rate of the column that line 70 falls in.
+"""
+
+FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_74 = AmountKind.declare(
+    CATALOG, "federal_excess_times_column_rate_line_74", non_negative=True
+)
+"""Line 72 times the column rate, T1 line 74 "Line 74: Line 72 multiplied by the percentage from
+line 73 =": line 72 times line 73, a fraction, rounded half-up to the cent.
+"""
+
+FEDERAL_TAX_AT_COLUMN_START_LINE_75 = AmountKind.declare(
+    CATALOG, "federal_tax_at_column_start_line_75", non_negative=True
+)
+"""Tax at the column's start, T1 line 75 "Line 75:" (each column prints "Line 75:" with 0.00,
+8,319.38, 20,081.25, 36,495.57 or 58,399.85): the printed tax at the start of the column that line
+70 falls in.
+"""
+
 FEDERAL_BASIC_TAX = AmountKind.declare(CATALOG, "federal_basic_tax", non_negative=True)
-"""T1 line 76 "Federal tax on taxable income" ("Line 74 plus line 75"): the federal tax on taxable
-income from the bracket schedule (`ca/brackets`), before non-refundable credits.
+"""T1 line 76 "Federal tax on taxable income" ("Line 74 plus line 75"): line 74 plus line 75,
+rounded half-up to the cent, the federal tax on taxable income before non-refundable credits.
 """
 
 CPP_BASE_CONTRIBUTIONS_LINE_86 = AmountKind.declare(

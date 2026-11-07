@@ -11,12 +11,12 @@
 # line 74 "Line 72 multiplied by the percentage from line 73"; line 75 the printed
 # constant (0.00, 8,319.38, 20,081.25, 36,495.57, 58,399.85); line 76 "Line 74 plus
 # line 75 Federal tax on taxable income".
-# The form prints each line 75 constant in dollars and cents, and each is the exact tax
-# on the brackets below at the line 73 rates rounded half-up to the cent (8,319.38 for
-# the exact 8,319.375), so the tax at each bracket's start rounds half-up to the cent.
-# Line 76 is a dollars-and-cents box, so the column's tax rounds half-up to the cent,
-# the owner's decision, as the form states no rounding rule; line 74 is not rounded on
-# its own, line 72 takes amounts already in cents, and line 75 is already in cents.
+# Each bracket's `tax_at_start` is the line 75 constant of its column, taken as printed:
+# the constants are not recomputed from the rates, and not rounded. (The exact tax below
+# the second column is 14.5% x 57,375 = 8,319.375, printed 8,319.38.)
+# This dataset has no rounding rule, as the form states none. The take-home build rounds
+# line 74 half-up to the cent, then line 76 half-up to the cent, in their own steps
+# (ca/cent_rounding), as the form's dollars-and-cents boxes do.
 family: ca/brackets
 tax_year: 2025
 kind: brackets
@@ -24,11 +24,10 @@ sources:
   - https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/last-year.html
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt
   - https://www.canada.ca/en/department-finance/news/2025/05/delivering-a-middle-class-tax-cut.html
-rounding: {increment: "0.01", mode: half_up}
-tax_at_start_rounding: {increment: "0.01", mode: half_up}
+rounding: none
 brackets:
-  - {from: "0", rate: "0.145"}
-  - {from: "57375", rate: "0.205"}
-  - {from: "114750", rate: "0.26"}
-  - {from: "177882", rate: "0.29"}
-  - {from: "253414", rate: "0.33"}
+  - {from: "0", rate: "0.145", tax_at_start: "0.00"}
+  - {from: "57375", rate: "0.205", tax_at_start: "8319.38"}
+  - {from: "114750", rate: "0.26", tax_at_start: "20081.25"}
+  - {from: "177882", rate: "0.29", tax_at_start: "36495.57"}
+  - {from: "253414", rate: "0.33", tax_at_start: "58399.85"}
