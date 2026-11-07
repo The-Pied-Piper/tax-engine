@@ -1,5 +1,5 @@
-"""Trace lines for rate tables and tiers: a bracket's column, a contribution or surcharge
-tier, a rate by income band and its application, an amount by income band.
+"""Trace lines for rate tables and tiers: a bracket's column or one figure of it, a contribution
+or surcharge tier, a rate by income band and its application, an amount by income band.
 """
 
 from __future__ import annotations
@@ -16,6 +16,7 @@ from tax_engine.domain.trace.base import TraceLine
 __all__ = [
     "AmountByBandLine",
     "BracketColumnLine",
+    "BracketColumnFigureLine",
     "SurchargeTierLine",
     "RateByIncomeBandLine",
     "ChosenRateAppliedLine",
@@ -36,6 +37,25 @@ class BracketColumnLine(TraceLine):
     def amount(self) -> Decimal:
         """The tax the bracket's column gives."""
         return self.tax
+
+
+@dataclass(frozen=True)
+class BracketColumnFigureLine(TraceLine):
+    """One figure of the bracket column that `base_amount` falls in: `figure`, which is the
+    figure called `name` ("lower bound", "rate" or "tax at start"), printed unrounded.
+
+    Its own class, not a `BracketColumnLine`: the line names one figure of the column and
+    rounds nothing, where the column line gives the whole tax.
+    """
+
+    base_amount: Decimal
+    name: str
+    figure: Decimal
+
+    @property
+    def amount(self) -> Decimal:
+        """The figure."""
+        return self.figure
 
 
 @dataclass(frozen=True)
