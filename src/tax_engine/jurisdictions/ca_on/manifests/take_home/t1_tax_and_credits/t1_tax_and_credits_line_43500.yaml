@@ -1,0 +1,32 @@
+# T1 General 2025, Ontario edition (form 5006-R), line 148 / line 43500 "Total payable" (CRA 5006-R-25E,
+# docs/cra-forms-2025/5006-r-25e.txt): "Line 148 and line 43500: Add lines 143 to 147. Total payable".
+# The take-home filer has two of those lines: line 143 "Amount from line 42000" (`ca/net_federal_tax`,
+# read directly from the line 42000 part) and line 147 "Provincial or territorial tax (complete and
+# attach your provincial or territorial Form 428, even if the result is "0")" (line 42800). Lines 144
+# (42100), 145 (42120) and 146 (42200) are absent for the take-home filer (no self-employment, no line
+# 23500) and are left out.
+#
+# Line 147 is ON428 line 90, "Enter this amount on line 42800 of your return. Ontario tax =". The ON428
+# form's export is another form's figure, so it is read only as a record list
+# (`ca-on/on428.on428_ontario_tax_line_90`): core/record_total totals the one amount into line 42800
+# (`ca/provincial_tax_line_42800`), with no step of its own for the pure copy.
+#
+# Line 148 is a sum of line 143 and line 42800, rounded once, half-up to the cent, through the shared
+# `ca/cent_rounding` dataset, producing `ca/total_payable` (line 43500).
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca-on/on428.on428_ontario_tax_line_90
+    produces:
+      output: ca/provincial_tax_line_42800
+  - name: core/sum
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts:
+        - ca/net_federal_tax
+        - ca/provincial_tax_line_42800
+    produces:
+      output: ca/total_payable

@@ -217,6 +217,14 @@ attach your provincial or territorial Form 428, even if the result is "0")". Lin
 "Social benefits repayment (amount from line 23500)".
 """
 
+PROVINCIAL_TAX_LINE_42800 = AmountKind.declare(
+    CATALOG, "provincial_tax_line_42800", non_negative=True
+)
+"""Provincial or territorial tax, T1 line 147 and line 42800 "Provincial or territorial tax
+(complete and attach your provincial or territorial Form 428, even if the result is "0")": the
+Ontario tax of Form ON428 line 90 (`ca-on/on428_ontario_tax_line_90`), entered on line 42800 of
+the return."""
+
 INCOME_TAX_DEDUCTED = AmountKind.declare(CATALOG, "income_tax_deducted", non_negative=True)
 """Income tax deducted, T1 line 150 (line 43700) "Total income tax deducted (amounts from all
 Canadian slips)": a starting amount."""
