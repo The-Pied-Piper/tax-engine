@@ -120,6 +120,12 @@ ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
 """Ontario tax after the minimum tax carryover, ON428 line 61 "Line 61: Line 55 minus line 60 (if
 negative, enter "0") =": line 55 minus line 60, not below zero."""
 
+ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
+    CATALOG, "on428_basic_reduction_line_74", non_negative=True
+)
+"""Basic reduction, ON428 line 74 "Basic reduction 294.00": the amount claimed, the first part of
+line 77."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
