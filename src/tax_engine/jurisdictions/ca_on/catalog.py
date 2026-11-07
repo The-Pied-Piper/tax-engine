@@ -51,6 +51,24 @@ ON428_TAX_AT_COLUMN_START_LINE_7 = AmountKind.declare(
 7,510.09, 12,445.60 or 20,957.60): the printed tax at the start of the column that line 1 falls
 in."""
 
+ON428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "on428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, ON428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero."""
+
+ON428_BRACKET_COLUMN_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "on428_bracket_column_rate_line_5", non_negative=True
+)
+"""Bracket column rate, ON428 line 5 (each column prints "Line 5: Rate" with 5.05%, 9.15%, 11.16%,
+12.16% or 13.16%): the printed rate of the column that line 1 falls in."""
+
+ON428_EXCESS_TIMES_COLUMN_RATE_LINE_6 = AmountKind.declare(
+    CATALOG, "on428_excess_times_column_rate_line_6", non_negative=True
+)
+"""Line 4 times the column rate, ON428 line 6 "Line 6: Line 4 multiplied by the percentage from
+line 5 =": line 4 times line 5, a fraction, rounded half-up to the cent."""
+
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )
@@ -260,11 +278,17 @@ ON428_TAX_AFTER_FARMERS_FOOD_DONATION_CREDIT_LINE_88 = AmountKind.declare(
 """Ontario tax after the farmers' food donation credit, ON428 line 88 "Line 88: Line 86 minus line
 87 (if negative, enter "0") =": line 86 minus line 87, never below zero."""
 
+ON428_TAXABLE_INCOME_LINE_89 = AmountKind.declare(
+    CATALOG, "on428_taxable_income_line_89", non_negative=True
+)
+"""Taxable income, ON428 line 89 chart line 1 "Enter your taxable income from line 26000 of your
+return": the T1 taxable income, read from its record list."""
+
 ON428_ONTARIO_HEALTH_PREMIUM_LINE_89 = AmountKind.declare(
     CATALOG, "on428_ontario_health_premium_line_89", non_negative=True
 )
-"""Ontario health premium, ON428 line 89 "Ontario health premium (complete the chart below)".
-PLACEHOLDER: the line 89 ticket (#322) takes over this id as the real output."""
+"""Ontario health premium, ON428 line 89 "Ontario health premium (complete the chart below)": the
+row of the chart that line 1 falls in, its figure rounded half-up to the cent."""
 
 ON428_ONTARIO_TAX_LINE_90 = AmountKind.declare(
     CATALOG, "on428_ontario_tax_line_90", non_negative=True

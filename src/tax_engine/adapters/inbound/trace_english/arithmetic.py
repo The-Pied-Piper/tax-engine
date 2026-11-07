@@ -25,6 +25,7 @@ from tax_engine.domain.trace.arithmetic import (
     LesserOfWithMaximumLine,
     MoreThanPerUnitLine,
     MultipleOverLine,
+    MultipliedByRateLine,
     PercentageAppliedLine,
     PerUnitAmountLine,
     PositivePartOfNegationLine,
@@ -404,6 +405,22 @@ class PercentageAppliedRenderer:
             f"{line.output.label}: {line.percentage_kind.label} "
             f"{EnglishFigures.money(line.percentage_value)}% of {line.amount_kind.label} "
             f"{EnglishFigures.money(line.amount_value)} = {EnglishFigures.money(line.result)} "
+            f"({EnglishFigures.rounding(line.rounding)})"
+        )
+
+
+@english_renderer
+class MultipliedByRateRenderer:
+    """English text for MultipliedByRateLine."""
+
+    line_class = MultipliedByRateLine
+
+    def render(self, line: MultipliedByRateLine) -> str:
+        """The English sentence for `line`."""
+        return (
+            f"{line.output.label}: {line.rate_kind.label} "
+            f"{EnglishFigures.percent(line.rate_value)}% of {line.base_kind.label} "
+            f"{EnglishFigures.money(line.base_value)} = {EnglishFigures.money(line.result)} "
             f"({EnglishFigures.rounding(line.rounding)})"
         )
 

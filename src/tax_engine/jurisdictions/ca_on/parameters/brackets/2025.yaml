@@ -13,8 +13,9 @@
 # Each bracket's `tax_at_start` is the line 7 constant of its column, taken as printed:
 # the constants are not recomputed from the rates, and not rounded.
 # Line 8 is a dollars-and-cents box, so the column's tax rounds half-up to the cent, the
-# owner's decision (`rounding`); line 6 is not rounded on its own, and line 4 takes amounts
-# already in cents.
+# owner's decision, as the form states no rounding rule; the take-home build rounds line 6
+# half-up to the cent in its own part (ca-on/bracket_column_tax_rounding), line 4 takes
+# amounts already in cents, and line 7 is already in cents, so line 8 is the same figure.
 family: ca-on/brackets
 tax_year: 2025
 kind: brackets
