@@ -62,6 +62,15 @@ from tests.forms import composition, derived
 
 D = Decimal
 
+EXACT_TOTAL = ParameterDataset(
+    "ex/total_rounding",
+    2025,
+    ROUNDING_ONLY,
+    RoundingOnly(),
+    NO_ROUNDING,
+    ("https://example.org/rounding",),
+)
+
 SALES = AmountKind("ex/sales")
 COSTS = AmountKind("ex/costs")
 PROFIT = AmountKind("ex/profit", non_negative=True)
@@ -125,7 +134,7 @@ def shop(name: str = "ex/shop") -> FormComposition:
     """Profit of each shop: sales less costs; exports the profit."""
     return composition(
         name,
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         instances=SHOPS,
         exports=[PROFIT],
     )
@@ -135,7 +144,7 @@ def audit(name: str = "ex/audit") -> FormComposition:
     """Each audit: the fee less the total profit of all the shops; exports the result."""
     return composition(
         name,
-        [RecordTotal(SHOP_PROFIT, PROFIT_TOTAL), Subtract(PROFIT_TOTAL, FEE, AUDITED)],
+        [RecordTotal(SHOP_PROFIT, PROFIT_TOTAL), Subtract(EXACT_TOTAL, PROFIT_TOTAL, FEE, AUDITED)],
         instances=AUDITS,
         exports=[AUDITED],
     )
@@ -145,7 +154,7 @@ def levy_each(starting: frozenset[ArtifactKind[Any]]) -> FormComposition:
     """Each audit's fee less the starting sales: a form with instances reading a starting kind."""
     return composition(
         "ex/levy",
-        [Subtract(SALES, FEE, AUDITED)],
+        [Subtract(EXACT_TOTAL, SALES, FEE, AUDITED)],
         instances=AUDITS,
         exports=[AUDITED],
         starting=starting,
@@ -244,7 +253,10 @@ def test_a_selection_without_a_producer_is_refused_naming_the_form() -> None:
     with pytest.raises(InvalidCompositionError, match="ex/shop.*no producer for 'fee'"):
         composition(
             "ex/shop",
-            [Subtract(SALES, COSTS, PROFIT), Subtract(PROFIT, FEE, AUDITED)],
+            [
+                Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT),
+                Subtract(EXACT_TOTAL, PROFIT, FEE, AUDITED),
+            ],
             instances=SHOPS,
             exports=[AUDITED],
         )
@@ -255,7 +267,10 @@ def test_an_export_nothing_in_the_form_produces_is_refused_naming_the_form() -> 
         InvalidCompositionError, match="ex/shop.*output 'fee' is produced by nothing"
     ):
         composition(
-            "ex/shop", [Subtract(SALES, COSTS, PROFIT)], instances=SHOPS, exports=[PROFIT, FEE]
+            "ex/shop",
+            [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+            instances=SHOPS,
+            exports=[PROFIT, FEE],
         )
 
 
@@ -283,7 +298,9 @@ def test_an_export_that_is_another_forms_export_is_refused() -> None:
 
 def test_a_form_must_export_something() -> None:
     with pytest.raises(InvalidManifestError, match="ex/shop.*exports"):
-        composition("ex/shop", [Subtract(SALES, COSTS, PROFIT)], instances=SHOPS, exports=[])
+        composition(
+            "ex/shop", [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)], instances=SHOPS, exports=[]
+        )
 
 
 def test_a_name_the_kinds_lack_is_refused() -> None:
@@ -303,7 +320,12 @@ def test_instances_that_are_not_a_record_list_are_refused_naming_the_form() -> N
     with pytest.raises(
         InvalidCompositionError, match="form 'ex/shop': instances 'ex/sales' is not a record list"
     ):
-        composition("ex/shop", [Subtract(SALES, COSTS, PROFIT)], instances=SALES, exports=[PROFIT])
+        composition(
+            "ex/shop",
+            [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+            instances=SALES,
+            exports=[PROFIT],
+        )
 
 
 # --- the set: order by imports ------------------------------------------------------------------
@@ -317,7 +339,7 @@ def test_a_form_that_imports_runs_after_the_form_that_exports_it_even_if_listed_
 
 def test_forms_that_do_not_import_each_other_run_in_name_order() -> None:
     forms = flat(
-        [Subtract(LEVY, FEE_TOTAL, GRAND)],
+        [Subtract(EXACT_TOTAL, LEVY, FEE_TOTAL, GRAND)],
         inputs=frozenset({SHOPS, LEVY, FEE_TOTAL}),
         outputs=frozenset({GRAND}),
         forms=[shop("ex/zebra"), shop("ex/apple"), shop("ex/mango")],
@@ -336,7 +358,7 @@ def test_a_cycle_of_imports_is_refused_naming_the_forms_on_it() -> None:
     # shop imports audit.audited, audit imports shop.profit.
     shop_needs_audit = composition(
         "ex/shop",
-        [Subtract(SALES, COSTS, PROFIT), RecordTotal(AUDIT_AUDITED, FEE_TOTAL)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT), RecordTotal(AUDIT_AUDITED, FEE_TOTAL)],
         instances=SHOPS,
         exports=[PROFIT, FEE_TOTAL],
     )
@@ -351,7 +373,7 @@ def test_a_cycle_of_imports_is_refused_naming_the_forms_on_it() -> None:
 def test_a_form_outside_the_cycle_is_not_named() -> None:
     shop_needs_audit = composition(
         "ex/shop",
-        [Subtract(SALES, COSTS, PROFIT), RecordTotal(AUDIT_AUDITED, FEE_TOTAL)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT), RecordTotal(AUDIT_AUDITED, FEE_TOTAL)],
         instances=SHOPS,
         exports=[PROFIT, FEE_TOTAL],
     )
@@ -371,7 +393,7 @@ def test_an_import_of_another_shape_than_the_export_is_refused() -> None:
     other = RecordListKind("ex/shop.profit", fields=(SALES,))
     needs_sales = composition(
         "ex/audit",
-        [RecordTotal(other, PROFIT_TOTAL), Subtract(PROFIT_TOTAL, FEE, AUDITED)],
+        [RecordTotal(other, PROFIT_TOTAL), Subtract(EXACT_TOTAL, PROFIT_TOTAL, FEE, AUDITED)],
         instances=AUDITS,
         exports=[AUDITED],
     )
@@ -398,7 +420,7 @@ def test_a_form_named_like_the_return_is_refused() -> None:
 def test_a_forms_instances_kind_must_be_one_of_the_computations_inputs() -> None:
     with pytest.raises(InvalidCompositionError, match="ex/shop.*'ex/shops'.*not.*input"):
         flat(
-            [Subtract(FEE, COSTS, LEVY)],
+            [Subtract(EXACT_TOTAL, FEE, COSTS, LEVY)],
             inputs=frozenset({FEE, COSTS}),
             outputs=frozenset({LEVY}),
             forms=[shop()],
@@ -418,7 +440,7 @@ def test_the_default_form_is_an_ordinary_form_with_one_instance_that_exports_lik
 def test_a_form_without_instances_takes_the_starting_artifacts_it_reads() -> None:
     once = composition(
         "ex/once",
-        [Subtract(SALES, COSTS, LEVY)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
         exports=[LEVY],
         starting=frozenset({SALES, COSTS, FEE}),
     )
@@ -430,7 +452,7 @@ def test_a_form_without_instances_takes_the_starting_artifacts_it_reads() -> Non
 def test_a_form_without_instances_reads_the_starting_artifacts_it_exports_unchanged() -> None:
     once = composition(
         "ex/once",
-        [Subtract(SALES, COSTS, LEVY)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
         exports=[LEVY, FEE],
         starting=frozenset({SALES, COSTS, FEE}),
     )
@@ -441,7 +463,10 @@ def test_a_form_without_instances_reads_the_starting_artifacts_it_exports_unchan
 def test_a_form_without_instances_does_not_take_what_is_not_a_starting_artifact() -> None:
     with pytest.raises(InvalidCompositionError, match="no producer for 'costs'") as caught:
         composition(
-            "ex/once", [Subtract(SALES, COSTS, LEVY)], exports=[LEVY], starting=frozenset({SALES})
+            "ex/once",
+            [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
+            exports=[LEVY],
+            starting=frozenset({SALES}),
         )
 
     assert str(caught.value).startswith("form 'ex/once': ")  # wired before any instance exists
@@ -450,7 +475,7 @@ def test_a_form_without_instances_does_not_take_what_is_not_a_starting_artifact(
 
 def test_a_forms_inputs_are_only_the_starting_artifacts_it_reads() -> None:
     plain = flat(
-        [Subtract(SALES, COSTS, LEVY)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
         inputs=frozenset({SALES, COSTS, AUDITS}),
         outputs=frozenset({LEVY}),
         forms=[
@@ -530,7 +555,7 @@ def test_an_import_no_form_exports_is_refused_for_a_form_without_instances() -> 
 def test_an_input_no_form_reads_is_refused() -> None:
     with pytest.raises(InvalidCompositionError, match="input 'fee' is consumed by nothing"):
         flat(
-            [Subtract(SALES, COSTS, LEVY)],
+            [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
             inputs=frozenset({SALES, COSTS, FEE}),
             outputs=frozenset({LEVY}),
         )
@@ -538,7 +563,7 @@ def test_an_input_no_form_reads_is_refused() -> None:
 
 def test_an_input_one_form_reads_and_another_form_does_not_is_fine() -> None:
     forms = flat(
-        [Subtract(SALES, COSTS, LEVY)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
         inputs=frozenset({SALES, COSTS, FEE}),
         outputs=frozenset({LEVY}),
         forms=[
@@ -561,7 +586,7 @@ def test_an_input_one_form_reads_and_another_form_does_not_is_fine() -> None:
 def test_an_input_that_a_form_also_produces_is_refused() -> None:
     with pytest.raises(InvalidCompositionError, match="input 'levy' is also produced by Subtract"):
         flat(
-            [Subtract(SALES, COSTS, LEVY)],
+            [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
             inputs=frozenset({SALES, COSTS, LEVY}),
             outputs=frozenset({LEVY}),
         )
@@ -607,7 +632,7 @@ def test_instance_order_is_the_order_of_the_records_given() -> None:
 def test_two_forms_importing_one_export_both_see_all_its_records() -> None:
     review = composition(
         "ex/review",
-        [RecordTotal(SHOP_PROFIT, PROFIT_TOTAL), Subtract(PROFIT_TOTAL, FEE, AUDITED)],
+        [RecordTotal(SHOP_PROFIT, PROFIT_TOTAL), Subtract(EXACT_TOTAL, PROFIT_TOTAL, FEE, AUDITED)],
         instances=AUDITS,
         exports=[AUDITED],
     )
@@ -844,7 +869,7 @@ def test_a_failure_inside_an_instance_names_the_form_and_the_position(position: 
 def test_a_non_contract_domain_error_keeps_its_class_and_gains_the_names() -> None:
     guarded = composition(
         "ex/shop",
-        [Reject(SALES, BROKEN), Subtract(BROKEN, COSTS, PROFIT)],
+        [Reject(SALES, BROKEN), Subtract(EXACT_TOTAL, BROKEN, COSTS, PROFIT)],
         instances=SHOPS,
         exports=[PROFIT],
     )
@@ -861,7 +886,7 @@ def test_a_failure_in_a_form_that_imports_names_that_form_and_the_instance() -> 
         [
             Reject(FEE, BROKEN),
             RecordTotal(SHOP_PROFIT, PROFIT_TOTAL),
-            Subtract(PROFIT_TOTAL, BROKEN, AUDITED),
+            Subtract(EXACT_TOTAL, PROFIT_TOTAL, BROKEN, AUDITED),
         ],
         instances=AUDITS,
         exports=[AUDITED],
@@ -873,7 +898,7 @@ def test_a_failure_in_a_form_that_imports_names_that_form_and_the_instance() -> 
 
 def test_a_failure_of_a_form_without_instances_names_the_form_and_instance_1() -> None:
     boom = flat(
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         inputs=frozenset({SALES, COSTS}),
         outputs=frozenset({PROFIT}),
     )
@@ -887,7 +912,7 @@ def test_a_failure_of_a_form_without_instances_names_the_form_and_instance_1() -
 def once_form() -> FormComposition:
     return composition(
         "ex/once",
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         exports=[PROFIT],
         starting=frozenset({SALES, COSTS}),
     )
@@ -906,7 +931,7 @@ def test_a_wiring_error_in_a_form_without_an_instances_list_names_the_form_only(
     with pytest.raises(InvalidCompositionError, match=r"^form 'ex/once': ") as caught:
         composition(
             "ex/once",
-            [Subtract(SALES, COSTS, PROFIT)],
+            [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
             exports=[PROFIT],
             starting=frozenset({SALES}),
         )
@@ -930,7 +955,7 @@ def test_the_trace_of_a_form_without_an_instances_list_has_one_line_at_position_
 
 def lone_set() -> FormSet:
     return flat(
-        [Subtract(SALES, COSTS, LEVY)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
         inputs=frozenset({SALES, COSTS}),
         outputs=frozenset({LEVY}),
     )
@@ -938,7 +963,7 @@ def lone_set() -> FormSet:
 
 def lone_composition() -> Composition:
     return Composition(
-        [Subtract(SALES, COSTS, LEVY)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
         inputs=frozenset({SALES, COSTS}),
         outputs=frozenset({LEVY}),
     )
@@ -966,11 +991,13 @@ def test_its_starting_kind_errors_are_the_compositions() -> None:
 def test_its_wiring_errors_are_those_of_the_composition_prefixed_with_the_form() -> None:
     with pytest.raises(InvalidCompositionError) as bare:
         Composition(
-            [Subtract(SALES, COSTS, LEVY)], inputs=frozenset({SALES}), outputs=frozenset({LEVY})
+            [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
+            inputs=frozenset({SALES}),
+            outputs=frozenset({LEVY}),
         )
     with pytest.raises(InvalidCompositionError) as wrapped:
         flat(
-            [Subtract(SALES, COSTS, LEVY)],
+            [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
             inputs=frozenset({SALES}),
             outputs=frozenset({LEVY}),
         )
@@ -1044,7 +1071,7 @@ def side(
     kind = RecordListKind(f"{name}s", fields=(SALES, COSTS))
     return composition(
         name,
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         instances=kind,
         exports=[PROFIT],
         max_instances=maximum,
@@ -1057,7 +1084,7 @@ def single(name: str, **limits: Any) -> FormComposition:
     """A form without an instances list (one instance) that exports the profit."""
     return composition(
         name,
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         exports=[PROFIT],
         starting=frozenset({SALES, COSTS}),
         **limits,
@@ -1095,7 +1122,7 @@ def copies(name: str, *, group: str | None = None) -> FormComposition:
     """A form of up to one copy whose copies carry no figures: it reads sales and costs as given."""
     return composition(
         name,
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         instances=RecordListKind(f"{name}_copies", fields=()),
         exports=[PROFIT],
         starting=frozenset({SALES, COSTS}),
@@ -1510,7 +1537,7 @@ def test_a_group_naming_one_form_is_refused_when_the_set_is_built() -> None:
             forms=[
                 composition(
                     "ex/shop",
-                    [Subtract(SALES, COSTS, PROFIT)],
+                    [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
                     instances=SHOPS,
                     exports=[PROFIT],
                     exclusive_group="ex/alone",
@@ -1528,14 +1555,6 @@ def test_the_limits_are_checked_after_the_instances_are_all_given() -> None:
 
 # --- a form reading its own export: the records of its earlier runs ------------------------------
 
-EXACT_TOTAL = ParameterDataset(
-    "ex/total_rounding",
-    2025,
-    ROUNDING_ONLY,
-    RoundingOnly(),
-    NO_ROUNDING,
-    ("https://example.org/rounding",),
-)
 AMOUNT = AmountKind("ex/amount")
 CARRIED = AmountKind("ex/carried")
 STEP_TOTAL = AmountKind("ex/total")
@@ -1694,7 +1713,7 @@ def test_a_cycle_between_two_forms_is_still_refused_when_one_reads_its_own_expor
     reading_shop = composition(
         "ex/shop",
         [
-            Subtract(SALES, COSTS, PROFIT),
+            Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT),
             RecordTotal(AUDIT_AUDITED, FEE_TOTAL),
             RecordTotal(SHOP_PROFIT, PROFIT_TOTAL),
             Sum(EXACT_TOTAL, (PROFIT_TOTAL, FEE_TOTAL), GRAND),
@@ -1789,7 +1808,9 @@ def test_the_trace_names_are_those_of_any_form() -> None:
 
 def test_a_form_set_refuses_a_blank_starting_artifact() -> None:
     forms = flat(
-        [Subtract(SALES, COSTS, LEVY)], inputs=frozenset({SALES, COSTS}), outputs=frozenset({LEVY})
+        [Subtract(EXACT_TOTAL, SALES, COSTS, LEVY)],
+        inputs=frozenset({SALES, COSTS}),
+        outputs=frozenset({LEVY}),
     )
 
     with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):
@@ -1895,7 +1916,7 @@ def test_each_form_has_its_own_blank_inputs() -> None:
     open_form = less_form(defaults=[Artifact(COSTS, BLANK)])
     strict_form = composition(
         "ex/strict",
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         exports=[PROFIT],
         starting=frozenset({SALES, COSTS}),
     )
@@ -2008,7 +2029,7 @@ def test_a_blank_field_where_the_default_is_a_value_is_read_as_the_default() -> 
     blank_costs = Artifact(SHOPS, RecordList(SHOPS.fields, [{SALES: D(100), COSTS: BLANK}]))
     shop_form = composition(
         "ex/shop",
-        [Subtract(SALES, COSTS, PROFIT)],
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
         instances=SHOPS,
         exports=[PROFIT],
         field_defaults=[Artifact(COSTS, D(30))],
@@ -2022,7 +2043,7 @@ def test_a_default_for_something_that_is_not_a_field_is_refused() -> None:
     with pytest.raises(InvalidCompositionError, match="default for 'fee', which is not a field"):
         composition(
             "ex/shop",
-            [Subtract(SALES, COSTS, PROFIT)],
+            [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
             instances=SHOPS,
             exports=[PROFIT],
             field_defaults=[Artifact(FEE, D(1))],
@@ -2043,7 +2064,7 @@ def test_a_blank_nothing_accepts_is_refused_even_when_the_form_reading_it_has_no
 ):
     fee_less = composition(
         "ex/audit",
-        [Subtract(SALES, FEE, AUDITED)],
+        [Subtract(EXACT_TOTAL, SALES, FEE, AUDITED)],
         instances=AUDITS,
         exports=[AUDITED],
         starting=frozenset({SALES}),

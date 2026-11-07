@@ -15,6 +15,7 @@ import pytest
 
 import tax_engine.domain.trace
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
 from tax_engine.domain.trace import forms as trace_forms
 
@@ -26,7 +27,9 @@ EXPENSES = AmountKind("ex/expenses")
 UNIT_AMOUNT = AmountKind("ex/unit_amount")
 UNIT_TOTAL = AmountKind("ex/unit_total")
 
-SUBTRACTED = SubtractedLine(NET_INCOME, GROSS_RENT, D("12000"), EXPENSES, D("2000"), D("10000"))
+SUBTRACTED = SubtractedLine(
+    NET_INCOME, GROSS_RENT, D("12000"), EXPENSES, D("2000"), NO_ROUNDING, D("10000")
+)
 TOTAL = RecordTotalLine(UNIT_TOTAL, UNIT_AMOUNT, (D("100"), D("250.50")), D("350.50"))
 
 
