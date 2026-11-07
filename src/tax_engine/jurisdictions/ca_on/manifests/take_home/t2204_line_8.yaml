@@ -1,0 +1,14 @@
+# T2204 (2025) line 8: "Line 6 minus line 7 (if negative, enter "0") = 8". The difference of two
+# lines, a calculation, so step 1 takes it through core/subtract_not_below_zero.
+#
+# Step 1 subtracts line 7 from line 6, both produced by their own tickets, and keeps the result at
+# or above 0: a line 7 above line 6 gives "0", as the form says.
+form:
+  name: ca/t2204
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/t2204_line_6
+      less: ca/t2204_line_7
+    produces:
+      output: ca/t2204_line_8
