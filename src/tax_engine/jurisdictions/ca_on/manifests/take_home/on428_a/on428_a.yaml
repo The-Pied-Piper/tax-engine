@@ -1,7 +1,7 @@
 # Schedule ON428-A (Ontario LIFT credit) 2025. This part names the form and its exports; line parts
 # carry capabilities. Export: the Part A line 20 LIFT credit for a single filer
-# (`ca-on/lift_credit_single`), which ON428 line 62140 reads (ON428 line 85/86 on the Ontario form,
-# read by #294).
+# (`ca-on/lift_credit_single`), the one figure another form reads: line 20 says to enter it on line
+# 62140 of Form ON428.
 form:
   name: ca-on/on428_a
   required: true
