@@ -3,12 +3,11 @@
 Form text (Form ON428, CRA 5006-c-25e.txt): "Line 88: Line 86 minus line 87 (if negative, enter
 "0") =". Line 88 is one core/subtract_not_below_zero: line 86
 (`ca-on/on428_tax_after_lift_credit_line_86`, required) less line 87
-(`ca-on/on428_farmers_food_donation_credit_line_87`), which is an optional input with blank
-fallback 0. A salary-only caller makes no community food program donation, so a
-request that leaves line 87 out is read as blank, and the line 88 part reads that blank as 0.
-Lines 86 and 87 come from other parts, so this test declares them as the inputs of its header
-(line 87 optional, as its real inputs part declares it) and loads the take-home folder's
-`on428_line_88.yaml` beside it. The output is
+(`ca-on/on428_farmers_food_donation_credit_line_87`). Line 87 is always produced by its own part
+(0 when the donations are blank), so line 88 takes it as a required input with no blank fallback:
+a blank line 87 is refused. Lines 86 and 87 come from other parts, so this test declares them as
+the inputs of its header and loads the take-home folder's `on428_line_88.yaml` beside it. The
+output is
 `ca-on/on428_tax_after_farmers_food_donation_credit_line_88`, exported by the form.
 """
 
@@ -38,10 +37,7 @@ inputs:
   - name: {LINE_86}
     required: true
   - name: {LINE_87}
-    required: false
-    default: null
-    basis: 'Line 87 and line 62150: Enter the amount of qualifying donations that have also been
-      claimed as a charitable donation. multiplied by 25%'
+    required: true
 outputs:
   - {LINE_86}
 capabilities: []
@@ -57,11 +53,12 @@ capabilities: []
 """
 
 
-def _line_88(take_home_service: TakeHomeService, line_86: str, line_87: str | None) -> Decimal:
+def _line_88(take_home_service: TakeHomeService, line_86: str, line_87: str) -> Decimal:
     kinds = bundled_kinds()
-    given = [Artifact(kinds.kind(LINE_86), D(line_86))]
-    if line_87 is not None:
-        given.append(Artifact(kinds.kind(LINE_87), D(line_87)))
+    given = [
+        Artifact(kinds.kind(LINE_86), D(line_86)),
+        Artifact(kinds.kind(LINE_87), D(line_87)),
+    ]
     worksheet = take_home_service(HEADER, FORM, PART).compute(CODE, 2025, *given)["ca-on/on428"][0]
     value = worksheet.get(kinds.kind(LINE_88)).value
     assert isinstance(value, Decimal)
@@ -79,10 +76,11 @@ def _line_88(take_home_service: TakeHomeService, line_86: str, line_87: str | No
         ("14102.14", "14102.14"),
     ],
 )
-def test_line_88_is_line_86_when_line_87_is_left_out(
+def test_line_88_is_line_86_when_line_87_is_0(
     take_home_service: TakeHomeService, line_86: str, line_88: str
 ) -> None:
-    assert _line_88(take_home_service, line_86, None) == D(line_88)
+    # Line 87 is the credit on blank donations, which is 0.00.
+    assert _line_88(take_home_service, line_86, "0.00") == D(line_88)
 
 
 def test_line_88_is_line_86_minus_line_87(take_home_service: TakeHomeService) -> None:
