@@ -15,21 +15,13 @@ starting inputs. `ca/ei_overpayment` (the T1 line 45000 amount) is exported by t
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.refund import (
     EI_OVERPAYMENT,
@@ -38,14 +30,11 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_LINE_15_COUNT,
     T2204_PREMIUMS_DEDUCTED,
 )
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = (
-    Path(tax_engine.jurisdictions.ca_on.__file__).parent
-    / "manifests"
-    / "take_home"
-    / "t2204_line_15.yaml"
-)
+
+PART = "t2204_line_15.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -71,29 +60,15 @@ FORM = dedent("""\
     """)
 
 
-def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
-    parts.mkdir(parents=True)
-    (parts / "a_header.yaml").write_text(HEADER)
-    (parts / "b_form.yaml").write_text(FORM)
-    shutil.copy(PART, parts / "c_line_15.yaml")
-    roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
-    parameter_roots = dict(roots)
-    roots[Namespace("ca-on")] = tmp_path
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, tax_engine.registrations.artifact_kinds()),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
-        tax_engine.registrations.capabilities(),
-    )
-
-
-def t2204(tmp_path: Path, line_4: str, line_14: str) -> Worksheet:
+def t2204(take_home_service: TakeHomeService, line_4: str, line_14: str) -> Worksheet:
     """The T2204 worksheet for a line 4 and a line 14."""
     starting = [
         Artifact(T2204_PREMIUMS_DEDUCTED, D(line_4)),
         Artifact(T2204_LINE_14, D(line_14)),
     ]
-    (sheet,) = service(tmp_path).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
+    (sheet,) = take_home_service(HEADER, FORM, PART).compute(
+        JurisdictionCode("CA-ON"), 2025, *starting
+    )["ca/t2204"]
     return sheet
 
 
@@ -121,9 +96,14 @@ def t2204(tmp_path: Path, line_4: str, line_14: str) -> Worksheet:
     ],
 )
 def test_line_15_count_and_ei_overpayment(
-    tmp_path: Path, line_4: str, line_14: str, line_15: str, count: int, overpayment: str
+    take_home_service: TakeHomeService,
+    line_4: str,
+    line_14: str,
+    line_15: str,
+    count: int,
+    overpayment: str,
 ) -> None:
-    sheet = t2204(tmp_path, line_4, line_14)
+    sheet = t2204(take_home_service, line_4, line_14)
     assert sheet.get(T2204_LINE_15).value == D(line_15)
     assert sheet.get(T2204_LINE_15_COUNT).value == count
     assert sheet.get(EI_OVERPAYMENT).value == D(overpayment)
