@@ -1,0 +1,17 @@
+# Schedule 6 (5000-S6, 2025) line 22, the basic CWB before reduction. The form prints:
+# "Line 22: Enter whichever is less: amount from line 20 or line 21." (docs/cra-forms-2025/
+# 5000-s6-25e.txt, line 296).
+#
+# Line 20 is `ca/cwb_working_income_rate_line_20` (from schedule_6_line_20.yaml). Line 21 is the
+# printed $1,633 maximum, `ca/cwb_maximum` (from schedule_6_line_21.yaml). The lesser of the two is
+# the output; a tie keeps the first amount listed, line 20, in form order.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/cwb_working_income_rate_line_20
+        - ca/cwb_maximum
+    produces:
+      output: ca/cwb_basic_benefit_line_22
