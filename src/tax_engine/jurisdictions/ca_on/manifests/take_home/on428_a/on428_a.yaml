@@ -1,15 +1,10 @@
 # Schedule ON428-A (Ontario LIFT credit) 2025. This part names the form and its exports; line parts
-# carry capabilities. Exports: the LIFT employment income line (`ca-on/lift_employment_income`), which
-# the return reads from the form, the Part A line 17 excess over the individual threshold
-# (`ca-on/lift_single_excess_over_threshold`), the Part A line 19 LIFT reduction
-# (`ca-on/lift_reduction`), and the LIFT credit for a single filer (`ca-on/lift_credit_single`,
-# line 20).
+# carry capabilities. Export: the Part A line 20 LIFT credit for a single filer
+# (`ca-on/lift_credit_single`), which ON428 line 62140 reads (ON428 line 85/86 on the Ontario form,
+# read by #294).
 form:
   name: ca-on/on428_a
   required: true
   exports:
-    - ca-on/lift_employment_income
-    - ca-on/lift_single_excess_over_threshold
-    - ca-on/lift_reduction
     - ca-on/lift_credit_single
 capabilities: []
