@@ -1,9 +1,9 @@
 # T1 General 2025, Ontario edition (form 5006-R), taxable income, lines 10100 to 26000. This part names
 # the form and its exports; each line's capability goes in a part of its own with the same `form.name`.
-# Exports: what other forms read from this one. Line 23600 (net income, `ca/net_income`) is read by
-# ON428-A line 6, Schedule 6 line 7 and T1 line 30000. Line 26000 (taxable income,
-# `ca/taxable_income`) is read by T1 line 76 and ON428 lines 4 and 89. Lines 15000 and 23300 are
-# read inside the form by line 23400 and are not exported.
+# Exports: what the take-home forms read from this one. Line 23600 (net income, `ca/net_income`) is
+# read by ON428-A line 6, Schedule 6 line 7 and T1 line 77 (line 30000). Line 26000 (taxable income,
+# `ca/taxable_income`) is read by T1 line 70 and ON428 line 1. Lines 15000 and 23300 are read inside
+# the form by line 23400 and are not exported.
 form:
   name: ca/t1_taxable_income
   required: true
