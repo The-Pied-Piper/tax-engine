@@ -418,3 +418,13 @@ def test_the_working_income_rate_of_schedule_6_line_20_is_a_non_negative_money_k
     kind = _kind(registry, "ca/cwb_working_income_rate_line_20")
     assert kind.value_type is Decimal
     assert non_negative(kind) is True
+
+
+def test_the_basic_benefit_before_reduction_of_schedule_6_line_22_is_a_non_negative_money_kind(
+    registry: ArtifactRegistry,
+) -> None:
+    # Schedule 6 line 22 "Enter whichever is less: amount from line 20 or line 21.": the lesser of
+    # two non-negative amounts is itself non-negative.
+    kind = _kind(registry, "ca/cwb_basic_benefit_line_22")
+    assert kind.value_type is Decimal
+    assert non_negative(kind) is True
