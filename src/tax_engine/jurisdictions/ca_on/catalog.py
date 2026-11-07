@@ -115,7 +115,7 @@ ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "on428_tax_on_taxable_income_line_8", non_negative=True
 )
 """Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
-line 6 plus line 7. Temporary copy until the line 8 part is on main."""
+line 6 plus line 7."""
 
 ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
     CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True
