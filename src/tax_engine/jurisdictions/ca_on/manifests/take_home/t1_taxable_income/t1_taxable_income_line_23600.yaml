@@ -7,6 +7,8 @@ form:
   name: ca/t1_taxable_income
 capabilities:
   - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/t1_taxable_income_line_23600_rounding
     consumes:
       amount: ca/net_income_before_adjustments
       less: ca/social_benefits_repayment

@@ -8,6 +8,8 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/subtract_not_below_zero
+    params:
+      rounding: ca-on/on428_a_line_20_rounding
     consumes:
       amount: ca-on/lift_maximum_credit
       less: ca-on/lift_reduction

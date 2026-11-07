@@ -12,6 +12,8 @@ capabilities:
     produces:
       output: ca/t2204_exemption
   - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/t2204_line_7_rounding
     consumes:
       amount: ca/t2204_line_3
       less: ca/t2204_exemption

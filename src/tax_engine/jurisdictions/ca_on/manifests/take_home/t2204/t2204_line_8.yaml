@@ -7,6 +7,8 @@ form:
   name: ca/t2204
 capabilities:
   - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/t2204_line_8_rounding
     consumes:
       amount: ca/t2204_line_6
       less: ca/t2204_line_7

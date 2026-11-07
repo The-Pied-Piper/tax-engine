@@ -1,0 +1,9 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 65: "Line 65: Line 63 minus line 64 (if
+# negative, enter "0")". The line is a dollars-and-cents box, so the difference rounds half-up to
+# the cent. The form states no rounding rule, so this is the owner's decision.
+family: ca-on/on428_line_65_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}

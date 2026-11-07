@@ -6,6 +6,8 @@ capabilities:
   # Line 6 is "Amount from line E of Part 2", a copy, so line 7 reads line E (the maximum basic
   # exemption) itself. "Line 5 minus line 6 (if negative, enter "0")":
   - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/schedule_8_line_7_rounding
     consumes:
       amount: ca/cpp_part_3_line_5
       less: ca/cpp_basic_exemption

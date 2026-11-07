@@ -1,0 +1,9 @@
+# Form T2204 (2025) line 13: "Line 9 minus line 12 (if negative, enter "0")". The line is a
+# dollars-and-cents box, so the difference rounds half-up to the cent. The form states no rounding
+# rule, so this is the owner's decision.
+family: ca/t2204_line_13_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
