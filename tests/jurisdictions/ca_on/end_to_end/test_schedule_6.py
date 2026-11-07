@@ -10,8 +10,8 @@ line 167, is not built yet. This is not a worked return: no return file, no slip
 
 Lines 11 and 14 are optional inputs that are never typed in here: they stay blank, and the line 12
 and 15 steps read the blank as 0. Lines 16 and 23 are copies of the working income and adjusted
-family net income and have no step, so they get no check; lines 18 and 25 read the figures those lines copy. Lines 2 to 4, 8, 9 and the disability and
-election parts are not built.
+family net income and have no step, so they get no check; lines 18 and 25 read the figures those
+lines copy. Lines 2 to 4, 8, 9 and the disability and election parts are not built.
 
 Form text: Schedule 6 (CRA 5000-S6, 2025, docs/cra-forms-2025/5000-s6-25e.txt), "Line 5: Add lines
 1 to 4"; "Line 7: Net income from line 23600 of the return"; "Line 17: Base amount 3,000.00"; "Line
