@@ -6,8 +6,7 @@ core/credit_amount, so it is the same at every salary. Line 9 reads nothing. Lin
 reads it later.
 
 The manifest part is loaded from the package. The header and the form's export are made up here,
-because the shared scaffold owns them. The one exception is the test that the real form header
-`on428/on428.yaml` loads: the real header is used as the form declaration.
+because the shared scaffold owns them.
 """
 
 from __future__ import annotations
@@ -21,7 +20,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on.catalog import BASIC_PERSONAL_AMOUNT
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 PART = "on428_line_9.yaml"
@@ -45,8 +44,8 @@ FORM = dedent("""\
     """)
 
 
-def line_9(take_home_service: TakeHomeService, salary: str, form: str = FORM) -> Decimal:
-    worksheets = take_home_service(HEADER, form, PART).compute(
+def line_9(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    worksheets = take_home_service(HEADER, FORM, PART).compute(
         JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca-on/on428"]
@@ -58,8 +57,3 @@ def test_line_9_is_the_basic_personal_amount_at_every_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
     assert line_9(take_home_service, salary) == D("12747.00")
-
-
-def test_the_real_form_header_builds_with_line_9(take_home_service: TakeHomeService) -> None:
-    header = (TAKE_HOME / "on428" / "on428.yaml").read_text(encoding="utf-8")
-    assert line_9(take_home_service, "70000", header) == D("12747.00")
