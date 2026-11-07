@@ -138,11 +138,46 @@ ON428_SURTAX_20_PERCENT_TIER_LINE_66 = AmountKind.declare(
 """Surtax 20% tier, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20% (if negative, enter
 "0") =": 20% of line 65 above $5,710, never below 0."""
 
+ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
+    CATALOG, "on428_surtax_total_line_68", non_negative=True
+)
+"""Ontario surtax, ON428 line 68 "Line 66 plus line 67 =": line 66 plus line 67."""
+
+ON428_DIVIDEND_TAX_CREDIT_LINE_57 = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_line_57", non_negative=True
+)
+"""Ontario dividend tax credit, ON428 line 57 "Line 57 and line and line 61520: Ontario dividend
+tax credit (use Worksheet ON428)": an optional input that a salary-only caller leaves out."""
+
+ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
+    CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
+)
+"""ON428 line 69 "Line 69: Line 62 plus line 68 =": line 61 plus line 68."""
+
 ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
     CATALOG, "on428_basic_reduction_line_74", non_negative=True
 )
 """Basic reduction, ON428 line 74 "Basic reduction 294.00": the amount claimed, the first part of
 line 77."""
+
+ON428_TAX_AFTER_DIVIDEND_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "on428_tax_after_dividend_credit_line_71", non_negative=True
+)
+"""Ontario tax after the dividend tax credit, ON428 line 71 "Line 71: Line 69 minus line 70 (if
+negative, enter "0") =": line 69 minus the dividend tax credit, not below zero."""
+
+ON428_ADDITIONAL_TAX_FOR_MINIMUM_TAX_LINE_72 = AmountKind.declare(
+    CATALOG, "on428_additional_tax_for_minimum_tax_line_72", non_negative=True
+)
+"""Additional tax for minimum tax purposes, ON428 line 72 "Line 72: If you entered an amount on line
+11 of Part 5 of Form T691, use Worksheet ON428 to calculate your additional tax for minimum tax
+purposes": an optional input that a salary-only caller leaves out."""
+
+ON428_TAX_WITH_MINIMUM_TAX_ADDITION_LINE_73 = AmountKind.declare(
+    CATALOG, "on428_tax_with_minimum_tax_addition_line_73", non_negative=True
+)
+"""Tax with the minimum tax addition, ON428 line 73 "Line 73: Line 71 plus line 72 =": line 71 plus
+line 72."""
 
 ON428_TAX_REDUCTION_LINE_77 = AmountKind.declare(
     CATALOG, "on428_tax_reduction_line_77", non_negative=True

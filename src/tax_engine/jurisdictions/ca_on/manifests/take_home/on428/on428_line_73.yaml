@@ -1,0 +1,17 @@
+# Form ON428 (2025, CRA 5006-c-25e) line 73, "Line 73: Line 71 plus line 72 =": the tax with the
+# minimum tax addition. It sums the tax after the dividend tax credit (line 71,
+# `ca-on/on428_tax_after_dividend_credit_line_71`) and the additional tax for minimum tax purposes
+# (line 72, `ca-on/on428_additional_tax_for_minimum_tax_line_72`). Line 72 is an optional input that
+# a salary-only caller leaves out, read as blank and then as 0 by the blank rule below. Line 73 is the
+# output `ca-on/on428_tax_with_minimum_tax_addition_line_73`.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        [ca-on/on428_tax_after_dividend_credit_line_71, ca-on/on428_additional_tax_for_minimum_tax_line_72]
+    blank:
+      ca-on/on428_additional_tax_for_minimum_tax_line_72: "0"
+    produces:
+      output: ca-on/on428_tax_with_minimum_tax_addition_line_73
