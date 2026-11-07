@@ -1,12 +1,13 @@
 """Progressive bracket schedules: the form's bracket columns over ascending thresholds.
 
-Each bracket holds the threshold it starts from (`lower`) and its `rate`. The schedule computes
-each bracket's `tax_at_start`, the tax at the bracket's start: the exact cumulative tax on the
-brackets below (never a sum of rounded figures), rounded with the schedule's
+Each bracket holds the threshold it starts from (`lower`), its `rate` and, optionally, the tax at
+its start as the form prints it (`tax_at_start`). A printed `tax_at_start` is used as given: it is
+not computed and not rounded. A bracket without one gets its tax at the start computed: the exact
+cumulative tax on the brackets below (never a sum of rounded figures), rounded with the schedule's
 `tax_at_start_rounding` rule; the first bracket's is 0, put through the same rule. By default the
-rule is none, so the tax at each start is the exact sum. The tax on an amount is the form's two
-lines for the bracket the amount falls in: the rate on the excess over the bracket's lower, plus
-its tax at its start. An amount at a threshold falls in the lower bracket, as the columns read
+rule is none, so a computed tax at each start is the exact sum. The tax on an amount is the form's
+two lines for the bracket the amount falls in: the rate on the excess over the bracket's lower,
+plus its tax at its start. An amount at a threshold falls in the lower bracket, as the columns read
 "more than ... but not more than ...".
 
 A schedule is parameter data, resolved per (family, tax_year); the code holds no jurisdiction's
@@ -26,13 +27,16 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule
 
 @dataclass(frozen=True)
 class Bracket:
-    """One column: `rate` on amounts above `lower`."""
+    """One column: `rate` on amounts above `lower`, and the printed tax at its start if the form
+    prints one (None if the schedule computes it)."""
 
     lower: Decimal
     rate: Decimal
+    tax_at_start: Decimal | None = None
 
     def __post_init__(self) -> None:
-        """Check: finite Decimal figures, `lower` >= 0, `rate` in [0, 1]."""
+        """Check: finite Decimal figures, `lower` >= 0, `rate` in [0, 1], and a printed
+        `tax_at_start`, when given, finite and >= 0."""
         for name, value in (("lower", self.lower), ("rate", self.rate)):
             if not isinstance(value, Decimal):
                 raise TypeError(f"bracket {name} must be a Decimal, got {type(value).__name__}")
@@ -46,6 +50,20 @@ class Bracket:
             raise InvalidBracketScheduleError(
                 f"bracket rate must be between 0 and 1, got {self.rate}"
             )
+        if self.tax_at_start is not None:
+            if not isinstance(self.tax_at_start, Decimal):
+                raise TypeError(
+                    "bracket tax_at_start must be a Decimal, "
+                    f"got {type(self.tax_at_start).__name__}"
+                )
+            if not self.tax_at_start.is_finite():
+                raise InvalidBracketScheduleError(
+                    f"bracket tax_at_start must be finite, got {self.tax_at_start}"
+                )
+            if self.tax_at_start < 0:
+                raise InvalidBracketScheduleError(
+                    f"bracket tax_at_start must not be negative, got {self.tax_at_start}"
+                )
 
 
 @dataclass(frozen=True)
@@ -105,6 +123,10 @@ class BracketSchedule:
         )
 
     def _tax_at_start(self, index: int) -> Decimal:
+        # A printed figure is the form's own constant: used as given, never computed or rounded.
+        printed = self.brackets[index].tax_at_start
+        if printed is not None:
+            return printed
         # The exact tax on the brackets below, summed unrounded, then rounded once by the rule;
         # the first bracket's 0 passes through the rule too, so every start has the rule's scale.
         below = self.brackets[: index + 1]

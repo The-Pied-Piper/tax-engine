@@ -256,7 +256,7 @@ def test_built_in_parsers_are_registered_by_the_walk(
         (AmountParser, frozenset({"amount"})),
         (AmountByBandParser, frozenset({"rows"})),
         (AmountByCountParser, frozenset({"amounts"})),
-        (BracketsParser, frozenset({"brackets", "tax_at_start_rounding"})),
+        (BracketsParser, frozenset({"brackets"})),
         (ClassRatesParser, frozenset({"classes", "full_year_days", "longest_fiscal_period_days"})),
         (ConditionsParser, frozenset({"count_when_any_applies", "conditions"})),
         (ContributionTierParser, frozenset({"rate", "lower", "upper", "maximum"})),

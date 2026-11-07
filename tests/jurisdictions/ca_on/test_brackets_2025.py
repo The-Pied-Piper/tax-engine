@@ -1,11 +1,12 @@
 """2025 federal and Ontario bracket data, checked against CRA's published figures.
 
 Sources are listed in each dataset file. Each bracket holds the form's column: its lower bound and
-its rate (2025 T1, Step 5, Part A, lines 71 and 73; Form ON428, Part A, lines 3 and 5). The engine
-computes the tax at each bracket's start, the exact tax on the brackets below rounded by the
-dataset's rule, half-up to the cent; the figures it gives are the constants the forms print (T1
-line 75; ON428 line 7). The tax on taxable income is "Line 72 multiplied by the percentage from
-line 73" plus line 75 (T1), or line 6 plus line 7 (ON428), for the column the income falls in; an
+its rate (2025 T1, Step 5, Part A, lines 71 and 73; Form ON428, Part A, lines 3 and 5). The
+federal dataset has the engine compute the tax at each bracket's start, the exact tax on the
+brackets below rounded by the dataset's rule, half-up to the cent (T1 line 75). The Ontario
+dataset carries the constants ON428 line 7 prints as given, with no rounding rule. The tax on
+taxable income is "Line 72 multiplied by the percentage from line 73" plus line 75 (T1), or line 6
+plus line 7 (ON428), for the column the income falls in; an
 income exactly at a column's upper bound falls in that column ("more than ... but not more than
 ..."). Line 76 (T1) and line 8 (ON428) are dollars-and-cents boxes, so the tax on taxable income
 is rounded half-up to the cent, by the dataset's own rule.
@@ -21,7 +22,7 @@ import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.parameters.brackets import BRACKETS, BracketSchedule
-from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.jurisdictions.ca.catalog import FEDERAL_BASIC_TAX, TAXABLE_INCOME
 from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 
@@ -76,7 +77,8 @@ def test_ontario_2025_brackets() -> None:
         (D("150000"), D("0.1216")),
         (D("220000"), D("0.1316")),
     ]
-    assert data.values.tax_at_start_rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+    # The printed line 7 figures are carried as given: no rounding rule on this schedule.
+    assert data.values.tax_at_start_rounding == NO_ROUNDING
     # ON428 line 8, a dollars-and-cents box: half-up to the cent.
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
     assert data.sources == ONTARIO_SOURCES
@@ -96,18 +98,25 @@ def test_the_computed_federal_tax_at_each_start_is_the_t1_line_75_printed_consta
     ]
 
 
-def test_the_computed_ontario_tax_at_each_start_is_the_on428_line_7_printed_constant() -> None:
+def test_the_ontario_tax_at_each_start_is_the_on428_line_7_printed_constant() -> None:
     schedule = SOURCE.get("ca-on/brackets", 2025, BRACKETS).values
 
-    # 2025 ON428, Part A, line 7 in columns 1 to 5. The exact tax below the third column is
-    # 5.05% x 52,886 + 9.15% x 52,889 = 7,510.0865, printed 7,510.09.
-    assert tax_at_starts(schedule) == [
+    # 2025 ON428, Part A, line 7 in columns 1 to 5, carried as printed (the exact tax below the
+    # third column, 7,510.0865, is printed 7,510.09).
+    assert [b.tax_at_start for b in schedule.brackets] == [
         D("0.00"),
         D("2670.74"),
         D("7510.09"),
         D("12445.60"),
         D("20957.60"),
     ]
+    assert tax_at_starts(schedule) == [b.tax_at_start for b in schedule.brackets]
+
+
+def test_the_federal_dataset_carries_no_printed_tax_at_start() -> None:
+    schedule = SOURCE.get("ca/brackets", 2025, BRACKETS).values
+
+    assert all(b.tax_at_start is None for b in schedule.brackets)
 
 
 @pytest.mark.parametrize("family", ["ca/brackets", "ca-on/brackets"])
