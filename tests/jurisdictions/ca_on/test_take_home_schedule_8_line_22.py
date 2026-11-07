@@ -7,28 +7,17 @@ parts), with line 4 given as a starting amount because its own part file is not 
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 
 import pytest
 
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions import ca_on
 from tax_engine.jurisdictions.ca.catalog import CPP_PART_3_LINE_4, CPP_PART_3_LINE_22
-from tax_engine.registrations import (
-    JURISDICTIONS,
-    artifact_kinds,
-    capabilities,
-    parameter_parsers,
-)
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 ONTARIO = JurisdictionCode("CA-ON")
-PART = Path(ca_on.__file__).parent / "manifests" / "take_home" / "schedule_8_line_22.yaml"
+PART = "schedule_8_line_22.yaml"
 HEADER = """\
 jurisdiction: CA-ON
 version: 1
@@ -48,17 +37,8 @@ form:
 """
 
 
-def line_22(tmp_path: Path, line_4: str) -> Decimal:
-    manifest = tmp_path / "manifests" / "test"
-    manifest.mkdir(parents=True)
-    (manifest / "00_header.yaml").write_text(HEADER)
-    (manifest / "01_form.yaml").write_text(FORM)
-    shutil.copy(PART, manifest / "02_line_22.yaml")
-    service = TaxComputationService(
-        YamlJurisdictionSource({ONTARIO.namespace: tmp_path}, artifact_kinds()),
-        YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers()),
-        capabilities(),
-    )
+def line_22(take_home_service: TakeHomeService, line_4: str) -> Decimal:
+    service = take_home_service(HEADER, FORM, PART)
     (worksheet,) = service.compute(ONTARIO, 2025, Artifact(CPP_PART_3_LINE_4, Decimal(line_4)))[
         "ca/schedule_8"
     ]
@@ -84,6 +64,6 @@ def line_22(tmp_path: Path, line_4: str) -> Decimal:
     ],
 )
 def test_line_22_is_4_percent_of_line_4_at_most_396(
-    tmp_path: Path, line_4: str, expected: str
+    take_home_service: TakeHomeService, line_4: str, expected: str
 ) -> None:
-    assert line_22(tmp_path, line_4) == Decimal(expected)
+    assert line_22(take_home_service, line_4) == Decimal(expected)
