@@ -13,4 +13,5 @@ form:
     - ca/cwb_net_income_line_7
     - ca/cwb_base_amount
     - ca/cwb_maximum
+    - ca/cwb_reduction_threshold
 capabilities: []
