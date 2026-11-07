@@ -32,6 +32,12 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, ON428 line 9 (line 58040) "Basic personal amount Claim $12,747": the
 amount claimed, the first part of the total of the Ontario credit amounts."""
 
+ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
+    CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
+)
+"""ON428 line 18 "Add lines 9, 10, 13, 16, and 17.": the total of lines 9, 10, 13, 16 and 17. The
+take-home build sums line 9 only."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""

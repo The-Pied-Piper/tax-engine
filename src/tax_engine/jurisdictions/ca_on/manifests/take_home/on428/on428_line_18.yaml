@@ -1,0 +1,12 @@
+# ON428 (2025) line 18, the total of lines 9 to 17. Form ON428 (CRA 5006-c-25e): "Line 18: Add
+# lines 9, 10, 13, 16, and 17." The take-home filer has no spouse, dependants or caregiver amounts,
+# so only line 9 (basic personal amount, ca-on/on428_line_9) is summed; a single part is still a
+# sum, so the step is built.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts: [ca-on/basic_personal_amount]
+    produces:
+      output: ca-on/on428_personal_amounts_subtotal_line_18
