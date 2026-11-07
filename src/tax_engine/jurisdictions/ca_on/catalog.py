@@ -74,6 +74,25 @@ ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
 """Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
 the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 
+# Temporary copy: declared here until #279 lands on main.
+ON428_TAX_ON_SPLIT_INCOME_LINE_54 = AmountKind.declare(
+    CATALOG, "on428_tax_on_split_income_line_54", non_negative=True
+)
+"""Ontario tax on split income, ON428 line 54: an optional input, blank for a salary-only caller.
+Temporary copy, declared by #279."""
+
+# Temporary copy: declared here until #280 lands on main.
+ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
+    CATALOG, "on428_tax_after_minimum_tax_carryover_line_61", non_negative=True
+)
+"""Ontario tax after minimum tax carryover, ON428 line 61, a temporary copy declared by #280."""
+
+ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
+    CATALOG, "on428_surtax_base_line_65", non_negative=True
+)
+"""Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
+less line 54, never below zero."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""

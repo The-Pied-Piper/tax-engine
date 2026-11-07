@@ -40,6 +40,7 @@ inputs:
   - name: {LINE_54}
     required: false
     default: null
+    basis: 'Line 54 and line 61510: Ontario tax on split income (complete Form T1206)'
   - name: {LINE_61}
     required: true
 outputs:
