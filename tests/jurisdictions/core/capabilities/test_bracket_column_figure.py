@@ -262,7 +262,10 @@ def test_the_trace_line_is_frozen() -> None:
     [
         (BracketColumnLowerBound, "column_figure: bracket lower bound for taxable_base 250: 100"),
         (BracketColumnRate, "column_figure: bracket rate for taxable_base 250: 20%"),
-        (BracketColumnTaxAtStart, "column_figure: bracket tax at start for taxable_base 250: 10"),
+        (
+            BracketColumnTaxAtStart,
+            "column_figure: bracket tax at start for taxable_base 250: 10.00",
+        ),
     ],
 )
 def test_the_trace_reads_in_english(cls: type[BracketColumnFigure], text: str) -> None:

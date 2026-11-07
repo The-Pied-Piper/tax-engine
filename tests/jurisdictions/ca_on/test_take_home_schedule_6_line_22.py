@@ -93,7 +93,9 @@ def line_22(take_home_service: TakeHomeService, salary: str) -> Decimal:
 def test_schedule_6_line_22_is_the_lesser_of_line_20_and_line_21(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_22(take_home_service, salary) == D(expected)
+    value = line_22(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_schedule_6_line_22_takes_line_21_when_line_20_rounds_to_it(
@@ -102,4 +104,6 @@ def test_schedule_6_line_22_takes_line_21_when_line_20_rounds_to_it(
     # Line 18 is $6,048.15 (line 6 of $9,048.15 less line 17 of $3,000.00). Line 20 is 27% of it,
     # $1,633.0005, which rounds half-up to $1,633.00. That equals line 21, so the result is
     # $1,633.00 whichever of the two is listed first.
-    assert line_22(take_home_service, "9048.15") == D("1633.00")
+    value = line_22(take_home_service, "9048.15")
+    assert value == D("1633.00")
+    assert value.as_tuple().exponent == -2

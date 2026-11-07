@@ -98,7 +98,9 @@ def line_27(take_home_service: TakeHomeService, salary: str) -> Decimal:
 def test_schedule_6_line_27_is_line_25_times_the_15_percent_rate(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_27(take_home_service, salary) == D(expected)
+    value = line_27(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize(
@@ -115,4 +117,6 @@ def test_schedule_6_line_27_is_line_25_times_the_15_percent_rate(
 def test_schedule_6_line_27_rounds_half_up_to_the_cent_from_the_rate_dataset(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_27(take_home_service, salary) == D(expected)
+    value = line_27(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2

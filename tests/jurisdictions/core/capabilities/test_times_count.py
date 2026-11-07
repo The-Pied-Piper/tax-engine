@@ -431,7 +431,7 @@ def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(inputs("16129", 2))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "amount_claimed: amount_each 16129 for each of 2 person_count = 32258 (half-up to 0.01)",
+        "amount_claimed: amount_each 16129 for each of 2 person_count = 32258.00 (half-up to 0.01)",
     )
 
 
@@ -439,7 +439,7 @@ def test_the_trace_reads_in_english_for_a_count_of_zero() -> None:
     result = cents().compute(inputs("16129.50", 0))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "amount_claimed: amount_each 16129.5 for each of 0 person_count = 0 (half-up to 0.01)",
+        "amount_claimed: amount_each 16129.50 for each of 0 person_count = 0.00 (half-up to 0.01)",
     )
 
 

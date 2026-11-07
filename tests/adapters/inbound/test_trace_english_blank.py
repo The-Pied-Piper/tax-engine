@@ -34,7 +34,8 @@ def test_a_line_left_blank() -> None:
 
 def test_a_blank_taken_as_a_fallback() -> None:
     assert (
-        render(BlankFallbackLine(DEDUCTION, Decimal("0.00"))) == "deduction: left blank, taken as 0"
+        render(BlankFallbackLine(DEDUCTION, Decimal("0.00")))
+        == "deduction: left blank, taken as 0.00"
     )
     assert render(BlankFallbackLine(HOUSEHOLD, 0)) == "household_count: left blank, taken as 0"
 

@@ -64,6 +64,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     ELIGIBLE_DEPENDANTS_CHECKED,
     ELIGIBLE_FOR_DISABILITY_AMOUNT,
     ELIGIBLE_FOR_DISABILITY_AMOUNT_CHECKED,
+    FEDERAL_TAX_TAXABLE_INCOME_LINE_70,
     INFIRM_CHILDREN_AMOUNT,
     MEDICAL_CLAIM,
     MEDICAL_EXPENSES,
@@ -169,6 +170,7 @@ from tests.kinds import non_negative
 def test_the_personal_amounts_kinds_are_money() -> None:
     for kind in (
         BASIC_PERSONAL_AMOUNT,
+        FEDERAL_TAX_TAXABLE_INCOME_LINE_70,
         AGE_MAXIMUM,
         AGE_INCOME_THRESHOLD,
         AGE_INCOME_OVER_THRESHOLD,

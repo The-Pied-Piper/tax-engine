@@ -93,7 +93,10 @@ class SumNotBelowZeroRenderer:
         parts = line.parts
         total = line.total
         terms = " + ".join(f"{kind.label} {EnglishFigures.money(amount)}" for kind, amount in parts)
-        return f"{output.label}: {terms or 'no parts'}, not below 0 = {EnglishFigures.money(total)}"
+        return (
+            f"{output.label}: {terms or 'no parts'}, not below 0 = {EnglishFigures.money(total)} "
+            f"({EnglishFigures.rounding(line.rounding)})"
+        )
 
 
 @english_renderer
