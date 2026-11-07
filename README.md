@@ -1,73 +1,94 @@
-# tax_engine
+# tax-engine: an open-source income tax calculation engine in Python
 
-A jurisdiction-agnostic personal income tax computation engine. Canada and Ontario
-are the bundled pilot jurisdictions. Requires Python 3.12 or newer.
+**tax-engine is a personal income tax calculation library where every number is a line on a real tax form, and every result explains itself in plain English.**
 
-## Development with uv
+Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from.
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
+Supported today: Canada (federal) and Ontario, tax year 2025. More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
-```sh
-uv sync --extra dev --locked
-uv run --extra dev --locked ruff check .
-uv run --extra dev --locked ruff format --check .
-uv run --extra dev --locked mypy src tests
-uv run --extra dev --locked lint-imports
-uv run --extra dev --locked python -m pytest
-uv build
+## Example: a $70,000 salary
+
+Given only a gross salary, the engine computes the contributions and tax from the CRA forms:
+
+| Item | Amount |
+| --- | ---: |
+| Federal tax | 7,585.64 |
+| Ontario tax (ON428, incl. health premium) | 3,911.45 |
+| **Total tax** | **11,497.09** |
+| CPP contributions | 3,956.75 |
+| EI premiums | 1,077.48 |
+| **Take-home** | **53,468.68** |
+
+Every figure comes with a sentence saying how it was reached. This is the real trace for the last Ontario line:
+
+```text
+on428_ontario_tax_line_90: on428_tax_after_farmers_food_donation_credit_line_88 3,311.45
+  + on428_ontario_health_premium_line_89 600.00 = 3,911.45 (half-up to 0.01)
 ```
 
-`uv sync` creates a `.venv` in the repository; manual activation is not needed.
-The committed lockfile fixes the development environment's dependency versions.
-After intentionally changing dependencies, run `uv lock` and commit the updated
-lockfile.
+## Why tax-engine
 
-## Development with Python and pip
+- **Explains itself.** An English trace for every line: inputs, operation, result, rounding.
+- **Mirrors the forms.** One form line is one capability, so engine steps read like the form itself.
+- **Rules are data.** Rates, thresholds and limits are datasets copied as printed, never recomputed in code.
+- **Checked against official sources.** Results are compared with the CRA payroll calculator, CRA's T4127 guide and CRA's own worked examples.
+- **Exact arithmetic.** `Decimal` everywhere, rounding only where the form says to round.
+- **Jurisdiction-agnostic core.** Jurisdictions are plugins that add forms, datasets and capabilities; adding one does not change the core.
 
-uv is optional. From the repository root:
+## Quick start
 
-```sh
-python -m venv .venv
-```
-
-Activate the environment:
-
-- Linux/macOS: `source .venv/bin/activate`
-- Windows PowerShell: `.venv\Scripts\Activate.ps1`
-
-Then install, test, and build:
+Requires Python 3.12 or newer. Install from a checkout:
 
 ```sh
-python -m pip install -e ".[dev]"
-python -m ruff check .
-python -m ruff format --check .
-python -m mypy src tests
-lint-imports
-python -m pytest
-python -m build
+git clone https://github.com/The-Pied-Piper/tax-engine.git
+cd tax-engine
+pip install -e .
 ```
 
-This installs the same declared development extras, but pip does not use
-the uv lockfile.
+Run the example, which prints the English trace for every form (the argument is the gross salary):
 
-Both build workflows produce a wheel and source distribution in `dist/`.
-The distributions include the jurisdiction manifests and parameter YAML files.
+```sh
+python examples/quickstart.py 70000
+```
 
-CI runs the lint, formatting, type, and test checks on Python 3.12 for pull requests
-targeting `main` and pushes to `main`.
-
-The [CRA reference archive](docs/cra-forms-2025/README.md) contains the saved
-forms, guides, and source provenance used to verify the Canadian calculations.
-
-## Engine usage
+`examples/quickstart.py`:
 
 ```python
+import sys
+from decimal import Decimal
+
 from tax_engine import build_tax_computation
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 
 engine = build_tax_computation()
-forms = engine.compose(JurisdictionCode("CA-ON"), 2025)
+sheets = engine.compute(
+    JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal(sys.argv[1]))
+)
+for form, form_sheets in sheets.items():
+    for sheet in form_sheets:
+        print(f"\n== {form} ==")
+        print("\n".join(EnglishTraceRenderer().render_all(sheet.trace)))
 ```
+
+## How it works
+
+A jurisdiction's manifest lists the forms that make up a return. Each form is built line by line from small capabilities (sum, bracket tax, credit, cap, and so on) fed by parameter datasets for the tax year. The engine wires the forms together, runs them, and records a trace for every step.
+
+## Coverage
+
+| Jurisdiction | Year | Forms and lines built |
+| --- | --- | --- |
+| Canada (federal) | 2025 | T1 General tax lines, Schedule 8 (CPP), T2204 (EI), Schedule 6 (Canada workers benefit), taxable income |
+| Ontario | 2025 | ON428 (Ontario tax), ON428-A (LIFT credit) |
+
+Roadmap: more forms and lines, the 2026 tax year, and other provinces and territories. Forms are added one at a time, each checked against the CRA's own text.
+
+## Contributing
+
+Issues and pull requests are welcome. Developer setup, checks and the CRA reference archive are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
