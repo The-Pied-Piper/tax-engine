@@ -101,7 +101,9 @@ def test_line_12_equals_line_10_when_line_11_is_blank(
 ) -> None:
     sheet = _schedule_6(take_home_service, salary)
 
-    assert sheet.get(bundled_kinds().kind(LINE_12)).value == D(expected)
+    value = sheet.get(bundled_kinds().kind(LINE_12)).value
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize(
@@ -119,7 +121,9 @@ def test_line_12_subtracts_line_11_and_floors_at_zero(
     # Line 10 for a 20000 salary is 19835.00; line 12 is line 10 minus line 11, never below zero.
     sheet = _schedule_6(take_home_service, salary, uccb)
 
-    assert sheet.get(bundled_kinds().kind(LINE_12)).value == D(expected)
+    value = sheet.get(bundled_kinds().kind(LINE_12)).value
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_12_kind_is_registered_and_non_negative() -> None:

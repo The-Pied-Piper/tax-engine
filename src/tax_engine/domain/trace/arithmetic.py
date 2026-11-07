@@ -92,8 +92,8 @@ class SumLine(TraceLine):
 
 @dataclass(frozen=True)
 class SumNotBelowZeroLine(TraceLine):
-    """The `total` produced as `output` by adding `parts`, each a kind and its value, in order, and
-    taking 0 when the sum would not be above zero.
+    """The `total` produced as `output` by adding `parts`, each a kind and its value, in order,
+    taking 0 when the exact sum would not be above zero, and rounded once with `rounding`.
 
     Its own class, not a `SumLine`: the floor is a different fact, and a renderer or a check
     matching plain sums must not catch floored ones.
@@ -101,6 +101,7 @@ class SumNotBelowZeroLine(TraceLine):
 
     output: Money
     parts: tuple[tuple[Money, Decimal], ...]
+    rounding: RoundingRule
     total: Decimal
 
     @property

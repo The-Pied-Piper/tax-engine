@@ -225,9 +225,9 @@ CENT_SALARIES = (*(case[0] for case in CASES), *BRACKET_EDGE_SALARIES)
 
 # The base and the lower bound, rate and tax at start the printed column gives lines 3, 5 and 7.
 BRACKET_COLUMN_TRACE: list[tuple[str, str, str, str, str]] = [
-    ("20000", "19835", "0", "5.05%", "0"),
-    ("70000", "69335", "52886", "9.15%", "2670.74"),
-    ("150000", "148926", "105775", "11.16%", "7510.09"),
+    ("20000", "19835.00", "0.00", "5.05%", "0.00"),
+    ("70000", "69335.00", "52886.00", "9.15%", "2670.74"),
+    ("150000", "148926.00", "105775.00", "11.16%", "7510.09"),
 ]
 
 

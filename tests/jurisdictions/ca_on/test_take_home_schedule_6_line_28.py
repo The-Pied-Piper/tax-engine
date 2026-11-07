@@ -114,7 +114,9 @@ def line_28(take_home_service: TakeHomeService, salary: str) -> Decimal:
 def test_schedule_6_line_28_is_line_22_minus_line_27_not_below_zero(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_28(take_home_service, salary) == D(expected)
+    value = line_28(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize("salary", ["40000", "70000"])
@@ -124,4 +126,6 @@ def test_schedule_6_line_28_is_zero_when_line_27_exceeds_line_22(
     # Line 27 (the reduction) is more than line 22 (the basic benefit) at these salaries, so the
     # subtraction is negative and the form's "(if negative, enter "0")" makes line 28 zero, not a
     # negative amount on T1 line 45300.
-    assert line_28(take_home_service, salary) == D("0.00")
+    value = line_28(take_home_service, salary)
+    assert value == D("0.00")
+    assert value.as_tuple().exponent == -2

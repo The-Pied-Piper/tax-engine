@@ -105,7 +105,9 @@ def test_line_7_is_the_t1_net_income(
 ) -> None:
     sheet = _schedule_6(take_home_service, salary)
 
-    assert sheet.get(bundled_kinds().kind(LINE_7)).value == D(expected)
+    value = sheet.get(bundled_kinds().kind(LINE_7)).value
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_line_7_is_the_negative_net_income_in_brackets_not_floored(
@@ -122,7 +124,9 @@ def test_line_7_is_the_negative_net_income_in_brackets_not_floored(
     )
     (sheet,) = worksheets[FORM]
 
-    assert sheet.get(kinds.kind(LINE_7)).value == D("-5665.00")
+    value = sheet.get(kinds.kind(LINE_7)).value
+    assert value == D("-5665.00")
+    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_7_kind_is_registered_and_signed() -> None:
