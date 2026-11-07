@@ -1,9 +1,9 @@
-# Form ON428 (2025, CRA 5006-c-25e) line 68, "Line 68: Line 66 plus line 67 =  (If line 65 is less
-# than $5,710, enter "0" on line 68.)": the Ontario surtax. It sums the surtax at the 20 percent tier
-# (line 66, `ca-on/on428_surtax_20_percent_tier_line_66`) and the surtax at the 36 percent tier
-# (line 67, `ca-on/on428_surtax_36_percent_tier_line_67`). The "enter 0" instruction needs no step:
-# both tiers give 0 at or below their thresholds, so the sum is 0. Line 68 is the output
-# `ca-on/on428_surtax_total_line_68`.
+# Form ON428 (2025, CRA 5006-c-25e) line 68, "Line 68: Line 66 plus line 67 =": the Ontario surtax.
+# It sums the surtax at the 20 percent tier (line 66, `ca-on/on428_surtax_20_percent_tier_line_66`)
+# and the surtax at the 36 percent tier (line 67, `ca-on/on428_surtax_36_percent_tier_line_67`).
+# The form also says, above line 66, "If the amount is less than $5,710, enter "0" on line 68 and
+# continue on line 69." That needs no step: both tiers give 0 at or below their thresholds, so the
+# sum is 0. Line 68 is the output `ca-on/on428_surtax_total_line_68`.
 form:
   name: ca-on/on428
 capabilities:

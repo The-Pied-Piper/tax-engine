@@ -1,7 +1,8 @@
 """ON428 (2025) line 68, computed from the real part files through the real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt): "Line 68: Line 66 plus line 67 =  (If line 65 is less
-than $5,710, enter "0" on line 68.)". Line 68 is one sum, core/sum of line 66 (the Ontario surtax
+Form text (Form ON428, CRA 5006-c-25e.txt): "Line 68: Line 66 plus line 67 =", and, above line 66,
+"If the amount is less than $5,710, enter "0" on line 68 and continue on line 69."
+Line 68 is one sum, core/sum of line 66 (the Ontario surtax
 at the 20 percent tier, `ca-on/on428_surtax_20_percent_tier_line_66`) and
 line 67 (the Ontario surtax at the 36 percent tier, `ca-on/on428_surtax_36_percent_tier_line_67`).
 Both lines are required inputs: the take-home calculator always produces them. The output is
@@ -78,7 +79,7 @@ def _line_68(take_home_service: TakeHomeService, line_66: str, line_67: str) -> 
         ("1149.62", "1494.40", "2644.02"),
         # Line 67 is 0 (the 36 percent tier is not reached), so line 68 is line 66.
         ("1149.62", "0", "1149.62"),
-        # Line 66 is 0 (the 20 percent tier is not reached), so line 68 is line 67.
+        # Line 66 is 0, so line 68 is line 67 (an arithmetic case, not a pair the form prints).
         ("0", "0.01", "0.01"),
     ],
 )
