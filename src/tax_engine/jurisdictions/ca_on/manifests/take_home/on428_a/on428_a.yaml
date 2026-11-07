@@ -1,0 +1,10 @@
+# Ontario LIFT credit schedule, ON428-A (2025), for the take-home calculator. This part names the
+# form and its export; each line's capability goes in a part of its own with the same `form.name`.
+# Exports: line 13, adjusted net income (`ca-on/lift_adjusted_net_income`), which Part A line 15
+# takes ("Amount from line 13 above"). The form's other lines are not built here.
+form:
+  name: ca-on/on428_a
+  required: true
+  exports:
+    - ca-on/lift_adjusted_net_income
+capabilities: []
