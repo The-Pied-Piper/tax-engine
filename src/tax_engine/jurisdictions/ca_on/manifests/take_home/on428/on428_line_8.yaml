@@ -1,0 +1,14 @@
+# Form ON428 (2025, CRA 5006-c-25e) line 8, "Line 8: Line 6 plus line 7 Ontario tax on taxable income =":
+# the Ontario tax on taxable income. It sums line 6 (`ca-on/on428_excess_times_column_rate_line_6`)
+# and line 7 (`ca-on/on428_tax_at_column_start_line_7`). Line 6 is already rounded to the cent and
+# line 7 is a printed amount in cents, so the sum has no rounding step. Line 8 is the output
+# `ca-on/on428_tax_on_taxable_income_line_8`.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        [ca-on/on428_excess_times_column_rate_line_6, ca-on/on428_tax_at_column_start_line_7]
+    produces:
+      output: ca-on/on428_tax_on_taxable_income_line_8
