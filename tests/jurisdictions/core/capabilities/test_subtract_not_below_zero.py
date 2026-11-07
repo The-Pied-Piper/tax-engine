@@ -398,7 +398,9 @@ def test_traces_a_floored_line_not_a_plain_subtracted_line() -> None:
     (line,) = capability().compute(inputs("10", "25.5")).trace
 
     assert type(line) is SubtractedNotBelowZeroLine
-    assert cast(Any, line) != SubtractedLine(NET, GROSS, D("10"), REDUCTION, D("25.5"), D("0"))
+    assert cast(Any, line) != SubtractedLine(
+        NET, GROSS, D("10"), REDUCTION, D("25.5"), NO_ROUNDING, D("0")
+    )
 
 
 def test_trace_amount_is_the_floored_result() -> None:

@@ -1,11 +1,12 @@
 # Federal cent rounding, 2025 tax year: the rule for every federal form line that is a
 # dollars-and-cents box and is read from an "(if negative, enter "0")" difference: Schedule 8
-# (5000-s8-25e) lines 4, 5 and 7, Schedule 6 (5000-s6-25e) lines 12, 18 and 25, T2204 lines 7, 8 and
-# 13, and T1 taxable income lines 23600 and 26000 (5006-r-25e). The same rule rounds, once and on
-# the exact figure, the totals of the core/sum steps and the products of the core/times_count steps
-# that the federal forms print in dollars and cents (Schedule 6 and Schedule 8 totals, T2204 lines 1,
-# 3, 6 and 15, the T1 taxable income total). The forms state no rounding rule, so half-up to the
-# cent is the owner's decision. A line that needs a different rule gets a dataset of its own.
+# (5000-s8-25e) lines 4, 5 and 7, Schedule 6 (5000-s6-25e) lines 12, 15, 18 and 25, T2204 lines 7,
+# 8 and 13, and T1 taxable income lines 23400, 23600 (signed and floored) and 26000 (5006-r-25e).
+# The same rule rounds, once and on the exact figure, the totals of the core/sum steps, the
+# differences of the core/subtract steps and the products of the core/times_count steps that the
+# federal forms print in dollars and cents (Schedule 6 and Schedule 8 totals, T2204 lines 1, 3, 6
+# and 15, the T1 taxable income total). The forms state no rounding rule, so half-up to the cent is
+# the owner's decision. A line that needs a different rule gets a dataset of its own.
 family: ca/cent_rounding
 tax_year: 2025
 kind: rounding_only

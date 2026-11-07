@@ -110,7 +110,7 @@ def test_its_slots_are_read_only() -> None:
 
 
 def test_its_slots_are_typed_as_read_only_mappings() -> None:
-    assert_type(Subtract.PARAMETERS, Mapping[str, ParameterKind[Any]])
+    assert_type(Subtract.PARAMETERS, Mapping[str, ParameterKind[RoundingOnly]])
     assert_type(Subtract.CONSUMES, Mapping[str, type])
     assert_type(Subtract.PRODUCES, Mapping[str, type])
 
