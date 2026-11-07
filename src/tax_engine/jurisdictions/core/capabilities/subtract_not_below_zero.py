@@ -2,7 +2,8 @@
 
 For the return lines the form prints with "if negative, enter 0": the manifest decides which
 artifact is the amount and which is taken off. Like `Subtract` it has no dataset, so it never
-rounds; unlike it, a difference below zero becomes a plain `Decimal(0)`.
+rounds; unlike it, a difference of zero or below becomes a zero with the difference's scale
+(-15.50 gives 0.00), never a negative zero.
 
 Either consumed slot may be blank (`BLANK_ALLOWED`). What a blank does there is the manifest
 step's `blank:` line: pass it on (the output is blank too, the 0 floor is never applied to a blank)
@@ -22,7 +23,10 @@ from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 
 @capability(identifier="subtract_not_below_zero")
 class SubtractNotBelowZero(Capability):
-    """Produces `output`: the consumed `amount` less the consumed `less`, never below zero."""
+    """Produces `output`: the consumed `amount` less the consumed `less`, never below zero.
+
+    A floored zero keeps the scale of the difference, so the line prints to the same decimals.
+    """
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "less": Decimal}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
@@ -39,8 +43,9 @@ class SubtractNotBelowZero(Capability):
         amount = self._input(inputs, self._amount).value
         less = self._input(inputs, self._less).value
         difference = amount - less
-        # A zero or negative difference is a plain zero: no scale, never a negative zero.
-        result = difference if difference > 0 else Decimal(0)
+        # A zero or negative difference is a zero with its scale (-15.50 gives 0.00), never a
+        # negative zero: the absolute value times 0 keeps the exponent and drops the sign.
+        result = difference if difference > 0 else difference.copy_abs() * 0
         return CapabilityResult(
             outputs=(Artifact(self._output, result),),
             trace=(
