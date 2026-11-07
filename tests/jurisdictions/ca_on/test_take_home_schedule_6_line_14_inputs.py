@@ -22,6 +22,7 @@ import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tests.kinds import bundled_kinds, non_negative
 
 LINE_14 = "ca/cwb_secondary_earner_exemption"
 PRINTED_BASIS = (
@@ -57,3 +58,10 @@ def test_a_request_that_leaves_out_line_14_is_read_as_blank(tmp_path: Path) -> N
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
     assert default is not None and default.is_blank
+
+
+def test_the_line_14_input_kind_is_registered_and_non_negative() -> None:
+    kind = bundled_kinds().kind(LINE_14)
+
+    assert kind.identifier == LINE_14
+    assert non_negative(kind) is True
