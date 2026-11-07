@@ -120,6 +120,24 @@ ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
 """Ontario tax after the minimum tax carryover, ON428 line 61 "Line 61: Line 55 minus line 60 (if
 negative, enter "0") =": line 55 minus line 60, not below zero."""
 
+ON428_DIVIDEND_TAX_CREDIT_LINE_57 = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_line_57", non_negative=True
+)
+"""Ontario dividend tax credit, ON428 line 57 "Line 57 and line and line 61520: Ontario dividend
+tax credit (use Worksheet ON428)": an optional input that a salary-only caller leaves out."""
+
+ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
+    CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
+)
+"""TEMPORARY COPY, owned by the line 69 PR (#285); drop when that merges. Tax with surtax, ON428
+line 69: the amount that line 71 subtracts from."""
+
+ON428_TAX_AFTER_DIVIDEND_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "on428_tax_after_dividend_credit_line_71", non_negative=True
+)
+"""Ontario tax after the dividend tax credit, ON428 line 71 "Line 71: Line 69 minus line 70 (if
+negative, enter "0") =": line 69 minus the dividend tax credit, not below zero."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
