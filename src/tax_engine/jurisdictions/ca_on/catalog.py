@@ -188,8 +188,8 @@ single filer with no dependants is the basic reduction on line 74 alone."""
 ON428_ONTARIO_TAX_REDUCTION_LINE_80 = AmountKind.declare(
     CATALOG, "on428_ontario_tax_reduction_line_80", non_negative=True
 )
-"""Ontario tax reduction, ON428 line 80. TEMPORARY COPY: declared and owned by the line 80 PR
-(#291); the second PR to merge drops its copy."""
+"""Ontario tax reduction, ON428 line 80. TEMPORARY COPY: declared and owned by the line 80 PR;
+the second PR to merge drops its copy."""
 
 ON428_TAX_AFTER_TAX_REDUCTION_LINE_81 = AmountKind.declare(
     CATALOG, "on428_tax_after_tax_reduction_line_81", non_negative=True

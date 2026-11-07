@@ -23,7 +23,7 @@ from tests.kinds import bundled_kinds
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
 LINE_73 = "ca-on/on428_tax_with_minimum_tax_addition_line_73"
-ON428_ONTARIO_TAX_REDUCTION_LINE_80 = "ca-on/on428_ontario_tax_reduction_line_80"
+LINE_80 = "ca-on/on428_ontario_tax_reduction_line_80"
 LINE_81 = "ca-on/on428_tax_after_tax_reduction_line_81"
 PART = "on428_line_81.yaml"
 
@@ -34,7 +34,7 @@ valid_from_tax_year: 2025
 inputs:
   - name: {LINE_73}
     required: true
-  - name: {ON428_ONTARIO_TAX_REDUCTION_LINE_80}
+  - name: {LINE_80}
     required: true
 outputs:
   - {LINE_73}
@@ -55,7 +55,7 @@ def _line_81(take_home_service: TakeHomeService, line_73: str, line_80: str) -> 
     kinds = bundled_kinds()
     given = [
         Artifact(kinds.kind(LINE_73), D(line_73)),
-        Artifact(kinds.kind(ON428_ONTARIO_TAX_REDUCTION_LINE_80), D(line_80)),
+        Artifact(kinds.kind(LINE_80), D(line_80)),
     ]
     worksheet = take_home_service(HEADER, FORM, PART).compute(CODE, 2025, *given)["ca-on/on428"][0]
     value = worksheet.get(kinds.kind(LINE_81)).value
