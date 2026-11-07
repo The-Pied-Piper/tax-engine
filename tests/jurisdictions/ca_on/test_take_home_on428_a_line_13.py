@@ -10,19 +10,17 @@ instructions on line 23600 said "if negative, show in brackets")", is therefore 
 line 6, because a sum line is built even with one part. Lines 7, 8, 10, 11 and 12 are not built:
 the take-home filer has none of them.
 
-The T1 side is a test-local declaration of `ca/t1_taxable_income` exporting `ca/net_income`. Its
-real line 15000 (total income) and line 23300 (deductions, read from the real Schedule 8) are
-composed in, but the real line 23600 is not: it needs net income before adjustments (line 23400),
-which is not built yet. The declaration's one step stands in for
-lines 23400 and 23600 together: total income less deductions from total income, not below zero.
-The engine does not let one form read another form's plain amounts, only its exports as record
-lists, so the stand-in must sit in the T1 form itself, which is why it is declared here.
+The T1 side is the real `ca/t1_taxable_income` form: its header part and the real lines 15000,
+23300 (deductions, read from the real Schedule 8), 23400, 23600, 26000 and the optional inputs
+parts, so net income comes from the salary through the real lines. The engine does not let one
+form read another form's plain amounts, only its exports as record lists, which is why line 6
+reads `ca/t1_taxable_income.net_income`.
 
 The salary is the only input the caller gives. Ontario's eligibility for the LIFT credit is not
 printed on the form ("go to canada.ca/on-tax-info"), so it is assumed true and not tested here.
 
 Line 6 and line 13 are each pinned as a figure. A negative net income cannot be made from a salary
-alone (deductions never exceed the salary, and the stand-in is floored at zero), so the "0" branch
+alone (deductions never exceed the salary), so the "0" branch
 of line 13 is not tested here.
 """
 
@@ -45,14 +43,18 @@ ONTARIO = JurisdictionCode("CA-ON")
 FORM = "ca-on/on428_a"
 LINE_6 = "ca-on/lift_net_income"
 LINE_13 = "ca-on/lift_adjusted_net_income"
-# The real parts composed beside the test's declarations: the salary, the real Schedule 8 (line
-# 22215 and its export read by T1 line 23300), T1 lines 15000 and 23300, and the real ON428-A form
-# declaration and line 13 part.
+# The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
+# taxable-income lines and inputs, and the real ON428-A form declaration and line 13 part.
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
+    "t1_taxable_income_inputs.yaml",
     "t1_taxable_income_line_15000.yaml",
     "t1_taxable_income_line_23300.yaml",
+    "t1_taxable_income_line_23400.yaml",
+    "t1_taxable_income_line_23600.yaml",
+    "t1_taxable_income_line_25700_inputs.yaml",
+    "t1_taxable_income_line_26000.yaml",
     "on428_a.yaml",
     "on428_a_line_13.yaml",
 )
@@ -69,22 +71,7 @@ HEADER = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
-# The T1 declaration, test-local: its one export is net income. Its one step stands in for lines
-# 23400 and 23600 (not built yet): total income less deductions from total income, not below zero.
-T1 = dedent("""\
-    form:
-      name: ca/t1_taxable_income
-      required: true
-      exports:
-        - ca/net_income
-    capabilities:
-      - name: core/subtract_not_below_zero
-        consumes:
-          amount: ca/total_income
-          less: ca/deductions_from_total_income
-        produces:
-          output: ca/net_income
-    """)
+T1 = (TAKE_HOME / "t1_taxable_income.yaml").read_text(encoding="utf-8")
 
 
 def _on428_a(take_home_service: TakeHomeService, salary: str) -> Worksheet:
