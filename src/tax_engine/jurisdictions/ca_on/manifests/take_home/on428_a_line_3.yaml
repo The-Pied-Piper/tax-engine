@@ -1,0 +1,13 @@
+# ON428-A (5006-a-25e) "Line 1: Amount from line 10100 of your return / Line 2: Amount from line
+# 10400 of your return / Line 3: Line 1 plus line 2". Line 1 is the salary input (employment income,
+# T1 line 10100). Line 2 (line 10400) is left out because the take-home filer has none, so line 3 is
+# a sum over line 1 alone; a sum is built even with one part.
+form:
+  name: ca-on/on428_a
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/employment_income
+    produces:
+      output: ca-on/lift_employment_income

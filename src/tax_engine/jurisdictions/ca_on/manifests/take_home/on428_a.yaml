@@ -1,0 +1,9 @@
+# Schedule ON428-A (Ontario LIFT credit) 2025. This part names the form and its exports; line parts
+# carry capabilities. Exports: the LIFT employment income line (`ca-on/lift_employment_income`), which
+# the return reads from the form.
+form:
+  name: ca-on/on428_a
+  required: true
+  exports:
+    - ca-on/lift_employment_income
+capabilities: []
