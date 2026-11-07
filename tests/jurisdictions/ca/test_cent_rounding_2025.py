@@ -1,8 +1,8 @@
 """The 2025 `ca/cent_rounding` dataset: the one rule shared by the federal floor steps
-(`core/subtract_not_below_zero`), Schedule 8 lines 4, 5 and 7, Schedule 6 line 18, T2204 lines 7,
-8 and 13, and T1 taxable income lines 23600 and 26000. It carries nothing but its rule, half-up to
-the cent, the rule of the dollars-and-cents boxes. It cites the Schedule 8, Schedule 6, T2204 and
-T1 text."""
+(`core/subtract_not_below_zero`), Schedule 8 lines 4, 5 and 7, Schedule 6 lines 12 and 18, T2204
+lines 7, 8 and 13, and T1 taxable income lines 23600 and 26000. It carries nothing but its rule,
+half-up to the cent, the rule of the dollars-and-cents boxes. It cites the Schedule 8, Schedule 6,
+T2204 and T1 text."""
 
 from __future__ import annotations
 
