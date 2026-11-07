@@ -2,9 +2,12 @@
 # carry capabilities. An export is added here by the line that produces it. A form must export
 # something, so the header starts with line 9, the basic personal amount; the lines that follow
 # add the figures other forms read (line 90, to T1 line 42800).
+# The line 44 export is temporary: the output is not read by any form yet, so the header exports it
+# until a later line reads it and this export is removed.
 form:
   name: ca-on/on428
   required: true
   exports:
     - ca-on/basic_personal_amount
+    - ca-on/on428_total_credit_amounts_line_44
 capabilities: []

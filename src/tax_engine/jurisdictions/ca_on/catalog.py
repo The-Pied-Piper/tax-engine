@@ -49,6 +49,26 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
+ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
+    CATALOG, "on428_credits_with_transfers_line_35", non_negative=True
+)
+"""Credits with transfers, ON428 line 35 "Line 35: Add lines 31 to 34. =": the sum of lines 31 to
+34. Declared here only as the starting input of the line 44 test; the part that produces line 35
+drops this declaration when it merges."""
+
+ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_line_43", non_negative=True
+)
+"""Allowable medical expenses, ON428 line 43 "Line 43 and line 58769: Line 41 plus line 42": the
+filer's own group plus the allowable amount for other dependants, a part of the total of the
+Ontario credit amounts (line 58800)."""
+
+ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
+    CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
+)
+"""Total credit amounts, ON428 line 44 "Line 44 and line 58800: Line 35 plus line 43 =": line 35
+plus line 43."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
