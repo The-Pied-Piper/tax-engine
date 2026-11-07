@@ -4,7 +4,7 @@
 #
 # The default form's export is T1 line 167, refund or balance owing (positive is owing, negative is
 # a refund). The CPP and EI figures the calculator also needs are exported by their own forms
-# (schedule_8.yaml, and T2204 when it is built); the calculator reads them from their forms.
+# (schedule_8.yaml and t2204.yaml); the calculator reads them from their forms.
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
