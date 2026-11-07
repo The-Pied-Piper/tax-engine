@@ -1,8 +1,8 @@
 # T1 General 2025, Ontario edition (form 5006-R), Step 5 Part A line 76, "Line 74 plus line 75
 # Federal tax on taxable income" (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Part A starts
 # with "Use the amount from line 26000 to complete the appropriate column below." Line 70 is "Amount
-# from line 26000", a copy of T1 line 26000, so it is a step: another form's export (`ca/taxable_income`)
-# is read only as a record list (`ca/t1_taxable_income.taxable_income`), and core/record_total totals
+# from line 26000", a copy of T1 line 26000, so it is a step: another form's export is read only as a
+# record list (`ca/t1_taxable_income.taxable_income`), and core/record_total totals
 # the one amount into line 70. Lines 71 to 75 are inside core/progressive_tax: the printed column
 # figures (lower bound, rate and constant) are the `ca/brackets` dataset, and the step gives line 76
 # rounded once, half-up to the cent.
