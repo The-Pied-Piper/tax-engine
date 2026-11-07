@@ -174,13 +174,14 @@ class SignChosenDifferenceLine(TraceLine):
 @dataclass(frozen=True)
 class SubtractedLine(TraceLine):
     """`output` = `minuend` (worth `minuend_amount`) less `subtrahend` (worth `subtrahend_amount`),
-    exact; `result` may be negative."""
+    the exact difference rounded once with `rounding`; `result` may be negative."""
 
     output: Money
     minuend: Money
     minuend_amount: Decimal
     subtrahend: Money
     subtrahend_amount: Decimal
+    rounding: RoundingRule
     result: Decimal
 
     @property
