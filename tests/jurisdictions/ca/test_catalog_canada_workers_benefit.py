@@ -44,6 +44,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_INCLUDE_TAX_EXEMPT_INCOME,
     CWB_INCLUDE_TAX_EXEMPT_INCOME_CHECKED,
     CWB_LINE_28_BY_SPOUSE,
+    CWB_MAXIMUM,
     CWB_NET_INCOME_LINE_7,
     CWB_REDUCTION_WITH_DEPENDANT,
     CWB_REDUCTION_WITHOUT_DEPENDANT,
@@ -160,6 +161,14 @@ def test_the_line_28_by_spouse_is_registered_and_money(registry: ArtifactRegistr
     assert non_negative(CWB_LINE_28_BY_SPOUSE) is True
     assert registry.get("ca/cwb_line_28_by_spouse") is CWB_LINE_28_BY_SPOUSE
     assert registry.get("ca/canada_workers_benefit_line_28") is CANADA_WORKERS_BENEFIT_LINE_28
+
+
+def test_the_cwb_maximum_is_registered_money_and_non_negative(registry: ArtifactRegistry) -> None:
+    # Schedule 6 line 21 "If not, enter $1,633": the printed maximum of the basic benefit for a
+    # filer with no eligible spouse or dependant, a dataset figure taken whole.
+    assert CWB_MAXIMUM.value_type is Decimal
+    assert non_negative(CWB_MAXIMUM) is True
+    assert registry.get("ca/cwb_maximum") is CWB_MAXIMUM
 
 
 def test_the_canada_workers_benefit_kinds_are_money() -> None:
