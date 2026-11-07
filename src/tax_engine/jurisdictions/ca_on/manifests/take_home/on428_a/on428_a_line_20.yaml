@@ -1,0 +1,15 @@
+# ON428-A (5006-a-25e) "Line 14: Amount from line 5 above (maximum $875) / Line 20: Line 14 minus line 19
+# (if negative, enter "0") Enter this amount on line 62140 of your Form ON428." Line 14 is a copy of
+# line 5, so it gets no step of its own and line 20 reads line 5 (`ca-on/lift_maximum_credit`, already
+# capped at 875). Line 19 is `ca-on/lift_reduction`. The step subtracts line 19 from line 5 and keeps
+# the result at or above 0, so a negative difference gives "0", as the form says. The output is the
+# LIFT credit for a single filer (`ca-on/lift_credit_single`), which ON428 line 85 (62140) reads.
+form:
+  name: ca-on/on428_a
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/lift_maximum_credit
+      less: ca-on/lift_reduction
+    produces:
+      output: ca-on/lift_credit_single
