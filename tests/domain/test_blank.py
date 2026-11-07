@@ -73,7 +73,9 @@ class SubtractCompute(Capability):
         amount = self._input(inputs, self._amount).value
         less = self._input(inputs, self._less).value
         result = amount - less
-        line = SubtractedLine(self._output, self._amount, amount, self._less, less, result)
+        line = SubtractedLine(
+            self._output, self._amount, amount, self._less, less, NO_ROUNDING, result
+        )
         return CapabilityResult((Artifact(self._output, result),), (line,))
 
 
@@ -323,7 +325,7 @@ def test_a_slot_with_a_fallback_takes_it_and_says_so() -> None:
     assert result.outputs == (Artifact(TAXABLE, D(500)),)
     assert result.trace == (
         BlankFallbackLine(DEDUCTION, D(0)),
-        SubtractedLine(TAXABLE, INCOME, D(500), DEDUCTION, D(0), D(500)),
+        SubtractedLine(TAXABLE, INCOME, D(500), DEDUCTION, D(0), NO_ROUNDING, D(500)),
     )
 
 
@@ -528,7 +530,7 @@ def test_a_skipped_chart_leaves_the_deduction_blank_and_the_tax_base_unchanged()
         LeftBlankLine(CHART_GAIN),
         BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)),
         BlankFallbackLine(DEDUCTION, D(0)),
-        SubtractedLine(TAXABLE, INCOME, D(50000), DEDUCTION, D(0), D(50000)),
+        SubtractedLine(TAXABLE, INCOME, D(50000), DEDUCTION, D(0), NO_ROUNDING, D(50000)),
     )
 
 

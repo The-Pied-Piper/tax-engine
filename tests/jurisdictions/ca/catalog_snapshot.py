@@ -2472,6 +2472,7 @@ REGISTERED = frozenset(
         "ca/taxable_income_signed",
         "ca/federal_tax_taxable_income_line_70",
         "ca/federal_basic_tax",
+        "ca/basic_personal_amount_net_income_line_3",
         "ca/basic_personal_amount",
         "ca/born_in_1960_or_earlier",
         "ca/born_in_1960_or_earlier_checked",

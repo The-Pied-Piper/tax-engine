@@ -15,11 +15,23 @@ from tax_engine.adapters.inbound.trace_english.registry import EnglishRendererRe
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.form import FormSet
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tests.forms import composition
 
 D = Decimal
+CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
+CENT_ROUNDING = ParameterDataset(
+    "ex/net_rounding",
+    2025,
+    ROUNDING_ONLY,
+    RoundingOnly(),
+    CENT,
+    ("https://example.org/rounding",),
+)
 
 NET_INCOME = AmountKind("ex/net_income")
 GROSS_RENT = AmountKind("ex/gross_rent")
@@ -27,7 +39,9 @@ EXPENSES = AmountKind("ex/expenses")
 UNIT_AMOUNT = AmountKind("ex/unit_amount")
 UNIT_TOTAL = AmountKind("ex/unit_total")
 
-SUBTRACTED = SubtractedLine(NET_INCOME, GROSS_RENT, D("12000.00"), EXPENSES, D("2000"), D("10000"))
+SUBTRACTED = SubtractedLine(
+    NET_INCOME, GROSS_RENT, D("12000.00"), EXPENSES, D("2000"), CENT, D("10000.00")
+)
 TOTAL = RecordTotalLine(UNIT_TOTAL, UNIT_AMOUNT, (D("100"), D("250.50")), D("350.50"))
 
 
@@ -46,11 +60,12 @@ def test_every_inner_sentence_is_prefixed_with_the_form_and_the_instance_positio
     inner = EnglishTraceRenderer().render_all((SUBTRACTED, TOTAL))
 
     assert inner == (
-        "net_income: gross_rent 12000.00 less expenses 2000 = 10000",
+        "net_income: gross_rent 12000.00 less expenses 2000 = 10000.00 (half-up to 0.01)",
         "unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 = 350.50",
     )
     assert render(FormInstanceLine("ex/rental", 2, (SUBTRACTED, TOTAL))) == (
-        "ex/rental, instance 2: net_income: gross_rent 12000.00 less expenses 2000 = 10000\n"
+        "ex/rental, instance 2: net_income: gross_rent 12000.00 less expenses 2000 = 10000.00 "
+        "(half-up to 0.01)\n"
         "ex/rental, instance 2: unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 "
         "= 350.50"
     )
@@ -60,7 +75,8 @@ def test_a_form_without_instances_is_prefixed_with_its_name_and_instance_1() -> 
     text = render(FormInstanceLine("ex/return", 1, (SUBTRACTED, TOTAL)))
 
     assert text == (
-        "ex/return, instance 1: net_income: gross_rent 12000.00 less expenses 2000 = 10000\n"
+        "ex/return, instance 1: net_income: gross_rent 12000.00 less expenses 2000 = 10000.00 "
+        "(half-up to 0.01)\n"
         "ex/return, instance 1: unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 "
         "= 350.50"
     )
@@ -71,7 +87,7 @@ def test_the_trace_of_a_form_without_an_instances_list_reads_as_instance_1() -> 
         [
             composition(
                 "ex/return",
-                [Subtract(GROSS_RENT, EXPENSES, NET_INCOME)],
+                [Subtract(CENT_ROUNDING, GROSS_RENT, EXPENSES, NET_INCOME)],
                 exports=[NET_INCOME],
                 starting=frozenset({GROSS_RENT, EXPENSES}),
             )
@@ -84,7 +100,8 @@ def test_the_trace_of_a_form_without_an_instances_list_reads_as_instance_1() -> 
 
     assert isinstance(line, FormInstanceLine)
     assert render(line) == (
-        "ex/return, instance 1: net_income: gross_rent 12000 less expenses 2000 = 10000"
+        "ex/return, instance 1: net_income: gross_rent 12000 less expenses 2000 = 10000.00 "
+        "(half-up to 0.01)"
     )
 
 

@@ -15,6 +15,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     AGE_MAXIMUM,
     AGE_REDUCTION,
     BASIC_PERSONAL_AMOUNT,
+    BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3,
     BORN_IN_1960_OR_EARLIER,
     BORN_IN_1960_OR_EARLIER_CHECKED,
     CAREGIVER_AMOUNT,
@@ -170,6 +171,7 @@ from tests.kinds import non_negative
 def test_the_personal_amounts_kinds_are_money() -> None:
     for kind in (
         BASIC_PERSONAL_AMOUNT,
+        BASIC_PERSONAL_AMOUNT_NET_INCOME_LINE_3,
         FEDERAL_TAX_TAXABLE_INCOME_LINE_70,
         AGE_MAXIMUM,
         AGE_INCOME_THRESHOLD,
