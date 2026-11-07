@@ -37,6 +37,7 @@ from textwrap import dedent
 
 import pytest
 
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -235,6 +236,32 @@ def test_every_line_matches_the_printed_form(
     assert {line: sheet.get(AMOUNT_LINES[line]).value for line in expected} == {
         line: D(figure) for line, figure in expected.items()
     }
+
+
+BRACKET_COLUMN_TRACE = [
+    ("20000", "19835", "0", "5.05%", "0"),
+    ("70000", "69335", "52886", "9.15%", "2670.74"),
+    ("150000", "148926", "105775", "11.16%", "7510.09"),
+]
+
+
+@pytest.mark.parametrize(("salary", "base", "lower", "rate", "at_start"), BRACKET_COLUMN_TRACE)
+def test_lines_3_5_and_7_trace_the_output_and_the_base_they_read(
+    take_home_service: TakeHomeService,
+    salary: str,
+    base: str,
+    lower: str,
+    rate: str,
+    at_start: str,
+) -> None:
+    text = EnglishTraceRenderer().render_all(on428(take_home_service, salary).trace)
+
+    taxable = "on428_taxable_income_line_1"
+    assert [line for line in text if ": bracket " in line] == [
+        f"on428_bracket_lower_bound_line_3: bracket lower bound for {taxable} {base}: {lower}",
+        f"on428_bracket_column_rate_line_5: bracket rate for {taxable} {base}: {rate}",
+        f"on428_tax_at_column_start_line_7: bracket tax at start for {taxable} {base}: {at_start}",
+    ]
 
 
 def test_the_form_exports_line_90_the_figure_t1_line_42800_reads(
