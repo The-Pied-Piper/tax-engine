@@ -20,9 +20,9 @@ basic credits only.
 
 The T2204 line 15 edge: line 15 counts only when more than $1. Run through the real parts, line 15
 is 1.01 at a salary of 2,032.32 (counted) and 1.00 at 2,032.33 (not more than $1, counts as 0);
-the ticket's "about 2,032.40 to 2,033.40" is only approximate. The EI overpayment exists only below
+so the edge is between those two salaries. The EI overpayment exists only below
 a salary of about 2,033 and the CWB only above about 3,000 (0.00 at 3,000, 135.00 at 3,500), so no
-salary has both non-zero. Figures are recomputed from the real parts, not taken from the ticket.
+salary has both non-zero.
 """
 
 from __future__ import annotations
@@ -143,7 +143,7 @@ def test_line_48200_is_the_ei_overpayment_plus_the_cwb(
 
 
 def test_line_48200_at_70000_is_the_cwb_alone(take_home_service: TakeHomeService) -> None:
-    # Ticket: at $70,000 line 48200 equals the CWB, which is 0.
+    # At $70,000 line 48200 is the CWB alone, which is 0.
     line_45000, line_45300, line_48200 = _figures(take_home_service, "70000")
 
     assert line_48200 == line_45300 == D("0.00")
