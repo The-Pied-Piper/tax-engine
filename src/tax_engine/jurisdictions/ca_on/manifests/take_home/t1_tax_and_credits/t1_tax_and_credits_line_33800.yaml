@@ -1,0 +1,15 @@
+# T1 General 2025, Ontario edition (form 5006-R), Step 5 line 115 / line 33800 "Line 113 multiplied by
+# the percentage from line 114" (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Line 113 is
+# `ca/non_refundable_credit_amounts` (line 33500, from t1_tax_and_credits_line_33500.yaml). Line 114
+# is the 14.5% federal non-refundable credit rate, held in the `ca/credit_rate` dataset, so it has no
+# step. The product is rounded half-up to the cent by that dataset's own rounding rule.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/apply_rate
+    params:
+      rate: ca/credit_rate
+    consumes:
+      base: ca/non_refundable_credit_amounts
+    produces:
+      output: ca/credit_amounts_at_credit_rate
