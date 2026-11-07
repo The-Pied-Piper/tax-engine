@@ -56,6 +56,12 @@ ON428_BRACKET_COLUMN_RATE_LINE_5 = AmountKind.declare(
 """Bracket column rate, ON428 line 5 (each column prints "Line 5: Rate" with 5.05%, 9.15%, 11.16%,
 12.16% or 13.16%): the printed rate of the column that line 1 falls in."""
 
+ON428_EXCESS_TIMES_COLUMN_RATE_LINE_6 = AmountKind.declare(
+    CATALOG, "on428_excess_times_column_rate_line_6", non_negative=True
+)
+"""Line 4 times the column rate, ON428 line 6 "Line 6: Line 4 multiplied by the percentage from
+line 5 =": line 4 times line 5, a fraction, rounded half-up to the cent."""
+
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )

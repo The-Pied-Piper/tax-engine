@@ -1,0 +1,19 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) Part A, line 6. Each of the five columns prints
+# "Line 6: Line 4 multiplied by the percentage from line 5 =". Line 4 is the taxable income over the
+# column's lower bound (`ca-on/on428_taxable_income_over_lower_bound_line_4`) and line 5 is the
+# column's rate as a fraction (`ca-on/on428_bracket_column_rate_line_5`, 0.0915 for 9.15%), so line 6
+# is one product: line 4 times line 5, rounded half-up to the cent by the
+# `ca-on/bracket_column_tax_rounding` dataset. The output is
+# `ca-on/on428_excess_times_column_rate_line_6`. Lines 4 and 5 are read from their producing parts
+# (on428_line_4.yaml and on428_line_5.yaml), so this part does not produce them again.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/multiply_by_rate
+    params:
+      rounding: ca-on/bracket_column_tax_rounding
+    consumes:
+      base: ca-on/on428_taxable_income_over_lower_bound_line_4
+      rate: ca-on/on428_bracket_column_rate_line_5
+    produces:
+      output: ca-on/on428_excess_times_column_rate_line_6

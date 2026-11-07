@@ -14,8 +14,9 @@
 # on the brackets below at the line 5 rates rounded half-up to the cent (7,510.09 for
 # the exact 7,510.0865), so the tax at each bracket's start rounds half-up to the cent.
 # Line 8 is a dollars-and-cents box, so the column's tax rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule; line 6 is not rounded on its
-# own, line 4 takes amounts already in cents, and line 7 is already in cents.
+# owner's decision, as the form states no rounding rule; the take-home build rounds line 6
+# half-up to the cent in its own part (ca-on/bracket_column_tax_rounding), line 4 takes
+# amounts already in cents, and line 7 is already in cents, so line 8 is the same figure.
 family: ca-on/brackets
 tax_year: 2025
 kind: brackets
