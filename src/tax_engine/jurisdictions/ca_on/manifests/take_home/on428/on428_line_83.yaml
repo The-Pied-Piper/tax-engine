@@ -1,0 +1,15 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 83, "Line 83: Line 81 minus line 82 (if negative,
+# enter "0") =": the Ontario tax after the provincial foreign tax credit. Line 81 is read from its
+# source part, and line 82 is read directly as an optional input that a salary-only caller leaves
+# out, read as blank and then as 0 by the blank rule of core/subtract_not_below_zero.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/on428_tax_after_reduction_line_81
+      less: ca-on/on428_provincial_foreign_tax_credit_line_82
+    blank:
+      less: "0"
+    produces:
+      output: ca-on/on428_tax_after_foreign_tax_credit_line_83
