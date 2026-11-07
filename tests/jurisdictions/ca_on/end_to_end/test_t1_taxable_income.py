@@ -27,6 +27,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.deductions import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
+    NET_INCOME_BEFORE_ADJUSTMENTS,
     SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, TOTAL_INCOME
@@ -53,11 +54,6 @@ HEADER_15000 = dedent("""\
         required: false
         default: "0"
         basis: 'Other employment income (T1 line 10400)'
-      # Line 23400 is built by ticket #217; until then line 23600 reads it from this header.
-      - name: ca/net_income_before_adjustments
-        required: false
-        default: "0"
-        basis: 'Net income before adjustments (T1 line 23400)'
     outputs:
       - ca/employment_income
     capabilities: []
@@ -123,3 +119,18 @@ def test_line_23300_is_the_schedule_8_enhanced_contributions_read_as_line_22215(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
     assert line_23300(take_home_service, salary) == D(expected)
+
+
+def line_23400(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+    )
+    (sheet,) = worksheets["ca/t1_taxable_income"]
+    return sheet.get(NET_INCOME_BEFORE_ADJUSTMENTS).value
+
+
+@pytest.mark.parametrize(("salary", "expected"), [("70000", "69335.00"), ("90000", "88926.00")])
+def test_line_23400_is_total_income_less_the_deductions_from_it(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert line_23400(take_home_service, salary) == D(expected)
