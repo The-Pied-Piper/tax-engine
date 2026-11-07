@@ -65,7 +65,7 @@ HEADER = dedent("""\
 # The real T2204 declaration (`t2204.yaml`) carries the form and its exports, so the fixture's own
 # form text is an empty mapping.
 FORM = "{}\n"
-PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.glob("t2204*.yaml"))))
+PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))))
 
 # Amount lines by form line; the line 1 count (note (1)) and line 15 count (more than $1) are
 # counts and are read by their own kinds.
@@ -155,6 +155,14 @@ SALARY_2010_AMOUNTS = {
     "45000": "22.96",
     "16": "10.00",
 }
+SALARY_2032_AMOUNTS = {
+    "4": "33.32",
+    "7": "32.00",
+    "8": "1.32",
+    "15": "1.32",
+    "45000": "1.32",
+    "16": "32.00",
+}
 SALARY_2033_AMOUNTS = {"15": "0.34", "45000": "0", "16": "33.00"}
 SALARY_1000_AMOUNTS = {
     "1": "0",
@@ -165,6 +173,7 @@ SALARY_1000_AMOUNTS = {
     "15": "0",
     "16": "0",
 }
+GIVEN_1078_48_AMOUNTS = {"13": "1.00", "14": "1.00", "15": "1.00", "45000": "0"}
 GIVEN_1148_AMOUNTS = {
     "4": "1148.00",
     "10": "1077.48",
@@ -182,6 +191,7 @@ GIVEN_1148_AMOUNTS = {
         ("70000", SALARY_70K_AMOUNTS, {"1": 1, "15": 0}),
         ("30000", SALARY_30K_AMOUNTS, {"15": 0}),
         ("2010", SALARY_2010_AMOUNTS, {"1": 1, "15": 1}),
+        ("2032", SALARY_2032_AMOUNTS, {"15": 1}),
         ("2033", SALARY_2033_AMOUNTS, {"15": 0}),
         ("1000", SALARY_1000_AMOUNTS, {"1": 0}),
     ],
@@ -213,6 +223,22 @@ def test_a_given_line_4_figure_is_the_premiums_deducted_and_the_overpayment_foll
         line: D(value) for line, value in GIVEN_1148_AMOUNTS.items()
     }
     assert counts(sheet, {"15": 1}) == {"15": 1}
+
+
+def test_an_overpayment_of_exactly_1_00_is_not_more_than_1_and_is_not_claimed(
+    take_home_service: TakeHomeService,
+) -> None:
+    # Line 15 says "more than $1": exactly $1.00 stays off line 45000.
+    sheet = compose(
+        take_home_service,
+        Artifact(EMPLOYMENT_INCOME, D("70000")),
+        Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, D("1078.48")),
+    )
+
+    assert amounts(sheet, GIVEN_1078_48_AMOUNTS) == {
+        line: D(value) for line, value in GIVEN_1078_48_AMOUNTS.items()
+    }
+    assert counts(sheet, {"15": 0}) == {"15": 0}
 
 
 def test_the_exports_read_the_calculator_and_return_lines_at_70000(
