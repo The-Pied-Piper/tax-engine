@@ -189,13 +189,6 @@ PENSION_INCOME_CREDIT = AmountKind.declare(CATALOG, "pension_income_credit", non
 $1,762)": the lesser of that maximum and the federal line 31400 amount, a part of the total of the
 Ontario credit amounts."""
 
-ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
-    CATALOG, "on428_credits_subtotal_line_25", non_negative=True
-)
-"""Ontario credits subtotal, ON428 line 25 "Line 25: Line 18 plus line 24 =": line 18 (the sum of
-lines 9, 10, 13, 16 and 17) plus line 24 (the sum of lines 19 to 23), before the pension income
-amount is added on line 28."""
-
 ON428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "on428_pension_income_amount", non_negative=True
 )
