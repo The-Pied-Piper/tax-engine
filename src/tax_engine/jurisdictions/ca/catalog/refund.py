@@ -462,10 +462,18 @@ self-employment and other earnings eligible for the EI program for access to EI 
 a starting amount, nil when there is no agreement with the Canada Employment Insurance
 Commission."""
 
+T2204_PREMIUMS_DEDUCTED_GIVEN = AmountKind.declare(
+    CATALOG, "t2204_premiums_deducted_given", non_negative=True
+)
+"""Total premiums deducted as given, Form T2204 line 4 "Total premiums deducted: Residents of other
+than Quebec (box 18 and box 55 of your T4 slips)": the figure the caller gives, from the T4 slips;
+blank when the caller does not give it, and line 4 is then computed."""
+
 T2204_PREMIUMS_DEDUCTED = AmountKind.declare(CATALOG, "t2204_premiums_deducted", non_negative=True)
 """Total premiums deducted, Form T2204 line 4 "Total premiums deducted: Residents of other than
-Quebec (box 18 and box 55 of your T4 slips)": a starting amount, taken as typed. Lines 6 and 9 read
-it as typed; the form prints no limit on line 4."""
+Quebec (box 18 and box 55 of your T4 slips)": the given figure (`ca/t2204_premiums_deducted_given`)
+or, when none is given, 1.64% of the EI insurable earnings of line 1 (maximum $1,077.48), computed
+as line 10 is. Lines 6 and 9 read it as typed; the form prints no limit on line 4."""
 
 T2204_PPIP_PREMIUMS = AmountKind.declare(CATALOG, "t2204_ppip_premiums", non_negative=True)
 """Quebec parental insurance plan (PPIP) premiums, the box 55 part of Form T2204 line 4 "Total
@@ -503,6 +511,11 @@ the maximum insurable earnings of $65,700."""
 T2204_EXEMPTION = AmountKind.declare(CATALOG, "t2204_exemption", non_negative=True)
 """Exemption of Form T2204 line 7 "Amount from line 3 – $2,000 = (if negative, enter "0")": the
 $2,000 taken from line 3, claimed whole, a dataset figure."""
+
+T2204_LINE_5 = AmountKind.declare(CATALOG, "t2204_line_5", non_negative=True)
+"""Line 5 of Form T2204, "Residents of other than Quebec (amount from line 9 of Schedule 13)": the
+self-employed EI premiums payable from Schedule 13, an optional input. Left blank, it is read as 0,
+as a salary-only caller has none."""
 
 T2204_LINE_6 = AmountKind.declare(CATALOG, "t2204_line_6", non_negative=True)
 """Line 6 of Form T2204, "Line 4 plus line 5": the premiums deducted (line 4) plus the Schedule 13

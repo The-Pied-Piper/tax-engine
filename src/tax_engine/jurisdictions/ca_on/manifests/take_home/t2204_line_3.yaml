@@ -1,0 +1,27 @@
+# T2204 (2025) line 3: "Line 1 plus line 2 (maximum $65,700)". The take-home caller has no T4, so
+# line 1 is the salary typed once (T1 line 10100), as the line 1 part describes, and line 2 is the
+# optional self-employment earnings input, left out when the caller has none.
+#
+# Step 1 adds line 1 and line 2. A blank line 2 counts as "0": the blank rule is keyed by the line 2
+# kind, so a blank in that part reads as 0 while a blank line 1 is still refused.
+#
+# Step 2 caps the sum at the printed maximum: the sum itself when it is under $65,700, else $65,700.
+form:
+  name: ca/t2204
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2204_line_1
+        - ca/t2204_self_employment_earnings
+    blank:
+      ca/t2204_self_employment_earnings: "0"
+    produces:
+      output: ca/t2204_line_1_plus_2
+  - name: core/capped_amount
+    params:
+      cap: ca/t2204_maximum_insurable_earnings
+    consumes:
+      base: ca/t2204_line_1_plus_2
+    produces:
+      output: ca/t2204_line_3
