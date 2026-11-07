@@ -964,6 +964,13 @@ LIFT_ADJUSTED_NET_INCOME = AmountKind.declare(
 Your adjusted net income", which Part A line 15 "Amount from line 13 above" and Part B line 30
 "Amount from line 13 of the previous page" take."""
 
+LIFT_SINGLE_EXCESS_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "lift_single_excess_over_threshold", non_negative=True
+)
+"""LIFT excess over the threshold, Schedule ON428-A Part A line 17 "Line 15 minus line 16 (if
+negative, enter "0")": line 15 "Amount from line 13 above" (the adjusted net income) less line 16
+"Individual income threshold 32,500.00", the base of the Part A reduction on line 19."""
+
 LIFT_REDUCTION = AmountKind.declare(CATALOG, "lift_reduction", non_negative=True)
 """LIFT credit reduction, Schedule ON428-A Part A line 19 "Line 17 multiplied by the percentage
 from line 18": line 18 "Applicable rate 5%" on line 17 "Line 15 minus line 16 (if negative, enter

@@ -1,0 +1,9 @@
+# Schedule ON428-A (form 5006-A, 2025), Part A. This part names the form and its export; each
+# line's capability goes in a part of its own with the same `form.name`. Export: line 19 "Line 17
+# multiplied by the percentage from line 18", the LIFT reduction that ON428 reads.
+form:
+  name: ca-on/on428_a
+  required: true
+  exports:
+    - ca-on/lift_reduction
+capabilities: []
