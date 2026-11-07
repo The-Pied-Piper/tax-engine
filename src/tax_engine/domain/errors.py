@@ -204,5 +204,10 @@ class InvalidSurchargeTiersError(DomainError):
     """A tier's threshold or rate is invalid, tiers are missing, or thresholds do not increase."""
 
 
+class InvalidAmountByBandError(DomainError):
+    """A band's figure is invalid or its shape is neither flat nor sloped, or a chart's bands are
+    missing, do not start at 0, or do not increase."""
+
+
 class InvalidYearAmountsError(DomainError):
     """A table of amounts by year is empty, out of order or has a bad figure."""

@@ -7,6 +7,7 @@ from __future__ import annotations
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.trace.rate_tables import (
+    AmountByBandLine,
     BracketColumnLine,
     ChosenRateAppliedLine,
     RateByIncomeBandLine,
@@ -100,4 +101,33 @@ class ChosenRateAppliedRenderer:
         return (
             f"{output.label}: {rate_kind.label} {EnglishFigures.percent(rate.value)}% of "
             f"{base.label} {EnglishFigures.money(amount)} ({EnglishFigures.rounding(rule)})"
+        )
+
+
+@english_renderer
+class AmountByBandRenderer:
+    """English text for AmountByBandLine."""
+
+    line_class = AmountByBandLine
+
+    def render(self, line: AmountByBandLine) -> str:
+        """The English sentence for `line`."""
+        output = line.output
+        base = line.base
+        income = line.base_amount
+        over = line.over
+        rule = line.rounding
+        if line.amount is not None:
+            figure = EnglishFigures.money(line.amount)
+        elif line.minus is not None and line.rate is not None and line.plus is not None:
+            figure = (
+                f"({EnglishFigures.money(income)} minus {EnglishFigures.money(line.minus)}) "
+                f"x {EnglishFigures.percent(line.rate.value)}% "
+                f"plus {EnglishFigures.money(line.plus)}"
+            )
+        else:
+            figure = EnglishFigures.money(line.result)
+        return (
+            f"{output.label}: {base.label} {EnglishFigures.money(income)}, "
+            f"over {EnglishFigures.money(over)}: {figure} ({EnglishFigures.rounding(rule)})"
         )

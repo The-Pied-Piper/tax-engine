@@ -1,0 +1,22 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 89, "Ontario health premium (complete the chart
+# below)". Chart line 1, "Enter your taxable income from line 26000 of your return", is read from
+# T1 line 26000 (`ca/t1_taxable_income.taxable_income`) as a record list, so the first step is
+# core/record_total over those records, giving `ca-on/on428_taxable_income_line_89`. The second step
+# reads that line as the base of the chart: core/amount_by_band picks the row of the chart the
+# income falls in and gives its figure, rounded half-up to the cent by the `health_premium_rows`
+# dataset's rule. The chart's rows are the `ca-on/health_premium_rows` dataset.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t1_taxable_income.taxable_income
+    produces:
+      output: ca-on/on428_taxable_income_line_89
+  - name: core/amount_by_band
+    params:
+      table: ca-on/health_premium_rows
+    consumes:
+      base: ca-on/on428_taxable_income_line_89
+    produces:
+      output: ca-on/on428_ontario_health_premium_line_89
