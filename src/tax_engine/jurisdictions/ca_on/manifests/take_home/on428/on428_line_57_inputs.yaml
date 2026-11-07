@@ -1,0 +1,9 @@
+# ON428 (2025) line 57's input, which a salary-only caller does not give.
+# Line 57: "Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)". A
+# salary-only caller has no dividend income, so a request that leaves the line out is read as blank,
+# and the line 71 part reads that blank as 0.
+inputs:
+  - name: ca-on/on428_dividend_tax_credit_line_57
+    required: false
+    default: null
+    basis: 'Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)'
