@@ -1,6 +1,6 @@
 # tax-engine: an open-source income tax calculation engine in Python
 
-**tax-engine is a personal income tax calculation library where every number is a line on a real tax form, and every result explains itself in plain English.**
+**tax-engine is a personal income tax calculation library where every number is a line on a real tax form, and every result explains itself in a readable trace.**
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from.
 

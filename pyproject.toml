@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tax-engine"
 version = "0.1.0"
-description = "A jurisdiction-agnostic personal income tax computation engine."
+description = "Open-source personal income tax calculation engine in Python. Every number is a tax-form line, and every result explains itself in a readable trace."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
