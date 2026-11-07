@@ -1,0 +1,20 @@
+# Schedule 6 (5000-S6, 2025) line 28, the Canada workers benefit to T1 line 45300. The form prints:
+# "Line 28: Line 22 minus line 27 (if negative, enter "0") If you are not completing Step 3, enter
+# this amount on line 45300 of your return." (docs/cra-forms-2025/5000-s6-25e.txt, lines 310-311).
+#
+# Line 22 is `ca/cwb_basic_benefit_line_22` (from schedule_6_line_22.yaml) and line 27 is
+# `ca/cwb_reduction_line_27` (from schedule_6_line_27.yaml). The result is not below zero. The form
+# prints no rounding rule, so the cent rounding (`ca/cent_rounding`) is the owner's decision, as on
+# lines 18 and 25. Step 3 is not completed (no disability tax credit), so line 28 goes straight to
+# T1 line 45300.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/subtract_not_below_zero
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      amount: ca/cwb_basic_benefit_line_22
+      less: ca/cwb_reduction_line_27
+    produces:
+      output: ca/cwb_benefit_line_28
