@@ -1,0 +1,16 @@
+# Schedule 6 (5000-S6, 2025) line 18, the working income over the base amount. The form prints:
+# "Line 18: Line 16 minus line 17 (if negative, enter "0")" (docs/cra-forms-2025/5000-s6-25e.txt,
+# line 286).
+#
+# Line 16 is "Family working income from line 6", a copy of line 6, so step 1 reads line 6 directly
+# (`ca/cwb_family_working_income`, from schedule_6_line_6.yaml), not a copy of it. Line 17 is the
+# base amount (`ca/cwb_base_amount`, from schedule_6_line_17.yaml). The result is not below zero.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/cwb_family_working_income
+      less: ca/cwb_base_amount
+    produces:
+      output: ca/cwb_working_income_over_base_amount
