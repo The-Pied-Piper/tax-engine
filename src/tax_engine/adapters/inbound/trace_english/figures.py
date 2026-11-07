@@ -1,15 +1,13 @@
 """EnglishFigures: how each type of field in a trace line reads in English.
 
-Percentages, plain figures, exact fractions, rounding rules and the start of a CCA table line
+Percentages, plain figures, rounding rules and the start of a CCA table line
 read the same in every line, so every line's renderer formats them with EnglishFigures, as in
 `EnglishFigures.money(amount)`; a package's renderer may too.
 """
 
 from __future__ import annotations
 
-import decimal
 from decimal import Decimal
-from fractions import Fraction as ExactFraction
 
 from tax_engine.domain.parameters.class_rates import ClassRate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule, RoundTo
@@ -32,14 +30,6 @@ class EnglishFigures:
     def money(amount: Decimal) -> str:
         """`amount` at the precision it is stored, e.g. 115000.00 -> "115000.00"."""
         return format(amount, "f")  # fixed-point, every digit; never an exponent
-
-    @staticmethod
-    def exact(amount: ExactFraction) -> str:
-        """An exact fraction as a plain figure if it terminates, else "numerator/denominator"."""
-        try:
-            return EnglishFigures.money(NO_ROUNDING.apply(amount))
-        except decimal.Inexact:
-            return f"{amount.numerator}/{amount.denominator}"
 
     @staticmethod
     def rounding(rule: RoundingRule) -> str:

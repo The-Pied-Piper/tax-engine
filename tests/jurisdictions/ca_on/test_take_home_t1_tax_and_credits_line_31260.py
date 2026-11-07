@@ -1,4 +1,4 @@
-"""T1 General 2025 (5006-R, Ontario) Step 5 Part A line 31260 "Canada employment amount", from the
+"""T1 General 2025 (5006-R, Ontario) Step 5 Part B line 31260 "Canada employment amount", from the
 salary and the optional line 10400 input.
 
 Line 31260 is "Line 92 and line 31260: Canada employment amount: Enter whichever is less: $1,471 or

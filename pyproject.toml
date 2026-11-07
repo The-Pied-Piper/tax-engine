@@ -5,11 +5,31 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tax-engine"
 version = "0.1.0"
-description = "A jurisdiction-agnostic personal income tax computation engine."
+description = "Open-source personal income tax calculation engine in Python. Every number is a tax-form line, and every result explains itself in a readable trace."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
+authors = [
+    { name = "Umar Khan", email = "The-Pied-Piper@users.noreply.github.com" },
+]
+keywords = [
+    "tax",
+    "income-tax",
+    "tax-calculation",
+    "canada",
+    "ontario",
+    "decimal",
+    "explainable",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial",
+]
 dependencies = [
     "PyYAML>=6.0",
 ]
@@ -25,6 +45,7 @@ dev = [
 ]
 
 [project.urls]
+Documentation = "https://github.com/The-Pied-Piper/tax-engine#readme"
 Repository = "https://github.com/The-Pied-Piper/tax-engine"
 Issues = "https://github.com/The-Pied-Piper/tax-engine/issues"
 
