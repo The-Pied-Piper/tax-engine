@@ -156,8 +156,9 @@ AMOUNT_LINES: dict[str, AmountKind] = {
     "89": ON428_ONTARIO_HEALTH_PREMIUM_LINE_89,
     "90": ON428_ONTARIO_TAX_LINE_90,
 }
-# Lines 3 (a bracket bound stored as a whole dollar figure) and 78 (line 77 times 2, unrounded) are
-# equal to the printed cents but come back without a decimal part, so they are not pinned here.
+# Every amount line but 5 (a rate). Lines 3 and 78 and the floored zeros are a known gap (see
+# `test_every_cent_line_has_two_decimals_known_gap`), so the passing test below pins the rest.
+ALL_CENT_LINES = tuple(line for line in AMOUNT_LINES if line != "5")
 CENT_LINES = (
     "1", "4", "6", "7", "8", "9", "18", "19", "21", "24", "25", "28", "31", "35", "44", "46",
     "50", "53", "55", "61", "65", "66", "67", "68", "69", "71", "73", "74", "77", "80", "81",
@@ -289,6 +290,25 @@ def test_the_cent_lines_have_exactly_two_decimals_when_above_zero(
     for line in CENT_LINES:
         value = sheet.get(AMOUNT_LINES[line]).value
         assert value == 0 or value.as_tuple().exponent == -2, line
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason=(
+        "Known gap, tracked as a follow-up ticket: line 3 comes back 52886 / 105775 (brackets dataset stores "
+        "whole dollars), line 78 comes back 588 (apply_fraction, no rounding), and floored zeros "
+        "(lines 3, 86 and 88 at 20,000) come back as a bare 0. The values equal the printed cents; "
+        "only the decimal places differ. Strict, so it fails the suite once the gap is closed."
+    ),
+)
+@pytest.mark.parametrize("salary", [case[0] for case in CASES])
+def test_every_cent_line_has_two_decimals_known_gap(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    sheet = on428(take_home_service, salary)
+
+    for line in ALL_CENT_LINES:
+        assert sheet.get(AMOUNT_LINES[line]).value.as_tuple().exponent == -2, line
 
 
 def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> None:
