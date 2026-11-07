@@ -1,8 +1,9 @@
 """The 2025 `ca-on/bracket_column_tax_rounding` dataset: the rounding rule of ON428 line 6, a
 dollars-and-cents box, with no values beyond its rule.
 
-The rule is half-up to the cent, as `ca-on/brackets` already rounds line 8 (every line 7 figure is
-in whole cents, so the two give the same result). The dataset cites only the ON428 text."""
+The rule is half-up to the cent, the owner's decision as the form states no rounding rule.
+`ca-on/brackets` has no rounding rule (every line 7 figure is in whole cents). The dataset cites
+only the ON428 text."""
 
 from __future__ import annotations
 
