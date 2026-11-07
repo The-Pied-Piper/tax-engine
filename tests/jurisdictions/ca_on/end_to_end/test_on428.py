@@ -5,9 +5,9 @@ Every ON428 line part has its own test with its neighbours typed in. This module
 whole form: it copies `salary.yaml`, every Schedule 8 part (lines 19 and 25 come from there), every
 T2204 part (line 21 reads T2204 line 16), every `t1_taxable_income*.yaml` part (line 1 reads T1 line
 26000), every `on428_a*.yaml` part (line 85 reads ON428-A line 20) and every `on428*.yaml` part of
-the ON428 folder into a temporary manifest folder beside a test-only header, and types in only the
-gross salary (`ca/employment_income`). The real header is not used because its output, T1 line 167,
-is not built yet. This is not a worked return: no return file, no slips, one form.
+the take-home folder into a temporary manifest folder beside a test-only header, and types in only
+the gross salary (`ca/employment_income`). The real header is not used because its output, T1 line
+167, is not built yet. This is not a worked return: no return file, no slips, one form.
 
 Line 2 is a copy of line 1 and has no step, so it has no pin. Line 9 is the basic personal amount
 (`ca-on/basic_personal_amount`) and line 18 reads it. Line 5 is a rate, so it has no cents check.
@@ -100,17 +100,17 @@ HEADER = dedent("""\
 # The real ON428 declaration (`on428.yaml`) carries the form and its exports, so the fixture's own
 # form text is an empty mapping.
 FORM = "{}\n"
-# The ON428 parts are globbed in their own folder: a recursive `on428*.yaml` glob would also match
-# each ON428-A part (`on428_a/on428_a*.yaml`) and copy it twice.
-ON428 = TAKE_HOME / "on428"
-ON428_A = TAKE_HOME / "on428_a"
+# A plain `on428*.yaml` glob would also match each ON428-A part (`on428_a*.yaml`), so the ON428
+# parts are the ones that do not start with `on428_a`.
+ON428_A = sorted(TAKE_HOME.glob("on428_a*.yaml"))
+ON428 = [part for part in sorted(TAKE_HOME.glob("on428*.yaml")) if part not in ON428_A]
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("t1_taxable_income*.yaml"))),
-    *(part.name for part in sorted(ON428_A.glob("on428_a*.yaml"))),
-    *(part.name for part in sorted(ON428.glob("on428*.yaml"))),
+    *(part.name for part in ON428_A),
+    *(part.name for part in ON428),
 )
 
 # Amount lines by form line. Line 2 is a copy of line 1 and line 1 is the taxable income the

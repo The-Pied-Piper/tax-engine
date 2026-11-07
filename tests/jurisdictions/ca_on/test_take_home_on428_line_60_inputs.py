@@ -21,7 +21,7 @@ from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
 PRINTED_BASIS = "Line 60 and line 61540: Enter whichever is less: amount from line 58 or line 59"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/on428/on428_line_60_inputs.yaml"
+    "manifests/take_home/on428_line_60_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

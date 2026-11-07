@@ -6,7 +6,7 @@ calculation: line 8 minus line 50, not below zero. The inputs are
 `ca-on/on428_tax_on_taxable_income_line_8` (line 8) and
 `ca-on/on428_non_refundable_credits_line_50` (line 50), both produced by other parts,
 so this test declares them as inputs in a header of its own and loads the take-home folder's
-`on428/on428_line_53.yaml` beside it. The output is `ca-on/on428_tax_minus_credits_line_53`,
+`on428_line_53.yaml` beside it. The output is `ca-on/on428_tax_minus_credits_line_53`,
 exported by the form.
 """
 

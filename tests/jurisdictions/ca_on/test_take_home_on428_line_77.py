@@ -8,7 +8,7 @@ is the $294.00 basic reduction at every salary, and line 78 reads line 77 later.
 
 The input is `ca-on/on428_basic_reduction_line_74` (line 74), produced by another part, so this test
 declares it as an input in a header of its own and loads the take-home folder's
-`on428/on428_line_77.yaml` beside it. The output is `ca-on/on428_tax_reduction_line_77`, exported by
+`on428_line_77.yaml` beside it. The output is `ca-on/on428_tax_reduction_line_77`, exported by
 the form.
 """
 

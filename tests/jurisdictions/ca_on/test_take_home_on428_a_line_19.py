@@ -5,7 +5,7 @@ line 19 "Line 17 multiplied by the percentage from line 18 =". Line 18 is a prin
 in the `ca-on/lift_single_rate` dataset, so line 19 is one calculation: 5% of line 17. The input is
 `ca-on/lift_single_excess_over_threshold` (line 17, "Line 15 minus line 16 (if negative, enter
 "0")"), produced by another part, so this test declares it as an input in a header of its own and
-loads the take-home folder's `on428_a/on428_a_line_19.yaml` beside it. The output is
+loads the take-home folder's `on428_a_line_19.yaml` beside it. The output is
 `ca-on/lift_reduction`, exported by the form.
 """
 

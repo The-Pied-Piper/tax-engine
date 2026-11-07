@@ -6,7 +6,7 @@ Form text (Form ON428, CRA 5006-c-25e.txt): "Line 67: (Line 65 minus $7,307) mul
 `ca-on/surtax_line_67` dataset, so line 67 is one calculation: line 65 minus 7,307, times 36%,
 rounded half-up to the cent, and 0 when line 65 is under the threshold. The input is
 `ca-on/on428_surtax_base_line_65` (line 65), produced by another part, so this test declares it
-as an input in a header of its own and loads the take-home folder's `on428/on428_line_67.yaml`
+as an input in a header of its own and loads the take-home folder's `on428_line_67.yaml`
 beside it. The output is `ca-on/on428_surtax_36_percent_tier_line_67`, exported by the form.
 """
 

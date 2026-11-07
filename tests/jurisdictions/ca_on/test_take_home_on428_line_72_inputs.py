@@ -25,7 +25,7 @@ PRINTED_BASIS = (
     "calculate your additional tax for minimum tax purposes"
 )
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/on428/on428_line_72_inputs.yaml"
+    "manifests/take_home/on428_line_72_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON
