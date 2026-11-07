@@ -6,7 +6,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca/schedule_8_line_4_rounding
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/cpp_part_3_line_2
       less: ca/cpp_maximum_pensionable_earnings

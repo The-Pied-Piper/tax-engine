@@ -8,7 +8,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca-on/on428_line_86_rounding
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/on428_tax_after_foreign_tax_credit_line_83
       less: ca-on/on428_lift_credit_line_85

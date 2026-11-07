@@ -10,7 +10,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca/t2204_line_13_rounding
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/t2204_premiums_deducted
       less: ca/t2204_line_10

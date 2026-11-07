@@ -12,7 +12,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca/t1_taxable_income_line_26000_rounding
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/net_income
       less: ca/deductions_from_net_income

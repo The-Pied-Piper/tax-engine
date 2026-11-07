@@ -7,7 +7,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca-on/on428_line_4_rounding
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/on428_taxable_income_line_1
       less: ca-on/on428_bracket_lower_bound_line_3

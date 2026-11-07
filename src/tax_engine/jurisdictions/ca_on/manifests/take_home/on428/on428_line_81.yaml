@@ -6,7 +6,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca-on/on428_line_81_rounding
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/on428_tax_with_minimum_tax_addition_line_73
       less: ca-on/on428_ontario_tax_reduction_line_80

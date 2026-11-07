@@ -1,0 +1,13 @@
+# Federal cent rounding, 2025 tax year: the rule for every federal form line that is a
+# dollars-and-cents box and is read from an "(if negative, enter "0")" difference: Schedule 8
+# (5000-s8-25e) lines 4, 5 and 7, T2204 lines 7, 8 and 13, and T1 taxable income lines 23600 and
+# 26000 (5006-r-25e). The forms state no rounding rule, so half-up to the cent is the owner's
+# decision. A line that needs a different rule gets a dataset of its own.
+family: ca/cent_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+rounding: {increment: "0.01", mode: half_up}

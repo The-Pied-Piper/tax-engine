@@ -7,7 +7,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca-on/on428_line_61_rounding
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/on428_tax_with_split_income_line_55
       less: ca-on/on428_minimum_tax_carryover_line_60

@@ -7,7 +7,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca-on/on428_line_71_rounding
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/on428_tax_with_surtax_line_69
       less: ca-on/on428_dividend_tax_credit_line_57

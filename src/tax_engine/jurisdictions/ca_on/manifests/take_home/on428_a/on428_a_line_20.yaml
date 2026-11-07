@@ -9,7 +9,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     params:
-      rounding: ca-on/on428_a_line_20_rounding
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/lift_maximum_credit
       less: ca-on/lift_reduction

@@ -1,9 +1,0 @@
-# Schedule 8 (CPP contributions, 2025, form 5000-S8) Part 3 line 5: "Line 5: Line 2 minus line 4
-# (if negative, enter "0")". The line is a dollars-and-cents box, so the difference rounds half-up
-# to the cent. The form states no rounding rule, so this is the owner's decision.
-family: ca/schedule_8_line_5_rounding
-tax_year: 2025
-kind: rounding_only
-sources:
-  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s8/5000-s8-25e.txt
-rounding: {increment: "0.01", mode: half_up}
