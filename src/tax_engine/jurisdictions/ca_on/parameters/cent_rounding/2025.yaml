@@ -2,10 +2,11 @@
 # dollars-and-cents box and is read from a "(if negative, enter "0")" or "(cannot be negative)"
 # difference, or from a product of two lines (ON428 line 6, line 4 times line 5,
 # core/multiply_by_rate): Form ON428 (5006-c-25e) lines 4, 6, 53, 61, 65, 71, 80, 81, 83, 86 and
-# 88, and Schedule ON428-A (5006-a-25e) lines 17 and 20. The same rule rounds, once and on the exact
-# figure, the totals of the core/sum steps and the product of the core/times_count step (ON428
-# line 80) on those forms. The forms state no rounding rule, so half-up to the cent is the owner's
-# decision. A line that needs a different rule gets a dataset of its own.
+# 88, and Schedule ON428-A (5006-a-25e) lines 3, 13, 17 and 20. The same rule rounds, once and on
+# the exact figure, the totals of the core/sum and core/sum_not_below_zero steps and the product of
+# the core/times_count step (ON428 line 80) on those forms. The forms state no rounding rule, so
+# half-up to the cent is the owner's decision. A line that needs a different rule gets a dataset of
+# its own.
 family: ca-on/cent_rounding
 tax_year: 2025
 kind: rounding_only
