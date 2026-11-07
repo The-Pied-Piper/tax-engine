@@ -110,14 +110,16 @@ line 7 of column 2 is for the eligible spouse. The form asks for the amount with
 brackets, so the kind is signed."""
 
 CWB_FAMILY_NET_INCOME_LINE_10 = AmountKind.declare(CATALOG, "cwb_family_net_income_line_10")
-"""Your column, Schedule 6 Part B line 10 "Add lines 7 to 9.": line 7 "Net income from line 23600 of
-the return (or the amount you would have entered if the instructions on line 23600 said "if
-negative, show in brackets")" (the TOSI-adjusted net income of Form T1206 Part 1 line 6, signed) and
-line 9 "Total of universal child care benefit (UCCB) repayment (line 21300 of the return) and
-registered disability savings plan (RDSP) income repayment (included on line 23200 of the return)"
-(the UCCB and RDSP income repayments of the other payments worksheet); line 8 "Total of net exempt
-income earned on a reserve" (`ca/cwb_tax_exempt_net_income`, zero unless the election is yes),
-signed. The form prints no "(if negative, enter "0")" on line 10, so the kind is signed."""
+"""Your column, Schedule 6 Part B line 10 "Add lines 7 to 9.": the net income of line 7 "Net income
+from line 23600 of the return (or the amount you would have entered if the instructions on line
+23600 said "if negative, show in brackets")" (the TOSI-adjusted net income of Form T1206 Part 1 line
+6, signed), plus lines 8 and 9. Line 8 is "Total of net exempt income earned on a reserve"
+(`ca/cwb_tax_exempt_net_income`, zero unless the election is yes), and line 9 is "Total of universal
+child care benefit (UCCB) repayment (line 21300 of the return) and registered disability savings
+plan (RDSP) income repayment (included on line 23200 of the return)" (the UCCB and RDSP income
+repayments of the other payments worksheet). The take-home calculator builds only line 7 and does
+not add lines 8 and 9. The form prints no "(if negative, enter "0")" on line 10, so the kind is
+signed."""
 
 CWB_FAMILY_NET_INCOME_LINE_12 = AmountKind.declare(
     CATALOG, "cwb_family_net_income_line_12", non_negative=True
@@ -236,8 +238,9 @@ CWB_FAMILY_WORKING_INCOME = AmountKind.declare(
     CATALOG, "cwb_family_working_income", non_negative=True
 )
 """Family working income, Schedule 6 Part A line 6 "Add the amounts from line 5 in columns 1 and 2.
-Enter this amount on line 16. Family working income": line 5 of column 1 (`ca/working_income`) and
-of column 2 (`ca/cwb_spouse_working_income`), which is 0 with no eligible spouse."""
+Enter this amount on line 16. Family working income". The take-home sum has line 5 of column 1
+(`ca/working_income`) only; column 2 (`ca/cwb_spouse_working_income`) is not built, so it is not
+added here."""
 
 CWB_SPOUSE_FAMILY_NET_INCOME_LINE_10 = AmountKind.declare(
     CATALOG, "cwb_spouse_family_net_income_line_10"
