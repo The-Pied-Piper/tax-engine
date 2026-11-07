@@ -191,13 +191,6 @@ ON428_EI_CREDIT_AMOUNT_LINE_21 = AmountKind.declare(
 """EI premiums credit amount, ON428 line 21 and line 58300: a copy of T2204 line 16, the EI
 premiums credit amount."""
 
-ON428_CPP_EI_CREDIT_AMOUNTS_LINE_24 = AmountKind.declare(
-    CATALOG, "on428_cpp_ei_credit_amounts_line_24", non_negative=True
-)
-"""CPP and EI credit amounts, ON428 line 24 "Line 24: Add lines 19 to 23.": the total of lines 19
-and 21 for a salary-only filer, lines 20, 22 and 23 (self-employed CPP and EI, adoption) left
-out."""
-
 ADOPTION_CREDIT = AmountKind.declare(CATALOG, "adoption_credit", non_negative=True)
 """Ontario adoption expenses, ON428 line 23 and line 58330 "Adoption expenses": the total of each
 child's eligible expenses, each capped at the Ontario maximum for one child, a part of the total of
