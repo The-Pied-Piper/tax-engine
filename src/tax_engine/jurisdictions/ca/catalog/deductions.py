@@ -1140,8 +1140,7 @@ NET_INCOME = AmountKind.declare(CATALOG, "net_income", non_negative=True)
 """Net income, T1 line 56 and line 23600 "Line 54 minus line 55 (if negative, enter "0") If
 negative, you may have a non-capital loss (see Form T1A) and the negative amount is to be used for
 certain calculations (go to canada.ca/line-23600) Net income": the net income before adjustments
-(line 23400) less the social benefits repayment (line 23500), not below zero. The signed amount
-before that floor is not built in the take-home: nothing produces `NET_INCOME_SIGNED`.
+(line 23400) less the social benefits repayment (line 23500), not below zero.
 """
 
 NET_INCOME_SIGNED = AmountKind.declare(CATALOG, "net_income_signed")
@@ -1150,7 +1149,8 @@ enter "0")" as Form T1206 Part 1 line 5 "Net income from line 23600 of your tax 
 amount you would have entered if the instructions on line 23600 read "if negative, show in
 brackets")" reads it, and so does the TOSI-adjusted net income, which Schedule ON479-A column 1
 line 1 reads: the net income before adjustments (line 23400) less the social benefits repayment
-(line 23500), signed."""
+(line 23500), signed. The take-home produces it in `t1_taxable_income_line_23600_signed.yaml`
+(one core/subtract, not floored)."""
 
 OAS_OVERPAYMENT_RECOVERED = AmountKind.declare(
     CATALOG, "oas_overpayment_recovered", non_negative=True
