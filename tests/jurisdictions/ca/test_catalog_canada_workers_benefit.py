@@ -438,3 +438,13 @@ def test_the_net_income_over_the_base_amount_of_schedule_6_line_25_is_a_non_nega
     kind = _kind(registry, "ca/cwb_net_income_over_base_amount")
     assert kind.value_type is Decimal
     assert non_negative(kind) is True
+
+
+def test_the_reduction_amount_of_schedule_6_line_27_is_a_non_negative_money_kind(
+    registry: ArtifactRegistry,
+) -> None:
+    # Schedule 6 line 27 "Line 25 multiplied by the percentage from line 26": line 25 is floored at
+    # zero and the rate is 15%, so the product is non-negative.
+    kind = _kind(registry, "ca/cwb_reduction_line_27")
+    assert kind.value_type is Decimal
+    assert non_negative(kind) is True
