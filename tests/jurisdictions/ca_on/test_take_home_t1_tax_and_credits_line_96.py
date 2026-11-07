@@ -1,4 +1,4 @@
-"""T1 General 2025 (5006-R, Ontario) Step 5 Part A line 96, from the salary alone.
+"""T1 General 2025 (5006-R, Ontario) Step 5 Part B line 96, from the salary alone.
 
 Line 96 is "Line 96: Add lines 86 to 95." (T1 General 5006-R, CRA 5006-R-25E, confirmed in
 docs/cra-forms-2025/5006-r-25e.txt, line 548). The take-home filer has three of the lines 86 to 95:

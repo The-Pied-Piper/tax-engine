@@ -1,4 +1,4 @@
-"""T1 General 2025 (5006-R, Ontario) Step 5 Part B line 121 (line 40400) "Federal tax with the tax
+"""T1 General 2025 (5006-R, Ontario) Step 5 Part C line 121 (line 40400) "Federal tax with the tax
 on split income", from the salary alone.
 
 Line 121 is "Line 119 plus line 120" (T1 General 5006-R, CRA 5006-R-25E, confirmed in

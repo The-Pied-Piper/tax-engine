@@ -7,7 +7,8 @@ is line 48200 "Total credits" (`ca/total_credits`), so line 167 is `core/subtrac
 `ca/total_credits` taken off `ca/total_payable`, rounded once to the cent by `ca/cent_rounding`, and
 produces the existing signed kind `ca/refund_or_balance_owing`. The figure has no floor: a negative
 figure is a refund (line 48400), a positive one a balance owing (line 48500). Lines 48400 and 48500
-are split out of this ticket and are not computed here.
+are left out as sign routing: the sign of line 167 only routes the figure to one of
+them, and neither line is computed here.
 
 The test composes the real salary, Schedule 8, T1 taxable income, T2204, Schedule 6, ON428 parts,
 the real line 42000 chain, and the parts of lines 43500, 48200 and the part under test. The header

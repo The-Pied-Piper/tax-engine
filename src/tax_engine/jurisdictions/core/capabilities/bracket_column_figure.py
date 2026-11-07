@@ -7,8 +7,10 @@ its lower bound, BracketColumnRate its rate, BracketColumnTaxAtStart its tax at 
 manifest's params carry only datasets, so the figure is chosen by the class, not by an option.
 
 The column is chosen as in `progressive_tax`: a base exactly at a threshold falls in the lower
-column. The figure is the schedule's own, printed as it is: the capability never rounds it, since
-the schedule already rounds its tax at each start by its own rule.
+column. The figure is the schedule's own, printed as it is: the capability never rounds it. The
+ca/brackets dataset states `rounding: none` and takes the printed line 75 constants as printed;
+the take-home build rounds the form's line 74 and line 76 amounts in their own steps, through the
+shared ca/cent_rounding dataset.
 """
 
 from __future__ import annotations

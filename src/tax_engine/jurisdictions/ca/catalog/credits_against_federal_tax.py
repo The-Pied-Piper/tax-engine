@@ -209,9 +209,10 @@ negative, enter "0") Federal tax =": line 132 less line 133, not below zero."""
 CREDITS_AGAINST_FEDERAL_TAX = AmountKind.declare(
     CATALOG, "credits_against_federal_tax", non_negative=True
 )
-"""Credits against federal tax, T1 line 138 (line 41600) "Add lines 135 to 137.": line 135
-(`political_credit`, 41000), line 136 (`investment_tax_credit`, 41200) and line 137
-(`labour_sponsored_funds_credit`), in line order."""
+"""Credits against federal tax, T1 line 138 (line 41600) "Add lines 135 to 137.", as built for the
+take-home return: the sum of no parts. Lines 135 (41000), 136 (41200) and 137 (41400) are absent for
+the take-home filer and are left out, so the figure is 0.
+"""
 
 FEDERAL_TAX_LESS_CREDITS = AmountKind.declare(
     CATALOG, "federal_tax_less_credits", non_negative=True

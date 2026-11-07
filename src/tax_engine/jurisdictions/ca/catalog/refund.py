@@ -445,8 +445,8 @@ owing": the total payable less the total credits, both already in cents.
 
 Line 149 is "Enter the amount from line 148 of the previous page.", the total payable. The one
 kind not declared non-negative: a negative amount is a refund (line 48400 "Refund"), a positive
-one a balance owing (line 48500 "Balance owing"). The line takes amounts already in cents, so it
-is in cents without a rounding of its own.
+one a balance owing (line 48500 "Balance owing"). The step rounds the figure through the shared
+ca/cent_rounding dataset, half-up to the cent.
 """
 
 REFUND = AmountKind.declare(CATALOG, "refund", non_negative=True)

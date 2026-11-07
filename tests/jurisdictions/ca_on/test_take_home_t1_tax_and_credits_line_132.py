@@ -38,8 +38,8 @@ LINE_128 = "ca/federal_tax_with_surtax"
 LINE_130 = "ca/federal_tax_less_foreign_tax_credit"
 LINE_132 = "ca/federal_tax_with_itc_recapture"
 # The real parts composed beside the test's header: the salary, the real Schedule 8 and T2204
-# parts, the real T1 taxable-income lines and inputs, lines 30000, 76, 84, 31260, 96, 98, 101, 106,
-# 33500, 33800, 35000, 40400, 125, 42900, 128 and 130, the line 130 inputs, and the part under test.
+# parts, the real T1 taxable-income lines and inputs, lines 30000, 76, 31260, 84, 96, 98, 101, 106,
+# 33500, 33800, 35000, 125, 40400, 42900, 128 and 130, the line 130 inputs, and the part under test.
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
