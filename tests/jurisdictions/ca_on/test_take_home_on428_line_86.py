@@ -7,12 +7,12 @@ core/subtract_not_below_zero: line 83 (`ca-on/on428_tax_after_foreign_tax_credit
 line 85. Line 85 is read from Schedule ON428-A Part A line 20 (`ca-on/lift_credit_single`), a
 cross-form read through the form's record list (`ca-on/on428_a.lift_credit_single`), so line 85 is
 one core/record_total over that list (`ca-on/on428_lift_credit_line_85`). Line 86 is
-`ca-on/on428_tax_after_lift_credit_line_86`. The form exports both.
+`ca-on/on428_tax_after_lift_credit_line_86`. The test's own form declaration exports both.
 
 Schedule ON428-A is the real form: its header and real lines 3, 5, 13, 16, 17, 19 and 20, over the
 real Schedule 8 and T1 taxable-income parts, so the LIFT credit comes from the salary through the
 real lines. Line 83 is built by another part, so this test declares it as a required input of its
-header as a temporary stand-in.
+header, as every ON428 line test declares its upstream lines.
 """
 
 from __future__ import annotations
