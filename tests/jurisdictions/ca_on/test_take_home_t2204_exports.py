@@ -69,13 +69,11 @@ def _worksheet(
     return kinds, service.compute(CODE, 2025, *starting)["ca/t2204"][0]
 
 
-def test_the_form_exports_exactly_the_three_figures(tmp_path: Path) -> None:
-    folder = tmp_path / "manifest"
-    folder.mkdir()
-    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    for number, part in enumerate(PARTS, start=2):
-        (folder / f"{number:02d}_{part}").write_bytes((TAKE_HOME / part).read_bytes())
+def test_the_form_exports_exactly_the_three_figures(
+    take_home_service: TakeHomeService, tmp_path: Path
+) -> None:
+    take_home_service(HEADER, FORM, *PARTS)
+    folder = tmp_path / "manifests" / "take_home"
     manifest = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
     (worksheet,) = [form for form in manifest.forms if form.name == "ca/t2204"]
     assert worksheet.exports == (LINE_4, OVERPAYMENT, LINE_16)
