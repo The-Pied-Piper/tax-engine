@@ -185,12 +185,23 @@ ON428_TAX_REDUCTION_LINE_77 = AmountKind.declare(
 """Tax reduction, ON428 line 77 "Add lines 74 to 76": the sum of the reduction parts, which for a
 single filer with no dependants is the basic reduction on line 74 alone."""
 
+ON428_TAX_REDUCTION_DOUBLED_LINE_78 = AmountKind.declare(
+    CATALOG, "on428_tax_reduction_doubled_line_78", non_negative=True
+)
+"""Doubled tax reduction, ON428 line 78 "Amount from line 77 above multiplied by 2 =": line 77
+multiplied by 2."""
+
+ON428_ONTARIO_TAX_REDUCTION_LINE_80 = AmountKind.declare(
+    CATALOG, "on428_ontario_tax_reduction_line_80", non_negative=True
+)
+"""Ontario tax reduction, ON428 line 80 "Line 80: Line 78 minus line 79 (if negative, enter "0")
+Ontario tax reduction =": line 78 minus line 79 (a copy of line 73), not below zero."""
+
 ON428_TAX_AFTER_TAX_REDUCTION_LINE_81 = AmountKind.declare(
     CATALOG, "on428_tax_after_tax_reduction_line_81", non_negative=True
 )
-"""STAND-IN copy of the kind declared by the line 81 PR, so that line 83 can read it before that PR
-merges. ON428 line 81 "Line 81: Line 73 minus line 80 (if negative, enter "0") =": line 73 minus
-line 80, not below zero. The second PR to merge drops this copy."""
+"""Ontario tax after the tax reduction, ON428 line 81 "Line 81: Line 73 minus line 80 (if negative,
+enter "0") =": line 73 minus the Ontario tax reduction, not below zero."""
 
 ON428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_82 = AmountKind.declare(
     CATALOG, "on428_provincial_foreign_tax_credit_line_82", non_negative=True
@@ -1218,8 +1229,9 @@ negative, enter "0") Your spouse's or common-law partner's adjusted net income".
 LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_individual_income_threshold", non_negative=True
 )
-"""Individual income threshold, Schedule ON428-A Part B line 31 "Individual income threshold
-32,500.00": a printed amount, taken whole."""
+"""Individual income threshold, Schedule ON428-A Part A line 16 "Individual income threshold
+32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
+whole."""
 
 LIFT_EXCESS_OVER_INDIVIDUAL_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_excess_over_individual_threshold", non_negative=True
