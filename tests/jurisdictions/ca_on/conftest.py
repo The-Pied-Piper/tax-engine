@@ -17,8 +17,6 @@ from tests.capabilities import bundled_capabilities
 from tests.kinds import bundled_kinds
 
 TAKE_HOME = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "take_home"
-# Test-data part files for lines whose package part is not written yet.
-TEST_PARTS = Path(__file__).parent / "part_files"
 
 
 class TakeHomeService(Protocol):
@@ -44,8 +42,7 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
         for number, part in enumerate(parts, start=2):
-            source = next(TAKE_HOME.rglob(part), None) or next(TEST_PARTS.rglob(part))
-            (folder / f"{number:02d}_{part}").write_bytes(source.read_bytes())
+            (folder / f"{number:02d}_{part}").write_bytes(next(TAKE_HOME.rglob(part)).read_bytes())
         roots = {**JURISDICTIONS.roots(), Namespace("ca-on"): tmp_path}
         return TaxComputationService(
             YamlJurisdictionSource(roots, bundled_kinds()),
