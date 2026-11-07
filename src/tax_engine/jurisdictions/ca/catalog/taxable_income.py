@@ -556,9 +556,9 @@ amount."""
 DEDUCTIONS_FROM_NET_INCOME = AmountKind.declare(
     CATALOG, "deductions_from_net_income", non_negative=True
 )
-"""Deductions from net income, T1 line 68 and line 25700 "Add lines 58 to 67.": the sum of the
-deductions from net income, here, in line order, lines 58, 59, 60, 61, 62, 63, 64, 65, 66 and 67
-(lines 24400, 24900, 25000, 25100, 25200, 25300, 25395, 25400, 25500 and 25600).
+"""Deductions from net income, T1 line 68 and line 25700 "Add lines 58 to 67.": in the take-home, an
+optional input (`t1_taxable_income_line_25700_inputs.yaml`, default "0"). None of lines 24400 to
+25600 applies to a salary-only filer, and line 26000 takes it off net income.
 """
 
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)

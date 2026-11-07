@@ -1,0 +1,12 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 53 (ca-on/on428): "Line 53: Line 51 minus line 52
+# (if negative, enter "0") =". Line 51 is a copy of line 8 and line 52 is a copy of line 50, so the
+# step reads those source lines directly: line 53 is line 8 minus line 50, not below zero.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/on428_tax_on_taxable_income_line_8
+      less: ca-on/on428_non_refundable_credits_line_50
+    produces:
+      output: ca-on/on428_tax_minus_credits_line_53

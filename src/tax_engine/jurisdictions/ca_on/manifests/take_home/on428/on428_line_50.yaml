@@ -1,0 +1,13 @@
+# Form ON428 (2025, CRA 5006-c-25e) line 50, "Line 50 and line 61500: Line 46 plus line 49 Enter this
+# amount on line 52. Ontario non-refundable tax credits =". It sums line 46
+# (`ca-on/on428_credit_amounts_at_credit_rate_line_46`) and line 49 (`ca-on/on428_donations_credit_line_49`, an
+# optional input read as 0 when left out, on428_line_49_inputs.yaml). Line 50 is their sum in line
+# order, the output `ca-on/on428_non_refundable_credits_line_50`.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts: [ca-on/on428_credit_amounts_at_credit_rate_line_46, ca-on/on428_donations_credit_line_49]
+    produces:
+      output: ca-on/on428_non_refundable_credits_line_50
