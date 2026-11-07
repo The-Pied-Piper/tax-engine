@@ -6,8 +6,7 @@ lines that print no "(if negative, enter "0")" (lines 39, 47 and 50), which are 
 ON428, ON479 or ON479-A amount here can be negative; the counts of dependent children and
 dependants are int, the T1221 slips and the co-operative education work placements record lists,
 the ON479 line 63270 business number digits, and the ON479-A line 7 percentage a Rate. Federal
-kinds come from `tax_engine.jurisdictions.ca.catalog`. Identifiers are stable:
-`tests/jurisdictions/ca_on/test_catalog.py` snapshots them.
+kinds come from `tax_engine.jurisdictions.ca.catalog`. Identifiers are stable.
 """
 
 from __future__ import annotations
@@ -26,7 +25,8 @@ from tax_engine.jurisdictions.ca_on import NAMESPACE
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
 ONTARIO_BASIC_TAX = AmountKind.declare(CATALOG, "ontario_basic_tax", non_negative=True)
-"""Ontario tax on taxable income, 2025 ON428 line 8 (Part A), before non-refundable credits."""
+"""Ontario tax on taxable income, 2025 ON428 line 8 (Part A), before non-refundable credits.
+Replaced by `ca-on/on428_tax_on_taxable_income_line_8`; kept only until the old kinds are swept."""
 
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, ON428 line 9 (line 58040) "Basic personal amount Claim $12,747": the
