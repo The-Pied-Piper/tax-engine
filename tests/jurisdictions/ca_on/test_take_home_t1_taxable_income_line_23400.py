@@ -16,13 +16,14 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.jurisdictions.ca.catalog import (
+from tax_engine.jurisdictions.ca.catalog.deductions import (
     DEDUCTIONS_FROM_TOTAL_INCOME,
     NET_INCOME_BEFORE_ADJUSTMENTS,
-    TOTAL_INCOME,
 )
+from tax_engine.jurisdictions.ca.catalog.income import TOTAL_INCOME
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
+D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 PART = "t1_taxable_income_line_23400.yaml"
 HEADER = """\
@@ -52,8 +53,8 @@ def line_23400(take_home_service: TakeHomeService, total_income: str, deductions
     (worksheet,) = service.compute(
         ONTARIO,
         2025,
-        Artifact(TOTAL_INCOME, Decimal(total_income)),
-        Artifact(DEDUCTIONS_FROM_TOTAL_INCOME, Decimal(deductions)),
+        Artifact(TOTAL_INCOME, D(total_income)),
+        Artifact(DEDUCTIONS_FROM_TOTAL_INCOME, D(deductions)),
     )["ca/t1_taxable_income"]
     return worksheet.get(NET_INCOME_BEFORE_ADJUSTMENTS).value
 
@@ -78,4 +79,4 @@ def line_23400(take_home_service: TakeHomeService, total_income: str, deductions
 def test_line_23400_is_line_34_less_line_53_not_floored(
     take_home_service: TakeHomeService, total_income: str, deductions: str, expected: str
 ) -> None:
-    assert line_23400(take_home_service, total_income, deductions) == Decimal(expected)
+    assert line_23400(take_home_service, total_income, deductions) == D(expected)
