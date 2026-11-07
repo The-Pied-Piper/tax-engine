@@ -1,0 +1,16 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 71, "Line 71: Line 69 minus line 70 (if negative,
+# enter "0") =": the Ontario tax after the dividend tax credit. Line 69 is read from its source
+# part. Line 70 is a copy of line 57, so the line 71 part reads line 57 directly; line 57 is an
+# optional input that a salary-only caller leaves out, read as blank and then as 0 by the blank rule
+# of core/subtract_not_below_zero.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/on428_tax_with_surtax_line_69
+      less: ca-on/on428_dividend_tax_credit_line_57
+    blank:
+      less: "0"
+    produces:
+      output: ca-on/on428_tax_after_dividend_credit_line_71
