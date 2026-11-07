@@ -1,18 +1,37 @@
 # CRA 2025 e-text forms (raw)
 
-> **Source and copyright notice.** The files in this folder are unmodified copies of publications of the
-> Canada Revenue Agency (CRA), kept here as the source for the tax data in this repository. They are
-> not the official versions: the current versions are on canada.ca, at the URLs given below. The
-> materials are owned by the Government of Canada and protected by copyright (Crown copyright). They are
-> reproduced for non-commercial purposes under the Government of Canada terms and conditions
+> **Source and copyright notice.** The files in this folder are copies of publications of the Canada
+> Revenue Agency (CRA), kept here as the source for the tax data in this repository. The CRA forms,
+> guides and bulletins are stored as downloaded, byte for byte, and their sha256 is recorded below to
+> show this. The exceptions are the files the tables below mark as derived: text extracts of a
+> PDF (`*.pdf.txt`) and the plain-text conversions of web pages (`web/*.txt`). This README is the
+> repository's own text. None of it is an official version: the originals are at the source URLs given
+> below, and the current edition of a publication may differ (for example, canada.ca now shows the
+> 2026 payroll formulas), so check canada.ca before relying on any figure.
+>
+> The materials are owned by the Government of Canada and protected by copyright (Crown copyright).
+> They are reproduced for non-commercial purposes under the Government of Canada terms and conditions
 > (<https://www.canada.ca/en/transparency/terms.html>, section "Ownership and usage of content
-> provided on this site", confirmed 2026-11-07), which allow reproduction in whole or in part, in any
-> format, without charge or further permission, provided the reproduction indicates the complete title
-> and author of the material and that it is a copy of the version at its original URL. Each file's title
-> is in the table below, the author is the Canada Revenue Agency, and each file's original URL is its
-> download URL below. Reproduction for commercial redistribution needs prior written permission from the
-> copyright administrator. The Apache-2.0 licence of this repository does not cover these files.
-> Check the official version on canada.ca for accuracy before relying on any figure.
+> provided on this site", confirmed 2026-11-07). Unless otherwise specified, those terms allow
+> reproduction in whole or in part, in any format, without charge or further permission, provided the
+> reproducer (1) exercises due diligence in ensuring the accuracy of the materials reproduced (here:
+> each file was checked against its download by sha256), (2) indicates the complete title and the
+> author of the material (the author is the Canada Revenue Agency; the complete title is printed at
+> the top of each file, and the tables below use short names), and (3) indicates that the reproduction
+> is a copy of the version available at the original URL (each file's source URL is given below; the
+> five web pages whose URL is not in the tables are listed after this notice). Reproduction for
+> commercial redistribution needs prior written permission from the copyright administrator. The terms
+> also say that the official symbols of the Government of Canada (including the Canada wordmark and the
+> flag symbol) may not be reproduced without prior written authorization. The Apache-2.0 licence of
+> this repository does not cover these files.
+>
+> Source URLs of the five web pages (the canonical address stored in each saved `.html` file):
+>
+> - `web/t1206-page`: <https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t1206.html>
+> - `web/tosi-guidance-adults`: <https://www.canada.ca/en/revenue-agency/programs/about-canada-revenue-agency-cra/federal-government-budgets/income-sprinkling/guidance-split-income-rules-adults.html>
+> - `web/tosi-excluded-shares`: <https://www.canada.ca/en/revenue-agency/programs/about-canada-revenue-agency-cra/federal-government-budgets/income-sprinkling/guidance-split-income-rules-adults/excluded-shares.html>
+> - `web/tosi-faq`: <https://www.canada.ca/en/revenue-agency/programs/about-canada-revenue-agency-cra/federal-government-budgets/income-sprinkling/frequently-asked-questions-income-sprinkling.html>
+> - `web/folio-s3-f4-c1`: <https://www.canada.ca/en/revenue-agency/services/tax/technical-information/income-tax/income-tax-folios-index/series-3-property-investments-savings-plans/series-3-property-investments-savings-plans-folio-4-capital-cost-allowance/income-tax-folio-s3-f4-c1-general-discussion-capital-cost-allowance.html>
 
 Downloaded unmodified with curl from `https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/<code>/<code>-25e.txt`
 on Umar's machine on 2026-10-19 (cloud containers cannot reach canada.ca), then copied here.
