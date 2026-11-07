@@ -188,8 +188,8 @@ single filer with no dependants is the basic reduction on line 74 alone."""
 ON428_TAX_REDUCTION_DOUBLED_LINE_78 = AmountKind.declare(
     CATALOG, "on428_tax_reduction_doubled_line_78", non_negative=True
 )
-"""TEMPORARY COPY, owned by the line 78 PR (#290); drop when that merges. Doubled tax reduction,
-ON428 line 78 "Amount from line 77 above multiplied by 2 =": line 77 multiplied by 2."""
+"""Doubled tax reduction, ON428 line 78 "Amount from line 77 above multiplied by 2 =": line 77
+multiplied by 2."""
 
 ON428_ONTARIO_TAX_REDUCTION_LINE_80 = AmountKind.declare(
     CATALOG, "on428_ontario_tax_reduction_line_80", non_negative=True
@@ -1211,8 +1211,9 @@ negative, enter "0") Your spouse's or common-law partner's adjusted net income".
 LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_individual_income_threshold", non_negative=True
 )
-"""Individual income threshold, Schedule ON428-A Part B line 31 "Individual income threshold
-32,500.00": a printed amount, taken whole."""
+"""Individual income threshold, Schedule ON428-A Part A line 16 "Individual income threshold
+32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
+whole."""
 
 LIFT_EXCESS_OVER_INDIVIDUAL_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_excess_over_individual_threshold", non_negative=True
