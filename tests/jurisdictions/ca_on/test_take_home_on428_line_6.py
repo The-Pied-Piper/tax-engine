@@ -8,10 +8,10 @@ rate held as a fraction (0.0915 is 9.15%), so line 6 is line 4 times line 5, wit
 
 Line 4 and line 5 are given directly as test-header inputs, as Artifacts, so this test does not
 compose the T1 lines, the salary or the line 1 to line 5 parts. Line 6 is one
-`core/multiply_by_rate` over line 4 and line 5, with the `ca-on/bracket_column_tax_rounding`
-dataset, output `ca-on/on428_excess_times_column_rate_line_6`, in the one part
-`on428_line_6.yaml`. The product is rounded half-up to the cent once, by that dataset's rule.
-The form declaration is test-local: it exports line 6.
+`core/multiply_by_rate` over line 4 and line 5, with the shared `ca-on/cent_rounding` dataset,
+output `ca-on/on428_excess_times_column_rate_line_6`, in the one part `on428_line_6.yaml`. The
+product is rounded half-up to the cent once, by that dataset's rule. The form declaration is
+test-local: it exports line 6.
 
 Figures (worked, hand computed): line 4 is 19,835.00, 16,449.00 and 43,151.00 at a $20,000, $70,000
 and $150,000 salary; line 5 is 0.0505, 0.0915 and 0.1116; so line 6 is 1,001.67, 1,505.08 and
