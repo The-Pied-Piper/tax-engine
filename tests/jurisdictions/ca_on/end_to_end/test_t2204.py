@@ -65,7 +65,7 @@ HEADER = dedent("""\
 # The real T2204 declaration (`t2204.yaml`) carries the form and its exports, so the fixture's own
 # form text is an empty mapping.
 FORM = "{}\n"
-PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.glob("t2204*.yaml"))))
+PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))))
 
 # Amount lines by form line; the line 1 count (note (1)) and line 15 count (more than $1) are
 # counts and are read by their own kinds.
