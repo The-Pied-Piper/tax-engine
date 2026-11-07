@@ -21,7 +21,6 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca_on.catalog import (
     LIFT_ADJUSTED_NET_INCOME,
     LIFT_INDIVIDUAL_INCOME_THRESHOLD,
@@ -53,16 +52,15 @@ FORM = dedent("""\
     """)
 
 
-def on428_a(take_home_service: TakeHomeService, line_13: str, line_16: str) -> Worksheet:
-    """The ON428-A worksheet for a line 13 and a line 16."""
-    starting = [
+def line_17(take_home_service: TakeHomeService, line_13: str, line_16: str) -> Decimal:
+    worksheets = take_home_service(HEADER, FORM, PART).compute(
+        JurisdictionCode("CA-ON"),
+        2025,
         Artifact(LIFT_ADJUSTED_NET_INCOME, D(line_13)),
         Artifact(LIFT_INDIVIDUAL_INCOME_THRESHOLD, D(line_16)),
-    ]
-    (sheet,) = take_home_service(HEADER, FORM, PART).compute(
-        JurisdictionCode("CA-ON"), 2025, *starting
-    )["ca-on/on428_a"]
-    return sheet
+    )
+    (sheet,) = worksheets["ca-on/on428_a"]
+    return sheet.get(LIFT_SINGLE_EXCESS_OVER_THRESHOLD).value
 
 
 @pytest.mark.parametrize(
@@ -79,5 +77,4 @@ def on428_a(take_home_service: TakeHomeService, line_13: str, line_16: str) -> W
 def test_line_17_is_line_13_less_line_16_not_below_zero(
     take_home_service: TakeHomeService, line_13: str, line_16: str, expected: str
 ) -> None:
-    sheet = on428_a(take_home_service, line_13, line_16)
-    assert sheet.get(LIFT_SINGLE_EXCESS_OVER_THRESHOLD).value == D(expected)
+    assert line_17(take_home_service, line_13, line_16) == D(expected)
