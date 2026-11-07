@@ -1,0 +1,19 @@
+# T2204 (2025) line 6: "Line 4 plus line 5 = 6". Line 4 is the premiums deducted
+# (`ca/t2204_premiums_deducted`, another ticket's part); line 5 is the Schedule 13 premium payable on
+# self-employment and other earnings (`ca/t2204_line_5`), which a salary-only caller never has.
+#
+# Step 1 adds the two lines with core/sum. A blank line 5 is read as 0, the trace recording it as a
+# fallback; a blank line 4 is still refused, as the line is the premiums deducted and the form has
+# no value to read in its place.
+form:
+  name: ca/t2204
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        - ca/t2204_premiums_deducted
+        - ca/t2204_line_5
+    blank:
+      ca/t2204_line_5: "0"
+    produces:
+      output: ca/t2204_line_6

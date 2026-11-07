@@ -512,6 +512,11 @@ T2204_EXEMPTION = AmountKind.declare(CATALOG, "t2204_exemption", non_negative=Tr
 """Exemption of Form T2204 line 7 "Amount from line 3 – $2,000 = (if negative, enter "0")": the
 $2,000 taken from line 3, claimed whole, a dataset figure."""
 
+T2204_LINE_5 = AmountKind.declare(CATALOG, "t2204_line_5", non_negative=True)
+"""Line 5 of Form T2204, "Residents of other than Quebec (amount from line 9 of Schedule 13)": the
+self-employed EI premiums payable from Schedule 13, an optional input. Left blank, it is read as 0,
+as a salary-only caller has none."""
+
 T2204_LINE_6 = AmountKind.declare(CATALOG, "t2204_line_6", non_negative=True)
 """Line 6 of Form T2204, "Line 4 plus line 5": the premiums deducted (line 4) plus the Schedule 13
 premiums payable on self-employment and other earnings (line 5), for each agreement."""

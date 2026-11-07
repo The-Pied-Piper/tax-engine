@@ -2019,10 +2019,6 @@ CPP_PART_3_LINE_12 = AmountKind.declare(CATALOG, "cpp_part_3_line_12", non_negat
 """Schedule 8 Part 3 line 12 "amount from line 7 multiplied by 1% (maximum $678.00)": the required
 first additional contributions on the earnings of line 7."""
 
-CPP_PART_3_LINE_28 = AmountKind.declare(CATALOG, "cpp_part_3_line_28", non_negative=True)
-"""Part 3 line 28 "Line 28: Line 26 plus line 27": the deduction for CPP enhanced contributions,
-T1 line 22215 (line 12 plus line 22)."""
-
 CPP_PART_5_LINE_20_NEGATIVE_LINE_23_POSITIVE = CountKind.declare(
     CATALOG, "cpp_part_5_line_20_negative_line_23_positive", non_negative=True
 )
@@ -2431,22 +2427,26 @@ CPP_DEDUCTION_ON_SELF_EMPLOYMENT_AND_OTHER_EARNINGS = AmountKind.declare(
 SCHEDULE_8_CPP_BASE_CONTRIBUTIONS_ON_RETURN = AmountKind.declare(
     CATALOG, "schedule_8_cpp_base_contributions_on_return", non_negative=True
 )
-"""Base CPP contributions of Schedule 8, for T1 line 30800 and ON428 line 58240: Part 5 line 57
-"Base CPP contributions through employment income: Line 55 plus line 56 Enter this amount (in
-dollars and cents) on line 30800 of your return." when Part 5 is completed, else the Part 3 route,
-cpp_part_3_base_contributions_on_return. The choice is by the count of cpp_part_5_completed. The
-form's total over its copies, 0 with none, is added to Form RC381's
-(rc381_cpp_base_contributions_on_return) in cpp_base_contributions_on_return."""
+"""Base CPP contributions of Schedule 8, for T1 line 30800 and ON428 line 58240: Part 3a line 25
+"Enter the amount from line 15. Enter this amount (in dollars and cents) on line 30800 of your
+return and line 58240 of your Form 428." In the take-home build `schedule_8_line_25.yaml`
+produces it as a one-part `core/sum` of Part 3 line 11 (`ca/cpp_part_3_line_11`), the required
+base contributions. Part 3b line 36 gives the same figure for a salary-only filer and Part 5 is
+out of scope, so the short route (Part 3a only) stands. The form's total over its copies, 0 with
+none, is added to Form RC381's (rc381_cpp_base_contributions_on_return) in
+cpp_base_contributions_on_return."""
 
 SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN = AmountKind.declare(
     CATALOG, "schedule_8_cpp_enhanced_contributions_on_return", non_negative=True
 )
-"""Enhanced CPP contributions of Schedule 8, for T1 line 22215: Part 5 line 69 "Deduction for CPP
-enhanced contributions on employment income: Line 64 plus line 68 Enter this amount (in dollars and
-cents) on line 22215 of your return." when Part 5 is completed, else the Part 3 route,
-cpp_part_3_enhanced_contributions_on_return. A deduction from total income, not a credit. The
-form's total over its copies, 0 with none, is added to Form RC381's
-(rc381_cpp_enhanced_contributions_on_return) in cpp_enhanced_contributions_on_return."""
+"""Enhanced CPP contributions of Schedule 8, for T1 line 22215: Part 3a line 28 "Line 26 plus line
+27 Enter this amount (in dollars and cents) on line 22215 of your return." In the take-home build
+`schedule_8_line_28.yaml` produces it as `core/sum` of Part 3 line 12 (`ca/cpp_part_3_line_12`,
+the form's line 26) and line 22 (`ca/cpp_part_3_line_22`, the form's line 27). Part 3b line 48 gives
+the same figure for a salary-only filer and Part 5 is out of scope, so the short route (Part 3a
+only) stands. A deduction from total income, not a credit. The form's total over its copies, 0
+with none, is added to Form RC381's (rc381_cpp_enhanced_contributions_on_return) in
+cpp_enhanced_contributions_on_return."""
 
 SCHEDULE_8_CPP_OVERPAYMENT = AmountKind.declare(
     CATALOG, "schedule_8_cpp_overpayment", non_negative=True
