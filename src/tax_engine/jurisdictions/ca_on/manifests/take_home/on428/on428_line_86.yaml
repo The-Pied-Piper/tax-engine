@@ -1,0 +1,14 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 86, "Line 86: Line 84 minus line 85 (if negative,
+# enter "0") =": the tax after the LIFT credit. Line 84 is a copy of line 83, so the step reads line 83
+# from its source part (`ca-on/on428_tax_after_foreign_tax_credit_line_83`) and subtracts line 85
+# (`ca-on/on428_lift_credit_line_85`), which is computed on the line before, not below zero. Line 85
+# is always built, so it has no blank rule.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/on428_tax_after_foreign_tax_credit_line_83
+      less: ca-on/on428_lift_credit_line_85
+    produces:
+      output: ca-on/on428_tax_after_lift_credit_line_86

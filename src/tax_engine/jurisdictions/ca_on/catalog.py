@@ -215,6 +215,56 @@ ON428_TAX_AFTER_TAX_REDUCTION_LINE_81 = AmountKind.declare(
 """Ontario tax after the tax reduction, ON428 line 81 "Line 81: Line 73 minus line 80 (if negative,
 enter "0") =": line 73 minus the Ontario tax reduction, not below zero."""
 
+ON428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_82 = AmountKind.declare(
+    CATALOG, "on428_provincial_foreign_tax_credit_line_82", non_negative=True
+)
+"""Provincial foreign tax credit, ON428 line 82 "Line 82: Provincial foreign tax credit (complete
+Form T2036)": an optional input that a salary-only caller leaves out."""
+
+ON428_TAX_AFTER_FOREIGN_TAX_CREDIT_LINE_83 = AmountKind.declare(
+    CATALOG, "on428_tax_after_foreign_tax_credit_line_83", non_negative=True
+)
+"""Ontario tax after the foreign tax credit, ON428 line 83 "Line 83: Line 81 minus line 82 (if
+negative, enter "0") =": line 81 minus line 82, not below zero."""
+
+ON428_LIFT_CREDIT_LINE_85 = AmountKind.declare(
+    CATALOG, "on428_lift_credit_line_85", non_negative=True
+)
+"""Low-income individuals and families tax (LIFT) credit, ON428 line 85 "Line 85 and line 62140:
+Low-income individuals and families tax (LIFT) credit (complete Schedule ON428-A)": the LIFT credit
+for a single filer, Schedule ON428-A Part A line 20."""
+
+ON428_TAX_AFTER_LIFT_CREDIT_LINE_86 = AmountKind.declare(
+    CATALOG, "on428_tax_after_lift_credit_line_86", non_negative=True
+)
+"""Ontario tax after the LIFT credit, ON428 line 86 "Line 86: Line 84 minus line 85 (if negative,
+enter "0") =": line 84 minus the LIFT credit, not below zero."""
+
+ON428_FARMERS_FOOD_DONATION_CREDIT_LINE_87 = AmountKind.declare(
+    CATALOG, "on428_farmers_food_donation_credit_line_87", non_negative=True
+)
+"""Farmers' food donation credit, ON428 line 87 "Line 87 and line 62150: Enter the amount of
+qualifying donations that have also been claimed as a charitable donation. multiplied by 25%": an
+optional input that a salary-only caller leaves out."""
+
+ON428_TAX_AFTER_FARMERS_FOOD_DONATION_CREDIT_LINE_88 = AmountKind.declare(
+    CATALOG, "on428_tax_after_farmers_food_donation_credit_line_88", non_negative=True
+)
+"""Ontario tax after the farmers' food donation credit, ON428 line 88 "Line 88: Line 86 minus line
+87 (if negative, enter "0") =": line 86 minus line 87, never below zero."""
+
+ON428_ONTARIO_HEALTH_PREMIUM_LINE_89 = AmountKind.declare(
+    CATALOG, "on428_ontario_health_premium_line_89", non_negative=True
+)
+"""Ontario health premium, ON428 line 89 "Ontario health premium (complete the chart below)".
+PLACEHOLDER: the line 89 ticket (#322) takes over this id as the real output."""
+
+ON428_ONTARIO_TAX_LINE_90 = AmountKind.declare(
+    CATALOG, "on428_ontario_tax_line_90", non_negative=True
+)
+"""Ontario tax, ON428 line 90 "Line 90: Line 88 plus line 89 Enter this amount on line 42800 of your
+return. Ontario tax =": line 88 plus line 89, entered on T1 line 42800."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
