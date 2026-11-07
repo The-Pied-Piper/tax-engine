@@ -1,0 +1,19 @@
+# T1 General 2025, Ontario edition (form 5006-R), Step 5 Part A line 138 / line 41600, "Add lines 135
+# to 137" (T1 General 5006-R, CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). The parts are line
+# 41000 (political contribution credit), line 41200 (investment tax credit) and line 41400
+# (labour-sponsored funds credit). The salary-only filer has none of the three, so the sum is built
+# over an empty list of parts and gives 0. core/sum rounds the result once, half-up to the cent, with
+# the shared `ca/cent_rounding` dataset, so the zero is the cent zero 0.00.
+# This line has no export of its own: line 41700 ("Basic personal amount and other credits" net of
+# these credits) reads `ca/credits_against_federal_tax` inside the form later, and the parent
+# `t1_tax_and_credits.yaml` owns the form's exports.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/sum
+    params:
+      rounding: ca/cent_rounding
+    consumes:
+      parts: []
+    produces:
+      output: ca/credits_against_federal_tax
