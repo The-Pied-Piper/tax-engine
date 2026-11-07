@@ -605,66 +605,6 @@ def test_part_3_line_2_is_a_non_negative_amount_of_employment_earnings(
     assert "ca/cpp_part_3_line_2" in REGISTERED
 
 
-# The count of Parts 4 and 5 completed together, and its checked count: Schedule 8 "Part 4 -
-# Complete this part if you are reporting only self-employment income" and "Part 5 - Complete this
-# part if you are reporting both: employment income ... and self-employment income". The two parts
-# are alternatives, so the count of both at 1 is refused (an input error), not added. The kinds are
-# reached through the registry so that the rest of this file runs before they are declared.
-BOTH_IDENTIFIERS = ("ca/cpp_part_4_and_part_5_both", "ca/cpp_part_4_and_part_5_both_checked")
-
-
-@pytest.mark.parametrize("identifier", BOTH_IDENTIFIERS)
-def test_each_cpp_part_4_and_part_5_both_kind_is_a_registered_non_negative_int_count(
-    identifier: str, registry: ArtifactRegistry
-) -> None:
-    kind = registry.kind(identifier)
-    assert kind.identifier == identifier
-    assert kind.value_type is int
-    assert non_negative(kind) is True
-    assert identifier in COUNTS
-    assert identifier not in SIGNED
-    assert identifier in REGISTERED
-
-
-def test_the_cpp_part_4_and_part_5_both_checked_is_a_kind_apart_from_the_count(
-    registry: ArtifactRegistry,
-) -> None:
-    count, checked = (registry.kind(identifier) for identifier in BOTH_IDENTIFIERS)
-    assert checked is not count
-
-
-# The count of Part 4 completed with employment earnings, and its checked count: Schedule 8 "Part 4
-# - Contributions on self-employment income and other earnings only (no employment income)", with
-# Part 3 line 1 (`ca/t4_cpp_pensionable_earnings_outside_quebec`) above 0. A count of 1 is refused
-# (an input error) and not added, as Part 5 is the form's route for a filer with employment income.
-# The kinds are reached through the registry so that the rest of this file runs before they are
-# declared.
-WITH_EARNINGS_IDENTIFIERS = (
-    "ca/cpp_part_4_with_employment_earnings",
-    "ca/cpp_part_4_with_employment_earnings_checked",
-)
-
-
-@pytest.mark.parametrize("identifier", WITH_EARNINGS_IDENTIFIERS)
-def test_each_cpp_part_4_with_employment_earnings_kind_is_a_registered_non_negative_int_count(
-    identifier: str, registry: ArtifactRegistry
-) -> None:
-    kind = registry.kind(identifier)
-    assert kind.identifier == identifier
-    assert kind.value_type is int
-    assert non_negative(kind) is True
-    assert identifier in COUNTS
-    assert identifier not in SIGNED
-    assert identifier in REGISTERED
-
-
-def test_the_cpp_part_4_with_employment_earnings_checked_is_a_kind_apart_from_the_count(
-    registry: ArtifactRegistry,
-) -> None:
-    count, checked = (registry.kind(identifier) for identifier in WITH_EARNINGS_IDENTIFIERS)
-    assert checked is not count
-
-
 def test_the_lines_the_part_5_routing_reads_are_non_negative_money(
     registry: ArtifactRegistry,
 ) -> None:

@@ -277,7 +277,7 @@ The total credits sum reads this amount."""
 CPP_PART_5_PAYABLE_ON_SELF_EMPLOYMENT = AmountKind.declare(
     CATALOG, "cpp_part_5_payable_on_self_employment", non_negative=True
 )
-"""T1 line 42100 from Part 5 line 49 (cpp_part_5_line_49_if_positive), once for each Part 5
+"""T1 line 42100 from Part 5 line 49 if positive, once for each Part 5
 completed (1 or 0)."""
 
 CPP_PAYABLE_ON_SELF_EMPLOYMENT_AND_OTHER_EARNINGS = AmountKind.declare(
