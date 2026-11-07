@@ -44,6 +44,12 @@ ON428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Bracket lower bound, ON428 line 3 (each column prints "Line 3:" with 0.00, 52,886.00, 105,775.00,
 150,000.00 or 220,000.00): the printed lower bound of the column that line 1 falls in."""
 
+ON428_BRACKET_COLUMN_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "on428_bracket_column_rate_line_5", non_negative=True
+)
+"""Bracket column rate, ON428 line 5 (each column prints "Line 5: Rate" with 5.05%, 9.15%, 11.16%,
+12.16% or 13.16%): the printed rate of the column that line 1 falls in."""
+
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )
