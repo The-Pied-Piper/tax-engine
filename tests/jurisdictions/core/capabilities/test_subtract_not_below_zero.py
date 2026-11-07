@@ -372,6 +372,7 @@ def test_traces_one_subtracted_not_below_zero_line() -> None:
             minuend_amount=D("100.25"),
             subtrahend=REDUCTION,
             subtrahend_amount=D("40"),
+            rounding=NO_ROUNDING,
             result=D("60.25"),
         ),
     )
@@ -380,14 +381,16 @@ def test_traces_one_subtracted_not_below_zero_line() -> None:
 def test_traces_the_floored_result() -> None:
     trace = capability().compute(inputs("10", "25.5")).trace
 
-    assert trace == (SubtractedNotBelowZeroLine(NET, GROSS, D("10"), REDUCTION, D("25.5"), D("0")),)
+    assert trace == (
+        SubtractedNotBelowZeroLine(NET, GROSS, D("10"), REDUCTION, D("25.5"), NO_ROUNDING, D("0")),
+    )
 
 
 def test_traces_the_rounded_result_under_the_dataset_rule() -> None:
     trace = cents().compute(inputs("10.005", "0")).trace
 
     assert trace == (
-        SubtractedNotBelowZeroLine(NET, GROSS, D("10.005"), REDUCTION, D("0"), D("10.01")),
+        SubtractedNotBelowZeroLine(NET, GROSS, D("10.005"), REDUCTION, D("0"), CENT, D("10.01")),
     )
 
 
@@ -467,7 +470,7 @@ def test_a_fallback_for_less_is_applied_and_the_floor_still_applies() -> None:
     assert kept.outputs == (Artifact(NET, D(508418)),)
     assert kept.trace == (
         BlankFallbackLine(REDUCTION, D(0)),
-        SubtractedNotBelowZeroLine(NET, GROSS, D(508418), REDUCTION, D(0), D(508418)),
+        SubtractedNotBelowZeroLine(NET, GROSS, D(508418), REDUCTION, D(0), NO_ROUNDING, D(508418)),
     )
 
     floored = (

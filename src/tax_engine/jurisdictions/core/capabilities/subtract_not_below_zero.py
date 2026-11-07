@@ -66,6 +66,7 @@ class SubtractNotBelowZero(Capability):
                     minuend_amount=amount,
                     subtrahend=self._less,
                     subtrahend_amount=less,
+                    rounding=rounding,
                     result=result,
                 ),
             ),

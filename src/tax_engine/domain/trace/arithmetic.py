@@ -189,8 +189,8 @@ class SubtractedLine(TraceLine):
 @dataclass(frozen=True)
 class SubtractedNotBelowZeroLine(TraceLine):
     """`output` = `minuend` (worth `minuend_amount`) less `subtrahend` (worth `subtrahend_amount`),
-    not below zero: `result` is the difference rounded by the step's dataset, or 0 (rounded the same
-    way) when the difference would not be above zero.
+    not below zero, rounded once with `rounding`: `result` is the difference, or 0 when it would not
+    be above zero.
 
     Its own class, not a `SubtractedLine`: the floor is a different fact, and a renderer or a
     check matching plain subtractions must not catch floored ones.
@@ -201,6 +201,7 @@ class SubtractedNotBelowZeroLine(TraceLine):
     minuend_amount: Decimal
     subtrahend: Money
     subtrahend_amount: Decimal
+    rounding: RoundingRule
     result: Decimal
 
     @property
