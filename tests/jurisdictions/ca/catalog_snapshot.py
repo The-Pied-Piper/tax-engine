@@ -2967,6 +2967,7 @@ REGISTERED = frozenset(
         "ca/canada_workers_benefit_line_41",
         "ca/canada_workers_benefit_line_42",
         "ca/canada_workers_benefit_before_conditions",
+        "ca/cwb_base_amount",
         "ca/cwb_claiming_basic",
         "ca/cwb_claiming_basic_checked",
         "ca/cwb_spouse_claiming_basic",

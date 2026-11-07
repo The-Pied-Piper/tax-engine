@@ -698,3 +698,7 @@ line 42 when Schedule 6 line 38103 "Are you eligible for the disability tax cred
 the disability amount of line 31600), else line 28 when Step 2 is completed ("If you are not
 completing Step 3, enter this amount on line 45300 of your return."), which is line 41 and is 0 when
 line 38102 says the basic CWB is not claimed."""
+
+CWB_BASE_AMOUNT = AmountKind.declare(CATALOG, "cwb_base_amount", non_negative=True)
+"""Schedule 6 line 17 "Base amount 3,000.00": the $3,000 base amount of the Canada workers benefit,
+a dataset figure, claimed whole."""

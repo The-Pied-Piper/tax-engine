@@ -369,3 +369,13 @@ def test_the_schedule_6_line_7_net_income_is_signed(registry: ArtifactRegistry) 
     # (You): the form shows a negative figure, so the kind is signed.
     assert non_negative(CWB_NET_INCOME_LINE_7) is False
     assert non_negative(registry.kind("ca/cwb_net_income_line_7")) is False
+
+
+def test_the_base_amount_of_schedule_6_line_17_is_a_non_negative_money_kind(
+    registry: ArtifactRegistry,
+) -> None:
+    # Schedule 6 line 17 "Base amount 3,000.00": the printed amount, a dataset figure (no salary),
+    # declared non-negative like the other claimed amounts of the schedule.
+    kind = _kind(registry, "ca/cwb_base_amount")
+    assert kind.value_type is Decimal
+    assert non_negative(kind) is True

@@ -1,0 +1,10 @@
+# Schedule 6 (5000-S6, 2025 edition) line 17, "Line 17: Base amount 3,000.00": the Canada workers
+# benefit base amount, a printed figure claimed whole. A dollars-and-cents figure, so it rounds
+# half-up to the cent, which changes nothing.
+family: ca/cwb_base_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "3000"
