@@ -44,6 +44,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_INCLUDE_TAX_EXEMPT_INCOME,
     CWB_INCLUDE_TAX_EXEMPT_INCOME_CHECKED,
     CWB_LINE_28_BY_SPOUSE,
+    CWB_NET_INCOME_LINE_7,
     CWB_REDUCTION_WITH_DEPENDANT,
     CWB_REDUCTION_WITHOUT_DEPENDANT,
     CWB_SECONDARY_EARNER_EXEMPTION,
@@ -74,7 +75,6 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_WORKING_INCOME_LESS_SPOUSE,
     WORKING_INCOME,
 )
-from tests.jurisdictions.ca.catalog_snapshot import SIGNED
 from tests.kinds import non_negative
 
 
@@ -85,6 +85,7 @@ def test_the_canada_workers_benefit_kinds_are_the_registered_ones(
     assert registry.get("ca/cwb_employment_income") is CWB_EMPLOYMENT_INCOME
     assert registry.get("ca/working_income") is WORKING_INCOME
     assert registry.get("ca/cwb_family_net_income_line_10") is CWB_FAMILY_NET_INCOME_LINE_10
+    assert registry.get("ca/cwb_net_income_line_7") is CWB_NET_INCOME_LINE_7
     assert registry.get("ca/cwb_family_net_income_line_12") is CWB_FAMILY_NET_INCOME_LINE_12
     assert registry.get("ca/adjusted_family_net_income") is ADJUSTED_FAMILY_NET_INCOME
     assert (
@@ -165,6 +166,7 @@ def test_the_canada_workers_benefit_kinds_are_money() -> None:
     for kind in (
         CWB_EMPLOYMENT_INCOME,
         WORKING_INCOME,
+        CWB_NET_INCOME_LINE_7,
         CWB_FAMILY_NET_INCOME_LINE_10,
         CWB_FAMILY_NET_INCOME_LINE_12,
         ADJUSTED_FAMILY_NET_INCOME,
@@ -362,12 +364,8 @@ def test_the_adjusted_family_net_income_is_signed(registry: ArtifactRegistry) ->
     assert non_negative(registry.kind("ca/adjusted_family_net_income")) is False
 
 
-def test_the_schedule_6_line_7_net_income_is_registered_and_signed(
-    registry: ArtifactRegistry,
-) -> None:
-    # Schedule 6 line 7 "Net income from line 23600 of the return ... if negative, show in
-    # brackets", column 1 (You): the form prints a negative figure, so the kind is signed.
-    kind = _kind(registry, "ca/cwb_net_income_line_7")
-    assert kind.value_type is Decimal
-    assert non_negative(kind) is False
-    assert kind.identifier in SIGNED
+def test_the_schedule_6_line_7_net_income_is_signed(registry: ArtifactRegistry) -> None:
+    # Schedule 6 line 7 "Net income from line 23600 ... if negative, show in brackets", column 1
+    # (You): the form shows a negative figure, so the kind is signed.
+    assert non_negative(CWB_NET_INCOME_LINE_7) is False
+    assert non_negative(registry.kind("ca/cwb_net_income_line_7")) is False

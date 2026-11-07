@@ -6,7 +6,8 @@
 # return, and another form reads an export only as a record list (`ca/t1_taxable_income.net_income`),
 # so the one amount is totalled by core/record_total, the same way ON428-A line 6 reads it. The take-home
 # filer has only the one line of column 1 for the net income, so no sum is built here. The result is
-# signed, because the form prints a negative net income in brackets and does not floor it at zero.
+# signed, because the form asks for a negative net income shown in brackets. The step reads the T1
+# net income export as it is; for a salary-only filer net income is never negative.
 form:
   name: ca/schedule_6
 capabilities:
