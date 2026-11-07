@@ -1,0 +1,9 @@
+# ON428 (2025) line 82's input, which a salary-only caller does not give.
+# Line 82: "Line 82: Provincial foreign tax credit (complete Form T2036)". A salary-only caller has
+# no foreign income, so a request that leaves the line out is read as blank, and the line 83 part
+# reads that blank as 0.
+inputs:
+  - name: ca-on/on428_provincial_foreign_tax_credit_line_82
+    required: false
+    default: null
+    basis: 'Line 82: Provincial foreign tax credit (complete Form T2036)'

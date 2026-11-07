@@ -1,4 +1,4 @@
-"""The 2025 Ontario LIFT credit rate, maximum and reduction, checked against CRA's ON428-A.
+"""The 2025 Ontario LIFT credit rate and maximum, checked against CRA's ON428-A.
 
 2025 Schedule ON428-A (form 5006-A): line 1 "Amount from line 10100 of your return"; line 2
 "Amount from line 10400 of your return"; line 3 "Line 1 plus line 2"; line 4 "Applicable rate
@@ -9,8 +9,7 @@ the end of the year": line 14 "Amount from line 5 above (maximum $875)"; line 15
 negative, enter "0")"; line 18 "Applicable rate 5%"; line 19 "Line 17 multiplied by the percentage
 from line 18"; line 20 "Line 14 minus line 19 (if negative, enter "0") Enter this amount on line
 62140 of your Form ON428." The 5.05% is a rate (the `rate` kind), the $875 a plain cap (the
-`amount` kind), and lines 16 to 19 one tier over the threshold (the `surcharge_tiers` kind). Lines
-5, 14 and 19 are dollars-and-cents boxes, so each is rounded half-up to the cent.
+`amount` kind). Lines 5 and 14 are dollars-and-cents boxes, so each is rounded half-up to the cent.
 
 Part B, "If you had a spouse or common-law partner at the end of the year": line 31 "Individual
 income threshold 32,500.00"; line 36 "Family income threshold 65,0000.00", a typo for 65,000.00;
@@ -33,15 +32,9 @@ from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-from tax_engine.domain.parameters.surcharge_tiers import (
-    SURCHARGE_TIERS,
-    SurchargeTier,
-    SurchargeTiers,
-)
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmount
 from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
-from tax_engine.jurisdictions.core.capabilities.tiered_surcharge import TieredSurcharge
 
 D = Decimal
 SOURCE = YamlParameterSource(
@@ -49,20 +42,16 @@ SOURCE = YamlParameterSource(
 )
 RATE_FAMILY = "ca-on/lift_rate"
 MAXIMUM = "ca-on/lift_maximum"
-REDUCTION_FAMILY = "ca-on/lift_reduction"
 INDIVIDUAL_THRESHOLD = "ca-on/lift_individual_income_threshold"
 FAMILY_THRESHOLD = "ca-on/lift_family_income_threshold"
 FAMILY_RATE = "ca-on/lift_family_rate"
 ON428_A_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt"
 
 # Made up for this test and not registered: the employment income the rate is applied to (line
-# 3), the credit before its maximum and after it (lines 5 and 14), the net income the reduction
-# is on (line 15) and the reduction (line 19).
+# 3), and the credit before its maximum and after it (lines 5 and 14).
 INCOME = AmountKind("ex/income")
 BEFORE_MAXIMUM = AmountKind("ex/before_maximum")
 CAPPED = AmountKind("ex/capped")
-NET_INCOME = AmountKind("ex/net_income")
-REDUCTION = AmountKind("ex/reduction")
 # Part B: the threshold a credit dataset gives (lines 31 and 36), the larger excess over a
 # threshold (line 38) and the reduction from it (line 40).
 THRESHOLD = AmountKind("ex/threshold")
@@ -86,18 +75,9 @@ def test_2025_maximum_is_875() -> None:
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-def test_2025_reduction_is_5_percent_over_32500() -> None:
-    data = SOURCE.get(REDUCTION_FAMILY, 2025, SURCHARGE_TIERS)
-
-    assert data.values == SurchargeTiers((SurchargeTier(D("32500"), Rate(D("0.05"))),))
-    # ON428-A line 19, a dollars-and-cents box: half-up to the cent.
-    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
-
-
 def test_2025_datasets_cite_only_the_on428_a_text() -> None:
     assert SOURCE.get(RATE_FAMILY, 2025, RATE).sources == (ON428_A_TEXT,)
     assert SOURCE.get(MAXIMUM, 2025, AMOUNT).sources == (ON428_A_TEXT,)
-    assert SOURCE.get(REDUCTION_FAMILY, 2025, SURCHARGE_TIERS).sources == (ON428_A_TEXT,)
 
 
 @pytest.mark.parametrize(
@@ -142,33 +122,6 @@ def test_at_most_875(credit: str, capped: str) -> None:
     result = capability.compute((Artifact(BEFORE_MAXIMUM, D(credit)),))
 
     assert result.outputs == (Artifact(CAPPED, D(capped)),)
-
-
-@pytest.mark.parametrize(
-    ("net_income", "reduction"),
-    [
-        # Return B: net income of 29735.00 is below the threshold, so line 17 is 0.
-        ("29735.00", "0"),
-        # Return C: (49535.00 - 32500) x 5% = 17035.00 x 5%.
-        ("49535.00", "851.75"),
-        # Return A: (115000 - 32500) x 5%, above the 875 maximum, so its credit is 0.
-        ("115000", "4125.00"),
-        # At the threshold nothing is over it; a cent above, 5% of the cent is 0.0005, rounded
-        # half-up to 0.00; 5% of 0.10 is 0.005, a tie, up to 0.01.
-        ("32500", "0"),
-        ("32500.01", "0.00"),
-        ("32500.10", "0.01"),
-        ("0", "0"),
-    ],
-)
-def test_5_percent_of_net_income_over_32500(net_income: str, reduction: str) -> None:
-    capability = TieredSurcharge(
-        SOURCE.get(REDUCTION_FAMILY, 2025, SURCHARGE_TIERS), NET_INCOME, REDUCTION
-    )
-
-    result = capability.compute((Artifact(NET_INCOME, D(net_income)),))
-
-    assert result.outputs == (Artifact(REDUCTION, D(reduction)),)
 
 
 def test_2025_individual_income_threshold_is_32500() -> None:
