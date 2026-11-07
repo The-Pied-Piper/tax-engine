@@ -942,6 +942,11 @@ LIFT_MAXIMUM_CREDIT = AmountKind.declare(CATALOG, "lift_maximum_credit", non_neg
 "Amount from line 5 above (maximum $875)" and Part B line 29 "Amount from line 5 of the previous
 page (maximum $875)"."""
 
+LIFT_NET_INCOME = AmountKind.declare(CATALOG, "lift_net_income", non_negative=False)
+"""Net income, Schedule ON428-A line 6 "Net income from line 23600 of your return (or the amount
+you would have entered if the instructions on line 23600 said "if negative, show in brackets")",
+which line 9 "Add lines 6 to 8." takes. Line 6 may be negative, so the kind is signed."""
+
 LIFT_NET_INCOME_AND_REPAYMENTS = AmountKind.declare(
     CATALOG, "lift_net_income_and_repayments", non_negative=False
 )
@@ -963,6 +968,13 @@ LIFT_ADJUSTED_NET_INCOME = AmountKind.declare(
 """Adjusted net income, Schedule ON428-A line 13 "Line 9 minus line 12 (if negative, enter "0")
 Your adjusted net income", which Part A line 15 "Amount from line 13 above" and Part B line 30
 "Amount from line 13 of the previous page" take."""
+
+LIFT_SINGLE_EXCESS_OVER_THRESHOLD = AmountKind.declare(
+    CATALOG, "lift_single_excess_over_threshold", non_negative=True
+)
+"""Excess over the individual threshold, Schedule ON428-A Part A line 17 "Line 15 minus line 16 (if
+negative, enter "0")", line 15 being "Amount from line 13 above" and line 16 "Individual income
+threshold 32,500.00"."""
 
 LIFT_REDUCTION = AmountKind.declare(CATALOG, "lift_reduction", non_negative=True)
 """LIFT credit reduction, Schedule ON428-A Part A line 19 "Line 17 multiplied by the percentage
