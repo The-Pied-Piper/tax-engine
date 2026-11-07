@@ -1,6 +1,6 @@
 """T2204 (2025) line 16, computed from the real part file through the real engine.
 
-T2204 line 16: "Enter whichever amount is the least: line 7, line 9 or line 12." The ticket (#213)
+T2204 line 16: "Enter whichever amount is the least: line 7, line 9 or line 12." The ticket
 builds it as the least of three amounts, in this order: line 7 (`ca/t2204_line_7`, the amount from
 line 3 less $2,000), line 4 (`ca/t2204_premiums_deducted`, the total premiums deducted) and line 10
 (`ca/t2204_line_10`, the residents' EI premium capped at its maximum). The output is
@@ -65,7 +65,7 @@ capabilities: []
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
-    """The engine over a Ontario package whose take-home folder holds a test header, the form
+    """The engine over an Ontario package whose take-home folder holds a test header, the form
     declaration and the real part file."""
     folder = tmp_path / "ca_on" / "manifests" / "take_home"
     folder.mkdir(parents=True)
@@ -116,3 +116,75 @@ def test_line_16_is_the_least_of_lines_7_4_and_10(
     tmp_path: Path, line_7: str, line_4: str, line_10: str, line_16: str
 ) -> None:
     assert _line_16(tmp_path, line_7, line_4, line_10) == D(line_16)
+
+
+PARTS = PART.parent
+COMPOSED_PARTS = (
+    "t2204_line_1.yaml",
+    "t2204_line_3.yaml",
+    "t2204_line_4.yaml",
+    "t2204_line_7.yaml",
+    "t2204_line_10.yaml",
+    "t2204_line_16.yaml",
+)
+SALARY = "ca/employment_income"
+LINE_4_GIVEN = "ca/t2204_premiums_deducted_given"
+COMPOSED_HEADER = f"""\
+jurisdiction: CA-ON
+version: 1
+valid_from_tax_year: 2025
+inputs:
+  - name: {SALARY}
+    required: true
+  - name: ca/t2204_self_employment_earnings
+    required: false
+    default: null
+    basis: "Total self-employment and other earnings eligible for the EI program"
+  - name: {LINE_4_GIVEN}
+    required: false
+    default: null
+    basis: "Total premiums deducted: Residents of other than Quebec"
+outputs:
+  - {SALARY}
+capabilities: []
+"""
+
+
+def _composed_service(tmp_path: Path) -> TaxComputationService:
+    """The engine over a test header, the form declaration and the real parts of lines 1, 3, 4, 7,
+    10 and 16, so line 16 is computed from the salary alone."""
+    folder = tmp_path / "ca_on" / "manifests" / "take_home"
+    folder.mkdir(parents=True)
+    (folder / "a_manifest.yaml").write_text(COMPOSED_HEADER, encoding="utf-8")
+    (folder / "b_t2204.yaml").write_text(dedent(FORM), encoding="utf-8")
+    for name in COMPOSED_PARTS:
+        shutil.copy(PARTS / name, folder / f"c_{name}")
+    roots = {**JURISDICTIONS.roots(), Namespace("ca-on"): tmp_path / "ca_on"}
+    return TaxComputationService(
+        YamlJurisdictionSource(roots, bundled_kinds()),
+        YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers()),
+        bundled_capabilities(),
+    )
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_4_given", "expected"),
+    [
+        # Line 4 left blank: the line 4 part computes it (1.64%, at most 1,077.48).
+        ("70000", None, "1077.48"),
+        ("30000", None, "492.00"),
+        ("2010", None, "10.00"),
+        ("1500", None, "0.00"),
+        # Line 4 given above the cap: line 10 is the least.
+        ("70000", "1148.00", "1077.48"),
+    ],
+)
+def test_line_16_from_the_salary_with_line_4_blank_or_given(
+    tmp_path: Path, salary: str, line_4_given: str | None, expected: str
+) -> None:
+    kinds = bundled_kinds()
+    starting = [Artifact(kinds.kind(SALARY), D(salary))]
+    if line_4_given is not None:
+        starting.append(Artifact(kinds.kind(LINE_4_GIVEN), D(line_4_given)))
+    worksheet = _composed_service(tmp_path).compute(CODE, 2025, *starting)["ca/t2204"][0]
+    assert worksheet.get(kinds.kind(LINE_16)).value == D(expected)
