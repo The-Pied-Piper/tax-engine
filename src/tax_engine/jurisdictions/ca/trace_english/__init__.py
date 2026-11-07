@@ -10,7 +10,8 @@ from __future__ import annotations
 from tax_engine.jurisdictions.ca.trace_english import (
     amount_by_count,
     contribution_tier,
+    given_amount,
     tapered_amount,
 )
 
-__all__ = ["amount_by_count", "contribution_tier", "tapered_amount"]
+__all__ = ["amount_by_count", "contribution_tier", "given_amount", "tapered_amount"]
