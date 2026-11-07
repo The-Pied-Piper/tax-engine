@@ -718,6 +718,13 @@ CWB_WORKING_INCOME_OVER_BASE_AMOUNT = AmountKind.declare(
 """Schedule 6 Part A line 18 "Line 16 minus line 17 (if negative, enter "0")": line 16 (a copy of
 line 6, `ca/cwb_family_working_income`) less line 17 (`ca/cwb_base_amount`), floored at zero."""
 
+CWB_NET_INCOME_OVER_BASE_AMOUNT = AmountKind.declare(
+    CATALOG, "cwb_net_income_over_base_amount", non_negative=True
+)
+"""Schedule 6 Part A line 25 "Line 23 minus line 24 (if negative, enter "0")": line 23 (a copy of
+line 15, `ca/adjusted_family_net_income`) less line 24 (`ca/cwb_reduction_threshold`), floored at
+zero."""
+
 CWB_WORKING_INCOME_RATE_LINE_20 = AmountKind.declare(
     CATALOG, "cwb_working_income_rate_line_20", non_negative=True
 )
