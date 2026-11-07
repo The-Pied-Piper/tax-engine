@@ -182,7 +182,7 @@ class SubtractedRenderer:
         return (
             f"{output.label}: {minuend.label} {EnglishFigures.money(minuend_amount)} "
             f"less {subtrahend.label} {EnglishFigures.money(subtrahend_amount)} "
-            f"= {EnglishFigures.money(result)}"
+            f"= {EnglishFigures.money(result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 

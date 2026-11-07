@@ -7,12 +7,14 @@
 # (schedule_6_line_14_inputs.yaml) that a salary-only caller leaves out: it is read as blank, and
 # the blank fallback is 0, so line 15 is then line 13 alone.
 #
-# The form prints no floor on line 15, so core/subtract gives a negative figure as is. The result
-# is the signed `ca/adjusted_family_net_income`.
+# The form prints no floor on line 15, so core/subtract gives a negative figure as is, rounded to
+# the cent by the ca/cent_rounding dataset. The result is the signed `ca/adjusted_family_net_income`.
 form:
   name: ca/schedule_6
 capabilities:
   - name: core/subtract
+    params:
+      rounding: ca/cent_rounding
     consumes:
       amount: ca/cwb_family_net_income_line_13
       less: ca/cwb_secondary_earner_exemption
