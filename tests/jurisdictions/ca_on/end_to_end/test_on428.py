@@ -220,7 +220,7 @@ HEALTH_PREMIUM_ROWS: list[tuple[str, str, str]] = [
 BRACKET_EDGE_SALARIES = (
     "53000", "53500", "106500", "107000", "150500", "151500", "220500", "221500",
 )  # fmt: skip
-CENT_SALARIES = ("0", *(case[0] for case in CASES), *BRACKET_EDGE_SALARIES)
+CENT_SALARIES = (*(case[0] for case in CASES), *BRACKET_EDGE_SALARIES)
 
 
 def on428(take_home_service: TakeHomeService, salary: str) -> Worksheet:
