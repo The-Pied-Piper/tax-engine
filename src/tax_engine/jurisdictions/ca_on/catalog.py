@@ -132,6 +132,12 @@ ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
 """Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
 less line 54, never below zero."""
 
+ON428_SURTAX_20_PERCENT_TIER_LINE_66 = AmountKind.declare(
+    CATALOG, "on428_surtax_20_percent_tier_line_66", non_negative=True
+)
+"""Surtax 20% tier, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20% (if negative, enter
+"0") =": 20% of line 65 above $5,710, never below 0."""
+
 ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
     CATALOG, "on428_basic_reduction_line_74", non_negative=True
 )
