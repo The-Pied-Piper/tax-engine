@@ -124,14 +124,14 @@ ON428_SURTAX_20_PERCENT_TIER_LINE_66 = AmountKind.declare(
     CATALOG, "on428_surtax_20_percent_tier_line_66", non_negative=True
 )
 """Surtax 20% tier, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20% (if negative, enter
-"0") =": 20% of line 65 above $5,710, never below 0. TEMPORARY COPY declared here until ticket
-#282, which owns it, merges."""
+"0") =": 20% of line 65 above $5,710, never below 0. TEMPORARY COPY declared here until the line 66
+part is on main."""
 
 ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
     CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True
 )
 """Surtax 36% tier, ON428 line 67: 36% of line 65 above $7,307, never below 0. TEMPORARY COPY
-declared here until ticket #283, which owns it, merges."""
+declared here until the line 67 part is on main."""
 
 ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
     CATALOG, "on428_surtax_total_line_68", non_negative=True
