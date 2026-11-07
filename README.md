@@ -1,6 +1,10 @@
 # tax-engine: an open-source income tax calculation engine in Python
 
-**tax-engine is a personal income tax calculation library where every number is a line on a real tax form, and every result explains itself in plain English.**
+[![CI](https://github.com/The-Pied-Piper/tax-engine/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/The-Pied-Piper/tax-engine/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
+
+**tax-engine is a personal income tax calculation library where every number is a line on a real tax form, and every result explains itself in a readable trace.**
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from.
 
@@ -85,6 +89,14 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 | Ontario | 2025 | ON428 (Ontario tax), ON428-A (LIFT credit) |
 
 Roadmap: more forms and lines, the 2026 tax year, and other provinces and territories. Forms are added one at a time, each checked against the CRA's own text.
+
+## Disclaimer and limits
+
+tax-engine is not tax advice and is not an official CRA product. It comes with no warranty, as the Apache-2.0 license says.
+
+It covers tax year 2025, Canada (federal) and Ontario only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
+
+Check any result against the CRA's own forms or with a professional before relying on it.
 
 ## Contributing
 
