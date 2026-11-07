@@ -53,6 +53,11 @@ HEADER_15000 = dedent("""\
         required: false
         default: "0"
         basis: 'Other employment income (T1 line 10400)'
+      # Line 23400 is built by ticket #217; until then line 23600 reads it from this header.
+      - name: ca/net_income_before_adjustments
+        required: false
+        default: "0"
+        basis: 'Net income before adjustments (T1 line 23400)'
     outputs:
       - ca/employment_income
     capabilities: []
@@ -61,10 +66,10 @@ HEADER_15000 = dedent("""\
 # export line 23300 reads.
 PARTS_15000 = (
     "salary.yaml",
-    *(part.name for part in sorted(TAKE_HOME.glob("schedule_8*.yaml"))),
+    *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.glob("t1_taxable_income*.yaml"))),
 )
-PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.glob("schedule_8*.yaml"))))
+PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))))
 
 
 def line_22215(take_home_service: TakeHomeService, salary: str) -> Decimal:

@@ -13,23 +13,15 @@ because the shared scaffold owns them.
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import BlankNotAllowedError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankFallbackLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.refund import (
@@ -37,14 +29,11 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_LINE_6,
     T2204_PREMIUMS_DEDUCTED,
 )
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = (
-    Path(tax_engine.jurisdictions.ca_on.__file__).parent
-    / "manifests"
-    / "take_home"
-    / "t2204_line_6.yaml"
-)
+
+PART = "t2204_line_6.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -69,25 +58,11 @@ FORM = dedent("""\
     """)
 
 
-def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
-    parts.mkdir(parents=True)
-    (parts / "a_header.yaml").write_text(HEADER)
-    (parts / "b_form.yaml").write_text(FORM)
-    shutil.copy(PART, parts / "c_line_6.yaml")
-    roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
-    parameter_roots = dict(roots)
-    roots[Namespace("ca-on")] = tmp_path
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, tax_engine.registrations.artifact_kinds()),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
-        tax_engine.registrations.capabilities(),
-    )
-
-
-def t2204(tmp_path: Path, starting: list[Artifact[Decimal]]) -> Worksheet:
+def t2204(take_home_service: TakeHomeService, starting: list[Artifact[Decimal]]) -> Worksheet:
     """The T2204 worksheet for the starting artifacts given; line 5 is left out unless given."""
-    (sheet,) = service(tmp_path).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
+    (sheet,) = take_home_service(HEADER, FORM, PART).compute(
+        JurisdictionCode("CA-ON"), 2025, *starting
+    )["ca/t2204"]
     return sheet
 
 
@@ -101,9 +76,9 @@ def t2204(tmp_path: Path, starting: list[Artifact[Decimal]]) -> Worksheet:
     ],
 )
 def test_line_6_is_line_4_when_line_5_is_left_blank(
-    tmp_path: Path, line_4: str, expected: str
+    take_home_service: TakeHomeService, line_4: str, expected: str
 ) -> None:
-    sheet = t2204(tmp_path, [Artifact(T2204_PREMIUMS_DEDUCTED, D(line_4))])
+    sheet = t2204(take_home_service, [Artifact(T2204_PREMIUMS_DEDUCTED, D(line_4))])
 
     assert sheet.get(T2204_LINE_6).value == D(expected)
 
@@ -116,10 +91,10 @@ def test_line_6_is_line_4_when_line_5_is_left_blank(
     ],
 )
 def test_line_6_adds_line_5_to_line_4_when_line_5_is_given(
-    tmp_path: Path, line_4: str, line_5: str, expected: str
+    take_home_service: TakeHomeService, line_4: str, line_5: str, expected: str
 ) -> None:
     sheet = t2204(
-        tmp_path,
+        take_home_service,
         [
             Artifact(T2204_PREMIUMS_DEDUCTED, D(line_4)),
             Artifact(T2204_LINE_5, D(line_5)),
@@ -129,12 +104,12 @@ def test_line_6_adds_line_5_to_line_4_when_line_5_is_given(
     assert sheet.get(T2204_LINE_6).value == D(expected)
 
 
-def test_a_blank_line_5_is_traced_as_a_fallback_of_0(tmp_path: Path) -> None:
-    sheet = t2204(tmp_path, [Artifact(T2204_PREMIUMS_DEDUCTED, D("32.96"))])
+def test_a_blank_line_5_is_traced_as_a_fallback_of_0(take_home_service: TakeHomeService) -> None:
+    sheet = t2204(take_home_service, [Artifact(T2204_PREMIUMS_DEDUCTED, D("32.96"))])
 
     assert BlankFallbackLine(T2204_LINE_5, D("0")) in sheet.trace
 
 
-def test_a_blank_line_4_is_still_refused(tmp_path: Path) -> None:
+def test_a_blank_line_4_is_still_refused(take_home_service: TakeHomeService) -> None:
     with pytest.raises(BlankNotAllowedError, match="may not be left blank"):
-        t2204(tmp_path, [Artifact(T2204_PREMIUMS_DEDUCTED, BLANK)])
+        t2204(take_home_service, [Artifact(T2204_PREMIUMS_DEDUCTED, BLANK)])

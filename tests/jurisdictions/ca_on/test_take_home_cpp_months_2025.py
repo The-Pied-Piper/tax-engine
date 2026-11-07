@@ -19,7 +19,7 @@ from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 LINE_A = "ca/cpp_months"
 PRINTED_BASIS = 'Enter "12" on line A below unless any of the following conditions apply:'
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/schedule_8_inputs.yaml"
+    "manifests/take_home/schedule_8/schedule_8_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

@@ -18,13 +18,12 @@ The real part is loaded under a test-local header, as the take-home header is an
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
-import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 LINE_2 = "ca/t2204_self_employment_earnings"
 LINE_4_GIVEN = "ca/t2204_premiums_deducted_given"
@@ -34,9 +33,7 @@ PRINTED_BASIS = (
 )
 LINE_5 = "ca/t2204_line_5"
 PRINTED_BASIS_LINE_5 = "Residents of other than Quebec (amount from line 9 of Schedule 13)"
-PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/t2204_inputs.yaml"
-)
+PART = "t2204_inputs.yaml"
 HEADER = """\
 jurisdiction: CA-ON
 version: 1
@@ -46,28 +43,39 @@ capabilities: []
 """
 
 
-def _manifest(tmp_path: Path) -> Manifest:
-    folder = tmp_path / "manifest"
-    folder.mkdir()
-    (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+FORM = """\
+form:
+  name: ca/t2204
+  required: true
+  exports:
+    - ca/t2204_line_1
+capabilities: []
+"""
+
+
+def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
+    """The temporary take-home folder the shared builder writes, loaded as a manifest."""
+    take_home_service(HEADER, FORM, PART)
+    folder = tmp_path / "manifests" / "take_home"
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
 
 
 def test_a_request_that_leaves_out_the_self_employment_earnings_is_read_as_blank(
-    tmp_path: Path,
+    take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_2]
+    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_2]
     default = declaration.default_artifact(kinds.kind(LINE_2))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
     assert default is not None and default.is_blank
 
 
-def test_a_request_that_leaves_out_line_5_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_5_is_read_as_blank(
+    take_home_service: TakeHomeService, tmp_path: Path
+) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_5]
+    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_5]
     default = declaration.default_artifact(kinds.kind(LINE_5))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS_LINE_5
@@ -75,10 +83,10 @@ def test_a_request_that_leaves_out_line_5_is_read_as_blank(tmp_path: Path) -> No
 
 
 def test_a_request_that_leaves_out_the_premiums_deducted_is_read_as_blank(
-    tmp_path: Path,
+    take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     kinds = artifact_kinds()
-    declaration = _manifest(tmp_path).inputs[LINE_4_GIVEN]
+    declaration = _manifest(take_home_service, tmp_path).inputs[LINE_4_GIVEN]
     default = declaration.default_artifact(kinds.kind(LINE_4_GIVEN))
     assert not declaration.required
     assert declaration.basis is not None and "premiums deducted" in declaration.basis.lower()
