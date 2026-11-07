@@ -7,3 +7,10 @@ inputs:
     required: false
     default: null
     basis: 'Total self-employment and other earnings eligible for the EI program for access to EI special benefits'
+  # T2204 line 5: "Residents of other than Quebec (amount from line 9 of Schedule 13)". A salary-only
+  # caller has no Schedule 13 premium, so a request that leaves the line out is read as blank, and
+  # the line 6 part reads that blank as 0.
+  - name: ca/t2204_line_5
+    required: false
+    default: null
+    basis: 'Residents of other than Quebec (amount from line 9 of Schedule 13)'

@@ -3200,6 +3200,7 @@ REGISTERED = frozenset(
         "ca/t2204_line_1_plus_2",
         "ca/t2204_line_3",
         "ca/t2204_exemption",
+        "ca/t2204_line_5",
         "ca/t2204_line_6",
         "ca/t2204_line_7",
         "ca/t2204_line_8",
