@@ -185,6 +185,25 @@ ON428_TAX_REDUCTION_LINE_77 = AmountKind.declare(
 """Tax reduction, ON428 line 77 "Add lines 74 to 76": the sum of the reduction parts, which for a
 single filer with no dependants is the basic reduction on line 74 alone."""
 
+ON428_TAX_AFTER_FOREIGN_TAX_CREDIT_LINE_83 = AmountKind.declare(
+    CATALOG, "on428_tax_after_foreign_tax_credit_line_83", non_negative=True
+)
+"""Stand-in declaration of ON428 line 83, "Line 83: Line 81 minus line 82 (if negative, enter "0")":
+the amount line 86 reads as its copy of line 84. The line 83 ticket owns this kind and its part."""
+
+ON428_LIFT_CREDIT_LINE_85 = AmountKind.declare(
+    CATALOG, "on428_lift_credit_line_85", non_negative=True
+)
+"""Low-income individuals and families tax (LIFT) credit, ON428 line 85 "Line 85 and line 62140:
+Low-income individuals and families tax (LIFT) credit (complete Schedule ON428-A)": the LIFT credit
+for a single filer, Schedule ON428-A Part A line 20."""
+
+ON428_TAX_AFTER_LIFT_CREDIT_LINE_86 = AmountKind.declare(
+    CATALOG, "on428_tax_after_lift_credit_line_86", non_negative=True
+)
+"""Ontario tax after the LIFT credit, ON428 line 86 "Line 86: Line 84 minus line 85 (if negative,
+enter "0") =": line 84 minus the LIFT credit, not below zero."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
