@@ -26,6 +26,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SumLine, SumNotBelowZeroLine
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 from tax_engine.jurisdictions.core.capabilities.sum import Sum
@@ -322,7 +323,10 @@ def test_traces_a_floored_line_not_a_plain_sum_line() -> None:
 
     assert type(line) is SumNotBelowZeroLine
     assert cast(Any, line) != SumLine(
-        TOTAL, ((PART_ONE, D("10")), (PART_TWO, D("-25.5")), (PART_THREE, D("5"))), D("0")
+        TOTAL,
+        ((PART_ONE, D("10")), (PART_TWO, D("-25.5")), (PART_THREE, D("5"))),
+        NO_ROUNDING,
+        D("0"),
     )
 
 

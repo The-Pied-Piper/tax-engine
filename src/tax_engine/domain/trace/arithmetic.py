@@ -76,10 +76,12 @@ class RoundedTotalLine(TraceLine):
 
 @dataclass(frozen=True)
 class SumLine(TraceLine):
-    """The `total` produced as `output` by adding `parts`, each a kind and its value, in order."""
+    """The `total` produced as `output` by adding `parts`, each a kind and its value, in order,
+    the exact sum rounded once with `rounding`."""
 
     output: Money
     parts: tuple[tuple[Money, Decimal], ...]
+    rounding: RoundingRule
     total: Decimal
 
     @property
@@ -473,10 +475,9 @@ class RatioAppliedLine(TraceLine):
 @dataclass(frozen=True)
 class TimesCountLine(TraceLine):
     """The `result` produced as `output`: `amount_kind` (worth `amount_value`) for each of
-    `count` units of `count_kind`, exactly.
+    `count` units of `count_kind`, the exact product rounded once with `rounding`.
 
-    Its own class, not a `PerUnitAmountLine`: the amount is an artifact, not a dataset's amount,
-    and the product is never rounded.
+    Its own class, not a `PerUnitAmountLine`: the amount is an artifact, not a dataset's amount.
     """
 
     output: Money
@@ -484,11 +485,12 @@ class TimesCountLine(TraceLine):
     amount_value: Decimal
     count_kind: ArtifactKind[int]
     count: int
+    rounding: RoundingRule
     result: Decimal
 
     @property
     def amount(self) -> Decimal:
-        """The exact product."""
+        """The rounded product."""
         return self.result
 
 

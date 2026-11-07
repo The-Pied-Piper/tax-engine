@@ -9,6 +9,8 @@ form:
   name: ca/t1_taxable_income
 capabilities:
   - name: core/sum
+    params:
+      rounding: ca/cent_rounding
     consumes:
       parts: [ca/employment_income, ca/other_employment_income]
     produces:
