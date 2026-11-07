@@ -215,6 +215,19 @@ ON428_TAX_AFTER_FOREIGN_TAX_CREDIT_LINE_83 = AmountKind.declare(
 """Ontario tax after the foreign tax credit, ON428 line 83 "Line 83: Line 81 minus line 82 (if
 negative, enter "0") =": line 81 minus line 82, not below zero."""
 
+ON428_LIFT_CREDIT_LINE_85 = AmountKind.declare(
+    CATALOG, "on428_lift_credit_line_85", non_negative=True
+)
+"""Low-income individuals and families tax (LIFT) credit, ON428 line 85 "Line 85 and line 62140:
+Low-income individuals and families tax (LIFT) credit (complete Schedule ON428-A)": the LIFT credit
+for a single filer, Schedule ON428-A Part A line 20."""
+
+ON428_TAX_AFTER_LIFT_CREDIT_LINE_86 = AmountKind.declare(
+    CATALOG, "on428_tax_after_lift_credit_line_86", non_negative=True
+)
+"""Ontario tax after the LIFT credit, ON428 line 86 "Line 86: Line 84 minus line 85 (if negative,
+enter "0") =": line 84 minus the LIFT credit, not below zero."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
