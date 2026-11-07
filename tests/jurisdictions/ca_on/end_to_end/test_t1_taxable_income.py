@@ -3,8 +3,8 @@
 This module grows one line at a time. Line 22215 is the first: its step is Schedule 8's own export,
 so the form builds nothing for it and this test reads that export from the real Schedule 8 parts
 composed from the salary. Line 15000 builds its own step in the form's parts
-(`t1_taxable_income*.yaml`), so its test composes those with the salary; line 10400 is declared
-optional in that test's header until its own declaration ships. The real header is not used because
+(`t1_taxable_income*.yaml`), so its test composes those with the salary and the real parts, line
+10400's optional input among them. The real header is not used because
 its output, T1 line 167, is not built yet. This is not a worked return: no return file, no slips,
 one form.
 
@@ -49,11 +49,6 @@ HEADER_15000 = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
-    inputs:
-      - name: ca/other_employment_income
-        required: false
-        default: "0"
-        basis: 'Other employment income (T1 line 10400)'
     outputs:
       - ca/employment_income
     capabilities: []
@@ -99,7 +94,10 @@ def line_15000(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(TOTAL_INCOME).value
 
 
-@pytest.mark.parametrize(("salary", "expected"), [("70000", "70000.00"), ("90000", "90000.00")])
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [("70000", "70000.00"), ("90000", "90000.00"), ("1000", "1000.00")],
+)
 def test_line_15000_is_the_salary_when_line_10400_is_left_out(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:

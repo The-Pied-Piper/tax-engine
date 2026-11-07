@@ -30,7 +30,7 @@ LINE_4_GIVEN = "ca/t2204_premiums_deducted_given"
 LINE_4 = "ca/t2204_premiums_deducted"
 OVERPAYMENT = "ca/ei_overpayment"
 LINE_16 = "ca/t2204_line_16"
-FORM = (TAKE_HOME / "t2204.yaml").read_text(encoding="utf-8")
+FORM = next(TAKE_HOME.rglob("t2204.yaml")).read_text(encoding="utf-8")
 PARTS = (
     "t2204_inputs.yaml",
     "t2204_line_1.yaml",
