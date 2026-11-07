@@ -1,0 +1,16 @@
+# Form ON428 (2025, CRA 5006-c-25e) line 55, "Line 55: Line 53 plus line 54 =": the tax with split
+# income. It sums the tax minus credits (line 53, `ca-on/on428_tax_minus_credits_line_53`) and the
+# Ontario tax on split income (line 54, `ca-on/on428_tax_on_split_income_line_54`). Line 54 is an
+# optional input that a salary-only caller leaves out, read as blank and then as 0 by the blank rule
+# below. Line 55 is the output `ca-on/on428_tax_with_split_income_line_55`.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        [ca-on/on428_tax_minus_credits_line_53, ca-on/on428_tax_on_split_income_line_54]
+    blank:
+      ca-on/on428_tax_on_split_income_line_54: "0"
+    produces:
+      output: ca-on/on428_tax_with_split_income_line_55

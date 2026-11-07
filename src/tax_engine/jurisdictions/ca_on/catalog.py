@@ -74,6 +74,25 @@ ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
 """Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
 the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 
+# TEMPORARY: a copy of ON428 line 53 for line 55's part until line 53 has its own kind. Drop this
+# constant when the line 53 ticket (#278) merges, and point line 55 at that kind.
+ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_credits_line_53", non_negative=True
+)
+"""Tax minus credits, ON428 line 53 "Line 53: Line 51 minus line 52 (if negative, enter "0") =":
+line 51 minus line 52, not below zero."""
+
+ON428_TAX_ON_SPLIT_INCOME_LINE_54 = AmountKind.declare(
+    CATALOG, "on428_tax_on_split_income_line_54", non_negative=True
+)
+"""Ontario tax on split income, ON428 line 54 "Line 54 and line 61510: Ontario tax on split income
+(complete Form T1206)": the tax from Form T1206."""
+
+ON428_TAX_WITH_SPLIT_INCOME_LINE_55 = AmountKind.declare(
+    CATALOG, "on428_tax_with_split_income_line_55", non_negative=True
+)
+"""Tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus line 54."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
