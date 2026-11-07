@@ -1,6 +1,6 @@
 # Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 78 (ca-on/on428): "Line 78: Amount from line 77
 # above multiplied by 2 =". Line 77 is the tax reduction amount,
-# `ca-on/on428_tax_reduction_amounts_line_77`, read from its own part, not copied. Line 78 is one
+# `ca-on/on428_tax_reduction_line_77`, read from its own part, not copied. Line 78 is one
 # calculation: line 77 times 2, from the `ca-on/tax_reduction_multiplier` fraction dataset (2 over
 # 1), with no rounding.
 form:
@@ -10,6 +10,6 @@ capabilities:
     params:
       fraction: ca-on/tax_reduction_multiplier
     consumes:
-      base: ca-on/on428_tax_reduction_amounts_line_77
+      base: ca-on/on428_tax_reduction_line_77
     produces:
       output: ca-on/on428_tax_reduction_doubled_line_78

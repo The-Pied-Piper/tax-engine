@@ -4,7 +4,7 @@ real engine.
 Form text (Form ON428, CRA 5006-c-25e.txt): "Line 78: Amount from line 77 above multiplied by 2 =".
 One calculation: line 77 times 2, from the `ca-on/tax_reduction_multiplier` fraction dataset (2 over
 1). The fraction is whole, so there is no rounding and no division. The input is
-`ca-on/on428_tax_reduction_amounts_line_77` (line 77), produced by another part, so this test
+`ca-on/on428_tax_reduction_line_77` (line 77), produced by another part, so this test
 declares it as an input in a header of its own and loads the take-home folder's
 `on428/on428_line_78.yaml` beside it. The output is `ca-on/on428_tax_reduction_doubled_line_78`,
 exported by the form.
@@ -23,7 +23,7 @@ from tests.kinds import bundled_kinds
 
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
-LINE_77 = "ca-on/on428_tax_reduction_amounts_line_77"
+LINE_77 = "ca-on/on428_tax_reduction_line_77"
 LINE_78 = "ca-on/on428_tax_reduction_doubled_line_78"
 PART = "on428_line_78.yaml"
 
