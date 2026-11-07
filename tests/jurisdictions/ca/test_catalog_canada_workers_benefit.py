@@ -369,3 +369,10 @@ def test_the_schedule_6_line_7_net_income_is_signed(registry: ArtifactRegistry) 
     # (You): the form shows a negative figure, so the kind is signed.
     assert non_negative(CWB_NET_INCOME_LINE_7) is False
     assert non_negative(registry.kind("ca/cwb_net_income_line_7")) is False
+
+
+def test_the_schedule_6_line_10_family_net_income_is_signed(registry: ArtifactRegistry) -> None:
+    # Schedule 6 line 10 "Add lines 7 to 9." (column 1, You) prints no floor at zero, so the kind
+    # is signed.
+    assert non_negative(CWB_FAMILY_NET_INCOME_LINE_10) is False
+    assert non_negative(registry.kind("ca/cwb_family_net_income_line_10")) is False
