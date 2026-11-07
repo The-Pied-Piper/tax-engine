@@ -738,6 +738,11 @@ CWB_NET_INCOME_OVER_BASE_AMOUNT = AmountKind.declare(
 line 15, `ca/adjusted_family_net_income`) less line 24 (`ca/cwb_reduction_threshold`), floored at
 zero."""
 
+CWB_REDUCTION_LINE_27 = AmountKind.declare(CATALOG, "cwb_reduction_line_27", non_negative=True)
+"""Schedule 6 line 27 "Line 25 multiplied by the percentage from line 26": line 25
+(`ca/cwb_net_income_over_base_amount`) times the 15% of line 26 (`ca/cwb_reduction_rate`), to the
+cent."""
+
 CWB_MAXIMUM = AmountKind.declare(CATALOG, "cwb_maximum", non_negative=True)
 """Schedule 6 line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If not,
 enter $1,633.": the $1,633 maximum benefit for a filer with no eligible spouse or dependant, claimed
