@@ -1,6 +1,7 @@
 """Unit tests for ParameterParserRegistry and `@parameter_parser`.
 
-Parsers are keyed by their kind's plain name (`amount`, `amount_by_count`, `brackets`,
+Parsers are keyed by their kind's plain name (`amount`, `amount_by_band`, `amount_by_count`,
+`brackets`,
 `claim_reduction`, `class_rates`, `conditions`, `contribution_tier`, `credit`, `factor`,
 `fraction`, `rate`, `rate_table`, `rounding_only`, `surcharge_tiers`, `taper`, `threshold_rate`,
 `year_amounts`), not namespaced yet.
@@ -15,6 +16,8 @@ from decimal import Decimal
 from typing import assert_type
 
 import pytest
+from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND
+from tax_engine.jurisdictions.core.parameter_parsers.amount_by_band import AmountByBandParser
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.parameter_parser import (
@@ -219,6 +222,7 @@ def test_every_call_builds_its_own_registry() -> None:
     ("kind", "parser_class"),
     [
         (AMOUNT, AmountParser),
+        (AMOUNT_BY_BAND, AmountByBandParser),
         (AMOUNT_BY_COUNT, AmountByCountParser),
         (BRACKETS, BracketsParser),
         (CLAIM_REDUCTION, ClaimReductionParser),
@@ -250,6 +254,7 @@ def test_built_in_parsers_are_registered_by_the_walk(
     ("parser_class", "body_keys"),
     [
         (AmountParser, frozenset({"amount"})),
+        (AmountByBandParser, frozenset({"rows"})),
         (AmountByCountParser, frozenset({"amounts"})),
         (BracketsParser, frozenset({"brackets", "tax_at_start_rounding"})),
         (ClassRatesParser, frozenset({"classes", "full_year_days", "longest_fiscal_period_days"})),
@@ -276,6 +281,7 @@ def test_built_in_parsers_read_their_body_keys(
 def test_the_walk_finds_exactly_the_built_in_parsers() -> None:
     assert tax_engine.registrations.parameter_parsers().identifiers() == {
         "amount",
+        "amount_by_band",
         "amount_by_count",
         "brackets",
         "claim_reduction",
