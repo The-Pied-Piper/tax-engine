@@ -35,6 +35,7 @@ from decimal import ROUND_HALF_UP, Decimal
 
 import pytest
 
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -42,6 +43,7 @@ from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.credits_against_federal_tax import (
     CREDITS_AGAINST_FEDERAL_TAX,
+    FEDERAL_LOGGING_TAX_CREDIT,
     FEDERAL_TAX,
     FEDERAL_TAX_LESS_CREDITS,
 )
@@ -52,6 +54,7 @@ from tax_engine.jurisdictions.ca.catalog.deductions import (
 from tax_engine.jurisdictions.ca.catalog.income import (
     CREDITS_AGAINST_BASIC_FEDERAL_TAX,
     EMPLOYMENT_INCOME,
+    OTHER_EMPLOYMENT_INCOME,
 )
 from tax_engine.jurisdictions.ca.catalog.net_tax import (
     NET_FEDERAL_TAX,
@@ -60,9 +63,12 @@ from tax_engine.jurisdictions.ca.catalog.net_tax import (
 )
 from tax_engine.jurisdictions.ca.catalog.non_refundable_credits import (
     CANADA_EMPLOYMENT_AMOUNT,
+    CANADA_EMPLOYMENT_AMOUNT_INCOME,
+    CREDIT_AMOUNTS_AT_CREDIT_RATE,
     CREDIT_AMOUNTS_LINE_84,
     CREDIT_AMOUNTS_LINE_98,
     CREDIT_AMOUNTS_LINE_106,
+    FEDERAL_FOREIGN_TAX_CREDIT,
     FEDERAL_TAX_AFTER_CREDITS,
     FEDERAL_TAX_LESS_FOREIGN_TAX_CREDIT,
     FEDERAL_TAX_WITH_ITC_RECAPTURE,
@@ -77,7 +83,12 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     CREDITS_SUBTOTAL_LINE_96,
     EI_PREMIUMS_LINE_88,
     FEDERAL_BASIC_TAX,
+    FEDERAL_BRACKET_COLUMN_RATE_LINE_73,
+    FEDERAL_BRACKET_LOWER_BOUND_LINE_71,
+    FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_74,
+    FEDERAL_TAX_AT_COLUMN_START_LINE_75,
     FEDERAL_TAX_TAXABLE_INCOME_LINE_70,
+    FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_72,
 )
 from tax_engine.jurisdictions.ca.catalog.refund import (
     CWB_LINE_45300,
@@ -110,6 +121,12 @@ PARTS = (
 # T1 General lines by kind, at $70,000 (Return DD). The label is the form line the kind is.
 T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
     "30000": (BASIC_PERSONAL_AMOUNT, "16129.00"),
+    "70": (FEDERAL_TAX_TAXABLE_INCOME_LINE_70, "69335.00"),
+    "71": (FEDERAL_BRACKET_LOWER_BOUND_LINE_71, "57375"),
+    "72": (FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_72, "11960.00"),
+    "73": (FEDERAL_BRACKET_COLUMN_RATE_LINE_73, "0.205"),
+    "74": (FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_74, "2451.80"),
+    "75": (FEDERAL_TAX_AT_COLUMN_START_LINE_75, "8319.38"),
     "76": (FEDERAL_BASIC_TAX, "10771.18"),
     "84": (CREDIT_AMOUNTS_LINE_84, "16129.00"),
     "86": (CPP_BASE_CONTRIBUTIONS_LINE_86, "3291.75"),
@@ -117,7 +134,9 @@ T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
     "96": (CREDITS_SUBTOTAL_LINE_96, "5840.23"),
     "98": (CREDIT_AMOUNTS_LINE_98, "21969.23"),
     "106": (CREDIT_AMOUNTS_LINE_106, "21969.23"),
+    "31260 income": (CANADA_EMPLOYMENT_AMOUNT_INCOME, "70000.00"),
     "31260": (CANADA_EMPLOYMENT_AMOUNT, "1471.00"),
+    "33800": (CREDIT_AMOUNTS_AT_CREDIT_RATE, "3185.54"),
     "33500": (NON_REFUNDABLE_CREDIT_AMOUNTS, "21969.23"),
     "35000": (NON_REFUNDABLE_TAX_CREDITS, "3185.54"),
     "125": (CREDITS_AGAINST_BASIC_FEDERAL_TAX, "3185.54"),
@@ -137,6 +156,9 @@ T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
     "45300": (CWB_LINE_45300, "0.00"),
     "167": (REFUND_OR_BALANCE_OWING, "11497.09"),
 }
+
+# Lines that are the form's printed bound or rate, not a computed dollar figure.
+PRINTED_AS_IS = {"71", "73"}
 
 # The return's line 167 and the payroll figures the calculator reads, by salary, with sources:
 # (salary, line 167, federal tax after credits, Ontario tax line 90, CPP base + enhanced, EI, CWB).
@@ -223,6 +245,72 @@ def test_every_line_matches_the_printed_form(
     assert {line: t1.get(kind).value for line, (kind, _) in T1_AT_70000.items()} == {
         line: D(figure) for line, (_, figure) in T1_AT_70000.items()
     }
+
+
+def test_every_dollar_line_is_printed_to_the_cent(take_home_service: TakeHomeService) -> None:
+    # Decimal equality ignores scale, so a whole-dollar figure would pass the table above: every
+    # dollar line is two decimals (line 71 is the printed whole-dollar bound and line 73 a rate).
+    t1 = sheet(run(take_home_service, "70000"), "ca/t1_tax_and_credits")
+
+    assert {
+        line: t1.get(kind).value.as_tuple().exponent
+        for line, (kind, _) in T1_AT_70000.items()
+        if line not in PRINTED_AS_IS
+    } == {line: -2 for line in T1_AT_70000 if line not in PRINTED_AS_IS}
+
+
+def test_line_42800_names_ontario_line_90_in_the_trace(take_home_service: TakeHomeService) -> None:
+    t1 = sheet(run(take_home_service, "70000"), "ca/t1_tax_and_credits")
+
+    assert (
+        f"{PROVINCIAL_TAX_LINE_42800.label}: item 1 {ON428_ONTARIO_TAX_LINE_90.label} 3911.45"
+        " = 3911.45"
+    ) in EnglishTraceRenderer().render_all(t1.trace)
+
+
+@pytest.mark.parametrize(
+    ("given", "line_130", "line_40600", "line_167"),
+    [
+        # Nothing given: the salary-only return.
+        ({}, "7585.64", "7585.64", "11497.09"),
+        # Line 10400, other employment income of 500.00: 70,500.00 of income, tax 7,733.14.
+        ({"10400": "500"}, None, None, "11645.34"),
+        # Line 40500, a foreign tax credit of 1,000.00, comes off the federal tax.
+        ({"40500": "1000"}, "6585.64", "6585.64", "10497.09"),
+        # Line 133, a logging tax credit of 100.00, comes off line 132 to give line 40600.
+        ({"133": "100"}, "7585.64", "7485.64", "11397.09"),
+        # A foreign tax credit above the federal tax: line 130 is signed and goes negative, line
+        # 40600 stops at 0.00 and line 167 is the Ontario tax alone.
+        ({"40500": "9000"}, "-1414.36", "0.00", "3911.45"),
+    ],
+)
+def test_the_optional_inputs_route_through_the_chain(
+    take_home_service: TakeHomeService,
+    given: dict[str, str],
+    line_130: str | None,
+    line_40600: str | None,
+    line_167: str,
+) -> None:
+    # The line tests cover each optional input alone; here one return types them in beside the
+    # salary and the real chain from the input to line 167 is read.
+    kinds_by_line = {
+        "10400": OTHER_EMPLOYMENT_INCOME,
+        "40500": FEDERAL_FOREIGN_TAX_CREDIT,
+        "133": FEDERAL_LOGGING_TAX_CREDIT,
+    }
+    worksheets = take_home_service(HEADER, RETURN, *PARTS).compute(
+        CODE,
+        2025,
+        Artifact(EMPLOYMENT_INCOME, D("70000")),
+        *(Artifact(kinds_by_line[line], D(value)) for line, value in given.items()),
+    )
+    t1 = sheet(worksheets, "ca/t1_tax_and_credits")
+
+    if line_130 is not None:
+        assert t1.get(FEDERAL_TAX_LESS_FOREIGN_TAX_CREDIT).value == D(line_130)
+    if line_40600 is not None:
+        assert t1.get(FEDERAL_TAX).value == D(line_40600)
+    assert t1.get(REFUND_OR_BALANCE_OWING).value == D(line_167)
 
 
 @pytest.mark.parametrize(("salary", "line_167", "federal", "ontario", "cpp", "ei", "cwb"), ANCHORS)
