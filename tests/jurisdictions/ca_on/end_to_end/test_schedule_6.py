@@ -100,27 +100,26 @@ AMOUNT_LINES: dict[str, AmountKind] = {
     "27": CWB_REDUCTION_LINE_27,
     "28": CWB_BENEFIT_LINE_28,
 }
-CENT_LINES = ("20", "22", "27", "28")
 
 
 # Each salary's figures by form line, hand-computed from the printed lines. Net income (lines 7, 10,
 # 12, 13, 15) is the salary less the Schedule 8 enhanced contributions (T1 line 22215); lines 17, 21
 # and 24 are the printed single amounts; the benefit (line 28) is line 22 less line 27.
 CASES: list[tuple[str, dict[str, str]]] = [
-    ("70000", {"1": "70000", "5": "70000", "6": "70000", "7": "69335.00", "10": "69335.00",
-            "12": "69335.00", "13": "69335.00", "15": "69335.00", "17": "3000.00", "18": "67000",
+    ("70000", {"1": "70000.00", "5": "70000.00", "6": "70000.00", "7": "69335.00", "10": "69335.00",
+            "12": "69335.00", "13": "69335.00", "15": "69335.00", "17": "3000.00", "18": "67000.00",
             "20": "18090.00", "21": "1633.00", "22": "1633.00", "24": "26855.00",
             "25": "42480.00", "27": "6372.00", "28": "0.00"}),
-    ("30000", {"1": "30000", "5": "30000", "6": "30000", "7": "29735.00", "10": "29735.00",
-            "12": "29735.00", "13": "29735.00", "15": "29735.00", "17": "3000.00", "18": "27000",
+    ("30000", {"1": "30000.00", "5": "30000.00", "6": "30000.00", "7": "29735.00", "10": "29735.00",
+            "12": "29735.00", "13": "29735.00", "15": "29735.00", "17": "3000.00", "18": "27000.00",
             "20": "7290.00", "21": "1633.00", "22": "1633.00", "24": "26855.00",
             "25": "2880.00", "27": "432.00", "28": "1201.00"}),
-    ("20000", {"1": "20000", "5": "20000", "6": "20000", "7": "19835.00", "10": "19835.00",
-            "12": "19835.00", "13": "19835.00", "15": "19835.00", "17": "3000.00", "18": "17000",
+    ("20000", {"1": "20000.00", "5": "20000.00", "6": "20000.00", "7": "19835.00", "10": "19835.00",
+            "12": "19835.00", "13": "19835.00", "15": "19835.00", "17": "3000.00", "18": "17000.00",
             "20": "4590.00", "21": "1633.00", "22": "1633.00", "24": "26855.00",
             "25": "0.00", "27": "0.00", "28": "1633.00"}),
-    ("2010", {"1": "2010", "5": "2010", "6": "2010", "7": "2010.00", "10": "2010.00",
-           "12": "2010.00", "13": "2010.00", "15": "2010.00", "17": "3000.00", "18": "0",
+    ("2010", {"1": "2010.00", "5": "2010.00", "6": "2010.00", "7": "2010.00", "10": "2010.00",
+           "12": "2010.00", "13": "2010.00", "15": "2010.00", "17": "3000.00", "18": "0.00",
            "20": "0.00", "21": "1633.00", "22": "0.00", "24": "26855.00",
            "25": "0.00", "27": "0.00", "28": "0.00"}),
 ]  # fmt: skip
@@ -177,17 +176,17 @@ def test_the_benefit_at_seventy_thousand_is_zero(take_home_service: TakeHomeServ
 
 
 @pytest.mark.parametrize("salary", [case[0] for case in CASES] + ["12345.67"])
-def test_the_cent_lines_have_exactly_two_decimals(
+def test_every_amount_line_has_exactly_two_decimals(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # A floored or capped line (22 at a low salary, 27 under the threshold, 28 past the phase-out)
-    # rounds through its own dataset, so it prints 0.00 and every cent line is pinned to two
-    # decimals, zero included.
+    # `==` on a Decimal ignores the scale, so the figures above cannot tell 70000 from 70000.00.
+    # Every amount line rounds through a dataset (or copies a line that does), so each holds exactly
+    # two decimals, zero included (22 at a low salary, 27 under the threshold, 28 past the
+    # phase-out).
     sheet = schedule_6(take_home_service, salary)
 
-    for line in CENT_LINES:
-        value = sheet.get(AMOUNT_LINES[line]).value
-        assert value.as_tuple().exponent == -2, line
+    for line, kind in AMOUNT_LINES.items():
+        assert sheet.get(kind).value.as_tuple().exponent == -2, line
 
 
 def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> None:

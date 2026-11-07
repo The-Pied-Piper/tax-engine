@@ -60,4 +60,6 @@ def line_24(take_home_service: TakeHomeService, salary: str) -> Decimal:
 def test_line_24_is_the_printed_26855_whatever_the_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    assert line_24(take_home_service, salary) == D("26855.00")
+    value = line_24(take_home_service, salary)
+    assert value == D("26855.00")
+    assert value.as_tuple().exponent == -2

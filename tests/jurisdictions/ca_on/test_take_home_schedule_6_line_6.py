@@ -78,4 +78,6 @@ def line_6(take_home_service: TakeHomeService, salary: str) -> Decimal:
 def test_schedule_6_line_6_is_line_5_column_1_alone(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_6(take_home_service, salary) == D(expected)
+    value = line_6(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
