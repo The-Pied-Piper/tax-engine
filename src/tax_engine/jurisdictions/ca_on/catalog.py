@@ -32,6 +32,23 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, ON428 line 9 (line 58040) "Basic personal amount Claim $12,747": the
 amount claimed, the first part of the total of the Ontario credit amounts."""
 
+ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
+    CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
+)
+"""Personal amounts subtotal, ON428 line 18 "Add lines 9, 10, 13, 16, and 17.": the sum of lines
+9, 10, 13, 16 and 17."""
+
+ON428_CPP_EI_CREDIT_AMOUNTS_LINE_24 = AmountKind.declare(
+    CATALOG, "on428_cpp_ei_credit_amounts_line_24", non_negative=True
+)
+"""CPP and EI credit amounts subtotal, ON428 line 24 "Add lines 19 to 23.": the sum of lines 19
+to 23."""
+
+ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
+    CATALOG, "on428_credits_subtotal_line_25", non_negative=True
+)
+"""Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
@@ -171,6 +188,19 @@ PENSION_INCOME_CREDIT = AmountKind.declare(CATALOG, "pension_income_credit", non
 """Ontario pension income amount, ON428 line 27 and line 58360 "Pension income amount (maximum
 $1,762)": the lesser of that maximum and the federal line 31400 amount, a part of the total of the
 Ontario credit amounts."""
+
+ON428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "on428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, ON428 line 27 "Line 27 and line 58360: Pension income amount (maximum
+$1,762)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
+
+ON428_CREDITS_WITH_PENSION_LINE_28 = AmountKind.declare(
+    CATALOG, "on428_credits_with_pension_line_28", non_negative=True
+)
+"""Ontario credits with the pension income amount, ON428 line 28 "Line 28: Line 26 plus line 27 =":
+line 26 "Amount from line 25 of the previous page" (a copy of line 25) plus line 27 (the pension
+income amount)."""
 
 DEPENDANT_ON428_LINE_28 = AmountKind.declare(CATALOG, "dependant_on428_line_28", non_negative=True)
 """Amount from line 28 of the dependant's Form ON428, Worksheet ON428 "Line 58480 - Disability
