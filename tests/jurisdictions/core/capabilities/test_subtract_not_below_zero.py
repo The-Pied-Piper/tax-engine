@@ -196,7 +196,7 @@ def test_a_larger_less_is_floored_at_zero() -> None:
 
 
 def test_the_floor_keeps_the_scale_of_the_difference() -> None:
-    # #452: when the floor applies, the zero keeps the scale of the difference (-15.50 gives
+    # When the floor applies, the zero keeps the scale of the difference (-15.50 gives
     # 0.00, so the line prints to the cent like a positive one), and is never a negative zero.
     value = compute("10.00", "25.50").value
 
