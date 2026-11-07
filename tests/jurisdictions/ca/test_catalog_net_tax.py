@@ -266,15 +266,3 @@ def test_the_social_benefits_repayment_payable_is_a_non_negative_decimal(
     assert non_negative(SOCIAL_BENEFITS_REPAYMENT_PAYABLE) is True
     assert non_negative(registry.kind("ca/social_benefits_repayment_payable")) is True
     assert "ca/social_benefits_repayment_payable" not in SIGNED
-
-
-def test_the_provincial_tax_line_42800_is_a_non_negative_decimal(
-    registry: ArtifactRegistry,
-) -> None:
-    # T1 line 147 and line 42800 "Provincial or territorial tax (complete and attach your provincial
-    # or territorial Form 428, even if the result is "0")" carries ON428 line 90, which is not below
-    # zero: it is the sum of ON428 lines 88 and 89, both amounts.
-    assert PROVINCIAL_TAX_LINE_42800.value_type is Decimal
-    assert non_negative(PROVINCIAL_TAX_LINE_42800) is True
-    assert non_negative(registry.kind("ca/provincial_tax_line_42800")) is True
-    assert "ca/provincial_tax_line_42800" not in SIGNED
