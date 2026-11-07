@@ -1,0 +1,19 @@
+# Condition of the Ontario tax reduction on Form ON428 line 80, 2025 tax year (form 5006-C): 'Enter
+# "0" on line 80 if any of the following applies to you:' followed by six printed conditions, one
+# of which is "There is an amount on line 72". This dataset copies that one condition in the form's
+# wording; the count is 0 when the condition applies and 1 when it does not. An amount other than 0
+# on line 72 gives 0; line 72 left out (read as blank, then as "0" by the take-home part) gives 1.
+# The other five printed conditions are not read in the take-home, so they are not in this dataset.
+# The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca-on/on428_line_80_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: none
+count_when_any_applies: "0"
+conditions:
+  - text: There is an amount on line 72
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: not_equal_to, than: "0"}

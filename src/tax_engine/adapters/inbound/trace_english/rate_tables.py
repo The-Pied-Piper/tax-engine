@@ -42,13 +42,18 @@ class BracketColumnFigureRenderer:
 
     def render(self, line: BracketColumnFigureLine) -> str:
         """The English sentence for `line`."""
-        base = EnglishFigures.money(line.base_amount)
+        output = line.output
+        base = line.base
+        amount = line.base_amount
         figure = (
             f"{EnglishFigures.percent(line.figure)}%"
             if line.name == "rate"
             else EnglishFigures.money(line.figure)
         )
-        return f"bracket {line.name} for {base}: {figure}"
+        return (
+            f"{output.label}: bracket {line.name} for {base.label} "
+            f"{EnglishFigures.money(amount)}: {figure}"
+        )
 
 
 @english_renderer
