@@ -1,5 +1,5 @@
 """Trace lines for rate tables and tiers: a bracket's column or one figure of it, a contribution
-or surcharge tier, a rate by income band and its application.
+or surcharge tier, a rate by income band and its application, an amount by income band.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from tax_engine.domain.parameters.rounding import RoundingRule
 from tax_engine.domain.trace.base import TraceLine
 
 __all__ = [
+    "AmountByBandLine",
     "BracketColumnLine",
     "BracketColumnFigureLine",
     "SurchargeTierLine",
@@ -124,4 +125,28 @@ class ChosenRateAppliedLine(TraceLine):
     @property
     def amount(self) -> Decimal:
         """The rounded product."""
+        return self.result
+
+
+@dataclass(frozen=True)
+class AmountByBandLine(TraceLine):
+    """The band of a chart that `base` (worth `base_amount`) falls in, its `over` the lower bound,
+    produced as `output`: the band's `flat_amount` (`minus`, `rate` and `plus` `None`) or its
+    sloped `minus`, `rate` and `plus` (`flat_amount` `None`), rounded with `rounding` to `result`.
+    """
+
+    output: Money
+    base: Money
+    base_amount: Decimal
+    over: Decimal
+    flat_amount: Decimal | None
+    minus: Decimal | None
+    rate: Rate | None
+    plus: Decimal | None
+    rounding: RoundingRule
+    result: Decimal
+
+    @property
+    def amount(self) -> Decimal:
+        """The rounded figure."""
         return self.result
