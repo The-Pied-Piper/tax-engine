@@ -123,8 +123,8 @@ negative, enter "0") =": line 55 minus line 60, not below zero."""
 ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
     CATALOG, "on428_surtax_total_line_68", non_negative=True
 )
-"""TEMPORARY COPY, owned by ticket #284: ON428 line 68 "Line 68: Line 66 plus line 67 =", the total
-surtax. Drop this kind when ticket #284 merges."""
+"""TEMPORARY COPY of the kind the ON428 line 68 step declares, "Line 68: Line 66 plus line 67 =",
+the total surtax. Drop this copy when that step merges."""
 
 ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
     CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
