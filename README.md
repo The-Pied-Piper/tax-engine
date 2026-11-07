@@ -8,18 +8,18 @@ Supported today: Canada (federal) and Ontario, tax year 2025. More forms, lines,
 
 ## Example: a $70,000 salary
 
-Given only a gross salary, the engine computes the contributions and tax from the CRA forms:
+Given only a gross salary, the engine works out the contributions and tax from the CRA forms. Take-home is then salary minus CPP, EI and total tax, a subtraction done by the caller outside the engine:
 
 | Item | Amount |
 | --- | ---: |
 | Federal tax | 7,585.64 |
 | Ontario tax (ON428, incl. health premium) | 3,911.45 |
 | **Total tax** | **11,497.09** |
-| CPP contributions | 3,956.75 |
+| CPP contributions (base 3,291.75 + enhanced 665.00) | 3,956.75 |
 | EI premiums | 1,077.48 |
 | **Take-home** | **53,468.68** |
 
-Every figure comes with a sentence saying how it was reached. This is the real trace for the last Ontario line:
+Every figure the engine computes comes with a sentence saying how it was reached. This is the trace for the last Ontario line (reformatted, with thousands separators and a line wrap):
 
 ```text
 on428_ontario_tax_line_90: on428_tax_after_farmers_food_donation_credit_line_88 3,311.45
@@ -31,7 +31,7 @@ on428_ontario_tax_line_90: on428_tax_after_farmers_food_donation_credit_line_88 
 - **Explains itself.** An English trace for every line: inputs, operation, result, rounding.
 - **Mirrors the forms.** One form line is one capability, so engine steps read like the form itself.
 - **Rules are data.** Rates, thresholds and limits are datasets copied as printed, never recomputed in code.
-- **Checked against official sources.** Results are compared with the CRA payroll calculator, CRA's T4127 guide and CRA's own worked examples.
+- **Checked against official sources.** Results are compared with the CRA payroll deductions calculator, CRA's T4127 guide and the printed forms.
 - **Exact arithmetic.** `Decimal` everywhere, rounding only where the form says to round.
 - **Jurisdiction-agnostic core.** Jurisdictions are plugins that add forms, datasets and capabilities; adding one does not change the core.
 
