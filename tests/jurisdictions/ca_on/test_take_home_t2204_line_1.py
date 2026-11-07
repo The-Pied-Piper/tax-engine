@@ -15,21 +15,13 @@ header declares it as a required starting input, as the Schedule 8 line D test d
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import (
@@ -38,14 +30,11 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_LINE_1_COUNT,
     T2204_SELF_EMPLOYMENT_EARNINGS,
 )
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = (
-    Path(tax_engine.jurisdictions.ca_on.__file__).parent
-    / "manifests"
-    / "take_home"
-    / "t2204_line_1.yaml"
-)
+
+PART = "t2204_line_1.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -73,23 +62,9 @@ FORM = dedent("""\
     """)
 
 
-def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
-    parts.mkdir(parents=True)
-    (parts / "a_header.yaml").write_text(HEADER)
-    (parts / "b_form.yaml").write_text(FORM)
-    shutil.copy(PART, parts / "c_line_1.yaml")
-    roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
-    parameter_roots = dict(roots)
-    roots[Namespace("ca-on")] = tmp_path
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, tax_engine.registrations.artifact_kinds()),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
-        tax_engine.registrations.capabilities(),
-    )
-
-
-def t2204(tmp_path: Path, salary: str, self_employment: str | None = None) -> Worksheet:
+def t2204(
+    take_home_service: TakeHomeService, salary: str, self_employment: str | None = None
+) -> Worksheet:
     """The T2204 worksheet for a salary; line 2 is left out unless it is given."""
     starting = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
@@ -97,7 +72,9 @@ def t2204(tmp_path: Path, salary: str, self_employment: str | None = None) -> Wo
     ]
     if self_employment is not None:
         starting.append(Artifact(T2204_SELF_EMPLOYMENT_EARNINGS, D(self_employment)))
-    (sheet,) = service(tmp_path).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
+    (sheet,) = take_home_service(HEADER, FORM, PART).compute(
+        JurisdictionCode("CA-ON"), 2025, *starting
+    )["ca/t2204"]
     return sheet
 
 
@@ -115,9 +92,9 @@ def t2204(tmp_path: Path, salary: str, self_employment: str | None = None) -> Wo
     ],
 )
 def test_line_1_is_the_salary_unless_the_note_applies(
-    tmp_path: Path, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert t2204(tmp_path, salary).get(T2204_LINE_1).value == D(expected)
+    assert t2204(take_home_service, salary).get(T2204_LINE_1).value == D(expected)
 
 
 @pytest.mark.parametrize(
@@ -132,9 +109,9 @@ def test_line_1_is_the_salary_unless_the_note_applies(
     ],
 )
 def test_the_note_count_is_0_under_2000_and_1_from_2000(
-    tmp_path: Path, salary: str, count: str
+    take_home_service: TakeHomeService, salary: str, count: str
 ) -> None:
-    assert t2204(tmp_path, salary).get(T2204_LINE_1_COUNT).value == int(count)
+    assert t2204(take_home_service, salary).get(T2204_LINE_1_COUNT).value == int(count)
 
 
 @pytest.mark.parametrize(
@@ -146,14 +123,16 @@ def test_the_note_count_is_0_under_2000_and_1_from_2000(
         ("2000", "2000.00"),
     ],
 )
-def test_a_blank_line_2_is_read_as_0(tmp_path: Path, salary: str, expected: str) -> None:
-    assert t2204(tmp_path, salary).get(T2204_LINE_1).value == D(expected)
+def test_a_blank_line_2_is_read_as_0(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert t2204(take_home_service, salary).get(T2204_LINE_1).value == D(expected)
 
 
-def test_self_employment_earnings_switch_the_note_off(tmp_path: Path) -> None:
+def test_self_employment_earnings_switch_the_note_off(take_home_service: TakeHomeService) -> None:
     # Line 2 is 100, so the caller has self-employment earnings and note (1) does not apply: line 1
     # is the salary of $1,500, though it is under $2,000, and the count is 1.
-    sheet = t2204(tmp_path, "1500", self_employment="100")
+    sheet = t2204(take_home_service, "1500", self_employment="100")
 
     assert sheet.get(T2204_LINE_1).value == D("1500.00")
     assert sheet.get(T2204_LINE_1_COUNT).value == 1
