@@ -1,0 +1,18 @@
+# T1 (2025, Ontario 5006-R page 5) line 69 and line 26000: "Line 57 minus line 68 (if negative, enter
+# "0") Taxable income". Line 57 is a copy of line 23600 ("Enter the amount from line 56 of the previous
+# page"), so step 1 reads the net income (`ca/net_income`) directly, not a copy of it.
+#
+# Line 68 and line 25700 "Add lines 58 to 67" are the deductions from net income, an optional input
+# (t1_taxable_income_inputs.yaml, default "0"): none of lines 58 to 67 applies to a salary-only filer.
+#
+# Step 1 takes the deductions off the net income and keeps the result at or above 0: a deduction above
+# net income gives "0", as the form says.
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/net_income
+      less: ca/deductions_from_net_income
+    produces:
+      output: ca/taxable_income
