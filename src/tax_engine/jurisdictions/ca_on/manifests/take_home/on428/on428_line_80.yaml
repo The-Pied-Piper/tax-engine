@@ -42,6 +42,8 @@ capabilities:
     produces:
       output: ca-on/on428_tax_reduction_conditions_count_line_80
   - name: core/times_count
+    params:
+      rounding: ca-on/cent_rounding
     consumes:
       amount: ca-on/on428_tax_reduction_before_conditions_line_80
       count: ca-on/on428_tax_reduction_conditions_count_line_80

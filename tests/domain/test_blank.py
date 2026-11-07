@@ -28,6 +28,7 @@ from tax_engine.domain.errors import (
     NegativeArtifactError,
 )
 from tax_engine.domain.kinds import AmountKind, CountKind, DigitsKind, RecordListKind, TextKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import (
     BlankFallbackLine,
@@ -229,7 +230,9 @@ def test_a_fallback_for_a_list_slot_is_the_type_of_its_kinds() -> None:
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
             parts = tuple(artifact for artifact in inputs)
             total = sum((a.value for a in parts), D(0))
-            return CapabilityResult((Artifact(NET, total),), (SumLine(NET, (), total),))
+            return CapabilityResult(
+                (Artifact(NET, total),), (SumLine(NET, (), NO_ROUNDING, total),)
+            )
 
     result = (
         Total((INCOME, OTHER), NET)

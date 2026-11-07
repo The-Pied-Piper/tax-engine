@@ -6,6 +6,8 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/sum
+    params:
+      rounding: ca-on/cent_rounding
     consumes:
       parts: [ca-on/on428_credits_with_pension_line_28]
     produces:

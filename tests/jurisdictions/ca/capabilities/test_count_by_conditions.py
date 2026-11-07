@@ -52,6 +52,7 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import (
     BlankFallbackLine,
     ConditionLine,
@@ -738,10 +739,24 @@ def test_renders_the_higher_net_income_rule_in_english() -> None:
 # Line 80 is multiplied by the gate once: 1 keeps the figure, 0 makes it 0.
 
 
+def exact_product() -> ParameterDataset[RoundingOnly]:
+    """The line's rounding dataset: no rounding, so the product is the figure itself."""
+    return ParameterDataset(
+        "ex/gated_rounding",
+        2025,
+        ROUNDING_ONLY,
+        RoundingOnly(),
+        NO_ROUNDING,
+        ("https://example.org/rounding",),
+    )
+
+
 def gated_line_80() -> Composition:
     return Composition(
         (
-            TimesCount(REDUCTION_BEFORE_GATE, GATE, REDUCTION),  # listed out of order on purpose
+            TimesCount(
+                exact_product(), REDUCTION_BEFORE_GATE, GATE, REDUCTION
+            ),  # listed out of order on purpose
             line_80(),
         ),
         inputs=frozenset({*FIVE_COUNTS, LINE_72, REDUCTION_BEFORE_GATE}),
