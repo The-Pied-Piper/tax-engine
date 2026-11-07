@@ -1,0 +1,25 @@
+# Form Schedule ON428-A, Ontario Learning Incentive Tax Credit (LIFT) (ca-on/on428_a), lines 4 and 5.
+# The form's declaration and exports are a part of the manifest's own, not this one.
+# Form text (CRA 5006-A-25E): "Line 4: Applicable rate 5.05%" and "Line 5: Line 3 multiplied by the
+# percentage from line 4 (maximum $875) =". Line 4 is a printed figure held in the ca-on/lift_rate
+# dataset, so it has no step. Line 14 "Amount from line 5 above (maximum $875)" is a copy, so it
+# has no step either.
+form:
+  name: ca-on/on428_a
+capabilities:
+  # Line 5, first operation: "Line 3 multiplied by the percentage from line 4", to the cent.
+  - name: core/apply_rate
+    params:
+      rate: ca-on/lift_rate
+    consumes:
+      base: ca-on/lift_employment_income
+    produces:
+      output: ca-on/lift_credit_before_maximum
+  # Line 5, second operation: "(maximum $875)", at most the printed maximum.
+  - name: core/capped_amount
+    params:
+      cap: ca-on/lift_maximum
+    consumes:
+      base: ca-on/lift_credit_before_maximum
+    produces:
+      output: ca-on/lift_maximum_credit
