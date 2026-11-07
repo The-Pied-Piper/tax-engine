@@ -4,9 +4,8 @@
 # (labour-sponsored funds credit). The salary-only filer has none of the three, so the sum is built
 # over an empty list of parts and gives 0. core/sum rounds the result once, half-up to the cent, with
 # the shared `ca/cent_rounding` dataset, so the zero is the cent zero 0.00.
-# This line has no export of its own: line 41700 ("Basic personal amount and other credits" net of
-# these credits) reads `ca/credits_against_federal_tax` inside the form later, and the parent
-# `t1_tax_and_credits.yaml` owns the form's exports.
+# This line has no export of its own: line 41700 ("Line 134 minus line 138") reads
+# `ca/credits_against_federal_tax` inside the form later.
 form:
   name: ca/t1_tax_and_credits
 capabilities:
