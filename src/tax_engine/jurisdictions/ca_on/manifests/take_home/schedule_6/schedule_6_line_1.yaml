@@ -1,0 +1,14 @@
+# Schedule 6 (5000-S6, 2025) line 1, employment income (column 1 "You"). The form prints: "Line 1:
+# Employment income and other employment income from line 10100 and line 10400 of the return" and
+# "Column 1 You" (docs/cra-forms-2025/5000-s6-25e.txt, lines 130-133).
+#
+# Line 1 is a sum of T1 line 10100 (employment income) and T1 line 10400 (other employment income).
+# Line 10400 is out of scope for the take-home calculator, so the sum has one part: the salary alone.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/sum
+    consumes:
+      parts: [ca/employment_income]
+    produces:
+      output: ca/cwb_employment_income
