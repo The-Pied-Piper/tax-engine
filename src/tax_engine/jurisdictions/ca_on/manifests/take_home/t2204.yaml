@@ -1,15 +1,14 @@
 # Form T2204 (Employee Overpayment of Employment Insurance Premiums, 2025). This part names the
 # form and its exports; each line's capability goes in a part of its own with the same `form.name`.
-# Exports: what the return reads from the form. Line 16 is entered on T1 line 31200 (and ON428
-# line 58300); line 15 is the overpayment refunded on T1 line 45000 "if this amount is more than
-# $1", so the line 15 figure, its more-than-$1 count and the amount for line 45000 (`ca/ei_overpayment`,
-# line 15 times that count) are exported for the return to read.
+# Exports: what the calculator and the return read from the form. Line 4 is the EI premiums
+# deducted, exported for the take-home calculator (it reads it as Schedule 8's lines 25 and 28 are
+# read). Line 16 goes to T1 line 31200 and ON428 line 58300 (#300, #270). `ca/ei_overpayment` is the
+# T1 line 45000 amount read by T1 line 48200 (#314).
 form:
   name: ca/t2204
   required: true
   exports:
-    - ca/t2204_line_15
-    - ca/t2204_line_15_count
+    - ca/t2204_premiums_deducted
     - ca/ei_overpayment
     - ca/t2204_line_16
 capabilities: []

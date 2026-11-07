@@ -1,0 +1,14 @@
+# T1 (2025) line 23600: "Line 56 and line 23600: Line 54 minus line 55 (if negative, enter "0")"
+# (5006-R, page 4). Line 54 is net income before adjustments (line 23400) and line 55 is the social
+# benefits repayment (line 23500); the step subtracts the repayment from the net income before
+# adjustments, and keeps the result at or above 0, so a negative difference gives "0", as the form
+# says. The output is net income (line 23600).
+form:
+  name: ca/t1_taxable_income
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca/net_income_before_adjustments
+      less: ca/social_benefits_repayment
+    produces:
+      output: ca/net_income

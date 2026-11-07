@@ -27,7 +27,7 @@ Line 1 (50339) is "Total CPP pensionable earnings from box 26 of all of your T4 
 is blank, enter the amount from box 14)", so the three contributions read employment income.
 Not triggered by the returns modelled: Part 2's proration for fewer than 12 months, and box 26
 differing from box 14. The slips' contributions differing from the required ones are line 24, which
-routes to the T1 line 44800 overpayment when positive (schedule_8_cpp_overpayment).
+routes to the T1 line 44800 overpayment when positive.
 """
 
 CPP_BASE_CONTRIBUTIONS_ON_SELF_EMPLOYMENT = AmountKind.declare(
