@@ -49,12 +49,24 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
+ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
+    CATALOG, "on428_credits_with_transfers_line_35", non_negative=True
+)
+"""Total of the credits with the student loan, tuition and transfer amounts, ON428 line 35 "Add
+lines 31 to 34.": the sum of line 31 with lines 32 to 34."""
+
+ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 "Line 36 minus
+line 40 (if negative, enter "0")" plus line 42 "Allowable amount of medical expenses for other
+dependants", a part of line 44."""
+
 ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
     CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
 )
 """Total credit amounts, ON428 line 44 "Line 44 and line 58800: Line 35 plus line 43 =": line 35
-plus line 43. Declared here only as the starting input of the line 46 test; the part that produces
-line 44 declares it, and this copy is dropped when that merges."""
+plus line 43."""
 
 ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
     CATALOG, "on428_credit_amounts_at_credit_rate_line_46", non_negative=True
