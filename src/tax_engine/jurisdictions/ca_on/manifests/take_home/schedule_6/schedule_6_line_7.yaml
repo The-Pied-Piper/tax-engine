@@ -1,0 +1,17 @@
+# Schedule 6 (5000-S6, 2025, CRA 5000-S6-25E) line 7. Line 7: "Net income from line 23600 of the return
+# (or the amount you would have entered if the instructions on line 23600 said "if negative, show in
+# brackets")", column 1 "You" (docs/cra-forms-2025/5000-s6-25e.txt, lines 193-197).
+#
+# Line 7 is a step of its own, not a read: the T1 form exports net income (`ca/net_income`) for the
+# return, and another form reads an export only as a record list (`ca/t1_taxable_income.net_income`),
+# so the one amount is totalled by core/record_total, the same way ON428-A line 6 reads it. The take-home
+# filer has only the one line of column 1 for the net income, so no sum is built here. The result is
+# signed, because the form prints a negative net income in brackets and does not floor it at zero.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca/cwb_net_income_line_7

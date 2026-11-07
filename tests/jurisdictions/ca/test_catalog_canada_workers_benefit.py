@@ -74,6 +74,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_WORKING_INCOME_LESS_SPOUSE,
     WORKING_INCOME,
 )
+from tests.jurisdictions.ca.catalog_snapshot import SIGNED
 from tests.kinds import non_negative
 
 
@@ -359,3 +360,14 @@ def test_the_adjusted_family_net_income_is_signed(registry: ArtifactRegistry) ->
     # 12, 18 and 25.
     assert non_negative(ADJUSTED_FAMILY_NET_INCOME) is False
     assert non_negative(registry.kind("ca/adjusted_family_net_income")) is False
+
+
+def test_the_schedule_6_line_7_net_income_is_registered_and_signed(
+    registry: ArtifactRegistry,
+) -> None:
+    # Schedule 6 line 7 "Net income from line 23600 of the return ... if negative, show in
+    # brackets", column 1 (You): the form prints a negative figure, so the kind is signed.
+    kind = _kind(registry, "ca/cwb_net_income_line_7")
+    assert kind.value_type is Decimal
+    assert non_negative(kind) is False
+    assert kind.identifier in SIGNED
