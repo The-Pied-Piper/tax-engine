@@ -1,13 +1,12 @@
-# T1 (2025) line 23300: total deductions from total income. Form text (5006-R page 4): "Line 53 and
-# line 23300: Add lines 35 to 52." The line is a sum, a calculation, so step 1 takes it through
-# core/sum over the parts the filer has. A salary-only filer has only one deduction: line 22215, whose
-# figure is Schedule 8's export (Schedule 8 line 28, "Enter this amount ... on line 22215 of your
-# return"). The other deduction lines (20700 to 23200) do not apply to this filer.
+# T1 (2025) line 23300: "Line 53 and line 23300: Add lines 35 to 52." (5006-R page 4). The line is a
+# sum, a calculation. A salary-only filer has one deduction, line 22215, which Schedule 8 line 28
+# exports; this form reads it as the other form's export (`ca/schedule_8.<export>`, a record list of
+# one amount), so the one step is core/record_total over those records, not core/sum.
 form:
   name: ca/t1_taxable_income
 capabilities:
-  - name: core/sum
+  - name: core/record_total
     consumes:
-      parts: [ca/schedule_8_cpp_enhanced_contributions_on_return]
+      records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
     produces:
       output: ca/deductions_from_total_income
