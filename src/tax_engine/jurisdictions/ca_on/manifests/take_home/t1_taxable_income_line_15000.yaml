@@ -1,10 +1,10 @@
 # T1 (5006-R, 2025) line 15000, total income. The form prints: "Line 21: Add lines 1 to 20." / "Line 28:
 # Line 21 plus line 27" / "Line 33 and line 15000: Line 28 plus line 32 Total income" (page 3). Line 34
-# ("Enter the amount from line 33") is a copy of line 33, so it gets no step.
+# ("Enter the amount from line 33 of the previous page.") is a copy of line 33, so it gets no step.
 #
 # Line 15000, total income, is the sum of line 10100 (employment income) and line 10400 (other
 # employment income) in form line order. The unnumbered subtotals on lines 21 and 28 fold into this
-# step and nothing else reads them. Parts the filer never has are left out of the sum.
+# step and nothing else reads them. Line 10400 is an optional input that reads as 0 when the filer has none, so a salary-only filer's total is the salary.
 form:
   name: ca/t1_taxable_income
 capabilities:
