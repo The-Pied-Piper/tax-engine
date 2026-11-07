@@ -1,0 +1,9 @@
+# The Ontario take-home return's one output, T1 line 167 (refund or balance owing; positive is owing,
+# negative is a refund). The T1 form exports it, another form's export is read only as a record list,
+# so core/record_total totals the one amount into the return's own `ca/refund_or_balance_owing`.
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t1_tax_and_credits.refund_or_balance_owing
+    produces:
+      output: ca/refund_or_balance_owing
