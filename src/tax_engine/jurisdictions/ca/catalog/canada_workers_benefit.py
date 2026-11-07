@@ -718,6 +718,12 @@ CWB_WORKING_INCOME_OVER_BASE_AMOUNT = AmountKind.declare(
 """Schedule 6 Part A line 18 "Line 16 minus line 17 (if negative, enter "0")": line 16 (a copy of
 line 6, `ca/cwb_family_working_income`) less line 17 (`ca/cwb_base_amount`), floored at zero."""
 
+CWB_WORKING_INCOME_RATE_LINE_20 = AmountKind.declare(
+    CATALOG, "cwb_working_income_rate_line_20", non_negative=True
+)
+"""Schedule 6 line 20 "Line 18 multiplied by the percentage from line 19": line 18
+(`ca/cwb_working_income_over_base_amount`) times the 27% of line 19 (`ca/cwb_rate`), to the cent."""
+
 CWB_MAXIMUM = AmountKind.declare(CATALOG, "cwb_maximum", non_negative=True)
 """Schedule 6 line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If not,
 enter $1,633.": the $1,633 maximum benefit for a filer with no eligible spouse or dependant, claimed
