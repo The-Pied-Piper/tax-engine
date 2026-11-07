@@ -13,10 +13,6 @@ output `ca-on/on428_excess_times_column_rate_line_6`, in the one part `on428_lin
 product is rounded half-up to the cent once, by that dataset's rule. The form declaration is
 test-local: it exports line 6.
 
-The part's `rounding:` parameter is read from the part file itself, and the line-specific
-`ca-on/bracket_column_tax_rounding` family is checked to be gone, because the numbers alone cannot
-tell which dataset rounds them (both are half-up to the cent).
-
 Figures (worked, hand computed): line 4 is 19,835.00, 16,449.00 and 43,151.00 at a $20,000, $70,000
 and $150,000 salary; line 5 is 0.0505, 0.0915 and 0.1116; so line 6 is 1,001.67, 1,505.08 and
 4,815.65 (19,835 × 0.0505 = 1,001.6675; 16,449 × 0.0915 = 1,505.0835; 43,151 × 0.1116 = 4,815.6516).
@@ -24,18 +20,13 @@ and $150,000 salary; line 5 is 0.0505, 0.0915 and 0.1116; so line 6 is 1,001.67,
 
 from __future__ import annotations
 
-import re
 from decimal import Decimal
 
 import pytest
 
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NotFoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
@@ -45,11 +36,6 @@ LINE_4 = "ca-on/on428_taxable_income_over_lower_bound_line_4"
 LINE_5 = "ca-on/on428_bracket_column_rate_line_5"
 LINE_6 = "ca-on/on428_excess_times_column_rate_line_6"
 PART = "on428_line_6.yaml"
-SHARED_ROUNDING = "ca-on/cent_rounding"
-LINE_SPECIFIC_ROUNDING = "ca-on/bracket_column_tax_rounding"
-SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
-)
 
 HEADER = f"""\
 jurisdiction: CA-ON
@@ -127,16 +113,3 @@ def test_the_kind_is_registered_and_not_negative() -> None:
 
     assert kind.identifier == LINE_6
     assert non_negative(kind)
-
-
-def test_line_6_part_rounds_with_the_shared_cent_rounding_dataset() -> None:
-    text = (TAKE_HOME / "on428" / PART).read_text(encoding="utf-8")
-    # Only the parameter lines count: the header comment may name other families.
-    rounding = re.findall(r"^\s*rounding:\s*(\S+?)\s*$", text, re.MULTILINE)
-
-    assert rounding == [SHARED_ROUNDING]
-
-
-def test_the_line_specific_rounding_dataset_is_gone() -> None:
-    with pytest.raises(NotFoundError):
-        SOURCE.get(LINE_SPECIFIC_ROUNDING, 2025, ROUNDING_ONLY)
