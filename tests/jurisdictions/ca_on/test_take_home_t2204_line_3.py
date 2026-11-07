@@ -128,3 +128,17 @@ def test_a_blank_line_2_counts_as_0(
 
     assert sheet.get(T2204_LINE_1_PLUS_2).value == D("70000.00")
     assert sheet.get(T2204_LINE_3).value == D("65700.00")
+
+
+@pytest.mark.parametrize(
+    ("salary", "printed"),
+    [("70000", "70000.00"), ("20000", "20000.00")],
+)
+def test_line_1_plus_line_2_prints_cents_at_70000_and_20000(
+    take_home_service: TakeHomeService, salary: str, printed: str
+) -> None:
+    # The sum step takes its cent rule from the shared rounding dataset; line 2 is left out.
+    total = t2204(take_home_service, salary).get(T2204_LINE_1_PLUS_2).value
+
+    assert str(total) == printed
+    assert total.as_tuple().exponent == -2

@@ -107,3 +107,15 @@ def test_line_15_count_and_ei_overpayment(
     assert sheet.get(T2204_LINE_15).value == D(line_15)
     assert sheet.get(T2204_LINE_15_COUNT).value == count
     assert sheet.get(EI_OVERPAYMENT).value == D(overpayment)
+
+
+@pytest.mark.parametrize("line_4", ["1077.48", "328.00"], ids=["salary_70000", "salary_20000"])
+def test_ei_overpayment_prints_cents_at_70000_and_20000(
+    take_home_service: TakeHomeService, line_4: str
+) -> None:
+    # Salary only, so line 14 is 0: the count is 0 and the overpayment is the cent zero of the
+    # rounding dataset, not a bare 0.
+    overpayment = t2204(take_home_service, line_4, "0").get(EI_OVERPAYMENT).value
+
+    assert str(overpayment) == "0.00"
+    assert overpayment.as_tuple().exponent == -2
