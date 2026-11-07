@@ -1,5 +1,19 @@
 # CRA 2025 e-text forms (raw)
 
+> **Source and copyright notice.** The files in this folder are unmodified copies of publications of the
+> Canada Revenue Agency (CRA), kept here as the source for the tax data in this repository. They are
+> not the official versions: the current versions are on canada.ca, at the URLs given below. The
+> materials are owned by the Government of Canada and protected by copyright (Crown copyright). They are
+> reproduced for non-commercial purposes under the Government of Canada terms and conditions
+> (<https://www.canada.ca/en/transparency/terms.html>, section "Ownership and usage of content
+> provided on this site", confirmed 2026-11-07), which allow reproduction in whole or in part, in any
+> format, without charge or further permission, provided the reproduction indicates the complete title
+> and author of the material and that it is a copy of the version at its original URL. Each file's title
+> is in the table below, the author is the Canada Revenue Agency, and each file's original URL is its
+> download URL below. Reproduction for commercial redistribution needs prior written permission from the
+> copyright administrator. The Apache-2.0 licence of this repository does not cover these files.
+> Check the official version on canada.ca for accuracy before relying on any figure.
+
 Downloaded unmodified with curl from `https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/<code>/<code>-25e.txt`
 on Umar's machine on 2026-10-19 (cloud containers cannot reach canada.ca), then copied here.
 sha256 checked against the download. Files are UTF-8 with BOM and CRLF line ends.
