@@ -1,0 +1,11 @@
+# Maximum benefit of the basic Canada workers benefit, 2025 tax year (Schedule 6, form 5000-S6),
+# line 21: "If you had an eligible spouse or an eligible dependant, enter $2,813. If not, enter
+# $1,633." The $1,633 is the printed figure for a filer with no eligible spouse or dependant, claimed
+# whole. A dollars-and-cents figure, so it rounds half-up to the cent, which changes nothing.
+family: ca/cwb_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1633"

@@ -110,14 +110,16 @@ line 7 of column 2 is for the eligible spouse. The form asks for the amount with
 brackets, so the kind is signed."""
 
 CWB_FAMILY_NET_INCOME_LINE_10 = AmountKind.declare(CATALOG, "cwb_family_net_income_line_10")
-"""Your column, Schedule 6 Part B line 10 "Add lines 7 to 9.": line 7 "Net income from line 23600 of
-the return (or the amount you would have entered if the instructions on line 23600 said "if
-negative, show in brackets")" (the TOSI-adjusted net income of Form T1206 Part 1 line 6, signed) and
-line 9 "Total of universal child care benefit (UCCB) repayment (line 21300 of the return) and
-registered disability savings plan (RDSP) income repayment (included on line 23200 of the return)"
-(the UCCB and RDSP income repayments of the other payments worksheet); line 8 "Total of net exempt
-income earned on a reserve" (`ca/cwb_tax_exempt_net_income`, zero unless the election is yes),
-signed. The form prints no "(if negative, enter "0")" on line 10, so the kind is signed."""
+"""Your column, Schedule 6 Part B line 10 "Add lines 7 to 9.": the net income of line 7 "Net income
+from line 23600 of the return (or the amount you would have entered if the instructions on line
+23600 said "if negative, show in brackets")" (the TOSI-adjusted net income of Form T1206 Part 1 line
+6, signed), plus lines 8 and 9. Line 8 is "Total of net exempt income earned on a reserve"
+(`ca/cwb_tax_exempt_net_income`, zero unless the election is yes), and line 9 is "Total of universal
+child care benefit (UCCB) repayment (line 21300 of the return) and registered disability savings
+plan (RDSP) income repayment (included on line 23200 of the return)" (the UCCB and RDSP income
+repayments of the other payments worksheet). The take-home calculator builds only line 7 and does
+not add lines 8 and 9. The form prints no "(if negative, enter "0")" on line 10, so the kind is
+signed."""
 
 CWB_FAMILY_NET_INCOME_LINE_12 = AmountKind.declare(
     CATALOG, "cwb_family_net_income_line_12", non_negative=True
@@ -340,6 +342,12 @@ at any time in the year"; and, under line 6, "You can claim the basic CWB in Ste
 working income on line 6 is more than $3,000." Eligibility is the return's to state, not computed
 here. The basic amount only: the disability supplement is Step 3 (`ca/cwb_disability_supplement`)
 and the advance payments are Step 4."""
+
+CWB_REDUCTION_THRESHOLD = AmountKind.declare(CATALOG, "cwb_reduction_threshold", non_negative=True)
+"""Canada workers benefit reduction threshold, Schedule 6 line 24 "If you had an eligible spouse or
+an eligible dependant, enter $30,639. If not, enter $26,855.": the base amount for a filer with no
+eligible spouse and no eligible dependant, here $26,855, the printed figure taken whole. Line 25
+takes it as line 24, "Line 23 minus line 24 (if negative, enter "0")"."""
 
 CWB_REDUCTION_WITHOUT_DEPENDANT = AmountKind.declare(
     CATALOG, "cwb_reduction_without_dependant", non_negative=True
@@ -699,3 +707,12 @@ line 42 when Schedule 6 line 38103 "Are you eligible for the disability tax cred
 the disability amount of line 31600), else line 28 when Step 2 is completed ("If you are not
 completing Step 3, enter this amount on line 45300 of your return."), which is line 41 and is 0 when
 line 38102 says the basic CWB is not claimed."""
+
+CWB_BASE_AMOUNT = AmountKind.declare(CATALOG, "cwb_base_amount", non_negative=True)
+"""Schedule 6 line 17 "Base amount 3,000.00": the $3,000 base amount of the Canada workers benefit,
+a dataset figure, claimed whole."""
+
+CWB_MAXIMUM = AmountKind.declare(CATALOG, "cwb_maximum", non_negative=True)
+"""Schedule 6 line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If not,
+enter $1,633.": the $1,633 maximum benefit for a filer with no eligible spouse or dependant, claimed
+whole, a dataset figure."""
