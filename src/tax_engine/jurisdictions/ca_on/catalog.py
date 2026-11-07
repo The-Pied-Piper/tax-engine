@@ -185,6 +185,12 @@ ON428_TAX_REDUCTION_LINE_77 = AmountKind.declare(
 """Tax reduction, ON428 line 77 "Add lines 74 to 76": the sum of the reduction parts, which for a
 single filer with no dependants is the basic reduction on line 74 alone."""
 
+ON428_TAX_REDUCTION_DOUBLED_LINE_78 = AmountKind.declare(
+    CATALOG, "on428_tax_reduction_doubled_line_78", non_negative=True
+)
+"""Doubled tax reduction, ON428 line 78 "Amount from line 77 above multiplied by 2 =": line 77
+multiplied by 2."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
