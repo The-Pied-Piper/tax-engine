@@ -1,0 +1,13 @@
+# Form ON428 (2025, CRA 5006-c-25e) line 35, "Line 35: Add lines 31 to 34.": the credits with
+# transfers. It sums line 31 alone, `ca-on/on428_credits_with_disability_line_31`, read from the
+# part that computes it. Lines 32 to 34 are left out because the take-home filer never has them.
+# Line 35 is the output `ca-on/on428_credits_with_transfers_line_35`.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        [ca-on/on428_credits_with_disability_line_31]
+    produces:
+      output: ca-on/on428_credits_with_transfers_line_35
