@@ -1,0 +1,12 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 81, "Line 81: Line 73 minus line 80 (if negative,
+# enter "0") =": the Ontario tax after the tax reduction. Line 73 is read from its source part, and
+# line 80 (the Ontario tax reduction) comes from another part. The result is not below zero.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/subtract_not_below_zero
+    consumes:
+      amount: ca-on/on428_tax_with_minimum_tax_addition_line_73
+      less: ca-on/on428_ontario_tax_reduction_line_80
+    produces:
+      output: ca-on/on428_tax_after_tax_reduction_line_81
