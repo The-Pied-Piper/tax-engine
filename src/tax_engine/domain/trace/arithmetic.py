@@ -425,7 +425,8 @@ class MultipliedByRateLine(TraceLine):
     `rate_value`, a fraction), rounded once with `rounding`.
 
     Its own class, not a `RateAppliedLine`: the rate is an artifact, not a dataset's rate, so the
-    line names the kind it came from.
+    line names the kind it came from. Not a `ChosenRateAppliedLine` either: that line's rate is a
+    `Rate`-valued artifact, while this rate is a Decimal amount.
     """
 
     output: Money

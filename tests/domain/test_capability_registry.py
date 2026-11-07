@@ -24,6 +24,7 @@ from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnRate,
     BracketColumnTaxAtStart,
 )
+from tax_engine.jurisdictions.core.capabilities.multiply_by_rate import MultiplyByRate
 from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
 from tests.capabilities import bundled_capabilities
@@ -169,6 +170,7 @@ def test_a_subclass_of_a_decorated_class_carries_no_identifier_of_its_own() -> N
     [
         ("core/progressive_tax", ProgressiveTax),
         ("core/apply_rate", ApplyRate),
+        ("core/multiply_by_rate", MultiplyByRate),
         ("core/subtract_not_below_zero", SubtractNotBelowZero),
         ("core/bracket_column_lower_bound", BracketColumnLowerBound),
         ("core/bracket_column_rate", BracketColumnRate),
@@ -179,13 +181,6 @@ def test_core_capabilities_are_registered_by_the_bundled_packages(
     identifier: str, cls: type[Capability]
 ) -> None:
     assert bundled_capabilities().get(identifier) is cls
-
-
-def test_core_multiply_by_rate_is_registered_by_the_bundled_packages() -> None:
-    # Imported here, not at the top, so that until the capability exists only this test fails.
-    from tax_engine.jurisdictions.core.capabilities.multiply_by_rate import MultiplyByRate
-
-    assert bundled_capabilities().get("core/multiply_by_rate") is MultiplyByRate
 
 
 def test_core_capabilities_declare_the_core_namespace() -> None:
