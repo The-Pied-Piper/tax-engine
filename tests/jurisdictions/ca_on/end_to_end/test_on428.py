@@ -295,7 +295,7 @@ def test_the_cent_lines_have_exactly_two_decimals_when_above_zero(
 @pytest.mark.xfail(
     strict=True,
     reason=(
-        "Known gap, tracked as a follow-up ticket: line 3 comes back 52886 / 105775 (brackets dataset stores "
+        "Known gap, follow-up ticket: line 3 comes back 52886 / 105775 (brackets dataset stores "
         "whole dollars), line 78 comes back 588 (apply_fraction, no rounding), and floored zeros "
         "(lines 3, 86 and 88 at 20,000) come back as a bare 0. The values equal the printed cents; "
         "only the decimal places differ. Strict, so it fails the suite once the gap is closed."
