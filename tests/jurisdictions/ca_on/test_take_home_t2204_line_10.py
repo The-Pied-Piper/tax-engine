@@ -12,31 +12,20 @@ the $2,000 of line 7.
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.refund import T2204_LINE_1, T2204_LINE_10
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = (
-    Path(tax_engine.jurisdictions.ca_on.__file__).parent
-    / "manifests"
-    / "take_home"
-    / "t2204_line_10.yaml"
-)
+
+PART = "t2204_line_10.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -57,26 +46,12 @@ FORM = dedent("""\
     """)
 
 
-def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
-    parts.mkdir(parents=True)
-    (parts / "a_header.yaml").write_text(HEADER)
-    (parts / "b_form.yaml").write_text(FORM)
-    shutil.copy(PART, parts / "c_line_10.yaml")
-    roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
-    parameter_roots = dict(roots)
-    roots[Namespace("ca-on")] = tmp_path
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, tax_engine.registrations.artifact_kinds()),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
-        tax_engine.registrations.capabilities(),
-    )
-
-
-def t2204(tmp_path: Path, line_1: str) -> Worksheet:
+def t2204(take_home_service: TakeHomeService, line_1: str) -> Worksheet:
     """The T2204 worksheet for a line 1 amount, the only starting input."""
     starting = [Artifact(T2204_LINE_1, D(line_1))]
-    (sheet,) = service(tmp_path).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
+    (sheet,) = take_home_service(HEADER, FORM, PART).compute(
+        JurisdictionCode("CA-ON"), 2025, *starting
+    )["ca/t2204"]
     return sheet
 
 
@@ -95,12 +70,14 @@ def t2204(tmp_path: Path, line_1: str) -> Worksheet:
     ],
 )
 def test_line_10_is_1_64_percent_of_line_1_up_to_the_maximum(
-    tmp_path: Path, line_1: str, expected: str
+    take_home_service: TakeHomeService, line_1: str, expected: str
 ) -> None:
-    assert t2204(tmp_path, line_1).get(T2204_LINE_10).value == D(expected)
+    assert t2204(take_home_service, line_1).get(T2204_LINE_10).value == D(expected)
 
 
 @pytest.mark.parametrize("line_1", ["65700.00", "65700.01", "65701"])
-def test_line_10_is_not_raised_just_above_65700(tmp_path: Path, line_1: str) -> None:
+def test_line_10_is_not_raised_just_above_65700(
+    take_home_service: TakeHomeService, line_1: str
+) -> None:
     # The tier stops at $65,700, so a line 1 just above it still gives the maximum, not more.
-    assert t2204(tmp_path, line_1).get(T2204_LINE_10).value == D("1077.48")
+    assert t2204(take_home_service, line_1).get(T2204_LINE_10).value == D("1077.48")

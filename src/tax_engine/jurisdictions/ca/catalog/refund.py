@@ -445,15 +445,6 @@ REFUND = AmountKind.declare(CATALOG, "refund", non_negative=True)
 below", so the total credits less the total payable, not below zero. A refund is never negative,
 unlike line 167 (`refund_or_balance_owing`), which stays signed."""
 
-T2204_INSURABLE_EARNINGS = AmountKind.declare(
-    CATALOG, "t2204_insurable_earnings", non_negative=True
-)
-"""Total EI insurable earnings, Form T2204 line 1 "Total EI insurable earnings (box 24 or, if
-blank, box 14 of your T4 slips) (1)": a starting amount, before note (1) "If you have no
-self-employment earnings and your total EI insurable earnings on your T4 slips are less than
-$2,000, enter "0"."
-"""
-
 T2204_SELF_EMPLOYMENT_EARNINGS = AmountKind.declare(
     CATALOG, "t2204_self_employment_earnings", non_negative=True
 )
@@ -474,21 +465,6 @@ T2204_PREMIUMS_DEDUCTED = AmountKind.declare(CATALOG, "t2204_premiums_deducted",
 Quebec (box 18 and box 55 of your T4 slips)": the given figure (`ca/t2204_premiums_deducted_given`)
 or, when none is given, 1.64% of the EI insurable earnings of line 1 (maximum $1,077.48), computed
 as line 10 is. Lines 6 and 9 read it as typed; the form prints no limit on line 4."""
-
-T2204_PPIP_PREMIUMS = AmountKind.declare(CATALOG, "t2204_ppip_premiums", non_negative=True)
-"""Quebec parental insurance plan (PPIP) premiums, the box 55 part of Form T2204 line 4 "Total
-premiums deducted: Residents of other than Quebec (box 18 and box 55 of your T4 slips)": the total
-of box 55 of the filer's T4 slips, a starting amount. Line 4 (`ca/t2204_premiums_deducted`) includes
-it, so it is checked to be at most line 4 (`ca/t2204_ppip_premiums_checked`). Note (2)
-(EI-exempt pay in box 28, and the controlling-shareholder agreement) is the filer's to apply: the
-form gives no box to key it on."""
-
-T2204_PPIP_PREMIUMS_CHECKED = AmountKind.declare(
-    CATALOG, "t2204_ppip_premiums_checked", non_negative=True
-)
-"""Quebec parental insurance plan (PPIP) premiums, the box 55 part of Form T2204 line 4, after the
-check that they are not more than line 4 (`ca/t2204_premiums_deducted`), of which they are a part
-(`core/at_most`), so a box 55 amount above line 4 is an input error, not capped."""
 
 T2204_LINE_1_COUNT = CountKind.declare(CATALOG, "t2204_line_1_count", non_negative=True)
 """Count of the note (1) on Form T2204 line 1 "If you have no self-employment earnings and your
@@ -529,17 +505,10 @@ T2204_LINE_8 = AmountKind.declare(CATALOG, "t2204_line_8", non_negative=True)
 """Line 8 of Form T2204, "Line 6 minus line 7 (if negative, enter "0")": line 6 less line 7, not
 below zero."""
 
-T2204_LINE_9 = AmountKind.declare(CATALOG, "t2204_line_9", non_negative=True)
-"""Line 9 of Form T2204, "Total premiums deducted from line 4 above": line 4 carried over."""
-
 T2204_LINE_10 = AmountKind.declare(CATALOG, "t2204_line_10", non_negative=True)
 """Line 10 of Form T2204, "Residents of other than Quebec Amount from line 1 × 1.64% = (maximum
 $1,077.48)": line 1 times the EI premium rate, capped at the maximum premium. The Quebec variant
 (line 11) is not modelled."""
-
-T2204_LINE_12 = AmountKind.declare(CATALOG, "t2204_line_12", non_negative=True)
-"""Line 12 of Form T2204, "Enter the amount from line 10 or line 11, whichever applies.": line 10,
-as the Quebec variant of line 11 is not modelled."""
 
 T2204_LINE_13 = AmountKind.declare(CATALOG, "t2204_line_13", non_negative=True)
 """Line 13 of Form T2204, "Line 9 minus line 12 (if negative, enter "0")": the premiums deducted

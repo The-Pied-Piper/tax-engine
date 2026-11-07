@@ -15,21 +15,13 @@ required starting input.
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.refund import (
@@ -37,11 +29,12 @@ from tax_engine.jurisdictions.ca.catalog.refund import (
     T2204_PREMIUMS_DEDUCTED,
     T2204_PREMIUMS_DEDUCTED_GIVEN,
 )
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-MANIFESTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "take_home"
-LINE_1_PART = MANIFESTS / "t2204_line_1.yaml"
-LINE_4_PART = MANIFESTS / "t2204_line_4.yaml"
+
+LINE_1_PART = "t2204_line_1.yaml"
+LINE_4_PART = "t2204_line_4.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON
@@ -74,24 +67,7 @@ FORM = dedent("""\
     """)
 
 
-def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
-    parts.mkdir(parents=True)
-    (parts / "a_header.yaml").write_text(HEADER)
-    (parts / "b_form.yaml").write_text(FORM)
-    shutil.copy(LINE_1_PART, parts / "c_line_1.yaml")
-    shutil.copy(LINE_4_PART, parts / "d_line_4.yaml")
-    roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
-    parameter_roots = dict(roots)
-    roots[Namespace("ca-on")] = tmp_path
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, tax_engine.registrations.artifact_kinds()),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
-        tax_engine.registrations.capabilities(),
-    )
-
-
-def t2204(tmp_path: Path, salary: str, given: str | None = None) -> Worksheet:
+def t2204(take_home_service: TakeHomeService, salary: str, given: str | None = None) -> Worksheet:
     """The T2204 worksheet for a salary; line 4 is left out unless `given` is passed."""
     starting = [
         Artifact(EMPLOYMENT_INCOME, D(salary)),
@@ -99,7 +75,9 @@ def t2204(tmp_path: Path, salary: str, given: str | None = None) -> Worksheet:
     ]
     if given is not None:
         starting.append(Artifact(T2204_PREMIUMS_DEDUCTED_GIVEN, D(given)))
-    (sheet,) = service(tmp_path).compute(JurisdictionCode("CA-ON"), 2025, *starting)["ca/t2204"]
+    (sheet,) = take_home_service(HEADER, FORM, LINE_1_PART, LINE_4_PART).compute(
+        JurisdictionCode("CA-ON"), 2025, *starting
+    )["ca/t2204"]
     return sheet
 
 
@@ -117,20 +95,25 @@ def t2204(tmp_path: Path, salary: str, given: str | None = None) -> Worksheet:
     ],
 )
 def test_a_blank_line_4_is_the_ei_premium_on_line_1(
-    tmp_path: Path, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert t2204(tmp_path, salary).get(T2204_PREMIUMS_DEDUCTED).value == D(expected)
+    assert t2204(take_home_service, salary).get(T2204_PREMIUMS_DEDUCTED).value == D(expected)
 
 
-def test_a_blank_line_4_is_computed_to_the_cent(tmp_path: Path) -> None:
-    assert str(t2204(tmp_path, "70000").get(T2204_PREMIUMS_DEDUCTED).value) == "1077.48"
+def test_a_blank_line_4_is_computed_to_the_cent(take_home_service: TakeHomeService) -> None:
+    assert str(t2204(take_home_service, "70000").get(T2204_PREMIUMS_DEDUCTED).value) == "1077.48"
 
 
 @pytest.mark.parametrize("given", ["1148.00", "0", "2500.00"])
-def test_a_given_line_4_is_the_output_unchanged(tmp_path: Path, given: str) -> None:
-    assert str(t2204(tmp_path, "70000", given).get(T2204_PREMIUMS_DEDUCTED).value) == given
+def test_a_given_line_4_is_the_output_unchanged(
+    take_home_service: TakeHomeService, given: str
+) -> None:
+    assert str(t2204(take_home_service, "70000", given).get(T2204_PREMIUMS_DEDUCTED).value) == given
 
 
-def test_a_given_line_4_is_not_computed_from_line_1(tmp_path: Path) -> None:
+def test_a_given_line_4_is_not_computed_from_line_1(take_home_service: TakeHomeService) -> None:
     # Line 1 would be 2,010 and the EI premium 32.96; the given figure is line 4 as it is.
-    assert str(t2204(tmp_path, "2010", "1148.00").get(T2204_PREMIUMS_DEDUCTED).value) == "1148.00"
+    assert (
+        str(t2204(take_home_service, "2010", "1148.00").get(T2204_PREMIUMS_DEDUCTED).value)
+        == "1148.00"
+    )

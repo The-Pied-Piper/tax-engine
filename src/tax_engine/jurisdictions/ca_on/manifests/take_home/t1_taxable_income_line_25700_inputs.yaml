@@ -1,0 +1,9 @@
+# T1 (2025) line 25700 input a salary-only caller does not give.
+# Line 68 and line 25700 "Add lines 58 to 67": a salary-only caller has none of lines 24400 to 25600,
+# so a request that leaves the line out is read as 0 by the line 26000 step. It is a part of its own,
+# so each line's test loads only the inputs its step reads.
+inputs:
+  - name: ca/deductions_from_net_income
+    required: false
+    default: "0"
+    basis: "Line 68 and line 25700: Add lines 58 to 67."
