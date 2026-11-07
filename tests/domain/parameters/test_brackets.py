@@ -275,18 +275,86 @@ def test_the_schedule_holds_no_rounding_rule_of_its_own() -> None:
 
 
 def test_a_bracket_holds_its_fields_in_order() -> None:
-    assert [field.name for field in fields(Bracket)] == ["lower", "rate"]
+    assert [field.name for field in fields(Bracket)] == ["lower", "rate", "tax_at_start"]
 
 
 def test_a_bracket_is_built_positionally_in_field_order() -> None:
-    assert Bracket(D(100), D("0.20")) == Bracket(lower=D(100), rate=D("0.20"))
+    assert Bracket(D(100), D("0.20"), D("10.00")) == Bracket(
+        lower=D(100), rate=D("0.20"), tax_at_start=D("10.00")
+    )
 
 
-def test_a_bracket_takes_no_tax_at_start() -> None:
-    with pytest.raises(TypeError):
-        Bracket(D(100), D("0.20"), D("10.00"))  # type: ignore[call-arg]
-    with pytest.raises(TypeError):
-        Bracket(D(100), D("0.20"), tax_at_start=D("10.00"))  # type: ignore[call-arg]
+def test_a_bracket_has_no_printed_tax_at_start_by_default() -> None:
+    assert Bracket(D(100), D("0.20")).tax_at_start is None
+
+
+def test_a_printed_tax_at_start_is_used_as_given_not_computed_or_rounded() -> None:
+    # The exact tax below the second bracket is 10.0; the printed 10.005 is used unrounded, even
+    # under a rule that would round the computed figure.
+    printed = BracketSchedule(
+        (Bracket(D(0), D("0.10")), Bracket(D(100), D("0.20"), D("10.005"))), CENT
+    )
+
+    column = printed.column_for(D(150))
+
+    assert column.tax_at_start == D("10.005")
+    assert column.tax == D("0.20") * 50 + D("10.005")
+
+
+def test_a_printed_tax_at_start_differing_from_the_computed_one_wins() -> None:
+    printed = BracketSchedule((Bracket(D(0), D("0.10")), Bracket(D(100), D("0.20"), D("11"))))
+
+    assert printed.tax_on(D(150)) == D(21)
+    assert SCHEDULE.tax_on(D(150)) == D(20)
+
+
+def test_a_bracket_without_a_printed_tax_at_start_is_computed_as_before() -> None:
+    # The first bracket carries a printed figure; the third does not, so its start is computed
+    # exactly from the brackets below (the computed path ignores the printed figure above it).
+    mixed = BracketSchedule(
+        (
+            Bracket(D(0), D("0.10"), D("0")),
+            Bracket(D(100), D("0.20"), D("10")),
+            Bracket(D(300), D("0.30")),
+        )
+    )
+
+    assert mixed.column_for(D(400)).tax_at_start == SCHEDULE.column_for(D(400)).tax_at_start
+
+
+def test_a_printed_tax_at_start_is_per_bracket() -> None:
+    printed = BracketSchedule(
+        (
+            Bracket(D(0), D("0.10"), D("0.00")),
+            Bracket(D(100), D("0.20"), D("10.00")),
+            Bracket(D(300), D("0.30"), D("49.99")),
+        )
+    )
+
+    assert [c.tax_at_start for c in map(printed.column_for, (D(50), D(150), D(400)))] == [
+        D("0.00"),
+        D("10.00"),
+        D("49.99"),
+    ]
+
+
+@pytest.mark.parametrize(
+    ("tax_at_start", "message"),
+    [
+        (D("-0.01"), "tax_at_start must not be negative"),
+        (D("NaN"), "tax_at_start must be finite"),
+        (D("Infinity"), "tax_at_start must be finite"),
+    ],
+)
+def test_rejects_invalid_printed_tax_at_start(tax_at_start: Decimal, message: str) -> None:
+    with pytest.raises(InvalidBracketScheduleError, match=message):
+        Bracket(D(100), D("0.20"), tax_at_start)
+
+
+@pytest.mark.parametrize("tax_at_start", [10, 10.0, "10"])
+def test_rejects_a_non_decimal_printed_tax_at_start(tax_at_start: object) -> None:
+    with pytest.raises(TypeError, match="bracket tax_at_start must be a Decimal"):
+        Bracket(D(100), D("0.20"), tax_at_start)  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize(

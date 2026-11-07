@@ -44,6 +44,13 @@ ON428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Bracket lower bound, ON428 line 3 (each column prints "Line 3:" with 0.00, 52,886.00, 105,775.00,
 150,000.00 or 220,000.00): the printed lower bound of the column that line 1 falls in."""
 
+ON428_TAX_AT_COLUMN_START_LINE_7 = AmountKind.declare(
+    CATALOG, "on428_tax_at_column_start_line_7", non_negative=True
+)
+"""Tax at the column's start, ON428 line 7 (each column prints "Line 7:" with 0.00, 2,670.74,
+7,510.09, 12,445.60 or 20,957.60): the printed tax at the start of the column that line 1 falls
+in."""
+
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )

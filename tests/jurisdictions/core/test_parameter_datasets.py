@@ -514,19 +514,35 @@ HALF_CENT_BRACKETS = BRACKETS_2025.replace('rate: "0.10"', 'rate: "0.105"').repl
 )
 
 
-def test_refuses_a_bracket_dataset_without_a_tax_at_start_rounding_rule(tmp_path: Path) -> None:
+def test_a_bracket_dataset_without_a_tax_at_start_rounding_rule_does_not_round(
+    tmp_path: Path,
+) -> None:
     write(
         tmp_path,
         "ex/parameters/brackets/2025.yaml",
         HALF_CENT_BRACKETS.replace("tax_at_start_rounding: none\n", ""),
     )
 
-    with pytest.raises(
-        InvalidParameterDataError, match=r"missing keys \['tax_at_start_rounding'\]"
-    ) as excinfo:
-        source(tmp_path).get("ex/brackets", 2025, BRACKETS)
+    schedule = source(tmp_path).get("ex/brackets", 2025, BRACKETS).values
 
-    assert "2025.yaml" in str(excinfo.value)
+    assert schedule.tax_at_start_rounding == NO_ROUNDING
+    assert schedule.column_for(D(150)).tax_at_start == D("11.025")
+
+
+def test_reads_a_printed_tax_at_start_per_bracket_as_given(tmp_path: Path) -> None:
+    write(
+        tmp_path,
+        "ex/parameters/brackets/2025.yaml",
+        HALF_CENT_BRACKETS.replace("tax_at_start_rounding: none\n", "").replace(
+            '{from: "105", rate: "0.205"}', '{from: "105", rate: "0.205", tax_at_start: "11.0250"}'
+        ),
+    )
+
+    schedule = source(tmp_path).get("ex/brackets", 2025, BRACKETS).values
+
+    assert schedule.brackets[1].tax_at_start == D("11.0250")
+    assert schedule.brackets[0].tax_at_start is None
+    assert schedule.column_for(D(150)).tax_at_start == D("11.0250")
 
 
 def test_reads_a_tax_at_start_rounding_rule(tmp_path: Path) -> None:
@@ -667,11 +683,6 @@ def test_reads_a_rounding_rule(tmp_path: Path) -> None:
             id="rounding-missing",
         ),
         pytest.param(
-            BRACKETS_2025.replace("tax_at_start_rounding: none\n", ""),
-            r"missing keys \['tax_at_start_rounding'\]",
-            id="tax-at-start-rounding-missing",
-        ),
-        pytest.param(
             BRACKETS_2025 + "tax_year: 2025\n", "duplicate key 'tax_year'", id="duplicate-key"
         ),
         pytest.param(
@@ -690,14 +701,24 @@ def test_reads_a_rounding_rule(tmp_path: Path) -> None:
             id="schedule-invalid",
         ),
         pytest.param(
-            BRACKETS_2025.replace('rate: "0.20"}', 'rate: "0.20", tax_at_start: "10.00"}'),
-            r"brackets\[1\]: unknown keys \['tax_at_start'\]",
-            id="tax-at-start-refused",
+            BRACKETS_2025.replace('rate: "0.20"}', 'rate: "0.20", tax_at_start: 10}'),
+            r"brackets\[1\].tax_at_start must be a string, got int",
+            id="tax-at-start-as-yaml-number",
         ),
         pytest.param(
-            BRACKETS_2025.replace('rate: "0.10"}', 'rate: "0.10", tax_at_start: "0.00"}'),
-            r"brackets\[0\]: unknown keys \['tax_at_start'\]",
-            id="first-tax-at-start-refused",
+            BRACKETS_2025.replace('rate: "0.20"}', 'rate: "0.20", tax_at_start: "ten"}'),
+            r"brackets\[1\].tax_at_start is not a decimal: 'ten'",
+            id="tax-at-start-not-decimal",
+        ),
+        pytest.param(
+            BRACKETS_2025.replace('rate: "0.20"}', 'rate: "0.20", tax_at_start: "-1"}'),
+            "tax_at_start must not be negative",
+            id="tax-at-start-negative",
+        ),
+        pytest.param(
+            BRACKETS_2025.replace('rate: "0.20"}', 'rate: "0.20", tax_at_start: "NaN"}'),
+            "tax_at_start is not a decimal",
+            id="tax-at-start-not-finite",
         ),
         pytest.param(
             BRACKETS_2025.replace('rate: "0.20"}', 'rate: "0.20", to: "300"}'),
