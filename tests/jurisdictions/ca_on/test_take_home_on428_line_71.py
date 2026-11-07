@@ -11,7 +11,7 @@ that blank as 0. The output is `ca-on/on428_tax_after_dividend_credit_line_71`, 
 form.
 
 Line 69 is built by another part, so this test declares it as a required input of its header, as
-every ON428 line test declares its upstream lines. Line 57 is declared as its real inputs part
+the ON428 line tests do. Line 57 is declared as its real inputs part
 declares it, and the test loads the test data folder's `on428_line_71.yaml` beside it.
 """
 

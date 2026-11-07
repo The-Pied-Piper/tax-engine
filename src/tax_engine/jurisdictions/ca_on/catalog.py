@@ -26,9 +26,7 @@ CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
 ONTARIO_BASIC_TAX = AmountKind.declare(CATALOG, "ontario_basic_tax", non_negative=True)
 """Ontario tax on taxable income, 2025 ON428 line 8 (Part A), before non-refundable credits.
-
-The take-home build replaces this kind with `ca-on/on428_tax_on_taxable_income_line_8`; it stays
-until the #412 sweep."""
+Replaced by `ca-on/on428_tax_on_taxable_income_line_8`; kept only until the old kinds are swept."""
 
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, ON428 line 9 (line 58040) "Basic personal amount Claim $12,747": the

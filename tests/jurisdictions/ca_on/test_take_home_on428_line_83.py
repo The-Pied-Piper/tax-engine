@@ -9,7 +9,7 @@ leaves line 82 out is read as blank, and the line 83 part reads that blank as 0.
 `ca-on/on428_tax_after_foreign_tax_credit_line_83`, exported by the form.
 
 Line 81 is built by another part, so this test declares it as a required input of its header, as
-every ON428 line test declares its upstream lines. Line 82 is declared as its real inputs part
+the ON428 line tests do. Line 82 is declared as its real inputs part
 declares it, and the test loads the test data folder's `on428_line_83.yaml` beside it.
 """
 

@@ -12,7 +12,7 @@ one core/record_total over that list (`ca-on/on428_lift_credit_line_85`). Line 8
 Schedule ON428-A is the real form: its header and real lines 3, 5, 13, 16, 17, 19 and 20, over the
 real Schedule 8 and T1 taxable-income parts, so the LIFT credit comes from the salary through the
 real lines. Line 83 is built by another part, so this test declares it as a required input of its
-header, as every ON428 line test declares its upstream lines.
+header, as the ON428 line tests do.
 """
 
 from __future__ import annotations
