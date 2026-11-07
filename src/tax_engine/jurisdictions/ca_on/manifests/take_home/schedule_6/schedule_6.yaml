@@ -1,13 +1,15 @@
 # Schedule 6 (Canada workers benefit, 5000-S6) 2025. This part names the form and its exports; each
 # line's capability goes in a part of its own with the same `form.name`. The engine refuses a form
 # that no part gives exports, so the list holds the lines built so far: line 1
-# (`ca/cwb_employment_income`) and line 7 (`ca/cwb_net_income_line_7`). The export that matters is
-# line 28, the figure T1 line 45300 reads; it will replace this list.
+# (`ca/cwb_employment_income`), line 5 (`ca/working_income`) and line 7
+# (`ca/cwb_net_income_line_7`). The export that matters is line 28, the figure T1 line 45300 reads;
+# it will replace this list.
 form:
   name: ca/schedule_6
   required: true
   exports:
     - ca/cwb_employment_income
+    - ca/working_income
     - ca/cwb_net_income_line_7
     - ca/cwb_base_amount
 capabilities: []
