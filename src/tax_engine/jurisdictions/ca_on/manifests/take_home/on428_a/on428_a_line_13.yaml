@@ -1,4 +1,6 @@
-# ON428-A (2025, CRA 5006-A-25E) lines 6 and 13. Line 13, "Line 9 minus line 12 (if negative, enter
+# ON428-A (2025, CRA 5006-A-25E) lines 6 and 13. Line 6: "Net income from line 23600 of your return (or the
+# amount you would have entered if the instructions on line 23600 said "if negative, show in
+# brackets")" (5006-a-25e.txt, line 27). Line 13, "Line 9 minus line 12 (if negative, enter
 # "0") Your adjusted net income", is the form's floored sum. Line 9, "Add lines 6 to 8.", is the
 # only line of the sum the take-home filer has a figure for: line 6 (net income from T1 line 23600),
 # since lines 7, 8, 10, 11 and 12 are not built. Line 13 is therefore a core/sum_not_below_zero over
