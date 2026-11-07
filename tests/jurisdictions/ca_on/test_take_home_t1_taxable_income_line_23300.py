@@ -4,8 +4,8 @@ contributions.
 
 Form text (5006-R page 4): "Line 53 and line 23300: Add lines 35 to 52." A salary-only filer has one
 deduction, line 22215, which Schedule 8 line 28 exports ("Enter this amount ... on line 22215 of
-your return"). T1 reads another form's export as the kind `ca/schedule_8.<export>`, a record list of one
-amount, so the step is core/record_total over it.
+your return"). T1 reads another form's export as the kind `ca/schedule_8.<export>`, a record list
+of one amount, so the step is core/record_total over it.
 
 The real parts compose here: the salary, every Schedule 8 part and the T1 form part and line part,
 under a test-only header, with only the gross salary typed in. This is not a worked return.
