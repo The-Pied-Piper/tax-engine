@@ -1,0 +1,10 @@
+# ON428 (2025) line 87's input, which a salary-only caller does not give.
+# Line 87: "Line 87 and line 62150: Enter the amount of qualifying donations that have also been claimed
+# as a charitable donation. multiplied by 25%". A salary-only caller makes no community food program
+# donation, so a request that leaves the line out is read as blank, and the line 88 part reads that
+# blank as 0.
+inputs:
+  - name: ca-on/on428_farmers_food_donation_credit_line_87
+    required: false
+    default: null
+    basis: 'Line 87 and line 62150: Enter the amount of qualifying donations that have also been claimed as a charitable donation. multiplied by 25%'
