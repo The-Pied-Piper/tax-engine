@@ -77,8 +77,7 @@ the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 ON428_TAX_WITH_SPLIT_INCOME_LINE_55 = AmountKind.declare(
     CATALOG, "on428_tax_with_split_income_line_55", non_negative=True
 )
-"""Ontario tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus
-line 54. A temporary copy of the kind that ticket #279 declares; drop it when #279 merges."""
+"""Tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus line 54."""
 
 ON428_MINIMUM_TAX_CARRYOVER_LINE_60 = AmountKind.declare(
     CATALOG, "on428_minimum_tax_carryover_line_60", non_negative=True
