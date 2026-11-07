@@ -1,0 +1,40 @@
+# T2204 (2025) line 15: "Employment insurance overpayment: Enter whichever is less: amount from line 9
+# or line 14. If this amount is more than $1, enter it on line 45000 of your return. 15"
+#
+# Line 9 is a pure copy of line 4 ("Enter the amount from line 4"), so this part reads line 4
+# (`ca/t2204_premiums_deducted`) directly and has no step of its own for line 9.
+#
+# Step 1 is the lesser of line 4 and line 14 (`ca/t2204_line_15`). On a tie the first listed,
+# line 4, is kept.
+#
+# Step 2 counts the "more than $1" condition: 1 when line 15 is more than $1, else 0. Exactly $1.00
+# gives 0, as the form says "more than $1".
+#
+# Step 3 multiplies line 15 by that count: the line 15 amount when the condition applies, "0" when
+# it does not. The product is the T1 line 45000 amount (`ca/ei_overpayment`), read by the return
+# and by T1 line 48200 (#314).
+form:
+  name: ca/t2204
+capabilities:
+  - name: core/lesser_of
+    consumes:
+      amounts:
+        - ca/t2204_premiums_deducted
+        - ca/t2204_line_14
+    produces:
+      output: ca/t2204_line_15
+  - name: ca/count_by_conditions
+    params:
+      conditions: ca/t2204_line_15_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca/t2204_line_15
+    produces:
+      output: ca/t2204_line_15_count
+  - name: core/times_count
+    consumes:
+      amount: ca/t2204_line_15
+      count: ca/t2204_line_15_count
+    produces:
+      output: ca/ei_overpayment
