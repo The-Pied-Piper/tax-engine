@@ -166,6 +166,19 @@ ON428_TAX_AFTER_DIVIDEND_CREDIT_LINE_71 = AmountKind.declare(
 """Ontario tax after the dividend tax credit, ON428 line 71 "Line 71: Line 69 minus line 70 (if
 negative, enter "0") =": line 69 minus the dividend tax credit, not below zero."""
 
+ON428_ADDITIONAL_TAX_FOR_MINIMUM_TAX_LINE_72 = AmountKind.declare(
+    CATALOG, "on428_additional_tax_for_minimum_tax_line_72", non_negative=True
+)
+"""Additional tax for minimum tax purposes, ON428 line 72 "Line 72: If you entered an amount on line
+11 of Part 5 of Form T691, use Worksheet ON428 to calculate your additional tax for minimum tax
+purposes": an optional input that a salary-only caller leaves out."""
+
+ON428_TAX_WITH_MINIMUM_TAX_ADDITION_LINE_73 = AmountKind.declare(
+    CATALOG, "on428_tax_with_minimum_tax_addition_line_73", non_negative=True
+)
+"""Tax with the minimum tax addition, ON428 line 73 "Line 73: Line 71 plus line 72 =": line 71 plus
+line 72."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
