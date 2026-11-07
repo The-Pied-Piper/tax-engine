@@ -2,8 +2,8 @@
 
 Form text (Form ON428, CRA 5006-c-25e.txt): "Line 55: Line 53 plus line 54 =".
 Line 55 is one sum, core/sum of line 53 (the tax minus credits,
-`ca-on/on428_tax_minus_credits_line_53`, a test-local copy until its own ticket lands) and line 54
-(the Ontario tax on split income, Form T1206, `ca-on/on428_tax_on_split_income_line_54`). Line 54
+`ca-on/on428_tax_minus_credits_line_53`, a temporary catalog kind until line 53 has its own) and
+line 54 (the Ontario tax on split income, Form T1206, `ca-on/on428_tax_on_split_income_line_54`). Line 54
 is an optional input: a caller with no split income leaves it out, it is read as blank, and the
 line 55 part reads that blank as 0. The output is `ca-on/on428_tax_with_split_income_line_55`,
 exported by the form.
@@ -40,7 +40,7 @@ inputs:
   - name: {LINE_54}
     required: false
     default: null
-    basis: 'Line 54: Ontario tax on split income (Form T1206)'
+    basis: 'Line 54 and line 61510: Ontario tax on split income (complete Form T1206)'
 outputs:
   - {LINE_53}
 capabilities: []

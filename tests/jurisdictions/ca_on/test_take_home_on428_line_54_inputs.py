@@ -18,7 +18,7 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_on.catalog import ON428_TAX_ON_SPLIT_INCOME_LINE_54
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
-PRINTED_BASIS = "Line 54: Ontario tax on split income (Form T1206)"
+PRINTED_BASIS = "Line 54 and line 61510: Ontario tax on split income (complete Form T1206)"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
     "manifests/take_home/on428/on428_line_54_inputs.yaml"
 )

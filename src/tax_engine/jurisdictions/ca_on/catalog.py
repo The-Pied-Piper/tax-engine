@@ -75,7 +75,7 @@ ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
 the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 
 # TEMPORARY: a copy of ON428 line 53 for line 55's part until line 53 has its own kind. Drop this
-# constant when the line 53 ticket (#278) merges, and point line 55 at that kind.
+# constant when line 53 is merged with its own kind, and point line 55 at that kind.
 ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
     CATALOG, "on428_tax_minus_credits_line_53", non_negative=True
 )
