@@ -77,8 +77,8 @@ the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
     CATALOG, "on428_surtax_base_line_65", non_negative=True
 )
-"""TEMPORARY COPY until ticket #281, which owns it, merges. Surtax base, ON428 line 65 "Line 63
-minus line 64 (if negative, enter "0")"."""
+"""TEMPORARY COPY, owned by the line 65 ticket and dropped when that merges. Surtax base, ON428
+line 65 "Line 63 minus line 64 (if negative, enter "0")"."""
 
 ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
     CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True

@@ -27,3 +27,11 @@ def test_2025_line_67_is_one_tier_at_36_percent_over_7307() -> None:
 
     assert data.values == SurchargeTiers((SurchargeTier(D("7307"), Rate(D("0.36"))),))
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+
+
+def test_2025_line_67_cites_only_the_on428_text() -> None:
+    data = SOURCE.get(FAMILY, 2025, SURCHARGE_TIERS)
+
+    assert data.sources == (
+        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt",
+    )
