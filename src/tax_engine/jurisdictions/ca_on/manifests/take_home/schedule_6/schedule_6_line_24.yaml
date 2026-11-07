@@ -1,0 +1,12 @@
+# Schedule 6 (2025) line 24: "If you had an eligible spouse or an eligible dependant, enter $30,639.
+# If not, enter $26,855." The filer takes the "If not" branch, so the $26,855 is the printed figure,
+# a dataset figure, and step 1 claims it whole through core/credit_amount and no salary reaches this
+# line.
+form:
+  name: ca/schedule_6
+capabilities:
+  - name: core/credit_amount
+    params:
+      amount: ca/cwb_reduction_threshold
+    produces:
+      output: ca/cwb_reduction_threshold

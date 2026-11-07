@@ -1,0 +1,13 @@
+# Canada workers benefit reduction threshold, 2025 tax year (Schedule 6, form 5000-S6), Step 2,
+# for a filer with no eligible spouse and no eligible dependant: line 24 "If you had an eligible
+# spouse or an eligible dependant, enter $30,639. If not, enter $26,855."
+# The $26,855 is the printed figure for the "If not" branch, claimed whole through
+# core/credit_amount, so no salary reaches this line. A dollars-and-cents figure, so it rounds
+# half-up to the cent, which changes nothing.
+family: ca/cwb_reduction_threshold
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "26855"
