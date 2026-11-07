@@ -143,6 +143,12 @@ ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
 )
 """Ontario surtax, ON428 line 68 "Line 66 plus line 67 =": line 66 plus line 67."""
 
+ON428_DIVIDEND_TAX_CREDIT_LINE_57 = AmountKind.declare(
+    CATALOG, "on428_dividend_tax_credit_line_57", non_negative=True
+)
+"""Ontario dividend tax credit, ON428 line 57 "Line 57 and line and line 61520: Ontario dividend
+tax credit (use Worksheet ON428)": an optional input that a salary-only caller leaves out."""
+
 ON428_TAX_WITH_SURTAX_LINE_69 = AmountKind.declare(
     CATALOG, "on428_tax_with_surtax_line_69", non_negative=True
 )
@@ -153,6 +159,12 @@ ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
 )
 """Basic reduction, ON428 line 74 "Basic reduction 294.00": the amount claimed, the first part of
 line 77."""
+
+ON428_TAX_AFTER_DIVIDEND_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "on428_tax_after_dividend_credit_line_71", non_negative=True
+)
+"""Ontario tax after the dividend tax credit, ON428 line 71 "Line 71: Line 69 minus line 70 (if
+negative, enter "0") =": line 69 minus the dividend tax credit, not below zero."""
 
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
