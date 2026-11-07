@@ -39,8 +39,8 @@ FORM = "ca/t1_tax_and_credits"
 LINE_33800 = "ca/credit_amounts_at_credit_rate"
 LINE_35000 = "ca/non_refundable_tax_credits"
 # The real parts composed beside the test's header: the salary, the real Schedule 8 and T2204
-# parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96, 98, 101, 106, 33500
-# and 33800, and the part under test.
+# parts, the real T1 taxable-income lines and inputs, lines 30000, 84, 31260, 96, 98, 101, 106,
+# 33500 and 33800, and the part under test.
 PARTS = (
     "salary.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_8*.yaml"))),
