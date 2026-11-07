@@ -8,9 +8,9 @@ whole form: it copies `salary.yaml`, every Schedule 8 part (line 22215 comes fro
 only the gross salary (`ca/employment_income`). The real header is not used because its output, T1
 line 167, is not built yet. This is not a worked return: no return file, no slips, one form.
 
-Lines 11 and 14 are optional inputs that default to 0 and are never typed in here. Lines 16 and 23
-are copies of the working income and adjusted family net income and have no step, so they get no
-check; lines 18 and 25 read the figures those lines copy. Lines 2 to 4, 8, 9 and the disability and
+Lines 11 and 14 are optional inputs that are never typed in here: they stay blank, and the line 12
+and 15 steps read the blank as 0. Lines 16 and 23 are copies of the working income and adjusted
+family net income and have no step, so they get no check; lines 18 and 25 read the figures those lines copy. Lines 2 to 4, 8, 9 and the disability and
 election parts are not built.
 
 Form text: Schedule 6 (CRA 5000-S6, 2025, docs/cra-forms-2025/5000-s6-25e.txt), "Line 5: Add lines
