@@ -1,0 +1,10 @@
+# Form ON428 Ontario Tax 2025 (CRA 5006-c). This part names the form and its exports; line parts
+# carry capabilities. An export is added here by the line that produces it. A form must export
+# something, so the header starts with line 9, the basic personal amount; the lines that follow
+# add the figures other forms read (line 90, to T1 line 42800).
+form:
+  name: ca-on/on428
+  required: true
+  exports:
+    - ca-on/basic_personal_amount
+capabilities: []
