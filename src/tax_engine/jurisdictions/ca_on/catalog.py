@@ -80,6 +80,12 @@ ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
 line 6 plus line 7. Temporary copy until the line 8 part is on main."""
 
+ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
+    CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True
+)
+"""36% surtax tier, ON428 line 67 "(Line 65 minus $7,307) multiplied by 36% (if negative, enter
+"0") =": 36% of line 65 above $7,307, never below 0."""
+
 ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
     CATALOG, "on428_donations_credit_line_49", non_negative=True
 )
@@ -120,23 +126,28 @@ ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
 """Ontario tax after the minimum tax carryover, ON428 line 61 "Line 61: Line 55 minus line 60 (if
 negative, enter "0") =": line 55 minus line 60, not below zero."""
 
+ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
+    CATALOG, "on428_surtax_base_line_65", non_negative=True
+)
+"""Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
+less line 54, never below zero."""
+
 ON428_SURTAX_20_PERCENT_TIER_LINE_66 = AmountKind.declare(
     CATALOG, "on428_surtax_20_percent_tier_line_66", non_negative=True
 )
 """Surtax 20% tier, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20% (if negative, enter
-"0") =": 20% of line 65 above $5,710, never below 0. TEMPORARY COPY declared here until the line 66
-part is on main."""
-
-ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
-    CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True
-)
-"""Surtax 36% tier, ON428 line 67: 36% of line 65 above $7,307, never below 0. TEMPORARY COPY
-declared here until the line 67 part is on main."""
+"0") =": 20% of line 65 above $5,710, never below 0."""
 
 ON428_SURTAX_TOTAL_LINE_68 = AmountKind.declare(
     CATALOG, "on428_surtax_total_line_68", non_negative=True
 )
 """Ontario surtax, ON428 line 68 "Line 66 plus line 67 =": line 66 plus line 67."""
+
+ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
+    CATALOG, "on428_basic_reduction_line_74", non_negative=True
+)
+"""Basic reduction, ON428 line 74 "Basic reduction 294.00": the amount claimed, the first part of
+line 77."""
 
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
