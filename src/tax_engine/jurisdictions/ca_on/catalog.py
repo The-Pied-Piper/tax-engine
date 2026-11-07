@@ -74,6 +74,18 @@ ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
 """Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
 the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 
+ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
+    CATALOG, "on428_surtax_base_line_65", non_negative=True
+)
+"""TEMPORARY COPY until ticket #281, which owns it, merges. Surtax base, ON428 line 65 "Line 63
+minus line 64 (if negative, enter "0")"."""
+
+ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
+    CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True
+)
+"""36% surtax tier, ON428 line 67 "(Line 65 minus $7,307) multiplied by 36% (if negative, enter
+"0") =": 36% of line 65 above $7,307, never below 0."""
+
 ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
     CATALOG, "on428_donations_credit_line_49", non_negative=True
 )
