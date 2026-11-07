@@ -488,14 +488,12 @@ TAXABLE_CAPITAL_GAINS = AmountKind.declare(CATALOG, "taxable_capital_gains", non
 12700 of your return", line 24 plus line 25, or 0 when that is negative (a net capital loss)."""
 
 TOTAL_INCOME = AmountKind.declare(CATALOG, "total_income")
-"""Total income, T1 line 15000 "Line 28 plus line 32 Total income": the sum of the income lines
-wired so far, in line order, with the taxable dividends (line 12000), the taxable capital gains
-and the taxable support payments. Not floored, so a loss larger than the other income is shown in
-brackets as the form prints it (T1 line 33 prints no floor; the General Guide says "If you have a
-loss, show it on the applicable line using brackets").
-
-The net rental income (line 13) and the net self-employment income (line 27, through line 28) are
-part of it.
+"""Total income, T1 line 15000 "Line 28 plus line 32 Total income": in the take-home, one core/sum
+of line 10100 (`ca/employment_income`) and line 10400 (`ca/other_employment_income`), in form line
+order (`t1_taxable_income_line_15000.yaml`). The subtotals on lines 21, 28 and 33 fold into that
+step. Not floored, so a loss larger than the other income is shown in brackets as the form prints it
+(T1 line 33 prints no floor; the General Guide says "If you have a loss, show it on the applicable
+line using brackets").
 """
 
 OTHER_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "other_employment_income", non_negative=True)

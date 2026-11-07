@@ -80,11 +80,17 @@ ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
 line 6 plus line 7. Temporary copy until the line 8 part is on main."""
 
+ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
+    CATALOG, "on428_donations_credit_line_49", non_negative=True
+)
+"""Donations and gifts credit, ON428 line 49 "Line 49 and line 58969: Line 47 plus line 48": a
+caller input, read as 0 when the filer has no donations or gifts."""
+
 ON428_NON_REFUNDABLE_CREDITS_LINE_50 = AmountKind.declare(
     CATALOG, "on428_non_refundable_credits_line_50", non_negative=True
 )
-"""Ontario non-refundable tax credits, ON428 line 50: line 46 plus line 49. Temporary copy until
-the line 50 part is on main."""
+"""Ontario non-refundable tax credits, ON428 line 50 "Line 50 and line 61500: Line 46 plus line 49":
+line 46 (the credits at the rate) plus line 49 (the donations and gifts credit)."""
 
 ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
     CATALOG, "on428_tax_minus_credits_line_53", non_negative=True
