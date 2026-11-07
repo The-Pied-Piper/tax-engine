@@ -218,6 +218,13 @@ HEALTH_PREMIUM_ROWS: list[tuple[str, str, str]] = [
     ("150000", "148926.00", "750.00"),
 ]
 
+# The base and the lower bound, rate and tax at start the printed column gives lines 3, 5 and 7.
+BRACKET_COLUMN_TRACE: list[tuple[str, str, str, str, str]] = [
+    ("20000", "19835", "0", "5.05%", "0"),
+    ("70000", "69335", "52886", "9.15%", "2670.74"),
+    ("150000", "148926", "105775", "11.16%", "7510.09"),
+]
+
 
 def on428(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
@@ -236,13 +243,6 @@ def test_every_line_matches_the_printed_form(
     assert {line: sheet.get(AMOUNT_LINES[line]).value for line in expected} == {
         line: D(figure) for line, figure in expected.items()
     }
-
-
-BRACKET_COLUMN_TRACE = [
-    ("20000", "19835", "0", "5.05%", "0"),
-    ("70000", "69335", "52886", "9.15%", "2670.74"),
-    ("150000", "148926", "105775", "11.16%", "7510.09"),
-]
 
 
 @pytest.mark.parametrize(("salary", "base", "lower", "rate", "at_start"), BRACKET_COLUMN_TRACE)
