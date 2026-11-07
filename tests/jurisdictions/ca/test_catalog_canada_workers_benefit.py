@@ -46,6 +46,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     CWB_LINE_28_BY_SPOUSE,
     CWB_MAXIMUM,
     CWB_NET_INCOME_LINE_7,
+    CWB_REDUCTION_THRESHOLD,
     CWB_REDUCTION_WITH_DEPENDANT,
     CWB_REDUCTION_WITHOUT_DEPENDANT,
     CWB_SECONDARY_EARNER_EXEMPTION,
@@ -94,6 +95,7 @@ def test_the_canada_workers_benefit_kinds_are_the_registered_ones(
         is CWB_BEFORE_REDUCTION_WITHOUT_DEPENDANT
     )
     assert registry.get("ca/cwb_reduction_without_dependant") is CWB_REDUCTION_WITHOUT_DEPENDANT
+    assert registry.get("ca/cwb_reduction_threshold") is CWB_REDUCTION_THRESHOLD
     assert (
         registry.get("ca/canada_workers_benefit_without_dependant")
         is CANADA_WORKERS_BENEFIT_WITHOUT_DEPENDANT
@@ -180,6 +182,7 @@ def test_the_canada_workers_benefit_kinds_are_money() -> None:
         CWB_FAMILY_NET_INCOME_LINE_12,
         ADJUSTED_FAMILY_NET_INCOME,
         CWB_BEFORE_REDUCTION_WITHOUT_DEPENDANT,
+        CWB_REDUCTION_THRESHOLD,
         CWB_REDUCTION_WITHOUT_DEPENDANT,
         CANADA_WORKERS_BENEFIT_WITHOUT_DEPENDANT,
         CWB_BEFORE_REDUCTION_WITH_DEPENDANT,

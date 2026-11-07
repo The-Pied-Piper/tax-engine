@@ -342,6 +342,12 @@ working income on line 6 is more than $3,000." Eligibility is the return's to st
 here. The basic amount only: the disability supplement is Step 3 (`ca/cwb_disability_supplement`)
 and the advance payments are Step 4."""
 
+CWB_REDUCTION_THRESHOLD = AmountKind.declare(CATALOG, "cwb_reduction_threshold", non_negative=True)
+"""Canada workers benefit reduction threshold, Schedule 6 line 24 "If you had an eligible spouse or
+an eligible dependant, enter $30,639. If not, enter $26,855.": the base amount for a filer with no
+eligible spouse and no eligible dependant, here $26,855, the printed figure taken whole. Line 25
+takes it as line 24, "Line 23 minus line 24 (if negative, enter "0")"."""
+
 CWB_REDUCTION_WITHOUT_DEPENDANT = AmountKind.declare(
     CATALOG, "cwb_reduction_without_dependant", non_negative=True
 )
