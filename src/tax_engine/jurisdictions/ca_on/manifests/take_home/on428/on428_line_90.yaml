@@ -1,0 +1,19 @@
+# Form ON428 (Ontario Tax, 2025, CRA 5006-c-25e) line 90 (ca-on/on428): "Line 90: Line 88 plus
+# line 89 Enter this amount on line 42800 of your return. Ontario tax =". Line 90 is one sum of
+# two parts, each read from its own line: line 88, the Ontario tax after the farmers' food donation
+# credit (`ca-on/on428_tax_after_farmers_food_donation_credit_line_88`), and line 89, the Ontario
+# health premium (`ca-on/on428_ontario_health_premium_line_89`). Line 90 is the output
+# `ca-on/on428_ontario_tax_line_90`. The instruction to enter it on T1 line 42800 needs no step:
+# the T1 General reads line 90 for that line.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        [
+          ca-on/on428_tax_after_farmers_food_donation_credit_line_88,
+          ca-on/on428_ontario_health_premium_line_89,
+        ]
+    produces:
+      output: ca-on/on428_ontario_tax_line_90

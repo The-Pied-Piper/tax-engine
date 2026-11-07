@@ -241,6 +241,18 @@ ON428_TAX_AFTER_FARMERS_FOOD_DONATION_CREDIT_LINE_88 = AmountKind.declare(
 """Ontario tax after the farmers' food donation credit, ON428 line 88 "Line 88: Line 86 minus line
 87 (if negative, enter "0") =": line 86 minus line 87, never below zero."""
 
+ON428_ONTARIO_HEALTH_PREMIUM_LINE_89 = AmountKind.declare(
+    CATALOG, "on428_ontario_health_premium_line_89", non_negative=True
+)
+"""Ontario health premium, ON428 line 89 "Ontario health premium (complete the chart below)".
+PLACEHOLDER: the line 89 ticket (#322) takes over this id as the real output."""
+
+ON428_ONTARIO_TAX_LINE_90 = AmountKind.declare(
+    CATALOG, "on428_ontario_tax_line_90", non_negative=True
+)
+"""Ontario tax, ON428 line 90 "Line 90: Line 88 plus line 89 Enter this amount on line 42800 of your
+return. Ontario tax =": line 88 plus line 89, entered on T1 line 42800."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
