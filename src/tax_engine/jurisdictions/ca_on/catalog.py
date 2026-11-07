@@ -265,11 +265,17 @@ ON428_TAX_AFTER_FARMERS_FOOD_DONATION_CREDIT_LINE_88 = AmountKind.declare(
 """Ontario tax after the farmers' food donation credit, ON428 line 88 "Line 88: Line 86 minus line
 87 (if negative, enter "0") =": line 86 minus line 87, never below zero."""
 
+ON428_TAXABLE_INCOME_LINE_89 = AmountKind.declare(
+    CATALOG, "on428_taxable_income_line_89", non_negative=True
+)
+"""Taxable income, ON428 line 89 chart line 1 "Enter your taxable income from line 26000 of your
+return": the T1 taxable income, read from its record list."""
+
 ON428_ONTARIO_HEALTH_PREMIUM_LINE_89 = AmountKind.declare(
     CATALOG, "on428_ontario_health_premium_line_89", non_negative=True
 )
-"""Ontario health premium, ON428 line 89 "Ontario health premium (complete the chart below)".
-PLACEHOLDER: the line 89 ticket (#322) takes over this id as the real output."""
+"""Ontario health premium, ON428 line 89 "Ontario health premium (complete the chart below)": the
+row of the chart that line 1 falls in, its figure rounded half-up to the cent."""
 
 ON428_ONTARIO_TAX_LINE_90 = AmountKind.declare(
     CATALOG, "on428_ontario_tax_line_90", non_negative=True
