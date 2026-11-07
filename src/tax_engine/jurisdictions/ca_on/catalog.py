@@ -132,6 +132,12 @@ ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
 """Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
 less line 54, never below zero."""
 
+ON428_BASIC_REDUCTION_LINE_74 = AmountKind.declare(
+    CATALOG, "on428_basic_reduction_line_74", non_negative=True
+)
+"""Basic reduction, ON428 line 74 "Basic reduction 294.00": the amount claimed, the first part of
+line 77."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
