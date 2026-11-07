@@ -23,7 +23,7 @@ from tax_engine.jurisdictions.ca_on.catalog import LIFT_EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
-PART = "on428_a_line_3.yaml"
+PART = "on428_a/on428_a_line_3.yaml"
 
 HEADER = dedent("""\
     jurisdiction: CA-ON

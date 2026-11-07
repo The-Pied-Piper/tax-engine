@@ -42,7 +42,9 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")
         for number, part in enumerate(parts, start=2):
-            (folder / f"{number:02d}_{part}").write_bytes((TAKE_HOME / part).read_bytes())
+            (folder / f"{number:02d}_{Path(part).name}").write_bytes(
+                (TAKE_HOME / part).read_bytes()
+            )
         roots = {**JURISDICTIONS.roots(), Namespace("ca-on"): tmp_path}
         return TaxComputationService(
             YamlJurisdictionSource(roots, bundled_kinds()),
