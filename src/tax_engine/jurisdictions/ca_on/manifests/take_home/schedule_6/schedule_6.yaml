@@ -4,10 +4,11 @@
 # (`ca/cwb_employment_income`), line 5 (`ca/working_income`), line 6
 # (`ca/cwb_family_working_income`), line 7 (`ca/cwb_net_income_line_7`), line 10
 # (`ca/cwb_family_net_income_line_10`, "Add lines 7 to 9.", the sum of line 7 alone for the
-# take-home filer), line 17 (`ca/cwb_base_amount`) and line 18
-# (`ca/cwb_working_income_over_base_amount`, "Line 16 minus line 17", floored at zero) and line 20
-# (`ca/cwb_working_income_rate_line_20`, line 18 times the 27% of line 19). The export
-# that matters is line 28, the figure T1 line 45300 reads; it will replace this list.
+# take-home filer), line 12 (`ca/cwb_family_net_income_line_12`, "Line 10 minus line 11"), line 17
+# (`ca/cwb_base_amount`), line 18 (`ca/cwb_working_income_over_base_amount`, "Line 16 minus line
+# 17", floored at zero) and line 20 (`ca/cwb_working_income_rate_line_20`, line 18 times the 27% of
+# line 19). The export that matters is line 28, the figure T1 line 45300 reads; it will replace
+# this list.
 form:
   name: ca/schedule_6
   required: true
@@ -17,6 +18,7 @@ form:
     - ca/cwb_family_working_income
     - ca/cwb_net_income_line_7
     - ca/cwb_family_net_income_line_10
+    - ca/cwb_family_net_income_line_12
     - ca/cwb_base_amount
     - ca/cwb_working_income_over_base_amount
     - ca/cwb_working_income_rate_line_20
