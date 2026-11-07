@@ -7,4 +7,7 @@ form:
   required: true
   exports:
     - ca-on/basic_personal_amount
+    # Temporary: the line 46 credit amounts are exported until line 50 reads them, then this entry
+    # is removed.
+    - ca-on/on428_credit_amounts_at_credit_rate_line_46
 capabilities: []
