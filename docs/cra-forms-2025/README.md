@@ -180,3 +180,17 @@ HTML pages are the raw page; the `.txt` beside each is the main content as text.
 | web/folio-s3-f4-c1.html (+ .txt) | Income Tax Folio S3-F4-C1, General Discussion of Capital Cost Allowance | be8685c4e3beca3fe50408753b6bd3d2a8c2ad232dde00a524db3e7efaa72454 |
 
 The folios index lists no tax-on-split-income folio.
+
+## T4127 Payroll Deductions Formulas, 2025 editions (2026-11-06)
+Saved with plain `curl -L` on Umar's machine from `https://www.canada.ca/content/dam/cra-arc/formspubs/pub/<folder>/<file>`
+(canada.ca blocks cloud containers); sha256 of the files as saved. CRA publishes no .txt for T4127.
+Added as the oracle for Ontario take-home (payroll withholding) checks. The current T4127 pages now
+show the 2026 editions (122nd and 123rd); these 2025 PDFs are still served at their old URLs.
+
+| File | What | sha256 |
+|---|---|---|
+| t4127-01-25e.pdf | T4127, Payroll Deductions Formulas, 120th Edition, effective January 1, 2025 (47 pages; `/pub/t4127-jan/t4127-01-25e.pdf`) | cdad2c9055006ec1dc92b9fe2710e7efb8f46b5222456c8da8dfc55691d7186d |
+| t4127-jul-25e.pdf | T4127, Payroll Deductions Formulas, 121st Edition, effective July 1, 2025 (21 pages; `/pub/t4127-jul/t4127-jul-25e.pdf`) | 25750e15da62b5fb733bea830adccc408102afca6a03bc9be2b8ec64b402993d |
+
+The July edition carries only the changes effective July 1 (it is the shorter document); read it together
+with the January edition. The companion CSV tables on CRA's pages were not saved.
