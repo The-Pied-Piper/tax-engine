@@ -42,3 +42,17 @@ def test_2025_floor_step_rounding_is_half_up_to_the_cent(family: str) -> None:
 
     assert data.values == RoundingOnly()
     assert data.rounding == RoundTo(Decimal("0.01"), RoundingMode.HALF_UP)
+
+
+FORM_TEXT = {
+    "ca-on/on428_a_line": "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt",
+    "ca-on/on428_line": "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt",
+}
+
+
+@pytest.mark.parametrize("family", FAMILIES)
+def test_2025_floor_step_rounding_cites_only_its_form_text(family: str) -> None:
+    data = SOURCE.get(family, 2025, ROUNDING_ONLY)
+    (form,) = (key for key in FORM_TEXT if family.startswith(key))
+
+    assert data.sources == (FORM_TEXT[form],)
