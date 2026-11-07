@@ -74,11 +74,57 @@ ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
 """Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
 the percentage from line 45 =": line 44 times the 5.05% of line 45."""
 
+ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "on428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
+line 6 plus line 7. Temporary copy until the line 8 part is on main."""
+
+ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
+    CATALOG, "on428_donations_credit_line_49", non_negative=True
+)
+"""Donations and gifts credit, ON428 line 49 "Line 49 and line 58969: Line 47 plus line 48": a
+caller input, read as 0 when the filer has no donations or gifts."""
+
+ON428_NON_REFUNDABLE_CREDITS_LINE_50 = AmountKind.declare(
+    CATALOG, "on428_non_refundable_credits_line_50", non_negative=True
+)
+"""Ontario non-refundable tax credits, ON428 line 50 "Line 50 and line 61500: Line 46 plus line 49":
+line 46 (the credits at the rate) plus line 49 (the donations and gifts credit)."""
+
+ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_credits_line_53", non_negative=True
+)
+"""Tax minus credits, ON428 line 53 "Line 51 minus line 52 (if negative, enter "0") =": line 8
+(copied to line 51) minus line 50 (copied to line 52), not below 0."""
+
+ON428_TAX_ON_SPLIT_INCOME_LINE_54 = AmountKind.declare(CATALOG, "on428_tax_on_split_income_line_54")
+"""Ontario tax on split income, ON428 line 54 "Line 54 and line 61510: Ontario tax on split income
+(complete Form T1206)": the tax from Form T1206."""
+
+ON428_TAX_WITH_SPLIT_INCOME_LINE_55 = AmountKind.declare(
+    CATALOG, "on428_tax_with_split_income_line_55"
+)
+"""Tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus line 54."""
+
+ON428_MINIMUM_TAX_CARRYOVER_LINE_60 = AmountKind.declare(
+    CATALOG, "on428_minimum_tax_carryover_line_60", non_negative=True
+)
+"""Minimum tax carryover applied, ON428 line 60 "Line 60 and line 61540: Enter whichever is less:
+amount from line 58 or line 59.": the lesser of line 58 and line 59, an optional input that a
+salary-only caller leaves out."""
+
+ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
+    CATALOG, "on428_tax_after_minimum_tax_carryover_line_61", non_negative=True
+)
+"""Ontario tax after the minimum tax carryover, ON428 line 61 "Line 61: Line 55 minus line 60 (if
+negative, enter "0") =": line 55 minus line 60, not below zero."""
+
 ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
     CATALOG, "on428_surtax_base_line_65", non_negative=True
 )
-"""Surtax base, ON428 line 65 "Line 63 minus line 64 (if negative, enter "0")": the surtax base.
-TEMPORARY COPY declared here until ticket #281, which owns it, merges."""
+"""Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
+less line 54, never below zero."""
 
 ON428_SURTAX_20_PERCENT_TIER_LINE_66 = AmountKind.declare(
     CATALOG, "on428_surtax_20_percent_tier_line_66", non_negative=True
