@@ -84,6 +84,20 @@ def test_ontario_2025_brackets() -> None:
     assert data.sources == ONTARIO_SOURCES
 
 
+def test_the_ontario_bracket_lower_bounds_carry_the_cent_scale() -> None:
+    data = SOURCE.get("ca-on/brackets", 2025, BRACKETS)
+
+    # ON428 line 3 prints each column's lower bound to the cent (0.00, 52,886.00, 105,775.00,
+    # 150,000.00, 220,000.00), so the dataset's bounds carry the cent's scale, the first's 0.00 too.
+    assert [(b.lower, b.lower.as_tuple().exponent) for b in data.values.brackets] == [
+        (D("0"), -2),
+        (D("52886"), -2),
+        (D("105775"), -2),
+        (D("150000"), -2),
+        (D("220000"), -2),
+    ]
+
+
 def test_the_computed_federal_tax_at_each_start_is_the_t1_line_75_printed_constant() -> None:
     schedule = SOURCE.get("ca/brackets", 2025, BRACKETS).values
 

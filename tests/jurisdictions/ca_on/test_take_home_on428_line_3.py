@@ -117,6 +117,27 @@ def test_line_3_is_the_lower_bound_of_the_column_line_1_falls_in(
     assert sheet.get(bundled_kinds().kind(LINE_3)).value == D(expected)
 
 
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
+        # Line 1 is 19,835.00: column 1, a zero lower bound printed to the cent.
+        ("20000", "0.00"),
+        # Line 1 is 69,335.00: column 2, 52,886.00.
+        ("70000", "52886.00"),
+        # Line 1 is 148,926.00: column 3, 105,775.00.
+        ("150000", "105775.00"),
+    ],
+)
+def test_line_3_is_held_to_the_cent_zero_included(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    value = _on428(take_home_service, salary).get(bundled_kinds().kind(LINE_3)).value
+
+    assert isinstance(value, Decimal)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
+
+
 def test_the_kinds_are_registered_and_not_negative() -> None:
     kinds = bundled_kinds()
 

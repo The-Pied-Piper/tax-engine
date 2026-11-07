@@ -195,13 +195,43 @@ def test_a_larger_less_is_floored_at_zero() -> None:
     assert type(output.value) is Decimal
 
 
-def test_the_floor_is_a_plain_decimal_zero() -> None:
-    # Settled on #67: when the floor applies, the output is `Decimal(0)`, not the difference's
-    # scale (no "0.0") and never a negative zero.
+def test_the_floor_keeps_the_scale_of_the_difference() -> None:
+    # #452: when the floor applies, the zero keeps the scale of the difference (-15.50 gives
+    # 0.00, so the line prints to the cent like a positive one), and is never a negative zero.
     value = compute("10.00", "25.50").value
 
     assert type(value) is Decimal
+    assert value == D("0")
+    assert value.as_tuple().exponent == -2
+    assert str(value) == "0.00"
+    assert not value.is_signed()
+
+
+@pytest.mark.parametrize(
+    ("amount", "less"),
+    [
+        ("100.00", "100.00"),  # a zero difference: 0.00
+        ("50.00", "100.00"),  # -50.00: 0.00
+        ("10.000", "10.0001"),  # -0.0001: a zero at four places, 0.0000
+        ("0.0000000000000001", "0.0000000000000002"),  # -1E-16: a zero at sixteen places
+    ],
+)
+def test_a_floored_zero_keeps_the_exponent_of_the_difference(amount: str, less: str) -> None:
+    difference = D(amount) - D(less)
+    value = compute(amount, less).value
+
+    assert difference < 0
+    assert value == D("0")
+    assert value.as_tuple().exponent == difference.as_tuple().exponent
+    assert not value.is_signed()
+
+
+def test_whole_number_operands_still_floor_to_a_whole_zero() -> None:
+    # The whole-number case is unchanged by the rule: a difference with no scale gives 0.
+    value = compute("5", "9").value
+
     assert str(value) == "0"
+    assert value.as_tuple().exponent == 0
     assert not value.is_signed()
 
 
