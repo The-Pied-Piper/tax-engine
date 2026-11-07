@@ -2731,6 +2731,7 @@ REGISTERED = frozenset(
         "ca/tosi_adjusted_taxable_income",
         "ca/tuition_income_with_tosi",
         "ca/credit_amounts_line_84",
+        "ca/credit_amounts_line_98",
         "ca/credit_amounts_subtotal",
         "ca/tuition_income_less_credits",
         "ca/unused_tuition_claimed",

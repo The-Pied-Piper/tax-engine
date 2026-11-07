@@ -218,6 +218,11 @@ CREDIT_AMOUNTS_LINE_84 = AmountKind.declare(CATALOG, "credit_amounts_line_84", n
 (line 77, line 30000) alone for the take-home filer, since lines 78 to 83 are 0 and are left out.
 Line 98 reads it, and line 85 copies it."""
 
+CREDIT_AMOUNTS_LINE_98 = AmountKind.declare(CATALOG, "credit_amounts_line_98", non_negative=True)
+"""Credit amounts through line 98, T1 line 98 "Add lines 85, 96, and 97.": line 84 (copied to
+line 85) plus the credits subtotal of line 96 for the take-home filer, since line 97 (the pension
+income amount) is 0 and is left out. Line 101 reads it."""
+
 CREDIT_AMOUNTS_SUBTOTAL = AmountKind.declare(CATALOG, "credit_amounts_subtotal", non_negative=True)
 """Credit amounts subtotal, T1 line 101 "Add lines 98 to 100. =", which Schedule 11 line 12 "Enter
 the amount from line 101 of your return" reads: the credit amounts of the lines wired up to line
