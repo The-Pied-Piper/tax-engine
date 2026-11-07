@@ -1,0 +1,9 @@
+# ON428-A (2025, Ontario LIFT credit), form 5006-a-25e. This part names the form and its exports; each
+# line's capability goes in a part of its own with the same `form.name`. The export is line 17's kind,
+# the excess over the individual threshold for a single filer.
+form:
+  name: ca-on/on428_a
+  required: true
+  exports:
+    - ca-on/lift_single_excess_over_threshold
+capabilities: []
