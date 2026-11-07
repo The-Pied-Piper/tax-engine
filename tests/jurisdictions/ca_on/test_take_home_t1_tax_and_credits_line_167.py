@@ -177,11 +177,12 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
     ) in EnglishTraceRenderer().render_all(sheet.trace)
 
 
-def test_the_real_t1_form_header_exports_refund_or_balance_owing_and_federal_basic_tax() -> None:
+def test_the_real_t1_form_header_exports_only_refund_or_balance_owing() -> None:
+    # Line 76 is read inside the form by line 40400 only, so it is not exported.
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
-    assert LINE_167 in exports
-    assert FEDERAL_BASIC_TAX in exports
+    assert exports == [LINE_167]
+    assert FEDERAL_BASIC_TAX not in exports
 
 
 def test_the_real_ontario_manifest_computes_refund_or_balance_owing_at_70000() -> None:
