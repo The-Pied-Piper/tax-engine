@@ -1158,8 +1158,9 @@ negative, enter "0") Your spouse's or common-law partner's adjusted net income".
 LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_individual_income_threshold", non_negative=True
 )
-"""Individual income threshold, Schedule ON428-A Part B line 31 "Individual income threshold
-32,500.00": a printed amount, taken whole."""
+"""Individual income threshold, Schedule ON428-A Part A line 16 "Individual income threshold
+32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
+whole."""
 
 LIFT_EXCESS_OVER_INDIVIDUAL_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_excess_over_individual_threshold", non_negative=True
