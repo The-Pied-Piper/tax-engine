@@ -1,0 +1,9 @@
+# T1 line 129 (2025) input a salary-only caller does not give.
+# Line 129 and line 40500: "Line 129 and line 40500: Federal foreign tax credit (complete Form T2209)"
+# (5006-R, Step 5). A salary-only caller has no foreign tax credit, so a request that leaves the line out
+# is read as 0, not blank, and line 130 is line 128 unchanged.
+inputs:
+  - name: ca/federal_foreign_tax_credit
+    required: false
+    default: "0"
+    basis: 'Line 129 and line 40500: Federal foreign tax credit (complete Form T2209)'
