@@ -94,6 +94,7 @@ PARTS = (
     "t1_tax_and_credits_line_43500.yaml",
     "t1_tax_and_credits_line_48200.yaml",
     "t1_tax_and_credits_line_167.yaml",
+    "return.yaml",
 )
 
 
