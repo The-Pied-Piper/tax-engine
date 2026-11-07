@@ -80,6 +80,12 @@ ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
 line 6 plus line 7. Temporary copy until the line 8 part is on main."""
 
+ON428_SURTAX_36_PERCENT_TIER_LINE_67 = AmountKind.declare(
+    CATALOG, "on428_surtax_36_percent_tier_line_67", non_negative=True
+)
+"""36% surtax tier, ON428 line 67 "(Line 65 minus $7,307) multiplied by 36% (if negative, enter
+"0") =": 36% of line 65 above $7,307, never below 0."""
+
 ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
     CATALOG, "on428_donations_credit_line_49", non_negative=True
 )
