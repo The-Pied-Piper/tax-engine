@@ -100,7 +100,7 @@ def test_line_10_is_the_sum_of_line_7(
 
 
 def test_the_line_10_kind_is_registered_and_signed() -> None:
-    # Signed: line 10 "Add lines 7 to 9." prints no floor at zero, so the kind may not be negative.
+    # Signed: line 10 "Add lines 7 to 9." prints no floor at zero, so the kind may be negative.
     kind = bundled_kinds().kind(LINE_10)
 
     assert kind.identifier == LINE_10
