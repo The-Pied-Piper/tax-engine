@@ -942,6 +942,11 @@ LIFT_MAXIMUM_CREDIT = AmountKind.declare(CATALOG, "lift_maximum_credit", non_neg
 "Amount from line 5 above (maximum $875)" and Part B line 29 "Amount from line 5 of the previous
 page (maximum $875)"."""
 
+LIFT_NET_INCOME = AmountKind.declare(CATALOG, "lift_net_income", non_negative=False)
+"""Net income, Schedule ON428-A line 6 "Net income from line 23600 of your return (or the amount
+you would have entered if the instructions on line 23600 said "if negative, show in brackets")",
+which line 9 "Add lines 6 to 8." takes. Line 6 may be negative, so the kind is signed."""
+
 LIFT_NET_INCOME_AND_REPAYMENTS = AmountKind.declare(
     CATALOG, "lift_net_income_and_repayments", non_negative=False
 )
