@@ -181,6 +181,13 @@ def test_core_capabilities_are_registered_by_the_bundled_packages(
     assert bundled_capabilities().get(identifier) is cls
 
 
+def test_core_multiply_by_rate_is_registered_by_the_bundled_packages() -> None:
+    # Imported here, not at the top, so that until the capability exists only this test fails.
+    from tax_engine.jurisdictions.core.capabilities.multiply_by_rate import MultiplyByRate
+
+    assert bundled_capabilities().get("core/multiply_by_rate") is MultiplyByRate
+
+
 def test_core_capabilities_declare_the_core_namespace() -> None:
     import tax_engine.jurisdictions.core.capabilities as core
 
