@@ -49,12 +49,6 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
-ON428_CREDITS_WITH_DISABILITY_LINE_31 = AmountKind.declare(
-    CATALOG, "on428_credits_with_disability_line_31", non_negative=True
-)
-"""Total of the credits with the disability amounts, ON428 line 31 "Add lines 28 to 30.": the sum
-of line 28 with the disability amounts of lines 29 and 30, not below zero."""
-
 ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
     CATALOG, "on428_credits_with_transfers_line_35", non_negative=True
 )
