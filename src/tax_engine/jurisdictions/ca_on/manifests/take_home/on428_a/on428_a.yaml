@@ -1,0 +1,10 @@
+# Schedule ON428-A (Ontario LIFT credit) 2025. This part names the form and its exports; each line's
+# capability goes in a part of its own with the same `form.name`. A form needs at least one export,
+# so for now it exports line 16, the one line built; later line tickets replace this list with the
+# figures the return reads (the LIFT credit, line 20, is read by ON428 line 85).
+form:
+  name: ca-on/on428_a
+  required: true
+  exports:
+    - ca-on/lift_individual_income_threshold
+capabilities: []
