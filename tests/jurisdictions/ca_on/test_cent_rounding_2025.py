@@ -1,7 +1,8 @@
 """The 2025 `ca-on/cent_rounding` dataset: the one rule shared by the Ontario floor steps
-(`core/subtract_not_below_zero`), ON428 lines 4, 53, 61, 65, 71, 80, 81, 83, 86 and 88 and ON428-A
-lines 17 and 20. It carries nothing but its rule, half-up to the cent, the rule of the
-dollars-and-cents boxes. It cites the ON428 and ON428-A text."""
+(`core/subtract_not_below_zero`) and the ON428 line 6 product (`core/multiply_by_rate`), that is,
+ON428 lines 4, 6, 53, 61, 65, 71, 80, 81, 83, 86 and 88 and ON428-A lines 17 and 20. It carries
+nothing but its rule, half-up to the cent, the rule of the dollars-and-cents boxes. It cites the
+ON428 and ON428-A text."""
 
 from __future__ import annotations
 

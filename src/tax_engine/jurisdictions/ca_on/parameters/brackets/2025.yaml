@@ -13,7 +13,7 @@
 # Each bracket's `tax_at_start` is the line 7 constant of its column, taken as printed:
 # the constants are not recomputed from the rates, and not rounded.
 # This dataset has no rounding rule, as the form states none. The take-home build rounds
-# line 6 half-up to the cent in its own part (ca-on/bracket_column_tax_rounding).
+# line 6 half-up to the cent in its own part (ca-on/cent_rounding).
 family: ca-on/brackets
 tax_year: 2025
 kind: brackets

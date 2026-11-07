@@ -1,6 +1,8 @@
 # Ontario cent rounding, 2025 tax year: the rule for every Ontario form line that is a
 # dollars-and-cents box and is read from a "(if negative, enter "0")" or "(cannot be negative)"
-# difference: Form ON428 (5006-c-25e) lines 4, 53, 61, 65, 71, 80, 81, 83, 86 and 88, and Schedule
+# difference, or from a product of two lines (ON428 line 6, line 4 times line 5,
+# core/multiply_by_rate): Form ON428 (5006-c-25e) lines 4, 6, 53, 61, 65, 71, 80, 81, 83, 86 and
+# 88, and Schedule
 # ON428-A (5006-a-25e) lines 17 and 20. The forms state no rounding rule, so half-up to the cent is
 # the owner's decision. A line that needs a different rule gets a dataset of its own.
 family: ca-on/cent_rounding
