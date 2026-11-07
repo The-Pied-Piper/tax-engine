@@ -489,17 +489,20 @@ def test_the_english_sentence_shows_a_reduction_above_the_supplement_before_the_
     trace = capability().compute((Artifact(INCOME, D("80000")),)).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "personal_amount: 1000 plus 500 less 3000 for income 80000 over 20000 (range 10000), "
+        "personal_amount: 1000 plus 500 less 500 for income 80000 over 20000 (range 10000), "
         "not below 1000 = 1000 (no rounding)",
     )
 
 
-def test_the_english_sentence_keeps_a_non_terminating_reduction_exact_under_no_rounding() -> None:
-    # 500 × 60000 / 7000 = 30000/7, no decimal form: with no rounding rule it prints as exact.
+def test_the_english_sentence_shows_the_amount_taken_off_for_a_reduction_with_no_decimal_form() -> (
+    None
+):
+    # 500 × 60000 / 7000 = 30000/7, no decimal form, and above the supplement: the whole
+    # supplement comes off, and the sentence works from the result, so it never needs the fraction.
     trace = capability(taper(values(range="7000"))).compute((Artifact(INCOME, D("80000")),)).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "personal_amount: 1000 plus 500 less 30000/7 for income 80000 over 20000 (range 7000), "
+        "personal_amount: 1000 plus 500 less 500 for income 80000 over 20000 (range 7000), "
         "not below 1000 = 1000 (no rounding)",
     )
 
