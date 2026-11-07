@@ -494,6 +494,16 @@ def test_the_english_sentence_shows_a_reduction_above_the_supplement_before_the_
     )
 
 
+def test_the_english_sentence_keeps_a_non_terminating_reduction_exact_under_no_rounding() -> None:
+    # 500 × 60000 / 7000 = 30000/7, no decimal form: with no rounding rule it prints as exact.
+    trace = capability(taper(values(range="7000"))).compute((Artifact(INCOME, D("80000")),)).trace
+
+    assert EnglishTraceRenderer().render_all(trace) == (
+        "personal_amount: 1000 plus 500 less 30000/7 for income 80000 over 20000 (range 7000), "
+        "not below 1000 = 1000 (no rounding)",
+    )
+
+
 def test_the_english_sentence_rounds_an_exact_fraction_by_the_cent_rule_not_as_a_fraction() -> None:
     # 500 × 1000 / 7000 = 500/7 = 71.428…, shown as 71.43; the result 1428.57 is the rounded sum.
     trace = (
