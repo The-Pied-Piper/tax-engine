@@ -97,7 +97,9 @@ def test_line_10_is_the_sum_of_line_7(
 ) -> None:
     sheet = _schedule_6(take_home_service, salary)
 
-    assert sheet.get(bundled_kinds().kind(LINE_10)).value == D(expected)
+    value = sheet.get(bundled_kinds().kind(LINE_10)).value
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_10_kind_is_registered_and_signed() -> None:

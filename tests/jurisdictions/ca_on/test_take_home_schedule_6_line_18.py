@@ -78,4 +78,6 @@ def line_18(take_home_service: TakeHomeService, salary: str) -> Decimal:
 def test_schedule_6_line_18_is_line_6_less_the_base_amount_not_below_zero(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_18(take_home_service, salary) == D(expected)
+    value = line_18(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2

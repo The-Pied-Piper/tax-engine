@@ -88,7 +88,9 @@ def line_20(take_home_service: TakeHomeService, salary: str) -> Decimal:
 def test_schedule_6_line_20_is_line_18_times_the_27_percent_rate(
     take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert line_20(take_home_service, salary) == D(expected)
+    value = line_20(take_home_service, salary)
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_schedule_6_line_20_rounds_half_up_to_the_cent_from_the_rate_dataset(
@@ -96,4 +98,6 @@ def test_schedule_6_line_20_rounds_half_up_to_the_cent_from_the_rate_dataset(
 ) -> None:
     # Line 18 is $3,001.01 (line 6 of $6,001.01 less line 17 of $3,000.00). 27% of it is
     # $810.2727, which rounds half-up to $810.27.
-    assert line_20(take_home_service, "6001.01") == D("810.27")
+    value = line_20(take_home_service, "6001.01")
+    assert value == D("810.27")
+    assert value.as_tuple().exponent == -2

@@ -108,7 +108,9 @@ def test_schedule_6_line_13_is_line_12_column_1_alone(
 ) -> None:
     sheet = _schedule_6(take_home_service, salary)
 
-    assert sheet.get(bundled_kinds().kind(LINE_13)).value == D(expected)
+    value = sheet.get(bundled_kinds().kind(LINE_13)).value
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 @pytest.mark.parametrize(
@@ -125,7 +127,9 @@ def test_schedule_6_line_13_follows_line_12_when_line_11_is_given(
 ) -> None:
     sheet = _schedule_6(take_home_service, salary, uccb)
 
-    assert sheet.get(bundled_kinds().kind(LINE_13)).value == D(expected)
+    value = sheet.get(bundled_kinds().kind(LINE_13)).value
+    assert value == D(expected)
+    assert value.as_tuple().exponent == -2
 
 
 def test_the_line_13_kind_is_registered_and_non_negative() -> None:
