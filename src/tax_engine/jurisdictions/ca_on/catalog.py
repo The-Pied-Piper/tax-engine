@@ -280,12 +280,19 @@ ON428_TAX_AFTER_LIFT_CREDIT_LINE_86 = AmountKind.declare(
 """Ontario tax after the LIFT credit, ON428 line 86 "Line 86: Line 84 minus line 85 (if negative,
 enter "0") =": line 84 minus the LIFT credit, not below zero."""
 
+ON428_QUALIFYING_FOOD_DONATIONS_LINE_87 = AmountKind.declare(
+    CATALOG, "on428_qualifying_food_donations_line_87", non_negative=True
+)
+"""Qualifying food donations, ON428 line 87 "Line 87 and line 62150: Enter the amount of qualifying
+donations that have also been claimed as a charitable donation": an optional input that a
+salary-only caller leaves out, read as 0."""
+
 ON428_FARMERS_FOOD_DONATION_CREDIT_LINE_87 = AmountKind.declare(
     CATALOG, "on428_farmers_food_donation_credit_line_87", non_negative=True
 )
 """Farmers' food donation credit, ON428 line 87 "Line 87 and line 62150: Enter the amount of
-qualifying donations that have also been claimed as a charitable donation. multiplied by 25%": an
-optional input that a salary-only caller leaves out."""
+qualifying donations that have also been claimed as a charitable donation. multiplied by 25% =":
+calculated, the qualifying donations multiplied by 25%."""
 
 ON428_TAX_AFTER_FARMERS_FOOD_DONATION_CREDIT_LINE_88 = AmountKind.declare(
     CATALOG, "on428_tax_after_farmers_food_donation_credit_line_88", non_negative=True
