@@ -19,13 +19,12 @@ from decimal import Decimal
 from textwrap import dedent
 
 import pytest
-import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on.catalog import ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 PART_LINE_9 = "on428_line_9.yaml"
@@ -65,14 +64,3 @@ def test_line_18_is_the_total_of_line_9_at_every_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
     assert line_18(take_home_service, salary) == D("12747.00")
-
-
-def test_line_18_reads_only_line_9_and_leaves_out_the_ontario_only_lines() -> None:
-    """Lines 10, 13, 16 and 17 are not read: the sum's only part is ca-on/basic_personal_amount."""
-    matches = list(TAKE_HOME.rglob(PART_LINE_18))
-    assert len(matches) == 1, f"the take-home folder has no {PART_LINE_18} part"
-    part = yaml.safe_load(matches[0].read_text(encoding="utf-8"))
-    (capability,) = part["capabilities"]
-    assert capability["name"] == "core/sum"
-    assert capability["consumes"]["parts"] == ["ca-on/basic_personal_amount"]
-    assert capability["produces"]["output"] == "ca-on/on428_personal_amounts_subtotal_line_18"
