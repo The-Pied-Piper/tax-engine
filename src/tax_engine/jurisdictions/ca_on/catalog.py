@@ -49,6 +49,31 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
+ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
+    CATALOG, "on428_credits_with_transfers_line_35", non_negative=True
+)
+"""Total of the credits with the student loan, tuition and transfer amounts, ON428 line 35 "Add
+lines 31 to 34.": the sum of line 31 with lines 32 to 34."""
+
+ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 "Line 36 minus
+line 40 (if negative, enter "0")" plus line 42 "Allowable amount of medical expenses for other
+dependants", a part of line 44."""
+
+ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
+    CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
+)
+"""Total credit amounts, ON428 line 44 "Line 44 and line 58800: Line 35 plus line 43 =": line 35
+plus line 43."""
+
+ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
+    CATALOG, "on428_credit_amounts_at_credit_rate_line_46", non_negative=True
+)
+"""Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
+the percentage from line 45 =": line 44 times the 5.05% of line 45."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""
@@ -178,6 +203,18 @@ CAREGIVER_AMOUNT = AmountKind.declare(CATALOG, "caregiver_amount", non_negative=
 ON428)": Worksheet ON428 line 6 "Add the amounts from line 5 of columns 1, 2, and 3 (and others, if
 any)", each line 5 "Allowable amount for this dependant: line 3 minus line 4 (if negative, enter
 "0")", a part of the total of the Ontario credit amounts."""
+
+ON428_CPP_BASE_CREDIT_AMOUNT_LINE_19 = AmountKind.declare(
+    CATALOG, "on428_cpp_base_credit_amount_line_19", non_negative=True
+)
+"""CPP base contributions credit amount, ON428 line 19 and line 58240 "Amount from line 30800 of
+your return": a copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+ON428_EI_CREDIT_AMOUNT_LINE_21 = AmountKind.declare(
+    CATALOG, "on428_ei_credit_amount_line_21", non_negative=True
+)
+"""EI premiums credit amount, ON428 line 21 and line 58300: a copy of T2204 line 16, the EI
+premiums credit amount."""
 
 ADOPTION_CREDIT = AmountKind.declare(CATALOG, "adoption_credit", non_negative=True)
 """Ontario adoption expenses, ON428 line 23 and line 58330 "Adoption expenses": the total of each
