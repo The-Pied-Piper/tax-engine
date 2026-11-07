@@ -17,7 +17,7 @@ from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import CapabilityResult, capability
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.jurisdictions.ca.capabilities.contribution_tier import _TierCalculation
+from tax_engine.jurisdictions.ca.capabilities.contribution_tier import TierCalculation
 from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
     CONTRIBUTION_TIER,
     ContributionTier,
@@ -26,7 +26,7 @@ from tax_engine.jurisdictions.ca.trace import GivenAmountLine
 
 
 @capability(identifier="given_or_contribution_tier")
-class GivenOrTieredContribution(_TierCalculation):
+class GivenOrTieredContribution(TierCalculation):
     """Produces `output`: the `given` figure unchanged, or, when `given` is blank, the `tier` rate
     on the `earnings` inside its band, rounded and capped."""
 

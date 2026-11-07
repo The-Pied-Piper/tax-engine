@@ -7,7 +7,7 @@ too) contribute nothing and earnings above it count only up to the band. The out
 which defaults to no rounding; the maximum applies after rounding and as given.
 
 The class is `TieredContribution` so that it does not share a name with the `ContributionTier`
-value object it reads. The calculation lives in `_TierCalculation`, a parent class with no
+value object it reads. The calculation lives in `TierCalculation`, a parent class with no
 identifier, so the capabilities that compute a tier result share it and each names its own slots.
 """
 
@@ -28,7 +28,7 @@ from tax_engine.jurisdictions.ca.parameter_shapes.contribution_tier import (
 from tax_engine.jurisdictions.ca.trace import ContributionTierLine
 
 
-class _TierCalculation(Capability):
+class TierCalculation(Capability):
     """The tier calculation shared by the capabilities that compute a tier result on earnings.
 
     Has no identifier, so it is not registered; a subclass is decorated with `@capability`, names
@@ -60,7 +60,7 @@ class _TierCalculation(Capability):
 
 
 @capability(identifier="contribution_tier")
-class TieredContribution(_TierCalculation):
+class TieredContribution(TierCalculation):
     """Produces `output`: the `tier` rate on the `earnings` inside its band, rounded and capped."""
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[ContributionTier]]] = {
