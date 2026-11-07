@@ -712,6 +712,12 @@ CWB_BASE_AMOUNT = AmountKind.declare(CATALOG, "cwb_base_amount", non_negative=Tr
 """Schedule 6 line 17 "Base amount 3,000.00": the $3,000 base amount of the Canada workers benefit,
 a dataset figure, claimed whole."""
 
+CWB_WORKING_INCOME_OVER_BASE_AMOUNT = AmountKind.declare(
+    CATALOG, "cwb_working_income_over_base_amount", non_negative=True
+)
+"""Schedule 6 Part A line 18 "Line 16 minus line 17 (if negative, enter "0")": line 16 (a copy of
+line 6, `ca/cwb_family_working_income`) less line 17 (`ca/cwb_base_amount`), floored at zero."""
+
 CWB_MAXIMUM = AmountKind.declare(CATALOG, "cwb_maximum", non_negative=True)
 """Schedule 6 line 21 "If you had an eligible spouse or an eligible dependant, enter $2,813. If not,
 enter $1,633.": the $1,633 maximum benefit for a filer with no eligible spouse or dependant, claimed
