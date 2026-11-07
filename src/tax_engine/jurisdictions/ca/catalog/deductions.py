@@ -1127,16 +1127,10 @@ line 23300."""
 DEDUCTIONS_FROM_TOTAL_INCOME = AmountKind.declare(
     CATALOG, "deductions_from_total_income", non_negative=True
 )
-"""Total deductions, T1 line 23300 "Add lines 35 to 52": the sum of the deductions from total
-income, here, in line order, the RPP deduction (line 20700), the RRSP deduction (line 20800), the
-FHSA deduction (line 20805), the elected split-pension deduction (line 21000), union dues (line
-21200), the UCCB repayment (line 21300), the child care expenses (line 21400), the disability
-supports deduction (line 21500), the allowable business investment loss (line 21700), the moving
-expenses of Form T1-M (line 21900), the deductible support payments (line 22000), carrying charges,
-interest expenses and other expenses (line 22100), the CPP contributions on self-employment income
-(line 22200), the enhanced CPP contributions (line 22215), exploration and development expenses
-(line 22400), other employment expenses (line 22900), the clergy residence deduction (line 23100)
-and other deductions (line 23200)."""
+"""Total deductions, T1 line 23300 "Add lines 35 to 52": in the take-home, one core/record_total
+over Schedule 8's export `ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return` (line
+22215, the enhanced CPP contributions), the only deduction a salary-only filer has
+(`t1_taxable_income_line_23300.yaml`)."""
 
 NET_INCOME_BEFORE_ADJUSTMENTS = AmountKind.declare(CATALOG, "net_income_before_adjustments")
 """Net income before adjustments, T1 line 54 and line 23400 "Line 34 minus line 53 (if negative,
@@ -1146,8 +1140,8 @@ NET_INCOME = AmountKind.declare(CATALOG, "net_income", non_negative=True)
 """Net income, T1 line 56 and line 23600 "Line 54 minus line 55 (if negative, enter "0") If
 negative, you may have a non-capital loss (see Form T1A) and the negative amount is to be used for
 certain calculations (go to canada.ca/line-23600) Net income": the net income before adjustments
-(line 23400) less the social benefits repayment (line 23500), not below zero. The amount before
-that floor is `NET_INCOME_SIGNED`.
+(line 23400) less the social benefits repayment (line 23500), not below zero. The signed amount
+before that floor is not built in the take-home: nothing produces `NET_INCOME_SIGNED`.
 """
 
 NET_INCOME_SIGNED = AmountKind.declare(CATALOG, "net_income_signed")
@@ -1271,7 +1265,9 @@ SOCIAL_BENEFITS_REPAYMENT = AmountKind.declare(
 )
 """Social benefits repayment, T1 line 55 and line 23500 "Line 55 and line 23500: If not, enter "0"
 on line 23500.": the result of the Federal Worksheet chart (line 21) when the chart applies, else
-0. Line 42200 carries it."""
+0. In the take-home it is an optional input (`t1_taxable_income_inputs.yaml`, default "0"): the
+chart applies only with amounts on lines 11900, 11300 or 14600, which a salary-only filer has none
+of."""
 
 TOTAL_SPLIT_INCOME = AmountKind.declare(CATALOG, "total_split_income", non_negative=True)
 """Total split income, Form T1206 Part 1 line 4 (68360) "Total split income: line 1 plus line 3

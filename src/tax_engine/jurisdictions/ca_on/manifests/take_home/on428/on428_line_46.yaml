@@ -1,0 +1,14 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) line 46 (ca-on/on428): "Line 45: Ontario non-refundable
+# tax credit rate 5.05% / Line 46 and line 58840: Line 44 multiplied by the percentage from line 45 =".
+# Line 45 is a printed rate, held in the `ca-on/credit_rate` dataset, so line 46 is one calculation:
+# 5.05% of line 44, rounded half-up to the cent. Line 44 is read from its source part, not copied.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/apply_rate
+    params:
+      rate: ca-on/credit_rate
+    consumes:
+      base: ca-on/on428_total_credit_amounts_line_44
+    produces:
+      output: ca-on/on428_credit_amounts_at_credit_rate_line_46

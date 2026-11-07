@@ -49,6 +49,83 @@ ON428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 )
 """Credits subtotal, ON428 line 25 "Line 18 plus line 24 =": line 18 plus line 24."""
 
+ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
+    CATALOG, "on428_credits_with_transfers_line_35", non_negative=True
+)
+"""Total of the credits with the student loan, tuition and transfer amounts, ON428 line 35 "Add
+lines 31 to 34.": the sum of line 31 with lines 32 to 34."""
+
+ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 "Line 36 minus
+line 40 (if negative, enter "0")" plus line 42 "Allowable amount of medical expenses for other
+dependants", a part of line 44."""
+
+ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
+    CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
+)
+"""Total credit amounts, ON428 line 44 "Line 44 and line 58800: Line 35 plus line 43 =": line 35
+plus line 43."""
+
+ON428_CREDIT_AMOUNTS_AT_CREDIT_RATE_LINE_46 = AmountKind.declare(
+    CATALOG, "on428_credit_amounts_at_credit_rate_line_46", non_negative=True
+)
+"""Credit amounts at the credit rate, ON428 line 46 "Line 46 and line 58840: Line 44 multiplied by
+the percentage from line 45 =": line 44 times the 5.05% of line 45."""
+
+ON428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "on428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Ontario tax on taxable income, ON428 line 8 "Line 6 plus line 7 Ontario tax on taxable income =":
+line 6 plus line 7. Temporary copy until the line 8 part is on main."""
+
+ON428_DONATIONS_CREDIT_LINE_49 = AmountKind.declare(
+    CATALOG, "on428_donations_credit_line_49", non_negative=True
+)
+"""Donations and gifts credit, ON428 line 49 "Line 49 and line 58969: Line 47 plus line 48": a
+caller input, read as 0 when the filer has no donations or gifts."""
+
+ON428_NON_REFUNDABLE_CREDITS_LINE_50 = AmountKind.declare(
+    CATALOG, "on428_non_refundable_credits_line_50", non_negative=True
+)
+"""Ontario non-refundable tax credits, ON428 line 50 "Line 50 and line 61500: Line 46 plus line 49":
+line 46 (the credits at the rate) plus line 49 (the donations and gifts credit)."""
+
+ON428_TAX_MINUS_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "on428_tax_minus_credits_line_53", non_negative=True
+)
+"""Tax minus credits, ON428 line 53 "Line 51 minus line 52 (if negative, enter "0") =": line 8
+(copied to line 51) minus line 50 (copied to line 52), not below 0."""
+
+ON428_TAX_ON_SPLIT_INCOME_LINE_54 = AmountKind.declare(CATALOG, "on428_tax_on_split_income_line_54")
+"""Ontario tax on split income, ON428 line 54 "Line 54 and line 61510: Ontario tax on split income
+(complete Form T1206)": the tax from Form T1206."""
+
+ON428_TAX_WITH_SPLIT_INCOME_LINE_55 = AmountKind.declare(
+    CATALOG, "on428_tax_with_split_income_line_55"
+)
+"""Tax with split income, ON428 line 55 "Line 55: Line 53 plus line 54 =": line 53 plus line 54."""
+
+ON428_MINIMUM_TAX_CARRYOVER_LINE_60 = AmountKind.declare(
+    CATALOG, "on428_minimum_tax_carryover_line_60", non_negative=True
+)
+"""Minimum tax carryover applied, ON428 line 60 "Line 60 and line 61540: Enter whichever is less:
+amount from line 58 or line 59.": the lesser of line 58 and line 59, an optional input that a
+salary-only caller leaves out."""
+
+ON428_TAX_AFTER_MINIMUM_TAX_CARRYOVER_LINE_61 = AmountKind.declare(
+    CATALOG, "on428_tax_after_minimum_tax_carryover_line_61", non_negative=True
+)
+"""Ontario tax after the minimum tax carryover, ON428 line 61 "Line 61: Line 55 minus line 60 (if
+negative, enter "0") =": line 55 minus line 60, not below zero."""
+
+ON428_SURTAX_BASE_LINE_65 = AmountKind.declare(
+    CATALOG, "on428_surtax_base_line_65", non_negative=True
+)
+"""Surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =": line 61
+less line 54, never below zero."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""

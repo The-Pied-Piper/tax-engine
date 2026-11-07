@@ -1,0 +1,9 @@
+# ON428 (2025) inputs a salary-only caller does not give.
+# Line 54: "Line 54 and line 61510: Ontario tax on split income (complete Form T1206)". A caller with
+# no split income leaves the line out, so a request that leaves it out is read as blank, and the
+# line 55 part reads that blank as 0.
+inputs:
+  - name: ca-on/on428_tax_on_split_income_line_54
+    required: false
+    default: null
+    basis: 'Line 54 and line 61510: Ontario tax on split income (complete Form T1206)'
