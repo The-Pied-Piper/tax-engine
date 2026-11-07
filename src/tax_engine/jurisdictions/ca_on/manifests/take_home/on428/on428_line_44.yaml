@@ -1,0 +1,17 @@
+# Form ON428 (2025, CRA 5006-c-25e) line 44, "Line 44 and line 58800: Line 35 plus line 43 =": the
+# total credit amounts. It sums the credits with transfers (line 35,
+# `ca-on/on428_credits_with_transfers_line_35`) and the allowable medical expenses (line 43,
+# `ca-on/on428_medical_expenses_line_43`). Line 43 is an optional input that a salary-only caller
+# leaves out, read as blank and then as 0 by the blank rule below. Line 44 is the output
+# `ca-on/on428_total_credit_amounts_line_44`.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/sum
+    consumes:
+      parts:
+        [ca-on/on428_credits_with_transfers_line_35, ca-on/on428_medical_expenses_line_43]
+    blank:
+      ca-on/on428_medical_expenses_line_43: "0"
+    produces:
+      output: ca-on/on428_total_credit_amounts_line_44

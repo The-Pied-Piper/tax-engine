@@ -55,6 +55,19 @@ ON428_CREDITS_WITH_TRANSFERS_LINE_35 = AmountKind.declare(
 """Total of the credits with the student loan, tuition and transfer amounts, ON428 line 35 "Add
 lines 31 to 34.": the sum of line 31 with lines 32 to 34."""
 
+ON428_MEDICAL_EXPENSES_LINE_43 = AmountKind.declare(
+    CATALOG, "on428_medical_expenses_line_43", non_negative=True
+)
+"""Medical expenses, ON428 line 43 and line 58769 "Line 41 plus line 42 =": line 41 "Line 36 minus
+line 40 (if negative, enter "0")" plus line 42 "Allowable amount of medical expenses for other
+dependants", a part of line 44."""
+
+ON428_TOTAL_CREDIT_AMOUNTS_LINE_44 = AmountKind.declare(
+    CATALOG, "on428_total_credit_amounts_line_44", non_negative=True
+)
+"""Total credit amounts, ON428 line 44 "Line 44 and line 58800: Line 35 plus line 43 =": line 35
+plus line 43."""
+
 AGE_MAXIMUM = AmountKind.declare(CATALOG, "age_maximum", non_negative=True)
 """Maximum Ontario age amount, Worksheet ON428 (form 5006-D), "Line 58080 - Age amount", line 1
 "Maximum amount 6,223.00": the dataset as an artifact."""

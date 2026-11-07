@@ -1,0 +1,9 @@
+# ON428 (2025) inputs a salary-only caller does not give.
+# Line 43: "Line 43 and line 58769: Line 41 plus line 42 =". A salary-only caller has no medical
+# expenses, so a request that leaves the line out is read as blank, and the line 44 part reads that
+# blank as 0.
+inputs:
+  - name: ca-on/on428_medical_expenses_line_43
+    required: false
+    default: null
+    basis: 'Line 43 and line 58769: Line 41 plus line 42'
