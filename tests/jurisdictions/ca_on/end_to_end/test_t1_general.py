@@ -7,7 +7,7 @@ its neighbours typed in. This module composes the whole real take-home manifest 
 8, T2204, ca/t1_taxable_income, ON428-A, ON428, Schedule 6 and the T1 General) and types in only
 the gross salary (`ca/employment_income`). It pins the T1 lines the salary-only filer fills, the
 return's one output (line 167, refund or balance owing) and the CPP and EI figures the calculator
-reads from Schedule 8 and T2204. It is not a worked return: no return file, no slips, no tax withheld.
+reads from Schedule 8 and T2204. It is not a worked return: no return file, no slips, no tax paid.
 The partial CPP2 range (salary between 71,300 and 81,200) is covered by one salary only.
 
 Form text: T1 General (CRA 5006-R, 2025, docs/cra-forms-2025/5006-r-25e.txt) "Line 75" columns
