@@ -10,7 +10,7 @@ line 14 (`ca/t2204_line_15`), the count of the "more than $1" condition
 The manifest part is loaded from the package. The header and the form's export are made up here,
 because the shared scaffold owns them. Line 4 (`ca/t2204_premiums_deducted`) and line 14
 (`ca/t2204_line_14`) are produced by other tickets, so the test header declares both as required
-starting inputs. `ca/ei_overpayment` is not a form export; it is read from the worksheet.
+starting inputs. `ca/ei_overpayment` (the T1 line 45000 amount) is exported by the form too.
 """
 
 from __future__ import annotations
