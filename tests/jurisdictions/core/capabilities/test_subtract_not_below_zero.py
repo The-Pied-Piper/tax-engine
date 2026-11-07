@@ -1,10 +1,14 @@
-"""Unit tests for the SubtractNotBelowZero capability (`core/subtract_not_below_zero`), made up.
+"""Unit tests for the SubtractNotBelowZero capability (`core/subtract_not_below_zero`).
 
-Its slots are those of `core/subtract`: two consumed single slots, `amount` and `less`, one
-produced slot `output`, no parameter slots. The output is max(amount − less, 0), exact, with no
-rounding (it has no dataset): the floor of a line the form prints with "if negative, enter 0".
-It records one `SubtractedNotBelowZeroLine`, whether or not the floor applied. Either consumed
-slot may be blank (`BLANK_ALLOWED`); the rules the manifest gives decide what a blank does there.
+Made-up kinds and values.
+
+Its slots: one parameter slot `rounding` (a `rounding_only` dataset, which carries only its
+rounding rule), two consumed `Decimal` slots, `amount` and `less`, and one produced slot `output`.
+The output is `rounding.apply(max(amount − less, 0))`: the difference is exact, floored at zero,
+and rounded once by the dataset's rule, which defaults to no rounding. A floored zero is never a
+negative zero. It records one `SubtractedNotBelowZeroLine`, whether or not the floor applied.
+Either consumed slot may be blank (`BLANK_ALLOWED`); the rules the manifest gives decide what a
+blank does there.
 """
 
 from __future__ import annotations
@@ -25,7 +29,15 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import (
+    NO_ROUNDING,
+    RoundingMode,
+    RoundingRule,
+    RoundTo,
+)
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import SubtractedLine, SubtractedNotBelowZeroLine
 from tax_engine.domain.trace.blank import BlankFallbackLine, BlankPassedOnLine
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
@@ -33,24 +45,41 @@ from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import S
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
-
+CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 GROSS = AmountKind("ex/gross_amount")
 REDUCTION = AmountKind("ex/reduction")
 NET = AmountKind("ex/net_amount")
 
 
-def capability() -> SubtractNotBelowZero:
-    """By default the made-up gross amount less the made-up reduction, not below zero."""
-    return SubtractNotBelowZero(GROSS, REDUCTION, NET)
+def rounding(rule: RoundingRule = NO_ROUNDING) -> ParameterDataset[RoundingOnly]:
+    """By default no rounding."""
+    return ParameterDataset(
+        "ex/net_amount_rounding",
+        2025,
+        ROUNDING_ONLY,
+        RoundingOnly(),
+        rule,
+        ("https://example.org/rounding",),
+    )
+
+
+def capability(rounding_data: ParameterDataset[RoundingOnly] | None = None) -> SubtractNotBelowZero:
+    """By default the made-up gross amount less the made-up reduction, floored, exact."""
+    return SubtractNotBelowZero(rounding_data or rounding(), GROSS, REDUCTION, NET)
+
+
+def cents() -> SubtractNotBelowZero:
+    """The made-up capability with its dataset rounding half-up to the cent."""
+    return capability(rounding(CENT))
 
 
 def inputs(amount: str, less: str) -> tuple[Artifact[Decimal], ...]:
     return (Artifact(GROSS, D(amount)), Artifact(REDUCTION, D(less)))
 
 
-def compute(amount: str, less: str) -> Artifact[Any]:
-    (output,) = capability().compute(inputs(amount, less)).outputs
+def compute(amount: str, less: str, wired: SubtractNotBelowZero | None = None) -> Artifact[Any]:
+    (output,) = (wired or capability()).compute(inputs(amount, less)).outputs
     return output
 
 
@@ -72,8 +101,9 @@ def test_leaves_its_contract_to_the_base() -> None:
     assert "produces" not in vars(SubtractNotBelowZero)
 
 
-def test_declares_the_slots_of_core_subtract() -> None:
-    assert SubtractNotBelowZero.PARAMETERS == {}
+def test_declares_its_slots() -> None:
+    assert SubtractNotBelowZero.PARAMETERS == {"rounding": ROUNDING_ONLY}
+    assert SubtractNotBelowZero.PARAMETERS["rounding"] is ROUNDING_ONLY
     assert SubtractNotBelowZero.CONSUMES == {"amount": Decimal, "less": Decimal}
     assert SubtractNotBelowZero.PRODUCES == {"output": Decimal}
     assert not SubtractNotBelowZero.is_list_slot("amount")
@@ -91,7 +121,7 @@ def test_its_slots_are_read_only() -> None:
 
 
 def test_its_slots_are_typed_as_read_only_mappings() -> None:
-    assert_type(SubtractNotBelowZero.PARAMETERS, Mapping[str, ParameterKind[Any]])
+    assert_type(SubtractNotBelowZero.PARAMETERS, Mapping[str, ParameterKind[RoundingOnly]])
     assert_type(SubtractNotBelowZero.CONSUMES, Mapping[str, type])
     assert_type(SubtractNotBelowZero.PRODUCES, Mapping[str, type])
 
@@ -107,21 +137,24 @@ def test_its_slots_cannot_be_changed() -> None:
 
 
 def test_is_built_from_its_slot_names_as_keywords() -> None:
-    wired = SubtractNotBelowZero(amount=GROSS, less=REDUCTION, output=NET)
+    wired = SubtractNotBelowZero(
+        rounding=rounding(),
+        amount=GROSS,
+        less=REDUCTION,
+        output=NET,
+    )
 
-    result = wired.compute(inputs("100", "30"))
-
-    assert result.outputs == (Artifact(NET, D("70")),)
+    assert compute("100", "30", wired) == Artifact(NET, D("70"))
 
 
-def test_takes_no_parameter_dataset() -> None:
+def test_takes_no_separate_rounding_argument() -> None:
     with pytest.raises(TypeError):
-        SubtractNotBelowZero(GROSS, REDUCTION, NET, object())  # type: ignore[call-arg]
+        SubtractNotBelowZero(rounding(), GROSS, REDUCTION, NET, NO_ROUNDING)  # type: ignore[call-arg]
 
 
 def test_rejects_one_kind_as_both_amount_and_less() -> None:
     with pytest.raises(InvalidCapabilityError, match="SubtractNotBelowZero") as raised:
-        SubtractNotBelowZero(GROSS, GROSS, NET)
+        SubtractNotBelowZero(rounding(), GROSS, GROSS, NET)
 
     message = str(raised.value)
     assert "'amount'" in message
@@ -130,7 +163,7 @@ def test_rejects_one_kind_as_both_amount_and_less() -> None:
 
 def test_rejects_one_kind_as_both_amount_and_output() -> None:
     with pytest.raises(InvalidCapabilityError, match="SubtractNotBelowZero") as raised:
-        SubtractNotBelowZero(GROSS, REDUCTION, GROSS)
+        SubtractNotBelowZero(rounding(), GROSS, REDUCTION, GROSS)
 
     message = str(raised.value)
     assert "'amount'" in message
@@ -139,7 +172,7 @@ def test_rejects_one_kind_as_both_amount_and_output() -> None:
 
 def test_rejects_one_kind_as_both_less_and_output() -> None:
     with pytest.raises(InvalidCapabilityError, match="SubtractNotBelowZero") as raised:
-        SubtractNotBelowZero(GROSS, REDUCTION, REDUCTION)
+        SubtractNotBelowZero(rounding(), GROSS, REDUCTION, REDUCTION)
 
     message = str(raised.value)
     assert "'less'" in message
@@ -148,12 +181,12 @@ def test_rejects_one_kind_as_both_less_and_output() -> None:
 
 def test_rejects_a_list_of_kinds_for_its_amount() -> None:
     with pytest.raises(InvalidCapabilityError, match="SubtractNotBelowZero.*'amount'"):
-        SubtractNotBelowZero((GROSS,), REDUCTION, NET)  # type: ignore[arg-type]
+        SubtractNotBelowZero(rounding(), (GROSS,), REDUCTION, NET)  # type: ignore[arg-type]
 
 
 def test_rejects_a_list_of_kinds_for_what_it_takes_off() -> None:
     with pytest.raises(InvalidCapabilityError, match="SubtractNotBelowZero.*'less'"):
-        SubtractNotBelowZero(GROSS, (REDUCTION,), NET)  # type: ignore[arg-type]
+        SubtractNotBelowZero(rounding(), GROSS, (REDUCTION,), NET)  # type: ignore[arg-type]
 
 
 def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
@@ -162,7 +195,7 @@ def test_mypy_rejects_wiring_an_artifact_kind_of_another_value_type() -> None:
     # wiring an artifact kind of another value type is ever accepted. At run time, building it
     # fails too.
     with pytest.raises(InvalidCapabilityError, match="SubtractNotBelowZero.*'less'"):
-        SubtractNotBelowZero(GROSS, count, NET)  # type: ignore[arg-type]
+        SubtractNotBelowZero(rounding(), GROSS, count, NET)  # type: ignore[arg-type]
 
 
 def test_is_not_generic_over_artifacts() -> None:
@@ -170,7 +203,7 @@ def test_is_not_generic_over_artifacts() -> None:
     assert not getattr(SubtractNotBelowZero, "__parameters__", ())
 
 
-# --- computing --------------------------------------------------------------------------------
+# --- computing, with no rounding --------------------------------------------------------------
 
 
 def test_a_positive_difference_is_produced_unchanged() -> None:
@@ -195,43 +228,18 @@ def test_a_larger_less_is_floored_at_zero() -> None:
     assert type(output.value) is Decimal
 
 
-def test_the_floor_keeps_the_scale_of_the_difference() -> None:
-    # When the floor applies, the zero keeps the scale of the difference (-15.50 gives
-    # 0.00, so the line prints to the cent like a positive one), and is never a negative zero.
+def test_a_floored_zero_is_never_a_negative_zero() -> None:
     value = compute("10.00", "25.50").value
 
     assert type(value) is Decimal
     assert value == D("0")
-    assert value.as_tuple().exponent == -2
-    assert str(value) == "0.00"
     assert not value.is_signed()
 
 
-@pytest.mark.parametrize(
-    ("amount", "less"),
-    [
-        ("100.00", "100.00"),  # a zero difference: 0.00
-        ("50.00", "100.00"),  # -50.00: 0.00
-        ("10.000", "10.0001"),  # -0.0001: a zero at four places, 0.0000
-        ("0.0000000000000001", "0.0000000000000002"),  # -1E-16: a zero at sixteen places
-    ],
-)
-def test_a_floored_zero_keeps_the_exponent_of_the_difference(amount: str, less: str) -> None:
-    difference = D(amount) - D(less)
-    value = compute(amount, less).value
-
-    assert difference <= 0
-    assert value == D("0")
-    assert value.as_tuple().exponent == difference.as_tuple().exponent
-    assert not value.is_signed()
-
-
-def test_whole_number_operands_still_floor_to_a_whole_zero() -> None:
-    # The whole-number case is unchanged by the rule: a difference with no scale gives 0.
+def test_a_whole_number_floored_zero_is_never_a_negative_zero() -> None:
     value = compute("5", "9").value
 
-    assert str(value) == "0"
-    assert value.as_tuple().exponent == 0
+    assert value == D("0")
     assert not value.is_signed()
 
 
@@ -262,12 +270,9 @@ def test_subtracts_decimals_float_would_not() -> None:
     assert compute("0.3", "0.1") == Artifact(NET, D("0.2"))
 
 
-def test_does_not_round_the_difference() -> None:
+def test_does_not_round_the_difference_without_a_rule() -> None:
     assert compute("0.005", "0.0049") == Artifact(NET, D("0.0001"))
-
-
-def test_keeps_the_scale_of_a_positive_difference() -> None:
-    assert str(compute("100.00", "40").value) == "60.00"
+    assert compute("10.005", "0") == Artifact(NET, D("10.005"))
 
 
 def test_the_order_of_the_inputs_does_not_matter() -> None:
@@ -294,6 +299,66 @@ def test_a_missing_less_is_a_missing_artifact() -> None:
         capability().compute((Artifact(GROSS, D("1")),))
 
 
+# --- computing, under the dataset's rounding rule ---------------------------------------------
+
+
+def test_a_positive_difference_is_rounded_half_up_to_the_cent() -> None:
+    # 10.005 less nothing is 10.005, which sits on the half-cent and rounds up to 10.01.
+    output = compute("10.005", "0", cents())
+
+    assert output == Artifact(NET, D("10.01"))
+    assert str(output.value) == "10.01"
+
+
+def test_the_difference_is_rounded_once_not_each_amount() -> None:
+    # 10.005 less 0.001 is 10.004, rounded to 10.00; rounding each amount first would give 10.01.
+    assert compute("10.005", "0.001", cents()) == Artifact(NET, D("10.00"))
+
+
+def test_a_positive_difference_takes_the_scale_of_the_rule() -> None:
+    output = compute("100", "40", cents())
+
+    assert output == Artifact(NET, D("60.00"))
+    assert str(output.value) == "60.00"
+
+
+def test_a_difference_exactly_on_a_half_cent_is_rounded_by_the_rule_alone() -> None:
+    # 0.005 sits on the tie: half-up to 0.01, half-even to 0.00.
+    half_even = RoundTo(D("0.01"), RoundingMode.HALF_EVEN)
+
+    assert compute("0.005", "0", cents()) == Artifact(NET, D("0.01"))
+    assert compute("0.005", "0", capability(rounding(half_even))) == Artifact(NET, D("0.00"))
+
+
+def test_a_floored_zero_is_half_up_to_the_cent_zero() -> None:
+    output = compute("10.00", "25.50", cents())
+
+    assert output == Artifact(NET, D("0.00"))
+    assert str(output.value) == "0.00"
+    assert output.value.as_tuple().exponent == -2
+
+
+def test_a_floored_zero_is_never_signed_under_the_cent_rule() -> None:
+    # A difference of -0.004 is floored before the rule: a zero, never -0.00.
+    value = compute("0.00", "0.004", cents()).value
+
+    assert value == D("0")
+    assert str(value) == "0.00"
+    assert not value.is_signed()
+
+
+def test_a_difference_of_zero_is_zero_cents_under_the_cent_rule() -> None:
+    assert str(compute("40.50", "40.50", cents()).value) == "0.00"
+
+
+def test_rounds_with_another_rule_of_the_dataset() -> None:
+    ceiling = capability(rounding(RoundTo(D("1"), RoundingMode.CEILING)))
+
+    # 10.2 less nothing is 10.2, up to 11; 3 less 9 is floored to 0, which stays 0.
+    assert compute("10.2", "0", ceiling) == Artifact(NET, D("11"))
+    assert compute("3", "9", ceiling) == Artifact(NET, D("0"))
+
+
 # --- trace ------------------------------------------------------------------------------------
 
 
@@ -318,6 +383,14 @@ def test_traces_the_floored_result() -> None:
     assert trace == (SubtractedNotBelowZeroLine(NET, GROSS, D("10"), REDUCTION, D("25.5"), D("0")),)
 
 
+def test_traces_the_rounded_result_under_the_dataset_rule() -> None:
+    trace = cents().compute(inputs("10.005", "0")).trace
+
+    assert trace == (
+        SubtractedNotBelowZeroLine(NET, GROSS, D("10.005"), REDUCTION, D("0"), D("10.01")),
+    )
+
+
 def test_traces_a_floored_line_not_a_plain_subtracted_line() -> None:
     (line,) = capability().compute(inputs("10", "25.5")).trace
 
@@ -332,7 +405,7 @@ def test_trace_amount_is_the_floored_result() -> None:
 
 
 def test_trace_result_is_the_output() -> None:
-    result = capability().compute(inputs("100.25", "40"))
+    result = cents().compute(inputs("100.25", "40"))
 
     assert [line.amount for line in result.trace] == [output.value for output in result.outputs]
 
@@ -425,6 +498,15 @@ def test_filled_values_are_floored_as_before_when_pass_on_is_declared() -> None:
 
     assert passing.run(inputs("2", "5")).outputs == (Artifact(NET, D(0)),)
     assert passing.run(inputs("5", "2")).outputs == (Artifact(NET, D(3)),)
+
+
+def test_a_fallback_for_less_is_subtracted_then_rounded_by_the_rule() -> None:
+    # 10 less the fallback 0.005 is 9.995, which rounds half-up to 10.00.
+    carried = cents().with_blank_rules({"less": D("0.005")})
+
+    result = carried.run((Artifact(GROSS, D("10")), blank_input(REDUCTION)))
+
+    assert result.outputs == (Artifact(NET, D("10.00")),)
 
 
 def test_a_rule_for_a_slot_that_is_not_consumed_is_refused() -> None:
