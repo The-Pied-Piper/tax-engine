@@ -32,6 +32,18 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, ON428 line 9 (line 58040) "Basic personal amount Claim $12,747": the
 amount claimed, the first part of the total of the Ontario credit amounts."""
 
+ON428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "on428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, ON428 line 1 "Enter your taxable income from line 26000 of your return.": the
+T1 taxable income, the base of the Part A bracket columns."""
+
+ON428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "on428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Bracket lower bound, ON428 line 3 (each column prints "Line 3:" with 0.00, 52,886.00, 105,775.00,
+150,000.00 or 220,000.00): the printed lower bound of the column that line 1 falls in."""
+
 ON428_PERSONAL_AMOUNTS_SUBTOTAL_LINE_18 = AmountKind.declare(
     CATALOG, "on428_personal_amounts_subtotal_line_18", non_negative=True
 )

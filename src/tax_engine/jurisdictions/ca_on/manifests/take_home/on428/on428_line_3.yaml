@@ -1,0 +1,26 @@
+# Form ON428 (Ontario Tax, 2025, 5006-c-25e) Part A, line 3. Each of the five columns prints "Line 3:"
+# with its lower bound: 0.00, 52,886.00, 105,775.00, 150,000.00 and 220,000.00. The form's
+# Transcriber's Note says: "Use the amount from column 1 if the amount on line 1 is $52,886 or less.
+# Use the amount from column 2 if the amount on line 1 is more than $52,886 but not more than
+# $105,775." (columns 3 to 5 follow the same wording up to "more than $220,000"). Line 3 is the
+# printed lower bound of the column that line 1 falls in.
+#
+# Line 1, "Enter your taxable income from line 26000 of your return.", is the T1 taxable income. The
+# T1 form exports it as `ca/taxable_income`, and another form reads an export only as a record list
+# (`ca/t1_taxable_income.taxable_income`), so line 1 is core/record_total over those records. Line 2
+# is a copy of line 1 and has no step of its own: line 3 reads line 1 directly.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/record_total
+    consumes:
+      records: ca/t1_taxable_income.taxable_income
+    produces:
+      output: ca-on/on428_taxable_income_line_1
+  - name: core/bracket_column_lower_bound
+    params:
+      schedule: ca-on/brackets
+    consumes:
+      base: ca-on/on428_taxable_income_line_1
+    produces:
+      output: ca-on/on428_bracket_lower_bound_line_3
