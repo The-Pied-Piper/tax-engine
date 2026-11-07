@@ -23,19 +23,19 @@ from __future__ import annotations
 from decimal import Decimal
 
 import pytest
-from tax_engine.domain.parameters.amount_by_band import (
-    AMOUNT_BY_BAND,
-    AmountBand,
-    AmountByBand,
-)
-from tax_engine.jurisdictions.core.capabilities.amount_by_band import AmountFromBand
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.parameters.amount_by_band import (
+    AMOUNT_BY_BAND,
+    AmountBand,
+    AmountByBand,
+)
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.jurisdictions.core.capabilities.amount_by_band import AmountFromBand
 
 D = Decimal
 SOURCE = YamlParameterSource(

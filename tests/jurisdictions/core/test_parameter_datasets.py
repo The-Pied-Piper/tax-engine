@@ -8,12 +8,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from tax_engine.domain.parameters.amount_by_band import (
-    AMOUNT_BY_BAND,
-    AmountBand,
-    AmountByBand,
-)
-from tax_engine.jurisdictions.core.parameter_parsers.amount_by_band import AmountByBandParser
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -32,6 +26,11 @@ from tax_engine.domain.errors import (
     InvalidThresholdRateError,
 )
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.amount_by_band import (
+    AMOUNT_BY_BAND,
+    AmountBand,
+    AmountByBand,
+)
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
 from tax_engine.domain.parameters.class_rates import (
     CLASS_RATES,
@@ -63,6 +62,7 @@ from tax_engine.domain.parameters.surcharge_tiers import (
     SurchargeTiers,
 )
 from tax_engine.domain.parameters.threshold_rate import THRESHOLD_RATE, ThresholdRate
+from tax_engine.jurisdictions.core.parameter_parsers.amount_by_band import AmountByBandParser
 from tests.parameter_source_support import (
     AMOUNT_2025,
     BRACKETS_2025,
@@ -3137,6 +3137,7 @@ def test_reads_amount_by_band_figures_exactly(tmp_path: Path) -> None:
 
     assert str(bands[2].amount) == "12.50"  # exact, scale kept
     assert str(bands[3].minus) == "300.50"
+    assert bands[1].rate is not None
     assert str(bands[1].rate.value) == "0.10"
 
 

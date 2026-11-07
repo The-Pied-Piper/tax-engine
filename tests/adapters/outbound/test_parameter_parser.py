@@ -16,8 +16,6 @@ from decimal import Decimal
 from typing import assert_type
 
 import pytest
-from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND
-from tax_engine.jurisdictions.core.parameter_parsers.amount_by_band import AmountByBandParser
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.parameter_parser import (
@@ -32,6 +30,7 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
 )
 from tax_engine.domain.parameters.amount import AMOUNT
+from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND
 from tax_engine.domain.parameters.brackets import BRACKETS, BracketSchedule
 from tax_engine.domain.parameters.class_rates import (
     CLASS_RATES,
@@ -70,6 +69,7 @@ from tax_engine.jurisdictions.ca.parameter_shapes.year_amounts import (
     YEAR_AMOUNTS,
 )
 from tax_engine.jurisdictions.core.parameter_parsers.amount import AmountParser
+from tax_engine.jurisdictions.core.parameter_parsers.amount_by_band import AmountByBandParser
 from tax_engine.jurisdictions.core.parameter_parsers.brackets import BracketsParser
 from tax_engine.jurisdictions.core.parameter_parsers.class_rates import ClassRatesParser
 from tax_engine.jurisdictions.core.parameter_parsers.conditions import ConditionsParser

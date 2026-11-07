@@ -16,16 +16,15 @@ from types import MappingProxyType
 from typing import Any, assert_type, cast
 
 import pytest
+
+from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount_by_band import (
     AMOUNT_BY_BAND,
     AmountBand,
     AmountByBand,
 )
-from tax_engine.jurisdictions.core.capabilities.amount_by_band import AmountFromBand
-
-from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
-from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE, Rate
@@ -37,6 +36,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.trace import AmountByBandLine
 from tax_engine.domain.trace import rate_tables as trace_rate_tables
+from tax_engine.jurisdictions.core.capabilities.amount_by_band import AmountFromBand
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
@@ -276,7 +276,7 @@ def test_the_trace_fields_are_in_their_order() -> None:
         "base",
         "base_amount",
         "over",
-        "amount",
+        "flat_amount",
         "minus",
         "rate",
         "plus",
@@ -292,7 +292,7 @@ def test_traces_one_line_for_a_flat_band() -> None:
             base=INCOME,
             base_amount=D("250"),
             over=D("200"),
-            amount=D("12"),
+            flat_amount=D("12"),
             minus=None,
             rate=None,
             plus=None,
@@ -323,13 +323,13 @@ def test_a_flat_band_line_has_no_sloped_figures() -> None:
     (line,) = trace_of(capability(), "250")
 
     assert (line.minus, line.rate, line.plus) == (None, None, None)
-    assert line.amount == D("12")
+    assert line.flat_amount == D("12")
 
 
 def test_a_sloped_band_line_has_no_flat_amount() -> None:
     (line,) = trace_of(capability(), "150")
 
-    assert line.amount is None
+    assert line.flat_amount is None
     assert (line.minus, line.rate, line.plus) == (D("100"), TEN_PERCENT, D("0"))
 
 
@@ -363,7 +363,7 @@ def test_the_trace_result_is_the_output() -> None:
 
     (output,) = result.outputs
     (line,) = result.trace
-    assert line.result == output.value
+    assert line.amount == output.value
 
 
 def test_the_trace_records_the_income_as_the_base_amount_not_the_part_over_the_boundary() -> None:

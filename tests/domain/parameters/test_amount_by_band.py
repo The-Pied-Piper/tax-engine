@@ -19,13 +19,13 @@ from decimal import Decimal
 from typing import Any, cast
 
 import pytest
+
+from tax_engine.domain.errors import DomainError, InvalidAmountByBandError
 from tax_engine.domain.parameters.amount_by_band import (
     AMOUNT_BY_BAND,
     AmountBand,
     AmountByBand,
 )
-
-from tax_engine.domain.errors import DomainError, InvalidAmountByBandError
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import Rate
 
@@ -234,6 +234,7 @@ def test_keeps_its_figures_exactly_as_given() -> None:
     band = AmountBand(D("20000.00"), minus=D("20000.00"), rate=Rate(D("0.0600")), plus=D("300.0"))
 
     assert [str(band.over), str(band.minus), str(band.plus)] == ["20000.00", "20000.00", "300.0"]
+    assert band.rate is not None
     assert str(band.rate.value) == "0.0600"
 
 

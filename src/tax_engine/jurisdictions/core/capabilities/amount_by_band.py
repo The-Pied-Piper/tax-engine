@@ -47,7 +47,7 @@ class AmountFromBand(Capability):
             base=self._base,
             base_amount=base,
             over=band.over,
-            amount=band.amount,
+            flat_amount=band.amount,
             minus=band.minus,
             rate=band.rate,
             plus=band.plus,

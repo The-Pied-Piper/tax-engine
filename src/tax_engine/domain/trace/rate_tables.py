@@ -10,7 +10,7 @@ from decimal import Decimal
 from tax_engine.domain.artifact import ArtifactKind, Money
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rate_table import RateTableRow
-from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule
+from tax_engine.domain.parameters.rounding import RoundingRule
 from tax_engine.domain.trace.base import TraceLine
 
 __all__ = [
@@ -111,23 +111,22 @@ class ChosenRateAppliedLine(TraceLine):
 @dataclass(frozen=True)
 class AmountByBandLine(TraceLine):
     """The band of a chart that `base` (worth `base_amount`) falls in, its `over` the lower bound,
-    produced as `output`: the band's flat `amount` (`minus`, `rate` and `plus` `None`) or its
-    sloped `minus`, `rate` and `plus` (`amount` `None`), rounded with `rounding` to `result`.
-
-    `amount` is the flat figure, `None` for a sloped band. It also satisfies `TraceLine.amount`,
-    so for a sloped band this line's `amount` is `None` and its figure is `result`. `rounding`,
-    `minus`, `rate`, `plus` and `result` have defaults only because a dataclass cannot put a
-    required field after one with a default; a capability always gives them all.
+    produced as `output`: the band's `flat_amount` (`minus`, `rate` and `plus` `None`) or its
+    sloped `minus`, `rate` and `plus` (`flat_amount` `None`), rounded with `rounding` to `result`.
     """
 
     output: Money
     base: Money
     base_amount: Decimal
     over: Decimal
-    # The flat figure: TraceLine.amount is typed Decimal, but a sloped band's line has none (None).
-    amount: Decimal | None = None  # type: ignore[assignment]
-    minus: Decimal | None = None
-    rate: Rate | None = None
-    plus: Decimal | None = None
-    rounding: RoundingRule = NO_ROUNDING
-    result: Decimal = Decimal(0)
+    flat_amount: Decimal | None
+    minus: Decimal | None
+    rate: Rate | None
+    plus: Decimal | None
+    rounding: RoundingRule
+    result: Decimal
+
+    @property
+    def amount(self) -> Decimal:
+        """The rounded figure."""
+        return self.result

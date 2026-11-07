@@ -117,8 +117,8 @@ class AmountByBandRenderer:
         income = line.base_amount
         over = line.over
         rule = line.rounding
-        if line.amount is not None:
-            figure = EnglishFigures.money(line.amount)
+        if line.flat_amount is not None:
+            figure = EnglishFigures.money(line.flat_amount)
         elif line.minus is not None and line.rate is not None and line.plus is not None:
             figure = (
                 f"({EnglishFigures.money(income)} minus {EnglishFigures.money(line.minus)}) "
