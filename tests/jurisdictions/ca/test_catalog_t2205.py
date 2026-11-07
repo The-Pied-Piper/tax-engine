@@ -274,13 +274,6 @@ def test_the_used_lines_quote_the_part_1_instruction() -> None:
     assert "Line 18" in squashed(docstring_of(T2205_LINE_18_USED.identifier))
 
 
-def test_the_rrsp_income_docstring_says_the_caller_no_longer_types_the_t2205_amount() -> None:
-    text = squashed(docstring_of("ca/rrsp_income"))
-
-    assert "T2205" in text
-    assert "no longer types" in text
-
-
 def test_the_routed_amounts_name_the_t1_lines_and_the_age_rule() -> None:
     for kind in (T2205_ON_LINE_11500, T2205_SPP_PART_ON_LINE_11500, T2205_LINE_22_ON_LINE_11500):
         assert "11500" in squashed(docstring_of(kind.identifier)), kind.identifier

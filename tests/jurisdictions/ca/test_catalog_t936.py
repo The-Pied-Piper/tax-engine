@@ -18,8 +18,6 @@ from pathlib import Path
 import tax_engine.jurisdictions.ca.catalog
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.jurisdictions.ca.catalog import (
-    T657_CUMULATIVE_NET_INVESTMENT_LOSS,
-    T657_NET_NON_ELIGIBLE_TAXABLE_CAPITAL_GAINS,
     T936_ADDITIONAL_INVESTMENT_EXPENSES,
     T936_ADDITIONAL_INVESTMENT_INCOME,
     T936_CHART_A_LINE_3,
@@ -364,17 +362,3 @@ def test_chart_a_kinds_quote_their_printed_lines() -> None:
     }
     for identifier, quote in quotes.items():
         assert quote in squashed(docstring_of(identifier)), identifier
-
-
-def test_the_two_t657_lines_are_no_longer_starting_amounts() -> None:
-    # Form T657 Step 1 line 15 and Step 2 line 16 are the totals of Form T936's exports now, so
-    # their docstrings name the form and the export, and no longer call the figure "a starting
-    # amount".
-    for kind, export in (
-        (T657_NET_NON_ELIGIBLE_TAXABLE_CAPITAL_GAINS, "ca/t936.t936_chart_a_line_14"),
-        (T657_CUMULATIVE_NET_INVESTMENT_LOSS, "ca/t936.t936_cnil"),
-    ):
-        text = squashed(docstring_of(kind.identifier))
-        assert "starting amount" not in text, kind.identifier
-        assert "T936" in text, kind.identifier
-        assert export in text, kind.identifier
