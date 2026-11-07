@@ -232,6 +232,12 @@ amount transferred from a dependant (use Worksheet ON428)": "the total of allowa
 claimed for all dependants", each line 12 "Enter whichever is less: amount from line 7 or line
 11. Allowable amount for this dependant", a part of the total of the Ontario credit amounts."""
 
+ON428_CREDITS_WITH_DISABILITY_LINE_31 = AmountKind.declare(
+    CATALOG, "on428_credits_with_disability_line_31", non_negative=True
+)
+"""Total of the credits with the disability amounts, ON428 line 31 "Add lines 28 to 30.": the sum
+of line 28 with the disability amounts of lines 29 and 30."""
+
 DISABILITY_SELF_BASE_AMOUNT = AmountKind.declare(
     CATALOG, "disability_self_base_amount", non_negative=True
 )
