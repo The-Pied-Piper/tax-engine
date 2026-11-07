@@ -189,8 +189,8 @@ ON428_TAX_AFTER_LIFT_CREDIT_LINE_86 = AmountKind.declare(
     CATALOG, "on428_tax_after_lift_credit_line_86", non_negative=True
 )
 """Ontario tax after the LIFT credit, ON428 line 86 "Line 86: Line 84 minus line 85 (if negative,
-enter "0") =": the figure from line 86, read here and declared in its own part by the line 86
-build."""
+enter "0") =": line 84 minus line 85, not below zero. Temporary copy until the line 86 part is on
+main."""
 
 ON428_FARMERS_FOOD_DONATION_CREDIT_LINE_87 = AmountKind.declare(
     CATALOG, "on428_farmers_food_donation_credit_line_87", non_negative=True
