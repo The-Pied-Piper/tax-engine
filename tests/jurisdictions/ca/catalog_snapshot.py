@@ -2951,6 +2951,7 @@ REGISTERED = frozenset(
         "ca/adjusted_family_net_income",
         "ca/cwb_before_reduction_without_dependant",
         "ca/cwb_reduction_without_dependant",
+        "ca/cwb_reduction_threshold",
         "ca/canada_workers_benefit_without_dependant",
         "ca/cwb_before_reduction_with_dependant",
         "ca/cwb_reduction_with_dependant",
