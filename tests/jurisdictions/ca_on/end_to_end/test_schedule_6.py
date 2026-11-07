@@ -175,7 +175,7 @@ def test_the_benefit_at_seventy_thousand_is_zero(take_home_service: TakeHomeServ
     assert sheet.get(CWB_BENEFIT_LINE_28).value == D("0.00")
 
 
-@pytest.mark.parametrize("salary", [case[0] for case in CASES] + ["12345.67"])
+@pytest.mark.parametrize("salary", [case[0] for case in CASES] + ["0", "12345.67"])
 def test_every_amount_line_has_exactly_two_decimals(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
