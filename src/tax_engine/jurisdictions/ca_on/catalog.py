@@ -185,12 +185,48 @@ ON428_TAX_REDUCTION_LINE_77 = AmountKind.declare(
 """Tax reduction, ON428 line 77 "Add lines 74 to 76": the sum of the reduction parts, which for a
 single filer with no dependants is the basic reduction on line 74 alone."""
 
+ON428_TAX_REDUCTION_DOUBLED_LINE_78 = AmountKind.declare(
+    CATALOG, "on428_tax_reduction_doubled_line_78", non_negative=True
+)
+"""Doubled tax reduction, ON428 line 78 "Amount from line 77 above multiplied by 2 =": line 77
+multiplied by 2."""
+
+ON428_ONTARIO_TAX_REDUCTION_LINE_80 = AmountKind.declare(
+    CATALOG, "on428_ontario_tax_reduction_line_80", non_negative=True
+)
+"""Ontario tax reduction, ON428 line 80 "Line 80: Line 78 minus line 79 (if negative, enter "0")
+Ontario tax reduction =": line 78 minus line 79 (a copy of line 73), not below zero."""
+
+ON428_TAX_AFTER_TAX_REDUCTION_LINE_81 = AmountKind.declare(
+    CATALOG, "on428_tax_after_tax_reduction_line_81", non_negative=True
+)
+"""Ontario tax after the tax reduction, ON428 line 81 "Line 81: Line 73 minus line 80 (if negative,
+enter "0") =": line 73 minus the Ontario tax reduction, not below zero."""
+
+ON428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_82 = AmountKind.declare(
+    CATALOG, "on428_provincial_foreign_tax_credit_line_82", non_negative=True
+)
+"""Provincial foreign tax credit, ON428 line 82 "Line 82: Provincial foreign tax credit (complete
+Form T2036)": an optional input that a salary-only caller leaves out."""
+
+ON428_TAX_AFTER_FOREIGN_TAX_CREDIT_LINE_83 = AmountKind.declare(
+    CATALOG, "on428_tax_after_foreign_tax_credit_line_83", non_negative=True
+)
+"""Ontario tax after the foreign tax credit, ON428 line 83 "Line 83: Line 81 minus line 82 (if
+negative, enter "0") =": line 81 minus line 82, not below zero."""
+
+ON428_LIFT_CREDIT_LINE_85 = AmountKind.declare(
+    CATALOG, "on428_lift_credit_line_85", non_negative=True
+)
+"""Low-income individuals and families tax (LIFT) credit, ON428 line 85 "Line 85 and line 62140:
+Low-income individuals and families tax (LIFT) credit (complete Schedule ON428-A)": the LIFT credit
+for a single filer, Schedule ON428-A Part A line 20."""
+
 ON428_TAX_AFTER_LIFT_CREDIT_LINE_86 = AmountKind.declare(
     CATALOG, "on428_tax_after_lift_credit_line_86", non_negative=True
 )
 """Ontario tax after the LIFT credit, ON428 line 86 "Line 86: Line 84 minus line 85 (if negative,
-enter "0") =": line 84 minus line 85, not below zero. Temporary copy until the line 86 part is on
-main."""
+enter "0") =": line 84 minus the LIFT credit, not below zero."""
 
 ON428_FARMERS_FOOD_DONATION_CREDIT_LINE_87 = AmountKind.declare(
     CATALOG, "on428_farmers_food_donation_credit_line_87", non_negative=True
@@ -1219,8 +1255,9 @@ negative, enter "0") Your spouse's or common-law partner's adjusted net income".
 LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_individual_income_threshold", non_negative=True
 )
-"""Individual income threshold, Schedule ON428-A Part B line 31 "Individual income threshold
-32,500.00": a printed amount, taken whole."""
+"""Individual income threshold, Schedule ON428-A Part A line 16 "Individual income threshold
+32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
+whole."""
 
 LIFT_EXCESS_OVER_INDIVIDUAL_THRESHOLD = AmountKind.declare(
     CATALOG, "lift_excess_over_individual_threshold", non_negative=True
