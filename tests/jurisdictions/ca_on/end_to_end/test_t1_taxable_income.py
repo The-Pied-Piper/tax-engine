@@ -1,37 +1,48 @@
-"""T1 (5006-R, 2025) total income from the salary alone: the form's real parts composed end to end.
+"""T1 General (5006-R, 2025) lines 10100 to 26000 from the salary alone, one module for the form.
 
-Every line part has its own test with its neighbours typed in. This module copies every
-`t1_taxable_income*.yaml` part from the package into a temporary manifest folder beside a test-only
-header, and types in only the gross salary (`ca/employment_income`, line 10100). Other employment
-income (line 10400) is an optional header input read as 0. This is not a worked return: no return
-file, one form. Parts that sibling tickets add later join through the glob.
+This module grows one line at a time. Line 22215 is the first: its step is Schedule 8's own export,
+so the form builds nothing for it and this test reads that export from the real Schedule 8 parts
+composed from the salary. Line 15000 builds its own step in the form's parts
+(`t1_taxable_income*.yaml`), so its test composes those with the salary; line 10400 is declared
+optional in that test's header until its own declaration ships. The real header is not used because
+its output, T1 line 167, is not built yet. This is not a worked return: no return file, no slips,
+one form.
 
-Form text (5006-R page 3): "Line 33 and line 15000: Line 28 plus line 32 Total income".
+Form text: T1 (CRA 5006-R, 2025) "Line 33 and line 15000: Line 28 plus line 32 Total income";
+"Line 48 and line 22215: Deduction for CPP or QPP enhanced contributions on employment income
+(complete Schedule 8 or Form RC381, whichever applies) (maximum $1,074.00)"; Schedule 8 (CRA
+5000-S8, 2025) Part 3a line 28 "Enter this amount (in dollars and cents) on line 22215 of your
+return."
 """
 
 from __future__ import annotations
 
-import shutil
 from decimal import Decimal
-from pathlib import Path
 from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
-import tax_engine.registrations
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.registry import Namespace
-from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca.catalog.deductions import (
+    SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN,
+)
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, TOTAL_INCOME
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 
 D = Decimal
-TAKE_HOME = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "take_home"
 HEADER = dedent("""\
+    jurisdiction: CA-ON
+    version: 1
+    valid_from_tax_year: 2025
+    outputs:
+      - ca/employment_income
+    capabilities: []
+    """)
+# The real Schedule 8 declaration (`schedule_8.yaml`) carries the form and its two exports to the
+# return, so the fixture's own form text is an empty mapping.
+FORM = "{}\n"
+HEADER_15000 = dedent("""\
     jurisdiction: CA-ON
     version: 1
     valid_from_tax_year: 2025
@@ -44,33 +55,46 @@ HEADER = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
+PARTS_15000 = (
+    "salary.yaml",
+    *(part.name for part in sorted(TAKE_HOME.glob("t1_taxable_income*.yaml"))),
+)
+PARTS = ("salary.yaml", *(part.name for part in sorted(TAKE_HOME.glob("schedule_8*.yaml"))))
 
 
-def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
-    parts.mkdir(parents=True)
-    (parts / "00_header.yaml").write_text(HEADER)
-    for part in [TAKE_HOME / "salary.yaml", *sorted(TAKE_HOME.glob("t1_taxable_income*.yaml"))]:
-        shutil.copy(part, parts / part.name)
-    roots = dict(tax_engine.registrations.JURISDICTIONS.roots())
-    parameter_roots = dict(roots)
-    roots[Namespace("ca-on")] = tmp_path
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, tax_engine.registrations.artifact_kinds()),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
-        tax_engine.registrations.capabilities(),
+def line_22215(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
+    (sheet,) = worksheets["ca/schedule_8"]
+    return sheet.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value
 
 
-def t1(tmp_path: Path, salary: str) -> Worksheet:
-    given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
-    worksheets = service(tmp_path).compute(JurisdictionCode("CA-ON"), 2025, *given)
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
+        ("70000", "665.00"),
+        ("90000", "1074.00"),
+        ("81200", "1074.00"),
+        ("3500", "0.00"),
+    ],
+)
+def test_line_22215_is_the_schedule_8_enhanced_contributions(
+    take_home_service: TakeHomeService, salary: str, expected: str
+) -> None:
+    assert line_22215(take_home_service, salary) == D(expected)
+
+
+def line_15000(take_home_service: TakeHomeService, salary: str) -> Decimal:
+    worksheets = take_home_service(HEADER_15000, FORM, *PARTS_15000).compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+    )
     (sheet,) = worksheets["ca/t1_taxable_income"]
-    return sheet
+    return sheet.get(TOTAL_INCOME).value
 
 
 @pytest.mark.parametrize(("salary", "expected"), [("70000", "70000.00"), ("90000", "90000.00")])
 def test_line_15000_is_the_salary_when_line_10400_is_left_out(
-    tmp_path: Path, salary: str, expected: str
+    take_home_service: TakeHomeService, salary: str, expected: str
 ) -> None:
-    assert t1(tmp_path, salary).get(TOTAL_INCOME).value == D(expected)
+    assert line_15000(take_home_service, salary) == D(expected)
