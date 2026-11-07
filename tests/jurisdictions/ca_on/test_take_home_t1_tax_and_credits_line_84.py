@@ -19,7 +19,7 @@ income, tax withheld 0, basic credits only, as the take-home calculator states t
 
 Line 84 is pinned as a figure for each salary and equal to line 30000 (the basic personal amount),
 at a salary whose line 23600 is below the threshold, at a salary inside the taper, and at salaries
-either side of the threshold. The trace names the line 30000 amount, the rounding and the
+either side of the top of the taper. The trace names the line 30000 amount, the rounding and the
 total, and the kind is pinned as registered and non-negative.
 """
 
