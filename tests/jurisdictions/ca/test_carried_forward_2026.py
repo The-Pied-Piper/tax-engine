@@ -1,4 +1,4 @@
-"""The eleven 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
+"""The fourteen 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
 indexed dollar amount): each equals its 2025 file apart from the year, and its 2026 file opens
 with the provisional and derivation header lines.
 """
@@ -13,6 +13,7 @@ import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.conditions import CONDITIONS
 from tax_engine.domain.parameters.credit import CREDIT
+from tax_engine.domain.parameters.fraction import FRACTION
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rate import RATE
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -38,6 +39,9 @@ FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca/donation_net_income_rate", RATE),
     ("ca-on/farmers_food_donation_rate", RATE),
     ("ca-on/on428_line_80_conditions", CONDITIONS),
+    ("ca-on/lift_rate", RATE),
+    ("ca-on/lift_single_rate", RATE),
+    ("ca-on/tax_reduction_multiplier", FRACTION),
 ]
 
 
