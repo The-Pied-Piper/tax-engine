@@ -1,0 +1,18 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Ontario cent rounding, 2026 tax year: the rule for every Ontario form line that is a
+# dollars-and-cents box and is read from a "(if negative, enter "0")" or "(cannot be negative)"
+# difference, or from a product of two lines (ON428 line 6, line 4 times line 5,
+# core/multiply_by_rate): Form ON428 (5006-c-25e) lines 4, 6, 53, 61, 65, 71, 80, 81, 83, 86 and
+# 88, and Schedule ON428-A (5006-a-25e) lines 3, 13, 17 and 20. The same rule rounds, once and on
+# the exact figure, the totals of the core/sum and core/sum_not_below_zero steps and the product of
+# the core/times_count step (ON428 line 80) on those forms. The forms state no rounding rule, so
+# half-up to the cent is the project's choice. A line that needs a different rule gets a dataset of
+# its own.
+family: ca-on/cent_rounding
+tax_year: 2026
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+rounding: {increment: "0.01", mode: half_up}
