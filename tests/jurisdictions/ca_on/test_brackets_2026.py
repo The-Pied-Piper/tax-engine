@@ -50,6 +50,12 @@ def schedule(family: str) -> BracketSchedule:
     return SOURCE.get(family, 2026, BRACKETS).values
 
 
+def tax_at_starts(family: str) -> list[Decimal]:
+    starts = [b.tax_at_start for b in schedule(family).brackets]
+    assert None not in starts
+    return [start for start in starts if start is not None]
+
+
 def cumulative_tax(lowers: list[str], rates: list[str]) -> list[Decimal]:
     total = D(0)
     starts = []
@@ -93,8 +99,8 @@ def test_the_2026_federal_lowest_rate_is_the_full_year_14_percent() -> None:
 def test_the_2026_tax_at_each_start_is_the_calculated_cumulative_tax(
     family: str, expected: list[str]
 ) -> None:
-    assert [b.tax_at_start for b in schedule(family).brackets] == [D(x) for x in expected]
-    assert all(b.tax_at_start.as_tuple().exponent == -2 for b in schedule(family).brackets)
+    assert tax_at_starts(family) == [D(x) for x in expected]
+    assert all(start.as_tuple().exponent == -2 for start in tax_at_starts(family))
 
 
 @pytest.mark.parametrize(
@@ -107,7 +113,7 @@ def test_the_2026_tax_at_each_start_is_the_calculated_cumulative_tax(
 def test_the_2026_tax_at_start_follows_the_documented_method(
     family: str, lowers: list[str], rates: list[str]
 ) -> None:
-    assert [b.tax_at_start for b in schedule(family).brackets] == cumulative_tax(lowers, rates)
+    assert tax_at_starts(family) == cumulative_tax(lowers, rates)
 
 
 @pytest.mark.parametrize(
@@ -144,10 +150,8 @@ def test_the_2026_tax_at_start_agrees_with_the_t4127_constant_within_a_dollar(
 ) -> None:
     # T4127's K is the tax overcharged by applying the bracket's rate to the whole income:
     # K = rate x lower - tax_at_start.
-    for bracket, lower, rate, k in zip(
-        schedule(family).brackets, lowers, rates, constants, strict=True
-    ):
-        assert abs(D(rate) * D(lower) - bracket.tax_at_start - D(k)) < D(1)
+    for start, lower, rate, k in zip(tax_at_starts(family), lowers, rates, constants, strict=True):
+        assert abs(D(rate) * D(lower) - start - D(k)) < D(1)
 
 
 @pytest.mark.parametrize(
@@ -173,8 +177,8 @@ def test_the_tax_is_continuous_across_each_2026_threshold(family: str, income: s
     assert abs(at_bound - next_start) <= D("0.005")
 
 
-def test_federal_tax_on_a_70000_salary_taxable_income() -> None:
-    # Taxable income 69,335.00: 8,193.22 + 0.205 x (69,335 - 58,523) = 10,409.68.
+def test_federal_tax_on_a_taxable_income_of_69335() -> None:
+    # A taxable income of 69,335.00: 8,193.22 + 0.205 x (69,335 - 58,523) = 10,409.68.
     assert schedule("ca/brackets").tax_on(D("69335.00")) == D("10409.68")
 
 
