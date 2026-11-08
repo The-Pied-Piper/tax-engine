@@ -8,7 +8,8 @@ its neighbours typed in. This module composes the whole real take-home manifest 
 the gross salary (`ca/employment_income`). It pins the T1 lines the salary-only filer fills, the
 return's one output (line 167, refund or balance owing) and the CPP and EI figures the calculator
 reads from Schedule 8 and T2204. It is not a worked return: no return file, no slips, no tax paid.
-The partial CPP2 range (salary between 71,300 and 81,200) is covered by one salary only.
+The partial CPP2 range (salary between 71,300 and 81,200) is covered by one salary in ANCHORS and
+by the boundary salaries (BOUNDARY_ANCHORS).
 
 Form text: T1 General (CRA 5006-R, 2025, docs/cra-forms-2025/5006-r-25e.txt) "Line 75" columns
 "Line 26000 is more than $57,375 but not more than $114,750" and the printed constants 8,319.38,
@@ -24,9 +25,11 @@ the cent (the project's cent rounding), and the module's oracle does the same.
 Oracles by salary: $70,000 Return DD (traced in the Schedule 8, T2204, ON428 and Schedule 6
 audits); $20,000, $275,000 and $2,010 from the PDOC check and T4127 (CRA, 121st
 edition), as recorded in the project's validation notes; the bracket salaries from arithmetic on
-the printed constants above. Line 167 literals exist only at the anchor salaries; at the other
-salaries line 167 is checked against the federal tax after credits and Ontario line 90. The
-take-home subtraction (salary less CPP, EI and tax) lives in the calculator, outside the engine.
+the printed constants above; the boundary salaries are engine pins checked against the TaxTips.ca
+2025 calculator (see BOUNDARY_ANCHORS). Line 167 literals exist only at the anchor and boundary
+salaries; at the other salaries line 167 is checked against the federal tax after credits and
+Ontario line 90. The take-home subtraction (salary less CPP, EI and tax) lives in the calculator,
+outside the engine.
 """
 
 from __future__ import annotations
@@ -174,14 +177,19 @@ ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
     ("2010", "-22.96", "0.00", "0.00", "0.00", "32.96", "0.00"),
 ]
 
-# Boundary salaries, each at the exact edge and one dollar either side (same column order as
-# ANCHORS). Edges covered: CWB phase-in start and end, CPP exemption (3,500), Ontario tax reduction
-# end, Ontario health premium steps, CWB phase-out start and end, LIFT start and end, the EI
-# maximum (65,700), YMPE (71,300), YAMPE (81,200), Ontario surtax tiers 1 and 2, every federal and
-# Ontario bracket edge, and the federal basic personal amount taper (177,882 to 253,414). Because
-# the only input is salary, each net-income edge sits at the salary where it falls. Oracle: our
-# engine's figures, agreeing with the TaxTips.ca 2025 calculator (independent, dollar-rounded)
-# within $1 on every figure at every salary here; the pins are our cents, not TaxTips' dollars.
+# Boundary salaries (same column order as ANCHORS): each edge's nearest whole-dollar salary and
+# the dollar either side. The only input is salary, so each net-income edge (line 23600) is
+# converted to the salary where it falls, after the line 22215 CPP deduction; because that is
+# rarely a whole dollar, the middle row is at most $1 from the exact edge, and the three rows
+# straddle it. Edges: CWB phase-in start and end, CPP exemption (3,500), first positive federal
+# tax, Ontario health premium steps, CWB phase-out start and end, LIFT start and end, Ontario tax
+# reduction end, the EI maximum (65,700), YMPE (71,300), YAMPE (81,200), Ontario surtax tiers 1
+# and 2 (printed 5,710 and 7,307, where the edge salary is derived from ON428 line 65), every
+# federal and Ontario bracket edge (also covered by BRACKET_SALARIES), and the federal basic
+# personal amount taper (177,882 to 253,414). A label like "ON bracket 2" names the top of
+# bracket 2. Oracle: the engine's own cents as a regression pin; the independent TaxTips.ca 2025
+# calculator (dollar-rounded, not CRA) agreed within $1 on every figure at every salary here when
+# the rows were made (8 Nov 2026), and the edge constants are the printed ones named above.
 BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
     ("2999", "0.00", "0.00", "0.00", "0.00", "49.18", "0.00"),  # CWB start -1
     ("3000", "0.00", "0.00", "0.00", "0.00", "49.20", "0.00"),  # CWB start
@@ -189,9 +197,6 @@ BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
     ("3499", "-134.73", "0.00", "0.00", "0.00", "57.38", "134.73"),  # CPP exemption 3,500 -1
     ("3500", "-135.00", "0.00", "0.00", "0.00", "57.40", "135.00"),  # CPP exemption 3,500
     ("3501", "-135.27", "0.00", "0.00", "0.06", "57.42", "135.27"),  # CPP exemption 3,500 +1
-    ("4999", "-539.73", "0.00", "0.00", "89.19", "81.98", "539.73"),  # CWB 5000 -1
-    ("5000", "-540.00", "0.00", "0.00", "89.25", "82.00", "540.00"),  # CWB 5000
-    ("5001", "-540.27", "0.00", "0.00", "89.31", "82.02", "540.27"),  # CWB 5000 +1
     ("9047", "-1632.69", "0.00", "0.00", "330.05", "148.37", "1632.69"),  # CWB phase-in end -1
     ("9048", "-1632.96", "0.00", "0.00", "330.11", "148.39", "1632.96"),  # CWB phase-in end
     ("9049", "-1633.00", "0.00", "0.00", "330.17", "148.40", "1633.00"),  # CWB phase-in end +1
@@ -203,7 +208,7 @@ BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
         "911.48",
         "308.63",
         "1633.00",
-    ),  # ON tax reduction (engine kink) -1
+    ),  # Federal tax first positive -1
     (
         "18820",
         "-1633.00",
@@ -212,7 +217,7 @@ BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
         "911.54",
         "308.65",
         "1633.00",
-    ),  # ON tax reduction (engine kink)
+    ),  # Federal tax first positive
     (
         "18821",
         "-1632.89",
@@ -221,7 +226,7 @@ BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
         "911.60",
         "308.66",
         "1633.00",
-    ),  # ON tax reduction (engine kink) +1
+    ),  # Federal tax first positive +1
     ("20166", "-1452.68", "180.32", "0.00", "991.63", "330.72", "1633.00"),  # OHP 20,000 -1
     ("20167", "-1452.52", "180.46", "0.02", "991.69", "330.74", "1633.00"),  # OHP 20,000
     ("20168", "-1452.33", "180.59", "0.08", "991.75", "330.76", "1633.00"),  # OHP 20,000 +1
@@ -255,6 +260,33 @@ BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
         "444.31",
         "1632.84",
     ),  # CWB phase-out start +1
+    (
+        "32317",
+        "1251.57",
+        "1808.50",
+        "300.00",
+        "1714.61",
+        "530.00",
+        "856.93",
+    ),  # ON tax reduction end -1
+    (
+        "32318",
+        "1251.85",
+        "1808.63",
+        "300.00",
+        "1714.67",
+        "530.02",
+        "856.78",
+    ),  # ON tax reduction end
+    (
+        "32319",
+        "1252.17",
+        "1808.77",
+        "300.03",
+        "1714.73",
+        "530.03",
+        "856.63",
+    ),  # ON tax reduction end +1
     ("32792", "1407.86", "1872.15", "322.10", "1742.87", "537.79", "786.39"),  # LIFT start -1
     ("32793", "1408.18", "1872.28", "322.14", "1742.93", "537.81", "786.24"),  # LIFT start
     ("32794", "1408.56", "1872.41", "322.24", "1742.99", "537.82", "786.09"),  # LIFT start +1
@@ -298,62 +330,46 @@ BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
     ("81200", "14834.05", "9788.47", "5045.58", "4430.10", "1077.48", "0.00"),  # YAMPE 81,200
     ("81201", "14834.34", "9788.67", "5045.67", "4430.10", "1077.48", "0.00"),  # YAMPE 81,200 +1
     (
-        "96685",
-        "19425.84",
-        "12962.89",
-        "6462.95",
+        "96657",
+        "19417.05",
+        "12957.15",
+        "6459.90",
         "4430.10",
         "1077.48",
         "0.00",
-    ),  # ON surtax tier 1 (engine kink) -1
+    ),  # ON surtax tier 1 -1
+    ("96658", "19417.35", "12957.36", "6459.99", "4430.10", "1077.48", "0.00"),  # ON surtax tier 1
     (
-        "96686",
-        "19426.16",
-        "12963.10",
-        "6463.06",
+        "96659",
+        "19417.66",
+        "12957.56",
+        "6460.10",
         "4430.10",
         "1077.48",
         "0.00",
-    ),  # ON surtax tier 1 (engine kink)
-    (
-        "96687",
-        "19426.47",
-        "12963.30",
-        "6463.17",
-        "4430.10",
-        "1077.48",
-        "0.00",
-    ),  # ON surtax tier 1 (engine kink) +1
-    (
-        "106829",
-        "22619.17",
-        "15042.41",
-        "7576.76",
-        "4430.10",
-        "1077.48",
-        "0.00",
-    ),  # ON surtax tier 2 (engine kink) -1
-    (
-        "106830",
-        "22619.50",
-        "15042.62",
-        "7576.88",
-        "4430.10",
-        "1077.48",
-        "0.00",
-    ),  # ON surtax tier 2 (engine kink)
-    (
-        "106831",
-        "22619.80",
-        "15042.82",
-        "7576.98",
-        "4430.10",
-        "1077.48",
-        "0.00",
-    ),  # ON surtax tier 2 (engine kink) +1
+    ),  # ON surtax tier 1 +1
     ("106848", "22625.15", "15046.31", "7578.84", "4430.10", "1077.48", "0.00"),  # ON bracket 2 -1
     ("106849", "22625.46", "15046.51", "7578.95", "4430.10", "1077.48", "0.00"),  # ON bracket 2
     ("106850", "22625.82", "15046.72", "7579.10", "4430.10", "1077.48", "0.00"),  # ON bracket 2 +1
+    (
+        "112803",
+        "24643.41",
+        "16267.08",
+        "8376.33",
+        "4430.10",
+        "1077.48",
+        "0.00",
+    ),  # ON surtax tier 2 -1
+    ("112804", "24643.77", "16267.29", "8376.48", "4430.10", "1077.48", "0.00"),  # ON surtax tier 2
+    (
+        "112805",
+        "24644.14",
+        "16267.49",
+        "8376.65",
+        "4430.10",
+        "1077.48",
+        "0.00",
+    ),  # ON surtax tier 2 +1
     ("115823", "25788.25", "16886.18", "8902.07", "4430.10", "1077.48", "0.00"),  # Fed bracket 2 -1
     ("115824", "25788.64", "16886.39", "8902.25", "4430.10", "1077.48", "0.00"),  # Fed bracket 2
     ("115825", "25789.06", "16886.64", "8902.42", "4430.10", "1077.48", "0.00"),  # Fed bracket 2 +1
@@ -564,10 +580,7 @@ def test_the_optional_inputs_route_through_the_chain(
     assert t1.get(REFUND_OR_BALANCE_OWING).value == D(line_167)
 
 
-@pytest.mark.parametrize(
-    ("salary", "line_167", "federal", "ontario", "cpp", "ei", "cwb"), [*ANCHORS, *BOUNDARY_ANCHORS]
-)
-def test_the_return_and_its_payroll_figures(
+def check_the_return_and_its_payroll_figures(
     take_home_service: TakeHomeService,
     salary: str,
     line_167: str,
@@ -592,6 +605,40 @@ def test_the_return_and_its_payroll_figures(
         + schedule_8.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value
     ) == D(cpp)
     assert sheet(worksheets, "ca/t2204").get(T2204_PREMIUMS_DEDUCTED).value == D(ei)
+
+
+@pytest.mark.parametrize(("salary", "line_167", "federal", "ontario", "cpp", "ei", "cwb"), ANCHORS)
+def test_the_return_and_its_payroll_figures(
+    take_home_service: TakeHomeService,
+    salary: str,
+    line_167: str,
+    federal: str,
+    ontario: str,
+    cpp: str,
+    ei: str,
+    cwb: str,
+) -> None:
+    check_the_return_and_its_payroll_figures(
+        take_home_service, salary, line_167, federal, ontario, cpp, ei, cwb
+    )
+
+
+@pytest.mark.parametrize(
+    ("salary", "line_167", "federal", "ontario", "cpp", "ei", "cwb"), BOUNDARY_ANCHORS
+)
+def test_the_return_and_its_payroll_figures_at_the_boundaries(
+    take_home_service: TakeHomeService,
+    salary: str,
+    line_167: str,
+    federal: str,
+    ontario: str,
+    cpp: str,
+    ei: str,
+    cwb: str,
+) -> None:
+    check_the_return_and_its_payroll_figures(
+        take_home_service, salary, line_167, federal, ontario, cpp, ei, cwb
+    )
 
 
 def test_line_167_adds_the_ontario_tax_once_and_never_the_health_premium_again(
