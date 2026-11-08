@@ -1,0 +1,11 @@
+# Provisional: taken from the CRA page "Indexation adjustment for personal income tax and benefit amounts" (2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Canada workers benefit reduction threshold, 2026 tax year (line 24 of Schedule 6 in the
+# 2025 edition), single filer: $27,392, claimed whole. The family threshold, $31,251, is not read.
+# A dollars-and-cents figure, so it rounds half-up to the cent, which changes nothing.
+family: ca/cwb_reduction_threshold
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html
+rounding: {increment: "0.01", mode: half_up}
+amount: "27392"
