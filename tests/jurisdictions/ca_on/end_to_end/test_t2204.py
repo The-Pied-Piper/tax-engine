@@ -293,3 +293,12 @@ def test_the_cent_figures_print_cents_at_70000_and_20000(
         value = sheet.get(artifact).value
         assert str(value) == printed
         assert value.as_tuple().exponent == -2
+
+
+def test_70k_trace_labels_line_16_by_its_figure(take_home_service: TakeHomeService) -> None:
+    sheet = salary_only(take_home_service, "70000")
+
+    line_16 = [line for line in sheet.trace if line.label == "t2204_line_16"]
+
+    assert [line.amount for line in line_16] == [D("1077.48")]
+    assert all(line.label is not None for line in sheet.trace)

@@ -27,3 +27,8 @@ class FormInstanceLine(TraceLine):
     def amount(self) -> Decimal:
         """Zero: the group is not about one figure; its inner lines each are."""
         return Decimal(0)
+
+    @property
+    def label(self) -> str | None:
+        """None: the line is not about one figure."""
+        return None

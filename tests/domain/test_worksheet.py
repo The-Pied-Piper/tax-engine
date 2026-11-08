@@ -19,6 +19,7 @@ from tax_engine.domain.errors import (
     CapabilityContractError,
     DomainError,
     DuplicateArtifactError,
+    DuplicateLabelError,
     MissingArtifactError,
 )
 from tax_engine.domain.kinds import AmountKind
@@ -41,6 +42,10 @@ class DoubledLine(TraceLine):
     @property
     def amount(self) -> Decimal:
         return self.doubled
+
+    @property
+    def label(self) -> str | None:
+        return None
 
 
 class Double(Capability):
@@ -106,6 +111,25 @@ def test_rejects_an_artifact_kind_given_as_a_starting_artifact() -> None:
 def test_rejects_two_starting_artifacts_of_one_kind() -> None:
     with pytest.raises(DuplicateArtifactError, match="'a'"):
         Worksheet(Artifact(A, D(1)), Artifact(A, D(2)))
+
+
+def test_rejects_two_starting_artifacts_that_share_a_label() -> None:
+    with pytest.raises(DuplicateLabelError, match="'ca/x' and 'ca-on/x' share the label 'x'"):
+        Worksheet(Artifact(AmountKind("ca/x"), D(1)), Artifact(AmountKind("ca-on/x"), D(2)))
+
+
+def test_rejects_an_output_that_shares_a_label_with_another_kind() -> None:
+    worksheet = Worksheet(Artifact(AmountKind("ca/x"), D(1)))
+
+    with pytest.raises(DuplicateLabelError, match="share the label 'x'"):
+        worksheet.apply(Double(AmountKind("ca/x"), AmountKind("ca-on/x")))
+
+    assert worksheet.trace == ()
+
+
+def test_accepts_a_label_used_once_in_each_of_two_worksheets() -> None:
+    Worksheet(Artifact(AmountKind("ca/x"), D(1)))
+    Worksheet(Artifact(AmountKind("ca-on/x"), D(1)))
 
 
 def test_apply_records_the_outputs() -> None:

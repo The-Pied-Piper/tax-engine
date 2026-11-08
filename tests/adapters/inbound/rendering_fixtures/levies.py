@@ -21,6 +21,10 @@ class ExLevyLine(TraceLine):
     def amount(self) -> Decimal:
         return self.figure
 
+    @property
+    def label(self) -> str | None:
+        return self.output.label
+
 
 @english_renderer
 class ExLevyRenderer:

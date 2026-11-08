@@ -31,3 +31,8 @@ class ContributionTierLine(TraceLine):
     def amount(self) -> Decimal:
         """The contribution: the rounded, capped result."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label

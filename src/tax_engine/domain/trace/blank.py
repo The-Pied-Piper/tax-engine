@@ -28,6 +28,11 @@ class LeftBlankLine(TraceLine):
         """Zero: a blank has no figure, so the line is not about one."""
         return Decimal(0)
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.kind.label
+
 
 @dataclass(frozen=True)
 class BlankFallbackLine(TraceLine):
@@ -40,6 +45,11 @@ class BlankFallbackLine(TraceLine):
     def amount(self) -> Decimal:
         """The fallback taken."""
         return Decimal(self.fallback)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.kind.label
 
 
 @dataclass(frozen=True)
@@ -66,6 +76,11 @@ class BlankFieldFallbackLine(TraceLine):
         """The fallback taken."""
         return Decimal(self.fallback)
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.field.kind.label
+
 
 @dataclass(frozen=True)
 class BlankPassedOnLine(TraceLine):
@@ -81,3 +96,8 @@ class BlankPassedOnLine(TraceLine):
     def amount(self) -> Decimal:
         """Zero: a blank has no figure, so the line is not about one."""
         return Decimal(0)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label

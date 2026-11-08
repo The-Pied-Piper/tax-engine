@@ -23,3 +23,8 @@ class GivenAmountLine(TraceLine):
     def amount(self) -> Decimal:
         """The amount given, as it was given."""
         return self.given_amount
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label

@@ -74,6 +74,10 @@ class ScaledLine(TraceLine):
     def amount(self) -> Decimal:
         return self.scaled
 
+    @property
+    def label(self) -> str | None:
+        return None
+
 
 class Scale(Capability):
     """Produces `target` = `source` × the `factor` dataset's value."""

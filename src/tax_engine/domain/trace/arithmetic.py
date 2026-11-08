@@ -73,6 +73,11 @@ class RoundedTotalLine(TraceLine):
         """The rounded total."""
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class SumLine(TraceLine):
@@ -88,6 +93,11 @@ class SumLine(TraceLine):
     def amount(self) -> Decimal:
         """The total of the parts."""
         return self.total
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -109,6 +119,11 @@ class SumNotBelowZeroLine(TraceLine):
         """The floored total."""
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class RateAppliedLine(TraceLine):
@@ -125,6 +140,11 @@ class RateAppliedLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded product."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -145,6 +165,11 @@ class DividedByRateLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded quotient."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -170,6 +195,11 @@ class SignChosenDifferenceLine(TraceLine):
         """The chosen, signed figure."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class SubtractedLine(TraceLine):
@@ -188,6 +218,11 @@ class SubtractedLine(TraceLine):
     def amount(self) -> Decimal:
         """The difference."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -213,6 +248,11 @@ class SubtractedNotBelowZeroLine(TraceLine):
         """The floored result."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class CreditAmountLine(TraceLine):
@@ -230,6 +270,11 @@ class CreditAmountLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded credit amount."""
         return self.value
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -249,6 +294,11 @@ class CappedAmountLine(TraceLine):
         """The rounded lesser."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class LesserOfLine(TraceLine):
@@ -262,6 +312,11 @@ class LesserOfLine(TraceLine):
     def amount(self) -> Decimal:
         """The least of the parts."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -284,6 +339,11 @@ class LesserOfWithMaximumLine(TraceLine):
         """The rounded lesser."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class GreaterOfLine(TraceLine):
@@ -297,6 +357,11 @@ class GreaterOfLine(TraceLine):
     def amount(self) -> Decimal:
         """The greatest of the parts."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -315,6 +380,11 @@ class PerUnitAmountLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded product."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -339,6 +409,11 @@ class MultipleOverLine(TraceLine):
         """The floored, rounded result."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class AtMostLine(TraceLine):
@@ -359,6 +434,11 @@ class AtMostLine(TraceLine):
     def amount(self) -> Decimal:
         """The amount, as produced."""
         return self.amount_value
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -381,6 +461,11 @@ class ClaimAtMostLine(TraceLine):
         """The claim, as produced."""
         return self.claim_value
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class FractionAppliedLine(TraceLine):
@@ -401,6 +486,11 @@ class FractionAppliedLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded product."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -424,6 +514,11 @@ class PercentageAppliedLine(TraceLine):
     def amount(self) -> Decimal:
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class MultipliedByRateLine(TraceLine):
@@ -446,6 +541,11 @@ class MultipliedByRateLine(TraceLine):
     @property
     def amount(self) -> Decimal:
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -473,6 +573,11 @@ class RatioAppliedLine(TraceLine):
         """The rounded quotient."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class TimesCountLine(TraceLine):
@@ -495,6 +600,11 @@ class TimesCountLine(TraceLine):
         """The rounded product."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class QuotientLine(TraceLine):
@@ -516,6 +626,11 @@ class QuotientLine(TraceLine):
     def amount(self) -> Decimal:
         """The exact quotient."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -540,6 +655,11 @@ class ThresholdGateLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded amount, or 0 when gated off."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -568,6 +688,11 @@ class AmountOrDividedByRateLine(TraceLine):
         """The figure chosen."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class CountAtLeastLine(TraceLine):
@@ -588,6 +713,11 @@ class CountAtLeastLine(TraceLine):
     def amount(self) -> Decimal:
         """The count, as produced."""
         return Decimal(self.count)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -614,6 +744,11 @@ class MoreThanPerUnitLine(TraceLine):
         """The total, as produced."""
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class CountAtMostLine(TraceLine):
@@ -635,6 +770,11 @@ class CountAtMostLine(TraceLine):
         """The count, as produced."""
         return Decimal(self.count)
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class YesOrNoCountLine(TraceLine):
@@ -652,6 +792,11 @@ class YesOrNoCountLine(TraceLine):
     def amount(self) -> Decimal:
         """The count, as produced."""
         return Decimal(self.count)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -674,6 +819,11 @@ class CountWithoutRecordsLine(TraceLine):
         """The count, as produced."""
         return Decimal(self.count)
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class CountNotRefusedLine(TraceLine):
@@ -691,6 +841,11 @@ class CountNotRefusedLine(TraceLine):
     def amount(self) -> Decimal:
         """The count, as produced."""
         return Decimal(self.count)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -716,6 +871,11 @@ class AmountWhenMoreLine(TraceLine):
         """The amount passed through, or 0."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class RatioTruncatedLine(TraceLine):
@@ -740,6 +900,11 @@ class RatioTruncatedLine(TraceLine):
         """The rounded ratio."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class PositivePartOfNegationLine(TraceLine):
@@ -759,6 +924,11 @@ class PositivePartOfNegationLine(TraceLine):
     def amount(self) -> Decimal:
         """The negation, or 0 when the amount is not negative."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -780,3 +950,8 @@ class LesserOfWhenPositiveLine(TraceLine):
     def amount(self) -> Decimal:
         """The least (negated when shown in brackets), or 0."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
