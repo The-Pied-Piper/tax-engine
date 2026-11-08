@@ -1,0 +1,13 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Schedule 6 (5000-S6, 2025 edition) line 19, "Rate 27%": the percentage of the Canada workers
+# benefit that line 20 ("Line 18 multiplied by the percentage from line 19") applies to line 18. The
+# 27% is a printed figure, held here as a rate of 0.27, so line 19 has no step of its own. Line 20
+# is a dollars-and-cents figure, so the product rounds half-up to the cent on this dataset.
+family: ca/cwb_rate
+tax_year: 2026
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s6/5000-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.27"
