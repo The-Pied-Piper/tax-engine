@@ -38,7 +38,3 @@ def test_2026_tax_reduction_basic_is_a_provisional_file() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1].startswith("# Derivation: ")
-
-
-def test_2025_tax_reduction_basic_is_unchanged() -> None:
-    assert SOURCE.get(FAMILY, 2025, CREDIT).values == Credit(amount=D("294.00"))

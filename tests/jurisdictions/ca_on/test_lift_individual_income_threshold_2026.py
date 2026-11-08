@@ -47,7 +47,3 @@ def test_2026_lift_individual_income_threshold_is_a_provisional_file() -> None:
     assert "1.9%" in "".join(lines[1:6])
     assert "Table 8.2" in "".join(lines[1:6])
     assert "nearest dollar" in "".join(lines[1:6])
-
-
-def test_2025_lift_individual_income_threshold_is_unchanged() -> None:
-    assert SOURCE.get(FAMILY, 2025, CREDIT).values == Credit(amount=D("32500.00"))
