@@ -2,6 +2,7 @@
 # Schedule 8 Part 3 line 12, first additional CPP contributions, 2026 tax year. Figures taken as printed in
 # T4127 (122nd Edition, Jan 2026) Table 8.5 (rate 1%, maximum $711) and Table 8.3 (YMCE $71,100.00, the
 # upper bound). Same layout as the 2025 file: the tier starts at 0.
+# The contribution is in dollars and cents; the sources name no rounding mode, so half-up to the cent, the engine's convention.
 family: ca/cpp_line_12_first_additional_contribution
 tax_year: 2026
 kind: contribution_tier

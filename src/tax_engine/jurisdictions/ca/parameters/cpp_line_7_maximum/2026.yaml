@@ -2,6 +2,7 @@
 # Maximum of Schedule 8 Part 3 line 7, 2026 tax year. Taken as printed in T4127 (122nd Edition, Jan 2026)
 # Table 8.3 as the Year's Maximum Contributory Earnings (YMCE), $71,100.00; the 2026 Schedule 8 is not
 # yet published. Same role as the 2025 file: the bound line 7 caps the difference at.
+# A dollars-and-cents amount, so half-up to the cent.
 family: ca/cpp_line_7_maximum
 tax_year: 2026
 kind: amount

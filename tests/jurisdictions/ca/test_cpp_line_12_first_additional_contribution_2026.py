@@ -59,9 +59,12 @@ def test_2026_line_12_cites_t4127_jan_2026() -> None:
         ("71100", "711.00"),
         ("90000", "711.00"),
         ("0", "0"),
+        # Rounded half-up to the cent: 1% of 0.10 is 0.001, of 0.50 is 0.005.
+        ("0.10", "0.00"),
+        ("0.50", "0.01"),
     ],
 )
-def test_contributes_on_the_tier(earnings: str, contribution: str) -> None:
+def test_contributes_on_line_12(earnings: str, contribution: str) -> None:
     # Earnings are line 7's, after the basic exemption: $70,000 - $3,500 = $66,500.
     capability = TieredContribution(
         SOURCE.get(FAMILY, 2026, CONTRIBUTION_TIER), EARNINGS, CONTRIBUTION

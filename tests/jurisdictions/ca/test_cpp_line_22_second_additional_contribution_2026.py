@@ -64,9 +64,12 @@ def test_2026_line_22_cites_t4127_jan_2026() -> None:
         ("20000", "416.00"),
         ("5000", "200.00"),
         ("0", "0"),
+        # Rounded half-up to the cent: 4% of 0.10 is 0.004, of 0.125 is 0.005.
+        ("0.10", "0.00"),
+        ("0.125", "0.01"),
     ],
 )
-def test_contributes_on_the_tier(earnings: str, contribution: str) -> None:
+def test_contributes_on_line_22(earnings: str, contribution: str) -> None:
     # Earnings are line 4's, the earnings between the two ceilings.
     capability = TieredContribution(
         SOURCE.get(FAMILY, 2026, CONTRIBUTION_TIER), EARNINGS, CONTRIBUTION
