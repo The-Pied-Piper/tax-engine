@@ -16,18 +16,20 @@ SOURCE = YamlParameterSource(
 )
 FAMILY = "ca-on/lift_maximum"
 PROVISIONAL_HEADER = (
-    "# Provisional: indexed from the 2025 form text by T4127's Ontario index rate; "
-    "to be confirmed against the 2026 form text "
-    "when CRA publishes it."
+    "# Provisional: taken from the 2025 form text named in sources; "
+    "to be confirmed against the 2026 form text when CRA publishes it."
 )
-T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
-SOURCES = (T4127_URL,)
+SOURCES = (
+    "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt",
+    "https://www.ontario.ca/page/low-income-individuals-and-families-tax-credit",
+    "https://www.budget.ontario.ca/2025/fallstatement/provisions.html",
+)
 
 
 def test_2026_lift_maximum() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-    assert data.values == Amount(D("892"))
+    assert data.values == Amount(D("875"))
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
     assert data.sources == SOURCES
     assert data.tax_year == 2026
@@ -39,7 +41,4 @@ def test_2026_lift_maximum_is_a_provisional_file() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1].startswith("# Derivation: ")
-    assert "least certain" in lines[1] + lines[2]
-    assert "1.9%" in "".join(lines[1:6])
-    assert "Table 8.2" in "".join(lines[1:6])
-    assert "nearest dollar" in "".join(lines[1:6])
+    assert "carried forward unchanged from the 2025 file, not indexed" in lines[1]

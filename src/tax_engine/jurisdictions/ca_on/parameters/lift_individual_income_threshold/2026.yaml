@@ -1,10 +1,9 @@
-# Provisional: indexed from the 2025 form text by T4127's Ontario index rate; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: the 2025 threshold of 32,500 indexed by Ontario's 1.9% index rate from T4127 Table 8.2,
-# rounded to the nearest dollar: 32,500 x 1.019 = 33,117.50, giving 33,118. This is the least certain
-# figure in the ca-on set; LIFT is not mentioned in T4127, so it is unconfirmed until the 2026 form
-# text is published.
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file, not indexed. Ontario's LIFT figures have been the same
+# since the 2022 enhancement (maximum 875, reduction from 32,500) while other Ontario credit amounts were indexed, and
+# the fall 2025 budget lists LIFT with fixed figures and not among the 2025 indexed amounts; LIFT is not in T4127.
 # Ontario LIFT individual income threshold, 2026 tax year (Schedule ON428-A, form 5006-A): Part A line 16
-# and Part B line 31 "Individual income threshold 33,118.00", from which line 32 "Line 30 minus line 31
+# and Part B line 31 "Individual income threshold 32,500.00", from which line 32 "Line 30 minus line 31
 # (if negative, enter "0")" takes line 30 "Amount from line 13 of the previous page". It borrows the credit
 # kind because it is a printed amount taken whole.
 # Line 31 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's choice, as
@@ -13,6 +12,8 @@ family: ca-on/lift_individual_income_threshold
 tax_year: 2026
 kind: credit
 sources:
-  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
+  - https://www.ontario.ca/page/low-income-individuals-and-families-tax-credit
+  - https://www.budget.ontario.ca/2025/fallstatement/provisions.html
 rounding: {increment: "0.01", mode: half_up}
-amount: "33118"
+amount: "32500"
