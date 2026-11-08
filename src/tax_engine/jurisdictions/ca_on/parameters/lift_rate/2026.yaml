@@ -1,7 +1,7 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
 # Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Ontario LIFT credit rate, 2026 tax year (Schedule ON428-A, form 5006-A): line 4 "Applicable rate 5.05%",
-# applied by line 5 "Line 3 multiplied by the percentage from line 4 (maximum $892)" to line 3 "Line 1 plus
+# applied by line 5 "Line 3 multiplied by the percentage from line 4 (maximum $875)" to line 3 "Line 1 plus
 # line 2", line 1 "Amount from line 10100 of your return".
 # Line 5 is a dollars-and-cents box, so the product rounds half-up to the cent, the project's choice, as
 # the form states no rounding rule.
