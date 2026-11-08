@@ -9,6 +9,7 @@ provisional until the 2026 form text is published.
 from __future__ import annotations
 
 from decimal import Decimal
+from importlib.resources import files
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -42,8 +43,6 @@ def test_2026_credit_rate_cites_t4127() -> None:
 
 
 def test_2026_credit_rate_is_a_provisional_file() -> None:
-    from importlib.resources import files
-
     path = files("tax_engine.jurisdictions.ca").joinpath("parameters/credit_rate/2026.yaml")
 
     assert path.read_text().startswith(
