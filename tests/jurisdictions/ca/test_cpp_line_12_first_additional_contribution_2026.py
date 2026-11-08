@@ -39,8 +39,8 @@ def test_2026_line_12_tier_is_1_percent_from_0_to_71100_at_most_711() -> None:
     data = SOURCE.get(FAMILY, 2026, CONTRIBUTION_TIER)
 
     assert data.values == ContributionTier(Rate(D("0.01")), D("0"), D("71100"), D("711.00"))
-    # Schedule 8 Part 3 line 12 gives no rounding rule of its own; the tier rounds to the cent,
-    # as the line 28 "(in dollars and cents)" box it feeds does.
+    # The tier rounds half-up to the cent, consistent with T4127's "Rounding procedures" for
+    # CPP/CPP2 contributions.
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 

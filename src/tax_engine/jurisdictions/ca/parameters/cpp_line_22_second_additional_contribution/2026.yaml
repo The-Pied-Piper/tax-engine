@@ -2,7 +2,8 @@
 # Schedule 8 Part 3 line 22, second additional CPP contributions, 2026 tax year. Figures taken as printed in
 # T4127 (122nd Edition, Jan 2026) Table 8.6 (rate 4%, earnings subject to the second additional contribution
 # $10,400.00, maximum $416). Same layout as the 2025 file: the band starts at 0.
-# The contribution is in dollars and cents; the sources name no rounding mode, so half-up to the cent, the engine's convention.
+# The contribution is in dollars and cents, so half-up to the cent, consistent with T4127's "Rounding
+# procedures" for CPP/CPP2 contributions (drop the third decimal digit, raising the second if the third is 5 or more).
 family: ca/cpp_line_22_second_additional_contribution
 tax_year: 2026
 kind: contribution_tier

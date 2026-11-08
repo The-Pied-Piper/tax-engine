@@ -2,7 +2,8 @@
 # Required base CPP contributions, Schedule 8 Part 3 line 11, 2026 tax year. Figures taken as printed in
 # T4127 (122nd Edition, Jan 2026) Table 8.4 (rate 4.95%, maximum $3,519.45) and Table 8.3 (YMCE $71,100.00,
 # the upper bound, as line 7's maximum). Same layout as the 2025 file: the tier starts at 0.
-# The contribution is in dollars and cents; the sources name no rounding mode, so half-up to the cent, the engine's convention.
+# The contribution is in dollars and cents, so half-up to the cent, consistent with T4127's "Rounding
+# procedures" for CPP/CPP2 contributions (drop the third decimal digit, raising the second if the third is 5 or more).
 family: ca/cpp_line_11_base_contribution
 tax_year: 2026
 kind: contribution_tier
