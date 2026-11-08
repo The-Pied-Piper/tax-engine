@@ -48,6 +48,21 @@ class DoubledLine(TraceLine):
         return None
 
 
+class TwoOut(Capability):
+    """Produces `a` and `b`, each as `inp`."""
+
+    CONSUMES = {"inp": Decimal}
+    PRODUCES = {"a": Decimal, "b": Decimal}
+
+    def __init__(self, inp: Money, a: Money, b: Money) -> None:
+        super().__init__(inp=inp, a=a, b=b)
+        self._inp, self._a, self._b = inp, a, b
+
+    def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
+        value = self._input(inputs, self._inp).value
+        return CapabilityResult((Artifact(self._a, value), Artifact(self._b, value)), ())
+
+
 class Double(Capability):
     """Produces `out` = 2 × `inp`; `extra`, `skip` and `peek` let a test break the contract.
 
@@ -114,7 +129,7 @@ def test_rejects_two_starting_artifacts_of_one_kind() -> None:
 
 
 def test_rejects_two_starting_artifacts_that_share_a_label() -> None:
-    with pytest.raises(DuplicateLabelError, match="'ca/x' and 'ca-on/x' share the label 'x'"):
+    with pytest.raises(DuplicateLabelError, match="'ca/x' .* and 'ca-on/x' .* share the label 'x'"):
         Worksheet(Artifact(AmountKind("ca/x"), D(1)), Artifact(AmountKind("ca-on/x"), D(2)))
 
 
@@ -125,6 +140,18 @@ def test_rejects_an_output_that_shares_a_label_with_another_kind() -> None:
         worksheet.apply(Double(AmountKind("ca/x"), AmountKind("ca-on/x")))
 
     assert worksheet.trace == ()
+
+
+def test_a_refused_apply_claims_none_of_its_labels() -> None:
+    worksheet = Worksheet(
+        Artifact(AmountKind("ca/inp"), D(1)), Artifact(AmountKind("ca-on/b"), D(1))
+    )
+
+    with pytest.raises(DuplicateLabelError):
+        worksheet.apply(TwoOut(AmountKind("ca/inp"), AmountKind("ca/a"), AmountKind("ca/b")))
+    worksheet.apply(Double(AmountKind("ca/inp"), AmountKind("ca-on/a")))
+
+    assert worksheet.get(AmountKind("ca-on/a")).value == D(2)
 
 
 def test_accepts_a_label_used_once_in_each_of_two_worksheets() -> None:

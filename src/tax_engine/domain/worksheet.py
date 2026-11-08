@@ -34,10 +34,10 @@ class Worksheet:
         self._producers: dict[ArtifactKind[Any], Capability] = {}
         self._trace: list[TraceLine] = []
         self._kinds_by_label: dict[str, ArtifactKind[Any]] = {}
+        self._claim_labels(artifact.kind for artifact in artifacts)
         for artifact in artifacts:
             if artifact.kind in self._artifacts:
                 raise DuplicateArtifactError(f"two starting values for {artifact.kind.label!r}")
-            self._claim_label(artifact.kind)
             self._artifacts[artifact.kind] = artifact
             if artifact.is_blank:
                 self._trace.append(LeftBlankLine(artifact.kind))
@@ -97,24 +97,28 @@ class Worksheet:
             raise DuplicateArtifactError(
                 f"{name} produced {ArtifactKind.labels(recorded)}, already recorded"
             )
-        for artifact in result.outputs:
-            self._claim_label(artifact.kind)
+        self._claim_labels(artifact.kind for artifact in result.outputs)
         for artifact in result.outputs:
             self._artifacts[artifact.kind] = artifact
             self._producers[artifact.kind] = capability
         self._trace.extend(result.trace)
 
-    def _claim_label(self, kind: ArtifactKind[Any]) -> None:
-        """Record `kind`'s label; refuse a different kind that already has it.
+    def _claim_labels(self, kinds: Iterable[ArtifactKind[Any]]) -> None:
+        """Record the labels of `kinds`; refuse a different kind that already has one.
 
-        A label is the local part of the identifier, so `ca/x` and `ca-on/x` would collide, and
-        the trace would no longer say which figure a line is about.
+        A label is the local part of the identifier, so `a/x` and `b/x` would collide, and the
+        trace would no longer say which figure a line is about. All or none are recorded.
         """
-        other = self._kinds_by_label.setdefault(kind.label, kind)
-        if other != kind:
-            raise DuplicateLabelError(
-                f"{other.identifier!r} and {kind.identifier!r} share the label {kind.label!r}"
-            )
+        claimed = dict(self._kinds_by_label)
+        for kind in kinds:
+            other = claimed.setdefault(kind.label, kind)
+            if other != kind:
+                raise DuplicateLabelError(
+                    f"{other.identifier!r} ({other.value_type.__name__}) and "
+                    f"{kind.identifier!r} ({kind.value_type.__name__}) share the label "
+                    f"{kind.label!r}"
+                )
+        self._kinds_by_label = claimed
 
     @staticmethod
     def _check_artifacts(artifacts: Iterable[object]) -> None:
