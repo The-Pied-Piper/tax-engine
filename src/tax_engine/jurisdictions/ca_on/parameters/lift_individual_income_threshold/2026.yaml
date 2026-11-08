@@ -1,7 +1,9 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: carried forward unchanged from the 2025 file, not indexed. Ontario's LIFT figures have been the same
-# since the 2022 enhancement (maximum 875, reduction from 32,500) while other Ontario credit amounts were indexed, and
-# the fall 2025 budget lists LIFT with fixed figures and not among the 2025 indexed amounts; LIFT is not in T4127.
+# Derivation: carried forward unchanged from the 2025 file; LIFT is not indexed, so the 2025 figure is kept rather than raised by 1.9%.
+# Ontario's LIFT figures have been the same since the 2022 enhancement (maximum 875, reduction from 32,500) while other Ontario
+# credit amounts were indexed (https://www.ontario.ca/page/low-income-individuals-and-families-tax-credit), and the fall 2025
+# budget lists LIFT with fixed figures and not among the 2025 indexed amounts
+# (https://www.budget.ontario.ca/2025/fallstatement/provisions.html). T4127 does not mention LIFT.
 # Ontario LIFT individual income threshold, 2026 tax year (Schedule ON428-A, form 5006-A): Part A line 16
 # and Part B line 31 "Individual income threshold 32,500.00", from which line 32 "Line 30 minus line 31
 # (if negative, enter "0")" takes line 30 "Amount from line 13 of the previous page". It borrows the credit
@@ -13,7 +15,5 @@ tax_year: 2026
 kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt
-  - https://www.ontario.ca/page/low-income-individuals-and-families-tax-credit
-  - https://www.budget.ontario.ca/2025/fallstatement/provisions.html
 rounding: {increment: "0.01", mode: half_up}
 amount: "32500"
