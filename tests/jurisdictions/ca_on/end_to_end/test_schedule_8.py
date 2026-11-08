@@ -7,7 +7,9 @@ the gross salary (`ca/employment_income`). The real header is not used because i
 167, is not built yet. This is not a worked return: no return file, no slips, one form.
 
 Form text: CRA 5000-S8 (2025), Part 3 lines 1 to 28 and the "Monthly proration for 2025" table.
-The expected figures are the ones the full-form audit produced from this same composition.
+The expected figures are the ones the full-form audit produced from this same composition, plus
+the CRA T4127 (120th edition) Appendix 1 Scenarios 1 and 3, whose published CPP and CPP2 totals
+they match.
 """
 
 from __future__ import annotations
@@ -154,27 +156,11 @@ SIX_MONTHS_70K = {
     "28": "537.00",
 }
 
-# CRA T4127 (120th edition, January 2025), Appendix 1, Scenario 1: $4,000 a pay period, 24 pay
-# periods, so a salary of 96,000 for 12 months. Table 1 totals: CPP 4,034.10, CPP2 396.00.
-T4127_SCENARIO_1 = {
-    "B": "71300.00",
-    "D": "81200.00",
-    "E": "3500.00",
-    "1": "81200.00",
-    "2": "81200.00",
-    "4": "9900.00",
-    "5": "71300.00",
-    "7": "67800.00",
-    "11": "3356.10",
-    "12": "678.00",
-    "22": "396.00",
-    "25": "3356.10",
-    "28": "1074.00",
-}
-# Same appendix, Scenario 3: $4,000 a pay period, turns 18 in March, so pay periods 7 to 24 are
-# paid (18 periods, a salary of 72,000) and PM is 9 months. Table 3 totals: CPP 3,025.58,
-# CPP2 297.00.
-T4127_SCENARIO_3 = {
+# CRA T4127 (120th edition, January 2025), Appendix 1, Scenario 3: $4,000 a pay period, turns 18 in
+# March, so pay periods 7 to 24 are paid (18 periods, a salary of 72,000) and PM is 9 months.
+# Table 3 totals: CPP 3,025.58, CPP2 297.00. Scenario 1 ($4,000 a pay period, 24 periods, so 96,000
+# for 12 months; totals CPP 4,034.10, CPP2 396.00) gives the same figures as FULL_YEAR_90K.
+NINE_MONTHS_72K = {
     "B": "53475.00",
     "D": "60900.00",
     "E": "2625.00",
@@ -197,8 +183,8 @@ T4127_SCENARIO_3 = {
         ("70000", None, FULL_YEAR_70K),
         ("90000", None, FULL_YEAR_90K),
         ("70000", 6, SIX_MONTHS_70K),
-        ("96000", None, T4127_SCENARIO_1),
-        ("72000", 9, T4127_SCENARIO_3),
+        ("96000", None, FULL_YEAR_90K),
+        ("72000", 9, NINE_MONTHS_72K),
     ],
 )
 def test_every_line_matches_the_printed_form(
@@ -219,8 +205,8 @@ def test_every_line_matches_the_printed_form(
 def test_the_cra_t4127_worked_examples_give_the_published_totals(
     tmp_path: Path, salary: str, months: int | None, cpp: str, cpp2: str
 ) -> None:
-    """The totals CRA prints for Scenarios 1 and 3 of T4127 Appendix 1 (120th edition): CPP is the
-    base plus the enhanced contributions (lines 11 and 12), CPP2 is line 22."""
+    # The totals CRA prints for Scenarios 1 and 3 of T4127 Appendix 1 (120th edition): CPP is the
+    # base plus the enhanced contributions (lines 11 and 12), CPP2 is line 22.
     result = figures(schedule_8(tmp_path, salary, months))
 
     assert result["11"] + result["12"] == D(cpp)
