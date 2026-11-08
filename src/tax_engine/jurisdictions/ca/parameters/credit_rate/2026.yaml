@@ -1,0 +1,11 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Federal non-refundable tax credit rate, 2026 tax year: 14%. T4127 (122nd edition, effective
+# January 1, 2026): "For 2026 and subsequent tax years, the lowest federal tax bracket will be
+# 14%." (2025 used the 14.5% blended rate.) As in 2025, the product rounds half-up to the cent.
+family: ca/credit_rate
+tax_year: 2026
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.14"
