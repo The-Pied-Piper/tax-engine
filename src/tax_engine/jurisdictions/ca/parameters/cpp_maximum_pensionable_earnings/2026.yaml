@@ -1,5 +1,5 @@
 # Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: annual figure x n/12, rounded half-up to the cent; reproduces the 2025 rows.
+# Derivation: calculated: annual figure x n/12, rounded half-up to the cent; reproduces the 2025 rows.
 # Maximum pensionable earnings, 2026 tax year. The 2026 Schedule 8 (form 5000-S8) is not
 # published yet. T4127 (122nd Edition) gives the 2026 maximum pensionable earnings of $74,600,
 # and the Schedule 8 "Monthly proration" column is that figure times the number of months from
