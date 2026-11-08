@@ -16,7 +16,8 @@ SOURCE = YamlParameterSource(
 )
 FAMILY = "ca-on/lift_maximum"
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text "
+    "# Provisional: indexed from the 2025 form text by T4127's Ontario index rate; "
+    "to be confirmed against the 2026 form text "
     "when CRA publishes it."
 )
 T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"

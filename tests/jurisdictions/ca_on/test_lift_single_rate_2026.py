@@ -16,7 +16,7 @@ SOURCE = YamlParameterSource(
 )
 FAMILY = "ca-on/lift_single_rate"
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text (carried forward); to be confirmed against "
+    "# Provisional: taken from the 2025 form text named in sources; to be confirmed against "
     "the 2026 form text when CRA publishes it."
 )
 SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-a/5006-a-25e.txt",)
