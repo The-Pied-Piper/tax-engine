@@ -1,5 +1,7 @@
 # Provisional: taken from the CRA page "Adjustment of personal income tax and benefit amounts" (2026); to be confirmed against the 2026 form text when CRA publishes it.
-# Canada workers benefit base amount, 2026 tax year (Schedule 6 line 17 in the 2025 edition): $3,000, claimed whole.
+# Canada workers benefit base amount, 2026 tax year (line 17 of Schedule 6 in the 2025
+# edition): $3,000, claimed whole.
+# Figures as reported from Umar's machine on 2026-11-08; not yet read from the page text in this repo.
 # A dollars-and-cents figure, so it rounds half-up to the cent, which changes nothing.
 family: ca/cwb_base_amount
 tax_year: 2026
