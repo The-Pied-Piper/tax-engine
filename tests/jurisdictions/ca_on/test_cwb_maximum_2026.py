@@ -12,6 +12,7 @@ import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.registry import Namespace
 
 D = Decimal
 SOURCE = YamlParameterSource(
@@ -27,3 +28,10 @@ def test_2026_cwb_maximum() -> None:
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
     assert data.sources == (CRA_PAGE,)
     assert data.tax_year == 2026
+
+
+def test_2026_cwb_maximum_is_a_provisional_file() -> None:
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca")]
+    lines = (root / "parameters" / "cwb_maximum" / "2026.yaml").read_text().splitlines()
+
+    assert lines[0] == PROVISIONAL_HEADER
