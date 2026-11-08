@@ -3,7 +3,7 @@
 # It borrows the credit kind because it is claimed whole, as the basic personal
 # amount is.
 # Line 74 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule.
+# project's choice, as the form states no rounding rule.
 family: ca-on/tax_reduction_basic
 tax_year: 2025
 kind: credit

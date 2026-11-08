@@ -1,7 +1,7 @@
 """T2204 (2025) line 6, the line 4 plus line 5, as the Ontario take-home manifest part wires it.
 
 T2204 line 6: "Line 4 plus line 5 = 6". Line 4 (`ca/t2204_premiums_deducted`) is the premiums
-deducted, produced by another ticket (#207), so the test header declares it as a required starting
+deducted, produced by another part, so the test header declares it as a required starting
 input. Line 5 (`ca/t2204_line_5`, "Residents of other than Quebec (amount from line 9 of Schedule
 13)") is the self-employed EI premium a salary-only caller never has: an optional input, read as
 blank when left out, and a blank line 5 is read as 0 by the part, which the trace records as a

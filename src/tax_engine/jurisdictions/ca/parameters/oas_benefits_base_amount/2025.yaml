@@ -2,8 +2,8 @@
 # benefits repayment"): line 16 "OAS benefits base amount 93,343.00", a part of line 17 "Line 15
 # minus line 16 (if negative, enter "0")". It borrows the credit kind because it is claimed
 # whole, as the basic personal amount is.
-# Line 16 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
-# decision, as the form states no rounding rule.
+# Line 16 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca/oas_benefits_base_amount
 tax_year: 2025
 kind: credit

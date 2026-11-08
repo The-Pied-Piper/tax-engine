@@ -158,7 +158,7 @@ def test_the_t2121_chart_lines_are_no_longer_artifacts(registry: ArtifactRegistr
 # property.
 
 
-# --- Form T2043 Chart B (#191): the statement's starting amounts and the Chart B totals ----------
+# --- Form T2043 Chart B: the statement's starting amounts and the Chart B totals ----------
 
 
 # --- Form T2125 statement lines: the T1 line each statement goes on ----------------------------

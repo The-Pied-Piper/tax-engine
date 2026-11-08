@@ -2,8 +2,8 @@
 # tax year (Federal Worksheet, form 5000-D1): "Line 31600 - Disability amount for self", line 4
 # "Threshold for child care and attendant care expenses 3,464.00". Line 5 of the worksheet is the
 # care expenses less this threshold, not below zero.
-# Line 4 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
-# decision, as the form states no rounding rule.
+# Line 4 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca/disability_self_care_threshold
 tax_year: 2025
 kind: credit

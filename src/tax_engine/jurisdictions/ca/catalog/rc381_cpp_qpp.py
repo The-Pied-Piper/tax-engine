@@ -49,7 +49,7 @@ T4_CPP_SLIP_COUNT = CountKind.declare(CATALOG, "t4_cpp_slip_count", non_negative
 """Number of T4 slips with CPP pensionable earnings, Schedule 8 Part 3 line 1 and Form RC381 Part 3
 line 1 "(maximum $81,200 per slip)": a count the filer enters, whole and 0 or more. The forms take
 one total over all the slips but print the box 26 maximum for one slip, so the count validates it
-(Umar, 2026-10-26, Q6): box 26 is refused above the count times the printed maximum, and with a
+(a project rule): box 26 is refused above the count times the printed maximum, and with a
 count of 0 any box 26 above 0 is refused. A slip is CPP or QPP by its province of employment, so
 it is counted in only one of this count and `ca/t4_qpp_slip_count`."""
 

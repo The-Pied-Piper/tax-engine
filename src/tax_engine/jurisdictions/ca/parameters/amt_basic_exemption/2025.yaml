@@ -1,7 +1,7 @@
 # Basic exemption of the alternative minimum tax, 2025 tax year (Form T691 Part 1 line 94): "Basic
 # exemption" "177,882.00", deducted on line 95 "Line 93 minus line 94 (if negative, enter "0")". The
 # amount is a printed figure of the form, claimed whole. Line 94 is a dollars-and-cents box, so the
-# amount rounds half-up to the cent, the owner's decision, as the form states no rounding rule.
+# amount rounds half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca/amt_basic_exemption
 tax_year: 2025
 kind: credit

@@ -3,7 +3,7 @@
 # line 7 "Enter whichever amount is the least: line 4, line 5 or line 6.". Two-thirds is
 # not a finite decimal, so it is a fraction, not a rate.
 # Line 6 is a dollars-and-cents box, so the two-thirds rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule.
+# project's choice, as the form states no rounding rule.
 family: ca/child_care_earned_income_fraction
 tax_year: 2025
 kind: fraction

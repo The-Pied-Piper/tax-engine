@@ -1,8 +1,8 @@
 """The 2025 Part 1 line 98 rate of Form T691: 50% of line 33800, the net non-refundable tax credits,
 checked against Form T691. Form T691 (2025) Part 1 line 98: "Net non-refundable tax credits (line
 33800 of your return) × 50% =". The 50% is the printed percentage of the form, a rate of 0.5,
-applied to a dollars-and-cents product, so it is rounded half-up to the cent, the owner's
-decision, as the form states no rounding rule.
+applied to a dollars-and-cents product, so it is rounded half-up to the cent, the project's
+choice, as the form states no rounding rule.
 """
 
 from __future__ import annotations

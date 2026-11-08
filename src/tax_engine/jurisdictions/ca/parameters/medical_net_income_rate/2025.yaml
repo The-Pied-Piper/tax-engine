@@ -2,7 +2,7 @@
 # "Amount from line 23600" "multiplied by 3%". It is the share of the net income that
 # line 110 takes off the filer's own medical expenses (line 107).
 # Line 108 is a dollars-and-cents box, so the product rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule.
+# project's choice, as the form states no rounding rule.
 family: ca/medical_net_income_rate
 tax_year: 2025
 kind: rate

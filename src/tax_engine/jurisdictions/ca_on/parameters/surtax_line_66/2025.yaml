@@ -1,7 +1,7 @@
 # Ontario surtax tier 1, 2025 tax year (Form ON428, form 5006-C): line 66 "(Line 65 minus
 # $5,710) multiplied by 20% (if negative, enter "0")". Line 65 "Line 63 minus line 64 (if
 # negative, enter "0")" is the surtax base, read from its own part. Line 66 is a
-# dollars-and-cents box, so it rounds half-up to the cent, the owner's decision, as the form
+# dollars-and-cents box, so it rounds half-up to the cent, the project's choice, as the form
 # states no rounding rule. Line 67 (the 36% tier) is its own part, as each tier is a separate
 # line.
 family: ca-on/surtax_line_66

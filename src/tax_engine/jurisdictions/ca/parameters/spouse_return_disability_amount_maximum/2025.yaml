@@ -2,8 +2,8 @@
 # amount on line 31600 of your return. (maximum $16,052)"), the most Schedule 2 line 4 "Enter the
 # amount from line 31600 of their return. (Note 1)" can carry. It borrows the credit kind because
 # the figure is claimed whole, as the basic personal amount is.
-# The worksheet states no rounding rule, so the figure rounds half-up to the cent, the owner's
-# decision, the repo convention.
+# The worksheet states no rounding rule, so the figure rounds half-up to the cent, the project's
+# choice, the repo convention.
 family: ca/spouse_return_disability_amount_maximum
 tax_year: 2025
 kind: credit

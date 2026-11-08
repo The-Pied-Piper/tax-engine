@@ -3,8 +3,8 @@
 # political contributions from line 40900 of your return were" "$1,275 or more, enter $650 on line
 # 41000 of your return. If not, use the amount from line 40900 of your return to decide which
 # column to complete." The $1,275 borrows the credit kind because it is a printed constant,
-# claimed whole. It is a dollars-and-cents amount, so it rounds half-up to the cent, the owner's
-# decision, as the form states no rounding rule.
+# claimed whole. It is a dollars-and-cents amount, so it rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca/political_credit_shortcut_threshold
 tax_year: 2025
 kind: credit

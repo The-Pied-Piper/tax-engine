@@ -6,7 +6,7 @@
 # directly (`ca/adjusted_family_net_income`, from schedule_6_line_15.yaml), not a copy of it. Line 24
 # is the reduction threshold (`ca/cwb_reduction_threshold`, from schedule_6_line_24.yaml). The
 # result is not below zero. The form prints no rounding rule, so the cent rounding
-# (`ca/cent_rounding`) is the owner's decision, as on line 18.
+# (`ca/cent_rounding`) is the project's choice, as on line 18.
 form:
   name: ca/schedule_6
 capabilities:

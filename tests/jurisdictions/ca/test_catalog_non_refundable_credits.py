@@ -297,7 +297,7 @@ def test_the_tuition_transfer_maximum_and_checked_kinds_are_registered_beside_th
     # Line 32400 "Tuition amount transferred from a child or grandchild"
     # (5000-G: "The maximum amount each student can transfer to you is $5,000 minus the amount that
     # they used to reduce their own tax payable."). The bound is the number of students the
-    # transfer comes from, a caller count, times $5,000 (the owner's decision), and the transfer is
+    # transfer comes from, a caller count, times $5,000 (the project's choice), and the transfer is
     # refused above it, not capped. The bound is `ca/tuition_transferred_from_child_maximum`, the
     # output of `core/per_unit_amount` over the per-student dataset; the checked amount is the
     # output of `core/at_most`, which the line 33500 sum reads in place of the input.
@@ -333,7 +333,7 @@ def test_the_canadian_tuition_count_and_checked_kinds_are_registered_beside_the_
     # institutions for 2025 (fees for each institution must be more than $100)": the form takes
     # one total, so the caller's number of institutions is the count (a whole number of 0 or
     # more) that `ca/more_than_per_unit` multiplies by $100, and the total it checks is the
-    # checked amount that lines 2 to 8 read in place of the input (the owner's decision).
+    # checked amount that lines 2 to 8 read in place of the input (the project's choice).
     assert registry.kind("ca/canadian_tuition_institutions") is CANADIAN_TUITION_INSTITUTIONS
     assert CANADIAN_TUITION_INSTITUTIONS.value_type is int
     assert non_negative(CANADIAN_TUITION_INSTITUTIONS) is True

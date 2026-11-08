@@ -3,7 +3,7 @@
 Form T691 (2025) Part 3 line 2: "Federal surtax on business income earned outside Canada" "Multiply
 the amount from line 1 by 48%.", where line 1 is the amount from line 7 of Part 2 (the basic
 federal tax). The 48% is the printed percentage of the form, a rate of 0.48, applied to a
-dollars-and-cents line, so it is rounded half-up to the cent, the owner's decision, as the form
+dollars-and-cents line, so it is rounded half-up to the cent, the project's choice, as the form
 states no rounding rule. The form prints no floor on line 2, so a negative basic federal tax gives
 a negative surtax, which the kind holds.
 

@@ -242,7 +242,7 @@ def test_the_gross_farming_expenses_line_67061_is_registered_and_signed(
 
 PROVINCE_CODES = ("on", "mb", "sk", "ab", "ns", "pe", "nl", "nb")
 
-# --- Form T2043 Parts 3 and 4 (#191): the Chart B and Chart C totals -----------------------------
+# --- Form T2043 Parts 3 and 4: the Chart B and Chart C totals -----------------------------
 
 PARTS_3_AND_4_ARTIFACTS = (
     *(f"ca/fuel_charge_chart_b_gross_income_{c}" for c in PROVINCE_CODES),

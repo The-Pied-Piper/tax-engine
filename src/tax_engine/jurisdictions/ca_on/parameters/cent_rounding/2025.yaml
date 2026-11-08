@@ -5,7 +5,7 @@
 # 88, and Schedule ON428-A (5006-a-25e) lines 3, 13, 17 and 20. The same rule rounds, once and on
 # the exact figure, the totals of the core/sum and core/sum_not_below_zero steps and the product of
 # the core/times_count step (ON428 line 80) on those forms. The forms state no rounding rule, so
-# half-up to the cent is the owner's decision. A line that needs a different rule gets a dataset of
+# half-up to the cent is the project's choice. A line that needs a different rule gets a dataset of
 # its own.
 family: ca-on/cent_rounding
 tax_year: 2025

@@ -9,7 +9,7 @@ caller has no T4, so line 1 reads the salary typed once (T1 line 10100) in place
 box 14.
 
 Line 2 is an optional input, read as blank when left out, and a blank line 2 is read as 0 by the
-part. The $2,000 of line 7 (`ca/t2204_exemption`) is produced by another ticket (#209), so the test
+part. The $2,000 of line 7 (`ca/t2204_exemption`) is produced by another part, so the test
 header declares it as a required starting input, as the Schedule 8 line D test does.
 """
 

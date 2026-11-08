@@ -13,7 +13,7 @@
 # (position 3). The `blank` rule is set on the whole amounts slot, because CountByConditions takes
 # one blank rule for the slot: a blank line 2 reads as 0, as the note needs. A blank salary or
 # exemption also reads as 0 in this build. That is acceptable here: the salary is always typed,
-# and the exemption is produced by the line 7 ticket (#209) before this step runs.
+# and the exemption is produced by the line 7 part before this step runs.
 #
 # Step 2 multiplies the salary by that count: the salary when the note does not apply, "0" when
 # it does.

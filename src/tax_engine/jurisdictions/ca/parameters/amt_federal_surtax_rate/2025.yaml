@@ -1,7 +1,7 @@
 # Federal surtax rate of the alternative minimum tax, 2025 tax year (Form T691 Part 3 line 2):
 # "Federal surtax on business income earned outside Canada" "Multiply the amount from line 1 by
 # 48%.". The 48% is the printed percentage of the form, a rate of 0.48, and the product is a
-# dollars-and-cents line, so it rounds half-up to the cent, the owner's decision, as the form
+# dollars-and-cents line, so it rounds half-up to the cent, the project's choice, as the form
 # states no rounding rule. The same printed 48% is Form T691 Part 6 line 9 "Federal surtax on
 # business income earned outside Canada" "Multiply the amount from line 7 by 48%.", which applies it
 # to line 7; one rate dataset serves both lines.

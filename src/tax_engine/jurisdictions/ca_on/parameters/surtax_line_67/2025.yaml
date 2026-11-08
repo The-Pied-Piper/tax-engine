@@ -3,7 +3,7 @@
 # the surtax base. Line 66 (the 20% tier over $5,710) is its own part, and line 68 "Line 66 plus
 # line 67" adds the two.
 # Line 67 is a dollars-and-cents box, so the tier rounds half-up to the cent before line 68 adds
-# it, the owner's decision, as the form states no rounding rule.
+# it, the project's choice, as the form states no rounding rule.
 family: ca-on/surtax_line_67
 tax_year: 2025
 kind: surcharge_tiers

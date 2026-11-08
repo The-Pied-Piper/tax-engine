@@ -10,7 +10,7 @@ part is loaded from the package. The header and the form's export are made up he
 shared scaffold owns them. Both inputs are declared as required, as the line 7 test does for line 3.
 
 The blank-line-4 take-home case (line 4 computed from the salary) is covered by the line 4 ticket's
-part (#207), not here. These tests start from a line 4 amount given directly.
+part, not here. These tests start from a line 4 amount given directly.
 """
 
 from __future__ import annotations

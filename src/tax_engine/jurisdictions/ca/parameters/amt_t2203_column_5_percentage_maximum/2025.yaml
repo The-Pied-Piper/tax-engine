@@ -4,8 +4,8 @@
 # for 100%). The form prints no maximum on that percentage: the 100% limit, the whole of the amount,
 # is a choice, not a form rule (no .txt published; confirmed from the PDF). It borrows the credit
 # kind because the figure is used whole, as the basic personal amount is.
-# The form states no rounding rule, so the figure rounds half-up to the cent, the owner's
-# decision, the repo convention.
+# The form states no rounding rule, so the figure rounds half-up to the cent, the project's
+# choice, the repo convention.
 family: ca/amt_t2203_column_5_percentage_maximum
 tax_year: 2025
 kind: credit

@@ -10,8 +10,7 @@ capabilities:
   # Route: the form prints line 25 only when line 24 is positive. A salary-only caller has no T4,
   # so actual equals required, line 24 is "0" and the form's own route is Part 3b, where line 36
   # (line 30 = line 15, plus lines 32 and 35, both 0) goes to line 30800 and line 58240. Same
-  # figure; the project builds the Part 3a line and not Part 3b (Umar, 6 Nov 2026 21:34Z,
-  # "agreed. stick with short for now").
+  # figure, so this part builds the shorter Part 3a line; Part 3b is not modelled.
   - name: core/sum
     params:
       rounding: ca/cent_rounding

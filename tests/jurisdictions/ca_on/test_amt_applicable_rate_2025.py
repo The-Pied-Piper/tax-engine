@@ -2,7 +2,7 @@
 
 Form T691 (2025) Part 1 line 79: "Applicable Rate" "× 50%", and line 80: "Line 78 multiply by the
 percentage from line 79" "=". The 50% is the printed percentage of the form, a rate of 0.5, and the
-product is a dollars-and-cents line, so it is rounded half-up to the cent, the owner's decision, as
+product is a dollars-and-cents line, so it is rounded half-up to the cent, the project's choice, as
 the form states no rounding rule.
 """
 

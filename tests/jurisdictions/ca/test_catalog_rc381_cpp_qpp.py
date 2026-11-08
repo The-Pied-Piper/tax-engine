@@ -1104,7 +1104,7 @@ def test_each_rc381_result_docstring_quotes_the_form(name: str, quotes: tuple[st
 def test_the_t4_slip_counts_are_registered_whole_numbers_of_0_or_more(
     registry: ArtifactRegistry,
 ) -> None:
-    # The number of T4 slips with CPP and with QPP pensionable earnings (Umar, 2026-10-26, Q6).
+    # The number of T4 slips with CPP and with QPP pensionable earnings.
     for identifier, kind in (
         ("ca/t4_cpp_slip_count", T4_CPP_SLIP_COUNT),
         ("ca/t4_qpp_slip_count", T4_QPP_SLIP_COUNT),

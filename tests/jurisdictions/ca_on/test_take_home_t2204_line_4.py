@@ -9,7 +9,7 @@ at most $1,077.48), the same as line 10 of the form.
 
 The real line 1 part and the line 4 part are loaded under test-local headers, as the take-home
 header is another part's. The line 1 part is the real one; the $2,000 of line 7
-(`ca/t2204_exemption`) is produced by another ticket (#209), so the header declares it as a
+(`ca/t2204_exemption`) is produced by another part, so the header declares it as a
 required starting input.
 """
 

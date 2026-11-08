@@ -5,8 +5,8 @@
 # $10,000."
 # It is claimed whole through core/credit_amount, so it is the `credit` kind, as the donation
 # first tier maximum is.
-# It is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
-# decision, as the form states no rounding rule.
+# It is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca/home_buyers_maximum
 tax_year: 2025
 kind: credit
