@@ -1,7 +1,7 @@
 # Provisional: taken from the CRA page "Adjustment of personal income tax and benefit amounts" (2026); to be confirmed against the 2026 form text when CRA publishes it.
 # Maximum basic Canada workers benefit, 2026 tax year (line 21 of Schedule 6 in the 2025
 # edition), single filer: $1,665, claimed whole. The family maximum, $2,869, is not read.
-# Figures as reported from Umar's machine on 2026-11-08; not yet read from the page text in this repo.
+# Figures as reported from Umar's machine on 2026-11-08; not yet read from the page text here.
 # A dollars-and-cents figure, so it rounds half-up to the cent, which changes nothing.
 family: ca/cwb_maximum
 tax_year: 2026
