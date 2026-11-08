@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Wrong tax figures belong here. Security problems do not: please report those privately, see [SECURITY.md](../blob/main/SECURITY.md).
+        Wrong tax figures belong here. Security problems do not: please report those privately, see [SECURITY.md](https://github.com/The-Pied-Piper/tax-engine/blob/main/SECURITY.md).
   - type: textarea
     id: what-happened
     attributes:
