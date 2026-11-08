@@ -1,0 +1,17 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Federal basic personal amount, 2026 tax year. T4127 (122nd edition, effective January 1,
+# 2026), Federal Basic Personal Amount (BPAF) Formula: "Where NI* <= $181,440, BPAF = $16,452.
+# Where $181,440 < NI* < $258,482, BPAF** = $16,452 - (NI* - $181,440) x ($1,623 / $77,042).
+# Where NI* >= $258,482, BPAF = $14,829." So the amount is a taper: base 14,829 (the minimum,
+# 16,452 - 1,623), supplement 1,623, threshold 181,440 and range 77,042 (the printed divisor,
+# taken as printed). Same rounding as 2025: half-up to the cent, once.
+family: ca/basic_personal_amount
+tax_year: 2026
+kind: taper
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+base: "14829"
+supplement: "1623"
+threshold: "181440"
+range: "77042"
