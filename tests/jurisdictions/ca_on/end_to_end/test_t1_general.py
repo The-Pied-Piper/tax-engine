@@ -22,7 +22,7 @@ that column. The form prints no rounding rule for lines 6 and 74; the engine rou
 the cent (the project's cent rounding), and the module's oracle does the same.
 
 Oracles by salary: $70,000 Return DD (traced in the Schedule 8, T2204, ON428 and Schedule 6
-audits); $20,000, $275,000 and $2,010 from the PDOC check of 7 Nov 2026 and T4127 (CRA, 121st
+audits); $20,000, $275,000 and $2,010 from the PDOC check and T4127 (CRA, 121st
 edition), as recorded in the project's validation notes; the bracket salaries from arithmetic on
 the printed constants above. Line 167 literals exist only at the anchor salaries; at the other
 salaries line 167 is checked against the federal tax after credits and Ontario line 90. The
@@ -163,7 +163,7 @@ PRINTED_AS_IS = {"71", "73"}
 # The return's line 167 and the payroll figures the calculator reads, by salary, with sources:
 # (salary, line 167, federal tax after credits, Ontario tax line 90, CPP base + enhanced, EI, CWB).
 # $70,000: Return DD (fed 7,585.64 + ON428 line 90 3,911.45); CPP and EI from T4127 (121st ed.),
-# confirmed against the PDOC check of 7 Nov 2026. $20,000: PDOC check; the Canada workers benefit
+# confirmed against the PDOC check. $20,000: PDOC check; the Canada workers benefit
 # (1,633.00) exceeds the tax, so line 167 is a refund. $275,000: PDOC check; CPP is capped (base
 # 3,356.10, enhanced 678.00, CPP2 396.00: 4,430.10) and line 22215 is 1,074.00. $2,010: T2204
 # (EI premium 32.96, line 15 overpayment 22.96 on T1 line 45000), CPP 0.00.
