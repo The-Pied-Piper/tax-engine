@@ -3,8 +3,9 @@
 The 2026 Schedule 8 (form 5000-S8) is not published. T4127 prints, for Canada except Quebec, the
 2026 year's maximum pensionable earnings $74,600.00, the additional maximum pensionable earnings
 $85,000.00, the second additional pensionable earnings $10,400.00 (the band between them) and,
-from its Chapter 7 formulas, the basic exemption $3,500. Each of the four families is the Schedule
-8 "Monthly proration" column for those figures: for n months, the annual figure x n / 12, rounded
+from its CPP tables (Table 6.1 and Table 8.3), the basic exemption $3,500. Each of the four
+families is the Schedule 8 "Monthly proration" column for those figures: for n months, the
+annual figure x n / 12, rounded
 half-up to the cent. CALCULATED, so each file is provisional and its second line states the
 derivation. The same method reproduces every row of the 2025 files (annual figures 71,300, 9,900,
 81,200 and 3,500), and the 2026 files keep the 2025 row layout: keys 1 to 12, no row for 0.

@@ -6,8 +6,8 @@
 # "Monthly proration" column is that figure times the number of months from line A (Part 2),
 # rounded half-up to the cent.
 # The rows are one for each number of months from 1 to 12. Part 4 line 12 takes its limit from
-# its own dataset, so Schedule 8 does not read the line C figure. The table has no row for 0
-# months, so a count without a row is refused.
+# its own dataset; line C is read at Part 6 line 34, and Form RC381 Part 2 line D reads the same
+# column. The table has no row for 0 months, so a count without a row is refused.
 # The figures are in dollars and cents, so each rounds half-up to the cent, which changes none
 # of them.
 family: ca/cpp_second_additional_earnings_maximum

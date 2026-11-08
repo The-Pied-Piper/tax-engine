@@ -1,7 +1,7 @@
 # Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
 # Derivation: annual figure x n/12, rounded half-up to the cent; reproduces the 2025 rows.
 # Maximum basic exemption, 2026 tax year. The 2026 Schedule 8 (form 5000-S8) is not published
-# yet. T4127 (122nd Edition, Chapter 7) gives the annual basic exemption of $3,500, and the
+# yet. T4127 (122nd Edition, Table 6.1 and Table 8.3) gives the annual basic exemption of $3,500, and the
 # Schedule 8 "Monthly proration" column is that figure times the number of months from line A
 # (Part 2), rounded half-up to the cent.
 # The rows are one for each number of months from 1 to 12. Part 4 line 8 is "Amount from line E
