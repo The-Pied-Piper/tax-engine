@@ -9,7 +9,6 @@ provisional until the 2026 form text is published.
 from __future__ import annotations
 
 from decimal import Decimal
-from importlib.resources import files
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -17,6 +16,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE, Rate
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 
 D = Decimal
@@ -24,6 +24,10 @@ SOURCE = YamlParameterSource(
     tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
 )
 FAMILY = "ca/credit_rate"
+PROVISIONAL_HEADER = (
+    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text "
+    "when CRA publishes it."
+)
 T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
 
 # Made up for this test and not registered: the credit amounts and the credits they give.
@@ -43,12 +47,10 @@ def test_2026_credit_rate_cites_t4127() -> None:
 
 
 def test_2026_credit_rate_is_a_provisional_file() -> None:
-    path = files("tax_engine.jurisdictions.ca").joinpath("parameters/credit_rate/2026.yaml")
+    root = tax_engine.registrations.JURISDICTIONS.roots()[Namespace("ca")]
+    lines = (root / "parameters" / "credit_rate" / "2026.yaml").read_text().splitlines()
 
-    assert path.read_text().startswith(
-        "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text "
-        "when CRA publishes it.\n"
-    )
+    assert lines[0] == PROVISIONAL_HEADER
 
 
 def test_2025_credit_rate_is_unchanged() -> None:
