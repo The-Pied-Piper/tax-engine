@@ -1,0 +1,18 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the 2025 threshold of 32,500 indexed by Ontario's 1.9% index rate from T4127 Table 8.2,
+# rounded to the nearest dollar: 32,500 x 1.019 = 33,117.50, giving 33,118. This is the least certain
+# figure in the ca-on set; LIFT is not mentioned in T4127, so it is an estimate until the 2026 form
+# text is published.
+# Ontario LIFT individual income threshold, 2026 tax year (Schedule ON428-A, form 5006-A): Part A line 16
+# and Part B line 31 "Individual income threshold 33,118.00", from which line 32 "Line 30 minus line 31
+# (if negative, enter "0")" takes line 30 "Amount from line 13 of the previous page". It borrows the credit
+# kind because it is a printed amount taken whole.
+# Line 31 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's choice, as
+# the form states no rounding rule.
+family: ca-on/lift_individual_income_threshold
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "33118"
