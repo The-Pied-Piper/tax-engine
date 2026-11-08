@@ -154,6 +154,42 @@ SIX_MONTHS_70K = {
     "28": "537.00",
 }
 
+# CRA T4127 (120th edition, January 2025), Appendix 1, Scenario 1: $4,000 a pay period, 24 pay
+# periods, so a salary of 96,000 for 12 months. Table 1 totals: CPP 4,034.10, CPP2 396.00.
+T4127_SCENARIO_1 = {
+    "B": "71300.00",
+    "D": "81200.00",
+    "E": "3500.00",
+    "1": "81200.00",
+    "2": "81200.00",
+    "4": "9900.00",
+    "5": "71300.00",
+    "7": "67800.00",
+    "11": "3356.10",
+    "12": "678.00",
+    "22": "396.00",
+    "25": "3356.10",
+    "28": "1074.00",
+}
+# Same appendix, Scenario 3: $4,000 a pay period, turns 18 in March, so pay periods 7 to 24 are
+# paid (18 periods, a salary of 72,000) and PM is 9 months. Table 3 totals: CPP 3,025.58,
+# CPP2 297.00.
+T4127_SCENARIO_3 = {
+    "B": "53475.00",
+    "D": "60900.00",
+    "E": "2625.00",
+    "1": "72000.00",
+    "2": "60900.00",
+    "4": "7425.00",
+    "5": "53475.00",
+    "7": "50850.00",
+    "11": "2517.08",
+    "12": "508.50",
+    "22": "297.00",
+    "25": "2517.08",
+    "28": "805.50",
+}
+
 
 @pytest.mark.parametrize(
     ("salary", "months", "expected"),
@@ -161,6 +197,8 @@ SIX_MONTHS_70K = {
         ("70000", None, FULL_YEAR_70K),
         ("90000", None, FULL_YEAR_90K),
         ("70000", 6, SIX_MONTHS_70K),
+        ("96000", None, T4127_SCENARIO_1),
+        ("72000", 9, T4127_SCENARIO_3),
     ],
 )
 def test_every_line_matches_the_printed_form(
@@ -169,6 +207,24 @@ def test_every_line_matches_the_printed_form(
     result = figures(schedule_8(tmp_path, salary, months))
 
     assert result == {line: D(value) for line, value in expected.items()}
+
+
+@pytest.mark.parametrize(
+    ("salary", "months", "cpp", "cpp2"),
+    [
+        ("96000", None, "4034.10", "396.00"),
+        ("72000", 9, "3025.58", "297.00"),
+    ],
+)
+def test_the_cra_t4127_worked_examples_give_the_published_totals(
+    tmp_path: Path, salary: str, months: int | None, cpp: str, cpp2: str
+) -> None:
+    """The totals CRA prints for Scenarios 1 and 3 of T4127 Appendix 1 (120th edition): CPP is the
+    base plus the enhanced contributions (lines 11 and 12), CPP2 is line 22."""
+    result = figures(schedule_8(tmp_path, salary, months))
+
+    assert result["11"] + result["12"] == D(cpp)
+    assert result["22"] == D(cpp2)
 
 
 def test_a_full_year_salary_gives_twelve_months_on_line_a(tmp_path: Path) -> None:
