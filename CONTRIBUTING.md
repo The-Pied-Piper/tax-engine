@@ -36,6 +36,14 @@ pip does not use the uv lockfile. Both build workflows produce a wheel and sourc
 
 CI runs lint, formatting, type and test checks on Python 3.12 for pull requests targeting `main` and pushes to `main`.
 
+## Provisional 2026 datasets
+
+A 2026 dataset sourced from CRA's T4127 payroll formulas, before CRA publishes the 2026 form text, starts with this exact line:
+
+`# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.`
+
+Remove the line in the pull request that confirms the figure against the form. Open items are found with `grep -rl "Provisional:" src/`.
+
 ## CRA reference archive
 
 The [CRA reference archive](docs/cra-forms-2025/README.md) holds the saved forms, guides and source provenance used to verify the Canadian calculations.
