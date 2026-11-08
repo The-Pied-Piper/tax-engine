@@ -1,0 +1,41 @@
+name: Bug report
+description: A wrong result, a crash, or a trace that does not match the form
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Wrong tax figures belong here. Security problems do not: please report those privately, see [SECURITY.md](../blob/main/SECURITY.md).
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did the engine do, and what did you expect instead?
+    validations:
+      required: true
+  - type: input
+    id: jurisdiction-year
+    attributes:
+      label: Jurisdiction and tax year
+      placeholder: e.g. CA-ON, 2025
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Inputs
+      description: A short code snippet or the input values that reproduce it.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: trace
+    attributes:
+      label: English trace or form line
+      description: The trace lines involved, or the form and line number you expected.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: e.g. 0.1.0 or a commit hash

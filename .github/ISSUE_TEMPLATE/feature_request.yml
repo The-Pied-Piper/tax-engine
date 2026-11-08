@@ -1,0 +1,23 @@
+name: Feature request
+description: A form, line, year or jurisdiction you would like supported
+labels: [enhancement]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What do you want to compute
+      description: The form, line, jurisdiction and tax year.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source
+      description: Name of the form or publication, with a link if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: Optional. Who needs it, and what are you trying to do?
