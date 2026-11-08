@@ -1,0 +1,64 @@
+name: Form ticket
+description: Build a tax form or one of its lines (maintainers' working format)
+labels: [enhancement]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary and scope
+      description: The form and line (or lines) to build, the jurisdiction and tax year, and what is out of scope.
+    validations:
+      required: true
+  - type: textarea
+    id: form-text
+    attributes:
+      label: Form text and source
+      description: The exact wording of the line from the official form, with the form name, publication and link.
+    validations:
+      required: true
+  - type: dropdown
+    id: input-or-calculation
+    attributes:
+      label: Input or calculation
+      description: Is this line taken as an input, or calculated from other lines?
+      options:
+        - Input
+        - Calculation
+    validations:
+      required: true
+  - type: textarea
+    id: capability
+    attributes:
+      label: Capability and kind
+      description: One line is one capability. Name the capability to reuse or add, and the kind it produces.
+  - type: textarea
+    id: datasets
+    attributes:
+      label: Datasets and printed constants
+      description: Every figure the form prints (rates, thresholds, maximums), taken as printed, with its dataset name and kind.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected figures
+      description: The line's value for a reference example from an official source, plus at least one edge case.
+  - type: textarea
+    id: related
+    attributes:
+      label: Upstream and downstream tickets
+      description: Tickets that produce lines this one reads, and tickets that read this one.
+  - type: textarea
+    id: merge-path
+    attributes:
+      label: Merge path
+      description: Who reviews it and how it is merged.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Include the expected figures test and that ruff check, ruff format --check, mypy, lint-imports and pytest pass.
+      value: |
+        - [ ] Line built and covered by tests
+        - [ ] Expected figures match the official source
+        - [ ] ruff check, ruff format --check, mypy, lint-imports and pytest pass
+    validations:
+      required: true
