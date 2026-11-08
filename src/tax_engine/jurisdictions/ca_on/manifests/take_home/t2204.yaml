@@ -2,8 +2,8 @@
 # form and its exports; each line's capability goes in a part of its own with the same `form.name`.
 # Exports: what the calculator and the return read from the form. Line 4 is the EI premiums
 # deducted, exported for the take-home calculator (it reads it as Schedule 8's lines 25 and 28 are
-# read). Line 16 goes to T1 line 31200 and ON428 line 58300 (#300, #270). `ca/ei_overpayment` is the
-# T1 line 45000 amount read by T1 line 48200 (#314).
+# read). Line 16 goes to T1 line 31200 and ON428 line 58300. `ca/ei_overpayment` is the
+# T1 line 45000 amount read by T1 line 48200.
 form:
   name: ca/t2204
   required: true

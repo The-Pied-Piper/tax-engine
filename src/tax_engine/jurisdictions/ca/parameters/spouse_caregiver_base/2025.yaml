@@ -5,7 +5,7 @@
 # for this person from line 23600 of their return". It borrows the credit kind because it
 # is claimed whole, as the basic reduction is.
 # Line 1 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule.
+# project's choice, as the form states no rounding rule.
 family: ca/spouse_caregiver_base
 tax_year: 2025
 kind: credit

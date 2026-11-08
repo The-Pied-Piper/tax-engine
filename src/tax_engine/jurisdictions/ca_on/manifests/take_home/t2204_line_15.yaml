@@ -12,7 +12,7 @@
 #
 # Step 3 multiplies line 15 by that count: the line 15 amount when the condition applies, "0" when
 # it does not. The product is the T1 line 45000 amount (`ca/ei_overpayment`), read by the return
-# and by T1 line 48200 (#314).
+# and by T1 line 48200.
 form:
   name: ca/t2204
 capabilities:

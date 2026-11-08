@@ -170,7 +170,7 @@ def test_a_base_below_the_cap_keeps_its_scale() -> None:
 
 
 def test_a_base_at_the_cap_keeps_its_own_scale() -> None:
-    # Settled on #72: at or below the cap the base is produced unchanged, scale and all.
+    # At or below the cap the base is produced unchanged, scale and all.
     assert str(compute(capability(cap("1000")), "1000.00").value) == "1000.00"
 
 

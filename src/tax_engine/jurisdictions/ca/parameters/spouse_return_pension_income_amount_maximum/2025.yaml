@@ -2,7 +2,7 @@
 # amount (use Federal Worksheet) (maximum $2,000)"), the most Schedule 2 line 3 "Enter the amount
 # from line 31400 of their return." can carry. It borrows the credit kind because the figure is
 # claimed whole, as the basic personal amount is.
-# The T1 states no rounding rule, so the figure rounds half-up to the cent, the owner's decision,
+# The T1 states no rounding rule, so the figure rounds half-up to the cent, the project's choice,
 # the repo convention.
 family: ca/spouse_return_pension_income_amount_maximum
 tax_year: 2025

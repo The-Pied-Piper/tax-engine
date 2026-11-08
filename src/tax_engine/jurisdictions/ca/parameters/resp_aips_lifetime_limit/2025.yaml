@@ -2,7 +2,7 @@
 # contribution limit that can be used to reduce or eliminate the amount of AIPs subject to the
 # additional tax $ 50,000.00", from which line 6 "Line 4 minus line 5" is taken. It borrows the
 # credit kind because it is a printed amount taken whole. Line 4 is a dollars-and-cents box, so the
-# amount rounds half-up to the cent, the owner's decision, as the form states no rounding rule.
+# amount rounds half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca/resp_aips_lifetime_limit
 tax_year: 2025
 kind: credit

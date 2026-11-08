@@ -4,7 +4,7 @@
 # 41000 of your return. If not, use the amount from line 40900 of your return to decide which
 # column to complete." The $650 borrows the credit kind because it is a printed constant, claimed
 # whole. Line 41000 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule.
+# project's choice, as the form states no rounding rule.
 family: ca/political_credit_shortcut_amount
 tax_year: 2025
 kind: credit

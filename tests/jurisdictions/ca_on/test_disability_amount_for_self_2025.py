@@ -9,7 +9,7 @@ under 18 years of age, complete the calculation below". Line 1 "Base amount 10,1
 3,464.00"; line 7 "Line 1 plus line 6 Enter this amount on line 31600 of your return. (maximum
 $16,052)". The three figures are kind `credit`, as core/credit_amount reads them (the dataset
 kind of the age amount's maximum), and the worksheet's lines are dollars-and-cents boxes, so each
-is rounded half-up to the cent, the owner's decision, as the form states no rounding rule.
+is rounded half-up to the cent, the project's choice, as the form states no rounding rule.
 """
 
 from __future__ import annotations

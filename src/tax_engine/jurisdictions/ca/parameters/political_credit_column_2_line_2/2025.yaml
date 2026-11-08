@@ -1,8 +1,8 @@
 # Federal political contribution tax credit, column 2 line 2, 2025 tax year (Federal Worksheet,
 # form 5000-D1): "Line 41000 - Federal political contribution tax credit", "Column 2: Line 40900 is more than $400 but not more than $750",
 # line 2: 400.00. It borrows the credit kind because it is a printed constant, claimed
-# whole. Line 2 is a dollars-and-cents box, so the amount rounds half-up to the cent, the owner's
-# decision, as the form states no rounding rule.
+# whole. Line 2 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca/political_credit_column_2_line_2
 tax_year: 2025
 kind: credit

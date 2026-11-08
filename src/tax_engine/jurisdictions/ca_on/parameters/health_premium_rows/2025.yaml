@@ -5,8 +5,8 @@
 # `plus`), and each row starts above its `over`. The chart's "$20,000 or less" row is the first row,
 # from 0. The rows are not tiers with maxima: each row is the chart's own figure, never a
 # difference of plateaus.
-# Line 89 is a dollars-and-cents box, so the premium rounds half-up to the cent, the owner's
-# decision, as the chart states no rounding rule.
+# Line 89 is a dollars-and-cents box, so the premium rounds half-up to the cent, the project's
+# choice, as the chart states no rounding rule.
 family: ca-on/health_premium_rows
 tax_year: 2025
 kind: amount_by_band

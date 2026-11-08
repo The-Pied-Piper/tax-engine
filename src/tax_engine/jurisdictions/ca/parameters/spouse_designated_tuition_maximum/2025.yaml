@@ -4,7 +4,7 @@
 # the year."), the most Schedule 2 line 5 "Enter the federal amount designated to you from their
 # forms T2202, TL11A, or TL11C. (Note 2)" can carry. It borrows the credit kind because the figure
 # is claimed whole, as the basic personal amount is.
-# The form states no rounding rule, so the figure rounds half-up to the cent, the owner's decision,
+# The form states no rounding rule, so the figure rounds half-up to the cent, the project's choice,
 # the repo convention.
 family: ca/spouse_designated_tuition_maximum
 tax_year: 2025

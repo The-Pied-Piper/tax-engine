@@ -3,7 +3,7 @@ wires it: the exemption (`ca/t2204_exemption`) and the difference, not below zer
 
 T2204 line 7: "Amount from line 3 – $2,000 = (if negative, enter "0")". The manifest part is loaded
 from the package. The header and the form's export are made up here, because the shared scaffold
-owns them. Line 3 (`ca/t2204_line_3`) is produced by another ticket (#206), so the test header
+owns them. Line 3 (`ca/t2204_line_3`) is produced by another part, so the test header
 declares it as a required starting input, as the Schedule 8 line D test does.
 
 The $2,000 is the `ca/t2204_exemption` dataset, claimed whole through core/credit_amount.

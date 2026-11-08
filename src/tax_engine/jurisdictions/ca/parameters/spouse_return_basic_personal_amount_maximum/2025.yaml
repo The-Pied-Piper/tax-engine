@@ -2,7 +2,7 @@
 # amount: Line 77 and line 30000: ... (maximum $16,129)"), the most Schedule 2 line 8 "Amount from
 # line 30000 of their return." can carry. It borrows the credit kind because the figure is claimed
 # whole, as the basic personal amount is.
-# The T1 states no rounding rule, so the figure rounds half-up to the cent, the owner's decision,
+# The T1 states no rounding rule, so the figure rounds half-up to the cent, the project's choice,
 # the repo convention.
 family: ca/spouse_return_basic_personal_amount_maximum
 tax_year: 2025

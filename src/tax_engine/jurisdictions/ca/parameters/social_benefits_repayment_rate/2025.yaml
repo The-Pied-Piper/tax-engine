@@ -1,7 +1,7 @@
 # Social benefits repayment rate, 2025 tax year (Federal Worksheet, form 5000-D1, "Line 23500 -
 # Social benefits repayment"): line 18 "Amount from line 17 multiplied by 15% =".
-# Line 18 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
-# decision, as the form states no rounding rule.
+# Line 18 is a dollars-and-cents box, so the product rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca/social_benefits_repayment_rate
 tax_year: 2025
 kind: rate

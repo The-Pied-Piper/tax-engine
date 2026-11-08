@@ -7,8 +7,8 @@
 # steps that the federal forms print in dollars and cents (Schedule 6 and Schedule 8 totals, T2204
 # lines 1, 3, 6 and 15, the T1 taxable income total, and the T1 tax lines that read it: line 76 and
 # its chain, and the dollars-and-cents lines from 84 to 167 except line 33800, which rounds through
-# the credit rate dataset). The forms state no rounding rule, so half-up to the cent is the owner's
-# decision. A line that needs a different rule gets a dataset of its own.
+# the credit rate dataset). The forms state no rounding rule, so half-up to the cent is the project's
+# choice. A line that needs a different rule gets a dataset of its own.
 family: ca/cent_rounding
 tax_year: 2025
 kind: rounding_only

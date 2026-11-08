@@ -1,7 +1,7 @@
 """The 2025 Part 1 line 94 basic exemption of Form T691: 177,882.00, checked against Form T691. Form
 T691 (2025) Part 1 line 94: "Basic exemption 177,882.00". The amount is a printed figure of the
 form, so it is claimed whole (the `credit` kind), and the dollars-and-cents line is rounded half-
-up to the cent, the owner's decision, as the form states no rounding rule.
+up to the cent, the project's choice, as the form states no rounding rule.
 """
 
 from __future__ import annotations

@@ -7,7 +7,7 @@ form's export are made up here, because the shared scaffold owns them. The calle
 line 1 reads the salary typed once (T1 line 10100), as the line 1 test describes.
 
 Line 2 is an optional input, read as blank when left out, and a blank line 2 counts as 0. The
-$2,000 of line 7 (`ca/t2204_exemption`) is produced by another ticket (#209), so the test header
+$2,000 of line 7 (`ca/t2204_exemption`) is produced by another part, so the test header
 declares it as a required starting input, as the line 1 test does.
 """
 

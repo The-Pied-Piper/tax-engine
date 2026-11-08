@@ -2531,7 +2531,7 @@ SIGNED = frozenset(
         "ca/itc_amount_n",
         # Form RC359 line 4 "Line 2 minus line 3" prints no "(if negative, enter "0")", so it is
         # signed; line 6 "Line 4 multiplied by the percentage from line 5" takes it, so it is signed
-        # too (an inference to be confirmed by the owner, the design does not settle line 6).
+        # too (an inference not yet confirmed, the design does not settle line 6).
         "ca/rc359_line_4",
         "ca/rc359_line_6",
         # Form T2048 line 26 "Line 17 minus line 25" prints no floor, and line 27 takes the lesser

@@ -3,8 +3,8 @@
 # percentage from line 5" multiplies line 4. The worksheet's "$105,709 or more, enter "0""
 # follows from the arithmetic, as 9,028 less 15% of (105,709 - 45,522) is zero, so it is not a
 # dataset.
-# Line 6 is a dollars-and-cents box, so the product rounds half-up to the cent, the owner's
-# decision, as the form states no rounding rule.
+# Line 6 is a dollars-and-cents box, so the product rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca/age_rate
 tax_year: 2025
 kind: rate

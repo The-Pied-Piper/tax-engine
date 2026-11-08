@@ -2,7 +2,7 @@
 # Activities): Step 3 line 46 "Lifetime FHSA limit 40,000.00", from which line 48 "Line 46
 # minus line 47" is taken. It borrows the credit kind because it is a printed amount taken
 # whole. Line 46 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
-# owner's decision, as the schedule states no rounding rule.
+# project's choice, as the schedule states no rounding rule.
 family: ca/fhsa_lifetime_limit
 tax_year: 2025
 kind: credit

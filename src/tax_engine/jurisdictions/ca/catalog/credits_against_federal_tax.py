@@ -302,7 +302,7 @@ FOREIGN_SURTAX_LIMIT = AmountKind.declare(CATALOG, "foreign_surtax_limit", non_n
 """The most the surtax allocated to the foreign countries can total, Form T2209 line 6: the one
 surtax of T1 line 127 (`federal_surtax_outside_canada`), 0 when it is negative (under minimum tax,
 Form T691 Part 3 line 4 prints no floor). No positive part can be allocated of a surtax that is not
-positive; a negative part is refused by the input kind (#947)."""
+positive; a negative part is refused by the input kind."""
 
 FOREIGN_PROPERTY_TAX_PAID = AmountKind.declare(
     CATALOG, "foreign_property_tax_paid", non_negative=True

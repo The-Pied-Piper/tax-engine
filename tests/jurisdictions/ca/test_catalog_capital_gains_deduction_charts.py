@@ -1,7 +1,7 @@
 """Registered and money kinds of the federal catalog family `capital_gains_deduction_charts`.
 
 Form T657 Charts 2016 to 2023 (Part 1 and Part 2 each) and Chart 2024, Period 1 and Period 2
-(confirmed 2026-10-19 from the PDF; the form lines are in
+(confirmed from the PDF; the form lines are in
 `tests/jurisdictions/ca_on/test_t657_2025.py`).
 """
 

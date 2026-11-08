@@ -5,7 +5,7 @@ page 4). The step subtracts the social benefits repayment (line 23500,
 `ca/social_benefits_repayment`) from the net income before adjustments (line 23400,
 `ca/net_income_before_adjustments`), not below zero, and the output is `ca/net_income`.
 
-Line 23400 is produced by another ticket (#217), so this test declares it as a required starting
+Line 23400 is produced by another part, so this test declares it as a required starting
 input in a header of its own. Line 23500 is an optional input declared in the take-home folder's
 `t1_taxable_income_inputs.yaml`, which this test loads beside the line 23600 part: a request that
 leaves it out reads it as its default, "0", as the form says for a filer with no EI or OAS income.

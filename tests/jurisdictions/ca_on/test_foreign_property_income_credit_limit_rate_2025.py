@@ -6,7 +6,7 @@ sourced outside of Canada (other than real or immovable property), your non-busi
 credit for that income cannot be more than 15% of your net income from that property. However,
 you may be able to deduct the part of the foreign taxes you paid over 15% on line 23200 of your
 return." The printed 15% is a `rate` dataset; the product is a dollars-and-cents amount, so it
-rounds half-up to the cent, the owner's decision, as the form states no rounding rule. The form is
+rounds half-up to the cent, the project's choice, as the form states no rounding rule. The form is
 a PDF with no published .txt, so the dataset cites the PDF.
 """
 

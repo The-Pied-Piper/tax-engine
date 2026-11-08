@@ -5,7 +5,7 @@ T2204 line 10: "Amount from line 1 × 1.64% = (maximum $1,077.48)". The part is 
 read on line 1, so line 10 is the line 1 amount times 1.64%, capped at the printed maximum.
 
 The manifest part is loaded from the package. The header, the line 1 input and the form's export are
-made up here, because the shared scaffold owns them. Line 1 is produced by another part (#261), so
+made up here, because the shared scaffold owns them. Line 1 is produced by another part, so
 the test header declares `ca/t2204_line_1` as a required starting input, as the line 1 test does for
 the $2,000 of line 7.
 """

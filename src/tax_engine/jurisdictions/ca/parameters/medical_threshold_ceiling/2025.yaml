@@ -2,7 +2,7 @@
 # whichever is less: $2,834 or the amount from line 108." It is a plain cap on the share of
 # the net income that line 110 takes off the filer's own medical expenses.
 # Line 109 is a dollars-and-cents box, so the lesser rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule.
+# project's choice, as the form states no rounding rule.
 family: ca/medical_threshold_ceiling
 tax_year: 2025
 kind: amount

@@ -1,7 +1,7 @@
 # Ontario non-refundable tax credit rate, 2025 tax year (Form ON428 line 45): 5.05%.
 # It is applied once, to the sum of the credit amounts on the form (ON428 line 58800).
 # That product (line 58840) is a dollars-and-cents box, so it rounds half-up to the cent,
-# the owner's decision, as the form states no rounding rule.
+# the project's choice, as the form states no rounding rule.
 family: ca-on/credit_rate
 tax_year: 2025
 kind: rate

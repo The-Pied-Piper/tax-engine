@@ -4,7 +4,7 @@
 # prints the percentage as 6.6667%, so the rate is 0.066667; it is used for the net logging income
 # of each province and for the cap of line 133 alike. The product rounds half-up to the cent, as
 # every dollars-and-cents box on the forms does: the guide states no rounding rule, so that is the
-# owner's decision.
+# project's choice.
 family: ca/logging_income_rate
 tax_year: 2025
 kind: rate

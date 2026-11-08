@@ -743,7 +743,7 @@ T777_LEASE_PAYMENTS_BEFORE_CHECKED = AmountKind.declare(
 )
 """Guide T4044 line 2 after the check that it is not more than line 7's "divided by 30" figure
 (`core/at_most`): line 7 prints no floor after "minus line 2", and a negative line 7 would be a
-negative leasing cost on line 27, so a larger line 2 is refused (the owner's rule of 2026-10-27:
+negative leasing cost on line 27, so a larger line 2 is refused (the project's rule:
 a claim, deduction or credit line the form leaves unfloored, whose negative would change a later
 figure, is refused)."""
 

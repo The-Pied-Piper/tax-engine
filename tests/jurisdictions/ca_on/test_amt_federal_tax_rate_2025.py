@@ -2,7 +2,7 @@
 T691. Form T691 (2025) Part 1 line 96: "Federal tax rate" "× 20.5%" (line 96), read by line 97
 "Gross minimum amount: line 95 multiplied by the percentage on line 96.". The 20.5% is the printed
 percentage of the form, a rate of 0.205, applied to a dollars-and-cents product, so it is rounded
-half-up to the cent, the owner's decision, as the form states no rounding rule.
+half-up to the cent, the project's choice, as the form states no rounding rule.
 
 The same printed 20.5% is Form T691 (2025) Part 4 line 5, "Applicable rate" "× 20.5%", which line 6,
 "Foreign income limit for special foreign tax credit: line 4 multiplied by the percentage on line 5

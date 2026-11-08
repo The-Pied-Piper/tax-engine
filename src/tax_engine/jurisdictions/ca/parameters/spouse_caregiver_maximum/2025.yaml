@@ -2,7 +2,7 @@
 # 5000-S5): "Line 30425", line 3 "Line 1 minus line 2 (if negative, enter "0") (maximum
 # $8,601)". It is a plain cap, not a credit.
 # Line 3 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the
-# owner's decision, as the form states no rounding rule.
+# project's choice, as the form states no rounding rule.
 family: ca/spouse_caregiver_maximum
 tax_year: 2025
 kind: amount

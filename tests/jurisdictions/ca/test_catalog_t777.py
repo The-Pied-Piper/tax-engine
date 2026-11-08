@@ -349,7 +349,7 @@ def test_the_part_a_change_in_use_kinds_docstrings_quote_the_part_a_guide_text()
     assert quote in squashed(docstring_of(CCA_CHANGE_IN_USE_FAIR_MARKET_VALUE.identifier))
 
 
-# --- the lines of page 1 to 3, the relocation form and the line 22900 total (#446) ---------------
+# --- the lines of page 1 to 3, the relocation form and the line 22900 total ---------------
 # The kinds of this ticket are looked up by identifier, so that the tests above keep their own
 # imports while the kinds are missing (each new test then fails with the missing identifier).
 

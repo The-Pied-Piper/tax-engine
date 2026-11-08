@@ -1,7 +1,7 @@
 # Rate of the net non-refundable tax credits, 2025 tax year (Form T691 Part 1 line 98): "Net
 # non-refundable tax credits (line 33800 of your return) × 50% =". The 50% is the printed
 # percentage of the form, a rate of 0.5, and the product is a dollars-and-cents line, so it rounds
-# half-up to the cent, the owner's decision, as the form states no rounding rule.
+# half-up to the cent, the project's choice, as the form states no rounding rule.
 family: ca/amt_non_refundable_credits_rate
 tax_year: 2025
 kind: rate
