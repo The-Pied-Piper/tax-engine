@@ -1,0 +1,15 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: printed in T4127 Table 8.1, federal 5th income threshold (the top bracket), the same relation as 2025.
+# Donations high income threshold, 2026 tax year: T4127 (122nd Edition) Table 8.1, the federal
+# 5th bracket threshold, $258,482, which is the amount Schedule 9 line 18 "Income threshold" takes
+# for 2026 and that line 19 takes from the taxable income, as the 2025 figure 253,414 does. It
+# borrows the credit kind because it is claimed whole, as the basic personal amount is.
+# Line 18 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca/donation_high_income_threshold
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "258482.00"
