@@ -15,9 +15,12 @@ import pytest
 
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.parameters.brackets import BRACKETS, BracketSchedule
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca.catalog import FEDERAL_BASIC_TAX, TAXABLE_INCOME
+from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 
 D = Decimal
 SOURCE = YamlParameterSource(
@@ -179,7 +182,13 @@ def test_the_tax_is_continuous_across_each_2026_threshold(family: str, income: s
 
 def test_federal_tax_on_a_taxable_income_of_69335() -> None:
     # A taxable income of 69,335.00: 8,193.22 + 0.205 x (69,335 - 58,523) = 10,409.68.
-    assert schedule("ca/brackets").tax_on(D("69335.00")) == D("10409.68")
+    capability = ProgressiveTax(
+        TAXABLE_INCOME, FEDERAL_BASIC_TAX, SOURCE.get("ca/brackets", 2026, BRACKETS)
+    )
+
+    result = capability.compute((Artifact(TAXABLE_INCOME, D("69335.00")),))
+
+    assert result.outputs == (Artifact(FEDERAL_BASIC_TAX, D("10409.68")),)
 
 
 @pytest.mark.parametrize(
