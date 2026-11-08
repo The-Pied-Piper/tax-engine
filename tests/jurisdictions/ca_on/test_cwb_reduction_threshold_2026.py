@@ -18,6 +18,10 @@ D = Decimal
 SOURCE = YamlParameterSource(
     tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
 )
+PROVISIONAL_HEADER = (
+    '# Provisional: taken from the CRA page "Indexation adjustment for personal income tax and '
+    'benefit amounts" (2026); to be confirmed against the 2026 form text when CRA publishes it.'
+)
 CRA_PAGE = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html"
 
 
