@@ -17,7 +17,7 @@ body:
     id: jurisdiction-year
     attributes:
       label: Jurisdiction and tax year
-      placeholder: e.g. CA-ON, 2025
+      placeholder: the jurisdiction code you used, and the year
     validations:
       required: true
   - type: textarea
