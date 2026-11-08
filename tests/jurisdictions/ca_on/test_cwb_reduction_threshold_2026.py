@@ -1,7 +1,7 @@
 """The 2026 `ca/cwb_reduction_threshold` dataset: 27,392 (single filer).
 
-Provisional, from the CRA page "Adjustment of personal income tax and benefit amounts", until the
-2026 Schedule 6 is published.
+Provisional, from the CRA page "Indexation adjustment for personal income tax and benefit
+amounts", until the 2026 Schedule 6 is published.
 """
 
 from __future__ import annotations
