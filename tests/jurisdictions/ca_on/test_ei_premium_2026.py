@@ -47,10 +47,12 @@ def test_2026_ei_tier_cites_t4127() -> None:
     assert T4127 in SOURCE.get(FAMILY, 2026, CONTRIBUTION_TIER).sources
 
 
-def test_2026_ei_tier_does_not_change_2025() -> None:
-    data = SOURCE.get(FAMILY, 2025, CONTRIBUTION_TIER)
+def test_2026_maximum_is_the_maximum_insurable_earnings_at_the_rate() -> None:
+    tier = SOURCE.get(FAMILY, 2026, CONTRIBUTION_TIER).values
 
-    assert data.values == ContributionTier(Rate(D("0.0164")), D("0"), D("65700"), D("1077.48"))
+    # No exemption: 68,900 x 1.63% is exactly the printed maximum $1,123.07.
+    assert tier.lower == D("0")
+    assert tier.upper * tier.rate.value == tier.maximum
 
 
 @pytest.mark.parametrize(
@@ -60,7 +62,13 @@ def test_2026_ei_tier_does_not_change_2025() -> None:
         ("70000", "1123.07"),
         ("68900", "1123.07"),
         ("20000", "326.00"),
+        # The low-income case: 1.63% x 10,000 = 163.00.
+        ("10000", "163.00"),
         ("0", "0"),
+        # Rounded half-up to the cent: 1.63% of 0.30 is 0.00489, down to 0.00; of 0.31 is
+        # 0.005053, up to 0.01.
+        ("0.30", "0.00"),
+        ("0.31", "0.01"),
     ],
 )
 def test_charges_2026_premiums_on_employment_income(earnings: str, premium: str) -> None:

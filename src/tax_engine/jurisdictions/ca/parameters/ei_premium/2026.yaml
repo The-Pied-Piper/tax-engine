@@ -4,6 +4,8 @@
 # except QC": Maximum Annual Insurable Earnings 68,900.00; Employee Contribution Rate 0.0163;
 # Maximum Annual Employee Premium 1,123.07. The maximum is taken as printed. Same tier as 2025:
 # the rate on the earnings from 0 to the maximum insurable earnings, with no exemption.
+# Premiums are in dollars and cents, and 1.63% of 68,900 is exactly the printed $1,123.07,
+# so the tier rounds half-up to the cent.
 family: ca/ei_premium
 tax_year: 2026
 kind: contribution_tier

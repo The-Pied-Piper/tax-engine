@@ -3,6 +3,8 @@
 # is the Maximum Annual Insurable Earnings, 68,900.00, of CRA T4127, 122nd Edition (effective
 # January 1, 2026), Table 8.7 "Employment Insurance 2026 rates and amounts", row "Canada
 # except QC". A plain amount, not a credit: the cap the sum of lines 1 and 2 is held to.
+# Line 3 is a dollars-and-cents box, so the capped figure rounds half-up to the cent, which
+# changes nothing.
 family: ca/t2204_maximum_insurable_earnings
 tax_year: 2026
 kind: amount

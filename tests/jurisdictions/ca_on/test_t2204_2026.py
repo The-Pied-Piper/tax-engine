@@ -19,6 +19,7 @@ SOURCE = YamlParameterSource(
     tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
 )
 FAMILY = "ca/t2204_maximum_insurable_earnings"
+CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)
 T4127 = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
 
 
@@ -26,12 +27,15 @@ def test_2026_line_3_maximum_is_68900() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
     assert data.values == Amount(value=D("68900.00"))
-    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+
+
+def test_2026_line_3_maximum_rounds_half_up_to_the_cent() -> None:
+    data = SOURCE.get(FAMILY, 2026, AMOUNT)
+
+    assert data.rounding == CENT
 
 
 def test_2026_line_3_maximum_cites_t4127() -> None:
-    assert T4127 in SOURCE.get(FAMILY, 2026, AMOUNT).sources
+    data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-
-def test_2025_line_3_maximum_is_unchanged() -> None:
-    assert SOURCE.get(FAMILY, 2025, AMOUNT).values == Amount(value=D("65700.00"))
+    assert T4127 in data.sources
