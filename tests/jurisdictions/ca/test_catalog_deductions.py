@@ -81,7 +81,7 @@ def test_part_3_line_2_is_a_non_negative_amount_of_employment_earnings(
 def test_the_lines_the_part_5_routing_reads_are_non_negative_money(
     registry: ArtifactRegistry,
 ) -> None:
-    # The Part 3 route of lines 30800, 22215 and 44800 keeps the PR 2 steps under a name of its
+    # The Part 3 route of lines 30800, 22215 and 44800 keeps the earlier steps under a name of its
     # own; the kinds the readers (ON428, Schedule 8's credit, the deductions, the refund total)
     # read keep their names and choose between the Part 3 route and Part 5 lines 57, 69 and 50 by
     # the Part 5 completed count. Lines 31000, 22200 and 42100 are the Part 4 route plus the Part
