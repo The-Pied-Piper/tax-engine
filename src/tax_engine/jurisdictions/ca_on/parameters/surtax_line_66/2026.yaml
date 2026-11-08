@@ -1,0 +1,12 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Ontario surtax tier 1, 2026 tax year (Form ON428 line 66): T4127 Table 8.2, row ON, surtax
+# threshold 5,818 at rate 0.20 ("V1 = 0.20 x (T4 - $5,818)"). Rounds half-up to the cent, the
+# project's choice, as a dollars-and-cents box. Line 67 (the 36% tier) is its own part.
+family: ca-on/surtax_line_66
+tax_year: 2026
+kind: surcharge_tiers
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+tiers:
+  - {threshold: "5818", rate: "0.20"}

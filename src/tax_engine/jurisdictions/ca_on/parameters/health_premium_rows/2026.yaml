@@ -1,0 +1,24 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Ontario health premium rows, 2026 tax year (Form ON428 line 89 chart): T4127 (Jan 2026) V2,
+# the lesser-of formulas for A (taxable income), which print the same figures as the 2025
+# chart: $300, $450, $600, $750, $900. Each row is a flat `amount` or a sloped figure
+# (`minus`, `rate`, `plus`: (income minus `minus`) x `rate` plus `plus`), each starting above its
+# `over`; the rows are never tiers with maxima. Rounds half-up to the cent, the project's choice.
+family: ca-on/health_premium_rows
+tax_year: 2026
+kind: amount_by_band
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rows:
+  - {over: "0", amount: "0"}
+  - {over: "20000", minus: "20000", rate: "0.06", plus: "0"}
+  - {over: "25000", amount: "300"}
+  - {over: "36000", minus: "36000", rate: "0.06", plus: "300"}
+  - {over: "38500", amount: "450"}
+  - {over: "48000", minus: "48000", rate: "0.25", plus: "450"}
+  - {over: "48600", amount: "600"}
+  - {over: "72000", minus: "72000", rate: "0.25", plus: "600"}
+  - {over: "72600", amount: "750"}
+  - {over: "200000", minus: "200000", rate: "0.25", plus: "750"}
+  - {over: "200600", amount: "900"}
