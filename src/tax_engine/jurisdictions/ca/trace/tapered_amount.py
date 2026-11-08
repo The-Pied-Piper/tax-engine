@@ -36,3 +36,8 @@ class TaperedAmountLine(TraceLine):
     def amount(self) -> Decimal:
         """The tapered amount: the rounded result."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label

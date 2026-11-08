@@ -42,6 +42,11 @@ class RecordTotalLine(TraceLine):
         """The exact total."""
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class RecordPositiveTotalLine(TraceLine):
@@ -63,6 +68,11 @@ class RecordPositiveTotalLine(TraceLine):
         """The exact total."""
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class RecordCountLine(TraceLine):
@@ -76,6 +86,11 @@ class RecordCountLine(TraceLine):
     def amount(self) -> Decimal:
         """The count, as an amount."""
         return Decimal(self.count)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -93,6 +108,11 @@ class FirstRecordCountLine(TraceLine):
     def amount(self) -> Decimal:
         """The count, as an amount."""
         return Decimal(self.value)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -113,6 +133,11 @@ class ItemsTotalLine(TraceLine):
         """The exact total."""
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class ItemSumLine(TraceLine):
@@ -132,6 +157,11 @@ class ItemSumLine(TraceLine):
         """The total of the item's parts."""
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class ItemLesserOfLine(TraceLine):
@@ -150,3 +180,8 @@ class ItemLesserOfLine(TraceLine):
     def amount(self) -> Decimal:
         """The least of the item's parts."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label

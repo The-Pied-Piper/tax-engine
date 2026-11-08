@@ -54,6 +54,10 @@ class DuplicateArtifactError(DomainError):
     """An artifact was given more than one value."""
 
 
+class DuplicateLabelError(DomainError):
+    """Two different kinds in one worksheet share a label, so a trace could not tell them apart."""
+
+
 class NegativeArtifactError(DomainError):
     """An artifact of a kind declared non-negative was given a value below zero.
 

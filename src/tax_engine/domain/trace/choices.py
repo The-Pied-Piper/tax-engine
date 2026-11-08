@@ -40,6 +40,11 @@ class ChosenByCountLine(TraceLine):
         """The chosen value, unchanged."""
         return self.chosen_value
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class ChosenByRangeLine(TraceLine):
@@ -62,6 +67,11 @@ class ChosenByRangeLine(TraceLine):
         """The chosen value, unchanged."""
         return self.chosen_value
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class ChosenBySignLine(TraceLine):
@@ -82,6 +92,11 @@ class ChosenBySignLine(TraceLine):
     def amount(self) -> Decimal:
         """The chosen value, unchanged."""
         return self.chosen_value
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -107,6 +122,11 @@ class ConditionLine(TraceLine):
         """1 when the condition applies, 0 when it does not."""
         return Decimal(1 if self.applies else 0)
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class ConditionsCountLine(TraceLine):
@@ -125,3 +145,8 @@ class ConditionsCountLine(TraceLine):
     def amount(self) -> Decimal:
         """The count."""
         return Decimal(self.count)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label

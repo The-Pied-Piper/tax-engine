@@ -63,6 +63,10 @@ class TaggedLine(TraceLine):
     def amount(self) -> Decimal:
         return self.total
 
+    @property
+    def label(self) -> str | None:
+        return None
+
 
 class Summing(Capability):
     """Produces each kind it produces as the sum of what it consumes + `add`; declares no slots.

@@ -19,6 +19,7 @@ from tax_engine.domain.capability import Capability
 from tax_engine.domain.errors import (
     CapabilityContractError,
     DuplicateArtifactError,
+    DuplicateLabelError,
     MissingArtifactError,
 )
 from tax_engine.domain.trace import LeftBlankLine, TraceLine
@@ -32,6 +33,8 @@ class Worksheet:
         self._artifacts: dict[ArtifactKind[Any], Artifact[Any]] = {}
         self._producers: dict[ArtifactKind[Any], Capability] = {}
         self._trace: list[TraceLine] = []
+        self._kinds_by_label: dict[str, ArtifactKind[Any]] = {}
+        self._claim_labels(artifact.kind for artifact in artifacts)
         for artifact in artifacts:
             if artifact.kind in self._artifacts:
                 raise DuplicateArtifactError(f"two starting values for {artifact.kind.label!r}")
@@ -94,10 +97,28 @@ class Worksheet:
             raise DuplicateArtifactError(
                 f"{name} produced {ArtifactKind.labels(recorded)}, already recorded"
             )
+        self._claim_labels(artifact.kind for artifact in result.outputs)
         for artifact in result.outputs:
             self._artifacts[artifact.kind] = artifact
             self._producers[artifact.kind] = capability
         self._trace.extend(result.trace)
+
+    def _claim_labels(self, kinds: Iterable[ArtifactKind[Any]]) -> None:
+        """Record the labels of `kinds`; refuse a different kind that already has one.
+
+        A label is the local part of the identifier, so `a/x` and `b/x` would collide, and the
+        trace would no longer say which figure a line is about. All or none are recorded.
+        """
+        claimed = dict(self._kinds_by_label)
+        for kind in kinds:
+            other = claimed.setdefault(kind.label, kind)
+            if other != kind:
+                raise DuplicateLabelError(
+                    f"{other.identifier!r} ({other.value_type.__name__}) and "
+                    f"{kind.identifier!r} ({kind.value_type.__name__}) share the label "
+                    f"{kind.label!r}"
+                )
+        self._kinds_by_label = claimed
 
     @staticmethod
     def _check_artifacts(artifacts: Iterable[object]) -> None:

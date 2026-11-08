@@ -38,6 +38,11 @@ class BracketColumnLine(TraceLine):
         """The tax the bracket's column gives."""
         return self.tax
 
+    @property
+    def label(self) -> str | None:
+        """None: the line is not about one figure."""
+        return None
+
 
 @dataclass(frozen=True)
 class BracketColumnFigureLine(TraceLine):
@@ -59,6 +64,11 @@ class BracketColumnFigureLine(TraceLine):
     def amount(self) -> Decimal:
         """The figure."""
         return self.figure
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -85,6 +95,11 @@ class SurchargeTierLine(TraceLine):
         """The rounded part charged by this tier."""
         return self.part
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class RateByIncomeBandLine(TraceLine):
@@ -106,6 +121,11 @@ class RateByIncomeBandLine(TraceLine):
     def amount(self) -> Decimal:
         """The chosen rate's value."""
         return self.rate.value
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
 
 
 @dataclass(frozen=True)
@@ -130,6 +150,11 @@ class ChosenRateAppliedLine(TraceLine):
         """The rounded product."""
         return self.result
 
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
 
 @dataclass(frozen=True)
 class AmountByBandLine(TraceLine):
@@ -153,3 +178,8 @@ class AmountByBandLine(TraceLine):
     def amount(self) -> Decimal:
         """The rounded figure."""
         return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
