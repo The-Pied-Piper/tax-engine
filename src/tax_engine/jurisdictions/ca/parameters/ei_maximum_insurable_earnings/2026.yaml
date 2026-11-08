@@ -1,0 +1,15 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: printed in T4127 Table 8.7 (Canada except QC), maximum annual insurable earnings.
+# Maximum insurable earnings, 2026 tax year: T4127 (122nd Edition, effective January 1, 2026),
+# Table 8.7 "Employment Insurance 2026 rates and amounts", row "Canada except QC". It is the figure
+# line 7 "Line 5 minus line 6 (if negative, enter "0")" of Schedule 13 starts from, so it borrows
+# the credit kind, claimed whole, as the 2025 figure does.
+# The printed amount is in dollars and cents, so it rounds half-up to the cent, which changes
+# nothing.
+family: ca/ei_maximum_insurable_earnings
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "68900.00"

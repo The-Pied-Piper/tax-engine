@@ -1,0 +1,14 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the basic reduction is printed in T4127 Table 8.2, row ON, as 300.00 for 2026. It is the
+# figure carried in the form's line 74 "Basic reduction", the first part of line 77 "Add lines 74 to 76.".
+# Ontario tax reduction, basic reduction, 2026 tax year (Form ON428, form 5006-C): line 74. It borrows the
+# credit kind because it is claimed whole, as the basic personal amount is.
+# Line 74 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's choice, as
+# the form states no rounding rule.
+family: ca-on/tax_reduction_basic
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "300.00"
