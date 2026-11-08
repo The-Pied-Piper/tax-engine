@@ -1,5 +1,5 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: no 2026 figure is printed for this multiplier, so the 2025 value is carried forward unchanged.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
 # Ontario tax reduction multiplier, 2026 tax year (Form ON428, form 5006-C): line 78 "Amount from line 77
 # above multiplied by 2 =". Two is a whole number, so it is a fraction of 2 over 1, not a rate: line 78 is
 # line 77 times 2. Line 78 is a dollars-and-cents box, so the product rounds half-up to the cent through
