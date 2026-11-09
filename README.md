@@ -8,7 +8,7 @@
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from.
 
-Supported today: Canada (federal) and Ontario, tax years 2025 and 2026. The 2026 figures are provisional: they come from CRA's payroll guidance or are carried forward from 2025, and are not yet confirmed against the 2026 forms. More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
+Supported today: Canada (federal) and Ontario, tax years 2025 and 2026. The 2026 figures are provisional: they come from CRA's payroll guidance, CRA's indexation figures, or are carried forward from 2025, and are not yet confirmed against the 2026 forms. More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
 ## Example: a $70,000 salary (tax year 2025)
 
