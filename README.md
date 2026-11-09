@@ -8,9 +8,9 @@
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from.
 
-Supported today: Canada (federal) and Ontario, tax year 2025. More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
+Supported today: Canada (federal) and Ontario, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
-## Example: a $70,000 salary
+## Example: a $70,000 salary (tax year 2025)
 
 Given only a gross salary, the engine works out the contributions and tax from the CRA forms. Take-home is then salary minus CPP, EI and total tax, a subtraction done by the caller outside the engine:
 
@@ -32,7 +32,7 @@ on428_ontario_tax_line_90: on428_tax_after_farmers_food_donation_credit_line_88 
 
 ## Why tax-engine
 
-- **Explains itself.** An English trace for every line: inputs, operation, result, rounding.
+- **Explains itself.** A trace for every line: inputs, operation, result, rounding. A renderer turns it into text in any language; English is built today.
 - **Mirrors the forms.** One form line is one capability, so engine steps read like the form itself.
 - **Rules are data.** Rates, thresholds and limits are datasets copied as printed, never recomputed in code.
 - **Checked against official sources.** Results are compared with the CRA payroll deductions calculator, CRA's T4127 guide and the printed forms.
@@ -85,16 +85,16 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 
 | Jurisdiction | Year | Forms and lines built |
 | --- | --- | --- |
-| Canada (federal) | 2025 | T1 General tax lines, Schedule 8 (CPP), T2204 (EI), Schedule 6 (Canada workers benefit), taxable income |
-| Ontario | 2025 | ON428 (Ontario tax), ON428-A (LIFT credit) |
+| Canada (federal) | 2025, 2026 (provisional) | T1 General tax lines, Schedule 8 (CPP), T2204 (EI), Schedule 6 (Canada workers benefit), taxable income |
+| Ontario | 2025, 2026 (provisional) | ON428 (Ontario tax), ON428-A (LIFT credit) |
 
-Roadmap: more forms and lines, the 2026 tax year, and other provinces and territories. Forms are added one at a time, each checked against the CRA's own text.
+Roadmap: more forms and lines, and other provinces and territories. Forms are added one at a time, each checked against the CRA's own text.
 
 ## Disclaimer and limits
 
 tax-engine is not tax advice and is not an official CRA product. It comes with no warranty, as the Apache-2.0 license says.
 
-It covers tax year 2025, Canada (federal) and Ontario only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
+It covers tax years 2025 and 2026 (2026 is provisional), Canada (federal) and Ontario only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
 
 Check any result against the CRA's own forms or with a professional before relying on it.
 
