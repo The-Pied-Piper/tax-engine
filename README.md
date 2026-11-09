@@ -8,7 +8,7 @@
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from.
 
-Supported today: Canada (federal) and Ontario, tax years 2025 and 2026. The 2026 figures are provisional: they come from CRA's payroll guidance, CRA's indexation figures, or are carried forward from 2025, and are not yet confirmed against the 2026 forms. More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
+Supported today: Canada (federal) and Ontario, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
 ## Example: a $70,000 salary (tax year 2025)
 
@@ -89,8 +89,6 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 | --- | --- | --- |
 | Canada (federal) | 2025, 2026 (provisional) | T1 General tax lines, Schedule 8 (CPP), T2204 (EI), Schedule 6 (Canada workers benefit), taxable income |
 | Ontario | 2025, 2026 (provisional) | ON428 (Ontario tax), ON428-A (LIFT credit) |
-
-Provisional means the figures are not yet confirmed against the 2026 forms (see the intro).
 
 Roadmap: more forms and lines, and other provinces and territories. Forms are added one at a time, each checked against the CRA's own text.
 
