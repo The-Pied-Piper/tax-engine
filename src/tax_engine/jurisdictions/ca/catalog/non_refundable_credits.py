@@ -754,8 +754,8 @@ FEDERAL_TAX_WITH_SPLIT_INCOME = AmountKind.declare(
     CATALOG, "federal_tax_with_split_income", non_negative=True
 )
 """Federal tax with the tax on split income, T1 line 121 and line 40400 "Line 119 plus line 120 =":
-the federal basic tax (line 119 "Enter the amount from line 76.") plus the federal tax on split
-income (line 120), in line order."""
+the federal tax on taxable income (line 119 "Enter the amount from line 76.") plus the federal tax
+on split income (line 120), in line order."""
 
 FEDERAL_TAX_AFTER_CREDITS = AmountKind.declare(
     CATALOG, "federal_tax_after_credits", non_negative=True

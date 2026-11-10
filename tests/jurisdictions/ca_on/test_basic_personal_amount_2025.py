@@ -186,10 +186,10 @@ def test_2025_credit_rate_is_the_lowest_bracket_rate(
 @pytest.mark.parametrize(
     ("net_income", "basic_tax", "after"),
     [
-        # $115,000 of net and taxable income: federal basic tax 20,146.25 less 16,129 × 14.5% =
-        # 2,338.705, a tie, up to 2,338.71.
+        # $115,000 of net and taxable income: federal tax on taxable income 20,146.25 less
+        # 16,129 × 14.5% = 2,338.705, a tie, up to 2,338.71.
         ("115000", "20146.25", "17807.54"),
-        # $10,000 of net and taxable income: federal basic tax 1,450 is fully offset.
+        # $10,000 of net and taxable income: federal tax on taxable income 1,450 is fully offset.
         ("10000", "1450", "0"),
     ],
 )
