@@ -7,6 +7,7 @@ form:
 capabilities:
   - name: core/sum
     title: "LIFT employment income"
+    reference: "3"
     params:
       rounding: ca-on/cent_rounding
     consumes:

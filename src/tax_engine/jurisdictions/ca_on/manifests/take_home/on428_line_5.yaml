@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/bracket_column_rate
     title: "Bracket column rate"
+    reference: "5"
     params:
       schedule: ca-on/brackets
     consumes:

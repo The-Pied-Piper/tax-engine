@@ -9,6 +9,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/lesser_of
+    reference: "22"
     consumes:
       amounts:
         - ca/cwb_working_income_rate_line_20

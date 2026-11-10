@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/tiered_surcharge
     title: "36% surtax tier"
+    reference: "67"
     params:
       tiers: ca-on/surtax_line_67
     consumes:

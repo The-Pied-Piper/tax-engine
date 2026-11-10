@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     title: "Net income"
+    reference: "56"
     params:
       rounding: ca/cent_rounding
     consumes:

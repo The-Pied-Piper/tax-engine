@@ -21,6 +21,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: ca/count_by_conditions
+    reference: "1"
     params:
       conditions: ca/t2204_line_1_conditions
     consumes:
@@ -35,6 +36,7 @@ capabilities:
       output: ca/t2204_line_1_count
   - name: core/times_count
     title: "Total EI insurable earnings"
+    reference: "1"
     params:
       rounding: ca/cent_rounding
     consumes:

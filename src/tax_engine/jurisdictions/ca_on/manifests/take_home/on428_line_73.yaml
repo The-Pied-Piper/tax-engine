@@ -9,6 +9,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Tax with the minimum tax addition"
+    reference: "73"
     params:
       rounding: ca-on/cent_rounding
     consumes:

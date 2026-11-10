@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Ontario tax on taxable income"
+    reference: "8"
     params:
       rounding: ca-on/cent_rounding
     consumes:

@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Ontario credits with the pension income amount"
+    reference: "28"
     params:
       rounding: ca-on/cent_rounding
     consumes:

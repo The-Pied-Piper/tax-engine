@@ -23,3 +23,5 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     assert on428.title("on428_surtax_total_line_68") == "Ontario surtax"
     assert on428.title("on428_taxable_income_line_1") == "Taxable income"
     assert on428.title("no_such_label") is None
+    assert on428.reference("on428_surtax_total_line_68") == "68"
+    assert on428.reference("no_such_label") is None

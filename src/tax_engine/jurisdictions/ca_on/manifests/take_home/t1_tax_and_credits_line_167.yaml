@@ -11,6 +11,7 @@ form:
 capabilities:
   - name: core/subtract
     title: "Refund or balance owing"
+    reference: "167"
     params:
       rounding: ca/cent_rounding
     consumes:

@@ -9,6 +9,7 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/subtract_not_below_zero
+    reference: "134"
     params:
       rounding: ca/cent_rounding
     consumes:

@@ -6,6 +6,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     title: "Tax minus credits"
+    reference: "53"
     params:
       rounding: ca-on/cent_rounding
     consumes:

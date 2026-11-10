@@ -33,10 +33,12 @@ class Worksheet:
         *artifacts: Artifact[Any],
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
+        figure_references: Mapping[str, str] | None = None,
     ) -> None:
         self._check_artifacts(artifacts)
         self._form_title = form_title
         self._figure_titles = dict(figure_titles or {})
+        self._figure_references = dict(figure_references or {})
         self._artifacts: dict[ArtifactKind[Any], Artifact[Any]] = {}
         self._producers: dict[ArtifactKind[Any], Capability] = {}
         self._trace: list[TraceLine] = []
@@ -62,6 +64,12 @@ class Worksheet:
     def title(self, label: str) -> str | None:
         """The readable title of the figure `label`; `None` if the manifest gives none."""
         return self._figure_titles.get(label)
+
+    def reference(self, label: str) -> str | None:
+        """What the form prints beside the figure `label`; `None` if the form prints none, which
+        is a step of the engine.
+        """
+        return self._figure_references.get(label)
 
     def get[V](self, kind: ArtifactKind[V]) -> Artifact[V]:
         """The artifact recorded for `kind`."""

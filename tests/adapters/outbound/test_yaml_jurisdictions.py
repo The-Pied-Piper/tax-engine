@@ -2481,6 +2481,43 @@ def test_a_form_and_a_selection_may_carry_a_title(tmp_path: Path) -> None:
     assert found.capabilities[0].title == "Net rental income"
 
 
+def test_a_selection_may_carry_a_reference(tmp_path: Path) -> None:
+    referenced = FORM_RENTAL.replace(
+        "  - {name: ex/a, produces: {output: ex/net_income}}",
+        "  - {name: ex/a, reference: Box 3, produces: {output: ex/net_income}}",
+    )
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": referenced})
+
+    (found,) = others(only_manifest(tmp_path))
+
+    assert found.capabilities[0].reference == "Box 3"
+
+
+@pytest.mark.parametrize(
+    ("part", "message"),
+    [
+        pytest.param(
+            FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, reference: '  ',"),
+            "must not be blank",
+            id="blank-reference",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace(
+                "produces: {output: ex/net_income}",
+                "produces: {output: ex/net_income, other: ex/unit_list}",
+            ).replace("{name: ex/a,", "{name: ex/a, reference: '3',"),
+            "reference belongs to the one figure a selection produces",
+            id="reference-with-two-figures",
+        ),
+    ],
+)
+def test_a_bad_reference_is_rejected(tmp_path: Path, part: str, message: str) -> None:
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-bad.yaml": part})
+
+    with pytest.raises(InvalidManifestError, match=message):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
 def test_a_form_and_a_selection_without_a_title_have_none(tmp_path: Path) -> None:
     write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL})
 

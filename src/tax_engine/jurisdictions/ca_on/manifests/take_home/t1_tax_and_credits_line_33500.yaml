@@ -9,6 +9,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Total of the non-refundable credit amounts"
+    reference: "113"
     params:
       rounding: ca/cent_rounding
     consumes:

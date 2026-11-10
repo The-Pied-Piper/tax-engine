@@ -6,6 +6,7 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: core/sum
+    reference: "22215"
     params:
       rounding: ca/cent_rounding
     consumes:

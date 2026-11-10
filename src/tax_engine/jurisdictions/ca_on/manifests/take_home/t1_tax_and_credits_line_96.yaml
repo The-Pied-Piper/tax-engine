@@ -10,16 +10,19 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/record_total
+    reference: "86"
     consumes:
       records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
     produces:
       output: ca/cpp_base_contributions_line_86
   - name: core/record_total
+    reference: "88"
     consumes:
       records: ca/t2204.t2204_line_16
     produces:
       output: ca/ei_premiums_line_88
   - name: core/sum
+    reference: "96"
     params:
       rounding: ca/cent_rounding
     consumes:

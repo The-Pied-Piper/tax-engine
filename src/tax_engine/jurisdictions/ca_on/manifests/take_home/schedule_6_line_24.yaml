@@ -7,6 +7,7 @@ form:
 capabilities:
   - name: core/credit_amount
     title: "Canada workers benefit reduction threshold"
+    reference: "24"
     params:
       amount: ca/cwb_reduction_threshold
     produces:

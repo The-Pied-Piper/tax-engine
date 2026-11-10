@@ -5,6 +5,7 @@ form:
 capabilities:
   - name: ca/amount_by_count
     title: "Maximum pensionable earnings"
+    reference: "B"
     params:
       table: ca/cpp_maximum_pensionable_earnings
     consumes:

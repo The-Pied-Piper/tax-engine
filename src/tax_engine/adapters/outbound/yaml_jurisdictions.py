@@ -55,8 +55,10 @@ Any of these keys in a part that does not declare `exports` is rejected. The def
 always required.
 Titles are for the reader of a trace: the `form:` block that declares `exports` may carry a
 `title` (the form's printed name), and a selection may carry a `title` (the printed wording of
-the one figure it produces; a selection producing several figures is rejected). Both are non-empty
-text, optional, and never used to look anything up: the identifier stays the unique name.
+the one figure it produces; a selection producing several figures is rejected). A selection may
+also carry a `reference`, what the form prints beside the figure it produces, as free text. All
+are non-empty text, optional, and never used to look anything up: the identifier stays the unique
+name.
 Parsing is strict because a manifest must stay selection plus slot bindings
 (design.md §4): unknown keys, duplicate keys and wrongly typed values are
 rejected with the offending file (for a folder, the offending part) named, never coerced or
@@ -117,7 +119,7 @@ _OPTIONAL_FORM_KEYS = frozenset(
 _OPTIONAL_INPUT_KEYS = frozenset({"default", "basis"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
-_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title"})
+_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference"})
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year")
 _IDENTIFIER_LISTS = ("inputs", "outputs")
 _PATTERNS = ("*.yaml", "*.yml")
@@ -563,6 +565,7 @@ class YamlJurisdictionSource:
         consumes = self._consumed(fields.optional_field("consumes"))
         blank = fields.optional_field("blank")
         title = fields.optional_field("title")
+        reference = fields.optional_field("reference")
         return CapabilitySelection(
             name=name,
             params=self._bindings(fields.optional_field("params")),
@@ -571,6 +574,7 @@ class YamlJurisdictionSource:
             blank=self._blank_rules(name, blank, consumes),
             blank_fields=self._field_blank_rules(name, blank, consumes),
             title=None if title is None else self._title(title),
+            reference=None if reference is None else self._title(reference),
         )
 
     def _blank_rules(

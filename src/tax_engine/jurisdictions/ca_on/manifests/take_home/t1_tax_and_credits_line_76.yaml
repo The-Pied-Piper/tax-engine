@@ -14,12 +14,14 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/record_total
+    reference: "70"
     consumes:
       records: ca/t1_taxable_income.taxable_income
     produces:
       output: ca/federal_tax_taxable_income_line_70
   - name: core/bracket_column_lower_bound
     title: "Bracket lower bound"
+    reference: "71"
     params:
       schedule: ca/brackets
     consumes:
@@ -28,6 +30,7 @@ capabilities:
       output: ca/federal_bracket_lower_bound_line_71
   - name: core/subtract_not_below_zero
     title: "Taxable income over the lower bound"
+    reference: "72"
     params:
       rounding: ca/cent_rounding
     consumes:
@@ -37,6 +40,7 @@ capabilities:
       output: ca/federal_taxable_income_over_lower_bound_line_72
   - name: core/bracket_column_rate
     title: "Bracket column rate"
+    reference: "73"
     params:
       schedule: ca/brackets
     consumes:
@@ -44,6 +48,7 @@ capabilities:
     produces:
       output: ca/federal_bracket_column_rate_line_73
   - name: core/multiply_by_rate
+    reference: "74"
     params:
       rounding: ca/cent_rounding
     consumes:
@@ -53,6 +58,7 @@ capabilities:
       output: ca/federal_excess_times_column_rate_line_74
   - name: core/bracket_column_tax_at_start
     title: "Tax at the column's start"
+    reference: "75"
     params:
       schedule: ca/brackets
     consumes:
@@ -60,6 +66,7 @@ capabilities:
     produces:
       output: ca/federal_tax_at_column_start_line_75
   - name: core/sum
+    reference: "76"
     params:
       rounding: ca/cent_rounding
     consumes:

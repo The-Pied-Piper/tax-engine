@@ -7,6 +7,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Total of the credits with the disability amounts"
+    reference: "31"
     params:
       rounding: ca-on/cent_rounding
     consumes:

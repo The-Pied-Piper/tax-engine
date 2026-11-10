@@ -9,6 +9,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: core/sum
+    reference: "6"
     params:
       rounding: ca/cent_rounding
     consumes:

@@ -48,6 +48,9 @@ class CapabilitySelection:
     `title` is the readable title of the one figure the selection produces, written by whoever
     builds the manifest (the printed wording of the form's line); `None` for none. A selection
     that produces several figures has no one figure to title, so it may not have one.
+    `reference` is what the form prints beside that figure to find it by ("65", "26000", "Box 3"),
+    free text because jurisdictions number their forms differently; a figure with one is on the
+    form, and one without is a step of the engine. The same rule applies: one figure, or none.
     """
 
     name: str
@@ -57,13 +60,15 @@ class CapabilitySelection:
     blank: Mapping[str, BlankRule] = dataclasses.field(default_factory=dict)
     blank_fields: Mapping[str, Mapping[str, BlankRule]] = dataclasses.field(default_factory=dict)
     title: str | None = None
+    reference: str | None = None
 
     def __post_init__(self) -> None:
-        if self.title is not None and len(self.produces) != 1:
-            raise InvalidManifestError(
-                f"{self.name}: a title belongs to the one figure a selection produces, "
-                f"but it produces {len(self.produces)}"
-            )
+        for key, given in (("title", self.title), ("reference", self.reference)):
+            if given is not None and len(self.produces) != 1:
+                raise InvalidManifestError(
+                    f"{self.name}: a {key} belongs to the one figure a selection produces, "
+                    f"but it produces {len(self.produces)}"
+                )
         for name in ("params", "produces", "blank"):
             object.__setattr__(self, name, MappingProxyType(dict(getattr(self, name))))
         object.__setattr__(

@@ -108,6 +108,11 @@ class FormComposition:
             for selection in form.capabilities
             if selection.title is not None
         }
+        self._figure_references = {
+            kinds.kind(next(iter(selection.produces.values()))).label: selection.reference
+            for selection in form.capabilities
+            if selection.reference is not None
+        }
         self._instances = instances
         self._exports = listed
         self._derived = form.derived_kinds(kinds)
@@ -156,6 +161,11 @@ class FormComposition:
     def figure_titles(self) -> Mapping[str, str]:
         """The readable title of each titled figure of the form, by the figure's label."""
         return MappingProxyType(self._figure_titles)
+
+    @property
+    def figure_references(self) -> Mapping[str, str]:
+        """What the form prints beside each figure it prints, by the figure's label."""
+        return MappingProxyType(self._figure_references)
 
     @property
     def name(self) -> str:
@@ -388,7 +398,10 @@ class FormSet:
     def _run(form: FormComposition, position: int, starting: list[Artifact[Any]]) -> Worksheet:
         try:
             return form.composition.compute(
-                *starting, form_title=form.title, figure_titles=form.figure_titles
+                *starting,
+                form_title=form.title,
+                figure_titles=form.figure_titles,
+                figure_references=form.figure_references,
             )
         except DomainError as exc:
             exc.args = (f"{form.name}, instance {position}: {exc}",)

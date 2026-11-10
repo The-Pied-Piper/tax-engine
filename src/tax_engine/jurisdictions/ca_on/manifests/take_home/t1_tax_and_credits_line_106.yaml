@@ -9,6 +9,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Credit amounts through line 106"
+    reference: "106"
     params:
       rounding: ca/cent_rounding
     consumes:

@@ -26,17 +26,20 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/record_total
+    reference: "45000"
     consumes:
       records: ca/t2204.ei_overpayment
     produces:
       output: ca/ei_overpayment_line_45000
   - name: core/record_total
+    reference: "45300"
     consumes:
       records: ca/schedule_6.cwb_benefit_line_28
     produces:
       output: ca/cwb_line_45300
   - name: core/sum
     title: "Total credits"
+    reference: "48200"
     params:
       rounding: ca/cent_rounding
     consumes:

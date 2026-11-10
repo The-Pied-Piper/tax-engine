@@ -7,6 +7,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     title: "Ontario tax after the dividend tax credit"
+    reference: "71"
     params:
       rounding: ca-on/cent_rounding
     consumes:

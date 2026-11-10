@@ -8,6 +8,7 @@ capabilities:
   # tier starts at 0 because line 4 is already net of line B. Line 28 reads it (line 27 is a copy).
   - name: ca/contribution_tier
     title: "Required second additional CPP contributions"
+    reference: "22"
     params:
       tier: ca/cpp_line_22_second_additional_contribution
     consumes:

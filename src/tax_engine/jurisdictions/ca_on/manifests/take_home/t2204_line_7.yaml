@@ -7,11 +7,13 @@ form:
   name: ca/t2204
 capabilities:
   - name: core/credit_amount
+    reference: "7"
     params:
       amount: ca/t2204_exemption
     produces:
       output: ca/t2204_exemption
   - name: core/subtract_not_below_zero
+    reference: "7"
     params:
       rounding: ca/cent_rounding
     consumes:

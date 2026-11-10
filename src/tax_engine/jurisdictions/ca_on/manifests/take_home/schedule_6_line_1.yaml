@@ -9,6 +9,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Employment income for the Canada workers benefit"
+    reference: "1"
     params:
       rounding: ca/cent_rounding
     consumes:

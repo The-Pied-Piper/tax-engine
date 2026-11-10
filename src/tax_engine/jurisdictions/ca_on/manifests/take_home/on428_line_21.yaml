@@ -5,6 +5,7 @@ form:
 capabilities:
   - name: core/record_total
     title: "EI premiums credit amount"
+    reference: "21"
     consumes:
       records: ca/t2204.t2204_line_16
     produces:

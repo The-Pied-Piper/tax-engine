@@ -14,12 +14,14 @@ form:
 capabilities:
   - name: core/record_total
     title: "Taxable income"
+    reference: "1"
     consumes:
       records: ca/t1_taxable_income.taxable_income
     produces:
       output: ca-on/on428_taxable_income_line_1
   - name: core/bracket_column_lower_bound
     title: "Bracket lower bound"
+    reference: "3"
     params:
       schedule: ca-on/brackets
     consumes:

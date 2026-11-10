@@ -10,6 +10,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: core/sum
+    reference: "3"
     params:
       rounding: ca/cent_rounding
     consumes:
@@ -21,6 +22,7 @@ capabilities:
     produces:
       output: ca/t2204_line_1_plus_2
   - name: core/capped_amount
+    reference: "3"
     params:
       cap: ca/t2204_maximum_insurable_earnings
     consumes:

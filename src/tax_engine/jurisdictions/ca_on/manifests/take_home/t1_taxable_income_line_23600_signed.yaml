@@ -15,6 +15,7 @@ form:
 capabilities:
   - name: core/subtract
     title: "Net income before its floor"
+    reference: "56"
     params:
       rounding: ca/cent_rounding
     consumes:

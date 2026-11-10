@@ -5,6 +5,7 @@ form:
 capabilities:
   - name: ca/amount_by_count
     title: "Basic exemption"
+    reference: "E"
     params:
       table: ca/cpp_basic_exemption
     consumes:
