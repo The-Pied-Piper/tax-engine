@@ -8,7 +8,8 @@ order. A part may carry any of the six manifest keys, the optional `title` or a 
 scalar keys (`jurisdiction`, `version`, `valid_from_tax_year`, and `title` if given) must each be
 in exactly one part, and the lists (`inputs`, `outputs`, `capabilities`) are concatenated in part
 order, an identifier listed in two parts of `inputs` or of `outputs` being rejected. The merged
-mapping then goes through the same parse as a whole file. A manifest naming another jurisdiction is rejected.
+mapping then goes through the same parse as a whole file. A manifest naming another jurisdiction
+is rejected.
 A manifest is a flat set of forms. A part with a `form:` key (`name`, and `exports` with an optional
 `instances`, all identifiers `<namespace>/<snake_case>`) gives all its `capabilities` to that
 form; without `instances` the form has one instance. A part without one joins the default
