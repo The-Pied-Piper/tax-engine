@@ -13,4 +13,4 @@ capabilities:
     consumes:
       parts: [ca/cwb_net_income_line_7]
     produces:
-      output: ca/cwb_family_net_income_line_10
+      output: ca/cwb_net_income_total_line_10

@@ -36,7 +36,7 @@ income of the T1 return before its floor, read from the signed T1 net income exp
 column 2 is for the eligible spouse. The form asks for the amount with a negative shown in
 brackets, so the kind is signed."""
 
-CWB_FAMILY_NET_INCOME_LINE_10 = AmountKind.declare(CATALOG, "cwb_family_net_income_line_10")
+CWB_NET_INCOME_TOTAL_LINE_10 = AmountKind.declare(CATALOG, "cwb_net_income_total_line_10")
 """Your column, Schedule 6 Part B line 10 "Add lines 7 to 9.": the net income of line 7 "Net income
 from line 23600 of the return (or the amount you would have entered if the instructions on line
 23600 said "if negative, show in brackets")" (here the signed T1 net income, `ca/net_income_signed`;
@@ -48,8 +48,8 @@ income repayments of the other payments worksheet). The take-home calculator bui
 does not add lines 8 and 9. The form prints no "(if negative, enter "0")" on line 10, so the kind is
 signed."""
 
-CWB_FAMILY_NET_INCOME_LINE_12 = AmountKind.declare(
-    CATALOG, "cwb_family_net_income_line_12", non_negative=True
+CWB_NET_INCOME_LESS_UCCB_RDSP_LINE_12 = AmountKind.declare(
+    CATALOG, "cwb_net_income_less_uccb_rdsp_line_12", non_negative=True
 )
 """Your column, Schedule 6 Part B line 12 "Line 10 minus line 11 (if negative, enter "0")": line 11
 is "Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)" (the UCCB
@@ -68,7 +68,7 @@ CWB_FAMILY_NET_INCOME_LINE_13 = AmountKind.declare(
 )
 """Schedule 6 Part B line 13 "Add the amounts from line 12 in columns 1 and 2. If you had an
 eligible spouse, continue at line 14; if not, continue at line 15.": the line 12 of column 1
-(`ca/cwb_family_net_income_line_12`) alone. Column 2, the eligible spouse's line 12
+(`ca/cwb_net_income_less_uccb_rdsp_line_12`) alone. Column 2, the eligible spouse's line 12
 (`ca/cwb_spouse_family_net_income_line_12`), is not built: the take-home calculator is single."""
 
 CWB_SECONDARY_EARNER_EXEMPTION = AmountKind.declare(

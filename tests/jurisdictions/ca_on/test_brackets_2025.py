@@ -23,7 +23,10 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.parameters.brackets import BRACKETS, BracketSchedule
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.jurisdictions.ca.catalog import FEDERAL_BASIC_TAX, TAXABLE_INCOME
+from tax_engine.jurisdictions.ca.catalog import (
+    FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76,
+    TAXABLE_INCOME,
+)
 from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 
 D = Decimal
@@ -164,19 +167,23 @@ def test_an_income_above_a_threshold_starts_from_the_next_columns_tax_at_start(
 
 
 @pytest.mark.parametrize(
-    ("taxable_income", "federal_basic_tax"),
+    ("taxable_income", "federal_tax_on_taxable_income_line_76"),
     [
         ("10000", "1450"),  # CRA "Completing a basic tax return": Giovanni
         ("115000", "20146.25"),  # same page, Maria: 26% x 250 + 20,081.25
     ],
 )
-def test_matches_cra_worked_examples(taxable_income: str, federal_basic_tax: str) -> None:
+def test_matches_cra_worked_examples(
+    taxable_income: str, federal_tax_on_taxable_income_line_76: str
+) -> None:
     schedule = SOURCE.get("ca/brackets", 2025, BRACKETS)
-    capability = ProgressiveTax(TAXABLE_INCOME, FEDERAL_BASIC_TAX, schedule)
+    capability = ProgressiveTax(TAXABLE_INCOME, FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76, schedule)
 
     result = capability.compute((Artifact(TAXABLE_INCOME, D(taxable_income)),))
 
-    assert result.outputs == (Artifact(FEDERAL_BASIC_TAX, D(federal_basic_tax)),)
+    assert result.outputs == (
+        Artifact(FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76, D(federal_tax_on_taxable_income_line_76)),
+    )
 
 
 @pytest.mark.parametrize(
@@ -198,12 +205,14 @@ def test_the_federal_tax_on_taxable_income_is_not_rounded_by_the_schedule(
     taxable_income: str, tax: str
 ) -> None:
     capability = ProgressiveTax(
-        TAXABLE_INCOME, FEDERAL_BASIC_TAX, SOURCE.get("ca/brackets", 2025, BRACKETS)
+        TAXABLE_INCOME,
+        FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76,
+        SOURCE.get("ca/brackets", 2025, BRACKETS),
     )
 
     result = capability.compute((Artifact(TAXABLE_INCOME, D(taxable_income)),))
 
-    assert result.outputs == (Artifact(FEDERAL_BASIC_TAX, D(tax)),)
+    assert result.outputs == (Artifact(FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76, D(tax)),)
 
 
 @pytest.mark.parametrize(
@@ -218,9 +227,11 @@ def test_the_federal_tax_on_taxable_income_is_not_rounded_by_the_schedule(
 )
 def test_the_ontario_tax_on_taxable_income_is_not_rounded(taxable_income: str, tax: str) -> None:
     capability = ProgressiveTax(
-        TAXABLE_INCOME, FEDERAL_BASIC_TAX, SOURCE.get("ca-on/brackets", 2025, BRACKETS)
+        TAXABLE_INCOME,
+        FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76,
+        SOURCE.get("ca-on/brackets", 2025, BRACKETS),
     )
 
     result = capability.compute((Artifact(TAXABLE_INCOME, D(taxable_income)),))
 
-    assert result.outputs == (Artifact(FEDERAL_BASIC_TAX, D(tax)),)
+    assert result.outputs == (Artifact(FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76, D(tax)),)

@@ -9,10 +9,10 @@ from tax_engine.domain.artifact import ArtifactKind, ArtifactRegistry
 from tax_engine.jurisdictions.ca.catalog import (
     ADJUSTED_FAMILY_NET_INCOME,
     CWB_EMPLOYMENT_INCOME,
-    CWB_FAMILY_NET_INCOME_LINE_10,
-    CWB_FAMILY_NET_INCOME_LINE_12,
     CWB_MAXIMUM,
+    CWB_NET_INCOME_LESS_UCCB_RDSP_LINE_12,
     CWB_NET_INCOME_LINE_7,
+    CWB_NET_INCOME_TOTAL_LINE_10,
     CWB_REDUCTION_THRESHOLD,
     WORKING_INCOME,
 )
@@ -32,8 +32,8 @@ def test_the_canada_workers_benefit_kinds_are_money() -> None:
         CWB_EMPLOYMENT_INCOME,
         WORKING_INCOME,
         CWB_NET_INCOME_LINE_7,
-        CWB_FAMILY_NET_INCOME_LINE_10,
-        CWB_FAMILY_NET_INCOME_LINE_12,
+        CWB_NET_INCOME_TOTAL_LINE_10,
+        CWB_NET_INCOME_LESS_UCCB_RDSP_LINE_12,
         ADJUSTED_FAMILY_NET_INCOME,
         CWB_REDUCTION_THRESHOLD,
     ):
@@ -63,8 +63,8 @@ def test_the_schedule_6_line_7_net_income_is_signed(registry: ArtifactRegistry) 
 def test_the_schedule_6_line_10_family_net_income_is_signed(registry: ArtifactRegistry) -> None:
     # Schedule 6 line 10 "Add lines 7 to 9." (column 1, You) prints no floor at zero, so the kind
     # is signed.
-    assert non_negative(CWB_FAMILY_NET_INCOME_LINE_10) is False
-    assert non_negative(registry.kind("ca/cwb_family_net_income_line_10")) is False
+    assert non_negative(CWB_NET_INCOME_TOTAL_LINE_10) is False
+    assert non_negative(registry.kind("ca/cwb_net_income_total_line_10")) is False
 
 
 def test_the_base_amount_of_schedule_6_line_17_is_a_non_negative_money_kind(

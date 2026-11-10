@@ -43,7 +43,7 @@ FORM = "ca/t1_tax_and_credits"
 LINE_43500 = "ca/total_payable"
 LINE_48200 = "ca/total_credits"
 LINE_167 = "ca/refund_or_balance_owing"
-FEDERAL_BASIC_TAX = "ca/federal_basic_tax"
+FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 = "ca/federal_tax_on_taxable_income_line_76"
 # The real header and form, read from the take-home folder, not test-local: the manifest's header
 # and the T1 tax and credits form declaration.
 REAL_HEADER = (TAKE_HOME / "manifest.yaml").read_text(encoding="utf-8")
@@ -183,7 +183,7 @@ def test_the_real_t1_form_header_exports_only_refund_or_balance_owing() -> None:
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
     assert exports == [LINE_167]
-    assert FEDERAL_BASIC_TAX not in exports
+    assert FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 not in exports
 
 
 def test_the_real_ontario_manifest_computes_refund_or_balance_owing_at_70000() -> None:

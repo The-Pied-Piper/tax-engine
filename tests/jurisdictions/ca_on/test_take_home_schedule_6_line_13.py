@@ -5,8 +5,8 @@ Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, lines 224-225): "L
 amounts from line 12 in columns 1 and 2. If you had an eligible spouse, continue at line 14; if
 not, continue at line 15." Line 13 is a calculation: the sum of line 12 over the columns. The
 take-home calculator is single with no eligible spouse, so column 2 is left out and the sum has one
-part: line 12 column 1 (`ca/cwb_family_net_income_line_12`, from schedule_6_line_12.yaml). Line 13
-is therefore one core/sum over line 12 column 1 alone.
+part: line 12 column 1 (`ca/cwb_net_income_less_uccb_rdsp_line_12`, from
+schedule_6_line_12.yaml). Line 13 is therefore one core/sum over line 12 column 1 alone.
 
 Line 12 is composed from the real parts, as in test_take_home_schedule_6_line_12.py: the salary is
 the only required input, and line 11 (`ca/uccb_and_rdsp_income`) is optional. The output is the
