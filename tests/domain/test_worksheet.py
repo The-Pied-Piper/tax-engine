@@ -450,3 +450,26 @@ def test_a_capability_that_rounds_through_a_rounding_rule_is_not_trapped() -> No
     worksheet.apply(Rounded(A, B, D(1)))
 
     assert worksheet.get(B) == Artifact(B, D("0.12"))
+
+
+def test_a_worksheet_gives_the_titles_it_was_given_by_label() -> None:
+    worksheet = Worksheet(
+        Artifact(A, D(1)), form_title="Schedule A", figure_titles={"a": "First figure"}
+    )
+
+    assert worksheet.form_title == "Schedule A"
+    assert worksheet.title("a") == "First figure"
+
+
+def test_a_worksheet_gives_the_references_it_was_given_by_label() -> None:
+    worksheet = Worksheet(Artifact(A, D(1)), figure_references={"a": "Box 3"})
+
+    assert worksheet.reference("a") == "Box 3"
+    assert worksheet.reference("b") is None
+
+
+def test_a_worksheet_without_titles_gives_none() -> None:
+    worksheet = Worksheet(Artifact(A, D(1)))
+
+    assert worksheet.form_title is None
+    assert worksheet.title("a") is None

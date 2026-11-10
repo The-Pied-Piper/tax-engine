@@ -14,6 +14,8 @@ capabilities:
     produces:
       output: ca-on/on428_taxable_income_line_89
   - name: core/amount_by_band
+    title: "Ontario health premium"
+    reference: "89"
     params:
       table: ca-on/health_premium_rows
     consumes:

@@ -58,6 +58,8 @@ def test_has_no_params_family() -> None:
         "produces",
         "blank",
         "blank_fields",
+        "title",
+        "reference",
     ]
 
 
@@ -281,6 +283,7 @@ def test_form_fields_in_order() -> None:
         "required_when",
         "basis",
         "fields",
+        "title",
     ]
 
 

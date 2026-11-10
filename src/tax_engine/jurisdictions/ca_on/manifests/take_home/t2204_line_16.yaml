@@ -7,6 +7,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: core/lesser_of
+    reference: "16"
     consumes:
       amounts:
         - ca/t2204_line_7

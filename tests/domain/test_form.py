@@ -48,7 +48,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.kinds import AmountKind, RecordListKind, TextKind
-from tax_engine.domain.manifest import Form
+from tax_engine.domain.manifest import CapabilitySelection, Form
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
@@ -230,6 +230,33 @@ def test_the_form_remembers_its_name_instances_and_exports() -> None:
     assert found.name == "ex/audit"
     assert found.instances is AUDITS
     assert found.exports == (AUDITED,)
+
+
+def test_a_worksheet_carries_the_titles_its_form_and_selections_were_given() -> None:
+    titled = composition(
+        "ex/titled",
+        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
+        exports=[STEP_TOTAL],
+        starting=frozenset({AMOUNT}),
+        title="Titled form",
+        selections=(
+            CapabilitySelection(
+                name="ex/sum",
+                params={},
+                consumes={},
+                produces={"output": STEP_TOTAL.identifier},
+                title="Step total",
+            ),
+        ),
+    )
+
+    sheets = FormSet([titled], inputs=frozenset({AMOUNT})).compute(Artifact(AMOUNT, D(1)))
+    (sheet,) = sheets["ex/titled"]
+
+    assert titled.title == "Titled form"
+    assert sheet.form_title == "Titled form"
+    assert sheet.title(STEP_TOTAL.label) == "Step total"
+    assert sheet.title(AMOUNT.label) is None
 
 
 def test_the_inner_composition_takes_the_instance_fields_and_the_imports() -> None:

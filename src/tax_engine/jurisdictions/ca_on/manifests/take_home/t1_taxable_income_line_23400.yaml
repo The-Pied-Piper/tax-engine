@@ -10,6 +10,8 @@ form:
   name: ca/t1_taxable_income
 capabilities:
   - name: core/subtract
+    title: "Net income before adjustments"
+    reference: "23400"
     params:
       rounding: ca/cent_rounding
     consumes:

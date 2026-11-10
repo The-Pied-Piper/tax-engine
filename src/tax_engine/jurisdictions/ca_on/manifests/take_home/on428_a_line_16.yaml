@@ -5,6 +5,8 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/credit_amount
+    title: "Individual income threshold"
+    reference: "16"
     params:
       amount: ca-on/lift_individual_income_threshold
     produces:

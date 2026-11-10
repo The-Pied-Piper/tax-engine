@@ -12,6 +12,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/record_total
+    reference: "7"
     consumes:
       records: ca/t1_taxable_income.net_income_signed
     produces:

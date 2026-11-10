@@ -9,6 +9,8 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/sum
+    title: "Working income"
+    reference: "5"
     params:
       rounding: ca/cent_rounding
     consumes:

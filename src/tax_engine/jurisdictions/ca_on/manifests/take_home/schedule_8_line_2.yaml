@@ -6,6 +6,7 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: core/lesser_of
+    reference: "2"
     consumes:
       amounts:
         - ca/cpp_additional_maximum_pensionable_earnings

@@ -11,6 +11,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/subtract_not_below_zero
+    reference: "28"
     params:
       rounding: ca/cent_rounding
     consumes:

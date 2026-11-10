@@ -9,6 +9,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/sum
+    reference: "13"
     params:
       rounding: ca/cent_rounding
     consumes:

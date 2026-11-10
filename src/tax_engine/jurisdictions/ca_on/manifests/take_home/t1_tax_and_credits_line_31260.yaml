@@ -7,6 +7,7 @@ form:
 capabilities:
   # "line 1 plus line 2", to the cent.
   - name: core/sum
+    title: "Canada employment amount income"
     params:
       rounding: ca/cent_rounding
     consumes:
@@ -15,6 +16,8 @@ capabilities:
       output: ca/canada_employment_amount_income
   # "whichever is less: $1,471 or" that sum; the printed $1,471 is the dataset figure.
   - name: core/capped_amount
+    title: "Canada employment amount"
+    reference: "31260"
     params:
       cap: ca/canada_employment_amount
     consumes:

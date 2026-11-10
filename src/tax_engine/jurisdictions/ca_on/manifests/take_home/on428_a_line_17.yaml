@@ -9,6 +9,8 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/subtract_not_below_zero
+    title: "Excess over the individual threshold"
+    reference: "17"
     params:
       rounding: ca-on/cent_rounding
     consumes:
