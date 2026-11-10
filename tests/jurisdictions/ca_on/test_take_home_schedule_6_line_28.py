@@ -26,7 +26,7 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import CWB_BENEFIT_LINE_28
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, OTHER_EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 
 D = Decimal
@@ -82,9 +82,12 @@ FORM = dedent("""\
     """)
 
 
-def line_28(take_home_service: TakeHomeService, salary: str) -> Decimal:
+def line_28(take_home_service: TakeHomeService, salary: str, other: str | None = None) -> Decimal:
+    artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if other is not None:
+        artifacts.append(Artifact(OTHER_EMPLOYMENT_INCOME, D(other)))
     worksheets = take_home_service(HEADER, FORM, *PARTS).compute(
-        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        JurisdictionCode("CA-ON"), 2025, *artifacts
     )
     (sheet,) = worksheets["ca/schedule_6"]
     return sheet.get(CWB_BENEFIT_LINE_28).value
@@ -128,4 +131,16 @@ def test_schedule_6_line_28_is_zero_when_line_27_exceeds_line_22(
     # negative amount on T1 line 45300.
     value = line_28(take_home_service, salary)
     assert value == D("0.00")
+    assert value.as_tuple().exponent == -2
+
+
+def test_schedule_6_line_28_counts_other_employment_income(
+    take_home_service: TakeHomeService,
+) -> None:
+    # $20,000 salary and $10,000 other employment income (line 10400): line 1 is $30,000.00, so
+    # working income is $30,000.00 and net income is $29,835.00. Line 22 is $1,633.00 and line 27
+    # is $447.00 (15% of the $2,980.00 over $26,855.00), so line 28 is $1,186.00. Salary alone
+    # leaves line 28 at $1,633.00.
+    value = line_28(take_home_service, "20000", "10000")
+    assert value == D("1186.00")
     assert value.as_tuple().exponent == -2

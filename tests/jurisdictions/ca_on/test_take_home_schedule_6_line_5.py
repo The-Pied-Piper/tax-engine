@@ -6,8 +6,9 @@ to 4. Enter the result, even if it is "0". Working income". Line 5 is a calculat
 lines 1 to 4. Lines 2 (scholarships), 3 (self-employment) and 4 (tax-exempt working income on a
 reserve, volunteer allowance) are out of scope for the take-home calculator, so the sum has one
 part: line 1. Line 5 is therefore one core/sum over line 1 alone (`ca/cwb_employment_income`, from
-schedule_6_line_1.yaml), so the test loads both parts: line 1 reads the salary and line 5 reads
-line 1's output.
+schedule_6_line_1.yaml), so the test loads both parts: line 1 adds the salary (line 10100) and the
+other employment income (line 10400, which reads as 0 when none is given) and line 5 reads line 1's
+output.
 
 The manifest parts are loaded from the package. The header and the form's export are made up here,
 because the shared scaffold owns them.
@@ -23,7 +24,7 @@ import pytest
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import WORKING_INCOME
-from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME, OTHER_EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
@@ -50,11 +51,12 @@ FORM = dedent("""\
     """)
 
 
-def line_5(take_home_service: TakeHomeService, salary: str) -> Decimal:
+def line_5(take_home_service: TakeHomeService, salary: str, other: str | None = None) -> Decimal:
+    artifacts = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if other is not None:
+        artifacts.append(Artifact(OTHER_EMPLOYMENT_INCOME, D(other)))
     worksheets = take_home_service(HEADER, FORM, LINE_10400_PART, LINE_1_PART, LINE_5_PART).compute(
-        JurisdictionCode("CA-ON"),
-        2025,
-        Artifact(EMPLOYMENT_INCOME, D(salary)),
+        JurisdictionCode("CA-ON"), 2025, *artifacts
     )
     (sheet,) = worksheets["ca/schedule_6"]
     return sheet.get(WORKING_INCOME).value
@@ -80,4 +82,14 @@ def test_schedule_6_line_5_is_line_1_to_4_sum_with_only_line_1(
 ) -> None:
     value = line_5(take_home_service, salary)
     assert value == D(expected)
+    assert value.as_tuple().exponent == -2
+
+
+def test_schedule_6_line_5_includes_other_employment_income(
+    take_home_service: TakeHomeService,
+) -> None:
+    # Line 1 is $70,000.00 + $5,000.50 = $75,000.50 and lines 2 to 4 are out of scope, so line 5 is
+    # $75,000.50.
+    value = line_5(take_home_service, "70000", "5000.50")
+    assert value == D("75000.50")
     assert value.as_tuple().exponent == -2
