@@ -4,7 +4,7 @@
 # Earlier lines' kinds are read inside the form by later lines and are not exported.
 form:
   name: ca/schedule_6
-  title: "Schedule 6"
+  title: "Schedule 6: Canada Workers Benefit"
   required: true
   exports:
     - ca/cwb_benefit_line_28

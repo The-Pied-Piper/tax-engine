@@ -10,7 +10,6 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/sum
-    title: "Credits against federal tax"
     params:
       rounding: ca/cent_rounding
     consumes:

@@ -30,6 +30,7 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
+from types import MappingProxyType
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
@@ -154,7 +155,7 @@ class FormComposition:
     @property
     def figure_titles(self) -> Mapping[str, str]:
         """The readable title of each titled figure of the form, by the figure's label."""
-        return self._figure_titles
+        return MappingProxyType(self._figure_titles)
 
     @property
     def name(self) -> str:

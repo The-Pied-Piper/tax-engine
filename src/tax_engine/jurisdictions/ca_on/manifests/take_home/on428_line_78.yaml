@@ -7,7 +7,6 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/apply_fraction
-    title: "Doubled tax reduction"
     params:
       fraction: ca-on/tax_reduction_multiplier
     consumes:

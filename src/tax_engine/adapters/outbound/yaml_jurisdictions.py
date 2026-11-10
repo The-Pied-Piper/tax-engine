@@ -134,8 +134,8 @@ class _Declaration(NamedTuple):
     required: bool
     required_when: str | None
     basis: str | None
-    fields: tuple[InputDeclaration, ...]
     title: str | None
+    fields: tuple[InputDeclaration, ...]
 
     def form(self, name: str, selections: tuple[CapabilitySelection, ...]) -> Form:
         """The form `name` with this declaration and `selections`, which checks the declaration."""
@@ -150,8 +150,8 @@ class _Declaration(NamedTuple):
             required=self.required,
             required_when=self.required_when,
             basis=self.basis,
-            fields=self.fields,
             title=self.title,
+            fields=self.fields,
         )
 
 

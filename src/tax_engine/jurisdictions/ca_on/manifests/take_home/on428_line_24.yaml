@@ -5,7 +5,6 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/sum
-    title: "CPP and EI credit amounts subtotal"
     params:
       rounding: ca-on/cent_rounding
     consumes:

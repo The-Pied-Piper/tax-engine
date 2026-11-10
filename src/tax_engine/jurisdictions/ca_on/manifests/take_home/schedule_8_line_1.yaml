@@ -7,7 +7,6 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: core/capped_amount
-    title: "CPP pensionable earnings outside Quebec"
     params:
       cap: ca/cpp_pensionable_earnings_per_slip_maximum
     consumes:

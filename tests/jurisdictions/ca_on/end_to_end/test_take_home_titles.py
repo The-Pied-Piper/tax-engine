@@ -18,8 +18,8 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     (on428,) = sheets["ca-on/on428"]
     (schedule_8,) = sheets["ca/schedule_8"]
 
-    assert on428.form_title == "ON428"
-    assert schedule_8.form_title == "Schedule 8"
+    assert on428.form_title == "Form ON428: Ontario Tax"
+    assert schedule_8.form_title == "Schedule 8: Canada Pension Plan Contributions and Overpayment"
     assert on428.title("on428_surtax_total_line_68") == "Ontario surtax"
     assert on428.title("on428_taxable_income_line_1") == "Taxable income"
     assert on428.title("no_such_label") is None
