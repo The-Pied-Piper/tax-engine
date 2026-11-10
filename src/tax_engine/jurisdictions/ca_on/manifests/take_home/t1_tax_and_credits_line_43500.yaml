@@ -17,11 +17,15 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/record_total
+    title: "Provincial or territorial tax"
+    reference: "42800"
     consumes:
       records: ca-on/on428.on428_ontario_tax_line_90
     produces:
       output: ca/provincial_tax_line_42800
   - name: core/sum
+    title: "Total payable"
+    reference: "43500"
     params:
       rounding: ca/cent_rounding
     consumes:

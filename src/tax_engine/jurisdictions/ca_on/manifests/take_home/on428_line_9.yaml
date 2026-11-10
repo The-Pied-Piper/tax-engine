@@ -5,6 +5,8 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/credit_amount
+    title: "Basic personal amount"
+    reference: "9"
     params:
       amount: ca-on/basic_personal_amount
     produces:

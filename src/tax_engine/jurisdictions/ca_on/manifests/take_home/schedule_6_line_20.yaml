@@ -9,6 +9,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/apply_rate
+    reference: "20"
     params:
       rate: ca/cwb_rate
     consumes:

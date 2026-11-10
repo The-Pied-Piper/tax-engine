@@ -6,6 +6,8 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/apply_rate
+    title: "Credit amounts at the credit rate"
+    reference: "46"
     params:
       rate: ca-on/credit_rate
     consumes:

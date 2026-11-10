@@ -12,6 +12,7 @@ capabilities:
   # (line 30 = line 15, plus lines 32 and 35, both 0) goes to line 30800 and line 58240. Same
   # figure, so this part builds the shorter Part 3a line; Part 3b is not modelled.
   - name: core/sum
+    reference: "25"
     params:
       rounding: ca/cent_rounding
     consumes:

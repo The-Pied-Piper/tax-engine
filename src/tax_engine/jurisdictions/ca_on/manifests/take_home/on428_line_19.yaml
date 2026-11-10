@@ -5,6 +5,8 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/record_total
+    title: "CPP or QPP contributions"
+    reference: "19"
     consumes:
       records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
     produces:

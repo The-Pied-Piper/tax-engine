@@ -4,6 +4,7 @@
 # 62140 of Form ON428.
 form:
   name: ca-on/on428_a
+  title: "Schedule ON428-A: Low-income Individuals and Families Tax (LIFT) Credit"
   required: true
   exports:
     - ca-on/lift_credit_single

@@ -34,6 +34,8 @@ capabilities:
     produces:
       output: ca/t2204_line_1_count
   - name: core/times_count
+    title: "Total EI insurable earnings"
+    reference: "1"
     params:
       rounding: ca/cent_rounding
     consumes:
