@@ -9,7 +9,7 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/sum
-    reference: "121"
+    reference: "40400"
     params:
       rounding: ca/cent_rounding
     consumes:

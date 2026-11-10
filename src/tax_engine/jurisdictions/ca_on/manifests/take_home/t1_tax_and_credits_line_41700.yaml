@@ -8,7 +8,7 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/subtract_not_below_zero
-    reference: "139"
+    reference: "41700"
     params:
       rounding: ca/cent_rounding
     consumes:

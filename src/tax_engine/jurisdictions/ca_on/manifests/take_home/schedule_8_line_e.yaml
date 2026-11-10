@@ -4,7 +4,7 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: ca/amount_by_count
-    title: "Basic exemption"
+    title: "Maximum basic exemption"
     reference: "E"
     params:
       table: ca/cpp_basic_exemption

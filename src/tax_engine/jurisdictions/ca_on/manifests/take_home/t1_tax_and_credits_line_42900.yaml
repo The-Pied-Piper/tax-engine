@@ -9,7 +9,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     title: "Basic federal tax"
-    reference: "126"
+    reference: "42900"
     params:
       rounding: ca/cent_rounding
     consumes:

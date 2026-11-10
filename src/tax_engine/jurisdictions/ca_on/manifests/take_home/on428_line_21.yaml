@@ -4,7 +4,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/record_total
-    title: "EI premiums credit amount"
+    title: "Employment insurance premiums"
     reference: "21"
     consumes:
       records: ca/t2204.t2204_line_16

@@ -25,7 +25,6 @@ capabilities:
     produces:
       output: ca/t2204_line_15
   - name: ca/count_by_conditions
-    reference: "15"
     params:
       conditions: ca/t2204_line_15_conditions
     consumes:
@@ -36,7 +35,7 @@ capabilities:
       output: ca/t2204_line_15_count
   - name: core/times_count
     title: "Employment insurance (EI) overpayment"
-    reference: "45000"
+    reference: "15"
     params:
       rounding: ca/cent_rounding
     consumes:

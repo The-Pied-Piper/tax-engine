@@ -12,7 +12,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     title: "Taxable income"
-    reference: "69"
+    reference: "26000"
     params:
       rounding: ca/cent_rounding
     consumes:

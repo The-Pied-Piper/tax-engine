@@ -66,6 +66,7 @@ capabilities:
     produces:
       output: ca/federal_tax_at_column_start_line_75
   - name: core/sum
+    title: "Federal tax on taxable income"
     reference: "76"
     params:
       rounding: ca/cent_rounding

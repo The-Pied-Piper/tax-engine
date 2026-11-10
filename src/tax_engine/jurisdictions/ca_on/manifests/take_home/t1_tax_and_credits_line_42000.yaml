@@ -9,7 +9,7 @@ form:
 capabilities:
   - name: core/sum
     title: "Net federal tax"
-    reference: "142"
+    reference: "42000"
     params:
       rounding: ca/cent_rounding
     consumes:

@@ -6,7 +6,6 @@ capabilities:
   # Line 6 is "Amount from line E of Part 2", a copy, so line 7 reads line E (the maximum basic
   # exemption) itself. "Line 5 minus line 6 (if negative, enter "0")":
   - name: core/subtract_not_below_zero
-    reference: "7"
     params:
       rounding: ca/cent_rounding
     consumes:

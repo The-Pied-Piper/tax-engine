@@ -9,7 +9,7 @@
 # Lines 15000 and 23300 are read inside the form by line 23400 and are not exported.
 form:
   name: ca/t1_taxable_income
-  title: "T1 General, Step 4: Taxable income"
+  title: "T1 Income Tax and Benefit Return, Steps 2 to 4: Total income, net income and taxable income"
   required: true
   exports:
     - ca/net_income

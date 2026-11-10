@@ -8,7 +8,6 @@ capabilities:
   # "line 1 plus line 2", to the cent.
   - name: core/sum
     title: "Canada employment amount income"
-    reference: "31260"
     params:
       rounding: ca/cent_rounding
     consumes:

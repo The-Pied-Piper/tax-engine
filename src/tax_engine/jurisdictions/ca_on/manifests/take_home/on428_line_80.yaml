@@ -24,7 +24,6 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     title: "Ontario tax reduction before the conditions"
-    reference: "80"
     params:
       rounding: ca-on/cent_rounding
     consumes:
@@ -33,7 +32,6 @@ capabilities:
     produces:
       output: ca-on/on428_tax_reduction_before_conditions_line_80
   - name: ca/count_by_conditions
-    reference: "80"
     params:
       conditions: ca-on/on428_line_80_conditions
     consumes:

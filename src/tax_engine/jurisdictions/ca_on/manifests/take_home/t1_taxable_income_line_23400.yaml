@@ -11,7 +11,7 @@ form:
 capabilities:
   - name: core/subtract
     title: "Net income before adjustments"
-    reference: "54"
+    reference: "23400"
     params:
       rounding: ca/cent_rounding
     consumes:
