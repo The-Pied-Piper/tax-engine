@@ -2573,3 +2573,52 @@ def test_a_bad_title_is_rejected(tmp_path: Path, part: str, message: str) -> Non
 
     with pytest.raises(InvalidManifestError, match=message):
         source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def default_form(manifest: Manifest) -> Form:
+    """The default form of `manifest`, the one the parts without a `form:` key make up."""
+    (found,) = (form for form in manifest.forms if form.name == "ex-on/return")
+    return found
+
+
+def test_the_manifest_may_carry_a_title_for_the_default_form(tmp_path: Path) -> None:
+    write_parts(
+        tmp_path, {"00-header.yaml": "title: Return summary\ncapabilities: []\n" + HEADER_PART}
+    )
+
+    assert default_form(only_manifest(tmp_path)).title == "Return summary"
+
+
+def test_the_default_form_without_a_title_has_none(tmp_path: Path) -> None:
+    write_parts(tmp_path, {"00-header.yaml": "capabilities: []\n" + HEADER_PART})
+
+    assert default_form(only_manifest(tmp_path)).title is None
+
+
+def test_a_single_manifest_file_may_carry_a_title(tmp_path: Path) -> None:
+    write(tmp_path, "ex-on/manifests/v1.yaml", "title: Return summary\n" + EX_ON_V1)
+
+    (manifest,) = source(tmp_path).get_jurisdiction(EX_ON).manifests
+
+    assert default_form(manifest).title == "Return summary"
+
+
+@pytest.mark.parametrize("text", ["''", "'  '"])
+def test_a_blank_manifest_title_is_rejected(tmp_path: Path, text: str) -> None:
+    write_parts(tmp_path, {"00-header.yaml": f"title: {text}\ncapabilities: []\n" + HEADER_PART})
+
+    with pytest.raises(InvalidManifestError, match="title"):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_a_manifest_title_in_two_parts_is_rejected(tmp_path: Path) -> None:
+    write_parts(
+        tmp_path,
+        {
+            "00-header.yaml": "title: Return summary\ncapabilities: []\n" + HEADER_PART,
+            "01-again.yaml": "title: Summary\n",
+        },
+    )
+
+    with pytest.raises(InvalidManifestError, match="key 'title' is already set in"):
+        source(tmp_path).get_jurisdiction(EX_ON)

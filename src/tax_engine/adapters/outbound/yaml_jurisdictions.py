@@ -53,6 +53,9 @@ yes/no count are checked when the manifest is loaded (the `Manifest` is built wi
 an artifact the kinds do not have is an InvalidManifestError naming the file.
 Any of these keys in a part that does not declare `exports` is rejected. The default form is
 always required.
+The default form has no `form:` block, so its title is the manifest's own optional `title` line,
+beside `jurisdiction`, `version` and `valid_from_tax_year`; like those scalar keys it may be in only
+one part.
 Titles are for the reader of a trace: the `form:` block that declares `exports` may carry a
 `title` (the form's printed name), and a selection may carry a `title` (the printed wording of
 the one figure it produces; a selection producing several figures is rejected). A selection may
@@ -100,7 +103,8 @@ from tax_engine.domain.registry import Namespace
 _MANIFEST_KEYS = frozenset(
     {"jurisdiction", "version", "valid_from_tax_year", "inputs", "outputs", "capabilities"}
 )
-_PART_KEYS = _MANIFEST_KEYS | {"form"}
+_OPTIONAL_MANIFEST_KEYS = frozenset({"title"})
+_PART_KEYS = _MANIFEST_KEYS | _OPTIONAL_MANIFEST_KEYS | {"form"}
 _FORM_KEYS = frozenset({"name"})
 _OPTIONAL_FORM_KEYS = frozenset(
     {
@@ -120,7 +124,7 @@ _OPTIONAL_INPUT_KEYS = frozenset({"default", "basis"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference"})
-_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year")
+_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs")
 _PATTERNS = ("*.yaml", "*.yml")
 
@@ -398,6 +402,8 @@ class YamlJurisdictionSource:
             for key in ("version", "valid_from_tax_year"):
                 if key in contents:
                     contents[key].require_integer()
+            if "title" in contents:
+                self._title(contents["title"])
             if "inputs" in contents:
                 self._declarations(contents["inputs"], self._input_kind)
             if "outputs" in contents:
@@ -434,7 +440,8 @@ class YamlJurisdictionSource:
 
         `forms_beside` gives the other forms, from the name the default form takes.
         """
-        doc = document.require_mapping(_MANIFEST_KEYS)
+        doc = document.require_mapping(_MANIFEST_KEYS, optional=_OPTIONAL_MANIFEST_KEYS)
+        title = doc.optional_field("title")
         code = self._code(doc.field("jurisdiction"))
         inputs = self._declarations(doc.field("inputs"), self._input_kind)
         outputs = self._identifiers(doc.field("outputs"))
@@ -457,6 +464,7 @@ class YamlJurisdictionSource:
                         self._selection(entry) for entry in doc.field("capabilities").items()
                     ),
                     required=True,
+                    title=None if title is None else self._title(title),
                 ),
                 *forms_beside(default),
             ),
