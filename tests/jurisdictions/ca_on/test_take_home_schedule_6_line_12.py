@@ -3,10 +3,10 @@
 Form text (5000-S6-25E, docs/cra-forms-2025/5000-s6-25e.txt, lines 215-220): line 11 is "Total of
 UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)" and line 12 is "Line 10
 minus line 11 (if negative, enter "0")". Line 12 is a `core/subtract_not_below_zero` of line 10
-(`ca/cwb_family_net_income_line_10`) less line 11, with a blank line 11 read as 0. Line 11 is an
+(`ca/cwb_net_income_total_line_10`) less line 11, with a blank line 11 read as 0. Line 11 is an
 optional input (`ca/uccb_and_rdsp_income`, part schedule_6_line_11_inputs.yaml) the take-home filer
 usually does not have. The output is the registered, non-negative kind
-`ca/cwb_family_net_income_line_12`.
+`ca/cwb_net_income_less_uccb_rdsp_line_12`.
 
 Line 10 is composed from the real line 7 and the real T1 lines, as in
 test_take_home_schedule_6_line_10.py; the salary is the only required input. The figures for a
@@ -31,7 +31,7 @@ from tests.kinds import bundled_kinds, non_negative
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 FORM = "ca/schedule_6"
-LINE_12 = "ca/cwb_family_net_income_line_12"
+LINE_12 = "ca/cwb_net_income_less_uccb_rdsp_line_12"
 LINE_11 = "ca/uccb_and_rdsp_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, and the real
 # T1 taxable-income lines and inputs, so the T1 net income is read from the salary; then the line 7

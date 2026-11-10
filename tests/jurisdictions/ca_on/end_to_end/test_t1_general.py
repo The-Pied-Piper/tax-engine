@@ -85,11 +85,11 @@ from tax_engine.jurisdictions.ca.catalog.personal_amounts import (
     CPP_BASE_CONTRIBUTIONS_LINE_86,
     CREDITS_SUBTOTAL_LINE_96,
     EI_PREMIUMS_LINE_88,
-    FEDERAL_BASIC_TAX,
     FEDERAL_BRACKET_COLUMN_RATE_LINE_73,
     FEDERAL_BRACKET_LOWER_BOUND_LINE_71,
     FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_74,
     FEDERAL_TAX_AT_COLUMN_START_LINE_75,
+    FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76,
     FEDERAL_TAX_TAXABLE_INCOME_LINE_70,
     FEDERAL_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_72,
 )
@@ -130,7 +130,7 @@ T1_AT_70000: dict[str, tuple[AmountKind, str]] = {
     "73": (FEDERAL_BRACKET_COLUMN_RATE_LINE_73, "0.205"),
     "74": (FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_74, "2451.80"),
     "75": (FEDERAL_TAX_AT_COLUMN_START_LINE_75, "8319.38"),
-    "76": (FEDERAL_BASIC_TAX, "10771.18"),
+    "76": (FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76, "10771.18"),
     "84": (CREDIT_AMOUNTS_LINE_84, "16129.00"),
     "86": (CPP_BASE_CONTRIBUTIONS_LINE_86, "3291.75"),
     "88": (EI_PREMIUMS_LINE_88, "1077.48"),
@@ -556,7 +556,7 @@ def test_the_bracket_lines_follow_the_printed_columns_at_every_salary(
 
     assert t1.get(FEDERAL_TAX_TAXABLE_INCOME_LINE_70).value == taxable
     assert on428.get(ON428_TAXABLE_INCOME_LINE_1).value == taxable
-    assert t1.get(FEDERAL_BASIC_TAX).value == tax_on(taxable, FEDERAL_COLUMNS)
+    assert t1.get(FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76).value == tax_on(taxable, FEDERAL_COLUMNS)
     assert on428.get(ON428_TAX_ON_TAXABLE_INCOME_LINE_8).value == tax_on(taxable, ONTARIO_COLUMNS)
     line_167 = sheet(worksheets, "ca-on/return").get(REFUND_OR_BALANCE_OWING).value
     assert (
@@ -577,7 +577,7 @@ def test_the_federal_edge_at_114750_belongs_to_the_lower_column(
     # 8,319.38 + 11,761.88 = 20,081.26 (the next column's constant is 20,081.25).
     t1 = sheet(run(take_home_service, "115824"), "ca/t1_tax_and_credits")
 
-    assert t1.get(FEDERAL_BASIC_TAX).value == D("20081.26")
+    assert t1.get(FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76).value == D("20081.26")
 
 
 def test_a_negative_salary_is_refused(take_home_service: TakeHomeService) -> None:
@@ -596,7 +596,7 @@ def test_the_ninety_thousand_dollar_return_matches_the_hand_computed_chain(
     schedule_8 = sheet(worksheets, "ca/schedule_8")
 
     assert t1.get(FEDERAL_TAX_TAXABLE_INCOME_LINE_70).value == D("88926.00")
-    assert t1.get(FEDERAL_BASIC_TAX).value == D("14787.34")
+    assert t1.get(FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76).value == D("14787.34")
     assert t1.get(NON_REFUNDABLE_TAX_CREDITS).value == D("3194.87")
     assert t1.get(FEDERAL_TAX_AFTER_CREDITS).value == D("11592.47")
     assert schedule_8.get(SCHEDULE_8_CPP_ENHANCED_CONTRIBUTIONS_ON_RETURN).value == D("1074.00")

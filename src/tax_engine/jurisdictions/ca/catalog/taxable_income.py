@@ -1,7 +1,7 @@
 """The federal catalog: losses of other years and taxable income.
 
 The non-capital and net capital losses of other years, the deductions from net income, taxable
-income and the federal basic tax.
+income and the federal tax on taxable income (T1 line 76).
 """
 
 from __future__ import annotations

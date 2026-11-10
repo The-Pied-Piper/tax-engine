@@ -53,7 +53,9 @@ FEDERAL_TAX_AT_COLUMN_START_LINE_75 = AmountKind.declare(
 70 falls in.
 """
 
-FEDERAL_BASIC_TAX = AmountKind.declare(CATALOG, "federal_basic_tax", non_negative=True)
+FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 = AmountKind.declare(
+    CATALOG, "federal_tax_on_taxable_income_line_76", non_negative=True
+)
 """T1 line 76 "Federal tax on taxable income" ("Line 74 plus line 75"): line 74 plus line 75,
 rounded half-up to the cent, the federal tax on taxable income before non-refundable credits.
 """

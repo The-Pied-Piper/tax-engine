@@ -4,7 +4,7 @@
 #
 # Line 13 is a sum of line 12 over the two columns. Column 2 (eligible spouse) is out of scope for
 # the take-home calculator, so the sum has one part: line 12 column 1
-# (`ca/cwb_family_net_income_line_12`, from schedule_6_line_12.yaml).
+# (`ca/cwb_net_income_less_uccb_rdsp_line_12`, from schedule_6_line_12.yaml).
 form:
   name: ca/schedule_6
 capabilities:
@@ -13,6 +13,6 @@ capabilities:
     params:
       rounding: ca/cent_rounding
     consumes:
-      parts: [ca/cwb_family_net_income_line_12]
+      parts: [ca/cwb_net_income_less_uccb_rdsp_line_12]
     produces:
       output: ca/cwb_family_net_income_line_13
