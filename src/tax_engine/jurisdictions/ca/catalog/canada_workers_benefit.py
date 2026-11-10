@@ -69,7 +69,8 @@ CWB_FAMILY_NET_INCOME_LINE_13 = AmountKind.declare(
 """Schedule 6 Part B line 13 "Add the amounts from line 12 in columns 1 and 2. If you had an
 eligible spouse, continue at line 14; if not, continue at line 15.": the line 12 of column 1
 (`ca/cwb_net_income_less_uccb_rdsp_line_12`) alone. Column 2, the eligible spouse's line 12
-(`ca/cwb_spouse_net_income_less_uccb_rdsp_line_12`), is not built: the take-home calculator is single."""
+(`ca/cwb_spouse_net_income_less_uccb_rdsp_line_12`), is not built: the take-home calculator is
+single."""
 
 CWB_SECONDARY_EARNER_EXEMPTION = AmountKind.declare(
     CATALOG, "cwb_secondary_earner_exemption", non_negative=True
