@@ -22,7 +22,7 @@ part of the form, `t1_tax_and_credits_line_76.yaml`, with one capability per pri
 - line 75: `core/bracket_column_tax_at_start` (the printed constant of the column: 0.00, 8,319.38,
   20,081.25, 36,495.57 and 58,399.85, carried as printed by `ca/brackets`);
 - line 76: `core/sum` of line 74 and line 75, rounded by `ca/cent_rounding`, output
-  `ca/federal_basic_tax`.
+  `ca/federal_tax_on_taxable_income_line_76`.
 
 Line 74 is rounded to the cent before line 75 is added, as the form's dollars-and-cents box does.
 At a line 26000 of 114,750.00, line 74 is 11,761.875, printed 11,761.88, and line 76 is 20,081.26
@@ -31,7 +31,7 @@ At a line 26000 of 114,750.00, line 74 is 11,761.875, printed 11,761.88, and lin
 The T1 side is the real `ca/t1_taxable_income` form: its header part and the real lines 15000,
 23300 (deductions, read from the real Schedule 8), 23400, 23600, 23600 signed, 26000 and the
 optional inputs parts, so line 26000 comes from the salary through the real lines. The form header
-of line 76 is test-local: it declares `ca/federal_basic_tax` as its one export.
+of line 76 is test-local: it declares `ca/federal_tax_on_taxable_income_line_76` as its one export.
 
 The salary is the only input the caller gives. Ontario resident, single filer, salary the only
 income, tax withheld 0, basic credits only, as the take-home calculator states them.
@@ -70,7 +70,7 @@ LINE_72 = "ca/federal_taxable_income_over_lower_bound_line_72"
 LINE_73 = "ca/federal_bracket_column_rate_line_73"
 LINE_74 = "ca/federal_excess_times_column_rate_line_74"
 LINE_75 = "ca/federal_tax_at_column_start_line_75"
-LINE_76 = "ca/federal_basic_tax"
+LINE_76 = "ca/federal_tax_on_taxable_income_line_76"
 TAXABLE_INCOME = "ca/taxable_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, and the real
 # T1 taxable-income lines and inputs, so line 26000 is read from the salary through the real lines.

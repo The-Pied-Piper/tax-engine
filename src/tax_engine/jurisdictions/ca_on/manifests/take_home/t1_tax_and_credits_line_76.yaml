@@ -74,4 +74,4 @@ capabilities:
       parts:
         [ca/federal_excess_times_column_rate_line_74, ca/federal_tax_at_column_start_line_75]
     produces:
-      output: ca/federal_basic_tax
+      output: ca/federal_tax_on_taxable_income_line_76
