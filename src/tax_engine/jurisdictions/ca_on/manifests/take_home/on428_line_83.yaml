@@ -6,6 +6,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/subtract_not_below_zero
+    title: "Ontario tax after the foreign tax credit"
     params:
       rounding: ca-on/cent_rounding
     consumes:

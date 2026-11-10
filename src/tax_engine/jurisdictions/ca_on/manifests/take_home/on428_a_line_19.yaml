@@ -6,6 +6,7 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/apply_rate
+    title: "LIFT credit reduction"
     params:
       rate: ca-on/lift_single_rate
     consumes:

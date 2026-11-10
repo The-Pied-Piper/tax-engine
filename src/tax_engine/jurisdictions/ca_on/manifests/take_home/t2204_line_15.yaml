@@ -33,6 +33,7 @@ capabilities:
     produces:
       output: ca/t2204_line_15_count
   - name: core/times_count
+    title: "Employment insurance (EI) overpayment"
     params:
       rounding: ca/cent_rounding
     consumes:

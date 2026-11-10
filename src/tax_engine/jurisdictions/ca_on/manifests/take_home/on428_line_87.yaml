@@ -7,6 +7,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/apply_rate
+    title: "Farmers' food donation credit"
     params:
       rate: ca-on/farmers_food_donation_rate
     consumes:

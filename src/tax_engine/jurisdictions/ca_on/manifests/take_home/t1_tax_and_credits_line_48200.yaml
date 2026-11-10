@@ -36,6 +36,7 @@ capabilities:
     produces:
       output: ca/cwb_line_45300
   - name: core/sum
+    title: "Total credits"
     params:
       rounding: ca/cent_rounding
     consumes:

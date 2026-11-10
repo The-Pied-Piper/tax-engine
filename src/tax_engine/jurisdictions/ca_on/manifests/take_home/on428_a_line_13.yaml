@@ -16,11 +16,13 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/record_total
+    title: "Net income"
     consumes:
       records: ca/t1_taxable_income.net_income_signed
     produces:
       output: ca-on/lift_net_income
   - name: core/sum_not_below_zero
+    title: "Adjusted net income"
     params:
       rounding: ca-on/cent_rounding
     consumes:

@@ -9,7 +9,7 @@ capability, in that order, to a fresh worksheet.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from typing import Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
@@ -55,15 +55,22 @@ class Composition:
         """The capabilities in the order they run, derived from their contracts."""
         return self._order
 
-    def compute(self, *artifacts: Artifact[Any]) -> Worksheet:
+    def compute(
+        self,
+        *artifacts: Artifact[Any],
+        form_title: str | None = None,
+        figure_titles: Mapping[str, str] | None = None,
+    ) -> Worksheet:
         """Apply every capability, in `order`, to a fresh worksheet of the starting `artifacts`.
 
         The starting artifacts must be exactly one of each declared input kind, and only a kind
         declared in `blank_inputs` may be blank, else it is a BlankNotAllowedError. A capability
         that produces a value below zero for a kind declared non-negative breaks its contract: its
         `NegativeArtifactError` is raised as the `CapabilityContractError` naming it.
+        `form_title` and `figure_titles` (label to title) are only carried on the worksheet for
+        whoever reads its trace; they change nothing in the computation.
         """
-        worksheet = Worksheet(*artifacts)
+        worksheet = Worksheet(*artifacts, form_title=form_title, figure_titles=figure_titles)
         self.check_starting_kinds((artifact.kind for artifact in artifacts), self._inputs)
         refused = [a.kind for a in artifacts if a.is_blank and a.kind not in self._blank_inputs]
         if refused:

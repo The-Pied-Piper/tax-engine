@@ -9,6 +9,7 @@
 # and 28); Part 3b is not modelled.
 form:
   name: ca/schedule_8
+  title: "Schedule 8"
   required: true
   exports:
     - ca/schedule_8_cpp_base_contributions_on_return

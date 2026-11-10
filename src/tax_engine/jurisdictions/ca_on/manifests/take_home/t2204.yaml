@@ -6,6 +6,7 @@
 # T1 line 45000 amount read by T1 line 48200.
 form:
   name: ca/t2204
+  title: "T2204"
   required: true
   exports:
     - ca/t2204_premiums_deducted

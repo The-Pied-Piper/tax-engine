@@ -6,6 +6,7 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/sum
+    title: "LIFT employment income"
     params:
       rounding: ca-on/cent_rounding
     consumes:

@@ -15,6 +15,7 @@ capabilities:
       output: ca/cpp_part_3_line_7_difference
   # "(maximum $67,800)": the difference, at most the printed maximum.
   - name: core/capped_amount
+    title: "Earnings subject to base and first additional contributions"
     params:
       cap: ca/cpp_line_7_maximum
     consumes:

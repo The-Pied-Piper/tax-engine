@@ -3,6 +3,7 @@
 # so core/record_total totals the one amount into the return's own `ca/refund_or_balance_owing`.
 capabilities:
   - name: core/record_total
+    title: "Refund or balance owing"
     consumes:
       records: ca/t1_tax_and_credits.refund_or_balance_owing
     produces:

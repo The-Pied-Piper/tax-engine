@@ -4,6 +4,7 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: ca/amount_by_count
+    title: "Maximum pensionable earnings"
     params:
       table: ca/cpp_maximum_pensionable_earnings
     consumes:

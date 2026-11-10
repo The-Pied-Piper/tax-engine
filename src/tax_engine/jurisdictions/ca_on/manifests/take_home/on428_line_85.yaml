@@ -8,6 +8,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/record_total
+    title: "Low-income individuals and families tax (LIFT) credit"
     consumes:
       records: ca-on/on428_a.lift_credit_single
     produces:

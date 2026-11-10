@@ -4,6 +4,7 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: ca/amount_by_count
+    title: "Basic exemption"
     params:
       table: ca/cpp_basic_exemption
     consumes:

@@ -9,6 +9,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/subtract_not_below_zero
+    title: "Your column"
     params:
       rounding: ca/cent_rounding
     consumes:

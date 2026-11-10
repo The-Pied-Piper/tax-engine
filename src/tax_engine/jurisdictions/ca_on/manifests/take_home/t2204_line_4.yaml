@@ -11,6 +11,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: ca/given_or_contribution_tier
+    title: "Total premiums deducted"
     params:
       tier: ca/ei_premium
     consumes:

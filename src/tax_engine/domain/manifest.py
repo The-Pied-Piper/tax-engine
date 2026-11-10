@@ -45,6 +45,9 @@ class CapabilitySelection:
     instead be the identifier of one artifact in the list, giving the rule for that part.
     `blank_fields` maps a consumed record-list slot to what a blank field in its records does: each
     field's identifier to a `BlankRule`. Each is kept as a read-only copy of what it was given.
+    `title` is the readable title of the one figure the selection produces, written by whoever
+    builds the manifest (the printed wording of the form's line); `None` for none. A selection
+    that produces several figures has no one figure to title, so it may not have one.
     """
 
     name: str
@@ -53,8 +56,14 @@ class CapabilitySelection:
     produces: Mapping[str, str]
     blank: Mapping[str, BlankRule] = dataclasses.field(default_factory=dict)
     blank_fields: Mapping[str, Mapping[str, BlankRule]] = dataclasses.field(default_factory=dict)
+    title: str | None = None
 
     def __post_init__(self) -> None:
+        if self.title is not None and len(self.produces) != 1:
+            raise InvalidManifestError(
+                f"{self.name}: a title belongs to the one figure a selection produces, "
+                f"but it produces {len(self.produces)}"
+            )
         for name in ("params", "produces", "blank"):
             object.__setattr__(self, name, MappingProxyType(dict(getattr(self, name))))
         object.__setattr__(
@@ -152,6 +161,9 @@ class Form:
     `None` for no maximum) and `min_instances` the fewest (an integer of at least 0, 0 meaning no
     minimum; `None` for none); the minimum may not be above the maximum. `exclusive_group` is an
     identifier shared by forms of which at most one may have instances (`None` for no group).
+
+    `title` is the form's readable name, as the form prints it ("Schedule 8"), written by whoever
+    builds the manifest; `None` for none. The `name` stays the form's unique identifier.
     """
 
     name: str
@@ -165,6 +177,7 @@ class Form:
     required_when: str | None = None
     basis: str | None = None
     fields: tuple[InputDeclaration, ...] = ()
+    title: str | None = None
 
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
         """The kind `<form>.<export>` of each of this form's exports a record can hold.

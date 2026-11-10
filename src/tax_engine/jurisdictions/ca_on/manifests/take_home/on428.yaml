@@ -3,6 +3,7 @@
 # figure another form reads: line 90 says to enter it on line 42800 of the return.
 form:
   name: ca-on/on428
+  title: "ON428"
   required: true
   exports:
     - ca-on/on428_ontario_tax_line_90

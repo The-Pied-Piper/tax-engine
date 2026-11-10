@@ -53,6 +53,10 @@ yes/no count are checked when the manifest is loaded (the `Manifest` is built wi
 an artifact the kinds do not have is an InvalidManifestError naming the file.
 Any of these keys in a part that does not declare `exports` is rejected. The default form is
 always required.
+Titles are for the reader of a trace: the `form:` block that declares `exports` may carry a
+`title` (the form's printed name), and a selection may carry a `title` (the printed wording of
+the one figure it produces; a selection producing several figures is rejected). Both are non-empty
+text, optional, and never used to look anything up: the identifier stays the unique name.
 Parsing is strict because a manifest must stay selection plus slot bindings
 (design.md §4): unknown keys, duplicate keys and wrongly typed values are
 rejected with the offending file (for a folder, the offending part) named, never coerced or
@@ -107,12 +111,13 @@ _OPTIONAL_FORM_KEYS = frozenset(
         "required_when",
         "basis",
         "fields",
+        "title",
     }
 )
 _OPTIONAL_INPUT_KEYS = frozenset({"default", "basis"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
-_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank"})
+_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title"})
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year")
 _IDENTIFIER_LISTS = ("inputs", "outputs")
 _PATTERNS = ("*.yaml", "*.yml")
@@ -130,6 +135,7 @@ class _Declaration(NamedTuple):
     required_when: str | None
     basis: str | None
     fields: tuple[InputDeclaration, ...]
+    title: str | None
 
     def form(self, name: str, selections: tuple[CapabilitySelection, ...]) -> Form:
         """The form `name` with this declaration and `selections`, which checks the declaration."""
@@ -145,6 +151,7 @@ class _Declaration(NamedTuple):
             required_when=self.required_when,
             basis=self.basis,
             fields=self.fields,
+            title=self.title,
         )
 
 
@@ -321,6 +328,7 @@ class YamlJurisdictionSource:
         required_when = node.optional_field("required_when")
         basis = node.optional_field("basis")
         fields = node.optional_field("fields")
+        title = node.optional_field("title")
         if exports is None:
             if instances is not None:
                 raise InvalidManifestError(
@@ -334,6 +342,7 @@ class YamlJurisdictionSource:
                 ("required_when", required_when),
                 ("basis", basis),
                 ("fields", fields),
+                ("title", title),
             ):
                 if limit is not None:
                     raise InvalidManifestError(
@@ -355,6 +364,7 @@ class YamlJurisdictionSource:
             if required_when is None
             else required_when.require_non_empty_string(),
             basis=None if basis is None else basis.require_non_empty_string(),
+            title=None if title is None else title.require_non_empty_string(),
             fields=()
             if fields is None
             else self._declarations(
@@ -544,6 +554,7 @@ class YamlJurisdictionSource:
         name = fields.field("name").require_string()
         consumes = self._consumed(fields.optional_field("consumes"))
         blank = fields.optional_field("blank")
+        title = fields.optional_field("title")
         return CapabilitySelection(
             name=name,
             params=self._bindings(fields.optional_field("params")),
@@ -551,6 +562,7 @@ class YamlJurisdictionSource:
             produces=self._produced(fields.field("produces")),
             blank=self._blank_rules(name, blank, consumes),
             blank_fields=self._field_blank_rules(name, blank, consumes),
+            title=None if title is None else title.require_non_empty_string(),
         )
 
     def _blank_rules(

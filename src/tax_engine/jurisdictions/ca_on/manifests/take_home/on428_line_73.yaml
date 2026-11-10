@@ -8,6 +8,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/sum
+    title: "Tax with the minimum tax addition"
     params:
       rounding: ca-on/cent_rounding
     consumes:

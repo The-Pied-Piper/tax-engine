@@ -9,11 +9,13 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/record_total
+    title: "Taxable income"
     consumes:
       records: ca/t1_taxable_income.taxable_income
     produces:
       output: ca-on/on428_taxable_income_line_89
   - name: core/amount_by_band
+    title: "Ontario health premium"
     params:
       table: ca-on/health_premium_rows
     consumes:

@@ -102,6 +102,11 @@ class FormComposition:
         produced = {kind for capability in wired for kind in capability.produces}
         read = {kind for capability in wired for kind in capability.consumes} | set(listed)
         self._form = form
+        self._figure_titles = {
+            next(iter(selection.produces.values())).partition("/")[2]: selection.title
+            for selection in form.capabilities
+            if selection.title is not None
+        }
         self._instances = instances
         self._exports = listed
         self._derived = form.derived_kinds(kinds)
@@ -140,6 +145,16 @@ class FormComposition:
     def _blank_kinds(*defaults: Iterable[Artifact[Any]]) -> frozenset[ArtifactKind[Any]]:
         """The kinds whose default is blank: those may arrive blank."""
         return frozenset(a.kind for group in defaults for a in group if a.is_blank)
+
+    @property
+    def title(self) -> str | None:
+        """The readable title of the form, as its manifest gives it; `None` for none."""
+        return self._form.title
+
+    @property
+    def figure_titles(self) -> Mapping[str, str]:
+        """The readable title of each titled figure of the form, by the figure's label."""
+        return self._figure_titles
 
     @property
     def name(self) -> str:
@@ -371,7 +386,9 @@ class FormSet:
     @staticmethod
     def _run(form: FormComposition, position: int, starting: list[Artifact[Any]]) -> Worksheet:
         try:
-            return form.composition.compute(*starting)
+            return form.composition.compute(
+                *starting, form_title=form.title, figure_titles=form.figure_titles
+            )
         except DomainError as exc:
             exc.args = (f"{form.name}, instance {position}: {exc}",)
             raise

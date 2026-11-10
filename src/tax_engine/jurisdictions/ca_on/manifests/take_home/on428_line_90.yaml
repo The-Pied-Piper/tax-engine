@@ -9,6 +9,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/sum
+    title: "Ontario tax"
     params:
       rounding: ca-on/cent_rounding
     consumes:

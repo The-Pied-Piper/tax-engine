@@ -13,6 +13,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/subtract
+    title: "Adjusted family net income"
     params:
       rounding: ca/cent_rounding
     consumes:
