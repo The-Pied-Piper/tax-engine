@@ -17,6 +17,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: core/lesser_of
+    title: "Employment insurance overpayment"
     reference: "15"
     consumes:
       amounts:
@@ -34,8 +35,6 @@ capabilities:
     produces:
       output: ca/t2204_line_15_count
   - name: core/times_count
-    title: "Employment insurance (EI) overpayment"
-    reference: "15"
     params:
       rounding: ca/cent_rounding
     consumes:

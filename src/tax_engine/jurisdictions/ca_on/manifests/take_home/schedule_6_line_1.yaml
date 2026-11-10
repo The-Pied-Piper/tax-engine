@@ -8,7 +8,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/sum
-    title: "Employment income for the Canada workers benefit"
+    title: "Employment income and other employment income from line 10100 and line 10400 of the return"
     reference: "1"
     params:
       rounding: ca/cent_rounding

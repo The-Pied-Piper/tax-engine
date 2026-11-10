@@ -7,7 +7,7 @@ capabilities:
   # above line B, read here as it is. The 4% and the maximum are dataset figures as printed; the
   # tier starts at 0 because line 4 is already net of line B. Line 28 reads it (line 27 is a copy).
   - name: ca/contribution_tier
-    title: "Required second additional CPP contributions"
+    title: "Required second additional contributions on CPP pensionable earnings"
     reference: "22"
     params:
       tier: ca/cpp_line_22_second_additional_contribution
