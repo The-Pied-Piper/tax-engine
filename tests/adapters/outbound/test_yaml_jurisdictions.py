@@ -2556,6 +2556,21 @@ def test_a_form_and_a_selection_without_a_title_have_none(tmp_path: Path) -> Non
             id="form-title-in-a-part-without-exports",
         ),
         pytest.param(
+            "title: ''\ncapabilities: []\n",
+            "title must not be empty",
+            id="empty-manifest-title",
+        ),
+        pytest.param(
+            "title: Top\n" + FORM_RENTAL,
+            "the manifest `title` belongs to the default form",
+            id="manifest-title-in-a-part-with-a-form",
+        ),
+        pytest.param(
+            "title: '  '\ncapabilities: []\n",
+            "must not be blank",
+            id="blank-manifest-title",
+        ),
+        pytest.param(
             FORM_RENTAL.replace(
                 "produces: {output: ex/net_income}",
                 "produces: {output: ex/net_income, other: ex/unit_list}",
@@ -2572,4 +2587,39 @@ def test_a_bad_title_is_rejected(tmp_path: Path, part: str, message: str) -> Non
     write_parts(tmp_path, parts)
 
     with pytest.raises(InvalidManifestError, match=message):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_the_manifest_may_carry_a_title_for_the_default_form(tmp_path: Path) -> None:
+    write_parts(
+        tmp_path, {"00-header.yaml": "title: Return summary\ncapabilities: []\n" + HEADER_PART}
+    )
+
+    assert returned(only_manifest(tmp_path)).title == "Return summary"
+
+
+def test_the_default_form_without_a_title_has_none(tmp_path: Path) -> None:
+    write_parts(tmp_path, {"00-header.yaml": "capabilities: []\n" + HEADER_PART})
+
+    assert returned(only_manifest(tmp_path)).title is None
+
+
+def test_a_single_manifest_file_may_carry_a_title(tmp_path: Path) -> None:
+    write(tmp_path, "ex-on/manifests/v1.yaml", "title: Return summary\n" + EX_ON_V1)
+
+    (manifest,) = source(tmp_path).get_jurisdiction(EX_ON).manifests
+
+    assert returned(manifest).title == "Return summary"
+
+
+def test_a_manifest_title_in_two_parts_is_rejected(tmp_path: Path) -> None:
+    write_parts(
+        tmp_path,
+        {
+            "00-header.yaml": "title: Return summary\ncapabilities: []\n" + HEADER_PART,
+            "01-again.yaml": "title: Summary\n",
+        },
+    )
+
+    with pytest.raises(InvalidManifestError, match="key 'title' is already set in"):
         source(tmp_path).get_jurisdiction(EX_ON)
