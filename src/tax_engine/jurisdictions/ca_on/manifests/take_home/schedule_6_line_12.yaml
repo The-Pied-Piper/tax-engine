@@ -2,7 +2,8 @@
 # enter "0")", column 1 "You" (docs/cra-forms-2025/5000-s6-25e.txt, lines 215-220).
 #
 # Line 10 is read from its source part (`ca/cwb_net_income_total_line_10`), and line 11 is read
-# directly as an optional input (`ca/uccb_and_rdsp_income`) that a salary-only caller leaves out, read
+# directly as an optional input (`ca/uccb_and_rdsp_income`) that a salary-only caller leaves out,
+# read
 # as blank and then as 0 by the blank rule of core/subtract_not_below_zero. The result is floored at
 # zero, as the form prints.
 form:

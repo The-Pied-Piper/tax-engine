@@ -226,6 +226,7 @@ def test_the_federal_tax_on_taxable_income_is_not_rounded_by_the_schedule(
     ],
 )
 def test_the_ontario_tax_on_taxable_income_is_not_rounded(taxable_income: str, tax: str) -> None:
+    # The output kind is only a carrier here: it holds the Ontario schedule's tax, not T1 line 76.
     capability = ProgressiveTax(
         TAXABLE_INCOME,
         FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76,
