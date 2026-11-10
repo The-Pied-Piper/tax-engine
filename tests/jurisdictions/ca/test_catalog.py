@@ -68,8 +68,8 @@ from tax_engine.jurisdictions.ca.catalog import (
     EDUCATOR_SUPPLIES_EXPENSES_AT_MOST_MAXIMUM,
     EI_PAYABLE_ON_SELF_EMPLOYMENT,
     EMPLOYEE_AND_PARTNER_GST_HST_REBATE,
-    FEDERAL_BASIC_TAX,
     FEDERAL_TAX_LESS_CREDITS,
+    FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76,
     FHSA_ANNUAL_AMOUNT_AFTER_TRANSFERS,
     FHSA_ANNUAL_AMOUNT_FOR_2024_WITH_CARRYFORWARD,
     FHSA_ANNUAL_AMOUNT_WITH_CARRYFORWARD,
@@ -250,7 +250,7 @@ def test_catalog_kinds_are_in_the_package_namespace() -> None:
 
 def test_the_catalog_kinds_named_by_the_package_are_money() -> None:
     assert TAXABLE_INCOME.value_type is Decimal
-    assert FEDERAL_BASIC_TAX.value_type is Decimal
+    assert FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76.value_type is Decimal
 
 
 def test_every_registered_kind_but_the_counts_and_record_lists_is_money(
@@ -1499,7 +1499,7 @@ def test_the_other_medical_supplement_lines_are_non_negative_decimals(
     signed = {
         "ca/spouse_net_income_before_adjustments",
         "ca/medical_supplement_employment_income_less_wage_loss",
-        "ca/cwb_family_net_income_line_10",
+        "ca/cwb_net_income_total_line_10",
         "ca/medical_supplement_column_1_line_3",
         "ca/medical_supplement_column_2_line_3",
     }

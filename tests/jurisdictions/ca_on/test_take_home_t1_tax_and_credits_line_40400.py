@@ -3,7 +3,8 @@ on split income", from the salary alone.
 
 Line 121 is "Line 119 plus line 120" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
 docs/cra-forms-2025/5006-r-25e.txt). Line 119 is "Enter the amount from line 76", a pure copy of
-line 76 (`ca/federal_basic_tax`, read directly because it is the same form), so it is no step.
+line 76 (`ca/federal_tax_on_taxable_income_line_76`, read directly because it is the same form), so
+it is no step.
 Line 120 is the federal tax on split income (TOSI), 0 for the take-home filer (salary the only
 income), so it is left out. Line 121 is therefore one `core/sum` over line 76 alone, rounded half-up
 to the cent with the shared `ca/cent_rounding` dataset, and produces
@@ -42,7 +43,7 @@ from tests.kinds import bundled_kinds, non_negative
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 FORM = "ca/t1_tax_and_credits"
-LINE_76 = "ca/federal_basic_tax"
+LINE_76 = "ca/federal_tax_on_taxable_income_line_76"
 LINE_121 = "ca/federal_tax_with_split_income"
 # The real parts composed beside the test's header: the salary, the real Schedule 8, the real T1
 # taxable-income lines and inputs, line 76 and line 121.

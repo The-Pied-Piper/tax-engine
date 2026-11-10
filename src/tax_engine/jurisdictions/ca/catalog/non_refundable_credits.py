@@ -197,7 +197,7 @@ TUITION_INCOME_BASE = AmountKind.declare(CATALOG, "tuition_income_base", non_neg
 """Income base for the tuition amount, Schedule 11 line 11 "Enter the amount from line 26000 of
 your return on line 11 if it is $57,375 or less. If it is more than $57,375, enter the result of
 the following calculation: Amount from line 76 of your return divided by 14.5% =": the taxable
-income, or the federal basic tax divided by 14.5% above the threshold."""
+income, or the federal tax on taxable income (line 76) divided by 14.5% above the threshold."""
 
 TOSI_ADJUSTED_TAXABLE_INCOME = AmountKind.declare(
     CATALOG, "tosi_adjusted_taxable_income", non_negative=True
@@ -754,8 +754,8 @@ FEDERAL_TAX_WITH_SPLIT_INCOME = AmountKind.declare(
     CATALOG, "federal_tax_with_split_income", non_negative=True
 )
 """Federal tax with the tax on split income, T1 line 121 and line 40400 "Line 119 plus line 120 =":
-the federal basic tax (line 119 "Enter the amount from line 76.") plus the federal tax on split
-income (line 120), in line order."""
+the federal tax on taxable income (line 119 "Enter the amount from line 76.") plus the federal tax
+on split income (line 120), in line order."""
 
 FEDERAL_TAX_AFTER_CREDITS = AmountKind.declare(
     CATALOG, "federal_tax_after_credits", non_negative=True
