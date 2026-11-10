@@ -4,8 +4,9 @@ The source takes a mapping of namespace -> jurisdiction package directory. A jur
 namespace is its code lower-cased (`EX-ON` -> `ex-on`). Each `*.yaml` / `*.yml` file directly in
 `<roots[ex-on]>/manifests/` is one whole manifest, and each subfolder there is one manifest too,
 merged from its parts: every `*.yaml` / `*.yml` file inside it (recursively), read in sorted path
-order. A part may carry any of the six manifest keys or a `form:` key; the scalar keys
-(`jurisdiction`, `version`, `valid_from_tax_year`) must each be in exactly one part, and the lists
+order. A part may carry any of the six manifest keys, the optional `title` or a `form:` key; the
+scalar keys (`jurisdiction`, `version`, `valid_from_tax_year`, and `title` if given) must each be
+in exactly one part, and the lists
 (`inputs`, `outputs`, `capabilities`) are concatenated in part order, an identifier listed in two
 parts of `inputs` or of `outputs` being rejected. The merged mapping then goes through the same
 parse as a whole file. A manifest naming another jurisdiction is rejected.
@@ -55,7 +56,7 @@ Any of these keys in a part that does not declare `exports` is rejected. The def
 always required.
 The default form has no `form:` block, so its title is the manifest's own optional `title` line,
 beside `jurisdiction`, `version` and `valid_from_tax_year`; like those scalar keys it may be in only
-one part.
+one part, and not in a part with a `form:` key.
 Titles are for the reader of a trace: the `form:` block that declares `exports` may carry a
 `title` (the form's printed name), and a selection may carry a `title` (the printed wording of
 the one figure it produces; a selection producing several figures is rejected). A selection may
@@ -287,6 +288,11 @@ class YamlJurisdictionSource:
         a form is rejected, naming the part that did.
         """
         name, declared = self._form_header(contents.pop("form"))
+        if "title" in contents:
+            raise InvalidManifestError(
+                f"{part}: form {name!r}: the manifest `title` belongs to the default form; "
+                "the form's own title goes in its `form:` block"
+            )
         if contents.keys() & set(_IDENTIFIER_LISTS):
             raise InvalidManifestError(
                 f"{part}: form {name!r}: inputs are derived and exports are declared in the "
@@ -441,7 +447,6 @@ class YamlJurisdictionSource:
         `forms_beside` gives the other forms, from the name the default form takes.
         """
         doc = document.require_mapping(_MANIFEST_KEYS, optional=_OPTIONAL_MANIFEST_KEYS)
-        title = doc.optional_field("title")
         code = self._code(doc.field("jurisdiction"))
         inputs = self._declarations(doc.field("inputs"), self._input_kind)
         outputs = self._identifiers(doc.field("outputs"))
@@ -449,6 +454,7 @@ class YamlJurisdictionSource:
             raise InvalidManifestError("outputs must name at least one artifact")
         Form.check_exports("outputs", sorted(outputs))
         default = code.namespace.identifier(_DEFAULT_FORM)
+        title = doc.optional_field("title")
         return Manifest(
             jurisdiction=code,
             version=doc.field("version").require_integer(),
