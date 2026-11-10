@@ -11,8 +11,8 @@ from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 CWB_EMPLOYMENT_INCOME = AmountKind.declare(CATALOG, "cwb_employment_income", non_negative=True)
 """Employment income for the Canada workers benefit, Schedule 6 line 1 "Employment income and other
 employment income from line 10100 and line 10400 of the return": the employment income and the
-other employment income added. The take-home sum has the salary alone (line 10400 is out of
-scope). The quote is from Schedule 6 (5000-S6)."""
+other employment income added. The take-home sum adds line 10400 (`ca/other_employment_income`,
+which reads as 0 when the filer has none) to line 10100. The quote is from Schedule 6 (5000-S6)."""
 
 WORKING_INCOME = AmountKind.declare(CATALOG, "working_income", non_negative=True)
 """Working income, Schedule 6 line 5 "Add lines 1 to 4. Enter the result, even if it is "0".

@@ -29,6 +29,7 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 LINE_1_PART = "schedule_6_line_1.yaml"
+LINE_10400_PART = "t1_taxable_income_line_10400_inputs.yaml"
 LINE_5_PART = "schedule_6_line_5.yaml"
 LINE_6_PART = "schedule_6_line_6.yaml"
 LINE_17_PART = "schedule_6_line_17.yaml"
@@ -55,7 +56,14 @@ FORM = dedent("""\
 
 def line_18(take_home_service: TakeHomeService, salary: str) -> Decimal:
     worksheets = take_home_service(
-        HEADER, FORM, LINE_1_PART, LINE_5_PART, LINE_6_PART, LINE_17_PART, LINE_18_PART
+        HEADER,
+        FORM,
+        LINE_10400_PART,
+        LINE_1_PART,
+        LINE_5_PART,
+        LINE_6_PART,
+        LINE_17_PART,
+        LINE_18_PART,
     ).compute(JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
     (sheet,) = worksheets["ca/schedule_6"]
     return sheet.get(CWB_WORKING_INCOME_OVER_BASE_AMOUNT).value
