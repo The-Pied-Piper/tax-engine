@@ -9,6 +9,8 @@ form:
   name: ca/t1_taxable_income
 capabilities:
   - name: core/sum
+    title: "Total income"
+    reference: "15000"
     params:
       rounding: ca/cent_rounding
     consumes:

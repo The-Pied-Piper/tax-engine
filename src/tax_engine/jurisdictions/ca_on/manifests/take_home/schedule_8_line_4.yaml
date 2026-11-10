@@ -5,6 +5,8 @@ form:
   name: ca/schedule_8
 capabilities:
   - name: core/subtract_not_below_zero
+    title: "Earnings subject to second additional contributions"
+    reference: "4"
     params:
       rounding: ca/cent_rounding
     consumes:

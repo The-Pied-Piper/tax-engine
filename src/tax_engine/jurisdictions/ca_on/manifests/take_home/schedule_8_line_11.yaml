@@ -7,6 +7,7 @@ capabilities:
   # earnings subject to the base contributions, read here as it is. The 4.95% and the maximum are
   # dataset figures as printed; the tier starts at 0 because line 7 is already net of the exemption.
   - name: ca/contribution_tier
+    reference: "11"
     params:
       tier: ca/cpp_line_11_base_contribution
     consumes:

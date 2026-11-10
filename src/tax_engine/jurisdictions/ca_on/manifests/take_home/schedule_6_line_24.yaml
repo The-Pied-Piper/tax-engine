@@ -6,6 +6,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/credit_amount
+    reference: "24"
     params:
       amount: ca/cwb_reduction_threshold
     produces:

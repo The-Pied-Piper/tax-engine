@@ -10,6 +10,8 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/subtract
+    title: "Refund or balance owing"
+    reference: "167"
     params:
       rounding: ca/cent_rounding
     consumes:

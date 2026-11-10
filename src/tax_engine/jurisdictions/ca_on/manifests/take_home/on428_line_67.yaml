@@ -7,6 +7,8 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/tiered_surcharge
+    title: "Surtax 36% tier"
+    reference: "67"
     params:
       tiers: ca-on/surtax_line_67
     consumes:

@@ -6,6 +6,8 @@ capabilities:
   # Schedule 8 Part 2 line D "Your additional maximum pensionable earnings for 2025 (maximum
   # $81,200)": the row of the monthly proration table for the months on line A.
   - name: ca/amount_by_count
+    title: "Additional maximum pensionable earnings"
+    reference: "D"
     params:
       table: ca/cpp_additional_maximum_pensionable_earnings
     consumes:

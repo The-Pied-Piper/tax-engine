@@ -6,6 +6,7 @@ form:
   name: ca/t1_taxable_income
 capabilities:
   - name: core/record_total
+    reference: "23300"
     consumes:
       records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
     produces:

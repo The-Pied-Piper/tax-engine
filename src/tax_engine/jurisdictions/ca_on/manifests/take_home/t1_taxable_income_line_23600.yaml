@@ -7,6 +7,8 @@ form:
   name: ca/t1_taxable_income
 capabilities:
   - name: core/subtract_not_below_zero
+    title: "Net income"
+    reference: "23600"
     params:
       rounding: ca/cent_rounding
     consumes:

@@ -2463,3 +2463,113 @@ def test_a_field_default_the_kind_refuses_fails_at_load_naming_the_file(tmp_path
         YamlJurisdictionSource(roots(tmp_path), kinds).get_jurisdiction(EX_ON)
 
     assert str(part_path(tmp_path, "02-form.yaml")) in str(caught.value)
+
+
+def test_a_form_and_a_selection_may_carry_a_title(tmp_path: Path) -> None:
+    titled = FORM_RENTAL.replace(
+        "  required: true\n", "  required: true\n  title: Rental schedule\n"
+    )
+    titled = titled.replace(
+        "  - {name: ex/a, produces: {output: ex/net_income}}",
+        "  - {name: ex/a, title: Net rental income, produces: {output: ex/net_income}}",
+    )
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": titled})
+
+    (found,) = others(only_manifest(tmp_path))
+
+    assert found.title == "Rental schedule"
+    assert found.capabilities[0].title == "Net rental income"
+
+
+def test_a_selection_may_carry_a_reference(tmp_path: Path) -> None:
+    referenced = FORM_RENTAL.replace(
+        "  - {name: ex/a, produces: {output: ex/net_income}}",
+        "  - {name: ex/a, reference: Box 3, produces: {output: ex/net_income}}",
+    )
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": referenced})
+
+    (found,) = others(only_manifest(tmp_path))
+
+    assert found.capabilities[0].reference == "Box 3"
+
+
+@pytest.mark.parametrize(
+    ("part", "message"),
+    [
+        pytest.param(
+            FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, reference: '  ',"),
+            "must not be blank",
+            id="blank-reference",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace(
+                "produces: {output: ex/net_income}",
+                "produces: {output: ex/net_income, other: ex/unit_list}",
+            ).replace("{name: ex/a,", "{name: ex/a, reference: '3',"),
+            "reference belongs to the one figure a selection produces",
+            id="reference-with-two-figures",
+        ),
+    ],
+)
+def test_a_bad_reference_is_rejected(tmp_path: Path, part: str, message: str) -> None:
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-bad.yaml": part})
+
+    with pytest.raises(InvalidManifestError, match=message):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_a_form_and_a_selection_without_a_title_have_none(tmp_path: Path) -> None:
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL})
+
+    (found,) = others(only_manifest(tmp_path))
+
+    assert found.title is None
+    assert found.capabilities[0].title is None
+
+
+@pytest.mark.parametrize(
+    ("part", "message"),
+    [
+        pytest.param(
+            FORM_RENTAL.replace("  required: true\n", "  required: true\n  title: ''\n"),
+            "title",
+            id="empty-form-title",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace("  required: true\n", "  required: true\n  title: '  '\n"),
+            "must not be blank",
+            id="blank-form-title",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, title: '  ',"),
+            "must not be blank",
+            id="blank-selection-title",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, title: '',"),
+            "title",
+            id="empty-selection-title",
+        ),
+        pytest.param(
+            FORM_RENTAL_NAME_ONLY.replace("  name: ex/rental\n", "  name: ex/rental\n  title: X\n"),
+            "title belongs to the part that declares exports",
+            id="form-title-in-a-part-without-exports",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace(
+                "produces: {output: ex/net_income}",
+                "produces: {output: ex/net_income, other: ex/unit_list}",
+            ).replace("{name: ex/a,", "{name: ex/a, title: Net,"),
+            "title belongs to the one figure a selection produces",
+            id="selection-title-with-two-figures",
+        ),
+    ],
+)
+def test_a_bad_title_is_rejected(tmp_path: Path, part: str, message: str) -> None:
+    parts = {"00-header.yaml": HEADER_PART, "01-bad.yaml": part}
+    if "exports" not in part:
+        parts["02-rental.yaml"] = FORM_RENTAL
+    write_parts(tmp_path, parts)
+
+    with pytest.raises(InvalidManifestError, match=message):
+        source(tmp_path).get_jurisdiction(EX_ON)

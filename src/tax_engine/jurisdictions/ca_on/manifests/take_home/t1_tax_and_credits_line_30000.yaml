@@ -18,6 +18,8 @@ capabilities:
     produces:
       output: ca/basic_personal_amount_net_income_line_3
   - name: ca/tapered_amount
+    title: "Basic personal amount"
+    reference: "30000"
     params:
       taper: ca/basic_personal_amount
     consumes:
