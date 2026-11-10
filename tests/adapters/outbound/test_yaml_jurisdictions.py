@@ -2499,6 +2499,16 @@ def test_a_form_and_a_selection_without_a_title_have_none(tmp_path: Path) -> Non
             id="empty-form-title",
         ),
         pytest.param(
+            FORM_RENTAL.replace("  required: true\n", "  required: true\n  title: '  '\n"),
+            "must not be blank",
+            id="blank-form-title",
+        ),
+        pytest.param(
+            FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, title: '  ',"),
+            "must not be blank",
+            id="blank-selection-title",
+        ),
+        pytest.param(
             FORM_RENTAL.replace("{name: ex/a,", "{name: ex/a, title: '',"),
             "title",
             id="empty-selection-title",

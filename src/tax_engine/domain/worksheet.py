@@ -56,15 +56,11 @@ class Worksheet:
 
     @property
     def form_title(self) -> str | None:
-        """The readable title of the form this is a copy of, as its manifest gives it; `None` if
-        the manifest gives none.
-        """
+        """The readable title of the form this is a copy of; `None` if its manifest gives none."""
         return self._form_title
 
     def title(self, label: str) -> str | None:
-        """The readable title of the figure `label`, as the manifest gives it; `None` if the
-        manifest gives none (a label is the figure's unique id, so it is never a title).
-        """
+        """The readable title of the figure `label`; `None` if the manifest gives none."""
         return self._figure_titles.get(label)
 
     def get[V](self, kind: ArtifactKind[V]) -> Artifact[V]:

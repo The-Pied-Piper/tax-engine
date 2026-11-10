@@ -103,7 +103,7 @@ class FormComposition:
         read = {kind for capability in wired for kind in capability.consumes} | set(listed)
         self._form = form
         self._figure_titles = {
-            next(iter(selection.produces.values())).partition("/")[2]: selection.title
+            kinds.kind(next(iter(selection.produces.values()))).label: selection.title
             for selection in form.capabilities
             if selection.title is not None
         }

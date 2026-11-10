@@ -364,7 +364,7 @@ class YamlJurisdictionSource:
             if required_when is None
             else required_when.require_non_empty_string(),
             basis=None if basis is None else basis.require_non_empty_string(),
-            title=None if title is None else title.require_non_empty_string(),
+            title=None if title is None else self._title(title),
             fields=()
             if fields is None
             else self._declarations(
@@ -375,6 +375,14 @@ class YamlJurisdictionSource:
         # Built to check the declaration; the form's selections are added when the parts merge.
         declared.form(name, ())
         return name, declared
+
+    @staticmethod
+    def _title(node: YamlNode) -> str:
+        """The readable title `node` holds: text with something to read in it."""
+        text = node.require_non_empty_string()
+        if not text.strip():
+            raise InvalidManifestError(f"{node.where} must not be blank")
+        return text
 
     def _part(self, part: Path) -> dict[str, YamlNode]:
         """The keys a part carries, each checked on its own; errors name the part."""
@@ -562,7 +570,7 @@ class YamlJurisdictionSource:
             produces=self._produced(fields.field("produces")),
             blank=self._blank_rules(name, blank, consumes),
             blank_fields=self._field_blank_rules(name, blank, consumes),
-            title=None if title is None else title.require_non_empty_string(),
+            title=None if title is None else self._title(title),
         )
 
     def _blank_rules(
