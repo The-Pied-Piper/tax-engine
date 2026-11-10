@@ -4,11 +4,12 @@ The source takes a mapping of namespace -> jurisdiction package directory. A jur
 namespace is its code lower-cased (`EX-ON` -> `ex-on`). Each `*.yaml` / `*.yml` file directly in
 `<roots[ex-on]>/manifests/` is one whole manifest, and each subfolder there is one manifest too,
 merged from its parts: every `*.yaml` / `*.yml` file inside it (recursively), read in sorted path
-order. A part may carry any of the six manifest keys or a `form:` key; the scalar keys
-(`jurisdiction`, `version`, `valid_from_tax_year`) must each be in exactly one part, and the lists
-(`inputs`, `outputs`, `capabilities`) are concatenated in part order, an identifier listed in two
-parts of `inputs` or of `outputs` being rejected. The merged mapping then goes through the same
-parse as a whole file. A manifest naming another jurisdiction is rejected.
+order. A part may carry any of the six manifest keys, the optional `title` or a `form:` key; the
+scalar keys (`jurisdiction`, `version`, `valid_from_tax_year`, and `title` if given) must each be
+in exactly one part, and the lists (`inputs`, `outputs`, `capabilities`) are concatenated in part
+order, an identifier listed in two parts of `inputs` or of `outputs` being rejected. The merged
+mapping then goes through the same parse as a whole file. A manifest naming another jurisdiction
+is rejected.
 A manifest is a flat set of forms. A part with a `form:` key (`name`, and `exports` with an optional
 `instances`, all identifiers `<namespace>/<snake_case>`) gives all its `capabilities` to that
 form; without `instances` the form has one instance. A part without one joins the default
@@ -53,6 +54,9 @@ yes/no count are checked when the manifest is loaded (the `Manifest` is built wi
 an artifact the kinds do not have is an InvalidManifestError naming the file.
 Any of these keys in a part that does not declare `exports` is rejected. The default form is
 always required.
+The default form has no `form:` block, so its title is the manifest's own optional `title` line,
+beside `jurisdiction`, `version` and `valid_from_tax_year`; like those scalar keys it may be in only
+one part, and not in a part with a `form:` key.
 Titles are for the reader of a trace: the `form:` block that declares `exports` may carry a
 `title` (the form's printed name), and a selection may carry a `title` (the printed wording of
 the one figure it produces; a selection producing several figures is rejected). A selection may
@@ -100,7 +104,8 @@ from tax_engine.domain.registry import Namespace
 _MANIFEST_KEYS = frozenset(
     {"jurisdiction", "version", "valid_from_tax_year", "inputs", "outputs", "capabilities"}
 )
-_PART_KEYS = _MANIFEST_KEYS | {"form"}
+_OPTIONAL_MANIFEST_KEYS = frozenset({"title"})
+_PART_KEYS = _MANIFEST_KEYS | _OPTIONAL_MANIFEST_KEYS | {"form"}
 _FORM_KEYS = frozenset({"name"})
 _OPTIONAL_FORM_KEYS = frozenset(
     {
@@ -120,7 +125,7 @@ _OPTIONAL_INPUT_KEYS = frozenset({"default", "basis"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference"})
-_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year")
+_SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs")
 _PATTERNS = ("*.yaml", "*.yml")
 
@@ -280,9 +285,14 @@ class YamlJurisdictionSource:
         """Give the `capabilities` of a part with a `form:` key to its form, noting its declaration.
 
         Takes `form` and `capabilities` out of `contents`; a second part declaring the exports of
-        a form is rejected, naming the part that did.
+        a form is rejected, naming the part that did, and so is a manifest `title` beside `form:`.
         """
         name, declared = self._form_header(contents.pop("form"))
+        if "title" in contents:
+            raise InvalidManifestError(
+                f"{part}: form {name!r}: the manifest `title` belongs to the default form; "
+                "the form's own title goes in its `form:` block"
+            )
         if contents.keys() & set(_IDENTIFIER_LISTS):
             raise InvalidManifestError(
                 f"{part}: form {name!r}: inputs are derived and exports are declared in the "
@@ -398,6 +408,8 @@ class YamlJurisdictionSource:
             for key in ("version", "valid_from_tax_year"):
                 if key in contents:
                     contents[key].require_integer()
+            if "title" in contents:
+                self._title(contents["title"])
             if "inputs" in contents:
                 self._declarations(contents["inputs"], self._input_kind)
             if "outputs" in contents:
@@ -434,7 +446,7 @@ class YamlJurisdictionSource:
 
         `forms_beside` gives the other forms, from the name the default form takes.
         """
-        doc = document.require_mapping(_MANIFEST_KEYS)
+        doc = document.require_mapping(_MANIFEST_KEYS, optional=_OPTIONAL_MANIFEST_KEYS)
         code = self._code(doc.field("jurisdiction"))
         inputs = self._declarations(doc.field("inputs"), self._input_kind)
         outputs = self._identifiers(doc.field("outputs"))
@@ -442,6 +454,7 @@ class YamlJurisdictionSource:
             raise InvalidManifestError("outputs must name at least one artifact")
         Form.check_exports("outputs", sorted(outputs))
         default = code.namespace.identifier(_DEFAULT_FORM)
+        title = doc.optional_field("title")
         return Manifest(
             jurisdiction=code,
             version=doc.field("version").require_integer(),
@@ -457,6 +470,7 @@ class YamlJurisdictionSource:
                         self._selection(entry) for entry in doc.field("capabilities").items()
                     ),
                     required=True,
+                    title=None if title is None else self._title(title),
                 ),
                 *forms_beside(default),
             ),
