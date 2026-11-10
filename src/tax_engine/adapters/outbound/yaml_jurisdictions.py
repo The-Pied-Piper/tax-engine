@@ -6,10 +6,9 @@ namespace is its code lower-cased (`EX-ON` -> `ex-on`). Each `*.yaml` / `*.yml` 
 merged from its parts: every `*.yaml` / `*.yml` file inside it (recursively), read in sorted path
 order. A part may carry any of the six manifest keys, the optional `title` or a `form:` key; the
 scalar keys (`jurisdiction`, `version`, `valid_from_tax_year`, and `title` if given) must each be
-in exactly one part, and the lists
-(`inputs`, `outputs`, `capabilities`) are concatenated in part order, an identifier listed in two
-parts of `inputs` or of `outputs` being rejected. The merged mapping then goes through the same
-parse as a whole file. A manifest naming another jurisdiction is rejected.
+in exactly one part, and the lists (`inputs`, `outputs`, `capabilities`) are concatenated in part
+order, an identifier listed in two parts of `inputs` or of `outputs` being rejected. The merged
+mapping then goes through the same parse as a whole file. A manifest naming another jurisdiction is rejected.
 A manifest is a flat set of forms. A part with a `form:` key (`name`, and `exports` with an optional
 `instances`, all identifiers `<namespace>/<snake_case>`) gives all its `capabilities` to that
 form; without `instances` the form has one instance. A part without one joins the default
@@ -285,7 +284,7 @@ class YamlJurisdictionSource:
         """Give the `capabilities` of a part with a `form:` key to its form, noting its declaration.
 
         Takes `form` and `capabilities` out of `contents`; a second part declaring the exports of
-        a form is rejected, naming the part that did.
+        a form is rejected, naming the part that did, and so is a manifest `title` beside `form:`.
         """
         name, declared = self._form_header(contents.pop("form"))
         if "title" in contents:

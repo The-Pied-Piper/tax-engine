@@ -2590,7 +2590,7 @@ def test_a_bad_title_is_rejected(tmp_path: Path, part: str, message: str) -> Non
         source(tmp_path).get_jurisdiction(EX_ON)
 
 
-def test_the_manifest_may_carry_a_title_for_the_returned(tmp_path: Path) -> None:
+def test_the_manifest_may_carry_a_title_for_the_default_form(tmp_path: Path) -> None:
     write_parts(
         tmp_path, {"00-header.yaml": "title: Return summary\ncapabilities: []\n" + HEADER_PART}
     )
