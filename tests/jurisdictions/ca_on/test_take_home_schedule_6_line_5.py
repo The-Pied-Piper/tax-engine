@@ -28,6 +28,7 @@ from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 D = Decimal
 LINE_1_PART = "schedule_6_line_1.yaml"
+LINE_10400_PART = "t1_taxable_income_line_10400_inputs.yaml"
 LINE_5_PART = "schedule_6_line_5.yaml"
 
 HEADER = dedent("""\
@@ -50,7 +51,7 @@ FORM = dedent("""\
 
 
 def line_5(take_home_service: TakeHomeService, salary: str) -> Decimal:
-    worksheets = take_home_service(HEADER, FORM, LINE_1_PART, LINE_5_PART).compute(
+    worksheets = take_home_service(HEADER, FORM, LINE_10400_PART, LINE_1_PART, LINE_5_PART).compute(
         JurisdictionCode("CA-ON"),
         2025,
         Artifact(EMPLOYMENT_INCOME, D(salary)),
