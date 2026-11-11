@@ -81,6 +81,7 @@ class TaxComputationService:
                     starting=inputs,
                     defaults=manifest.defaults,
                     field_defaults=manifest.field_defaults[form.name],
+                    declared=manifest.inputs.values(),
                 )
                 for form in manifest.forms
             ],
