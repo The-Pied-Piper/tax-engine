@@ -26,7 +26,7 @@ optional input (`t1_taxable_income_line_25700_inputs.yaml`, default "0"). None o
 TAXABLE_INCOME = AmountKind.declare(CATALOG, "taxable_income", non_negative=True)
 """Taxable income, T1 line 69 "Line 57 minus line 68 (if negative, enter "0") Taxable income"
 (line 26000, as Step 5 refers to it): net income less the deductions from net income, not below
-zero; the base the federal and Ontario brackets apply to.
+zero; the base the federal and provincial brackets apply to.
 
 Line 57 is "Enter the amount from line 56 of the previous page" (net income); line 68 (25700) is
 "Add lines 58 to 67".
