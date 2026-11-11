@@ -31,6 +31,7 @@ A manifest whose `jurisdiction` is not the package's jurisdiction is rejected.
 | `outputs` | yes | Non-empty list of artifact identifiers, none repeated: the exports of the default form. |
 | `capabilities` | yes | List of capability selections (below). |
 | `title` | no | Printed name of the default form. |
+| `imports` | no | List of form identifiers `<namespace>/<snake_case>` to import (see Imported forms). |
 
 An identifier that is in both `inputs` and `outputs` is an input carried onto the return as entered.
 
@@ -59,17 +60,45 @@ The `form:` block has these keys:
 | `min_instances` | Integer of at least 0, not above `max_instances`: the fewest. |
 | `exclusive_group` | Identifier shared by forms of which at most one may have instances. |
 | `title` | The form's printed name, such as `Schedule 8`. |
+| `supplies` | Mapping from a neutral identifier to one of the form's own exports (see Supplied figures). |
 
 A form may span several parts that carry the same `form.name`, in part order. Exactly one of them
 declares `exports`, together with every other key of the block except `name`; a second part that
 declares `exports`, or any of the other keys without `exports`, is rejected. A part with a `form:`
-key takes no `inputs` or `outputs`: inputs are derived and exports are declared in the block.
+key takes no `inputs`, `outputs` or `imports`: inputs are derived and exports are declared in the block.
 
 The limits apply to the count of instances; a form without `instances` has a default list of one
 instance. Which fields the instances kind has, that defaults suit their kinds, and that
 `required_when` is a yes/no count are checked when the manifest is loaded, against the artifact
 kinds the source was given; an artifact those kinds do not have is an `InvalidManifestError`
 naming the file.
+
+## Supplied figures
+
+A form that declares `exports` may also declare `supplies`, a mapping from a neutral identifier
+`<namespace>/<snake_case>.<label>` (the form named by it need not exist) to one of its own exports,
+which must be an amount, a count or a record list. The engine derives that kind as it does a form's
+export, so every form reads it like `<form>.<export>`. One form supplies a given identifier; a
+second is rejected, naming its part. `supplies` is allowed only in the part that declares `exports`.
+
+## Imported forms
+
+`imports` lists forms whose parts live in another package, so that several manifests share one
+form. It may be in a whole file or in any part (lists from parts are concatenated in part order),
+and no identifier is listed twice.
+
+- The parts of an imported form are the `*.yaml` or `*.yml` files, recursively and sorted, in
+  `<package of the namespace>/forms/<local id>/`, not under `manifests/`.
+- They load with the manifest's own parts and take its jurisdiction, version and tax year, so each
+  carries only `form` and `capabilities`. Its `form.name` is the imported identifier, and exactly
+  one part declares `exports`, as for any form.
+- A part of the manifest that names an imported form, an import with no package or no parts, and an
+  imported part with any other key are rejected, naming the part.
+- The forms run in this order: the default form, the imported forms in `imports` order, then the
+  manifest's own.
+- An imported form that reads a derived `<form>.<export>`-style figure that no form of the manifest
+  supplies is rejected, naming the form and the figure. Each importing manifest supplies such a
+  figure from its own forms with `supplies`.
 
 ## Merging parts
 
