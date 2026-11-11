@@ -5,7 +5,7 @@
 # as 0, not blank.
 inputs:
   - name: ca-on/on428_qualifying_food_donations_line_87
+    reference: "87"
     required: false
     default: "0"
     basis: 'Line 87 and line 62150: Enter the amount of qualifying donations that have also been claimed as a charitable donation'
-    reference: "87"
