@@ -1963,6 +1963,15 @@ def test_an_input_taken_as_its_default_is_traced_and_one_given_is_not() -> None:
     assert given_blank.trace == (DefaultedInputLine(COSTS, D(30)),)
 
 
+def test_the_default_itself_given_by_the_caller_is_not_traced_as_a_default() -> None:
+    default = Artifact(COSTS, D(30))
+    forms = less_set([default])
+
+    worksheet = forms.compute(Artifact(SALES, D(100)), default)[RETURN][0]
+
+    assert worksheet.trace == ()
+
+
 def test_a_blank_default_is_traced_as_left_blank_not_as_a_default() -> None:
     forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
 

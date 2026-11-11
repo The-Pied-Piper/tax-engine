@@ -58,11 +58,7 @@ class Worksheet:
             self._artifacts[artifact.kind] = artifact
             if artifact.is_blank:
                 self._trace.append(LeftBlankLine(artifact.kind))
-            elif (
-                artifact.kind in defaulted_kinds
-                and isinstance(artifact.value, Decimal | int)
-                and not isinstance(artifact.value, bool)
-            ):
+            elif artifact.kind in defaulted_kinds and _is_number(artifact.value):
                 self._trace.append(DefaultedInputLine(artifact.kind, artifact.value))
 
     @property
