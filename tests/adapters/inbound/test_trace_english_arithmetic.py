@@ -6,6 +6,7 @@ printed by its label.
 
 from __future__ import annotations
 
+from dataclasses import replace
 from decimal import Decimal
 
 from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTraceRenderer
@@ -138,7 +139,16 @@ def test_the_lesser_of_a_figure_and_a_limit() -> None:
     )
 
 
-def test_a_capped_amount_names_its_cap_by_the_dataset_family() -> None:
+def test_a_capped_amount_names_its_cap_by_the_title_the_form_prints() -> None:
+    cap = replace(amount_dataset("ca/some_year_maximum", "80"), title="maximum per slip")
+    line = CappedAmountLine(OUT, WAGES, D("100"), cap, NO_ROUNDING, D("80"))
+
+    assert render(line) == (
+        "Lesser of wages (100.00) and the maximum per slip (80.00) gives 80.00 (not rounded)."
+    )
+
+
+def test_a_capped_amount_without_a_title_names_its_cap_by_the_dataset_family() -> None:
     cap = amount_dataset("ca/some_year_maximum", "80")
     line = CappedAmountLine(OUT, WAGES, D("100"), cap, NO_ROUNDING, D("80"))
 

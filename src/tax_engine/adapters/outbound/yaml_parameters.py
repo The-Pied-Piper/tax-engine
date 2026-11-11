@@ -30,6 +30,7 @@ from tax_engine.domain.registry import Namespace
 
 _FAMILY = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*(/[a-z0-9]+([_-][a-z0-9]+)*)+")
 _ENVELOPE_KEYS = frozenset({"family", "tax_year", "kind", "sources", "rounding"})
+_OPTIONAL_ENVELOPE_KEYS = frozenset({"title"})
 
 
 class YamlParameterSource:
@@ -58,7 +59,7 @@ class YamlParameterSource:
                 f"{path}: kind {declared_kind!r} does not match the requested {kind.name!r}"
             )
         try:
-            optional = (
+            optional = _OPTIONAL_ENVELOPE_KEYS | (
                 parser.optional_keys if isinstance(parser, OptionalKeysParser) else frozenset()
             )
             doc = document.require_mapping(_ENVELOPE_KEYS | parser.body_keys, optional=optional)
@@ -70,6 +71,7 @@ class YamlParameterSource:
                 values=parser.parse(doc),
                 rounding=doc.field("rounding").parse_rounding_rule(),
                 sources=self._sources(doc.field("sources")),
+                title=self._title(doc),
             )
         except (YamlShapeError, DomainError) as exc:
             raise InvalidParameterDataError(f"{path}: {exc}") from exc
@@ -100,6 +102,11 @@ class YamlParameterSource:
         declared_year = doc.field("tax_year").require_integer()
         if declared_year != tax_year:
             raise YamlShapeError(f"tax_year {declared_year} does not match {tax_year}")
+
+    @staticmethod
+    def _title(doc: YamlNode) -> str | None:
+        node = doc.optional_field("title")
+        return None if node is None else node.require_non_empty_string()
 
     @staticmethod
     def _sources(node: YamlNode) -> tuple[str, ...]:

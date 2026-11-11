@@ -72,12 +72,12 @@ class EnglishNames:
         return self.of_label(figure.label)
 
     def parameter(self, dataset: ParameterDataset[Amount]) -> str:
-        """A fixed figure from a dataset: its family in plain words, then the figure in brackets.
+        """A fixed figure from a dataset: its name, then the figure in brackets.
 
-        "ca/cpp_pensionable_earnings_per_slip_maximum" -> "the cpp pensionable earnings per slip
-        maximum (81200.00)". The family is the dataset's own name, not an invented title.
+        The name is the title the form prints for the figure ("the maximum per slip (81200.00)");
+        a dataset without one is named by its family in plain words, never by an invented title.
         """
-        name = _plain_words(dataset.family.rsplit("/", 1)[-1])
+        name = dataset.title or _plain_words(dataset.family.rsplit("/", 1)[-1])
         return f"the {name} ({EnglishFigures.money(dataset.values.value)})"
 
     def of_label(self, label: str) -> str:
