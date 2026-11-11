@@ -2093,6 +2093,25 @@ def test_an_input_declares_whether_it_is_required_and_optional_ones_a_default_an
     }
 
 
+def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Path) -> None:
+    manifest = load_parts(
+        tmp_path,
+        {
+            "01-inputs.yaml": """\
+                inputs:
+                  - {name: ex/income, required: true, title: Income, reference: "101"}
+                  - {name: ex/credit, required: false, default: "0", basis: "L", title: Credit}
+                """.replace("                ", "")
+        },
+    )
+
+    assert manifest.inputs["ex/income"] == InputDeclaration(
+        "ex/income", True, title="Income", reference="101"
+    )
+    assert manifest.inputs["ex/credit"].title == "Credit"
+    assert manifest.inputs["ex/credit"].reference is None
+
+
 @pytest.mark.parametrize(
     ("entry", "message"),
     [

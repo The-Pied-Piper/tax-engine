@@ -103,12 +103,17 @@ class InputDeclaration:
     as when it leaves the line out (a blank artifact is a declared blank, `None` is no default),
     and `basis` is the printed sentence of the form that justifies the default, which nothing
     checks against the form text.
+    `title` is the readable title of the figure, as the form prints it, and `reference` is what
+    the form prints beside it to find it by ("10400", "Box 14"), as for a capability selection;
+    either may be given to a required or an optional input, and `None` is none.
     """
 
     name: str
     required: bool
     default: Artifact[Any] | None = None
     basis: str | None = None
+    title: str | None = None
+    reference: str | None = None
 
     def __post_init__(self) -> None:
         Form.check_identifier("input", self.name)
