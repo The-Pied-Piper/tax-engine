@@ -11,9 +11,9 @@ from tax_engine.domain.trace import TraceLine
 class LineRenderer[L: TraceLine](Protocol):
     """Renders the lines of one trace line class as English text.
 
-    EnglishTraceRenderer looks the renderer up by the exact class of each line, in an
-    EnglishRendererRegistry. Declare `line_class` as a plain class attribute, not a property, so
-    `@english_renderer` can type-check it against `render`.
+    `EnglishTraceRenderer` looks the renderer up by the exact class of each line. Declare
+    `line_class` as a plain class attribute, not a property, so `@english_renderer` can type-check
+    it against `render`.
     """
 
     @property

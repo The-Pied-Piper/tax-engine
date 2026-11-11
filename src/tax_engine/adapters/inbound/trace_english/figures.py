@@ -1,8 +1,7 @@
 """EnglishFigures: how each type of field in a trace line reads in English.
 
-Percentages, plain figures, rounding rules
-read the same in every line, so every line's renderer formats them with EnglishFigures, as in
-`EnglishFigures.money(amount)`; a package's renderer may too.
+Percentages, plain figures and rounding rules read the same in every line, so renderers format them
+here, as in `EnglishFigures.money(amount)`.
 """
 
 from __future__ import annotations

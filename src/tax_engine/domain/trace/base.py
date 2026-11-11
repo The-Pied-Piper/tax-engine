@@ -19,11 +19,10 @@ class TraceLine(ABC):
     @property
     @abstractmethod
     def label(self) -> str | None:
-        """The label of the figure this line is about, so a reader finds its figure by label
-        instead of by wording; several lines about one figure share its label.
+        """The label of the figure this line is about, so a reader finds it by label instead of
+        wording.
 
-        Required of every line type: `None`, stated by the line type, for a line that is not
-        about a figure.
+        Several lines about one figure share its label; `None` for a line not about a figure.
         """
 
     @property

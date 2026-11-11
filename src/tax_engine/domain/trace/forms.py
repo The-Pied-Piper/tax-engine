@@ -13,13 +13,11 @@ __all__ = ["FormInstanceLine"]
 
 @dataclass(frozen=True)
 class FormInstanceLine(TraceLine):
-    """The `lines` of the run of the form named `form` on its instance at `position` (from 1; a
-    form without an instances list has one instance, 1), in the order they were recorded.
+    """The `lines` of the run of the form named `form` on its instance at `position` (from 1), in
+    the order recorded.
 
-    Its own class: the form is a group of capabilities, not a capability, so the lines of a run
-    are kept together here rather than among the lines of another form's. `printed` is the
-    worksheet of that run, whose titles and references name the figures of `lines` (labels are
-    shared across forms with different references); a line built without one names them by label.
+    `printed` is the worksheet of that run, whose titles and references name the figures of `lines`;
+    a line built without one names them by label.
     """
 
     form: str

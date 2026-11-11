@@ -22,11 +22,10 @@ __all__ = [
 
 @dataclass(frozen=True)
 class ChosenByCountLine(TraceLine):
-    """`chosen_kind` (worth `chosen_value`) produced as `output`, chosen as `count_kind` is
-    `count`: the first candidate for a count of 0, the second for any other count.
+    """`chosen_kind` (worth `chosen_value`) produced as `output`, chosen as `count_kind` is `count`:
+    the first candidate for a count of 0, the second for any other count.
 
-    Its own class, not a `TimesCountLine`: the count chooses between two artifacts and scales
-    nothing, so the line names the candidate that was chosen; the one not chosen is not recorded.
+    The line names the candidate chosen; the other is not recorded.
     """
 
     output: Money
@@ -51,9 +50,7 @@ class ChosenByRangeLine(TraceLine):
     """`chosen_kind` (worth `chosen_value`) produced as `output`, chosen as `tested_kind` is
     `tested_value`: the first, second or third candidate by the range the tested amount is in.
 
-    Its own class, not a `ChosenByCountLine`: the tested amount is a money amount compared with
-    limits, and the line names the candidate that was chosen; the ones not chosen and the limits
-    are not recorded.
+    The line names the candidate chosen; the others and the limits are not recorded.
     """
 
     output: Money
@@ -78,7 +75,6 @@ class ChosenBySignLine(TraceLine):
     """`chosen_kind` (worth `chosen_value`) produced as `output`, chosen as `sign_kind` is `sign`:
     the candidate of the branch the sign falls in (positive, zero or negative).
 
-    Its own class, not a `ChosenByCountLine`: the sign of an amount chooses, not a count. The
     `chosen_kind` is None when no candidate covers the branch, and the value is then 0.
     """
 
@@ -103,12 +99,9 @@ class ChosenBySignLine(TraceLine):
 class ConditionLine(TraceLine):
     """One condition of a list, the `position` (from 1) of the printed `text`, for `output`.
 
-    `reads` holds each figure the condition's tests read, in the order read: the kind and its
-    value, a whole number for a count kind and a Decimal for an amount kind, or `BLANK` for a figure
-    the filer left blank (a test on a blank does not hold). `applies` is whether the condition
-    holds.
-
-    Its own class, not a `SumLine`: a condition is a comparison of figures, not a sum.
+    `reads` holds each figure the condition's tests read, in order: the kind and its value (a count
+    as an int, an amount as a Decimal), or `BLANK` for a blank figure, on which a test does not
+    hold. `applies` is whether the condition holds.
     """
 
     output: ArtifactKind[int]
@@ -132,9 +125,6 @@ class ConditionLine(TraceLine):
 class ConditionsCountLine(TraceLine):
     """The `count` produced as `output` from a list of conditions: `applied` holds the positions
     (from 1) of the conditions that applied, in order, none when no condition applied.
-
-    Its own class, not an `ItemsTotalLine`: the count is one of two whole numbers, chosen by
-    whether any condition applied, not a total of amounts.
     """
 
     output: ArtifactKind[int]

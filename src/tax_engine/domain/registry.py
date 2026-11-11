@@ -1,15 +1,8 @@
 """Registries: where packages register the pieces they contribute (capabilities, parsers, ...).
 
-The core never lists contributed pieces. `Registry` is a plain store keyed by strings; subclasses
-add typed entry points under their own names. `Namespace` builds namespaced identifiers: a
-package declares its namespace once, as `NAMESPACE = "..."` in its `__init__.py`, and each piece
-is identified as `<namespace>/<local id>`. Nothing here discovers or imports anything.
-
-`@capability` stamps a class with its identifier when its module is imported, so the namespace is
-resolved then: resolving it while a package without `NAMESPACE` is still being imported fails, so
-declare `NAMESPACE` at the top of its `__init__.py` (repeat the parent's to inherit it), before
-importing any module that stamps. Nothing registers on import: the composition root builds each
-registry from what the packages contribute (`tax_engine.registrations`).
+The composition root builds the registries; only decorators that fill a `SharedRegistry` (the
+English trace renderers) register on import. A package declares `NAMESPACE` at the top of its
+`__init__.py`, before importing any module that uses `@capability`.
 """
 
 from __future__ import annotations
@@ -32,9 +25,8 @@ _LOCAL_ID = re.compile(r"[a-z][a-z0-9]*(_[a-z0-9]+)*")
 class Registry[T]:
     """A store of items of one kind under unique string keys.
 
-    Construct one directly: a registry is a plain value that whoever wires the application builds
-    and hands on. `SharedRegistry` adds the application-wide instance, for the registries that
-    decorators fill on import.
+    A plain value that whoever wires the application builds and hands on. `SharedRegistry` adds the
+    application-wide instance for registries that decorators fill on import.
     """
 
     def __init__(self) -> None:
