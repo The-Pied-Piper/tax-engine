@@ -99,7 +99,8 @@ The `form:` block has these keys:
 A form may span several parts that carry the same `form.name`, in part order. Exactly one of them
 declares `exports`, together with every other key of the block except `name`; a second part that
 declares `exports`, or any of the other keys without `exports`, is rejected. A part with a `form:`
-key takes no `inputs`, `outputs` or `imports`: inputs are derived and exports are declared in the block.
+key takes no `outputs` or `imports`: exports are declared in the block. It may carry `inputs`, which
+join the manifest's inputs like any part's, so a form carries the optional inputs it needs.
 
 The limits apply to the count of instances; a form without `instances` has a default list of one
 instance. Which fields the instances kind has, that defaults suit their kinds, and that
@@ -124,8 +125,11 @@ and no identifier is listed twice.
 - The parts of an imported form are the `*.yaml` or `*.yml` files, recursively and sorted, in
   `<package of the namespace>/forms/<local id>/`, not under `manifests/`.
 - They load with the manifest's own parts and take its jurisdiction, version and tax year, so each
-  carries only `form` and `capabilities`. Its `form.name` is the imported identifier, and exactly
-  one part declares `exports`, as for any form.
+  carries `form`, `capabilities` and `inputs`. Its `form.name` is the imported
+  identifier, and exactly one part declares `exports`, as for any form.
+- The `inputs` of an imported form's parts join the importing manifest's inputs, such as an
+  optional input a salary-only caller leaves blank. An input declared there and also by the
+  manifest, or by another imported form, is rejected, naming it and the part that listed it first.
 - A part of the manifest that names an imported form, an import with no package or no parts, and an
   imported part with any other key are rejected, naming the part.
 - The forms run in this order: the default form, the imported forms in `imports` order, then the

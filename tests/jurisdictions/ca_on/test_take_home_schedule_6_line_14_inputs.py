@@ -15,14 +15,14 @@ another part's.
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
-import tax_engine.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 from tests.kinds import bundled_kinds, non_negative
+from tests.manifest_support import inputs_without_form
 
 LINE_14 = "ca/cwb_secondary_earner_exemption"
 PRINTED_BASIS = (
@@ -31,8 +31,8 @@ PRINTED_BASIS = (
     "(line 5) is equal to or more than your eligible spouse's working income, enter whichever is "
     "less from column 2: amount from line 5 or line 12. (maximum $16,386)"
 )
-PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/2025/schedule_6_line_14_inputs.yaml"
+PART = Path(tax_engine.jurisdictions.ca.__file__).parent / (
+    "forms/schedule_6/schedule_6_line_14_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON
@@ -47,7 +47,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+    (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
 
 

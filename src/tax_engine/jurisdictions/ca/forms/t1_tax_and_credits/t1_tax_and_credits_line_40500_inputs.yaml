@@ -2,6 +2,8 @@
 # Line 129 and line 40500: "Line 129 and line 40500: Federal foreign tax credit (complete Form T2209)"
 # (5006-R, Step 5). A salary-only caller has no foreign tax credit, so a request that leaves the line out
 # is read as 0, not blank, and line 130 is line 128 unchanged.
+form:
+  name: ca/t1_tax_and_credits
 inputs:
   - name: ca/federal_foreign_tax_credit
     title: "Federal foreign tax credit"

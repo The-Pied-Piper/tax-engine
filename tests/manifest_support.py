@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
+from pathlib import Path
 
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import InputDeclaration
@@ -16,3 +18,12 @@ def required_fields(kind: RecordListKind) -> tuple[InputDeclaration, ...]:
 def required_inputs(names: Iterable[str]) -> dict[str, InputDeclaration]:
     """A required declaration for each of `names`, by identifier."""
     return {name: InputDeclaration(name=name, required=True) for name in sorted(names)}
+
+
+def inputs_without_form(part: Path) -> str:
+    """The text of a form's inputs part without its `form:` header.
+
+    A test manifest built from lines of several forms does not declare the form that owns the
+    inputs, so the inputs join its default form as the caller's own.
+    """
+    return re.sub(r"^form:\n  name: .*\n", "", part.read_text(encoding="utf-8"), flags=re.MULTILINE)

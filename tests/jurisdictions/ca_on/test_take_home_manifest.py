@@ -6,6 +6,9 @@ its blank rule (a fixed fallback or `compute`), or a salary-only request is refu
 
 from __future__ import annotations
 
+from pathlib import Path
+
+import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Manifest
@@ -65,3 +68,17 @@ def test_the_t1_reads_the_provincial_tax_ontario_supplies() -> None:
     (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
 
     assert dict(on428.supplies) == {"ca/provincial_tax.amount": "ca-on/on428_ontario_tax_line_90"}
+
+
+def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_forms() -> None:
+    own = {
+        path.name
+        for path in Path(tax_engine.jurisdictions.ca_on.__file__).parent.rglob("*_inputs.yaml")
+    }
+
+    assert not {name for name in own if not name.startswith("on428_")}
+    assert {
+        "ca/cpp_months",
+        "ca/other_employment_income",
+        "ca/social_benefits_repayment",
+    } <= set(_manifest().inputs)

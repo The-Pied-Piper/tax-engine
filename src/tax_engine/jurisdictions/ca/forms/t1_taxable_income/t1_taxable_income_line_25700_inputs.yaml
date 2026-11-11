@@ -2,6 +2,8 @@
 # Line 68 and line 25700 "Add lines 58 to 67": a salary-only caller has none of lines 24400 to 25600,
 # so a request that leaves the line out is read as 0 by the line 26000 step. It is a part of its own,
 # so each line's test loads only the inputs its step reads.
+form:
+  name: ca/t1_taxable_income
 inputs:
   - name: ca/deductions_from_net_income
     reference: "25700"

@@ -5,6 +5,8 @@
 # income, enter whichever is less from column 2: amount from line 5 or line 12. (maximum $16,386)"
 # (docs/cra-forms-2025/5000-s6-25e.txt, lines 229-234). A request that leaves the line out is read as
 # blank, and the line 15 part reads that blank as 0 by the blank rule of core/subtract.
+form:
+  name: ca/schedule_6
 inputs:
   - name: ca/cwb_secondary_earner_exemption
     title: "Secondary earner exemption"
