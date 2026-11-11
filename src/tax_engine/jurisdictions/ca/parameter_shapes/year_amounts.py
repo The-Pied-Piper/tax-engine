@@ -1,9 +1,7 @@
 """Year amounts: the named figures a form prints for each year it changed them.
 
-A table of rows, newest first. A row's `from_year` N means "year N or later"; only the last row may
-leave it out, meaning "any earlier year". `row_for(year)` gives the first row that applies, or None
-when the form prints nothing for that year. Like `Rate`, the value objects check themselves. The
-code holds no jurisdiction's figures.
+Rows are newest first; a row's `from_year` N means "year N or later", and only the last row may omit
+it ("any earlier year"). `row_for(year)` gives the first row that applies, or None.
 """
 
 from __future__ import annotations

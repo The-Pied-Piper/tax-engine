@@ -15,9 +15,12 @@ __all__ = ["ContributionTierLine"]
 
 @dataclass(frozen=True)
 class ContributionTierLine(TraceLine):
-    """The `result` produced as `output`: `tier`'s rate on `contributory`, the part of `earnings`
-    (worth `earnings_amount`) inside the tier's band, rounded with `rounding`, at most the tier's
-    maximum."""
+    """The `result` produced as `output`: `tier`'s rate on `contributory`, at most the tier's
+    maximum.
+
+    `contributory` is the part of `earnings` (worth `earnings_amount`) inside the tier's band,
+    rounded with `rounding`.
+    """
 
     output: Money
     earnings: Money

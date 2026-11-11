@@ -1,11 +1,8 @@
-"""The federal catalog: Form T1212, "Statement of Deferred Security Options Benefits", the form
+"""The federal catalog: Form T1212, Statement of Deferred Security Options Benefits, the form
 `ca/t1212`.
 
-The form runs once (it has no instances). Its two starting amounts are the printed line 1 and
-line 2; the steps compute line 3 and the 50% of line 2 that footnote (1) says to enter on line 24900
-of the return. The exports are line 2 (to be entered on line 10100), line 3 and that 50% amount,
-which the security options deduction of line 24900 and Form T691 Part 1 line 29 read through
-`ca/t1212.<name>`."""
+The form runs once; its exports are read through `ca/t1212.<name>`.
+"""
 
 from __future__ import annotations
 

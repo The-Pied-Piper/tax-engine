@@ -1,11 +1,7 @@
 """Tiered surcharge: a rate on the part of a money artifact over each tier's threshold, summed.
 
-For the return lines that read "(base minus threshold) multiplied by rate (if negative, enter 0)",
-one per tier, then added; a tier with a maximum charges at most that (a schedule of plateaus). The
-tiers give each tier's unrounded, capped charge (`SurchargeTiers.charges`); the capability rounds
-each with the `tiers` dataset's rule, which defaults to no rounding, and outputs the sum of the
-rounded parts. Where it is used the base is never negative (a tax after credits, floored at zero);
-a negative base yields zero parts.
+Each tier's capped charge is rounded with the `tiers` dataset's rule, then summed; a negative base
+gives zero parts.
 """
 
 from __future__ import annotations

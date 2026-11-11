@@ -1,14 +1,6 @@
 """Conditions: a form's list of conditions, copied condition by condition in the form's order.
 
-A form line that is switched on or off by a list of conditions (enter 0 if any of them applies, or
-complete a chart if any applies) is copied as printed. A `ConditionList` holds
-`count_when_any_applies` (0 or 1) and one or more `Condition`s; when no condition applies the count
-is the other one of 0 and 1. A `Condition` holds its printed `text`, word for word, and `parts`, all
-of which must hold; a `ConditionPart` holds `tests`, any one of which holds ("and" joins parts, "or"
-joins tests). A `ConditionTest` compares one figure with a printed figure (`than`) or with another
-amount (`against`). The figures are named by position (from 1) in the capability's list of counts or
-of amounts, so a figure read by several tests is listed once. The code holds no jurisdiction's
-conditions.
+See docs/parameter-data.md.
 """
 
 from __future__ import annotations
@@ -25,12 +17,12 @@ _RELATIONS = ("equal_to", "not_equal_to", "more_than")
 
 @dataclass(frozen=True)
 class ConditionTest:
-    """One comparison: the figure at `position` (from 1) among the `reads` kind ("count" or
-    "amount") stands in `relation` ("equal_to", "not_equal_to" or "more_than") to exactly one of
-    `than`, a printed figure, and `against`, the position (from 1) of another amount.
+    """One comparison of the figure at `position` (from 1) among the `reads` kind ("count" or
+    "amount").
 
-    `against` is only for a test that reads an amount, and names an amount other than its own. The
-    figures are exact.
+    `relation` is "equal_to", "not_equal_to" or "more_than"; exactly one of `than`, a printed
+    figure, and `against`, the position (from 1) of another amount, is given. `against` applies only
+    to an amount test and names another amount than its own.
     """
 
     reads: str

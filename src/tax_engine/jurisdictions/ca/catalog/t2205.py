@@ -1,17 +1,8 @@
-"""The federal catalog: Form T2205, "Amounts from a Spousal or Common-law Partner RRSP, RRIF, or SPP
-to Include in Income", the form `ca/t2205`.
+"""The federal catalog: Form T2205, amounts from a spousal or common-law partner RRSP, RRIF or SPP.
 
-The form runs once (it has no instances). Its twelve starting amounts are the printed lines 1, 2,
-4, 6, 7, 12, 13, 14, 17, 18 and 20 and the part of line 11 that relates to SPP withdrawals (line 11
-prints "If part of this amount relates to withdrawals from an SPP"); the steps compute the other
-printed lines and check each part against its whole. The exports are the RRSP part of line 11, the
-SPP part of line 11 and line 22, which the return reports, and line 10 and line 21, which are the
-spouse's or common-law partner's amounts (exported, never read into this return).
-
-The form cannot read the age of the filer, a figure of the return. The return totals the three
-exports and sends the SPP part and line 22 to T1 line 11500 (the filer is 65 or older at the end of
-the year) or to T1 line 13000, and the RRSP part to T1 line 12900; the kinds at the end of this
-module are those amounts."""
+The form `ca/t2205` runs once; the kinds at the end of this module are the amounts the return sends
+to T1.
+"""
 
 from __future__ import annotations
 

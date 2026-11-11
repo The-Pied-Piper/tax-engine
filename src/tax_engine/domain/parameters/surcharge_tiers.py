@@ -1,8 +1,7 @@
 """Surcharge tiers: a rate charged on the part of a base over each tier's threshold.
 
-The tiers are parameter data, resolved per (family, tax_year); the code holds no jurisdiction's
-thresholds or rates. A tier charges its rate on the part of a base over its threshold, at most its
-optional maximum, unrounded; rounding the part and summing the tiers are the capability's.
+A tier charges its rate on the part of the base over its threshold, at most its optional maximum,
+unrounded; rounding the part and summing the tiers are the capability's.
 """
 
 from __future__ import annotations

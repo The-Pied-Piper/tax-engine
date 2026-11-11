@@ -1,11 +1,6 @@
 """Rate tables: a form's table of rates by bands of a figure, copied row for row.
 
-Each row is printed as "more than X but not more than Y: rate" (the last row "more than X: rate",
-with no upper bound); the table also holds `rate_at_zero`, the rate a form gives a figure of
-exactly zero. The bounds are exact and kept as printed: an overlap between a row's upper bound and
-the next row's lower bound, as a form's typo can print, is kept, while a gap is refused. A figure
-above zero falls in the last row whose `more_than` it exceeds, so in an overlap the later row
-applies. The code holds no jurisdiction's tables.
+See docs/parameter-data.md.
 """
 
 from __future__ import annotations
@@ -99,10 +94,10 @@ class RateTable:
 
     def row_for(self, figure: Decimal) -> RateTableRow | None:
         """The row a `figure` of zero or more falls in: `None` for exactly zero, which takes
-        `rate_at_zero`, else the last row whose `more_than` it exceeds.
+        `rate_at_zero`.
 
-        The first row is more than 0, so a figure above zero always exceeds one; with no gaps,
-        the figure is at most that row's `not_more_than` whenever it has one.
+        Otherwise the last row whose `more_than` the figure exceeds; a figure above zero always
+        exceeds the first row's.
         """
         if figure == 0:
             return None

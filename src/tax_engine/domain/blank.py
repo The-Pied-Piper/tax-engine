@@ -1,13 +1,8 @@
-"""Blank: the value of a line the filer left empty, and how a capability treats one (design.md §3).
+"""Blank: the value of a line the filer left empty, and how a capability treats one.
 
-A blank is a value of its own, distinct from zero, an empty list and an empty text: a form that
-says to leave a part blank, or not to complete the rest of the form, leaves those lines blank, not
-zero. Any artifact can be blank, so
-every capability states, for each artifact slot it consumes, what it does with a blank there: it
-refuses it (the default), takes a fallback value the capability itself supplies, or passes the
-blank on to everything it produces, or leaves the decision to its own code (`COMPUTE`). The rule
-is the consuming capability's, whether the blank came from the request or from an upstream
-capability.
+A blank is distinct from zero: a form that says to leave a line blank leaves it blank, not zero. A
+capability refuses a blank unless the manifest gives a rule for that slot
+(`Capability.with_blank_rules`).
 """
 
 from __future__ import annotations

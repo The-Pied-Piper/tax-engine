@@ -1,11 +1,7 @@
 """Progressive tax: a bracket schedule applied to a taxable base.
 
-One mechanism, wired per use: the same class computes, say, national and
-regional basic tax from the same base, with different schedules and outputs.
-It computes the form's two lines for the bracket the base falls in: the rate on the
-excess over the bracket's lower, plus the tax at the bracket's start, which the schedule
-computes by its own rule. Rounding happens once, on the total, using the schedule dataset's
-rule.
+The rate on the excess over the bracket's lower plus its tax at start, rounded once with the
+schedule's rule.
 """
 
 from __future__ import annotations

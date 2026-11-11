@@ -25,11 +25,11 @@ class ValidationError(DomainError):
 
 
 class InvalidManifestError(DomainError):
-    """A jurisdiction manifest is malformed or breaks a manifest rule (design.md §4)."""
+    """A jurisdiction manifest is malformed or breaks a manifest rule."""
 
 
 class InvalidRoundingRuleError(DomainError):
-    """A rounding rule's parameters are invalid (design.md §3, Rounding)."""
+    """A rounding rule's parameters are invalid."""
 
 
 class InvalidJurisdictionCodeError(ValidationError):
@@ -149,9 +149,7 @@ class InvalidAmountByCountError(DomainError):
 class NoAmountForCountError(ValidationError):
     """A count was given that the table of amounts by count has no row for.
 
-    It is a ValidationError, not a DomainError of its own: the count is the caller's input and
-    the table is as printed, so the fault is the request's, and it maps to the same status as any
-    other invalid input.
+    A ValidationError, since the count is the caller's input.
     """
 
 
@@ -193,15 +191,15 @@ class InvalidCompositionError(DomainError):
 
 
 class InvalidCapabilityError(DomainError):
-    """A capability class declares slots its constructor cannot be built from (design.md §3)."""
+    """A capability class declares slots its constructor cannot be built from."""
 
 
 class InvalidSelectionError(DomainError):
-    """A manifest selection does not fill its capability's slots as declared (design.md §4)."""
+    """A manifest selection does not fill its capability's slots as declared."""
 
 
 class AmbiguousManifestError(DomainError):
-    """More than one manifest applies to a tax year (design.md §4; §5 rule 6)."""
+    """More than one manifest applies to a tax year."""
 
 
 class InvalidSurchargeTiersError(DomainError):

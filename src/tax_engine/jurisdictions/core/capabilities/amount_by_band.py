@@ -1,10 +1,7 @@
 """AmountFromBand: the amount of the band of a chart that a base falls in.
 
-For the form lines that print a chart of amounts by income band, read row by row: the base picks
-the band (`AmountByBand.band_for`, an income at a boundary in the lower band), and the output is
-that band's figure at the base, flat or sloped (`AmountBand.amount_at`). The figure is unrounded
-until the output, which the `table` dataset's rounding rule rounds once (no rounding by default).
-It records one `AmountByBandLine` for the band it used.
+An income at a boundary is in the lower band. The band's flat or sloped figure is unrounded until
+the output, which the `table` dataset's rounding rule rounds once. Records one `AmountByBandLine`.
 """
 
 from __future__ import annotations

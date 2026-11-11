@@ -1,9 +1,7 @@
 """Jurisdiction codes: which tax jurisdiction a manifest or computation is for.
 
-Codes follow ISO 3166: a country (ISO 3166-1 alpha-2, e.g. `CA`) or a country
-plus subdivision (ISO 3166-2, e.g. `CA-ON`). Only the format is checked, not
-membership in the ISO lists. Codes are never coerced: `ca-on` is rejected,
-not upper-cased.
+A code is ISO 3166-1 alpha-2 (`CA`) or ISO 3166-2 (`CA-ON`). Only the format is checked, and a code
+is never coerced: `ca-on` is rejected.
 """
 
 from __future__ import annotations

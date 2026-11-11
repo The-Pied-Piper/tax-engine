@@ -1,10 +1,6 @@
-"""RecordPositiveTotal: adds the positive amounts of one amount field over the records of a
-record list, exactly.
+"""RecordPositiveTotal: adds the positive amounts of one amount field over a record list, exactly.
 
-The record-list kind has exactly one field, an amount; the capability adds each amount above zero
-over the records in order, and a zero or negative amount counts 0. An empty list, or a list with
-no positive amount, totals zero. It has no dataset, so it never rounds. Each item is named by its
-position from 1 in the trace.
+A zero or negative amount counts 0; an empty list totals zero.
 """
 
 from __future__ import annotations

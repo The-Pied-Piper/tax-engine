@@ -1,10 +1,6 @@
 """Amount by band: a printed chart of figures by income band, the `amount_by_band` values.
 
-A band is one row of a chart: `over`, the lower bound the row starts above, and either a flat
-`amount` the row prints or a sloped figure, `(income minus minus) x rate plus plus`. A row is
-either flat (`amount` alone) or sloped (`minus`, `rate` and `plus` all set); any other mix is an
-error. A figure is exact, finite and not negative; the code holds no jurisdiction's chart. The
-rounding rule is the dataset's, applied by the capability.
+See docs/parameter-data.md.
 """
 
 from __future__ import annotations

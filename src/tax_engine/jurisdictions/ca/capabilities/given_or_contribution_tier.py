@@ -1,11 +1,10 @@
 """Given or contribution tier: a figure the filer gives, else a tier result on the earnings.
 
-For a form line that is given on the form when the filer has it, and computed from the earnings
-when left blank, such as T2204 line 4. A given figure is the output unchanged: no rounding, no cap,
-its scale kept. A blank `given` (its rule is `compute` in the manifest) is the tier result on the
-`earnings`, exactly as `TieredContribution` computes it. Only `given` may be blank; `earnings` is
-refused when blank.
+A given figure is the output unchanged; a blank `given` (rule `compute`) gives the tier result on
+`earnings`, which may not be blank.
 """
+
+# T2204 line 4.
 
 from __future__ import annotations
 

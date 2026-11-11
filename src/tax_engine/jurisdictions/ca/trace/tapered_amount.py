@@ -19,9 +19,8 @@ class TaperedAmountLine(TraceLine):
     """The `result` produced as `output`: `taper`'s base plus its supplement less `reduction`, not
     below the base, rounded with `rounding`.
 
-    `reduction` is the supplement's share for how far `base` (worth `base_amount`) sits above the
-    taper's threshold, recorded as an exact fraction and before the floor at zero, so it can
-    exceed the supplement; a base at or below the threshold gets a zero reduction.
+    `reduction` is recorded as an exact fraction before the floor at zero, so it can exceed the
+    supplement; at or below the threshold it is zero.
     """
 
     output: Money

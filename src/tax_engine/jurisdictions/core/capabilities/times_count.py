@@ -1,15 +1,7 @@
 """TimesCount: a money artifact's amount for each unit of a count artifact.
 
-For an amount computed once and claimed for each of a counted number of persons, where the
-amount is itself an artifact (a dataset's per-unit amount is `core/per_unit_amount`): the output
-is `rounding.apply(amount × count)`. The product is formed exactly, on `Fraction`s, and rounded
-once with the `rounding_only` dataset's rule; the dataset says what
-scale the product takes, and this capability adds none of its own. A count of 0 is not special:
-it gives the rule's zero. A zero product is never a signed zero.
-
-Either consumed slot may be blank (`BLANK_ALLOWED`). What a blank does there is the manifest
-step's `blank:` line: pass it on (the output is blank too; a blank count is not a count of 0) or
-take a fallback in its place, after which the product is formed as usual.
+The output is `rounding.apply(amount × count)`; a count of 0 gives the rule's zero, never a signed
+zero. A blank count is not a count of 0.
 """
 
 from __future__ import annotations

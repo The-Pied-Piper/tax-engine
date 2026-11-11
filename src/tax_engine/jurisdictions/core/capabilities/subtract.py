@@ -1,14 +1,6 @@
 """Subtract: takes one money artifact off another, exactly, and rounds the difference once.
 
-One mechanism for every difference between two amounts on a return: the manifest decides which
-artifact is the amount and which is taken off. The difference is formed exactly and rounded once by
-the `rounding_only` dataset's rule: the manifest step names the dataset, and a
-difference that needs no rounding names one that states none.
-
-It has no floor: when `less` exceeds `amount` the result is negative, as is.
-
-Either consumed slot may be blank. What a blank does there is the manifest step's `blank:` line:
-pass it on (the difference is blank too), or take a fallback in its place.
+The difference is negative when `less` exceeds `amount`; a `pass_on` blank blanks it.
 """
 
 from __future__ import annotations

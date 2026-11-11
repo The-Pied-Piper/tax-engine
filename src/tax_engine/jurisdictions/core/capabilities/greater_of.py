@@ -1,8 +1,7 @@
 """GreaterOf: the greatest of a list of money artifacts, exactly.
 
-For a form line that reads "whichever is more": the manifest decides which amounts are compared,
-and in which order they are listed in the trace. It has no dataset, so it never rounds; when two
-amounts are equal, the first listed is produced, keeping its scale.
+The manifest's order is the trace order; of equal amounts the first listed is produced, keeping its
+scale. It never rounds.
 """
 
 from __future__ import annotations

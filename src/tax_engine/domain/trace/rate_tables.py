@@ -46,12 +46,10 @@ class BracketColumnLine(TraceLine):
 
 @dataclass(frozen=True)
 class BracketColumnFigureLine(TraceLine):
-    """One figure of the bracket column that `base` (worth `base_amount`) falls in, produced as
-    `output`: `figure`, which is the figure called `name` ("lower bound", "rate" or "tax at
-    start"), printed unrounded.
+    """The figure `name` ("lower bound", "rate" or "tax at start") of the bracket column `base`
+    falls in, as `output`.
 
-    Its own class, not a `BracketColumnLine`: the line names one figure of the column and
-    rounds nothing, where the column line gives the whole tax.
+    `figure` is printed unrounded.
     """
 
     output: Money
@@ -73,12 +71,11 @@ class BracketColumnFigureLine(TraceLine):
 
 @dataclass(frozen=True)
 class SurchargeTierLine(TraceLine):
-    """One tier of a surcharge produced as `output`: `rate` of `base` (worth `base_amount`) over
-    `threshold`, not below zero, at most the tier's `maximum` when it has one (`None` otherwise),
-    rounded with `rounding` to `part`.
+    """One tier of a surcharge produced as `output`: `rate` of `base` over `threshold`, at most
+    `maximum`.
 
-    `base_amount` is the whole base, not the part over the threshold; a base that does not reach
-    the threshold still gets its line, with a zero part.
+    The part is not below zero and is rounded with `rounding`. `base_amount` is the whole base, not
+    the part over the threshold; a base below the threshold still gets its line, with a zero part.
     """
 
     output: Money
@@ -103,12 +100,9 @@ class SurchargeTierLine(TraceLine):
 
 @dataclass(frozen=True)
 class RateByIncomeBandLine(TraceLine):
-    """`rate` produced as `output`, the rate of the table's `row` that `income` (worth
-    `income_amount`) falls in; `row` is `None` for a figure of exactly 0, which takes the table's
-    rate at zero.
+    """`rate` produced as `output`: the rate of the table's `row` that `income` falls in.
 
-    Its own class, not a `BracketColumnLine` or `SurchargeTierLine`: the row chooses one rate for
-    the whole figure, and nothing is charged or rounded.
+    `row` is `None` for a figure of exactly 0, which takes the table's rate at zero.
     """
 
     output: ArtifactKind[Rate]
@@ -133,8 +127,7 @@ class ChosenRateAppliedLine(TraceLine):
     """The `result` produced as `output` by `base` (worth `base_amount`) × `rate_kind` (worth
     `rate`), rounded once with `rounding`.
 
-    Its own class, not a `RateAppliedLine`: the rate is an artifact chosen earlier, not a rate
-    dataset's, so the line names the kind it came from.
+    The rate is an artifact chosen earlier, so the line names its kind.
     """
 
     output: Money

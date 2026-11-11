@@ -1,14 +1,8 @@
-"""The federal catalog: Form T1043 (2025), "Deduction for Excess Registered Pension Plan Transfers
-You Withdrew from an RRSP, a PRPP, an SPP, or a RRIF", lines 1 to 9, in one form.
+"""The federal catalog: Form T1043 (2025), lines 1 to 9, the form `ca/t1043`, run once.
 
-The form `ca/t1043` runs once. Line 1 is the lesser of the excess transfer shown on the T4A slips
-and the excess amount shown on the receipt ("whichever is less"); line 4 is line 2 plus line 3;
-line 5 is line 1 minus line 4; line 8 is line 6 minus line 7; line 9, the lesser of lines 5 and 8,
-is the amount the form allows for T1 line 23200 once the filer has answered the two conditions
-the form prints under "To claim the deduction, you have to meet both of the following conditions"
-(each a yes or no answer, a count of 1 or 0; a "no" to either leaves a deduction of $0). The
-"Year(s)" box above line 1 is not a numbered line and no figure depends on it, so it is not
-entered."""
+Line 9 is the amount for T1 line 23200 once the filer answers the form's two conditions (1 or 0); a
+"no" leaves $0. The "Year(s)" box is not entered.
+"""
 
 from __future__ import annotations
 
