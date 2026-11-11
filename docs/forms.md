@@ -41,3 +41,13 @@ to the length of its list uniformly.
 `FormSet` refuses a caller who breaks a limit with a `ValidationError` naming the form or the group.
 It refuses at construction a group that names only one form, or in which two forms always have
 instances (each could never hold).
+
+## Supplied figures
+
+A form's `supplies` maps a neutral identifier `<namespace>/<snake_case>.<label>` to one of its own
+exports. The identifier is spelt like a form export's but names a form that need not exist: the
+engine derives it as the record list of that export's one field, so every form reads it as it reads
+`<form>.<export>`. A manifest uses it so that a form it imports reads a figure under a name no
+jurisdiction is part of, and each jurisdiction supplies it from its own forms. Only an export a
+record can hold (an amount, a count or a record list) may be supplied, and one identifier is
+supplied by one form only; a clash with a derived `<form>.<export>` is an `InvalidManifestError`.
