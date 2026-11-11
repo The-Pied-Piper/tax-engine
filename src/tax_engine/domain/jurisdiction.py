@@ -1,4 +1,4 @@
-"""A jurisdiction and every manifest version stored for it (design.md §4).
+"""A jurisdiction and every manifest version stored for it.
 
 It answers which manifest applies to a tax year, refusing to choose between manifests valid from
 the same year; the computation-date question (retroactive successors) is deferred.

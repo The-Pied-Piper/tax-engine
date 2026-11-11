@@ -103,11 +103,10 @@ class SumLine(TraceLine):
 
 @dataclass(frozen=True)
 class SumNotBelowZeroLine(TraceLine):
-    """The `total` produced as `output` by adding `parts`, each a kind and its value, in order,
-    taking 0 when the exact sum would not be above zero, and rounded once with `rounding`.
+    """The `total` produced as `output` by adding `parts`, taken as 0 when the exact sum is not
+    above zero, and rounded once with `rounding`.
 
-    Its own class, not a `SumLine`: the floor is a different fact, and a renderer or a check
-    matching plain sums must not catch floored ones.
+    A line type of its own, so a check matching plain `SumLine`s never catches floored ones.
     """
 
     output: Money
@@ -150,10 +149,7 @@ class RateAppliedLine(TraceLine):
 
 @dataclass(frozen=True)
 class DividedByRateLine(TraceLine):
-    """The `result` produced as `output` by `dividend` (worth `dividend_amount`) ÷ `rate`, rounded.
-
-    Its own class, not a `RateAppliedLine`: the figure is divided by the rate, not multiplied.
-    """
+    """The `result` produced as `output` by `dividend` (worth `dividend_amount`) ÷ `rate`."""
 
     output: Money
     dividend: Money
@@ -178,8 +174,8 @@ class SignChosenDifferenceLine(TraceLine):
     """The `result` produced as `output` from `difference` (worth `difference_amount`), picked by
     the sign of `sign` (worth `sign_amount`) against `reference` (worth `reference_amount`).
 
-    A sign amount that is not negative gives the difference as it is; a negative one gives the
-    lesser of the reference and the magnitude of the difference, as a negative number.
+    A non-negative sign amount gives the difference; a negative one gives the lesser of the
+    reference and the magnitude of the difference, as a negative number.
     """
 
     output: Money
@@ -228,12 +224,10 @@ class SubtractedLine(TraceLine):
 
 @dataclass(frozen=True)
 class SubtractedNotBelowZeroLine(TraceLine):
-    """`output` = `minuend` (worth `minuend_amount`) less `subtrahend` (worth `subtrahend_amount`),
-    not below zero, rounded once with `rounding`: `result` is the difference, or 0 when it would not
-    be above zero.
+    """`output` = `minuend` less `subtrahend` (each with its amount), not below zero, rounded once
+    with `rounding`: `result` is the difference, or 0 when it is not above zero.
 
-    Its own class, not a `SubtractedLine`: the floor is a different fact, and a renderer or a
-    check matching plain subtractions must not catch floored ones.
+    A line type of its own, so a check matching plain `SubtractedLine`s never catches floored ones.
     """
 
     output: Money
@@ -257,10 +251,7 @@ class SubtractedNotBelowZeroLine(TraceLine):
 
 @dataclass(frozen=True)
 class CreditAmountLine(TraceLine):
-    """A credit dataset's amount `basis` produced as `output`, rounded with `rounding` to `value`.
-
-    Its own class, not a `RateAppliedLine`: no rate is applied, and the amount itself is the result.
-    """
+    """A credit dataset's amount `basis` produced as `output`, rounded to `value`."""
 
     output: Money
     basis: Credit
@@ -322,11 +313,10 @@ class LesserOfLine(TraceLine):
 
 @dataclass(frozen=True)
 class LesserOfWithMaximumLine(TraceLine):
-    """The `result` produced as `output`: the least of `parts`, each a kind and its value, and the
-    `maximum`, rounded with `rounding`.
+    """The `result` produced as `output`: the least of `parts` and the `maximum`, rounded with
+    `rounding`.
 
-    Its own class, not a `LesserOfLine` or `CappedAmountLine`: it compares several amounts and a
-    dataset's figure.
+    It compares several amounts and a dataset's figure, unlike `LesserOfLine` or `CappedAmountLine`.
     """
 
     output: Money
@@ -390,10 +380,8 @@ class PerUnitAmountLine(TraceLine):
 
 @dataclass(frozen=True)
 class MultipleOverLine(TraceLine):
-    """The `result` produced as `output`: `factor` × `base` (worth `base_amount`) less `less`
-    (worth `less_amount`), not below zero, rounded once with `rounding`.
-
-    Its own class, not a `SubtractedNotBelowZeroLine`: the multiple is a different fact.
+    """The `result` produced as `output`: `factor` × `base` (worth `base_amount`) less `less` (worth
+    `less_amount`), not below zero, rounded once with `rounding`.
     """
 
     output: Money
@@ -421,8 +409,7 @@ class AtMostLine(TraceLine):
     """`output` = `amount_kind` (worth `amount_value`), unchanged, being at most `bound` (worth
     `bound_value`).
 
-    Its own class, not a `LesserOfLine` or `CappedAmountLine`: the amount is not capped, it is
-    checked; an amount above its bound is an error, and no line is recorded for it.
+    An amount above its bound is an error and records no line.
     """
 
     output: Money
@@ -444,11 +431,10 @@ class AtMostLine(TraceLine):
 
 @dataclass(frozen=True)
 class ClaimAtMostLine(TraceLine):
-    """`output` = `claim_kind` (worth `claim_value`), unchanged, being at most `maximum_kind`
-    (worth `maximum_value`), or being 0 when the maximum is negative.
+    """`output` = `claim_kind` (worth `claim_value`), unchanged, being at most `maximum_kind` (worth
+    `maximum_value`), or being 0 when the maximum is negative.
 
-    Its own class, not an `AtMostLine`: a maximum below zero lets a claim of 0 through, and a
-    claim above a maximum is an error, so no line is recorded for it.
+    A claim above the maximum is an error and records no line.
     """
 
     output: Money
@@ -472,8 +458,7 @@ class ClaimAtMostLine(TraceLine):
 class FractionAppliedLine(TraceLine):
     """The `result` produced as `output` by `base` (worth `base_amount`) × `fraction`, rounded.
 
-    Its own class, not a `RateAppliedLine`: a fraction is not a rate, and its amount may be
-    unrounded (a quotient with no finite decimal expansion is never recorded under no rounding).
+    The amount may be unrounded.
     """
 
     output: Money
@@ -496,11 +481,10 @@ class FractionAppliedLine(TraceLine):
 
 @dataclass(frozen=True)
 class PercentageAppliedLine(TraceLine):
-    """The `result` produced as `output` by `amount_kind` (worth `amount_value`) ×
-    `percentage_kind` (worth `percentage_value`) / 100, rounded once with `rounding`.
+    """The `result` produced as `output` by `amount_kind` (worth `amount_value`) × `percentage_kind`
+    (worth `percentage_value`) / 100, rounded once with `rounding`.
 
-    Its own class, not a `RateAppliedLine`: the percentage is an artifact, not a dataset's rate,
-    so the line names the kind it came from.
+    The percentage is an artifact, so the line names its kind.
     """
 
     output: Money
@@ -526,9 +510,7 @@ class MultipliedByRateLine(TraceLine):
     """The `result` produced as `output` by `base_kind` (worth `base_value`) × `rate_kind` (worth
     `rate_value`, a fraction), rounded once with `rounding`.
 
-    Its own class, not a `RateAppliedLine`: the rate is an artifact, not a dataset's rate, so the
-    line names the kind it came from. Not a `ChosenRateAppliedLine` either: that line's rate is a
-    `Rate`-valued artifact, while this rate is a Decimal amount.
+    The rate is a Decimal amount artifact, so the line names its kind.
     """
 
     output: Money
@@ -551,12 +533,11 @@ class MultipliedByRateLine(TraceLine):
 
 @dataclass(frozen=True)
 class RatioAppliedLine(TraceLine):
-    """The `result` produced as `output` by `amount_kind` (worth `amount_value`) ×
-    `numerator_kind` (worth `numerator_value`) / `denominator_kind` (worth `denominator_value`),
-    rounded once with `rounding`.
+    """The `result` produced as `output` by `amount_kind` (worth `amount_value`) × `numerator_kind`
+    (worth `numerator_value`) / `denominator_kind` (worth `denominator_value`), rounded once with
+    `rounding`.
 
-    Its own class, not a `FractionAppliedLine`: the ratio is two artifacts, not a dataset's
-    fraction, so the line names the kinds it came from.
+    The ratio is two artifacts, so the line names their kinds.
     """
 
     output: Money
@@ -582,10 +563,8 @@ class RatioAppliedLine(TraceLine):
 
 @dataclass(frozen=True)
 class TimesCountLine(TraceLine):
-    """The `result` produced as `output`: `amount_kind` (worth `amount_value`) for each of
-    `count` units of `count_kind`, the exact product rounded once with `rounding`.
-
-    Its own class, not a `PerUnitAmountLine`: the amount is an artifact, not a dataset's amount.
+    """The `result` produced as `output`: `amount_kind` (worth `amount_value`) for each of `count`
+    units of `count_kind`, the exact product rounded once with `rounding`.
     """
 
     output: Money
@@ -609,11 +588,10 @@ class TimesCountLine(TraceLine):
 
 @dataclass(frozen=True)
 class QuotientLine(TraceLine):
-    """The `result` produced as `output`: `dividend` (worth `dividend_amount`) divided by
-    `divisor` (worth `divisor_amount`), exactly.
+    """The `result` produced as `output`: `dividend` (worth `dividend_amount`) divided by `divisor`
+    (worth `divisor_amount`), exactly.
 
-    Its own class, not a `FractionAppliedLine`: both parts are artifacts, no dataset is read and
-    nothing is rounded.
+    Both parts are artifacts; no dataset is read and nothing is rounded.
     """
 
     output: Money
@@ -638,9 +616,6 @@ class QuotientLine(TraceLine):
 class ThresholdGateLine(TraceLine):
     """The `result` produced as `output`: `amount_kind` (worth `amount_value`) when `gate_kind`
     (worth `gate_value`) is at least `threshold`, otherwise 0, rounded with `rounding`.
-
-    Its own class, not a `CappedAmountLine`: the gate decides whether the amount passes at all,
-    it does not limit it.
     """
 
     output: Money
@@ -667,12 +642,9 @@ class ThresholdGateLine(TraceLine):
 class AmountOrDividedByRateLine(TraceLine):
     """The figure `result` for `output`: the tested amount passed through, or a figure divided.
 
-    The tested amount (`amount_kind`, `amount_value`) is compared with the `limit`'s threshold.
-    At or below it the amount is the result; over it the result is the `dividend_value` of
-    `dividend_kind` divided by the limit's rate. Either way it is rounded with `rounding`.
-
-    The tested amount's fields are named `amount_kind` and `amount_value` because `amount` is
-    the result.
+    At or below the `limit`'s threshold the tested amount (`amount_kind`, `amount_value`) is the
+    result; over it the result is `dividend_value` of `dividend_kind` divided by the limit's rate.
+    Either way it is rounded with `rounding`.
     """
 
     output: Money
@@ -700,8 +672,7 @@ class CountAtLeastLine(TraceLine):
     """`output` = `count_kind` (worth `count`), unchanged, being at least `minimum_kind` (worth
     `minimum`).
 
-    Its own class, not an `AtMostLine`: the figures are whole numbers, and a count below its
-    minimum is an error, so no line is recorded for it.
+    A count below its minimum is an error and records no line.
     """
 
     output: ArtifactKind[int]
@@ -726,9 +697,7 @@ class MoreThanPerUnitLine(TraceLine):
     """`output` = `total_kind` (worth `total`), unchanged, being more than `minimum_total`:
     `per_unit` for each of `count` units of `count_kind`, rounded once with `rounding`.
 
-    Its own class, not a `PerUnitAmountLine`: the line is about the total that was checked, and it
-    records no product as a result. A total not more than the minimum is an error, so no line is
-    recorded for it.
+    A total not more than the minimum is an error and records no line.
     """
 
     output: Money
@@ -756,8 +725,7 @@ class CountAtMostLine(TraceLine):
     """`output` = `count_kind` (worth `count`), unchanged, being at most `maximum_kind` (worth
     `maximum`).
 
-    Its own class, not a `CountAtLeastLine`: the figures are whole numbers, and a count above
-    its maximum is an error, so no line is recorded for it.
+    A count above its maximum is an error and records no line.
     """
 
     output: ArtifactKind[int]
@@ -781,8 +749,7 @@ class CountAtMostLine(TraceLine):
 class YesOrNoCountLine(TraceLine):
     """`output` = `count_kind` (worth `count`), unchanged, being a yes or no answer of 0 or 1.
 
-    Its own class, not a `CountAtLeastLine`: there is no minimum, and a count above 1 is an error,
-    so no line is recorded for it.
+    A count above 1 is an error and records no line.
     """
 
     output: ArtifactKind[int]
@@ -802,11 +769,10 @@ class YesOrNoCountLine(TraceLine):
 
 @dataclass(frozen=True)
 class CountWithoutRecordsLine(TraceLine):
-    """`output` = `count_kind` (worth `count`), unchanged, checked against `record_count` records
-    of `records_kind`: the count is 0, or no record is held.
+    """`output` = `count_kind` (worth `count`), unchanged, checked against `record_count` records of
+    `records_kind`: the count is 0, or no record is held.
 
-    Its own class, not a `CountAtLeastLine`: there is no minimum, and a count above 0 with a record
-    is an error, so no line is recorded for it.
+    A count above 0 with a record is an error and records no line.
     """
 
     output: ArtifactKind[int]
@@ -830,8 +796,7 @@ class CountWithoutRecordsLine(TraceLine):
 class CountNotRefusedLine(TraceLine):
     """`output` = `count_kind` (worth `count`), unchanged, no listed condition refusing it.
 
-    Its own class, not a `YesOrNoCountLine`: the count is checked against a dataset's conditions,
-    not against 0 and 1, and a refused count is an error, so no line is recorded for it.
+    A refused count is an error and records no line.
     """
 
     output: ArtifactKind[int]
@@ -851,11 +816,10 @@ class CountNotRefusedLine(TraceLine):
 
 @dataclass(frozen=True)
 class AmountWhenMoreLine(TraceLine):
-    """The `result` produced as `output`: `amount_kind` (worth `amount_value`) if `more_kind`
-    (worth `more_value`) is more than `than_kind` (worth `than_value`), else 0.
+    """The `result` produced as `output`: `amount_kind` (worth `amount_value`) if `more_kind` (worth
+    `more_value`) is more than `than_kind` (worth `than_value`), else 0.
 
-    Its own class, not a `ThresholdGateLine`: the figure it is compared with is an artifact, not
-    a threshold dataset's amount, and nothing is rounded.
+    The figure compared with is an artifact; nothing is rounded.
     """
 
     output: Money
@@ -883,8 +847,7 @@ class RatioTruncatedLine(TraceLine):
     """The `result` (a rate, 0 to 1) produced as `output` by `dividend` (worth `dividend_amount`)
     divided by `divisor` (worth `divisor_amount`), rounded once with `rounding`.
 
-    `cap_at_one` is whether a dividend above the divisor gives 1. Its own class, not a
-    `QuotientLine`: the quotient is rounded by a rule, and a zero divisor gives 0.
+    `cap_at_one` is whether a dividend above the divisor gives 1; a zero divisor gives 0.
     """
 
     output: ArtifactKind[Rate]
@@ -909,11 +872,8 @@ class RatioTruncatedLine(TraceLine):
 
 @dataclass(frozen=True)
 class PositivePartOfNegationLine(TraceLine):
-    """The `result` produced as `output`: the negation of `amount_kind` (worth `amount_value`),
-    not below zero.
-
-    Its own class, not a `SubtractedNotBelowZeroLine`: nothing is taken off, the one figure is
-    negated.
+    """The `result` produced as `output`: the negation of `amount_kind` (worth `amount_value`), not
+    below zero.
     """
 
     output: Money
@@ -937,8 +897,7 @@ class LesserOfWhenPositiveLine(TraceLine):
     """The `result` produced as `output` by the least of `parts`, each a kind and its value, only
     when every part is above zero (`all_positive`), else 0.
 
-    `bracket` is whether the least is shown negated ("in brackets"). Its own class, not a
-    `LesserOfLine`: the least is gated, and may be negated.
+    `bracket` is whether the least is shown negated ("in brackets").
     """
 
     output: Money

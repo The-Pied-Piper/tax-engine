@@ -1,11 +1,7 @@
 """Reading parameter datasets: the `ParameterParser` protocol and the registry of parsers.
 
-A package contributes parsers in its `parameter_parsers` package; nothing registers on import: the
-composition root builds a `ParameterParserRegistry` by walking each package's parsers
-(`tax_engine.registrations.parameter_parsers`). Parsers are keyed by their kind's name
-(`brackets`, `credit`, `rate`), which is not namespaced yet. A jurisdiction's parsers are outbound
-adapters that live in its package: the import contract lets them import this module and
-`yaml_support`, and nothing else under `adapters.outbound`.
+Parsers are keyed by their kind's name (`brackets`, `credit`, `rate`). A package's parsers may
+import this module and `yaml_support`, and nothing else under `adapters.outbound`.
 """
 
 from __future__ import annotations
@@ -22,9 +18,8 @@ from tax_engine.domain.registry import Registry
 class ParameterParser[T](Protocol):
     """Reads the kind-specific part of a YAML dataset file into that kind's values.
 
-    YamlParameterSource looks the parser up by the kind requested, in a ParameterParserRegistry.
-    Declare `kind` as a plain class attribute, not a property, so `@parameter_parser` can
-    type-check it against `parse`.
+    `YamlParameterSource` looks the parser up by the requested kind. Declare `kind` as a plain class
+    attribute, not a property, so `@parameter_parser` can type-check it against `parse`.
     """
 
     @property
@@ -80,7 +75,8 @@ class ParserClass[T, P](Protocol):
 class ParameterParserRegistry(Registry[object]):
     """Holds one parser per parameter kind; lookups by `ParameterKind[T]` give `ParameterParser[T]`.
 
-    Its string keys are kind names (not namespaced yet); register parsers with `register_class`.
+    Its string keys are kind names, which are not namespaced; register parsers with
+    `register_class`.
     """
 
     def for_kind[T](self, kind: ParameterKind[T]) -> ParameterParser[T]:
@@ -97,9 +93,7 @@ class ParameterParserRegistry(Registry[object]):
         """Register an instance of the parser class `cls` under its kind's name.
 
         Registering the same class again changes nothing; another class for the kind is an error.
-
-        `cls` must declare a `ParameterKind` as its `kind` class attribute; whether its `parse`
-        returns that kind's values is checked by `@parameter_parser` when mypy runs.
+        `cls` must declare a `ParameterKind` as its `kind` class attribute.
         """
         kind = inspect.getattr_static(cls, "kind", None)
         if not isinstance(kind, ParameterKind):
@@ -119,10 +113,8 @@ PARSER_MARK = "IS_PARAMETER_PARSER"
 def parameter_parser[T, P: ParameterParser[Any]](cls: ParserClass[T, P]) -> type[P]:
     """Class decorator marking a parser class, and type-checking it; it registers nothing.
 
-    A parser whose `parse` returns another type than its kind's values fails `mypy .` here
-    with "Cannot infer value of type parameter". The composition root finds the marked classes
-    by walking each package's `parameter_parsers` (`parsers_in`); a subclass is not marked until
-    it is decorated itself.
+    A parser whose `parse` returns another type than its kind's values fails mypy here. A subclass
+    is not marked until it is decorated itself.
     """
     parser_class = type(cls())
     setattr(parser_class, PARSER_MARK, True)  # noqa: B010  (a class's own mark, read by `is_parser`)

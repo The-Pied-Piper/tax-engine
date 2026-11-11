@@ -1,16 +1,6 @@
 """Record lists: a variable number of same-shaped records held as one artifact value.
 
-A `RecordList` is the value of a kind such as `ex/dependants`: its `fields`, the artifact kinds
-every record has, and its `records` in the caller's order. A `Record` is a frozen mapping keyed by
-field kind, read by kind and never by position. Every field is of a kind a record can hold (the
-`RecordField` Protocol: an amount, a count or a record list); a record holds each of them, an
-instance of its value type and, for a kind declared non-negative, never below zero, and nothing
-else. A field of a record-list kind holds a
-nested `RecordList` of exactly that kind's fields, which may be empty. A list may be empty.
-Packages declare a record-list kind, a `RecordListKind`, on their own catalog with
-`RecordListKind.declare`; an `Artifact` of one holds only a list built with that kind's fields.
-A capability consuming one does the per-item work itself and names each item by its position
-from 1 ("item 2").
+A `Record` is read by field kind, never by position; items are named by position from 1 ("item 2").
 """
 
 from __future__ import annotations
@@ -36,9 +26,8 @@ from tax_engine.domain.errors import (
 class Record(Mapping[ArtifactKind[Any], "Decimal | int | RecordList"]):
     """One record of a record list: a frozen mapping of its field kinds to their values.
 
-    Built by `RecordList`, which checks it against the list's fields; equal to any mapping of the
-    same items, and hashable. A field may be blank (`is_blank`); reading its value is then a
-    BlankValueError naming the field, as for a blank artifact.
+    Built by `RecordList`, which checks it; equal to any mapping of the same items, and hashable. A
+    field may be blank; reading its value is then a BlankValueError naming the field.
     """
 
     __slots__ = ("_values",)
@@ -86,14 +75,11 @@ class Record(Mapping[ArtifactKind[Any], "Decimal | int | RecordList"]):
 class RecordList:
     """Records of the same `fields`, in the caller's order, each checked when the list is built.
 
-    The fields are `Decimal` or `int` artifact kinds or record-list kinds, none or more, no
-    identifier twice, else an InvalidRecordError. With no fields every record is empty and the
-    list only counts its records (a form's copies that carry no figures of their own). A record
-    that is not a mapping, misses a field or has a key that is not one of the fields is an
-    InvalidRecordError; a value that is not an instance of its field kind's value type is a
-    TypeError (a `bool` is not a count); a value below zero for a field declared non-negative is a
-    NegativeArtifactError. Each record error names the record by its position from 1 and the field
-    by its identifier. A Decimal value that is NaN or infinite is an InvalidRecordError.
+    With no fields every record is empty and the list only counts its records. Raises
+    InvalidRecordError for invalid `fields`, a record that is not a mapping, misses a field or has
+    an extra key, or a NaN or infinite `Decimal`; TypeError for a value not of its field's type (a
+    `bool` is not a count); NegativeArtifactError for a negative value in a non-negative field.
+    Errors name the record by position from 1 and the field by identifier.
     """
 
     fields: tuple[ArtifactKind[Any], ...]

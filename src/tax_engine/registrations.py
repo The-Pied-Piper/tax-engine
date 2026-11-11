@@ -1,12 +1,7 @@
 """The packages the composition root wires together, listed explicitly.
 
-`JURISDICTIONS` lists the packages: core and each jurisdiction. Nothing in them registers by being
-imported: `artifact_kinds()`, `capabilities()` and `parameter_parsers()`, called once each by the
-composition root, build the registries of every catalog's kinds, of every `capabilities` package's
-classes and of every `parameter_parsers` package's classes (found by walking their modules) and
-hand them on. Adding a jurisdiction `<x>` is importing `tax_engine.jurisdictions.<x>` and adding it
-to `JURISDICTIONS`. `CORE_PACKAGES` names the one core package whose decorators still fill a shared
-registry: the English trace renderers, until they follow the same shape.
+Adding a jurisdiction is importing its package and listing it in `JURISDICTIONS`; see
+docs/jurisdiction-packages.md.
 """
 
 import tax_engine.adapters.inbound.trace_english

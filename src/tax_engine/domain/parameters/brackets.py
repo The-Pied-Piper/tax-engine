@@ -1,18 +1,6 @@
 """Progressive bracket schedules: the form's bracket columns over ascending thresholds.
 
-Each bracket holds the threshold it starts from (`lower`), its `rate` and, optionally, the tax at
-its start as the form prints it (`tax_at_start`). A printed `tax_at_start` is used as given: it is
-not computed and not rounded. A bracket without one gets its tax at the start computed: the exact
-cumulative tax on the brackets below (never a sum of rounded figures), rounded with the schedule's
-`tax_at_start_rounding` rule; the first bracket's is 0, put through the same rule. By default the
-rule is none, so a computed tax at each start is the exact sum. The tax on an amount is the form's
-two lines for the bracket the amount falls in: the rate on the excess over the bracket's lower,
-plus its tax at its start. An amount at a threshold falls in the lower bracket, as the columns read
-"more than ... but not more than ...".
-
-A schedule is parameter data, resolved per (family, tax_year); the code holds no jurisdiction's
-thresholds, rates or rounding. Arithmetic is exact apart from the rule's rounding of each start:
-rounding the column's tax is the capability's decision, made with its own rounding rule.
+See docs/parameter-data.md.
 """
 
 from __future__ import annotations

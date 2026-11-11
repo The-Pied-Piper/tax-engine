@@ -1,90 +1,6 @@
 """Reads jurisdictions from YAML manifest files. Implements JurisdictionSource.
 
-The source takes a mapping of namespace -> jurisdiction package directory. A jurisdiction's
-namespace is its code lower-cased (`EX-ON` -> `ex-on`). Each `*.yaml` / `*.yml` file directly in
-`<roots[ex-on]>/manifests/` is one whole manifest, and each subfolder there is one manifest too,
-merged from its parts: every `*.yaml` / `*.yml` file inside it (recursively), read in sorted path
-order. A part may carry any of the six manifest keys, the optional `title` or a `form:` key; the
-scalar keys (`jurisdiction`, `version`, `valid_from_tax_year`, and `title` if given) must each be
-in exactly one part, and the lists (`inputs`, `outputs`, `capabilities`) are concatenated in part
-order, an identifier listed in two parts of `inputs` or of `outputs` being rejected. The merged
-mapping then goes through the same parse as a whole file. A manifest naming another jurisdiction
-is rejected.
-A manifest may also carry `imports`, a list of form identifiers `<namespace>/<snake_case>`
-(in a whole file or in any part, the lists concatenating in part order), none listed twice. The
-parts of an imported form are the `*.yaml` / `*.yml` files, recursively and sorted, in
-`<roots[namespace]>/forms/<local id>/`, not under `manifests/`, and they load with the manifest's
-own parts, taking its jurisdiction, version and year. Each carries only `form` and `capabilities`,
-and its `form.name` is the imported identifier; exactly one declares `exports`, as for any form.
-A part with `inputs` alone (no `form:` key) declares the inputs the form brings to every manifest
-that imports it, as a part of the manifest would; an input listed there and by the manifest, or by
-another imported form, is rejected. A part of the manifest that names an imported form, an import
-without a package or parts, and an imported part with any other key are rejected, naming the part.
-The forms run in this order: the default form, the imported forms in `imports` order, then the
-manifest's own.
-A form that declares `exports` may also declare `supplies`, a mapping from a neutral identifier
-`<namespace>/<snake_case>.<label>` (the form need not exist) to one of its own exports that is an
-amount, a count or a record list: the engine derives that kind as it does a form's export, so an
-imported form reads a figure each importing manifest supplies from its own forms. One form
-supplies an identifier; an imported form that reads a derived figure no form of the manifest
-supplies is rejected, naming the form and the figure.
-A manifest is a flat set of forms. A part with a `form:` key (`name`, and `exports` with an optional
-`instances`, all identifiers `<namespace>/<snake_case>`) gives all its `capabilities` to that
-form; without `instances` the form has one instance. A part without one joins the default
-form, named `<namespace>/return` and otherwise an ordinary form: its exports are the
-manifest's `outputs`. A form may span parts that carry the same `form.name`, in part order:
-exactly one of them declares `exports` (with its `instances`), and a second that does is rejected.
-A form without `instances` has a default list of one instance, and limits apply to its count.
-That part may also declare `max_instances` (an integer of at least 1), `min_instances` (an integer
-of at least 0, not above `max_instances`) and `exclusive_group` (an identifier): the most and the
-fewest instances the form may have, and a group of forms of which at most one may have instances.
-Any of these keys in a part that does not declare `exports`, or repeated by a second part, is
-rejected.
-A part with a `form:` key takes no `inputs` or `outputs`: inputs are derived, exports are declared
-in the `form:` block. The default form's name is reserved for the parts without a `form:` key; a
-`form:` part naming it is rejected, naming the part. The default form's `outputs` are its exports,
-so two with one local id (`ex/x` and `ca/x`, both `<ns>/return.x`) are rejected as "outputs".
-A single manifest file is not a part and takes no `form:` key: all of it is the default form.
-Each selection names a capability and fills its slots: `params` (slot -> family, optional),
-`consumes` (slot -> artifact identifier, or a list of them kept in order as a tuple, optional)
-`blank` (consumed slot, or one artifact identifier in a list slot -> what a blank in it does: the
-text of a fallback value, `pass_on`, or `compute`, which leaves it to the class; optional, a slot
-not named refuses a blank) and
-`produces` (slot -> artifact identifier, required, at least one). Slot names, and whether a
-slot takes one identifier or a list, are not checked against capability classes here.
-The top-level `outputs` list the default form's exports: a required, non-empty list of non-empty
-strings without duplicates (an identifier in both `inputs` and `outputs` is an input carried onto
-the return as entered).
-Every input says whether it is required: `inputs` is a required, non-empty list of mappings with
-`name` and `required` (`true` or `false`, nothing implicit; a bare identifier is rejected). An
-optional input also declares `default` and `basis`: `default` is written as the value the request
-is read as when it leaves the line out (`null` for blank, a quoted figure such as `"0"`, `[]`, or
-`""`), and must be present even when `null`; `basis` is the printed sentence of the form that
-justifies it, which the loader keeps but does not check. A required input takes neither.
-A `form:` block that declares `exports` also declares `required` (`true` or `false`) and, for an
-optional form, `required_when` (the identifier of the yes/no artifact that says when the form is
-needed: a required input or an artifact a selection produces, never one of its own exports) and
-`basis` (the printed "Complete this form if" sentence); a required form takes neither. A form with
-`instances` lists `fields`, one mapping per field of the instances kind, declared like inputs
-(`name`, `required`, and for an optional one `default` and `basis`); a form without `instances` has
-none. Which fields the instances kind has, that defaults suit their kinds and that a predicate is a
-yes/no count are checked when the manifest is loaded (the `Manifest` is built with the kinds), and
-an artifact the kinds do not have is an InvalidManifestError naming the file.
-Any of these keys in a part that does not declare `exports` is rejected. The default form is
-always required.
-The default form has no `form:` block, so its title is the manifest's own optional `title` line,
-beside `jurisdiction`, `version` and `valid_from_tax_year`; like those scalar keys it may be in only
-one part, and not in a part with a `form:` key.
-Titles are for the reader of a trace: the `form:` block that declares `exports` may carry a
-`title` (the form's printed name), and a selection may carry a `title` (the printed wording of
-the one figure it produces; a selection producing several figures is rejected). A selection may
-also carry a `reference`, what the form prints beside the figure it produces, as free text. All
-are non-empty text, optional, and never used to look anything up: the identifier stays the unique
-name.
-Parsing is strict because a manifest must stay selection plus slot bindings
-(design.md §4): unknown keys, duplicate keys and wrongly typed values are
-rejected with the offending file (for a folder, the offending part) named, never coerced or
-ignored.
+The manifest format is described in docs/manifest-format.md.
 """
 
 from __future__ import annotations
@@ -685,9 +601,12 @@ class YamlJurisdictionSource:
     def _declaration(
         self, entry: YamlNode, kind_of: Callable[[str], ArtifactKind[Any]]
     ) -> InputDeclaration:
-        """One input or field: its `name`, whether it is `required`, and for an optional one its
-        `default` (written as the value, `null` for blank) and the printed `basis`; any may also
-        give the printed `title` and `reference` of its figure."""
+        """One input or field: its `name`, `required`, and for an optional one `default` and
+        `basis`.
+
+        `default` is written as the value (`null` for blank); `title` and `reference` may also be
+        given.
+        """
         fields = entry.require_mapping(
             frozenset({"name"}), optional=_OPTIONAL_INPUT_KEYS | {"required"}
         )
@@ -778,9 +697,10 @@ class YamlJurisdictionSource:
         node: YamlNode | None,
         consumes: Mapping[str, str | tuple[str, ...]],
     ) -> dict[str, BlankRule]:
-        """What a blank does in each slot, or each artifact in a list slot, `node` names: `pass_on`
-        and `compute` are the rules `PASS_ON` and `COMPUTE`, anything else a fallback number read
-        as the value type of the kinds the slot (or the one artifact) takes.
+        """What a blank does in each slot, or each artifact in a list slot, `node` names.
+
+        `pass_on` and `compute` are the rules `PASS_ON` and `COMPUTE`; anything else is a fallback
+        number read as the value type of the kinds the slot (or the one artifact) takes.
         """
         return {
             name: self._blank_rule(who, name, value.require_non_empty_string(), consumes)
@@ -794,9 +714,11 @@ class YamlJurisdictionSource:
         node: YamlNode | None,
         consumes: Mapping[str, str | tuple[str, ...]],
     ) -> dict[str, dict[str, BlankRule]]:
-        """What a blank does in each record field `node` names under a slot (a mapping of field
-        identifier to rule): `pass_on` and `compute` are the rules `PASS_ON` and `COMPUTE`,
-        anything else a fallback number read as the value type of the field's kind.
+        """What a blank does in each record field `node` names under a slot, as a mapping of field
+        identifier to rule.
+
+        `pass_on` and `compute` are the rules `PASS_ON` and `COMPUTE`; anything else is a fallback
+        number read as the value type of the field's kind.
         """
         rules: dict[str, dict[str, BlankRule]] = {}
         for slot, value in [] if node is None else node.fields():

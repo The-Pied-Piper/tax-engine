@@ -20,11 +20,9 @@ class FormInstanceRenderer:
     def render(self, line: FormInstanceLine, names: EnglishNames) -> str:
         """The English sentences for the run's lines, one per line, each prefixed.
 
-        The prefix is the form as it prints its title (the form's name if it has none), then
-        ", instance N" (N is 1 for a form without an instances list); the inner lines are named
-        from the worksheet of that run, else from the one `names` has.
-        Inner lines use the shared registry: a renderer is built without the registry in use, so it
-        is unreachable.
+        The prefix is the form's printed title (its name if it has none), then ", instance N" (N
+        from 1). Inner lines are named from the worksheet of that run, else from the one `names`
+        has, and use the shared registry.
         """
         printed = names.printed if line.printed is None else line.printed
         title = None if printed is None else printed.form_title

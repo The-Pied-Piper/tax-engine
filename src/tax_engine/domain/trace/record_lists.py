@@ -27,9 +27,6 @@ __all__ = [
 class RecordTotalLine(TraceLine):
     """The `total` produced as `output`: `field` added over the items of a record list, in the
     list's order, each item's `amounts` entry its value of `field`, exactly.
-
-    Its own class, not a `SumLine`: the parts are the items of one list, named by position, not
-    artifacts of their own.
     """
 
     output: Money
@@ -50,12 +47,9 @@ class RecordTotalLine(TraceLine):
 
 @dataclass(frozen=True)
 class RecordPositiveTotalLine(TraceLine):
-    """The `total` produced as `output`: the positive `amounts` of `field` added over the items of
-    a record list, in the list's order, each amount exactly as read; a zero or negative amount
-    counts 0.
-
-    Its own class, not a `SumLine`: the parts are the items of one list, named by position, not
-    artifacts of their own.
+    """The `total` produced as `output`: the positive `amounts` of `field` added over the items of a
+    record list, in the list's order, each amount exactly as read; a zero or negative amount counts
+    0.
     """
 
     output: Money
@@ -117,11 +111,8 @@ class FirstRecordCountLine(TraceLine):
 
 @dataclass(frozen=True)
 class ItemsTotalLine(TraceLine):
-    """The `total` produced as `output` by adding `items`, each the position (from 1) of an item
-    of a record list and its amount, in order. No items is a total of 0.
-
-    Its own class, not a `SumLine`: the parts are items of one list, named by position, not
-    artifacts of their own.
+    """The `total` produced as `output` by adding `items`, each the position (from 1) of an item of
+    a record list and its amount, in order. No items is a total of 0.
     """
 
     output: Money
@@ -143,8 +134,6 @@ class ItemsTotalLine(TraceLine):
 class ItemSumLine(TraceLine):
     """The `total` produced as `output` for the item at `position` (from 1) of a record list, by
     adding `parts`, each a field kind and its value in that item, in order.
-
-    Its own class, not a `SumLine`: the parts are fields of one item, named by its position.
     """
 
     output: Money
@@ -165,10 +154,8 @@ class ItemSumLine(TraceLine):
 
 @dataclass(frozen=True)
 class ItemLesserOfLine(TraceLine):
-    """The `result` for the item at `position` (from 1) of a record list, produced as `output`:
-    the least of `parts`, each a field kind and its value in that item, in order.
-
-    Its own class, not a `LesserOfLine`: the parts are fields of one item, named by its position.
+    """The `result` for the item at `position` (from 1) of a record list, produced as `output`: the
+    least of `parts`, each a field kind and its value in that item, in order.
     """
 
     output: Money
