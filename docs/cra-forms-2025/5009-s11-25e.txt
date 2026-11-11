@@ -1,0 +1,56 @@
+﻿5009-S11
+
+Protected B when completed
+
+2025
+
+Schedule AB(S11)
+
+Alberta Tuition and Education Amounts
+
+Only the student completes this schedule.
+
+Complete this schedule to calculate your Alberta tuition and education amounts, and your unused provincial tuition and education amounts available to carry forward to a future year.
+
+Attach a copy of this schedule to your paper return.
+
+For more information, go to canada.ca/ab-tax-info. Also see Guide P105, Students and Income Tax.
+
+If you resided in a province or territory other than Alberta on December 31, 2024, you cannot claim your unused tuition and education amounts in 2025 or any future tax year.
+
+Unused tuition and education amounts:
+Line 1: Enter your unused Alberta tuition and education amounts from your 2024 notice of assessment or reassessment. ^
+
+Enter the amount from line 26000 of your return on line 2 if it is $60,000 or less. If it is more than $60,000, enter the result of the following calculation:
+Line 2: Amount from line 8 or line 15 (whichever applies) of your Form AB428 ^
+divided by 8% = ^
+
+Line 3: Enter the amount from line 39 of your Form AB428. ^
+
+Line 4: Line 2 minus line 3 (if negative, enter "0") = ^
+
+Line 5: Enter whichever is less: amount from line 1 or line 4. Enter this amount on line 58560 of your Form AB428. Your unused Alberta tuition and education amounts claimed for 2025 ^
+
+Carryforward of unused amounts
+
+Complete this section to calculate your unused provincial tuition and education amounts available to carry forward to a future year.
+
+Line 6: Amount from line 1 above ^
+
+Line 7: Amount from line 5 above ^
+
+Line 8: Line 6 minus line 7 Unused provincial tuition and education amounts available to carry forward to a future year = ^
+
+See the privacy notice on your return.
+
+
+ 
+
+
+
+
+
+
+
+
+
