@@ -14,6 +14,7 @@ reads a figure each importing manifest supplies under that name. Names are made 
 
 from __future__ import annotations
 
+import decimal
 import re
 from collections.abc import Mapping
 from decimal import Decimal
@@ -74,6 +75,15 @@ capabilities:
   - name: core/record_total
     consumes: {records: ex/provincial_tax.amount}
     produces: {output: ex/federal_total}
+"""
+
+FEDERAL_STANDALONE = """\
+form:
+  name: ex/federal
+  required: true
+  exports: [ex/federal_total]
+capabilities:
+  - {name: ex/c, produces: {output: ex/federal_total}}
 """
 
 FEDERAL_NAME_ONLY = """\
@@ -152,7 +162,12 @@ def test_the_forms_run_default_then_imported_in_imports_order_then_own(tmp_path:
         "capabilities:\n  - {name: ex/c, produces: {output: ex/aid_total}}\n",
     )
     write_province(tmp_path, head=header("EX-ON", "[ex/federal, ex/aid]"))
-    write(tmp_path, "ex-on/manifests/v1/02-zz.yaml", province_form("ex-on").replace("levy", "aa"))
+    write(
+        tmp_path,
+        "ex-on/manifests/v1/02-zz.yaml",
+        "form: {name: ex-on/aa, required: true, exports: [ex-on/aa_total]}\n"
+        "capabilities:\n  - {name: ex/c, produces: {output: ex-on/aa_total}}\n",
+    )
 
     assert names(manifest_of(tmp_path)) == [
         "ex-on/return",
@@ -204,7 +219,7 @@ def test_imports_in_two_parts_are_concatenated_in_part_order(tmp_path: Path) -> 
 
 
 def test_a_whole_file_manifest_may_import(tmp_path: Path) -> None:
-    write_federal(tmp_path)
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL_STANDALONE})
     write(
         tmp_path,
         "ex-on/manifests/v1.yaml",
@@ -499,7 +514,9 @@ class Third(Half):
     """Produces `target` as a third of `source`, to the cent."""
 
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
-        value = (self._input(inputs, self._source).value / 3).quantize(D("0.01"))
+        with decimal.localcontext() as context:
+            context.traps[decimal.Inexact] = False
+            value = (self._input(inputs, self._source).value / 3).quantize(D("0.01"))
         return CapabilityResult(outputs=(Artifact(self._target, value),), trace=())
 
 
