@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import decimal
 from collections.abc import Iterable, Mapping
+from decimal import Decimal
 from typing import Any, cast
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
@@ -22,7 +23,7 @@ from tax_engine.domain.errors import (
     DuplicateLabelError,
     MissingArtifactError,
 )
-from tax_engine.domain.trace import LeftBlankLine, TraceLine
+from tax_engine.domain.trace import BlankFallbackLine, LeftBlankLine, TraceLine
 
 
 class Worksheet:
@@ -42,6 +43,9 @@ class Worksheet:
         self._artifacts: dict[ArtifactKind[Any], Artifact[Any]] = {}
         self._producers: dict[ArtifactKind[Any], Capability] = {}
         self._trace: list[TraceLine] = []
+        # Where a blank input's single trace row sits, and the fallbacks that row already says.
+        self._blank_rows: dict[ArtifactKind[Any], int] = {}
+        self._fallbacks_said: dict[ArtifactKind[Any], set[Decimal]] = {}
         self._kinds_by_label: dict[str, ArtifactKind[Any]] = {}
         self._claim_labels(artifact.kind for artifact in artifacts)
         for artifact in artifacts:
@@ -49,6 +53,7 @@ class Worksheet:
                 raise DuplicateArtifactError(f"two starting values for {artifact.kind.label!r}")
             self._artifacts[artifact.kind] = artifact
             if artifact.is_blank:
+                self._blank_rows[artifact.kind] = len(self._trace)
                 self._trace.append(LeftBlankLine(artifact.kind))
 
     @property
@@ -125,7 +130,29 @@ class Worksheet:
         for artifact in result.outputs:
             self._artifacts[artifact.kind] = artifact
             self._producers[artifact.kind] = capability
-        self._trace.extend(result.trace)
+        for line in result.trace:
+            self._record(line)
+
+    def _record(self, line: TraceLine) -> None:
+        """Add `line` to the trace; a blank input is said once, however many steps take a fallback.
+
+        The first fallback taken for a blank starting input replaces that input's "left blank" row,
+        so the one row says it was left blank and what it was taken as. The same fallback taken by
+        a later step adds nothing; a different fallback is a new fact and gets its own row.
+        """
+        if not isinstance(line, BlankFallbackLine):
+            self._trace.append(line)
+            return
+        taken = Decimal(line.fallback)
+        said = self._fallbacks_said.setdefault(line.kind, set())
+        if taken in said:
+            return
+        said.add(taken)
+        row = self._blank_rows.pop(line.kind, None)
+        if row is None:
+            self._trace.append(line)
+        else:
+            self._trace[row] = line
 
     def _claim_labels(self, kinds: Iterable[ArtifactKind[Any]]) -> None:
         """Record the labels of `kinds`; refuse a different kind that already has one.

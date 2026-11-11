@@ -485,6 +485,41 @@ def test_a_blank_starting_artifact_is_traced_as_left_blank() -> None:
     assert worksheet.get(CHART_GAIN).is_blank
 
 
+def test_a_blank_input_read_by_two_steps_is_traced_once_as_left_blank_and_taken() -> None:
+    worksheet = Worksheet(blank(LIMIT), Artifact(INCOME, D(500)), Artifact(OTHER, D(5)))
+    worksheet.apply(less_zero(INCOME, LIMIT, DEDUCTION))
+    worksheet.apply(less_zero(OTHER, LIMIT, NET))
+
+    assert worksheet.trace == (
+        BlankFallbackLine(LIMIT, D(0)),
+        SubtractedLine(DEDUCTION, INCOME, D(500), LIMIT, D(0), NO_ROUNDING, D(500)),
+        SubtractedLine(NET, OTHER, D(5), LIMIT, D(0), NO_ROUNDING, D(5)),
+    )
+
+
+def test_a_blank_input_taken_as_two_different_values_keeps_both() -> None:
+    worksheet = Worksheet(blank(LIMIT), Artifact(INCOME, D(500)))
+    worksheet.apply(less_zero(INCOME, LIMIT, DEDUCTION))
+    worksheet.apply(SubtractCompute(INCOME, LIMIT, NET).with_blank_rules({"less": D(1)}))
+
+    fallbacks = [line for line in worksheet.trace if isinstance(line, BlankFallbackLine)]
+    assert fallbacks == [BlankFallbackLine(LIMIT, D(0)), BlankFallbackLine(LIMIT, D(1))]
+
+
+def test_a_blank_input_no_step_takes_a_fallback_for_stays_left_blank() -> None:
+    worksheet = Worksheet(blank(LIMIT), Artifact(INCOME, D(500)))
+    worksheet.apply(pass_on(INCOME, LIMIT, DEDUCTION))
+
+    assert worksheet.trace == (LeftBlankLine(LIMIT), BlankPassedOnLine(DEDUCTION, (LIMIT,)))
+
+
+def test_an_entered_input_has_no_blank_row() -> None:
+    worksheet = Worksheet(Artifact(LIMIT, D(5)), Artifact(INCOME, D(500)))
+    worksheet.apply(less_zero(INCOME, LIMIT, DEDUCTION))
+
+    assert [type(line) for line in worksheet.trace] == [SubtractedLine]
+
+
 def test_an_upstream_blank_is_passed_on_taken_as_zero_or_refused_by_the_consumer() -> None:
     upstream = pass_on(CHART_GAIN, LIMIT, DEDUCTION)
     start = (blank(CHART_GAIN), Artifact(LIMIT, D(1)), Artifact(INCOME, D(500)))
