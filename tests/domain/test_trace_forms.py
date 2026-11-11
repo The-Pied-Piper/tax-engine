@@ -47,7 +47,7 @@ def test_is_a_trace_line_of_the_forms_module_re_exported_by_the_package() -> Non
 def test_fields_in_order() -> None:
     found = line()
 
-    assert [f.name for f in fields(found)] == ["form", "position", "lines"]
+    assert [f.name for f in fields(found)] == ["form", "position", "lines", "printed"]
     assert found == FormInstanceLine(form="ex/rental", position=2, lines=(SUBTRACTED, TOTAL))
     assert found.form == "ex/rental"
     assert found.position == 2

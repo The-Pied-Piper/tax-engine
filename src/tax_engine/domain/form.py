@@ -45,6 +45,7 @@ from tax_engine.domain.errors import (
     NotFoundError,
     ValidationError,
 )
+from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import Form, InputDeclaration
 from tax_engine.domain.record_list import Record, RecordList
@@ -348,7 +349,7 @@ class FormSet:
         instance, 1. A form with no steps (it only exports its input) has no line.
         """
         return tuple(
-            FormInstanceLine(form.name, position, worksheet.trace)
+            FormInstanceLine(form.name, position, worksheet.trace, worksheet)
             for form in self._forms
             for position, worksheet in enumerate(worksheets.get(form.name, ()), start=1)
             if worksheet.trace
@@ -422,8 +423,23 @@ class FormSet:
             listed.append({export: BLANK if made.is_blank else made.value})
         return Artifact(derived, RecordList(derived.fields, listed))
 
-    @staticmethod
+    def _imported_figures(self, form: FormComposition) -> dict[str, ImportedFigure]:
+        """Each figure `form` imports, by label, as the form that exports it prints it."""
+        found: dict[str, ImportedFigure] = {}
+        for kind in form.imports:
+            exporter = self.form(self._producers[kind])
+            assert isinstance(kind, RecordListKind)  # a form export is read as a record list
+            (export,) = kind.fields
+            found[export.label] = ImportedFigure(
+                exporter.title,
+                exporter.figure_titles.get(export.label),
+                exporter.figure_references.get(export.label),
+                exporter.instances is None,
+            )
+        return found
+
     def _run(
+        self,
         form: FormComposition,
         position: int,
         starting: list[Artifact[Any]],
@@ -435,6 +451,7 @@ class FormSet:
                 form_title=form.title,
                 figure_titles=form.figure_titles,
                 figure_references=form.figure_references,
+                imported_figures=self._imported_figures(form),
                 defaulted=defaulted,
             )
         except DomainError as exc:
