@@ -5,6 +5,9 @@ prints one, otherwise by its title in quotes, and when it has neither (a step of
 form does not print) by its internal label in plain words, never by an invented title.
 A trace line's own figure is not named in its sentence: the line already carries its label, and
 the form's title and reference for it come from the worksheet beside the text.
+A fixed figure from a dataset is named by the wording the form prints for it (the dataset's
+`title`, such as "maximum per slip"), written without quotes after "the" because it is a
+phrase beside the figure rather than a line title; with no title, by its family in plain words.
 """
 
 from __future__ import annotations
@@ -14,6 +17,8 @@ from decimal import Decimal
 from typing import Protocol
 
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+from tax_engine.domain.parameters.amount import Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
 
 __all__ = ["EnglishNames", "FigureNames", "Labelled"]
 
@@ -68,6 +73,15 @@ class EnglishNames:
     def of(self, figure: Labelled) -> str:
         """The name of `figure` for a sentence."""
         return self.of_label(figure.label)
+
+    def parameter(self, dataset: ParameterDataset[Amount]) -> str:
+        """A fixed figure from a dataset: its name, then the figure in brackets.
+
+        The name is the title the form prints for the figure ("the maximum per slip (81200.00)");
+        a dataset without one is named by its family in plain words, never by an invented title.
+        """
+        name = dataset.title or _plain_words(dataset.family.rsplit("/", 1)[-1])
+        return f"the {name} ({EnglishFigures.money(dataset.values.value)})"
 
     def of_label(self, label: str) -> str:
         """The name of the figure `label` for a sentence."""
