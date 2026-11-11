@@ -1,4 +1,4 @@
-"""A form may supply a neutral figure: `Form.supplies` (#618).
+"""A form may supply a neutral figure: `Form.supplies`.
 
 A form that declares `exports` may carry `supplies`, a mapping from a neutral derived identifier
 (`<ns>/<form_snake>.<label>`, naming a form that need not exist) to one of its own exports. The

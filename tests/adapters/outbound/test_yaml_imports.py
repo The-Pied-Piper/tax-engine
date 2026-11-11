@@ -1,4 +1,4 @@
-"""YamlJurisdictionSource: a manifest imports forms of another package by name (#618).
+"""YamlJurisdictionSource: a manifest imports forms of another package by name.
 
 A manifest may carry `imports:`, a list of form identifiers `<ns>/<local_id>`. The parts of an
 imported form live in `<package dir of ns>/forms/<local_id>/` (every `*.yaml` / `*.yml`, sorted,
@@ -328,7 +328,7 @@ def test_a_form_listed_in_two_parts_imports_is_rejected(tmp_path: Path) -> None:
     write_federal(tmp_path)
     write_province(tmp_path, extra={"02-more.yaml": "imports: [ex/federal]\n"})
 
-    with pytest.raises(InvalidManifestError, match="ex/federal.*more than once"):
+    with pytest.raises(InvalidManifestError, match="ex/federal.*already listed"):
         source(tmp_path).get_jurisdiction(EX_ON)
 
 

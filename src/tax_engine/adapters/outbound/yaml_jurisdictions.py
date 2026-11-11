@@ -143,7 +143,7 @@ _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference"})
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
-_IDENTIFIER_LISTS = ("inputs", "outputs")
+_IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
 
 
@@ -261,7 +261,6 @@ class YamlJurisdictionSource:
         form_selections: dict[str, list[CapabilitySelection]] = {}
         declarations: dict[str, tuple[Path, _Declaration]] = {}
         identifier_owners: dict[str, dict[str, Path]] = {key: {} for key in _IDENTIFIER_LISTS}
-        import_owners: dict[str, Path] = {}
         form_parts: dict[str, Path] = {}
         for part in parts:
             contents = self._part(part)
@@ -269,10 +268,7 @@ class YamlJurisdictionSource:
                 name = self._join_form(part, contents, form_selections, declarations)
                 form_parts.setdefault(name, part)
             for key, node in contents.items():
-                if key == "imports":
-                    self._claim_imports(node, part, import_owners)
-                    lists.setdefault(key, []).extend(item.value for item in node.items())
-                elif key in _SCALAR_KEYS:
+                if key in _SCALAR_KEYS:
                     if key in scalar_owners:
                         raise InvalidManifestError(
                             f"{part}: key {key!r} is already set in {scalar_owners[key]}"
@@ -282,6 +278,7 @@ class YamlJurisdictionSource:
                 else:
                     self._claim_identifiers(key, node, part, identifier_owners.get(key, {}))
                     lists.setdefault(key, []).extend(item.value for item in node.items())
+        import_owners = identifier_owners["imports"]
         for name in form_selections.keys() & import_owners.keys():
             raise InvalidManifestError(
                 f"{form_parts[name]}: form {name!r} is imported in {import_owners[name]}: "
@@ -329,7 +326,7 @@ class YamlJurisdictionSource:
         if contents.keys() & set(_IDENTIFIER_LISTS):
             raise InvalidManifestError(
                 f"{part}: form {name!r}: inputs are derived and exports are declared in the "
-                "form: block, so the part takes no `inputs` or `outputs`"
+                "form: block, so the part takes no `inputs`, `outputs` or `imports`"
             )
         chosen = form_selections.setdefault(name, [])
         if declared is not None:
@@ -537,18 +534,6 @@ class YamlJurisdictionSource:
                 raise InvalidManifestError(
                     f"{part}: {key}[{index}]: {identifier!r} is already listed in "
                     f"{owners[identifier]}"
-                )
-            owners[identifier] = part
-
-    @staticmethod
-    def _claim_imports(node: YamlNode, part: Path, owners: dict[str, Path]) -> None:
-        """Record the part's imports, refusing one an earlier part listed."""
-        for index, item in enumerate(node.items()):
-            identifier = item.require_string()
-            if identifier in owners:
-                raise InvalidManifestError(
-                    f"{part}: imports[{index}]: {identifier!r} is listed more than once, "
-                    f"already in {owners[identifier]}"
                 )
             owners[identifier] = part
 
