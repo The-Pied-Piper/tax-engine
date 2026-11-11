@@ -305,7 +305,9 @@ class FormSet:
         Each form runs once per record of its instances (a form without an instances list has one
         instance), in `forms` order, on a worksheet of the starting artifacts it reads, its record's
         fields and its imports. The result maps each form's name to its worksheets in instance
-        order, none if its instances list is empty.
+        order, none if its instances list is empty. A worksheet traces each starting input it
+        reads that was read as its default (left out, or given blank where the default is a
+        value); a record's field defaults are not traced.
         A DomainError from a run is raised as itself; its message starts with the form and the
         instance position (`<form>, instance N: ...`, N being 1 for a form without an instances
         list). A kind given that is a form's export is refused: the forms derive it,
@@ -320,15 +322,19 @@ class FormSet:
             if counts[kind] > 1:
                 raise DuplicateArtifactError(f"two starting values for {kind.label!r}")
         given = {artifact.kind: artifact for artifact in artifacts}
+        defaulted: set[ArtifactKind[Any]] = set()
         for kind, default in self._defaults.items():
             # Left out, or given blank where the default is a value: the default is what is read.
-            given[kind] = self._read_as(given.get(kind), default)
+            was = given.get(kind)
+            if was is None or (was.is_blank and not default.is_blank):
+                defaulted.add(kind)
+            given[kind] = self._read_as(was, default)
         self._check_given(given)
         self._check_limits(given)
         store: dict[ArtifactKind[Any], Artifact[Any]] = {}
         worksheets: dict[str, tuple[Worksheet, ...]] = {}
         for form in self._forms:
-            ran = tuple(self._runs(form, given, store))
+            ran = tuple(self._runs(form, given, store, frozenset(defaulted)))
             worksheets[form.name] = ran
             for derived in form.derived:
                 store[derived] = self._export_of(derived, ran)
@@ -353,6 +359,7 @@ class FormSet:
         form: FormComposition,
         given: Mapping[ArtifactKind[Any], Artifact[Any]],
         store: Mapping[ArtifactKind[Any], Artifact[Any]],
+        defaulted: frozenset[ArtifactKind[Any]],
     ) -> Iterable[Worksheet]:
         imported = [store[kind] for kind in sorted(form.imports, key=Composition.sort_key)]
         instances = form.instances
@@ -363,12 +370,16 @@ class FormSet:
         ]
         done: list[Worksheet] = []
         if instances is None:
-            yield self._run(form, 1, [*shared, *imported, *self._earlier_runs(form, done)])
+            yield self._run(
+                form, 1, [*shared, *imported, *self._earlier_runs(form, done)], defaulted
+            )
             return
         for position, record in enumerate(given[instances].value.records, start=1):
             starting = [self._field(form, record, kind) for kind in fields]
             earlier = self._earlier_runs(form, done)
-            worksheet = self._run(form, position, [*shared, *starting, *imported, *earlier])
+            worksheet = self._run(
+                form, position, [*shared, *starting, *imported, *earlier], defaulted
+            )
             done.append(worksheet)
             yield worksheet
 
@@ -412,13 +423,19 @@ class FormSet:
         return Artifact(derived, RecordList(derived.fields, listed))
 
     @staticmethod
-    def _run(form: FormComposition, position: int, starting: list[Artifact[Any]]) -> Worksheet:
+    def _run(
+        form: FormComposition,
+        position: int,
+        starting: list[Artifact[Any]],
+        defaulted: frozenset[ArtifactKind[Any]],
+    ) -> Worksheet:
         try:
             return form.composition.compute(
                 *starting,
                 form_title=form.title,
                 figure_titles=form.figure_titles,
                 figure_references=form.figure_references,
+                defaulted=defaulted,
             )
         except DomainError as exc:
             exc.args = (f"{form.name}, instance {position}: {exc}",)

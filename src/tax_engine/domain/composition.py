@@ -61,6 +61,7 @@ class Composition:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
+        defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> Worksheet:
         """Apply every capability, in `order`, to a fresh worksheet of the starting `artifacts`.
 
@@ -70,13 +71,15 @@ class Composition:
         `NegativeArtifactError` is raised as the `CapabilityContractError` naming it.
         `form_title`, `figure_titles` and `figure_references` (label to title, label to what the
         form prints beside the figure) are only carried on the worksheet for
-        whoever reads its trace; they change nothing in the computation.
+        whoever reads its trace; they change nothing in the computation. `defaulted` names the
+        starting kinds that are the manifest's default, which the worksheet's trace says.
         """
         worksheet = Worksheet(
             *artifacts,
             form_title=form_title,
             figure_titles=figure_titles,
             figure_references=figure_references,
+            defaulted=defaulted,
         )
         self.check_starting_kinds((artifact.kind for artifact in artifacts), self._inputs)
         refused = [a.kind for a in artifacts if a.is_blank and a.kind not in self._blank_inputs]
