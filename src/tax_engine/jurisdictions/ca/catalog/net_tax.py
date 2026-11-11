@@ -198,7 +198,7 @@ line 23500)": the amount of line 23500, carried."""
 TOTAL_PAYABLE = AmountKind.declare(CATALOG, "total_payable", non_negative=True)
 """Total payable, T1 line 148 (line 43500) "Add lines 143 to 147. Total payable", as built for the
 take-home return: the sum of two parts, line 143 (`net_federal_tax`, line 42000) and line 147
-(`provincial_tax_line_42800`, the Ontario tax from ON428 line 90, entered on line 42800). Lines 144
+(`provincial_tax_line_42800`, the provincial tax, entered on line 42800). Lines 144
 (42100), 145 (42120) and 146 (42200) are absent for the take-home filer and are left out.
 """
 
@@ -207,8 +207,8 @@ PROVINCIAL_TAX_LINE_42800 = AmountKind.declare(
 )
 """Provincial or territorial tax, T1 line 147 and line 42800 "Provincial or territorial tax
 (complete and attach your provincial or territorial Form 428, even if the result is "0")": the
-Ontario tax of Form ON428 line 90 (`ca-on/on428_ontario_tax_line_90`), entered on line 42800 of
-the return."""
+provincial tax figure of the filer's province (`ca/provincial_tax`), entered on line 42800 of the
+return."""
 
 INCOME_TAX_DEDUCTED = AmountKind.declare(CATALOG, "income_tax_deducted", non_negative=True)
 """Income tax deducted, T1 line 150 (line 43700) "Total income tax deducted (amounts from all

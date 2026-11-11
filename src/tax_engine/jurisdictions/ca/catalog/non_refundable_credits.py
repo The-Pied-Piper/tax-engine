@@ -908,8 +908,8 @@ FOREIGN_TAX_CREDIT_BASIC_FEDERAL_TAX = AmountKind.declare(
 """Basic federal tax for the foreign tax credit, Form T2209 note (4) "Basic federal tax": the
 basic federal tax with the dividend credit and the surtax, the amount of
 `basic_federal_tax_with_dividend_credit_and_surtax`, "minus any:" the refundable Quebec abatement
-(line 44000 of your return or line 15 of Part 2 of Form T2203), which does not apply to an Ontario
-return, and "federal refundable First Nations abatement (line 44100 of your return)"."""
+(line 44000 of your return or line 15 of Part 2 of Form T2203, for a Quebec resident), and
+"federal refundable First Nations abatement (line 44100 of your return)"."""
 
 FEDERAL_NON_BUSINESS_FOREIGN_TAX_CREDIT = AmountKind.declare(
     CATALOG, "federal_non_business_foreign_tax_credit", non_negative=True
