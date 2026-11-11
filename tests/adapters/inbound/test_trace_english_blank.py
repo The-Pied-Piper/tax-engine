@@ -53,15 +53,18 @@ def test_a_blank_passed_on() -> None:
     )
 
 
-def test_a_blank_line_has_no_figure_but_the_fallback() -> None:
+def test_a_blank_line_has_no_figure_but_the_fallback_and_the_default() -> None:
     assert LeftBlankLine(CHART_GAIN).amount == 0
     assert BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)).amount == 0
     assert BlankFallbackLine(DEDUCTION, Decimal("3")).amount == 3
 
 
 def test_an_input_taken_as_its_default() -> None:
-    assert render(DefaultedInputLine(HOUSEHOLD, 12)) == "Not given, so the form's default gives 12."
+    assert (
+        render(DefaultedInputLine(HOUSEHOLD, 12))
+        == "No value given, so the form's default gives 12."
+    )
     assert (
         render(DefaultedInputLine(LIMIT, Decimal("0.00")))
-        == "Not given, so the form's default gives 0.00."
+        == "No value given, so the form's default gives 0.00."
     )

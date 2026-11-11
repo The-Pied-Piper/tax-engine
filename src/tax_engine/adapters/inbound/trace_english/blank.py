@@ -38,7 +38,7 @@ class DefaultedInputRenderer:
 
     def render(self, line: DefaultedInputLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return f"not given, so the form's default gives {_figure(line.value)}"
+        return f"no value given, so the form's default gives {_figure(line.value)}"
 
 
 @english_renderer
@@ -52,9 +52,9 @@ class BlankFallbackRenderer:
         return f"left blank, taken as {_figure(line.fallback)}"
 
 
-def _figure(fallback: Decimal | int) -> str:
-    """The fallback as money for an amount, else as a plain whole number."""
-    return EnglishFigures.money(fallback) if isinstance(fallback, Decimal) else str(fallback)
+def _figure(value: Decimal | int) -> str:
+    """The value (a fallback or a default) as money for an amount, else as a plain whole number."""
+    return EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
 
 
 def _where(field: BlankField, names: EnglishNames) -> str:

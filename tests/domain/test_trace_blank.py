@@ -48,7 +48,7 @@ def test_a_line_is_frozen_and_compares_by_value() -> None:
         line.kind = DEDUCTION  # type: ignore[misc]
 
 
-def test_only_the_fallback_line_has_a_figure() -> None:
+def test_only_the_fallback_and_default_lines_have_a_figure() -> None:
     assert LeftBlankLine(CHART_GAIN).amount == 0
     assert BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)).amount == 0
     assert BlankFallbackLine(DEDUCTION, Decimal("7.5")).amount == Decimal("7.5")

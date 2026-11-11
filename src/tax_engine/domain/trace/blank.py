@@ -1,4 +1,5 @@
-"""Trace lines for blanks: a line left blank, a blank taken as a fallback, a blank passed on."""
+"""Trace lines for blanks: a line left blank, a blank taken as a fallback, a blank passed on, and
+an input read as its default."""
 
 from __future__ import annotations
 
