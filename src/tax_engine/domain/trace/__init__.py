@@ -1,7 +1,8 @@
 """The structured trace: what each capability did, recorded as facts, never text.
 
-Jurisdiction-specific lines live in `tax_engine.jurisdictions.<package>.trace`; rendering is in the
-adapters.
+A line holds domain objects and amounts; its `amount` is the figure the line is about. A count is an
+`int` kind and its `int` value, a chosen rate a `Rate` kind and its `Rate` value. Jurisdiction lines
+live in `tax_engine.jurisdictions.<package>.trace`; rendering is in the adapters.
 """
 
 from __future__ import annotations

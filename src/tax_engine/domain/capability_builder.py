@@ -1,4 +1,4 @@
-"""Builds one capability from a manifest selection (design.md §4).
+"""Builds one capability from a manifest selection.
 
 Resolves artifact kinds from the registry it is given (datasets come resolved from the caller),
 checks the selection fills exactly the class's slots, and calls the constructor by keyword.

@@ -1,6 +1,8 @@
 """Registries: where packages register the pieces they contribute (capabilities, parsers, ...).
 
-Nothing registers on import; the composition root builds each registry (`tax_engine.registrations`).
+The composition root builds the registries; only decorators that fill a `SharedRegistry` (the
+English trace renderers) register on import. A package declares `NAMESPACE` at the top of its
+`__init__.py`, before importing any module that uses `@capability`.
 """
 
 from __future__ import annotations

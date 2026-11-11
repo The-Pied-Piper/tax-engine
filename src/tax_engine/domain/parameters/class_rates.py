@@ -126,10 +126,11 @@ class ClassRate:
 
 @dataclass(frozen=True)
 class ClassRates:
-    """At least one `ClassRate`, no class number twice, in the order given, and the positive whole
-    number of days in a full fiscal period (`full_year_days`), the 365 a short fiscal period's CCA
-    is compared to, and the whole number of days in the longest fiscal period
-    (`longest_fiscal_period_days`, at least `full_year_days`), the most a fiscal period may have."""
+    """At least one `ClassRate`, none twice, in the order given, and the days in fiscal periods.
+
+    `full_year_days` is the positive number of days a short fiscal period's CCA is compared to;
+    `longest_fiscal_period_days` is the most a fiscal period may have, at least `full_year_days`.
+    """
 
     classes: tuple[ClassRate, ...]
     full_year_days: int

@@ -1,7 +1,8 @@
-"""Blank: the value of a line the filer left empty, and how a capability treats one (design.md §3).
+"""Blank: the value of a line the filer left empty, and how a capability treats one.
 
-A blank is distinct from zero, an empty list and an empty text; the consuming capability states what
-it does with one.
+A blank is distinct from zero: a form that says to leave a line blank leaves it blank, not zero. A
+capability refuses a blank unless the manifest gives a rule for that slot
+(`Capability.with_blank_rules`).
 """
 
 from __future__ import annotations

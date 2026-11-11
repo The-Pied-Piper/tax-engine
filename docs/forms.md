@@ -28,6 +28,15 @@ instance record on its own `Worksheet`, keeps every form's exports in one store,
 imports as starting artifacts, and returns a mapping from form name to one `Worksheet` per
 instance, in instance order.
 
+## Required and optional forms
+
+`required` says whether the return must include the form. An optional form names the yes/no
+artifact that says when it is needed in `required_when`, the machine form of its printed "Complete
+this form if ..." sentence (kept as `basis`); a required form has neither, and an optional form may
+not be gated by one of its own exports. A form with an instances list declares each field of its
+records in `fields`; a form without one has no fields. A field of a required form, or of an
+attached optional form, is required only when the form is attached.
+
 ## Instance limits
 
 A form without an instances list has a default list of exactly one instance, and the limits apply

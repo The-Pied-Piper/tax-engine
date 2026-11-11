@@ -1,5 +1,4 @@
-"""Jurisdiction manifest: which capabilities run for a jurisdiction, and from which tax year
-(design.md §4).
+"""Jurisdiction manifest: which capabilities run for a jurisdiction, and from which tax year.
 
 A flat set of forms plus the declarations of the artifacts a computation starts from.
 """
@@ -134,15 +133,9 @@ class InputDeclaration:
 class Form:
     """A named group of selections run once per instance, with the artifacts it exports.
 
-    `instances` is the record-list kind the caller supplies, one record per instance, or `None` for
-    a form with one instance and no `fields`. `exports` are readable by every other form as
-    `<name>.<local id>`. `required_when` is the yes/no artifact that makes an optional form needed
-    (the machine form of its printed `basis`); a required form has neither, and an optional form may
-    not be gated by its own export. `max_instances` is at least 1 and `min_instances` at least 0 and
-    not above it (`None` for none); forms sharing an `exclusive_group` may not both have instances.
-    `supplies` maps a neutral identifier `<namespace>/<snake_case>.<label>` to one of the form's own
-    exports, so that other forms read it under a name no jurisdiction is part of; one export of a
-    record-holdable kind per identifier, and one form per identifier.
+    `instances` is the record-list kind the caller supplies (`None` for one instance and no
+    `fields`); `exports` are readable by every form as `<name>.<local id>`; `supplies` maps neutral
+    identifiers to own exports. See docs/forms.md for the other keys.
     """
 
     name: str

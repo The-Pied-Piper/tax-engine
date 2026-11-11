@@ -1,4 +1,4 @@
-"""Parameter datasets: one family's values of one kind for one tax year (design.md §4).
+"""Parameter datasets: one family's values of one kind for one tax year.
 
 Every covered tax year needs its own dataset; an absent year is never carried
 forward. `sources` records where the values came from.

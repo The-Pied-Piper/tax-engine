@@ -93,10 +93,11 @@ class RateTable:
             )
 
     def row_for(self, figure: Decimal) -> RateTableRow | None:
-        """The row a `figure` of zero or more falls in: `None` for exactly zero, else the last row
-        whose `more_than` it exceeds.
+        """The row a `figure` of zero or more falls in: `None` for exactly zero, which takes
+        `rate_at_zero`.
 
-        A figure above zero always exceeds the first row's `more_than`.
+        Otherwise the last row whose `more_than` the figure exceeds; a figure above zero always
+        exceeds the first row's.
         """
         if figure == 0:
             return None

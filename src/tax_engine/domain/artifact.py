@@ -1,4 +1,4 @@
-"""Artifacts: the named intermediate values that capabilities consume and produce (design.md §2).
+"""Artifacts: the named intermediate values that capabilities consume and produce.
 
 A kind names a value type by a namespaced identifier; a package declares its kinds on an
 `ArtifactCatalog`.

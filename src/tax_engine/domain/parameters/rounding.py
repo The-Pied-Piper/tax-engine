@@ -1,4 +1,4 @@
-"""Rounding rules (design.md §3, Rounding).
+"""Rounding rules.
 
 See docs/parameter-data.md.
 """

@@ -41,8 +41,10 @@ number. It holds its `rate`, whether the half-year rule applies to it (and on sa
 `aiip_factor` and `riip_factor`. The factors are `Fraction`s kept as given, so a printed factor of
 0 is allowed. A class may list `elections`, each a whole `code` above 0 and the `rate` a row takes
 when the caller elects that code. The table holds at least one class, no class number twice, in the
-order given; a class it does not list is `None`. It also holds the days in a full fiscal period,
-against which a first fiscal period of fewer days is prorated.
+order given; a class it does not list is `None`. It also holds `full_year_days`, the positive
+number of days in a full fiscal period, against which a first fiscal period of fewer days is
+prorated, and `longest_fiscal_period_days`, the most days a fiscal period may have (a whole number
+of at least `full_year_days`).
 
 ## Conditions (`conditions.py`)
 

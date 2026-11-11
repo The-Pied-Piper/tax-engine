@@ -1,4 +1,4 @@
-"""The composition: wired capabilities, checked and ordered (design.md §5).
+"""The composition: wired capabilities, checked and ordered.
 
 Rejects bad wiring when built and computes by applying each capability, in contract order, to a
 fresh worksheet.
@@ -24,7 +24,7 @@ from tax_engine.domain.worksheet import Worksheet
 class Composition:
     """Capabilities wired through artifact kinds into one computation from `inputs` to `outputs`.
 
-    Construction fails with `InvalidCompositionError` if the wiring breaks a rule of design.md §5.
+    Construction fails with `InvalidCompositionError` if the wiring breaks a composition rule.
     """
 
     def __init__(

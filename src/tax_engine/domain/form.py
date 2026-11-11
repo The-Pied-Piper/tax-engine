@@ -55,9 +55,9 @@ class FormComposition:
         """Wire `capabilities` as `form`, whose names `kinds` resolves to artifact kinds.
 
         `defaults` are what a starting artifact is read as when left out, and `field_defaults` the
-        same for an `instances` field left blank. `declared` gives the `title` and `reference` of
-        the inputs and fields this form reads, which its worksheet shows like those of a step's
-        figure.
+        same for an `instances` field left blank; an input or field whose default is blank may
+        arrive blank, and any other blank is refused. `declared` gives the `title` and `reference`
+        of the inputs and fields this form reads.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -216,8 +216,9 @@ class FormSet:
     """The forms of a computation, run in the order of their imports.
 
     Construction raises InvalidCompositionError naming the forms for a duplicate form, an instances
-    kind not among `inputs`, an invalid exclusive group, an unexported import, an import cycle, or
-    an input no form reads. A form's read of its own derived export is not a cycle.
+    kind not among `inputs`, an input that is a form's derived `<form>.<export>` kind, an invalid
+    exclusive group, an unexported import, an import cycle, or an input no form reads. A form's read
+    of its own derived export is not a cycle.
     """
 
     def __init__(
@@ -264,8 +265,10 @@ class FormSet:
         Each form runs once per record of its instances, in `forms` order. The result maps each
         form's name to its worksheets in instance order (none if its instances list is empty). A
         DomainError from a run is raised with `<form>, instance N: ` (N from 1) before its message.
-        A kind that is a form's export is refused as a DuplicateArtifactError. A breach of the
-        instance limits is a ValidationError naming the form or group, before any form runs.
+        Two values for one kind are a DuplicateArtifactError; a kind that is a form's export is an
+        InvalidCompositionError. A breach of the instance limits is a ValidationError naming the
+        form or group, before any form runs. A worksheet traces each starting input it read as its
+        default; field defaults are not traced.
         """
         kinds = [artifact.kind for artifact in artifacts]
         counts = Counter(kinds)
@@ -295,7 +298,7 @@ class FormSet:
         """A `FormInstanceLine` per worksheet of `worksheets` that has trace lines, in the order the
         forms run.
 
-        The position counts every worksheet from 1.
+        The position counts every worksheet from 1; a form with no steps has no line.
         """
         return tuple(
             FormInstanceLine(form.name, position, worksheet.trace, worksheet)

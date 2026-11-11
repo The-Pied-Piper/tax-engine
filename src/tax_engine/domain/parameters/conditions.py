@@ -17,12 +17,12 @@ _RELATIONS = ("equal_to", "not_equal_to", "more_than")
 
 @dataclass(frozen=True)
 class ConditionTest:
-    """One comparison: the figure at `position` (from 1) among the `reads` kind ("count" or
-    "amount") stands in `relation` ("equal_to", "not_equal_to" or "more_than") to one of `than` or
-    `against`.
+    """One comparison of the figure at `position` (from 1) among the `reads` kind ("count" or
+    "amount").
 
-    Exactly one of `than`, a printed figure, and `against`, the position (from 1) of another amount,
-    is given; `against` applies only to an amount test and names an amount other than its own.
+    `relation` is "equal_to", "not_equal_to" or "more_than"; exactly one of `than`, a printed
+    figure, and `against`, the position (from 1) of another amount, is given. `against` applies only
+    to an amount test and names another amount than its own.
     """
 
     reads: str

@@ -1,6 +1,8 @@
-"""The capability contract (design.md §3).
+"""The capability contract: named slots a manifest fills.
 
-Named slots a manifest fills, and the blank rules the base applies before `compute`.
+A capability only consumes and produces artifacts. `BLANK_ALLOWED`, `BLANK_PER_ITEM` and
+`BLANK_RECORD_FIELDS` list the slots that may take blank rules, which the base applies before
+`compute`.
 """
 
 from __future__ import annotations

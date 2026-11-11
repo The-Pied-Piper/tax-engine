@@ -1,6 +1,6 @@
 """The worksheet: one filled-in copy of a form, holding the figures one run of it produced.
 
-Records each capability's outputs and holds it to its contract (design.md §3).
+Records each capability's outputs and holds it to its contract.
 """
 
 from __future__ import annotations
