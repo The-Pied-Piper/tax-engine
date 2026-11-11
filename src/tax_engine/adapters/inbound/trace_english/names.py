@@ -14,6 +14,8 @@ from decimal import Decimal
 from typing import Protocol
 
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+from tax_engine.domain.parameters.amount import Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
 
 __all__ = ["EnglishNames", "FigureNames", "Labelled"]
 
@@ -68,6 +70,15 @@ class EnglishNames:
     def of(self, figure: Labelled) -> str:
         """The name of `figure` for a sentence."""
         return self.of_label(figure.label)
+
+    def parameter(self, dataset: ParameterDataset[Amount]) -> str:
+        """A fixed figure from a dataset: its family in plain words, then the figure in brackets.
+
+        "ca/cpp_pensionable_earnings_per_slip_maximum" -> "the cpp pensionable earnings per slip
+        maximum (81200.00)". The family is the dataset's own name, not an invented title.
+        """
+        name = _plain_words(dataset.family.rsplit("/", 1)[-1])
+        return f"the {name} ({EnglishFigures.money(dataset.values.value)})"
 
     def of_label(self, label: str) -> str:
         """The name of the figure `label` for a sentence."""

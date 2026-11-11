@@ -42,5 +42,5 @@ class CappedAmount(Capability):
         result = rounding.apply(lesser)
         return CapabilityResult(
             outputs=(Artifact(self._output, result),),
-            trace=(CappedAmountLine(self._output, self._base, base, cap, rounding, result),),
+            trace=(CappedAmountLine(self._output, self._base, base, self._cap, rounding, result),),
         )

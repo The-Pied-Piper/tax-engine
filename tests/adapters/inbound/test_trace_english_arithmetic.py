@@ -11,7 +11,8 @@ from decimal import Decimal
 from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTraceRenderer
 from tax_engine.adapters.inbound.trace_english.renderer import _sentence
 from tax_engine.domain.kinds import AmountKind, CountKind, RateKind, RecordListKind
-from tax_engine.domain.parameters.amount import Amount
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.factor import Factor
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
@@ -20,6 +21,7 @@ from tax_engine.domain.trace import (
     AmountOrDividedByRateLine,
     AmountWhenMoreLine,
     AtMostLine,
+    CappedAmountLine,
     ClaimAtMostLine,
     CountAtLeastLine,
     CountAtMostLine,
@@ -98,6 +100,10 @@ def test_a_sign_chosen_difference_that_is_not_negative() -> None:
     assert render(line) == "Wages (30.00), because bonus (5.00) is not negative, gives 30.00."
 
 
+def amount_dataset(family: str, value: str) -> ParameterDataset[Amount]:
+    return ParameterDataset(family, 2025, AMOUNT, Amount(D(value)), NO_ROUNDING, ("https://x.org",))
+
+
 def test_a_sign_chosen_difference_that_is_negative() -> None:
     line = SignChosenDifferenceLine(OUT, BONUS, D("-5"), FLOOR, D("10"), WAGES, D("30"), D("-10"))
 
@@ -116,15 +122,28 @@ def test_the_lesser_of_two_and_the_least_of_more() -> None:
 
 
 def test_the_lesser_of_a_figure_and_a_limit() -> None:
-    one = LesserOfWithMaximumLine(OUT, ((WAGES, D("100")),), Amount(D("80")), NO_ROUNDING, D("80"))
+    maximum = amount_dataset("ex/wage_maximum", "80")
+    one = LesserOfWithMaximumLine(OUT, ((WAGES, D("100")),), maximum, NO_ROUNDING, D("80"))
     two = LesserOfWithMaximumLine(
-        OUT, ((WAGES, D("100")), (BONUS, D("60"))), Amount(D("80")), CENT, D("60")
+        OUT, ((WAGES, D("100")), (BONUS, D("60"))), maximum, CENT, D("60")
     )
 
-    assert render(one) == "Lesser of wages (100.00) and the limit 80.00 gives 80.00 (not rounded)."
+    assert (
+        render(one)
+        == "Lesser of wages (100.00) and the wage maximum (80.00) gives 80.00 (not rounded)."
+    )
     assert render(two) == (
-        "Least of wages (100.00), bonus (60.00) and the limit 80.00 gives 60.00 "
+        "Least of wages (100.00), bonus (60.00) and the wage maximum (80.00) gives 60.00 "
         "(rounded to the nearest cent)."
+    )
+
+
+def test_a_capped_amount_names_its_cap_by_the_dataset_family() -> None:
+    cap = amount_dataset("ca/some_year_maximum", "80")
+    line = CappedAmountLine(OUT, WAGES, D("100"), cap, NO_ROUNDING, D("80"))
+
+    assert render(line) == (
+        "Lesser of wages (100.00) and the some year maximum (80.00) gives 80.00 (not rounded)."
     )
 
 
