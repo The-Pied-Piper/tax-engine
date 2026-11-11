@@ -64,7 +64,7 @@ capabilities:
 | `outputs` | yes | Non-empty list of artifact identifiers, none repeated: the exports of the default form. |
 | `capabilities` | yes | List of capability selections (below). |
 | `title` | no | Printed name of the default form. |
-| `imports` | no | List of form identifiers `<namespace>/<snake_case>` to import (see Imported forms). |
+| `imports` | no | List of forms to import, each a form identifier `<namespace>/<snake_case>` or a form with dataset rebinds (see Imported forms). |
 
 An identifier that is in both `inputs` and `outputs` is an input carried onto the return as entered.
 
@@ -132,6 +132,21 @@ and no identifier is listed twice.
   manifest, or by another imported form, is rejected, naming it and the part that listed it first.
 - A part of the manifest that names an imported form, an import with no package or no parts, and an
   imported part with any other key are rejected, naming the part.
+- An entry may instead be a mapping, to read other dataset families than the form's own:
+
+  ```yaml
+  imports:
+    - ca/t1_taxable_income
+    - form: ca/schedule_6
+      datasets:
+        ca/cwb_base_amount: ca-ab/cwb_base_amount
+  ```
+
+  `datasets` is a non-empty mapping from a family the form's selections read in `params` to the
+  family to read instead, in this manifest alone; the form's files stay shared. Artifacts keep
+  their names, even when one has the name of a family. A family no part of the form reads is
+  rejected. A target with no dataset, or of another kind than the slot takes, is rejected when the
+  return is composed, as for any selection. An entry with no `datasets` is the bare identifier.
 - The forms run in this order: the default form, the imported forms in `imports` order, then the
   manifest's own.
 - An imported form that reads a derived figure (a `<form>.<export>` or a supplied identifier) that
