@@ -1,16 +1,8 @@
-"""The federal catalog: Form T1032, Joint Election to Split Pension Income, the form `ca/t1032`, run
-once (no instances). Step 2 is the maximum split-pension amount (lines 1 to 21), Step 3 the elected
-amount (line 22), Step 4 the pension income amounts of line 31400 for both spouses (lines 23 to 34)
-and Step 5 the income tax deducted (lines 35 to 42). The starting inputs are the lines 1, 2, 4, 18,
-32 and 35 and the three yes-or-no answers; lines 37 and 40 are the return's own
-`ca/income_tax_deducted` (T1 line 43700 before the election); the elected amount is the
-one amount of line 22, entered once with the answer of Step 3 and carried by the return on line
-21000 (`ca/elected_split_pension_deduction`, the transferring spouse's return) or on line 11600
-(`ca/elected_split_pension_amount`, the receiving spouse's return), never entered on those lines.
-The intermediate kinds are the steps between the inputs and the exports; the exports are the form's
-lines 21, the checked answer of Step 3, 22, 31400 of each spouse, 39 and 42. The last kinds check
-line 1 of a transferring spouse's return against line 8 of the return's own Federal Worksheet for
-line 31400, and read the exports into the return's T1 lines 31400 and 43700."""
+"""The federal catalog: Form T1032, Joint Election to Split Pension Income, the form `ca/t1032`.
+
+The form runs once; the elected amount (line 22) is entered once and carried to the return, never
+entered there.
+"""
 
 from __future__ import annotations
 

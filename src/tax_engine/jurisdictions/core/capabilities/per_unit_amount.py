@@ -1,9 +1,7 @@
 """Per-unit amount: an `amount` dataset's amount for each unit of a count artifact.
 
-For the return lines the form prints as "number of ... multiplied by" an amount: the output is
-`rounding.apply(amount × count)`, the product of the per-unit amount and the `int` count, rounded
-once with the `amount` dataset's rule, which defaults to no rounding, like `core/credit_amount`;
-the per-unit amount itself is never rounded first.
+The output is `rounding.apply(amount × count)`, rounded once with the `amount` dataset's rule (none
+by default); the per-unit amount is never rounded first.
 """
 
 from __future__ import annotations

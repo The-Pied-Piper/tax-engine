@@ -1,8 +1,7 @@
 """The federal catalog: personal amounts.
 
-The basic personal, age, spouse, eligible dependant, caregiver, medical and disability amounts, the
-principal residence gain lines, the fields of the capital cost allowance table and the infirm
-children amount.
+Basic personal, age, spouse, dependant, caregiver, medical and disability amounts, the principal
+residence gain lines, the capital cost allowance table's fields and the infirm children amount.
 """
 
 from __future__ import annotations

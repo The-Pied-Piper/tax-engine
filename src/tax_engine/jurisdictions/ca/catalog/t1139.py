@@ -1,18 +1,8 @@
-"""The federal catalog: Form T1139 (2025), "Reconciliation of 2025 Business Income for Tax
-Purposes", Parts 2 to 5, in a row form for each business and a summary form for the return.
+"""The federal catalog: Form T1139 (2025), Parts 2 to 5: a row form `ca/t1139` and a summary form.
 
-The row form `ca/t1139` is the form filled in for one business ("fill in another Form T1139 for
-each business"), run once for each record of its list `ca/t1139_businesses`. The filer names the
-statements of the business by their positions in the statements of its form (T2125, T2042 or
-T2121); amounts A, H and I are those statements' line 9946, never typed again. The row form works
-Part 2 (formula B or formula C), Part 3 (the death of a proprietor), Part 4 (D, E and G) and Part 5
-(J and L) and gives, for the line the business is reported on, the net income the form tells the
-filer to report (G or L) and the net income of the statements it takes the place of. The summary
-form `ca/t1139_return` runs once: for each of the lines 13500, 13700, 13900, 14100 and 14300 it
-takes the statements' net income, leaves out the statements a Form T1139 takes the place of and
-adds the net income the forms report. A return with no Form T1139 reports the statements' net
-income as before. Amounts 2G, 2O and 3G are exact fractions inside the steps of B, C and 3H, not
-artifacts of their own."""
+`ca/t1139` runs once for each record of `ca/t1139_businesses`; the summary form `ca/t1139_return`
+runs once for the return.
+"""
 
 from __future__ import annotations
 

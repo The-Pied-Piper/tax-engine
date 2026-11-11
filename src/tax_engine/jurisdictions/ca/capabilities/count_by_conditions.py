@@ -1,23 +1,13 @@
 """CountByConditions: 1 or 0 from a form's list of conditions, so a line can be switched on or off.
 
-Form ON428 line 80: "Enter "0" on line 80 if any of the following applies to you:" followed by the
-printed conditions; and the rule that "only the individual with the higher net income can claim the
-amounts on lines 75 and 76". The `conditions` dataset copies the form's conditions in the form's
-order and wording, and says which count a list gives when any condition applies; when none does the
-count is the other one of 0 and 1. Each test of a condition names the figure it reads by its
-position (from 1) in the consumed list of `counts` (the yes/no counts a caller gives, 1 = the
-condition applies) or of `amounts`, and a comparison with another amount names that amount's
-position too, so a kind is listed once however many tests read it. Every test is evaluated, so the
-trace records every figure read: one `ConditionLine` for each condition, then a
-`ConditionsCountLine`. The output is a count, so nothing is rounded.
-
-Both lists may be left blank (`BLANK_ALLOWED`); the manifest's `blank:` line says what that does at
-each step. A blank count is given a fallback (a count of 0 is "not ticked"). A blank amount, with
-the rule `compute`, cannot be tested: a test that reads one does not hold, and its `ConditionLine`
-records the blank. If another condition applies, the answer stands. If none applies, a blank
-cannot show that a condition fails, so the blank amount is refused, naming it and the line. A
-blank count under `compute` is refused.
+Every test is evaluated and traced. A blank count takes a fallback or `pass_on` (under `compute` it
+is refused); a blank amount under `compute` makes its test not hold, and is refused, naming it, only
+if no condition applies.
 """
+
+# ON428 line 80: "Enter "0" on line 80 if any of the following applies to you", and only the
+# individual with the higher net income can claim the amounts on lines 75 and 76. Each test names
+# the figure it reads by position (from 1) in the consumed `counts` or `amounts`.
 
 from __future__ import annotations
 
@@ -52,9 +42,11 @@ class CountByConditions(Capability):
         amounts: tuple[Money, ...],
         output: ArtifactKind[int],
     ) -> None:
-        """Wire the capability: its conditions dataset, the counts and amounts it reads (each
-        position the dataset reads must be listed, and each listed kind must be read), the kind
-        produced."""
+        """Wire the capability: its conditions dataset, the counts and amounts it reads, and the
+        kind produced.
+
+        Each position the dataset reads must be listed, and each listed kind must be read.
+        """
         super().__init__(counts=counts, amounts=amounts, output=output)
         self._check_listed("counts", counts, conditions.values.count_positions_read)
         self._check_listed("amounts", amounts, conditions.values.amount_positions_read)

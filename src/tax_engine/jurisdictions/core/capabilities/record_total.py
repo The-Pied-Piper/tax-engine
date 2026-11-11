@@ -1,9 +1,7 @@
 """RecordTotal: adds one amount field over the records of a record list, exactly.
 
-The record-list kind has exactly one field, an amount; the capability adds it over the records in
-order, and an empty list totals zero. The amount may be blank in a record (`BLANK_RECORD_FIELDS`);
-what that does is the manifest step's `blank:` rule for the field. It has no dataset, so it never
-rounds. Each item is named by its position from 1 in the trace.
+The record-list kind has one amount field, which may be blank per the manifest's `blank:` rule for
+the field; an empty list totals zero. It never rounds; items are named by position from 1.
 """
 
 from __future__ import annotations

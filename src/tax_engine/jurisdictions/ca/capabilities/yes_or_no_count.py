@@ -1,13 +1,7 @@
 """YesOrNoCount: a count that answers a yes or no question, refused when it is above 1.
 
-For a form line that asks a yes or no question and takes the answer as a count: 1 for yes, 0 for
-no. The count is produced as is when it is 0 or 1; a count above 1 is not capped to 1 but is an
-input error, `InputAboveBoundError`, naming the kind and its value. A negative count is refused by
-the kind's `non_negative` declaration, not here. It records one `YesOrNoCountLine`.
-
-The count may be blank (`BLANK_ALLOWED`); what a blank does is the manifest step's `blank:` line,
-which passes it on here: a blank answer gives a blank checked count, and the check validates an
-answer rather than inventing one.
+A count of 0 or 1 is produced as is; above 1 is an `InputAboveBoundError` naming the kind and value.
+A blank count is passed on blank by the manifest's `blank:` rule. Records one `YesOrNoCountLine`.
 """
 
 from __future__ import annotations

@@ -1,10 +1,7 @@
 """Multiple over: a `factor` dataset's multiple of one money artifact less another, floored at zero.
 
-For the return lines the form prints as an amount "multiplied by" a factor, then "minus" another
-line, "if negative, enter 0": the manifest decides which artifact is multiplied (`amount`) and
-which is taken off (`less`). The output is `rounding.apply(max(factor × amount − less, 0))`,
-rounded once after the floor with the `factor` dataset's rule, which defaults to no rounding; a
-difference at or below zero is a plain `Decimal(0)`.
+The output is `rounding.apply(max(factor × amount − less, 0))`, rounded once after the floor; a
+difference at or below zero gives zero, itself rounded by the dataset rule.
 """
 
 from __future__ import annotations

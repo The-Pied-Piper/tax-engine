@@ -16,9 +16,6 @@ __all__ = ["AmountByCountLine"]
 class AmountByCountLine(TraceLine):
     """The `result` produced as `output`: the table's `row` for `count` of `count_kind`, rounded
     with `rounding`.
-
-    Its own class, not a `CreditAmountLine`: the figure is one row of a table, chosen by a count
-    an artifact holds.
     """
 
     output: Money

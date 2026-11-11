@@ -1,15 +1,11 @@
 """Contribution tier: a rate on the part of a money artifact inside a band, capped, exactly.
 
-For contributions charged on the earnings between two bounds, up to a maximum: the contributory
-earnings are `max(min(earnings, upper) - lower, 0)`, so earnings below the band (negative ones
-too) contribute nothing and earnings above it count only up to the band. The output is
-`min(rounding.apply(contributory × rate), maximum)`, rounded only with the `tier` dataset's rule,
-which defaults to no rounding; the maximum applies after rounding and as given.
-
-The class is `TieredContribution` so that it does not share a name with the `ContributionTier`
-value object it reads. The calculation lives in `TierCalculation`, a parent class with no
-identifier, so the capabilities that compute a tier result share it and each names its own slots.
+The output is `min(rounding.apply(max(min(earnings, upper) - lower, 0) × rate), maximum)`.
 """
+
+# The class is `TieredContribution` so that it does not share a name with the `ContributionTier`
+# value object it reads. `TierCalculation`, a parent class with no identifier, holds the calculation
+# that capabilities share.
 
 from __future__ import annotations
 

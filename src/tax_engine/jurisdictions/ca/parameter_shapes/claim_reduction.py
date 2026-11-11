@@ -1,8 +1,7 @@
 """Claim reductions: what a form takes off an expense claim before it counts.
 
-A reduction is the lesser of a `ceiling` and a `rate` of a figure (such as a person's net income),
-and the claim may also have an optional per-claim `maximum` on what is left. Like `Rate`, the
-value object checks itself. The code holds no jurisdiction's figures.
+A reduction is the lesser of a `ceiling` and a `rate` of a figure; the claim may also have a
+per-claim `maximum` on what is left. The value object checks itself, like `Rate`.
 """
 
 from __future__ import annotations
