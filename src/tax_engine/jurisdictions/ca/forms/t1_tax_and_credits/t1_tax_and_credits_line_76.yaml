@@ -1,10 +1,10 @@
-# T1 General 2025, Ontario edition (form 5006-R), Step 5 Part A lines 70 to 76, "Federal tax on
+# T1 General 2025 (form 5006-R), Step 5 Part A lines 70 to 76, "Federal tax on
 # taxable income" (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Part A starts with "Use the
 # amount from line 26000 to complete the appropriate column below." Line 70 is "Amount from line
 # 26000", a copy of T1 line 26000, so it is a step: another form's export is read only as a record
 # list (`ca/t1_taxable_income.taxable_income`), and core/record_total totals the one amount into
-# line 70. Lines 71 to 76 follow the printed column, one capability per line, as ON428 lines 3 to 8
-# do: the bracket columns are the `ca/brackets` dataset, and the dollars-and-cents boxes (lines 72,
+# line 70. Lines 71 to 76 follow the printed column, one capability per line, as the provincial tax form's
+# bracket lines do: the bracket columns are the `ca/brackets` dataset, and the dollars-and-cents boxes (lines 72,
 # 74 and 76) are rounded half-up to the cent by `ca/cent_rounding`. Line 75 is the printed constant
 # of the column, carried as printed, so it is not rounded again.
 #

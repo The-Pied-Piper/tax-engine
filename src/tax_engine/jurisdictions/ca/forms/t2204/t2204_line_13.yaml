@@ -1,4 +1,4 @@
-# T2204 (2025) line 13: "Line 9 minus line 12 (if negative, enter "0") = 13". For an Ontario resident,
+# T2204 (2025) line 13: "Line 9 minus line 12 (if negative, enter "0") = 13". As this form is modelled,
 # line 9 is a copy of line 4 (ca/t2204_premiums_deducted) and line 12 is a copy of line 10
 # (ca/t2204_line_10), so this part has no steps for lines 9 and 12: it reads those two amounts
 # directly as its inputs.

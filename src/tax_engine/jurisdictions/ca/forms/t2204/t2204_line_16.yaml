@@ -1,6 +1,6 @@
 # T2204 (2025) line 16, "Enter whichever amount is the least: line 7, line 9 or line 12."
 # Line 7 is the amount from line 3 less $2,000. Lines 9 and 12 are pure copies of lines 4 and 10
-# for an Ontario resident, so this step reads lines 4 and 10 directly: line 4 is the total
+# as this form is modelled, so this step reads lines 4 and 10 directly: line 4 is the total
 # premiums deducted (`ca/t2204_premiums_deducted`) and line 10 is the residents' EI premium
 # capped at its maximum (`ca/t2204_line_10`). The lesser of the three is the output.
 form:

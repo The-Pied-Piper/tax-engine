@@ -1,4 +1,4 @@
-# T1 General 2025, Ontario edition (form 5006-R), tax and credits, from Step 5 Part A onward. This
+# T1 General 2025 (form 5006-R), tax and credits, from Step 5 Part A onward. This
 # part names the form and its exports; each line's capability goes in a part of its own with the
 # same `form.name`.
 # Exports: what the take-home return reads from this form.

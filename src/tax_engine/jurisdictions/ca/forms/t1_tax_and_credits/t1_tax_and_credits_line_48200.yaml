@@ -1,4 +1,4 @@
-# T1 General 2025, Ontario edition (form 5006-R), line 48200 "Total credits" (CRA 5006-R-25E,
+# T1 General 2025 (form 5006-R), line 48200 "Total credits" (CRA 5006-R-25E,
 # docs/cra-forms-2025/5006-r-25e.txt): "Line 166 and line 48200: Add lines 150 to 165. Total
 # credits". Lines 150 to 165 are summed; the take-home filer has two of them.
 #
@@ -14,11 +14,11 @@
 # The sum of the two is rounded once, half-up to the cent, through the shared ca/cent_rounding
 # dataset. The result is signed, as the line prints no floor.
 #
-# Lines left out, for the take-home filer (Ontario, single, salary only, no T4, basic credits only):
+# Lines left out, for the take-home filer (single, salary only, no T4, basic credits only):
 #   - 150 (43700, tax deducted) is always 0 with no T4 slip.
 #   - 151 (44000, the Quebec abatement) applies to Quebec only.
 #   - 152 (44800, the CPP overpayment) is 0 because CPP is computed from salary, not overpaid.
-#   - 165 (47900, Form ON479 for Ontario) has credits that all need inputs the filer never has, so
+#   - 165 (47900, provincial or territorial credits) has credits that all need inputs the filer never has, so
 #     it is 0.
 #   - The other lines (153 to 164 other than 45000 and 45300) need slips, receipts or expenses the
 #     filer does not have.

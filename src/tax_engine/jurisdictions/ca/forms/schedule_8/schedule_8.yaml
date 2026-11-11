@@ -1,6 +1,6 @@
 # Schedule 8 (CPP contributions), form 5000-S8, Part 3. This part names the form and its exports;
 # each line's capability goes in a part of its own with the same `form.name`.
-# Exports: the form's on-return kinds, the base contributions for T1 line 30800 and ON428 line 58240
+# Exports: the form's on-return kinds, the base contributions for T1 line 30800 and the provincial tax form
 # and the deduction for the enhanced contributions for T1 line 22215. They are Part 5's lines when
 # Part 5 is completed and the Part 3 lines otherwise; a take-home caller never completes Part 5.
 # The form prints them on Part 3a lines 25 and 28 when line 24 is positive and on Part 3b lines
