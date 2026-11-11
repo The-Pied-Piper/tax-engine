@@ -23,13 +23,14 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 
 __all__ = ["EnglishNames", "FigureNames", "Labelled", "short_form_title"]
 
-# A bare line number or letter ("4", "B", "26000", "5a") is a line of the form; anything else
-# ("Box 3", "Part 2") is already how the form says it.
-_LINE_REFERENCE = re.compile(r"[A-Za-z0-9]+")
+# A bare line number or letter ("4", "B", "26000", "5a"), or a box of a line ("87 box A"), is a line
+# of the form; anything else ("Box 3", "Part 2") is already how the form says it.
+_LINE_REFERENCE = re.compile(r"[A-Za-z0-9]+( box [A-Z])?")
 
 
 def _line_of(reference: str) -> str:
-    """A printed reference in a sentence: "line 4" for a bare line number or letter."""
+    """A printed reference in a sentence: "line 4" for a bare line number or letter,
+    "line 87 box A" for a box of a line."""
     return f"line {reference}" if _LINE_REFERENCE.fullmatch(reference) else reference
 
 
