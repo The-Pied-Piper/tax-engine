@@ -10,7 +10,6 @@ form:
 capabilities:
   # Line 5, first operation: "Line 3 multiplied by the percentage from line 4", to the cent.
   - name: core/apply_rate
-    title: "LIFT credit before its maximum"
     params:
       rate: ca-on/lift_rate
     consumes:
@@ -19,7 +18,6 @@ capabilities:
       output: ca-on/lift_credit_before_maximum
   # Line 5, second operation: "(maximum $875)", at most the printed maximum.
   - name: core/capped_amount
-    title: "LIFT credit at most its maximum"
     reference: "5"
     params:
       cap: ca-on/lift_maximum

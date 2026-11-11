@@ -6,7 +6,6 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/subtract_not_below_zero
-    title: "Ontario tax after the community food program donation tax credit for farmers"
     reference: "88"
     params:
       rounding: ca-on/cent_rounding

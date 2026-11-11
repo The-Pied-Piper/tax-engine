@@ -9,6 +9,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/record_total
+    reference: "1"
     consumes:
       records: ca/t1_taxable_income.taxable_income
     produces:

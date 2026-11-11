@@ -23,7 +23,9 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     assert schedule_8.form_title == "Schedule 8: Canada Pension Plan Contributions and Overpayment"
     assert summary.form_title == "Return summary"
     assert on428.title("on428_surtax_total_line_68") == "Ontario surtax"
-    assert on428.title("on428_taxable_income_line_1") == "Taxable income"
+    assert on428.title("on428_tax_on_taxable_income_line_8") == "Ontario tax on taxable income"
+    assert on428.title("on428_taxable_income_line_1") is None
     assert on428.title("no_such_label") is None
     assert on428.reference("on428_surtax_total_line_68") == "68"
+    assert on428.reference("on428_taxable_income_line_1") == "1"
     assert on428.reference("no_such_label") is None
