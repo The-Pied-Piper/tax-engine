@@ -3,7 +3,7 @@
 # charitable donation" (5006-c-25e). The 25% is computed by the line 87 part, not taken from the
 # caller. A salary-only caller has no such donations, so a request that leaves the input out is read
 # as 0, not blank.
-# Box A of line 87 (the owner's naming, #621); the 25% result is box B, in the line 87 part.
+# Box A of line 87 (the owner's naming); the 25% result is box B, in the line 87 part.
 inputs:
   - name: ca-on/on428_qualifying_food_donations_line_87
     reference: "87 box A"
