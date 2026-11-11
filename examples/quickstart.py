@@ -14,4 +14,15 @@ sheets = engine.compute(
 for form, form_sheets in sheets.items():
     for sheet in form_sheets:
         print(f"\n== {form} ==")
-        print("\n".join(EnglishTraceRenderer().render_all(sheet.trace)))
+        renderer = EnglishTraceRenderer()
+        for line in sheet.trace:
+            # The sentence names the figures it uses, as the form prints them, when it is given
+            # the worksheet; the title and reference of the figure it is about go beside it.
+            title = None if line.label is None else sheet.title(line.label)
+            reference = None if line.label is None else sheet.reference(line.label)
+            heading = " ".join(
+                part
+                for part in (None if reference is None else f"[line {reference}]", title)
+                if part is not None
+            )
+            print(f"{heading + ': ' if heading else ''}{renderer.render(line, sheet)}")

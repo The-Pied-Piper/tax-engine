@@ -60,13 +60,14 @@ def test_every_inner_sentence_is_prefixed_with_the_form_and_the_instance_positio
     inner = EnglishTraceRenderer().render_all((SUBTRACTED, TOTAL))
 
     assert inner == (
-        "gross_rent (12000.00) less expenses (2000) gives 10000.00 (rounded to the nearest cent).",
-        "unit_amount of item 1 (100) plus unit_amount of item 2 (250.50) gives 350.50.",
+        "gross_rent (12000.00) less expenses (2000.00) "
+        "gives 10000.00 (rounded to the nearest cent).",
+        "unit_amount of item 1 (100.00) plus unit_amount of item 2 (250.50) gives 350.50.",
     )
     assert render(FormInstanceLine("ex/rental", 2, (SUBTRACTED, TOTAL))) == (
-        "Form ex/rental, instance 2: gross_rent (12000.00) less expenses (2000) "
+        "Form ex/rental, instance 2: gross_rent (12000.00) less expenses (2000.00) "
         "gives 10000.00 (rounded to the nearest cent).\n"
-        "Form ex/rental, instance 2: unit_amount of item 1 (100) "
+        "Form ex/rental, instance 2: unit_amount of item 1 (100.00) "
         "plus unit_amount of item 2 (250.50) gives 350.50."
     )
 
@@ -75,9 +76,9 @@ def test_a_form_without_instances_is_prefixed_with_its_name_and_instance_1() -> 
     text = render(FormInstanceLine("ex/return", 1, (SUBTRACTED, TOTAL)))
 
     assert text == (
-        "Form ex/return, instance 1: gross_rent (12000.00) less expenses (2000) "
+        "Form ex/return, instance 1: gross_rent (12000.00) less expenses (2000.00) "
         "gives 10000.00 (rounded to the nearest cent).\n"
-        "Form ex/return, instance 1: unit_amount of item 1 (100) "
+        "Form ex/return, instance 1: unit_amount of item 1 (100.00) "
         "plus unit_amount of item 2 (250.50) gives 350.50."
     )
 
@@ -100,7 +101,7 @@ def test_the_trace_of_a_form_without_an_instances_list_reads_as_instance_1() -> 
 
     assert isinstance(line, FormInstanceLine)
     assert render(line) == (
-        "Form ex/return, instance 1: gross_rent (12000) less expenses (2000) gives 10000.00 "
+        "Form ex/return, instance 1: gross_rent (12000.00) less expenses (2000.00) gives 10000.00 "
         "(rounded to the nearest cent)."
     )
 
@@ -128,9 +129,9 @@ def test_the_trace_renderer_renders_form_lines_among_others() -> None:
     )
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "Form ex/rental, instance 1: unit_amount of item 1 (100) "
+        "Form ex/rental, instance 1: unit_amount of item 1 (100.00) "
         "plus unit_amount of item 2 (250.50) gives 350.50.",
-        "Form ex/rental, instance 2: unit_amount of item 1 (100) "
+        "Form ex/rental, instance 2: unit_amount of item 1 (100.00) "
         "plus unit_amount of item 2 (250.50) gives 350.50.",
-        "unit_amount of item 1 (1) plus unit_amount of item 2 (2) gives 3.",
+        "unit_amount of item 1 (1.00) plus unit_amount of item 2 (2.00) gives 3.00.",
     )

@@ -55,8 +55,8 @@ class RoundedTotalRenderer:
     def render(self, line: RoundedTotalLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         return (
-            f"Based on {names.figure(line.base, line.base_amount)}, "
-            f"{EnglishFigures.rounding(line.rounding)}"
+            f"Based on {names.figure(line.base, line.base_amount)} gives "
+            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -69,8 +69,10 @@ class SumRenderer:
     def render(self, line: SumLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         terms = " plus ".join(names.figure(kind, amount) for kind, amount in line.parts)
+        if not line.parts:
+            return f"Nothing to add, so {EnglishFigures.money(line.total)}"
         return (
-            f"{terms or 'No parts'} gives {EnglishFigures.money(line.total)} "
+            f"{terms} gives {EnglishFigures.money(line.total)} "
             f"({EnglishFigures.rounding(line.rounding)})"
         )
 
@@ -84,8 +86,10 @@ class SumNotBelowZeroRenderer:
     def render(self, line: SumNotBelowZeroLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         terms = " plus ".join(names.figure(kind, amount) for kind, amount in line.parts)
+        if not line.parts:
+            return f"Nothing to add, not below 0, so {EnglishFigures.money(line.total)}"
         return (
-            f"{terms or 'No parts'}, not below 0, gives {EnglishFigures.money(line.total)} "
+            f"{terms}, not below 0, gives {EnglishFigures.money(line.total)} "
             f"({EnglishFigures.rounding(line.rounding)})"
         )
 
@@ -100,8 +104,8 @@ class RateAppliedRenderer:
         """The English sentence for `line`."""
         return (
             f"{EnglishFigures.percent(line.rate.value)}% of "
-            f"{names.figure(line.base, line.base_amount)}, "
-            f"{EnglishFigures.rounding(line.rounding)}"
+            f"{names.figure(line.base, line.base_amount)} gives "
+            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -195,8 +199,9 @@ class CappedAmountRenderer:
     def render(self, line: CappedAmountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         return (
-            f"Lesser of {names.figure(line.base, line.base_amount)} and "
-            f"{EnglishFigures.money(line.cap.value)}, {EnglishFigures.rounding(line.rounding)}"
+            f"Lesser of {names.figure(line.base, line.base_amount)} and the limit "
+            f"{EnglishFigures.money(line.cap.value)} gives "
+            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -208,8 +213,9 @@ class LesserOfRenderer:
 
     def render(self, line: LesserOfLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = " and ".join(names.figure(kind, amount) for kind, amount in line.parts)
-        return f"Lesser of {terms} gives {EnglishFigures.money(line.result)}"
+        terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in line.parts])
+        word = "Lesser" if len(line.parts) == 2 else "Least"
+        return f"{word} of {terms} gives {EnglishFigures.money(line.result)}"
 
 
 @english_renderer
@@ -220,9 +226,15 @@ class LesserOfWithMaximumRenderer:
 
     def render(self, line: LesserOfWithMaximumLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = " and ".join(names.figure(kind, amount) for kind, amount in line.parts)
+        terms = EnglishFigures.listing(
+            [
+                *(names.figure(kind, amount) for kind, amount in line.parts),
+                f"the limit {EnglishFigures.money(line.maximum.value)}",
+            ]
+        )
+        word = "Lesser" if len(line.parts) == 1 else "Least"
         return (
-            f"Lesser of {terms} and {EnglishFigures.money(line.maximum.value)} gives "
+            f"{word} of {terms} gives "
             f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
@@ -235,8 +247,9 @@ class GreaterOfRenderer:
 
     def render(self, line: GreaterOfLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = " and ".join(names.figure(kind, amount) for kind, amount in line.parts)
-        return f"Greater of {terms} gives {EnglishFigures.money(line.result)}"
+        terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in line.parts])
+        word = "Greater" if len(line.parts) == 2 else "Greatest"
+        return f"{word} of {terms} gives {EnglishFigures.money(line.result)}"
 
 
 @english_renderer
@@ -263,10 +276,10 @@ class MultipleOverRenderer:
     def render(self, line: MultipleOverLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         return (
-            f"{EnglishFigures.money(line.factor.value)} × the part of "
-            f"{names.figure(line.base, line.base_amount)} over "
-            f"{names.figure(line.less, line.less_amount)}, not below 0, "
-            f"{EnglishFigures.rounding(line.rounding)}"
+            f"{EnglishFigures.money(line.factor.value)} × "
+            f"{names.figure(line.base, line.base_amount)} less "
+            f"{names.figure(line.less, line.less_amount)}, not below 0, gives "
+            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -311,10 +324,15 @@ class FractionAppliedRenderer:
 
     def render(self, line: FractionAppliedLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
+        fraction = line.fraction
+        share = (
+            f"{fraction.numerator} times"
+            if fraction.denominator == 1
+            else f"{fraction.numerator}/{fraction.denominator} of"
+        )
         return (
-            f"{line.fraction.numerator}/{line.fraction.denominator} of "
-            f"{names.figure(line.base, line.base_amount)}, "
-            f"{EnglishFigures.rounding(line.rounding)}"
+            f"{share} {names.figure(line.base, line.base_amount)} gives "
+            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -328,7 +346,7 @@ class PercentageAppliedRenderer:
         """The English sentence for `line`."""
         return (
             f"{names.of(line.percentage_kind)} "
-            f"({EnglishFigures.money(line.percentage_value)}%) of "
+            f"({format(line.percentage_value.normalize(), 'f')}%) of "
             f"{names.figure(line.amount_kind, line.amount_value)} gives "
             f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
@@ -360,8 +378,8 @@ class RatioAppliedRenderer:
         return (
             f"{names.figure(line.amount_kind, line.amount_value)} × "
             f"{names.figure(line.numerator_kind, line.numerator_value)} / "
-            f"{names.figure(line.denominator_kind, line.denominator_value)}, "
-            f"{EnglishFigures.rounding(line.rounding)}"
+            f"{names.figure(line.denominator_kind, line.denominator_value)} gives "
+            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -403,12 +421,16 @@ class ThresholdGateRenderer:
 
     def render(self, line: ThresholdGateLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return (
-            f"{names.figure(line.amount_kind, line.amount_value)}, as "
-            f"{names.figure(line.gate_kind, line.gate_value)} is at least "
-            f"{EnglishFigures.money(line.threshold.value)}, gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
-        )
+        amount = names.figure(line.amount_kind, line.amount_value)
+        gate = names.figure(line.gate_kind, line.gate_value)
+        threshold = EnglishFigures.money(line.threshold.value)
+        rounded = EnglishFigures.rounding(line.rounding)
+        if line.gate_value >= line.threshold.value:
+            return (
+                f"{amount}, because {gate} is at least {threshold}, gives "
+                f"{EnglishFigures.money(line.result)} ({rounded})"
+            )
+        return f"0, because {gate} is below {threshold}, so {amount} does not apply"
 
 
 @english_renderer
@@ -419,12 +441,19 @@ class AmountOrDividedByRateRenderer:
 
     def render(self, line: AmountOrDividedByRateLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
+        amount = names.figure(line.amount_kind, line.amount_value)
+        rounded = EnglishFigures.rounding(line.rounding)
+        limit = EnglishFigures.money(line.limit.threshold)
+        if line.amount_value <= line.limit.threshold:
+            return (
+                f"{amount} is {limit} or less, so it stands as "
+                f"{EnglishFigures.money(line.result)} ({rounded})"
+            )
         return (
-            f"{names.figure(line.amount_kind, line.amount_value)} if "
-            f"{EnglishFigures.money(line.limit.threshold)} or less, otherwise "
+            f"{amount} is over {limit}, so "
             f"{names.figure(line.dividend_kind, line.dividend_value)} divided by "
-            f"{EnglishFigures.percent(line.limit.rate.value)}%, gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{EnglishFigures.percent(line.limit.rate.value)}% gives "
+            f"{EnglishFigures.money(line.result)} ({rounded})"
         )
 
 
@@ -522,7 +551,7 @@ class RatioTruncatedRenderer:
 
     def render(self, line: RatioTruncatedLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        cap = ", at most 1" if line.cap_at_one else ""
+        cap = ", capped at 1," if line.cap_at_one else ""
         return (
             f"{names.figure(line.dividend, line.dividend_amount)} divided by "
             f"{names.figure(line.divisor, line.divisor_amount)}{cap} gives "
@@ -552,11 +581,13 @@ class LesserOfWhenPositiveRenderer:
 
     def render(self, line: LesserOfWhenPositiveLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        terms = " and ".join(names.figure(kind, amount) for kind, amount in line.parts)
-        lesser = f"Lesser of {terms}" if len(line.parts) > 1 else terms
+        terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in line.parts])
+        word = "Lesser" if len(line.parts) == 2 else "Least"
+        lesser = f"{word} of {terms}" if len(line.parts) > 1 else terms
         brackets = ", shown in brackets" if line.bracket else ""
         gate = "" if line.all_positive else ", not all positive"
-        return f"{lesser}{brackets}{gate} gives {EnglishFigures.money(line.result)}"
+        separator = "," if brackets or gate else ""
+        return f"{lesser}{brackets}{gate}{separator} gives {EnglishFigures.money(line.result)}"
 
 
 @english_renderer
@@ -567,9 +598,11 @@ class AmountWhenMoreRenderer:
 
     def render(self, line: AmountWhenMoreLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return (
-            f"{names.figure(line.amount_kind, line.amount_value)} if "
-            f"{names.figure(line.more_kind, line.more_value)} is more than "
-            f"{names.figure(line.than_kind, line.than_value)} gives "
-            f"{EnglishFigures.money(line.result)}"
-        )
+        more = names.figure(line.more_kind, line.more_value)
+        than = names.figure(line.than_kind, line.than_value)
+        if line.more_value > line.than_value:
+            return (
+                f"{names.figure(line.amount_kind, line.amount_value)}, because {more} is more "
+                f"than {than}, gives {EnglishFigures.money(line.result)}"
+            )
+        return f"0, because {more} is not more than {than}"

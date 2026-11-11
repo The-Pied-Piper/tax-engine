@@ -43,7 +43,7 @@ def test_a_blank_passed_on() -> None:
     )
     assert (
         render(BlankPassedOnLine(DEDUCTION, (CHART_GAIN, LIMIT)))
-        == "Blank because chart_gain, limit were blank."
+        == "Blank because chart_gain and limit were blank."
     )
 
 

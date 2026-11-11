@@ -12,6 +12,8 @@ import re
 from decimal import Decimal
 from typing import Protocol
 
+from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+
 __all__ = ["EnglishNames", "FigureNames", "Labelled"]
 
 # A bare line number or letter ("4", "B", "26000", "5a") is a line of the form; anything else
@@ -46,6 +48,7 @@ class EnglishNames:
     def __init__(self, printed: FigureNames | None = None) -> None:
         """Name figures from `printed`, a worksheet; with none, every figure is its label."""
         self._printed = printed
+        self._labels_shown: set[str] = set()
 
     @property
     def printed(self) -> FigureNames | None:
@@ -54,13 +57,18 @@ class EnglishNames:
 
     def figure(self, figure: Labelled, value: Decimal | int) -> str:
         """The name of `figure` with its figure in brackets, e.g. "line 2 (70000.00)"."""
-        shown = format(value, "f") if isinstance(value, Decimal) else str(value)
+        shown = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
         return f"{self.of(figure)} ({shown})"
+
+    def shows_label(self, word: str) -> bool:
+        """Whether `word` is an internal label this has shown, so it is not a word to capitalise."""
+        return word in self._labels_shown
 
     def of(self, figure: Labelled) -> str:
         """The name of `figure` for a sentence."""
         label = figure.label
         if self._printed is None:
+            self._labels_shown.add(label)
             return label
         reference = self._printed.reference(label)
         if reference is not None:
@@ -68,4 +76,5 @@ class EnglishNames:
         title = self._printed.title(label)
         if title is not None:
             return f'"{title}"'
+        self._labels_shown.add(label)
         return label

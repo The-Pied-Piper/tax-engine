@@ -178,7 +178,7 @@ def test_line_33800_names_line_33500_the_rate_and_its_rounding_in_the_trace(
     sheet = _sheet(take_home_service, "70000")
 
     assert (
-        "14.5% of line 33500 (21969.23), rounded to the nearest cent."
+        "14.5% of line 33500 (21969.23) gives 3185.54 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

@@ -72,6 +72,6 @@ class BlankPassedOnRenderer:
         named = [names.of(kind) for kind in line.because] + [
             _where(f, names) for f in line.because_fields
         ]
-        causes = ", ".join(named)
+        causes = EnglishFigures.listing(named)
         verb = "was" if len(named) == 1 else "were"
         return f"blank because {causes} {verb} blank"

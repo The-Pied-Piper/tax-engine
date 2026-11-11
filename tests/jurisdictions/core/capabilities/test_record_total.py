@@ -172,14 +172,14 @@ def test_the_trace_renders_one_item_per_record_then_the_total() -> None:
     result = capability().compute((items("24000", "6000"),))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "item_amount of item 1 (24000) plus item_amount of item 2 (6000) gives 30000.",
+        "item_amount of item 1 (24000.00) plus item_amount of item 2 (6000.00) gives 30000.00.",
     )
 
 
 def test_the_trace_for_no_records_says_no_items() -> None:
     result = capability().compute((items(),))
 
-    assert EnglishTraceRenderer().render_all(result.trace) == ("No items gives 0.",)
+    assert EnglishTraceRenderer().render_all(result.trace) == ("No items, so 0.00.",)
 
 
 def test_rejects_a_plain_kind_of_record_lists_as_records() -> None:

@@ -100,7 +100,8 @@ class ConditionRenderer:
         applies = line.applies
         figures = ", ".join(f"{names.of(kind)} ({_figure(value)})" for kind, value in reads)
         verdict = "applies" if applies else "does not apply"
-        return f'Condition {position} "{text}" {verdict}: {figures}'
+        read = f" (read {figures})" if figures else ""
+        return f'Condition {position} "{text}"{read} {verdict}'
 
 
 @english_renderer
@@ -118,5 +119,5 @@ class ConditionsCountRenderer:
         elif len(applied) == 1:
             which = f"condition {applied[0]} applies"
         else:
-            which = f"conditions {', '.join(str(position) for position in applied)} apply"
+            which = f"conditions {EnglishFigures.listing([str(p) for p in applied])} apply"
         return f"{which}, so the count is {count}"

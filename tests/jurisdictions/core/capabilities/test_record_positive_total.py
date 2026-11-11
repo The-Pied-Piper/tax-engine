@@ -214,8 +214,8 @@ def test_the_trace_renders_each_item_then_the_total_and_the_positive_only_rule()
     result = capability().compute((items("6000", "-4000", "0"),))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "item_amount of item 1 (6000) plus item_amount of item 2 (-4000) counts 0"
-        " plus item_amount of item 3 (0) counts 0 gives 6000."
+        "item_amount of item 1 (6000.00) plus item_amount of item 2 (-4000.00) counts 0"
+        " plus item_amount of item 3 (0.00) counts 0 gives 6000.00."
         " Only positive amounts are added; a zero or negative amount counts 0.",
     )
 
@@ -224,5 +224,5 @@ def test_the_trace_for_no_records_says_no_items() -> None:
     result = capability().compute((items(),))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "No items gives 0. Only positive amounts are added; a zero or negative amount counts 0.",
+        "No items, so 0.00. Only positive amounts are added; a zero or negative amount counts 0.",
     )

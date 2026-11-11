@@ -18,19 +18,15 @@ class TaperedAmountRenderer:
 
     def render(self, line: TaperedAmountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        base = line.base
-        amount = line.base_amount
         taper = line.taper
-        rule = line.rounding
-        # The amount taken off, from the rounded result: line 1 plus line 2 less line 11.
+        # The amount taken off, from the rounded result.
         reduction = taper.base + taper.supplement - line.result
         return (
-            f"{EnglishFigures.money(taper.base)} "
-            f"plus {EnglishFigures.money(taper.supplement)} "
-            f"less {EnglishFigures.money(reduction)} "
-            f"for {names.figure(base, amount)} "
-            f"over {EnglishFigures.money(taper.threshold)} (range "
-            f"{EnglishFigures.money(taper.range)}), "
+            f"{EnglishFigures.money(taper.base)} plus {EnglishFigures.money(taper.supplement)}, "
+            f"less {EnglishFigures.money(reduction)} (the reduction for "
+            f"{names.figure(line.base, line.base_amount)} over "
+            f"{EnglishFigures.money(taper.threshold)}, "
+            f"spread over a range of {EnglishFigures.money(taper.range)}), "
             f"not below {EnglishFigures.money(taper.base)}, "
-            f"gives {EnglishFigures.money(line.result)} ({EnglishFigures.rounding(rule)})"
+            f"gives {EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )

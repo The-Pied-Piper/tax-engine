@@ -18,13 +18,12 @@ class ContributionTierRenderer:
 
     def render(self, line: ContributionTierLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        earnings = line.earnings
         tier = line.tier
-        rule = line.rounding
-        contributory = line.contributory
         return (
-            f"{EnglishFigures.percent(tier.rate.value)}% of the part of {names.of(earnings)} "
-            f"between {EnglishFigures.money(tier.lower)} and {EnglishFigures.money(tier.upper)} "
-            f"({EnglishFigures.money(contributory)}), "
-            f"at most {EnglishFigures.money(tier.maximum)}, {EnglishFigures.rounding(rule)}"
+            f"{EnglishFigures.percent(tier.rate.value)}% of the part of "
+            f"{names.figure(line.earnings, line.earnings_amount)} between "
+            f"{EnglishFigures.money(tier.lower)} and {EnglishFigures.money(tier.upper)}, which is "
+            f"{EnglishFigures.money(line.contributory)}, at most "
+            f"{EnglishFigures.money(tier.maximum)}, "
+            f"gives {EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )

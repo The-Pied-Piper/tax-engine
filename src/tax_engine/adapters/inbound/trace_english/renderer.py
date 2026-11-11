@@ -30,7 +30,8 @@ class EnglishTraceRenderer:
             renderer = self._renderers.for_line_class(type(line))
         except UnknownRegistrationError:
             raise TypeError(f"no English rendering for trace line {type(line).__name__}") from None
-        return _sentence(renderer.render(line, EnglishNames(printed)))
+        names = EnglishNames(printed)
+        return _sentence(renderer.render(line, names), names)
 
     def render_all(
         self, trace: Iterable[TraceLine], printed: FigureNames | None = None
@@ -39,9 +40,9 @@ class EnglishTraceRenderer:
         return tuple(self.render(line, printed) for line in trace)
 
 
-def _sentence(text: str) -> str:
+def _sentence(text: str, names: EnglishNames) -> str:
     """`text` as a sentence: its first word capitalised and a full stop at the end."""
-    first = text.split(" ", 1)[0]
     # An internal label ("net_income_signed") is not a word, so it keeps its spelling.
-    capitalised = text if "_" in first else text[:1].upper() + text[1:]
+    first = text.split(" ", 1)[0]
+    capitalised = text if names.shows_label(first) else text[:1].upper() + text[1:]
     return capitalised if capitalised.endswith(".") else f"{capitalised}."

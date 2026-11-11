@@ -260,11 +260,14 @@ def test_the_trace_line_is_frozen() -> None:
 @pytest.mark.parametrize(
     ("cls", "text"),
     [
-        (BracketColumnLowerBound, "Bracket lower bound for taxable_base (250): 100."),
-        (BracketColumnRate, "Bracket rate for taxable_base (250): 20%."),
+        (
+            BracketColumnLowerBound,
+            "taxable_base (250.00) falls in the bracket that starts at 100.00.",
+        ),
+        (BracketColumnRate, "taxable_base (250.00) falls in a bracket with the rate 20%."),
         (
             BracketColumnTaxAtStart,
-            "Bracket tax at start for taxable_base (250): 10.00.",
+            "taxable_base (250.00) falls in a bracket with 10.00 of tax on the income below it.",
         ),
     ],
 )

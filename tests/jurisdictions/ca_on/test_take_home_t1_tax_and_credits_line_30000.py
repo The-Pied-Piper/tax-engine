@@ -199,9 +199,9 @@ def test_line_30000_names_its_base_and_its_rounded_reduction_in_the_trace(
 
     assert sheet.get(output).value == D(expected)
     assert (
-        f"14538 plus 1591 less {reduction} for {line_3.label} ({line_23600}) "
-        f"over 177882 (range 75532), not below 14538, gives {expected} "
-        "(rounded to the nearest cent)."
+        f"14538.00 plus 1591.00, less {reduction} (the reduction for {line_3.label} "
+        f"({line_23600}) over 177882.00, spread over a range of 75532.00), "
+        f"not below 14538.00, gives {expected} (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
@@ -235,6 +235,7 @@ def test_line_30000_names_line_3_and_the_range_in_the_trace(
     kinds = bundled_kinds()
 
     assert (
-        f"14538 plus 1591 less 0.00 for {kinds.kind(LINE_3).label} (69335.00) "
-        "over 177882 (range 75532), not below 14538, gives 16129.00 (rounded to the nearest cent)."
+        f"14538.00 plus 1591.00, less 0.00 (the reduction for {kinds.kind(LINE_3).label} "
+        "(69335.00) over 177882.00, spread over a range of 75532.00), "
+        "not below 14538.00, gives 16129.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

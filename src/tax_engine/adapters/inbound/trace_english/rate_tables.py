@@ -25,13 +25,11 @@ class BracketColumnRenderer:
 
     def render(self, line: BracketColumnLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        lower = line.lower
-        rate = line.rate
-        excess = line.excess
-        tax_at_start = line.tax_at_start
         return (
-            f"{EnglishFigures.percent(rate)}% of the {EnglishFigures.money(excess)} "
-            f"over {EnglishFigures.money(lower)}, plus {EnglishFigures.money(tax_at_start)}"
+            f"{EnglishFigures.percent(line.rate)}% of the {EnglishFigures.money(line.excess)} "
+            f"over {EnglishFigures.money(line.lower)}, plus "
+            f"{EnglishFigures.money(line.tax_at_start)}, "
+            f"gives {EnglishFigures.money(line.tax)}"
         )
 
 
@@ -43,14 +41,17 @@ class BracketColumnFigureRenderer:
 
     def render(self, line: BracketColumnFigureLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        base = line.base
-        amount = line.base_amount
-        figure = (
+        shown = (
             f"{EnglishFigures.percent(line.figure)}%"
             if line.name == "rate"
             else EnglishFigures.money(line.figure)
         )
-        return f"Bracket {line.name} for {names.figure(base, amount)}: {figure}"
+        found = names.figure(line.base, line.base_amount)
+        if line.name == "lower bound":
+            return f"{found} falls in the bracket that starts at {shown}"
+        if line.name == "rate":
+            return f"{found} falls in a bracket with the rate {shown}"
+        return f"{found} falls in a bracket with {shown} of tax on the income below it"
 
 
 @english_renderer
@@ -61,17 +62,13 @@ class SurchargeTierRenderer:
 
     def render(self, line: SurchargeTierLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        base = line.base
-        amount = line.base_amount
-        threshold = line.threshold
-        rate = line.rate
-        rule = line.rounding
         maximum = line.maximum
         at_most = "" if maximum is None else f", at most {EnglishFigures.money(maximum)}"
         return (
-            f"{EnglishFigures.percent(rate.value)}% of the part of {names.figure(base, amount)} "
-            f"over {EnglishFigures.money(threshold)}{at_most}, "
-            f"({EnglishFigures.rounding(rule)})"
+            f"{EnglishFigures.percent(line.rate.value)}% of the part of "
+            f"{names.figure(line.base, line.base_amount)} over "
+            f"{EnglishFigures.money(line.threshold)}{at_most}, gives "
+            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -88,7 +85,7 @@ class RateByIncomeBandRenderer:
         row = line.row
         rate = line.rate
         if row is None:
-            band = "which is 0"
+            band = "exactly 0"
         elif row.not_more_than is None:
             band = f"more than {EnglishFigures.money(row.more_than)}"
         else:
@@ -117,7 +114,8 @@ class ChosenRateAppliedRenderer:
         rule = line.rounding
         return (
             f"{names.of(rate_kind)} ({EnglishFigures.percent(rate.value)}%) of "
-            f"{names.figure(base, amount)}, {EnglishFigures.rounding(rule)}"
+            f"{names.figure(base, amount)} gives {EnglishFigures.money(line.amount)} "
+            f"({EnglishFigures.rounding(rule)})"
         )
 
 
@@ -129,21 +127,20 @@ class AmountByBandRenderer:
 
     def render(self, line: AmountByBandLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        base = line.base
-        income = line.base_amount
-        over = line.over
-        rule = line.rounding
         if line.flat_amount is not None:
-            figure = EnglishFigures.money(line.flat_amount)
+            how = f"the amount is {EnglishFigures.money(line.flat_amount)}"
         elif line.minus is not None and line.rate is not None and line.plus is not None:
-            figure = (
-                f"({EnglishFigures.money(income)} minus {EnglishFigures.money(line.minus)}) "
-                f"× {EnglishFigures.percent(line.rate.value)}% "
-                f"plus {EnglishFigures.money(line.plus)} gives {EnglishFigures.money(line.result)}"
+            how = (
+                f"({EnglishFigures.money(line.base_amount)} minus "
+                f"{EnglishFigures.money(line.minus)}) "
+                f"× {EnglishFigures.percent(line.rate.value)}% plus "
+                f"{EnglishFigures.money(line.plus)} "
+                f"gives {EnglishFigures.money(line.result)}"
             )
         else:
-            figure = EnglishFigures.money(line.result)
+            how = f"the amount is {EnglishFigures.money(line.result)}"
         return (
-            f"{names.figure(base, income)}, over {EnglishFigures.money(over)}: "
-            f"{figure} ({EnglishFigures.rounding(rule)})"
+            f"{names.figure(line.base, line.base_amount)} is over "
+            f"{EnglishFigures.money(line.over)}, "
+            f"so {how} ({EnglishFigures.rounding(line.rounding)})"
         )

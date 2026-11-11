@@ -847,7 +847,7 @@ def test_the_trace_reads_in_english_with_the_record_named() -> None:
     passed = capability.run((lines({SALES: D(1), COSTS: BLANK}),))
     renderer = EnglishTraceRenderer()
 
-    assert renderer.render(taken.trace[0]) == "Sales (item 1 of lines): left blank, taken as 0."
+    assert renderer.render(taken.trace[0]) == "sales (item 1 of lines): left blank, taken as 0.00."
     assert renderer.render(passed.trace[0]) == ("Blank because costs (item 1 of lines) was blank.")
 
 
