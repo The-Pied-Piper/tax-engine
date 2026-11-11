@@ -1,23 +1,7 @@
 """Tax computation: a jurisdiction's manifest for a tax year built into a set of forms, run.
 
-The service does the I/O only: it reads the jurisdiction through its port, asks it for the
-manifest of the tax year, resolves each selection's capability class and datasets through the
-ports and registries it was given, and hands them with the manifest's own kinds to the domain
-(`CapabilityBuilder`, which resolves the selection's artifact kinds, and `FormSet`, which wires
-every form), which decides. It converts nothing and checks no manifest: a manifest the source
-returns was read through its kinds and checked when it was built. Resolution errors propagate
-unchanged. Composed on the first call for a jurisdiction and tax year, then shared.
-
-A manifest is a flat set of forms, peers that together are the return. Each form exports the
-`<form>.<export>` kinds that every form reads; the manifest carries them with the kinds it was
-built with. `compose` returns the wired `FormSet`; `compute` runs it
-and returns each form's worksheets by form name: one per instance, in instance order.
-
-The composed `FormSet` is kept per (jurisdiction code, tax year). Sharing it is safe because
-`FormSet.compute` builds its own store and worksheets and never writes to the forms; nothing
-invalidates it because manifests and datasets are static files. A lock guards the cache because
-the service may be called from several threads at once. The lock is held for a whole compose, so a
-cold (jurisdiction, tax year) makes concurrent callers wait.
+The service does I/O only. Each composed `FormSet` is cached per jurisdiction and tax year; sharing
+it is safe because `FormSet.compute` never writes to the forms.
 """
 
 from __future__ import annotations
@@ -57,7 +41,8 @@ class TaxComputationService:
     def compose(self, code: JurisdictionCode, tax_year: int) -> FormSet:
         """The forms of the manifest that applies to `tax_year` in `code`, wired.
 
-        The same `FormSet` is returned on every call for the same `code` and `tax_year`.
+        The same `FormSet` is returned on every call for the same `code` and `tax_year`. A lock is
+        held for a whole compose, so concurrent callers of a cold key wait.
         """
         with self._lock:
             key = (code, tax_year)
@@ -94,12 +79,10 @@ class TaxComputationService:
     ) -> dict[str, tuple[Worksheet, ...]]:
         """The worksheets of every form, by form name, from `artifacts`.
 
-        `artifacts` are the starting artifacts of the manifest: one of each declared input kind,
-        among them each form's instances. An optional input left out, or given blank where
-        its default is a value, is read as its manifest default (blank for `default: null`);
-        a required one left out is refused, naming it.
-        A form's worksheets are one per instance, in instance order; a form without an instances
-        list has one instance.
+        `artifacts` are one of each declared input kind, among them each form's instances. An
+        optional input left out, or given blank where its default is a value, is read as its
+        manifest default; a required one left out is refused, naming it. Each form has one worksheet
+        per instance, in instance order.
         """
         return self.compose(code, tax_year).compute(*artifacts)
 

@@ -1,10 +1,7 @@
 """Strict YAML reading shared by the YAML adapters.
 
-`YamlNode` wraps a parsed value with its location in the document, so every
-check names exactly where it failed ("brackets[0].rate is not a decimal").
-Unknown, missing and duplicate keys and wrongly typed values are rejected,
-never coerced or ignored. Shape problems raise YamlShapeError; each adapter
-re-raises them as its own domain error with the file named.
+`YamlNode` carries its location so errors name where they failed; shape problems raise
+YamlShapeError.
 """
 
 from __future__ import annotations
@@ -221,9 +218,8 @@ class YamlNode:
     def parse_whole_number(self) -> int:
         """This node's value as an int, parsed from a YAML string of digits such as "3".
 
-        Numbers must be quoted so YAML never reads them itself; the text must be ASCII decimal
-        digits with no sign and no leading zero, so each number has one spelling. Non-strings,
-        any other text and digits too many for `int` raise YamlShapeError.
+        Numbers are quoted so YAML never reads them itself, in ASCII decimal digits with no sign and
+        no leading zero. Anything else raises YamlShapeError.
         """
         text = self.require_string()
         if not _WHOLE_NUMBER.fullmatch(text):
@@ -236,9 +232,9 @@ class YamlNode:
     def parse_rounding_rule(self) -> RoundingRule:
         """This node's value as a RoundingRule, parsed from `none` or `{increment, mode}`.
 
-        `none` is NO_ROUNDING; a mapping of a quoted decimal `increment` and a `mode` such as
-        `half_up` is a RoundTo. Any other value, unknown or missing keys and an unknown mode
-        raise YamlShapeError; an increment that is not positive raises InvalidRoundingRuleError.
+        `none` is NO_ROUNDING; a quoted decimal `increment` and a `mode` such as `half_up` is a
+        RoundTo. Any other value, unknown or missing keys or an unknown mode raise YamlShapeError; a
+        non-positive increment raises InvalidRoundingRuleError.
         """
         if self._value == "none":
             return NO_ROUNDING

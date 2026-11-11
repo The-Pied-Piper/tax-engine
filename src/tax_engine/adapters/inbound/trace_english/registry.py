@@ -1,8 +1,6 @@
 """EnglishRendererRegistry: the English text of each trace line class, by line class.
 
-A renderer registers itself with `@english_renderer`, in the module beside its line class's
-feature (a jurisdiction package's own lines included); EnglishTraceRenderer looks renderers up by
-the exact class of each line. Renderers are keyed by their line class's module and qualified
+A renderer registers itself with `@english_renderer`, keyed by its line class's module and qualified
 name.
 """
 
@@ -20,9 +18,8 @@ from tax_engine.domain.trace import TraceLine
 class RendererClass[L: TraceLine, R](Protocol):
     """A renderer class as `@english_renderer` sees it: its line class, `render` and constructor.
 
-    Matching both `line_class` and `render` against one `L` is what lets mypy reject a renderer
-    whose `render` takes another line class than its `line_class`; `line_class` must be a class
-    attribute.
+    Matching `line_class` and `render` against one `L` makes mypy reject a renderer whose `render`
+    takes another line class; `line_class` must be a class attribute.
     """
 
     line_class: type[L]
@@ -39,9 +36,8 @@ class RendererClass[L: TraceLine, R](Protocol):
 class EnglishRendererRegistry(SharedRegistry[object]):
     """Holds one renderer per trace line class; lookups by `type[L]` give `LineRenderer[L]`.
 
-    Its string keys are line classes' module and qualified names; register renderers with
-    `register_class` or `@english_renderer`. A subclass of a registered line class has no
-    renderer until one is registered for it.
+    Register renderers with `register_class` or `@english_renderer`. A subclass of a registered line
+    class has no renderer until one is registered for it.
     """
 
     def for_line_class[L: TraceLine](self, line_class: type[L]) -> LineRenderer[L]:
