@@ -34,7 +34,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import JURISDICTIONS, parameter_parsers
 from tests.capabilities import bundled_capabilities
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService, header_without_imports
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
@@ -46,7 +46,7 @@ LINE_167 = "ca/refund_or_balance_owing"
 FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 = "ca/federal_tax_on_taxable_income_line_76"
 # The real header and form, read from the take-home folder, not test-local: the manifest's header
 # and the T1 tax and credits form declaration.
-REAL_HEADER = (TAKE_HOME / "manifest.yaml").read_text(encoding="utf-8")
+REAL_HEADER = header_without_imports()
 REAL_FORM = next(TAKE_HOME.rglob("t1_tax_and_credits.yaml")).read_text(encoding="utf-8")
 # The real parts composed beside the real header and form: the salary, the real Schedule 8, Schedule
 # 6, T2204 and ON428 parts, the real T1 taxable-income lines and inputs, lines 30000, 76, 84, 31260,
