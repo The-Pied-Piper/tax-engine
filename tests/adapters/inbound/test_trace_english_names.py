@@ -16,18 +16,6 @@ LESS = AmountKind("ex/allowance")
 NET = AmountKind("ex/net_pay")
 
 
-def _cap(title: str | None) -> ParameterDataset[Amount]:
-    return ParameterDataset(
-        "ex/some_ceiling",
-        2025,
-        AMOUNT,
-        Amount(Decimal("81200")),
-        NO_ROUNDING,
-        ("https://x.org",),
-        title,
-    )
-
-
 class _Printed:
     """A stand-in for a worksheet: what the form prints for some figures."""
 
@@ -40,6 +28,18 @@ class _Printed:
 
     def reference(self, label: str) -> str | None:
         return self._references.get(label)
+
+
+def _cap(title: str | None) -> ParameterDataset[Amount]:
+    return ParameterDataset(
+        "ex/some_ceiling",
+        2025,
+        AMOUNT,
+        Amount(Decimal("81200")),
+        NO_ROUNDING,
+        ("https://x.org",),
+        title,
+    )
 
 
 def test_with_no_worksheet_a_figure_is_its_label_in_plain_words() -> None:
