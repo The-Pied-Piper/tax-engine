@@ -1,10 +1,13 @@
 # Form ON428 Ontario Tax 2025 (CRA 5006-c). This part names the form and its exports; line parts
 # carry capabilities. Export: line 90, the Ontario tax (`ca-on/on428_ontario_tax_line_90`), the one
-# figure another form reads: line 90 says to enter it on line 42800 of the return.
+# figure another form reads: line 90 says to enter it on line 42800 of the return. The form also
+# supplies it as `ca/provincial_tax.amount`, the name the federal T1 reads.
 form:
   name: ca-on/on428
   title: "Form ON428: Ontario Tax"
   required: true
   exports:
     - ca-on/on428_ontario_tax_line_90
+  supplies:
+    ca/provincial_tax.amount: ca-on/on428_ontario_tax_line_90
 capabilities: []
