@@ -27,7 +27,7 @@ PRINTED_BASIS = (
     "as a charitable donation"
 )
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/on428_line_87_inputs.yaml"
+    "manifests/2025/on428_line_87_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON
