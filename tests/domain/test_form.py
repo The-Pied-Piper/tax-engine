@@ -46,6 +46,7 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
     ValidationError,
 )
+from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.kinds import AmountKind, RecordListKind, TextKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, InputDeclaration
@@ -2189,3 +2190,54 @@ def test_a_blank_nothing_accepts_is_refused_even_when_the_form_reading_it_has_no
 
     with pytest.raises(BlankNotAllowedError, match="'sales' may not be left blank"):
         forms.compute(Artifact(SALES, BLANK), no_audits)
+
+
+# --- the set: a form's imports are named as the exporting form prints them ----------------------
+
+
+def test_a_runs_imports_carry_the_exporting_forms_title_and_printed_names() -> None:
+    exporting = composition(
+        "ex/shop",
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        instances=SHOPS,
+        exports=[PROFIT],
+        title="Form SH1: Shop",
+        selections=(
+            CapabilitySelection(
+                name="ex/subtract",
+                params={},
+                consumes={},
+                produces={"output": PROFIT.identifier},
+                title="Profit",
+                reference="12",
+            ),
+        ),
+    )
+
+    result = form_set(audit(), exporting).compute(TWO_SHOPS, TWO_AUDITS)
+
+    (audit_sheet, _) = result["ex/audit"]
+    assert audit_sheet.imported("profit") == ImportedFigure("Form SH1: Shop", "Profit", "12", False)
+    assert audit_sheet.imported("fee") is None
+    # The return form reads the audits' export, from a form with instances.
+    (return_sheet,) = result[RETURN]
+    assert return_sheet.imported("audited") == ImportedFigure(None, None, None, False)
+
+
+def test_an_import_from_a_form_without_an_instances_list_is_one_instance() -> None:
+    result = flat(
+        [RecordTotal(FIRST_TOTAL, GRAND)],
+        inputs=frozenset({LEVY, PROFIT_TOTAL}),
+        outputs=frozenset({GRAND}),
+        forms=[
+            composition(
+                "ex/first",
+                [Subtract(EXACT_TOTAL, LEVY, PROFIT_TOTAL, FEE_TOTAL)],
+                exports=[FEE_TOTAL],
+                starting=frozenset({LEVY, PROFIT_TOTAL}),
+            )
+        ],
+    ).compute(Artifact(LEVY, D(1)), Artifact(PROFIT_TOTAL, D(1)))
+
+    (sheet,) = result[RETURN]
+    assert sheet.imported("fee_total") == ImportedFigure(None, None, None, True)

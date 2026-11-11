@@ -31,7 +31,7 @@ class RecordTotalRenderer:
         amounts = line.amounts
         total = line.total
         items = " plus ".join(
-            f"{names.of(field)} of item {position} ({EnglishFigures.money(amount)})"
+            f"{names.of_item(field, position)} ({EnglishFigures.money(amount)})"
             for position, amount in enumerate(amounts, start=1)
         )
         return (
@@ -56,7 +56,7 @@ class RecordPositiveTotalRenderer:
         amounts = line.amounts
         total = line.total
         items = " plus ".join(
-            f"{names.of(field)} of item {position} ({EnglishFigures.money(amount)})"
+            f"{names.of_item(field, position)} ({EnglishFigures.money(amount)})"
             + ("" if amount > 0 else " counts 0")
             for position, amount in enumerate(amounts, start=1)
         )
@@ -92,7 +92,7 @@ class FirstRecordCountRenderer:
     def render(self, line: FirstRecordCountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         noun = "item" if line.record_count == 1 else "items"
-        return f"{names.of(line.field)} of item 1 ({line.value}), of {line.record_count} {noun}"
+        return f"{names.of_item(line.field, 1)} ({line.value}), of {line.record_count} {noun}"
 
 
 @english_renderer
