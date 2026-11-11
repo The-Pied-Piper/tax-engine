@@ -22,7 +22,7 @@ from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
 PRINTED_BASIS = "Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/on428_line_57_inputs.yaml"
+    "manifests/2025/on428_line_57_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON
