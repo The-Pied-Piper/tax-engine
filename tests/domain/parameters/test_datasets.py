@@ -6,6 +6,7 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine.domain.errors import InvalidParameterDataError
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
@@ -39,3 +40,16 @@ def test_works_for_any_kind() -> None:
     dataset = ParameterDataset("ex/rate", 2025, rate, Decimal("0.2"), NO_ROUNDING, ("src",))
 
     assert dataset.values == Decimal("0.2")
+
+
+def test_a_blank_title_is_refused() -> None:
+    with pytest.raises(InvalidParameterDataError):
+        ParameterDataset(
+            "ex/credit", 2025, CREDIT, Credit(Decimal("1")), NO_ROUNDING, ("https://x.org",), " "
+        )
+
+
+def test_the_title_is_optional() -> None:
+    dataset = ParameterDataset("ex/credit", 2025, CREDIT, Credit(Decimal("1")), NO_ROUNDING, ("s",))
+
+    assert dataset.title is None

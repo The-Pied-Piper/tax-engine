@@ -83,6 +83,10 @@ def render(line: TraceLine) -> str:
     return EnglishTraceRenderer().render(line)
 
 
+def amount_dataset(family: str, value: str) -> ParameterDataset[Amount]:
+    return ParameterDataset(family, 2025, AMOUNT, Amount(D(value)), NO_ROUNDING, ("https://x.org",))
+
+
 def test_a_rounded_total() -> None:
     line = RoundedTotalLine(OUT, WAGES, D("100.004"), CENT, D("100.00"))
 
@@ -99,10 +103,6 @@ def test_a_sign_chosen_difference_that_is_not_negative() -> None:
     line = SignChosenDifferenceLine(OUT, BONUS, D("5"), FLOOR, D("10"), WAGES, D("30"), D("30"))
 
     assert render(line) == "Wages (30.00), because bonus (5.00) is not negative, gives 30.00."
-
-
-def amount_dataset(family: str, value: str) -> ParameterDataset[Amount]:
-    return ParameterDataset(family, 2025, AMOUNT, Amount(D(value)), NO_ROUNDING, ("https://x.org",))
 
 
 def test_a_sign_chosen_difference_that_is_negative() -> None:

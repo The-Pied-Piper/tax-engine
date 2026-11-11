@@ -5,6 +5,8 @@ prints one, otherwise by its title in quotes, and when it has neither (a step of
 form does not print) by its internal label in plain words, never by an invented title.
 A trace line's own figure is not named in its sentence: the line already carries its label, and
 the form's title and reference for it come from the worksheet beside the text.
+A fixed figure from a dataset is named by the wording the form prints for it (the dataset's
+`title`, such as "maximum per slip"), else by its family in plain words.
 """
 
 from __future__ import annotations

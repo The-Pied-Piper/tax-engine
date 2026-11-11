@@ -6,6 +6,8 @@ from decimal import Decimal
 
 from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTraceRenderer
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 
@@ -82,3 +84,23 @@ def test_a_rendered_line_names_its_figures_as_the_form_prints_them_and_not_its_o
     assert EnglishTraceRenderer().render(line) == (
         "Gross pay (70000.00) less allowance (71300.00), not below 0, gives 0.00 (not rounded)."
     )
+
+
+def _cap(title: str | None) -> ParameterDataset[Amount]:
+    return ParameterDataset(
+        "ex/some_ceiling",
+        2025,
+        AMOUNT,
+        Amount(Decimal("81200")),
+        NO_ROUNDING,
+        ("https://x.org",),
+        title,
+    )
+
+
+def test_a_fixed_figure_is_named_by_the_title_the_form_prints() -> None:
+    assert EnglishNames().parameter(_cap("maximum per slip")) == "the maximum per slip (81200.00)"
+
+
+def test_a_fixed_figure_without_a_title_is_named_by_its_family_in_plain_words() -> None:
+    assert EnglishNames().parameter(_cap(None)) == "the some ceiling (81200.00)"
