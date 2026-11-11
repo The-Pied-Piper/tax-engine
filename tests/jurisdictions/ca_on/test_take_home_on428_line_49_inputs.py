@@ -22,7 +22,7 @@ from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 D = Decimal
 PRINTED_BASIS = "Line 49 and line 58969: Line 47 plus line 48"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/on428_line_49_inputs.yaml"
+    "manifests/2025/on428_line_49_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

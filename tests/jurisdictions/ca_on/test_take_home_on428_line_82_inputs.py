@@ -22,7 +22,7 @@ from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
 PRINTED_BASIS = "Line 82: Provincial foreign tax credit (complete Form T2036)"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/on428_line_82_inputs.yaml"
+    "manifests/2025/on428_line_82_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

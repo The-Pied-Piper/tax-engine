@@ -21,7 +21,7 @@ from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
 PRINTED_BASIS = "Line 54 and line 61510: Ontario tax on split income (complete Form T1206)"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/on428_line_54_inputs.yaml"
+    "manifests/2025/on428_line_54_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

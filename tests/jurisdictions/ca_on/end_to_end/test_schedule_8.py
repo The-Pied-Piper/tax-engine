@@ -81,7 +81,7 @@ CENT_LINES = ("11", "12", "22", "25", "28")
 
 
 def service(tmp_path: Path) -> TaxComputationService:
-    parts = tmp_path / "manifests" / "take_home"
+    parts = tmp_path / "manifests" / "2025"
     parts.mkdir(parents=True)
     (parts / "00_header.yaml").write_text(HEADER)
     for part in [TAKE_HOME / "salary.yaml", *sorted(TAKE_HOME.rglob("schedule_8*.yaml"))]:
