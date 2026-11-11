@@ -176,6 +176,14 @@ class Form:
 
     `title` is the form's readable name, as the form prints it ("Schedule 8"), written by whoever
     builds the manifest; `None` for none. The `name` stays the form's unique identifier.
+
+    `supplies` maps a neutral identifier `<namespace>/<snake_case>.<label>` to one of the form's
+    own exports, kept as a read-only copy (empty for none). The identifier is spelt like a form
+    export's but names a form that need not exist: the engine derives it as the record list of
+    that export's one field, so every form reads it as it reads `<form>.<export>`. A manifest
+    uses it so a form it imports reads a figure under a name no jurisdiction is part of, and each
+    jurisdiction supplies it from its own forms. Only an export a record can hold may be supplied,
+    and one identifier by one form only.
     """
 
     name: str
@@ -190,23 +198,39 @@ class Form:
     basis: str | None = None
     fields: tuple[InputDeclaration, ...] = ()
     title: str | None = None
+    # Not hashed: a read-only mapping is unhashable, and equal forms still hash alike.
+    supplies: Mapping[str, str] = dataclasses.field(default_factory=dict, hash=False)
 
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
-        """The kind `<form>.<export>` of each of this form's exports a record can hold.
+        """The kind `<form>.<export>` of each of this form's exports a record can hold, then the
+        kind of each neutral identifier it supplies.
 
-        Each is a record list of the export's one field, in the order of the exports; `kinds`
-        resolves the export names. An export that is not an amount, a count or a record list (a
-        rate, say, or digits) has none: no other form reads it.
+        Each is a record list of the export's one field, in the order of the exports (and then of
+        `supplies`); `kinds` resolves the export names. An export that is not an amount, a count
+        or a record list (a rate, say, or digits) has none: no other form reads it, and supplying
+        one is an InvalidManifestError.
         """
         namespace, _, form_id = self.name.partition("/")
-        return tuple(
+        own = tuple(
             RecordListKind(f"{namespace}/{form_id}.{export.label}", fields=(export,))
             for export in (kinds.kind(identifier) for identifier in self.exports)
             if isinstance(export, RecordField)
         )
+        return own + tuple(
+            self._supplied(neutral, kinds.kind(export)) for neutral, export in self.supplies.items()
+        )
+
+    def _supplied(self, neutral: str, export: ArtifactKind[Any]) -> RecordListKind:
+        if not isinstance(export, RecordField):
+            raise InvalidManifestError(
+                f"form {self.name!r}: supplies {neutral!r}: {export.identifier!r} is not an "
+                "amount, a count or a record list"
+            )
+        return RecordListKind(neutral, fields=(export,))
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "exports", tuple(self.exports))
+        object.__setattr__(self, "supplies", MappingProxyType(dict(self.supplies)))
         object.__setattr__(self, "capabilities", tuple(self.capabilities))
         object.__setattr__(self, "fields", tuple(self.fields))
         self.check_identifier("name", self.name)
@@ -228,6 +252,23 @@ class Form:
                 raise InvalidManifestError(f"form {self.name!r}: {exc}") from None
         self._check_requirement()
         self._check_fields()
+        self._check_supplies()
+
+    def _check_supplies(self) -> None:
+        for neutral, export in self.supplies.items():
+            form_id, dot, label = neutral.partition(".")
+            if not dot:
+                raise InvalidManifestError(
+                    f"form {self.name!r}: supplies {neutral!r} must be "
+                    "<namespace>/<snake_case>.<label>"
+                )
+            self.check_identifier("supplies", form_id)
+            self.check_identifier("supplies", f"{form_id.partition('/')[0]}/{label}")
+            if export not in self.exports:
+                raise InvalidManifestError(
+                    f"form {self.name!r}: supplies {neutral!r}: {export!r} is not one of its "
+                    "exports"
+                )
 
     def _check_requirement(self) -> None:
         if self.required:
@@ -333,8 +374,9 @@ class Manifest:
     A manifest is built with `artifacts`, the kinds the application declared, and is checked
     against them when it is built: a manifest that exists is correct. The forms' exports are
     resolved in `artifacts`; `kinds` is `artifacts` and the `<form>.<export>` kinds the forms
-    derive, the lookup for everything the manifest names. Every default is read through its kind
-    (`defaults`, and `field_defaults` by form name for the fields of a form's records); a default
+    derive (and the neutral kinds they supply), the lookup for everything the manifest names.
+    Every default is read through its kind (`defaults`, and `field_defaults` by form name for the
+    fields of a form's records); a default
     no value of its kind could be, fields that are not those of the record-list kind a form takes
     as instances, and a `required_when` that is not a yes/no (a count, 1 for yes and 0 for no)
     are an InvalidManifestError. An identifier `artifacts` does not have is its
@@ -369,6 +411,7 @@ class Manifest:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
+        self._check_derived(derived)
         kinds = self.artifacts.extended(derived)
         object.__setattr__(self, "kinds", kinds)
         self._check_artifacts(kinds)
@@ -396,6 +439,17 @@ class Manifest:
                 self.forms,
             )
         )
+
+    @staticmethod
+    def _check_derived(derived: list[RecordListKind]) -> None:
+        """Refuse an identifier two forms derive, as an export or as a supplied figure."""
+        identifiers = [kind.identifier for kind in derived]
+        for identifier in identifiers:
+            if identifiers.count(identifier) > 1:
+                raise InvalidManifestError(
+                    f"{identifier!r} is derived by more than one form: a form's export is "
+                    "also supplied, or two forms supply it"
+                )
 
     def _check_artifacts(self, kinds: ArtifactRegistry) -> None:
         """Refuse what only the artifact kinds can say, naming the input or form."""
