@@ -1,15 +1,8 @@
-"""The federal catalog: Form T746 (2025), "Calculating Your Deduction for Refund of Unused RRSP,
-PRPP, and SPP Contributions", lines 1 to 13, in a row form and a summary form.
+"""The federal catalog: Form T746 (2025), lines 1 to 13, a row form and a summary form.
 
-The row form `ca/t746_year` is the form's lines 1 to 4 filled in for one year of unused
-contributions ("fill out a separate Form T746, lines 1 to 4 only, for each year"), run once for
-each record of its list `ca/t746_years`. The summary form `ca/t746` runs once: it adds the line 4
-amounts of all years, takes the withdrawals of lines 6 to 10, adds them at line 12 and gives line
-13, the lesser of lines 4 and 12, which is the deduction for T1 line 23200. Line 11 (the amount
-from Form T2205) is left out until Form T2205 is built (it is a figure that form computes, not one
-the filer re-types). Line 5, the year of the withdrawal, is entered and read by no step. The two
-conditions printed under "For you to claim the deduction" are the filer's yes or no answers, a
-count of 1 or 0, and a deduction is allowed when at least one holds."""
+`ca/t746_year` runs for each record of `ca/t746_years`; `ca/t746` runs once. Line 11 (Form T2205) is
+not added to the withdrawals.
+"""
 
 from __future__ import annotations
 

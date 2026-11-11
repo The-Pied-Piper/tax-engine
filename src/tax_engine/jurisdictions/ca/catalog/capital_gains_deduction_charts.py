@@ -1,11 +1,8 @@
-"""The federal catalog: Form T657 Charts 2016 to 2023 (Part 1 and Part 2 each) and Chart 2024,
-Period 1 and Period 2.
+"""The federal catalog: Form T657 Charts 2016 to 2024 (2024 in Periods 1 and 2).
 
-The starting amounts of each chart (the signed Part 1 F and G, the box 30 amounts and the counts)
-and the computed amounts of each chart, with each chart's total carried forward. The charts are
-chained in the form's year order: each chart's amount B is the total carried by the chart before
-it, and Period 2's amount B is Period 1's amount N, so those are not declared. Chart 2016's amount B
-is the choice of line 19 of Chart 2 or the (2016-1) calculation, declared here."""
+The charts chain in year order, so each chart's amount B is the total of the one before it and
+is not declared.
+"""
 
 from __future__ import annotations
 

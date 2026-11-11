@@ -1,14 +1,7 @@
 """Apply ratio: multiplies a money artifact by a ratio of two other money artifacts.
 
-For form lines such as "tax otherwise payable × foreign income / worldwide income", whose ratio is
-computed by earlier lines, not stated by a dataset: the output is
-`rounding.apply(amount × numerator / denominator)`, the product formed first and divided once, as an
-exact fraction so nothing is rounded before the rule. It is rounded only with the `rounding_only`
-dataset's rule; under no rounding a quotient with no finite decimal expansion raises
-`decimal.Inexact`. A zero denominator is refused with a `ValidationError`. A ratio above 1 is not
-capped here; where the law caps it, the manifest does with `lesser_of`. The arithmetic is the static
-method `ApplyRatio.ratio_of`, which a capability that works a ratio per item calls instead of
-copying it.
+The output is `rounding.apply(amount × numerator / denominator)`; a zero denominator is a
+`ValidationError` and a ratio above 1 is not capped.
 """
 
 from __future__ import annotations

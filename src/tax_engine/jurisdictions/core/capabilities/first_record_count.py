@@ -1,10 +1,7 @@
 """FirstRecordCount: takes the one count in the first record of a record list.
 
-The record-list kind has exactly one field, a count; the capability takes that field of the first
-record (position 0, fixed) and produces it as `output`. It has no dataset, so it never rounds. An
-empty list has no first record and is refused. It reads a form's export of one count
-(`<form>.<export>`), a list of one record, as that one count. The item is named by its position
-from 1 in the trace.
+The record-list kind has one count field, and an empty list is refused. It reads a form's export of
+one count (`<form>.<export>`) as that count; the item is named by position 1 in the trace.
 """
 
 from __future__ import annotations

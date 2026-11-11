@@ -1,8 +1,7 @@
 """Capped amount: the lesser of a money artifact and an `amount` dataset's cap, exactly.
 
-For the return lines the form prints as "whichever is less": a base at or below the cap is
-produced unchanged (keeping its scale), a base above it produces the cap's value. The lesser is
-rounded only with the `cap` dataset's rule, which defaults to no rounding.
+A base at or below the cap is produced unchanged, keeping its scale; above it the cap's value is
+produced. The `cap` dataset's rounding rule applies once (none by default).
 """
 
 from __future__ import annotations

@@ -1,13 +1,8 @@
-"""The federal catalog: Form T2017 (2025), "Summary of Reserves on Dispositions of Capital
-Property", Part 1 (pages 1 and 2), in ten row forms and one summary form. The row forms are
-`ca/t2017_line_N_reserve` for the reserve lines N that take a list of dispositions (2, 3, 4, 8,
-9, 10, 17, 21, 24 and 27), each run once for each record of its list
-`ca/t2017_line_N_reserve_rows`. The record fields are the reserve calculation's inputs; only the
-records of lines 2 and 8 hold the nine-year answer. The summary form `ca/t2017` is run once: it
-adds the lines of Part 1. The starting inputs are the 2024 figures of lines 1, 7, 16, 20, 23 and
-30, and the 2024 figure that line 26 is computed from; line 14 is entered and read by no step. The
-intermediate kinds are the steps of the calculation of reserve; the claim of each
-row (`ca/t2017_row_reserve`) and the lines of the summary are the forms' exports."""
+"""The federal catalog: Form T2017 (2025) Part 1, ten row forms and one summary form.
+
+`ca/t2017_line_N_reserve` runs for each record of its `..._rows` list; the summary form `ca/t2017`
+runs once.
+"""
 
 from __future__ import annotations
 

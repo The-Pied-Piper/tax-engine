@@ -1,16 +1,7 @@
 """ChooseByCount: one of two money artifacts, chosen by a count artifact.
 
-For a line computed once for each of two columns, where a count of persons decides which column
-applies (one amount when there are none, another when there are any): the output is `when_none`
-when the count is 0 and `when_any` for any other count, the chosen value unchanged with its scale
-kept. It has no dataset, so it never rounds, and no floor; the count only chooses, it never
-scales.
-
-Any of its three inputs may be left blank, and the manifest's `blank:` line says what that does at
-each step (`BLANK_ALLOWED` only allows it). A blank count is usually given a fallback. A candidate
-given `compute` is read only if chosen: a blank one that was not chosen is ignored, and a blank one
-that was chosen is refused, naming the line. A blank in an input with no `blank:` line is refused
-before `compute`, and `pass_on` on a candidate blanks the output even if it was not chosen.
+The output is `when_none` for a count of 0, else `when_any`, unchanged. A `compute` candidate is
+read only if chosen.
 """
 
 from __future__ import annotations

@@ -36,13 +36,13 @@ _FRACTIONS = FractionParser()
 
 @parameter_parser
 class ClassRatesParser:
-    """Parser for `class_rates` datasets: `classes`, keyed by each class number as a quoted
-    decimal, each a `rate`, a `half_year_rule`, a `recapture_and_terminal_loss`, a
-    `half_year_rule_on_sale`, an `aiip_factor` and a `riip_factor`, each factor a quoted whole
-    `numerator` and `denominator` read as a `fraction` dataset's are, and optionally `elections`,
-    keyed by each code as a quoted whole number above 0, each a `rate` as a quoted decimal; and
-    `full_year_days`, a quoted whole number above 0, the days of a full fiscal period; and
-    `longest_fiscal_period_days`, a quoted whole number, the days of the longest fiscal period."""
+    """Parser for `class_rates` datasets.
+
+    Reads `classes` keyed by each class number as a quoted decimal (with `rate`, `half_year_rule`,
+    `recapture_and_terminal_loss`, `half_year_rule_on_sale`, the factors `aiip_factor` and
+    `riip_factor` as quoted `numerator` and `denominator`, and optional `elections` keyed by quoted
+    whole code), plus `full_year_days` and `longest_fiscal_period_days` as quoted whole numbers.
+    """
 
     kind = CLASS_RATES
     body_keys = frozenset({"classes", "full_year_days", "longest_fiscal_period_days"})

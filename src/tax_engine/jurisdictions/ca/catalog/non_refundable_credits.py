@@ -1,8 +1,7 @@
 """The federal catalog: non-refundable credits.
 
-The CPP, EI and Canada employment amounts, donations and gifts, the top-up credit, the non-
-refundable tax credits total, the federal foreign tax credit and the investment tax credit
-recapture.
+CPP, EI and Canada employment amounts, donations, the top-up credit, foreign tax credit and
+investment tax credit recapture.
 """
 
 from __future__ import annotations

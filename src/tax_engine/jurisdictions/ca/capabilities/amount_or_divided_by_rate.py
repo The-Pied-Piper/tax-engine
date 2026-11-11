@@ -1,14 +1,12 @@
 """AmountOrDividedByRate: an amount, or another figure divided by a rate, chosen by a threshold.
 
-For lines such as Schedule 11 line 11: "Enter the amount from line 26000 of your return on line 11
-if it is $57,375 or less. If it is more than $57,375, enter the result of the following
-calculation: Amount from line 76 of your return divided by 14.5% =". At or below the `limit`
-dataset's threshold ("or less") the output is the consumed `amount`; over it, the consumed
-`dividend` divided by the dataset's rate. The division is an exact fraction, so 5.05% divides as
-2,000/101, and the dataset's rounding rule rounds the chosen figure once; under `rounding: none`
-an inexact division raises `decimal.Inexact`. Both figures are always required. It records one
-`AmountOrDividedByRateLine`.
+At or below the `limit` threshold the output is `amount`, over it `dividend` divided exactly by the
+rate, rounded once.
 """
+
+# Schedule 11 line 11: "Enter the amount from line 26000 of your return on line 11 if it is $57,375
+# or less. If it is more than $57,375, enter the result of the following calculation: Amount from
+# line 76 of your return divided by 14.5%".
 
 from __future__ import annotations
 

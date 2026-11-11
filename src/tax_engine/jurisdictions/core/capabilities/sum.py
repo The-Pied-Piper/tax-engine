@@ -1,14 +1,7 @@
 """Sum: adds the values of a list of money artifacts, exactly.
 
-One mechanism for every total on a return: the manifest decides which parts are added, and in
-which order they are listed in the trace. The parts are added on exact `Fraction`s and the total
-is rounded once by the `rounding_only` dataset's rule: the manifest step names
-the dataset, and a total that needs no rounding names one that states none (which may drop a
-trailing zero of the exact sum).
-
-Any part may be blank (`BLANK_ALLOWED`). What a blank does is the manifest step's `blank:` line,
-for the whole list or for one part by its identifier (`BLANK_PER_ITEM`): so a total can pass a
-blank part on while another part, a line that may be left out, counts as zero.
+Added as exact `Fraction`s and rounded once; a blank part follows the manifest's `blank:` rule, per
+list or per part.
 """
 
 from __future__ import annotations

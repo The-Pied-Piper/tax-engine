@@ -1,18 +1,7 @@
 """The federal catalog: Form RC381 Part 2, Part 3 lines 1 to 93 and Part 4 lines 1 to 129.
 
-Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and Overpayments":
-Part 2 (the months and the monthly proration table, lines G to J being the QPP side) and the CPP
-side of Part 3 on employment income (lines 1 to 26), then its QPP side and the totals (lines 27
-to 69), then Part 3a and Part 3b (lines 70 to 93) with their three results, then Part 4 (for
-residents of a province or territory other than Quebec) through line 129: the CPP side (lines 1 to
-27), the QPP side with the second additional contributions and the totals (lines 28 to 56), the
-earnings subject to contributions, the self-employed contributions and the overpayment (lines 57
-to 91), the base and enhanced contributions through employment income (lines 92 to 110), and the
-base and enhanced contributions through self-employment income and other earnings (lines 111 to
-129), with the results for the return after Part 3 and Part 4: lines 30800, 22215, 44800, 42100,
-31000 and 22200.
-Lines C to F of Part 2 are Schedule 8 Part 2's lines B to E, the existing artifacts read with the
-same months.
+Inter-Provincial Calculation for CPP and QPP Contributions and Overpayments (2025); Part 2 lines C
+to F are Schedule 8 Part 2's lines B to E.
 """
 
 from __future__ import annotations

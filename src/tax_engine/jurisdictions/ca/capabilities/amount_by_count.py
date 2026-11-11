@@ -1,14 +1,11 @@
 """Amount by count: the figure a form prints against a count, read from a table.
 
-For lines that look an amount up in a printed table keyed by a count (the months a plan applied,
-say): the output is `rounding.apply(row)`, the figure of the `table` dataset's row for the
-consumed count, rounded once with that dataset's rule, which defaults to no rounding. A count
-with no row is not guessed at, floored or carried over from the nearest row: it raises
-`NoAmountForCountError`.
-
-The class is `AmountForCount` so that it does not share a name with the `AmountByCount` value
-object it reads.
+The output is the `table` dataset's row for the count, rounded once with its rule. A count with no
+row raises `NoAmountForCountError`.
 """
+
+# The class is `AmountForCount` so that it does not share a name with the `AmountByCount` value
+# object it reads.
 
 from __future__ import annotations
 

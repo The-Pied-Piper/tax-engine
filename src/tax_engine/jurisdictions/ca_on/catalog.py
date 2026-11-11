@@ -1,12 +1,7 @@
-"""The Ontario artifact catalog: Ontario's own kinds, named from Forms ON428 (§2, §8), ON479,
-Schedule ON479-A, T1221, ON-BEN and T1206 Part 3.
+"""The Ontario artifact catalog: Ontario's own kinds, named from the Ontario forms.
 
-Only the kinds in use are declared. Amounts are Decimal, non-negative except the Form T1206 Part 3
-lines that print no "(if negative, enter "0")" (lines 39, 47 and 50), which are signed, as no other
-ON428, ON479 or ON479-A amount here can be negative; the counts of dependent children and
-dependants are int, the T1221 slips and the co-operative education work placements record lists,
-the ON479 line 63270 business number digits, and the ON479-A line 7 percentage a Rate. Federal
-kinds come from `tax_engine.jurisdictions.ca.catalog`. Identifiers are stable.
+Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kinds come from
+`ca.catalog`; identifiers are stable.
 """
 
 from __future__ import annotations

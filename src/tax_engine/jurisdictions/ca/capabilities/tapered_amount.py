@@ -1,17 +1,11 @@
 """Tapered amount: a base amount plus a supplement reduced as a money artifact passes a threshold.
 
-For amounts made of a base plus a supplement that is reduced in proportion to how far a figure
-sits above a threshold, over a stated range, not below zero: the reduction is
-`supplement × max(base − threshold, 0) / range`, computed as an exact fraction so nothing is
-rounded before the rule. The output is
-`rounding.apply(taper.base + max(supplement − reduction, 0))`, rounded once with the `taper`
-dataset's rule, which defaults to no rounding; under no rounding a reduction with no finite
-decimal expansion raises `decimal.Inexact`. At or below the threshold the output is base plus
-supplement; at or above threshold plus range it is the base.
-
-The class is `TaperedAmount` so that it does not share a name with the `Taper` value object it
-reads.
+The reduction is `supplement × max(base − threshold, 0) / range`, exact, and the result is rounded
+once with the `taper` dataset's rule.
 """
+
+# The class is `TaperedAmount` so that it does not share a name with the `Taper` value object it
+# reads.
 
 from __future__ import annotations
 

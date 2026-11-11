@@ -1,15 +1,7 @@
 """SumNotBelowZero: adds the values of a list of money artifacts, floored at zero, then rounded.
 
-For the return lines the form prints with "if negative, enter 0" after adding: the manifest
-decides which parts are added, and in which order they are listed in the trace. The parts are
-added on exact `Fraction`s, the sum is floored at zero, and the floored total is rounded once with
-the `rounding_only` dataset's rule, as `SubtractNotBelowZero` rounds: `rounding.apply(max(sum, 0))`.
-That rule defaults to no rounding. A floored zero is never a negative zero, and under a rule with a
-scale it takes that scale (0.00 under the cent rule).
-
-Any part may be blank (`BLANK_ALLOWED`), and the manifest step's `blank:` line says what a blank
-does, for the whole list or for one part by its identifier (`BLANK_PER_ITEM`), as for `Sum`. A
-total that passes a blank on is blank, so the zero floor is applied only to a filled sum.
+The output is `rounding.apply(max(sum, 0))`; blank parts follow `blank:` as for `Sum`, and a
+passed-on blank is not floored.
 """
 
 from __future__ import annotations

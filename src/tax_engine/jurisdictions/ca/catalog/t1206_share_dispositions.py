@@ -1,10 +1,8 @@
-"""The federal catalog: Form T1206, Tax on Split Income, "Dispositions of certain capital property
-- shares subject to TOSI" (page 6), the form `ca/t1206_share_dispositions`, and its calculation
-of reserve, the form `ca/t1206_share_reserve`, run once for each disposition of the row list.
-The starting inputs are lines A, B and F and the row list; the age answer is the return's
-existing input `ca/aged_18_or_older_at_end_of_2025`. The row fields are the reserve form's
-inputs, the reserve claimed among them. The intermediate kinds are the steps between the inputs and
-the exports; the lines and the reserve of each row are the forms' exports."""
+"""The federal catalog: Form T1206 page 6, the form `ca/t1206_share_dispositions`, and
+`ca/t1206_share_reserve`.
+
+The reserve form runs once for each disposition of the row list.
+"""
 
 from __future__ import annotations
 
