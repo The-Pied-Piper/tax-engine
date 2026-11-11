@@ -3,12 +3,14 @@
 # multiplied by 25% =". The 25% is a printed rate, held in the `ca-on/farmers_food_donation_rate`
 # dataset, so line 87 is one calculation: 25% of the qualifying donations, rounded half-up to the
 # cent. The donations are an optional input (read as 0 when left out), not read from another part.
+# The line has two boxes: the donations (box A, the input) and the 25% result (box B, this step).
+# The form does not name them; "box A" and "box B" are the owner's naming.
 form:
   name: ca-on/on428
 capabilities:
   - name: core/apply_rate
     title: "Community food program donation tax credit for farmers"
-    reference: "87"
+    reference: "87 box B"
     params:
       rate: ca-on/farmers_food_donation_rate
     consumes:

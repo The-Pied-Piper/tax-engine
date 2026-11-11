@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from tax_engine.domain.errors import InvalidParameterDataError
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import RoundingRule
 
@@ -15,6 +16,8 @@ from tax_engine.domain.parameters.rounding import RoundingRule
 @dataclass(frozen=True)
 class ParameterDataset[T]:
     """One family's parameter values of one kind for one tax year, with rounding and sources.
+
+    `title` is the wording the form prints for the figure, when it prints any ("maximum per slip").
 
     Refuses values that are not of its kind's type.
     """
@@ -25,8 +28,11 @@ class ParameterDataset[T]:
     values: T
     rounding: RoundingRule
     sources: tuple[str, ...]
+    title: str | None = None
 
     def __post_init__(self) -> None:
+        if self.title is not None and not self.title.strip():
+            raise InvalidParameterDataError("a dataset title, when given, must not be blank")
         if not isinstance(self.values, self.kind.value_type):
             raise TypeError(
                 f"{self.kind.name} dataset values must be a {self.kind.value_type.__name__}, "

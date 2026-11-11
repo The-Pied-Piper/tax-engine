@@ -8,7 +8,12 @@ import tax_engine.adapters.inbound.trace_english.blank as english_blank
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.inbound.trace_english.registry import EnglishRendererRegistry
 from tax_engine.domain.kinds import AmountKind, CountKind
-from tax_engine.domain.trace import BlankFallbackLine, BlankPassedOnLine, LeftBlankLine, TraceLine
+from tax_engine.domain.trace import (
+    BlankFallbackLine,
+    BlankPassedOnLine,
+    DefaultedInputLine,
+    TraceLine,
+)
 
 CHART_GAIN = AmountKind("ex/chart_gain")
 LIMIT = AmountKind("ex/limit")
@@ -24,12 +29,8 @@ def test_the_blank_renderer_module_registers_each_line() -> None:
     assert english_blank.__name__ == "tax_engine.adapters.inbound.trace_english.blank"
     registry = EnglishRendererRegistry.shared()
 
-    for line_class in (LeftBlankLine, BlankFallbackLine, BlankPassedOnLine):
+    for line_class in (BlankFallbackLine, BlankPassedOnLine, DefaultedInputLine):
         assert registry.for_line_class(line_class).line_class is line_class
-
-
-def test_a_line_left_blank() -> None:
-    assert render(LeftBlankLine(CHART_GAIN)) == "Left blank."
 
 
 def test_a_blank_taken_as_a_fallback() -> None:
@@ -47,7 +48,17 @@ def test_a_blank_passed_on() -> None:
     )
 
 
-def test_a_blank_line_has_no_figure_but_the_fallback() -> None:
-    assert LeftBlankLine(CHART_GAIN).amount == 0
+def test_a_blank_line_has_no_figure_but_the_fallback_and_the_default() -> None:
     assert BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)).amount == 0
     assert BlankFallbackLine(DEDUCTION, Decimal("3")).amount == 3
+
+
+def test_an_input_taken_as_its_default() -> None:
+    assert (
+        render(DefaultedInputLine(HOUSEHOLD, 12))
+        == "No value given, so the form's default gives 12."
+    )
+    assert (
+        render(DefaultedInputLine(LIMIT, Decimal("0.00")))
+        == "No value given, so the form's default gives 0.00."
+    )

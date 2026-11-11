@@ -33,7 +33,6 @@ from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import (
     BlankFallbackLine,
     BlankPassedOnLine,
-    LeftBlankLine,
     SubtractedLine,
     SumLine,
 )
@@ -478,11 +477,26 @@ def test_pass_on_in_one_slot_wins_over_compute_in_another() -> None:
 # --- through a worksheet and a composition ----------------------------------------------------
 
 
-def test_a_blank_starting_artifact_is_traced_as_left_blank() -> None:
+def test_a_blank_starting_artifact_has_no_trace_row_of_its_own() -> None:
     worksheet = Worksheet(blank(CHART_GAIN), Artifact(INCOME, D(1)))
 
-    assert worksheet.trace == (LeftBlankLine(CHART_GAIN),)
+    assert worksheet.trace == ()
     assert worksheet.get(CHART_GAIN).is_blank
+
+
+def test_each_step_that_takes_a_fallback_for_a_blank_input_says_so() -> None:
+    worksheet = Worksheet(blank(LIMIT), Artifact(INCOME, D(500)), Artifact(OTHER, D(5)))
+    worksheet.apply(less_zero(INCOME, LIMIT, DEDUCTION))
+    worksheet.apply(
+        SubtractCompute(OTHER, LIMIT, NET).with_blank_rules({"less": D(1)}),
+    )
+
+    assert worksheet.trace == (
+        BlankFallbackLine(LIMIT, D(0)),
+        SubtractedLine(DEDUCTION, INCOME, D(500), LIMIT, D(0), NO_ROUNDING, D(500)),
+        BlankFallbackLine(LIMIT, D(1)),
+        SubtractedLine(NET, OTHER, D(5), LIMIT, D(1), NO_ROUNDING, D(4)),
+    )
 
 
 def test_an_upstream_blank_is_passed_on_taken_as_zero_or_refused_by_the_consumer() -> None:
@@ -527,7 +541,6 @@ def test_a_skipped_chart_leaves_the_deduction_blank_and_the_tax_base_unchanged()
     assert worksheet.get(DEDUCTION).is_blank
     assert worksheet.get(TAXABLE).value == D(50000)
     assert worksheet.trace == (
-        LeftBlankLine(CHART_GAIN),
         BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)),
         BlankFallbackLine(DEDUCTION, D(0)),
         SubtractedLine(TAXABLE, INCOME, D(50000), DEDUCTION, D(0), NO_ROUNDING, D(50000)),

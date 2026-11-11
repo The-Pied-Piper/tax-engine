@@ -5,27 +5,35 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTraceRenderer
+from tax_engine.adapters.inbound.trace_english.names import short_form_title
+from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SubtractedNotBelowZeroLine
+from tax_engine.domain.worksheet import Worksheet
 
 GROSS = AmountKind("ex/gross_pay")
 LESS = AmountKind("ex/allowance")
 NET = AmountKind("ex/net_pay")
 
 
-class _Printed:
-    """A stand-in for a worksheet: what the form prints for some figures."""
+def _Printed(titles: dict[str, str], references: dict[str, str]) -> Worksheet:  # noqa: N802
+    """A worksheet of no figures that prints `titles` and `references` for some of them."""
+    return Worksheet(figure_titles=titles, figure_references=references)
 
-    def __init__(self, titles: dict[str, str], references: dict[str, str]) -> None:
-        self._titles = titles
-        self._references = references
 
-    def title(self, label: str) -> str | None:
-        return self._titles.get(label)
-
-    def reference(self, label: str) -> str | None:
-        return self._references.get(label)
+def _cap(title: str | None) -> ParameterDataset[Amount]:
+    return ParameterDataset(
+        "ex/some_ceiling",
+        2025,
+        AMOUNT,
+        Amount(Decimal("81200")),
+        NO_ROUNDING,
+        ("https://x.org",),
+        title,
+    )
 
 
 def test_with_no_worksheet_a_figure_is_its_label_in_plain_words() -> None:
@@ -82,3 +90,83 @@ def test_a_rendered_line_names_its_figures_as_the_form_prints_them_and_not_its_o
     assert EnglishTraceRenderer().render(line) == (
         "Gross pay (70000.00) less allowance (71300.00), not below 0, gives 0.00 (not rounded)."
     )
+
+
+def _imported(
+    reference: str | None, title: str | None = None, *, one_instance: bool = True
+) -> ImportedFigure:
+    return ImportedFigure("Form ON428: Ontario Tax", title, reference, one_instance)
+
+
+def test_a_figure_read_from_another_form_is_named_as_that_form_prints_it() -> None:
+    sheet = Worksheet(
+        imported_figures={"gross_pay": _imported("90"), "allowance": _imported("Box 3")}
+    )
+    names = EnglishNames(sheet)
+
+    assert names.of(GROSS) == "line 90 of ON428"
+    assert names.of(LESS) == "Box 3 of ON428"
+    assert names.figure(GROSS, Decimal("3911.45")) == "line 90 of ON428 (3911.45)"
+
+
+def test_an_imported_figure_with_no_reference_is_named_by_its_title_then_by_its_label() -> None:
+    sheet = Worksheet(
+        imported_figures={"gross_pay": _imported(None, "Gross pay"), "net_pay": _imported(None)}
+    )
+    names = EnglishNames(sheet)
+
+    assert names.of(GROSS) == '"Gross pay" of ON428'
+    assert names.of(NET) == "net pay"
+
+
+def test_an_imported_figure_of_a_form_without_a_title_is_named_without_the_form() -> None:
+    sheet = Worksheet(imported_figures={"gross_pay": ImportedFigure(None, None, "90", True)})
+
+    assert EnglishNames(sheet).of(GROSS) == "line 90"
+
+
+def test_a_form_is_named_by_its_title_up_to_the_colon_without_form() -> None:
+    assert short_form_title("Form ON428: Ontario Tax") == "ON428"
+    assert short_form_title("Schedule 8: Canada Pension Plan Contributions") == "Schedule 8"
+    assert short_form_title("T1 General") == "T1 General"
+
+
+def test_an_item_of_a_one_instance_form_has_no_item_number() -> None:
+    sheet = Worksheet(imported_figures={"gross_pay": _imported("90")})
+    names = EnglishNames(sheet)
+
+    assert names.of_item(GROSS, 1) == "line 90 of ON428"
+    assert names.of_item(LESS, 2) == "allowance of item 2"
+
+
+def test_an_item_of_a_form_with_instances_is_named_by_its_position() -> None:
+    sheet = Worksheet(imported_figures={"gross_pay": _imported("5", one_instance=False)})
+
+    assert EnglishNames(sheet).of_item(GROSS, 2) == "line 5 of ON428, item 2"
+
+
+def test_two_figures_with_one_reference_are_told_apart_by_their_titles() -> None:
+    sheet = Worksheet(
+        figure_titles={"allowance": "Allowance"},
+        figure_references={"gross_pay": "87", "allowance": "87", "net_pay": "88"},
+    )
+    names = EnglishNames(sheet)
+
+    assert names.of(LESS) == '"Allowance"'
+    assert names.of(GROSS) == "line 87"
+    assert names.of(NET) == "line 88"
+
+
+def test_a_fixed_figure_is_named_by_the_title_the_form_prints() -> None:
+    assert EnglishNames().parameter(_cap("maximum per slip")) == "the maximum per slip (81200.00)"
+
+
+def test_a_fixed_figure_without_a_title_is_named_by_its_family_in_plain_words() -> None:
+    assert EnglishNames().parameter(_cap(None)) == "the some ceiling (81200.00)"
+
+
+def test_a_box_of_a_line_is_a_line_of_the_form() -> None:
+    names = EnglishNames(_Printed({}, {"gross_pay": "87 box A", "allowance": "87 box B"}))
+
+    assert names.of(GROSS) == "line 87 box A"
+    assert names.of(LESS) == "line 87 box B"

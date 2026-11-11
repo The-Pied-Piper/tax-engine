@@ -14,19 +14,19 @@ from tax_engine.domain.trace.blank import (
     BlankField,
     BlankFieldFallbackLine,
     BlankPassedOnLine,
-    LeftBlankLine,
+    DefaultedInputLine,
 )
 
 
 @english_renderer
-class LeftBlankRenderer:
-    """English text for LeftBlankLine."""
+class DefaultedInputRenderer:
+    """English text for DefaultedInputLine."""
 
-    line_class = LeftBlankLine
+    line_class = DefaultedInputLine
 
-    def render(self, line: LeftBlankLine, names: EnglishNames) -> str:
+    def render(self, line: DefaultedInputLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return "left blank"
+        return f"no value given, so the form's default gives {_figure(line.value)}"
 
 
 @english_renderer
@@ -40,9 +40,9 @@ class BlankFallbackRenderer:
         return f"left blank, taken as {_figure(line.fallback)}"
 
 
-def _figure(fallback: Decimal | int) -> str:
-    """The fallback as money for an amount, else as a plain whole number."""
-    return EnglishFigures.money(fallback) if isinstance(fallback, Decimal) else str(fallback)
+def _figure(value: Decimal | int) -> str:
+    """The value (a fallback or a default) as money for an amount, else as a plain whole number."""
+    return EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
 
 
 def _where(field: BlankField, names: EnglishNames) -> str:
