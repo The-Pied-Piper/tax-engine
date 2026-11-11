@@ -253,6 +253,15 @@ def test_two_provinces_importing_the_same_form_both_load(tmp_path: Path) -> None
     assert "ex-ab/levy" in names(ab)
 
 
+FEDERAL_OTHER = """\
+form:
+  name: ex/other
+  required: true
+  exports: [ex/other_total]
+capabilities:
+  - {name: ex/c, produces: {output: ex/other_total}}
+"""
+
 FEDERAL_INPUTS = """\
 inputs:
   - name: ex/other_income
@@ -298,8 +307,34 @@ def test_an_imported_input_the_manifest_declares_too_is_rejected_naming_it(tmp_p
         extra={"02-own.yaml": FEDERAL_INPUTS},
     )
 
-    with pytest.raises(InvalidManifestError, match="ex/other_income.*ex/federal"):
+    with pytest.raises(InvalidManifestError, match="ex/other_income"):
         source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_an_input_two_imported_forms_declare_is_rejected(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
+    write(tmp_path, "ex/forms/other/00-other.yaml", FEDERAL_OTHER)
+    write(tmp_path, "ex/forms/other/01-inputs.yaml", FEDERAL_INPUTS)
+    write_province(tmp_path, head=header("EX-ON", "[ex/federal, ex/other]"))
+
+    with pytest.raises(InvalidManifestError, match="ex/other_income") as caught:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert "other/01-inputs.yaml" in str(caught.value)
+
+
+def test_a_whole_file_manifest_input_an_imported_form_declares_is_rejected(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
+    whole = header("EX-ON").replace(
+        "inputs: [{name: ex/income, required: true}]",
+        "inputs: [{name: ex/income, required: true}, {name: ex/other_income, required: true}]",
+    )
+    write(tmp_path, "ex-on/manifests/whole.yaml", whole + "capabilities: []\n")
+
+    with pytest.raises(InvalidManifestError, match="ex/other_income") as caught:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert "whole.yaml" in str(caught.value)
 
 
 def test_an_input_two_inputs_parts_of_the_form_declare_is_rejected_naming_the_part(

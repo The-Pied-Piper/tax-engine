@@ -124,14 +124,15 @@ and no identifier is listed twice.
 - The parts of an imported form are the `*.yaml` or `*.yml` files, recursively and sorted, in
   `<package of the namespace>/forms/<local id>/`, not under `manifests/`.
 - They load with the manifest's own parts and take its jurisdiction, version and tax year, so each
-  carries only `form` and `capabilities`. Its `form.name` is the imported identifier, and exactly
-  one part declares `exports`, as for any form.
+  carries `form` and `capabilities` (or `inputs` alone, below). Its `form.name` is the imported
+  identifier, and exactly one part declares `exports`, as for any form.
 - A part with `inputs` alone (no `form:` key) declares the inputs the form brings to every manifest
   that imports it, such as an optional input a salary-only caller leaves blank. An input listed by
   such a part and also by the manifest, or by another imported form, is rejected, naming it and
-  the form.
+  the part that listed it first.
 - A part of the manifest that names an imported form, an import with no package or no parts, and an
-  imported part with any other key are rejected, naming the part.
+  imported part with any other key, or with `inputs` beside a `form:` key, are rejected, naming
+  the part.
 - The forms run in this order: the default form, the imported forms in `imports` order, then the
   manifest's own.
 - An imported form that reads a derived figure (a `<form>.<export>` or a supplied identifier) that
