@@ -1,8 +1,7 @@
 """Threshold rates: the figures of a line that passes an amount through or divides by a rate.
 
-A `rate` and a `threshold`: a form line passes an amount through when it is at or below the
-threshold, and otherwise divides another figure by the rate. Like `Rate`, the value object checks
-itself. The code holds no jurisdiction's figures.
+A `rate` and a `threshold`: an amount at or below the threshold passes through, otherwise another
+figure is divided by the rate. The value object checks itself, like `Rate`.
 """
 
 from __future__ import annotations

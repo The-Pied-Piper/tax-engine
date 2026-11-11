@@ -1,17 +1,6 @@
 """Class rates: a form's table of classes, each with its rate, its rules and its two factors.
 
-Each class is keyed by its number as printed, an exact `Decimal` so a class such as 10.1 is a
-number; it holds its `rate`, whether the half-year rule applies to it or it is exempt, whether
-recapture and a terminal loss apply to it or it is excluded, and two factors, the `aiip_factor` and
-the `riip_factor`. A class also states whether it has the half-year rule on sale
-(`half_year_rule_on_sale`) or not. A class may list `elections`, each a whole `code` above 0 and the
-`rate` a row takes when the caller elects that code, such as a reduced or increased rate a taxpayer
-elects for a property. The factors are `Fraction`s, the `fraction` kind's values, kept as given: a
-form can print a factor of 0 as well as one such as seven eighths. The table holds at least one
-class, no class number twice (by value), in the order given; a class it does not list is `None`. The
-table also holds the days in a full fiscal period, which a first fiscal period of fewer days is
-prorated against.
-The code holds no jurisdiction's tables.
+See docs/parameter-data.md.
 """
 
 from __future__ import annotations
@@ -70,11 +59,11 @@ class ClassElection:
 
 @dataclass(frozen=True)
 class ClassRate:
-    """One class: its positive `class_number`, its `rate`, its `half_year_rule`, its
-    `recapture_and_terminal_loss` and its `aiip_factor` and `riip_factor`, each a `Fraction`, its
-    `half_year_rule_on_sale` and its `elections`, none unless given, each code once.
+    """One class: its positive `class_number`, rates, rules and `Fraction` factors, and its
+    `elections`.
 
-    Anything else is refused when it is built.
+    `half_year_rule_on_sale` and `elections` default to none, each code once. Anything else is
+    refused when it is built.
     """
 
     class_number: Decimal

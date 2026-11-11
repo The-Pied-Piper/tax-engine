@@ -1,11 +1,6 @@
-"""The worksheet: one filled-in copy of a form.
+"""The worksheet: one filled-in copy of a form, holding the figures one run of it produced.
 
-A form (`tax_engine.domain.form`) is the blank: which lines it has and how they connect.
-A worksheet is
-the figures one run of it produced, so a form with several instances has one worksheet each.
-It starts with the computation's starting artifacts and records each capability's
-output artifacts as the capability is applied, holding it to its contract (design.md §3).
-It never decides what runs next; ordering belongs to the composition (§5).
+Records each capability's outputs and holds it to its contract (design.md §3).
 """
 
 from __future__ import annotations

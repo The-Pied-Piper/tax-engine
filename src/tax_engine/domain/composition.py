@@ -1,10 +1,7 @@
 """The composition: wired capabilities, checked and ordered (design.md §5).
 
-A composition is built once from capabilities and the artifact kinds a computation takes and
-returns, and which of its inputs may be left blank. An input that is also a declared output is
-carried onto the worksheet as entered, with no producer. It rejects bad wiring when built,
-derives the execution order from the capabilities' contracts, and computes by applying each
-capability, in that order, to a fresh worksheet.
+Rejects bad wiring when built and computes by applying each capability, in contract order, to a
+fresh worksheet.
 """
 
 from __future__ import annotations
@@ -67,15 +64,10 @@ class Composition:
     ) -> Worksheet:
         """Apply every capability, in `order`, to a fresh worksheet of the starting `artifacts`.
 
-        The starting artifacts must be exactly one of each declared input kind, and only a kind
-        declared in `blank_inputs` may be blank, else it is a BlankNotAllowedError. A capability
-        that produces a value below zero for a kind declared non-negative breaks its contract: its
-        `NegativeArtifactError` is raised as the `CapabilityContractError` naming it.
-        `form_title`, `figure_titles`, `figure_references` and `imported_figures` (label to title,
-        label to what the form prints beside the figure, label to the figure as the form it is
-        read from prints it) are only carried on the worksheet for
-        whoever reads its trace; they change nothing in the computation. `defaulted` names the
-        starting kinds that are the manifest's default, which the worksheet's trace says.
+        The starting artifacts are exactly one of each input kind; only a kind in `blank_inputs` may
+        be blank (else BlankNotAllowedError). A capability producing a value below zero for a
+        non-negative kind raises CapabilityContractError naming it. `form_title`, `figure_titles`,
+        `figure_references`, `imported_figures` and `defaulted` only annotate the worksheet's trace.
         """
         worksheet = Worksheet(
             *artifacts,

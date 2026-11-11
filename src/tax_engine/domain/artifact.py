@@ -1,19 +1,7 @@
-"""Artifacts: the named intermediate values that capabilities consume and produce.
+"""Artifacts: the named intermediate values that capabilities consume and produce (design.md §2).
 
-Ordering in the engine is expressed through artifacts, never through direct
-capability-to-capability dependencies (design.md §2). An `ArtifactKind[V]` names a kind of
-artifact by a namespaced identifier such as `ex/taxable_income` and states the type of its
-values; an `Artifact[V]` is one value of a kind, produced in one computation. Each package
-declares its kinds through one `ArtifactCatalog`, which only records them; the composition root
-registers each catalog explicitly with `ArtifactRegistry.register_catalog`.
-
-Every kind is one of the subclasses of `ArtifactKind`, which own what depends on the
-kind of value: how it is declared and what it refuses. What only some kinds
-have is a Protocol a kind matches by shape (`HasFloor`, `RecordField`, `YesNo`). The kinds are in
-kinds.py (amount, count, rate, text, digits and record list). A subclass declares itself on a
-catalog with its own `declare`. An amount or a count may be declared non-negative, and then no
-artifact of it holds a value below zero. Names come from the jurisdiction's own law or return,
-never from another system's.
+A kind names a value type by a namespaced identifier; a package declares its kinds on an
+`ArtifactCatalog`.
 """
 
 from __future__ import annotations
@@ -43,13 +31,8 @@ V = TypeVar("V")
 class HasFloor(Protocol):
     """A kind with a lowest value it holds, as a non-negative amount or count does.
 
-    Matched by shape: any kind with `is_below_floor` is one; `Artifact` and a record check it
-    before asking, so a kind of another sort (text, rate, digits) is never asked. An amount or
-    count kind always matches, whether or not it was declared non-negative; its answer is then
-    always no.
-
-    `value` is `Any` because the amount and count kinds narrow it to `Decimal` and `int`, which a
-    Protocol parameter of a wider type would not accept.
+    Matched by shape: any kind with `is_below_floor` is one. An amount or count kind always matches;
+    its answer is always no unless it was declared non-negative.
     """
 
     def is_below_floor(self, value: Any) -> bool:
@@ -82,13 +65,10 @@ class YesNo(Protocol):
 
 @dataclass(frozen=True)
 class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
-    """A kind of artifact, named by its identifier `<namespace>/<local id>`, and its value type.
+    """A kind of artifact, named by `<namespace>/<local id>`, with its value type.
 
-    Build one of its subclasses (amount, count, rate, text, digits and record-list kinds, all in
-    kinds.py); a package declares its own through an `ArtifactCatalog`, with the subclass's
-    `declare`. A subclass may refuse values (`check_value`); it never reads text, which the
-    adapters turn into finished values. What only some kinds have is a Protocol a kind matches by
-    shape: `HasFloor`, `RecordField` and `YesNo`.
+    Build one of its subclasses (kinds.py); a package declares it on an `ArtifactCatalog` with the
+    subclass's `declare`. A subclass may refuse values (`check_value`) but never reads text.
     """
 
     identifier: str
@@ -127,9 +107,7 @@ class ArtifactKind(Generic[V]):  # noqa: UP046  (invariant V, see above)
     def check_value(self, value: V) -> None:
         """Refuse `value`, already an instance of the value type, if this kind cannot hold it.
 
-        Called by `Artifact`; a kind accepts every instance unless a subclass says otherwise, as
-        `RecordListKind` does for a record list of other fields and `DigitsKind` for text that is
-        not its digits.
+        Called by `Artifact`; accepts every instance unless a subclass says otherwise.
         """
 
 
@@ -141,11 +119,9 @@ type Money = ArtifactKind[Decimal]
 class Artifact[T]:
     """One value of an artifact kind in one computation, checked against the kind's value type.
 
-    A `Decimal` that is NaN or infinite is an InvalidAmountError, whatever the kind. A value below
-    zero for a kind declared non-negative is a NegativeArtifactError; zero, signed or not, is
-    accepted. `BLANK` is accepted for any kind, whatever its value type: the artifact is then
-    blank (`is_blank`), the kind's checks are skipped, and reading its `value` is a
-    BlankValueError, since a blank has none.
+    A NaN or infinite `Decimal` is an InvalidAmountError; a value below zero for a non-negative kind
+    is a NegativeArtifactError (zero is accepted). `BLANK` is accepted for any kind: the kind's
+    checks are skipped and reading `value` is a BlankValueError.
     """
 
     kind: ArtifactKind[T]
@@ -193,9 +169,9 @@ class ArtifactRegistry(Registry[object]):
     def register_catalog(self, catalog: ArtifactCatalog) -> None:
         """Register every kind `catalog` declared under its identifier.
 
-        A kind already registered as that same object is skipped, so registering one catalog
-        twice is idempotent; an identifier taken by anything else is an error, and then nothing
-        from the catalog is registered.
+        Registering the same kind object again is skipped, so a catalog registers idempotently. An
+        identifier taken by another object is an error, and then nothing from the catalog is
+        registered.
         """
         pending = [kind for kind in catalog.kinds if self.identifier_of(kind) != kind.identifier]
         for kind in pending:
@@ -222,9 +198,8 @@ class ArtifactRegistry(Registry[object]):
     def kind(self, identifier: str) -> ArtifactKind[Any]:
         """The artifact kind registered as `identifier`.
 
-        An unknown identifier is the registry's UnknownRegistrationError; an entry that is not an
-        `ArtifactKind`, or a kind registered under another identifier than its own, is an
-        InvalidRegistrationError naming the identifier.
+        Raises UnknownRegistrationError for an unknown identifier and InvalidRegistrationError if
+        the entry is not an `ArtifactKind` or is registered under another identifier than its own.
         """
         item = self.get(identifier)
         if not isinstance(item, ArtifactKind):

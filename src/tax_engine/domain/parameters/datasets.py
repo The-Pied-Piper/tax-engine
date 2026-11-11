@@ -17,9 +17,8 @@ from tax_engine.domain.parameters.rounding import RoundingRule
 class ParameterDataset[T]:
     """One family's parameter values of one kind for one tax year, with rounding and sources.
 
-    `title` is the wording the form prints for the figure, when it prints any ("maximum per slip").
-
-    Refuses values that are not of its kind's type.
+    `title` is the wording the form prints for the figure, if any ("maximum per slip"). Raises if
+    the values are not of its kind's type.
     """
 
     family: str

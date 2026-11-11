@@ -1,11 +1,7 @@
-"""Jurisdiction manifest: which capabilities run for a jurisdiction, and from which tax year.
+"""Jurisdiction manifest: which capabilities run for a jurisdiction, and from which tax year
+(design.md §4).
 
-A manifest selects capabilities and fills their slots (design.md §4): parameter slots with
-families, artifact slots with artifact identifiers. The slots themselves are declared in code.
-A manifest is a flat set of forms, peers that together are the return (a form is a named group of
-selections with the artifacts it exports), and the declarations of the artifacts the computation
-starts from. Every form, input and field of a form's instances says whether it is required, and an
-optional input or field declares its default and basis; the YAML spelling is the loader's.
+A flat set of forms plus the declarations of the artifacts a computation starts from.
 """
 
 from __future__ import annotations
@@ -38,19 +34,11 @@ class CapabilitySelection:
     """One capability chosen by a manifest, with its slots filled by identifier.
 
     `params` maps parameter slots to families; `consumes` and `produces` map artifact slots to
-    artifact identifiers, and a consumed slot may instead map to a list of identifiers, kept in
-    order as a tuple. `blank` maps a consumed slot to what a blank in it does, a `BlankRule`: the
-    fallback value taken in its place, `PASS_ON`, or `COMPUTE` (the class decides in code); a slot
-    not named refuses a blank. For a list slot a class opens to it (`BLANK_PER_ITEM`), the name may
-    instead be the identifier of one artifact in the list, giving the rule for that part.
-    `blank_fields` maps a consumed record-list slot to what a blank field in its records does: each
-    field's identifier to a `BlankRule`. Each is kept as a read-only copy of what it was given.
-    `title` is the readable title of the one figure the selection produces, written by whoever
-    builds the manifest (the printed wording of the form's line); `None` for none. A selection
-    that produces several figures has no one figure to title, so it may not have one.
-    `reference` is what the form prints beside that figure to find it by ("65", "26000", "Box 3"),
-    free text because jurisdictions number their forms differently; a figure with one is on the
-    form, and one without is a step of the engine. The same rule applies: one figure, or none.
+    identifiers (a consumed slot may map to a list, kept as a tuple). `blank` maps a consumed slot,
+    or one artifact in a `BLANK_PER_ITEM` list, to a `BlankRule`; `blank_fields` maps a record-list
+    slot to a `BlankRule` per field. A slot not named refuses a blank. `title` and `reference` are
+    the printed wording and line label of the one figure the selection produces; `None` for none,
+    and a selection producing several figures may not have either.
     """
 
     name: str
@@ -98,16 +86,10 @@ class CapabilitySelection:
 class InputDeclaration:
     """How a manifest declares one input, or one field of a form's instances list.
 
-    `required` says whether every request must give it. A required one takes no `default` and no
-    `basis`; an optional one declares both: `default` is the finished artifact the request is read
-    as when it leaves the line out (a blank artifact is a declared blank, `None` is no default),
-    and `basis` is the printed sentence of the form that justifies the default, which nothing
-    checks against the form text.
-    `title` is the readable title of the figure, as the form prints it, and `reference` is what
-    the form prints beside it to find it by ("10400", "Box 14"), as for a capability selection;
-    either may be given to a required or an optional input, and `None` is none. A worksheet gives
-    them for an input its form reads and for a declared field of its form's `instances`; an input
-    no step of the form reads, and the `instances` list itself, have no figure to carry them.
+    A required input takes no `default` or `basis`; an optional one declares both. `default` is the
+    artifact read when the request leaves the line out (a blank artifact is a declared blank, `None`
+    is no default); `basis` is the form's printed sentence justifying it, which nothing checks.
+    `title` and `reference` are the figure's printed title and line label (`None` for none).
     """
 
     name: str
@@ -152,30 +134,12 @@ class InputDeclaration:
 class Form:
     """A named group of selections run once per instance, with the artifacts it exports.
 
-    A form is a peer of the others, not a capability: `instances` is the identifier of the
-    record-list kind the caller supplies, one record per instance, or `None` for a form without an
-    instances list, which has one instance; `exports` are the identifiers of the artifacts the form
-    produces, each readable by every form (itself aside) as `<name>.<local id of the export>`. All
-    are plain identifiers
-    `<namespace>/<snake_case>`: the dotted identifier is built by the engine, never written.
-    `exports` and `capabilities` (the form's selections) are kept as tuples copied from what was
-    given. The inputs of a form are not declared: they are derived from its selections.
-
-    `required` says whether the return must include the form. An optional form names the yes/no
-    artifact that says when it is needed in `required_when` (the machine form of its printed
-    "Complete this form if ..." sentence, which is kept as `basis`); a required form has neither,
-    and an optional form may not be gated by one of its own exports. A form with an instances list
-    declares each field of its records in `fields` (a field of a required form or of an attached
-    optional form is required only when the form is attached); a form without one has no fields.
-
-    A form without `instances` has a default instance list of one instance, and the limits apply to
-    its count. `max_instances` is the most instances a caller may give (an integer of at least 1;
-    `None` for no maximum) and `min_instances` the fewest (an integer of at least 0, 0 meaning no
-    minimum; `None` for none); the minimum may not be above the maximum. `exclusive_group` is an
-    identifier shared by forms of which at most one may have instances (`None` for no group).
-
-    `title` is the form's readable name, as the form prints it ("Schedule 8"), written by whoever
-    builds the manifest; `None` for none. The `name` stays the form's unique identifier.
+    `instances` is the record-list kind the caller supplies, one record per instance, or `None` for
+    a form with one instance and no `fields`. `exports` are readable by every other form as
+    `<name>.<local id>`. `required_when` is the yes/no artifact that makes an optional form needed
+    (the machine form of its printed `basis`); a required form has neither, and an optional form may
+    not be gated by its own export. `max_instances` is at least 1 and `min_instances` at least 0 and
+    not above it (`None` for none); forms sharing an `exclusive_group` may not both have instances.
     """
 
     name: str
@@ -194,9 +158,8 @@ class Form:
     def derived_kinds(self, kinds: ArtifactRegistry) -> tuple[RecordListKind, ...]:
         """The kind `<form>.<export>` of each of this form's exports a record can hold.
 
-        Each is a record list of the export's one field, in the order of the exports; `kinds`
-        resolves the export names. An export that is not an amount, a count or a record list (a
-        rate, say, or digits) has none: no other form reads it.
+        Each is a record list of the export's one field, in export order. An export that is not an
+        amount, a count or a record list has none.
         """
         namespace, _, form_id = self.name.partition("/")
         return tuple(
@@ -266,9 +229,9 @@ class Form:
     ) -> None:
         """Refuse limits no instance count could satisfy; the message does not name the form.
 
-        Each given limit must be an integer (a boolean is not): `max_instances` at least 1,
-        `min_instances` at least 0 and not above the maximum. A form without an instances list has
-        one instance, so a `min_instances` above 1 can never hold.
+        Each limit must be an integer: `max_instances` at least 1, `min_instances` at least 0 and
+        not above the maximum. A form without an instances list has one instance, so a
+        `min_instances` above 1 can never hold.
         """
         for field, value, least in (
             ("max_instances", max_instances, 1),
@@ -323,22 +286,11 @@ class Form:
 class Manifest:
     """One structural version of a jurisdiction's composition.
 
-    `forms` are the peers that together are the return, in a tuple of at least one form with
-    distinct names. `inputs` declare the artifacts a computation starts from, by identifier and
-    once each: a non-empty mapping, among them the instances kind of each form, which the caller
-    supplies with the rest. Each form's own inputs are derived from its selections. The
-    `required_when` of an optional form names a required input, an artifact one of the manifest's
-    selections produces.
-
-    A manifest is built with `artifacts`, the kinds the application declared, and is checked
-    against them when it is built: a manifest that exists is correct. The forms' exports are
-    resolved in `artifacts`; `kinds` is `artifacts` and the `<form>.<export>` kinds the forms
-    derive, the lookup for everything the manifest names. Every default is read through its kind
-    (`defaults`, and `field_defaults` by form name for the fields of a form's records); a default
-    no value of its kind could be, fields that are not those of the record-list kind a form takes
-    as instances, and a `required_when` that is not a yes/no (a count, 1 for yes and 0 for no)
-    are an InvalidManifestError. An identifier `artifacts` does not have is its
-    UnknownRegistrationError.
+    `forms` is a tuple of at least one form with distinct names; `inputs` declare the starting
+    artifacts once each, among them each form's instances kind. A manifest is checked against
+    `artifacts` (the application's kinds) when built, so one that exists is correct. `kinds` adds
+    the `<form>.<export>` kinds. An unresolvable default or `required_when` that is not a yes/no is
+    an InvalidManifestError; an unknown identifier is an UnknownRegistrationError.
     """
 
     jurisdiction: JurisdictionCode

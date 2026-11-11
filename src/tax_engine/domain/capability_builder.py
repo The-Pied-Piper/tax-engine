@@ -1,12 +1,7 @@
 """Builds one capability from a manifest selection (design.md §4).
 
-The selection fills slots by identifier. The builder resolves artifact kinds from the registry it
-is given; datasets are resolved by the caller. It checks the selection fills exactly the slots the
-capability class declares, each in its own section, and that each resolved dataset is the family
-the selection names and of the slot's kind; a list slot takes a list of distinct identifiers and
-is resolved to their kinds in the same order. Then it calls the constructor by keyword.
-Value types of kinds are the constructor's check; the builder re-raises the constructor's
-rejection naming the selection, and never calls ports.
+Resolves artifact kinds from the registry it is given (datasets come resolved from the caller),
+checks the selection fills exactly the class's slots, and calls the constructor by keyword.
 """
 
 from __future__ import annotations
@@ -46,13 +41,11 @@ class CapabilityBuilder:
     ) -> Capability:
         """A `cls` built from the resolved `datasets`, keyed by slot, and kinds from `artifacts`.
 
-        A list slot is resolved to a tuple of kinds, one per identifier in the order named.
-        Raises InvalidSelectionError naming the selection and slot if the selection does not fill
-        exactly `cls`'s slots, fills a list slot with other than a list of distinct identifiers or
-        another slot with a list, or a resolved dataset is missing, extra, or not what the
-        selection names; the constructor's InvalidCapabilityError (a kind of the wrong value type,
-        or one kind filling two slots) is re-raised as InvalidSelectionError naming the selection,
-        chained to it. Lookup errors from `artifacts.kind` propagate unchanged.
+        A list slot resolves to a tuple of kinds in the order named. Raises InvalidSelectionError
+        naming the selection and slot if the selection does not fill exactly `cls`'s slots, a list
+        and a single slot are mixed up, or a dataset is missing, extra or not what the selection
+        names. The constructor's InvalidCapabilityError is re-raised as InvalidSelectionError;
+        lookup errors from `artifacts.kind` propagate unchanged.
         """
         who = self._describe(selection)
         self._check_sections(selection, cls, who)
@@ -81,12 +74,10 @@ class CapabilityBuilder:
         artifacts: ArtifactRegistry,
         who: str,
     ) -> tuple[dict[str, BlankRule], dict[ArtifactKind[Any], BlankRule]]:
-        """What a blank does in each slot, or each kind in a list slot, the selection names:
-        its typed rule, as the YAML loader gave it.
+        """What a blank does in each slot, or each kind in a list slot, the selection names.
 
-        A name that is not a slot is the identifier of a consumed artifact: its rule is for that
-        kind alone, and `Capability.with_blank_rules` checks the slot takes one. Returns the rules
-        by slot and the rules by kind.
+        Returns the typed rules by slot and by kind. A name that is not a slot is the identifier of
+        a consumed artifact; `Capability.with_blank_rules` checks its slot takes one.
         """
         rules: dict[str, BlankRule] = {}
         per_item: dict[ArtifactKind[Any], BlankRule] = {}
@@ -119,11 +110,9 @@ class CapabilityBuilder:
         artifacts: ArtifactRegistry,
         who: str,
     ) -> dict[str, dict[ArtifactKind[Any], BlankRule]]:
-        """What a blank does in each record field the selection names under a slot: its typed
-        rule, as the YAML loader gave it, with the field's identifier looked up as a kind.
+        """What a blank does in each record field the selection names under a slot.
 
-        `Capability.with_blank_rules` checks the slot takes record fields and that the kind is a
-        field of its lists.
+        The field identifiers are looked up as kinds; `Capability.with_blank_rules` checks the rest.
         """
         per_field: dict[str, dict[ArtifactKind[Any], BlankRule]] = {}
         for slot, rules in selection.blank_fields.items():

@@ -1,19 +1,6 @@
 """The capability contract (design.md §3).
 
-A capability is pure mechanism. Its class declares, in code, named slots: parameter slots
-(`PARAMETERS`, slot -> parameter kind) and artifact slots (`CONSUMES` / `PRODUCES`, slot -> value
-type), each a keyword parameter of its constructor; a manifest fills them. A consumed slot may
-take a list of kinds of one value type (declared as `list[Decimal]`), so a capability's number of
-inputs can be left to the manifest. An instance consumes and produces the artifact kinds it was
-built with, and the worksheet holds it to that. The vocabulary is consume / produce only: there
-is no "modify". Any artifact can be blank (blank.py), so a class declares in `BLANK_ALLOWED` which
-of its consumed slots may ever be blank; the manifest says what a blank does in each of those
-(`with_blank_rules`), and the base applies it before `compute` runs, so `compute` sees a blank
-only in a slot whose rule is `COMPUTE`, where the class decides in code what the blank means. A
-list slot a class lists in `BLANK_PER_ITEM` may also be given a rule for one kind in it, which
-replaces the slot's own rule for that kind. A record-list slot a class lists in
-`BLANK_RECORD_FIELDS` may also be given a rule for each field of its records, applied to that field
-in every record before `compute` runs.
+Named slots a manifest fills, and the blank rules the base applies before `compute`.
 """
 
 from __future__ import annotations
@@ -64,12 +51,10 @@ _KEYWORD_CAPABLE = frozenset(
 class Capability(ABC):
     """A mechanism, built from named slots, that computes what it produces from what it consumes.
 
-    Subclasses may assign plain dicts to the slot mappings; each is exposed read-only, and every
-    slot is checked against the constructor when the subclass is defined. The constructor must be
-    written in the class body (a dataclass-generated `__init__` is not there yet when the check
-    runs), and each slot must be a named keyword parameter of it: `**kwargs` does not count. The
-    constructor passes its artifact slots, by name, to `super().__init__`, which checks them and
-    derives `consumes` and `produces`; parameter datasets stay on the subclass.
+    Subclasses may assign plain dicts to the slot mappings; each is exposed read-only and checked
+    against the constructor when the subclass is defined, so the constructor must be written in the
+    class body with each slot as a named keyword parameter (`**kwargs` does not count). It passes
+    its artifact slots to `super().__init__`; parameter datasets stay on the subclass.
     """
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[Any]]] = MappingProxyType({})
@@ -266,10 +251,9 @@ class Capability(ABC):
     def __init__(self, **slots: ArtifactKind[Any] | tuple[ArtifactKind[Any], ...]) -> None:
         """Wire the artifact slots declared in `CONSUMES` / `PRODUCES` with the kinds given by name.
 
-        A list slot takes a tuple of kinds (possibly empty); every other slot takes one kind.
-        Raises InvalidCapabilityError naming the class and the slot if one is missing, unknown,
-        not filled as declared with kinds of exactly its value type, or filled with a kind
-        another slot, or another place in the same list, has.
+        A list slot takes a tuple of kinds (possibly empty); every other slot takes one kind. Raises
+        InvalidCapabilityError naming the class and slot if a slot is missing, unknown, not filled
+        with kinds of exactly its value type, or filled with a kind another slot already has.
         """
         name = type(self).__name__
         declared = {**self.CONSUMES, **self.PRODUCES}
@@ -307,24 +291,15 @@ class Capability(ABC):
         per_item: Mapping[ArtifactKind[Any], BlankRule] | None = None,
         per_field: Mapping[str, Mapping[ArtifactKind[Any], BlankRule]] | None = None,
     ) -> Self:
-        """Give this capability what a blank does in each consumed slot named in `rules`, and
-        return it: the fallback value taken in its place, `PASS_ON`, or `COMPUTE`. A slot without
-        a rule refuses a blank.
+        """Set what a blank does in each consumed slot named in `rules`, and return this capability.
 
-        `per_item` gives the rule for one kind in a list slot listed in `BLANK_PER_ITEM`; it
-        replaces the slot's own rule for that kind, and the other kinds in the slot keep theirs.
-
-        `per_field` gives, for a record-list slot listed in `BLANK_RECORD_FIELDS`, the rule for
-        each field of its records, which holds for that field in every record of every list in the
-        slot. A field is a `Decimal` or `int` field, so a fallback is of its own type; a record-list
-        field can only be passed on or computed.
-
-        Raises InvalidCapabilityError naming the class and the slot if rules were already given,
-        a slot is not in `BLANK_ALLOWED`, a kind is not wired to a consumed slot or its slot is not
-        in `BLANK_PER_ITEM`, a slot is not in `BLANK_RECORD_FIELDS` or a field is not one of its
-        lists' fields, or a fallback is not a finite `Decimal` or `int` of exactly the
-        slot's value type or is not valid for a kind wired to the slot, such as a negative one for
-        a non-negative kind.
+        A rule is the fallback value taken in the blank's place, `PASS_ON` or `COMPUTE`; a slot
+        without one refuses a blank. `per_item` gives the rule for one kind in a `BLANK_PER_ITEM`
+        list slot, overriding the slot's own. `per_field` gives, for a `BLANK_RECORD_FIELDS` slot,
+        the rule for each record field; a record-list field can only be passed on or computed.
+        Raises InvalidCapabilityError if rules were already given, a slot, kind or field is not
+        allowed for them, or a fallback is not a finite value of the slot's type that its kind
+        accepts.
         """
         name = type(self).__name__
         if self._blank_rules_given:
@@ -480,20 +455,12 @@ class Capability(ABC):
     def run(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         """Apply the blank rules to `inputs`, then compute; only `Worksheet.apply` calls this.
 
-        A blank input takes the rule given for its own kind if there is one (`BLANK_PER_ITEM`),
-        else its slot's. A blank input with a fallback is replaced by an artifact of the fallback,
-        and the trace says so first, unless a `PASS_ON` slot is also blank: that wins over a
-        fallback as over `COMPUTE`, so the fallback is never used and the trace does not say it
-        was. A blank in a slot with no rule is a BlankNotAllowedError naming the line and the
-        slot; that refusal comes before anything else. Otherwise a blank in a `PASS_ON` slot gives
-        a blank artifact for every produced kind, with a trace line each and `compute` not
-        called. A blank field of a record in a `BLANK_RECORD_FIELDS` slot is treated the same way
-        with the rule given for that field, each blank naming its record by position: a fallback
-        replaces it in a new list, `PASS_ON` blanks the outputs, `COMPUTE` leaves it, and a field
-        with no rule is a BlankNotAllowedError naming the field, the record and the list.
-        Otherwise `compute` runs, and a blank in a `COMPUTE` slot reaches it as the blank
-        artifact; a blank among its outputs is a CapabilityContractError, since only a `PASS_ON`
-        rule makes an output blank.
+        A blank takes the rule for its own kind (`BLANK_PER_ITEM`), else its slot's; a blank record
+        field takes its field's rule. A blank with no rule is a BlankNotAllowedError, raised first.
+        A `PASS_ON` blank blanks every produced kind without calling `compute`, and wins over a
+        fallback. A fallback replaces the blank and the trace says so. A blank in a `COMPUTE` slot
+        reaches `compute`, whose blank output is a CapabilityContractError since only `PASS_ON`
+        makes an output blank.
         """
         name = type(self).__name__
         kept: list[Artifact[Any]] = []
@@ -597,9 +564,8 @@ class Capability(ABC):
 class CapabilityRegistry(Registry[type[Capability]]):
     """The capability classes packages contribute, by full identifier (`core/progressive_tax`).
 
-    A plain registry that whoever wires the application builds and fills: `register_class`
-    registers a class under the identifier `@capability` gave it. The inherited `register` takes
-    the key as given and skips namespace validation.
+    `register_class` registers a class under the identifier `@capability` gave it; the inherited
+    `register` takes the key as given and skips namespace validation.
     """
 
     def register_class[C: Capability](self, cls: type[C]) -> type[C]:
@@ -621,9 +587,7 @@ class CapabilityRegistry(Registry[type[Capability]]):
 def capability[C: Capability](*, identifier: str) -> Callable[[type[C]], type[C]]:
     """Class decorator giving a capability its full identifier, `<namespace>/<identifier>`.
 
-    `identifier` is the local id; the namespace comes from the package declaring `NAMESPACE`.
-    The decorator registers nothing: the composition root builds a `CapabilityRegistry` from the
-    packages' capabilities (`tax_engine.registrations.capabilities`).
+    The namespace comes from the package declaring `NAMESPACE`. The decorator registers nothing.
     """
 
     def stamp(cls: type[C]) -> type[C]:
