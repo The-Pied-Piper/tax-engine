@@ -46,3 +46,22 @@ def test_schedule_8_exports_the_cpp_figures_the_t1_and_on428_read() -> None:
         "ca/schedule_8_cpp_base_contributions_on_return",
         "ca/schedule_8_cpp_enhanced_contributions_on_return",
     }
+
+
+def test_the_federal_forms_are_imported_in_the_order_the_manifest_lists_them() -> None:
+    names = [form.name for form in _manifest().forms]
+
+    imported = [
+        "ca/t1_taxable_income",
+        "ca/t1_tax_and_credits",
+        "ca/schedule_6",
+        "ca/schedule_8",
+        "ca/t2204",
+    ]
+    assert names[1 : 1 + len(imported)] == imported
+
+
+def test_the_t1_reads_the_provincial_tax_ontario_supplies() -> None:
+    (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
+
+    assert dict(on428.supplies) == {"ca/provincial_tax.amount": "ca-on/on428_ontario_tax_line_90"}
