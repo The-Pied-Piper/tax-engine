@@ -39,11 +39,8 @@ class Worksheet:
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> None:
-        """A worksheet of the starting `artifacts`. One whose kind is in `defaulted` (the caller
-        left it out or gave it blank, and the manifest's default is what is read) has a
-        `DefaultedInputLine`, unless it is blank or not an amount or a count. A blank one has no
-        row of its own: each step that takes a fallback for it, or is blank because of it, says so.
-        Defaults of a record's fields are not traced.
+        """A worksheet of the starting `artifacts`. One whose kind is in `defaulted` has a
+        `DefaultedInputLine`: the manifest's default is what is read.
         """
         self._check_artifacts(artifacts)
         defaulted_kinds = frozenset(defaulted)
