@@ -21,7 +21,6 @@ from textwrap import dedent
 
 import pytest
 
-import tax_engine.jurisdictions.ca_on
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -50,9 +49,9 @@ from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca.catalog.rc381_cpp_qpp import (
     T4_CPP_PENSIONABLE_EARNINGS_OUTSIDE_QUEBEC,
 )
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME
 
 D = Decimal
-TAKE_HOME = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "take_home"
 HEADER = dedent("""\
     jurisdiction: CA-ON
     version: 1
