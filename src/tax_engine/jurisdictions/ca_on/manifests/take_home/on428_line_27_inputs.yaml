@@ -7,3 +7,5 @@ inputs:
     required: false
     default: "0"
     basis: 'Line 27 and line 58360: Pension income amount (maximum $1,762)'
+    title: "Pension income amount"
+    reference: "27"

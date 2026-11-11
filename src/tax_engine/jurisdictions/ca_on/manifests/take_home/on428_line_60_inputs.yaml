@@ -7,3 +7,5 @@ inputs:
     required: false
     default: null
     basis: 'Line 60 and line 61540: Enter whichever is less: amount from line 58 or line 59'
+    title: "Ontario minimum tax carryover"
+    reference: "60"

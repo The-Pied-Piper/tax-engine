@@ -7,3 +7,5 @@ inputs:
     required: false
     default: null
     basis: 'Line 82: Provincial foreign tax credit (complete Form T2036)'
+    title: "Provincial foreign tax credit"
+    reference: "82"

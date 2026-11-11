@@ -7,3 +7,5 @@ inputs:
     required: false
     default: null
     basis: 'Line 43 and line 58769: Line 41 plus line 42'
+    title: "Medical expenses"
+    reference: "43"

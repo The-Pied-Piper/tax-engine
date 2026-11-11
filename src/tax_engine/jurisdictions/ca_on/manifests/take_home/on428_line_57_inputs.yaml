@@ -7,3 +7,5 @@ inputs:
     required: false
     default: null
     basis: 'Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)'
+    title: "Ontario dividend tax credit"
+    reference: "57"
