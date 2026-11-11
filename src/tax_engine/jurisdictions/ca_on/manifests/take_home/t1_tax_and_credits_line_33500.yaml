@@ -8,7 +8,6 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/sum
-    title: "Total of the non-refundable credit amounts"
     reference: "33500"
     params:
       rounding: ca/cent_rounding

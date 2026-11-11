@@ -20,7 +20,6 @@ capabilities:
     produces:
       output: ca/federal_tax_taxable_income_line_70
   - name: core/bracket_column_lower_bound
-    title: "Bracket lower bound"
     reference: "71"
     params:
       schedule: ca/brackets
@@ -29,7 +28,6 @@ capabilities:
     produces:
       output: ca/federal_bracket_lower_bound_line_71
   - name: core/subtract_not_below_zero
-    title: "Taxable income over the lower bound"
     reference: "72"
     params:
       rounding: ca/cent_rounding
@@ -39,7 +37,7 @@ capabilities:
     produces:
       output: ca/federal_taxable_income_over_lower_bound_line_72
   - name: core/bracket_column_rate
-    title: "Bracket column rate"
+    title: "Rate"
     reference: "73"
     params:
       schedule: ca/brackets
@@ -57,7 +55,6 @@ capabilities:
     produces:
       output: ca/federal_excess_times_column_rate_line_74
   - name: core/bracket_column_tax_at_start
-    title: "Tax at the column's start"
     reference: "75"
     params:
       schedule: ca/brackets
