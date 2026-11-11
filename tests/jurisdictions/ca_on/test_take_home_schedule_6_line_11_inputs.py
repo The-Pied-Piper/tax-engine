@@ -24,7 +24,7 @@ PRINTED_BASIS = (
     "Line 11: Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)"
 )
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/schedule_6_line_11_inputs.yaml"
+    "manifests/2025/schedule_6_line_11_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

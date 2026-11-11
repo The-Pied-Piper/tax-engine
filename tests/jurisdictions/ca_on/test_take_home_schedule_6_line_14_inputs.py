@@ -32,7 +32,7 @@ PRINTED_BASIS = (
     "less from column 2: amount from line 5 or line 12. (maximum $16,386)"
 )
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/take_home/schedule_6_line_14_inputs.yaml"
+    "manifests/2025/schedule_6_line_14_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON
