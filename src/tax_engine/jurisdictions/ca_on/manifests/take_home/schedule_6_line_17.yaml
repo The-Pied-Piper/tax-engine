@@ -5,6 +5,7 @@ form:
   name: ca/schedule_6
 capabilities:
   - name: core/credit_amount
+    title: "Base amount"
     reference: "17"
     params:
       amount: ca/cwb_base_amount
