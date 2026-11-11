@@ -1,11 +1,7 @@
 """The jurisdiction packages: where each keeps its data, and registering their catalogs.
 
-A package declares only `NAMESPACE = "..."` in its `__init__.py`; its directory is the one holding
-that file, with `catalog.py`, `manifests/` and `parameters/` inside (core has no manifests
-or parameters). The YAML sources read under these directories; `register` imports each `catalog`
-module and registers its `CATALOG` into an artifact registry, `register_capabilities` walks each
-`capabilities` package into a capability registry and `register_parameter_parsers` walks each
-`parameter_parsers` package into a parser registry, when the composition root asks.
+A package declares `NAMESPACE` in its `__init__.py`; the `register*` functions fill the registries
+they are given.
 """
 
 from __future__ import annotations
@@ -54,10 +50,8 @@ class JurisdictionPackages:
     def register(self, registry: ArtifactRegistry) -> None:
         """Register every package's catalog, its `catalog` module's `CATALOG`, into `registry`.
 
-        Registering again is idempotent. Every catalog is looked up first, so a package without
-        a catalog in its own namespace registers nothing; an identifier clashing with one
-        already in `registry` is an error, which can leave the catalogs registered before it in
-        place.
+        Registering again is idempotent. An identifier clashing with one already in `registry` is an
+        error that can leave the catalogs registered before it in place.
         """
         catalogs = [self._catalog(name, namespace) for name, namespace in self._namespaces.items()]
         for catalog in catalogs:
@@ -66,10 +60,9 @@ class JurisdictionPackages:
     def register_capabilities(self, registry: CapabilityRegistry) -> None:
         """Register the capabilities of every package, found by walking its `capabilities` package.
 
-        A package without a `capabilities` package contributes none. Every package is walked
-        first, so an import error registers nothing. Registering again is idempotent; an
-        identifier taken by another class is an error, which can leave the capabilities
-        registered before it in place.
+        Every package is walked first, so an import error registers nothing. Registering again is
+        idempotent; an identifier taken by another class is an error that can leave earlier
+        registrations in place.
         """
         found = [
             cls
@@ -83,9 +76,8 @@ class JurisdictionPackages:
     def register_parameter_parsers(self, registry: ParameterParserRegistry) -> None:
         """Register the parsers of every package, found by walking its `parameter_parsers` package.
 
-        A package without a `parameter_parsers` package contributes none. Every package is walked
-        first, so an import error registers nothing. Registering again is idempotent; a kind another
-        class's parser holds is an error.
+        Every package is walked first, so an import error registers nothing. Registering again is
+        idempotent; a kind another class's parser holds is an error.
         """
         found = [
             cls

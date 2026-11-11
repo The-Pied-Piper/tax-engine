@@ -1,13 +1,7 @@
 """EnglishNames: how a trace line's text names a figure.
 
-A figure is named the way the form prints it: by its reference ("line 4", "line B") when the form
-prints one, otherwise by its title in quotes, and when it has neither (a step of the engine the
-form does not print) by its internal label in plain words, never by an invented title.
-A trace line's own figure is not named in its sentence: the line already carries its label, and
-the form's title and reference for it come from the worksheet beside the text.
-A fixed figure from a dataset is named by the wording the form prints for it (the dataset's
-`title`, such as "maximum per slip"), written without quotes after "the" because it is a
-phrase beside the figure rather than a line title; with no title, by its family in plain words.
+By the form's reference ("line 4"), else its title in quotes, else its label in plain words; a
+dataset's figure by its `title`.
 """
 
 from __future__ import annotations

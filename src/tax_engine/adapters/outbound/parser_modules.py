@@ -1,8 +1,7 @@
 """Finding the parameter parsers of a package by walking its modules, so no list names them.
 
-A parser package is any package whose modules define parser classes (decorated with
-`@parameter_parser`, declaring their `kind`). `parsers_in` imports every module under it and
-returns the parser classes each one defines, so adding a parser is adding its module.
+`parsers_in` imports every module under a package and returns the `@parameter_parser` classes each
+defines.
 """
 
 from __future__ import annotations
