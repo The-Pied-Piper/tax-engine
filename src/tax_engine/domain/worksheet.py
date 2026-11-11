@@ -24,7 +24,7 @@ from tax_engine.domain.errors import (
     MissingArtifactError,
 )
 from tax_engine.domain.figure_names import ImportedFigure
-from tax_engine.domain.trace import DefaultedInputLine, LeftBlankLine, TraceLine
+from tax_engine.domain.trace import DefaultedInputLine, TraceLine
 
 
 class Worksheet:
@@ -39,10 +39,8 @@ class Worksheet:
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> None:
-        """A worksheet of the starting `artifacts`. A blank one has a `LeftBlankLine`; one whose
-        kind is in `defaulted` (the caller left it out or gave it blank, and the manifest's default
-        is what is read) has a `DefaultedInputLine`, unless it is blank or not an amount or a
-        count. Defaults of a record's fields are not traced.
+        """A worksheet of the starting `artifacts`. One whose kind is in `defaulted` has a
+        `DefaultedInputLine`: the manifest's default is what is read.
         """
         self._check_artifacts(artifacts)
         defaulted_kinds = frozenset(defaulted)
@@ -59,9 +57,11 @@ class Worksheet:
             if artifact.kind in self._artifacts:
                 raise DuplicateArtifactError(f"two starting values for {artifact.kind.label!r}")
             self._artifacts[artifact.kind] = artifact
-            if artifact.is_blank:
-                self._trace.append(LeftBlankLine(artifact.kind))
-            elif artifact.kind in defaulted_kinds and _is_number(artifact.value):
+            if (
+                not artifact.is_blank
+                and artifact.kind in defaulted_kinds
+                and _is_number(artifact.value)
+            ):
                 self._trace.append(DefaultedInputLine(artifact.kind, artifact.value))
 
     @property

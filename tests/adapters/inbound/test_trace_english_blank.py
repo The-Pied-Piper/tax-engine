@@ -12,7 +12,6 @@ from tax_engine.domain.trace import (
     BlankFallbackLine,
     BlankPassedOnLine,
     DefaultedInputLine,
-    LeftBlankLine,
     TraceLine,
 )
 
@@ -30,12 +29,8 @@ def test_the_blank_renderer_module_registers_each_line() -> None:
     assert english_blank.__name__ == "tax_engine.adapters.inbound.trace_english.blank"
     registry = EnglishRendererRegistry.shared()
 
-    for line_class in (LeftBlankLine, BlankFallbackLine, BlankPassedOnLine, DefaultedInputLine):
+    for line_class in (BlankFallbackLine, BlankPassedOnLine, DefaultedInputLine):
         assert registry.for_line_class(line_class).line_class is line_class
-
-
-def test_a_line_left_blank() -> None:
-    assert render(LeftBlankLine(CHART_GAIN)) == "Left blank."
 
 
 def test_a_blank_taken_as_a_fallback() -> None:
@@ -54,7 +49,6 @@ def test_a_blank_passed_on() -> None:
 
 
 def test_a_blank_line_has_no_figure_but_the_fallback_and_the_default() -> None:
-    assert LeftBlankLine(CHART_GAIN).amount == 0
     assert BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)).amount == 0
     assert BlankFallbackLine(DEDUCTION, Decimal("3")).amount == 3
 

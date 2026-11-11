@@ -19,7 +19,6 @@ from tax_engine.domain.trace import (
     BlankFieldFallbackLine,
     BlankPassedOnLine,
     FormInstanceLine,
-    LeftBlankLine,
     SubtractedLine,
     TraceLine,
 )
@@ -42,7 +41,7 @@ LINE_CLASSES = _line_classes()
 
 
 def test_every_line_type_is_found() -> None:
-    assert len(LINE_CLASSES) == 63
+    assert len(LINE_CLASSES) == 62
 
 
 @pytest.mark.parametrize("cls", LINE_CLASSES, ids=[cls.__name__ for cls in LINE_CLASSES])
@@ -65,7 +64,6 @@ def test_the_blank_lines_are_labelled_with_the_blank_figure() -> None:
     records = AmountKind("ex/units")
     total = AmountKind("ex/total")
 
-    assert LeftBlankLine(rent).label == "rent"
     assert BlankFallbackLine(rent, 0).label == "rent"
     assert BlankFieldFallbackLine(BlankField(rent, records, 2), 0).label == "rent"
     assert BlankPassedOnLine(total, (rent,)).label == "total"
@@ -74,7 +72,12 @@ def test_the_blank_lines_are_labelled_with_the_blank_figure() -> None:
 def test_lines_about_one_figure_share_its_label() -> None:
     rent = AmountKind("ex/rent")
 
-    assert LeftBlankLine(rent).label == BlankFallbackLine(rent, 0).label
+    records = AmountKind("ex/units")
+
+    assert (
+        BlankFieldFallbackLine(BlankField(rent, records, 1), 0).label
+        == BlankFallbackLine(rent, 0).label
+    )
 
 
 def test_a_form_instance_is_not_about_a_figure() -> None:
