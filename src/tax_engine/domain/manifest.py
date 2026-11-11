@@ -105,7 +105,9 @@ class InputDeclaration:
     checks against the form text.
     `title` is the readable title of the figure, as the form prints it, and `reference` is what
     the form prints beside it to find it by ("10400", "Box 14"), as for a capability selection;
-    either may be given to a required or an optional input, and `None` is none.
+    either may be given to a required or an optional input, and `None` is none. A worksheet gives
+    them for an input its form reads and for a declared field of its form's `instances`; an input
+    no step of the form reads, and the `instances` list itself, have no figure to carry them.
     """
 
     name: str

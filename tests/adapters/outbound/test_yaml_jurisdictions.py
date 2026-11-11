@@ -2117,7 +2117,7 @@ def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Pat
 def test_an_input_title_or_reference_must_be_a_non_blank_string(
     tmp_path: Path, key: str, given: str
 ) -> None:
-    with pytest.raises(InvalidManifestError):
+    with pytest.raises(InvalidManifestError, match=f"{key} must"):
         load_parts(
             tmp_path,
             {

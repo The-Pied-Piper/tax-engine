@@ -52,11 +52,6 @@ from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
 
 
-def kinds_of_fields(instances: RecordListKind | None) -> tuple[ArtifactKind[Any], ...]:
-    """The kinds of the fields of the records of `instances`; none for a form without them."""
-    return () if instances is None else tuple(instances.fields)
-
-
 class FormComposition:
     """One form wired: the capabilities of form `name` as an inner `Composition`.
 
@@ -113,7 +108,9 @@ class FormComposition:
         produced = {kind for capability in wired for kind in capability.produces}
         read = {kind for capability in wired for kind in capability.consumes} | set(listed)
         self._form = form
-        by_name = {kind.identifier: kind for kind in kinds_of_fields(instances)}
+        by_name = {} if instances is None else {kind.identifier: kind for kind in instances.fields}
+        # A field the form's `instances` does not have is the manifest's own check to refuse; here
+        # it is skipped. A title and a reference are only for the input kinds the form reads.
         printed = [(kinds.kind(d.name), d) for d in declared if kinds.kind(d.name) in read] + [
             (by_name[d.name], d) for d in form.fields if d.name in by_name
         ]
@@ -121,7 +118,8 @@ class FormComposition:
             (kinds.kind(next(iter(selection.produces.values()))), selection)
             for selection in form.capabilities
         ]
-        # An input is never also produced (the composition refuses it), so the two never clash.
+        # A kind that is an input is never also produced (the composition refuses it), so an
+        # input's entry and a step's never share a kind.
         self._figure_titles = {
             kind.label: found.title for kind, found in printed if found.title is not None
         } | {kind.label: found.title for kind, found in produced_by if found.title is not None}
