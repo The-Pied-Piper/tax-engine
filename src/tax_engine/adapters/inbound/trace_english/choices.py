@@ -38,8 +38,10 @@ class ChosenByCountRenderer:
         count = line.count
         chosen_kind = line.chosen_kind
         chosen = line.chosen_value
+        verdict = "is 0" if count == 0 else "is not 0"
         return (
-            f"{names.figure(chosen_kind, chosen)}, chosen because {names.figure(count_kind, count)}"
+            f"{names.figure(chosen_kind, chosen)}, chosen because "
+            f"{names.figure(count_kind, count)} {verdict}"
         )
 
 

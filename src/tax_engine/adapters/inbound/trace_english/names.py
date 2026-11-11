@@ -67,7 +67,10 @@ class EnglishNames:
 
     def of(self, figure: Labelled) -> str:
         """The name of `figure` for a sentence."""
-        label = figure.label
+        return self.of_label(figure.label)
+
+    def of_label(self, label: str) -> str:
+        """The name of the figure `label` for a sentence."""
         if self._printed is None:
             return _plain_words(label)
         reference = self._printed.reference(label)

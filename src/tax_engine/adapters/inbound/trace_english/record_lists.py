@@ -142,5 +142,7 @@ class ItemLesserOfRenderer:
         parts = line.parts
         result = line.result
         terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in parts])
+        if len(parts) == 1:
+            return f"Item {position}: {terms} gives {EnglishFigures.money(result)}"
         word = "lesser" if len(parts) == 2 else "least"
         return f"Item {position}: {word} of {terms} gives {EnglishFigures.money(result)}"

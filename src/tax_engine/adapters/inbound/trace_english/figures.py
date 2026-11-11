@@ -31,13 +31,10 @@ class EnglishFigures:
     @staticmethod
     def money(amount: Decimal) -> str:
         """`amount` in cents or finer, e.g. 70000 -> "70000.00" and 0.125 -> "0.125"."""
-        exponent = amount.as_tuple().exponent
-        shown = (
-            amount.quantize(Decimal("0.01"))
-            if isinstance(exponent, int) and exponent > -2
-            else amount
-        )
-        return format(shown, "f")  # fixed-point, every digit; never an exponent
+        text = format(amount, "f")  # fixed-point, every digit; never an exponent
+        whole, _, cents = text.partition(".")
+        shown = f"{whole}.{cents.ljust(2, '0')}"
+        return "0.00" if shown == "-0.00" else shown
 
     @staticmethod
     def rounding(rule: RoundingRule) -> str:

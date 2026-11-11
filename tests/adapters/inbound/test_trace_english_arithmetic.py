@@ -102,7 +102,7 @@ def test_a_sign_chosen_difference_that_is_negative() -> None:
     line = SignChosenDifferenceLine(OUT, BONUS, D("-5"), FLOOR, D("10"), WAGES, D("30"), D("-10"))
 
     assert render(line) == (
-        "Bonus (-5.00) is negative, so the lesser of floor (10.00) and wages (30.00), "
+        "Bonus (-5.00) is negative, so the lesser of floor (10.00) and the size of wages (30.00), "
         "as a negative, gives -10.00."
     )
 
@@ -186,7 +186,7 @@ def test_a_threshold_gate_that_is_not_met() -> None:
     )
 
     assert render(line) == (
-        "0, because income (700.00) is below 800.00, so wages (500.00) does not apply."
+        "0.00, because income (700.00) is below 800.00, so wages (500.00) does not apply."
     )
 
 
@@ -305,7 +305,7 @@ def test_an_amount_when_one_figure_is_more_than_another() -> None:
     assert render(more) == (
         "Bonus (50.00), because income (900.00) is more than floor (800.00), gives 50.00."
     )
-    assert render(not_more) == "0, because income (800.00) is not more than floor (800.00)."
+    assert render(not_more) == "0.00, because income (800.00) is not more than floor (800.00)."
 
 
 def test_figures_are_named_as_lines_when_the_form_prints_references() -> None:
@@ -351,7 +351,7 @@ def test_a_multiple_over_is_the_multiple_less_the_amount_not_the_part_over() -> 
     )
 
     assert render(line) == (
-        "2.00 × wages (100.00) less bonus (50.00), not below 0, gives 150.00 "
+        "2 × wages (100.00) less bonus (50.00), not below 0, gives 150.00 "
         "(rounded to the nearest cent)."
     )
 

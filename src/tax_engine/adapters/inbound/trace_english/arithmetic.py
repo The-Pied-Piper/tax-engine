@@ -140,7 +140,7 @@ class SignChosenDifferenceRenderer:
             )
         return (
             f"{names.figure(line.sign, line.sign_amount)} is negative, so the lesser of "
-            f"{names.figure(line.reference, line.reference_amount)} and "
+            f"{names.figure(line.reference, line.reference_amount)} and the size of "
             f"{names.figure(line.difference, line.difference_amount)}, as a negative, "
             f"gives {EnglishFigures.money(line.result)}"
         )
@@ -215,6 +215,8 @@ class LesserOfRenderer:
         """The English sentence for `line`."""
         terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in line.parts])
         word = "Lesser" if len(line.parts) == 2 else "Least"
+        if len(line.parts) == 1:
+            return f"{terms} gives {EnglishFigures.money(line.result)}"
         return f"{word} of {terms} gives {EnglishFigures.money(line.result)}"
 
 
@@ -249,6 +251,8 @@ class GreaterOfRenderer:
         """The English sentence for `line`."""
         terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in line.parts])
         word = "Greater" if len(line.parts) == 2 else "Greatest"
+        if len(line.parts) == 1:
+            return f"{terms} gives {EnglishFigures.money(line.result)}"
         return f"{word} of {terms} gives {EnglishFigures.money(line.result)}"
 
 
@@ -276,7 +280,7 @@ class MultipleOverRenderer:
     def render(self, line: MultipleOverLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         return (
-            f"{EnglishFigures.money(line.factor.value)} × "
+            f"{format(line.factor.value.normalize(), 'f')} × "
             f"{names.figure(line.base, line.base_amount)} less "
             f"{names.figure(line.less, line.less_amount)}, not below 0, gives "
             f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
@@ -430,7 +434,10 @@ class ThresholdGateRenderer:
                 f"{amount}, because {gate} is at least {threshold}, gives "
                 f"{EnglishFigures.money(line.result)} ({rounded})"
             )
-        return f"0, because {gate} is below {threshold}, so {amount} does not apply"
+        return (
+            f"{EnglishFigures.money(line.result)}, because {gate} is below {threshold}, "
+            f"so {amount} does not apply"
+        )
 
 
 @english_renderer
@@ -605,4 +612,4 @@ class AmountWhenMoreRenderer:
                 f"{names.figure(line.amount_kind, line.amount_value)}, because {more} is more "
                 f"than {than}, gives {EnglishFigures.money(line.result)}"
             )
-        return f"0, because {more} is not more than {than}"
+        return f"{EnglishFigures.money(line.result)}, because {more} is not more than {than}"

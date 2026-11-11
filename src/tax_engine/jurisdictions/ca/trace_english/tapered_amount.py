@@ -4,6 +4,8 @@ renderer class per line class, each registered with `@english_renderer`.
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
@@ -19,8 +21,10 @@ class TaperedAmountRenderer:
     def render(self, line: TaperedAmountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         taper = line.taper
-        # The amount taken off, from the rounded result.
-        reduction = taper.base + taper.supplement - line.result
+        # The amount taken off, in cents for reading; the exact fraction is on the line.
+        reduction = (
+            Decimal(line.reduction.numerator) / Decimal(line.reduction.denominator)
+        ).quantize(Decimal("0.01"))
         return (
             f"{EnglishFigures.money(taper.base)} plus {EnglishFigures.money(taper.supplement)}, "
             f"less {EnglishFigures.money(reduction)} (the reduction for "

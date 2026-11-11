@@ -26,4 +26,14 @@ class FormInstanceRenderer:
         """
         prefix = f"Form {line.form}, instance {line.position}: "
         sentences = EnglishTraceRenderer().render_all(line.lines, names.printed)
-        return "\n".join(f"{prefix}{sentence}" for sentence in sentences)
+        return "\n".join(
+            f"{prefix}{sentence}"
+            if inner.label is None
+            else f"{prefix}{_capitalised(names.of_label(inner.label))}: {sentence}"
+            for inner, sentence in zip(line.lines, sentences, strict=True)
+        )
+
+
+def _capitalised(name: str) -> str:
+    """`name` with its first letter capitalised."""
+    return name[:1].upper() + name[1:]

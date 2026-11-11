@@ -139,8 +139,9 @@ class AmountByBandRenderer:
             )
         else:
             how = f"the amount is {EnglishFigures.money(line.result)}"
+        position = "is over" if line.base_amount > line.over else "is in the band starting at"
         return (
-            f"{names.figure(line.base, line.base_amount)} is over "
+            f"{names.figure(line.base, line.base_amount)} {position} "
             f"{EnglishFigures.money(line.over)}, "
             f"so {how} ({EnglishFigures.rounding(line.rounding)})"
         )

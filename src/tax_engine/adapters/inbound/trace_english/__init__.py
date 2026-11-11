@@ -26,13 +26,14 @@ from tax_engine.adapters.inbound.trace_english import (
     renderer,
 )
 from tax_engine.adapters.inbound.trace_english.line_renderer import LineRenderer
-from tax_engine.adapters.inbound.trace_english.names import EnglishNames, FigureNames
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames, FigureNames, Labelled
 from tax_engine.adapters.inbound.trace_english.renderer import EnglishTraceRenderer
 
 __all__ = [
     "EnglishNames",
     "EnglishTraceRenderer",
     "FigureNames",
+    "Labelled",
     "LineRenderer",
     "arithmetic",
     "blank",

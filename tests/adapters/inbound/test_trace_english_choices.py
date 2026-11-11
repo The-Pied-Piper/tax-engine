@@ -27,10 +27,10 @@ def render(line: TraceLine) -> str:
 
 def test_a_candidate_chosen_by_a_count() -> None:
     assert render(ChosenByCountLine(OUT, CHILDREN, 0, CREDIT, D("500"))) == (
-        "Credit (500.00), chosen because children (0)."
+        "Credit (500.00), chosen because children (0) is 0."
     )
     assert render(ChosenByCountLine(OUT, CHILDREN, 2, CREDIT, D("750.5"))) == (
-        "Credit (750.50), chosen because children (2)."
+        "Credit (750.50), chosen because children (2) is not 0."
     )
 
 

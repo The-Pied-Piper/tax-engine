@@ -489,7 +489,7 @@ def test_the_english_sentence_shows_a_reduction_above_the_supplement_before_the_
     trace = capability().compute((Artifact(INCOME, D("80000")),)).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "1000.00 plus 500.00, less 500.00 (the reduction for income (80000.00) over 20000.00, "
+        "1000.00 plus 500.00, less 3000.00 (the reduction for income (80000.00) over 20000.00, "
         "spread over a range of 10000.00), not below 1000.00, gives 1000.00 (not rounded).",
     )
 
@@ -497,12 +497,12 @@ def test_the_english_sentence_shows_a_reduction_above_the_supplement_before_the_
 def test_the_english_sentence_shows_the_amount_taken_off_for_a_reduction_with_no_decimal_form() -> (
     None
 ):
-    # 500 × 60000 / 7000 = 30000/7, no decimal form, and above the supplement: the whole
-    # supplement comes off, and the sentence works from the result, so it never needs the fraction.
+    # 500 × 60000 / 7000 = 30000/7 = 4285.71…, no decimal form: shown to the cent, above the
+    # supplement, so the floor decides the result.
     trace = capability(taper(values(range="7000"))).compute((Artifact(INCOME, D("80000")),)).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "1000.00 plus 500.00, less 500.00 (the reduction for income (80000.00) over 20000.00, "
+        "1000.00 plus 500.00, less 4285.71 (the reduction for income (80000.00) over 20000.00, "
         "spread over a range of 7000.00), not below 1000.00, gives 1000.00 (not rounded).",
     )
 
