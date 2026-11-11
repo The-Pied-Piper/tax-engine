@@ -2112,6 +2112,22 @@ def test_an_input_may_give_the_title_and_reference_the_form_prints(tmp_path: Pat
     assert manifest.inputs["ex/credit"].reference is None
 
 
+@pytest.mark.parametrize("key", ["title", "reference"])
+@pytest.mark.parametrize("given", ['""', '"   "', "null", "5", "[]"])
+def test_an_input_title_or_reference_must_be_a_non_blank_string(
+    tmp_path: Path, key: str, given: str
+) -> None:
+    with pytest.raises(InvalidManifestError):
+        load_parts(
+            tmp_path,
+            {
+                "01-inputs.yaml": (
+                    f"inputs:\n  - {{name: ex/income, required: true, {key}: {given}}}\n"
+                )
+            },
+        )
+
+
 @pytest.mark.parametrize(
     ("entry", "message"),
     [

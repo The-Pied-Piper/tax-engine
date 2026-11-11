@@ -277,6 +277,35 @@ def test_a_worksheet_carries_the_title_and_reference_of_the_inputs_it_reads() ->
     assert sheet.title(STEP_TOTAL.label) is None
 
 
+def test_a_worksheet_leaves_out_the_title_of_an_input_the_form_does_not_read() -> None:
+    titled = composition(
+        "ex/titled",
+        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
+        exports=[STEP_TOTAL],
+        starting=frozenset({AMOUNT, COSTS}),
+        declared=[InputDeclaration(COSTS.identifier, True, title="Costs", reference="9")],
+    )
+
+    assert titled.figure_titles == {}
+    assert titled.figure_references == {}
+
+
+def test_a_worksheet_carries_the_title_and_reference_of_a_declared_instance_field() -> None:
+    shop_form = composition(
+        "ex/shop",
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        instances=SHOPS,
+        exports=[PROFIT],
+        fields=(
+            InputDeclaration(SALES.identifier, True, title="Sales", reference="1"),
+            InputDeclaration(COSTS.identifier, True),
+        ),
+    )
+
+    assert shop_form.figure_titles == {SALES.label: "Sales"}
+    assert shop_form.figure_references == {SALES.label: "1"}
+
+
 def test_the_inner_composition_takes_the_instance_fields_and_the_imports() -> None:
     inner = audit().composition
 

@@ -52,6 +52,11 @@ from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
 
 
+def kinds_of_fields(instances: RecordListKind | None) -> tuple[ArtifactKind[Any], ...]:
+    """The kinds of the fields of the records of `instances`; none for a form without them."""
+    return () if instances is None else tuple(instances.fields)
+
+
 class FormComposition:
     """One form wired: the capabilities of form `name` as an inner `Composition`.
 
@@ -93,8 +98,9 @@ class FormComposition:
         composition takes a blank for those of them it reads, and refuses a blank in any other
         input. A default that is a value is what is read when the input or field is blank.
         `declared` are the manifest's input declarations: the `title` and `reference` of each one
-        this form reads, and of each field of its `instances`, are given by the worksheet like
-        those of a figure a step produces.
+        this form reads, and of each declared field of its `instances`, are given by the worksheet
+        like those of a figure a step produces; a declaration of an input the form does not read
+        (or of the `instances` list itself, which is no figure) is left out.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -107,24 +113,24 @@ class FormComposition:
         produced = {kind for capability in wired for kind in capability.produces}
         read = {kind for capability in wired for kind in capability.consumes} | set(listed)
         self._form = form
-        printed = [*(d for d in declared if kinds.kind(d.name) in read), *form.fields]
+        by_name = {kind.identifier: kind for kind in kinds_of_fields(instances)}
+        printed = [(kinds.kind(d.name), d) for d in declared if kinds.kind(d.name) in read] + [
+            (by_name[d.name], d) for d in form.fields if d.name in by_name
+        ]
+        produced_by = [
+            (kinds.kind(next(iter(selection.produces.values()))), selection)
+            for selection in form.capabilities
+        ]
+        # An input is never also produced (the composition refuses it), so the two never clash.
         self._figure_titles = {
-            kinds.kind(declaration.name).label: declaration.title
-            for declaration in printed
-            if declaration.title is not None
-        } | {
-            kinds.kind(next(iter(selection.produces.values()))).label: selection.title
-            for selection in form.capabilities
-            if selection.title is not None
-        }
+            kind.label: found.title for kind, found in printed if found.title is not None
+        } | {kind.label: found.title for kind, found in produced_by if found.title is not None}
         self._figure_references = {
-            kinds.kind(declaration.name).label: declaration.reference
-            for declaration in printed
-            if declaration.reference is not None
+            kind.label: found.reference for kind, found in printed if found.reference is not None
         } | {
-            kinds.kind(next(iter(selection.produces.values()))).label: selection.reference
-            for selection in form.capabilities
-            if selection.reference is not None
+            kind.label: found.reference
+            for kind, found in produced_by
+            if found.reference is not None
         }
         self._instances = instances
         self._exports = listed

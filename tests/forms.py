@@ -58,6 +58,7 @@ def composition(
     title: str | None = None,
     selections: tuple[CapabilitySelection, ...] = (),
     declared: Iterable[InputDeclaration] = (),
+    fields: tuple[InputDeclaration, ...] = (),
 ) -> FormComposition:
     """The `FormComposition` of the form `name` whose exports and instances are the given kinds."""
     form, kinds = _declared(
@@ -69,6 +70,7 @@ def composition(
         exclusive_group=exclusive_group,
         title=title,
         selections=selections,
+        fields=fields,
     )
     for kind in starting:
         if kind.identifier not in kinds.identifiers():
