@@ -194,3 +194,31 @@ show the 2026 editions (122nd and 123rd); these 2025 PDFs are still served at th
 
 The July edition carries only the changes effective July 1 (it is the shorter document); read it together
 with the January edition. The companion CSV tables on CRA's pages were not saved.
+
+## Alberta 2025 forms, CRA package code 5009 (2026-11-11)
+Alberta's CRA code is 5009 (Ontario is 5006). Saved with plain `curl -L` on Umar's machine from
+`https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/<code>/<code>-25e.txt` (canada.ca blocks cloud
+containers), then copied here unmodified; sha256 of the files as saved. The .txt files start with a UTF-8 BOM
+and use CRLF line ends. Schedule 6 is the only shared form whose figures differ for Alberta. The other federal
+forms are used as they are (the Alberta T1 return, 5009-r, shows no figure that differs from the Ontario one).
+
+| File | Form | sha256 |
+|---|---|---|
+| 5009-c-25e.txt | Form AB428, Alberta Tax and Credits | 9954e3368a818bfe6e56ab871bf13f5cf28a0a7228319250fc5530dcb5e77833 |
+| 5009-d-25e.txt | Worksheet AB428 | 5c9eee54877796e6a083a6d1a81a0d159e5d7eb4b509832d3ff0a6160be499a4 |
+| 5009-r-25e.txt | T1 return, Alberta edition | b802ba18bc9992bb8b183e3f80cf6ff970419b7248bad8e3f70c05d5daef7b7d |
+| 5009-s2-25e.txt | Schedule AB(S2), Provincial Amounts Transferred from your Spouse or Common-Law Partner | ece76058b19dc4040f25378df44e999d7514f0fbd5d0ada852735f027a17087a |
+| 5009-s11-25e.txt | Schedule AB(S11), Alberta Tuition and Education Amounts | 364cfd750cb38ff9a86c7ff1527d406159ce78533a579c98a1a294335428dbc2 |
+| 5009-s6-25e.txt | Schedule 6, Canada Workers Benefit, Alberta edition (filed under `5009-s6`; the Alberta base amount, rate and maximum differ from the Ontario-edition figures) | ef24f20b9d7999a250315b14cf05fdbc67f9c82213d07fb2a05e6c0d6a40ff4b |
+| td1ab-25e.pdf | TD1AB, 2025 Alberta Personal Tax Credits Return, PDF from `/pbg/td1ab/td1ab-25e.pdf` (no .txt) | f349d57dd252a8a3d3cfb879f839f1f78a62be3e147b0bbbae0bd27b5afc3f94 |
+
+Not saved: **5009-pc**, Alberta Tax Information, which is a web page only (no .txt or PDF). The
+`cra-tax-rates.html` page fetched alongside had no Alberta content and is not committed.
+
+Web-page evidence (`web/`), fetched 2026-11-11, raw HTML. These are **not an accepted source** for a figure;
+per the process, a figure that only a web page states stays a listed check on its ticket.
+
+| File | Source page | sha256 |
+|---|---|---|
+| web/alberta-package.html | https://www.canada.ca/en/revenue-agency/services/forms-publications/tax-packages-years/general-income-tax-benefit-package/alberta.html (the CRA 2025 Alberta package page, listing the 5009 forms) | 872acd615b0d0a9629d0b536827739afc37fea97186793ac4ea50889f64b3a28 |
+| web/alberta-personal-income-tax.html | https://www.alberta.ca/personal-income-tax (Alberta's own page; the only place found with the 2026 Alberta figures) | a185494129582cea986e0275e7ab054f002460d6809c3cf9f5b6633c45d28e87 |
