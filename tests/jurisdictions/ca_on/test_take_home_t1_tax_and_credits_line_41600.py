@@ -78,10 +78,7 @@ def test_line_41600_is_zero_at_any_salary(take_home_service: TakeHomeService, sa
 def test_the_trace_shows_a_sum_with_no_parts(take_home_service: TakeHomeService) -> None:
     sheet = _sheet(take_home_service, "70000")
 
-    label = bundled_kinds().kind(LINE_41600).label
-    assert f"{label}: no parts = 0.00 (half-up to 0.01)" in EnglishTraceRenderer().render_all(
-        sheet.trace
-    )
+    assert "Nothing to add, so 0.00." in EnglishTraceRenderer().render_all(sheet.trace)
 
 
 def test_the_line_41600_kind_is_registered_and_non_negative() -> None:

@@ -23,11 +23,10 @@ Given only a gross salary, the engine works out the contributions and tax from t
 | EI premiums | 1,077.48 |
 | **Take-home** | **53,468.68** |
 
-Every figure the engine computes comes with a trace saying how it was reached. This is the trace for the last Ontario line (reformatted, with thousands separators and a line wrap):
+Every figure the engine computes comes with a trace saying how it was reached. Each trace line is about one figure (`line.label`), and its sentence names the figures it uses as the form prints them, so a caller shows the figure beside the sentence. This is the trace for the last Ontario line (ON428 line 90, "Ontario tax"):
 
 ```text
-on428_ontario_tax_line_90: on428_tax_after_farmers_food_donation_credit_line_88 3,311.45
-  + on428_ontario_health_premium_line_89 600.00 = 3,911.45 (half-up to 0.01)
+line 90: Line 88 (3311.45) plus line 89 (600.00) gives 3911.45 (rounded to the nearest cent).
 ```
 
 ## Why tax-engine
@@ -62,7 +61,7 @@ import sys
 from decimal import Decimal
 
 from tax_engine import build_tax_computation
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
+from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -74,7 +73,13 @@ sheets = engine.compute(
 for form, form_sheets in sheets.items():
     for sheet in form_sheets:
         print(f"\n== {form} ==")
-        print("\n".join(EnglishTraceRenderer().render_all(sheet.trace)))
+        renderer = EnglishTraceRenderer()
+        names = EnglishNames(sheet)
+        for line in sheet.trace:
+            # The sentence names the figures it uses as the form prints them when it is given
+            # the worksheet; the figure the line is about is named beside it.
+            sentence = renderer.render(line, sheet)
+            print(sentence if line.label is None else f"{names.of_label(line.label)}: {sentence}")
 ```
 
 The example uses tax year 2025. Change `2025` to `2026` for the provisional 2026 year.

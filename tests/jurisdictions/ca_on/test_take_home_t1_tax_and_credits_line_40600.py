@@ -164,15 +164,11 @@ def test_line_134_names_line_132_line_133_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = _sheet(take_home_service, "70000", "100.00")
-    kinds = bundled_kinds()
-    output = kinds.kind(LINE_134)
-    line_132 = kinds.kind(LINE_132)
-    line_133 = kinds.kind(LINE_133)
 
     assert (
-        f"{output.label}: {line_132.label} 7585.64 less {line_133.label} 100.00, "
-        "not below 0 = 7485.64 (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        "Line 132 (7585.64) less line 133 (100.00), not below 0, gives 7485.64 "
+        "(rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
 def test_line_134_is_never_below_zero(take_home_service: TakeHomeService) -> None:

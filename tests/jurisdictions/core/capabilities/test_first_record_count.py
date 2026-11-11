@@ -187,7 +187,7 @@ def test_the_trace_renders_the_first_item_and_how_many_there_are() -> None:
     result = capability().compute((flags(1, 0),))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "first_flag: item 1 item_count 1 of 2 items",
+        "Item count of item 1 (1), of 2 items.",
     )
 
 
@@ -195,5 +195,5 @@ def test_the_trace_for_one_record_renders_the_count_of_items() -> None:
     result = capability().compute((flags(0),))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "first_flag: item 1 item_count 0 of 1 items",
+        "Item count of item 1 (0), of 1 item.",
     )

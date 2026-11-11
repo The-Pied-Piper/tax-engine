@@ -7,6 +7,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.blank import Blank
 from tax_engine.domain.trace.choices import (
@@ -31,16 +32,16 @@ class ChosenByCountRenderer:
 
     line_class = ChosenByCountLine
 
-    def render(self, line: ChosenByCountLine) -> str:
+    def render(self, line: ChosenByCountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         count_kind = line.count_kind
         count = line.count
         chosen_kind = line.chosen_kind
         chosen = line.chosen_value
+        verdict = "is 0" if count == 0 else "is not 0"
         return (
-            f"{output.label}: {chosen_kind.label} {EnglishFigures.money(chosen)}, "
-            f"chosen as {count_kind.label} is {count}"
+            f"{names.figure(chosen_kind, chosen)}, chosen because "
+            f"{names.figure(count_kind, count)} {verdict}"
         )
 
 
@@ -50,9 +51,8 @@ class ChosenBySignRenderer:
 
     line_class = ChosenBySignLine
 
-    def render(self, line: ChosenBySignLine) -> str:
+    def render(self, line: ChosenBySignLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         sign_kind = line.sign_kind
         sign = line.sign
         chosen_kind = line.chosen_kind
@@ -63,13 +63,10 @@ class ChosenBySignRenderer:
         else:
             word = "zero"
         if chosen_kind is None:
-            return (
-                f"{output.label}: 0, no amount when {sign_kind.label} "
-                f"{EnglishFigures.money(sign)} is {word}"
-            )
+            return f"0, no amount when {names.figure(sign_kind, sign)} is {word}"
         return (
-            f"{output.label}: {chosen_kind.label} {EnglishFigures.money(line.chosen_value)}, "
-            f"chosen as {sign_kind.label} {EnglishFigures.money(sign)} is {word}"
+            f"{names.figure(chosen_kind, line.chosen_value)}, "
+            f"chosen because {names.figure(sign_kind, sign)} is {word}"
         )
 
 
@@ -79,16 +76,15 @@ class ChosenByRangeRenderer:
 
     line_class = ChosenByRangeLine
 
-    def render(self, line: ChosenByRangeLine) -> str:
+    def render(self, line: ChosenByRangeLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         tested_kind = line.tested_kind
         tested = line.tested_value
         chosen_kind = line.chosen_kind
         chosen = line.chosen_value
         return (
-            f"{output.label}: {chosen_kind.label} {EnglishFigures.money(chosen)}, "
-            f"chosen as {tested_kind.label} is {EnglishFigures.money(tested)}"
+            f"{names.figure(chosen_kind, chosen)}, "
+            f"chosen because {names.figure(tested_kind, tested)} fits its range"
         )
 
 
@@ -98,16 +94,16 @@ class ConditionRenderer:
 
     line_class = ConditionLine
 
-    def render(self, line: ConditionLine) -> str:
+    def render(self, line: ConditionLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         position = line.position
         text = line.text
         reads = line.reads
         applies = line.applies
-        figures = ", ".join(f"{kind.label} {_figure(value)}" for kind, value in reads)
+        figures = ", ".join(f"{names.of(kind)} ({_figure(value)})" for kind, value in reads)
         verdict = "applies" if applies else "does not apply"
-        return f'{output.label}: condition {position} "{text}": {figures}, {verdict}'
+        read = f" (read {figures})" if figures else ""
+        return f'Condition {position} "{text}"{read} {verdict}'
 
 
 @english_renderer
@@ -116,9 +112,8 @@ class ConditionsCountRenderer:
 
     line_class = ConditionsCountLine
 
-    def render(self, line: ConditionsCountLine) -> str:
+    def render(self, line: ConditionsCountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         applied = line.applied
         count = line.count
         if not applied:
@@ -126,5 +121,5 @@ class ConditionsCountRenderer:
         elif len(applied) == 1:
             which = f"condition {applied[0]} applies"
         else:
-            which = f"conditions {', '.join(str(position) for position in applied)} apply"
-        return f"{output.label}: {which}, so {count}"
+            which = f"conditions {EnglishFigures.listing([str(p) for p in applied])} apply"
+        return f"{which}, so the count is {count}"

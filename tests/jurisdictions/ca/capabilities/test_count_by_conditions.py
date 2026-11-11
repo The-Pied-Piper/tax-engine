@@ -709,17 +709,17 @@ def test_renders_the_line_80_gate_in_english() -> None:
     trace = line_80().compute(line_80_inputs("120.00", (0, 0, 1, 0, 0))).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        'gate: condition 1 "You were not a resident of Canada at the beginning of the year": '
-        "not_resident_of_canada 0, does not apply",
-        'gate: condition 2 "You were not a resident of Ontario on December 31, 2025": '
-        "not_resident_of_ontario 0, does not apply",
-        'gate: condition 3 "There is an amount on line 72": amount_on_line_72 120.00, applies',
-        'gate: condition 4 "You were bankrupt at any time in 2025": bankrupt 1, applies',
-        'gate: condition 5 "Your return is filed for you by a trustee in bankruptcy": '
-        "filed_by_trustee 0, does not apply",
-        'gate: condition 6 "You are choosing not to claim an Ontario tax reduction": '
-        "not_claiming_reduction 0, does not apply",
-        "gate: conditions 3, 4 apply, so 0",
+        'Condition 1 "You were not a resident of Canada at the beginning of the year" '
+        "(read not resident of canada (0)) does not apply.",
+        'Condition 2 "You were not a resident of Ontario on December 31, 2025" '
+        "(read not resident of ontario (0)) does not apply.",
+        'Condition 3 "There is an amount on line 72" (read amount on line 72 (120.00)) applies.',
+        'Condition 4 "You were bankrupt at any time in 2025" (read bankrupt (1)) applies.',
+        'Condition 5 "Your return is filed for you by a trustee in bankruptcy" '
+        "(read filed by trustee (0)) does not apply.",
+        'Condition 6 "You are choosing not to claim an Ontario tax reduction" '
+        "(read not claiming reduction (0)) does not apply.",
+        "Conditions 3 and 4 apply, so the count is 0.",
     )
 
 
@@ -727,10 +727,10 @@ def test_renders_the_higher_net_income_rule_in_english() -> None:
     trace = higher_income().compute(incomes("48000", "30000")).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        'higher_income_claims: condition 1 "Only the individual with the higher net income can '
-        'claim the amounts on lines 75 and 76": filer_net_income 48000, spouse_net_income 30000, '
-        "applies",
-        "higher_income_claims: condition 1 applies, so 1",
+        'Condition 1 "Only the individual with the higher net income can claim the amounts on '
+        'lines 75 and 76" (read filer net income (48000.00), spouse net income (30000.00)) '
+        "applies.",
+        "Condition 1 applies, so the count is 1.",
     )
 
 

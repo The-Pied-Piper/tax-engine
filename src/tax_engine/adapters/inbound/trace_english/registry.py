@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Any, Protocol, cast
 
 from tax_engine.adapters.inbound.trace_english.line_renderer import LineRenderer
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
 from tax_engine.domain.registry import SharedRegistry
 from tax_engine.domain.trace import TraceLine
@@ -26,7 +27,7 @@ class RendererClass[L: TraceLine, R](Protocol):
 
     line_class: type[L]
 
-    def render(self, renderer: R, line: L, /) -> str:
+    def render(self, renderer: R, line: L, names: EnglishNames, /) -> str:
         """The class's `render`, unbound: called with an instance and a line of `line_class`."""
         ...
 

@@ -167,15 +167,10 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = _sheet(take_home_service, "70000")
-    kinds = bundled_kinds()
-    output = kinds.kind(LINE_167)
-    minuend = kinds.kind(LINE_43500)
-    subtrahend = kinds.kind(LINE_48200)
 
     assert (
-        f"{output.label}: {minuend.label} 11497.09 less {subtrahend.label} 0.00"
-        " = 11497.09 (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        "Line 43500 (11497.09) less line 48200 (0.00) gives 11497.09 (rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
 def test_the_real_t1_form_header_exports_only_refund_or_balance_owing() -> None:

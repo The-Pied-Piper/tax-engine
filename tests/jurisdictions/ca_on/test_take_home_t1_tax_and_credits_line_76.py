@@ -278,9 +278,7 @@ def test_line_76_names_lines_74_and_75_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     _, sheet = _sheets(take_home_service, "70000")
-    kinds = bundled_kinds()
 
     assert (
-        f"{kinds.kind(LINE_76).label}: {kinds.kind(LINE_74).label} 2451.80 + "
-        f"{kinds.kind(LINE_75).label} 8319.38 = 10771.18 (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        "Line 74 (2451.80) plus line 75 (8319.38) gives 10771.18 (rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

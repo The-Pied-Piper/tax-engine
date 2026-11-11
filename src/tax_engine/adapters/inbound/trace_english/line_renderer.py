@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Protocol
 
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.domain.trace import TraceLine
 
 
@@ -20,6 +21,6 @@ class LineRenderer[L: TraceLine](Protocol):
         """The exact trace line class this renderer renders."""
         ...
 
-    def render(self, line: L) -> str:
+    def render(self, line: L, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         ...

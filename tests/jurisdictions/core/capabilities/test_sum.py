@@ -388,14 +388,15 @@ def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(three_parts())
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "total: part_one 100.25 + part_two 40 + part_three 9.75 = 150.00 (half-up to 0.01)",
+        "Part one (100.25) plus part two (40.00) plus part three (9.75)"
+        " gives 150.00 (rounded to the nearest cent).",
     )
 
 
 def test_the_trace_reads_in_english_for_no_parts_with_no_rounding() -> None:
     result = Sum(rounding(), (), TOTAL).compute(())
 
-    assert EnglishTraceRenderer().render_all(result.trace) == ("total: no parts = 0 (no rounding)",)
+    assert EnglishTraceRenderer().render_all(result.trace) == ("Nothing to add, so 0.00.",)
 
 
 def test_is_not_generic_over_artifacts() -> None:

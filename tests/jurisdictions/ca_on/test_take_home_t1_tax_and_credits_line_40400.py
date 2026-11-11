@@ -136,13 +136,10 @@ def test_line_121_names_line_76_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = _sheet(take_home_service, "70000")
-    kinds = bundled_kinds()
-    output = kinds.kind(LINE_121)
-    part = kinds.kind(LINE_76)
 
     assert (
-        f"{output.label}: {part.label} 10771.18 = 10771.18 (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        "Line 76 (10771.18) gives 10771.18 (rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
 def test_the_line_121_kind_is_registered_and_non_negative() -> None:
