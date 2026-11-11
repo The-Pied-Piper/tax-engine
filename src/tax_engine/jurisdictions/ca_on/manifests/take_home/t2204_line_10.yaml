@@ -5,6 +5,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: ca/contribution_tier
+    title: "Required premiums"
     reference: "10"
     params:
       tier: ca/ei_premium
