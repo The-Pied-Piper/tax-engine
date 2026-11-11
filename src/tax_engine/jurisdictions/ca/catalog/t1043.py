@@ -1,7 +1,7 @@
 """The federal catalog: Form T1043 (2025), lines 1 to 9, the form `ca/t1043`, run once.
 
 Line 9 is the amount for T1 line 23200 once the filer answers the form's two conditions (1 or 0); a
-"no" leaves $0.
+"no" leaves $0. The "Year(s)" box is not entered.
 """
 
 from __future__ import annotations

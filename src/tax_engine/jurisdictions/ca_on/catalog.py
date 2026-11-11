@@ -1,7 +1,7 @@
 """The Ontario artifact catalog: Ontario's own kinds, named from the Ontario forms.
 
 Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kinds come from
-`ca.catalog`; identifiers are stable.
+`tax_engine.jurisdictions.ca.catalog`; identifiers are stable.
 """
 
 from __future__ import annotations

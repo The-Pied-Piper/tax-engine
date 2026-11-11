@@ -1,7 +1,8 @@
 """SumNotBelowZero: adds the values of a list of money artifacts, floored at zero, then rounded.
 
-The output is `rounding.apply(max(sum, 0))`; blank parts follow `blank:` as for `Sum`, and a
-passed-on blank is not floored.
+The output is `rounding.apply(max(sum, 0))`; a floored zero is never negative zero and takes the
+rule's scale (0.00 under the cent rule). Blank parts follow `blank:` as for `Sum`, and a passed-on
+blank is not floored.
 """
 
 from __future__ import annotations

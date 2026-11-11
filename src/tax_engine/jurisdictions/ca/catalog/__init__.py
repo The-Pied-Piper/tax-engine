@@ -1,4 +1,4 @@
-"""The federal Canada artifact catalog: artifact kinds named from Canada's own return (§2, §8).
+"""The federal Canada artifact catalog: artifact kinds named from Canada's own return.
 
 Amounts are `Decimal`, non-negative unless the form prints no floor. Identifiers are stable:
 `tests/jurisdictions/ca/test_catalog.py` snapshots them.

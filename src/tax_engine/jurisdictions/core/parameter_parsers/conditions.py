@@ -23,9 +23,12 @@ _OPTIONAL_TEST_KEYS = frozenset({"than", "against"})
 
 @parameter_parser
 class ConditionsParser:
-    """Parser for `conditions` datasets: `count_when_any_applies` (a quoted whole number) and
-    `conditions`, each a `text` and `parts`; each part holds `tests`, each a `reads`, a quoted
-    `position`, a `relation` and one of a quoted decimal `than` and a quoted position `against`."""
+    """Parser for `conditions` datasets.
+
+    Reads `count_when_any_applies` (a quoted whole number) and `conditions`, each a `text` and
+    `parts`; each part holds `tests`, each a `reads`, a quoted `position`, a `relation` and one of a
+    quoted decimal `than` and a quoted position `against`.
+    """
 
     kind = CONDITIONS
     body_keys = frozenset({"count_when_any_applies", "conditions"})

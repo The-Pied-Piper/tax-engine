@@ -1,7 +1,8 @@
 """Apply fraction: multiplies a money artifact by a fraction from a `fraction` dataset.
 
-The output is `rounding.apply(base × numerator / denominator)`, divided exactly; a blank `base` is
-refused unless the manifest says `pass_on`.
+The output is `rounding.apply(base × numerator / denominator)`, divided exactly; with no rounding an
+inexact quotient raises `decimal.Inexact`. A blank `base` follows the manifest's `blank:` rule
+(`pass_on` blanks the output).
 """
 
 from __future__ import annotations

@@ -41,7 +41,8 @@ class ClassRatesParser:
     Reads `classes` keyed by each class number as a quoted decimal (with `rate`, `half_year_rule`,
     `recapture_and_terminal_loss`, `half_year_rule_on_sale`, the factors `aiip_factor` and
     `riip_factor` as quoted `numerator` and `denominator`, and optional `elections` keyed by quoted
-    whole code), plus `full_year_days` and `longest_fiscal_period_days` as quoted whole numbers.
+    whole code above 0), plus `full_year_days` (above 0) and `longest_fiscal_period_days` as quoted
+    whole numbers.
     """
 
     kind = CLASS_RATES

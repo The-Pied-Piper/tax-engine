@@ -1,7 +1,8 @@
 """The federal catalog: Form T746 (2025), lines 1 to 13, a row form and a summary form.
 
 `ca/t746_year` runs for each record of `ca/t746_years`; `ca/t746` runs once. Line 11 (Form T2205) is
-not added to the withdrawals.
+not added to the withdrawals, and line 5 is read by no step. The deduction needs at least one of the
+two filer conditions (1 or 0) to hold.
 """
 
 from __future__ import annotations
@@ -83,8 +84,8 @@ amount."""
 
 T746_WITHDRAWALS = AmountKind.declare(CATALOG, "t746_withdrawals", non_negative=True)
 """Total withdrawals, Form T746 line 12 "Add lines 6 to 11": the RRSP, RRIF, PRPP and SPP amounts
-withdrawn in the year shown on line 5 and included in income; line 11 is not added yet (see the
-module note)."""
+withdrawn in the year shown on line 5 and included in income; line 11 is not added (see the
+module docstring)."""
 
 T746_EXPECTED_TO_FULLY_DEDUCT_CONTRIBUTIONS = CountKind.declare(
     CATALOG, "t746_expected_to_fully_deduct_contributions", non_negative=True

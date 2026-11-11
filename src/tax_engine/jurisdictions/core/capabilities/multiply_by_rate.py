@@ -1,6 +1,7 @@
 """Multiply by rate: multiplies a money artifact by a rate artifact, a fraction from 0 to 1.
 
-The output is `rounding.apply(base × rate)`; a rate outside 0 to 1 is an `InvalidRateError`.
+The output is `rounding.apply(base × rate)`. The rate is a fraction (0.0915 is 9.15%), never a
+percentage; one outside 0 to 1 is an `InvalidRateError`.
 """
 
 from __future__ import annotations

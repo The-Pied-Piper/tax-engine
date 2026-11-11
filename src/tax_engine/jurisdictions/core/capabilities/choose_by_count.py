@@ -1,7 +1,8 @@
 """ChooseByCount: one of two money artifacts, chosen by a count artifact.
 
 The output is `when_none` for a count of 0, else `when_any`, unchanged. A `compute` candidate is
-read only if chosen.
+read only if chosen (a chosen blank one is refused, naming the line); `pass_on` on a candidate
+blanks the output even if it was not chosen.
 """
 
 from __future__ import annotations

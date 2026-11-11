@@ -1,8 +1,12 @@
 """Tapered amount: a base amount plus a supplement reduced as a money artifact passes a threshold.
 
-The reduction is `supplement × max(base − threshold, 0) / range`, exact, and the result is rounded
-once with the `taper` dataset's rule.
+The reduction is `supplement × max(base − threshold, 0) / range`, exact: at or below the threshold
+the output is base plus supplement, at or above threshold plus range it is the base. Rounded once
+with the `taper` dataset's rule; with no rounding an inexact reduction raises `decimal.Inexact`.
 """
+
+# The class is `TaperedAmount` so that it does not share a name with the `Taper` value object it
+# reads.
 
 # The class is `TaperedAmount` so that it does not share a name with the `Taper` value object it
 # reads.

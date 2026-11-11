@@ -1,8 +1,13 @@
 """AmountOrDividedByRate: an amount, or another figure divided by a rate, chosen by a threshold.
 
 At or below the `limit` threshold the output is `amount`, over it `dividend` divided exactly by the
-rate, rounded once.
+rate (5.05% divides as 2,000/101); both figures are required. Rounded once; under `rounding: none`
+an inexact division raises `decimal.Inexact`.
 """
+
+# Schedule 11 line 11: "Enter the amount from line 26000 of your return on line 11 if it is $57,375
+# or less. If it is more than $57,375, enter the result of the following calculation: Amount from
+# line 76 of your return divided by 14.5%".
 
 # Schedule 11 line 11: "Enter the amount from line 26000 of your return on line 11 if it is $57,375
 # or less. If it is more than $57,375, enter the result of the following calculation: Amount from

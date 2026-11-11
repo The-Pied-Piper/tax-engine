@@ -1,4 +1,4 @@
-"""BracketColumnFigure: one printed figure of the bracket column a base falls in, unrounded.
+"""BracketColumnFigure: one printed figure of the bracket column a base falls in, never rounded.
 
 Subclasses give the lower bound, the rate or the tax at the column's start; a base at a threshold is
 in the lower column.

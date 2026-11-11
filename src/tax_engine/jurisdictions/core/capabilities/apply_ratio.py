@@ -1,7 +1,8 @@
 """Apply ratio: multiplies a money artifact by a ratio of two other money artifacts.
 
-The output is `rounding.apply(amount × numerator / denominator)`; a zero denominator is a
-`ValidationError` and a ratio above 1 is not capped.
+The output is `rounding.apply(amount × numerator / denominator)`; with no rounding an inexact
+quotient raises `decimal.Inexact`. A zero denominator is a `ValidationError`; a ratio above 1 is not
+capped. Reuse `ApplyRatio.ratio_of` for a ratio per item.
 """
 
 from __future__ import annotations

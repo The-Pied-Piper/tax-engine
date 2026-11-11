@@ -1,7 +1,7 @@
 """SubtractNotBelowZero: takes one money artifact off another, floored at zero.
 
-The output is `rounding.apply(max(amount - less, 0))`; a `pass_on` blank blanks it without the
-floor.
+The output is `rounding.apply(max(amount - less, 0))`; a floored zero is never negative zero. A
+`pass_on` blank blanks it without the floor.
 """
 
 from __future__ import annotations

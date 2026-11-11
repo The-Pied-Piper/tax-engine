@@ -1,6 +1,7 @@
 """TimesCount: a money artifact's amount for each unit of a count artifact.
 
-The output is `rounding.apply(amount × count)`; a blank count is not a count of 0.
+The output is `rounding.apply(amount × count)`; a count of 0 gives the rule's zero, never a signed
+zero. A blank count is not a count of 0.
 """
 
 from __future__ import annotations

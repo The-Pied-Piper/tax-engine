@@ -1,8 +1,13 @@
 """CountByConditions: 1 or 0 from a form's list of conditions, so a line can be switched on or off.
 
-Every test is evaluated and traced. A blank count needs a fallback; a blank amount under `compute`
-is refused, naming it, only if no condition applies.
+Every test is evaluated and traced. A blank count takes a fallback or `pass_on` (under `compute` it
+is refused); a blank amount under `compute` makes its test not hold, and is refused, naming it, only
+if no condition applies.
 """
+
+# ON428 line 80: "Enter "0" on line 80 if any of the following applies to you", and only the
+# individual with the higher net income can claim the amounts on lines 75 and 76. Each test names
+# the figure it reads by position (from 1) in the consumed `counts` or `amounts`.
 
 # ON428 line 80: "Enter "0" on line 80 if any of the following applies to you", and only the
 # individual with the higher net income can claim the amounts on lines 75 and 76. Each test names
@@ -41,9 +46,11 @@ class CountByConditions(Capability):
         amounts: tuple[Money, ...],
         output: ArtifactKind[int],
     ) -> None:
-        """Wire the capability: its conditions dataset, the counts and amounts it reads (each
-        position the dataset reads must be listed, and each listed kind must be read), the kind
-        produced."""
+        """Wire the capability: its conditions dataset, the counts and amounts it reads, and the
+        kind produced.
+
+        Each position the dataset reads must be listed, and each listed kind must be read.
+        """
         super().__init__(counts=counts, amounts=amounts, output=output)
         self._check_listed("counts", counts, conditions.values.count_positions_read)
         self._check_listed("amounts", amounts, conditions.values.amount_positions_read)
