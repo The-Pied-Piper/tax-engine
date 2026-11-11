@@ -16,6 +16,18 @@ LESS = AmountKind("ex/allowance")
 NET = AmountKind("ex/net_pay")
 
 
+def _cap(title: str | None) -> ParameterDataset[Amount]:
+    return ParameterDataset(
+        "ex/some_ceiling",
+        2025,
+        AMOUNT,
+        Amount(Decimal("81200")),
+        NO_ROUNDING,
+        ("https://x.org",),
+        title,
+    )
+
+
 class _Printed:
     """A stand-in for a worksheet: what the form prints for some figures."""
 
@@ -83,18 +95,6 @@ def test_a_rendered_line_names_its_figures_as_the_form_prints_them_and_not_its_o
     )
     assert EnglishTraceRenderer().render(line) == (
         "Gross pay (70000.00) less allowance (71300.00), not below 0, gives 0.00 (not rounded)."
-    )
-
-
-def _cap(title: str | None) -> ParameterDataset[Amount]:
-    return ParameterDataset(
-        "ex/some_ceiling",
-        2025,
-        AMOUNT,
-        Amount(Decimal("81200")),
-        NO_ROUNDING,
-        ("https://x.org",),
-        title,
     )
 
 
