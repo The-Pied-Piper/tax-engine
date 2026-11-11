@@ -11,15 +11,15 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-import tax_engine.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 
 LINE_A = "ca/cpp_months"
 PRINTED_BASIS = 'Enter "12" on line A below unless any of the following conditions apply:'
-PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/2025/schedule_8_inputs.yaml"
+PART = Path(tax_engine.jurisdictions.ca.__file__).parent / (
+    "forms/schedule_8/schedule_8_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

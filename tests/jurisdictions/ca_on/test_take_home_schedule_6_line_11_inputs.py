@@ -14,7 +14,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-import tax_engine.jurisdictions.ca_on
+import tax_engine.jurisdictions.ca
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
@@ -23,8 +23,8 @@ LINE_11 = "ca/uccb_and_rdsp_income"
 PRINTED_BASIS = (
     "Line 11: Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)"
 )
-PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
-    "manifests/2025/schedule_6_line_11_inputs.yaml"
+PART = Path(tax_engine.jurisdictions.ca.__file__).parent / (
+    "forms/schedule_6/schedule_6_line_11_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-ON

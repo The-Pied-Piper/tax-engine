@@ -16,9 +16,12 @@ parts of an imported form are the `*.yaml` / `*.yml` files, recursively and sort
 `<roots[namespace]>/forms/<local id>/`, not under `manifests/`, and they load with the manifest's
 own parts, taking its jurisdiction, version and year. Each carries only `form` and `capabilities`,
 and its `form.name` is the imported identifier; exactly one declares `exports`, as for any form.
-A part of the manifest that names an imported form, an import without a package or parts, and an
-imported part with any other key are rejected, naming the part. The forms run in this order: the
-default form, the imported forms in `imports` order, then the manifest's own.
+A part with `inputs` alone (no `form:` key) declares the inputs the form brings to every manifest
+that imports it, as a part of the manifest would; an input listed there and by the manifest, or by
+another imported form, is rejected. A part of the manifest that names an imported form, an import
+without a package or parts, and an imported part with any other key are rejected, naming the part.
+The forms run in this order: the default form, the imported forms in `imports` order, then the
+manifest's own.
 A form that declares `exports` may also declare `supplies`, a mapping from a neutral identifier
 `<namespace>/<snake_case>.<label>` (the form need not exist) to one of its own exports that is an
 amount, a count or a record list: the engine derives that kind as it does a form's export, so an
@@ -145,6 +148,13 @@ _OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
+
+
+class _Imported(NamedTuple):
+    """The forms a manifest imports and the input declarations their parts carry."""
+
+    forms: tuple[Form, ...]
+    inputs: tuple[tuple[str, InputDeclaration], ...]  # (imported form, declaration), in order
 
 
 class _Declaration(NamedTuple):
@@ -354,16 +364,26 @@ class YamlJurisdictionSource:
                     )
                 owners[neutral] = (name, part)
 
-    def _imported(self, names: tuple[str, ...], owners: Mapping[str, Path]) -> tuple[Form, ...]:
-        """The forms `names`, in order, each from the parts in its package's `forms/` folder.
+    def _imported(self, names: tuple[str, ...], owners: Mapping[str, Path]) -> _Imported:
+        """The forms `names`, in order, each from the parts in its package's `forms/` folder,
+        with the inputs those parts declare.
 
         `owners` gives the part that lists each import, to name in an error.
         """
-        return tuple(self._imported_form(name, owners.get(name)) for name in names)
+        found = [self._imported_form(name, owners.get(name)) for name in names]
+        return _Imported(
+            forms=tuple(form for form, _ in found),
+            inputs=tuple(
+                (form.name, declaration) for form, inputs in found for declaration in inputs
+            ),
+        )
 
-    def _imported_form(self, identifier: str, owner: Path | None) -> Form:
-        """The form `identifier` of the parts in `<package>/forms/<local id>/`, which carry only
-        `form` and `capabilities` and all name that form.
+    def _imported_form(
+        self, identifier: str, owner: Path | None
+    ) -> tuple[Form, tuple[InputDeclaration, ...]]:
+        """The form `identifier` of the parts in `<package>/forms/<local id>/` and the inputs
+        they declare; a part carries `form` and `capabilities` and names that form, or carries
+        `inputs` alone.
         """
         namespace, _, local_id = identifier.partition("/")
         prefix = "" if owner is None else f"{owner}: "
@@ -379,9 +399,16 @@ class YamlJurisdictionSource:
             raise InvalidManifestError(f"{prefix}imports {identifier!r}: no parts in {folder}")
         selections: dict[str, list[CapabilitySelection]] = {}
         declarations: dict[str, tuple[Path, _Declaration]] = {}
+        input_owners: dict[str, Path] = {}
+        inputs: list[InputDeclaration] = []
         for part in parts:
             contents = self._part(part)
             self._check_imported_part(part, identifier, contents)
+            if "form" not in contents:
+                node = contents["inputs"]
+                self._claim_identifiers("inputs", node, part, input_owners)
+                inputs.extend(self._declarations(node, self._input_kind))
+                continue
             name = self._join_form(part, contents, selections, declarations)
             if name != identifier:
                 raise InvalidManifestError(
@@ -389,15 +416,22 @@ class YamlJurisdictionSource:
                     "another form"
                 )
         default = Namespace(namespace).identifier(_DEFAULT_FORM)
-        return self._form(identifier, selections[identifier], declarations, default)
+        return self._form(identifier, selections.get(identifier, []), declarations, default), tuple(
+            inputs
+        )
 
     @staticmethod
     def _check_imported_part(part: Path, identifier: str, contents: dict[str, YamlNode]) -> None:
-        """Refuse a part of an imported form without a `form:` key or with a manifest key."""
+        """Refuse a part of an imported form that is neither a `form:` part (with `capabilities`)
+        nor a part of `inputs` alone, or that carries a manifest key.
+        """
         if "form" not in contents:
-            raise InvalidManifestError(
-                f"{part}: imported form {identifier!r}: a part needs a `form:` key"
-            )
+            if set(contents) != {"inputs"}:
+                raise InvalidManifestError(
+                    f"{part}: imported form {identifier!r}: a part needs a `form:` key, or "
+                    "only `inputs`"
+                )
+            return
         for key in contents.keys() - _IMPORTED_PART_KEYS:
             raise InvalidManifestError(
                 f"{part}: imported form {identifier!r}: key {key!r} belongs to the importing "
@@ -549,7 +583,7 @@ class YamlJurisdictionSource:
         self,
         document: YamlNode,
         forms_beside: Callable[[str], tuple[Form, ...]] = lambda _: (),
-        imported: Callable[[tuple[str, ...]], tuple[Form, ...]] = lambda _: (),
+        imported: Callable[[tuple[str, ...]], _Imported] = lambda _: _Imported((), ()),
     ) -> Manifest:
         """The manifest of `document`, whose selections and `outputs` are the default form's.
 
@@ -566,12 +600,21 @@ class YamlJurisdictionSource:
         default = code.namespace.identifier(_DEFAULT_FORM)
         title = doc.optional_field("title")
         imports = doc.optional_field("imports")
-        forms_imported = () if imports is None else imported(self._import_list(imports))
+        found = _Imported((), ()) if imports is None else imported(self._import_list(imports))
+        forms_imported = found.forms
+        declared_inputs = {declaration.name: declaration for declaration in inputs}
+        for form_name, declaration in found.inputs:
+            if declaration.name in declared_inputs:
+                raise InvalidManifestError(
+                    f"input {declaration.name!r}: declared by the imported form {form_name!r} "
+                    "and also listed by the manifest or another imported form"
+                )
+            declared_inputs[declaration.name] = declaration
         manifest = Manifest(
             jurisdiction=code,
             version=doc.field("version").require_integer(),
             valid_from_tax_year=doc.field("valid_from_tax_year").require_integer(),
-            inputs={declaration.name: declaration for declaration in inputs},
+            inputs=declared_inputs,
             artifacts=self._kinds,
             forms=(
                 Form(

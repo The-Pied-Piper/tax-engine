@@ -5,10 +5,11 @@ imported form live in `<package dir of ns>/forms/<local_id>/` (every `*.yaml` / 
 recursively), not under `manifests/`. They load with the importing manifest's own parts: `forms`
 runs the default form, then the imported forms in `imports` order, then the manifest's own.
 
-An imported part may carry only `form` and `capabilities`, and its `form.name` is the imported
-identifier. A form that declares `exports` may also declare `supplies`, a mapping from a neutral
-derived identifier (`ex/provincial_tax.amount`) to one of its own exports, so an imported form
-reads a figure each importing manifest supplies under that name. Names are made up: the package
+An imported part carries `form` and `capabilities`, and its `form.name` is the imported
+identifier; or it carries `inputs` alone, the input declarations the form brings to every
+importing manifest. A form that declares `exports` may also declare `supplies`, a mapping from a
+neutral derived identifier (`ex/provincial_tax.amount`) to one of its own exports, so an imported
+form reads a figure each importing manifest supplies under that name. Names are made up: the package
 `ex` holds the shared form `ex/federal`, `ex-on` and `ex-ab` are two provinces importing it.
 """
 
@@ -250,6 +251,95 @@ def test_two_provinces_importing_the_same_form_both_load(tmp_path: Path) -> None
     assert "ex/federal" in names(ab)
     assert "ex-on/levy" in names(on)
     assert "ex-ab/levy" in names(ab)
+
+
+FEDERAL_INPUTS = """\
+inputs:
+  - name: ex/other_income
+    required: false
+    default: "0"
+    basis: "Other income: if none, enter 0."
+"""
+
+
+def test_an_imported_form_brings_the_inputs_its_inputs_part_declares(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
+    write_province(tmp_path)
+
+    declared = manifest_of(tmp_path).inputs
+
+    assert list(declared) == ["ex/income", "ex/other_income"]
+    assert not declared["ex/other_income"].required
+    assert declared["ex/other_income"].basis == "Other income: if none, enter 0."
+
+
+def test_two_provinces_importing_the_form_both_get_its_inputs_without_declaring_them(
+    tmp_path: Path,
+) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
+    write_province(tmp_path, "ex-on")
+    write_province(tmp_path, "ex-ab")
+
+    assert "ex/other_income" in manifest_of(tmp_path, EX_ON).inputs
+    assert "ex/other_income" in manifest_of(tmp_path, EX_AB).inputs
+
+
+def test_a_manifest_that_does_not_import_the_form_does_not_get_its_inputs(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
+    write_province(tmp_path, head=header("EX-ON", "[]"), form=province_form("ex-on"))
+
+    assert "ex/other_income" not in manifest_of(tmp_path).inputs
+
+
+def test_an_imported_input_the_manifest_declares_too_is_rejected_naming_it(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
+    write_province(
+        tmp_path,
+        extra={"02-own.yaml": FEDERAL_INPUTS},
+    )
+
+    with pytest.raises(InvalidManifestError, match="ex/other_income.*ex/federal"):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
+def test_an_input_two_inputs_parts_of_the_form_declare_is_rejected_naming_the_part(
+    tmp_path: Path,
+) -> None:
+    write_federal(
+        tmp_path,
+        {
+            "00-federal.yaml": FEDERAL,
+            "01-inputs.yaml": FEDERAL_INPUTS,
+            "02-again.yaml": FEDERAL_INPUTS,
+        },
+    )
+    write_province(tmp_path)
+
+    with pytest.raises(InvalidManifestError, match="ex/other_income") as caught:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert "02-again.yaml" in str(caught.value)
+
+
+def test_an_inputs_part_with_another_key_is_rejected_naming_the_part(tmp_path: Path) -> None:
+    write_federal(
+        tmp_path,
+        {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS + "outputs: [ex/y]\n"},
+    )
+    write_province(tmp_path)
+
+    with pytest.raises(InvalidManifestError, match="form") as caught:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert "01-inputs.yaml" in str(caught.value)
+
+
+def test_an_imported_form_with_only_an_inputs_part_is_rejected(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"01-inputs.yaml": FEDERAL_INPUTS})
+    write_province(tmp_path)
+
+    with pytest.raises(InvalidManifestError, match="no part declares its exports"):
+        source(tmp_path).get_jurisdiction(EX_ON)
 
 
 # --- rejections ----------------------------------------------------------------------------------
