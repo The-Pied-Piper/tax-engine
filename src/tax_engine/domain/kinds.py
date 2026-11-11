@@ -1,14 +1,7 @@
 """The artifact kinds: amount, count, rate, text, digits and record list.
 
-Each is an `ArtifactKind` of one value type that says for itself what it refuses and what a
-package declares it with. Text is never read here: the adapters turn it into finished values
-(adapters/text.py). A package declares one on its catalog with the class's own `declare`, e.g.
-`AmountKind.declare(CATALOG, "taxable_income", non_negative=True)`.
-An amount or a count may be non-negative; a count that is, is also how a yes/no is written, 1
-for yes and 0 for no. A digits kind holds a fixed count of ASCII digits as text, a business
-number say; a record-list kind holds a variable number of same-shaped records (the `RecordList`
-value is in record_list.py). A new kind of value is a new subclass of `ArtifactKind`, not an edit
-here.
+A package declares one with the class's `declare`; a non-negative count is also how a yes/no is
+written (1 or 0).
 """
 
 from __future__ import annotations
@@ -159,9 +152,8 @@ class TextKind(ArtifactKind[str]):
 class DigitsKind(ArtifactKind[str]):
     """A digits kind: its values are texts of exactly its `digits` ASCII digits, or blank.
 
-    `digits` is an `int` of at least 1 (a `bool` is not one), else an InvalidRegistrationError
-    naming the kind. Two kinds of one identifier with another number of digits are not equal.
-    Packages declare theirs with `declare`.
+    `digits` is an `int` of at least 1, else InvalidRegistrationError. Kinds of one identifier with
+    another number of digits are not equal.
     """
 
     digits: int = field(kw_only=True)
@@ -206,9 +198,8 @@ class DigitsKind(ArtifactKind[str]):
 class RecordListKind(ArtifactKind[RecordList]):
     """A record-list kind: its values are `RecordList`s of exactly its `fields`, in that order.
 
-    The fields are `Decimal`, `int` or record-list kinds, none or more, no identifier twice, else an
-    InvalidRegistrationError naming the kind; they may come from any package's catalog. Two kinds
-    of one identifier with other fields are not equal. Packages declare theirs with `declare`.
+    The fields are `Decimal`, `int` or record-list kinds with no identifier twice, else
+    InvalidRegistrationError. Kinds of one identifier with other fields are not equal.
     """
 
     fields: tuple[ArtifactKind[Any], ...] = field(kw_only=True)

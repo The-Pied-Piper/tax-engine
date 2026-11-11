@@ -1,10 +1,7 @@
 """Parameter kinds: a name for a kind of parameter and the type of its values.
 
-Each parameter type declares its kind next to itself (e.g. BRACKETS beside
-BracketSchedule), and each capability declares a kind for each of its parameter
-slots (e.g. `schedule: BRACKETS`). Data files
-state their kind, so readers can check what they found against what was asked.
-Adding a kind changes nothing that already exists.
+Each parameter type declares its kind beside itself; data files state their kind, so readers can
+check what they found.
 """
 
 from __future__ import annotations

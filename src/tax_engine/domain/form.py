@@ -1,29 +1,6 @@
 """Forms: peers that run once per instance and read each other's exports.
 
-A computation is a flat set of forms that together are the return; none is special. A form is a
-group of capabilities with the artifacts it exports, never a capability itself. A `FormComposition`
-is one form wired: an inner `Composition` whose outputs are the form's exports and whose inputs are
-derived. The inputs of a form are the starting artifacts it reads, plus the fields of its
-`instances` kind (a record-list kind, one record per instance) if it has one; a form without an
-`instances` list has exactly one implicit instance. The kinds a form reads that other forms export
-are its imports and are inputs too.
-
-For each export `X` of the form `B` the engine derives the kind `B.X`: a record list of one field,
-`X`, with a record per instance in instance order (one record for a form without an instances list).
-Every form reads any such kind by its identifier; an export nobody reads is fine.
-
-A `FormSet` holds the forms of one computation. It orders them by their imports and runs each
-once per instance record (a form without an instances list has one) on its own `Worksheet`. It
-keeps every form's exports in one store, hands each run its imports as starting artifacts and
-returns a plain mapping: form name to one `Worksheet` per instance, in instance order.
-
-A form without an instances list has a default instance list of exactly one instance, and the
-limits apply to the length of its list uniformly. `max_instances` is the most records the caller
-may give and `min_instances` the fewest. An `exclusive_group` is shared by forms of which at most
-one may have instances: with none the group exports nothing, so what totals its forms' exports
-totals to zero. The `FormSet` refuses a caller who breaks a limit with a ValidationError naming the
-form or the group, and refuses at construction a group that names only one form or in which two
-forms always have instances (each can never hold).
+See docs/forms.md for instances, limits and the derived `<form>.<export>` kinds.
 """
 
 from __future__ import annotations
@@ -56,22 +33,12 @@ from tax_engine.domain.worksheet import Worksheet
 class FormComposition:
     """One form wired: the capabilities of form `name` as an inner `Composition`.
 
-    Built from the manifest's `Form` (name, limits, `exports`, `instances`) and the kinds that
-    resolve its names; the `instances` kind must be a record list, else an InvalidCompositionError.
-    The inner composition returns the exports. Its inputs are the kinds of `starting` (the
-    starting artifacts of the computation) that the form's capabilities consume or export, plus
-    the fields of `instances` if it has any, plus, always, its imports. A form that reads its own
-    `<form>.<export>` gets, in each run, a record list of that export over the runs before it, in
-    run order (empty in the first). A field of `instances` that is also among `starting` is an
-    InvalidCompositionError: one kind, two values.
-    An export of a `Decimal` or `int` kind or a record-list kind is also readable by every form as
-    `<form>.<export>`; one of another kind (a rate, digits) is only on the form's worksheets.
-    Any breach of the rules of `Composition` is an InvalidCompositionError naming the form
-    (`form 'x': ...`). The rules of the `Form` itself (exports that are not empty and not another
-    form's, the limits, a well-formed `exclusive_group`) were checked when it was declared and are
-    an InvalidManifestError there.
-    `max_instances`, `min_instances` and `exclusive_group` are the limits the `FormSet` enforces on
-    the instances.
+    Its inputs are the `starting` kinds the capabilities consume or export, the fields of
+    `instances` (a record-list kind, else InvalidCompositionError), and its imports. A form reading
+    its own `<form>.<export>` gets the record list over the runs before it (empty in the first). A
+    field of `instances` that is also in `starting` is an InvalidCompositionError. Rule breaches
+    name the form (`form 'x': ...`). Exports of an amount, count or record-list kind are readable as
+    `<form>.<export>`; others only on the form's worksheets.
     """
 
     def __init__(
@@ -87,16 +54,10 @@ class FormComposition:
     ) -> None:
         """Wire `capabilities` as `form`, whose names `kinds` resolves to artifact kinds.
 
-        The name, limits, `instances` and `exports` are the form's own, already checked when it
-        was declared. `defaults` are the artifacts a starting artifact is read as when it is left
-        out, and `field_defaults` the same for a field of `instances` when a record leaves it
-        blank. An input or field whose default is blank may arrive blank: the form's own
-        composition takes a blank for those of them it reads, and refuses a blank in any other
-        input. A default that is a value is what is read when the input or field is blank.
-        `declared` are the manifest's input declarations: the `title` and `reference` of each one
-        this form reads, and of each declared field of its `instances`, are given by the worksheet
-        like those of a figure a step produces; a declaration of an input the form does not read
-        (or of the `instances` list itself, which is no figure) is left out.
+        `defaults` are what a starting artifact is read as when left out, and `field_defaults` the
+        same for an `instances` field left blank; an input or field whose default is blank may
+        arrive blank, and any other blank is refused. `declared` gives the `title` and `reference`
+        of the inputs and fields this form reads.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -254,11 +215,10 @@ class FormComposition:
 class FormSet:
     """The forms of a computation, run in the order of their imports.
 
-    Construction fails with InvalidCompositionError naming the forms for a form listed twice, an
-    instances kind that is not among `inputs`, an exclusive group naming one form or two forms that
-    always have instances, an input that is a form's derived `<form>.<export>` kind, an import that
-    no form exports, a cycle of imports, or an input that no form reads (an instances kind is read
-    by its form). A form's read of its own derived export is not a cycle: see `FormComposition`.
+    Construction raises InvalidCompositionError naming the forms for a duplicate form, an instances
+    kind not among `inputs`, an input that is a form's derived `<form>.<export>` kind, an invalid
+    exclusive group, an unexported import, an import cycle, or an input no form reads. A form's read
+    of its own derived export is not a cycle.
     """
 
     def __init__(
@@ -270,8 +230,7 @@ class FormSet:
     ) -> None:
         """Wire `forms` into a computation that starts from the artifacts of the kinds `inputs`.
 
-        `defaults` are the artifacts a caller who leaves out an input of that kind, or gives it
-        blank when the default is a value, is read as giving (a blank default among them);
+        `defaults` are what an input left out, or blank where the default is a value, is read as;
         each is of one of the `inputs`, once.
         """
         listed = tuple(forms)
@@ -303,19 +262,13 @@ class FormSet:
     def compute(self, *artifacts: Artifact[Any]) -> dict[str, tuple[Worksheet, ...]]:
         """Run every form on `artifacts`: one of each input kind, instances kinds among them.
 
-        Each form runs once per record of its instances (a form without an instances list has one
-        instance), in `forms` order, on a worksheet of the starting artifacts it reads, its record's
-        fields and its imports. The result maps each form's name to its worksheets in instance
-        order, none if its instances list is empty. A worksheet traces each starting input it
-        reads that was read as its default (left out, or given blank where the default is a
-        value); a record's field defaults are not traced.
-        A DomainError from a run is raised as itself; its message starts with the form and the
-        instance position (`<form>, instance N: ...`, N being 1 for a form without an instances
-        list). A kind given that is a form's export is refused: the forms derive it,
-        and two values for one kind are a DuplicateArtifactError, as in a `Worksheet`. More
-        instances of a form than its `max_instances`, fewer than its `min_instances` (a form without
-        an instances list has one), or instances of two forms of one exclusive
-        group, are a ValidationError naming the form or the group, before any form runs.
+        Each form runs once per record of its instances, in `forms` order. The result maps each
+        form's name to its worksheets in instance order (none if its instances list is empty). A
+        DomainError from a run is raised with `<form>, instance N: ` (N from 1) before its message.
+        Two values for one kind are a DuplicateArtifactError; a kind that is a form's export is an
+        InvalidCompositionError. A breach of the instance limits is a ValidationError naming the
+        form or group, before any form runs. A worksheet traces each starting input it read as its
+        default; field defaults are not traced.
         """
         kinds = [artifact.kind for artifact in artifacts]
         counts = Counter(kinds)
@@ -345,8 +298,7 @@ class FormSet:
         """A `FormInstanceLine` per worksheet of `worksheets` that has trace lines, in the order the
         forms run.
 
-        The position is from 1, counting every worksheet; a form without an instances list has one
-        instance, 1. A form with no steps (it only exports its input) has no line.
+        The position counts every worksheet from 1; a form with no steps has no line.
         """
         return tuple(
             FormInstanceLine(form.name, position, worksheet.trace, worksheet)

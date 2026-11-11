@@ -1,9 +1,7 @@
 """Fractions: a fraction of whole numbers, such as a form's "two-thirds" or a printed factor of 0.
 
-A rate must be a finite decimal, and two-thirds is not, so a fraction is carried as its numerator
-(zero or more, since a form can print a factor of 0) and its positive denominator, kept as given
-(never reduced), and the one division is left to the capability that applies it. The code holds
-no jurisdiction's fractions.
+Held as numerator (zero or more) and positive denominator, kept as given and never reduced, because
+two-thirds is not a finite decimal; the capability that applies it does the one division.
 """
 
 from __future__ import annotations

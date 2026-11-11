@@ -1,8 +1,7 @@
 """Rounding only: the values of a dataset that carries nothing but its rounding rule.
 
-For a capability that computes from artifacts alone and rounds its result once: its dataset is the
-shared envelope, and the `rounding` rule is the one figure it states. The values are empty, so
-every `RoundingOnly` is equal to every other and nothing is refused.
+For a capability that computes from artifacts alone and rounds its result once. The values are
+empty, so every `RoundingOnly` is equal to every other.
 """
 
 from __future__ import annotations

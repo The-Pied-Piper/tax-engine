@@ -1,13 +1,8 @@
-"""The structured trace: what each capability did, recorded as facts.
+"""The structured trace: what each capability did, recorded as facts, never text.
 
-A trace line holds the domain objects and amounts involved (`ArtifactKind`, `Rate`, `Credit`,
-`Amount`, `ParameterDataset`, `Factor`, `Fraction`, `RateTableRow`, `ClassRate`,
-`RoundingRule`), never text; its `amount` is the figure the line is about. A count is an `int`
-artifact kind and its `int` value; a chosen rate is a `Rate` artifact kind and its `Rate` value.
-Lines in a jurisdiction's own vocabulary live in that jurisdiction's package
-(`tax_engine.jurisdictions.<package>.trace`). Rendering lines as human-readable text lives
-outside the
-domain, in the adapters.
+A line holds domain objects and amounts; its `amount` is the figure the line is about. A count is an
+`int` kind and its `int` value, a chosen rate a `Rate` kind and its `Rate` value. Jurisdiction lines
+live in `tax_engine.jurisdictions.<package>.trace`; rendering is in the adapters.
 """
 
 from __future__ import annotations

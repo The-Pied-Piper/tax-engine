@@ -1,17 +1,6 @@
-"""Rounding rules (design.md §3, Rounding).
+"""Rounding rules.
 
-Rounding is a parameter, never a jurisdiction constant in code. A capability
-decides *where* it rounds, as does a parameter value that computes a figure of its
-own (a bracket schedule's tax at each bracket's start); the `RoundingRule` each is
-given decides *how*. The default is `NO_ROUNDING`, which leaves amounts exact, so
-every rounding point calls `apply` and an unconfigured rule changes nothing.
-
-Only exact amounts are accepted: a `Decimal`, or the exact `Fraction` a capability gets by
-dividing. Rounding works on exact fractions, so any positive increment (0.01, 1, 0.05, ...)
-rounds without an inexact division. `apply` is the one place allowed to be inexact: the engine
-runs capabilities under a `decimal` context that traps `Inexact`, and rounding is the only
-arithmetic a dataset asks for. `NO_ROUNDING` still never rounds: a quotient with no finite
-decimal expansion raises `decimal.Inexact`.
+See docs/parameter-data.md.
 """
 
 from __future__ import annotations
