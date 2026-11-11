@@ -9,10 +9,6 @@ an inexact division raises `decimal.Inexact`.
 # or less. If it is more than $57,375, enter the result of the following calculation: Amount from
 # line 76 of your return divided by 14.5%".
 
-# Schedule 11 line 11: "Enter the amount from line 26000 of your return on line 11 if it is $57,375
-# or less. If it is more than $57,375, enter the result of the following calculation: Amount from
-# line 76 of your return divided by 14.5%".
-
 from __future__ import annotations
 
 from collections.abc import Mapping

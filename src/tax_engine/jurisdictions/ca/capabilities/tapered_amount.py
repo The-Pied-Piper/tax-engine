@@ -8,9 +8,6 @@ with the `taper` dataset's rule; with no rounding an inexact reduction raises `d
 # The class is `TaperedAmount` so that it does not share a name with the `Taper` value object it
 # reads.
 
-# The class is `TaperedAmount` so that it does not share a name with the `Taper` value object it
-# reads.
-
 from __future__ import annotations
 
 from collections.abc import Mapping

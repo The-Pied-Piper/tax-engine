@@ -9,10 +9,6 @@ if no condition applies.
 # individual with the higher net income can claim the amounts on lines 75 and 76. Each test names
 # the figure it reads by position (from 1) in the consumed `counts` or `amounts`.
 
-# ON428 line 80: "Enter "0" on line 80 if any of the following applies to you", and only the
-# individual with the higher net income can claim the amounts on lines 75 and 76. Each test names
-# the figure it reads by position (from 1) in the consumed `counts` or `amounts`.
-
 from __future__ import annotations
 
 from collections.abc import Mapping

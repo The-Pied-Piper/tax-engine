@@ -1,7 +1,7 @@
 """Multiple over: a `factor` dataset's multiple of one money artifact less another, floored at zero.
 
 The output is `rounding.apply(max(factor × amount − less, 0))`, rounded once after the floor; a
-difference at or below zero is a plain `Decimal(0)`.
+difference at or below zero gives zero, itself rounded by the dataset rule.
 """
 
 from __future__ import annotations
