@@ -10,12 +10,14 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/record_total
+    title: "Base CPP or QPP contributions through employment income"
     reference: "30800"
     consumes:
       records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
     produces:
       output: ca/cpp_base_contributions_line_86
   - name: core/record_total
+    title: "Employment insurance premiums through employment"
     reference: "31200"
     consumes:
       records: ca/t2204.t2204_line_16

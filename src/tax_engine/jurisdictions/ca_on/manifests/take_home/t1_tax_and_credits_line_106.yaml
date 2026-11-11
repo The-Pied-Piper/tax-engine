@@ -8,7 +8,6 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/sum
-    title: "Credit amounts through line 106"
     reference: "106"
     params:
       rounding: ca/cent_rounding

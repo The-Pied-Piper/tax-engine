@@ -26,12 +26,14 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/record_total
+    title: "Employment insurance (EI) overpayment"
     reference: "45000"
     consumes:
       records: ca/t2204.ei_overpayment
     produces:
       output: ca/ei_overpayment_line_45000
   - name: core/record_total
+    title: "Canada workers benefit (CWB)"
     reference: "45300"
     consumes:
       records: ca/schedule_6.cwb_benefit_line_28
