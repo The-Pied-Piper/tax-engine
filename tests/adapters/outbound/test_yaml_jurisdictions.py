@@ -1311,17 +1311,32 @@ def test_several_forms_are_kept_in_the_order_their_names_first_appear(tmp_path: 
     assert [c.name for c in business.capabilities] == ["ex/c", "ex/d"]
 
 
-@pytest.mark.parametrize(
-    "extra", ["inputs: [{name: ex/rentals, required: true}]\n", "outputs: [ex/y]\n"]
-)
-def test_a_form_part_with_inputs_or_outputs_is_rejected_naming_the_part(
-    tmp_path: Path, extra: str
-) -> None:
-    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL + extra})
+def test_a_form_part_with_outputs_is_rejected_naming_the_part(tmp_path: Path) -> None:
+    write_parts(
+        tmp_path,
+        {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL + "outputs: [ex/y]\n"},
+    )
 
     with pytest.raises(
-        InvalidManifestError, match="form 'ex/rental'.*inputs are derived"
+        InvalidManifestError, match="form 'ex/rental'.*exports are declared"
     ) as caught:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert str(part_path(tmp_path, "01-rental.yaml")) in str(caught.value)
+
+
+def test_a_form_part_may_declare_inputs_which_join_the_manifests(tmp_path: Path) -> None:
+    extra = "inputs: [{name: ex/extra_input, required: false, default: '0', basis: printed}]\n"
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL + extra})
+
+    assert "ex/extra_input" in only_manifest(tmp_path).inputs
+
+
+def test_an_input_a_form_part_and_another_part_both_declare_is_rejected(tmp_path: Path) -> None:
+    extra = "inputs: [{name: ex/x, required: true}]\n"
+    write_parts(tmp_path, {"00-header.yaml": HEADER_PART, "01-rental.yaml": FORM_RENTAL + extra})
+
+    with pytest.raises(InvalidManifestError, match="ex/x") as caught:
         source(tmp_path).get_jurisdiction(EX_ON)
 
     assert str(part_path(tmp_path, "01-rental.yaml")) in str(caught.value)

@@ -15,7 +15,6 @@ another part's.
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import tax_engine.jurisdictions.ca
@@ -23,6 +22,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
 from tests.kinds import bundled_kinds, non_negative
+from tests.manifest_support import inputs_without_form
 
 LINE_14 = "ca/cwb_secondary_earner_exemption"
 PRINTED_BASIS = (
@@ -47,7 +47,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+    (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
 
 

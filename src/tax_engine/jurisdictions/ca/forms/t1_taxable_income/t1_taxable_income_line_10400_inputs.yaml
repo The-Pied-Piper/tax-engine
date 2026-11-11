@@ -2,6 +2,8 @@
 # Line 2 and line 10400: "Line 2 and line 10400: Other employment income" (5006-R page 3). A salary-only
 # caller has no slips, tips or other employment income, so a request that leaves the line out is read
 # as 0, not blank.
+form:
+  name: ca/t1_taxable_income
 inputs:
   - name: ca/other_employment_income
     title: "Other employment income"

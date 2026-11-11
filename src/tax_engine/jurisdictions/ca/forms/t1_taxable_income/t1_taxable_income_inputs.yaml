@@ -1,4 +1,6 @@
 # T1 (2025) inputs a salary-only caller does not give.
+form:
+  name: ca/t1_taxable_income
 inputs:
   # T1 line 23500: "Line 55 and line 23500: If not, enter "0" on line 23500." A salary-only filer has
   # nothing on lines 11900, 11300 or 14600, so the Federal Worksheet chart does not apply and the

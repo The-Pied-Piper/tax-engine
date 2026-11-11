@@ -56,7 +56,7 @@ _OPTIONAL_FORM_KEYS = frozenset(
         "supplies",
     }
 )
-_IMPORTED_PART_KEYS = frozenset({"form", "capabilities"})
+_IMPORTED_PART_KEYS = frozenset({"form", "capabilities", "inputs"})
 _OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
@@ -261,10 +261,10 @@ class YamlJurisdictionSource:
                 f"{part}: form {name!r}: the manifest `title` belongs to the default form; "
                 "the form's own title goes in its `form:` block"
             )
-        if contents.keys() & set(_IDENTIFIER_LISTS):
+        if contents.keys() & {"outputs", "imports"}:
             raise InvalidManifestError(
-                f"{part}: form {name!r}: inputs are derived and exports are declared in the "
-                "form: block, so the part takes no `inputs`, `outputs` or `imports`"
+                f"{part}: form {name!r}: exports are declared in the form: block, so the part "
+                "takes no `outputs` or `imports`"
             )
         chosen = form_selections.setdefault(name, [])
         if declared is not None:
@@ -315,8 +315,7 @@ class YamlJurisdictionSource:
         self, identifier: str, owner: Path | None, input_owners: dict[str, Path]
     ) -> tuple[Form, tuple[InputDeclaration, ...]]:
         """The form `identifier` of the parts in `<package>/forms/<local id>/` and the inputs
-        they declare; a part carries `form` and `capabilities` and names that form, or carries
-        `inputs` alone.
+        they declare; each part names that form and carries `capabilities` and `inputs`.
         """
         namespace, _, local_id = identifier.partition("/")
         prefix = "" if owner is None else f"{owner}: "
@@ -336,11 +335,10 @@ class YamlJurisdictionSource:
         for part in parts:
             contents = self._part(part)
             self._check_imported_part(part, identifier, contents)
-            if "form" not in contents:
-                node = contents["inputs"]
+            if "inputs" in contents:
+                node = contents.pop("inputs")
                 self._claim_identifiers("inputs", node, part, input_owners)
                 inputs.extend(self._declarations(node, self._input_kind))
-                continue
             name = self._join_form(part, contents, selections, declarations)
             if name != identifier:
                 raise InvalidManifestError(
@@ -353,16 +351,11 @@ class YamlJurisdictionSource:
 
     @staticmethod
     def _check_imported_part(part: Path, identifier: str, contents: dict[str, YamlNode]) -> None:
-        """Refuse a part of an imported form that is neither a `form:` part (with `capabilities`)
-        nor a part of `inputs` alone, or that carries a manifest key.
-        """
+        """Refuse a part of an imported form without a `form:` key or with a manifest key."""
         if "form" not in contents:
-            if set(contents) != {"inputs"}:
-                raise InvalidManifestError(
-                    f"{part}: imported form {identifier!r}: a part needs a `form:` key, or "
-                    "only `inputs`"
-                )
-            return
+            raise InvalidManifestError(
+                f"{part}: imported form {identifier!r}: a part needs a `form:` key"
+            )
         for key in contents.keys() - _IMPORTED_PART_KEYS:
             raise InvalidManifestError(
                 f"{part}: imported form {identifier!r}: key {key!r} belongs to the importing "

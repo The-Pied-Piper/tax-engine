@@ -11,13 +11,13 @@ another part's.
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import tax_engine.jurisdictions.ca
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tests.manifest_support import inputs_without_form
 
 LINE_11 = "ca/uccb_and_rdsp_income"
 PRINTED_BASIS = (
@@ -39,7 +39,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+    (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
 
 

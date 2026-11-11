@@ -5,9 +5,9 @@ imported form live in `<package dir of ns>/forms/<local_id>/` (every `*.yaml` / 
 recursively), not under `manifests/`. They load with the importing manifest's own parts: `forms`
 runs the default form, then the imported forms in `imports` order, then the manifest's own.
 
-An imported part carries `form` and `capabilities`, and its `form.name` is the imported
-identifier; or it carries `inputs` alone, the input declarations the form brings to every
-importing manifest. A form that declares `exports` may also declare `supplies`, a mapping from a
+An imported part carries `form`, `capabilities` and `inputs`, and its `form.name` is the
+imported identifier; its `inputs` are the declarations the form brings to every importing
+manifest. A form that declares `exports` may also declare `supplies`, a mapping from a
 neutral derived identifier (`ex/provincial_tax.amount`) to one of its own exports, so an imported
 form reads a figure each importing manifest supplies under that name. Names are made up: the package
 `ex` holds the shared form `ex/federal`, `ex-on` and `ex-ab` are two provinces importing it.
@@ -262,7 +262,7 @@ capabilities:
   - {name: ex/c, produces: {output: ex/other_total}}
 """
 
-FEDERAL_INPUTS = """\
+INPUTS_BODY = """\
 inputs:
   - name: ex/other_income
     required: false
@@ -270,8 +270,10 @@ inputs:
     basis: "Other income: if none, enter 0."
 """
 
+FEDERAL_INPUTS = "form:\n  name: ex/federal\n" + INPUTS_BODY
 
-def test_an_imported_form_brings_the_inputs_its_inputs_part_declares(tmp_path: Path) -> None:
+
+def test_an_imported_form_brings_the_inputs_its_part_declares(tmp_path: Path) -> None:
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
     write_province(tmp_path)
 
@@ -304,7 +306,7 @@ def test_an_imported_input_the_manifest_declares_too_is_rejected_naming_it(tmp_p
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
     write_province(
         tmp_path,
-        extra={"02-own.yaml": FEDERAL_INPUTS},
+        extra={"02-own.yaml": INPUTS_BODY},
     )
 
     with pytest.raises(InvalidManifestError, match="ex/other_income"):
@@ -314,7 +316,11 @@ def test_an_imported_input_the_manifest_declares_too_is_rejected_naming_it(tmp_p
 def test_an_input_two_imported_forms_declare_is_rejected(tmp_path: Path) -> None:
     write_federal(tmp_path, {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS})
     write(tmp_path, "ex/forms/other/00-other.yaml", FEDERAL_OTHER)
-    write(tmp_path, "ex/forms/other/01-inputs.yaml", FEDERAL_INPUTS)
+    write(
+        tmp_path,
+        "ex/forms/other/01-inputs.yaml",
+        FEDERAL_INPUTS.replace("ex/federal", "ex/other"),
+    )
     write_province(tmp_path, head=header("EX-ON", "[ex/federal, ex/other]"))
 
     with pytest.raises(InvalidManifestError, match="ex/other_income") as caught:
@@ -356,7 +362,9 @@ def test_an_input_two_inputs_parts_of_the_form_declare_is_rejected_naming_the_pa
     assert "02-again.yaml" in str(caught.value)
 
 
-def test_an_inputs_part_with_another_key_is_rejected_naming_the_part(tmp_path: Path) -> None:
+def test_an_imported_part_with_inputs_and_outputs_is_rejected_naming_the_part(
+    tmp_path: Path,
+) -> None:
     write_federal(
         tmp_path,
         {"00-federal.yaml": FEDERAL, "01-inputs.yaml": FEDERAL_INPUTS + "outputs: [ex/y]\n"},
@@ -369,7 +377,7 @@ def test_an_inputs_part_with_another_key_is_rejected_naming_the_part(tmp_path: P
     assert "01-inputs.yaml" in str(caught.value)
 
 
-def test_an_imported_form_with_only_an_inputs_part_is_rejected(tmp_path: Path) -> None:
+def test_an_imported_form_whose_only_part_declares_no_exports_is_rejected(tmp_path: Path) -> None:
     write_federal(tmp_path, {"01-inputs.yaml": FEDERAL_INPUTS})
     write_province(tmp_path)
 

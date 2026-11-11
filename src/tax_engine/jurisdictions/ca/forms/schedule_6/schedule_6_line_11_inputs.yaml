@@ -2,6 +2,8 @@
 # give. Line 11: "Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)"
 # (docs/cra-forms-2025/5000-s6-25e.txt, lines 215-220). A request that leaves the line out is read as
 # blank, and the line 12 part reads that blank as 0 by the blank rule of core/subtract_not_below_zero.
+form:
+  name: ca/schedule_6
 inputs:
   - name: ca/uccb_and_rdsp_income
     title: "Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)"

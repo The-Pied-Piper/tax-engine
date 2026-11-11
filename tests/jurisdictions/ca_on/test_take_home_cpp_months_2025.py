@@ -8,13 +8,13 @@ The real part is loaded under a test-local header, as the take-home header is an
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import tax_engine.jurisdictions.ca
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tests.manifest_support import inputs_without_form
 
 LINE_A = "ca/cpp_months"
 PRINTED_BASIS = 'Enter "12" on line A below unless any of the following conditions apply:'
@@ -34,7 +34,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder = tmp_path / "manifest"
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
-    shutil.copy(PART, folder / PART.name)
+    (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
 
 
