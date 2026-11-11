@@ -7,6 +7,7 @@ from decimal import Decimal
 from tax_engine import build_tax_computation
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.trace import DefaultedInputLine
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 
 
@@ -54,3 +55,19 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     assert on428.reference("on428_taxable_income_line_1") == "1"
     assert on428.reference("on428_taxable_income_line_89") == "1"
     assert on428.reference("no_such_label") is None
+
+
+def test_schedule_8_line_a_is_traced_as_the_months_default_with_its_printed_reference() -> None:
+    sheets = build_tax_computation().compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+    )
+
+    (schedule_8,) = sheets["ca/schedule_8"]
+    (months,) = [
+        line
+        for line in schedule_8.trace
+        if isinstance(line, DefaultedInputLine) and line.label == "cpp_months"
+    ]
+
+    assert months.amount == 12
+    assert schedule_8.reference("cpp_months") == "A"

@@ -53,7 +53,14 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.record_list import RecordList
-from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine, TraceLine
+from tax_engine.domain.trace import (
+    DefaultedInputLine,
+    FormInstanceLine,
+    LeftBlankLine,
+    RecordTotalLine,
+    SubtractedLine,
+    TraceLine,
+)
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
@@ -1942,6 +1949,27 @@ def test_an_input_the_caller_leaves_out_takes_its_default() -> None:
     forms = less_set([Artifact(COSTS, D(30))])
 
     assert levy(forms, Artifact(SALES, D(100))) == D(70)
+
+
+def test_an_input_taken_as_its_default_is_traced_and_one_given_is_not() -> None:
+    forms = less_set([Artifact(COSTS, D(30))])
+
+    left_out = forms.compute(Artifact(SALES, D(100)))[RETURN][0]
+    given = forms.compute(Artifact(SALES, D(100)), Artifact(COSTS, D(10)))[RETURN][0]
+    given_blank = forms.compute(Artifact(SALES, D(100)), Artifact(COSTS, BLANK))[RETURN][0]
+
+    assert left_out.trace == (DefaultedInputLine(COSTS, D(30)),)
+    assert given.trace == ()
+    assert given_blank.trace == (DefaultedInputLine(COSTS, D(30)),)
+
+
+def test_a_blank_default_is_traced_as_left_blank_not_as_a_default() -> None:
+    forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
+
+    worksheet = forms.compute(Artifact(SALES, D(100)))[RETURN][0]
+
+    assert LeftBlankLine(COSTS) in worksheet.trace
+    assert not any(isinstance(line, DefaultedInputLine) for line in worksheet.trace)
 
 
 def test_an_input_the_caller_gives_beats_its_default() -> None:

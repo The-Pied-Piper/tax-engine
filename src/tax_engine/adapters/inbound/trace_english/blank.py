@@ -14,6 +14,7 @@ from tax_engine.domain.trace.blank import (
     BlankField,
     BlankFieldFallbackLine,
     BlankPassedOnLine,
+    DefaultedInputLine,
     LeftBlankLine,
 )
 
@@ -27,6 +28,17 @@ class LeftBlankRenderer:
     def render(self, line: LeftBlankLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         return "left blank"
+
+
+@english_renderer
+class DefaultedInputRenderer:
+    """English text for DefaultedInputLine."""
+
+    line_class = DefaultedInputLine
+
+    def render(self, line: DefaultedInputLine, names: EnglishNames) -> str:
+        """The English sentence for `line`."""
+        return f"not given, so the form's default gives {_figure(line.value)}"
 
 
 @english_renderer

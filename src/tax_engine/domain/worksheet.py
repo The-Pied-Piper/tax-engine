@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import decimal
 from collections.abc import Iterable, Mapping
+from decimal import Decimal
 from typing import Any, cast
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind
@@ -22,7 +23,7 @@ from tax_engine.domain.errors import (
     DuplicateLabelError,
     MissingArtifactError,
 )
-from tax_engine.domain.trace import LeftBlankLine, TraceLine
+from tax_engine.domain.trace import DefaultedInputLine, LeftBlankLine, TraceLine
 
 
 class Worksheet:
@@ -34,8 +35,14 @@ class Worksheet:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
+        defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> None:
+        """A worksheet of the starting `artifacts`. A blank one has a `LeftBlankLine`; one whose
+        kind is in `defaulted` (the caller left it out, and the manifest's default is what is
+        read) has a `DefaultedInputLine`, unless it is blank or not an amount or a count.
+        """
         self._check_artifacts(artifacts)
+        defaulted_kinds = frozenset(defaulted)
         self._form_title = form_title
         self._figure_titles = dict(figure_titles or {})
         self._figure_references = dict(figure_references or {})
@@ -50,6 +57,8 @@ class Worksheet:
             self._artifacts[artifact.kind] = artifact
             if artifact.is_blank:
                 self._trace.append(LeftBlankLine(artifact.kind))
+            elif artifact.kind in defaulted_kinds and isinstance(artifact.value, Decimal | int):
+                self._trace.append(DefaultedInputLine(artifact.kind, artifact.value))
 
     @property
     def trace(self) -> tuple[TraceLine, ...]:
