@@ -5,6 +5,8 @@
 # at 0.
 inputs:
   - name: ca/federal_logging_tax_credit
+    title: "Federal logging tax credit"
+    reference: "133"
     required: false
     default: "0"
     basis: 'Line 133: Federal logging tax credit'

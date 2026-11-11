@@ -4,6 +4,7 @@
 # so each line's test loads only the inputs its step reads.
 inputs:
   - name: ca/deductions_from_net_income
+    reference: "25700"
     required: false
     default: "0"
     basis: "Line 68 and line 25700: Add lines 58 to 67."

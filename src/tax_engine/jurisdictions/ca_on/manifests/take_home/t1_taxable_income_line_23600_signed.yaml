@@ -14,7 +14,6 @@ form:
   name: ca/t1_taxable_income
 capabilities:
   - name: core/subtract
-    title: "Net income before its floor"
     params:
       rounding: ca/cent_rounding
     consumes:
