@@ -75,6 +75,25 @@ def test_new_kinds_need_only_a_registered_parser(tmp_path: Path) -> None:
     assert values == D("0.2")
 
 
+def test_a_dataset_may_carry_the_title_the_form_prints(tmp_path: Path) -> None:
+    write(tmp_path, "ex/parameters/personal_credit/2025.yaml", CREDIT_2025 + 'title: "maximum"\n')
+    write(
+        tmp_path, "ex/parameters/other_credit/2025.yaml", CREDIT_2025.replace("personal", "other")
+    )
+
+    with_title = source(tmp_path).get("ex/personal_credit", 2025, CREDIT)
+    without = source(tmp_path).get("ex/other_credit", 2025, CREDIT)
+
+    assert (with_title.title, without.title) == ("maximum", None)
+
+
+def test_a_blank_dataset_title_is_refused(tmp_path: Path) -> None:
+    write(tmp_path, "ex/parameters/personal_credit/2025.yaml", CREDIT_2025 + 'title: " "\n')
+
+    with pytest.raises(InvalidParameterDataError):
+        source(tmp_path).get("ex/personal_credit", 2025, CREDIT)
+
+
 def test_requesting_a_kind_without_a_parser_fails(tmp_path: Path) -> None:
     write(tmp_path, "ex/parameters/brackets/2025.yaml", BRACKETS_2025)
 

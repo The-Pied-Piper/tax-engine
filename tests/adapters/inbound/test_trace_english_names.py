@@ -8,6 +8,8 @@ from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTrace
 from tax_engine.adapters.inbound.trace_english.names import short_form_title
 from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
@@ -20,6 +22,18 @@ NET = AmountKind("ex/net_pay")
 def _Printed(titles: dict[str, str], references: dict[str, str]) -> Worksheet:  # noqa: N802
     """A worksheet of no figures that prints `titles` and `references` for some of them."""
     return Worksheet(figure_titles=titles, figure_references=references)
+
+
+def _cap(title: str | None) -> ParameterDataset[Amount]:
+    return ParameterDataset(
+        "ex/some_ceiling",
+        2025,
+        AMOUNT,
+        Amount(Decimal("81200")),
+        NO_ROUNDING,
+        ("https://x.org",),
+        title,
+    )
 
 
 def test_with_no_worksheet_a_figure_is_its_label_in_plain_words() -> None:
@@ -141,3 +155,11 @@ def test_two_figures_with_one_reference_are_told_apart_by_their_titles() -> None
     assert names.of(LESS) == '"Allowance"'
     assert names.of(GROSS) == "line 87"
     assert names.of(NET) == "line 88"
+
+
+def test_a_fixed_figure_is_named_by_the_title_the_form_prints() -> None:
+    assert EnglishNames().parameter(_cap("maximum per slip")) == "the maximum per slip (81200.00)"
+
+
+def test_a_fixed_figure_without_a_title_is_named_by_its_family_in_plain_words() -> None:
+    assert EnglishNames().parameter(_cap(None)) == "the some ceiling (81200.00)"
