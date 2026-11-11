@@ -1,8 +1,7 @@
 """Finding the capabilities of a package by walking its modules, so no list names them.
 
-A capabilities package is any package whose modules define classes decorated with `@capability`.
-`capabilities_in` imports every module under it and returns the decorated classes each one
-defines, so adding a capability is adding its module.
+`capabilities_in` imports every module under a package and returns the classes decorated with
+`@capability` that each defines.
 """
 
 from __future__ import annotations
@@ -18,10 +17,8 @@ from tax_engine.domain.capability import Capability
 def capabilities_in(package: ModuleType) -> list[type[Capability]]:
     """The capability classes defined in `package` and its submodules, sorted by identifier.
 
-    Only a class defined in a module is taken from it, so one imported from elsewhere is not
-    found twice, nor is one bound to a second name. A subclass of a decorated class that is not
-    itself decorated carries no identifier and is left out. A capability outside this package is
-    never found: it is stamped but not registered.
+    A class is taken only from the module that defines it, so one imported elsewhere is not found
+    twice. An undecorated subclass of a decorated class has no identifier and is left out.
     """
     modules = [package]
     modules += [

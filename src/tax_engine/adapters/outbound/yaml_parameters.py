@@ -1,13 +1,6 @@
 """Reads parameter datasets from YAML files. Implements ParameterSource.
 
-The source takes a mapping of namespace -> jurisdiction package directory. A dataset for
-family `ex-on/brackets` and tax year 2025 lives at `<roots[ex-on]>/parameters/brackets/2025.yaml`:
-the family's first segment is its namespace, and the rest (which may nest) is its path under
-`parameters/`. Every file has the same envelope
-(family, tax_year, kind, sources, rounding) plus keys specific to its kind,
-which that kind's parser reads. The file must declare the family, year and kind
-that were asked for. An absent file is NotFoundError: a year is never carried
-forward. Decimals are YAML strings ("0.145") so they never pass through float.
+The file format is described in docs/parameter-files.md.
 """
 
 from __future__ import annotations
