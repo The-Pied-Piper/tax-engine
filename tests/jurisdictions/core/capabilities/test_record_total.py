@@ -172,7 +172,7 @@ def test_the_trace_renders_one_item_per_record_then_the_total() -> None:
     result = capability().compute((items("24000", "6000"),))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "item_amount of item 1 (24000.00) plus item_amount of item 2 (6000.00) gives 30000.00.",
+        "Item amount of item 1 (24000.00) plus item amount of item 2 (6000.00) gives 30000.00.",
     )
 
 

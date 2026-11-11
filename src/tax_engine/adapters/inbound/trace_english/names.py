@@ -1,7 +1,8 @@
 """EnglishNames: how a trace line's text names a figure.
 
 A figure is named the way the form prints it: by its reference ("line 4", "line B") when the form
-prints one, otherwise by its title in quotes, and only when it has neither by its internal label.
+prints one, otherwise by its title in quotes, and when it has neither (a step of the engine the
+form does not print) by its internal label in plain words, never by an invented title.
 A trace line's own figure is not named in its sentence: the line already carries its label, and
 the form's title and reference for it come from the worksheet beside the text.
 """
@@ -19,6 +20,11 @@ __all__ = ["EnglishNames", "FigureNames", "Labelled"]
 # A bare line number or letter ("4", "B", "26000", "5a") is a line of the form; anything else
 # ("Box 3", "Part 2") is already how the form says it.
 _LINE_REFERENCE = re.compile(r"[A-Za-z0-9]+")
+
+
+def _plain_words(label: str) -> str:
+    """An internal label in plain words: "t2204_exemption" -> "t2204 exemption"."""
+    return label.replace("_", " ")
 
 
 class Labelled(Protocol):
@@ -48,7 +54,6 @@ class EnglishNames:
     def __init__(self, printed: FigureNames | None = None) -> None:
         """Name figures from `printed`, a worksheet; with none, every figure is its label."""
         self._printed = printed
-        self._labels_shown: set[str] = set()
 
     @property
     def printed(self) -> FigureNames | None:
@@ -60,21 +65,15 @@ class EnglishNames:
         shown = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
         return f"{self.of(figure)} ({shown})"
 
-    def shows_label(self, word: str) -> bool:
-        """Whether `word` is an internal label this has shown, so it is not a word to capitalise."""
-        return word in self._labels_shown
-
     def of(self, figure: Labelled) -> str:
         """The name of `figure` for a sentence."""
         label = figure.label
         if self._printed is None:
-            self._labels_shown.add(label)
-            return label
+            return _plain_words(label)
         reference = self._printed.reference(label)
         if reference is not None:
             return f"line {reference}" if _LINE_REFERENCE.fullmatch(reference) else reference
         title = self._printed.title(label)
         if title is not None:
             return f'"{title}"'
-        self._labels_shown.add(label)
-        return label
+        return _plain_words(label)

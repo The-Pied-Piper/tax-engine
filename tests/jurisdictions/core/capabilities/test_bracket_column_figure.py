@@ -262,12 +262,12 @@ def test_the_trace_line_is_frozen() -> None:
     [
         (
             BracketColumnLowerBound,
-            "taxable_base (250.00) falls in the bracket that starts at 100.00.",
+            "Taxable base (250.00) falls in the bracket that starts at 100.00.",
         ),
-        (BracketColumnRate, "taxable_base (250.00) falls in a bracket with the rate 20%."),
+        (BracketColumnRate, "Taxable base (250.00) falls in a bracket with the rate 20%."),
         (
             BracketColumnTaxAtStart,
-            "taxable_base (250.00) falls in a bracket with 10.00 of tax on the income below it.",
+            "Taxable base (250.00) falls in a bracket with 10.00 of tax on the income below it.",
         ),
     ],
 )

@@ -416,9 +416,9 @@ def test_every_dollar_line_is_printed_to_the_cent(take_home_service: TakeHomeSer
 def test_line_42800_names_ontario_line_90_in_the_trace(take_home_service: TakeHomeService) -> None:
     t1 = sheet(run(take_home_service, "70000"), "ca/t1_tax_and_credits")
 
-    assert (
-        f"{ON428_ONTARIO_TAX_LINE_90.label} of item 1 (3911.45) gives 3911.45."
-    ) in EnglishTraceRenderer().render_all(t1.trace, t1)
+    assert "On428 ontario tax line 90 of item 1 (3911.45) gives 3911.45." in (
+        EnglishTraceRenderer().render_all(t1.trace, t1)
+    )
 
 
 @pytest.mark.parametrize(

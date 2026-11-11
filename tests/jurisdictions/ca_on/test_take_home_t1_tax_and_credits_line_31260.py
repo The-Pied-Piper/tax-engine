@@ -155,9 +155,8 @@ def test_line_31260_names_the_income_and_the_cap_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = _sheet(take_home_service, _salary("70000"))
-    kinds = bundled_kinds()
 
     assert (
-        f"Lesser of {kinds.kind(INCOME_SUM).label} (70000.00) and the limit 1471.00 "
+        "Lesser of canada employment amount income (70000.00) and the limit 1471.00 "
         "gives 1471.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

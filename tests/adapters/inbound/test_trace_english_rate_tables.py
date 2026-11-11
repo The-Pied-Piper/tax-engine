@@ -50,7 +50,7 @@ def test_a_rate_by_income_band_with_an_upper_bound() -> None:
     line = RateByIncomeBandLine(RATE_OUT, INCOME, D("2500"), row, Rate(D("0.1")))
 
     assert render(line) == (
-        "income (2500.00) is more than 1000.00 but not more than 5000.00, so the rate is 10%."
+        "Income (2500.00) is more than 1000.00 but not more than 5000.00, so the rate is 10%."
     )
 
 
@@ -59,7 +59,7 @@ def test_a_rate_by_income_band_without_an_upper_bound() -> None:
 
     line = RateByIncomeBandLine(RATE_OUT, INCOME, D("9000"), row, Rate(D("0.25")))
 
-    assert render(line) == "income (9000.00) is more than 5000.00, so the rate is 25%."
+    assert render(line) == "Income (9000.00) is more than 5000.00, so the rate is 25%."
 
 
 def test_a_chosen_rate_applied() -> None:
@@ -70,7 +70,7 @@ def test_a_chosen_rate_applied() -> None:
         OUT, INCOME, D("1000"), CHOSEN_RATE, Rate(D("0.125")), CENT, D("125")
     )
 
-    assert render(unrounded) == "chosen_rate (10%) of income (1000.00) gives 100.00 (not rounded)."
+    assert render(unrounded) == "Chosen rate (10%) of income (1000.00) gives 100.00 (not rounded)."
     assert render(rounded) == (
-        "chosen_rate (12.5%) of income (1000.00) gives 125.00 (rounded to the nearest cent)."
+        "Chosen rate (12.5%) of income (1000.00) gives 125.00 (rounded to the nearest cent)."
     )

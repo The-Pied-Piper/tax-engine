@@ -27,22 +27,22 @@ def render(line: TraceLine) -> str:
 
 def test_a_candidate_chosen_by_a_count() -> None:
     assert render(ChosenByCountLine(OUT, CHILDREN, 0, CREDIT, D("500"))) == (
-        "credit (500.00), chosen because children (0)."
+        "Credit (500.00), chosen because children (0)."
     )
     assert render(ChosenByCountLine(OUT, CHILDREN, 2, CREDIT, D("750.5"))) == (
-        "credit (750.50), chosen because children (2)."
+        "Credit (750.50), chosen because children (2)."
     )
 
 
 def test_a_candidate_chosen_by_the_sign_of_an_amount() -> None:
     assert render(ChosenBySignLine(OUT, BALANCE, D("4"), CREDIT, D("10"))) == (
-        "credit (10.00), chosen because balance (4.00) is positive."
+        "Credit (10.00), chosen because balance (4.00) is positive."
     )
     assert render(ChosenBySignLine(OUT, BALANCE, D("-4"), CREDIT, D("10"))) == (
-        "credit (10.00), chosen because balance (-4.00) is negative."
+        "Credit (10.00), chosen because balance (-4.00) is negative."
     )
     assert render(ChosenBySignLine(OUT, BALANCE, D("0"), CREDIT, D("10"))) == (
-        "credit (10.00), chosen because balance (0.00) is zero."
+        "Credit (10.00), chosen because balance (0.00) is zero."
     )
 
 
@@ -57,5 +57,5 @@ def test_a_sign_with_no_candidate_gives_no_amount() -> None:
 
 def test_a_candidate_chosen_by_the_range_of_an_amount() -> None:
     assert render(ChosenByRangeLine(OUT, INCOME, D("52000"), CREDIT, D("300"))) == (
-        "credit (300.00), chosen because income (52000.00) fits its range."
+        "Credit (300.00), chosen because income (52000.00) fits its range."
     )

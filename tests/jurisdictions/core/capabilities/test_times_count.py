@@ -431,7 +431,7 @@ def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(inputs("16129", 2))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "amount_each (16129.00) for each of person_count (2)"
+        "Amount each (16129.00) for each of person count (2)"
         " gives 32258.00 (rounded to the nearest cent).",
     )
 
@@ -440,7 +440,7 @@ def test_the_trace_reads_in_english_for_a_count_of_zero() -> None:
     result = cents().compute(inputs("16129.50", 0))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "amount_each (16129.50) for each of person_count (0)"
+        "Amount each (16129.50) for each of person count (0)"
         " gives 0.00 (rounded to the nearest cent).",
     )
 
@@ -449,7 +449,7 @@ def test_the_trace_reads_in_english_with_no_rounding() -> None:
     result = capability().compute(inputs("16129", 2))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "amount_each (16129.00) for each of person_count (2) gives 32258.00 (not rounded).",
+        "Amount each (16129.00) for each of person count (2) gives 32258.00 (not rounded).",
     )
 
 

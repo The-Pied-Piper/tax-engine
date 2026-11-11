@@ -388,7 +388,7 @@ def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(three_parts())
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "part_one (100.25) plus part_two (40.00) plus part_three (9.75)"
+        "Part one (100.25) plus part two (40.00) plus part three (9.75)"
         " gives 150.00 (rounded to the nearest cent).",
     )
 

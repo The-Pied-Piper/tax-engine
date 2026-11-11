@@ -39,11 +39,11 @@ def test_a_blank_taken_as_a_fallback() -> None:
 
 def test_a_blank_passed_on() -> None:
     assert (
-        render(BlankPassedOnLine(DEDUCTION, (CHART_GAIN,))) == "Blank because chart_gain was blank."
+        render(BlankPassedOnLine(DEDUCTION, (CHART_GAIN,))) == "Blank because chart gain was blank."
     )
     assert (
         render(BlankPassedOnLine(DEDUCTION, (CHART_GAIN, LIMIT)))
-        == "Blank because chart_gain and limit were blank."
+        == "Blank because chart gain and limit were blank."
     )
 
 

@@ -89,20 +89,20 @@ def test_a_rounded_total() -> None:
 def test_a_quotient_by_a_rate() -> None:
     line = DividedByRateLine(OUT, WAGES, D("50"), Rate(D("0.25")), NO_ROUNDING, D("200"))
 
-    assert render(line) == "wages (50.00) divided by 25% gives 200.00 (not rounded)."
+    assert render(line) == "Wages (50.00) divided by 25% gives 200.00 (not rounded)."
 
 
 def test_a_sign_chosen_difference_that_is_not_negative() -> None:
     line = SignChosenDifferenceLine(OUT, BONUS, D("5"), FLOOR, D("10"), WAGES, D("30"), D("30"))
 
-    assert render(line) == "wages (30.00), because bonus (5.00) is not negative, gives 30.00."
+    assert render(line) == "Wages (30.00), because bonus (5.00) is not negative, gives 30.00."
 
 
 def test_a_sign_chosen_difference_that_is_negative() -> None:
     line = SignChosenDifferenceLine(OUT, BONUS, D("-5"), FLOOR, D("10"), WAGES, D("30"), D("-10"))
 
     assert render(line) == (
-        "bonus (-5.00) is negative, so the lesser of floor (10.00) and wages (30.00), "
+        "Bonus (-5.00) is negative, so the lesser of floor (10.00) and wages (30.00), "
         "as a negative, gives -10.00."
     )
 
@@ -144,7 +144,7 @@ def test_an_amount_for_each_unit() -> None:
 
 def test_an_at_most_check_on_an_amount() -> None:
     assert render(AtMostLine(OUT, WAGES, D("100"), FLOOR, D("150"))) == (
-        "wages (100.00), at most floor (150.00)."
+        "Wages (100.00), at most floor (150.00)."
     )
 
 
@@ -152,8 +152,8 @@ def test_a_claim_at_most_a_maximum() -> None:
     within = ClaimAtMostLine(OUT, WAGES, D("40"), FLOOR, D("50"))
     negative_maximum = ClaimAtMostLine(OUT, WAGES, D("0"), FLOOR, D("-1"))
 
-    assert render(within) == "wages (40.00), at most floor (50.00)."
-    assert render(negative_maximum) == "wages (0.00), allowed because floor (-1.00) is negative."
+    assert render(within) == "Wages (40.00), at most floor (50.00)."
+    assert render(negative_maximum) == "Wages (0.00), allowed because floor (-1.00) is negative."
 
 
 def test_a_ratio_applied() -> None:
@@ -161,13 +161,13 @@ def test_a_ratio_applied() -> None:
         OUT, WAGES, D("100"), BONUS, D("1"), EXTRA, D("4"), NO_ROUNDING, D("25")
     )
 
-    assert render(line) == "wages (100.00) × bonus (1.00) / extra (4.00) gives 25.00 (not rounded)."
+    assert render(line) == "Wages (100.00) × bonus (1.00) / extra (4.00) gives 25.00 (not rounded)."
 
 
 def test_an_exact_quotient() -> None:
     line = QuotientLine(OUT, WAGES, D("10"), BONUS, D("4"), D("2.5"))
 
-    assert render(line) == "wages (10.00) divided by bonus (4.00) gives 2.50."
+    assert render(line) == "Wages (10.00) divided by bonus (4.00) gives 2.50."
 
 
 def test_a_threshold_gate_that_is_met() -> None:
@@ -176,7 +176,7 @@ def test_a_threshold_gate_that_is_met() -> None:
     )
 
     assert render(line) == (
-        "wages (500.00), because income (1000.00) is at least 800.00, gives 500.00 (not rounded)."
+        "Wages (500.00), because income (1000.00) is at least 800.00, gives 500.00 (not rounded)."
     )
 
 
@@ -200,20 +200,20 @@ def test_an_amount_that_stands_or_is_divided_by_a_rate() -> None:
     )
 
     assert (
-        render(stands) == "wages (900.00) is 1000.00 or less, so it stands as 900.00 (not rounded)."
+        render(stands) == "Wages (900.00) is 1000.00 or less, so it stands as 900.00 (not rounded)."
     )
     assert render(divided) == (
-        "wages (1200.00) is over 1000.00, so bonus (600.00) divided by 50% gives 1200.00 "
+        "Wages (1200.00) is over 1000.00, so bonus (600.00) divided by 50% gives 1200.00 "
         "(not rounded)."
     )
 
 
 def test_a_count_at_least_and_at_most() -> None:
     assert render(CountAtLeastLine(MINIMUM, CHILDREN, 3, MINIMUM, 1)) == (
-        "children (3), at least minimum (1)."
+        "Children (3), at least minimum (1)."
     )
     assert render(CountAtMostLine(MINIMUM, CHILDREN, 3, MINIMUM, 5)) == (
-        "children (3), at most minimum (5)."
+        "Children (3), at most minimum (5)."
     )
 
 
@@ -223,7 +223,7 @@ def test_a_total_more_than_an_amount_for_each_unit() -> None:
     )
 
     assert render(line) == (
-        "wages (500.00), more than 400.00 (200.00 for each of children (2), not rounded)."
+        "Wages (500.00), more than 400.00 (200.00 for each of children (2), not rounded)."
     )
 
 
@@ -232,11 +232,11 @@ def test_a_total_with_no_units() -> None:
         OUT, WAGES, D("500"), CHILDREN, 0, Amount(D("200")), NO_ROUNDING, D("0")
     )
 
-    assert render(line) == "wages (500.00), with no children."
+    assert render(line) == "Wages (500.00), with no children."
 
 
 def test_a_yes_or_no_count() -> None:
-    assert render(YesOrNoCountLine(FLAG, FLAG, 1)) == "flag (1), a yes or no answer of 0 or 1."
+    assert render(YesOrNoCountLine(FLAG, FLAG, 1)) == "Flag (1), a yes or no answer of 0 or 1."
 
 
 def test_a_count_checked_against_the_records_held() -> None:
@@ -244,14 +244,14 @@ def test_a_count_checked_against_the_records_held() -> None:
     one = CountWithoutRecordsLine(FLAG, FLAG, 0, ROWS, 1)
     many = CountWithoutRecordsLine(FLAG, FLAG, 0, ROWS, 3)
 
-    assert render(none) == "flag (2), with no rows (0 records)."
-    assert render(one) == "flag (0), with 1 record of rows."
-    assert render(many) == "flag (0), with 3 records of rows."
+    assert render(none) == "Flag (2), with no rows (0 records)."
+    assert render(one) == "Flag (0), with 1 record of rows."
+    assert render(many) == "Flag (0), with 3 records of rows."
 
 
 def test_a_count_not_refused() -> None:
     assert render(CountNotRefusedLine(FLAG, FLAG, 1)) == (
-        "flag (1), not refused by the listed conditions."
+        "Flag (1), not refused by the listed conditions."
     )
 
 
@@ -264,10 +264,10 @@ def test_a_ratio_truncated_with_and_without_a_cap() -> None:
     )
 
     assert (
-        render(plain) == "wages (1.00) divided by bonus (3.00) gives 0.333 (rounded down to 0.001)."
+        render(plain) == "Wages (1.00) divided by bonus (3.00) gives 0.333 (rounded down to 0.001)."
     )
     assert render(capped) == (
-        "wages (5.00) divided by bonus (3.00), capped at 1, gives 1.000 (rounded down to 0.001)."
+        "Wages (5.00) divided by bonus (3.00), capped at 1, gives 1.000 (rounded down to 0.001)."
     )
 
 
@@ -295,7 +295,7 @@ def test_the_lesser_of_figures_when_all_are_positive() -> None:
     )
     assert render(gated) == "Lesser of wages (5.00) and bonus (0.00), not all positive, gives 0.00."
     assert render(three) == "Least of wages (5.00), bonus (3.00) and extra (9.00) gives 3.00."
-    assert render(single) == "wages (5.00) gives 5.00."
+    assert render(single) == "Wages (5.00) gives 5.00."
 
 
 def test_an_amount_when_one_figure_is_more_than_another() -> None:
@@ -303,7 +303,7 @@ def test_an_amount_when_one_figure_is_more_than_another() -> None:
     not_more = AmountWhenMoreLine(OUT, BONUS, D("50"), INCOME, D("800"), FLOOR, D("800"), D("0"))
 
     assert render(more) == (
-        "bonus (50.00), because income (900.00) is more than floor (800.00), gives 50.00."
+        "Bonus (50.00), because income (900.00) is more than floor (800.00), gives 50.00."
     )
     assert render(not_more) == "0, because income (800.00) is not more than floor (800.00)."
 
@@ -322,22 +322,20 @@ def test_figures_are_named_as_lines_when_the_form_prints_references() -> None:
     assert renderer.render(two, printed) == "Lesser of line 2 (10.00) and extra (4.50) gives 4.50."
 
 
-def test_a_sentence_keeps_a_leading_label_and_capitalises_a_leading_name() -> None:
+def test_a_sentence_is_capitalised_whether_it_opens_with_a_fallback_label_or_a_printed_name() -> (
+    None
+):
     labelled = EnglishNames()
     printed = EnglishNames(_Printed({}, {"wages": "2"}))
 
-    assert _sentence(f"{labelled.of(WAGES)} (1.00) less nothing", labelled) == (
-        "wages (1.00) less nothing."
-    )
-    assert _sentence(f"{printed.of(WAGES)} (1.00) less nothing", printed) == (
-        "Line 2 (1.00) less nothing."
-    )
-    assert _sentence("lesser of two", EnglishNames()) == "Lesser of two."
+    assert _sentence(f"{labelled.of(WAGES)} (1.00) less nothing") == "Wages (1.00) less nothing."
+    assert _sentence(f"{printed.of(WAGES)} (1.00) less nothing") == "Line 2 (1.00) less nothing."
+    assert _sentence("lesser of two") == "Lesser of two."
 
 
 def test_a_sentence_that_ends_in_a_full_stop_gets_no_second_one() -> None:
-    assert _sentence("Done.", EnglishNames()) == "Done."
-    assert _sentence("Done", EnglishNames()) == "Done."
+    assert _sentence("Done.") == "Done."
+    assert _sentence("Done") == "Done."
 
 
 def test_a_multiple_over_is_the_multiple_less_the_amount_not_the_part_over() -> None:
@@ -364,5 +362,5 @@ def test_a_percentage_applied_prints_the_percentage_as_stored() -> None:
     )
 
     assert render(line) == (
-        "bonus (25%) of wages (200.00) gives 50.00 (rounded to the nearest cent)."
+        "Bonus (25%) of wages (200.00) gives 50.00 (rounded to the nearest cent)."
     )

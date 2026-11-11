@@ -193,13 +193,12 @@ def test_line_30000_names_its_base_and_its_rounded_reduction_in_the_trace(
     take_home_service: TakeHomeService, salary: str, line_23600: str, reduction: str, expected: str
 ) -> None:
     _, sheet = _sheets(take_home_service, salary)
-    kinds = bundled_kinds()
-    output = kinds.kind(LINE_30000)
-    line_3 = kinds.kind(LINE_3)
+    output = bundled_kinds().kind(LINE_30000)
 
     assert sheet.get(output).value == D(expected)
     assert (
-        f"14538.00 plus 1591.00, less {reduction} (the reduction for {line_3.label} "
+        f"14538.00 plus 1591.00, less {reduction} "
+        "(the reduction for basic personal amount net income line 3 "
         f"({line_23600}) over 177882.00, spread over a range of 75532.00), "
         f"not below 14538.00, gives {expected} (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
@@ -232,10 +231,10 @@ def test_line_30000_names_line_3_and_the_range_in_the_trace(
 ) -> None:
     # The sentence as the tapered-amount renderer prints it: the reduction rounded, then the result.
     _, sheet = _sheets(take_home_service, "70000")
-    kinds = bundled_kinds()
 
     assert (
-        f"14538.00 plus 1591.00, less 0.00 (the reduction for {kinds.kind(LINE_3).label} "
+        "14538.00 plus 1591.00, less 0.00 "
+        "(the reduction for basic personal amount net income line 3 "
         "(69335.00) over 177882.00, spread over a range of 75532.00), "
         "not below 14538.00, gives 16129.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
