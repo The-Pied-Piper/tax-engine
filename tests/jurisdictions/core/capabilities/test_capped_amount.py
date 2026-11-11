@@ -258,7 +258,7 @@ def test_traces_one_capped_amount_line() -> None:
             output=CAPPED,
             base=GROSS,
             base_amount=D("1500"),
-            cap=Amount(D("1000")),
+            cap=cap(),
             rounding=NO_ROUNDING,
             result=D("1000"),
         ),
@@ -268,16 +268,14 @@ def test_traces_one_capped_amount_line() -> None:
 def test_traces_a_base_below_the_cap() -> None:
     trace = capability().compute((Artifact(GROSS, D("400.25")),)).trace
 
-    assert trace == (
-        CappedAmountLine(CAPPED, GROSS, D("400.25"), Amount(D("1000")), NO_ROUNDING, D("400.25")),
-    )
+    assert trace == (CappedAmountLine(CAPPED, GROSS, D("400.25"), cap(), NO_ROUNDING, D("400.25")),)
 
 
 def test_traces_the_cap_datasets_rounding_rule_and_the_rounded_result() -> None:
     trace = capability(cap("1000", CENT)).compute((Artifact(GROSS, D("400.005")),)).trace
 
     assert trace == (
-        CappedAmountLine(CAPPED, GROSS, D("400.005"), Amount(D("1000")), CENT, D("400.01")),
+        CappedAmountLine(CAPPED, GROSS, D("400.005"), cap("1000", CENT), CENT, D("400.01")),
     )
 
 

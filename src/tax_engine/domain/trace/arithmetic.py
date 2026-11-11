@@ -12,6 +12,7 @@ from tax_engine.domain.artifact import ArtifactKind, Money
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.credit import Credit
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.factor import Factor
 from tax_engine.domain.parameters.fraction import Fraction
 from tax_engine.domain.parameters.rate import Rate
@@ -285,7 +286,7 @@ class CappedAmountLine(TraceLine):
     output: Money
     base: Money
     base_amount: Decimal
-    cap: Amount
+    cap: ParameterDataset[Amount]
     rounding: RoundingRule
     result: Decimal
 
@@ -330,7 +331,7 @@ class LesserOfWithMaximumLine(TraceLine):
 
     output: Money
     parts: tuple[tuple[Money, Decimal], ...]
-    maximum: Amount
+    maximum: ParameterDataset[Amount]
     rounding: RoundingRule
     result: Decimal
 

@@ -199,8 +199,8 @@ class CappedAmountRenderer:
     def render(self, line: CappedAmountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         return (
-            f"Lesser of {names.figure(line.base, line.base_amount)} and the limit "
-            f"{EnglishFigures.money(line.cap.value)} gives "
+            f"Lesser of {names.figure(line.base, line.base_amount)} and "
+            f"{names.parameter(line.cap)} gives "
             f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
@@ -231,7 +231,7 @@ class LesserOfWithMaximumRenderer:
         terms = EnglishFigures.listing(
             [
                 *(names.figure(kind, amount) for kind, amount in line.parts),
-                f"the limit {EnglishFigures.money(line.maximum.value)}",
+                names.parameter(line.maximum),
             ]
         )
         word = "Lesser" if len(line.parts) == 1 else "Least"
