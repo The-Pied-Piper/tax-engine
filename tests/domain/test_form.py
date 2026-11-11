@@ -55,10 +55,8 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.record_list import RecordList
 from tax_engine.domain.trace import (
-    BlankFallbackLine,
     DefaultedInputLine,
     FormInstanceLine,
-    LeftBlankLine,
     RecordTotalLine,
     SubtractedLine,
     TraceLine,
@@ -1974,15 +1972,11 @@ def test_the_default_itself_given_by_the_caller_is_not_traced_as_a_default() -> 
     assert worksheet.trace == ()
 
 
-def test_a_blank_default_is_traced_as_left_blank_not_as_a_default() -> None:
+def test_a_blank_default_is_not_traced_as_a_default() -> None:
     forms = less_set([Artifact(COSTS, BLANK)], blank_inputs=frozenset({COSTS}))
 
     worksheet = forms.compute(Artifact(SALES, D(100)))[RETURN][0]
 
-    assert any(
-        isinstance(line, (LeftBlankLine, BlankFallbackLine)) and line.label == COSTS.label
-        for line in worksheet.trace
-    )
     assert not any(isinstance(line, DefaultedInputLine) for line in worksheet.trace)
 
 
