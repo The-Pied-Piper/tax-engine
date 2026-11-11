@@ -411,7 +411,7 @@ def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(inputs("100.25", "40"))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "net_amount: gross_amount 100.25 less reduction 40 = 60.25 (half-up to 0.01)",
+        "gross_amount (100.25) less reduction (40) gives 60.25 (rounded to the nearest cent).",
     )
 
 
@@ -419,7 +419,7 @@ def test_the_trace_reads_in_english_with_no_rounding_named() -> None:
     result = capability().compute(inputs("10", "25.5"))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "net_amount: gross_amount 10 less reduction 25.5 = -15.5 (no rounding)",
+        "gross_amount (10) less reduction (25.5) gives -15.5 (not rounded).",
     )
 
 

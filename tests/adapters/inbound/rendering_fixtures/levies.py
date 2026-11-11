@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.artifact import ArtifactKind
 from tax_engine.domain.trace import TraceLine
@@ -32,5 +33,5 @@ class ExLevyRenderer:
 
     line_class = ExLevyLine
 
-    def render(self, line: ExLevyLine) -> str:
-        return f"{line.output.label}: levy of {line.figure}"
+    def render(self, line: ExLevyLine, names: EnglishNames) -> str:
+        return f"levy of {line.figure} on {names.of(line.output)}"

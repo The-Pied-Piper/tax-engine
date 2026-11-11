@@ -29,25 +29,21 @@ def test_the_blank_renderer_module_registers_each_line() -> None:
 
 
 def test_a_line_left_blank() -> None:
-    assert render(LeftBlankLine(CHART_GAIN)) == "chart_gain: left blank"
+    assert render(LeftBlankLine(CHART_GAIN)) == "Left blank."
 
 
 def test_a_blank_taken_as_a_fallback() -> None:
-    assert (
-        render(BlankFallbackLine(DEDUCTION, Decimal("0.00")))
-        == "deduction: left blank, taken as 0.00"
-    )
-    assert render(BlankFallbackLine(HOUSEHOLD, 0)) == "household_count: left blank, taken as 0"
+    assert render(BlankFallbackLine(DEDUCTION, Decimal("0.00"))) == "Left blank, taken as 0.00."
+    assert render(BlankFallbackLine(HOUSEHOLD, 0)) == "Left blank, taken as 0."
 
 
 def test_a_blank_passed_on() -> None:
     assert (
-        render(BlankPassedOnLine(DEDUCTION, (CHART_GAIN,)))
-        == "deduction: blank because chart_gain was blank"
+        render(BlankPassedOnLine(DEDUCTION, (CHART_GAIN,))) == "Blank because chart_gain was blank."
     )
     assert (
         render(BlankPassedOnLine(DEDUCTION, (CHART_GAIN, LIMIT)))
-        == "deduction: blank because chart_gain, limit were blank"
+        == "Blank because chart_gain, limit were blank."
     )
 
 

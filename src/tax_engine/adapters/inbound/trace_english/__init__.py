@@ -19,16 +19,20 @@ from tax_engine.adapters.inbound.trace_english import (
     figures,
     forms,
     line_renderer,
+    names,
     rate_tables,
     record_lists,
     registry,
     renderer,
 )
 from tax_engine.adapters.inbound.trace_english.line_renderer import LineRenderer
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames, FigureNames
 from tax_engine.adapters.inbound.trace_english.renderer import EnglishTraceRenderer
 
 __all__ = [
+    "EnglishNames",
     "EnglishTraceRenderer",
+    "FigureNames",
     "LineRenderer",
     "arithmetic",
     "blank",
@@ -36,6 +40,7 @@ __all__ = [
     "figures",
     "forms",
     "line_renderer",
+    "names",
     "rate_tables",
     "record_lists",
     "registry",

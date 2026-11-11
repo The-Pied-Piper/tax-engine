@@ -709,17 +709,17 @@ def test_renders_the_line_80_gate_in_english() -> None:
     trace = line_80().compute(line_80_inputs("120.00", (0, 0, 1, 0, 0))).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        'gate: condition 1 "You were not a resident of Canada at the beginning of the year": '
-        "not_resident_of_canada 0, does not apply",
-        'gate: condition 2 "You were not a resident of Ontario on December 31, 2025": '
-        "not_resident_of_ontario 0, does not apply",
-        'gate: condition 3 "There is an amount on line 72": amount_on_line_72 120.00, applies',
-        'gate: condition 4 "You were bankrupt at any time in 2025": bankrupt 1, applies',
-        'gate: condition 5 "Your return is filed for you by a trustee in bankruptcy": '
-        "filed_by_trustee 0, does not apply",
-        'gate: condition 6 "You are choosing not to claim an Ontario tax reduction": '
-        "not_claiming_reduction 0, does not apply",
-        "gate: conditions 3, 4 apply, so 0",
+        'Condition 1 "You were not a resident of Canada at the beginning of the year" '
+        "does not apply: not_resident_of_canada (0).",
+        'Condition 2 "You were not a resident of Ontario on December 31, 2025" '
+        "does not apply: not_resident_of_ontario (0).",
+        'Condition 3 "There is an amount on line 72" applies: amount_on_line_72 (120.00).',
+        'Condition 4 "You were bankrupt at any time in 2025" applies: bankrupt (1).',
+        'Condition 5 "Your return is filed for you by a trustee in bankruptcy" '
+        "does not apply: filed_by_trustee (0).",
+        'Condition 6 "You are choosing not to claim an Ontario tax reduction" '
+        "does not apply: not_claiming_reduction (0).",
+        "Conditions 3, 4 apply, so the count is 0.",
     )
 
 
@@ -727,10 +727,9 @@ def test_renders_the_higher_net_income_rule_in_english() -> None:
     trace = higher_income().compute(incomes("48000", "30000")).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        'higher_income_claims: condition 1 "Only the individual with the higher net income can '
-        'claim the amounts on lines 75 and 76": filer_net_income 48000, spouse_net_income 30000, '
-        "applies",
-        "higher_income_claims: condition 1 applies, so 1",
+        'Condition 1 "Only the individual with the higher net income can claim the amounts on '
+        'lines 75 and 76" applies: filer_net_income (48000), spouse_net_income (30000).',
+        "Condition 1 applies, so the count is 1.",
     )
 
 

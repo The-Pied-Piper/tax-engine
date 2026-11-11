@@ -502,8 +502,8 @@ def test_the_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(parts("100.25", "40", "9.75"))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "total: part_one 100.25 + part_two 40 + part_three 9.75, not below 0 = 150.00 "
-        "(half-up to 0.01)",
+        "part_one (100.25) plus part_two (40) plus part_three (9.75), not below 0, gives 150.00 "
+        "(rounded to the nearest cent).",
     )
 
 
@@ -511,7 +511,8 @@ def test_the_floored_trace_reads_in_english_with_the_rounding_named() -> None:
     result = cents().compute(parts("10", "-25.5", "5"))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "total: part_one 10 + part_two -25.5 + part_three 5, not below 0 = 0.00 (half-up to 0.01)",
+        "part_one (10) plus part_two (-25.5) plus part_three (5), not below 0, gives 0.00 "
+        "(rounded to the nearest cent).",
     )
 
 
@@ -519,7 +520,7 @@ def test_the_trace_reads_in_english_for_no_parts_with_no_rounding() -> None:
     result = SumNotBelowZero(rounding(), (), TOTAL).compute(())
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "total: no parts, not below 0 = 0 (no rounding)",
+        "No parts, not below 0, gives 0 (not rounded).",
     )
 
 

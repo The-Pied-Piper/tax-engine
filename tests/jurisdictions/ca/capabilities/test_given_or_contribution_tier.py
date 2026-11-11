@@ -405,9 +405,7 @@ def test_the_given_amount_line_renders_in_english() -> None:
 
     rendered = EnglishTraceRenderer().render_all(trace)
 
-    assert len(rendered) == 1
-    assert rendered[0].startswith(OUTPUT.label)
-    assert "1148" in rendered[0]
+    assert rendered == ("Given (1148.00), as given.",)
 
 
 def test_trace_holds_no_text_for_a_given_figure() -> None:

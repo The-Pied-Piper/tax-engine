@@ -135,8 +135,8 @@ def test_a_negative_net_income_is_line_6_in_brackets_and_line_13_is_zero(
     assert line_13.as_tuple().exponent == -2
     assert not line_13.is_signed()
     assert (
-        "lift_adjusted_net_income: lift_net_income -5665.00, not below 0 = 0.00 (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        "Line 6 (-5665.00), not below 0, gives 0.00 (rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
 @pytest.mark.parametrize(
@@ -164,6 +164,5 @@ def test_line_13_prints_cents_and_names_its_rounding_in_the_trace(
     assert str(value) == "69335.00"
     assert value.as_tuple().exponent == -2
     assert (
-        "lift_adjusted_net_income: lift_net_income 69335.00, not below 0 = 69335.00 "
-        "(half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        "Line 6 (69335.00), not below 0, gives 69335.00 (rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

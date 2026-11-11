@@ -199,9 +199,10 @@ def test_line_30000_names_its_base_and_its_rounded_reduction_in_the_trace(
 
     assert sheet.get(output).value == D(expected)
     assert (
-        f"{output.label}: 14538 plus 1591 less {reduction} for {line_3.label} {line_23600} "
-        f"over 177882 (range 75532), not below 14538 = {expected} (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        f"14538 plus 1591 less {reduction} for {line_3.label} ({line_23600}) "
+        f"over 177882 (range 75532), not below 14538, gives {expected} "
+        "(rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
 def test_line_3_is_the_line_23600_amount_at_70000(take_home_service: TakeHomeService) -> None:
@@ -234,6 +235,6 @@ def test_line_30000_names_line_3_and_the_range_in_the_trace(
     kinds = bundled_kinds()
 
     assert (
-        f"{kinds.kind(LINE_30000).label}: 14538 plus 1591 less 0.00 for {kinds.kind(LINE_3).label} "
-        "69335.00 over 177882 (range 75532), not below 14538 = 16129.00 (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        f"14538 plus 1591 less 0.00 for {kinds.kind(LINE_3).label} (69335.00) "
+        "over 177882 (range 75532), not below 14538, gives 16129.00 (rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

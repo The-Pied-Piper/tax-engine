@@ -417,9 +417,8 @@ def test_line_42800_names_ontario_line_90_in_the_trace(take_home_service: TakeHo
     t1 = sheet(run(take_home_service, "70000"), "ca/t1_tax_and_credits")
 
     assert (
-        f"{PROVINCIAL_TAX_LINE_42800.label}: item 1 {ON428_ONTARIO_TAX_LINE_90.label} 3911.45"
-        " = 3911.45"
-    ) in EnglishTraceRenderer().render_all(t1.trace)
+        f"{ON428_ONTARIO_TAX_LINE_90.label} of item 1 (3911.45) gives 3911.45."
+    ) in EnglishTraceRenderer().render_all(t1.trace, t1)
 
 
 @pytest.mark.parametrize(

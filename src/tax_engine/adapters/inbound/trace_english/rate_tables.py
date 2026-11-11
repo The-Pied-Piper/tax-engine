@@ -5,6 +5,7 @@ per line class, each registered with `@english_renderer`.
 from __future__ import annotations
 
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.trace.rate_tables import (
     AmountByBandLine,
@@ -22,15 +23,15 @@ class BracketColumnRenderer:
 
     line_class = BracketColumnLine
 
-    def render(self, line: BracketColumnLine) -> str:
+    def render(self, line: BracketColumnLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         lower = line.lower
         rate = line.rate
         excess = line.excess
         tax_at_start = line.tax_at_start
         return (
-            f"{EnglishFigures.percent(rate)}% on {EnglishFigures.money(excess)} "
-            f"over {EnglishFigures.money(lower)} plus {EnglishFigures.money(tax_at_start)}"
+            f"{EnglishFigures.percent(rate)}% of the {EnglishFigures.money(excess)} "
+            f"over {EnglishFigures.money(lower)}, plus {EnglishFigures.money(tax_at_start)}"
         )
 
 
@@ -40,9 +41,8 @@ class BracketColumnFigureRenderer:
 
     line_class = BracketColumnFigureLine
 
-    def render(self, line: BracketColumnFigureLine) -> str:
+    def render(self, line: BracketColumnFigureLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         base = line.base
         amount = line.base_amount
         figure = (
@@ -50,10 +50,7 @@ class BracketColumnFigureRenderer:
             if line.name == "rate"
             else EnglishFigures.money(line.figure)
         )
-        return (
-            f"{output.label}: bracket {line.name} for {base.label} "
-            f"{EnglishFigures.money(amount)}: {figure}"
-        )
+        return f"Bracket {line.name} for {names.figure(base, amount)}: {figure}"
 
 
 @english_renderer
@@ -62,9 +59,8 @@ class SurchargeTierRenderer:
 
     line_class = SurchargeTierLine
 
-    def render(self, line: SurchargeTierLine) -> str:
+    def render(self, line: SurchargeTierLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         base = line.base
         amount = line.base_amount
         threshold = line.threshold
@@ -73,8 +69,8 @@ class SurchargeTierRenderer:
         maximum = line.maximum
         at_most = "" if maximum is None else f", at most {EnglishFigures.money(maximum)}"
         return (
-            f"{output.label}: {EnglishFigures.percent(rate.value)}% of {base.label} "
-            f"{EnglishFigures.money(amount)} over {EnglishFigures.money(threshold)}{at_most} "
+            f"{EnglishFigures.percent(rate.value)}% of the part of {names.figure(base, amount)} "
+            f"over {EnglishFigures.money(threshold)}{at_most}, "
             f"({EnglishFigures.rounding(rule)})"
         )
 
@@ -85,9 +81,8 @@ class RateByIncomeBandRenderer:
 
     line_class = RateByIncomeBandLine
 
-    def render(self, line: RateByIncomeBandLine) -> str:
+    def render(self, line: RateByIncomeBandLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         income = line.income
         amount = line.income_amount
         row = line.row
@@ -102,8 +97,8 @@ class RateByIncomeBandRenderer:
                 f"but not more than {EnglishFigures.money(row.not_more_than)}"
             )
         return (
-            f"{output.label}: {income.label} {EnglishFigures.money(amount)}, "
-            f"{band}: {EnglishFigures.percent(rate.value)}%"
+            f"{names.figure(income, amount)} is {band}, "
+            f"so the rate is {EnglishFigures.percent(rate.value)}%"
         )
 
 
@@ -113,17 +108,16 @@ class ChosenRateAppliedRenderer:
 
     line_class = ChosenRateAppliedLine
 
-    def render(self, line: ChosenRateAppliedLine) -> str:
+    def render(self, line: ChosenRateAppliedLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         base = line.base
         amount = line.base_amount
         rate_kind = line.rate_kind
         rate = line.rate
         rule = line.rounding
         return (
-            f"{output.label}: {rate_kind.label} {EnglishFigures.percent(rate.value)}% of "
-            f"{base.label} {EnglishFigures.money(amount)} ({EnglishFigures.rounding(rule)})"
+            f"{names.of(rate_kind)} ({EnglishFigures.percent(rate.value)}%) of "
+            f"{names.figure(base, amount)}, {EnglishFigures.rounding(rule)}"
         )
 
 
@@ -133,9 +127,8 @@ class AmountByBandRenderer:
 
     line_class = AmountByBandLine
 
-    def render(self, line: AmountByBandLine) -> str:
+    def render(self, line: AmountByBandLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        output = line.output
         base = line.base
         income = line.base_amount
         over = line.over
@@ -145,12 +138,12 @@ class AmountByBandRenderer:
         elif line.minus is not None and line.rate is not None and line.plus is not None:
             figure = (
                 f"({EnglishFigures.money(income)} minus {EnglishFigures.money(line.minus)}) "
-                f"x {EnglishFigures.percent(line.rate.value)}% "
-                f"plus {EnglishFigures.money(line.plus)} = {EnglishFigures.money(line.result)}"
+                f"× {EnglishFigures.percent(line.rate.value)}% "
+                f"plus {EnglishFigures.money(line.plus)} gives {EnglishFigures.money(line.result)}"
             )
         else:
             figure = EnglishFigures.money(line.result)
         return (
-            f"{output.label}: {base.label} {EnglishFigures.money(income)}, "
-            f"over {EnglishFigures.money(over)}: {figure} ({EnglishFigures.rounding(rule)})"
+            f"{names.figure(base, income)}, over {EnglishFigures.money(over)}: "
+            f"{figure} ({EnglishFigures.rounding(rule)})"
         )

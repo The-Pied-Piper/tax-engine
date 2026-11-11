@@ -33,9 +33,11 @@ class EnglishFigures:
 
     @staticmethod
     def rounding(rule: RoundingRule) -> str:
-        """How `rule` rounds, e.g. "no rounding" or "half-up to 0.01"."""
+        """How `rule` rounds, e.g. "not rounded" or "rounded to the nearest cent"."""
         if rule == NO_ROUNDING:
-            return "no rounding"
+            return "not rounded"
         if isinstance(rule, RoundTo):
-            return f"{rule.mode.value.replace('_', '-')} to {rule.increment:f}"
+            if rule.mode.value == "half_up" and rule.increment == Decimal("0.01"):
+                return "rounded to the nearest cent"
+            return f"rounded {rule.mode.value.replace('_', '-')} to {rule.increment:f}"
         raise TypeError(f"no English rendering for rounding rule {type(rule).__name__}")

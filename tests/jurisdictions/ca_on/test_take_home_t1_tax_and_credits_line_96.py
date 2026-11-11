@@ -182,10 +182,8 @@ def test_line_96_names_its_three_parts_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet, _, _ = _sheets(take_home_service, "70000")
-    kinds = bundled_kinds()
 
     assert (
-        f"{kinds.kind(LINE_96).label}: {kinds.kind(LINE_86).label} 3291.75 + "
-        f"{kinds.kind(LINE_88).label} 1077.48 + {kinds.kind(CANADA_EMPLOYMENT_AMOUNT).label} "
-        "1471.00 = 5840.23 (half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        "Line 30800 (3291.75) plus line 31200 (1077.48) plus line 31260 (1471.00) gives 5840.23 "
+        "(rounded to the nearest cent)."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

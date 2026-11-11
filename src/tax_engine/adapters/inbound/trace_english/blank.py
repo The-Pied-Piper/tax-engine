@@ -7,6 +7,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.trace.blank import (
     BlankFallbackLine,
@@ -23,9 +24,9 @@ class LeftBlankRenderer:
 
     line_class = LeftBlankLine
 
-    def render(self, line: LeftBlankLine) -> str:
+    def render(self, line: LeftBlankLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return f"{line.kind.label}: left blank"
+        return "left blank"
 
 
 @english_renderer
@@ -34,9 +35,9 @@ class BlankFallbackRenderer:
 
     line_class = BlankFallbackLine
 
-    def render(self, line: BlankFallbackLine) -> str:
+    def render(self, line: BlankFallbackLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return f"{line.kind.label}: left blank, taken as {_figure(line.fallback)}"
+        return f"left blank, taken as {_figure(line.fallback)}"
 
 
 def _figure(fallback: Decimal | int) -> str:
@@ -44,9 +45,9 @@ def _figure(fallback: Decimal | int) -> str:
     return EnglishFigures.money(fallback) if isinstance(fallback, Decimal) else str(fallback)
 
 
-def _where(field: BlankField) -> str:
+def _where(field: BlankField, names: EnglishNames) -> str:
     """The field, the record's position and the list, as the trace names a blank record field."""
-    return f"{field.kind.label} (item {field.position} of {field.records.label})"
+    return f"{names.of(field.kind)} (item {field.position} of {names.of(field.records)})"
 
 
 @english_renderer
@@ -55,9 +56,9 @@ class BlankFieldFallbackRenderer:
 
     line_class = BlankFieldFallbackLine
 
-    def render(self, line: BlankFieldFallbackLine) -> str:
+    def render(self, line: BlankFieldFallbackLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return f"{_where(line.field)}: left blank, taken as {_figure(line.fallback)}"
+        return f"{_where(line.field, names)}: left blank, taken as {_figure(line.fallback)}"
 
 
 @english_renderer
@@ -66,9 +67,11 @@ class BlankPassedOnRenderer:
 
     line_class = BlankPassedOnLine
 
-    def render(self, line: BlankPassedOnLine) -> str:
+    def render(self, line: BlankPassedOnLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        named = [kind.label for kind in line.because] + [_where(f) for f in line.because_fields]
+        named = [names.of(kind) for kind in line.because] + [
+            _where(f, names) for f in line.because_fields
+        ]
         causes = ", ".join(named)
         verb = "was" if len(named) == 1 else "were"
-        return f"{line.output.label}: blank because {causes} {verb} blank"
+        return f"blank because {causes} {verb} blank"

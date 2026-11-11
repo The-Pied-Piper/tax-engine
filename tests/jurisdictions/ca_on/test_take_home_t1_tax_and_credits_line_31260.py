@@ -158,6 +158,6 @@ def test_line_31260_names_the_income_and_the_cap_in_the_trace(
     kinds = bundled_kinds()
 
     assert (
-        f"{kinds.kind(CAP).label}: lesser of {kinds.kind(INCOME_SUM).label} 70000.00 and 1471 "
-        "(half-up to 0.01)"
-    ) in EnglishTraceRenderer().render_all(sheet.trace)
+        f"Lesser of {kinds.kind(INCOME_SUM).label} (70000.00) and 1471, "
+        "rounded to the nearest cent."
+    ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

@@ -1,7 +1,7 @@
 """Unit tests for the English text of the trace line of a form instance, made-up values.
 
 A `FormInstanceLine` reads as its instance's lines, each inner sentence (rendered by the line's
-own renderer) prefixed with "<form>, instance N: " where N is the position from 1, one sentence
+own renderer) prefixed with "Form <form>, instance N: " where N is the position from 1, one sentence
 per inner line, in order, separated by a newline. The form is named as the manifest names it.
 """
 
@@ -60,14 +60,14 @@ def test_every_inner_sentence_is_prefixed_with_the_form_and_the_instance_positio
     inner = EnglishTraceRenderer().render_all((SUBTRACTED, TOTAL))
 
     assert inner == (
-        "net_income: gross_rent 12000.00 less expenses 2000 = 10000.00 (half-up to 0.01)",
-        "unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 = 350.50",
+        "gross_rent (12000.00) less expenses (2000) gives 10000.00 (rounded to the nearest cent).",
+        "unit_amount of item 1 (100) plus unit_amount of item 2 (250.50) gives 350.50.",
     )
     assert render(FormInstanceLine("ex/rental", 2, (SUBTRACTED, TOTAL))) == (
-        "ex/rental, instance 2: net_income: gross_rent 12000.00 less expenses 2000 = 10000.00 "
-        "(half-up to 0.01)\n"
-        "ex/rental, instance 2: unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 "
-        "= 350.50"
+        "Form ex/rental, instance 2: gross_rent (12000.00) less expenses (2000) "
+        "gives 10000.00 (rounded to the nearest cent).\n"
+        "Form ex/rental, instance 2: unit_amount of item 1 (100) "
+        "plus unit_amount of item 2 (250.50) gives 350.50."
     )
 
 
@@ -75,10 +75,10 @@ def test_a_form_without_instances_is_prefixed_with_its_name_and_instance_1() -> 
     text = render(FormInstanceLine("ex/return", 1, (SUBTRACTED, TOTAL)))
 
     assert text == (
-        "ex/return, instance 1: net_income: gross_rent 12000.00 less expenses 2000 = 10000.00 "
-        "(half-up to 0.01)\n"
-        "ex/return, instance 1: unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 "
-        "= 350.50"
+        "Form ex/return, instance 1: gross_rent (12000.00) less expenses (2000) "
+        "gives 10000.00 (rounded to the nearest cent).\n"
+        "Form ex/return, instance 1: unit_amount of item 1 (100) "
+        "plus unit_amount of item 2 (250.50) gives 350.50."
     )
 
 
@@ -100,15 +100,15 @@ def test_the_trace_of_a_form_without_an_instances_list_reads_as_instance_1() -> 
 
     assert isinstance(line, FormInstanceLine)
     assert render(line) == (
-        "ex/return, instance 1: net_income: gross_rent 12000 less expenses 2000 = 10000.00 "
-        "(half-up to 0.01)"
+        "Form ex/return, instance 1: gross_rent (12000) less expenses (2000) gives 10000.00 "
+        "(rounded to the nearest cent)."
     )
 
 
 def test_the_position_counts_from_1() -> None:
     text = render(FormInstanceLine("ex/rental", 1, (TOTAL,)))
 
-    assert text.startswith("ex/rental, instance 1: unit_total: ")
+    assert text.startswith("Form ex/rental, instance 1: unit_amount of item 1")
 
 
 def test_the_inner_lines_keep_their_order() -> None:
@@ -116,8 +116,8 @@ def test_the_inner_lines_keep_their_order() -> None:
 
     first, second = render(reversed_lines).split("\n")
 
-    assert first.startswith("ex/rental, instance 3: unit_total")
-    assert second.startswith("ex/rental, instance 3: net_income")
+    assert first.startswith("Form ex/rental, instance 3: unit_amount of item 1")
+    assert second.startswith("Form ex/rental, instance 3: gross_rent (12000.00)")
 
 
 def test_the_trace_renderer_renders_form_lines_among_others() -> None:
@@ -128,9 +128,9 @@ def test_the_trace_renderer_renders_form_lines_among_others() -> None:
     )
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "ex/rental, instance 1: unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 "
-        "= 350.50",
-        "ex/rental, instance 2: unit_total: item 1 unit_amount 100 + item 2 unit_amount 250.50 "
-        "= 350.50",
-        "unit_total: item 1 unit_amount 1 + item 2 unit_amount 2 = 3",
+        "Form ex/rental, instance 1: unit_amount of item 1 (100) "
+        "plus unit_amount of item 2 (250.50) gives 350.50.",
+        "Form ex/rental, instance 2: unit_amount of item 1 (100) "
+        "plus unit_amount of item 2 (250.50) gives 350.50.",
+        "unit_amount of item 1 (1) plus unit_amount of item 2 (2) gives 3.",
     )

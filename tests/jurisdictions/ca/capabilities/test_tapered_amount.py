@@ -480,8 +480,8 @@ def test_the_english_sentence_without_rounding_shows_the_reduction_and_the_resul
     trace = capability().compute((Artifact(INCOME, D("22000")),)).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "personal_amount: 1000 plus 500 less 100 for income 22000 over 20000 (range 10000), "
-        "not below 1000 = 1400 (no rounding)",
+        "1000 plus 500 less 100 for income (22000) over 20000 (range 10000), "
+        "not below 1000, gives 1400 (not rounded).",
     )
 
 
@@ -489,8 +489,8 @@ def test_the_english_sentence_shows_a_reduction_above_the_supplement_before_the_
     trace = capability().compute((Artifact(INCOME, D("80000")),)).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "personal_amount: 1000 plus 500 less 500 for income 80000 over 20000 (range 10000), "
-        "not below 1000 = 1000 (no rounding)",
+        "1000 plus 500 less 500 for income (80000) over 20000 (range 10000), "
+        "not below 1000, gives 1000 (not rounded).",
     )
 
 
@@ -502,8 +502,8 @@ def test_the_english_sentence_shows_the_amount_taken_off_for_a_reduction_with_no
     trace = capability(taper(values(range="7000"))).compute((Artifact(INCOME, D("80000")),)).trace
 
     assert EnglishTraceRenderer().render_all(trace) == (
-        "personal_amount: 1000 plus 500 less 500 for income 80000 over 20000 (range 7000), "
-        "not below 1000 = 1000 (no rounding)",
+        "1000 plus 500 less 500 for income (80000) over 20000 (range 7000), "
+        "not below 1000, gives 1000 (not rounded).",
     )
 
 
@@ -517,7 +517,7 @@ def test_the_english_sentence_rounds_an_exact_fraction_by_the_cent_rule_not_as_a
 
     (sentence,) = EnglishTraceRenderer().render_all(trace)
     assert sentence == (
-        "personal_amount: 1000 plus 500 less 71.43 for income 21000 over 20000 (range 7000), "
-        "not below 1000 = 1428.57 (half-up to 0.01)"
+        "1000 plus 500 less 71.43 for income (21000) over 20000 (range 7000), "
+        "not below 1000, gives 1428.57 (rounded to the nearest cent)."
     )
     assert "/" not in sentence

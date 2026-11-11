@@ -259,13 +259,13 @@ def test_lines_3_5_and_7_trace_the_output_and_the_base_they_read(
     rate: str,
     at_start: str,
 ) -> None:
-    text = EnglishTraceRenderer().render_all(on428(take_home_service, salary).trace)
+    sheet = on428(take_home_service, salary)
+    text = EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
-    taxable = "on428_taxable_income_line_1"
-    assert [line for line in text if ": bracket " in line] == [
-        f"on428_bracket_lower_bound_line_3: bracket lower bound for {taxable} {base}: {lower}",
-        f"on428_bracket_column_rate_line_5: bracket rate for {taxable} {base}: {rate}",
-        f"on428_tax_at_column_start_line_7: bracket tax at start for {taxable} {base}: {at_start}",
+    assert [line for line in text if line.startswith("Bracket ")] == [
+        f"Bracket lower bound for line 1 ({base}): {lower}.",
+        f"Bracket rate for line 1 ({base}): {rate}.",
+        f"Bracket tax at start for line 1 ({base}): {at_start}.",
     ]
 
 

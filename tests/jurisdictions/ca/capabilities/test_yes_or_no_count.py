@@ -235,7 +235,7 @@ def test_the_blank_trace_says_which_line_was_left_blank() -> None:
     result = capability().with_blank_rules({"count": PASS_ON}).run((Artifact(COUNT, BLANK),))
 
     assert EnglishTraceRenderer().render_all(result.trace) == (
-        "yes_or_no_checked: blank because yes_or_no was blank",
+        "Blank because yes_or_no was blank.",
     )
 
 
