@@ -1,4 +1,5 @@
-"""Trace lines for blanks: a line left blank, a blank taken as a fallback, a blank passed on."""
+"""Trace lines for blanks: a line left blank, a blank taken as a fallback, a blank passed on, and
+an input read as its default."""
 
 from __future__ import annotations
 
@@ -13,6 +14,7 @@ __all__ = [
     "BlankFieldFallbackLine",
     "BlankFallbackLine",
     "BlankPassedOnLine",
+    "DefaultedInputLine",
     "LeftBlankLine",
 ]
 
@@ -27,6 +29,25 @@ class LeftBlankLine(TraceLine):
     def amount(self) -> Decimal:
         """Zero: a blank has no figure, so the line is not about one."""
         return Decimal(0)
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.kind.label
+
+
+@dataclass(frozen=True)
+class DefaultedInputLine(TraceLine):
+    """The `kind` the computation started with, left out or given blank, read as the manifest's
+    default `value`."""
+
+    kind: ArtifactKind[Any]
+    value: Decimal | int
+
+    @property
+    def amount(self) -> Decimal:
+        """The default read."""
+        return Decimal(self.value)
 
     @property
     def label(self) -> str | None:
