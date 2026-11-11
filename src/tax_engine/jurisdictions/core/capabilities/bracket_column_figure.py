@@ -1,14 +1,7 @@
-"""BracketColumnFigure: one printed figure of the bracket column a base falls in, unrounded.
+"""BracketColumnFigure: one printed figure of the bracket column a base falls in, never rounded.
 
-A form's bracket table prints, per column, a lower bound, a rate and a tax at the column's start;
-a form line reads one of them for the column its taxable base falls in. The three capabilities
-here are thin subclasses of one undecorated base, each giving one figure: BracketColumnLowerBound
-its lower bound, BracketColumnRate its rate, BracketColumnTaxAtStart its tax at the start. The
-manifest's params carry only datasets, so the figure is chosen by the class, not by an option.
-
-The column is chosen as in `progressive_tax`: a base exactly at a threshold falls in the lower
-column. The figure is the schedule's own, printed as it is: the capability never rounds it. Any
-rounding of a line built from it belongs to that line's own step, through a rounding dataset.
+Subclasses give the lower bound, the rate or the tax at the column's start; a base at a threshold is
+in the lower column.
 """
 
 from __future__ import annotations

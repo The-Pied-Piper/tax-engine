@@ -1,14 +1,8 @@
-"""The federal catalog: Form T936, "Calculation of Cumulative Net Investment Loss (CNIL) to December
-31, 2025", the form `ca/t936`.
+"""The federal catalog: Form T936, Cumulative Net Investment Loss to December 31, 2025, the form
+`ca/t936`, run once.
 
-The form runs once (it has no instances). Its five starting amounts are the printed lines the filer
-enters: Part 3 line 15 (the investment expenses of previous years), line 20 (the investment income
-of previous years), the 2024 part of line 17 (the amount from line 17218 of Form T2048 for 2024)
-and Chart A lines 15 and 16 (boxes 21 and 30 of the 2025 T3 slips). Every other line that computes
-is a step of the form that reads the return's figures, so it is a kind of its own; a line that is
-another line's amount (Part 3 line 14 is line A, line 19 is line B, Chart A line 10 and line 18 are
-rates) has none. The exports are Chart A line 14 and Part 3 line C, which Form T657 Step 1 line 15
-and Step 2 line 16 read through `ca/t936.<name>`."""
+Its exports are Chart A line 14 and Part 3 line C, which Form T657 reads through `ca/t936.<name>`.
+"""
 
 from __future__ import annotations
 

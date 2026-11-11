@@ -14,19 +14,23 @@ _BRACKET_OPTIONAL_KEYS = frozenset({"tax_at_start"})
 
 @parameter_parser
 class BracketsParser:
-    """Parser for `brackets` datasets: a list of thresholds and rates, each optionally with the
-    tax at its start as printed, and the optional rule that rounds the computed tax at each
-    bracket's start."""
+    """Parser for `brackets` datasets: a list of thresholds and rates.
+
+    Each bracket may carry its printed tax at its start; an optional rule rounds the computed tax at
+    each start.
+    """
 
     kind = BRACKETS
     body_keys = frozenset({"brackets"})
     optional_keys = frozenset({"tax_at_start_rounding"})
 
     def parse(self, document: YamlNode) -> BracketSchedule:
-        """Build a BracketSchedule from the dataset's `brackets` list of entries and its optional
-        `tax_at_start_rounding` rule, read in the same form as `rounding`. A missing rule is
-        NO_ROUNDING, so computed figures are not rounded; a printed `tax_at_start` is always used
-        as given."""
+        """Build a BracketSchedule from the dataset's `brackets` list and its optional
+        `tax_at_start_rounding` rule.
+
+        The rule is read in the same form as `rounding`; a missing rule is NO_ROUNDING, and a
+        printed `tax_at_start` is always used as given.
+        """
         rounding = document.optional_field("tax_at_start_rounding")
         return BracketSchedule(
             tuple(self._bracket(entry) for entry in document.field("brackets").items()),

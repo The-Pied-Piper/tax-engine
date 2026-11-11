@@ -1,8 +1,7 @@
 """The federal catalog: the remaining T1 inputs.
 
-The labour-sponsored fund amount, political contributions, the figures of Form T929 (disability
-supports deduction), employment expense deductions, business income lines, residence and spouse
-figures.
+Labour-sponsored fund, political contributions, Form T929, employment expenses, business income,
+residence and spouse figures.
 """
 
 from __future__ import annotations

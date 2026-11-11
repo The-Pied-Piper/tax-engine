@@ -1,10 +1,7 @@
-"""The federal catalog: Form T777, Statement of Employment Expenses, capital cost allowance schedule
-for employees (Parts A and B, page 4 and page 5), the form `ca/t777`.
+"""The federal catalog: Form T777, capital cost allowance schedule for employees (Parts A and B),
+the form `ca/t777`.
 
-The row lists are built of the CCA table's own columns (`ca/cca_*`, declared in `personal_amounts`).
-Part A has one list for Class 8 (line 13) and one for the vehicle classes 10, 54 and 55 (line 25),
-Part B one list for Class 10.1 vehicles (line 25). The intermediate kinds are the steps between the
-rows and the exports; the lines and the closing lists are the form's exports.
+The row lists are built of the CCA table's columns (`ca/cca_*`, declared in `personal_amounts`).
 """
 
 from __future__ import annotations

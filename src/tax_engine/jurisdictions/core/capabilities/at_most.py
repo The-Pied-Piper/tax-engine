@@ -1,9 +1,7 @@
 """AtMost: a money artifact that may not exceed another, passed on unchanged.
 
-For a form line that reads "not more than": the manifest decides which artifact is the amount
-(typically a filer's claim) and which is its bound. An amount at or below the bound is produced
-as is, exactly and with its own scale; it has no dataset, so it never rounds, and no floor. An
-amount above the bound is not capped: it is an input error, `InputAboveBoundError`.
+An amount at or below the bound is produced as is, with its own scale; never rounded or floored. An
+amount above the bound is an `InputAboveBoundError`, not capped.
 """
 
 from __future__ import annotations

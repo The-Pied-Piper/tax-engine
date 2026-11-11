@@ -1,10 +1,7 @@
 """The federal catalog: deductions from total income.
 
-The split pension, union dues, child care, capital gains deduction, business investment loss,
-support, carrying charges, CPP and other deduction lines, down to net income and the repayment lines
-that follow it, and the lines of Form T2222 (northern residents deductions) with Chart A and Chart B
-of its Step 3, which are record lists, and the moving expenses of Form T1-M (line 21900), a record
-list of the moves with the lines of each move.
+From the split pension down to net income and the repayment lines after it, plus the lines of Form
+T2222 (with Charts A and B as record lists) and the moves of Form T1-M line 21900 as a record list.
 """
 
 from __future__ import annotations

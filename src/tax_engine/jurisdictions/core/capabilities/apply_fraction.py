@@ -1,14 +1,8 @@
 """Apply fraction: multiplies a money artifact by a fraction from a `fraction` dataset.
 
-For form lines such as "multiplied by two-thirds", whose fraction is not a finite decimal: the
-output is `rounding.apply(base × numerator / denominator)`, the division done as an exact fraction
-so nothing is rounded before the rule. It is rounded only with the `fraction` dataset's rule, which
-defaults to no rounding; under no rounding a quotient with no finite decimal expansion raises
-`decimal.Inexact`.
-
-A blank `base` is allowed. What it does is the manifest step's `blank:` rule: `pass_on` gives a
-blank `output` (a fraction of a line left blank is blank, and there is nothing to round); with no
-rule it is refused. `compute` never sees a blank.
+The output is `rounding.apply(base × numerator / denominator)`, divided exactly; with no rounding an
+inexact quotient raises `decimal.Inexact`. A blank `base` follows the manifest's `blank:` rule
+(`pass_on` blanks the output).
 """
 
 from __future__ import annotations

@@ -1,9 +1,7 @@
 """Federal Canada (`CA`): the federal artifact catalog, the `ca/...` parameter datasets, its
 capabilities and its trace lines.
 
-Importing the package imports its `capabilities` package, which holds the federal capabilities,
-its `trace` package of federal trace lines, and its `trace_english` package, which registers their
-English renderers.
+Importing the package imports its `capabilities`, `trace` and `trace_english` packages.
 """
 
 NAMESPACE = "ca"

@@ -1,14 +1,7 @@
 """SubtractNotBelowZero: takes one money artifact off another, floored at zero.
 
-For the return lines the form prints with "if negative, enter 0": the manifest decides which
-artifact is the amount and which is taken off. The output is `rounding.apply(max(amount - less,
-0))`: the difference is formed exactly, floored at zero, and rounded only with the `rounding_only`
-dataset's rule, as `MultiplyByRate` rounds. That rule defaults to no rounding; the dataset says what
-it is, and this capability adds no scale of its own. A floored zero is never a negative zero.
-
-Either consumed slot may be blank (`BLANK_ALLOWED`). What a blank does there is the manifest
-step's `blank:` line: pass it on (the output is blank too, the 0 floor is never applied to a blank)
-or take a fallback in its place, after which the difference is floored and rounded as usual.
+The output is `rounding.apply(max(amount - less, 0))`; a floored zero is never negative zero. A
+`pass_on` blank blanks it without the floor.
 """
 
 from __future__ import annotations

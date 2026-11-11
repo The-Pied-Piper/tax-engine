@@ -1,9 +1,7 @@
 """Tapers: a base amount plus a supplement that is reduced to nothing over a range of a figure.
 
-A taper holds the four figures a form prints, all exact: the `base` amount, the `supplement` added
-to it, the `threshold` above which the supplement is reduced and the `range` over which it is
-reduced to nothing. The full amount, base plus supplement, is not stored. The code holds no
-jurisdiction's tapers.
+All four figures the form prints (`base`, `supplement`, `threshold`, `range`) are exact; the full
+amount is not stored.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@
 # Line 7 is a step of its own, not a read: the T1 form exports the net income before its floor
 # (`ca/net_income_signed`, line 23600 unfloored), and another form reads an export only as a record
 # list (`ca/t1_taxable_income.net_income_signed`), so the one amount is totalled by core/record_total,
-# the same way ON428-A line 6 reads it. The take-home filer has only the one line of column 1 for the
+# the same way the provincial credit form reads it. The take-home filer has only the one line of column 1 for the
 # net income, so no sum is built here. The result is signed, because the form asks for a negative net
 # income shown in brackets, so the step reads the unfloored signed net income as the form says.
 form:

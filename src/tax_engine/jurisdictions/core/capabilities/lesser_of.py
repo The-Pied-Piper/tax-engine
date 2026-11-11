@@ -1,12 +1,7 @@
 """LesserOf: the least of a list of money artifacts, exactly.
 
-For a form line that reads "whichever is less": the manifest decides which amounts are compared,
-and in which order they are listed in the trace. It has no dataset, so it never rounds; when two
-amounts are equal, the first listed is produced, keeping its scale.
-
-Any amount may be blank (`BLANK_ALLOWED`). What a blank does there is the manifest step's `blank:`
-line: pass it on (the output is blank too, and the least of the other amounts is never taken in its
-place) or take a fallback in its place, after which the least is found as usual.
+Of equal amounts the first listed is produced, keeping its scale. A `pass_on` blank blanks the
+output.
 """
 
 from __future__ import annotations

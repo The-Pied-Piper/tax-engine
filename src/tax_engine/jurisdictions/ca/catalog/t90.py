@@ -1,10 +1,7 @@
-"""The federal catalog: Form T90, "Income Exempt from Tax under the Indian Act", the form `ca/t90`.
+"""The federal catalog: Form T90, Income Exempt from Tax under the Indian Act, the form `ca/t90`.
 
-The form runs once (it has no instances). Its sixteen starting amounts are the printed lines 1 to
-19, with line 10019 the unnumbered line "EI maternity and parental benefits and PPIP benefits
-included on line 9"; the steps compute lines 4, 14, 16, 18 and 20 and check line 10019 against
-line 9. The exports are line 4, the checked line 10019 and line 20, which Schedule 6 reads through
-`ca/t90.<name>`. Lines 14, 16 and 18 are the intermediate kinds between the inputs and line 20."""
+The form runs once; its exports are read through `ca/t90.<name>`.
+"""
 
 from __future__ import annotations
 

@@ -1,13 +1,6 @@
 """The federal catalog: investment tax credit, Form T2038(IND) Parts A, B, D and E.
 
-The caller's lines of Parts A, B and D (the SR&ED, agricultural, partnership, qualified property,
-mineral exploration, critical mineral, apprenticeship T3 box 40, repayment, opening balance,
-graduated rate estate and claim figures), the credit each one produces at its rate, the totals of
-Parts A and B that Part D reads, and the amounts of Part D that give line 41200, the investment tax
-credit (`investment_tax_credit`). Part E takes the carryback designations (lines 67200, 67210 and
-67220) and the refund the filer designates (amount 17), and gives the amounts L, M, N and O, the
-refund of investment tax credit on line 45400 (`investment_tax_credit_refund`). The apprentices and
-their total are the kinds of `credits_against_federal_tax`.
+Parts A, B and D give line 41200 (`investment_tax_credit`); Part E gives the refund on line 45400.
 """
 
 from __future__ import annotations

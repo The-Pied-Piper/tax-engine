@@ -1,22 +1,7 @@
 """The federal catalog: alternative minimum tax, Form T691.
 
-Part 1 of the form: the adjusted taxable income, from the film property, the rental and leasing
-property, the tax shelter amounts, the resource property, the capital gains, the gifts of
-publicly listed securities, the security options deductions, the losses of other years, the
-deductions, the non-deductible expenses, the applicable rate, the dividends, the lifetime capital
-gains exemption, the capital gains deductions, the basic exemption, the federal tax rate and the
-credits. Part 9 of the form: the resource
-property and flow-through shares. Part 2 of the form: the basic federal tax. Part 8 of the form:
-the minimum tax carryover applied on line 40427. Part 3 of the form: the federal surtax, the
-federal tax payable and the regular net federal tax payable. Part 4 of the form: the special
-foreign tax credit. Part 5 of the form: the obligation to pay alternative minimum tax, from the net
-minimum tax payable to the alternative minimum tax payable. Part 6 of the form: the federal tax
-payable under the alternative minimum tax, from the basic federal tax less the split income tax to
-the greater of the federal tax with the surtax and the split income tax after the credits. Part 7 of
-the form: the additional taxes paid for minimum tax carryover, from the basic federal tax with the
-recapture to the foreign credit share. Part 8 of the form, from line 13: the balance of the minimum
-tax carryover available for later years and the total available for 2026, less the unapplied 2018
-carryover.
+Parts 1 to 9 of the form, from the adjusted taxable income to the minimum tax carryover available
+for later years.
 """
 
 from __future__ import annotations

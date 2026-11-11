@@ -1,8 +1,7 @@
 """Amounts by count: the figures a form prints against a count, such as a table by months.
 
-A table holds rows in the order given, each a non-negative `int` count and the exact, finite,
-non-negative amount printed against it. A count is listed once. The code holds no
-jurisdiction's tables.
+Rows are kept in the order given, each a non-negative `int` count, listed once, with its exact,
+finite, non-negative amount.
 """
 
 from __future__ import annotations

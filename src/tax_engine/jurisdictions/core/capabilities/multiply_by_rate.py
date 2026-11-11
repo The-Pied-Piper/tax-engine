@@ -1,11 +1,7 @@
 """Multiply by rate: multiplies a money artifact by a rate artifact, a fraction from 0 to 1.
 
-For form lines such as "Line 4 multiplied by the percentage from line 5", whose rate is computed
-by an earlier line, not stated by a dataset: the output is `rounding.apply(base × rate)`, the
-product formed exactly, as a fraction, and rounded only with the `rounding_only` dataset's rule,
-which defaults to no rounding. The rate is a fraction (0.0915 is 9.15%), so nothing divides it by
-100. A rate outside 0 to 1 is refused with `InvalidRateError`, as a rate dataset would refuse it;
-the base is not capped.
+The output is `rounding.apply(base × rate)`. The rate is a fraction (0.0915 is 9.15%), never a
+percentage; one outside 0 to 1 is an `InvalidRateError`.
 """
 
 from __future__ import annotations
