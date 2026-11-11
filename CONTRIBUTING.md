@@ -49,3 +49,14 @@ For 2026 only, a figure CRA has not yet printed on a form may be calculated, car
 ## CRA reference archive
 
 The [CRA reference archive](docs/cra-forms-2025/README.md) holds the saved forms, guides and source provenance used to verify the Canadian calculations.
+
+## Docstrings
+
+A docstring tells a reader what a module, class or function is and does now.
+
+1. Write in the present tense: one summary line, plus a short paragraph only if the summary is not enough.
+2. No change history ("now also", "previously", "replaces"). That belongs in the pull request and in git.
+3. No "does not", "no longer" or "removed" sentences about behaviour that is not there. State a limit only if a caller would otherwise be caught out, in one sentence.
+4. Do not restate the signature, types or names. Describe what they cannot show: units, rounding, what a blank means, what it raises.
+5. Keep it to the summary line plus about 5 lines. A module docstring is 1 to 3 lines. Anything longer is a spec: put it in `docs/` and link it from the docstring.
+6. Why a rule exists (a CRA form line, a ruling) goes in a comment or a doc page, not in the docstring.
