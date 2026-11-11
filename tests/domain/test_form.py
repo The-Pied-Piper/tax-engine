@@ -48,7 +48,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.kinds import AmountKind, RecordListKind, TextKind
-from tax_engine.domain.manifest import CapabilitySelection, Form
+from tax_engine.domain.manifest import CapabilitySelection, Form, InputDeclaration
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
@@ -257,6 +257,53 @@ def test_a_worksheet_carries_the_titles_its_form_and_selections_were_given() -> 
     assert sheet.form_title == "Titled form"
     assert sheet.title(STEP_TOTAL.label) == "Step total"
     assert sheet.title(AMOUNT.label) is None
+
+
+def test_a_worksheet_carries_the_title_and_reference_of_the_inputs_it_reads() -> None:
+    titled = composition(
+        "ex/titled",
+        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
+        exports=[STEP_TOTAL],
+        starting=frozenset({AMOUNT}),
+        declared=[InputDeclaration(AMOUNT.identifier, True, title="Amount", reference="10100")],
+    )
+
+    (sheet,) = FormSet([titled], inputs=frozenset({AMOUNT})).compute(Artifact(AMOUNT, D(1)))[
+        "ex/titled"
+    ]
+
+    assert sheet.title(AMOUNT.label) == "Amount"
+    assert sheet.reference(AMOUNT.label) == "10100"
+    assert sheet.title(STEP_TOTAL.label) is None
+
+
+def test_a_worksheet_leaves_out_the_title_of_an_input_the_form_does_not_read() -> None:
+    titled = composition(
+        "ex/titled",
+        [Sum(EXACT_TOTAL, (AMOUNT,), STEP_TOTAL)],
+        exports=[STEP_TOTAL],
+        starting=frozenset({AMOUNT, COSTS}),
+        declared=[InputDeclaration(COSTS.identifier, True, title="Costs", reference="9")],
+    )
+
+    assert titled.figure_titles == {}
+    assert titled.figure_references == {}
+
+
+def test_a_worksheet_carries_the_title_and_reference_of_a_declared_instance_field() -> None:
+    shop_form = composition(
+        "ex/shop",
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        instances=SHOPS,
+        exports=[PROFIT],
+        fields=(
+            InputDeclaration(SALES.identifier, True, title="Sales", reference="1"),
+            InputDeclaration(COSTS.identifier, True),
+        ),
+    )
+
+    assert shop_form.figure_titles == {SALES.label: "Sales"}
+    assert shop_form.figure_references == {SALES.label: "1"}
 
 
 def test_the_inner_composition_takes_the_instance_fields_and_the_imports() -> None:

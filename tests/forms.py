@@ -11,7 +11,7 @@ from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.kinds import RecordListKind
-from tax_engine.domain.manifest import CapabilitySelection, Form
+from tax_engine.domain.manifest import CapabilitySelection, Form, InputDeclaration
 
 
 def _declared(
@@ -57,6 +57,8 @@ def composition(
     field_defaults: Iterable[Artifact[Any]] = (),
     title: str | None = None,
     selections: tuple[CapabilitySelection, ...] = (),
+    declared: Iterable[InputDeclaration] = (),
+    fields: tuple[InputDeclaration, ...] = (),
 ) -> FormComposition:
     """The `FormComposition` of the form `name` whose exports and instances are the given kinds."""
     form, kinds = _declared(
@@ -68,7 +70,11 @@ def composition(
         exclusive_group=exclusive_group,
         title=title,
         selections=selections,
+        fields=fields,
     )
+    for kind in starting:
+        if kind.identifier not in kinds.identifiers():
+            kinds.register(kind.identifier, kind)
     return FormComposition(
         form,
         capabilities,
@@ -76,4 +82,5 @@ def composition(
         starting=starting,
         defaults=defaults,
         field_defaults=field_defaults,
+        declared=declared,
     )

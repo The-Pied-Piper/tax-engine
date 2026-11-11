@@ -46,7 +46,7 @@ from tax_engine.domain.errors import (
     ValidationError,
 )
 from tax_engine.domain.kinds import RecordListKind
-from tax_engine.domain.manifest import Form
+from tax_engine.domain.manifest import Form, InputDeclaration
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
 from tax_engine.domain.worksheet import Worksheet
@@ -82,6 +82,7 @@ class FormComposition:
         starting: frozenset[ArtifactKind[Any]] = frozenset(),
         defaults: Iterable[Artifact[Any]] = (),
         field_defaults: Iterable[Artifact[Any]] = (),
+        declared: Iterable[InputDeclaration] = (),
     ) -> None:
         """Wire `capabilities` as `form`, whose names `kinds` resolves to artifact kinds.
 
@@ -91,6 +92,10 @@ class FormComposition:
         blank. An input or field whose default is blank may arrive blank: the form's own
         composition takes a blank for those of them it reads, and refuses a blank in any other
         input. A default that is a value is what is read when the input or field is blank.
+        `declared` are the manifest's input declarations: the `title` and `reference` of each one
+        this form reads, and of each declared field of its `instances`, are given by the worksheet
+        like those of a figure a step produces; a declaration of an input the form does not read
+        (or of the `instances` list itself, which is no figure) is left out.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -103,15 +108,27 @@ class FormComposition:
         produced = {kind for capability in wired for kind in capability.produces}
         read = {kind for capability in wired for kind in capability.consumes} | set(listed)
         self._form = form
+        by_name = {} if instances is None else {kind.identifier: kind for kind in instances.fields}
+        # A field the form's `instances` does not have is the manifest's own check to refuse; here
+        # it is skipped. A title and a reference are only for the input kinds the form reads.
+        printed = [(kinds.kind(d.name), d) for d in declared if kinds.kind(d.name) in read] + [
+            (by_name[d.name], d) for d in form.fields if d.name in by_name
+        ]
+        produced_by = [
+            (kinds.kind(next(iter(selection.produces.values()))), selection)
+            for selection in form.capabilities
+        ]
+        # A kind that is an input is never also produced (the composition refuses it), so an
+        # input's entry and a step's never share a kind.
         self._figure_titles = {
-            kinds.kind(next(iter(selection.produces.values()))).label: selection.title
-            for selection in form.capabilities
-            if selection.title is not None
-        }
+            kind.label: found.title for kind, found in printed if found.title is not None
+        } | {kind.label: found.title for kind, found in produced_by if found.title is not None}
         self._figure_references = {
-            kinds.kind(next(iter(selection.produces.values()))).label: selection.reference
-            for selection in form.capabilities
-            if selection.reference is not None
+            kind.label: found.reference for kind, found in printed if found.reference is not None
+        } | {
+            kind.label: found.reference
+            for kind, found in produced_by
+            if found.reference is not None
         }
         self._instances = instances
         self._exports = listed

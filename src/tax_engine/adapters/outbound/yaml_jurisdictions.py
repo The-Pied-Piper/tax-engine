@@ -121,7 +121,7 @@ _OPTIONAL_FORM_KEYS = frozenset(
         "title",
     }
 )
-_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis"})
+_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
 _OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference"})
@@ -510,7 +510,8 @@ class YamlJurisdictionSource:
         self, entry: YamlNode, kind_of: Callable[[str], ArtifactKind[Any]]
     ) -> InputDeclaration:
         """One input or field: its `name`, whether it is `required`, and for an optional one its
-        `default` (written as the value, `null` for blank) and the printed `basis`."""
+        `default` (written as the value, `null` for blank) and the printed `basis`; any may also
+        give the printed `title` and `reference` of its figure."""
         fields = entry.require_mapping(
             frozenset({"name"}), optional=_OPTIONAL_INPUT_KEYS | {"required"}
         )
@@ -520,11 +521,15 @@ class YamlJurisdictionSource:
             raise InvalidManifestError(f"input {name!r}: required must be declared true or false")
         default = fields.optional_field("default")
         basis = fields.optional_field("basis")
+        title = fields.optional_field("title")
+        reference = fields.optional_field("reference")
         return InputDeclaration(
             name=name,
             required=required.require_boolean(),
             default=None if default is None else self._default(name, default, kind_of(name)),
             basis=None if basis is None else basis.require_non_empty_string(),
+            title=None if title is None else self._title(title),
+            reference=None if reference is None else self._title(reference),
         )
 
     @staticmethod
