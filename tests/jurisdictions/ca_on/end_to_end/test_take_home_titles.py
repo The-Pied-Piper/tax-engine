@@ -23,7 +23,34 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     assert schedule_8.form_title == "Schedule 8: Canada Pension Plan Contributions and Overpayment"
     assert summary.form_title == "Return summary"
     assert on428.title("on428_surtax_total_line_68") == "Ontario surtax"
-    assert on428.title("on428_taxable_income_line_1") == "Taxable income"
+    assert on428.title("on428_tax_on_taxable_income_line_8") == "Ontario tax on taxable income"
+    assert on428.title("on428_taxable_income_line_1") is None
+    assert on428.title("on428_pension_income_amount") == "Pension income amount"
+    assert on428.reference("on428_pension_income_amount") == "27"
+    assert on428.title("on428_medical_expenses_line_43") == "Medical expenses"
+    assert on428.reference("on428_medical_expenses_line_43") == "43"
+    assert on428.title("on428_donations_credit_line_49") == "Donations and gifts"
+    assert on428.reference("on428_donations_credit_line_49") == "49"
+    assert on428.title("on428_tax_on_split_income_line_54") == "Ontario tax on split income"
+    assert on428.reference("on428_tax_on_split_income_line_54") == "54"
+    assert on428.title("on428_dividend_tax_credit_line_57") == "Ontario dividend tax credit"
+    assert on428.reference("on428_dividend_tax_credit_line_57") == "57"
+    assert on428.title("on428_minimum_tax_carryover_line_60") == "Ontario minimum tax carryover"
+    assert on428.reference("on428_minimum_tax_carryover_line_60") == "60"
+    assert (
+        on428.title("on428_additional_tax_for_minimum_tax_line_72")
+        == "Ontario additional tax for minimum tax purposes"
+    )
+    assert on428.reference("on428_additional_tax_for_minimum_tax_line_72") == "72"
+    assert (
+        on428.title("on428_provincial_foreign_tax_credit_line_82")
+        == "Provincial foreign tax credit"
+    )
+    assert on428.reference("on428_provincial_foreign_tax_credit_line_82") == "82"
+    assert on428.title("on428_qualifying_food_donations_line_87") is None
+    assert on428.reference("on428_qualifying_food_donations_line_87") == "87"
     assert on428.title("no_such_label") is None
     assert on428.reference("on428_surtax_total_line_68") == "68"
+    assert on428.reference("on428_taxable_income_line_1") == "1"
+    assert on428.reference("on428_taxable_income_line_89") == "1"
     assert on428.reference("no_such_label") is None

@@ -16,14 +16,14 @@ form:
   name: ca-on/on428_a
 capabilities:
   - name: core/record_total
-    title: "Net income"
+    title: "Net income from line 23600 of your return"
     reference: "6"
     consumes:
       records: ca/t1_taxable_income.net_income_signed
     produces:
       output: ca-on/lift_net_income
   - name: core/sum_not_below_zero
-    title: "Adjusted net income"
+    title: "Your adjusted net income"
     reference: "13"
     params:
       rounding: ca-on/cent_rounding

@@ -4,6 +4,8 @@
 # read as blank, and the line 61 part reads that blank as 0.
 inputs:
   - name: ca-on/on428_minimum_tax_carryover_line_60
+    title: "Ontario minimum tax carryover"
+    reference: "60"
     required: false
     default: null
     basis: 'Line 60 and line 61540: Enter whichever is less: amount from line 58 or line 59'

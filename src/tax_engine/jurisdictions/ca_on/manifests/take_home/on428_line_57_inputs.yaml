@@ -4,6 +4,8 @@
 # and the line 71 part reads that blank as 0.
 inputs:
   - name: ca-on/on428_dividend_tax_credit_line_57
+    title: "Ontario dividend tax credit"
+    reference: "57"
     required: false
     default: null
     basis: 'Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)'

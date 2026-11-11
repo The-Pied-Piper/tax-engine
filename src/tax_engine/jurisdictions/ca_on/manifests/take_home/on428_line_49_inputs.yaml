@@ -4,6 +4,8 @@
 # the line out is read as 0, not blank.
 inputs:
   - name: ca-on/on428_donations_credit_line_49
+    title: "Donations and gifts"
+    reference: "49"
     required: false
     default: "0"
     basis: 'Line 49 and line 58969: Line 47 plus line 48'

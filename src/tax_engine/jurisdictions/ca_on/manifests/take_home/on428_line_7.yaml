@@ -14,7 +14,6 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/bracket_column_tax_at_start
-    title: "Tax at the column's start"
     reference: "7"
     params:
       schedule: ca-on/brackets

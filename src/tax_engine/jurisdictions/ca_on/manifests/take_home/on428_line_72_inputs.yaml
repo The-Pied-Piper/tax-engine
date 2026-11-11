@@ -5,6 +5,8 @@
 # blank as 0.
 inputs:
   - name: ca-on/on428_additional_tax_for_minimum_tax_line_72
+    title: "Ontario additional tax for minimum tax purposes"
+    reference: "72"
     required: false
     default: null
     basis: 'Line 72: If you entered an amount on line 11 of Part 5 of Form T691, use Worksheet ON428 to calculate your additional tax for minimum tax purposes'
