@@ -4,6 +4,8 @@
 # blank, and the line 12 part reads that blank as 0 by the blank rule of core/subtract_not_below_zero.
 inputs:
   - name: ca/uccb_and_rdsp_income
+    title: "Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)"
+    reference: "11"
     required: false
     default: null
     basis: 'Line 11: Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)'
