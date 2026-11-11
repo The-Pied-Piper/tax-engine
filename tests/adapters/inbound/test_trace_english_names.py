@@ -163,3 +163,10 @@ def test_a_fixed_figure_is_named_by_the_title_the_form_prints() -> None:
 
 def test_a_fixed_figure_without_a_title_is_named_by_its_family_in_plain_words() -> None:
     assert EnglishNames().parameter(_cap(None)) == "the some ceiling (81200.00)"
+
+
+def test_a_box_of_a_line_is_a_line_of_the_form() -> None:
+    names = EnglishNames(_Printed({}, {"gross_pay": "87 box A", "allowance": "87 box B"}))
+
+    assert names.of(GROSS) == "line 87 box A"
+    assert names.of(LESS) == "line 87 box B"

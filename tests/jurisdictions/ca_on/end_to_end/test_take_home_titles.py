@@ -37,6 +37,7 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     assert on428.reference("on428_tax_on_split_income_line_54") == "54"
     assert on428.title("on428_dividend_tax_credit_line_57") == "Ontario dividend tax credit"
     assert on428.reference("on428_dividend_tax_credit_line_57") == "57"
+    assert on428.reference("on428_farmers_food_donation_credit_line_87") == "87 box B"
     assert on428.title("on428_minimum_tax_carryover_line_60") == "Ontario minimum tax carryover"
     assert on428.reference("on428_minimum_tax_carryover_line_60") == "60"
     assert (
@@ -50,7 +51,7 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     )
     assert on428.reference("on428_provincial_foreign_tax_credit_line_82") == "82"
     assert on428.title("on428_qualifying_food_donations_line_87") is None
-    assert on428.reference("on428_qualifying_food_donations_line_87") == "87"
+    assert on428.reference("on428_qualifying_food_donations_line_87") == "87 box A"
     assert on428.title("no_such_label") is None
     assert on428.reference("on428_surtax_total_line_68") == "68"
     assert on428.reference("on428_taxable_income_line_1") == "1"
