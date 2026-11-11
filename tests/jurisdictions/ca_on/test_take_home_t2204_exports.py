@@ -73,7 +73,7 @@ def test_the_form_exports_exactly_the_three_figures(
     take_home_service: TakeHomeService, tmp_path: Path
 ) -> None:
     take_home_service(HEADER, FORM, *PARTS)
-    folder = tmp_path / "manifests" / "take_home"
+    folder = tmp_path / "manifests" / "2025"
     manifest = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
     (worksheet,) = [form for form in manifest.forms if form.name == "ca/t2204"]
     assert worksheet.exports == (LINE_4, OVERPAYMENT, LINE_16)

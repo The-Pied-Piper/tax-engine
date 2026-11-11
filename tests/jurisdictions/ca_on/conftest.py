@@ -19,7 +19,7 @@ from tax_engine.registrations import JURISDICTIONS, parameter_parsers
 from tests.capabilities import bundled_capabilities
 from tests.kinds import bundled_kinds
 
-ONTARIO_PARTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "take_home"
+ONTARIO_PARTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 
 
@@ -71,7 +71,7 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
     """
 
     def build(header: str, form: str, *parts: str) -> TaxComputationService:
-        folder = tmp_path / "manifests" / "take_home"
+        folder = tmp_path / "manifests" / "2025"
         folder.mkdir(parents=True)
         (folder / "00_header.yaml").write_text(header, encoding="utf-8")
         (folder / "01_form.yaml").write_text(form, encoding="utf-8")

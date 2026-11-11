@@ -41,7 +41,7 @@ capabilities: []
 def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     """The temporary take-home folder the shared builder writes, loaded as a manifest."""
     take_home_service(HEADER, FORM, PART)
-    folder = tmp_path / "manifests" / "take_home"
+    folder = tmp_path / "manifests" / "2025"
     return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
 
 
