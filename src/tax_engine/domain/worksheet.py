@@ -22,6 +22,7 @@ from tax_engine.domain.errors import (
     DuplicateLabelError,
     MissingArtifactError,
 )
+from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.trace import LeftBlankLine, TraceLine
 
 
@@ -34,11 +35,13 @@ class Worksheet:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
+        imported_figures: Mapping[str, ImportedFigure] | None = None,
     ) -> None:
         self._check_artifacts(artifacts)
         self._form_title = form_title
         self._figure_titles = dict(figure_titles or {})
         self._figure_references = dict(figure_references or {})
+        self._imported_figures = dict(imported_figures or {})
         self._artifacts: dict[ArtifactKind[Any], Artifact[Any]] = {}
         self._producers: dict[ArtifactKind[Any], Capability] = {}
         self._trace: list[TraceLine] = []
@@ -70,6 +73,22 @@ class Worksheet:
         is a step of the engine.
         """
         return self._figure_references.get(label)
+
+    def imported(self, label: str) -> ImportedFigure | None:
+        """The figure `label` as the form it is read from prints it; `None` if this form does not
+        read it from another form.
+        """
+        return self._imported_figures.get(label)
+
+    def shares_reference(self, label: str) -> bool:
+        """Whether another figure of this form prints the same reference as the figure `label`
+        (an input and the step that reads it on one line, say), so the reference alone would
+        not tell them apart.
+        """
+        reference = self._figure_references.get(label)
+        return reference is not None and (
+            sum(found == reference for found in self._figure_references.values()) > 1
+        )
 
     def get[V](self, kind: ArtifactKind[V]) -> Artifact[V]:
         """The artifact recorded for `kind`."""

@@ -44,6 +44,7 @@ from tax_engine.domain.trace import (
     TraceLine,
     YesOrNoCountLine,
 )
+from tax_engine.domain.worksheet import Worksheet
 
 D = Decimal
 OUT = AmountKind("ex/result")
@@ -62,18 +63,9 @@ DOWN_TENTH = RoundTo(increment=D("0.001"), mode=RoundingMode.DOWN)
 RATE_OUT = RateKind("ex/rate_result")
 
 
-class _Printed:
-    """A stand-in for a worksheet: what the form prints for some figures."""
-
-    def __init__(self, titles: dict[str, str], references: dict[str, str]) -> None:
-        self._titles = titles
-        self._references = references
-
-    def title(self, label: str) -> str | None:
-        return self._titles.get(label)
-
-    def reference(self, label: str) -> str | None:
-        return self._references.get(label)
+def _Printed(titles: dict[str, str], references: dict[str, str]) -> Worksheet:  # noqa: N802
+    """A worksheet of no figures that prints `titles` and `references` for some of them."""
+    return Worksheet(figure_titles=titles, figure_references=references)
 
 
 def render(line: TraceLine) -> str:

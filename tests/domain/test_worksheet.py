@@ -22,6 +22,7 @@ from tax_engine.domain.errors import (
     DuplicateLabelError,
     MissingArtifactError,
 )
+from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.trace import TraceLine
 from tax_engine.domain.worksheet import Worksheet
@@ -473,3 +474,19 @@ def test_a_worksheet_without_titles_gives_none() -> None:
 
     assert worksheet.form_title is None
     assert worksheet.title("a") is None
+
+
+def test_a_worksheet_says_whether_two_of_its_figures_print_one_reference() -> None:
+    worksheet = Worksheet(figure_references={"a": "87", "b": "87", "c": "88"})
+
+    assert worksheet.shares_reference("a") and worksheet.shares_reference("b")
+    assert not worksheet.shares_reference("c")
+    assert not worksheet.shares_reference("unprinted")
+
+
+def test_a_worksheet_knows_the_figures_it_imports_only_by_label() -> None:
+    figure = ImportedFigure("Form X: Y", None, "90", True)
+    worksheet = Worksheet(imported_figures={"tax": figure})
+
+    assert worksheet.imported("tax") is figure
+    assert worksheet.imported("other") is None

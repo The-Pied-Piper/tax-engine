@@ -5,7 +5,7 @@ with `@english_renderer`.
 
 from __future__ import annotations
 
-from tax_engine.adapters.inbound.trace_english.names import EnglishNames
+from tax_engine.adapters.inbound.trace_english.names import EnglishNames, short_form_title
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.adapters.inbound.trace_english.renderer import EnglishTraceRenderer
 from tax_engine.domain.trace.forms import FormInstanceLine
@@ -20,12 +20,18 @@ class FormInstanceRenderer:
     def render(self, line: FormInstanceLine, names: EnglishNames) -> str:
         """The English sentences for the run's lines, one per line, each prefixed.
 
-        The prefix is the form, then ", instance N" (N is 1 for a form without an instances list).
+        The prefix is the form as it prints its title (the form's name if it has none), then
+        ", instance N" (N is 1 for a form without an instances list); the inner lines are named
+        from the worksheet of that run, else from the one `names` has.
         Inner lines use the shared registry: a renderer is built without the registry in use, so it
         is unreachable.
         """
-        prefix = f"Form {line.form}, instance {line.position}: "
-        sentences = EnglishTraceRenderer().render_all(line.lines, names.printed)
+        printed = names.printed if line.printed is None else line.printed
+        title = None if printed is None else printed.form_title
+        form = f"Form {line.form}" if title is None else short_form_title(title)
+        prefix = f"{form}, instance {line.position}: "
+        sentences = EnglishTraceRenderer().render_all(line.lines, printed)
+        names = EnglishNames(printed)
         return "\n".join(
             f"{prefix}{sentence}"
             if inner.label is None

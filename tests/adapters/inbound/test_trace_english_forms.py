@@ -19,6 +19,7 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import FormInstanceLine, RecordTotalLine, SubtractedLine
+from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tests.forms import composition
 
@@ -135,3 +136,40 @@ def test_the_trace_renderer_renders_form_lines_among_others() -> None:
         "plus unit amount of item 2 (250.50) gives 350.50.",
         "Unit amount of item 1 (1.00) plus unit amount of item 2 (2.00) gives 3.00.",
     )
+
+
+def test_a_form_run_is_named_by_its_printed_title_and_its_own_worksheet() -> None:
+    # Two forms print different references for one label: each run names its figures by its own.
+    first = Worksheet(form_title="Form AA1: First", figure_references={"unit_total": "4"})
+    second = Worksheet(form_title="Schedule 2: Second", figure_references={"unit_total": "9"})
+    lines = (
+        FormInstanceLine("ex/first", 1, (TOTAL,), first),
+        FormInstanceLine("ex/second", 1, (TOTAL,), second),
+    )
+
+    assert EnglishTraceRenderer().render_all(lines) == (
+        "AA1, instance 1: Line 4: Unit amount of item 1 (100.00) plus unit amount of item 2 "
+        "(250.50) gives 350.50.",
+        "Schedule 2, instance 1: Line 9: Unit amount of item 1 (100.00) plus unit amount of "
+        "item 2 (250.50) gives 350.50.",
+    )
+
+
+def test_the_form_set_trace_carries_each_runs_worksheet() -> None:
+    forms = FormSet(
+        [
+            composition(
+                "ex/return",
+                [Subtract(CENT_ROUNDING, GROSS_RENT, EXPENSES, NET_INCOME)],
+                exports=[NET_INCOME],
+                starting=frozenset({GROSS_RENT, EXPENSES}),
+            )
+        ],
+        inputs=frozenset({GROSS_RENT, EXPENSES}),
+    )
+    worksheets = forms.compute(Artifact(GROSS_RENT, D("12000")), Artifact(EXPENSES, D("2000")))
+
+    (line,) = forms.trace(worksheets)
+
+    assert isinstance(line, FormInstanceLine)
+    assert line.printed is worksheets["ex/return"][0]

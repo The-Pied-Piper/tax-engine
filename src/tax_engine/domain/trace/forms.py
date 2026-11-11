@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 
+from tax_engine.domain.figure_names import FigureNames
 from tax_engine.domain.trace.base import TraceLine
 
 __all__ = ["FormInstanceLine"]
@@ -16,12 +17,15 @@ class FormInstanceLine(TraceLine):
     form without an instances list has one instance, 1), in the order they were recorded.
 
     Its own class: the form is a group of capabilities, not a capability, so the lines of a run
-    are kept together here rather than among the lines of another form's.
+    are kept together here rather than among the lines of another form's. `printed` is the
+    worksheet of that run, whose titles and references name the figures of `lines` (labels are
+    shared across forms with different references); a line built without one names them by label.
     """
 
     form: str
     position: int
     lines: tuple[TraceLine, ...]
+    printed: FigureNames | None = None
 
     @property
     def amount(self) -> Decimal:
