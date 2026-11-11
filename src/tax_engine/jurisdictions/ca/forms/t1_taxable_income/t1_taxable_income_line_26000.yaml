@@ -1,4 +1,4 @@
-# T1 (2025, Ontario 5006-R page 5) line 69 and line 26000: "Line 57 minus line 68 (if negative, enter
+# T1 (2025, 5006-R page 5) line 69 and line 26000: "Line 57 minus line 68 (if negative, enter
 # "0") Taxable income". Line 57 is a copy of line 23600 ("Enter the amount from line 56 of the previous
 # page"), so step 1 reads the net income (`ca/net_income`) directly, not a copy of it.
 #
