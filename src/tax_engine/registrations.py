@@ -1,6 +1,7 @@
 """The packages the composition root wires together, listed explicitly.
 
-Adding a jurisdiction is importing its package and listing it in `JURISDICTIONS`.
+Adding a jurisdiction is importing its package and listing it in `JURISDICTIONS`; see
+docs/jurisdiction-packages.md.
 """
 
 import tax_engine.adapters.inbound.trace_english

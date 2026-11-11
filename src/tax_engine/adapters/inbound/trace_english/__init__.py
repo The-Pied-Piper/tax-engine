@@ -1,7 +1,7 @@
 """English rendering of the structured trace: one readable sentence per trace line.
 
-Importing this package imports every core renderer module; a jurisdiction renders its own lines in
-its `trace_english` package.
+A new module of core trace lines adds its renderer module here; a jurisdiction renders its own lines
+in its `trace_english` package.
 """
 
 from __future__ import annotations

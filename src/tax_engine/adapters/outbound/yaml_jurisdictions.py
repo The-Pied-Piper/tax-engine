@@ -561,9 +561,12 @@ class YamlJurisdictionSource:
     def _declaration(
         self, entry: YamlNode, kind_of: Callable[[str], ArtifactKind[Any]]
     ) -> InputDeclaration:
-        """One input or field: its `name`, whether it is `required`, and for an optional one its
-        `default` (written as the value, `null` for blank) and the printed `basis`; any may also
-        give the printed `title` and `reference` of its figure."""
+        """One input or field: its `name`, `required`, and for an optional one `default` and
+        `basis`.
+
+        `default` is written as the value (`null` for blank); `title` and `reference` may also be
+        given.
+        """
         fields = entry.require_mapping(
             frozenset({"name"}), optional=_OPTIONAL_INPUT_KEYS | {"required"}
         )
@@ -654,9 +657,10 @@ class YamlJurisdictionSource:
         node: YamlNode | None,
         consumes: Mapping[str, str | tuple[str, ...]],
     ) -> dict[str, BlankRule]:
-        """What a blank does in each slot, or each artifact in a list slot, `node` names: `pass_on`
-        and `compute` are the rules `PASS_ON` and `COMPUTE`, anything else a fallback number read
-        as the value type of the kinds the slot (or the one artifact) takes.
+        """What a blank does in each slot, or each artifact in a list slot, `node` names.
+
+        `pass_on` and `compute` are the rules `PASS_ON` and `COMPUTE`; anything else is a fallback
+        number read as the value type of the kinds the slot (or the one artifact) takes.
         """
         return {
             name: self._blank_rule(who, name, value.require_non_empty_string(), consumes)
@@ -670,9 +674,11 @@ class YamlJurisdictionSource:
         node: YamlNode | None,
         consumes: Mapping[str, str | tuple[str, ...]],
     ) -> dict[str, dict[str, BlankRule]]:
-        """What a blank does in each record field `node` names under a slot (a mapping of field
-        identifier to rule): `pass_on` and `compute` are the rules `PASS_ON` and `COMPUTE`,
-        anything else a fallback number read as the value type of the field's kind.
+        """What a blank does in each record field `node` names under a slot, as a mapping of field
+        identifier to rule.
+
+        `pass_on` and `compute` are the rules `PASS_ON` and `COMPUTE`; anything else is a fallback
+        number read as the value type of the field's kind.
         """
         rules: dict[str, dict[str, BlankRule]] = {}
         for slot, value in [] if node is None else node.fields():

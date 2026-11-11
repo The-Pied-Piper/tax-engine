@@ -1,6 +1,7 @@
 """Reading parameter datasets: the `ParameterParser` protocol and the registry of parsers.
 
-Parsers are keyed by their kind's name (`brackets`, `credit`, `rate`), which is not namespaced.
+Parsers are keyed by their kind's name (`brackets`, `credit`, `rate`). A package's parsers may
+import this module and `yaml_support`, and nothing else under `adapters.outbound`.
 """
 
 from __future__ import annotations
@@ -74,7 +75,8 @@ class ParserClass[T, P](Protocol):
 class ParameterParserRegistry(Registry[object]):
     """Holds one parser per parameter kind; lookups by `ParameterKind[T]` give `ParameterParser[T]`.
 
-    Its string keys are kind names (not namespaced yet); register parsers with `register_class`.
+    Its string keys are kind names, which are not namespaced; register parsers with
+    `register_class`.
     """
 
     def for_kind[T](self, kind: ParameterKind[T]) -> ParameterParser[T]:

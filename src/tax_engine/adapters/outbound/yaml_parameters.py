@@ -1,7 +1,6 @@
 """Reads parameter datasets from YAML files. Implements ParameterSource.
 
-Family `ex-on/brackets`, year 2025 is `<roots[ex-on]>/parameters/brackets/2025.yaml`; a missing file
-is NotFoundError.
+The file format is described in docs/parameter-files.md.
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 # Manifest format
 
 A jurisdiction manifest is YAML that selects capabilities and binds their slots to artifact
-identifiers (design.md §4). `YamlJurisdictionSource`
+identifiers. `YamlJurisdictionSource`
 (`src/tax_engine/adapters/outbound/yaml_jurisdictions.py`) reads it. Which slots a capability has,
 and whether a slot takes one identifier or a list, are declared in code and checked when a
 capability is built, not by the loader.
@@ -19,6 +19,39 @@ namespace is its code lower-cased (`EX-ON` gives `ex-on`). Under `<package>/mani
   `*.yml` file inside it, recursively, read in sorted path order.
 
 A manifest whose `jurisdiction` is not the package's jurisdiction is rejected.
+
+## Which manifest applies
+
+A package may hold several manifests. For a tax year, `Jurisdiction.manifest_for` takes the one with
+the greatest `valid_from_tax_year` that is not after the year. It raises `NotFoundError` if every
+manifest starts later, and `AmbiguousManifestError` if two start in that greatest year. `version`
+numbers the manifests and names them in that error.
+
+## Example
+
+A whole-file manifest with one input and one capability, under `ex-on/manifests/v1.yaml`:
+
+```yaml
+jurisdiction: EX-ON
+version: 1
+valid_from_tax_year: 2025
+inputs:
+  - name: ex-on/levy_base
+    required: true
+outputs:
+  - ex-on/levy
+capabilities:
+  - name: core/progressive_tax
+    params:
+      schedule: ex-on/brackets
+    consumes:
+      base: ex-on/levy_base
+    produces:
+      output: ex-on/levy
+```
+
+`ex-on/brackets` is a parameter family, read from `parameters/brackets/<tax year>.yaml` (see
+[Parameter files](parameter-files.md)).
 
 ## Manifest keys
 
@@ -42,8 +75,9 @@ top-level `capabilities` belong to the default form, named `<namespace>/return` 
 `ex-on/return`), a required form whose exports are `outputs`. Two `outputs` with the same local id
 (`ex/x` and `ca/x`, both `<namespace>/return.x`) are rejected.
 
-Further forms exist only in a folder manifest. A part with a `form:` key gives all of its
-`capabilities` to that form. A single manifest file is not a part and takes no `form:` key.
+Further forms of the manifest's own are declared only in a folder manifest, by parts with a
+`form:` key (forms named by `imports` may be listed in a whole file too). A part with a `form:` key
+gives all of its `capabilities` to that form. A single manifest file is not a part and takes no `form:` key.
 
 The `form:` block has these keys:
 
@@ -96,9 +130,9 @@ and no identifier is listed twice.
   imported part with any other key are rejected, naming the part.
 - The forms run in this order: the default form, the imported forms in `imports` order, then the
   manifest's own.
-- An imported form that reads a derived `<form>.<export>`-style figure that no form of the manifest
-  supplies is rejected, naming the form and the figure. Each importing manifest supplies such a
-  figure from its own forms with `supplies`.
+- An imported form that reads a derived figure (a `<form>.<export>` or a supplied identifier) that
+  no form of the manifest derives is rejected, naming the form and the figure. Each importing
+  manifest supplies such a figure from its own forms with `supplies`.
 
 ## Merging parts
 

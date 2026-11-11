@@ -1,6 +1,7 @@
 """Reading the text of a manifest or a request as values: the one place the engine does it.
 
-A refusal is an InvalidTextError, to which the caller adds where the text came from.
+The domain holds finished values only. A refusal is an InvalidTextError, to which the caller adds
+where the text came from.
 """
 
 from __future__ import annotations
@@ -58,9 +59,10 @@ def read_artifact[V](kind: ArtifactKind[V], text: str) -> Artifact[V]:
 
 
 def read_default[V](kind: ArtifactKind[V], declared: str | tuple[()] | None) -> Artifact[V]:
-    """The artifact a manifest's declared default is read as: `None` is blank, a string is read
-    as `read_artifact` reads it, and `()` (an empty list) is an empty record list for a
-    record-list kind and refused for any other kind.
+    """The artifact a manifest's declared default is read as.
+
+    `None` is blank, a string is read as `read_artifact` reads it, and `()` is an empty record list
+    for a record-list kind and refused for any other kind.
     """
     if declared is None:
         return Artifact(kind, BLANK)

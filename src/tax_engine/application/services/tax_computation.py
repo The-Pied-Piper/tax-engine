@@ -1,7 +1,7 @@
 """Tax computation: a jurisdiction's manifest for a tax year built into a set of forms, run.
 
-Resolution errors propagate unchanged; each composed `FormSet` is cached per jurisdiction and tax
-year.
+The service does I/O only. Each composed `FormSet` is cached per jurisdiction and tax year; sharing
+it is safe because `FormSet.compute` never writes to the forms.
 """
 
 from __future__ import annotations

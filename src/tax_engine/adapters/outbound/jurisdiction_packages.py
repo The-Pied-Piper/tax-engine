@@ -1,7 +1,7 @@
 """The jurisdiction packages: where each keeps its data, and registering their catalogs.
 
-A package declares `NAMESPACE` in its `__init__.py`; the `register*` functions fill the registries
-they are given.
+A package declares `NAMESPACE` in its `__init__.py`; see docs/jurisdiction-packages.md for the
+layout.
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 """EnglishNames: how a trace line's text names a figure.
 
-By the form's reference ("line 4"), else its title in quotes, else its label in plain words; a
-dataset's figure by its `title`.
+By the form's reference ("line 4"), else its title in quotes, else its label in plain words, never
+an invented title; a dataset's figure by its `title`, unquoted.
 """
 
 from __future__ import annotations
