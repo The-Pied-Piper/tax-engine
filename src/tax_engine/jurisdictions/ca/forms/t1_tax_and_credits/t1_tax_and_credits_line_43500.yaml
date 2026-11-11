@@ -8,7 +8,7 @@
 #
 # Line 147 is ON428 line 90, "Enter this amount on line 42800 of your return. Ontario tax =". The ON428
 # form's export is another form's figure, so it is read only as a record list
-# (`ca-on/on428.on428_ontario_tax_line_90`): core/record_total totals the one amount into line 42800
+# (`ca/provincial_tax.amount`): core/record_total totals the one amount into line 42800
 # (`ca/provincial_tax_line_42800`), with no step of its own for the pure copy.
 #
 # Line 148 is a sum of line 143 and line 42800, rounded once, half-up to the cent, through the shared
@@ -20,7 +20,7 @@ capabilities:
     title: "Provincial or territorial tax"
     reference: "42800"
     consumes:
-      records: ca-on/on428.on428_ontario_tax_line_90
+      records: ca/provincial_tax.amount
     produces:
       output: ca/provincial_tax_line_42800
   - name: core/sum

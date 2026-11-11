@@ -105,12 +105,12 @@ from tax_engine.jurisdictions.ca_on.catalog import (
     ON428_TAX_ON_TAXABLE_INCOME_LINE_8,
     ON428_TAXABLE_INCOME_LINE_1,
 )
-from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService, header_without_imports
 
 D = Decimal
 CODE = JurisdictionCode("CA-ON")
 # The two files that are not parts of a form: the real header and the form-less return.
-HEADER = (TAKE_HOME / "manifest.yaml").read_text(encoding="utf-8")
+HEADER = header_without_imports()
 RETURN = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 PARTS = (
     "salary.yaml",

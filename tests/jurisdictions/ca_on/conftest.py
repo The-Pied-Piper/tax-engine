@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import re
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Protocol
 
 import pytest
 
+import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -16,7 +19,38 @@ from tax_engine.registrations import JURISDICTIONS, parameter_parsers
 from tests.capabilities import bundled_capabilities
 from tests.kinds import bundled_kinds
 
-TAKE_HOME = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "take_home"
+ONTARIO_PARTS = Path(tax_engine.jurisdictions.ca_on.__file__).parent / "manifests" / "take_home"
+FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
+
+
+class TakeHomeFolders:
+    """The part files of the Ontario take-home return: Ontario's own, and the federal forms it
+    imports from the `ca` package. `rglob` and `glob` search both; `/` names a file of Ontario's.
+    """
+
+    def rglob(self, pattern: str) -> Iterator[Path]:
+        yield from ONTARIO_PARTS.rglob(pattern)
+        yield from FEDERAL_FORMS.rglob(pattern)
+
+    def glob(self, pattern: str) -> Iterator[Path]:
+        yield from ONTARIO_PARTS.glob(pattern)
+        yield from FEDERAL_FORMS.glob(pattern)
+
+    def __truediv__(self, name: str) -> Path:
+        return ONTARIO_PARTS / name
+
+
+TAKE_HOME = TakeHomeFolders()
+
+
+def header_without_imports() -> str:
+    """The real Ontario manifest header with its `imports:` list taken out.
+
+    A test that copies the federal parts beside the header as parts of its own manifest cannot also
+    import them.
+    """
+    header = (ONTARIO_PARTS / "manifest.yaml").read_text(encoding="utf-8")
+    return re.sub(r"^imports:\n(?:  - .*\n)+", "", header, flags=re.MULTILINE)
 
 
 class TakeHomeService(Protocol):
