@@ -34,6 +34,11 @@ def _line_of(reference: str) -> str:
     return f"line {reference}" if _LINE_REFERENCE.fullmatch(reference) else reference
 
 
+def _line_of(reference: str) -> str:
+    """A printed reference in a sentence: "line 4" for a bare line number or letter."""
+    return f"line {reference}" if _LINE_REFERENCE.fullmatch(reference) else reference
+
+
 def _plain_words(label: str) -> str:
     """An internal label in plain words: "t2204_exemption" -> "t2204 exemption"."""
     return label.replace("_", " ")
