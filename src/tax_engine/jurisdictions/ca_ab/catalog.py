@@ -68,3 +68,9 @@ AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 )
 """EI premiums credit amount, AB428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+AB428_DIVIDEND_TAX_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "ab428_dividend_tax_credit_line_63", non_negative=True
+)
+"""Alberta dividend tax credit, AB428 line 63 (line 61520) "Alberta dividend tax credit (use
+Worksheet AB428)": an optional input that a salary-only caller leaves out."""
