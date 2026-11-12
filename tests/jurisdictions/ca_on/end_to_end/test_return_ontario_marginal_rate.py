@@ -6,8 +6,7 @@ the share of a further dollar of Ontario tax-bearing income that goes to Ontario
 surtax. No new form text: the printed rates are those of line 5 ("Line 5: Rate 5.05%", "9.15%",
 "11.16%", "12.16%", "13.16%", CRA 5006-c-25e.txt) and the surtax rates those of line 66 "(Line 65
 minus $5,710) multiplied by 20%" and line 67 "(Line 65 minus $7,307) multiplied by 36%". The rate
-times the factor is not a printed line, so the step is untitled and prints no form title; its
-reference is "5, 66, 67".
+times the factor is not a printed line, so the step is untitled and carries no line reference.
 
 The return summary has one `core/multiply_by_rate` step in `return.yaml`: base
 `ca-on/ontario_surtax_factor`, rate `ca-on/ontario_bracket_rate_return`, the dataset
@@ -155,13 +154,13 @@ def test_the_return_prints_the_marginal_rate_as_a_percentage_in_the_core_percent
     assert unit.identifier == "core/percent"
 
 
-def test_the_marginal_rate_step_has_the_reference_and_no_title(
+def test_the_marginal_rate_step_has_no_reference_and_no_title(
     take_home_service: TakeHomeService,
 ) -> None:
     summary = _summary(take_home_service, "70000")
     label = bundled_kinds().kind(MARGINAL).label
 
-    assert summary.reference(label) == "5, 66, 67"
+    assert summary.reference(label) is None
     assert summary.title(label) is None
 
 

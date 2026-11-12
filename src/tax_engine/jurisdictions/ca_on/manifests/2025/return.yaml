@@ -64,7 +64,6 @@ capabilities:
     produces:
       output: ca-on/return_health_premium_slope
   - name: core/multiply_by_rate
-    reference: "5, 66, 67"
     unit: core/percent
     params:
       rounding: ca-on/exact_rounding
