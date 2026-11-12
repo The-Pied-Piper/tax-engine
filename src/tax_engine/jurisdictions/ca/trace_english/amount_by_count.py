@@ -19,6 +19,7 @@ class AmountByCountRenderer:
     def render(self, line: AmountByCountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         return (
-            f"The table amount for {names.figure(line.count_kind, line.count)} is "
-            f"{names.shown(line.label, line.row)} ({EnglishFigures.rounding(line.rounding)})"
+            f"Looking up {names.figure(line.count_kind, line.count)} in the table gives "
+            f"{names.shown(line.label, line.row)} for {names.of(line.output)} "
+            f"({EnglishFigures.rounding(line.rounding)})"
         )

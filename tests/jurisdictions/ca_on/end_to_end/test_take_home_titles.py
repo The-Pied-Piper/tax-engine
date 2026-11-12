@@ -76,3 +76,19 @@ def test_schedule_8_line_a_is_traced_as_the_months_default_with_its_printed_refe
         EnglishTraceRenderer().render(months) == "No value given, so the form's default gives 12."
     )
     assert schedule_8.reference("cpp_months") == "A"
+
+
+def test_schedule_8_line_b_sentence_names_line_a_and_the_line_it_gives() -> None:
+    sheets = build_tax_computation().compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+    )
+
+    (schedule_8,) = sheets["ca/schedule_8"]
+    (line_b,) = [
+        line for line in schedule_8.trace if line.label == "cpp_maximum_pensionable_earnings"
+    ]
+
+    assert EnglishTraceRenderer().render(line_b, schedule_8) == (
+        "Looking up line A (12 months) in the table gives CA$71300.00 for line B "
+        "(rounded to the nearest cent)."
+    )
