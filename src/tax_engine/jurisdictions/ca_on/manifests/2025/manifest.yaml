@@ -1,12 +1,13 @@
-# Ontario 2025 take-home manifest: the return's identity and its one export. The caller gives the
+# Ontario 2025 take-home manifest: the return's identity and its exports. The caller gives the
 # gross salary and nothing else (salary.yaml). Ontario's own forms are in parts beside this one, so a
 # line ticket adds only its own part file; the federal forms are imported by name below, their parts
 # in the `ca` package (`ca/forms/<name>/`).
 #
-# The default form's export is T1 line 167, refund or balance owing (positive is owing, negative is
-# a refund), and the Ontario surtax factor (ON428 lines 66 and 67), which the marginal rate reads.
-# The CPP and EI figures the calculator also needs are exported by their own forms
-# (Schedule 8 and T2204, both imported); the calculator reads them from their forms.
+# The default form's exports are T1 line 167, refund or balance owing (positive is owing, negative
+# is a refund), the Ontario surtax factor (ON428 lines 66 and 67) and the ON428 line 5 bracket
+# rate, which the marginal rate reads. The CPP and EI figures the calculator also needs are exported
+# by their own forms (Schedule 8 and T2204, both imported); the calculator reads them from their
+# forms.
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
@@ -15,6 +16,7 @@ title: Return summary
 outputs:
   - ca/refund_or_balance_owing
   - ca-on/ontario_surtax_factor
+  - ca-on/ontario_bracket_rate_return
 capabilities: []
 imports:
   - ca/t1_taxable_income

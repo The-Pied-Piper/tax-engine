@@ -407,3 +407,9 @@ ONTARIO_SURTAX_FACTOR = AmountKind.declare(CATALOG, "ontario_surtax_factor", non
 "(Line 65 minus $7,307) multiplied by 36%": 1 plus the rate of each surtax tier line 65 is over,
 the tax a further dollar of Ontario tax brings with the surtax. A plain figure with no unit, not
 printed on the form."""
+
+ONTARIO_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "ontario_bracket_rate_return", non_negative=True
+)
+"""Ontario bracket rate, ON428 line 5 "Line 5: Rate": the printed rate of the column that line 1
+falls in, read from ON428 into the return summary."""
