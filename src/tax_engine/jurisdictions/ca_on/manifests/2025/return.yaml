@@ -14,6 +14,7 @@ capabilities:
   # line 1 falls in). The ON428 form exports it, so core/record_total totals the one rate into the
   # return's own `ca-on/ontario_bracket_rate_return`. The step is untitled: the return prints no title.
   - name: core/record_total
+    unit: core/percent
     consumes:
       records: ca-on/on428.on428_bracket_column_rate_line_5
     produces:

@@ -75,12 +75,11 @@ def test_the_return_lists_the_bracket_rate_and_the_refund_or_balance_owing() -> 
     assert default.exports == (RETURN_RATE, LINE_167)
 
 
-def test_the_return_bracket_rate_kind_is_a_registered_non_negative_amount_without_unit() -> None:
+def test_the_return_bracket_rate_kind_is_a_registered_non_negative_amount() -> None:
     kind = bundled_kinds().kind(RETURN_RATE)
 
     assert kind.identifier == RETURN_RATE
     assert non_negative(kind)
-    assert getattr(kind, "unit", None) is None
 
 
 @pytest.mark.parametrize(
@@ -125,3 +124,12 @@ def test_the_70000_take_home_stays_53468_68() -> None:
 
     assert total_tax == D("11497.09")
     assert D("70000") - cpp - ei - total_tax == D("53468.68")
+
+
+def test_the_return_prints_the_bracket_rate_as_a_percentage_in_the_core_percent_unit() -> None:
+    (summary,) = _worksheets("70000")[RETURN]
+
+    unit = summary.unit(bundled_kinds().kind(RETURN_RATE).label)
+
+    assert unit is not None
+    assert unit.identifier == "core/percent"
