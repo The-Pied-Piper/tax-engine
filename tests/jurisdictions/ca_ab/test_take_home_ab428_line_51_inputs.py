@@ -24,7 +24,7 @@ PART = (
     Path(tax_engine.jurisdictions.ca_ab.__file__).parent
     / "manifests"
     / "2025"
-    / "ab428_line_51_input.yaml"
+    / "ab428_line_51_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-AB
