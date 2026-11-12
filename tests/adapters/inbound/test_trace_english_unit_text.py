@@ -56,6 +56,29 @@ def test_an_english_unit_text_is_a_unit_text() -> None:
     assert text.identifier == "ex/moons"
 
 
+def test_a_unit_text_must_define_singular_plural_placement_and_spaced() -> None:
+    text: UnitText = MOONS
+
+    assert (text.singular, text.plural, text.placement, text.spaced) == (
+        "moon",
+        "moons",
+        Placement.AFTER,
+        True,
+    )
+
+
+def test_a_text_that_leaves_out_a_required_field_is_not_a_unit_text() -> None:
+    class Bare:
+        identifier = "ex/bare"
+
+        def write(self, shown: str, value: Decimal | int) -> str:
+            return shown
+
+    text: UnitText = Bare()  # type: ignore[assignment]
+
+    assert text.identifier == "ex/bare"
+
+
 def test_spaced_is_keyword_only_and_has_no_default() -> None:
     with pytest.raises(TypeError, match="spaced"):
         EnglishUnitText("ex/crowns", "EX$", "EX$", Placement.BEFORE)  # type: ignore[call-arg]
