@@ -19,8 +19,10 @@ def build_tax_computation() -> TaxComputationService:
     roots = JURISDICTIONS.roots()
     registered_units = units()
     EnglishUnitTextRegistry.shared().require(registered_units.units)
-    return TaxComputationService(
+    service = TaxComputationService(
         YamlJurisdictionSource(roots, kinds, registered_units),
         YamlParameterSource(roots, parameter_parsers(), registered_units),
         capabilities(),
     )
+    service.check(JURISDICTIONS.jurisdiction_codes())
+    return service

@@ -17,6 +17,7 @@ from tax_engine.adapters.outbound.parser_modules import parsers_in
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import UnitCatalog, UnitRegistry
 
@@ -47,6 +48,17 @@ class JurisdictionPackages:
     def roots(self) -> Mapping[Namespace, Path]:
         """Each package's namespace mapped to its package directory."""
         return self._roots
+
+    def jurisdiction_codes(self) -> tuple[JurisdictionCode, ...]:
+        """The code of each package that has a `manifests` folder, in package order.
+
+        A code is the package's namespace in upper case, such as `CA-ON` for `ca-on`.
+        """
+        return tuple(
+            JurisdictionCode(namespace.name.upper())
+            for namespace, root in self._roots.items()
+            if (root / "manifests").is_dir()
+        )
 
     def register(self, registry: ArtifactRegistry) -> None:
         """Register every package's catalog, its `catalog` module's `CATALOG`, into `registry`.

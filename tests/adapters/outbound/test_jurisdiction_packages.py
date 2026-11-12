@@ -23,6 +23,7 @@ from tax_engine.adapters.outbound.yaml_support import YamlNode
 from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
+from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.registration_fixtures import ex_cap, ex_on, ex_parse
@@ -486,3 +487,31 @@ def test_a_failing_import_in_one_package_registers_none_of_the_parsers(
         packages.register_parameter_parsers(registry)
 
     assert registry.identifiers() == frozenset()
+
+
+def test_the_jurisdiction_codes_are_the_upper_cased_namespaces_of_packages_with_manifests(
+    tmp_path: Path, package: MakePackage
+) -> None:
+    for name in ("ex_ab", "ex_on"):
+        (tmp_path / name / "manifests").mkdir(parents=True)
+    packages = JurisdictionPackages(
+        (package(tmp_path, "ex_on", "ex-on"), package(tmp_path, "ex_ab", "ex-ab"))
+    )
+
+    assert packages.jurisdiction_codes() == (JurisdictionCode("EX-ON"), JurisdictionCode("EX-AB"))
+
+
+def test_a_package_without_a_manifests_folder_has_no_jurisdiction_code(
+    tmp_path: Path, package: MakePackage
+) -> None:
+    (tmp_path / "ex_on" / "manifests").mkdir(parents=True)
+    (tmp_path / "ex").mkdir()
+    packages = JurisdictionPackages(
+        (package(tmp_path, "ex", "ex"), package(tmp_path, "ex_on", "ex-on"))
+    )
+
+    assert packages.jurisdiction_codes() == (JurisdictionCode("EX-ON"),)
+
+
+def test_no_packages_give_no_jurisdiction_codes() -> None:
+    assert JurisdictionPackages(()).jurisdiction_codes() == ()

@@ -237,3 +237,61 @@ def test_a_rebind_to_a_family_of_another_kind_fails_when_composed(tmp_path: Path
 
     with pytest.raises(InvalidParameterDataError, match="rate.*credit"):
         base_amount(tmp_path, EX_AB)
+
+
+def checking_service(directory: Path) -> TaxComputationService:
+    capabilities = CapabilityRegistry()
+    capabilities.register("core/credit_amount", CreditAmount)
+    capabilities.register("ex/half", Half)
+    parameters = YamlParameterSource(package_roots(directory), parameter_parsers())
+    return TaxComputationService(source(directory), parameters, capabilities)
+
+
+def test_check_accepts_a_rebind_to_a_matching_dataset(tmp_path: Path) -> None:
+    write_benefit(tmp_path)
+    province(tmp_path, "[ex/benefit]", "ex-on")
+    province(tmp_path, REBOUND, "ex-ab")
+    credit_file(tmp_path, "ex/base", "3000")
+    credit_file(tmp_path, "ex-ab/base", "2760")
+
+    checking_service(tmp_path).check([EX_ON, EX_AB])
+
+
+def test_check_rejects_a_rebind_to_a_family_with_no_dataset(tmp_path: Path) -> None:
+    write_benefit(tmp_path)
+    province(tmp_path, REBOUND, "ex-ab")
+    credit_file(tmp_path, "ex/base", "3000")
+
+    with pytest.raises(
+        InvalidManifestError, match=r"EX-AB, manifest valid from 2025: .*ex-ab/base"
+    ):
+        checking_service(tmp_path).check([EX_AB])
+
+
+def test_check_rejects_a_rebind_to_a_family_of_another_kind(tmp_path: Path) -> None:
+    write_benefit(tmp_path)
+    province(tmp_path, REBOUND, "ex-ab")
+    credit_file(tmp_path, "ex/base", "3000")
+    credit_file(tmp_path, "ex-ab/base", "0.5", kind="rate")
+
+    with pytest.raises(
+        InvalidManifestError, match=r"EX-AB, manifest valid from 2025: .*rate.*credit"
+    ):
+        checking_service(tmp_path).check([EX_AB])
+
+
+def test_check_keeps_the_composed_forms_for_later_calculations(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    write_benefit(tmp_path)
+    province(tmp_path, "[ex/benefit]", "ex-on")
+    credit_file(tmp_path, "ex/base", "3000")
+    service = checking_service(tmp_path)
+
+    service.check([EX_ON])
+
+    def recomposed(*args: object) -> None:
+        raise AssertionError("composed again after the check")
+
+    monkeypatch.setattr(service, "_compose", recomposed)
+    assert service.compose(EX_ON, 2025) is service.compose(EX_ON, 2025)
