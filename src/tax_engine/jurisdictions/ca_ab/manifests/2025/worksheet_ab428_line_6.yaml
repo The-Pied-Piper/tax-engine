@@ -1,0 +1,14 @@
+# Worksheet AB428 (2025) line 6, the base amount. Worksheet AB428 (CRA 5009-d-25e): "Line 6: Base
+# amount 4,800.00". The 4,800.00 is the `ca-ab/supplemental_credit_base` dataset, claimed whole
+# through core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-ab/worksheet_ab428
+capabilities:
+  - name: core/credit_amount
+    title: "Base amount"
+    reference: "6"
+    unit: ca/cad
+    params:
+      amount: ca-ab/supplemental_credit_base
+    produces:
+      output: ca-ab/worksheet_ab428_line_6
