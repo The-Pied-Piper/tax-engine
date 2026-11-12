@@ -30,8 +30,8 @@ from tests.forms import composition
 
 D = Decimal
 
-CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
-MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER)
+CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
+MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER, True)
 UNITS = {"ex/crowns": CROWNS, "ex/moons": MOONS}
 
 EXACT = ParameterDataset(

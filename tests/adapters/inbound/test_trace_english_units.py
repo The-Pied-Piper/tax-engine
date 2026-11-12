@@ -1,10 +1,10 @@
 """Unit tests for printing a figure's unit in English trace sentences, with made-up kinds and units.
 
-A figure with a unit prints it with its number: before the number against it ("EX$3500.00") or
-after it with a space ("12 moons", "1 moon"); `EnglishFigures.with_unit` writes it, the unit itself
-being plain data. A figure with none prints as it always has. The unit is the worksheet's
-(`FigureNames.unit(label)`), so a sentence names it for the figures it reads and for the figure it
-gives; a dataset's constant (a per-unit amount, threshold, cap or bound) stays bare.
+A figure with a unit prints it with its number: before it ("EX$3500.00") or after it ("12 moons",
+"1 moon"), with a space between only when the unit is `spaced`; `EnglishFigures.with_unit` writes
+it, the unit itself being plain data. A figure with none prints as it always has. The unit is the
+worksheet's (`FigureNames.unit(label)`), so a sentence names it for the figures it reads and for
+the figure it gives; a dataset's constant (a per-unit amount, threshold, cap or bound) stays bare.
 """
 
 from __future__ import annotations
@@ -39,8 +39,8 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 
 D = Decimal
-CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
-MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER)
+CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
+MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER, True)
 
 GROSS = AmountKind("ex/gross_pay")
 LESS = AmountKind("ex/allowance")
@@ -187,7 +187,7 @@ def test_a_unit_before_the_number_is_written_against_it() -> None:
 
 
 def test_a_unit_before_the_number_uses_its_singular_or_plural_the_same_way() -> None:
-    marks = Unit("ex/marks", "one mark ", "marks ", Placement.BEFORE)
+    marks = Unit("ex/marks", "one mark ", "marks ", Placement.BEFORE, False)
 
     assert EnglishFigures.with_unit("1", 1, marks) == "one mark 1"
     assert EnglishFigures.with_unit("3", 3, marks) == "marks 3"
@@ -197,6 +197,39 @@ def test_a_negative_amount_with_a_unit_before_the_number_puts_the_sign_first() -
     assert EnglishFigures.with_unit("-1.00", D("-1.00"), CROWNS) == "-EX$1.00"
     assert EnglishFigures.with_unit("-1", -1, CROWNS) == "-EX$1"
     assert EnglishFigures.with_unit("-3500.50", D("-3500.50"), CROWNS) == "-EX$3500.50"
+
+
+def test_the_four_placement_and_spacing_combinations() -> None:
+    def unit(placement: Placement, spaced: bool) -> Unit:
+        return Unit("ex/crowns", "EX$", "EX$", placement, spaced)
+
+    before_tight = unit(Placement.BEFORE, False)
+    before_spaced = unit(Placement.BEFORE, True)
+    after_spaced = Unit("ex/moons", "moon", "moons", Placement.AFTER, True)
+    after_tight = Unit("ex/percent", "%", "%", Placement.AFTER, False)
+
+    assert EnglishFigures.with_unit("3500.00", D("3500.00"), before_tight) == "EX$3500.00"
+    assert EnglishFigures.with_unit("3500.00", D("3500.00"), before_spaced) == "EX$ 3500.00"
+    assert EnglishFigures.with_unit("12", 12, after_spaced) == "12 moons"
+    assert EnglishFigures.with_unit("12", 12, after_tight) == "12%"
+
+
+def test_a_negative_amount_keeps_its_sign_first_whether_or_not_the_unit_is_spaced() -> None:
+    spaced = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, True)
+
+    assert EnglishFigures.with_unit("-1.00", D("-1.00"), spaced) == "-EX$ 1.00"
+    assert EnglishFigures.with_unit("-1.00", D("-1.00"), CROWNS) == "-EX$1.00"
+
+
+def test_singular_is_used_only_for_exactly_one_whether_or_not_the_unit_is_spaced() -> None:
+    spaced_before = Unit("ex/marks", "mark", "marks", Placement.BEFORE, True)
+    tight_after = Unit("ex/ratios", "pt", "pts", Placement.AFTER, False)
+
+    assert EnglishFigures.with_unit("1", 1, spaced_before) == "mark 1"
+    assert EnglishFigures.with_unit("2", 2, spaced_before) == "marks 2"
+    assert EnglishFigures.with_unit("1", 1, tight_after) == "1pt"
+    assert EnglishFigures.with_unit("2", 2, tight_after) == "2pts"
+    assert EnglishFigures.with_unit("1.50", D("1.50"), tight_after) == "1.50pts"
 
 
 def test_a_negative_amount_with_a_unit_after_the_number_keeps_its_sign_on_the_number() -> None:

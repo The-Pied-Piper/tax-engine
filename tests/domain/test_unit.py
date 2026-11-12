@@ -23,8 +23,8 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import Placement, Unit, UnitCatalog, UnitRegistry
 
-CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
-MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER)
+CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
+MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER, True)
 
 
 def test_a_unit_has_an_identifier_words_and_a_placement() -> None:
@@ -35,11 +35,12 @@ def test_a_unit_has_an_identifier_words_and_a_placement() -> None:
         Placement.BEFORE,
     )
     assert MOONS.placement is Placement.AFTER
+    assert (CROWNS.spaced, MOONS.spaced) == (False, True)
 
 
 def test_a_unit_is_a_value() -> None:
-    assert Unit("ex/moons", "moon", "moons", Placement.AFTER) == MOONS
-    assert hash(Unit("ex/moons", "moon", "moons", Placement.AFTER)) == hash(MOONS)
+    assert Unit("ex/moons", "moon", "moons", Placement.AFTER, True) == MOONS
+    assert hash(Unit("ex/moons", "moon", "moons", Placement.AFTER, True)) == hash(MOONS)
     assert CROWNS != MOONS
 
 
@@ -53,27 +54,27 @@ def test_a_unit_is_pure_data_it_writes_nothing() -> None:
 )
 def test_a_unit_identifier_is_a_namespace_and_a_snake_case_local_id(identifier: str) -> None:
     with pytest.raises(InvalidRegistrationError, match="unit identifier"):
-        Unit(identifier, "moon", "moons", Placement.AFTER)
+        Unit(identifier, "moon", "moons", Placement.AFTER, True)
 
 
 def test_a_bare_unit_name_is_refused_naming_it() -> None:
     with pytest.raises(InvalidRegistrationError, match="'moons'"):
-        Unit("moons", "moon", "moons", Placement.AFTER)
+        Unit("moons", "moon", "moons", Placement.AFTER, True)
 
 
 @pytest.mark.parametrize("singular", ["", "   "])
 def test_a_unit_needs_a_singular_and_a_plural(singular: str) -> None:
     with pytest.raises(InvalidRegistrationError, match="singular"):
-        Unit("ex/moons", singular, "moons", Placement.AFTER)
+        Unit("ex/moons", singular, "moons", Placement.AFTER, True)
     with pytest.raises(InvalidRegistrationError, match="plural"):
-        Unit("ex/moons", "moon", singular, Placement.AFTER)
+        Unit("ex/moons", "moon", singular, Placement.AFTER, True)
 
 
 def test_a_package_declares_its_units_on_a_catalog() -> None:
     catalog = UnitCatalog(Namespace("ex"))
 
-    crowns = catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE)
-    moons = catalog.declare("moons", "moon", "moons", Placement.AFTER)
+    crowns = catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE, False)
+    moons = catalog.declare("moons", "moon", "moons", Placement.AFTER, True)
 
     assert catalog.namespace == Namespace("ex")
     assert crowns == CROWNS
@@ -83,15 +84,15 @@ def test_a_package_declares_its_units_on_a_catalog() -> None:
 
 def test_a_catalog_refuses_a_local_id_it_already_declared() -> None:
     catalog = UnitCatalog(Namespace("ex"))
-    catalog.declare("moons", "moon", "moons", Placement.AFTER)
+    catalog.declare("moons", "moon", "moons", Placement.AFTER, True)
 
     with pytest.raises(DuplicateRegistrationError, match="moons"):
-        catalog.declare("moons", "mooon", "mooons", Placement.AFTER)
+        catalog.declare("moons", "mooon", "mooons", Placement.AFTER, True)
 
 
 def test_a_registry_gets_a_unit_by_its_full_identifier() -> None:
     catalog = UnitCatalog(Namespace("ex"))
-    catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE)
+    catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE, False)
     registry = UnitRegistry()
     registry.register_catalog(catalog)
 
@@ -102,7 +103,7 @@ def test_a_registry_gets_a_unit_by_its_full_identifier() -> None:
 
 def test_registering_the_same_catalog_again_changes_nothing() -> None:
     catalog = UnitCatalog(Namespace("ex"))
-    catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE)
+    catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE, False)
     registry = UnitRegistry()
 
     registry.register_catalog(catalog)
@@ -113,9 +114,9 @@ def test_registering_the_same_catalog_again_changes_nothing() -> None:
 
 def test_a_second_catalog_of_one_namespace_may_not_redeclare_a_local_id() -> None:
     first = UnitCatalog(Namespace("ex"))
-    first.declare("crowns", "EX$", "EX$", Placement.BEFORE)
+    first.declare("crowns", "EX$", "EX$", Placement.BEFORE, False)
     second = UnitCatalog(Namespace("ex"))
-    second.declare("crowns", "X$", "X$", Placement.BEFORE)
+    second.declare("crowns", "X$", "X$", Placement.BEFORE, False)
     registry = UnitRegistry()
     registry.register_catalog(first)
 
@@ -131,7 +132,7 @@ def _registry() -> UnitRegistry:
         ("ex-on", "ducats", "ON$"),
     ):
         catalog = UnitCatalog(Namespace(namespace))
-        catalog.declare(name, symbol, symbol, Placement.BEFORE)
+        catalog.declare(name, symbol, symbol, Placement.BEFORE, False)
         registry.register_catalog(catalog)
     return registry
 
@@ -147,7 +148,7 @@ def test_a_unit_of_any_namespace_is_found_by_its_full_identifier() -> None:
 def test_the_same_local_id_in_two_namespaces_is_two_units() -> None:
     registry = _registry()
     twin = UnitCatalog(Namespace("ex-on"))
-    twin.declare("crowns", "ON$", "ON$", Placement.BEFORE)
+    twin.declare("crowns", "ON$", "ON$", Placement.BEFORE, False)
     registry.register_catalog(twin)
 
     assert registry.unit("ex/crowns").singular == "EX$"
@@ -171,13 +172,46 @@ def test_a_bare_name_is_not_searched_for_in_any_namespace() -> None:
         registry.get("crowns")
 
 
-def test_a_unit_is_a_frozen_public_value_with_four_readable_fields() -> None:
+def test_a_unit_is_a_frozen_public_value_with_five_readable_fields() -> None:
     assert [f.name for f in dataclasses.fields(Unit)] == [
         "identifier",
         "singular",
         "plural",
         "placement",
+        "spaced",
     ]
     with pytest.raises(dataclasses.FrozenInstanceError):
         MOONS.identifier = "ex/suns"  # type: ignore[misc]
     assert {p.value for p in Placement} == {"before", "after"}
+
+
+def test_spaced_is_part_of_a_units_equality_and_hash() -> None:
+    tight = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
+    spaced = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, True)
+
+    assert tight != spaced
+    assert hash(tight) != hash(spaced)
+    assert len({tight, spaced}) == 2
+    assert tight == CROWNS
+
+
+def test_a_unit_built_without_spaced_is_refused() -> None:
+    with pytest.raises(TypeError, match="spaced"):
+        Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)  # type: ignore[call-arg]
+
+
+def test_declaring_a_unit_without_spaced_is_refused() -> None:
+    catalog = UnitCatalog(Namespace("ex"))
+
+    with pytest.raises(TypeError, match="spaced"):
+        catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE)  # type: ignore[call-arg]
+
+
+def test_a_catalog_declares_spaced_by_position_or_keyword() -> None:
+    catalog = UnitCatalog(Namespace("ex"))
+
+    by_position = catalog.declare("moons", "moon", "moons", Placement.AFTER, True)
+    by_keyword = catalog.declare("crowns", "EX$", "EX$", Placement.BEFORE, spaced=False)
+
+    assert by_position.spaced is True
+    assert by_keyword.spaced is False

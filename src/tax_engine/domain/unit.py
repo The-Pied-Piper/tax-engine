@@ -33,12 +33,19 @@ class Unit:
     symbol such as `EX$` is both. A unit is plain data; an adapter decides how to write it. The
     identifier, `<namespace>/<snake_case>`, is the language-neutral key; the text is wording in
     one language.
+
+    `spaced` says whether one space separates the unit's text from the figure: `False` for a
+    symbol written against its number ("EX$3500.00", "12%"), `True` for a word ("12 moons", or
+    "EX$ 3500.00" for a symbol the unit's language sets apart). It is separate from `placement`
+    because both before and after units may go either way, and it is required so a unit never
+    prints with a spacing nobody chose.
     """
 
     identifier: str
     singular: str
     plural: str
     placement: Placement
+    spaced: bool
 
     def __post_init__(self) -> None:
         namespace, _, local_id = self.identifier.partition("/")
@@ -77,9 +84,11 @@ class UnitCatalog:
         """Every unit declared so far, in declaration order."""
         return tuple(self._units.values())
 
-    def declare(self, local_id: str, singular: str, plural: str, placement: Placement) -> Unit:
+    def declare(
+        self, local_id: str, singular: str, plural: str, placement: Placement, spaced: bool
+    ) -> Unit:
         """Declare the unit `local_id` in this namespace; declaring one twice is an error."""
-        unit = Unit(self._namespace.identifier(local_id), singular, plural, placement)
+        unit = Unit(self._namespace.identifier(local_id), singular, plural, placement, spaced)
         if unit.identifier in self._units:
             raise DuplicateRegistrationError(
                 f"unit {unit.identifier!r} is already declared in this catalog"

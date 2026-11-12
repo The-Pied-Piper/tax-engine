@@ -51,8 +51,7 @@ class TaxComputationService:
             return self._composed[key]
 
     def _compose(self, code: JurisdictionCode, tax_year: int) -> FormSet:
-        jurisdiction = self._jurisdictions.get_jurisdiction(code)
-        manifest = jurisdiction.manifest_for(tax_year)
+        manifest = self._jurisdictions.get_jurisdiction(code).manifest_for(tax_year)
         kinds = manifest.kinds
         inputs = frozenset(kinds.kind(identifier) for identifier in manifest.inputs)
         return FormSet(

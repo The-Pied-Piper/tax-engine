@@ -75,13 +75,13 @@ class NoParameters:
 
 def registry() -> UnitRegistry:
     units = UnitRegistry()
-    for namespace, name, singular, plural, placement in (
-        ("core", "moons", "moon", "moons", Placement.AFTER),
-        ("ex", "crowns", "EX$", "EX$", Placement.BEFORE),
-        ("ex-on", "ducats", "ON$", "ON$", Placement.BEFORE),
+    for namespace, name, singular, plural, placement, spaced in (
+        ("core", "moons", "moon", "moons", Placement.AFTER, True),
+        ("ex", "crowns", "EX$", "EX$", Placement.BEFORE, False),
+        ("ex-on", "ducats", "ON$", "ON$", Placement.BEFORE, False),
     ):
         catalog = UnitCatalog(Namespace(namespace))
-        catalog.declare(name, singular, plural, placement)
+        catalog.declare(name, singular, plural, placement, spaced)
         units.register_catalog(catalog)
     return units
 

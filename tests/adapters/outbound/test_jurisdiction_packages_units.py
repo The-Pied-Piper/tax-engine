@@ -48,7 +48,7 @@ def package(monkeypatch: pytest.MonkeyPatch) -> MakePackage:
 
 def catalog_of(namespace: str, name: str) -> UnitCatalog:
     catalog = UnitCatalog(Namespace(namespace))
-    catalog.declare(name, "EX$", "EX$", Placement.BEFORE)
+    catalog.declare(name, "EX$", "EX$", Placement.BEFORE, False)
     return catalog
 
 
@@ -65,7 +65,7 @@ def test_the_units_of_each_packages_units_module_are_registered(
 
     packages.register_units(registry)
 
-    assert registry.unit("ex/crowns") == Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
+    assert registry.unit("ex/crowns") == Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
     assert registry.unit("ex-on/ducats").identifier == "ex-on/ducats"
 
 

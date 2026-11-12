@@ -228,6 +228,12 @@ identifier `<namespace>/<snake_case>`, like an artifact kind (`ex/crowns`, `core
 figure with none prints as it always has. The identifier is the language-neutral key; a unit's
 text (`EX$`, `moons`) is English wording, which another language's renderer replaces.
 
+Each unit declares where its text goes (`placement`, before or after the number) and whether one
+space separates the text from the figure (`spaced`, required, no default): a unit declared before
+and not spaced prints `EX$3500.00`, after and spaced `12 moons`, after and not spaced `12%`, before
+and spaced `EX$ 3500.00`. A minus sign always comes first (`-EX$ 1.00`), and the singular text is
+used only for a figure of exactly 1.
+
 A package declares units on a `UnitCatalog` in its `units.py` (see
 [Jurisdiction packages](jurisdiction-packages.md)). A manifest of any jurisdiction may name a unit of
 any package, core's included, by its full identifier; nothing is inherited and no bare name is

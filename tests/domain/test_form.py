@@ -2220,7 +2220,7 @@ def test_a_runs_imports_carry_the_exporting_forms_title_and_printed_names() -> N
 
 
 def test_a_form_importing_a_unit_bearing_export_reads_it_in_the_exporters_unit() -> None:
-    crowns = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
+    crowns = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
     exporting = composition(
         "ex/shop",
         [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
