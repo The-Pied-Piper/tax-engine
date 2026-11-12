@@ -8,6 +8,7 @@ form:
   name: ca-ab/ab428
 capabilities:
   - name: core/apply_rate
+    title: "Alberta minimum tax carryover"
     reference: "64 box B"
     unit: ca/cad
     params:
