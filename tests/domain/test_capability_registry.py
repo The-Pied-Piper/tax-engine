@@ -18,6 +18,7 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
 )
 from tax_engine.domain.registry import Registry
+from tax_engine.jurisdictions.core.capabilities.amount_by_band_rate import AmountByBandRate
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnLowerBound,
@@ -174,6 +175,7 @@ def test_a_subclass_of_a_decorated_class_carries_no_identifier_of_its_own() -> N
         ("core/subtract_not_below_zero", SubtractNotBelowZero),
         ("core/bracket_column_lower_bound", BracketColumnLowerBound),
         ("core/bracket_column_rate", BracketColumnRate),
+        ("core/amount_by_band_rate", AmountByBandRate),
         ("core/bracket_column_tax_at_start", BracketColumnTaxAtStart),
     ],
 )

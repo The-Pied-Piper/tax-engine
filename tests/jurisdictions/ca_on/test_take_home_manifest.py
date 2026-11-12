@@ -34,10 +34,11 @@ def test_the_return_exports_line_167_and_the_pieces_of_the_marginal_rate() -> No
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert set(default.exports) == {
+        "ca-on/ontario_bracket_rate_return",
+        "ca-on/ontario_surtax_factor",
+        "ca-on/return_health_premium_slope",
         "ca/refund_or_balance_owing",
         "ca/federal_marginal_rate",
-        "ca-on/ontario_surtax_factor",
-        "ca-on/ontario_bracket_rate_return",
     }
 
 
