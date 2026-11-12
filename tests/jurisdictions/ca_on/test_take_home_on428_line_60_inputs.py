@@ -1,6 +1,7 @@
 """ON428 (2025) line 60's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 60 and line 61540: Enter
+Form text (ON428, CRA 5006-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 60 and line 61540:
+Enter
 whichever is less: amount from line 58 or line 59." A salary-only caller has no Ontario minimum tax
 carryover, so a request that leaves the line out is read as blank, and the line 61 part reads that
 blank as 0.

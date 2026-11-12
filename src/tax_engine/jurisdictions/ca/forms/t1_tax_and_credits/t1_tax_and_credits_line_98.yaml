@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 Part B line 98 "Add lines 85, 96, and 97."
-# (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Line 85 "Enter the amount from line 84 of
+# (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 85 "Enter the amount from line 84 of
 # the previous page" is a pure copy of line 84 (`ca/credit_amounts_line_84`), so it is not a step
 # of its own and line 84 is read directly. Line 96 is `ca/credits_subtotal_line_96`. Line 97, the
 # pension income amount, is 0 for the take-home filer and is left out. The sum is built even with

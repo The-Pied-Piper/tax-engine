@@ -1,7 +1,8 @@
 """Schedule 6 (5000-S6, 2025) line 15, adjusted family net income, as the Ontario take-home manifest
 parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, lines 235-236): "Line 15: Line 13
+Form text (5000-S6 2025, cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, lines 235-236): "Line 15:
+Line 13
 minus line 14 Enter this amount on line 23 and line 35. Adjusted family net income" is a
 subtraction: line 13 (`ca/cwb_family_net_income_line_13`, from schedule_6_line_13.yaml) less line
 14 (`ca/cwb_secondary_earner_exemption`, the optional input of schedule_6_line_14_inputs.yaml). The

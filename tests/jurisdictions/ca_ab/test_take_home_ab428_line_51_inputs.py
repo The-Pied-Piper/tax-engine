@@ -1,6 +1,7 @@
 """AB428 (2025) line 51's input, as the Alberta take-home manifest part declares it.
 
-Form text (Form AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 51 and line 58769: Line 49
+Form text (Form AB428, CRA 5009-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 51 and line 58769:
+Line 49
 plus line 50 =". The line sits under the printed heading "Medical expenses:", which is its title. A
 salary-only caller has no medical expenses, so a request that leaves the line out is read as blank.
 

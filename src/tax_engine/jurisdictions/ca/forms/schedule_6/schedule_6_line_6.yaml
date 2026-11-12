@@ -1,6 +1,6 @@
 # Schedule 6 (5000-S6, 2025) line 6, family working income. The form prints: "Line 6: Add the amounts
 # from line 5 in columns 1 and 2. Enter this amount on line 16. Family working income"
-# (docs/cra-forms-2025/5000-s6-25e.txt, line 156).
+# (cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, line 156).
 #
 # Line 6 is a sum of line 5 over the two columns. Column 2 (eligible spouse) is out of scope for the
 # take-home calculator, so the sum has one part: line 5 column 1 (`ca/working_income`, from

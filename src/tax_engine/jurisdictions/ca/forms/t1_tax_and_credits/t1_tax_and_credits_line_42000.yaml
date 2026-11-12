@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), line 142 and line 42000 "Add lines 139 to 141. Net federal tax"
-# (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Line 139 is `ca/federal_tax_less_credits` (line 41700).
+# (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 139 is `ca/federal_tax_less_credits` (line 41700).
 # Line 140 (line 41500) and line 141 (line 41800) are absent for a take-home filer, so they are left out and
 # not wired. The sum is built even with its one part present: core/sum adds line 139 and rounds the total
 # once, half-up to the cent, through the shared `ca/cent_rounding` dataset, producing `ca/net_federal_tax`,

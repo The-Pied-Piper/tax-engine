@@ -1,7 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) line 138 / line 41600 "Credits against federal tax", from the
 salary alone.
 
-Line 41600 is "Add lines 135 to 137" (T1 General 5006-R, CRA 5006-R-25E, docs/cra-forms-2025/
+Line 41600 is "Add lines 135 to 137" (T1 General 5006-R, CRA 5006-R-25E,
+cra-docs/docs/cra-forms-2025/
 5006-r-25e.txt, to be confirmed against the file); the parts are line 41000 (political contribution
 credit), line 41200 (investment tax credit) and line 41400 (labour-sponsored funds credit). The
 take-home filer has none of the three (basic credits only), so by ruling R2 the sum has no parts and

@@ -1,6 +1,6 @@
 # Schedule 6 (5000-S6, 2025) line 15, adjusted family net income. The form prints: "Line 15: Line 13
 # minus line 14 Enter this amount on line 23 and line 35. Adjusted family net income"
-# (docs/cra-forms-2025/5000-s6-25e.txt, lines 235-236).
+# (cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, lines 235-236).
 #
 # Line 15 subtracts line 14 from line 13 (`ca/cwb_family_net_income_line_13`, from
 # schedule_6_line_13.yaml). Line 14 (`ca/cwb_secondary_earner_exemption`) is an optional input

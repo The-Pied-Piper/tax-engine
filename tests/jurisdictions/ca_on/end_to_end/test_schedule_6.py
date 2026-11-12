@@ -13,7 +13,8 @@ and 15 steps read the blank as 0. Lines 16 and 23 are copies of the working inco
 family net income and have no step, so they get no check; lines 18 and 25 read the figures those
 lines copy. Lines 2 to 4, 8, 9 and the disability and election parts are not built.
 
-Form text: Schedule 6 (CRA 5000-S6, 2025, docs/cra-forms-2025/5000-s6-25e.txt), "Line 5: Add lines
+Form text: Schedule 6 (CRA 5000-S6, 2025, cra-docs/docs/cra-forms-2025/5000-s6-25e.txt), "Line 5:
+Add lines
 1 to 4"; "Line 7: Net income from line 23600 of the return"; "Line 17: Base amount 3,000.00"; "Line
 18: Line 16 minus line 17 (if negative, enter "0")"; "Line 19: Rate 27%"; "Line 20: Line 18
 multiplied by the percentage from line 19"; "Line 21: ... If not, enter $1,633"; "Line 22: Enter

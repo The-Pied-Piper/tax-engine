@@ -1,7 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) line 30000 "Basic personal amount", from the salary alone.
 
 Line 30000 is calculated on worksheet 5000-D1 (CRA 5000-D1-25E, confirmed in
-docs/cra-forms-2025/5000-d1-25e.txt, "Line 30000 - Basic personal amount"). The worksheet says:
+cra-docs/docs/cra-forms-2025/5000-d1-25e.txt, "Line 30000 - Basic personal amount"). The worksheet
+says:
 "If the amount from line 23600 of your return is: - $177,882 or less, enter $16,129 on line 30000
 of your return - $253,414 or more, enter $14,538 on line 30000 of your return. Otherwise, complete
 the calculation below." Then: "Line 1: Base amount 14,538.00", "Line 2: Supplement amount 1,591.00",

@@ -2,7 +2,7 @@
 salary alone.
 
 Line 42000 is "Line 142 and line 42000: Add lines 139 to 141. Net federal tax" (T1 General
-5006-R, CRA 5006-R-25E, confirmed in docs/cra-forms-2025/5006-r-25e.txt). Line 139 is
+5006-R, CRA 5006-R-25E, confirmed in cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 139 is
 `ca/federal_tax_less_credits` (line 41700, same form). Lines 140 (41500) and 141 (41800) are absent
 for the take-home filer and are left out, so line 42000 is one `core/sum` over line 139 only,
 rounded half-up to the cent with the shared `ca/cent_rounding` dataset, and produces

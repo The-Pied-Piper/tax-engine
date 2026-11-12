@@ -1,6 +1,7 @@
 """ON428 (2025) line 4 from the salary alone, real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, repo copy docs/cra-forms-2025/5006-c-25e.txt): each
+Form text (Form ON428, CRA 5006-c-25e.txt, repo copy cra-docs/docs/cra-forms-2025/5006-c-25e.txt):
+each
 Part A column prints "Line 4: Line 2 minus line 3 (cannot be negative) =". Line 2 is a copy of
 line 1 (the T1 taxable income, line 26000), and line 3 is the printed lower bound of the column
 that line 1 falls in. Line 4 is therefore line 1 less line 3, floored at zero.

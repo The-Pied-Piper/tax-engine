@@ -8,7 +8,8 @@ and Schedule 8) and Schedule 6 with the same swap, and types in only the gross s
 (`ca/employment_income`). The service is built over the Alberta package list of
 `tests/jurisdictions/ca_ab/support.py`, as Alberta is not in `registrations.JURISDICTIONS`.
 
-Form text (docs/cra-forms-2025/5009-s6-25e.txt): "Line 16: Family working income from line 6";
+Form text (cra-docs/docs/cra-forms-2025/5009-s6-25e.txt): "Line 16: Family working income from line
+6";
 "Line 17: Base amount 2,760.00"; "Line 18: Line 16 minus line 17 (if negative, enter "0")";
 "Line 19:
 Rate 21%"; "Line 20: Line 18 multiplied by the percentage from line 19"; "Line 21: If you had an

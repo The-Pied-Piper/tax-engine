@@ -2,7 +2,8 @@
 salary alone.
 
 Line 41700 is "Line 139 and line 41700: Line 134 minus line 138 (if negative, enter "0")" (T1
-General 5006-R, CRA 5006-R-25E, confirmed in docs/cra-forms-2025/5006-r-25e.txt). Line 134 is
+General 5006-R, CRA 5006-R-25E, confirmed in cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 134
+is
 `ca/federal_tax` (line 40600); line 138 is `ca/credits_against_federal_tax` (line 41600, "Add lines
 135 to 137"). The line prints "(if negative, enter "0")", so it is one
 `core/subtract_not_below_zero`, rounded half-up to the cent with the shared `ca/cent_rounding`

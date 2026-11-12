@@ -1,7 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) line 132 "Line 130 plus line 131", from the salary alone.
 
 Line 132 is "Line 130 plus line 131" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt). Line 130 is `ca/federal_tax_less_foreign_tax_credit`. Line
+cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 130 is `ca/federal_tax_less_foreign_tax_credit`.
+Line
 131 (the recapture of investment tax credit, Form T2038(IND)) is absent for a take-home filer, so
 it is left out and not wired. Line 132 is therefore one `core/sum` over line 130 only, rounded
 half-up to the cent with the shared `ca/cent_rounding` dataset, and produces

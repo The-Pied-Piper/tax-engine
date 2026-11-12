@@ -1,7 +1,8 @@
 """ON428 (2025) line 8, Ontario tax on taxable income, computed from the real part file through the
 real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, repo copy docs/cra-forms-2025/5006-c-25e.txt): "Line 8:
+Form text (Form ON428, CRA 5006-c-25e.txt, repo copy cra-docs/docs/cra-forms-2025/5006-c-25e.txt):
+"Line 8:
 Line 6 plus line 7 Ontario tax on taxable income =".
 
 Line 8 is one sum, core/sum of line 6 (`ca-on/on428_excess_times_column_rate_line_6`) and line 7

@@ -1,6 +1,7 @@
 """T1 General 2025 (5006-R, Ontario) line 148 / line 43500 "Total payable", from the salary alone.
 
-5006-R-25E (docs/cra-forms-2025/5006-r-25e.txt): "Line 148 and line 43500: Add lines 143 to 147.
+5006-R-25E (cra-docs/docs/cra-forms-2025/5006-r-25e.txt): "Line 148 and line 43500: Add lines 143 to
+147.
 Total payable". The take-home filer has two of those lines: line 143 "Amount from line 42000"
 (`ca/net_federal_tax`, read directly from the line 42000 part) and line 147 "Provincial or
 territorial tax (complete and attach your provincial or territorial Form 428, even if the result

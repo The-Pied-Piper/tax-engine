@@ -1,6 +1,7 @@
 """ON428 (2025) line 72's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 72: If you entered an amount on
+Form text (ON428, CRA 5006-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 72: If you entered an
+amount on
 line 11 of Part 5 of Form T691, use Worksheet ON428 to calculate your additional tax for minimum tax
 purposes" is the line's printed text, and it is the basis in the take-home part. A caller with no
 minimum tax leaves the line out, so the request is read as blank, and the line 73 part reads that

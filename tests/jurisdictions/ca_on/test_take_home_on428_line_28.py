@@ -1,6 +1,7 @@
 """ON428 (2025) line 28, as the Ontario take-home manifest part wires it.
 
-Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 28: Line 26 plus line 27 =".
+Form text (ON428, CRA 5006-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 28: Line 26 plus line
+27 =".
 Line 26 is "Amount from line 25 of the previous page", a copy of line 25, so it has no capability of
 its own: the part reads line 25 directly. Line 27 is "Line 27 and line 58360: Pension income amount
 (maximum $1,762)", an optional input with blank fallback 0, in its own part file

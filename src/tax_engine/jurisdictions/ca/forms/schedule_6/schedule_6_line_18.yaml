@@ -1,5 +1,5 @@
 # Schedule 6 (5000-S6, 2025) line 18, the working income over the base amount. The form prints:
-# "Line 18: Line 16 minus line 17 (if negative, enter "0")" (docs/cra-forms-2025/5000-s6-25e.txt,
+# "Line 18: Line 16 minus line 17 (if negative, enter "0")" (cra-docs/docs/cra-forms-2025/5000-s6-25e.txt,
 # line 286).
 #
 # Line 16 is "Family working income from line 6", a copy of line 6, so step 1 reads line 6 directly

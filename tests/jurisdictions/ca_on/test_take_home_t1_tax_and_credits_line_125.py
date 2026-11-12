@@ -1,7 +1,7 @@
 """T1 General 2025 (5006-R, Ontario) line 125 "Add lines 122 to 124.", from the salary alone.
 
 Line 125 is "Add lines 122 to 124" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt). Line 122 is "Amount from line 35000"
+cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 122 is "Amount from line 35000"
 (`ca/non_refundable_tax_credits`), a pure copy with no step. Line 123 (line 40425, the federal
 dividend tax credit) and line 124 (line 40427, the minimum tax carryover) are 0 for a filer with no
 dividends and no minimum tax carryover, so both are left out. Line 125 is therefore one `core/sum`

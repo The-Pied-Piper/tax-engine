@@ -2,7 +2,8 @@
 from the salary alone.
 
 Line 76 is "Line 74 plus line 75 Federal tax on taxable income" (T1 General 5006-R, CRA 5006-R-25E,
-confirmed in docs/cra-forms-2025/5006-r-25e.txt, lines 426-482). Part A starts with "Use the amount
+confirmed in cra-docs/docs/cra-forms-2025/5006-r-25e.txt, lines 426-482). Part A starts with "Use
+the amount
 from line 26000 to complete the appropriate column below." Line 70 is "Amount from line 26000", and
 the form says "Use column 1 if the amount from line 26000 is $57,375 or less", "Use column 2 if the
 amount from line 26000 is more than $57,375 but not more than $114,750", and so on up to column 5

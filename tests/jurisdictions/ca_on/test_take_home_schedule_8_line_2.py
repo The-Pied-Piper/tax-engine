@@ -1,7 +1,7 @@
 """Schedule 8 (CPP) Part 3 line 2, computed from the real part file through the real engine.
 
 T1-2025 Schedule 8 (form 5000-S8), Part 3, line 2: "Enter whichever is less: amount from line D of
-Part 2 or line 1." (docs/cra-forms-2025/5000-s8-25e.txt). Line D is the additional maximum
+Part 2 or line 1." (cra-docs/docs/cra-forms-2025/5000-s8-25e.txt). Line D is the additional maximum
 pensionable earnings, line 1 the T4 pensionable earnings outside Quebec. Both are produced by other
 lines' parts, so this test declares them as inputs in a header of its own and loads the take-home
 folder's `schedule_8_line_2.yaml` beside it.

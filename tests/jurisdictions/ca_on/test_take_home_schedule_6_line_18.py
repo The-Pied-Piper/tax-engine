@@ -1,7 +1,8 @@
 """Schedule 6 (5000-S6, 2025) line 18, the working income over the base amount, as the Ontario
 take-home manifest parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, line 286): "Line 18: Line 16 minus
+Form text (5000-S6 2025, cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, line 286): "Line 18: Line 16
+minus
 line 17 (if negative, enter "0")". Line 16 is a copy of line 6 (family working income, "Family
 working income from line 6", no step) and line 17 is the base amount, 3,000.00. Line 18 is one
 core/subtract_not_below_zero of the base amount (line 17) from family working income (line 6), so

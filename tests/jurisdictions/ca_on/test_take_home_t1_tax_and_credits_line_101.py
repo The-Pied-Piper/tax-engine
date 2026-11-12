@@ -2,7 +2,8 @@
 salary alone.
 
 Line 101 is "Add lines 98 to 100." (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt). Line 98 is `ca/credit_amounts_line_98`. Lines 99 and 100 are 0
+cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 98 is `ca/credit_amounts_line_98`. Lines 99 and
+100 are 0
 for the take-home filer and are left out.
 Line 101 is therefore one `core/sum` over line 98 only, rounded half-up to the cent with the shared
 `ca/cent_rounding` dataset, and produces `ca/credit_amounts_subtotal`, a non-negative kind.

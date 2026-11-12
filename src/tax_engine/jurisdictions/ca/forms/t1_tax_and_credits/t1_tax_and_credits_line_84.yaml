@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 Part B line 84 "Add lines 77 to 83. ="
-# (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt). Line 77 is the basic personal amount,
+# (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 77 is the basic personal amount,
 # line 30000 (`ca/basic_personal_amount`), read directly as a part. Lines 78 to 83 are 0 for a
 # single salary-only filer under 65, so they are left out. The sum is built even with one part:
 # core/sum adds line 77 alone and rounds the total once, half-up to the cent, through the shared

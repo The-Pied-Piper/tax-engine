@@ -1,6 +1,7 @@
 """AB428 (2025) line 72's input, as the Alberta take-home manifest part declares it.
 
-Form text (Form AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 72: Alberta political
+Form text (Form AB428, CRA 5009-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 72: Alberta
+political
 contributions tax credit (use Worksheet AB428) (maximum $1,000)". A salary-only caller has no
 political contributions, so a request that leaves the line out is read as blank (the $20,000,
 $70,000 and $200,000 figures of the ticket are 0.00, a blank line).

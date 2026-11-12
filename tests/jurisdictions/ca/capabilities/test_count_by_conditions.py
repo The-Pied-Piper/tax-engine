@@ -136,7 +136,8 @@ HIGHER_NET_INCOME = dataset(
     "ex/higher_net_income",
 )
 
-# Federal Worksheet 2025, chart for line 23500 (docs/cra-forms-2025/5000-d1-25e.txt): "Complete the
+# Federal Worksheet 2025, chart for line 23500 (cra-docs/docs/cra-forms-2025/5000-d1-25e.txt):
+# "Complete the
 # chart below if one or both of the following applies:". Each condition joins tests with "and"
 # (the parts) and "or" (the tests of a part).
 CHART_CONDITIONS = dataset(

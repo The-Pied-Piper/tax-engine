@@ -1,6 +1,7 @@
 """AB428 (2025) line 60's input, as the Alberta take-home manifest part declares it.
 
-Form text (AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 60 and line 61510: Alberta tax
+Form text (AB428, CRA 5009-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 60 and line 61510:
+Alberta tax
 on split income (complete Form T1206)" is the line's basis in the part. A caller with no split
 income leaves the line out, so the request is read as blank (the $20,000, $70,000 and $200,000
 figures of the ticket are 0.00, a blank line), and the line 61 part reads that blank as 0.

@@ -1,7 +1,8 @@
 """Registered, money and count kinds of the federal catalog family `rc381_cpp_qpp`.
 
 Form RC381 (2025), "Inter-Provincial Calculation for CPP and QPP Contributions and Overpayments"
-(`docs/cra-forms-2025/rc381-25e.pdf`): Part 2 (the months and the monthly proration table) and
+(`cra-docs/docs/cra-forms-2025/rc381-25e.pdf`): Part 2 (the months and the monthly proration table)
+and
 Part 3 lines 1 to 3, 6 to 11, 14 to 16, 18 to 24, 26 to 31, 34 to 36, 38, 40 to 44, 46, 49, 52, 53,
 56, 59 to 61, 64 and 67 to 69, and the entries on lines 19, 25, 39 and 45, then Part 3a and Part 3b
 (lines 73, 75 to 93, the helper under line 87 and the three results for lines 30800, 22215 and
@@ -1005,7 +1006,8 @@ RESULT_QUOTES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ),
 )
 
-# The words of the form each input's docstring quotes (`docs/cra-forms-2025/rc381-25e.pdf`), and
+# The words of the form each input's docstring quotes
+# (`cra-docs/docs/cra-forms-2025/rc381-25e.pdf`), and
 # the box number of the line, which the form prints beside it.
 INPUT_QUOTES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("qpp_months", ("Enter the number of months that QPP applied in 2025.", "Part 2")),

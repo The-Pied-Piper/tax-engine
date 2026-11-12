@@ -1,6 +1,7 @@
 """ON428 (2025) line 7, from the salary alone, real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, repo copy docs/cra-forms-2025/5006-c-25e.txt): each of
+Form text (Form ON428, CRA 5006-c-25e.txt, repo copy cra-docs/docs/cra-forms-2025/5006-c-25e.txt):
+each of
 the five columns prints "Line 7:" with the tax at the column's start, 0.00, 2,670.74, 7,510.09,
 12,445.60 and 20,957.60 (the constants listed in the dataset file ca-on/brackets 2025). The
 Transcriber's Note says: "Use the amount from column 1 if the amount on line 1 is $52,886 or less.

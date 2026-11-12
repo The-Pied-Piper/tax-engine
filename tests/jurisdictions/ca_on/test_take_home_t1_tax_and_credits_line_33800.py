@@ -2,7 +2,7 @@
 from line 114", from the salary alone.
 
 Line 33800 is "Line 113 multiplied by the percentage from line 114" (T1 General 5006-R, CRA
-5006-R-25E, confirmed in docs/cra-forms-2025/5006-r-25e.txt). Line 113 is line 33500
+5006-R-25E, confirmed in cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 113 is line 33500
 (`ca/non_refundable_credit_amounts`, "Line 106 plus line 112" on that form), and line 114 is the
 federal non-refundable tax credit rate of 14.5%, held in the `ca/credit_rate` dataset. Line 33800
 is therefore one calculation: 14.5% of line 33500, rounded half-up to the cent with the dataset's

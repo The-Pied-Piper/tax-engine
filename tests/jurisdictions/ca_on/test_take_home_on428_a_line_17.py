@@ -1,7 +1,8 @@
 """ON428-A (2025) line 17, as the Ontario take-home manifest part wires it: adjusted net income over
 the individual threshold, not below zero.
 
-Form text (ON428-A, CRA 5006-a-25e.txt in docs/cra-forms-2025): "Line 15: Amount from line 13
+Form text (ON428-A, CRA 5006-a-25e.txt in cra-docs/docs/cra-forms-2025): "Line 15: Amount from line
+13
 above / Line 16: Individual income threshold 32,500.00 / Line 17: Line 15 minus line 16 (if
 negative, enter "0") =". Line 15 is a copy of line 13, so the step reads line 13
 (`ca-on/lift_adjusted_net_income`) directly. Line 16 is

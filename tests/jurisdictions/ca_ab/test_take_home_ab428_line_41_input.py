@@ -1,6 +1,7 @@
 """AB428 (2025) line 41's input, as the Alberta take-home manifest part declares it.
 
-Form text (Form AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 41 and line 58560: Your
+Form text (Form AB428, CRA 5009-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 41 and line 58560:
+Your
 unused tuition and education amounts (attach Schedule AB(S11))". A salary-only caller has no
 Schedule AB(S11), so a request that leaves the line out is read as blank, and its consumers (line 43
 and line 2 of Worksheet AB428) read that blank as 0.

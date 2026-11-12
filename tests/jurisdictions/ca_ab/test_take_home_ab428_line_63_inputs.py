@@ -1,6 +1,7 @@
 """AB428 (2025) line 63's input, as the Alberta take-home manifest part declares it.
 
-Form text (AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 63 and line 61520: Alberta
+Form text (AB428, CRA 5009-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 63 and line 61520:
+Alberta
 dividend tax credit (use Worksheet AB428)" is the line's basis in the take-home part. A salary-only
 caller has no dividend income, so a request that leaves the line out is read as blank.
 

@@ -1,7 +1,8 @@
 """ON428 (2025) line 5, the bracket column rate, computed from the real part file through the real
 engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, repo copy docs/cra-forms-2025/5006-c-25e.txt): each of
+Form text (Form ON428, CRA 5006-c-25e.txt, repo copy cra-docs/docs/cra-forms-2025/5006-c-25e.txt):
+each of
 the five columns prints its rate on "Line 5": "Line 5: Rate 5.05%", "Line 5: Rate 9.15%",
 "Line 5: Rate 11.16%", "Line 5: Rate 12.16%" and "Line 5: Rate 13.16%". Line 5 is the printed rate
 of the column that taxable income falls in, and a taxable income exactly at a column's upper bound

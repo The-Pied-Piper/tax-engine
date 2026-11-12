@@ -3,8 +3,10 @@ salary and the optional line 10400 input.
 
 Line 31260 is "Line 92 and line 31260: Canada employment amount: Enter whichever is less: $1,471 or
 line 1 plus line 2." (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt, line 538). Line 1 is line 10100 employment income and line 2 is
-line 10400 other employment income. The General Guide 5000-G (docs/cra-forms-2025/5000-g-25e.txt,
+cra-docs/docs/cra-forms-2025/5006-r-25e.txt, line 538). Line 1 is line 10100 employment income and
+line 2 is
+line 10400 other employment income. The General Guide 5000-G
+(cra-docs/docs/cra-forms-2025/5000-g-25e.txt,
 line 2874) gives the cook example: "if you are a cook who received $35,000 in employment income in
 2025 that you reported on line 10100 of your return, you can claim $1,471 (the maximum amount) on
 line 31260 of your return."
