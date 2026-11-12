@@ -12,9 +12,8 @@ premium (6% and 25%). The sum is not a printed line, so the step is untitled and
 The return summary ends with one `core/sum` step in `return.yaml`: parts the federal marginal
 rate, the Ontario marginal rate and the health premium slope, in that order, the dataset
 `ca-on/exact_rounding` (`rounding: none`, the sum is exact), unit `core/percent`, producing the new
-non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The return's exports are that rate, the
-average income tax rate and T1 line 167: the three parts are now read inside the return, so they are
-no longer exported.
+non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The three parts are now read inside the
+return, so they are no longer exported (pinned in `test_take_home_manifest.py`).
 
 Figures (the real bundled manifest, salary the only input), each the exact sum of the three parts,
 worked by hand from the printed rates. Taxable income is the T1 figure the line 73 column and the
@@ -42,15 +41,12 @@ import pytest
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.manifest import Manifest
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.registrations import JURISDICTIONS, units
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService, header_without_imports
 from tests.kinds import bundled_kinds, non_negative
 
@@ -84,12 +80,6 @@ FIGURES = [
     ("120000", "0.26", "0.174096", "0", "0.434096"),
     ("275000", "0.33", "0.205296", "0", "0.535296"),
 ]
-
-
-def _manifest() -> Manifest:
-    source = YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds(), units())
-    (manifest,) = source.get_jurisdiction(ONTARIO).manifests
-    return manifest
 
 
 def _worksheets(
@@ -263,11 +253,3 @@ def test_the_marginal_tax_rate_is_explained_in_english_as_percentages(
     # Each part is named as the return names it and prints as a percentage; the sum prints as a
     # percentage and the sentence says it is not rounded.
     assert re.fullmatch(rf".*{sentence} \(not rounded\)\.?", text)
-
-
-def test_the_return_exports_line_167_the_marginal_tax_rate_and_the_average_rate() -> None:
-    (default,) = (form for form in _manifest().forms if form.name == RETURN)
-    exports = set(default.exports)
-
-    assert exports == {LINE_167, MARGINAL, "ca-on/average_income_tax_rate"}
-    assert not exports & {FEDERAL, ONTARIO_RATE, SLOPE}
