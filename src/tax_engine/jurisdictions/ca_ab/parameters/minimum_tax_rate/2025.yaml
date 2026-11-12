@@ -1,8 +1,7 @@
-# Alberta minimum tax rate, 2025 tax year (Form AB428 line 67, "Form T691: line 1 minus line 2 of
-# Part 7 multiplied by 35%"): 35%. The 35% is a printed figure, held here as a rate of 0.35, so
-# the printed percentage has no step of its own. It is also used by line 64. The product is a
-# dollars-and-cents box, so it rounds half-up to the cent, the project's choice, as the form states
-# no rounding rule.
+# Alberta minimum tax rate, 2025 tax year (Form AB428 lines 64 and 67): 35%.
+# Line 64 applies it to the amount from line 40427 of the return, and line 67 to the Form T691
+# amount. Each product is a dollars-and-cents box, so it rounds half-up to the cent,
+# the project's choice, as the form states no rounding rule.
 family: ca-ab/minimum_tax_rate
 tax_year: 2025
 kind: rate

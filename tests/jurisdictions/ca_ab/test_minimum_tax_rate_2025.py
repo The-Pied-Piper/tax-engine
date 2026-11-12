@@ -1,8 +1,8 @@
-"""The 2025 rate of `ca-ab/minimum_tax_rate`, checked against Form AB428 (5009-C, 2025).
+"""The 2025 rate of `ca-ab/minimum_tax_rate`, checked against Form AB428 (2025), lines 64 and 67.
 
-Form AB428 (2025, Alberta) line 67: "Form T691: line 1 minus line 2 of Part 7 ^ multiplied by 35% =
-^". The printed percentage is a rate of 0.35; line 67 is a dollars-and-cents box, so the product
-rounds half-up to the cent.
+Form AB428 (5009-C, 2025), line 64: "Amount from line 40427 of your return multiplied by 35% = ".
+The printed percentage is a rate of 0.35, read by line 64 and by line 67; both are
+dollars-and-cents lines, so the product rounds half-up to the cent.
 """
 
 from __future__ import annotations
