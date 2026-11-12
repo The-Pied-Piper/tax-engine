@@ -25,7 +25,8 @@ class UnitText(Protocol):
 
     A language defines, for its unit, the text beside a figure of exactly 1 (`singular`) and beside
     any other (`plural`), where the text goes (`placement`) and whether a space separates it from
-    the figure (`spaced`), and writes a figure with them in `write`.
+    the figure (`spaced`) and whether a fraction is written as a percentage (`as_percentage`), and
+    writes a figure with them in `write`.
     """
 
     @property
@@ -51,6 +52,11 @@ class UnitText(Protocol):
     @property
     def spaced(self) -> bool:
         """Whether one space separates the text from the figure."""
+        ...
+
+    @property
+    def as_percentage(self) -> bool:
+        """Whether a figure of this unit is a fraction written as a percentage (0.2965 as 29.65)."""
         ...
 
     def write(self, shown: str, value: Decimal | int) -> str:

@@ -10,4 +10,4 @@ from tax_engine.jurisdictions.core.units import MONTHS, PERCENT, YEARS
 
 english_unit(MONTHS.identifier, "month", "months", Placement.AFTER, spaced=True)
 english_unit(YEARS.identifier, "year", "years", Placement.AFTER, spaced=True)
-english_unit(PERCENT.identifier, "%", "%", Placement.AFTER, spaced=False)
+english_unit(PERCENT.identifier, "%", "%", Placement.AFTER, spaced=False, as_percentage=True)

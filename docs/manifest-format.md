@@ -233,8 +233,10 @@ the singular and plural text, where it goes (`placement`, before or after the nu
 one space separates it from the figure (`spaced`, required, no default): a unit placed before and
 not spaced prints `EX$3500.00`, after and spaced `12 moons`, after and not spaced `12%`, before
 and spaced `EX$ 3500.00`. A minus sign always comes first (`-EX$ 1.00`), and the singular text is
-used only for a figure of exactly 1. A registered unit with no English text stops the engine
-building, naming the unit.
+used only for a figure of exactly 1. A unit registered with `as_percentage=True` (keyword, default
+`False`) has figures that are fractions written as percentages: a `core/percent` figure of 0.2965
+prints `29.65%`, so a rate stays a fraction in the engine and prints as a form does. A registered
+unit with no English text stops the engine building, naming the unit.
 
 A package declares units on a `UnitCatalog` in its `units.py` (see
 [Jurisdiction packages](jurisdiction-packages.md)). A manifest of any jurisdiction may name a unit of
