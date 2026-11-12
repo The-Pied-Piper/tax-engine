@@ -85,6 +85,12 @@ AB428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_64 = AmountKind.declare(
 your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
 that a salary-only caller leaves out and is read as 0; the 35% is applied by the next step."""
 
+AB428_MINIMUM_TAX_CARRYOVER_LINE_64 = AmountKind.declare(
+    CATALOG, "ab428_minimum_tax_carryover_line_64", non_negative=True
+)
+"""Alberta minimum tax carryover, AB428 line 64 and line 61540 "Amount from line 40427 of your
+return multiplied by 35% =": calculated, the amount from line 40427 multiplied by 35%."""
+
 AB428_MINIMUM_TAX_T691_AMOUNT_LINE_67 = AmountKind.declare(
     CATALOG, "ab428_minimum_tax_t691_amount_line_67"
 )
