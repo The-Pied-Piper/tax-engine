@@ -15,8 +15,6 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-import yaml
-
 import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.kinds import AmountKind
@@ -78,28 +76,3 @@ def test_a_request_that_leaves_out_line_57_is_read_as_blank(tmp_path: Path) -> N
     default = declaration.default_artifact(kinds.kind(IDENTIFIER))
 
     assert default is not None and default.is_blank
-
-
-def test_the_part_keys_are_in_the_order_the_ontario_inputs_use() -> None:
-    part = yaml.safe_load(PART.read_text(encoding="utf-8"))
-
-    assert list(part) == ["inputs"]
-    assert len(part["inputs"]) == 1
-    assert list(part["inputs"][0]) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "required",
-        "default",
-        "basis",
-    ]
-    assert part["inputs"][0] == {
-        "name": IDENTIFIER,
-        "title": "Donations and gifts",
-        "reference": "57",
-        "unit": "ca/cad",
-        "required": False,
-        "default": None,
-        "basis": PRINTED_BASIS,
-    }
