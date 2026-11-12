@@ -17,13 +17,13 @@ AB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_8", non_negative=True
 )
 """Alberta tax on taxable income, AB428 line 8 "Line 6 plus line 7 Alberta tax on taxable income =":
-line 6 plus line 7, the tax of the first column, read by line 59 on the tax form."""
+line 6 plus line 7 of the column that line 1 falls in, read by line 59 on the tax form."""
 
 AB428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_15", non_negative=True
 )
 """Alberta tax on taxable income, AB428 line 15 "Line 13 plus line 14 Alberta tax on taxable income
-=": line 13 plus line 14, the tax of the second column, read by line 59 on the tax form."""
+=": line 13 plus line 14 of the column that line 1 falls in, read by line 59 on the tax form."""
 
 AB428_UNUSED_TUITION_LINE_41 = AmountKind.declare(
     CATALOG, "ab428_unused_tuition_line_41", non_negative=True
@@ -35,7 +35,7 @@ of Worksheet AB428."""
 AB428_CREDITS_TOTAL_LINE_52 = AmountKind.declare(
     CATALOG, "ab428_credits_total_line_52", non_negative=True
 )
-"""Total of the credit amounts, AB428 line 52 (line 58800) "Line 43 plus line 51 =": line 43 plus
+"""Credit amounts total, AB428 line 52 (line 58800) "Line 43 plus line 51 =": line 43 plus
 line 51, read by line 1 of Worksheet AB428."""
 
 AB428_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
