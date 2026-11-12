@@ -6,8 +6,8 @@
 # The default form's exports are T1 line 167, refund or balance owing (positive is owing, negative
 # is a refund), the federal marginal rate (the T1 line 73 bracket rate), the Ontario surtax factor
 # (ON428 lines 66 and 67), the ON428 line 5 bracket rate and the health premium slope, which the
-# marginal rate reads. The CPP and EI figures the calculator also needs are exported by their own forms (Schedule 8 and T2204,
-# both imported); the calculator reads them from their forms.
+# marginal rate reads. The CPP and EI figures the calculator also needs are exported by their own
+# forms (Schedule 8 and T2204, both imported); the calculator reads them from their forms.
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
