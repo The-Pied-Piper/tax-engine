@@ -15,7 +15,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.registry import Namespace
-from tax_engine.registrations import JURISDICTIONS, parameter_parsers
+from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
 from tests.capabilities import bundled_capabilities
 from tests.kinds import bundled_kinds
 from tests.manifest_support import inputs_without_form
@@ -87,7 +87,7 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
         roots = {**JURISDICTIONS.roots(), Namespace("ca-on"): tmp_path}
         return TaxComputationService(
             YamlJurisdictionSource(roots, bundled_kinds()),
-            YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers()),
+            YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units()),
             bundled_capabilities(),
         )
 
