@@ -98,6 +98,13 @@ AB428_MINIMUM_TAX_T691_AMOUNT_LINE_67 = AmountKind.declare(
 line 2 of Part 7 multiplied by 35%": the amount from Form T691, an optional input that a salary-only
 caller leaves out. The 35% multiply is a separate step."""
 
+AB428_ADDITIONAL_MINIMUM_TAX_LINE_67 = AmountKind.declare(
+    CATALOG, "ab428_additional_minimum_tax_line_67"
+)
+"""Alberta additional tax for minimum tax purposes, AB428 line 67 "Line 67: Form T691: line 1 minus
+line 2 of Part 7 multiplied by 35% =": the T691 amount multiplied by 35%, rounded half-up to the
+cent."""
+
 AB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_69 = AmountKind.declare(
     CATALOG, "ab428_provincial_foreign_tax_credit_line_69", non_negative=True
 )
