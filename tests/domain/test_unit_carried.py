@@ -12,7 +12,6 @@ from __future__ import annotations
 from decimal import Decimal
 
 import pytest
-from tax_engine.domain.unit import Placement, Unit
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCompositionError, InvalidManifestError
@@ -22,6 +21,7 @@ from tax_engine.domain.manifest import CapabilitySelection, InputDeclaration
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.unit import Placement, Unit
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tests.forms import composition

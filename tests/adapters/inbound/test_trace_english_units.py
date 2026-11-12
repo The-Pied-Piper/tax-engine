@@ -10,13 +10,12 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from tax_engine.domain.unit import Placement, Unit
-
 import tax_engine.jurisdictions.ca.trace_english  # noqa: F401  (registers the renderers)
 from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTraceRenderer
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.domain.trace import DefaultedInputLine, SubtractedNotBelowZeroLine
+from tax_engine.domain.unit import Placement, Unit
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 

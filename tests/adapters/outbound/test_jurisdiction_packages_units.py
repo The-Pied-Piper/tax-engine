@@ -13,12 +13,12 @@ from pathlib import Path
 from types import ModuleType
 
 import pytest
-from tax_engine.domain.unit import Placement, Unit, UnitCatalog, UnitRegistry
 
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.errors import InvalidRegistrationError, UnknownRegistrationError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import Placement, Unit, UnitCatalog, UnitRegistry
 
 _NONE = object()
 """No `units` module at all."""
