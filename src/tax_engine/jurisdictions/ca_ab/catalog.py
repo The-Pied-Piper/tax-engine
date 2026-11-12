@@ -58,3 +58,9 @@ WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9 = AmountKind.declare(
 """Alberta supplemental tax credit, Worksheet AB428 line 9 "Line 9: Line 7 multiplied by the
 percentage from line 8 enter this amount on line 61545 of your Form AB428.": the credit entered on
 line 61545 of Form AB428."""
+
+AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "ab428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, AB428 line 34 "Line 34 and line 58360: Pension income amount (maximum
+$1,719)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
