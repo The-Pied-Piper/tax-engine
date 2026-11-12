@@ -148,6 +148,12 @@ AB428_CPP_EI_AND_OTHER_LINE_32 = AmountKind.declare(
 """CPP, EI and other credit amounts subtotal, AB428 line 32 "Line 32: Add lines 27 to 31. = ^": the
 sum of lines 27 and 29. Lines 28, 30 and 31 are not built: a salary-only filer has none of them."""
 
+AB428_CREDITS_SUBTOTAL_LINE_33 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_33", non_negative=True
+)
+"""Credits subtotal, AB428 line 33 "Line 33: Line 26 plus line 32 = ^": line 26 is "Amount from line
+25 of the previous page", a copy of line 25, so the sum adds line 25 and line 32."""
+
 AB428_DIVIDEND_TAX_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "ab428_dividend_tax_credit_line_63", non_negative=True
 )
