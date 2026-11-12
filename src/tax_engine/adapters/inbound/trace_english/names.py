@@ -88,11 +88,22 @@ class EnglishNames:
         return self._written(value, None if label is None else self.unit_of(label))
 
     def _written(self, value: Decimal | int, unit: Unit | None) -> str:
-        """`value` as an amount or a count, with `unit`'s English text if there is one."""
-        text = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
+        """`value` as an amount or a count, with `unit`'s English text if there is one.
+
+        A unit written as a percentage prints its fraction as one: 0.2965 as "29.65%".
+        """
         if unit is None:
-            return text
-        return self._unit_texts.for_unit(unit).write(text, value)
+            return EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
+        unit_text = self._unit_texts.for_unit(unit)
+        if isinstance(value, Decimal):
+            digits = (
+                EnglishFigures.percent(value)
+                if unit_text.as_percentage
+                else EnglishFigures.money(value)
+            )
+        else:
+            digits = str(value)
+        return unit_text.write(digits, value)
 
     def unit_of(self, label: str) -> Unit | None:
         """The unit of the figure `label`, as the form that makes it declares; `None` for none."""
