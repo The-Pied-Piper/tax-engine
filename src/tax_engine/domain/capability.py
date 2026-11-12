@@ -2,7 +2,7 @@
 
 A capability only consumes and produces artifacts. `BLANK_ALLOWED`, `BLANK_PER_ITEM` and
 `BLANK_RECORD_FIELDS` list the slots that may take blank rules, which the base applies before
-`compute`.
+`compute`; `MAY_BE_BLANK` lists the produced slots whose output `compute` may itself leave blank.
 """
 
 from __future__ import annotations
@@ -84,6 +84,12 @@ class Capability(ABC):
     declares its own.
     """
 
+    MAY_BE_BLANK: ClassVar[frozenset[str]] = frozenset()
+    """The produced slots whose output `compute` may return blank, for a figure the capability
+    leaves blank itself. A produced slot not listed here refuses a blank from `compute`. A subclass
+    inherits its parent's slots unless it declares its own.
+    """
+
     BLANK_PER_ITEM: ClassVar[frozenset[str]] = frozenset()
     """The `BLANK_ALLOWED` list slots whose rule may be given for one kind in the list instead of
     for the whole slot (`with_blank_rules`), so the parts of one list can differ. A slot not listed
@@ -124,6 +130,13 @@ class Capability(ABC):
                 raise InvalidCapabilityError(
                     f"{cls.__name__}: BLANK_ALLOWED must be a set of slot names"
                 ) from None
+        if "MAY_BE_BLANK" in vars(cls):
+            try:
+                cls.MAY_BE_BLANK = frozenset(cls.MAY_BE_BLANK)
+            except TypeError:
+                raise InvalidCapabilityError(
+                    f"{cls.__name__}: MAY_BE_BLANK must be a set of slot names"
+                ) from None
         if "BLANK_PER_ITEM" in vars(cls):
             try:
                 cls.BLANK_PER_ITEM = frozenset(cls.BLANK_PER_ITEM)
@@ -154,6 +167,7 @@ class Capability(ABC):
                     )
                 declared_in[slot] = mapping
         cls._check_blank_allowed()
+        cls._check_may_be_blank()
         cls._check_blank_per_item()
         cls._check_blank_record_fields()
         # `__init__`'s own signature, not the class's, so a custom `__new__` cannot hide it; its
@@ -173,6 +187,15 @@ class Capability(ABC):
             if slot not in cls.CONSUMES:
                 raise InvalidCapabilityError(
                     f"{cls.__name__}: BLANK_ALLOWED slot {slot!r} is not a consumed slot"
+                )
+
+    @classmethod
+    def _check_may_be_blank(cls) -> None:
+        """Refuse a `MAY_BE_BLANK` entry that is not the name of a produced slot."""
+        for slot in cls.MAY_BE_BLANK:
+            if slot not in cls.PRODUCES:
+                raise InvalidCapabilityError(
+                    f"{cls.__name__}: MAY_BE_BLANK slot {slot!r} is not a produced slot"
                 )
 
     @classmethod
@@ -286,6 +309,7 @@ class Capability(ABC):
         self._slot_of = {kind: slot for slot in self.CONSUMES for kind in wired[slot]}
         self._consumes = frozenset(kind for slot in self.CONSUMES for kind in wired[slot])
         self._produces = frozenset(kind for slot in self.PRODUCES for kind in wired[slot])
+        self._may_be_blank = frozenset(kind for slot in self.MAY_BE_BLANK for kind in wired[slot])
 
     def with_blank_rules(
         self,
@@ -461,8 +485,8 @@ class Capability(ABC):
         field takes its field's rule. A blank with no rule is a BlankNotAllowedError, raised first.
         A `PASS_ON` blank blanks every produced kind without calling `compute`, and wins over a
         fallback. A fallback replaces the blank and the trace says so. A blank in a `COMPUTE` slot
-        reaches `compute`, whose blank output is a CapabilityContractError since only `PASS_ON`
-        makes an output blank.
+        reaches `compute`, whose blank output is a CapabilityContractError unless its slot is in
+        `MAY_BE_BLANK`.
         """
         name = type(self).__name__
         kept: list[Artifact[Any]] = []
@@ -502,12 +526,14 @@ class Capability(ABC):
         blank = [
             artifact.kind
             for artifact in result.outputs
-            if isinstance(artifact, Artifact) and artifact.is_blank
+            if isinstance(artifact, Artifact)
+            and artifact.is_blank
+            and artifact.kind not in self._may_be_blank
         ]
         if blank:
             raise CapabilityContractError(
                 f"{name} returned {ArtifactKind.labels(blank)} blank from compute; "
-                "only a PASS_ON rule makes an output blank"
+                "only a PASS_ON rule or a MAY_BE_BLANK slot makes an output blank"
             )
         return CapabilityResult(outputs=result.outputs, trace=(*fallbacks, *result.trace))
 

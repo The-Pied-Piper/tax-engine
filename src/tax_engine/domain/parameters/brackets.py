@@ -8,7 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 
-from tax_engine.domain.errors import InvalidBracketScheduleError
+from tax_engine.domain.errors import AmountOutsideBracketRangeError, InvalidBracketScheduleError
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule
 
@@ -67,13 +67,22 @@ class BracketColumn:
 
 @dataclass(frozen=True)
 class BracketSchedule:
-    """Brackets from 0, strictly ascending; the tax at each start rounded by one rule."""
+    """Brackets over one range of amounts, strictly ascending; the tax at each start rounded by
+    one rule.
+
+    The range starts at the first bracket's threshold ("more than": 0 itself is covered only when
+    that threshold is 0) and ends at `up_to` ("not more than"), or has no upper end if `up_to` is
+    None. A first bracket above 0 must print its tax at start, since the schedule cannot compute
+    the tax below its range.
+    """
 
     brackets: tuple[Bracket, ...]
     tax_at_start_rounding: RoundingRule = NO_ROUNDING
+    up_to: Decimal | None = None
 
     def __post_init__(self) -> None:
-        """Check the rule is a RoundingRule, the first threshold 0 and each above the last."""
+        """Check the rule is a RoundingRule, the thresholds ascend, a first bracket above 0 prints
+        its tax at start, and `up_to`, if given, is a finite Decimal above the last threshold."""
         if not isinstance(self.tax_at_start_rounding, RoundingRule):
             raise TypeError(
                 "schedule tax_at_start_rounding must be a RoundingRule, "
@@ -82,9 +91,10 @@ class BracketSchedule:
         if not self.brackets:
             raise InvalidBracketScheduleError("a schedule needs at least one bracket")
         first = self.brackets[0]
-        if first.lower != 0:
+        if first.lower != 0 and first.tax_at_start is None:
             raise InvalidBracketScheduleError(
-                f"the first bracket must start at 0, got {first.lower}"
+                "the first bracket must start at 0 unless it gives its tax_at_start, "
+                f"got {first.lower}"
             )
         for below, above in zip(self.brackets, self.brackets[1:], strict=False):
             if above.lower <= below.lower:
@@ -92,13 +102,50 @@ class BracketSchedule:
                     f"bracket thresholds must be strictly ascending: {above.lower} "
                     f"follows {below.lower}"
                 )
+        if self.up_to is not None:
+            if not isinstance(self.up_to, Decimal):
+                raise TypeError(
+                    f"schedule up_to must be a Decimal, got {type(self.up_to).__name__}"
+                )
+            if not self.up_to.is_finite():
+                raise InvalidBracketScheduleError(
+                    f"schedule up_to must be finite, got {self.up_to}"
+                )
+            if self.up_to <= self.brackets[-1].lower:
+                raise InvalidBracketScheduleError(
+                    f"schedule up_to must be above the last bracket's start "
+                    f"{self.brackets[-1].lower}, got {self.up_to}"
+                )
 
-    def column_for(self, amount: Decimal) -> BracketColumn:
-        """The column `amount` falls in, with the rate on its excess plus its tax at its start."""
+    @property
+    def has_range(self) -> bool:
+        """Whether the schedule states a range: an `up_to`, or a first bracket above 0."""
+        return self.up_to is not None or self.brackets[0].lower != 0
+
+    def covers(self, amount: Decimal) -> bool:
+        """Whether `amount` is in the schedule's range: more than the first threshold (or 0 or
+        more, if that is 0) and not more than `up_to`."""
         if not isinstance(amount, Decimal):
             raise TypeError(f"amount must be a Decimal, got {type(amount).__name__}")
-        if amount < 0:
+        first = self.brackets[0].lower
+        if amount < first or (first != 0 and amount == first):
+            return False
+        return self.up_to is None or amount <= self.up_to
+
+    def column_for(self, amount: Decimal) -> BracketColumn:
+        """The column `amount` falls in, with the rate on its excess plus its tax at its start.
+
+        Raises AmountOutsideBracketRangeError if the range does not cover `amount`, and ValueError
+        for a negative amount on a schedule from 0 with no upper end.
+        """
+        if not isinstance(amount, Decimal):
+            raise TypeError(f"amount must be a Decimal, got {type(amount).__name__}")
+        if self.brackets[0].lower == 0 and self.up_to is None and amount < 0:
             raise ValueError(f"amount must not be negative, got {amount}")
+        if not self.covers(amount):
+            raise AmountOutsideBracketRangeError(
+                f"amount {amount} is outside the range of the bracket schedule"
+            )
         index = 0
         for candidate in range(1, len(self.brackets)):
             if amount <= self.brackets[candidate].lower:
@@ -117,8 +164,12 @@ class BracketSchedule:
             return printed
         # The exact tax on the brackets below, summed unrounded, then rounded once by the rule;
         # the first bracket's 0 passes through the rule too, so every start has the rule's scale.
+        # A first bracket above 0 adds its printed start, the tax below the range.
         below = self.brackets[: index + 1]
-        exact = sum(
+        first_start = self.brackets[0].tax_at_start
+        exact = (
+            Decimal(0) if self.brackets[0].lower == 0 or first_start is None else first_start
+        ) + sum(
             (
                 (above.lower - bracket.lower) * bracket.rate
                 for bracket, above in zip(below, below[1:], strict=False)
@@ -128,7 +179,10 @@ class BracketSchedule:
         return self.tax_at_start_rounding.apply(exact)
 
     def tax_on(self, amount: Decimal) -> Decimal:
-        """Exact tax on `amount`: the tax of the column it falls in."""
+        """Exact tax on `amount`: the tax of the column it falls in.
+
+        Raises AmountOutsideBracketRangeError if the range does not cover `amount`.
+        """
         return self.column_for(amount).tax
 
 

@@ -110,6 +110,10 @@ class InvalidBracketScheduleError(DomainError):
     """A bracket schedule's thresholds or rates are invalid."""
 
 
+class AmountOutsideBracketRangeError(DomainError):
+    """An amount was looked up in a bracket schedule whose range does not cover it."""
+
+
 class InvalidParameterDataError(DomainError):
     """A parameter dataset is malformed or does not match where it was found."""
 
