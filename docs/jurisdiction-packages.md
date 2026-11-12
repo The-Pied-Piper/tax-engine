@@ -19,7 +19,9 @@ Real jurisdiction names appear only there and in the mirrored `tests/jurisdictio
 | `trace/`, `trace_english/` | Trace lines of the package's own and the renderers of their English text. |
 
 The `core` package is the same shape with an empty catalog and no data folders: its `capabilities`
-and `parameter_parsers` hold the generic mechanisms.
+and `parameter_parsers` hold the generic mechanisms, and its `units.py` and `trace_english/units.py`
+declare the units and the English text of the units that every jurisdiction may use (months, years,
+percent).
 
 ## Registration
 
