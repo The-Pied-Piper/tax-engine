@@ -13,6 +13,12 @@ from tax_engine.jurisdictions.ca_ab import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+AB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "ab428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, AB428 line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, the base of the bracket columns read by lines 3 and 4."""
+
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, AB428 line 16 (line 58040) "Basic personal amount Claim $22,323": the
 amount claimed, the first part of the total of the Alberta credit amounts."""
