@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/apply_fraction
     reference: "78"
+    unit: ca/cad
     params:
       fraction: ca-on/tax_reduction_multiplier
     consumes:

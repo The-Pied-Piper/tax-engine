@@ -6,6 +6,7 @@ inputs:
   - name: ca-on/on428_pension_income_amount
     title: "Pension income amount"
     reference: "27"
+    unit: ca/cad
     required: false
     default: "0"
     basis: 'Line 27 and line 58360: Pension income amount (maximum $1,762)'

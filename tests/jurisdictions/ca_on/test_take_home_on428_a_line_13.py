@@ -135,7 +135,7 @@ def test_a_negative_net_income_is_line_6_in_brackets_and_line_13_is_zero(
     assert line_13.as_tuple().exponent == -2
     assert not line_13.is_signed()
     assert (
-        "Line 6 (-5665.00), not below 0, gives 0.00 (rounded to the nearest cent)."
+        "Line 6 (-CA$5665.00), not below 0, gives CA$0.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
@@ -164,5 +164,5 @@ def test_line_13_prints_cents_and_names_its_rounding_in_the_trace(
     assert str(value) == "69335.00"
     assert value.as_tuple().exponent == -2
     assert (
-        "Line 6 (69335.00), not below 0, gives 69335.00 (rounded to the nearest cent)."
+        "Line 6 (CA$69335.00), not below 0, gives CA$69335.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

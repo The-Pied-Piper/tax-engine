@@ -91,9 +91,7 @@ def service(tmp_path: Path) -> TaxComputationService:
     roots[Namespace("ca-on")] = tmp_path
     return TaxComputationService(
         YamlJurisdictionSource(
-            roots,
-            tax_engine.registrations.artifact_kinds(),
-            tax_engine.registrations.units(),
+            roots, tax_engine.registrations.artifact_kinds(), tax_engine.registrations.units()
         ),
         YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
         tax_engine.registrations.capabilities(),

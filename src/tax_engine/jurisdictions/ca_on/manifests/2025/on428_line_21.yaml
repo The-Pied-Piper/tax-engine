@@ -6,6 +6,7 @@ capabilities:
   - name: core/record_total
     title: "Employment insurance premiums"
     reference: "21"
+    unit: ca/cad
     consumes:
       records: ca/t2204.t2204_line_16
     produces:
