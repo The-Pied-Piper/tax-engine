@@ -491,7 +491,7 @@ class FormSet:
 
     @staticmethod
     def _in(unit: Unit | None) -> str:
-        return "no unit" if unit is None else repr(unit.name)
+        return "no unit" if unit is None else repr(unit.identifier)
 
     def _check_not_derived(self, kinds: Iterable[ArtifactKind[Any]]) -> None:
         derived = set(kinds) & self._producers.keys()

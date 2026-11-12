@@ -2,8 +2,8 @@
 
 The service hands the manifest's resolved units (`Manifest.units_by_name`) to each form it
 composes, so a computed worksheet's artifacts carry the unit (`artifact.unit`) and its trace prints
-it. Made-up packages: `ex-on` (a province) uses the units of `ex` (crowns), of itself (ducats)
-and of core (moons).
+it. Made-up packages: `ex-on` (a province) names units of `ex` (ex/crowns), of itself (ex-on/ducats)
+and of core (core/moons), by their full identifiers.
 """
 
 from __future__ import annotations
@@ -105,11 +105,11 @@ def service(directory: Path, manifest: str) -> TaxComputationService:
 
 WITH_UNITS = """\
 inputs:
-  - {name: ex/gross_pay, required: true, unit: crowns}
-  - {name: ex/allowance, required: true, unit: crowns}
+  - {name: ex/gross_pay, required: true, unit: ex/crowns}
+  - {name: ex/allowance, required: true, unit: ex/crowns}
 capabilities:
   - name: ex/net
-    unit: ducats
+    unit: ex-on/ducats
     consumes: {gross: ex/gross_pay, allowance: ex/allowance}
     produces: {net: ex/net_pay}
 """

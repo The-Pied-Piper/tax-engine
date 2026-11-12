@@ -176,7 +176,7 @@ def test_a_manifest_names_no_unit_unless_it_is_given_some() -> None:
 
     assert dict(found.units_by_name) == {}
     with pytest.raises(TypeError):
-        found.units_by_name["crowns"] = None  # type: ignore[index]
+        found.units_by_name["ex/crowns"] = None  # type: ignore[index]
 
 
 def test_equal_manifests_are_equal_and_hash_alike() -> None:

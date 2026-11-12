@@ -329,9 +329,9 @@ class Manifest:
     `artifacts` (the application's kinds) when built, so one that exists is correct. `kinds` adds
     the `<form>.<export>` kinds and the neutral kinds the forms supply. An unresolvable default or
     `required_when` that is not a yes/no is an InvalidManifestError; an unknown identifier is an
-    UnknownRegistrationError. `units_by_name` holds each unit its declarations name, by the name
-    they write, already resolved for the jurisdiction; the loader builds it and refuses an unknown
-    or ambiguous name.
+    UnknownRegistrationError. `units_by_name` holds each unit its declarations name, by the full
+    identifier they write, already looked up in the unit registry; the loader builds it and refuses
+    an unknown identifier.
     """
 
     jurisdiction: JurisdictionCode

@@ -16,7 +16,6 @@ import pytest
 
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.errors import InvalidRegistrationError, UnknownRegistrationError
-from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import Placement, Unit, UnitCatalog, UnitRegistry
 
@@ -66,11 +65,8 @@ def test_the_units_of_each_packages_units_module_are_registered(
 
     packages.register_units(registry)
 
-    assert registry.resolve("crowns", JurisdictionCode("EX")) == Unit(
-        "crowns", "EX$", "EX$", Placement.BEFORE
-    )
-    assert registry.resolve("ducats", JurisdictionCode("EX-ON")).name == "ducats"
-    assert registry.resolve("crowns", JurisdictionCode("EX-ON")).name == "crowns"
+    assert registry.unit("ex/crowns") == Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
+    assert registry.unit("ex-on/ducats").identifier == "ex-on/ducats"
 
 
 def test_a_package_without_a_units_module_declares_no_units(
@@ -81,8 +77,8 @@ def test_a_package_without_a_units_module_declares_no_units(
 
     packages.register_units(registry)
 
-    with pytest.raises(UnknownRegistrationError, match="unit 'crowns'"):
-        registry.resolve("crowns", JurisdictionCode("EX"))
+    with pytest.raises(UnknownRegistrationError, match="ex/crowns"):
+        registry.unit("ex/crowns")
 
 
 def test_registering_units_again_is_idempotent(tmp_path: Path, package: MakePackage) -> None:
@@ -92,7 +88,7 @@ def test_registering_units_again_is_idempotent(tmp_path: Path, package: MakePack
     packages.register_units(registry)
     packages.register_units(registry)
 
-    assert registry.resolve("crowns", JurisdictionCode("EX")).name == "crowns"
+    assert registry.unit("ex/crowns").identifier == "ex/crowns"
 
 
 @pytest.mark.parametrize("declared", [_UNSET, None, "crowns", UnitCatalog])

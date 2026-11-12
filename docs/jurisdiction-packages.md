@@ -9,7 +9,7 @@ Real jurisdiction names appear only there and in the mirrored `tests/jurisdictio
 | --- | --- |
 | `__init__.py` | `NAMESPACE = "..."`, the namespace of every identifier the package declares. Declare it at the top, before importing any module that uses `@capability`, which resolves it on import. A subpackage that declares identifiers repeats the namespace to inherit it. |
 | `catalog.py` or `catalog/` | The artifact kinds, on a `CATALOG`. |
-| `units.py` | Optional. The units its manifests may name with `unit:`, on a `UNITS` `UnitCatalog` in the package's namespace. |
+| `units.py` | Optional. The units it declares, on a `UNITS` `UnitCatalog` in the package's namespace. A manifest names one by its full identifier, `unit: <namespace>/<local_id>`; a province package does not inherit its country's units, so a manifest names them with the country's namespace. |
 | `manifests/` | Manifests, see [Manifest format](manifest-format.md). |
 | `forms/` | Parts of forms that other manifests import. |
 | `parameters/` | Parameter datasets, see [Parameter files](parameter-files.md). |

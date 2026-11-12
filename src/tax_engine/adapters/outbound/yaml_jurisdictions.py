@@ -637,18 +637,18 @@ class YamlJurisdictionSource:
             valid_from_tax_year=doc.field("valid_from_tax_year").require_integer(),
             inputs=declared_inputs,
             artifacts=self._kinds,
-            units_by_name=self._units_named(code, declared_inputs, forms),
+            units_by_name=self._units_named(declared_inputs, forms),
             forms=forms,
         )
         self._check_supplied(manifest, forms_imported)
         return manifest
 
     def _units_named(
-        self, code: JurisdictionCode, inputs: Mapping[str, InputDeclaration], forms: Iterable[Form]
+        self, inputs: Mapping[str, InputDeclaration], forms: Iterable[Form]
     ) -> dict[str, Unit]:
-        """Each unit the declarations name, found for the jurisdiction `code`, by name.
+        """Each unit the declarations name, looked up by its full identifier, keyed as written.
 
-        A name that is declared nowhere it looks, or in several places, is an InvalidManifestError.
+        An identifier no unit is registered under, a bare name included, is an InvalidManifestError.
         """
         declared = [(f"input {name!r}", declaration.unit) for name, declaration in inputs.items()]
         for form in forms:
@@ -661,9 +661,11 @@ class YamlJurisdictionSource:
             if name is None or name in found:
                 continue
             try:
-                found[name] = self._units.resolve(name, code)
-            except (UnknownRegistrationError, InvalidRegistrationError) as exc:
-                raise InvalidManifestError(f"{who}: {exc}") from None
+                found[name] = self._units.unit(name)
+            except UnknownRegistrationError:
+                raise InvalidManifestError(
+                    f"{who}: unit {name!r} is not declared; expected <namespace>/<snake_case>"
+                ) from None
         return found
 
     @staticmethod

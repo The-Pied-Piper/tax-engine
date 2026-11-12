@@ -39,8 +39,8 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 
 D = Decimal
-CROWNS = Unit("crowns", "EX$", "EX$", Placement.BEFORE)
-MOONS = Unit("moons", "moon", "moons", Placement.AFTER)
+CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
+MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER)
 
 GROSS = AmountKind("ex/gross_pay")
 LESS = AmountKind("ex/allowance")
@@ -187,7 +187,7 @@ def test_a_unit_before_the_number_is_written_against_it() -> None:
 
 
 def test_a_unit_before_the_number_uses_its_singular_or_plural_the_same_way() -> None:
-    marks = Unit("marks", "one mark ", "marks ", Placement.BEFORE)
+    marks = Unit("ex/marks", "one mark ", "marks ", Placement.BEFORE)
 
     assert EnglishFigures.with_unit("1", 1, marks) == "one mark 1"
     assert EnglishFigures.with_unit("3", 3, marks) == "marks 3"

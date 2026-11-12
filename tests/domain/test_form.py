@@ -2220,7 +2220,7 @@ def test_a_runs_imports_carry_the_exporting_forms_title_and_printed_names() -> N
 
 
 def test_a_form_importing_a_unit_bearing_export_reads_it_in_the_exporters_unit() -> None:
-    crowns = Unit("crowns", "EX$", "EX$", Placement.BEFORE)
+    crowns = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
     exporting = composition(
         "ex/shop",
         [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
@@ -2232,10 +2232,10 @@ def test_a_form_importing_a_unit_bearing_export_reads_it_in_the_exporters_unit()
                 params={},
                 consumes={},
                 produces={"output": PROFIT.identifier},
-                unit="crowns",
+                unit="ex/crowns",
             ),
         ),
-        units={"crowns": crowns},
+        units={"ex/crowns": crowns},
     )
 
     result = form_set(audit(), exporting).compute(TWO_SHOPS, TWO_AUDITS)

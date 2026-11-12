@@ -30,9 +30,9 @@ from tests.forms import composition
 
 D = Decimal
 
-CROWNS = Unit("crowns", "EX$", "EX$", Placement.BEFORE)
-MOONS = Unit("moons", "moon", "moons", Placement.AFTER)
-UNITS = {"crowns": CROWNS, "moons": MOONS}
+CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE)
+MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER)
+UNITS = {"ex/crowns": CROWNS, "ex/moons": MOONS}
 
 EXACT = ParameterDataset(
     "ex/rounding", 2025, ROUNDING_ONLY, RoundingOnly(), NO_ROUNDING, ("https://example.org/r",)
@@ -73,7 +73,7 @@ def test_a_selection_and_an_input_have_no_unit_by_default() -> None:
 
 def test_a_selection_unit_belongs_to_the_one_figure_it_produces() -> None:
     with pytest.raises(InvalidManifestError, match="unit belongs to the one figure"):
-        CapabilitySelection("ex/a", {}, {}, {"output": "ex/net", "other": "ex/x"}, unit="crowns")
+        CapabilitySelection("ex/a", {}, {}, {"output": "ex/net", "other": "ex/x"}, unit="ex/crowns")
 
 
 def test_a_worksheet_reads_the_unit_of_a_figure_by_label() -> None:
@@ -173,11 +173,11 @@ def test_a_form_composition_collects_the_units_of_its_inputs_and_its_steps_by_la
                 {},
                 {"minuend": "ex/income", "subtrahend": "ex/relief"},
                 {"output": "ex/net"},
-                unit="moons",
+                unit="ex/moons",
             ),
         ),
         declared=(
-            InputDeclaration("ex/income", True, unit="moons"),
+            InputDeclaration("ex/income", True, unit="ex/moons"),
             InputDeclaration("ex/relief", True),
         ),
         units=UNITS,
@@ -198,10 +198,10 @@ def test_the_form_hands_its_units_to_each_worksheet_it_computes() -> None:
                 {},
                 {"minuend": "ex/income", "subtrahend": "ex/relief"},
                 {"output": "ex/net"},
-                unit="crowns",
+                unit="ex/crowns",
             ),
         ),
-        declared=(InputDeclaration("ex/income", True, unit="crowns"),),
+        declared=(InputDeclaration("ex/income", True, unit="ex/crowns"),),
         units=UNITS,
     )
     forms = FormSet([form], inputs=frozenset({INCOME, RELIEF}))
@@ -310,24 +310,24 @@ def reader(name: str, total: AmountKind, unit: str | None) -> FormComposition:
 
 
 def test_forms_reading_a_field_in_one_unit_agree() -> None:
-    first = reader("ex/first", FEE_TOTAL, "crowns")
-    second = reader("ex/second", OTHER_TOTAL, "crowns")
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, "ex/crowns")
 
     FormSet([first, second], inputs=frozenset({AUDITS}))
 
 
 def test_two_consumers_disagreeing_on_the_unit_of_a_field_are_refused() -> None:
-    first = reader("ex/first", FEE_TOTAL, "crowns")
-    second = reader("ex/second", OTHER_TOTAL, "moons")
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
+    second = reader("ex/second", OTHER_TOTAL, "ex/moons")
 
     with pytest.raises(
-        InvalidCompositionError, match=r"'fee'.*'crowns'.*'ex/first'.*'moons'.*'ex/second'"
+        InvalidCompositionError, match=r"'fee'.*'ex/crowns'.*'ex/first'.*'ex/moons'.*'ex/second'"
     ):
         FormSet([first, second], inputs=frozenset({AUDITS}))
 
 
 def test_a_consumer_with_a_unit_and_one_without_disagree() -> None:
-    first = reader("ex/first", FEE_TOTAL, "crowns")
+    first = reader("ex/first", FEE_TOTAL, "ex/crowns")
     second = reader("ex/second", OTHER_TOTAL, None)
 
     with pytest.raises(InvalidCompositionError, match=r"'fee'.*unit"):
@@ -346,16 +346,16 @@ def test_a_producer_and_a_consumer_disagreeing_on_the_unit_are_refused() -> None
                 {},
                 {"minuend": "ex/income", "subtrahend": "ex/relief"},
                 {"output": "ex/fee"},
-                unit="moons",
+                unit="ex/moons",
             ),
         ),
         units=UNITS,
     )
-    consumer = reader("ex/consumer", FEE_TOTAL, "crowns")
+    consumer = reader("ex/consumer", FEE_TOTAL, "ex/crowns")
 
     with pytest.raises(
         InvalidCompositionError,
-        match=r"'fee'.*produced in 'moons' by 'ex/producer'.*'crowns'.*'ex/consumer'",
+        match=r"'fee'.*produced in 'ex/moons' by 'ex/producer'.*'ex/crowns'.*'ex/consumer'",
     ):
         FormSet(
             [producer, consumer],
