@@ -48,7 +48,7 @@ For 2026 only, a figure CRA has not yet printed on a form may be calculated, car
 
 ## CRA reference archive
 
-The [CRA reference archive](docs/cra-forms-2025/README.md) holds the saved forms, guides and source provenance used to verify the Canadian calculations.
+The CRA reference archive lives in the separate repository [cra-docs](https://github.com/The-Pied-Piper/cra-docs) (`docs/cra-forms-2025/README.md` there). It holds the saved forms, guides and source provenance used to verify the Canadian calculations.
 
 ## Docstrings
 
