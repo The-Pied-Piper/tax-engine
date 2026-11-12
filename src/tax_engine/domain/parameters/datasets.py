@@ -11,14 +11,15 @@ from dataclasses import dataclass
 from tax_engine.domain.errors import InvalidParameterDataError
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.parameters.rounding import RoundingRule
+from tax_engine.domain.unit import Unit
 
 
 @dataclass(frozen=True)
 class ParameterDataset[T]:
     """One family's parameter values of one kind for one tax year, with rounding and sources.
 
-    `title` is the wording the form prints for the figure, if any ("maximum per slip"). Raises if
-    the values are not of its kind's type.
+    `title` is the wording the form prints for the figure, if any ("maximum per slip"). `unit` is
+    what its figures are measured in, if declared. Raises if the values are not of its kind's type.
     """
 
     family: str
@@ -28,6 +29,7 @@ class ParameterDataset[T]:
     rounding: RoundingRule
     sources: tuple[str, ...]
     title: str | None = None
+    unit: Unit | None = None
 
     def __post_init__(self) -> None:
         if self.title is not None and not self.title.strip():

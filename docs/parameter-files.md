@@ -23,6 +23,7 @@ Every file has the same envelope, plus keys specific to its kind, which that kin
 | `sources` | yes | A non-empty list of strings naming where the figures come from. |
 | `rounding` | yes | `none`, or a mapping of `increment` (a quoted positive decimal) and `mode` (such as `half_up`). |
 | `title` | no | The wording the form prints for the figure, such as `maximum per slip`. Non-empty text. |
+| `unit` | no | What the figures are measured in, by the full identifier of a declared unit (`<namespace>/<snake_case>`, such as `ca/cad`). A trace sentence that names the dataset's fixed figure (a cap or a maximum) writes it with the unit's text; a dataset with no `unit` prints bare. The identifier is matched exactly, case and spaces included, and a unit no package declares is rejected. |
 
 The file must declare the family, year and kind that were asked for, or it is rejected. Unknown,
 missing and duplicate keys and wrongly typed values are rejected, and every error names the file.

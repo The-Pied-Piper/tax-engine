@@ -16,24 +16,39 @@ from tax_engine.adapters.outbound.parameter_parser import (
     ParameterParserRegistry,
 )
 from tax_engine.adapters.outbound.yaml_support import YamlNode, YamlShapeError
-from tax_engine.domain.errors import DomainError, InvalidParameterDataError, NotFoundError
+from tax_engine.domain.errors import (
+    DomainError,
+    InvalidParameterDataError,
+    NotFoundError,
+    UnknownRegistrationError,
+)
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import Unit, UnitRegistry
 
 _FAMILY = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*(/[a-z0-9]+([_-][a-z0-9]+)*)+")
 _ENVELOPE_KEYS = frozenset({"family", "tax_year", "kind", "sources", "rounding"})
-_OPTIONAL_ENVELOPE_KEYS = frozenset({"title"})
+_OPTIONAL_ENVELOPE_KEYS = frozenset({"title", "unit"})
 
 
 class YamlParameterSource:
     """Parameter datasets read from the `parameters/` directory of each jurisdiction package."""
 
-    def __init__(self, roots: Mapping[Namespace, Path], parsers: ParameterParserRegistry) -> None:
+    def __init__(
+        self,
+        roots: Mapping[Namespace, Path],
+        parsers: ParameterParserRegistry,
+        units: UnitRegistry | None = None,
+    ) -> None:
         """Read datasets under each namespace's package directory in `roots`, parsing each with
-        its kind's parser from `parsers`, which whoever wires the application builds."""
+        its kind's parser from `parsers`, which whoever wires the application builds.
+
+        A dataset's `unit` is looked up in `units`; with none, a dataset may name no unit.
+        """
         self._roots = dict(roots)
         self._parsers = parsers
+        self._units = UnitRegistry() if units is None else units
 
     def get[T](self, family: str, tax_year: int, kind: ParameterKind[T]) -> ParameterDataset[T]:
         """Read `<root>/parameters/<family rest>/<tax_year>.yaml`; parse it with `kind`'s parser.
@@ -65,6 +80,7 @@ class YamlParameterSource:
                 rounding=doc.field("rounding").parse_rounding_rule(),
                 sources=self._sources(doc.field("sources")),
                 title=self._title(doc),
+                unit=self._unit(doc),
             )
         except (YamlShapeError, DomainError) as exc:
             raise InvalidParameterDataError(f"{path}: {exc}") from exc
@@ -100,6 +116,18 @@ class YamlParameterSource:
     def _title(doc: YamlNode) -> str | None:
         node = doc.optional_field("title")
         return None if node is None else node.require_non_empty_string()
+
+    def _unit(self, doc: YamlNode) -> Unit | None:
+        node = doc.optional_field("unit")
+        if node is None:
+            return None
+        identifier = node.require_non_empty_string()
+        try:
+            return self._units.unit(identifier)
+        except UnknownRegistrationError:
+            raise YamlShapeError(
+                f"unit {identifier!r} is not declared; expected <namespace>/<snake_case>"
+            ) from None
 
     @staticmethod
     def _sources(node: YamlNode) -> tuple[str, ...]:

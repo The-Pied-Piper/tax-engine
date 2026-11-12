@@ -85,8 +85,11 @@ class EnglishNames:
         """`value` as the figure `label` is written: an amount in cents or finer, a count whole,
         with the figure's unit if it has one ("EX$3500.00", "12 moons"). `None` has no unit.
         """
+        return self._written(value, None if label is None else self.unit_of(label))
+
+    def _written(self, value: Decimal | int, unit: Unit | None) -> str:
+        """`value` as an amount or a count, with `unit`'s English text if there is one."""
         text = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
-        unit = None if label is None else self.unit_of(label)
         if unit is None:
             return text
         return self._unit_texts.for_unit(unit).write(text, value)
@@ -119,9 +122,10 @@ class EnglishNames:
 
         The name is the title the form prints for the figure ("the maximum per slip (81200.00)");
         a dataset without one is named by its family in plain words, never by an invented title.
+        A dataset that declares a unit writes its figure with it, as "(EX$81200.00)".
         """
         name = dataset.title or _plain_words(dataset.family.rsplit("/", 1)[-1])
-        return f"the {name} ({EnglishFigures.money(dataset.values.value)})"
+        return f"the {name} ({self._written(dataset.values.value, dataset.unit)})"
 
     def of_label(self, label: str) -> str:
         """The name of the figure `label` for a sentence."""
