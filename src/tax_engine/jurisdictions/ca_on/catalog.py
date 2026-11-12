@@ -396,3 +396,14 @@ LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
 """Individual income threshold, Schedule ON428-A Part A line 16 "Individual income threshold
 32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
 whole."""
+
+ONTARIO_SURTAX_BASE = AmountKind.declare(CATALOG, "ontario_surtax_base", non_negative=True)
+"""Ontario surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =":
+the figure on the return summary, the one amount of ON428's export of line 65 totalled into the
+return's own artifact."""
+
+ONTARIO_SURTAX_FACTOR = AmountKind.declare(CATALOG, "ontario_surtax_factor", non_negative=True)
+"""Ontario surtax factor, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20%" and line 67
+"(Line 65 minus $7,307) multiplied by 36%": 1 plus the rate of each surtax tier line 65 is over,
+the tax a further dollar of Ontario tax brings with the surtax. A plain figure with no unit, not
+printed on the form."""
