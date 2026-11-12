@@ -13,6 +13,10 @@ from tax_engine.jurisdictions.ca_ab import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, AB428 line 16 (line 58040) "Basic personal amount Claim $22,323": the
+amount claimed, the first part of the total of the Alberta credit amounts."""
+
 AB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_8", non_negative=True
 )
