@@ -1,0 +1,21 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) line 67 (ca-ab/ab428): "Line 67: Form T691:
+# line 1 minus line 2 of Part 7 multiplied by 35% =". The 35% is a printed rate, held in the
+# `ca-ab/minimum_tax_rate` dataset, so line 67 is one calculation: 35% of the T691 amount, rounded
+# half-up to the cent. The T691 amount is an optional input (read as 0 when left out), not read from
+# another part. The line has two boxes: the T691 amount (box A, the input) and the 35% result (box
+# B, this step). The form does not name them; "box A" and "box B" are the owner's naming.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/apply_rate
+    title: "Alberta additional tax for minimum tax purposes"
+    reference: "67 box B"
+    unit: ca/cad
+    params:
+      rate: ca-ab/minimum_tax_rate
+    consumes:
+      base: ca-ab/ab428_minimum_tax_t691_amount_line_67
+    blank:
+      base: "0"
+    produces:
+      output: ca-ab/ab428_additional_minimum_tax_line_67
