@@ -26,6 +26,12 @@ capabilities: []
 imports:
   - ca/t1_taxable_income
   - ca/t1_tax_and_credits
-  - ca/schedule_6
+  # Alberta prints its own Schedule 6 (5009-S6): the shared form reads the Alberta datasets instead.
+  - form: ca/schedule_6
+    datasets:
+      ca/cwb_base_amount: ca-ab/cwb_base_amount
+      ca/cwb_rate: ca-ab/cwb_rate
+      ca/cwb_maximum: ca-ab/cwb_maximum
+      ca/cwb_reduction_threshold: ca-ab/cwb_reduction_threshold
   - ca/schedule_8
   - ca/t2204
