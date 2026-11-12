@@ -9,6 +9,9 @@
 # return's own `ca/total_payable`, then core/divide divides it by the salary, rounding once with
 # `ca-on/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
 #
+# Only line 167 carries a line reference: the steps below read figures for the rates and are
+# engine-internal, so they carry none.
+#
 # The return also reads ON428 line 65, the surtax base (`ca-on/on428_surtax_base_line_65`), the same
 # way (ON428 exports it), into its own `ca-on/ontario_surtax_base`. The next step gives the Ontario
 # surtax factor: ON428 line 66 "(Line 65 minus $5,710) multiplied by 20%" and line 67 "(Line 65
@@ -56,14 +59,12 @@ capabilities:
     produces:
       output: ca-on/average_income_tax_rate
   - name: core/record_total
-    reference: "65"
     unit: ca/cad
     consumes:
       records: ca-on/on428.on428_surtax_base_line_65
     produces:
       output: ca-on/ontario_surtax_base
   - name: ca-on/surtax_factor
-    reference: "66, 67"
     params:
       line_66: ca-on/surtax_line_66
       line_67: ca-on/surtax_line_67
@@ -72,7 +73,6 @@ capabilities:
     produces:
       output: ca-on/ontario_surtax_factor
   - name: core/record_total
-    reference: "5"
     unit: core/percent
     consumes:
       records: ca-on/on428.on428_bracket_column_rate_line_5

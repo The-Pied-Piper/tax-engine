@@ -110,6 +110,17 @@ def test_the_return_bracket_rate_is_the_line_5_rate(
     assert summary.get(kinds.kind(RETURN_RATE)).value == D(rate)
 
 
+def test_the_return_bracket_rate_step_carries_no_title_and_no_line_reference(
+    take_home_service: TakeHomeService,
+) -> None:
+    (summary,) = _worksheets(take_home_service, "70000")[RETURN]
+
+    label = bundled_kinds().kind(RETURN_RATE).label
+
+    assert summary.reference(label) is None
+    assert summary.title(label) is None
+
+
 def test_the_70000_take_home_stays_53468_68(take_home_service: TakeHomeService) -> None:
     worksheets = _worksheets(take_home_service, "70000")
     kinds = bundled_kinds()
