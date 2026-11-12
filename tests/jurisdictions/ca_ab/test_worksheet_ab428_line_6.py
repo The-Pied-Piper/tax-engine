@@ -4,8 +4,8 @@ Form text (CRA 5009-d-25e.txt): "Line 6: Base amount 4,800.00". The amount is th
 `ca-ab/supplemental_credit_base` dataset, claimed whole through core/credit_amount, so it is the
 same at every salary. Line 6 reads nothing.
 
-The manifest part is loaded from the package. The header and the manifest's outputs are made up here,
-because the end-to-end scaffold owns them.
+The manifest part is loaded from the package. The header and the manifest's outputs are made up
+here, because the end-to-end scaffold owns them.
 """
 
 from __future__ import annotations
