@@ -1,0 +1,18 @@
+# Form AB428 Alberta Tax and Credits 2025 (CRA 5009-c), lines 1 to 58. This part names the form and
+# its exports; line parts carry capabilities. Exports: line 8
+# (`ca-ab/ab428_tax_on_taxable_income_line_8`) and line 15
+# (`ca-ab/ab428_tax_on_taxable_income_line_15`), which line 59 on the tax form reads;
+# line 41 (`ca-ab/ab428_unused_tuition_line_41`) and line 52 (`ca-ab/ab428_credits_total_line_52`),
+# which Worksheet AB428 reads on its lines 2 and 1; and line 58
+# (`ca-ab/ab428_non_refundable_credits_line_58`), which line 62 on the tax form reads.
+form:
+  name: ca-ab/ab428_credits
+  title: "Form AB428: Alberta Tax and Credits"
+  required: true
+  exports:
+    - ca-ab/ab428_tax_on_taxable_income_line_8
+    - ca-ab/ab428_tax_on_taxable_income_line_15
+    - ca-ab/ab428_unused_tuition_line_41
+    - ca-ab/ab428_credits_total_line_52
+    - ca-ab/ab428_non_refundable_credits_line_58
+capabilities: []
