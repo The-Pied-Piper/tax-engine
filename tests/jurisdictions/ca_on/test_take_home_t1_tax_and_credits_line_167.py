@@ -175,11 +175,11 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
-def test_the_real_t1_form_header_exports_refund_or_balance_owing_and_the_line_73_rate() -> None:
+def test_the_real_t1_form_header_exports_line_167_total_payable_and_the_line_73_rate() -> None:
     # Line 76 is read inside the form by line 40400 only, so it is not exported.
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
-    assert set(exports) == {LINE_167, FEDERAL_BRACKET_COLUMN_RATE_LINE_73}
+    assert set(exports) == {LINE_167, LINE_43500, FEDERAL_BRACKET_COLUMN_RATE_LINE_73}
     assert FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 not in exports
 
 

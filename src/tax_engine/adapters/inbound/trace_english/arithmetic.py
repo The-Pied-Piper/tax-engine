@@ -410,10 +410,14 @@ class QuotientRenderer:
 
     def render(self, line: QuotientLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
+        dividend = names.figure(line.dividend, line.dividend_amount)
+        divisor = names.figure(line.divisor, line.divisor_amount)
+        result = names.shown(line.label, line.result)
+        if line.divisor_amount == 0:
+            return f"{dividend} divided by {divisor}, which is zero, gives {result}"
         return (
-            f"{names.figure(line.dividend, line.dividend_amount)} divided by "
-            f"{names.figure(line.divisor, line.divisor_amount)} gives "
-            f"{names.shown(line.label, line.result)}"
+            f"{dividend} divided by {divisor} gives {result} "
+            f"({EnglishFigures.rounding(line.rounding)})"
         )
 
 

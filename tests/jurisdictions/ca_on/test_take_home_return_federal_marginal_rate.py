@@ -167,11 +167,10 @@ def test_the_federal_marginal_rate_prints_as_the_percentage_the_form_prints(
     assert any("gives 20.5%" in line for line in lines)
 
 
-def test_the_real_t1_form_exports_line_167_and_the_line_73_rate() -> None:
+def test_the_real_t1_form_exports_include_line_167_and_the_line_73_rate() -> None:
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
-    assert set(exports) == {LINE_167, LINE_73}
-    assert len(exports) == 2
+    assert {LINE_167, LINE_73} <= set(exports)
 
 
 def test_the_real_ontario_manifest_computes_the_federal_marginal_rate_at_70000() -> None:

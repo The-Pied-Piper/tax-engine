@@ -397,6 +397,12 @@ LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
 32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
 whole."""
 
+AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
+"""Average income tax rate, the Ontario return summary's own figure (no form prints it): T1 line
+43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Ontario
+income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1642 is 16.42%. CPP
+and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+
 ONTARIO_SURTAX_BASE = AmountKind.declare(CATALOG, "ontario_surtax_base", non_negative=True)
 """Ontario surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =":
 the figure on the return summary, the one amount of ON428's export of line 65 totalled into the
