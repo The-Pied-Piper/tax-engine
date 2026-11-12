@@ -4,4 +4,5 @@ inputs:
   - name: ca/employment_income
     title: "Employment income"
     reference: "10100"
+    unit: ca/cad
     required: true

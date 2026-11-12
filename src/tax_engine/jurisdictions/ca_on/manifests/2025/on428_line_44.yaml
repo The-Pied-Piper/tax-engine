@@ -9,6 +9,7 @@ form:
 capabilities:
   - name: core/sum
     reference: "44"
+    unit: ca/cad
     params:
       rounding: ca-on/cent_rounding
     consumes:

@@ -18,6 +18,7 @@ capabilities:
   - name: core/record_total
     title: "Net income from line 23600 of your return"
     reference: "6"
+    unit: ca/cad
     consumes:
       records: ca/t1_taxable_income.net_income_signed
     produces:
@@ -25,6 +26,7 @@ capabilities:
   - name: core/sum_not_below_zero
     title: "Your adjusted net income"
     reference: "13"
+    unit: ca/cad
     params:
       rounding: ca-on/cent_rounding
     consumes:

@@ -15,6 +15,7 @@ form:
 capabilities:
   - name: core/bracket_column_tax_at_start
     reference: "7"
+    unit: ca/cad
     params:
       schedule: ca-on/brackets
     consumes:

@@ -11,6 +11,7 @@ form:
 capabilities:
   - name: core/multiply_by_rate
     reference: "6"
+    unit: ca/cad
     params:
       rounding: ca-on/cent_rounding
     consumes:
