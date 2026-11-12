@@ -277,21 +277,27 @@ def test_the_form_exports_line_90_the_figure_t1_line_42800_reads(
     assert sheet.get(ON428_ONTARIO_TAX_LINE_90).value == D("3911.45")
 
 
-def test_the_form_exports_line_90_and_the_line_5_rate(take_home_service: TakeHomeService) -> None:
-    # Every other line is read only inside the form, so the form exports line 90 and the line 5 rate
-    # the return summary reads.
+def test_the_form_exports_line_90_and_the_surtax_base_line_65_and_the_line_5_rate(
+    take_home_service: TakeHomeService,
+) -> None:
+    # Every other line is read only inside the form: the form exports line 90 and line 65.
     service = take_home_service(HEADER, FORM, *PARTS)
     code = JurisdictionCode("CA-ON")
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca-on/on428")
     assert tuple(kind.identifier for kind in form.exports) == (
         ON428_ONTARIO_TAX_LINE_90.identifier,
+        ON428_SURTAX_BASE_LINE_65.identifier,
         ON428_BRACKET_COLUMN_RATE_LINE_5.identifier,
     )
 
     worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
     (sheet,) = worksheets["ca-on/on428"]
 
-    assert [sheet.get(kind).value for kind in form.exports] == [D("3911.45"), D("0.0915")]
+    assert [sheet.get(kind).value for kind in form.exports] == [
+        D("3911.45"),
+        D("3311.45"),
+        D("0.0915"),
+    ]
 
 
 def test_the_module_composes_without_a_t1_general_part(take_home_service: TakeHomeService) -> None:

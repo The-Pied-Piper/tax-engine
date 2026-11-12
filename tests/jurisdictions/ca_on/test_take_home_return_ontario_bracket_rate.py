@@ -76,7 +76,7 @@ def test_the_on428_form_exports_the_bracket_column_rate_of_line_5() -> None:
 def test_the_return_lists_the_bracket_rate_and_the_refund_or_balance_owing() -> None:
     (default,) = (form for form in _manifest().forms if form.name == RETURN)
 
-    assert default.exports == (RETURN_RATE, LINE_167)
+    assert {RETURN_RATE, LINE_167} <= set(default.exports)
 
 
 def test_the_return_bracket_rate_kind_is_a_registered_non_negative_amount() -> None:

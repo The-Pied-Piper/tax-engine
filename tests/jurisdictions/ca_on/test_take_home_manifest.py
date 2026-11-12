@@ -7,6 +7,7 @@ its blank rule (a fixed fallback or `compute`), or a salary-only request is refu
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -34,6 +35,7 @@ def test_the_return_exports_the_signed_total_tax_of_t1_line_167_and_the_bracket_
 
     assert default.exports == (
         "ca-on/ontario_bracket_rate_return",
+        "ca-on/ontario_surtax_factor",
         "ca/refund_or_balance_owing",
     )
 
@@ -85,3 +87,60 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
         "ca/other_employment_income",
         "ca/social_benefits_repayment",
     } <= set(_manifest().inputs)
+
+
+def test_on428_exports_line_90_the_surtax_base_line_65_and_the_line_5_rate() -> None:
+    (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
+
+    assert set(on428.exports) == {
+        "ca-on/on428_ontario_tax_line_90",
+        "ca-on/on428_surtax_base_line_65",
+        "ca-on/on428_bracket_column_rate_line_5",
+    }
+
+
+def _return_steps() -> list[tuple[str, dict[str, str], dict[str, Any], dict[str, str]]]:
+    """The steps of the return as (name, params, consumes, produces)."""
+    (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
+    return [
+        (step.name, dict(step.params), dict(step.consumes), dict(step.produces))
+        for step in default.capabilities
+    ]
+
+
+def test_the_return_reads_line_65_into_its_own_artifact_and_gives_the_surtax_factor() -> None:
+    # The return totals the one amount of ON428's export of line 65 (the export of another form is
+    # read as a record list) into its own artifact, then `ca-on/surtax_factor` reads that artifact
+    # and the datasets of lines 66 and 67. Titles, references and units are not pinned here.
+    steps = _return_steps()
+
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca-on/on428.on428_surtax_base_line_65"},
+        {"output": "ca-on/ontario_surtax_base"},
+    ) in steps
+    assert (
+        "ca-on/surtax_factor",
+        {"line_66": "ca-on/surtax_line_66", "line_67": "ca-on/surtax_line_67"},
+        {"base": "ca-on/ontario_surtax_base"},
+        {"output": "ca-on/ontario_surtax_factor"},
+    ) in steps
+
+
+def test_the_return_reads_the_on428_line_5_bracket_rate() -> None:
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca-on/on428.on428_bracket_column_rate_line_5"},
+        {"output": "ca-on/ontario_bracket_rate_return"},
+    ) in _return_steps()
+
+
+def test_the_return_still_totals_line_167() -> None:
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca/t1_tax_and_credits.refund_or_balance_owing"},
+        {"output": "ca/refund_or_balance_owing"},
+    ) in _return_steps()
