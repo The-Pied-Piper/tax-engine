@@ -1,4 +1,4 @@
-"""The Alberta catalog: the AB428 line 75 kind (ticket #705).
+"""The Alberta catalog: the AB428 line 75 kind.
 
 Form text (Form AB428, CRA 5009-c-25e.txt): "Line 75: Line 73 minus line 74 (if negative, enter "0")
 Enter this amount on line 42800 of your return. Alberta tax =".

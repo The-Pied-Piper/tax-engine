@@ -1,4 +1,4 @@
-"""The AB428 form declaration (ticket #705), read from the real part file.
+"""The AB428 form declaration, read from the real part file.
 
 Form text (Form AB428, CRA 5009-c-25e.txt): "Line 75: Line 73 minus line 74 (if negative, enter "0")
 Enter this amount on line 42800 of your return. Alberta tax =".
