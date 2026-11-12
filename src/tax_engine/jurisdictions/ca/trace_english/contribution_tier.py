@@ -25,5 +25,6 @@ class ContributionTierRenderer:
             f"{EnglishFigures.money(tier.lower)} and {EnglishFigures.money(tier.upper)}, which is "
             f"{EnglishFigures.money(line.contributory)}, at most "
             f"{EnglishFigures.money(tier.maximum)}, "
-            f"gives {EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"gives {names.shown(line.label, line.result)} "
+            f"({EnglishFigures.rounding(line.rounding)})"
         )

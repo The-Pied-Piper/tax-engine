@@ -4,8 +4,6 @@ line class, each registered with `@english_renderer`.
 
 from __future__ import annotations
 
-from decimal import Decimal
-
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
@@ -26,7 +24,7 @@ class DefaultedInputRenderer:
 
     def render(self, line: DefaultedInputLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return f"no value given, so the form's default gives {_figure(line.value)}"
+        return f"no value given, so the form's default gives {names.shown(line.label, line.value)}"
 
 
 @english_renderer
@@ -37,12 +35,7 @@ class BlankFallbackRenderer:
 
     def render(self, line: BlankFallbackLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return f"left blank, taken as {_figure(line.fallback)}"
-
-
-def _figure(value: Decimal | int) -> str:
-    """The value (a fallback or a default) as money for an amount, else as a plain whole number."""
-    return EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
+        return f"left blank, taken as {names.shown(line.label, line.fallback)}"
 
 
 def _where(field: BlankField, names: EnglishNames) -> str:
@@ -58,7 +51,10 @@ class BlankFieldFallbackRenderer:
 
     def render(self, line: BlankFieldFallbackLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        return f"{_where(line.field, names)}: left blank, taken as {_figure(line.fallback)}"
+        return (
+            f"{_where(line.field, names)}: left blank, taken as "
+            f"{names.shown(line.field.kind.label, line.fallback)}"
+        )
 
 
 @english_renderer

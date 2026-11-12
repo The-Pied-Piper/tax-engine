@@ -61,6 +61,7 @@ from tax_engine.domain.trace import (
     SubtractedLine,
     TraceLine,
 )
+from tax_engine.domain.unit import Placement, Unit
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
@@ -2216,6 +2217,35 @@ def test_a_runs_imports_carry_the_exporting_forms_title_and_printed_names() -> N
     # The return form reads the audits' export, from a form with instances.
     (return_sheet,) = result[RETURN]
     assert return_sheet.imported("audited") == ImportedFigure(None, None, None, False)
+
+
+def test_a_form_importing_a_unit_bearing_export_reads_it_in_the_exporters_unit() -> None:
+    crowns = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
+    exporting = composition(
+        "ex/shop",
+        [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],
+        instances=SHOPS,
+        exports=[PROFIT],
+        selections=(
+            CapabilitySelection(
+                name="ex/subtract",
+                params={},
+                consumes={},
+                produces={"output": PROFIT.identifier},
+                unit="ex/crowns",
+            ),
+        ),
+        units={"ex/crowns": crowns},
+    )
+
+    result = form_set(audit(), exporting).compute(TWO_SHOPS, TWO_AUDITS)
+
+    (audit_sheet, _) = result["ex/audit"]
+    assert audit_sheet.imported("profit") == ImportedFigure(None, None, None, False, crowns)
+    assert audit_sheet.unit("profit") is crowns
+    assert audit_sheet.unit("fee") is None
+    (shop_sheet, _) = result["ex/shop"]
+    assert shop_sheet.unit("profit") is crowns
 
 
 def test_an_import_from_a_form_without_an_instances_list_is_one_instance() -> None:

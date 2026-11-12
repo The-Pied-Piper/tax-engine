@@ -20,5 +20,5 @@ class AmountByCountRenderer:
         """The English sentence for `line`."""
         return (
             f"The table amount for {names.figure(line.count_kind, line.count)} is "
-            f"{EnglishFigures.money(line.row)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.row)} ({EnglishFigures.rounding(line.rounding)})"
         )

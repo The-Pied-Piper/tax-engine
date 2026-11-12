@@ -27,6 +27,7 @@ from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import Form, InputDeclaration
 from tax_engine.domain.record_list import Record, RecordList
 from tax_engine.domain.trace import FormInstanceLine, TraceLine
+from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 
 
@@ -51,13 +52,15 @@ class FormComposition:
         defaults: Iterable[Artifact[Any]] = (),
         field_defaults: Iterable[Artifact[Any]] = (),
         declared: Iterable[InputDeclaration] = (),
+        units: Mapping[str, Unit] | None = None,
     ) -> None:
         """Wire `capabilities` as `form`, whose names `kinds` resolves to artifact kinds.
 
         `defaults` are what a starting artifact is read as when left out, and `field_defaults` the
         same for an `instances` field left blank; an input or field whose default is blank may
         arrive blank, and any other blank is refused. `declared` gives the `title` and `reference`
-        of the inputs and fields this form reads.
+        of the inputs and fields this form reads. `units` holds the units the manifest names, by
+        identifier: every one `declared`, a field or a selection uses.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -91,6 +94,15 @@ class FormComposition:
             kind.label: found.reference
             for kind, found in produced_by
             if found.reference is not None
+        }
+        known = {} if units is None else units
+        self._unit_claims = tuple(
+            (kind, how, None if found.unit is None else known[found.unit])
+            for how, claims in (("read", printed), ("produced", produced_by))
+            for kind, found in claims
+        )
+        self._figure_units = {
+            kind.label: unit for kind, _, unit in self._unit_claims if unit is not None
         }
         self._instances = instances
         self._exports = listed
@@ -145,6 +157,18 @@ class FormComposition:
     def figure_references(self) -> Mapping[str, str]:
         """What the form prints beside each figure it prints, by the figure's label."""
         return MappingProxyType(self._figure_references)
+
+    @property
+    def figure_units(self) -> Mapping[str, Unit]:
+        """The unit of each figure of the form that has one, by the figure's label."""
+        return MappingProxyType(self._figure_units)
+
+    @property
+    def unit_claims(self) -> tuple[tuple[ArtifactKind[Any], str, Unit | None], ...]:
+        """The unit this form gives each figure it prints, as `(kind, "read" or "produced", unit)`;
+        `None` for a figure it gives none.
+        """
+        return self._unit_claims
 
     @property
     def name(self) -> str:
@@ -242,6 +266,7 @@ class FormSet:
         }
         self._check_not_derived(inputs)
         self._check_imports(listed)
+        self._check_units(listed)
         self._check_inputs_are_read(listed, inputs)
         self._defaults = self._index_defaults(defaults, inputs)
         self._inputs = inputs
@@ -387,6 +412,7 @@ class FormSet:
                 exporter.figure_titles.get(export.label),
                 exporter.figure_references.get(export.label),
                 exporter.instances is None,
+                exporter.figure_units.get(export.label),
             )
         return found
 
@@ -403,6 +429,7 @@ class FormSet:
                 form_title=form.title,
                 figure_titles=form.figure_titles,
                 figure_references=form.figure_references,
+                figure_units=form.figure_units,
                 imported_figures=self._imported_figures(form),
                 defaulted=defaulted,
             )
@@ -447,6 +474,24 @@ class FormSet:
                 raise InvalidCompositionError(f"two defaults for {artifact.kind.label!r}")
             found[artifact.kind] = artifact
         return found
+
+    @staticmethod
+    def _check_units(forms: Sequence[FormComposition]) -> None:
+        """Refuse a figure that two forms give different units: its producer and its readers, or
+        readers among themselves; a figure with a unit in one form and none in another differs."""
+        seen: dict[ArtifactKind[Any], tuple[str, Unit | None, str]] = {}
+        for form in forms:
+            for kind, how, unit in form.unit_claims:
+                first = seen.setdefault(kind, (form.name, unit, how))
+                if first[1] != unit:
+                    raise InvalidCompositionError(
+                        f"figure {kind.label!r} is {first[2]} in {FormSet._in(first[1])} by "
+                        f"{first[0]!r} but {how} in {FormSet._in(unit)} by {form.name!r}"
+                    )
+
+    @staticmethod
+    def _in(unit: Unit | None) -> str:
+        return "no unit" if unit is None else repr(unit.identifier)
 
     def _check_not_derived(self, kinds: Iterable[ArtifactKind[Any]]) -> None:
         derived = set(kinds) & self._producers.keys()

@@ -20,6 +20,7 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.trace import DefaultedInputLine, TraceLine
+from tax_engine.domain.unit import Unit
 
 
 class Worksheet:
@@ -31,6 +32,7 @@ class Worksheet:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
+        figure_units: Mapping[str, Unit] | None = None,
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> None:
@@ -42,13 +44,14 @@ class Worksheet:
         self._form_title = form_title
         self._figure_titles = dict(figure_titles or {})
         self._figure_references = dict(figure_references or {})
+        self._figure_units = dict(figure_units or {})
         self._imported_figures = dict(imported_figures or {})
         self._artifacts: dict[ArtifactKind[Any], Artifact[Any]] = {}
         self._producers: dict[ArtifactKind[Any], Capability] = {}
         self._trace: list[TraceLine] = []
         self._kinds_by_label: dict[str, ArtifactKind[Any]] = {}
         self._claim_labels(artifact.kind for artifact in artifacts)
-        for artifact in artifacts:
+        for artifact in map(self._with_unit, artifacts):
             if artifact.kind in self._artifacts:
                 raise DuplicateArtifactError(f"two starting values for {artifact.kind.label!r}")
             self._artifacts[artifact.kind] = artifact
@@ -78,6 +81,25 @@ class Worksheet:
         is a step of the engine.
         """
         return self._figure_references.get(label)
+
+    def unit(self, label: str) -> Unit | None:
+        """The unit of the figure `label`: this form's own, else that of the form it is read from;
+        `None` if neither has one.
+        """
+        own = self._figure_units.get(label)
+        if own is not None:
+            return own
+        imported = self._imported_figures.get(label)
+        return None if imported is None else imported.unit
+
+    def unit_of(self, line: TraceLine) -> Unit | None:
+        """The unit of the figure `line` is about; `None` if it is about none or it has none."""
+        label = line.label
+        return None if label is None else self.unit(label)
+
+    def _with_unit(self, artifact: Artifact[Any]) -> Artifact[Any]:
+        """`artifact` with the unit the manifest gives its figure; one it gives none has none."""
+        return artifact.with_unit(self._figure_units.get(artifact.kind.label))
 
     def imported(self, label: str) -> ImportedFigure | None:
         """The figure `label` as the form it is read from prints it; `None` if this form does not
@@ -146,7 +168,7 @@ class Worksheet:
                 f"{name} produced {ArtifactKind.labels(recorded)}, already recorded"
             )
         self._claim_labels(artifact.kind for artifact in result.outputs)
-        for artifact in result.outputs:
+        for artifact in map(self._with_unit, result.outputs):
             self._artifacts[artifact.kind] = artifact
             self._producers[artifact.kind] = capability
         self._trace.extend(result.trace)

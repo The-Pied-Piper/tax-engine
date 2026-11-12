@@ -6,7 +6,7 @@ The manifest format is described in docs/manifest-format.md.
 from __future__ import annotations
 
 import dataclasses
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from pathlib import Path
 from typing import Any, NamedTuple
 
@@ -35,6 +35,7 @@ from tax_engine.domain.manifest import (
     Manifest,
 )
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import Unit, UnitRegistry
 
 _MANIFEST_KEYS = frozenset(
     {"jurisdiction", "version", "valid_from_tax_year", "inputs", "outputs", "capabilities"}
@@ -58,10 +59,10 @@ _OPTIONAL_FORM_KEYS = frozenset(
     }
 )
 _IMPORTED_PART_KEYS = frozenset({"form", "capabilities", "inputs"})
-_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference"})
+_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference", "unit"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
-_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference"})
+_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference", "unit"})
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
@@ -118,13 +119,20 @@ class _Declaration(NamedTuple):
 class YamlJurisdictionSource:
     """Jurisdictions read from the `manifests/` directory of each jurisdiction package."""
 
-    def __init__(self, roots: Mapping[Namespace, Path], kinds: ArtifactRegistry) -> None:
+    def __init__(
+        self,
+        roots: Mapping[Namespace, Path],
+        kinds: ArtifactRegistry,
+        units: UnitRegistry | None = None,
+    ) -> None:
         """Read manifests under each namespace's package directory in `roots`.
 
-        Each manifest is built with `kinds`, which reads and checks what it declares.
+        Each manifest is built with `kinds`, which reads and checks what it declares, and `units`,
+        where the units it names are looked up; with none, a manifest may name no unit.
         """
         self._roots = dict(roots)
         self._kinds = kinds
+        self._units = UnitRegistry() if units is None else units
 
     def get_jurisdiction(self, code: JurisdictionCode) -> Jurisdiction:
         """The jurisdiction with every manifest in its package; see JurisdictionSource."""
@@ -609,29 +617,56 @@ class YamlJurisdictionSource:
         forms_imported = found.forms
         declared_inputs = {declaration.name: declaration for declaration in inputs}
         declared_inputs.update((declaration.name, declaration) for declaration in found.inputs)
+        forms = (
+            Form(
+                name=default,
+                instances=None,
+                exports=tuple(sorted(outputs)),
+                capabilities=tuple(
+                    self._selection(entry) for entry in doc.field("capabilities").items()
+                ),
+                required=True,
+                title=None if title is None else self._title(title),
+            ),
+            *forms_imported,
+            *forms_beside(default),
+        )
         manifest = Manifest(
             jurisdiction=code,
             version=doc.field("version").require_integer(),
             valid_from_tax_year=doc.field("valid_from_tax_year").require_integer(),
             inputs=declared_inputs,
             artifacts=self._kinds,
-            forms=(
-                Form(
-                    name=default,
-                    instances=None,
-                    exports=tuple(sorted(outputs)),
-                    capabilities=tuple(
-                        self._selection(entry) for entry in doc.field("capabilities").items()
-                    ),
-                    required=True,
-                    title=None if title is None else self._title(title),
-                ),
-                *forms_imported,
-                *forms_beside(default),
-            ),
+            units_by_name=self._units_named(declared_inputs, forms),
+            forms=forms,
         )
         self._check_supplied(manifest, forms_imported)
         return manifest
+
+    def _units_named(
+        self, inputs: Mapping[str, InputDeclaration], forms: Iterable[Form]
+    ) -> dict[str, Unit]:
+        """Each unit the declarations name, looked up by its full identifier, keyed as written.
+
+        An identifier no unit is registered under, a bare name included, is an InvalidManifestError.
+        """
+        declared = [(f"input {name!r}", declaration.unit) for name, declaration in inputs.items()]
+        for form in forms:
+            declared.extend(
+                (f"field {field.name!r} of form {form.name!r}", field.unit) for field in form.fields
+            )
+            declared.extend((selection.name, selection.unit) for selection in form.capabilities)
+        found: dict[str, Unit] = {}
+        for who, name in declared:
+            if name is None or name in found:
+                continue
+            try:
+                found[name] = self._units.unit(name)
+            except UnknownRegistrationError:
+                raise InvalidManifestError(
+                    f"{who}: unit {name!r} is not declared; expected <namespace>/<snake_case>"
+                ) from None
+        return found
 
     @staticmethod
     def _check_supplied(manifest: Manifest, imported: tuple[Form, ...]) -> None:
@@ -687,8 +722,8 @@ class YamlJurisdictionSource:
         """One input or field: its `name`, `required`, and for an optional one `default` and
         `basis`.
 
-        `default` is written as the value (`null` for blank); `title` and `reference` may also be
-        given.
+        `default` is written as the value (`null` for blank); `title`, `reference` and `unit` (the
+        full identifier of a unit, looked up when the manifest is built) may also be given.
         """
         fields = entry.require_mapping(
             frozenset({"name"}), optional=_OPTIONAL_INPUT_KEYS | {"required"}
@@ -701,6 +736,7 @@ class YamlJurisdictionSource:
         basis = fields.optional_field("basis")
         title = fields.optional_field("title")
         reference = fields.optional_field("reference")
+        unit = fields.optional_field("unit")
         return InputDeclaration(
             name=name,
             required=required.require_boolean(),
@@ -708,6 +744,7 @@ class YamlJurisdictionSource:
             basis=None if basis is None else basis.require_non_empty_string(),
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
+            unit=None if unit is None else unit.require_non_empty_string(),
         )
 
     @staticmethod
@@ -763,6 +800,7 @@ class YamlJurisdictionSource:
         blank = fields.optional_field("blank")
         title = fields.optional_field("title")
         reference = fields.optional_field("reference")
+        unit = fields.optional_field("unit")
         return CapabilitySelection(
             name=name,
             params=self._bindings(fields.optional_field("params")),
@@ -772,6 +810,7 @@ class YamlJurisdictionSource:
             blank_fields=self._field_blank_rules(name, blank, consumes),
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
+            unit=None if unit is None else unit.require_non_empty_string(),
         )
 
     def _blank_rules(

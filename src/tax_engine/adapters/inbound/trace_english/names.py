@@ -14,6 +14,7 @@ from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.domain.figure_names import FigureNames, ImportedFigure
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
+from tax_engine.domain.unit import Unit
 
 __all__ = ["EnglishNames", "FigureNames", "Labelled", "short_form_title"]
 
@@ -64,8 +65,22 @@ class EnglishNames:
 
     def figure(self, figure: Labelled, value: Decimal | int) -> str:
         """The name of `figure` with its figure in brackets, e.g. "line 2 (70000.00)"."""
-        shown = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
-        return f"{self.of(figure)} ({shown})"
+        return f"{self.of(figure)} ({self.shown(figure.label, value)})"
+
+    def shown(self, label: str | None, value: Decimal | int) -> str:
+        """`value` as the figure `label` is written: an amount in cents or finer, a count whole,
+        with the figure's unit if it has one ("EX$3500.00", "12 moons"). `None` has no unit.
+        """
+        text = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
+        unit = None if label is None else self.unit_of(label)
+        return EnglishFigures.with_unit(text, value, unit)
+
+    def unit_of(self, label: str) -> Unit | None:
+        """The unit of the figure `label`, as the form that makes it declares; `None` for none."""
+        if self._printed is None:
+            return None
+        imported = self._printed.imported(label)
+        return self._printed.unit(label) if imported is None else imported.unit
 
     def of(self, figure: Labelled) -> str:
         """The name of `figure` for a sentence."""
