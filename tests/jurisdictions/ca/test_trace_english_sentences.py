@@ -33,5 +33,5 @@ def test_an_amount_by_count() -> None:
     line = AmountByCountLine(OUT, CHILDREN, 3, D("1200"), NO_ROUNDING, D("1200"))
 
     assert EnglishTraceRenderer().render(line) == (
-        "The table amount for children (3) is 1200.00 (not rounded)."
+        "Looking up children (3) in the table gives 1200.00 for contribution (not rounded)."
     )
