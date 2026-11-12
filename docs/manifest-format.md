@@ -224,9 +224,9 @@ used to look anything up: the identifier stays the unique name.
 
 `unit` on an input, a field or a selection names the unit of one figure: the words or symbol its
 number is written with in a trace, `EX$3500.00` or `12 months`. A unit is named by its full
-identifier `<namespace>/<snake_case>`, like an artifact kind (`ca/cad`, `core/months`), and a
-figure with none prints as it always has. The identifier is the language-neutral key; a unit's text (`EX$`, `moons`) is English wording, which another language's
-renderer replaces.
+identifier `<namespace>/<snake_case>`, like an artifact kind (`ex/crowns`, `core/months`), and a
+figure with none prints as it always has. The identifier is the language-neutral key; a unit's
+text (`EX$`, `moons`) is English wording, which another language's renderer replaces.
 
 A package declares units on a `UnitCatalog` in its `units.py` (see
 [Jurisdiction packages](jurisdiction-packages.md)). A manifest of any jurisdiction may name a unit of

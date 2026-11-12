@@ -1,9 +1,9 @@
 """Unit tests for the manifest key `unit:` on YamlJurisdictionSource.
 
 An input, a field of a form's instances list and a capability selection may name a `unit:`, which
-the source resolves against the `UnitRegistry` it is given for the manifest's jurisdiction (core's
-units, the jurisdiction's own, a province's federal ones). The manifest keeps the name. A name no
-one declares fails at load, naming the file. A selection's unit belongs to the one figure it
+the source looks up by its full identifier `<namespace>/<snake_case>` in the `UnitRegistry` it is
+given, whatever namespace declares it. The manifest keeps the identifier as written. One no one
+declares, or a bare name, fails at load, naming the file. A selection's unit belongs to the one figure it
 produces. Everything here is made up.
 """
 

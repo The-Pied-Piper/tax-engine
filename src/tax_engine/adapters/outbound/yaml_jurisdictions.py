@@ -723,7 +723,7 @@ class YamlJurisdictionSource:
         `basis`.
 
         `default` is written as the value (`null` for blank); `title`, `reference` and `unit` (the
-        name of a unit, resolved when the manifest is built) may also be given.
+        full identifier of a unit, looked up when the manifest is built) may also be given.
         """
         fields = entry.require_mapping(
             frozenset({"name"}), optional=_OPTIONAL_INPUT_KEYS | {"required"}

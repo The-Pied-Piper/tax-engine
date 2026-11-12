@@ -60,7 +60,7 @@ class FormComposition:
         same for an `instances` field left blank; an input or field whose default is blank may
         arrive blank, and any other blank is refused. `declared` gives the `title` and `reference`
         of the inputs and fields this form reads. `units` holds the units the manifest names, by
-        name, which is every name `declared`, a field or a selection uses.
+        identifier: every one `declared`, a field or a selection uses.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
