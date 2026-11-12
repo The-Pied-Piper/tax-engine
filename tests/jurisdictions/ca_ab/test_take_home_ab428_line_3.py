@@ -8,10 +8,10 @@ the table (`ca-ab/brackets_lines_2_to_8`) does not apply (lines 9 to 15 do), so 
 
 Line 3 is one `core/bracket_column_lower_bound` step over line 1 with that schedule, output
 `ca-ab/ab428_bracket_lower_bound_line_3`, in the part `ab428_line_3.yaml`. Line 1 is not this
-ticket's: the part that holds it (#668) is stood in for here by `LINE_1_PART`, a test-local copy.
+ticket's: its part, `ab428_credits_line_1.yaml`, is composed as it is.
 
-The real parts composed: the Alberta salary, the real Schedule 8, the T1 taxable-income parts and
-`ab428_line_3.yaml`. The form declaration is test-local, exporting lines 1 and 3.
+The real parts composed: the Alberta salary, the real Schedule 8, the T1 taxable-income parts,
+line 1 and `ab428_line_3.yaml`. The form declaration is test-local, exporting lines 1 and 3.
 
 Figures, computed here from the engine's T1 taxable income (line 26000): salary 20,000 gives line 1
 of 19,835.00, 70,000 gives 69,335.00 and 200,000 gives 198,926.00. Above the CPP and EI maxima the
@@ -93,21 +93,7 @@ FORM_TEXT = dedent(f"""\
         - {LINE_1}
         - {LINE_3}
     """)
-# Stands in for the line 1 part that #668 adds (one core/record_total over the T1 taxable income,
-# as `on428_line_3.yaml` does for Ontario). Nothing here asserts that part; delete this constant
-# and compose the real part once #668 is merged.
-LINE_1_PART = dedent(f"""\
-    form:
-      name: {FORM}
-    capabilities:
-      - name: core/record_total
-        reference: "1"
-        unit: ca/cad
-        consumes:
-          records: ca/t1_taxable_income.taxable_income
-        produces:
-          output: {LINE_1}
-    """)
+LINE_1_PART = ALBERTA_PARTS / "ab428_credits_line_1.yaml"
 
 
 def _federal(name: str) -> Path:
@@ -127,7 +113,7 @@ def _part_files() -> Iterator[tuple[str, str]]:
             if name.endswith("_inputs.yaml")
             else found.read_text("utf-8"),
         )
-    yield "ab428_line_1_stand_in.yaml", LINE_1_PART
+    yield LINE_1_PART.name, LINE_1_PART.read_text(encoding="utf-8")
     yield LINE_PART.name, LINE_PART.read_text(encoding="utf-8")
 
 
