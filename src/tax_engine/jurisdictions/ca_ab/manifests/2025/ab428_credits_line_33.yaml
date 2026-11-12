@@ -1,0 +1,17 @@
+# Form AB428 (CRA 5009-c) line 33: "Line 33: Line 26 plus line 32 = ^". Line 26 is "Amount from line 25
+# of the previous page", a copy of line 25, so it has no step: step 1 adds line 25 and line 32 with
+# core/sum, as ON428 line 28 adds its line 25 and line 27.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    reference: "33"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        - ca-ab/ab428_credits_subtotal_line_25
+        - ca-ab/ab428_cpp_ei_and_other_line_32
+    produces:
+      output: ca-ab/ab428_credits_subtotal_line_33
