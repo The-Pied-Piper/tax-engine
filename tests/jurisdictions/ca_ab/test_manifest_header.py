@@ -1,5 +1,5 @@
 """The header of the Alberta 2025 manifest: the return's identity, its output and its federal
-imports. It declares no inputs yet; the salary input comes with its own ticket."""
+imports. It declares no inputs itself; the salary input is in the part `salary.yaml`."""
 
 from __future__ import annotations
 
