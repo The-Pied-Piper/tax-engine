@@ -414,6 +414,16 @@ ONTARIO_BRACKET_RATE_RETURN = AmountKind.declare(
 """Ontario bracket rate, ON428 line 5 "Line 5: Rate": the printed rate of the column that line 1
 falls in, read from ON428 into the return summary."""
 
+RETURN_TAXABLE_INCOME = AmountKind.declare(CATALOG, "return_taxable_income", non_negative=True)
+"""Taxable income on the Return summary: the T1 taxable income (line 26000), the base of the
+health premium chart."""
+
+RETURN_HEALTH_PREMIUM_SLOPE = AmountKind.declare(
+    CATALOG, "return_health_premium_slope", non_negative=True
+)
+"""Health premium slope, ON428 line 89 chart: the printed rate of the chart row that the taxable
+income falls in (6% or 25%), 0 for a flat row."""
+
 ONTARIO_MARGINAL_RATE = AmountKind.declare(CATALOG, "ontario_marginal_rate", non_negative=True)
 """Ontario marginal rate, ON428 line 5 "Line 5: Rate" times the surtax factor of lines 66 and 67:
 the rate a further dollar of income is taxed at in Ontario with the surtax, on the return summary.

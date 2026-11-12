@@ -3,7 +3,7 @@
 # Ontario exact rounding, 2026 tax year: the rule for an Ontario product that is not a dollars-and-cents
 # box, the Ontario marginal rate on the return summary (ON428 line 5 rate times the surtax factor of
 # lines 66 and 67, core/multiply_by_rate). It is an exact product and the form prints no rounding
-# rule for it, so nothing is rounded. The cent rule of `ca-on/cent_rounding` does not apply to it.
+# rule for it (the project's choice is no rounding); the form is cited for lines 5, 66 and 67 only. The cent rule of `ca-on/cent_rounding` does not apply to it.
 family: ca-on/exact_rounding
 tax_year: 2026
 kind: rounding_only
