@@ -53,4 +53,3 @@ def test_a_request_that_leaves_out_line_51_is_read_as_blank(tmp_path: Path) -> N
     assert declaration.reference == "51"
     assert declaration.unit == "ca/cad"
     assert default is not None and default.is_blank
-
