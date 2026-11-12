@@ -31,15 +31,36 @@ def test_the_salary_is_the_only_required_input() -> None:
 
 
 def test_the_return_exports_line_167_and_the_marginal_and_average_rates() -> None:
+    # The federal marginal rate, the Ontario marginal rate and the health premium slope are read
+    # inside the return by the final sum, so they are no longer exported.
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert set(default.exports) == {
         "ca-on/average_income_tax_rate",
-        "ca-on/ontario_marginal_rate",
-        "ca-on/return_health_premium_slope",
+        "ca-on/marginal_tax_rate",
         "ca/refund_or_balance_owing",
-        "ca/federal_marginal_rate",
     }
+
+
+def test_the_return_ends_with_the_sum_of_the_three_rates_exactly() -> None:
+    # The last step adds the federal marginal rate, the Ontario marginal rate and the health
+    # premium slope, in that order, with the dataset that rounds nothing.
+    (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
+
+    last = default.capabilities[-1]
+
+    assert (last.name, dict(last.params), dict(last.consumes), dict(last.produces)) == (
+        "core/sum",
+        {"rounding": "ca-on/exact_rounding"},
+        {
+            "parts": (
+                "ca/federal_marginal_rate",
+                "ca-on/ontario_marginal_rate",
+                "ca-on/return_health_premium_slope",
+            )
+        },
+        {"output": "ca-on/marginal_tax_rate"},
+    )
 
 
 def test_the_return_multiplies_the_bracket_rate_by_the_surtax_factor_exactly() -> None:
