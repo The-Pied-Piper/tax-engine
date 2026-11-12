@@ -51,8 +51,8 @@ class SurtaxFactor(Capability):
         over = tuple(
             tier
             for dataset in (self._line_66, self._line_67)
-            for tier in dataset.values.tiers
-            if base > tier.threshold
+            for tier, charge in dataset.values.charges(base)
+            if charge > 0
         )
         factor = Decimal(1) + sum((tier.rate.value for tier in over), Decimal(0))
         return CapabilityResult(
