@@ -1,7 +1,7 @@
 """BracketColumnFigure: one printed figure of the bracket column a base falls in, never rounded.
 
 Subclasses give the lower bound, the rate or the tax at the column's start; a base at a threshold is
-in the lower column.
+in the lower column. A base the schedule's range does not cover gives a blank.
 """
 
 from __future__ import annotations
@@ -12,18 +12,20 @@ from decimal import Decimal
 from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, Money
+from tax_engine.domain.blank import BLANK
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
 from tax_engine.domain.parameters.brackets import BRACKETS, BracketColumn, BracketSchedule
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
-from tax_engine.domain.trace import BracketColumnFigureLine, TraceLine
+from tax_engine.domain.trace import BracketColumnFigureLine, BracketOutsideRangeLine, TraceLine
 
 
 class BracketColumnFigure(Capability):
     """Produces `output`: one figure of the `schedule` column that the consumed `base` falls in.
 
     Undecorated: a subclass gives the figure's `FIGURE_NAME` and `_figure`, and carries the
-    identifier. Consumes `base` and produces `output`, both Decimal.
+    identifier. Consumes `base` and produces `output`, both Decimal; `output` is blank, with its own
+    trace line, when the schedule's range does not cover `base`.
     """
 
     FIGURE_NAME: ClassVar[str]
@@ -32,6 +34,7 @@ class BracketColumnFigure(Capability):
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[BracketSchedule]]] = {"schedule": BRACKETS}
     CONSUMES: ClassVar[Mapping[str, type]] = {"base": Decimal}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    MAY_BE_BLANK: ClassVar[frozenset[str]] = frozenset({"output"})
 
     def __init__(
         self, base: Money, output: Money, schedule: ParameterDataset[BracketSchedule]
@@ -48,7 +51,13 @@ class BracketColumnFigure(Capability):
 
     def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
         base = self._input(inputs, self._base).value
-        column = self._schedule.values.column_for(base)
+        schedule = self._schedule.values
+        if schedule.has_range and not schedule.covers(base):
+            outside: tuple[TraceLine, ...] = (
+                BracketOutsideRangeLine(output=self._output, base=self._base, base_amount=base),
+            )
+            return CapabilityResult(outputs=(Artifact(self._output, BLANK),), trace=outside)
+        column = schedule.column_for(base)
         figure = self._figure(column)
         trace: tuple[TraceLine, ...] = (
             BracketColumnFigureLine(

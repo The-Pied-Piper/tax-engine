@@ -18,6 +18,7 @@ __all__ = [
     "AmountByBandRateLine",
     "BracketColumnLine",
     "BracketColumnFigureLine",
+    "BracketOutsideRangeLine",
     "SurchargeTierLine",
     "RateByIncomeBandLine",
     "ChosenRateAppliedLine",
@@ -63,6 +64,26 @@ class BracketColumnFigureLine(TraceLine):
     def amount(self) -> Decimal:
         """The figure."""
         return self.figure
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
+
+@dataclass(frozen=True)
+class BracketOutsideRangeLine(TraceLine):
+    """`output` is left blank: `base` (worth `base_amount`) is outside the range of the bracket
+    table."""
+
+    output: Money
+    base: Money
+    base_amount: Decimal
+
+    @property
+    def amount(self) -> Decimal:
+        """0: a blank has no figure."""
+        return Decimal(0)
 
     @property
     def label(self) -> str | None:

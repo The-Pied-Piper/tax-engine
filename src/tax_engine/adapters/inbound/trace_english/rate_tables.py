@@ -12,6 +12,7 @@ from tax_engine.domain.trace.rate_tables import (
     AmountByBandRateLine,
     BracketColumnFigureLine,
     BracketColumnLine,
+    BracketOutsideRangeLine,
     ChosenRateAppliedLine,
     RateByIncomeBandLine,
     SurchargeTierLine,
@@ -53,6 +54,18 @@ class BracketColumnFigureRenderer:
         if line.name == "rate":
             return f"{found} falls in a bracket with the rate {shown}"
         return f"{found} falls in a bracket with {shown} of tax on the income below it"
+
+
+@english_renderer
+class BracketOutsideRangeRenderer:
+    """English text for BracketOutsideRangeLine."""
+
+    line_class = BracketOutsideRangeLine
+
+    def render(self, line: BracketOutsideRangeLine, names: EnglishNames) -> str:
+        """The English sentence for `line`."""
+        found = names.figure(line.base, line.base_amount)
+        return f"{found} is outside the range of the bracket table, so it is left blank"
 
 
 @english_renderer

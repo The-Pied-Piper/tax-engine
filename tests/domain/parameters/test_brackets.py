@@ -141,7 +141,7 @@ def test_the_schedule_offers_one_column_per_amount_and_its_tax() -> None:
     data = {field.name for field in fields(BracketSchedule)}
     public = {name for name in vars(BracketSchedule) if not name.startswith("_")} - data
 
-    assert public == {"column_for", "tax_on"}
+    assert public == {"column_for", "covers", "has_range", "tax_on"}
 
 
 def test_single_bracket_is_a_flat_rate() -> None:
@@ -166,10 +166,11 @@ def test_rejects_non_decimal_amount() -> None:
 # --- the tax at each bracket's start, computed by the schedule's rule ------------------
 
 
-def test_a_schedule_holds_its_brackets_and_its_tax_at_start_rounding_in_order() -> None:
+def test_a_schedule_holds_its_brackets_rounding_and_range_in_order() -> None:
     assert [field.name for field in fields(BracketSchedule)] == [
         "brackets",
         "tax_at_start_rounding",
+        "up_to",
     ]
 
 

@@ -439,7 +439,7 @@ def test_a_compute_rule_is_allowed_on_a_slot_that_takes_no_number() -> None:
     Listing(notes, NET).with_blank_rules({"rows": COMPUTE})
 
 
-def test_compute_may_still_never_return_a_blank() -> None:
+def test_compute_may_not_return_a_blank_in_a_slot_not_listed_may_be_blank() -> None:
     class Leaky(SubtractCompute):
         def compute(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
             return CapabilityResult((blank(self._output),), ())

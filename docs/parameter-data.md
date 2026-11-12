@@ -17,6 +17,18 @@ start as the form prints it (`tax_at_start`).
   excess over the bracket's lower, plus its tax at start. An amount at a threshold falls in the
   lower bracket ("more than ... but not more than ...").
 - Rounding the column's tax is the capability's decision, made with its own rounding rule.
+- A schedule covers a range of amounts. The first bracket's `from` is where it starts ("more than":
+  0 itself is covered only when `from` is 0). The optional `up_to` is the last amount it covers
+  ("not more than"); it must lie above the last bracket's `from`. Without `up_to` the schedule has
+  no upper end. `covers(amount)` says whether an amount is in the range.
+- A first bracket above 0 must print its `tax_at_start`, since the schedule cannot compute the tax
+  below its range. A later bracket without a printed start then adds the exact tax on the brackets
+  between to that printed figure, rounded with `tax_at_start_rounding`.
+- A ranged schedule (an `up_to`, or a first bracket above 0) is how a form prints two tables side by
+  side, each filled in only for the incomes it covers. `column_for` and `tax_on` refuse an amount
+  outside the range (`AmountOutsideBracketRangeError`); the `bracket_column_*` capabilities instead
+  give a blank, with a trace line saying the base is outside the range, which later steps pass on.
+  A schedule from 0 with no `up_to` covers every amount from 0.
 
 ## Amount by band (`amount_by_band.py`)
 
