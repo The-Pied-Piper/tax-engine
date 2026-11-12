@@ -37,6 +37,7 @@ def test_the_return_exports_line_167_the_rates_and_the_surtax_factor() -> None:
         "ca-on/average_income_tax_rate",
         "ca-on/ontario_bracket_rate_return",
         "ca-on/ontario_surtax_factor",
+        "ca-on/return_health_premium_slope",
         "ca/refund_or_balance_owing",
     )
 

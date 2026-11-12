@@ -9,6 +9,7 @@ from tax_engine.adapters.inbound.trace_english.names import EnglishNames
 from tax_engine.adapters.inbound.trace_english.registry import english_renderer
 from tax_engine.domain.trace.rate_tables import (
     AmountByBandLine,
+    AmountByBandRateLine,
     BracketColumnFigureLine,
     BracketColumnLine,
     ChosenRateAppliedLine,
@@ -144,4 +145,21 @@ class AmountByBandRenderer:
             f"{names.figure(line.base, line.base_amount)} {position} "
             f"{EnglishFigures.money(line.over)}, "
             f"so {how} ({EnglishFigures.rounding(line.rounding)})"
+        )
+
+
+@english_renderer
+class AmountByBandRateRenderer:
+    """English text for AmountByBandRateLine."""
+
+    line_class = AmountByBandRateLine
+
+    def render(self, line: AmountByBandRateLine, names: EnglishNames) -> str:
+        """The English sentence for `line`."""
+        position = "is over" if line.base_amount > line.over else "is in the band starting at"
+        flat = "the band is a flat amount and " if line.rate is None else ""
+        return (
+            f"{names.figure(line.base, line.base_amount)} {position} "
+            f"{EnglishFigures.money(line.over)}, "
+            f"so {flat}the rate is {EnglishFigures.percent(line.result)}%."
         )

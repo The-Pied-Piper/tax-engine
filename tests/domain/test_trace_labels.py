@@ -41,7 +41,7 @@ LINE_CLASSES = _line_classes()
 
 
 def test_every_line_type_is_found() -> None:
-    assert len(LINE_CLASSES) == 62
+    assert len(LINE_CLASSES) == 63
 
 
 @pytest.mark.parametrize("cls", LINE_CLASSES, ids=[cls.__name__ for cls in LINE_CLASSES])

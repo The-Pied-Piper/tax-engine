@@ -10,6 +10,7 @@ from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rate_table import RateTableRow
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.domain.trace import (
+    AmountByBandRateLine,
     BracketColumnLine,
     ChosenRateAppliedLine,
     RateByIncomeBandLine,
@@ -21,6 +22,8 @@ OUT = AmountKind("ex/tax")
 INCOME = AmountKind("ex/income")
 RATE_OUT = RateKind("ex/rate_for_income")
 CHOSEN_RATE = RateKind("ex/chosen_rate")
+GROSS = AmountKind("ex/gross_pay")
+SLOPE = AmountKind("ex/slope")
 CENT = RoundTo(increment=D("0.01"), mode=RoundingMode.HALF_UP)
 
 
@@ -74,3 +77,36 @@ def test_a_chosen_rate_applied() -> None:
     assert render(rounded) == (
         "Chosen rate (12.5%) of income (1000.00) gives 125.00 (rounded to the nearest cent)."
     )
+
+
+def test_a_sloped_band_above_its_start_gives_its_rate() -> None:
+    line = AmountByBandRateLine(SLOPE, GROSS, D("72300.00"), D("72000"), Rate(D("0.25")), D("0.25"))
+
+    assert render(line) == "Gross pay (72300.00) is over 72000.00, so the rate is 25%."
+
+
+def test_a_flat_band_gives_a_rate_of_zero() -> None:
+    line = AmountByBandRateLine(SLOPE, GROSS, D("69335.00"), D("48600"), None, D("0"))
+
+    assert render(line) == (
+        "Gross pay (69335.00) is over 48600.00, so the band is a flat amount and the rate is 0%."
+    )
+
+
+def test_a_base_at_the_start_of_the_band_is_in_the_band_starting_there() -> None:
+    line = AmountByBandRateLine(SLOPE, GROSS, D("72000.00"), D("72000"), Rate(D("0.25")), D("0.25"))
+    flat = AmountByBandRateLine(SLOPE, GROSS, D("0"), D("0"), None, D("0"))
+
+    assert render(line) == (
+        "Gross pay (72000.00) is in the band starting at 72000.00, so the rate is 25%."
+    )
+    assert render(flat) == (
+        "Gross pay (0.00) is in the band starting at 0.00, "
+        "so the band is a flat amount and the rate is 0%."
+    )
+
+
+def test_a_rate_prints_as_a_percentage_the_way_other_rates_do() -> None:
+    line = AmountByBandRateLine(SLOPE, GROSS, D("21000"), D("20000"), Rate(D("0.06")), D("0.06"))
+
+    assert render(line) == "Gross pay (21000.00) is over 20000.00, so the rate is 6%."
