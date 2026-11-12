@@ -5,9 +5,9 @@ chart prints "Line 73: Rate" with 14.5%, 20.5%, 26%, 29% or 33%. The existing st
 `ca/federal_bracket_column_rate_line_73` of `ca/t1_tax_and_credits` is the printed rate of the
 column that line 70 falls in. The return summary reads it as a cross-form read: the T1 form exports
 it, and one `core/record_total` step of `return.yaml` totals the one amount into the return's own
-amount kind `ca/federal_marginal_rate`. The step has no printed title, no printed line; the step carries
-the unit `core/percent`, so the summary shows it untitled, with no reference, and a trace prints the
-fraction 0.205 as the form prints it, "20.5%".
+amount kind `ca/federal_marginal_rate`. The step has no printed title and no printed line, and
+carries the unit `core/percent`, so the summary shows it untitled, with no reference, and a trace
+prints the fraction 0.205 as the form prints it, "20.5%".
 
 The test composes the real salary, Schedule 8, T1 taxable income, T2204, Schedule 6, ON428 parts and
 the real T1 parts, as the line 167 test does. The header and the form are the real files:
