@@ -396,3 +396,13 @@ LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
 """Individual income threshold, Schedule ON428-A Part A line 16 "Individual income threshold
 32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
 whole."""
+
+RETURN_TAXABLE_INCOME = AmountKind.declare(CATALOG, "return_taxable_income", non_negative=True)
+"""Taxable income on the Return summary: the T1 taxable income (line 26000), the base of the
+health premium chart."""
+
+RETURN_HEALTH_PREMIUM_SLOPE = AmountKind.declare(
+    CATALOG, "return_health_premium_slope", non_negative=True
+)
+"""Health premium slope, ON428 line 89 chart: the printed rate of the chart row that the taxable
+income falls in (6% or 25%), 0 for a flat row."""

@@ -10,3 +10,19 @@ capabilities:
       records: ca/t1_tax_and_credits.refund_or_balance_owing
     produces:
       output: ca/refund_or_balance_owing
+# The Return summary's health premium slope: the rate of the ON428 line 89 chart row that the T1
+# taxable income falls in, 0 for a flat row. The taxable income is totalled into the return's own
+# kind, and the slope is read from the `ca-on/health_premium_rows` dataset. Neither is exported.
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.taxable_income
+    produces:
+      output: ca-on/return_taxable_income
+  - name: core/amount_by_band_rate
+    params:
+      table: ca-on/health_premium_rows
+    consumes:
+      base: ca-on/return_taxable_income
+    produces:
+      output: ca-on/return_health_premium_slope
