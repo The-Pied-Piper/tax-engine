@@ -58,3 +58,7 @@ WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9 = AmountKind.declare(
 """Alberta supplemental tax credit, Worksheet AB428 line 9 "Line 9: Line 7 multiplied by the
 percentage from line 8 enter this amount on line 61545 of your Form AB428.": the credit entered on
 line 61545 of Form AB428."""
+
+WORKSHEET_AB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_ab428_line_6", non_negative=True)
+"""Base amount, Worksheet AB428 line 6 "Line 6: Base amount 4,800.00": the base amount of the
+Alberta supplemental tax credit."""
