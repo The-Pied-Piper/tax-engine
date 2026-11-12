@@ -1,0 +1,10 @@
+# Worksheet AB428 (CRA 5009-D) 2025, section "Line 61545 – Alberta supplemental tax credit". This
+# part names the form and its export: line 9 (`ca-ab/worksheet_ab428_supplemental_credit_line_9`),
+# which the form says to enter on line 61545 of Form AB428. Line parts carry the capabilities.
+form:
+  name: ca-ab/worksheet_ab428
+  title: "Worksheet AB428"
+  required: true
+  exports:
+    - ca-ab/worksheet_ab428_supplemental_credit_line_9
+capabilities: []
