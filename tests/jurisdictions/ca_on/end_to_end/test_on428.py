@@ -285,7 +285,7 @@ def test_the_form_exports_line_90_and_the_line_5_rate(take_home_service: TakeHom
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca-on/on428")
     assert tuple(kind.identifier for kind in form.exports) == (
         ON428_ONTARIO_TAX_LINE_90.identifier,
-        "ca-on/on428_bracket_column_rate_line_5",
+        ON428_BRACKET_COLUMN_RATE_LINE_5.identifier,
     )
 
     worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))

@@ -8,9 +8,9 @@ is the one printed in the column of the ON428 chart (line 5), the existing step
 Another form reads an export only as a record list, as the return does for T1 line 167. So the
 ON428 form exports line 5 and the return summary has one `core/record_total` step consuming
 `ca-on/on428.on428_bracket_column_rate_line_5`, producing the new Ontario kind
-`ca-on/ontario_bracket_rate_return` (a non-negative amount, no unit yet: rates are unit-less
-until #658). The default form `ca-on/return` lists it in its outputs after
-`ca/refund_or_balance_owing`. Names the ticket does not settle: the kind identifier.
+`ca-on/ontario_bracket_rate_return` (a non-negative amount, unit `core/percent`). The default form `ca-on/return` lists it in
+its outputs beside `ca/refund_or_balance_owing`. Names the ticket does not settle: the kind
+identifier.
 
 Figures (the real bundled manifest, salary the only input): $20,000 gives the first bracket's rate
 0.0505, $70,000 gives 0.0915 and $275,000 gives the top bracket's rate 0.1316. The $70,000
@@ -25,19 +25,21 @@ from decimal import Decimal
 import pytest
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Manifest
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
-from tests.capabilities import bundled_capabilities
+from tax_engine.registrations import JURISDICTIONS, units
+from tests.jurisdictions.ca_on.conftest import (
+    ONTARIO_PARTS,
+    TakeHomeService,
+)
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
+REAL_HEADER = (ONTARIO_PARTS / "manifest.yaml").read_text(encoding="utf-8")
 RETURN = "ca-on/return"
 ON428 = "ca-on/on428"
 LINE_5 = "ca-on/on428_bracket_column_rate_line_5"
@@ -45,12 +47,12 @@ RETURN_RATE = "ca-on/ontario_bracket_rate_return"
 LINE_167 = "ca/refund_or_balance_owing"
 
 
-def _service() -> TaxComputationService:
-    return TaxComputationService(
-        YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds(), units()),
-        YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units()),
-        bundled_capabilities(),
-    )
+# The real header, with every Ontario part composed beside it as the calculator loads them, and the
+# federal forms imported by the header.
+PARTS = tuple(
+    sorted(path.name for path in ONTARIO_PARTS.rglob("*.yaml") if path.name != "manifest.yaml")
+)
+NO_FORM = "capabilities: []\n"
 
 
 def _manifest() -> Manifest:
@@ -59,8 +61,11 @@ def _manifest() -> Manifest:
     return manifest
 
 
-def _worksheets(salary: str) -> dict[str, tuple[Worksheet, ...]]:
-    return _service().compute(ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
+def _worksheets(
+    take_home_service: TakeHomeService, salary: str
+) -> dict[str, tuple[Worksheet, ...]]:
+    service = take_home_service(REAL_HEADER, NO_FORM, *PARTS)
+    return service.compute(ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
 
 
 def test_the_on428_form_exports_the_bracket_column_rate_of_line_5() -> None:
@@ -93,8 +98,10 @@ def test_the_return_bracket_rate_kind_is_a_registered_non_negative_amount() -> N
         ("275000", "0.1316"),
     ],
 )
-def test_the_return_bracket_rate_is_the_line_5_rate(salary: str, rate: str) -> None:
-    worksheets = _worksheets(salary)
+def test_the_return_bracket_rate_is_the_line_5_rate(
+    take_home_service: TakeHomeService, salary: str, rate: str
+) -> None:
+    worksheets = _worksheets(take_home_service, salary)
     kinds = bundled_kinds()
     (on428,) = worksheets[ON428]
     (summary,) = worksheets[RETURN]
@@ -103,8 +110,8 @@ def test_the_return_bracket_rate_is_the_line_5_rate(salary: str, rate: str) -> N
     assert summary.get(kinds.kind(RETURN_RATE)).value == D(rate)
 
 
-def test_the_70000_take_home_stays_53468_68() -> None:
-    worksheets = _worksheets("70000")
+def test_the_70000_take_home_stays_53468_68(take_home_service: TakeHomeService) -> None:
+    worksheets = _worksheets(take_home_service, "70000")
     kinds = bundled_kinds()
     (summary,) = worksheets[RETURN]
     (schedule_8,) = worksheets["ca/schedule_8"]
@@ -126,8 +133,10 @@ def test_the_70000_take_home_stays_53468_68() -> None:
     assert D("70000") - cpp - ei - total_tax == D("53468.68")
 
 
-def test_the_return_prints_the_bracket_rate_as_a_percentage_in_the_core_percent_unit() -> None:
-    (summary,) = _worksheets("70000")[RETURN]
+def test_the_return_prints_the_bracket_rate_as_a_percentage_in_the_core_percent_unit(
+    take_home_service: TakeHomeService,
+) -> None:
+    (summary,) = _worksheets(take_home_service, "70000")[RETURN]
 
     unit = summary.unit(bundled_kinds().kind(RETURN_RATE).label)
 
