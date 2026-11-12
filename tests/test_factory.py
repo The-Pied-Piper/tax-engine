@@ -21,8 +21,10 @@ def test_each_call_to_the_artifact_kinds_builds_its_own_registry() -> None:
     assert artifact_kinds() is not artifact_kinds()
 
 
-def test_the_units_are_those_of_every_listed_package_none_declaring_any_yet() -> None:
-    assert units().identifiers() == frozenset()
+def test_the_units_are_those_of_every_listed_package() -> None:
+    assert units().identifiers() == frozenset(
+        {"core/months", "core/years", "core/percent", "ca/cad"}
+    )
 
 
 def test_each_call_to_the_units_builds_its_own_registry() -> None:
