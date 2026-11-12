@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import assert_type
 
 import pytest
+from tax_engine.jurisdictions.core.capabilities.amount_by_band_rate import AmountByBandRate
 
 from tax_engine.domain.capability import Capability, CapabilityRegistry, capability
 from tax_engine.domain.errors import (
@@ -174,6 +175,7 @@ def test_a_subclass_of_a_decorated_class_carries_no_identifier_of_its_own() -> N
         ("core/subtract_not_below_zero", SubtractNotBelowZero),
         ("core/bracket_column_lower_bound", BracketColumnLowerBound),
         ("core/bracket_column_rate", BracketColumnRate),
+        ("core/amount_by_band_rate", AmountByBandRate),
         ("core/bracket_column_tax_at_start", BracketColumnTaxAtStart),
     ],
 )
