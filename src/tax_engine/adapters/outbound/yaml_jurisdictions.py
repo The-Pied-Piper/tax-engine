@@ -5,6 +5,7 @@ The manifest format is described in docs/manifest-format.md.
 
 from __future__ import annotations
 
+import dataclasses
 from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any, NamedTuple
@@ -66,7 +67,14 @@ _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
 
 
-class _Imported(NamedTuple):
+class _ImportEntry(NamedTuple):
+    """One `imports` entry: the form and the dataset families it reads in place of its own."""
+
+    name: str
+    datasets: Mapping[str, str]
+
+
+class _LoadedImports(NamedTuple):
     """The forms a manifest imports and the input declarations their parts carry."""
 
     forms: tuple[Form, ...]
@@ -167,8 +175,8 @@ class YamlJurisdictionSource:
         try:
             return self._manifest(
                 document,
-                imported=lambda names: self._imported(
-                    names, {}, self._input_owners(document, path)
+                imported=lambda imports: self._imported(
+                    imports, {}, self._input_owners(document, path)
                 ),
             )
         except (
@@ -232,7 +240,7 @@ class YamlJurisdictionSource:
                     self._form(name, selections, declarations, default)
                     for name, selections in form_selections.items()
                 ),
-                lambda names: self._imported(names, import_owners, identifier_owners["inputs"]),
+                lambda imports: self._imported(imports, import_owners, identifier_owners["inputs"]),
             )
         except (
             InvalidManifestError,
@@ -294,28 +302,37 @@ class YamlJurisdictionSource:
 
     def _imported(
         self,
-        names: tuple[str, ...],
+        imports: tuple[_ImportEntry, ...],
         owners: Mapping[str, Path],
         input_owners: dict[str, Path],
-    ) -> _Imported:
-        """The forms `names`, in order, each from the parts in its package's `forms/` folder,
-        with the inputs those parts declare.
+    ) -> _LoadedImports:
+        """The forms `imports` name, in order, each from the parts in its package's `forms/`
+        folder, with the inputs those parts declare.
 
         `owners` gives the part that lists each import, to name in an error. `input_owners` gives
         the part that declares each input of the manifest; the imported parts are added to it, so
         an input declared twice is refused as it is between two parts of a manifest.
         """
-        found = [self._imported_form(name, owners.get(name), input_owners) for name in names]
-        return _Imported(
+        found = [
+            self._imported_form(entry.name, owners.get(entry.name), input_owners, entry.datasets)
+            for entry in imports
+        ]
+        return _LoadedImports(
             forms=tuple(form for form, _ in found),
             inputs=tuple(declaration for _, inputs in found for declaration in inputs),
         )
 
     def _imported_form(
-        self, identifier: str, owner: Path | None, input_owners: dict[str, Path]
+        self,
+        identifier: str,
+        owner: Path | None,
+        input_owners: dict[str, Path],
+        datasets: Mapping[str, str],
     ) -> tuple[Form, tuple[InputDeclaration, ...]]:
         """The form `identifier` of the parts in `<package>/forms/<local id>/` and the inputs
         they declare; each part names that form and carries `capabilities` and `inputs`.
+
+        Each family of `datasets` replaces itself in the parameters the form's selections read.
         """
         namespace, _, local_id = identifier.partition("/")
         prefix = "" if owner is None else f"{owner}: "
@@ -346,8 +363,33 @@ class YamlJurisdictionSource:
                     "another form"
                 )
         default = Namespace(namespace).identifier(_DEFAULT_FORM)
-        form = self._form(identifier, selections.get(identifier, []), declarations, default)
+        chosen = self._rebound(
+            selections.get(identifier, []), datasets, f"{prefix}imports {identifier!r}"
+        )
+        form = self._form(identifier, chosen, declarations, default)
         return form, tuple(inputs)
+
+    @staticmethod
+    def _rebound(
+        selections: list[CapabilitySelection], datasets: Mapping[str, str], who: str
+    ) -> list[CapabilitySelection]:
+        """`selections` reading each family of `datasets` as the family it maps to.
+
+        Only `params` change; artifacts keep their names. A family no selection reads is refused.
+        """
+        if not datasets:
+            return selections
+        used: set[str] = set()
+        chosen: list[CapabilitySelection] = []
+        for selection in selections:
+            used.update(datasets.keys() & set(selection.params.values()))
+            params = {
+                slot: datasets.get(family, family) for slot, family in selection.params.items()
+            }
+            chosen.append(dataclasses.replace(selection, params=params))
+        for family in datasets.keys() - used:
+            raise InvalidManifestError(f"{who}: dataset {family!r} is read by no part of the form")
+        return chosen
 
     @staticmethod
     def _check_imported_part(part: Path, identifier: str, contents: dict[str, YamlNode]) -> None:
@@ -485,9 +527,12 @@ class YamlJurisdictionSource:
         if key not in _IDENTIFIER_LISTS:
             return
         for index, item in enumerate(node.items()):
-            identifier = (
-                item.field("name").require_string() if key == "inputs" else item.require_string()
-            )
+            if key == "inputs":
+                identifier = item.field("name").require_string()
+            elif key == "imports":
+                identifier = YamlJurisdictionSource._import_name(item)
+            else:
+                identifier = item.require_string()
             if identifier in owners:
                 raise InvalidManifestError(
                     f"{part}: {key}[{index}]: {identifier!r} is already listed in "
@@ -495,19 +540,55 @@ class YamlJurisdictionSource:
                 )
             owners[identifier] = part
 
-    def _import_list(self, node: YamlNode) -> tuple[str, ...]:
-        """The form identifiers of an `imports` list, in order, none repeated."""
-        self._identifiers(node)
-        names = tuple(item.require_string() for item in node.items())
-        for name in names:
+    def _import_list(self, node: YamlNode) -> tuple[_ImportEntry, ...]:
+        """The entries of an `imports` list, in order, no form repeated.
+
+        An entry is a form identifier, or a mapping of `form` and `datasets`, a non-empty mapping
+        from a family the form reads to the family to read instead.
+        """
+        entries: list[_ImportEntry] = []
+        for item in node.items():
+            name = self._import_name(item)
+            if name in {entry.name for entry in entries}:
+                raise YamlShapeError(f"{item.where}: {name!r} is listed more than once")
             Form.check_identifier("import", name)
-        return names
+            entries.append(_ImportEntry(name, self._rebinds(item)))
+        return tuple(entries)
+
+    @staticmethod
+    def _import_name(item: YamlNode) -> str:
+        """The form identifier an `imports` entry names, in either of its shapes."""
+        identifier = (
+            item.field("form").require_string() if item.is_mapping() else item.require_string()
+        )
+        if not identifier:
+            raise YamlShapeError(f"{item.where} must not be empty")
+        return identifier
+
+    @staticmethod
+    def _rebinds(item: YamlNode) -> dict[str, str]:
+        """The families an `imports` entry has the form read in place of its own."""
+        if not item.is_mapping():
+            return {}
+        item.require_mapping(frozenset({"form"}), optional=frozenset({"datasets"}))
+        node = item.optional_field("datasets")
+        if node is None:
+            return {}
+        datasets = node.string_mapping()
+        if not datasets:
+            raise YamlShapeError(f"{node.where} must name at least one family")
+        for source, target in datasets.items():
+            Form.check_identifier("dataset", source)
+            Form.check_identifier("dataset", target)
+        return datasets
 
     def _manifest(
         self,
         document: YamlNode,
         forms_beside: Callable[[str], tuple[Form, ...]] = lambda _: (),
-        imported: Callable[[tuple[str, ...]], _Imported] = lambda _: _Imported((), ()),
+        imported: Callable[[tuple[_ImportEntry, ...]], _LoadedImports] = lambda _: _LoadedImports(
+            (), ()
+        ),
     ) -> Manifest:
         """The manifest of `document`, whose selections and `outputs` are the default form's.
 
@@ -524,7 +605,7 @@ class YamlJurisdictionSource:
         default = code.namespace.identifier(_DEFAULT_FORM)
         title = doc.optional_field("title")
         imports = doc.optional_field("imports")
-        found = _Imported((), ()) if imports is None else imported(self._import_list(imports))
+        found = _LoadedImports((), ()) if imports is None else imported(self._import_list(imports))
         forms_imported = found.forms
         declared_inputs = {declaration.name: declaration for declaration in inputs}
         declared_inputs.update((declaration.name, declaration) for declaration in found.inputs)
