@@ -121,7 +121,7 @@ def test_line_125_names_line_35000_and_its_rounding_in_the_trace(
 ) -> None:
     sheet = _sheet(take_home_service, "70000")
     assert (
-        "Line 35000 (3185.54) gives 3185.54 (rounded to the nearest cent)."
+        "Line 35000 (CA$3185.54) gives CA$3185.54 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 

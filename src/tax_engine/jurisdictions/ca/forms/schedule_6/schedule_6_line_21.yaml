@@ -8,6 +8,7 @@ capabilities:
   - name: core/credit_amount
     title: "Maximum benefit"
     reference: "21"
+    unit: ca/cad
     params:
       amount: ca/cwb_maximum
     produces:

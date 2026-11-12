@@ -9,6 +9,7 @@ capabilities:
   - name: core/capped_amount
     title: "Total CPP pensionable earnings from box 26 of all of your T4 slips"
     reference: "1"
+    unit: ca/cad
     params:
       cap: ca/cpp_pensionable_earnings_per_slip_maximum
     consumes:

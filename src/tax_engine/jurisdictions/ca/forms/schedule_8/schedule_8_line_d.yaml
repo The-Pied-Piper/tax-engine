@@ -8,6 +8,7 @@ capabilities:
   - name: ca/amount_by_count
     title: "Additional maximum pensionable earnings"
     reference: "D"
+    unit: ca/cad
     params:
       table: ca/cpp_additional_maximum_pensionable_earnings
     consumes:

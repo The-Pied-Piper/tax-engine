@@ -9,6 +9,7 @@ capabilities:
   - name: core/lesser_of
     title: "Non-refundable tax credit for employment insurance premiums through employment"
     reference: "16"
+    unit: ca/cad
     consumes:
       amounts:
         - ca/t2204_line_7

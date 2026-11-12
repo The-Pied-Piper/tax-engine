@@ -9,6 +9,7 @@ capabilities:
   - name: ca/contribution_tier
     title: "Required second additional contributions on CPP pensionable earnings"
     reference: "22"
+    unit: ca/cad
     params:
       tier: ca/cpp_line_22_second_additional_contribution
     consumes:

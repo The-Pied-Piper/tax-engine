@@ -28,6 +28,7 @@ capabilities:
   - name: core/record_total
     title: "Employment insurance (EI) overpayment"
     reference: "45000"
+    unit: ca/cad
     consumes:
       records: ca/t2204.ei_overpayment
     produces:
@@ -35,6 +36,7 @@ capabilities:
   - name: core/record_total
     title: "Canada workers benefit (CWB)"
     reference: "45300"
+    unit: ca/cad
     consumes:
       records: ca/schedule_6.cwb_benefit_line_28
     produces:
@@ -42,6 +44,7 @@ capabilities:
   - name: core/sum
     title: "Total credits"
     reference: "48200"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

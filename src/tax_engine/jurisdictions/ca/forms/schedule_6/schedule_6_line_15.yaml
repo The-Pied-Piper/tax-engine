@@ -15,6 +15,7 @@ capabilities:
   - name: core/subtract
     title: "Adjusted family net income"
     reference: "15"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

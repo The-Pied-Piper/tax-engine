@@ -7,6 +7,7 @@ inputs:
   # gives 12.
   - name: ca/cpp_months
     reference: "A"
+    unit: core/months
     required: false
     default: "12"
     basis: 'Enter "12" on line A below unless any of the following conditions apply:'

@@ -7,6 +7,7 @@ form:
 capabilities:
   - name: core/lesser_of
     reference: "2"
+    unit: ca/cad
     consumes:
       amounts:
         - ca/cpp_additional_maximum_pensionable_earnings

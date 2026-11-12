@@ -9,6 +9,7 @@ capabilities:
   - name: core/subtract_not_below_zero
     title: "Net income"
     reference: "23600"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

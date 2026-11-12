@@ -14,6 +14,7 @@ capabilities:
   - name: core/record_total
     title: "Net income from line 23600 of the return"
     reference: "7"
+    unit: ca/cad
     consumes:
       records: ca/t1_taxable_income.net_income_signed
     produces:

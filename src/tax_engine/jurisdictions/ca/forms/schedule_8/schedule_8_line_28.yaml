@@ -8,6 +8,7 @@ capabilities:
   - name: core/sum
     title: "Deduction for CPP enhanced contributions on employment income"
     reference: "28"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

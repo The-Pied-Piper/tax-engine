@@ -9,6 +9,7 @@ capabilities:
   - name: ca/contribution_tier
     title: "Required base contributions on CPP pensionable earnings"
     reference: "11"
+    unit: ca/cad
     params:
       tier: ca/cpp_line_11_base_contribution
     consumes:

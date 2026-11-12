@@ -7,6 +7,7 @@ form:
 capabilities:
   - name: core/record_total
     reference: "23300"
+    unit: ca/cad
     consumes:
       records: ca/schedule_8.schedule_8_cpp_enhanced_contributions_on_return
     produces:

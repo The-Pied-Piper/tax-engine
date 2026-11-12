@@ -7,6 +7,7 @@ form:
 inputs:
   - name: ca/deductions_from_net_income
     reference: "25700"
+    unit: ca/cad
     required: false
     default: "0"
     basis: "Line 68 and line 25700: Add lines 58 to 67."

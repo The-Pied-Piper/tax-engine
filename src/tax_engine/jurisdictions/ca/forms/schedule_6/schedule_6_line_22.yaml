@@ -10,6 +10,7 @@ form:
 capabilities:
   - name: core/lesser_of
     reference: "22"
+    unit: ca/cad
     consumes:
       amounts:
         - ca/cwb_working_income_rate_line_20

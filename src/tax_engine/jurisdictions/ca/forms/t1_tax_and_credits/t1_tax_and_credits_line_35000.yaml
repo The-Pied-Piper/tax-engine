@@ -12,6 +12,7 @@ capabilities:
   - name: core/sum
     title: "Total federal non-refundable tax credits"
     reference: "35000"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

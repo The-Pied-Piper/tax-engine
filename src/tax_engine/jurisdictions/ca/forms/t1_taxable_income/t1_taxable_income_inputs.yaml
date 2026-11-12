@@ -8,6 +8,7 @@ inputs:
   - name: ca/social_benefits_repayment
     title: "Social benefits repayment"
     reference: "23500"
+    unit: ca/cad
     required: false
     default: "0"
     basis: 'Line 55 and line 23500: If not, enter "0" on line 23500.'

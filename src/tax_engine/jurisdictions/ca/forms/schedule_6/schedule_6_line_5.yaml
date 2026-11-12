@@ -11,6 +11,7 @@ capabilities:
   - name: core/sum
     title: "Working income"
     reference: "5"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

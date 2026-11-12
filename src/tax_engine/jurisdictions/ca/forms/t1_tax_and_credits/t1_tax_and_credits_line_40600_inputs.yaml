@@ -9,6 +9,7 @@ inputs:
   - name: ca/federal_logging_tax_credit
     title: "Federal logging tax credit"
     reference: "133"
+    unit: ca/cad
     required: false
     default: "0"
     basis: 'Line 133: Federal logging tax credit'

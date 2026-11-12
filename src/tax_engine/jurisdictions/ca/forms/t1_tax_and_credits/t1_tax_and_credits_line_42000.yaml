@@ -10,6 +10,7 @@ capabilities:
   - name: core/sum
     title: "Net federal tax"
     reference: "42000"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:
