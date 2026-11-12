@@ -12,8 +12,9 @@ premium (6% and 25%). The sum is not a printed line, so the step is untitled and
 The return summary ends with one `core/sum` step in `return.yaml`: parts the federal marginal
 rate, the Ontario marginal rate and the health premium slope, in that order, the dataset
 `ca-on/exact_rounding` (`rounding: none`, the sum is exact), unit `core/percent`, producing the new
-non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The return's exports are that rate, the average
-income tax rate and T1 line 167: the three parts are now read inside the return, so they are no longer exported.
+non-negative Ontario amount kind `ca-on/marginal_tax_rate`. The return's exports are that rate, the
+average income tax rate and T1 line 167: the three parts are now read inside the return, so they are
+no longer exported.
 
 Figures (the real bundled manifest, salary the only input), each the exact sum of the three parts,
 worked by hand from the printed rates. Taxable income is the T1 figure the line 73 column and the

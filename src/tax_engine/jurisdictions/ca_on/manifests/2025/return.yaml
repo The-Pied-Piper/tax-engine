@@ -27,7 +27,10 @@
 # The step after those multiplies the bracket rate by the surtax factor (lines 5, 66 and 67) into the Ontario
 # marginal rate, the rate a further dollar of income is taxed at with the surtax. It is an exact
 # product, a rate with no printed rounding rule, so the `ca-on/exact_rounding` dataset rounds
-# nothing. It has no title.
+# nothing. It has no title. The last step adds the federal marginal rate, the Ontario marginal rate
+# and the health premium slope with core/sum into `ca-on/marginal_tax_rate`, the income tax rate on a
+# further dollar of salary; it is exact too (`ca-on/exact_rounding`), is not printed on the form and
+# has no title or line.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -104,3 +107,14 @@ capabilities:
       rate: ca-on/ontario_bracket_rate_return
     produces:
       output: ca-on/ontario_marginal_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      parts:
+        - ca/federal_marginal_rate
+        - ca-on/ontario_marginal_rate
+        - ca-on/return_health_premium_slope
+    produces:
+      output: ca-on/marginal_tax_rate
