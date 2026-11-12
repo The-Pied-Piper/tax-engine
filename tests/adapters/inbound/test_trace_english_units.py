@@ -56,6 +56,7 @@ from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 D = Decimal
 CROWNS = Unit("ex/crowns")
 MOONS = Unit("ex/moons")
+SHARES = Unit("ex/shares")  # a fraction written as a percentage
 WEEKS = Unit("ex/weeks")  # declared, but given no English text
 TEXTS = EnglishUnitTextRegistry()
 TEXTS.register_text(EnglishUnitText("ex/crowns", "EX$", "EX$", Placement.BEFORE, spaced=False))
@@ -69,6 +70,17 @@ OUT = AmountKind("ex/contribution")
 CENT = RoundTo(increment=D("0.01"), mode=RoundingMode.HALF_UP)
 
 
+def percentage_texts() -> EnglishUnitTextRegistry:
+    """`TEXTS` plus `ex/shares`, a fraction written as a percentage."""
+    texts = EnglishUnitTextRegistry()
+    for text in (
+        EnglishUnitText("ex/crowns", "EX$", "EX$", Placement.BEFORE, spaced=False),
+        EnglishUnitText("ex/shares", "%", "%", Placement.AFTER, spaced=False, as_percentage=True),
+    ):
+        texts.register_text(text)
+    return texts
+
+
 def sheet(units: dict[str, Unit], references: dict[str, str] | None = None) -> Worksheet:
     return Worksheet(figure_units=units, figure_references=references or {})
 
@@ -79,6 +91,49 @@ def test_a_figure_without_a_unit_prints_as_before() -> None:
     assert names.figure(GROSS, D("70000.00")) == "line 2 (70000.00)"
     assert names.figure(TERM, 12) == "term (12)"
     assert EnglishNames().figure(GROSS, D("70000.00")) == "gross pay (70000.00)"
+
+
+@pytest.mark.parametrize(
+    ("value", "written"),
+    [
+        (D("0.0505"), "5.05%"),
+        (D("0.2965"), "29.65%"),
+        (D("0.205"), "20.5%"),
+        (D("0.1642"), "16.42%"),
+        (D("0"), "0%"),
+        (D("1"), "100%"),
+        (D("-0.01"), "-1%"),
+    ],
+)
+def test_a_figure_whose_unit_is_a_percentage_prints_as_a_percentage(
+    value: Decimal, written: str
+) -> None:
+    names = EnglishNames(sheet({"gross_pay": SHARES}), percentage_texts())
+
+    assert names.figure(GROSS, value) == f"gross pay ({written})"
+
+
+def test_a_percentage_unit_prints_the_percentage_in_a_line_it_reads_and_gives() -> None:
+    line = SubtractedNotBelowZeroLine(
+        output=NET,
+        minuend=GROSS,
+        minuend_amount=D("0.2965"),
+        subtrahend=LESS,
+        subtrahend_amount=D("0.205"),
+        result=D("0.0915"),
+        rounding=NO_ROUNDING,
+    )
+    printed = sheet({"gross_pay": SHARES, "allowance": SHARES, "net_pay": SHARES})
+
+    assert EnglishTraceRenderer(unit_texts=percentage_texts()).render(line, printed) == (
+        "Gross pay (29.65%) less allowance (20.5%), not below 0, gives 9.15% (not rounded)."
+    )
+
+
+def test_a_unit_without_as_percentage_still_prints_the_fraction() -> None:
+    names = EnglishNames(sheet({"gross_pay": CROWNS}), TEXTS)
+
+    assert names.figure(GROSS, D("0.2965")) == "gross pay (EX$0.2965)"
 
 
 def test_a_unit_before_the_number_is_printed_against_it() -> None:
