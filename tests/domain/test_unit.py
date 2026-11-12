@@ -1,7 +1,8 @@
 """Unit tests for units: `Unit`, `Placement`, `UnitCatalog` and `UnitRegistry`.
 
 A unit has a name (what a manifest writes after `unit:`), a singular and a plural word or symbol,
-and a placement before or after the number. A package declares its units on a `UnitCatalog`, like
+and a placement before or after the number; it is plain data, and the English adapter writes it
+(`EnglishFigures.with_unit`). A package declares its units on a `UnitCatalog`, like
 its kinds on an `ArtifactCatalog`; a `UnitRegistry` holds the catalogs and resolves a manifest's
 unit name for one jurisdiction: core's units, the jurisdiction's own, and, for a province, those
 of its federal package. Names, symbols and namespaces are made up.
@@ -10,7 +11,6 @@ of its federal package. Names, symbols and namespaces are made up.
 from __future__ import annotations
 
 import dataclasses
-from decimal import Decimal
 
 import pytest
 
@@ -23,8 +23,6 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import Placement, Unit, UnitCatalog, UnitRegistry
-
-D = Decimal
 
 CROWNS = Unit("crowns", "EX$", "EX$", Placement.BEFORE)
 MOONS = Unit("moons", "moon", "moons", Placement.AFTER)
@@ -46,26 +44,8 @@ def test_a_unit_is_a_value() -> None:
     assert CROWNS != MOONS
 
 
-def test_a_unit_before_the_number_is_written_against_it() -> None:
-    assert CROWNS.format(D("3500.00"), "3500.00") == "EX$3500.00"
-    assert CROWNS.format(D("0.00"), "0.00") == "EX$0.00"
-
-
-def test_a_unit_after_the_number_is_written_after_a_space() -> None:
-    assert MOONS.format(12, "12") == "12 moons"
-
-
-def test_a_unit_after_the_number_is_singular_for_exactly_one() -> None:
-    assert MOONS.format(1, "1") == "1 moon"
-    assert MOONS.format(2, "2") == "2 moons"
-    assert MOONS.format(0, "0") == "0 moons"
-
-
-def test_a_unit_before_the_number_uses_its_singular_or_plural_the_same_way() -> None:
-    marks = Unit("marks", "one mark ", "marks ", Placement.BEFORE)
-
-    assert marks.format(1, "1") == "one mark 1"
-    assert marks.format(3, "3") == "marks 3"
+def test_a_unit_is_pure_data_it_writes_nothing() -> None:
+    assert not hasattr(Unit, "format")
 
 
 @pytest.mark.parametrize("name", ["", "Moons", "two words", "ex/moons", "9moons"])

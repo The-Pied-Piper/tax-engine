@@ -69,11 +69,11 @@ class EnglishNames:
 
     def shown(self, label: str | None, value: Decimal | int) -> str:
         """`value` as the figure `label` is written: an amount in cents or finer, a count whole,
-        with the figure's unit if it has one ("CA$3500.00", "12 months"). `None` has no unit.
+        with the figure's unit if it has one ("EX$3500.00", "12 moons"). `None` has no unit.
         """
         text = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
         unit = None if label is None else self.unit_of(label)
-        return text if unit is None else unit.format(value, text)
+        return EnglishFigures.with_unit(text, value, unit)
 
     def unit_of(self, label: str) -> Unit | None:
         """The unit of the figure `label`, as the form that makes it declares; `None` for none."""

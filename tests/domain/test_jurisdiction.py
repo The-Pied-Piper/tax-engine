@@ -7,6 +7,7 @@ Codes, identifiers and versions are made up.
 
 from __future__ import annotations
 
+import dataclasses
 from typing import assert_type
 
 import pytest
@@ -112,3 +113,8 @@ def test_a_shared_year_that_is_not_the_best_is_not_ambiguous() -> None:
     rival = manifest(version=4, valid_from_tax_year=2025)
 
     assert jurisdiction(V1, rival, V2).manifest_for(2028) is V2
+
+
+def test_a_jurisdiction_holds_its_code_and_manifests_only() -> None:
+    # The units a manifest names are the manifest's (`Manifest.units_by_name`).
+    assert [field.name for field in dataclasses.fields(Jurisdiction)] == ["code", "manifests"]

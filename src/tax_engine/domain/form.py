@@ -60,8 +60,7 @@ class FormComposition:
         same for an `instances` field left blank; an input or field whose default is blank may
         arrive blank, and any other blank is refused. `declared` gives the `title` and `reference`
         of the inputs and fields this form reads. `units` holds the units the manifest names, by
-        name; a name that `declared`, a field or a selection uses and `units` lacks is an
-        InvalidCompositionError.
+        name, which is every name `declared`, a field or a selection uses.
         """
         name = form.name
         instances = None if form.instances is None else kinds.kind(form.instances)
@@ -97,14 +96,13 @@ class FormComposition:
             if found.reference is not None
         }
         known = {} if units is None else units
-        self._read_units = {kind: self._unit_named(name, d.unit, known) for kind, d in printed}
-        self._produced_units = {
-            kind: self._unit_named(name, selection.unit, known) for kind, selection in produced_by
-        }
+        self._unit_claims = tuple(
+            (kind, how, None if found.unit is None else known[found.unit])
+            for how, claims in (("read", printed), ("produced", produced_by))
+            for kind, found in claims
+        )
         self._figure_units = {
-            kind.label: unit
-            for kind, unit in (self._read_units | self._produced_units).items()
-            if unit is not None
+            kind.label: unit for kind, _, unit in self._unit_claims if unit is not None
         }
         self._instances = instances
         self._exports = listed
@@ -141,15 +139,6 @@ class FormComposition:
             raise InvalidCompositionError(f"form {name!r}: {exc}") from exc
 
     @staticmethod
-    def _unit_named(form: str, name: str | None, known: Mapping[str, Unit]) -> Unit | None:
-        """The unit `name` of `known`; `None` for no name."""
-        if name is None:
-            return None
-        if name not in known:
-            raise InvalidCompositionError(f"form {form!r}: unit {name!r} is not one of its units")
-        return known[name]
-
-    @staticmethod
     def _blank_kinds(*defaults: Iterable[Artifact[Any]]) -> frozenset[ArtifactKind[Any]]:
         """The kinds whose default is blank: those may arrive blank."""
         return frozenset(a.kind for group in defaults for a in group if a.is_blank)
@@ -175,14 +164,11 @@ class FormComposition:
         return MappingProxyType(self._figure_units)
 
     @property
-    def read_units(self) -> Mapping[ArtifactKind[Any], Unit | None]:
-        """The unit this form gives each input or field it prints, `None` for none."""
-        return MappingProxyType(self._read_units)
-
-    @property
-    def produced_units(self) -> Mapping[ArtifactKind[Any], Unit | None]:
-        """The unit this form gives each figure its steps produce, `None` for none."""
-        return MappingProxyType(self._produced_units)
+    def unit_claims(self) -> tuple[tuple[ArtifactKind[Any], str, Unit | None], ...]:
+        """The unit this form gives each figure it prints, as `(kind, "read" or "produced", unit)`;
+        `None` for a figure it gives none.
+        """
+        return self._unit_claims
 
     @property
     def name(self) -> str:
@@ -495,14 +481,13 @@ class FormSet:
         readers among themselves; a figure with a unit in one form and none in another differs."""
         seen: dict[ArtifactKind[Any], tuple[str, Unit | None, str]] = {}
         for form in forms:
-            for how, units in (("produced", form.produced_units), ("read", form.read_units)):
-                for kind, unit in units.items():
-                    first = seen.setdefault(kind, (form.name, unit, how))
-                    if first[1] != unit:
-                        raise InvalidCompositionError(
-                            f"figure {kind.label!r} is {first[2]} in {FormSet._in(first[1])} by "
-                            f"{first[0]!r} but {how} in {FormSet._in(unit)} by {form.name!r}"
-                        )
+            for kind, how, unit in form.unit_claims:
+                first = seen.setdefault(kind, (form.name, unit, how))
+                if first[1] != unit:
+                    raise InvalidCompositionError(
+                        f"figure {kind.label!r} is {first[2]} in {FormSet._in(first[1])} by "
+                        f"{first[0]!r} but {how} in {FormSet._in(unit)} by {form.name!r}"
+                    )
 
     @staticmethod
     def _in(unit: Unit | None) -> str:

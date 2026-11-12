@@ -44,7 +44,7 @@ class BracketColumnFigureRenderer:
         shown = (
             f"{EnglishFigures.percent(line.figure)}%"
             if line.name == "rate"
-            else EnglishFigures.money(line.figure)
+            else names.shown(line.label, line.figure)
         )
         found = names.figure(line.base, line.base_amount)
         if line.name == "lower bound":
@@ -128,7 +128,7 @@ class AmountByBandRenderer:
     def render(self, line: AmountByBandLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         if line.flat_amount is not None:
-            how = f"the amount is {EnglishFigures.money(line.flat_amount)}"
+            how = f"the amount is {names.shown(line.label, line.flat_amount)}"
         elif line.minus is not None and line.rate is not None and line.plus is not None:
             how = (
                 f"({EnglishFigures.money(line.base_amount)} minus "

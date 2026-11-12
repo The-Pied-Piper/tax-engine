@@ -83,16 +83,23 @@ class Worksheet:
         return self._figure_references.get(label)
 
     def unit(self, label: str) -> Unit | None:
-        """The unit of the figure `label`; `None` if the manifest gives it none."""
-        return self._figure_units.get(label)
+        """The unit of the figure `label`: this form's own, else that of the form it is read from;
+        `None` if neither has one.
+        """
+        own = self._figure_units.get(label)
+        if own is not None:
+            return own
+        imported = self._imported_figures.get(label)
+        return None if imported is None else imported.unit
 
     def unit_of(self, line: TraceLine) -> Unit | None:
         """The unit of the figure `line` is about; `None` if it is about none or it has none."""
         label = line.label
-        return None if label is None else self._figure_units.get(label)
+        return None if label is None else self.unit(label)
 
     def _with_unit(self, artifact: Artifact[Any]) -> Artifact[Any]:
-        return artifact.with_unit(self._figure_units.get(artifact.kind.label, artifact.unit))
+        """`artifact` with the unit the manifest gives its figure; one it gives none has none."""
+        return artifact.with_unit(self._figure_units.get(artifact.kind.label))
 
     def imported(self, label: str) -> ImportedFigure | None:
         """The figure `label` as the form it is read from prints it; `None` if this form does not

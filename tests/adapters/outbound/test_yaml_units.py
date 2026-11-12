@@ -256,3 +256,87 @@ def test_a_unit_belongs_to_the_one_figure_a_selection_produces(tmp_path: Path) -
               - {name: ex/a, unit: moons, produces: {output: ex/y, other: ex/z}}
             """,
         )
+
+
+# --- the manifest holds the units it names, resolved ---------------------------------------------
+
+
+def test_a_manifest_holds_each_unit_its_declarations_name_by_name(tmp_path: Path) -> None:
+    manifest = load(
+        tmp_path,
+        """\
+        inputs:
+          - {name: ex/rent, required: true, unit: crowns}
+          - {name: ex/term, required: false, default: "12", basis: "L", unit: moons}
+          - {name: ex/plain, required: true}
+        capabilities:
+          - {name: ex/a, unit: ducats, produces: {output: ex/y}}
+          - {name: ex/b, unit: crowns, produces: {output: ex/z}}
+        """,
+    )
+    registry = units()
+
+    assert dict(manifest.units_by_name) == {
+        "crowns": registry.get("ex/crowns"),
+        "moons": registry.get("core/moons"),
+        "ducats": registry.get("ex-on/ducats"),
+    }
+    assert manifest.units_by_name["crowns"].singular == "EX$"
+
+
+def test_a_manifest_naming_no_unit_holds_none(tmp_path: Path) -> None:
+    manifest = load(
+        tmp_path,
+        """\
+        inputs: [{name: ex/rent, required: true}]
+        capabilities: []
+        """,
+    )
+
+    assert dict(manifest.units_by_name) == {}
+
+
+def test_a_manifest_holds_the_unit_of_a_field_of_a_forms_instances(tmp_path: Path) -> None:
+    manifest = load_folder(tmp_path, "{name: ex/gross_rent, required: true, unit: crowns}")
+
+    assert set(manifest.units_by_name) == {"crowns"}
+
+
+def test_each_manifest_of_a_jurisdiction_holds_only_the_units_it_names(tmp_path: Path) -> None:
+    load(
+        tmp_path,
+        """\
+        inputs: [{name: ex/rent, required: true, unit: crowns}]
+        capabilities: []
+        """,
+    )
+    later = tmp_path / "ex-on" / "manifests" / "v2.yaml"
+    later.write_text(
+        HEADER.replace("version: 1", "version: 2").replace("2025", "2026")
+        + "inputs: [{name: ex/rent, required: true, unit: moons}]\ncapabilities: []\n",
+        encoding="utf-8",
+    )
+
+    jurisdiction = source(tmp_path).get_jurisdiction(EX_ON)
+
+    held = {m.version: set(m.units_by_name) for m in jurisdiction.manifests}
+    assert held == {1: {"crowns"}, 2: {"moons"}}
+
+
+def test_a_unit_name_declared_in_two_places_a_manifest_sees_is_refused_at_load(
+    tmp_path: Path,
+) -> None:
+    registry = units()
+    twin = UnitCatalog(Namespace("ex-on"))
+    twin.declare("crowns", "ON$", "ON$", Placement.BEFORE)
+    registry.register_catalog(twin)
+
+    with pytest.raises(InvalidManifestError, match="unit 'crowns'.*ambiguous"):
+        load(
+            tmp_path,
+            """\
+            inputs: [{name: ex/rent, required: true, unit: crowns}]
+            capabilities: []
+            """,
+            registry,
+        )

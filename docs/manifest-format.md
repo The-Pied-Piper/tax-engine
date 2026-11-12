@@ -224,7 +224,9 @@ used to look anything up: the identifier stays the unique name.
 
 `unit` on an input, a field or a selection names the unit of one figure: the words or symbol its
 number is written with in a trace, `EX$3500.00` or `12 months`. A unit is bare snake_case, never
-`<namespace>/<name>`, and a figure with none prints as it always has.
+`<namespace>/<name>`, and a figure with none prints as it always has. The `name` is the
+language-neutral key; a unit's text (`EX$`, `moons`) is English wording, which another language's
+renderer replaces.
 
 A package declares units on a `UnitCatalog` in its `units.py` (see
 [Jurisdiction packages](jurisdiction-packages.md)). A manifest of jurisdiction `EX-ON` finds a name
@@ -236,5 +238,9 @@ packages is refused as ambiguous.
 A unit is carried as data with the figure, as `Artifact.unit` and `Worksheet.unit`, so a reader of
 the results needs no English. A figure is read in one unit by every form that reads it and every
 form that produces it: forms that disagree, including one that names a unit and one that names
-none, are an `InvalidCompositionError` naming the figure and the forms. Real manifests and datasets
-name no unit.
+none, are an `InvalidCompositionError` naming the figure and the forms. A figure that two
+declarations of a manifest name must therefore name the same unit in both. A figure a form imports
+from another form takes the unit of the exporting form, which is what the importing form prints
+and `Worksheet.unit` reads. The manifest alone decides a figure's unit: an artifact a caller hands
+in with a unit of its own is stamped with the manifest's, or with none. Real manifests and
+datasets name no unit.

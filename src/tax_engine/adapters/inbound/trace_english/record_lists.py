@@ -31,13 +31,13 @@ class RecordTotalRenderer:
         amounts = line.amounts
         total = line.total
         items = " plus ".join(
-            f"{names.of_item(field, position)} ({EnglishFigures.money(amount)})"
+            f"{names.of_item(field, position)} ({names.shown(field.label, amount)})"
             for position, amount in enumerate(amounts, start=1)
         )
         return (
-            f"{items} gives {EnglishFigures.money(total)}"
+            f"{items} gives {names.shown(line.label, total)}"
             if items
-            else f"No items, so {EnglishFigures.money(total)}"
+            else f"No items, so {names.shown(line.label, total)}"
         )
 
 
@@ -56,14 +56,14 @@ class RecordPositiveTotalRenderer:
         amounts = line.amounts
         total = line.total
         items = " plus ".join(
-            f"{names.of_item(field, position)} ({EnglishFigures.money(amount)})"
+            f"{names.of_item(field, position)} ({names.shown(field.label, amount)})"
             + ("" if amount > 0 else " counts 0")
             for position, amount in enumerate(amounts, start=1)
         )
         sentence = (
-            f"{items} gives {EnglishFigures.money(total)}."
+            f"{items} gives {names.shown(line.label, total)}."
             if items
-            else f"No items, so {EnglishFigures.money(total)}."
+            else f"No items, so {names.shown(line.label, total)}."
         )
         return f"{sentence} {POSITIVE_RULE}"
 
@@ -92,7 +92,8 @@ class FirstRecordCountRenderer:
     def render(self, line: FirstRecordCountLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         noun = "item" if line.record_count == 1 else "items"
-        return f"{names.of_item(line.field, 1)} ({line.value}), of {line.record_count} {noun}"
+        first = names.shown(line.field.label, line.value)
+        return f"{names.of_item(line.field, 1)} ({first}), of {line.record_count} {noun}"
 
 
 @english_renderer
@@ -106,12 +107,12 @@ class ItemsTotalRenderer:
         items = line.items
         total = line.total
         terms = " plus ".join(
-            f"item {position} ({EnglishFigures.money(amount)})" for position, amount in items
+            f"item {position} ({names.shown(line.label, amount)})" for position, amount in items
         )
         return (
-            f"{terms} gives {EnglishFigures.money(total)}"
+            f"{terms} gives {names.shown(line.label, total)}"
             if terms
-            else f"No items, so {EnglishFigures.money(total)}"
+            else f"No items, so {names.shown(line.label, total)}"
         )
 
 
@@ -127,7 +128,7 @@ class ItemSumRenderer:
         parts = line.parts
         total = line.total
         terms = " plus ".join(f"{names.figure(kind, amount)}" for kind, amount in parts)
-        return f"Item {position}: {terms} gives {EnglishFigures.money(total)}"
+        return f"Item {position}: {terms} gives {names.shown(line.label, total)}"
 
 
 @english_renderer
@@ -143,6 +144,6 @@ class ItemLesserOfRenderer:
         result = line.result
         terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in parts])
         if len(parts) == 1:
-            return f"Item {position}: {terms} gives {EnglishFigures.money(result)}"
+            return f"Item {position}: {terms} gives {names.shown(line.label, result)}"
         word = "lesser" if len(parts) == 2 else "least"
-        return f"Item {position}: {word} of {terms} gives {EnglishFigures.money(result)}"
+        return f"Item {position}: {word} of {terms} gives {names.shown(line.label, result)}"

@@ -6,7 +6,7 @@ The manifest format is described in docs/manifest-format.md.
 from __future__ import annotations
 
 import dataclasses
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from pathlib import Path
 from typing import Any, NamedTuple
 
@@ -139,10 +139,7 @@ class YamlJurisdictionSource:
         manifests = tuple(self._load_all(code))
         if not manifests:
             raise NotFoundError(f"no manifests for jurisdiction {code} in {self._manifests(code)}")
-        named: dict[str, Unit] = {}
-        for manifest in manifests:
-            named.update(self._units_named(manifest))
-        return Jurisdiction(code=code, manifests=manifests, units=named)
+        return Jurisdiction(code=code, manifests=manifests)
 
     def _load_all(self, code: JurisdictionCode) -> list[Manifest]:
         manifests = self._manifests(code)
@@ -620,40 +617,41 @@ class YamlJurisdictionSource:
         forms_imported = found.forms
         declared_inputs = {declaration.name: declaration for declaration in inputs}
         declared_inputs.update((declaration.name, declaration) for declaration in found.inputs)
+        forms = (
+            Form(
+                name=default,
+                instances=None,
+                exports=tuple(sorted(outputs)),
+                capabilities=tuple(
+                    self._selection(entry) for entry in doc.field("capabilities").items()
+                ),
+                required=True,
+                title=None if title is None else self._title(title),
+            ),
+            *forms_imported,
+            *forms_beside(default),
+        )
         manifest = Manifest(
             jurisdiction=code,
             version=doc.field("version").require_integer(),
             valid_from_tax_year=doc.field("valid_from_tax_year").require_integer(),
             inputs=declared_inputs,
             artifacts=self._kinds,
-            forms=(
-                Form(
-                    name=default,
-                    instances=None,
-                    exports=tuple(sorted(outputs)),
-                    capabilities=tuple(
-                        self._selection(entry) for entry in doc.field("capabilities").items()
-                    ),
-                    required=True,
-                    title=None if title is None else self._title(title),
-                ),
-                *forms_imported,
-                *forms_beside(default),
-            ),
+            units_by_name=self._units_named(code, declared_inputs, forms),
+            forms=forms,
         )
         self._check_supplied(manifest, forms_imported)
-        self._units_named(manifest)
         return manifest
 
-    def _units_named(self, manifest: Manifest) -> dict[str, Unit]:
-        """Each unit the declarations of `manifest` name, found for its jurisdiction, by name.
+    def _units_named(
+        self, code: JurisdictionCode, inputs: Mapping[str, InputDeclaration], forms: Iterable[Form]
+    ) -> dict[str, Unit]:
+        """Each unit the declarations name, found for the jurisdiction `code`, by name.
 
         A name that is declared nowhere it looks, or in several places, is an InvalidManifestError.
         """
-        declared = [
-            (f"input {name!r}", declaration.unit) for name, declaration in manifest.inputs.items()
-        ]
-        for form in manifest.forms:
+        declared = [(f"input {name!r}", declaration.unit) for name, declaration in inputs.items()]
+        for form in forms:
             declared.extend(
                 (f"field {field.name!r} of form {form.name!r}", field.unit) for field in form.fields
             )
@@ -663,7 +661,7 @@ class YamlJurisdictionSource:
             if name is None or name in found:
                 continue
             try:
-                found[name] = self._units.resolve(name, manifest.jurisdiction)
+                found[name] = self._units.resolve(name, code)
             except (UnknownRegistrationError, InvalidRegistrationError) as exc:
                 raise InvalidManifestError(f"{who}: {exc}") from None
         return found
@@ -722,8 +720,8 @@ class YamlJurisdictionSource:
         """One input or field: its `name`, `required`, and for an optional one `default` and
         `basis`.
 
-        `default` is written as the value (`null` for blank); `title` and `reference` may also be
-        given.
+        `default` is written as the value (`null` for blank); `title`, `reference` and `unit` (the
+        name of a unit, resolved when the manifest is built) may also be given.
         """
         fields = entry.require_mapping(
             frozenset({"name"}), optional=_OPTIONAL_INPUT_KEYS | {"required"}

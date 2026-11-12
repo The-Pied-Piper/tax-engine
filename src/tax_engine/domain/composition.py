@@ -69,8 +69,9 @@ class Composition:
         The starting artifacts are exactly one of each input kind; only a kind in `blank_inputs` may
         be blank (else BlankNotAllowedError). A capability producing a value below zero for a
         non-negative kind raises CapabilityContractError naming it. `form_title`, `figure_titles`,
-        `figure_references`, `figure_units`, `imported_figures` and `defaulted` only annotate the
-        worksheet's trace.
+        `figure_references`, `imported_figures` and `defaulted` only annotate the worksheet's
+        trace. `figure_units` also stamps each artifact the worksheet holds with its figure's
+        unit, replacing any unit an artifact arrived with.
         """
         worksheet = Worksheet(
             *artifacts,

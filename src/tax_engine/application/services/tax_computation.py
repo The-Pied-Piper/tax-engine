@@ -68,7 +68,7 @@ class TaxComputationService:
                     defaults=manifest.defaults,
                     field_defaults=manifest.field_defaults[form.name],
                     declared=manifest.inputs.values(),
-                    units=jurisdiction.units,
+                    units=manifest.units_by_name,
                 )
                 for form in manifest.forms
             ],

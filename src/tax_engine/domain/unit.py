@@ -1,4 +1,4 @@
-"""Units: the words or symbol a figure is written with, such as `CA$` or `months`.
+"""Units: the words or symbol a figure is written with, such as `EX$` or `moons`.
 
 A package declares its units on a `UnitCatalog`; a manifest names one with `unit:` and
 `UnitRegistry.resolve` finds it.
@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import enum
 from dataclasses import dataclass
-from decimal import Decimal
 
 from tax_engine.domain.errors import (
     DuplicateRegistrationError,
@@ -25,7 +24,7 @@ _CORE = "core"
 
 
 class Placement(enum.Enum):
-    """Where a unit's text goes: `BEFORE` the number ("CA$3500.00") or `AFTER` it ("12 months")."""
+    """Where a unit's text goes: `BEFORE` the number ("EX$3500.00") or `AFTER` it ("12 moons")."""
 
     BEFORE = "before"
     AFTER = "after"
@@ -36,8 +35,8 @@ class Unit:
     """A unit a manifest names `unit: <name>`, with the text it is written with.
 
     `singular` is the text beside a figure of exactly 1, `plural` the text beside any other; a
-    symbol such as `CA$` is both. A unit placed `BEFORE` is written against its number, one placed
-    `AFTER` after a space. The name is a snake_case local id.
+    symbol such as `EX$` is both. A unit is plain data; an adapter decides how to write it. The
+    name is a snake_case local id and the language-neutral key; the text is wording in one language.
     """
 
     name: str
@@ -50,7 +49,7 @@ class Unit:
             Namespace(_CORE).identifier(self.name)
         except InvalidRegistrationError:
             raise InvalidRegistrationError(
-                f"invalid unit name {self.name!r}: expected snake_case, e.g. 'months'"
+                f"invalid unit name {self.name!r}: expected snake_case, e.g. 'moons'"
             ) from None
         for kind, text in (("singular", self.singular), ("plural", self.plural)):
             if not text.strip():
@@ -58,16 +57,11 @@ class Unit:
                     f"unit {self.name!r}: {kind} must not be empty, got {text!r}"
                 )
 
-    def format(self, value: Decimal | int, shown: str) -> str:
-        """The figure `value`, which prints as `shown`, with this unit: `EX$3500.00`, `12 moons`."""
-        text = self.singular if value == 1 else self.plural
-        return f"{text}{shown}" if self.placement is Placement.BEFORE else f"{shown} {text}"
-
 
 class UnitCatalog:
     """One package's units, built in the package's namespace.
 
-    Each package that has units creates one, e.g. `UnitCatalog(Namespace("ca"))`. Declaring
+    Each package that has units creates one, e.g. `UnitCatalog(Namespace("ex"))`. Declaring
     registers nothing; `UnitRegistry.register_catalog` does.
     """
 
@@ -95,7 +89,7 @@ class UnitCatalog:
 
 
 class UnitRegistry(Registry[Unit]):
-    """The units the packages declare, keyed `<namespace>/<name>` (`ca/cad`)."""
+    """The units the packages declare, keyed `<namespace>/<name>` (`ex/crowns`)."""
 
     def register_catalog(self, catalog: UnitCatalog) -> None:
         """Register every unit `catalog` declared; a clash registers nothing from the catalog.

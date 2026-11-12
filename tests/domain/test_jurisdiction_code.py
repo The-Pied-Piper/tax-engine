@@ -76,3 +76,17 @@ def test_is_not_equal_to_a_plain_string() -> None:
 )
 def test_its_namespace_is_the_code_lower_cased(value: str, namespace: str) -> None:
     assert JurisdictionCode(value).namespace == Namespace(namespace)
+
+
+@pytest.mark.parametrize(
+    ("value", "namespaces"),
+    [
+        ("EX", ("ex",)),
+        ("EX-ON", ("ex-on", "ex")),
+        ("EX-75", ("ex-75", "ex")),
+    ],
+)
+def test_its_namespaces_are_its_own_then_its_countrys(
+    value: str, namespaces: tuple[str, ...]
+) -> None:
+    assert JurisdictionCode(value).namespaces == namespaces

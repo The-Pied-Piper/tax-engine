@@ -15,12 +15,14 @@ import pytest
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCompositionError, InvalidManifestError
+from tax_engine.domain.figure_names import ImportedFigure
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection, InputDeclaration
 from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
+from tax_engine.domain.trace import DefaultedInputLine
 from tax_engine.domain.unit import Placement, Unit
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
@@ -210,6 +212,79 @@ def test_the_form_hands_its_units_to_each_worksheet_it_computes() -> None:
     assert sheet.get(RELIEF).unit is None
     assert sheet.get(NET).unit is CROWNS
     assert sheet.unit_of(sheet.trace[0]) is CROWNS
+
+
+def test_the_manifest_decides_a_starting_artifact_passed_with_a_unit_loses_it() -> None:
+    sheet = Worksheet(Artifact(INCOME, D("70000"), unit=CROWNS), figure_units={"net": CROWNS})
+
+    assert sheet.get(INCOME).unit is None
+
+
+def test_the_manifest_decides_a_unit_the_caller_gives_a_figure_with_another_is_replaced() -> None:
+    sheet = Worksheet(Artifact(INCOME, D("70000"), unit=MOONS), figure_units={"income": CROWNS})
+
+    assert sheet.get(INCOME).unit is CROWNS
+
+
+def test_a_form_without_a_unit_for_a_figure_strips_the_unit_of_the_artifact_passed_in() -> None:
+    form = composition(
+        "ex-on/levy",
+        [Subtract(EXACT, INCOME, RELIEF, NET)],
+        exports=[NET],
+        starting=frozenset({INCOME, RELIEF}),
+        selections=(
+            CapabilitySelection(
+                "core/subtract",
+                {},
+                {"minuend": "ex/income", "subtrahend": "ex/relief"},
+                {"output": "ex/net"},
+            ),
+        ),
+        units=UNITS,
+    )
+    forms = FormSet([form], inputs=frozenset({INCOME, RELIEF}))
+
+    (sheet,) = forms.compute(
+        Artifact(INCOME, D("1000"), unit=CROWNS), Artifact(RELIEF, D("400"), unit=MOONS)
+    )["ex-on/levy"]
+
+    assert sheet.get(INCOME).unit is None
+    assert sheet.get(RELIEF).unit is None
+    assert sheet.get(NET).unit is None
+
+
+def test_an_imported_figure_has_the_unit_of_its_exporter() -> None:
+    sheet = Worksheet(imported_figures={"income": ImportedFigure(None, None, "4", False, CROWNS)})
+
+    assert sheet.unit("income") is CROWNS
+    assert sheet.unit("relief") is None
+
+
+def test_the_unit_of_a_trace_line_about_an_imported_figure_is_its_exporters() -> None:
+    sheet = Worksheet(
+        Artifact(INCOME, D("1000")),
+        defaulted=[INCOME],
+        imported_figures={"income": ImportedFigure(None, None, "4", False, CROWNS)},
+    )
+    (line,) = sheet.trace
+
+    assert isinstance(line, DefaultedInputLine)
+    assert sheet.unit_of(line) is CROWNS
+
+
+def test_a_worksheets_own_unit_for_a_figure_comes_before_the_imported_one() -> None:
+    sheet = Worksheet(
+        figure_units={"income": MOONS},
+        imported_figures={"income": ImportedFigure(None, None, None, False, CROWNS)},
+    )
+
+    assert sheet.unit("income") is MOONS
+
+
+def test_an_imported_figure_with_no_unit_has_none() -> None:
+    sheet = Worksheet(imported_figures={"income": ImportedFigure(None, None, None, False)})
+
+    assert sheet.unit("income") is None
 
 
 # One record list, one field: the consumers and a producer of the field `ex/fee`.

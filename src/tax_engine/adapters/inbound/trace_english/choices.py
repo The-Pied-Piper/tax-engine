@@ -19,13 +19,6 @@ from tax_engine.domain.trace.choices import (
 )
 
 
-def _figure(value: int | Decimal | Blank) -> str:
-    """A figure a condition read: a count as it is, an amount as money, a blank as left blank."""
-    if isinstance(value, Blank):
-        return "left blank"
-    return str(value) if isinstance(value, int) else EnglishFigures.money(value)
-
-
 @english_renderer
 class ChosenByCountRenderer:
     """English text for ChosenByCountLine."""
@@ -94,13 +87,20 @@ class ConditionRenderer:
 
     line_class = ConditionLine
 
+    @staticmethod
+    def _read(label: str, value: int | Decimal | Blank, names: EnglishNames) -> str:
+        """A figure a condition read, with its unit; a blank as left blank."""
+        return "left blank" if isinstance(value, Blank) else names.shown(label, value)
+
     def render(self, line: ConditionLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
         position = line.position
         text = line.text
         reads = line.reads
         applies = line.applies
-        figures = ", ".join(f"{names.of(kind)} ({_figure(value)})" for kind, value in reads)
+        figures = ", ".join(
+            f"{names.of(kind)} ({self._read(kind.label, value, names)})" for kind, value in reads
+        )
         verdict = "applies" if applies else "does not apply"
         read = f" (read {figures})" if figures else ""
         return f'Condition {position} "{text}"{read} {verdict}'

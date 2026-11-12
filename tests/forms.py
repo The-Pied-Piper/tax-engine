@@ -89,5 +89,5 @@ def composition(
         defaults=defaults,
         field_defaults=field_defaults,
         declared=declared,
-        **({} if units is None else {"units": units}),
+        units=units,
     )

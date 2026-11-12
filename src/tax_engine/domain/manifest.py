@@ -26,6 +26,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import Unit
 
 
 @dataclass(frozen=True, slots=True)
@@ -328,7 +329,9 @@ class Manifest:
     `artifacts` (the application's kinds) when built, so one that exists is correct. `kinds` adds
     the `<form>.<export>` kinds and the neutral kinds the forms supply. An unresolvable default or
     `required_when` that is not a yes/no is an InvalidManifestError; an unknown identifier is an
-    UnknownRegistrationError.
+    UnknownRegistrationError. `units_by_name` holds each unit its declarations name, by the name
+    they write, already resolved for the jurisdiction; the loader builds it and refuses an unknown
+    or ambiguous name.
     """
 
     jurisdiction: JurisdictionCode
@@ -337,6 +340,7 @@ class Manifest:
     inputs: Mapping[str, InputDeclaration]
     forms: tuple[Form, ...]
     artifacts: ArtifactRegistry = dataclasses.field(compare=False)
+    units_by_name: Mapping[str, Unit] = dataclasses.field(default_factory=dict, compare=False)
     kinds: ArtifactRegistry = dataclasses.field(init=False, compare=False)
     defaults: tuple[Artifact[Any], ...] = dataclasses.field(init=False, compare=False)
     field_defaults: Mapping[str, tuple[Artifact[Any], ...]] = dataclasses.field(
@@ -346,6 +350,7 @@ class Manifest:
     def __post_init__(self) -> None:
         object.__setattr__(self, "inputs", MappingProxyType(dict(self.inputs)))
         object.__setattr__(self, "forms", tuple(self.forms))
+        object.__setattr__(self, "units_by_name", MappingProxyType(dict(self.units_by_name)))
         if not self.forms:
             raise InvalidManifestError("forms must name at least one form")
         names = [found.name for found in self.forms]
