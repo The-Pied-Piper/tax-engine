@@ -1,0 +1,8 @@
+# The one input a take-home caller gives: the gross salary, which is the employment income of T1
+# line 10100. Every other input a form declares is optional with its blank rule in that form's part.
+inputs:
+  - name: ca/employment_income
+    title: "Employment income"
+    reference: "10100"
+    unit: ca/cad
+    required: true

@@ -44,3 +44,17 @@ AB428_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
 """Alberta non-refundable tax credits, AB428 line 58 (line 61500) "Line 54 plus line 57 Enter this
 amount on line 62. Alberta non-refundable tax credits =": line 54 plus line 57, read by line 62 on
 the tax form."""
+
+AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
+    CATALOG, "ab428_alberta_tax_line_75", non_negative=True
+)
+"""Alberta tax, AB428 line 75 "Line 75: Line 73 minus line 74 (if negative, enter "0") Enter this
+amount on line 42800 of your return. Alberta tax =": line 73 minus line 74, not below 0, entered on
+T1 line 42800."""
+
+WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9 = AmountKind.declare(
+    CATALOG, "worksheet_ab428_supplemental_credit_line_9", non_negative=True
+)
+"""Alberta supplemental tax credit, Worksheet AB428 line 9 "Line 9: Line 7 multiplied by the
+percentage from line 8 enter this amount on line 61545 of your Form AB428.": the credit entered on
+line 61545 of Form AB428."""
