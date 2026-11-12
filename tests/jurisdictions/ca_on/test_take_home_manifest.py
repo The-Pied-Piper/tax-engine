@@ -30,14 +30,26 @@ def test_the_salary_is_the_only_required_input() -> None:
     assert required == {SALARY}
 
 
-def test_the_return_exports_the_signed_total_tax_of_t1_line_167_and_the_bracket_rate() -> None:
+def test_the_return_exports_the_signed_total_tax_of_t1_line_167_and_the_marginal_rate() -> None:
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
-    assert default.exports == (
-        "ca-on/ontario_bracket_rate_return",
-        "ca-on/ontario_surtax_factor",
-        "ca/refund_or_balance_owing",
-    )
+    assert default.exports == ("ca-on/ontario_marginal_rate", "ca/refund_or_balance_owing")
+
+
+def test_the_return_multiplies_the_bracket_rate_by_the_surtax_factor_exactly() -> None:
+    # The marginal rate step reads the factor as its base and the bracket rate as its rate, with
+    # the dataset that rounds nothing; both are read inside the return, not exported.
+    (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
+
+    assert (
+        "core/multiply_by_rate",
+        {"rounding": "ca-on/exact_rounding"},
+        {"base": "ca-on/ontario_surtax_factor", "rate": "ca-on/ontario_bracket_rate_return"},
+        {"output": "ca-on/ontario_marginal_rate"},
+    ) in [
+        (step.name, dict(step.params), dict(step.consumes), dict(step.produces))
+        for step in default.capabilities
+    ]
 
 
 def test_schedule_8_is_a_required_form_without_instances() -> None:

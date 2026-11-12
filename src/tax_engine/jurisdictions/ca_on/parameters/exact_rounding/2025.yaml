@@ -1,0 +1,10 @@
+# Ontario exact rounding, 2025 tax year: the rule for an Ontario product that is not a dollars-and-cents
+# box, the Ontario marginal rate on the return summary (ON428 line 5 rate times the surtax factor of
+# lines 66 and 67, core/multiply_by_rate). It is an exact product and the form prints no rounding
+# rule for it, so nothing is rounded. The cent rule of `ca-on/cent_rounding` does not apply to it.
+family: ca-on/exact_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: none

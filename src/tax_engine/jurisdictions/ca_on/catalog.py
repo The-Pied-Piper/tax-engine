@@ -413,3 +413,8 @@ ONTARIO_BRACKET_RATE_RETURN = AmountKind.declare(
 )
 """Ontario bracket rate, ON428 line 5 "Line 5: Rate": the printed rate of the column that line 1
 falls in, read from ON428 into the return summary."""
+
+ONTARIO_MARGINAL_RATE = AmountKind.declare(CATALOG, "ontario_marginal_rate", non_negative=True)
+"""Ontario marginal rate, ON428 line 5 "Line 5: Rate" times the surtax factor of lines 66 and 67:
+the rate a further dollar of income is taxed at in Ontario with the surtax, on the return summary.
+An exact product, not printed on the form."""
