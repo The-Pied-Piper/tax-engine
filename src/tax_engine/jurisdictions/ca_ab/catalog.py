@@ -98,6 +98,13 @@ AB428_MINIMUM_TAX_T691_AMOUNT_LINE_67 = AmountKind.declare(
 line 2 of Part 7 multiplied by 35%": the amount from Form T691, an optional input that a salary-only
 caller leaves out. The 35% multiply is a separate step."""
 
+AB428_ADDITIONAL_MINIMUM_TAX_LINE_67 = AmountKind.declare(
+    CATALOG, "ab428_additional_minimum_tax_line_67"
+)
+"""Alberta additional tax for minimum tax purposes, AB428 line 67 "Line 67: Form T691: line 1 minus
+line 2 of Part 7 multiplied by 35% =": the T691 amount multiplied by 35%, rounded half-up to the
+cent."""
+
 AB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_69 = AmountKind.declare(
     CATALOG, "ab428_provincial_foreign_tax_credit_line_69", non_negative=True
 )
@@ -140,6 +147,12 @@ AB428_CPP_EI_AND_OTHER_LINE_32 = AmountKind.declare(
 )
 """CPP, EI and other credit amounts subtotal, AB428 line 32 "Line 32: Add lines 27 to 31. = ^": the
 sum of lines 27 and 29. Lines 28, 30 and 31 are not built: a salary-only filer has none of them."""
+
+AB428_CREDITS_SUBTOTAL_LINE_33 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_33", non_negative=True
+)
+"""Credits subtotal, AB428 line 33 "Line 33: Line 26 plus line 32 = ^": line 26 is "Amount from line
+25 of the previous page", a copy of line 25, so the sum adds line 25 and line 32."""
 
 AB428_DIVIDEND_TAX_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "ab428_dividend_tax_credit_line_63", non_negative=True
