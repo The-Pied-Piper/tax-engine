@@ -42,6 +42,7 @@ def test_a_unit_text_is_a_frozen_value_with_the_identifier_it_is_for() -> None:
         "plural",
         "placement",
         "spaced",
+        "as_percentage",
     ]
     assert EnglishUnitText("ex/moons", "moon", "moons", Placement.AFTER, spaced=True) == MOONS
     with pytest.raises(dataclasses.FrozenInstanceError):
@@ -64,6 +65,23 @@ def test_a_unit_text_must_define_singular_plural_placement_and_spaced() -> None:
         Placement.AFTER,
         True,
     )
+
+
+def test_a_unit_text_exposes_as_percentage_defaulting_to_false() -> None:
+    rates = EnglishUnitText("ex/rates", "%", "%", Placement.AFTER, spaced=False, as_percentage=True)
+    text: UnitText = rates
+
+    assert text.as_percentage is True
+    assert MOONS.as_percentage is False
+    assert CROWNS.as_percentage is False
+
+
+def test_as_percentage_is_a_keyword_only_field_that_defaults_to_false() -> None:
+    field = dataclasses.fields(EnglishUnitText)[-1]
+
+    assert field.name == "as_percentage"
+    assert field.kw_only is True
+    assert field.default is False
 
 
 def test_a_text_that_leaves_out_a_required_field_is_not_a_unit_text() -> None:
@@ -257,3 +275,11 @@ def test_an_english_unit_text_refuses_empty_text_naming_the_unit() -> None:
 def test_an_english_unit_text_refuses_a_malformed_identifier() -> None:
     with pytest.raises(InvalidRegistrationError, match="Crowns"):
         EnglishUnitText("Crowns", "EX$", "EX$", Placement.BEFORE, spaced=False)
+
+
+def test_english_unit_takes_as_percentage_by_keyword_and_registers_it() -> None:
+    text = english_unit("ex/shares", "%", "%", Placement.AFTER, spaced=False, as_percentage=True)
+
+    assert text.as_percentage is True
+    assert EnglishUnitTextRegistry.shared().for_unit(Unit("ex/shares")).as_percentage is True
+    assert english_unit("ex/plain", "a", "b", Placement.AFTER, spaced=False).as_percentage is False
