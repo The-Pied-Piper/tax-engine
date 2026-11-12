@@ -15,7 +15,5 @@ capabilities:
       rate: ca-ab/minimum_tax_rate
     consumes:
       base: ca-ab/ab428_minimum_tax_t691_amount_line_67
-    blank:
-      base: "0"
     produces:
       output: ca-ab/ab428_additional_minimum_tax_line_67

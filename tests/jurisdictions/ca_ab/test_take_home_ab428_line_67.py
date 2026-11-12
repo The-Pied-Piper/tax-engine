@@ -4,7 +4,7 @@ part files through the real engine.
 Form text (Form AB428, CRA 5009-c-25e.txt): "Line 67: Form T691: line 1 minus line 2 of Part 7 ^ /
 multiplied by 35% = ^". The input is the T691 amount
 (`ca-ab/ab428_minimum_tax_t691_amount_line_67`), which the inputs part declares as optional, read
-as blank when left out. Line 67 is one calculation: 35% of that amount, a printed rate held in
+as 0 when left out. Line 67 is one calculation: 35% of that amount, a printed rate held in
 the `ca-ab/minimum_tax_rate` dataset, rounded half-up to the cent. The output is
 `ca-ab/ab428_additional_minimum_tax_line_67`.
 
@@ -30,7 +30,6 @@ from tax_engine.application.services.tax_computation import TaxComputationServic
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.trace.blank import BlankFallbackLine
 from tax_engine.domain.worksheet import Worksheet
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
@@ -108,7 +107,6 @@ def test_the_part_declares_the_one_calculation_as_the_form_prints_it() -> None:
             "unit": "ca/cad",
             "params": {"rate": "ca-ab/minimum_tax_rate"},
             "consumes": {"base": T691_AMOUNT},
-            "blank": {"base": "0"},
             "produces": {"output": LINE_67},
         }
     ]
@@ -145,22 +143,6 @@ def test_line_67_is_35_percent_of_the_t691_amount_rounded_half_up(
 
 
 def test_a_caller_who_leaves_out_the_t691_amount_gets_0(tmp_path: Path) -> None:
-    # The amount is left out, so it is blank, and the line is 0.00: the ticket's figure at $20,000,
-    # $70,000 and $200,000 (salary only, no minimum tax to report).
+    # The amount is left out, so it is read as 0, and the line is 0.00: the ticket's figure at
+    # $20,000, $70,000 and $200,000 (salary only, no minimum tax to report).
     assert _line_67(tmp_path, None) == D("0.00")
-
-
-def test_a_blank_t691_amount_prints_its_own_left_blank_row(tmp_path: Path) -> None:
-    kinds = alberta_kinds()
-    sheet = _worksheet(tmp_path, None)
-
-    (row,) = [line for line in sheet.trace if isinstance(line, BlankFallbackLine)]
-
-    assert row.kind is kinds.kind(T691_AMOUNT)
-    assert row.amount == 0
-
-
-def test_a_given_t691_amount_prints_no_left_blank_row(tmp_path: Path) -> None:
-    sheet = _worksheet(tmp_path, "1000.00")
-
-    assert not [line for line in sheet.trace if isinstance(line, BlankFallbackLine)]
