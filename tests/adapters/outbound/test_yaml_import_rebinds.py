@@ -142,11 +142,23 @@ def test_a_malformed_entry_is_rejected(tmp_path: Path, entry: str) -> None:
 
 
 def test_rebinds_are_not_chained_each_family_is_swapped_once(tmp_path: Path) -> None:
-    write_benefit(tmp_path)
-    province(tmp_path, "[{form: ex/benefit, datasets: {ex/base: ex-ab/base, ex-ab/base: ex/x}}]")
+    two_steps = BENEFIT.replace(
+        "exports: [ex/base_amount]", "exports: [ex/base_amount, ex/second_amount]"
+    )
+    two_steps += (
+        "  - name: core/credit_amount\n"
+        "    params: {amount: ex/second}\n"
+        "    produces: {output: ex/second_amount}\n"
+    )
+    write(tmp_path, "ex/forms/benefit/00-benefit.yaml", two_steps)
+    province(tmp_path, "[{form: ex/benefit, datasets: {ex/base: ex/second, ex/second: ex/third}}]")
 
-    with pytest.raises(InvalidManifestError, match="'ex-ab/base'.*no part"):
-        source(tmp_path).get_jurisdiction(EX_ON)
+    benefit = next(f for f in manifest_of(tmp_path).forms if f.name == "ex/benefit")
+
+    assert [dict(c.params) for c in benefit.capabilities] == [
+        {"amount": "ex/second"},
+        {"amount": "ex/third"},
+    ]
 
 
 def test_a_form_listed_bare_and_with_a_rebind_is_rejected(tmp_path: Path) -> None:
