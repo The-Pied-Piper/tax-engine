@@ -1,0 +1,31 @@
+# Alberta 2025 take-home manifest: the return's identity and its export. The caller gives the
+# gross salary and nothing else (the salary input is added by its own ticket). Alberta's own forms
+# are in parts beside this one, so a line ticket adds only its own part file; the federal forms are
+# imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
+#
+# Alberta builds three forms, split so that no form reads another in a loop (as the federal T1 is
+# split around ON428): `ca-ab/ab428_credits` (AB428 lines 1 to 58), `ca-ab/worksheet_ab428` (the
+# supplemental credit section of CRA 5009-D) and `ca-ab/ab428` (lines 59 to 75), which supplies
+# `ca/provincial_tax.amount` for T1 line 42800.
+#
+# The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
+# is a refund). Alberta uses the standard federal CPP and EI (no QPP), so Schedule 8 and T2204 are
+# imported unchanged.
+#
+# Alberta is not yet listed in `registrations.JURISDICTIONS`: the startup check builds every listed
+# manifest, and this one is partial until the AB428 forms exist (T1 needs `ca/provincial_tax.amount`,
+# which no Alberta form supplies yet), and it has no `inputs` yet. The end-to-end ticket lists it.
+jurisdiction: CA-AB
+version: 1
+valid_from_tax_year: 2025
+# The title is the engine's own wording for the default form, not a printed form heading.
+title: Return summary
+outputs:
+  - ca/refund_or_balance_owing
+capabilities: []
+imports:
+  - ca/t1_taxable_income
+  - ca/t1_tax_and_credits
+  - ca/schedule_6
+  - ca/schedule_8
+  - ca/t2204
