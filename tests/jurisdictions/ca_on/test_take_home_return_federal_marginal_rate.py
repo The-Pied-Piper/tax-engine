@@ -5,9 +5,9 @@ chart prints "Line 73: Rate" with 14.5%, 20.5%, 26%, 29% or 33%. The existing st
 `ca/federal_bracket_column_rate_line_73` of `ca/t1_tax_and_credits` is the printed rate of the
 column that line 70 falls in. The return summary reads it as a cross-form read: the T1 form exports
 it, and one `core/record_total` step of `return.yaml` totals the one amount into the return's own
-amount kind `ca/federal_marginal_rate`. The step has no printed title, no printed line and no unit,
-so the summary shows it untitled, with no reference. The rate is held as a fraction (0.205 for
-20.5%); how it is printed is not pinned here.
+amount kind `ca/federal_marginal_rate`. The step has no printed title, no printed line; the step carries
+the unit `core/percent`, so the summary shows it untitled, with no reference, and a trace prints the
+fraction 0.205 as the form prints it, "20.5%".
 
 The test composes the real salary, Schedule 8, T1 taxable income, T2204, Schedule 6, ON428 parts and
 the real T1 parts, as the line 167 test does. The header and the form are the real files:
@@ -22,6 +22,7 @@ from decimal import Decimal
 import pytest
 import yaml
 
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -145,7 +146,7 @@ def test_the_return_summary_still_carries_line_167(take_home_service: TakeHomeSe
     assert summary.get(bundled_kinds().kind(LINE_167)).value == D("11497.09")
 
 
-def test_the_federal_marginal_rate_has_no_title_no_reference_and_no_unit(
+def test_the_federal_marginal_rate_has_no_title_no_reference_and_the_percent_unit(
     take_home_service: TakeHomeService,
 ) -> None:
     summary = _summary(take_home_service, "70000")
@@ -153,7 +154,17 @@ def test_the_federal_marginal_rate_has_no_title_no_reference_and_no_unit(
 
     assert summary.title(label) is None
     assert summary.reference(label) is None
-    assert summary.unit(label) is None
+    assert summary.unit(label) == units().get("core/percent")
+
+
+def test_the_federal_marginal_rate_prints_as_the_percentage_the_form_prints(
+    take_home_service: TakeHomeService,
+) -> None:
+    summary = _summary(take_home_service, "70000")
+
+    lines = EnglishTraceRenderer().render_all(summary.trace, summary)
+
+    assert any("gives 20.5%" in line for line in lines)
 
 
 def test_the_real_t1_form_exports_line_167_and_the_line_73_rate() -> None:

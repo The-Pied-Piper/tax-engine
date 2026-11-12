@@ -12,8 +12,10 @@ capabilities:
       output: ca/refund_or_balance_owing
   # The federal marginal rate: the T1 form exports line 73's bracket column rate and
   # core/record_total totals the one fraction into the return's own `ca/federal_marginal_rate`. It
-  # has no printed title or line, and is a manifest output until a later step reads it.
+  # has no printed title or line, prints as a percentage, and is a manifest output until a later
+  # step reads it.
   - name: core/record_total
+    unit: core/percent
     consumes:
       records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
     produces:
