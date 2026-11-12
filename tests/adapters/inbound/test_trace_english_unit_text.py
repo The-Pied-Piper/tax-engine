@@ -18,10 +18,9 @@ import pytest
 from tax_engine.adapters.inbound.trace_english.unit_text import (
     EnglishUnitText,
     EnglishUnitTextRegistry,
-    Placement,
-    UnitText,
     english_unit,
 )
+from tax_engine.adapters.inbound.unit_text import Placement, UnitText
 from tax_engine.domain.errors import (
     DuplicateRegistrationError,
     InvalidRegistrationError,

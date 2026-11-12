@@ -1,6 +1,7 @@
-"""UnitText: the text a language writes a unit with, and the English one, by unit.
+"""The English text of units, by unit.
 
-A `Unit` is only its identifier; each language supplies how a figure is written with it. English
+A `Unit` is only its identifier; each language supplies how a figure is written with it, through
+the language-neutral `UnitText` protocol in `tax_engine.adapters.inbound.unit_text`. English
 text registers with `english_unit` in the `trace_english/units.py` of the package that declares the
 unit, keyed by the unit's identifier, and `EnglishUnitTextRegistry.require` checks at startup that
 every registered unit has some.
@@ -8,12 +9,11 @@ every registered unit has some.
 
 from __future__ import annotations
 
-import enum
 from collections.abc import Iterable
 from dataclasses import KW_ONLY, dataclass
 from decimal import Decimal
-from typing import Protocol
 
+from tax_engine.adapters.inbound.unit_text import Placement
 from tax_engine.domain.errors import (
     DuplicateRegistrationError,
     InvalidRegistrationError,
@@ -25,55 +25,8 @@ from tax_engine.domain.unit import Unit
 __all__ = [
     "EnglishUnitText",
     "EnglishUnitTextRegistry",
-    "Placement",
-    "UnitText",
     "english_unit",
 ]
-
-
-class Placement(enum.Enum):
-    """Where a unit's text goes: `BEFORE` the number ("EX$3500.00") or `AFTER` it ("12 moons")."""
-
-    BEFORE = "before"
-    AFTER = "after"
-
-
-class UnitText(Protocol):
-    """The text one language writes a unit with; every language implements it.
-
-    A language defines, for its unit, the text beside a figure of exactly 1 (`singular`) and beside
-    any other (`plural`), where the text goes (`placement`) and whether a space separates it from
-    the figure (`spaced`), and writes a figure with them in `write`.
-    """
-
-    @property
-    def identifier(self) -> str:
-        """The identifier of the unit this is the text of."""
-        ...
-
-    @property
-    def singular(self) -> str:
-        """The text beside a figure of exactly 1."""
-        ...
-
-    @property
-    def plural(self) -> str:
-        """The text beside any other figure."""
-        ...
-
-    @property
-    def placement(self) -> Placement:
-        """Whether the text goes before or after the figure."""
-        ...
-
-    @property
-    def spaced(self) -> bool:
-        """Whether one space separates the text from the figure."""
-        ...
-
-    def write(self, shown: str, value: Decimal | int) -> str:
-        """The figure `value`, which prints as `shown`, written with the unit."""
-        ...
 
 
 @dataclass(frozen=True)

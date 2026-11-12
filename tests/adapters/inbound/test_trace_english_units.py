@@ -21,8 +21,8 @@ from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
 from tax_engine.adapters.inbound.trace_english.unit_text import (
     EnglishUnitText,
     EnglishUnitTextRegistry,
-    Placement,
 )
+from tax_engine.adapters.inbound.unit_text import Placement
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import UnknownRegistrationError
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind

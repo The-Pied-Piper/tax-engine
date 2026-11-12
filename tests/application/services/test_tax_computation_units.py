@@ -18,8 +18,8 @@ from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.inbound.trace_english.unit_text import (
     EnglishUnitText,
     EnglishUnitTextRegistry,
-    Placement,
 )
+from tax_engine.adapters.inbound.unit_text import Placement
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact, ArtifactKind
