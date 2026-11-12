@@ -30,11 +30,12 @@ def test_the_salary_is_the_only_required_input() -> None:
     assert required == {SALARY}
 
 
-def test_the_return_exports_the_signed_total_tax_of_t1_line_167_and_the_average_rate() -> None:
+def test_the_return_exports_line_167_the_rates_and_the_surtax_factor() -> None:
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert default.exports == (
         "ca-on/average_income_tax_rate",
+        "ca-on/ontario_bracket_rate_return",
         "ca-on/ontario_surtax_factor",
         "ca/refund_or_balance_owing",
     )
@@ -89,12 +90,13 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
     } <= set(_manifest().inputs)
 
 
-def test_on428_exports_line_90_and_the_surtax_base_line_65() -> None:
+def test_on428_exports_line_90_the_surtax_base_line_65_and_the_line_5_rate() -> None:
     (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
 
     assert set(on428.exports) == {
         "ca-on/on428_ontario_tax_line_90",
         "ca-on/on428_surtax_base_line_65",
+        "ca-on/on428_bracket_column_rate_line_5",
     }
 
 
@@ -125,6 +127,15 @@ def test_the_return_reads_line_65_into_its_own_artifact_and_gives_the_surtax_fac
         {"base": "ca-on/ontario_surtax_base"},
         {"output": "ca-on/ontario_surtax_factor"},
     ) in steps
+
+
+def test_the_return_reads_the_on428_line_5_bracket_rate() -> None:
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca-on/on428.on428_bracket_column_rate_line_5"},
+        {"output": "ca-on/ontario_bracket_rate_return"},
+    ) in _return_steps()
 
 
 def test_the_return_still_totals_line_167() -> None:
