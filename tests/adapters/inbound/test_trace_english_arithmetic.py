@@ -63,6 +63,7 @@ MINIMUM = CountKind("ex/minimum")
 ROWS = RecordListKind("ex/rows", fields=())
 CENT = RoundTo(increment=D("0.01"), mode=RoundingMode.HALF_UP)
 DOWN_TENTH = RoundTo(increment=D("0.001"), mode=RoundingMode.DOWN)
+TEN_THOUSANDTH = RoundTo(increment=D("0.0001"), mode=RoundingMode.HALF_UP)
 RATE_OUT = RateKind("ex/rate_result")
 
 
@@ -186,9 +187,37 @@ def test_a_ratio_applied() -> None:
 
 
 def test_an_exact_quotient() -> None:
-    line = QuotientLine(OUT, WAGES, D("10"), BONUS, D("4"), D("2.5"))
+    line = QuotientLine(OUT, WAGES, D("10"), BONUS, D("4"), NO_ROUNDING, D("2.5"))
 
-    assert render(line) == "Wages (10.00) divided by bonus (4.00) gives 2.50."
+    assert render(line) == "Wages (10.00) divided by bonus (4.00) gives 2.50 (not rounded)."
+
+
+def test_a_rounded_quotient_names_its_rounding_rule() -> None:
+    line = QuotientLine(OUT, WAGES, D("10"), BONUS, D("3"), CENT, D("3.33"))
+
+    assert render(line) == (
+        "Wages (10.00) divided by bonus (3.00) gives 3.33 (rounded to the nearest cent)."
+    )
+
+
+def test_a_quotient_rounded_to_ten_thousandths_names_its_increment() -> None:
+    line = QuotientLine(OUT, WAGES, D("1"), BONUS, D("3"), TEN_THOUSANDTH, D("0.3333"))
+
+    assert render(line) == (
+        "Wages (1.00) divided by bonus (3.00) gives 0.3333 (rounded half-up to 0.0001)."
+    )
+
+
+def test_a_quotient_by_zero_says_the_divisor_is_zero_and_names_no_rounding() -> None:
+    line = QuotientLine(OUT, WAGES, D("10"), BONUS, D("0"), CENT, D("0"))
+
+    assert render(line) == "Wages (10.00) divided by bonus (0.00), which is zero, gives 0.00."
+
+
+def test_a_quotient_by_zero_names_no_rounding_whatever_the_rule() -> None:
+    line = QuotientLine(OUT, WAGES, D("10"), BONUS, D("0.00"), NO_ROUNDING, D("0"))
+
+    assert render(line) == "Wages (10.00) divided by bonus (0.00), which is zero, gives 0.00."
 
 
 def test_a_threshold_gate_that_is_met() -> None:
@@ -331,13 +360,14 @@ def test_an_amount_when_one_figure_is_more_than_another() -> None:
 
 def test_figures_are_named_as_lines_when_the_form_prints_references() -> None:
     printed = _Printed({}, {"wages": "2", "bonus": "B", "floor": "5a"})
-    quotient = QuotientLine(OUT, WAGES, D("10"), BONUS, D("4"), D("2.5"))
+    quotient = QuotientLine(OUT, WAGES, D("10"), BONUS, D("4"), NO_ROUNDING, D("2.5"))
     at_most = AtMostLine(OUT, WAGES, D("100"), FLOOR, D("150"))
     two = LesserOfLine(OUT, ((WAGES, D("10")), (EXTRA, D("4.5"))), D("4.5"))
     renderer = EnglishTraceRenderer()
 
     assert (
-        renderer.render(quotient, printed) == "Line 2 (10.00) divided by line B (4.00) gives 2.50."
+        renderer.render(quotient, printed)
+        == "Line 2 (10.00) divided by line B (4.00) gives 2.50 (not rounded)."
     )
     assert renderer.render(at_most, printed) == "Line 2 (100.00), at most line 5a (150.00)."
     assert renderer.render(two, printed) == "Lesser of line 2 (10.00) and extra (4.50) gives 4.50."
