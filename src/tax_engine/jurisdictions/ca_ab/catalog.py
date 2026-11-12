@@ -36,6 +36,12 @@ AB428_UNUSED_TUITION_LINE_41 = AmountKind.declare(
 education amounts": the unused tuition and education amounts from Schedule AB(S11), read by line 2
 of Worksheet AB428."""
 
+AB428_MEDICAL_EXPENSES_LINE_51 = AmountKind.declare(
+    CATALOG, "ab428_medical_expenses_line_51", non_negative=True
+)
+"""Medical expenses, AB428 line 51 (line 58769) "Line 49 plus line 50 =": line 49 plus line 50, an
+optional input; a blank is read as 0 by the line 52 part."""
+
 AB428_CREDITS_TOTAL_LINE_52 = AmountKind.declare(
     CATALOG, "ab428_credits_total_line_52", non_negative=True
 )

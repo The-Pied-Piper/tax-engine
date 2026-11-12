@@ -1,0 +1,11 @@
+# AB428 (2025) inputs a salary-only caller does not give.
+# Line 51: "Line 51 and line 58769: Line 49 plus line 50 =". A salary-only caller has no medical
+# expenses, so a request that leaves the line out is read as blank, and the line 52 part reads that
+# blank as 0.
+inputs:
+  - name: ca-ab/ab428_medical_expenses_line_51
+    reference: "51"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 51 and line 58769: Line 49 plus line 50'
