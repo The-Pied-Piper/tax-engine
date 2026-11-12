@@ -60,6 +60,13 @@ AB428_TAX_ON_SPLIT_INCOME_LINE_60 = AmountKind.declare(CATALOG, "ab428_tax_on_sp
 (complete Form T1206)": the tax from Form T1206, an optional input that a salary-only caller leaves
 out."""
 
+AB428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_72 = AmountKind.declare(
+    CATALOG, "ab428_political_contributions_credit_line_72", non_negative=True
+)
+"""Alberta political contributions tax credit, AB428 line 72 "Line 72: Alberta political
+contributions tax credit (use Worksheet AB428) (maximum $1,000)": the credit from the worksheet, an
+optional input that a salary-only caller leaves out, read by line 73."""
+
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
 )
