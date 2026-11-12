@@ -1,5 +1,6 @@
 """The header of the Alberta 2025 manifest: the return's identity, its output and its federal
-imports. It declares no inputs itself; the salary input is in the part `salary.yaml`."""
+imports (Schedule 6 reads the Alberta Canada workers benefit datasets, 5009-S6). It declares no
+inputs itself; the salary input is in the part `salary.yaml`."""
 
 from __future__ import annotations
 
@@ -37,11 +38,21 @@ def test_the_return_exports_the_refund_or_balance_owing_and_declares_no_capabili
     assert header["capabilities"] == []
 
 
-def test_the_federal_forms_are_imported_in_order() -> None:
+def test_the_federal_forms_are_imported_in_order_and_schedule_6_reads_the_alberta_datasets() -> (
+    None
+):
     assert _header()["imports"] == [
         "ca/t1_taxable_income",
         "ca/t1_tax_and_credits",
-        "ca/schedule_6",
+        {
+            "form": "ca/schedule_6",
+            "datasets": {
+                "ca/cwb_base_amount": "ca-ab/cwb_base_amount",
+                "ca/cwb_rate": "ca-ab/cwb_rate",
+                "ca/cwb_maximum": "ca-ab/cwb_maximum",
+                "ca/cwb_reduction_threshold": "ca-ab/cwb_reduction_threshold",
+            },
+        },
         "ca/schedule_8",
         "ca/t2204",
     ]
