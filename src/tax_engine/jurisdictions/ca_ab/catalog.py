@@ -55,6 +55,11 @@ AB428_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
 amount on line 62. Alberta non-refundable tax credits =": line 54 plus line 57, read by line 62 on
 the tax form."""
 
+AB428_TAX_ON_SPLIT_INCOME_LINE_60 = AmountKind.declare(CATALOG, "ab428_tax_on_split_income_line_60")
+"""Alberta tax on split income, AB428 line 60 "Line 60 and line 61510: Alberta tax on split income
+(complete Form T1206)": the tax from Form T1206, an optional input that a salary-only caller leaves
+out."""
+
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
 )
