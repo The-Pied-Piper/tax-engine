@@ -60,6 +60,13 @@ AB428_TAX_ON_SPLIT_INCOME_LINE_60 = AmountKind.declare(CATALOG, "ab428_tax_on_sp
 (complete Form T1206)": the tax from Form T1206, an optional input that a salary-only caller leaves
 out."""
 
+AB428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_64 = AmountKind.declare(
+    CATALOG, "ab428_minimum_tax_carryover_amount_line_64", non_negative=True
+)
+"""Alberta minimum tax carryover amount, AB428 line 64 and line 61540 "Amount from line 40427 of
+your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
+that a salary-only caller leaves out and is read as 0; the 35% is applied by the next step."""
+
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
 )
