@@ -1,0 +1,12 @@
+# Alberta basic personal amount, 2025 tax year (Form AB428 line 58040; TD1AB line 1). Not
+# income-tested. The credit rate that turns it into tax relief is its own dataset.
+# Line 58040 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+family: ca-ab/basic_personal_amount
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/td1ab/td1ab-25e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "22323"
