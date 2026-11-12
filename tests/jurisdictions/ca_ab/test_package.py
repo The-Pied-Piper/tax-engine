@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 import tax_engine.jurisdictions.ca_ab
-
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages
 
