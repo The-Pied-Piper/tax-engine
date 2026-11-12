@@ -98,6 +98,13 @@ AB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_69 = AmountKind.declare(
 """Provincial foreign tax credit, AB428 line 69 "Line 69: Provincial foreign tax credit (complete
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
 
+AB428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_72 = AmountKind.declare(
+    CATALOG, "ab428_political_contributions_credit_line_72", non_negative=True
+)
+"""Alberta political contributions tax credit, AB428 line 72 "Line 72: Alberta political
+contributions tax credit (use Worksheet AB428) (maximum $1,000)": the credit from the worksheet, an
+optional input that a salary-only caller leaves out, read by line 73."""
+
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
 )
