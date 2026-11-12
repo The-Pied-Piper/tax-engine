@@ -6,6 +6,7 @@ inputs:
   - name: ca-on/on428_provincial_foreign_tax_credit_line_82
     title: "Provincial foreign tax credit"
     reference: "82"
+    unit: ca/cad
     required: false
     default: null
     basis: 'Line 82: Provincial foreign tax credit (complete Form T2036)'

@@ -262,10 +262,10 @@ def test_lines_3_5_and_7_trace_the_output_and_the_base_they_read(
     sheet = on428(take_home_service, salary)
     text = EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
-    assert [line for line in text if line.startswith(f"Line 1 ({base}) falls in ")] == [
-        f"Line 1 ({base}) falls in the bracket that starts at {lower}.",
-        f"Line 1 ({base}) falls in a bracket with the rate {rate}.",
-        f"Line 1 ({base}) falls in a bracket with {at_start} of tax on the income below it.",
+    assert [line for line in text if line.startswith(f"Line 1 (CA${base}) falls in ")] == [
+        f"Line 1 (CA${base}) falls in the bracket that starts at CA${lower}.",
+        f"Line 1 (CA${base}) falls in a bracket with the rate {rate}.",
+        f"Line 1 (CA${base}) falls in a bracket with CA${at_start} of tax on the income below it.",
     ]
 
 

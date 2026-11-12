@@ -6,6 +6,7 @@ inputs:
   - name: ca-on/on428_tax_on_split_income_line_54
     title: "Ontario tax on split income"
     reference: "54"
+    unit: ca/cad
     required: false
     default: null
     basis: 'Line 54 and line 61510: Ontario tax on split income (complete Form T1206)'

@@ -10,6 +10,7 @@ form:
 capabilities:
   - name: core/record_total
     reference: "1"
+    unit: ca/cad
     consumes:
       records: ca/t1_taxable_income.taxable_income
     produces:
@@ -17,6 +18,7 @@ capabilities:
   - name: core/amount_by_band
     title: "Ontario health premium"
     reference: "89"
+    unit: ca/cad
     params:
       table: ca-on/health_premium_rows
     consumes:

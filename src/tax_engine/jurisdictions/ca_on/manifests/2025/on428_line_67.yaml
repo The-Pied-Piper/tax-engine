@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/tiered_surcharge
     reference: "67"
+    unit: ca/cad
     params:
       tiers: ca-on/surtax_line_67
     consumes:

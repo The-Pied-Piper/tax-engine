@@ -20,7 +20,7 @@ from pathlib import Path
 import tax_engine.jurisdictions.ca
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.kinds import bundled_kinds, non_negative
 from tests.manifest_support import inputs_without_form
 
@@ -48,7 +48,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     (folder / PART.name).write_text(inputs_without_form(PART), encoding="utf-8")
-    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
+    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
 
 
 def test_a_request_that_leaves_out_line_14_is_read_as_blank(tmp_path: Path) -> None:

@@ -10,6 +10,7 @@ capabilities:
   - name: core/record_total
     title: "Low-income individuals and families tax (LIFT) credit"
     reference: "85"
+    unit: ca/cad
     consumes:
       records: ca-on/on428_a.lift_credit_single
     produces:

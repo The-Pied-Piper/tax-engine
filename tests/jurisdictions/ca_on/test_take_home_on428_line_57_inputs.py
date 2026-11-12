@@ -18,7 +18,7 @@ import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_on.catalog import ON428_DIVIDEND_TAX_CREDIT_LINE_57
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 PRINTED_BASIS = "Line 57 and line and line 61520: Ontario dividend tax credit (use Worksheet ON428)"
 PART = Path(tax_engine.jurisdictions.ca_on.__file__).parent / (
@@ -38,7 +38,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     folder.mkdir()
     (folder / "header.yaml").write_text(HEADER)
     shutil.copy(PART, folder / PART.name)
-    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
+    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
 
 
 def test_a_request_that_leaves_out_line_57_is_read_as_blank(tmp_path: Path) -> None:

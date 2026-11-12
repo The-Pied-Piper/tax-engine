@@ -249,5 +249,5 @@ none, are an `InvalidCompositionError` naming the figure and the forms. A figure
 declarations of a manifest name must therefore name the same unit in both. A figure a form imports
 from another form takes the unit of the exporting form, which is what the importing form prints
 and `Worksheet.unit` reads. The manifest alone decides a figure's unit: an artifact a caller hands
-in with a unit of its own is stamped with the manifest's, or with none. Real manifests and
-datasets name no unit.
+in with a unit of its own is stamped with the manifest's, or with none. Real manifests name a
+unit on the figures that have one; a rate or a count names none.
