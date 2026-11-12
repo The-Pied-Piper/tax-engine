@@ -17,6 +17,12 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, AB428 line 16 (line 58040) "Basic personal amount Claim $22,323": the
 amount claimed, the first part of the total of the Alberta credit amounts."""
 
+AB428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_25", non_negative=True
+)
+"""AB428 line 25 "Line 25: Add lines 16, 17, 20, 23, and 24.": the sum of those lines, here the
+basic personal amount (line 16) alone."""
+
 AB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_8", non_negative=True
 )
@@ -28,6 +34,12 @@ AB428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 )
 """Alberta tax on taxable income, AB428 line 15 "Line 13 plus line 14 Alberta tax on taxable income
 =": line 13 plus line 14 of the column that line 1 falls in, read by line 59 on the tax form."""
+
+AB428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
+    CATALOG, "ab428_cpp_contributions_line_27", non_negative=True
+)
+"""CPP or QPP contributions, AB428 line 27 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
 
 AB428_UNUSED_TUITION_LINE_41 = AmountKind.declare(
     CATALOG, "ab428_unused_tuition_line_41", non_negative=True
@@ -74,8 +86,24 @@ WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9 = AmountKind.declare(
 percentage from line 8 enter this amount on line 61545 of your Form AB428.": the credit entered on
 line 61545 of Form AB428."""
 
+WORKSHEET_AB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_ab428_line_6", non_negative=True)
+"""Base amount, Worksheet AB428 line 6 "Line 6: Base amount 4,800.00": the base amount of the
+Alberta supplemental tax credit."""
+
 AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "ab428_ei_premiums_line_29", non_negative=True
 )
 """EI premiums credit amount, AB428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+AB428_DIVIDEND_TAX_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "ab428_dividend_tax_credit_line_63", non_negative=True
+)
+"""Alberta dividend tax credit, AB428 line 63 (line 61520) "Alberta dividend tax credit (use
+Worksheet AB428)": an optional input that a salary-only caller leaves out."""
+
+AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "ab428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, AB428 line 34 "Line 34 and line 58360: Pension income amount (maximum
+$1,719)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
