@@ -14,7 +14,6 @@ from __future__ import annotations
 import shutil
 from decimal import Decimal
 from pathlib import Path
-from typing import Any
 
 import yaml
 
@@ -50,7 +49,7 @@ def _manifest(tmp_path: Path) -> Manifest:
     ).load(folder)
 
 
-def _declaration() -> dict[str, Any]:
+def _declaration() -> dict[str, object]:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     (declaration,) = part["inputs"]
