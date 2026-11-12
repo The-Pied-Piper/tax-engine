@@ -37,6 +37,11 @@ FEDERAL_BRACKET_COLUMN_RATE_LINE_73 = AmountKind.declare(
 20.5%, 26%, 29% or 33%): the printed rate of the column that line 70 falls in.
 """
 
+FEDERAL_MARGINAL_RATE = AmountKind.declare(CATALOG, "federal_marginal_rate", non_negative=True)
+"""Federal marginal rate, T1 line 73 "Line 73: Rate": the printed rate of the column that line 70
+falls in, a fraction (0.205 for 20.5%), read by the return from the T1 form's export.
+"""
+
 FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_74 = AmountKind.declare(
     CATALOG, "federal_excess_times_column_rate_line_74", non_negative=True
 )
