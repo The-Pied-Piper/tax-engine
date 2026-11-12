@@ -141,6 +141,14 @@ def test_a_malformed_entry_is_rejected(tmp_path: Path, entry: str) -> None:
         source(tmp_path).get_jurisdiction(EX_ON)
 
 
+def test_rebinds_are_not_chained_each_family_is_swapped_once(tmp_path: Path) -> None:
+    write_benefit(tmp_path)
+    province(tmp_path, "[{form: ex/benefit, datasets: {ex/base: ex-ab/base, ex-ab/base: ex/x}}]")
+
+    with pytest.raises(InvalidManifestError, match="'ex-ab/base'.*no part"):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
 def test_a_form_listed_bare_and_with_a_rebind_is_rejected(tmp_path: Path) -> None:
     write_benefit(tmp_path)
     province(tmp_path, "[ex/benefit, {form: ex/benefit, datasets: {ex/base: ex-ab/base}}]")

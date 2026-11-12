@@ -144,7 +144,8 @@ and no identifier is listed twice.
 
   `datasets` is a non-empty mapping from a family the form's selections read in `params` to the
   family to read instead, in this manifest alone; the form's files stay shared. Artifacts keep
-  their names, even when one has the name of a family. A family no part of the form reads is
+  their names, even when one has the name of a family. Each family is named as the form's own files name it and is replaced once, so
+  `a: b` with `b: c` reads `b` for `a` and `c` for `b`, never `c` for `a`. A family no part of the form reads is
   rejected. A target with no dataset, or of another kind than the slot takes, is rejected when the
   return is composed, as for any selection. An entry with no `datasets` is the bare identifier.
 - The forms run in this order: the default form, the imported forms in `imports` order, then the

@@ -67,14 +67,14 @@ _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
 
 
-class _Import(NamedTuple):
+class _ImportEntry(NamedTuple):
     """One `imports` entry: the form and the dataset families it reads in place of its own."""
 
     name: str
     datasets: Mapping[str, str]
 
 
-class _Imported(NamedTuple):
+class _LoadedImports(NamedTuple):
     """The forms a manifest imports and the input declarations their parts carry."""
 
     forms: tuple[Form, ...]
@@ -302,10 +302,10 @@ class YamlJurisdictionSource:
 
     def _imported(
         self,
-        imports: tuple[_Import, ...],
+        imports: tuple[_ImportEntry, ...],
         owners: Mapping[str, Path],
         input_owners: dict[str, Path],
-    ) -> _Imported:
+    ) -> _LoadedImports:
         """The forms `imports` name, in order, each from the parts in its package's `forms/`
         folder, with the inputs those parts declare.
 
@@ -317,7 +317,7 @@ class YamlJurisdictionSource:
             self._imported_form(entry.name, owners.get(entry.name), input_owners, entry.datasets)
             for entry in imports
         ]
-        return _Imported(
+        return _LoadedImports(
             forms=tuple(form for form, _ in found),
             inputs=tuple(declaration for _, inputs in found for declaration in inputs),
         )
@@ -540,19 +540,19 @@ class YamlJurisdictionSource:
                 )
             owners[identifier] = part
 
-    def _import_list(self, node: YamlNode) -> tuple[_Import, ...]:
+    def _import_list(self, node: YamlNode) -> tuple[_ImportEntry, ...]:
         """The entries of an `imports` list, in order, no form repeated.
 
         An entry is a form identifier, or a mapping of `form` and `datasets`, a non-empty mapping
         from a family the form reads to the family to read instead.
         """
-        entries: list[_Import] = []
+        entries: list[_ImportEntry] = []
         for item in node.items():
             name = self._import_name(item)
             if name in {entry.name for entry in entries}:
                 raise YamlShapeError(f"{item.where}: {name!r} is listed more than once")
             Form.check_identifier("import", name)
-            entries.append(_Import(name, self._rebinds(item)))
+            entries.append(_ImportEntry(name, self._rebinds(item)))
         return tuple(entries)
 
     @staticmethod
@@ -586,7 +586,9 @@ class YamlJurisdictionSource:
         self,
         document: YamlNode,
         forms_beside: Callable[[str], tuple[Form, ...]] = lambda _: (),
-        imported: Callable[[tuple[_Import, ...]], _Imported] = lambda _: _Imported((), ()),
+        imported: Callable[[tuple[_ImportEntry, ...]], _LoadedImports] = lambda _: _LoadedImports(
+            (), ()
+        ),
     ) -> Manifest:
         """The manifest of `document`, whose selections and `outputs` are the default form's.
 
@@ -603,7 +605,7 @@ class YamlJurisdictionSource:
         default = code.namespace.identifier(_DEFAULT_FORM)
         title = doc.optional_field("title")
         imports = doc.optional_field("imports")
-        found = _Imported((), ()) if imports is None else imported(self._import_list(imports))
+        found = _LoadedImports((), ()) if imports is None else imported(self._import_list(imports))
         forms_imported = found.forms
         declared_inputs = {declaration.name: declaration for declaration in inputs}
         declared_inputs.update((declaration.name, declaration) for declaration in found.inputs)
