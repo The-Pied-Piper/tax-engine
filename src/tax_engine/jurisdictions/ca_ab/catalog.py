@@ -29,6 +29,12 @@ AB428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 """Alberta tax on taxable income, AB428 line 15 "Line 13 plus line 14 Alberta tax on taxable income
 =": line 13 plus line 14 of the column that line 1 falls in, read by line 59 on the tax form."""
 
+AB428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
+    CATALOG, "ab428_cpp_contributions_line_27", non_negative=True
+)
+"""CPP or QPP contributions, AB428 line 27 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
 AB428_UNUSED_TUITION_LINE_41 = AmountKind.declare(
     CATALOG, "ab428_unused_tuition_line_41", non_negative=True
 )
