@@ -171,3 +171,10 @@ AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 )
 """Pension income amount, AB428 line 34 "Line 34 and line 58360: Pension income amount (maximum
 $1,719)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
+
+AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "ab428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, AB428 line 3 "Line 3: 0.00" (60,000.00; 151,234.00): the printed lower
+bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 181,481,
+where lines 9 to 15 apply."""

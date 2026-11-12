@@ -1,0 +1,20 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) Part A, line 3. Each of the three columns
+# prints "Line 3:" with its lower bound: 0.00, 60,000.00 and 151,234.00, under "Column 1: Line 1 is
+# $60,000 or less", "Column 2: Line 1 is more than $60,000 but not more than $151,234" and "Column
+# 3: Line 1 is more than $151,234 but not more than $181,481". Line 3 is the printed lower bound of
+# the column that line 1 falls in. Above 181,481 the table does not apply (lines 9 to 15 do), so
+# line 3 is blank.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 3 reads line 1 directly.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "3"
+    unit: ca/cad
+    params:
+      schedule: ca-ab/brackets_lines_2_to_8
+    consumes:
+      base: ca-ab/ab428_taxable_income_line_1
+    produces:
+      output: ca-ab/ab428_bracket_lower_bound_line_3
