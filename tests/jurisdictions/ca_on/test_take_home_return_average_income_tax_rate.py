@@ -26,9 +26,8 @@ line 167 test does, with the real return part. The take-home figure of $70,000 (
 that is salary less CPP, EI and total tax, a subtraction done outside the engine) is pinned at the
 end, so the new step changes none of its terms.
 
-Not pinnable until ticket #658 prints rates as percentages: the English sentence's result figure
-(it will read "16.42%"). The sentence test below pins its structure and leaves the result figure
-out, and the one assertion #658 will extend is marked there.
+The English sentence prints the result as the percentage the form style prints, "16.42%", because
+the step's unit is `core/percent`.
 """
 
 from __future__ import annotations
@@ -150,12 +149,10 @@ def test_the_sentence_names_total_payable_over_salary_and_its_rounding(
 
     text = "\n".join(EnglishTraceRenderer().render_all(sheet.trace, sheet))
 
-    # Structure only: "<dividend figure> divided by <divisor figure> gives <result> (<rounding>)".
-    # The step has no title and no reference, so its figures are named by their labels.
-    # #658 WILL CHANGE the result figure: once rates print as percentages it reads "16.42%"; the
-    # pattern below leaves the result figure out (`[^()]*`) so that ticket can pin it.
+    # "<dividend figure> divided by <divisor figure> gives <result> (<rounding>)"; the step has no
+    # title and no reference, so its figures are named by their labels.
     assert re.search(
-        r"\(CA\$11497\.09\) divided by [^()]*\(CA\$70000\.00\) gives [^()]*"
+        r"\(CA\$11497\.09\) divided by [^()]*\(CA\$70000\.00\) gives 16\.42% "
         r"\(rounded half-up to 0\.0001\)",
         text,
     )
