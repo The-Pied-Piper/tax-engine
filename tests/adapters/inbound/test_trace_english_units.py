@@ -174,7 +174,8 @@ def test_a_table_amount_prints_the_unit_of_its_count_and_of_its_result() -> None
     printed = sheet({"term": MOONS, "contribution": CROWNS}, {"term": "A"})
 
     assert EnglishTraceRenderer(unit_texts=TEXTS).render(line, printed) == (
-        "The table amount for line A (12 moons) is EX$3500.00 (rounded to the nearest cent)."
+        "Looking up line A (12 moons) in the table gives EX$3500.00 for contribution "
+        "(rounded to the nearest cent)."
     )
 
 
@@ -182,7 +183,7 @@ def test_a_table_amount_without_units_prints_as_before() -> None:
     line = AmountByCountLine(OUT, TERM, 12, D("3500"), NO_ROUNDING, D("3500"))
 
     assert EnglishTraceRenderer(unit_texts=TEXTS).render(line) == (
-        "The table amount for term (12) is 3500.00 (not rounded)."
+        "Looking up term (12) in the table gives 3500.00 for contribution (not rounded)."
     )
 
 
