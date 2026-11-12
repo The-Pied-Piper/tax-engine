@@ -1,7 +1,7 @@
 """AB428 (2025) line 12, the bracket column rate of lines 9 to 15, from the real part file through
 the real engine.
 
-Form text (Form AB428, CRA 5009-c-25e.txt, repo copy docs/cra-forms-2025/5009-c-25e.txt, read
+Form text (Form AB428, CRA 5009-c-25e.txt, CRA form text in the cra-docs repo, read
 2026-11-12): the three columns of lines 9 to 15 print "Line 12: Rate 13%", "Line 12: Rate 14%" and
 "Line 12: Rate 15%". Column 1 is used if line 1 is "more than $181,481 but not more than
 $241,974", column 2 if it is more than $241,974 but not more than $362,961, column 3 if it is
@@ -100,8 +100,11 @@ def _line_12(tmp_path: Path, taxable_income: str) -> Decimal | Blank:
     kinds = alberta_kinds()
     given = Artifact(kinds.kind(LINE_1), D(taxable_income))
     (sheet,) = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025, given)[FORM_NAME]
-    value = sheet.get(kinds.kind(LINE_12)).value
-    assert value is BLANK or isinstance(value, Decimal)
+    artifact = sheet.get(kinds.kind(LINE_12))
+    if artifact.is_blank:
+        return BLANK
+    value = artifact.value
+    assert isinstance(value, Decimal)
     return value
 
 

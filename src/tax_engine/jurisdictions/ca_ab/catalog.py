@@ -184,3 +184,9 @@ AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, AB428 line 3 "Line 3: 0.00" (60,000.00; 151,234.00): the printed lower
 bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 181,481,
 where lines 9 to 15 apply."""
+
+AB428_BRACKET_RATE_LINE_12 = AmountKind.declare(
+    CATALOG, "ab428_bracket_rate_line_12", non_negative=True
+)
+"""Bracket column rate, AB428 line 12 (the columns print "Line 12: Rate" with 13%, 14% or 15%): the
+printed rate of the column that line 1 falls in; blank when line 1 is 181,481.00 or less."""
