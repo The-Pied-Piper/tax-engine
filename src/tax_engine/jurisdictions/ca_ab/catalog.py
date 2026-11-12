@@ -78,6 +78,12 @@ AB428_TAX_ON_SPLIT_INCOME_LINE_60 = AmountKind.declare(CATALOG, "ab428_tax_on_sp
 (complete Form T1206)": the tax from Form T1206, an optional input that a salary-only caller leaves
 out."""
 
+AB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_69 = AmountKind.declare(
+    CATALOG, "ab428_provincial_foreign_tax_credit_line_69", non_negative=True
+)
+"""Provincial foreign tax credit, AB428 line 69 "Line 69: Provincial foreign tax credit (complete
+Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
+
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
 )
