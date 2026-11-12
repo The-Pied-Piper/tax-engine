@@ -79,3 +79,9 @@ AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 )
 """EI premiums credit amount, AB428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "ab428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, AB428 line 34 "Line 34 and line 58360: Pension income amount (maximum
+$1,719)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
