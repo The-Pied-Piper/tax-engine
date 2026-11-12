@@ -4,6 +4,8 @@
 # Exports: what the take-home return reads from this form.
 #   - Line 167 (`ca/refund_or_balance_owing`, "Refund or balance owing") is the figure the take-home
 #     return reads; positive is a balance owing, negative a refund.
+#   - Line 43500 (`ca/total_payable`, "Total payable") is the federal plus Ontario income tax the
+#     return summary reads for the average income tax rate.
 # Line 76 (`ca/federal_tax_on_taxable_income_line_76`, "Line 74 plus line 75 Federal tax on
 # taxable income") is read inside the form by line 40400 only, and line 70 by line 76, so neither
 # is exported.
@@ -13,4 +15,5 @@ form:
   required: true
   exports:
     - ca/refund_or_balance_owing
+    - ca/total_payable
 capabilities: []

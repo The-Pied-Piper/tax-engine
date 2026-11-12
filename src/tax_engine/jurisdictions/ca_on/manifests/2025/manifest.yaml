@@ -4,7 +4,8 @@
 # in the `ca` package (`ca/forms/<name>/`).
 #
 # The default form's export is T1 line 167, refund or balance owing (positive is owing, negative is
-# a refund). The CPP and EI figures the calculator also needs are exported by their own forms
+# a refund), and the average income tax rate (`ca-on/average_income_tax_rate`, total payable over
+# salary). The CPP and EI figures the calculator also needs are exported by their own forms
 # (Schedule 8 and T2204, both imported); the calculator reads them from their forms.
 jurisdiction: CA-ON
 version: 1
@@ -13,6 +14,7 @@ valid_from_tax_year: 2025
 title: Return summary
 outputs:
   - ca/refund_or_balance_owing
+  - ca-on/average_income_tax_rate
 capabilities: []
 imports:
   - ca/t1_taxable_income

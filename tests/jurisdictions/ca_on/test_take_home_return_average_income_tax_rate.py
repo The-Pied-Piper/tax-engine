@@ -194,7 +194,7 @@ def test_the_manifest_outputs_the_average_rate_beside_the_line_167_figure() -> N
     (manifest,) = source.get_jurisdiction(ONTARIO).manifests
     (summary,) = (form for form in manifest.forms if form.name == RETURN)
 
-    assert summary.exports == (LINE_167, AVERAGE_RATE)
+    assert summary.exports == (AVERAGE_RATE, LINE_167)
 
 
 def test_the_real_t1_form_exports_total_payable_for_the_return_to_read() -> None:

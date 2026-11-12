@@ -1,0 +1,13 @@
+# Ontario rate rounding, 2026 tax year: the rule for the Ontario return summary's average income tax
+# rate (core/divide, T1 line 43500 "Total payable" over T1 total income, `ca/employment_income`):
+# the exact quotient is rounded once, half-up to 0.0001, so a rate as a fraction such as 0.1642
+# prints as 16.42%. The forms print no precision for this figure, so half-up to four places is the
+# project's choice. A figure that needs a different rule gets a dataset of its own.
+family: ca-on/rate_rounding
+tax_year: 2026
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-r/5006-r-25e.txt
+rounding: {increment: "0.0001", mode: half_up}
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
