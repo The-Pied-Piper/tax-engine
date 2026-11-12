@@ -5,7 +5,7 @@ carry a printed `tax_at_start`, and 0 itself is then not covered. An optional `u
 inclusive last amount covered; it must lie above the last bracket's `from`. `covers(amount)` says
 whether the schedule answers for an amount, and `column_for` / `tax_on` refuse an amount it does
 not cover with AmountOutsideBracketRangeError. A schedule with no `up_to` and a first bracket at 0
-behaves as it always did.
+keeps its plain from-zero behaviour.
 """
 
 from __future__ import annotations

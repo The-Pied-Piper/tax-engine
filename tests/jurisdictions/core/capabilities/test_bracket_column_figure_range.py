@@ -3,7 +3,7 @@
 A base the schedule does not cover (`schedule.covers(base)` is false) gives a blank `output`
 instead of a figure, with one BracketOutsideRangeLine as its trace: the output and base kinds and
 the base amount. The slot is declared `MAY_BE_BLANK`, so `run` accepts the blank. A covered base,
-and every base of a schedule from 0 with no `up_to`, gives its figure as before. Made-up values.
+and every base of a schedule from 0 with no `up_to`, gives its figure. Made-up values.
 """
 
 from __future__ import annotations

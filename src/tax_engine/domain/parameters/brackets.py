@@ -119,7 +119,7 @@ class BracketSchedule:
 
     @property
     def has_range(self) -> bool:
-        """Whether the schedule states a range: an `up_to`, or a first bracket above 0."""
+        """Whether the schedule has a range: an `up_to`, or a first bracket above 0."""
         return self.up_to is not None or self.brackets[0].lower != 0
 
     def covers(self, amount: Decimal) -> bool:

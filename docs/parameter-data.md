@@ -28,7 +28,7 @@ start as the form prints it (`tax_at_start`).
   side, each filled in only for the incomes it covers. `column_for` and `tax_on` refuse an amount
   outside the range (`AmountOutsideBracketRangeError`); the `bracket_column_*` capabilities instead
   give a blank, with a trace line saying the base is outside the range, which later steps pass on.
-  A schedule from 0 with no `up_to` covers every amount from 0 and behaves as before.
+  A schedule from 0 with no `up_to` covers every amount from 0.
 
 ## Amount by band (`amount_by_band.py`)
 
