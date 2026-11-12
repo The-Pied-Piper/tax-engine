@@ -10,6 +10,7 @@ capabilities:
   - name: core/sum
     title: "Ontario surtax"
     reference: "68"
+    unit: ca/cad
     params:
       rounding: ca-on/cent_rounding
     consumes:

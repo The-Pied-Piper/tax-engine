@@ -184,7 +184,7 @@ def test_the_real_t1_form_header_exports_only_refund_or_balance_owing() -> None:
 def test_the_real_ontario_manifest_computes_refund_or_balance_owing_at_70000() -> None:
     # No fixture: the bundled Ontario manifest, with every take-home part, as the calculator loads.
     service = TaxComputationService(
-        YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds()),
+        YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds(), units()),
         YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units()),
         bundled_capabilities(),
     )

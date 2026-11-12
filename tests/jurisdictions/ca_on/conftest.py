@@ -86,7 +86,7 @@ def take_home_service(tmp_path: Path) -> TakeHomeService:
             )
         roots = {**JURISDICTIONS.roots(), Namespace("ca-on"): tmp_path}
         return TaxComputationService(
-            YamlJurisdictionSource(roots, bundled_kinds()),
+            YamlJurisdictionSource(roots, bundled_kinds(), units()),
             YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), units()),
             bundled_capabilities(),
         )

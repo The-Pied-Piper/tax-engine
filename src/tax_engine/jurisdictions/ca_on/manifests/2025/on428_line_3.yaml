@@ -14,12 +14,14 @@ form:
 capabilities:
   - name: core/record_total
     reference: "1"
+    unit: ca/cad
     consumes:
       records: ca/t1_taxable_income.taxable_income
     produces:
       output: ca-on/on428_taxable_income_line_1
   - name: core/bracket_column_lower_bound
     reference: "3"
+    unit: ca/cad
     params:
       schedule: ca-on/brackets
     consumes:

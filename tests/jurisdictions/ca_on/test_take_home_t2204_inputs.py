@@ -22,7 +22,7 @@ from pathlib import Path
 
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 
 LINE_2 = "ca/t2204_self_employment_earnings"
@@ -57,7 +57,7 @@ def _manifest(take_home_service: TakeHomeService, tmp_path: Path) -> Manifest:
     """The temporary take-home folder the shared builder writes, loaded as a manifest."""
     take_home_service(HEADER, FORM, PART)
     folder = tmp_path / "manifests" / "2025"
-    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
+    return YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
 
 
 def test_a_request_that_leaves_out_the_self_employment_earnings_is_read_as_blank(

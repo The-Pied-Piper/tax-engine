@@ -12,13 +12,13 @@ import tax_engine.jurisdictions.ca_on
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Manifest
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 SALARY = "ca/employment_income"
 
 
 def _manifest() -> Manifest:
-    source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds())
+    source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
     (manifest,) = source.get_jurisdiction(JurisdictionCode("CA-ON")).manifests
     return manifest
 
