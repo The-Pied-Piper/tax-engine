@@ -7,9 +7,7 @@ the same as another currency.
 from __future__ import annotations
 
 from decimal import Decimal
-from pathlib import Path
 
-import tax_engine.jurisdictions
 import tax_engine.registrations
 from tax_engine.adapters.inbound.trace_english.unit_text import EnglishUnitTextRegistry
 from tax_engine.adapters.inbound.unit_text import Placement
@@ -60,11 +58,12 @@ def test_every_registered_unit_has_english_text() -> None:
 
 
 def test_every_bundled_amount_dataset_is_measured_in_the_canadian_dollar() -> None:
-    root = Path(tax_engine.jurisdictions.__file__).parent
+    roots = tax_engine.registrations.JURISDICTIONS.roots()
     amounts = [
         path
-        for package in ("ca", "ca_on")
-        for path in (root / package / "parameters").rglob("*.yaml")
+        for namespace, root in roots.items()
+        if namespace.name.startswith("ca")
+        for path in (root / "parameters").rglob("*.yaml")
         if "\nkind: amount\n" in path.read_text()
     ]
 
