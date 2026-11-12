@@ -408,6 +408,12 @@ ONTARIO_SURTAX_FACTOR = AmountKind.declare(CATALOG, "ontario_surtax_factor", non
 the tax a further dollar of Ontario tax brings with the surtax. A plain figure with no unit, not
 printed on the form."""
 
+ONTARIO_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "ontario_bracket_rate_return", non_negative=True
+)
+"""Ontario bracket rate, ON428 line 5 "Line 5: Rate": the printed rate of the column that line 1
+falls in, read from ON428 into the return summary."""
+
 RETURN_TAXABLE_INCOME = AmountKind.declare(CATALOG, "return_taxable_income", non_negative=True)
 """Taxable income on the Return summary: the T1 taxable income (line 26000), the base of the
 health premium chart."""
