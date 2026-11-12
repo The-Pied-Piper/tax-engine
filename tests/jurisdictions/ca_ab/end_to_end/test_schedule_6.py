@@ -28,13 +28,9 @@ from textwrap import dedent
 
 import pytest
 
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import (
     CWB_BASE_AMOUNT,
@@ -48,13 +44,7 @@ from tax_engine.jurisdictions.ca.catalog.canada_workers_benefit import (
     CWB_WORKING_INCOME_RATE_LINE_20,
 )
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_ab.support import (
-    alberta_capabilities,
-    alberta_kinds,
-    alberta_packages,
-    alberta_parameter_parsers,
-    alberta_units,
-)
+from tests.jurisdictions.ca_ab.support import alberta_service
 
 D = Decimal
 HEADER_TEMPLATE = dedent("""\
@@ -112,21 +102,6 @@ CASES: list[tuple[str, dict[str, str]]] = [
                "22": "1750.00", "24": "26159.00", "25": "43176.00", "27": "6476.40",
                "28": "0.00"}),
 ]  # fmt: skip
-
-
-def alberta_service(tmp_path: Path, header: str = HEADER) -> TaxComputationService:
-    """The engine over a temporary Alberta manifest (`HEADER`) and the Alberta package list."""
-    folder = tmp_path / "manifests" / "2025"
-    folder.mkdir(parents=True)
-    (folder / "manifest.yaml").write_text(header, encoding="utf-8")
-    roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
-    return TaxComputationService(
-        YamlJurisdictionSource(roots, alberta_kinds(), alberta_units()),
-        YamlParameterSource(
-            alberta_packages().roots(), alberta_parameter_parsers(), alberta_units()
-        ),
-        alberta_capabilities(),
-    )
 
 
 def schedule_6(tmp_path: Path, salary: str, header: str = HEADER) -> Worksheet:
