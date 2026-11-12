@@ -32,5 +32,5 @@ def test_2025_exact_rounding_is_not_the_cent_rule() -> None:
 
 
 def test_2025_exact_rounding_names_a_source() -> None:
-    # The cited form gives the arithmetic (lines 5, 66, 67); it prints no rounding text for a rule of none.
+    # The cited form gives the arithmetic (lines 5, 66, 67), no rounding text for a rule of none.
     assert SOURCE.get(FAMILY, 2025, ROUNDING_ONLY).sources
