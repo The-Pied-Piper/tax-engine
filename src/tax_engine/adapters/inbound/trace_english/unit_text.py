@@ -38,7 +38,8 @@ class EnglishUnitText:
     figure: `False` for a symbol written against its number ("EX$3500.00", "12%"), `True` for a
     word ("12 moons"). It is separate from `placement` because before and after units may go
     either way, and it is keyword-only with no default so a unit never prints with a spacing
-    nobody chose.
+    nobody chose. `as_percentage` marks a unit whose figures are fractions written as percentages:
+    0.2965 prints as "29.65%" with the text "%". It is keyword-only and defaults to `False`.
     """
 
     identifier: str
@@ -47,6 +48,7 @@ class EnglishUnitText:
     placement: Placement
     _: KW_ONLY
     spaced: bool
+    as_percentage: bool = False
 
     def __post_init__(self) -> None:
         Unit(self.identifier)  # the identifier must be a valid unit identifier
@@ -111,8 +113,11 @@ def english_unit(
     placement: Placement,
     *,
     spaced: bool,
+    as_percentage: bool = False,
 ) -> EnglishUnitText:
     """Register the English text of the unit `identifier` on the shared registry and return it."""
-    text = EnglishUnitText(identifier, singular, plural, placement, spaced=spaced)
+    text = EnglishUnitText(
+        identifier, singular, plural, placement, spaced=spaced, as_percentage=as_percentage
+    )
     EnglishUnitTextRegistry.shared().register_text(text)
     return text
