@@ -1,16 +1,15 @@
 """The Ontario return summary carries the ON428 line 5 bracket column rate, through the real engine.
 
-Ticket #725 (Ontario bracket rate, step 2 of the marginal rate series). No new form text: the rate
-is the one printed in the column of the ON428 chart (line 5), the existing step
+The return summary gives the Ontario bracket rate. No new form text: the rate is the one printed
+in the column of the ON428 chart (line 5), the existing step
 `ca-on/on428_bracket_column_rate_line_5` ("Line 5: Rate 5.05%", "9.15%", "11.16%", "12.16%",
 "13.16%", CRA 5006-c-25e.txt).
 
 Another form reads an export only as a record list, as the return does for T1 line 167. So the
 ON428 form exports line 5 and the return summary has one `core/record_total` step consuming
-`ca-on/on428.on428_bracket_column_rate_line_5`, producing the new Ontario kind
-`ca-on/ontario_bracket_rate_return` (a non-negative amount, unit `core/percent`). The default form `ca-on/return` lists it in
-its outputs beside `ca/refund_or_balance_owing`. Names the ticket does not settle: the kind
-identifier.
+`ca-on/on428.on428_bracket_column_rate_line_5`, producing the Ontario kind
+`ca-on/ontario_bracket_rate_return` (a non-negative amount, unit `core/percent`). The default
+form `ca-on/return` lists it in its outputs beside `ca/refund_or_balance_owing`.
 
 Figures (the real bundled manifest, salary the only input): $20,000 gives the first bracket's rate
 0.0505, $70,000 gives 0.0915 and $275,000 gives the top bracket's rate 0.1316. The $70,000
