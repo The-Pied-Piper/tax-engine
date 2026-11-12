@@ -1,0 +1,11 @@
+# Alberta 2025 brackets, AB428 Part A lines 9 to 15 (columns 1 to 3; each tax_at_start is the printed line 14 constant)
+family: ca-ab/brackets_lines_9_to_15
+tax_year: 2025
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt
+rounding: none
+brackets:
+  - {from: "181481.00", rate: "0.13", tax_at_start: "17553.04"}
+  - {from: "241974.00", rate: "0.14", tax_at_start: "25417.13"}
+  - {from: "362961.00", rate: "0.15", tax_at_start: "42355.31"}

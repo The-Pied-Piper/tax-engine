@@ -29,6 +29,12 @@ AB428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
 """AB428 line 25 "Line 25: Add lines 16, 17, 20, 23, and 24.": the sum of those lines, here the
 basic personal amount (line 16) alone."""
 
+AB428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
+    CATALOG, "ab428_bracket_lower_bound_line_10", non_negative=True
+)
+"""Lower bound of the column, AB428 line 10 "Line 10: 181,481.00": the printed lower bound of the
+column of lines 9 to 15 that line 1 falls in, blank when line 1 is 181,481 or less."""
+
 AB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_8", non_negative=True
 )
