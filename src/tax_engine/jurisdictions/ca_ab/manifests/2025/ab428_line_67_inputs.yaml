@@ -1,0 +1,12 @@
+# AB428 (2025) inputs a salary-only caller does not give.
+# Line 67: "Alberta additional tax for minimum tax purposes: Line 67: Form T691: line 1 minus line 2 of
+# Part 7 multiplied by 35%". A caller with no minimum tax to report leaves the line out, so a request
+# that leaves it out is read as blank. The 35% multiply is a separate step.
+inputs:
+  - name: ca-ab/ab428_minimum_tax_t691_amount_line_67
+    title: "Alberta additional tax for minimum tax purposes"
+    reference: "67 box A"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 67: Form T691: line 1 minus line 2 of Part 7'

@@ -60,6 +60,13 @@ AB428_TAX_ON_SPLIT_INCOME_LINE_60 = AmountKind.declare(CATALOG, "ab428_tax_on_sp
 (complete Form T1206)": the tax from Form T1206, an optional input that a salary-only caller leaves
 out."""
 
+AB428_MINIMUM_TAX_T691_AMOUNT_LINE_67 = AmountKind.declare(
+    CATALOG, "ab428_minimum_tax_t691_amount_line_67"
+)
+"""Alberta additional tax for minimum tax purposes, AB428 line 67 "Line 67: Form T691: line 1 minus
+line 2 of Part 7 multiplied by 35%": the amount from Form T691, an optional input that a salary-only
+caller leaves out. The 35% multiply is a separate step."""
+
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
 )
