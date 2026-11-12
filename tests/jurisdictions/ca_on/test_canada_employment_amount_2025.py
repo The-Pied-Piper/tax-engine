@@ -25,7 +25,9 @@ from tax_engine.jurisdictions.core.capabilities.capped_amount import CappedAmoun
 
 D = Decimal
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    tax_engine.registrations.JURISDICTIONS.roots(),
+    tax_engine.registrations.parameter_parsers(),
+    tax_engine.registrations.units(),
 )
 FAMILY = "ca/canada_employment_amount"
 

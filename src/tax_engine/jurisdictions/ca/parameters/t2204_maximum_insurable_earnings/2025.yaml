@@ -7,6 +7,7 @@ family: ca/t2204_maximum_insurable_earnings
 tax_year: 2025
 kind: amount
 title: "maximum"
+unit: ca/cad
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf
 rounding: {increment: "0.01", mode: half_up}

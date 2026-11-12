@@ -7,6 +7,7 @@ family: ca/cpp_pensionable_earnings_per_slip_maximum
 tax_year: 2026
 kind: amount
 title: "maximum per slip"
+unit: ca/cad
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
 rounding: {increment: "0.01", mode: half_up}
