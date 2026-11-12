@@ -24,9 +24,12 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
 )
 from tax_engine.domain.parameters.brackets import BRACKETS, Bracket, BracketSchedule
-from tax_engine.domain.parameters.credit import CREDIT
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import Unit, UnitCatalog, UnitRegistry
 from tax_engine.jurisdictions.core.parameter_parsers.credit import CreditParser
 from tests.parameter_source_support import (
     BRACKETS_2025,
@@ -92,6 +95,70 @@ def test_a_blank_dataset_title_is_refused(tmp_path: Path) -> None:
 
     with pytest.raises(InvalidParameterDataError):
         source(tmp_path).get("ex/personal_credit", 2025, CREDIT)
+
+
+def unit_registry() -> UnitRegistry:
+    catalog = UnitCatalog(Namespace("ex"))
+    catalog.declare("crowns")
+    registry = UnitRegistry()
+    registry.register_catalog(catalog)
+    return registry
+
+
+def source_with_units(directory: Path, units: UnitRegistry | None) -> YamlParameterSource:
+    return YamlParameterSource(roots(directory), parsers=built_in_parsers(), units=units)
+
+
+def test_a_dataset_may_carry_the_unit_its_figures_are_measured_in(tmp_path: Path) -> None:
+    write(tmp_path, "ex/parameters/personal_credit/2025.yaml", CREDIT_2025 + "unit: ex/crowns\n")
+    write(
+        tmp_path, "ex/parameters/other_credit/2025.yaml", CREDIT_2025.replace("personal", "other")
+    )
+    units = unit_registry()
+    source = source_with_units(tmp_path, units)
+
+    with_unit = source.get("ex/personal_credit", 2025, CREDIT)
+    without = source.get("ex/other_credit", 2025, CREDIT)
+
+    assert with_unit.unit is units.unit("ex/crowns")
+    assert with_unit.unit == Unit("ex/crowns")
+    assert without.unit is None
+
+
+def test_a_dataset_unit_defaults_to_none() -> None:
+    dataset = ParameterDataset(
+        "ex/personal_credit", 2025, CREDIT, Credit(D("1")), NO_ROUNDING, ("https://x.org",)
+    )
+
+    assert dataset.unit is None
+
+
+@pytest.mark.parametrize("declared", ["ex/nothing", "crowns", '" "', '""'])
+def test_an_unknown_bare_or_blank_dataset_unit_is_refused_naming_file_and_identifier(
+    tmp_path: Path, declared: str
+) -> None:
+    write(tmp_path, "ex/parameters/personal_credit/2025.yaml", CREDIT_2025 + f"unit: {declared}\n")
+
+    with pytest.raises(InvalidParameterDataError) as refused:
+        source_with_units(tmp_path, unit_registry()).get("ex/personal_credit", 2025, CREDIT)
+
+    message = str(refused.value)
+    assert "ex/parameters/personal_credit/2025.yaml" in message
+    assert "unit" in message
+    assert declared.strip('" ') in message
+
+
+def test_with_no_unit_registry_a_dataset_naming_a_unit_is_refused(tmp_path: Path) -> None:
+    write(tmp_path, "ex/parameters/personal_credit/2025.yaml", CREDIT_2025 + "unit: ex/crowns\n")
+
+    with pytest.raises(InvalidParameterDataError, match=r"2025\.yaml.*ex/crowns"):
+        source_with_units(tmp_path, None).get("ex/personal_credit", 2025, CREDIT)
+
+
+def test_with_no_unit_registry_a_dataset_without_a_unit_still_loads(tmp_path: Path) -> None:
+    write(tmp_path, "ex/parameters/personal_credit/2025.yaml", CREDIT_2025)
+
+    assert source_with_units(tmp_path, None).get("ex/personal_credit", 2025, CREDIT).unit is None
 
 
 def test_requesting_a_kind_without_a_parser_fails(tmp_path: Path) -> None:

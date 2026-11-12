@@ -6,7 +6,8 @@ A figure with a unit prints it with its number: before it ("EX$3500.00") or afte
 itself being only its identifier; a unit with no text is refused, naming it. A figure with none
 prints as it always has. The unit is the worksheet's (`FigureNames.unit(label)`), so a sentence
 names it for the figures it reads and for the figure it gives; a dataset's constant (a per-unit
-amount, threshold, cap or bound) stays bare.
+amount, threshold or bound) stays bare, except a dataset figure that carries its own `unit`
+(`EnglishNames.parameter`), which prints it.
 """
 
 from __future__ import annotations
@@ -26,11 +27,14 @@ from tax_engine.adapters.inbound.unit_text import Placement
 from tax_engine.domain.blank import BLANK
 from tax_engine.domain.errors import UnknownRegistrationError
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
+from tax_engine.domain.parameters.amount import AMOUNT, Amount
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
 from tax_engine.domain.trace import (
     AmountByBandLine,
     BracketColumnFigureLine,
+    CappedAmountLine,
     ChosenByCountLine,
     ChosenByRangeLine,
     ChosenBySignLine,
@@ -40,6 +44,7 @@ from tax_engine.domain.trace import (
     ItemLesserOfLine,
     ItemsTotalLine,
     ItemSumLine,
+    LesserOfWithMaximumLine,
     RecordPositiveTotalLine,
     RecordTotalLine,
     SubtractedNotBelowZeroLine,
@@ -426,4 +431,59 @@ def test_a_bracket_columns_printed_amounts_print_their_unit_but_a_rate_stays_a_p
     assert render(lower) == "Gross pay (52000.00) falls in the bracket that starts at 50000.00."
     assert render(at_start) == (
         "Gross pay (52000.00) falls in a bracket with 5000.00 of tax on the income below it."
+    )
+
+
+def cap(unit: Unit | None, title: str | None = "maximum per slip") -> ParameterDataset[Amount]:
+    return ParameterDataset(
+        "ex/slip_maximum",
+        2025,
+        AMOUNT,
+        Amount(D("81200.00")),
+        NO_ROUNDING,
+        ("https://x.org",),
+        title=title,
+        unit=unit,
+    )
+
+
+def test_a_dataset_figure_prints_its_unit() -> None:
+    names = EnglishNames(sheet({}), TEXTS)
+
+    assert names.parameter(cap(CROWNS)) == "the maximum per slip (EX$81200.00)"
+
+
+def test_a_dataset_figure_with_a_unit_after_the_number_prints_it_there() -> None:
+    assert EnglishNames(sheet({}), TEXTS).parameter(cap(MOONS)) == (
+        "the maximum per slip (81200.00 moons)"
+    )
+
+
+def test_a_dataset_figure_without_a_unit_prints_as_before() -> None:
+    assert EnglishNames(sheet({}), TEXTS).parameter(cap(None)) == "the maximum per slip (81200.00)"
+    assert EnglishNames().parameter(cap(None)) == "the maximum per slip (81200.00)"
+
+
+def test_a_dataset_figure_whose_unit_has_no_english_text_is_refused_naming_the_unit() -> None:
+    with pytest.raises(UnknownRegistrationError, match="ex/weeks"):
+        EnglishNames(sheet({}), TEXTS).parameter(cap(WEEKS))
+
+
+def test_a_capped_amount_prints_the_unit_of_its_cap() -> None:
+    line = CappedAmountLine(NET, GROSS, D("90000.00"), cap(CROWNS), NO_ROUNDING, D("81200.00"))
+
+    assert render(line) == (
+        "Lesser of gross pay (90000.00) and the maximum per slip (EX$81200.00) gives "
+        "81200.00 (not rounded)."
+    )
+
+
+def test_a_lesser_of_with_a_maximum_prints_the_unit_of_its_maximum() -> None:
+    line = LesserOfWithMaximumLine(
+        NET, ((GROSS, D("90000.00")),), cap(CROWNS), NO_ROUNDING, D("81200.00")
+    )
+
+    assert render(line) == (
+        "Lesser of gross pay (90000.00) and the maximum per slip (EX$81200.00) gives "
+        "81200.00 (not rounded)."
     )
