@@ -55,10 +55,10 @@ def test_the_engine_refuses_to_build_when_a_registered_unit_has_no_english_text(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     catalog = UnitCatalog(Namespace("ex"))
-    catalog.declare("test_652_furlongs")
+    catalog.declare("furlongs")
     registry = UnitRegistry()
     registry.register_catalog(catalog)
     monkeypatch.setattr(factory, "units", lambda: registry)
 
-    with pytest.raises(UnknownRegistrationError, match="ex/test_652_furlongs"):
+    with pytest.raises(UnknownRegistrationError, match="ex/furlongs"):
         factory.build_tax_computation()

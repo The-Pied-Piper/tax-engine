@@ -24,6 +24,7 @@ from tax_engine.adapters.inbound.trace_english.unit_text import (
 )
 from tax_engine.domain.errors import (
     DuplicateRegistrationError,
+    InvalidRegistrationError,
     UnknownRegistrationError,
 )
 from tax_engine.domain.registry import Namespace, SharedRegistry
@@ -209,16 +210,28 @@ def test_the_startup_check_refuses_a_registered_unit_with_no_text() -> None:
 
 
 def test_english_unit_registers_the_text_on_the_shared_registry() -> None:
-    english_unit("ex/test_652_lunes", "lune", "lunes", Placement.AFTER, spaced=True)
+    english_unit("ex/lunes", "lune", "lunes", Placement.AFTER, spaced=True)
 
-    found = EnglishUnitTextRegistry.shared().for_unit(Unit("ex/test_652_lunes"))
+    found = EnglishUnitTextRegistry.shared().for_unit(Unit("ex/lunes"))
     assert found.write("2", 2) == "2 lunes"
     assert found.write("1", 1) == "1 lune"
-    assert found.identifier == "ex/test_652_lunes"
+    assert found.identifier == "ex/lunes"
 
 
 def test_english_unit_takes_spaced_by_keyword_only() -> None:
     with pytest.raises(TypeError):
-        english_unit("ex/test_652_bad", "a", "b", Placement.AFTER, True)  # type: ignore[call-arg]
+        english_unit("ex/bad", "a", "b", Placement.AFTER, True)  # type: ignore[call-arg]
     with pytest.raises(TypeError, match="spaced"):
-        english_unit("ex/test_652_bad", "a", "b", Placement.AFTER)  # type: ignore[call-arg]
+        english_unit("ex/bad", "a", "b", Placement.AFTER)  # type: ignore[call-arg]
+
+
+def test_an_english_unit_text_refuses_empty_text_naming_the_unit() -> None:
+    with pytest.raises(InvalidRegistrationError, match="ex/zz.*singular"):
+        EnglishUnitText("ex/zz", " ", "zz", Placement.AFTER, spaced=True)
+    with pytest.raises(InvalidRegistrationError, match="ex/zz.*plural"):
+        EnglishUnitText("ex/zz", "zz", "", Placement.AFTER, spaced=True)
+
+
+def test_an_english_unit_text_refuses_a_malformed_identifier() -> None:
+    with pytest.raises(InvalidRegistrationError, match="Crowns"):
+        EnglishUnitText("Crowns", "EX$", "EX$", Placement.BEFORE, spaced=False)

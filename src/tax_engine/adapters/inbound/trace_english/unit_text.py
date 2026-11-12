@@ -14,7 +14,11 @@ from dataclasses import KW_ONLY, dataclass
 from decimal import Decimal
 from typing import Protocol
 
-from tax_engine.domain.errors import DuplicateRegistrationError, UnknownRegistrationError
+from tax_engine.domain.errors import (
+    DuplicateRegistrationError,
+    InvalidRegistrationError,
+    UnknownRegistrationError,
+)
 from tax_engine.domain.registry import SharedRegistry
 from tax_engine.domain.unit import Unit
 
@@ -65,6 +69,15 @@ class EnglishUnitText:
     placement: Placement
     _: KW_ONLY
     spaced: bool
+
+    def __post_init__(self) -> None:
+        Unit(self.identifier)  # the identifier must be a valid unit identifier
+        for kind, text in (("singular", self.singular), ("plural", self.plural)):
+            if not text.strip():
+                raise InvalidRegistrationError(
+                    f"English text for unit {self.identifier!r}: {kind} must not be empty, "
+                    f"got {text!r}"
+                )
 
     def write(self, shown: str, value: Decimal | int) -> str:
         """The figure `value`, which prints as `shown`, written with the unit.
