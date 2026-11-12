@@ -20,6 +20,7 @@ capabilities:
     produces:
       output: ca-on/return_taxable_income
   - name: core/amount_by_band_rate
+    unit: core/percent
     params:
       table: ca-on/health_premium_rows
     consumes:

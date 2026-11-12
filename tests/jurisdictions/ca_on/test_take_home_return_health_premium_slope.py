@@ -199,3 +199,17 @@ def test_the_real_return_summary_takes_the_taxable_income_and_its_slope_as_steps
     assert [line.base_amount for line in slopes] == [D(taxable_income)]
     assert summary.get(kinds.kind(TAXABLE_INCOME)).value == D(taxable_income)
     assert summary.get(kinds.kind(SLOPE)).value == D(slope)
+
+
+def test_the_slope_is_a_percentage_and_the_taxable_income_is_dollars(
+    take_home_service: TakeHomeService,
+) -> None:
+    kinds = bundled_kinds()
+    summary = _return_summary(take_home_service, "70000")
+
+    slope_unit = summary.unit(kinds.kind(SLOPE).label)
+    income_unit = summary.unit(kinds.kind(TAXABLE_INCOME).label)
+    assert slope_unit is not None
+    assert income_unit is not None
+    assert slope_unit.identifier == "core/percent"
+    assert income_unit.identifier == "ca/cad"
