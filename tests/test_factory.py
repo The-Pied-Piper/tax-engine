@@ -62,3 +62,21 @@ def test_the_engine_refuses_to_build_when_a_registered_unit_has_no_english_text(
 
     with pytest.raises(UnknownRegistrationError, match="ex/furlongs"):
         factory.build_tax_computation()
+
+
+def test_the_engine_reads_its_datasets_with_the_registered_units(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    given: dict[str, Any] = {}
+
+    class Spy:
+        def __init__(self, roots: Any, parsers: Any, units: Any = None) -> None:
+            given["units"] = units
+
+    registry = UnitRegistry()
+    monkeypatch.setattr(factory, "YamlParameterSource", Spy)
+    monkeypatch.setattr(factory, "units", lambda: registry)
+
+    factory.build_tax_computation()
+
+    assert given["units"] is registry

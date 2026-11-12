@@ -21,6 +21,6 @@ def build_tax_computation() -> TaxComputationService:
     EnglishUnitTextRegistry.shared().require(registered_units.units)
     return TaxComputationService(
         YamlJurisdictionSource(roots, kinds, registered_units),
-        YamlParameterSource(roots, parameter_parsers()),
+        YamlParameterSource(roots, parameter_parsers(), registered_units),
         capabilities(),
     )
