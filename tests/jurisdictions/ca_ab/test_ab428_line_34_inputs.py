@@ -28,7 +28,7 @@ D = Decimal
 IDENTIFIER = AB428_PENSION_INCOME_AMOUNT.identifier
 PRINTED_BASIS = "Line 34 and line 58360: Pension income amount (maximum $1,719)"
 PART = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / (
-    "manifests/2025/ab428_pension_income_inputs.yaml"
+    "manifests/2025/ab428_line_34_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-AB
