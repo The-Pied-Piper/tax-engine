@@ -16,7 +16,12 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.blank import BLANK, PASS_ON
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.credit import CREDIT, Credit
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -28,7 +33,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundingRule,
     RoundTo,
 )
-from tax_engine.domain.trace import RateAppliedLine
+from tax_engine.domain.trace import BlankPassedOnLine, RateAppliedLine
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tests.capabilities import bundled_capabilities
 
@@ -257,3 +262,34 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank base ---------------------------------------------------------------------------
+
+
+def test_allows_a_blank_only_in_its_base() -> None:
+    assert ApplyRate.BLANK_ALLOWED == frozenset({"base"})
+
+
+def test_a_blank_base_with_no_rule_is_refused_naming_the_line() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'gross_amount'.*'base'"):
+        capability().run((Artifact(GROSS, BLANK),))
+
+
+def test_a_blank_base_passed_on_gives_a_blank_output_and_no_rounding() -> None:
+    # A rounding rule that would raise on any figure shows that nothing is rounded.
+    wired = capability(rate(rounding=CENT)).with_blank_rules({"base": PASS_ON})
+
+    result = wired.run((Artifact(GROSS, BLANK),))
+
+    assert result.outputs == (Artifact(RATED, BLANK),)
+    assert result.trace == (BlankPassedOnLine(RATED, (GROSS,)),)
+
+
+def test_a_filled_base_is_the_same_with_or_without_the_blank_rule() -> None:
+    plain = capability().run((Artifact(GROSS, D("1000")),))
+    ruled = capability().with_blank_rules({"base": PASS_ON}).run((Artifact(GROSS, D("1000")),))
+
+    assert plain == ruled
+    assert plain.outputs == (Artifact(RATED, D("500")),)
+    assert isinstance(plain.trace[0], RateAppliedLine)
