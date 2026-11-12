@@ -44,6 +44,7 @@ LINE_43500 = "ca/total_payable"
 LINE_48200 = "ca/total_credits"
 LINE_167 = "ca/refund_or_balance_owing"
 FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 = "ca/federal_tax_on_taxable_income_line_76"
+FEDERAL_BRACKET_COLUMN_RATE_LINE_73 = "ca/federal_bracket_column_rate_line_73"
 # The real header and form, read from the take-home folder, not test-local: the manifest's header
 # and the T1 tax and credits form declaration.
 REAL_HEADER = header_without_imports()
@@ -174,11 +175,11 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
-def test_the_real_t1_form_header_exports_only_refund_or_balance_owing() -> None:
+def test_the_real_t1_form_header_exports_refund_or_balance_owing_and_the_line_73_rate() -> None:
     # Line 76 is read inside the form by line 40400 only, so it is not exported.
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
-    assert exports == [LINE_167]
+    assert set(exports) == {LINE_167, FEDERAL_BRACKET_COLUMN_RATE_LINE_73}
     assert FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 not in exports
 
 

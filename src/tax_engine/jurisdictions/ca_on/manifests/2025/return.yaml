@@ -12,7 +12,10 @@
 # exports it), into its own `ca-on/ontario_bracket_rate_return`; it has no title of its own.
 # The health premium slope is the rate of the ON428 line 89 chart row that the T1 taxable income
 # falls in, 0 for a flat row. The taxable income is totalled into the return's own kind, and the
-# slope is read from the `ca-on/health_premium_rows` dataset.
+# slope is read from the `ca-on/health_premium_rows` dataset. The federal marginal rate is read the
+# same way as the bracket rate: the T1 form exports line 73's bracket column rate
+# (`ca/federal_bracket_column_rate_line_73`, "Line 73: Rate"), and the last step totals the one
+# fraction into its own `ca/federal_marginal_rate`, with no title or line of its own.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -59,3 +62,9 @@ capabilities:
       base: ca-on/return_taxable_income
     produces:
       output: ca-on/return_health_premium_slope
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+    produces:
+      output: ca/federal_marginal_rate
