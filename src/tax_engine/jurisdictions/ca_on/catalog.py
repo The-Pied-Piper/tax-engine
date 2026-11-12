@@ -434,3 +434,8 @@ ONTARIO_MARGINAL_RATE = AmountKind.declare(CATALOG, "ontario_marginal_rate", non
 """Ontario marginal rate, ON428 line 5 "Line 5: Rate" times the surtax factor of lines 66 and 67:
 the rate a further dollar of income is taxed at in Ontario with the surtax, on the return summary.
 An exact product, not printed on the form."""
+
+MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
+"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
+marginal rate, the Ontario marginal rate and the health premium slope, on the return summary. Not
+printed on the form."""
