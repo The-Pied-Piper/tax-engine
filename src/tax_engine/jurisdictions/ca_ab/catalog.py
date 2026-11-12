@@ -13,6 +13,10 @@ from tax_engine.jurisdictions.ca_ab import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, AB428 line 16 (line 58040) "Basic personal amount Claim $22,323": the
+amount claimed, the first part of the total of the Alberta credit amounts."""
+
 AB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_8", non_negative=True
 )
@@ -63,3 +67,9 @@ WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9 = AmountKind.declare(
 """Alberta supplemental tax credit, Worksheet AB428 line 9 "Line 9: Line 7 multiplied by the
 percentage from line 8 enter this amount on line 61545 of your Form AB428.": the credit entered on
 line 61545 of Form AB428."""
+
+AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
+    CATALOG, "ab428_ei_premiums_line_29", non_negative=True
+)
+"""EI premiums credit amount, AB428 line 29 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""

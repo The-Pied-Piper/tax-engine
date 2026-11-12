@@ -1,0 +1,14 @@
+# AB428 (2025) line 16, the basic personal amount. Form AB428 (CRA 5009-c-25e): "Line 16 and line
+# 58040: Basic personal amount Claim $22,323". The $22,323 is the `ca-ab/basic_personal_amount`
+# dataset, claimed whole through core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/credit_amount
+    title: "Basic personal amount"
+    reference: "16"
+    unit: ca/cad
+    params:
+      amount: ca-ab/basic_personal_amount
+    produces:
+      output: ca-ab/basic_personal_amount
