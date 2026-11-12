@@ -10,7 +10,6 @@ from __future__ import annotations
 from typing import assert_type
 
 import pytest
-from tax_engine.jurisdictions.core.capabilities.amount_by_band_rate import AmountByBandRate
 
 from tax_engine.domain.capability import Capability, CapabilityRegistry, capability
 from tax_engine.domain.errors import (
@@ -19,6 +18,7 @@ from tax_engine.domain.errors import (
     UnknownRegistrationError,
 )
 from tax_engine.domain.registry import Registry
+from tax_engine.jurisdictions.core.capabilities.amount_by_band_rate import AmountByBandRate
 from tax_engine.jurisdictions.core.capabilities.apply_rate import ApplyRate
 from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnLowerBound,

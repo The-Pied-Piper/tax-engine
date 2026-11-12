@@ -13,6 +13,7 @@ valid_from_tax_year: 2025
 title: Return summary
 outputs:
   - ca/refund_or_balance_owing
+  - ca-on/return_health_premium_slope
 capabilities: []
 imports:
   - ca/t1_taxable_income

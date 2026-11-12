@@ -64,7 +64,7 @@ form:
     - {SLOPE}
 capabilities:
   - name: core/amount_by_band_rate
-    parameters:
+    params:
       table: {ROWS}
     consumes:
       base: {TAXABLE_INCOME}

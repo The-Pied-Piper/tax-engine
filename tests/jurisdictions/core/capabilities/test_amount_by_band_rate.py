@@ -16,7 +16,6 @@ from types import MappingProxyType
 from typing import Any, assert_type, cast
 
 import pytest
-from tax_engine.jurisdictions.core.capabilities.amount_by_band_rate import AmountByBandRate
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
@@ -37,6 +36,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.trace import AmountByBandRateLine, TraceLine
 from tax_engine.domain.trace import rate_tables as trace_rate_tables
+from tax_engine.jurisdictions.core.capabilities.amount_by_band_rate import AmountByBandRate
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
@@ -344,6 +344,7 @@ def test_the_trace_result_is_the_output_and_the_lines_amount() -> None:
 
     (output,) = result.outputs
     (line,) = result.trace
+    assert isinstance(line, AmountByBandRateLine)
     assert line.amount == output.value
     assert line.result == output.value
 
