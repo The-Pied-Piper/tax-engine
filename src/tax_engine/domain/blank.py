@@ -43,7 +43,7 @@ class Compute(Enum):
 
 COMPUTE = Compute.COMPUTE
 """A blank rule: a blank in this slot reaches the capability's `compute` as a blank artifact, and
-the class decides in code what it means. `compute` may still never return a blank.
+the class decides in code what it means. `compute` may return a blank only in a slot its class lists in `MAY_BE_BLANK`.
 """
 
 type BlankRule = Decimal | int | PassOn | Compute

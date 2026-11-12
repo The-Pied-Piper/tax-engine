@@ -475,7 +475,8 @@ class Capability(ABC):
         """Compute this capability's output artifacts from the artifacts of the kinds it consumes.
 
         Only `run` calls this in a real computation. A blank among `inputs` is in a slot whose
-        rule is `COMPUTE`, never in any other: this decides what it means, and may not return it.
+        rule is `COMPUTE`, never in any other: this decides what it means, and may not return it. `compute` returns a blank output only in a
+        `MAY_BE_BLANK` slot.
         """
 
     def run(self, inputs: tuple[Artifact[Any], ...]) -> CapabilityResult:
