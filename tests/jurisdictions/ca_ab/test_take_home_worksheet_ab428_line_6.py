@@ -88,5 +88,5 @@ def line_6(tmp_path: Path, salary: str) -> Decimal:
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
-def test_line_6_is_the_basic_personal_amount_at_every_salary(tmp_path: Path, salary: str) -> None:
+def test_line_6_is_the_base_amount_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_6(tmp_path, salary) == D("4800.00")
