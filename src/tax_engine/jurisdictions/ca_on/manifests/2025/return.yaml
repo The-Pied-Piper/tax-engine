@@ -1,6 +1,14 @@
 # The Ontario take-home return: T1 line 167 (refund or balance owing; positive is owing,
 # negative is a refund). The T1 form exports it, another form's export is read only as a record list,
 # so core/record_total totals the one amount into the return's own `ca/refund_or_balance_owing`.
+#
+# The return's second output is the average income tax rate, which no form prints (so its step has
+# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus
+# line 147: the federal and the Ontario income tax) divided by the salary, T1 line 10100
+# (`ca/employment_income`). T1 exports line 43500, so a core/record_total step reads it into the
+# return's own `ca/total_payable`, then core/divide divides it by the salary, rounding once with
+# `ca-on/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
+#
 # The return also reads ON428 line 65, the surtax base (`ca-on/on428_surtax_base_line_65`), the same
 # way (ON428 exports it), into its own `ca-on/ontario_surtax_base`. The next step gives the Ontario
 # surtax factor: ON428 line 66 "(Line 65 minus $5,710) multiplied by 20%" and line 67 "(Line 65
@@ -29,6 +37,21 @@ capabilities:
       records: ca/t1_tax_and_credits.refund_or_balance_owing
     produces:
       output: ca/refund_or_balance_owing
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.total_payable
+    produces:
+      output: ca/total_payable
+  - name: core/divide
+    unit: core/percent
+    params:
+      rounding: ca-on/rate_rounding
+    consumes:
+      dividend: ca/total_payable
+      divisor: ca/employment_income
+    produces:
+      output: ca-on/average_income_tax_rate
   - name: core/record_total
     reference: "65"
     unit: ca/cad

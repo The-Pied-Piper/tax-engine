@@ -589,9 +589,9 @@ class TimesCountLine(TraceLine):
 @dataclass(frozen=True)
 class QuotientLine(TraceLine):
     """The `result` produced as `output`: `dividend` (worth `dividend_amount`) divided by `divisor`
-    (worth `divisor_amount`), exactly.
+    (worth `divisor_amount`), the exact quotient rounded once with `rounding`.
 
-    Both parts are artifacts; no dataset is read and nothing is rounded.
+    A zero divisor gives 0; `rounding` is still recorded.
     """
 
     output: Money
@@ -599,11 +599,12 @@ class QuotientLine(TraceLine):
     dividend_amount: Decimal
     divisor: Money
     divisor_amount: Decimal
+    rounding: RoundingRule
     result: Decimal
 
     @property
     def amount(self) -> Decimal:
-        """The exact quotient."""
+        """The rounded quotient."""
         return self.result
 
     @property
