@@ -4,8 +4,8 @@ Form text (AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Alberta additiona
 tax purposes: Line 67: Form T691: line 1 minus line 2 of Part 7 ^ multiplied by 35% = ^" is the
 line's printed text; the part takes the text before the ^ marker as its basis. The form prints no
 floor, so the kind is not non_negative. A caller with no minimum tax to report leaves the line out,
-so the request is read as blank (the $20,000, $70,000 and $200,000 figures of the ticket are 0.00,
-a blank line).
+so the request is read as 0, not blank (the $20,000, $70,000 and $200,000 figures of the ticket
+are 0.00).
 
 The real part is loaded under a test-local header, as the Alberta manifest cannot be built yet.
 """
@@ -13,6 +13,7 @@ The real part is loaded under a test-local header, as the Alberta manifest canno
 from __future__ import annotations
 
 import shutil
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +25,7 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_ab.catalog import AB428_MINIMUM_TAX_T691_AMOUNT_LINE_67
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
 
+D = Decimal
 IDENTIFIER = "ca-ab/ab428_minimum_tax_t691_amount_line_67"
 PRINTED_BASIS = "Line 67: Form T691: line 1 minus line 2 of Part 7"
 PART = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / (
@@ -63,7 +65,7 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
             "reference": "67 box A",
             "unit": "ca/cad",
             "required": False,
-            "default": None,
+            "default": "0",
             "basis": PRINTED_BASIS,
         }
     ]
@@ -78,10 +80,11 @@ def test_the_part_declares_the_one_input_as_printed() -> None:
     ]
 
 
-def test_a_request_that_leaves_out_line_67_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_67_is_read_as_zero(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
 
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
-    assert default is not None and default.is_blank
+    assert default is not None and not default.is_blank
+    assert default.value == D("0")
