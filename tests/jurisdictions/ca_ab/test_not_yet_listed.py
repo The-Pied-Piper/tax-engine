@@ -2,7 +2,7 @@
 
 Listing it makes the service's startup check build the Alberta manifest, and a partial manifest
 fails that check (T1 needs `ca/provincial_tax.amount`, which no Alberta form supplies until the
-AB428 tax form exists, and the manifest has no `inputs` yet). The end-to-end ticket lists Alberta
+AB428 tax form exists). The end-to-end ticket lists Alberta
 and deletes this test.
 """
 

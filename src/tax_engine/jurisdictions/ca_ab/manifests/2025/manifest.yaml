@@ -1,7 +1,7 @@
 # Alberta 2025 take-home manifest: the return's identity and its export. The caller gives the
-# gross salary and nothing else (the salary input is added by its own ticket). Alberta's own forms
-# are in parts beside this one, so a line ticket adds only its own part file; the federal forms are
-# imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
+# gross salary and nothing else (salary.yaml). Alberta's own forms
+# are in parts beside this one, so a line ticket adds only its own part file; the federal forms
+# are imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
 #
 # Alberta builds three forms, split so that no form reads another in a loop (as the federal T1 is
 # split around ON428): `ca-ab/ab428_credits` (AB428 lines 1 to 58), `ca-ab/worksheet_ab428` (the
@@ -14,7 +14,7 @@
 #
 # Alberta is not yet listed in `registrations.JURISDICTIONS`: the startup check builds every listed
 # manifest, and this one is partial until the AB428 forms exist (T1 needs `ca/provincial_tax.amount`,
-# which no Alberta form supplies yet), and it has no `inputs` yet. The end-to-end ticket lists it.
+# which no Alberta form supplies yet). The end-to-end ticket lists it.
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
