@@ -1,0 +1,18 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) line 64 (ca-ab/ab428): "Line 64 and line
+# 61540: Amount from line 40427 of your return ^ multiplied by 35% = ^". The 35% is a printed rate,
+# held in the `ca-ab/minimum_tax_rate` dataset, so line 64 is one calculation: 35% of the amount,
+# rounded half-up to the cent. The amount is an optional input (read as 0 when left out), not read
+# from another part. The line has two boxes: the amount (box A, the input) and the 35% result
+# (box B, this step). The form does not name them; "box A" and "box B" are the owner's naming.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/apply_rate
+    reference: "64 box B"
+    unit: ca/cad
+    params:
+      rate: ca-ab/minimum_tax_rate
+    consumes:
+      base: ca-ab/ab428_minimum_tax_carryover_amount_line_64
+    produces:
+      output: ca-ab/ab428_minimum_tax_carryover_line_64
