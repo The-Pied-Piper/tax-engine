@@ -20,11 +20,12 @@ import yaml
 import tax_engine.jurisdictions.ca_ab
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
+from tax_engine.jurisdictions.ca_ab.catalog import AB428_PENSION_INCOME_AMOUNT
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
 from tests.kinds import non_negative
 
 D = Decimal
-IDENTIFIER = "ca-ab/ab428_pension_income_amount"
+IDENTIFIER = AB428_PENSION_INCOME_AMOUNT.identifier
 PRINTED_BASIS = "Line 34 and line 58360: Pension income amount (maximum $1,719)"
 PART = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / (
     "manifests/2025/ab428_pension_income_inputs.yaml"
@@ -80,12 +81,10 @@ def test_the_part_declares_only_the_pension_income_input_in_the_printed_order() 
 
 
 def test_the_pension_income_amount_is_a_non_negative_amount_kind() -> None:
-    from tax_engine.jurisdictions.ca_ab import catalog
-
     kind = alberta_kinds().kind(IDENTIFIER)
 
-    assert catalog.AB428_PENSION_INCOME_AMOUNT.identifier == IDENTIFIER
-    assert kind is catalog.AB428_PENSION_INCOME_AMOUNT
+    assert IDENTIFIER == "ca-ab/ab428_pension_income_amount"
+    assert kind is AB428_PENSION_INCOME_AMOUNT
     assert non_negative(kind)
 
 
