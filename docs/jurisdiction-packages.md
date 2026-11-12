@@ -9,7 +9,7 @@ Real jurisdiction names appear only there and in the mirrored `tests/jurisdictio
 | --- | --- |
 | `__init__.py` | `NAMESPACE = "..."`, the namespace of every identifier the package declares. Declare it at the top, before importing any module that uses `@capability`, which resolves it on import. A subpackage that declares identifiers repeats the namespace to inherit it. |
 | `catalog.py` or `catalog/` | The artifact kinds, on a `CATALOG`. |
-| `units.py` | Optional. The units it declares, on a `UNITS` `UnitCatalog` in the package's namespace, each with `declare(local_id, singular, plural, placement, spaced)`: where the text goes (before or after the number) and whether a space separates it from the figure. A manifest names one by its full identifier, `unit: <namespace>/<local_id>`; a province package does not inherit its country's units, so a manifest names them with the country's namespace. |
+| `units.py` | Optional. The units it declares, on a `UNITS` `UnitCatalog` in the package's namespace, each with `declare(local_id)`: a unit is its full identifier only. A manifest names one by its full identifier, `unit: <namespace>/<local_id>`; a province package does not inherit its country's units, so a manifest names them with the country's namespace. The package's `trace_english/units.py` registers the English text of each unit with `english_unit(identifier, singular, plural, placement, spaced=...)`; the engine refuses to build when a registered unit has no English text. |
 | `manifests/` | Manifests, see [Manifest format](manifest-format.md). |
 | `forms/` | Parts of forms that other manifests import. |
 | `parameters/` | Parameter datasets, see [Parameter files](parameter-files.md). |

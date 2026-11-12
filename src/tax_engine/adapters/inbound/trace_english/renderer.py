@@ -10,6 +10,7 @@ from collections.abc import Iterable
 
 from tax_engine.adapters.inbound.trace_english.names import EnglishNames, FigureNames
 from tax_engine.adapters.inbound.trace_english.registry import EnglishRendererRegistry
+from tax_engine.adapters.inbound.trace_english.unit_text import EnglishUnitTextRegistry
 from tax_engine.domain.errors import UnknownRegistrationError
 from tax_engine.domain.trace import TraceLine
 
@@ -17,9 +18,14 @@ from tax_engine.domain.trace import TraceLine
 class EnglishTraceRenderer:
     """Renders trace lines as English text."""
 
-    def __init__(self, renderers: EnglishRendererRegistry | None = None) -> None:
-        """Render with `renderers`, by default the shared registry."""
+    def __init__(
+        self,
+        renderers: EnglishRendererRegistry | None = None,
+        unit_texts: EnglishUnitTextRegistry | None = None,
+    ) -> None:
+        """Render with `renderers` and write units with `unit_texts`, by default the shared ones."""
         self._renderers = EnglishRendererRegistry.shared() if renderers is None else renderers
+        self._unit_texts = EnglishUnitTextRegistry.shared() if unit_texts is None else unit_texts
 
     def render(self, line: TraceLine, printed: FigureNames | None = None) -> str:
         """The English sentence for `line`; raises TypeError for a line class it does not know.
@@ -30,7 +36,7 @@ class EnglishTraceRenderer:
             renderer = self._renderers.for_line_class(type(line))
         except UnknownRegistrationError:
             raise TypeError(f"no English rendering for trace line {type(line).__name__}") from None
-        return _sentence(renderer.render(line, EnglishNames(printed)))
+        return _sentence(renderer.render(line, EnglishNames(printed, self._unit_texts)))
 
     def render_all(
         self, trace: Iterable[TraceLine], printed: FigureNames | None = None

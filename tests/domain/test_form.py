@@ -61,7 +61,7 @@ from tax_engine.domain.trace import (
     SubtractedLine,
     TraceLine,
 )
-from tax_engine.domain.unit import Placement, Unit
+from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.record_total import RecordTotal
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
@@ -2220,7 +2220,7 @@ def test_a_runs_imports_carry_the_exporting_forms_title_and_printed_names() -> N
 
 
 def test_a_form_importing_a_unit_bearing_export_reads_it_in_the_exporters_unit() -> None:
-    crowns = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
+    crowns = Unit("ex/crowns")
     exporting = composition(
         "ex/shop",
         [Subtract(EXACT_TOTAL, SALES, COSTS, PROFIT)],

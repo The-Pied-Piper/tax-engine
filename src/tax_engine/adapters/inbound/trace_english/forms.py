@@ -22,14 +22,16 @@ class FormInstanceRenderer:
 
         The prefix is the form's printed title (its name if it has none), then ", instance N" (N
         from 1). Inner lines are named from the worksheet of that run, else from the one `names`
-        has, and use the shared registry.
+        has, and write units with the unit texts of `names`.
         """
         printed = names.printed if line.printed is None else line.printed
         title = None if printed is None else printed.form_title
         form = f"Form {line.form}" if title is None else short_form_title(title)
         prefix = f"{form}, instance {line.position}: "
-        sentences = EnglishTraceRenderer().render_all(line.lines, printed)
-        names = EnglishNames(printed)
+        sentences = EnglishTraceRenderer(unit_texts=names.unit_texts).render_all(
+            line.lines, printed
+        )
+        names = EnglishNames(printed, names.unit_texts)
         return "\n".join(
             f"{prefix}{sentence}"
             if inner.label is None

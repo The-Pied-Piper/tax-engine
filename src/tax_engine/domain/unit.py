@@ -1,4 +1,4 @@
-"""Units: the words or symbol a figure is written with, such as `EX$` or `moons`.
+"""Units: what a figure is measured in, such as `ca/cad`, named by identifier only.
 
 A package declares its units on a `UnitCatalog`; a manifest names one with `unit:` by its full
 identifier, `<namespace>/<snake_case>` like an artifact kind's, and `UnitRegistry.unit` finds it.
@@ -6,7 +6,6 @@ identifier, `<namespace>/<snake_case>` like an artifact kind's, and `UnitRegistr
 
 from __future__ import annotations
 
-import enum
 from dataclasses import dataclass
 
 from tax_engine.domain.errors import (
@@ -15,37 +14,19 @@ from tax_engine.domain.errors import (
 )
 from tax_engine.domain.registry import Namespace, Registry
 
-__all__ = ["Placement", "Unit", "UnitCatalog", "UnitRegistry"]
-
-
-class Placement(enum.Enum):
-    """Where a unit's text goes: `BEFORE` the number ("EX$3500.00") or `AFTER` it ("12 moons")."""
-
-    BEFORE = "before"
-    AFTER = "after"
+__all__ = ["Unit", "UnitCatalog", "UnitRegistry"]
 
 
 @dataclass(frozen=True)
 class Unit:
-    """A unit a manifest names `unit: <identifier>`, with the text it is written with.
+    """A unit a manifest names `unit: <identifier>`: the identifier and nothing else.
 
-    `singular` is the text beside a figure of exactly 1, `plural` the text beside any other; a
-    symbol such as `EX$` is both. A unit is plain data; an adapter decides how to write it. The
-    identifier, `<namespace>/<snake_case>`, is the language-neutral key; the text is wording in
-    one language.
-
-    `spaced` says whether one space separates the unit's text from the figure: `False` for a
-    symbol written against its number ("EX$3500.00", "12%"), `True` for a word ("12 moons", or
-    "EX$ 3500.00" for a symbol the unit's language sets apart). It is separate from `placement`
-    because both before and after units may go either way, and it is required so a unit never
-    prints with a spacing nobody chose.
+    The identifier, `<namespace>/<snake_case>` (`ca/cad`), is language-neutral. The words, symbol,
+    placement and spacing a figure is written with belong to each language's adapter, which finds
+    them by the identifier.
     """
 
     identifier: str
-    singular: str
-    plural: str
-    placement: Placement
-    spaced: bool
 
     def __post_init__(self) -> None:
         namespace, _, local_id = self.identifier.partition("/")
@@ -56,11 +37,6 @@ class Unit:
                 f"invalid unit identifier {self.identifier!r}: expected "
                 "<namespace>/<snake_case>, e.g. 'ex/moons'"
             ) from None
-        for kind, text in (("singular", self.singular), ("plural", self.plural)):
-            if not text.strip():
-                raise InvalidRegistrationError(
-                    f"unit {self.identifier!r}: {kind} must not be empty, got {text!r}"
-                )
 
 
 class UnitCatalog:
@@ -84,11 +60,9 @@ class UnitCatalog:
         """Every unit declared so far, in declaration order."""
         return tuple(self._units.values())
 
-    def declare(
-        self, local_id: str, singular: str, plural: str, placement: Placement, spaced: bool
-    ) -> Unit:
+    def declare(self, local_id: str) -> Unit:
         """Declare the unit `local_id` in this namespace; declaring one twice is an error."""
-        unit = Unit(self._namespace.identifier(local_id), singular, plural, placement, spaced)
+        unit = Unit(self._namespace.identifier(local_id))
         if unit.identifier in self._units:
             raise DuplicateRegistrationError(
                 f"unit {unit.identifier!r} is already declared in this catalog"
@@ -113,6 +87,11 @@ class UnitRegistry(Registry[Unit]):
                 raise DuplicateRegistrationError(f"unit {key!r} is already registered")
         for key, unit in pending:
             self.register(key, unit)
+
+    @property
+    def units(self) -> tuple[Unit, ...]:
+        """Every registered unit, in registration order."""
+        return tuple(self._items.values())
 
     def unit(self, identifier: str) -> Unit:
         """The unit registered as `identifier`, whatever its namespace.

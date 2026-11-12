@@ -4,7 +4,9 @@ import pytest
 
 from tax_engine import factory
 from tax_engine.domain.artifact import ArtifactRegistry
-from tax_engine.domain.unit import UnitRegistry
+from tax_engine.domain.errors import UnknownRegistrationError
+from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import UnitCatalog, UnitRegistry
 from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 
 
@@ -43,3 +45,20 @@ def test_the_engine_reads_its_manifests_with_the_registered_units(
     factory.build_tax_computation()
 
     assert given["units"] is registry
+
+
+def test_the_engine_builds_with_the_bundled_packages_having_text_for_every_unit() -> None:
+    assert factory.build_tax_computation() is not None
+
+
+def test_the_engine_refuses_to_build_when_a_registered_unit_has_no_english_text(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    catalog = UnitCatalog(Namespace("ex"))
+    catalog.declare("test_652_furlongs")
+    registry = UnitRegistry()
+    registry.register_catalog(catalog)
+    monkeypatch.setattr(factory, "units", lambda: registry)
+
+    with pytest.raises(UnknownRegistrationError, match="ex/test_652_furlongs"):
+        factory.build_tax_computation()

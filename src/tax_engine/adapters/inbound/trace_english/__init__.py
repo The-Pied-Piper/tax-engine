@@ -18,6 +18,7 @@ from tax_engine.adapters.inbound.trace_english import (
     record_lists,
     registry,
     renderer,
+    unit_text,
 )
 from tax_engine.adapters.inbound.trace_english.line_renderer import LineRenderer
 from tax_engine.adapters.inbound.trace_english.names import EnglishNames, FigureNames, Labelled
@@ -40,4 +41,5 @@ __all__ = [
     "record_lists",
     "registry",
     "renderer",
+    "unit_text",
 ]
