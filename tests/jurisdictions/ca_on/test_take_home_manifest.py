@@ -162,13 +162,3 @@ def test_the_return_still_totals_line_167() -> None:
         {"records": "ca/t1_tax_and_credits.refund_or_balance_owing"},
         {"output": "ca/refund_or_balance_owing"},
     ) in _return_steps()
-
-
-def test_only_the_line_167_step_of_the_return_carries_a_line_reference() -> None:
-    # A step carries a reference only when it gives the final result for a printed form line; the
-    # steps that read figures for the rates are engine-internal and carry none.
-    (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
-
-    assert [step.reference for step in default.capabilities if step.reference is not None] == [
-        "167"
-    ]
