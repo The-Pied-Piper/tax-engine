@@ -402,3 +402,14 @@ AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate",
 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Ontario
 income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1642 is 16.42%. CPP
 and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+
+ONTARIO_SURTAX_BASE = AmountKind.declare(CATALOG, "ontario_surtax_base", non_negative=True)
+"""Ontario surtax base, ON428 line 65 "Line 65: Line 63 minus line 64 (if negative, enter "0") =":
+the figure on the return summary, the one amount of ON428's export of line 65 totalled into the
+return's own artifact."""
+
+ONTARIO_SURTAX_FACTOR = AmountKind.declare(CATALOG, "ontario_surtax_factor", non_negative=True)
+"""Ontario surtax factor, ON428 line 66 "(Line 65 minus $5,710) multiplied by 20%" and line 67
+"(Line 65 minus $7,307) multiplied by 36%": 1 plus the rate of each surtax tier line 65 is over,
+the tax a further dollar of Ontario tax brings with the surtax. A plain figure with no unit, not
+printed on the form."""
