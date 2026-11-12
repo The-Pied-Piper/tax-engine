@@ -20,8 +20,8 @@ amount claimed, the first part of the total of the Alberta credit amounts."""
 AB428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
     CATALOG, "ab428_credits_subtotal_line_25", non_negative=True
 )
-"""Credit amounts subtotal, AB428 line 25 "Line 25: Add lines 16, 17, 20, 23, and 24.": the sum of
-the credit amounts claimed so far, here the basic personal amount alone."""
+"""AB428 line 25 "Line 25: Add lines 16, 17, 20, 23, and 24.": the sum of those lines, here the
+basic personal amount (line 16) alone."""
 
 AB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_8", non_negative=True

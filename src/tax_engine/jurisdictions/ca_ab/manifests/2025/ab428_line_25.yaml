@@ -1,7 +1,7 @@
-# AB428 (2025) line 25, the total of lines 16 to 24. Form AB428 (CRA 5009-c-25e): "Line 25: Add
-# lines 16, 17, 20, 23, and 24." The take-home filer has no age, spouse, eligible dependant or
-# infirm dependant amounts, so only line 16 (basic personal amount, ca-ab/basic_personal_amount) is
-# summed; a single part is still a sum, so the step is built.
+# AB428 (2025) line 25, the sum of lines 16, 17, 20, 23 and 24. Form AB428 (CRA 5009-c-25e): "Line
+# 25: Add lines 16, 17, 20, 23, and 24." The take-home filer claims no age, spouse, eligible
+# dependant or infirm dependant amounts (lines 17, 20, 23 and 24), so only line 16 (basic personal
+# amount, ca-ab/basic_personal_amount) is summed; a single part is still a sum, so the step is built.
 form:
   name: ca-ab/ab428_credits
 capabilities:
