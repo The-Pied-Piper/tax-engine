@@ -92,3 +92,20 @@ def test_schedule_8_line_b_sentence_names_line_a_and_the_line_it_gives() -> None
         "Looking up line A (12 months) in the table gives CA$71300.00 for line B "
         "(rounded to the nearest cent)."
     )
+
+
+def test_schedule_6_line_7_names_the_t1_net_income_as_line_23600() -> None:
+    sheets = build_tax_computation().compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+    )
+
+    (t1,) = sheets["ca/t1_taxable_income"]
+    (schedule_6,) = sheets["ca/schedule_6"]
+    (line_7,) = [line for line in schedule_6.trace if line.label == "cwb_net_income_line_7"]
+
+    assert t1.reference("net_income_signed") == "23600"
+    assert t1.title("net_income_signed") is None
+    assert EnglishTraceRenderer().render(line_7, schedule_6) == (
+        "Line 23600 of T1 Income Tax and Benefit Return, Steps 2 to 4 (CA$69335.00) "
+        "gives CA$69335.00."
+    )
