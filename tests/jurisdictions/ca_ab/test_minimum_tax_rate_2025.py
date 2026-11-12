@@ -18,6 +18,7 @@ D = Decimal
 # Alberta is not in `registrations.JURISDICTIONS` yet, so the source is built over its own packages.
 SOURCE = YamlParameterSource(alberta_packages().roots(), alberta_parameter_parsers())
 FAMILY = "ca-ab/minimum_tax_rate"
+CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt"
 
 
 def test_2025_minimum_tax_rate_is_35_percent() -> None:
@@ -30,3 +31,9 @@ def test_2025_minimum_tax_rate_rounds_half_up_to_the_cent() -> None:
     data = SOURCE.get(FAMILY, 2025, RATE)
 
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
+
+
+def test_2025_minimum_tax_rate_cites_form_ab428() -> None:
+    data = SOURCE.get(FAMILY, 2025, RATE)
+
+    assert data.sources == (CRA_FORM_TEXT,)

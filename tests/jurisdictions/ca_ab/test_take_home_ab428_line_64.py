@@ -30,6 +30,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
+from tax_engine.jurisdictions.ca_ab.catalog import AB428_MINIMUM_TAX_CARRYOVER_LINE_64
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -37,6 +38,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
+from tests.kinds import non_negative
 
 D = Decimal
 CODE = JurisdictionCode("CA-AB")
@@ -162,9 +164,11 @@ def test_the_step_keys_mirror_the_ontario_on428_line_87_part() -> None:
     ]
 
 
-def test_the_kind_is_a_registered_amount() -> None:
+def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = alberta_kinds().kind(LINE_64)
 
+    assert kind is AB428_MINIMUM_TAX_CARRYOVER_LINE_64
     assert isinstance(kind, AmountKind)
     assert kind.identifier == LINE_64
     assert kind.value_type is Decimal
+    assert non_negative(kind)
