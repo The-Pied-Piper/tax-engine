@@ -3,8 +3,8 @@
 # so core/record_total totals the one amount into the return's own `ca/refund_or_balance_owing`.
 #
 # The return's second output is the average income tax rate, which no form prints (so its step has
-# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Ontario income tax) divided by
-# the salary, T1 line 10100 (`ca/employment_income`). T1 exports line 43500, so a core/record_total
+# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus
+# line 147: the federal and the Ontario income tax) divided by the salary, T1 line 10100 (`ca/employment_income`). T1 exports line 43500, so a core/record_total
 # step reads it into the return's own `ca/total_payable`, then core/divide divides it by the salary,
 # rounding once with `ca-on/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
 capabilities:

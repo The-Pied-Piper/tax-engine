@@ -1,4 +1,4 @@
-"""The sixteen 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
+"""The seventeen 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
 indexed dollar amount): each equals its 2025 file apart from the year, and its 2026 file opens
 with the provisional and derivation header lines.
 """
@@ -33,6 +33,7 @@ DERIVATION_PREFIX = "# Derivation: carried forward unchanged from the 2025 file;
 FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca/cent_rounding", ROUNDING_ONLY),
     ("ca-on/cent_rounding", ROUNDING_ONLY),
+    ("ca-on/rate_rounding", ROUNDING_ONLY),
     ("ca/cwb_rate", RATE),
     ("ca/cwb_reduction_rate", RATE),
     ("ca/t2204_exemption", CREDIT),

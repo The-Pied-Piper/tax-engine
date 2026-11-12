@@ -175,7 +175,7 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
 
 
 def test_the_real_t1_form_header_exports_refund_or_balance_owing_and_total_payable() -> None:
-    # Line 43500 is read by the return summary (the average income tax rate, ticket #728); line 76
+    # Line 43500 is read by the return summary (the average income tax rate); line 76
     # is read inside the form by line 40400 only, so it is not exported.
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 

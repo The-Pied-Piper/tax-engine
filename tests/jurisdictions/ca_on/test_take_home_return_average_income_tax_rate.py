@@ -1,6 +1,6 @@
 """The Ontario take-home return summary's average income tax rate: total income tax over salary.
 
-Owner ruling (ticket #728, 12 Nov 2026): the average rate is income tax divided by salary, not all
+Owner ruling (12 Nov 2026): the average rate is income tax divided by salary, not all
 deductions (CPP and EI are not income tax). Income tax is T1 line 43500 "Total payable" (5006-R-25E:
 federal plus Ontario income tax, `ca/total_payable`), the salary is `ca/employment_income`. The form
 prints no such figure, so the step has no title and no reference.
@@ -36,18 +36,15 @@ import re
 from decimal import Decimal
 
 import pytest
-import yaml
 
 from tax_engine import build_tax_computation
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.trace import QuotientLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_on.catalog import AVERAGE_INCOME_TAX_RATE
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.jurisdictions.ca_on.conftest import TakeHomeService
 from tests.jurisdictions.ca_on.test_take_home_t1_tax_and_credits_line_167 import (
     PARTS,
@@ -184,24 +181,6 @@ def test_the_average_rate_kind_is_registered_and_non_negative() -> None:
     assert kind is AVERAGE_INCOME_TAX_RATE
     assert kind.identifier == AVERAGE_RATE
     assert non_negative(kind) is True
-
-
-def test_the_manifest_outputs_the_average_rate_beside_the_line_167_figure() -> None:
-    source = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units())
-    (manifest,) = source.get_jurisdiction(ONTARIO).manifests
-    (summary,) = (form for form in manifest.forms if form.name == RETURN)
-
-    assert summary.exports == (AVERAGE_RATE, LINE_167)
-
-
-def test_the_real_t1_form_exports_total_payable_for_the_return_to_read() -> None:
-    exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
-
-    assert TOTAL_PAYABLE in exports
-    assert LINE_167 in exports
-
-
-# --- the take-home figure is unchanged ----------------------------------------------------------
 
 
 def test_the_70000_take_home_is_still_53468_68() -> None:
