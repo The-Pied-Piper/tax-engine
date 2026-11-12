@@ -1,0 +1,12 @@
+# AB428 (2025) line 64's input, the minimum tax carryover amount a salary-only caller does not give.
+# Line 64 and line 61540: "Amount from line 40427 of your return". The 35% is computed by the next
+# part, not taken from the caller. A salary-only caller has no such amount, so a request that leaves
+# the input out is read as 0, not blank.
+# Box A of line 64 (the owner's naming); the 35% result is in the next part.
+inputs:
+  - name: ca-ab/ab428_minimum_tax_carryover_amount_line_64
+    reference: "64 box A"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: 'Line 64 and line 61540: Amount from line 40427 of your return'
