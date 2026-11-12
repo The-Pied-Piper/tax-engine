@@ -13,6 +13,7 @@ form:
   name: ca/t1_tax_and_credits
 capabilities:
   - name: core/record_total
+    unit: ca/cad
     consumes:
       records: ca/t1_taxable_income.net_income
     produces:
@@ -20,6 +21,7 @@ capabilities:
   - name: ca/tapered_amount
     title: "Basic personal amount"
     reference: "30000"
+    unit: ca/cad
     params:
       taper: ca/basic_personal_amount
     consumes:

@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/greater_of
     reference: "14"
+    unit: ca/cad
     consumes:
       amounts:
         - ca/t2204_line_8

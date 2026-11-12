@@ -6,6 +6,7 @@ capabilities:
   - name: ca/amount_by_count
     title: "Maximum basic exemption"
     reference: "E"
+    unit: ca/cad
     params:
       table: ca/cpp_basic_exemption
     consumes:

@@ -4,6 +4,7 @@ form:
 capabilities:
   - name: core/subtract_not_below_zero
     reference: "5"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

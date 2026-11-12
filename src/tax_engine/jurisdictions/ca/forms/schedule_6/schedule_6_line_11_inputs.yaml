@@ -8,6 +8,7 @@ inputs:
   - name: ca/uccb_and_rdsp_income
     title: "Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)"
     reference: "11"
+    unit: ca/cad
     required: false
     default: null
     basis: 'Line 11: Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)'

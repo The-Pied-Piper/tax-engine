@@ -13,6 +13,7 @@ capabilities:
   - name: core/subtract_not_below_zero
     title: "Taxable income"
     reference: "26000"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

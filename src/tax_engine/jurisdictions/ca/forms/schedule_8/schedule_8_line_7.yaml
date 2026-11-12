@@ -6,6 +6,7 @@ capabilities:
   # Line 6 is "Amount from line E of Part 2", a copy, so line 7 reads line E (the maximum basic
   # exemption) itself. "Line 5 minus line 6 (if negative, enter "0")":
   - name: core/subtract_not_below_zero
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:
@@ -17,6 +18,7 @@ capabilities:
   - name: core/capped_amount
     title: "Earnings subject to base and first additional contributions"
     reference: "7"
+    unit: ca/cad
     params:
       cap: ca/cpp_line_7_maximum
     consumes:

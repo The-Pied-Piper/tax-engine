@@ -36,6 +36,7 @@ capabilities:
   - name: core/times_count
     title: "Total EI insurable earnings"
     reference: "1"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

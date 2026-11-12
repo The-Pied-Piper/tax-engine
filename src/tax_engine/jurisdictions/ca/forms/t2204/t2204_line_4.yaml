@@ -13,6 +13,7 @@ capabilities:
   - name: ca/given_or_contribution_tier
     title: "Total premiums deducted"
     reference: "4"
+    unit: ca/cad
     params:
       tier: ca/ei_premium
     consumes:

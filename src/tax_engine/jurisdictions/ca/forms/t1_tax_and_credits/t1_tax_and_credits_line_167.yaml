@@ -12,6 +12,7 @@ capabilities:
   - name: core/subtract
     title: "Refund or balance owing"
     reference: "167"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

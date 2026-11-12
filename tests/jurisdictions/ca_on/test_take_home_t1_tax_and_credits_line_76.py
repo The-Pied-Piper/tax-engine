@@ -280,5 +280,6 @@ def test_line_76_names_lines_74_and_75_and_its_rounding_in_the_trace(
     _, sheet = _sheets(take_home_service, "70000")
 
     assert (
-        "Line 74 (2451.80) plus line 75 (8319.38) gives 10771.18 (rounded to the nearest cent)."
+        "Line 74 (CA$2451.80) plus line 75 (CA$8319.38) gives CA$10771.18 "
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

@@ -19,7 +19,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
-from tax_engine.registrations import JURISDICTIONS, artifact_kinds
+from tax_engine.registrations import JURISDICTIONS, artifact_kinds, units
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
 from tests.kinds import bundled_kinds
 
@@ -74,7 +74,7 @@ def test_the_form_exports_exactly_the_three_figures(
 ) -> None:
     take_home_service(HEADER, FORM, *PARTS)
     folder = tmp_path / "manifests" / "2025"
-    manifest = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds()).load(folder)
+    manifest = YamlJurisdictionSource(JURISDICTIONS.roots(), artifact_kinds(), units()).load(folder)
     (worksheet,) = [form for form in manifest.forms if form.name == "ca/t2204"]
     assert worksheet.exports == (LINE_4, OVERPAYMENT, LINE_16)
 

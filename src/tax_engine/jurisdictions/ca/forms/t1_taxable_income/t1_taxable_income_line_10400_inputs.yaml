@@ -8,6 +8,7 @@ inputs:
   - name: ca/other_employment_income
     title: "Other employment income"
     reference: "10400"
+    unit: ca/cad
     required: false
     default: "0"
     basis: 'Line 2 and line 10400: Other employment income'

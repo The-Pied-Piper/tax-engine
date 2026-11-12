@@ -8,6 +8,7 @@ inputs:
   - name: ca/federal_foreign_tax_credit
     title: "Federal foreign tax credit"
     reference: "40500"
+    unit: ca/cad
     required: false
     default: "0"
     basis: 'Line 129 and line 40500: Federal foreign tax credit (complete Form T2209)'

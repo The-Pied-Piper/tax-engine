@@ -19,6 +19,7 @@ capabilities:
   - name: core/record_total
     title: "Provincial or territorial tax"
     reference: "42800"
+    unit: ca/cad
     consumes:
       records: ca/provincial_tax.amount
     produces:
@@ -26,6 +27,7 @@ capabilities:
   - name: core/sum
     title: "Total payable"
     reference: "43500"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

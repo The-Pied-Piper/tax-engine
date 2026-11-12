@@ -10,6 +10,7 @@ form:
 capabilities:
   - name: core/apply_rate
     reference: "20"
+    unit: ca/cad
     params:
       rate: ca/cwb_rate
     consumes:

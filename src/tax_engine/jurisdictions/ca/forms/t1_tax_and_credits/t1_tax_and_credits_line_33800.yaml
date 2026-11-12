@@ -8,6 +8,7 @@ form:
 capabilities:
   - name: core/apply_rate
     reference: "33800"
+    unit: ca/cad
     params:
       rate: ca/credit_rate
     consumes:

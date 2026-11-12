@@ -12,6 +12,7 @@ capabilities:
   - name: core/record_total
     title: "Base CPP or QPP contributions through employment income"
     reference: "30800"
+    unit: ca/cad
     consumes:
       records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
     produces:
@@ -19,12 +20,14 @@ capabilities:
   - name: core/record_total
     title: "Employment insurance premiums through employment"
     reference: "31200"
+    unit: ca/cad
     consumes:
       records: ca/t2204.t2204_line_16
     produces:
       output: ca/ei_premiums_line_88
   - name: core/sum
     reference: "96"
+    unit: ca/cad
     params:
       rounding: ca/cent_rounding
     consumes:

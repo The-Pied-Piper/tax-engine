@@ -32,7 +32,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.registrations import JURISDICTIONS, parameter_parsers
+from tax_engine.registrations import JURISDICTIONS, parameter_parsers, units
 from tests.capabilities import bundled_capabilities
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService, header_without_imports
 from tests.kinds import bundled_kinds, non_negative
@@ -169,7 +169,8 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
     sheet = _sheet(take_home_service, "70000")
 
     assert (
-        "Line 43500 (11497.09) less line 48200 (0.00) gives 11497.09 (rounded to the nearest cent)."
+        "Line 43500 (CA$11497.09) less line 48200 (CA$0.00) gives CA$11497.09 "
+        "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
@@ -184,7 +185,7 @@ def test_the_real_t1_form_header_exports_only_refund_or_balance_owing() -> None:
 def test_the_real_ontario_manifest_computes_refund_or_balance_owing_at_70000() -> None:
     # No fixture: the bundled Ontario manifest, with every take-home part, as the calculator loads.
     service = TaxComputationService(
-        YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds()),
+        YamlJurisdictionSource(JURISDICTIONS.roots(), bundled_kinds(), units()),
         YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers()),
         bundled_capabilities(),
     )

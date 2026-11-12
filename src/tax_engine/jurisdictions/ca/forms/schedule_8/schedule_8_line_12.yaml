@@ -8,6 +8,7 @@ capabilities:
   - name: ca/contribution_tier
     title: "Required first additional contributions on CPP pensionable earnings"
     reference: "12"
+    unit: ca/cad
     params:
       tier: ca/cpp_line_12_first_additional_contribution
     consumes:

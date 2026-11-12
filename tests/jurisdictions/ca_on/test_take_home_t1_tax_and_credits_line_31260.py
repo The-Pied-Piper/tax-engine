@@ -157,6 +157,6 @@ def test_line_31260_names_the_income_and_the_cap_in_the_trace(
     sheet = _sheet(take_home_service, _salary("70000"))
 
     assert (
-        "Lesser of canada employment amount income (70000.00) and "
-        "the canada employment amount (1471.00) gives 1471.00 (rounded to the nearest cent)."
+        "Lesser of canada employment amount income (CA$70000.00) and "
+        "the canada employment amount (1471.00) gives CA$1471.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
