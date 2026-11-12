@@ -29,10 +29,13 @@ def test_the_salary_is_the_only_required_input() -> None:
     assert required == {SALARY}
 
 
-def test_the_return_exports_the_signed_total_tax_of_t1_line_167() -> None:
+def test_the_return_exports_the_signed_total_tax_of_t1_line_167_and_the_bracket_rate() -> None:
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
-    assert default.exports == ("ca/refund_or_balance_owing",)
+    assert default.exports == (
+        "ca-on/ontario_bracket_rate_return",
+        "ca/refund_or_balance_owing",
+    )
 
 
 def test_schedule_8_is_a_required_form_without_instances() -> None:

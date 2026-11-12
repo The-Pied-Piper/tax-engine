@@ -396,3 +396,9 @@ LIFT_INDIVIDUAL_INCOME_THRESHOLD = AmountKind.declare(
 """Individual income threshold, Schedule ON428-A Part A line 16 "Individual income threshold
 32,500.00" and Part B line 31 "Individual income threshold 32,500.00": a printed amount, taken
 whole."""
+
+ONTARIO_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "ontario_bracket_rate_return", non_negative=True
+)
+"""Ontario bracket rate, ON428 line 5 "Line 5: Rate": the printed rate of the column that line 1
+falls in, read from ON428 into the return summary."""
