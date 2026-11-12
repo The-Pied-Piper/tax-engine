@@ -14,7 +14,7 @@
 #
 # Alberta is not yet listed in `registrations.JURISDICTIONS`: the startup check builds every listed
 # manifest, and this one is partial until the AB428 forms exist (T1 needs `ca/provincial_tax.amount`,
-# which no Alberta form supplies yet). The end-to-end ticket (#666) lists it.
+# which no Alberta form supplies yet), and it has no `inputs` yet. The end-to-end ticket lists it.
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025

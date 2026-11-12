@@ -1,6 +1,6 @@
 """The Alberta package list and the registries built over it, for the Alberta tests.
 
-Alberta is not in `tax_engine.registrations.JURISDICTIONS` until the end-to-end ticket (#666) lists
+Alberta is not in `tax_engine.registrations.JURISDICTIONS` until the end-to-end ticket lists
 it, because a partial Alberta manifest would fail the startup check. Until then the Alberta tests
 build their own package list (core, federal, Alberta) and take their kinds, units, capabilities and
 parameter parsers from it, as `tests/kinds.py` and `tests/capabilities.py` do for the bundled list.
@@ -11,9 +11,8 @@ from __future__ import annotations
 
 from functools import cache
 
-import tax_engine.jurisdictions.ca_ab
-
 import tax_engine.jurisdictions.ca
+import tax_engine.jurisdictions.ca_ab
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry

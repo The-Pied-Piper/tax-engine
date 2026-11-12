@@ -1,13 +1,14 @@
 """The header of the Alberta 2025 manifest: the return's identity, its output and its federal
-imports. It declares no inputs yet; the salary input is ticket #662."""
+imports. It declares no inputs yet; the salary input comes with its own ticket."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
 
-import tax_engine.jurisdictions.ca_ab
 import yaml
+
+import tax_engine.jurisdictions.ca_ab
 
 MANIFEST = (
     Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025" / "manifest.yaml"
