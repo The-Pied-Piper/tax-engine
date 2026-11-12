@@ -11,6 +11,7 @@ from decimal import Decimal
 from typing import Protocol
 
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+from tax_engine.adapters.inbound.trace_english.unit_text import EnglishUnitTextRegistry
 from tax_engine.domain.figure_names import FigureNames, ImportedFigure
 from tax_engine.domain.parameters.amount import Amount
 from tax_engine.domain.parameters.datasets import ParameterDataset
@@ -54,14 +55,27 @@ class Labelled(Protocol):
 class EnglishNames:
     """Names figures in English: by printed reference, else printed title, else label."""
 
-    def __init__(self, printed: FigureNames | None = None) -> None:
-        """Name figures from `printed`, a worksheet; with none, every figure is its label."""
+    def __init__(
+        self,
+        printed: FigureNames | None = None,
+        unit_texts: EnglishUnitTextRegistry | None = None,
+    ) -> None:
+        """Name figures from `printed`, a worksheet; with none, every figure is its label.
+
+        A figure's unit is written with its text in `unit_texts`, by default the shared registry.
+        """
         self._printed = printed
+        self._unit_texts = EnglishUnitTextRegistry.shared() if unit_texts is None else unit_texts
 
     @property
     def printed(self) -> FigureNames | None:
         """The worksheet figures are named from, if any."""
         return self._printed
+
+    @property
+    def unit_texts(self) -> EnglishUnitTextRegistry:
+        """The registry unit text is looked up in."""
+        return self._unit_texts
 
     def figure(self, figure: Labelled, value: Decimal | int) -> str:
         """The name of `figure` with its figure in brackets, e.g. "line 2 (70000.00)"."""
@@ -73,7 +87,9 @@ class EnglishNames:
         """
         text = EnglishFigures.money(value) if isinstance(value, Decimal) else str(value)
         unit = None if label is None else self.unit_of(label)
-        return EnglishFigures.with_unit(text, value, unit)
+        if unit is None:
+            return text
+        return self._unit_texts.for_unit(unit).write(text, value)
 
     def unit_of(self, label: str) -> Unit | None:
         """The unit of the figure `label`, as the form that makes it declares; `None` for none."""

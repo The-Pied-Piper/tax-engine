@@ -1,20 +1,30 @@
 """Unit tests for printing a figure's unit in English trace sentences, with made-up kinds and units.
 
 A figure with a unit prints it with its number: before it ("EX$3500.00") or after it ("12 moons",
-"1 moon"), with a space between only when the unit is `spaced`; `EnglishFigures.with_unit` writes
-it, the unit itself being plain data. A figure with none prints as it always has. The unit is the
-worksheet's (`FigureNames.unit(label)`), so a sentence names it for the figures it reads and for
-the figure it gives; a dataset's constant (a per-unit amount, threshold, cap or bound) stays bare.
+"1 moon"), with a space between only when the unit's English text is `spaced`. The
+`EnglishUnitText` in the `EnglishUnitTextRegistry` given to `EnglishNames` writes it, the unit
+itself being only its identifier; a unit with no text is refused, naming it. A figure with none
+prints as it always has. The unit is the worksheet's (`FigureNames.unit(label)`), so a sentence
+names it for the figures it reads and for the figure it gives; a dataset's constant (a per-unit
+amount, threshold, cap or bound) stays bare.
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
 
+import pytest
+
 import tax_engine.jurisdictions.ca.trace_english  # noqa: F401  (registers the renderers)
 from tax_engine.adapters.inbound.trace_english import EnglishNames, EnglishTraceRenderer
 from tax_engine.adapters.inbound.trace_english.figures import EnglishFigures
+from tax_engine.adapters.inbound.trace_english.unit_text import (
+    EnglishUnitText,
+    EnglishUnitTextRegistry,
+)
+from tax_engine.adapters.inbound.unit_text import Placement
 from tax_engine.domain.blank import BLANK
+from tax_engine.domain.errors import UnknownRegistrationError
 from tax_engine.domain.kinds import AmountKind, CountKind, RecordListKind
 from tax_engine.domain.parameters.rate import Rate
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingMode, RoundTo
@@ -34,13 +44,17 @@ from tax_engine.domain.trace import (
     RecordTotalLine,
     SubtractedNotBelowZeroLine,
 )
-from tax_engine.domain.unit import Placement, Unit
+from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.trace import AmountByCountLine
 
 D = Decimal
-CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
-MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER, True)
+CROWNS = Unit("ex/crowns")
+MOONS = Unit("ex/moons")
+WEEKS = Unit("ex/weeks")  # declared, but given no English text
+TEXTS = EnglishUnitTextRegistry()
+TEXTS.register_text(EnglishUnitText("ex/crowns", "EX$", "EX$", Placement.BEFORE, spaced=False))
+TEXTS.register_text(EnglishUnitText("ex/moons", "moon", "moons", Placement.AFTER, spaced=True))
 
 GROSS = AmountKind("ex/gross_pay")
 LESS = AmountKind("ex/allowance")
@@ -55,7 +69,7 @@ def sheet(units: dict[str, Unit], references: dict[str, str] | None = None) -> W
 
 
 def test_a_figure_without_a_unit_prints_as_before() -> None:
-    names = EnglishNames(sheet({}, {"gross_pay": "2"}))
+    names = EnglishNames(sheet({}, {"gross_pay": "2"}), TEXTS)
 
     assert names.figure(GROSS, D("70000.00")) == "line 2 (70000.00)"
     assert names.figure(TERM, 12) == "term (12)"
@@ -63,19 +77,19 @@ def test_a_figure_without_a_unit_prints_as_before() -> None:
 
 
 def test_a_unit_before_the_number_is_printed_against_it() -> None:
-    names = EnglishNames(sheet({"gross_pay": CROWNS}, {"gross_pay": "2"}))
+    names = EnglishNames(sheet({"gross_pay": CROWNS}, {"gross_pay": "2"}), TEXTS)
 
     assert names.figure(GROSS, D("70000.00")) == "line 2 (EX$70000.00)"
 
 
 def test_a_unit_after_the_number_is_printed_after_it() -> None:
-    names = EnglishNames(sheet({"term": MOONS}))
+    names = EnglishNames(sheet({"term": MOONS}), TEXTS)
 
     assert names.figure(TERM, 12) == "term (12 moons)"
 
 
 def test_a_unit_after_the_number_is_singular_for_one_and_plural_otherwise() -> None:
-    names = EnglishNames(sheet({"term": MOONS}))
+    names = EnglishNames(sheet({"term": MOONS}), TEXTS)
 
     assert names.figure(TERM, 1) == "term (1 moon)"
     assert names.figure(TERM, 0) == "term (0 moons)"
@@ -83,7 +97,7 @@ def test_a_unit_after_the_number_is_singular_for_one_and_plural_otherwise() -> N
 
 
 def test_only_the_figure_with_the_unit_prints_it() -> None:
-    names = EnglishNames(sheet({"term": MOONS}))
+    names = EnglishNames(sheet({"term": MOONS}), TEXTS)
 
     assert names.figure(GROSS, D("1.00")) == "gross pay (1.00)"
 
@@ -100,7 +114,7 @@ def test_a_line_names_the_unit_of_each_figure_it_reads() -> None:
     )
     printed = sheet({"gross_pay": CROWNS, "allowance": CROWNS, "net_pay": CROWNS})
 
-    assert EnglishTraceRenderer().render(line, printed) == (
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(line, printed) == (
         "Gross pay (EX$70000.00) less allowance (EX$71300.00), not below 0, "
         "gives EX$0.00 (not rounded)."
     )
@@ -117,7 +131,7 @@ def test_a_result_with_no_unit_gives_the_plain_figure_though_its_terms_have_one(
         rounding=NO_ROUNDING,
     )
 
-    assert EnglishTraceRenderer().render(line, sheet({"gross_pay": CROWNS})) == (
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(line, sheet({"gross_pay": CROWNS})) == (
         "Gross pay (EX$70000.00) less allowance (71300.00), not below 0, gives 0.00 (not rounded)."
     )
 
@@ -125,19 +139,19 @@ def test_a_result_with_no_unit_gives_the_plain_figure_though_its_terms_have_one(
 def test_an_input_taken_as_its_default_prints_its_unit() -> None:
     line = DefaultedInputLine(TERM, 12)
 
-    assert EnglishTraceRenderer().render(line, sheet({"term": MOONS})) == (
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(line, sheet({"term": MOONS})) == (
         "No value given, so the form's default gives 12 moons."
     )
-    assert EnglishTraceRenderer().render(DefaultedInputLine(TERM, 1), sheet({"term": MOONS})) == (
-        "No value given, so the form's default gives 1 moon."
-    )
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(
+        DefaultedInputLine(TERM, 1), sheet({"term": MOONS})
+    ) == ("No value given, so the form's default gives 1 moon.")
 
 
 def test_an_input_taken_as_its_default_without_a_unit_prints_as_before() -> None:
-    assert EnglishTraceRenderer().render(DefaultedInputLine(TERM, 12), sheet({})) == (
-        "No value given, so the form's default gives 12."
-    )
-    assert EnglishTraceRenderer().render(DefaultedInputLine(TERM, 12)) == (
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(
+        DefaultedInputLine(TERM, 12), sheet({})
+    ) == ("No value given, so the form's default gives 12.")
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(DefaultedInputLine(TERM, 12)) == (
         "No value given, so the form's default gives 12."
     )
 
@@ -145,7 +159,7 @@ def test_an_input_taken_as_its_default_without_a_unit_prints_as_before() -> None
 def test_an_amount_taken_as_its_default_prints_its_unit() -> None:
     line = DefaultedInputLine(GROSS, D("0.00"))
 
-    assert EnglishTraceRenderer().render(line, sheet({"gross_pay": CROWNS})) == (
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(line, sheet({"gross_pay": CROWNS})) == (
         "No value given, so the form's default gives EX$0.00."
     )
 
@@ -154,7 +168,7 @@ def test_a_table_amount_prints_the_unit_of_its_count_and_of_its_result() -> None
     line = AmountByCountLine(OUT, TERM, 12, D("3500"), CENT, D("3500"))
     printed = sheet({"term": MOONS, "contribution": CROWNS}, {"term": "A"})
 
-    assert EnglishTraceRenderer().render(line, printed) == (
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(line, printed) == (
         "The table amount for line A (12 moons) is EX$3500.00 (rounded to the nearest cent)."
     )
 
@@ -162,87 +176,53 @@ def test_a_table_amount_prints_the_unit_of_its_count_and_of_its_result() -> None
 def test_a_table_amount_without_units_prints_as_before() -> None:
     line = AmountByCountLine(OUT, TERM, 12, D("3500"), NO_ROUNDING, D("3500"))
 
-    assert EnglishTraceRenderer().render(line) == (
+    assert EnglishTraceRenderer(unit_texts=TEXTS).render(line) == (
         "The table amount for term (12) is 3500.00 (not rounded)."
     )
 
 
-# --- EnglishFigures.with_unit ---------------------------------------------------------------------
+# --- a unit with no English text ------------------------------------------------------------------
 
 
-def test_a_unit_after_the_number_is_written_after_a_space() -> None:
-    assert EnglishFigures.with_unit("12", 12, MOONS) == "12 moons"
+def test_a_figure_whose_unit_has_no_english_text_is_refused_naming_the_unit() -> None:
+    names = EnglishNames(sheet({"term": WEEKS}), TEXTS)
+
+    with pytest.raises(UnknownRegistrationError, match="ex/weeks"):
+        names.figure(TERM, 12)
+    with pytest.raises(UnknownRegistrationError, match="ex/weeks"):
+        names.shown("term", 12)
 
 
-def test_a_unit_after_the_number_is_singular_for_exactly_one() -> None:
-    assert EnglishFigures.with_unit("1", 1, MOONS) == "1 moon"
-    assert EnglishFigures.with_unit("1.00", D("1.00"), MOONS) == "1.00 moon"
-    assert EnglishFigures.with_unit("2", 2, MOONS) == "2 moons"
-    assert EnglishFigures.with_unit("0", 0, MOONS) == "0 moons"
+def test_a_sentence_whose_unit_has_no_english_text_is_refused_naming_the_unit() -> None:
+    with pytest.raises(UnknownRegistrationError, match="ex/weeks"):
+        EnglishTraceRenderer(unit_texts=TEXTS).render(
+            DefaultedInputLine(TERM, 12), sheet({"term": WEEKS})
+        )
 
 
-def test_a_unit_before_the_number_is_written_against_it() -> None:
-    assert EnglishFigures.with_unit("3500.00", D("3500.00"), CROWNS) == "EX$3500.00"
-    assert EnglishFigures.with_unit("0.00", D("0.00"), CROWNS) == "EX$0.00"
+def test_english_names_use_the_unit_texts_they_are_given_not_the_shared_ones() -> None:
+    other = EnglishUnitTextRegistry()
+    other.register_text(EnglishUnitText("ex/moons", "lune", "lunes", Placement.AFTER, spaced=True))
+
+    assert EnglishNames(sheet({"term": MOONS}), other).figure(TERM, 2) == "term (2 lunes)"
+    assert EnglishNames(sheet({"term": MOONS}), TEXTS).figure(TERM, 2) == "term (2 moons)"
 
 
-def test_a_unit_before_the_number_uses_its_singular_or_plural_the_same_way() -> None:
-    marks = Unit("ex/marks", "one mark ", "marks ", Placement.BEFORE, False)
+def test_the_english_renderer_passes_its_unit_texts_on_to_the_names() -> None:
+    other = EnglishUnitTextRegistry()
+    other.register_text(EnglishUnitText("ex/moons", "lune", "lunes", Placement.AFTER, spaced=True))
 
-    assert EnglishFigures.with_unit("1", 1, marks) == "one mark 1"
-    assert EnglishFigures.with_unit("3", 3, marks) == "marks 3"
-
-
-def test_a_negative_amount_with_a_unit_before_the_number_puts_the_sign_first() -> None:
-    assert EnglishFigures.with_unit("-1.00", D("-1.00"), CROWNS) == "-EX$1.00"
-    assert EnglishFigures.with_unit("-1", -1, CROWNS) == "-EX$1"
-    assert EnglishFigures.with_unit("-3500.50", D("-3500.50"), CROWNS) == "-EX$3500.50"
+    assert EnglishTraceRenderer(unit_texts=other).render(
+        DefaultedInputLine(TERM, 1), sheet({"term": MOONS})
+    ) == ("No value given, so the form's default gives 1 lune.")
 
 
-def test_the_four_placement_and_spacing_combinations() -> None:
-    def unit(placement: Placement, spaced: bool) -> Unit:
-        return Unit("ex/crowns", "EX$", "EX$", placement, spaced)
-
-    before_tight = unit(Placement.BEFORE, False)
-    before_spaced = unit(Placement.BEFORE, True)
-    after_spaced = Unit("ex/moons", "moon", "moons", Placement.AFTER, True)
-    after_tight = Unit("ex/percent", "%", "%", Placement.AFTER, False)
-
-    assert EnglishFigures.with_unit("3500.00", D("3500.00"), before_tight) == "EX$3500.00"
-    assert EnglishFigures.with_unit("3500.00", D("3500.00"), before_spaced) == "EX$ 3500.00"
-    assert EnglishFigures.with_unit("12", 12, after_spaced) == "12 moons"
-    assert EnglishFigures.with_unit("12", 12, after_tight) == "12%"
-
-
-def test_a_negative_amount_keeps_its_sign_first_whether_or_not_the_unit_is_spaced() -> None:
-    spaced = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, True)
-
-    assert EnglishFigures.with_unit("-1.00", D("-1.00"), spaced) == "-EX$ 1.00"
-    assert EnglishFigures.with_unit("-1.00", D("-1.00"), CROWNS) == "-EX$1.00"
-
-
-def test_singular_is_used_only_for_exactly_one_whether_or_not_the_unit_is_spaced() -> None:
-    spaced_before = Unit("ex/marks", "mark", "marks", Placement.BEFORE, True)
-    tight_after = Unit("ex/ratios", "pt", "pts", Placement.AFTER, False)
-
-    assert EnglishFigures.with_unit("1", 1, spaced_before) == "mark 1"
-    assert EnglishFigures.with_unit("2", 2, spaced_before) == "marks 2"
-    assert EnglishFigures.with_unit("1", 1, tight_after) == "1pt"
-    assert EnglishFigures.with_unit("2", 2, tight_after) == "2pts"
-    assert EnglishFigures.with_unit("1.50", D("1.50"), tight_after) == "1.50pts"
-
-
-def test_a_negative_amount_with_a_unit_after_the_number_keeps_its_sign_on_the_number() -> None:
-    assert EnglishFigures.with_unit("-3", -3, MOONS) == "-3 moons"
-
-
-def test_a_figure_with_no_unit_is_written_as_given() -> None:
-    assert EnglishFigures.with_unit("-1.00", D("-1.00"), None) == "-1.00"
-    assert EnglishFigures.with_unit("12", 12, None) == "12"
+def test_english_figures_no_longer_write_units() -> None:
+    assert not hasattr(EnglishFigures, "with_unit")
 
 
 def test_a_negative_amount_prints_its_unit_after_the_sign_in_a_sentence() -> None:
-    names = EnglishNames(sheet({"gross_pay": CROWNS}))
+    names = EnglishNames(sheet({"gross_pay": CROWNS}), TEXTS)
 
     assert names.figure(GROSS, D("-1.00")) == "gross pay (-EX$1.00)"
     assert names.shown("gross_pay", D("-1.00")) == "-EX$1.00"
@@ -260,7 +240,7 @@ JOBS = RecordListKind("ex/jobs", fields=())
 
 
 def render(line: object, printed: Worksheet | None = None) -> str:
-    return EnglishTraceRenderer().render(line, printed)  # type: ignore[arg-type]
+    return EnglishTraceRenderer(unit_texts=TEXTS).render(line, printed)  # type: ignore[arg-type]
 
 
 def test_a_record_total_prints_the_unit_of_each_item_and_of_the_total() -> None:

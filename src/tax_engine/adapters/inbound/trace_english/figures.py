@@ -10,7 +10,6 @@ from collections.abc import Sequence
 from decimal import Decimal
 
 from tax_engine.domain.parameters.rounding import NO_ROUNDING, RoundingRule, RoundTo
-from tax_engine.domain.unit import Placement, Unit
 
 
 class EnglishFigures:
@@ -35,24 +34,6 @@ class EnglishFigures:
         whole, _, cents = text.partition(".")
         shown = f"{whole}.{cents.ljust(2, '0')}"
         return "0.00" if shown == "-0.00" else shown
-
-    @staticmethod
-    def with_unit(shown: str, value: Decimal | int, unit: Unit | None) -> str:
-        """The figure `value`, which prints as `shown`, written with `unit`.
-
-        A unit placed before the number goes before its digits, after any minus sign ("-EX$1.00");
-        one placed after goes after the number ("12 moons"). One space separates the unit from the
-        figure when the unit is `spaced` ("EX$ 1.00", "12%" when not). The unit's singular text is
-        used for a value of exactly 1 and its plural for any other. With no unit, `shown` as it is.
-        """
-        if unit is None:
-            return shown
-        text = unit.singular if value == 1 else unit.plural
-        gap = " " if unit.spaced else ""
-        if unit.placement is Placement.AFTER:
-            return f"{shown}{gap}{text}"
-        sign, digits = ("-", shown[1:]) if shown.startswith("-") else ("", shown)
-        return f"{sign}{text}{gap}{digits}"
 
     @staticmethod
     def rounding(rule: RoundingRule) -> str:

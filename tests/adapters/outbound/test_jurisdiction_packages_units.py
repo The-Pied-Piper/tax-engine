@@ -17,7 +17,7 @@ import pytest
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.errors import InvalidRegistrationError, UnknownRegistrationError
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.unit import Placement, Unit, UnitCatalog, UnitRegistry
+from tax_engine.domain.unit import Unit, UnitCatalog, UnitRegistry
 
 _NONE = object()
 """No `units` module at all."""
@@ -48,7 +48,7 @@ def package(monkeypatch: pytest.MonkeyPatch) -> MakePackage:
 
 def catalog_of(namespace: str, name: str) -> UnitCatalog:
     catalog = UnitCatalog(Namespace(namespace))
-    catalog.declare(name, "EX$", "EX$", Placement.BEFORE, False)
+    catalog.declare(name)
     return catalog
 
 
@@ -65,7 +65,7 @@ def test_the_units_of_each_packages_units_module_are_registered(
 
     packages.register_units(registry)
 
-    assert registry.unit("ex/crowns") == Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
+    assert registry.unit("ex/crowns") == Unit("ex/crowns")
     assert registry.unit("ex-on/ducats").identifier == "ex-on/ducats"
 
 

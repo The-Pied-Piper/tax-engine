@@ -23,15 +23,15 @@ from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import DefaultedInputLine
-from tax_engine.domain.unit import Placement, Unit
+from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.core.capabilities.subtract import Subtract
 from tests.forms import composition
 
 D = Decimal
 
-CROWNS = Unit("ex/crowns", "EX$", "EX$", Placement.BEFORE, False)
-MOONS = Unit("ex/moons", "moon", "moons", Placement.AFTER, True)
+CROWNS = Unit("ex/crowns")
+MOONS = Unit("ex/moons")
 UNITS = {"ex/crowns": CROWNS, "ex/moons": MOONS}
 
 EXACT = ParameterDataset(

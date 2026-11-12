@@ -20,7 +20,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection, InputDeclaration, Manifest
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.unit import Placement, UnitCatalog, UnitRegistry
+from tax_engine.domain.unit import UnitCatalog, UnitRegistry
 from tests.kinds import AutoKinds
 
 EX_ON = JurisdictionCode("EX-ON")
@@ -39,13 +39,9 @@ RENTALS = RecordListKind("ex/rentals", fields=(GROSS_RENT, EXPENSES))
 
 def units() -> UnitRegistry:
     registry = UnitRegistry()
-    for namespace, name, singular, plural, placement, spaced in (
-        ("core", "moons", "moon", "moons", Placement.AFTER, True),
-        ("ex", "crowns", "EX$", "EX$", Placement.BEFORE, False),
-        ("ex-on", "ducats", "ON$", "ON$", Placement.BEFORE, False),
-    ):
+    for namespace, name in (("core", "moons"), ("ex", "crowns"), ("ex-on", "ducats")):
         catalog = UnitCatalog(Namespace(namespace))
-        catalog.declare(name, singular, plural, placement, spaced)
+        catalog.declare(name)
         registry.register_catalog(catalog)
     return registry
 
@@ -295,7 +291,7 @@ def test_a_manifest_holds_each_unit_its_declarations_name_by_name(tmp_path: Path
         "core/moons": registry.get("core/moons"),
         "ex-on/ducats": registry.get("ex-on/ducats"),
     }
-    assert manifest.units_by_name["ex/crowns"].singular == "EX$"
+    assert manifest.units_by_name["ex/crowns"].identifier == "ex/crowns"
 
 
 def test_a_manifest_naming_no_unit_holds_none(tmp_path: Path) -> None:
