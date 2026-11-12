@@ -1,0 +1,24 @@
+# Alberta 2025 brackets, Form AB428 (Alberta Tax and Credits, 5009-c-25e) Part A, lines 2 to 8,
+# columns 1 to 3 (docs/cra-forms-2025/5009-c-25e.txt). Column headings: "Column 1: Line 1 is
+# $60,000 or less"; "Column 2: Line 1 is more than $60,000 but not more than $151,234"; "Column 3:
+# Line 1 is more than $151,234 but not more than $181,481". In every column: line 3 the column's
+# lower bound (0.00, 60,000.00, 151,234.00); line 5 "Rate" (8%, 10%, 12%); line 7 the printed
+# constant (0.00, 4,800.00, 13,923.40). Lines 3, 5 and 7 are the printed figures; lines 2, 4, 6
+# and 8 are computed.
+# Each bracket's `tax_at_start` is the line 7 constant of its column, taken as printed: the
+# constants are not recomputed from the rates, and not rounded.
+# This dataset has no rounding rule, as the form states none. The take-home build rounds line 6
+# half-up to the cent in its own part (ca-ab/cent_rounding).
+# `up_to`: the table covers line 1 of 181,481.00 or less. Above it lines 9 to 15 apply and this
+# line is blank.
+family: ca-ab/brackets_lines_2_to_8
+tax_year: 2025
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt
+rounding: none
+up_to: "181481.00"
+brackets:
+  - {from: "0.00", rate: "0.08", tax_at_start: "0.00"}
+  - {from: "60000.00", rate: "0.10", tax_at_start: "4800.00"}
+  - {from: "151234.00", rate: "0.12", tax_at_start: "13923.40"}
