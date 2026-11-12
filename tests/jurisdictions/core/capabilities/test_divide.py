@@ -22,7 +22,6 @@ from types import MappingProxyType
 from typing import Any, assert_type, cast
 
 import pytest
-from tax_engine.jurisdictions.core.capabilities.divide import Divide
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
@@ -38,6 +37,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.trace import QuotientLine
+from tax_engine.jurisdictions.core.capabilities.divide import Divide
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
