@@ -4,11 +4,10 @@
 # in the `ca` package (`ca/forms/<name>/`).
 #
 # The default form's exports are T1 line 167, refund or balance owing (positive is owing, negative
-# is a refund), the Ontario marginal rate (ON428 line 5 bracket rate times the surtax factor of
-# lines 66 and 67) and the health premium slope (ON428 line 89 chart), which the marginal rate total
-# reads. The CPP and EI figures the calculator also needs are exported
-# by their own forms (Schedule 8 and T2204, both imported); the calculator reads them from their
-# forms.
+# is a refund), the federal marginal rate (the T1 line 73 bracket rate), the Ontario marginal rate
+# (ON428 line 5 bracket rate times the surtax factor of lines 66 and 67) and the health premium
+# slope (ON428 line 89 chart). The CPP and EI figures the calculator also needs are exported by
+# their own forms (Schedule 8 and T2204, both imported); the calculator reads them from their forms.
 jurisdiction: CA-ON
 version: 1
 valid_from_tax_year: 2025
@@ -16,6 +15,7 @@ valid_from_tax_year: 2025
 title: Return summary
 outputs:
   - ca/refund_or_balance_owing
+  - ca/federal_marginal_rate
   - ca-on/ontario_marginal_rate
   - ca-on/return_health_premium_slope
 capabilities: []

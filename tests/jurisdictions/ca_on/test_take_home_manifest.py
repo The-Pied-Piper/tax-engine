@@ -30,14 +30,15 @@ def test_the_salary_is_the_only_required_input() -> None:
     assert required == {SALARY}
 
 
-def test_the_return_exports_the_signed_total_tax_of_t1_line_167_and_the_marginal_rate() -> None:
+def test_the_return_exports_line_167_and_the_marginal_rates() -> None:
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
-    assert default.exports == (
+    assert set(default.exports) == {
         "ca-on/ontario_marginal_rate",
         "ca-on/return_health_premium_slope",
         "ca/refund_or_balance_owing",
-    )
+        "ca/federal_marginal_rate",
+    }
 
 
 def test_the_return_multiplies_the_bracket_rate_by_the_surtax_factor_exactly() -> None:
