@@ -104,6 +104,13 @@ AB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_69 = AmountKind.declare(
 """Provincial foreign tax credit, AB428 line 69 "Line 69: Provincial foreign tax credit (complete
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
 
+AB428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_72 = AmountKind.declare(
+    CATALOG, "ab428_political_contributions_credit_line_72", non_negative=True
+)
+"""Alberta political contributions tax credit, AB428 line 72 "Line 72: Alberta political
+contributions tax credit (use Worksheet AB428) (maximum $1,000)": the credit from the worksheet, an
+optional input that a salary-only caller leaves out, read by line 73."""
+
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
 )
@@ -127,6 +134,12 @@ AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 )
 """EI premiums credit amount, AB428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+AB428_CPP_EI_AND_OTHER_LINE_32 = AmountKind.declare(
+    CATALOG, "ab428_cpp_ei_and_other_line_32", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, AB428 line 32 "Line 32: Add lines 27 to 31. = ^": the
+sum of lines 27 and 29. Lines 28, 30 and 31 are not built: a salary-only filer has none of them."""
 
 AB428_DIVIDEND_TAX_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "ab428_dividend_tax_credit_line_63", non_negative=True
