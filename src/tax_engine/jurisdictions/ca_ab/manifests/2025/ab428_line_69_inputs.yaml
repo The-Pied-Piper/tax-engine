@@ -1,0 +1,12 @@
+# AB428 (2025) line 69's input, which a salary-only caller does not give.
+# Line 69: "Line 69: Provincial foreign tax credit (complete Form T2036)". A salary-only caller has
+# no foreign income, so a request that leaves the line out is read as blank, and the line 70 part
+# reads that blank as 0.
+inputs:
+  - name: ca-ab/ab428_provincial_foreign_tax_credit_line_69
+    title: "Provincial foreign tax credit"
+    reference: "69"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 69: Provincial foreign tax credit (complete Form T2036)'
