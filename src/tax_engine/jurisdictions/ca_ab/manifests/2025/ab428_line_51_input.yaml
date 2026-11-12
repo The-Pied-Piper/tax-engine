@@ -4,6 +4,7 @@
 # blank as 0.
 inputs:
   - name: ca-ab/ab428_medical_expenses_line_51
+    title: "Medical expenses"
     reference: "51"
     unit: ca/cad
     required: false

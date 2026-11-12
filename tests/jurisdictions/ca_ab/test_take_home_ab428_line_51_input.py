@@ -1,8 +1,8 @@
 """AB428 (2025) line 51's input, as the Alberta take-home manifest part declares it.
 
 Form text (Form AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 51 and line 58769: Line 49
-plus line 50 =". The line prints no heading, so the declaration has no title. A salary-only caller
-has no medical expenses, so a request that leaves the line out is read as blank.
+plus line 50 =". The line sits under the printed heading "Medical expenses:", which is its title. A
+salary-only caller has no medical expenses, so a request that leaves the line out is read as blank.
 
 The real part is loaded under a test-local header, as the take-home header is another part's. The
 Alberta registries of `support.py` are used, as Alberta is not yet in the registrations.
@@ -54,6 +54,6 @@ def test_a_request_that_leaves_out_line_51_is_read_as_blank(tmp_path: Path) -> N
 
 def test_line_51_is_declared_as_printed(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
-    assert declaration.title is None
+    assert declaration.title == "Medical expenses"
     assert declaration.reference == "51"
     assert declaration.unit == "ca/cad"
