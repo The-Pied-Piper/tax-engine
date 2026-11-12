@@ -31,8 +31,6 @@ capabilities:
     produces:
       output: ca/refund_or_balance_owing
   - name: core/record_total
-    title: "Total payable"
-    reference: "43500"
     unit: ca/cad
     consumes:
       records: ca/t1_tax_and_credits.total_payable
