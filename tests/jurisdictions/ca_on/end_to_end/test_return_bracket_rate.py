@@ -30,15 +30,11 @@ from tax_engine.domain.manifest import Manifest
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import JURISDICTIONS, units
-from tests.jurisdictions.ca_on.conftest import (
-    ONTARIO_PARTS,
-    TakeHomeService,
-)
+from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService, header_without_imports
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
-REAL_HEADER = (ONTARIO_PARTS / "manifest.yaml").read_text(encoding="utf-8")
 RETURN = "ca-on/return"
 ON428 = "ca-on/on428"
 LINE_5 = "ca-on/on428_bracket_column_rate_line_5"
@@ -46,12 +42,16 @@ RETURN_RATE = "ca-on/ontario_bracket_rate_return"
 LINE_167 = "ca/refund_or_balance_owing"
 
 
-# The real header, with every Ontario part composed beside it as the calculator loads them, and the
-# federal forms imported by the header.
-PARTS = tuple(
-    sorted(path.name for path in ONTARIO_PARTS.rglob("*.yaml") if path.name != "manifest.yaml")
+HEADER = header_without_imports()
+RETURN_FORM = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
+PARTS = (
+    "salary.yaml",
+    *(
+        part.name
+        for part in sorted(TAKE_HOME.rglob("*.yaml"))
+        if part.name not in {"manifest.yaml", "return.yaml", "salary.yaml"}
+    ),
 )
-NO_FORM = "capabilities: []\n"
 
 
 def _manifest() -> Manifest:
@@ -63,7 +63,7 @@ def _manifest() -> Manifest:
 def _worksheets(
     take_home_service: TakeHomeService, salary: str
 ) -> dict[str, tuple[Worksheet, ...]]:
-    service = take_home_service(REAL_HEADER, NO_FORM, *PARTS)
+    service = take_home_service(HEADER, RETURN_FORM, *PARTS)
     return service.compute(ONTARIO, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
 
 

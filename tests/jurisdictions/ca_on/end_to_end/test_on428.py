@@ -280,7 +280,7 @@ def test_the_form_exports_line_90_the_figure_t1_line_42800_reads(
 def test_the_form_exports_line_90_and_the_surtax_base_line_65_and_the_line_5_rate(
     take_home_service: TakeHomeService,
 ) -> None:
-    # Every other line is read only inside the form: the form exports line 90 and line 65.
+    # Every other line is read only inside the form: the form exports lines 90, 65 and 5.
     service = take_home_service(HEADER, FORM, *PARTS)
     code = JurisdictionCode("CA-ON")
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca-on/on428")
