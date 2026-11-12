@@ -1,0 +1,13 @@
+# Form AB428 line 29 (58300) is a copy of T2204 line 16, the EI premiums credit amount. The amount
+# arrives as a record list from T2204, so the one step is core/record_total over those records.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/record_total
+    title: "Employment insurance premiums"
+    reference: "29"
+    unit: ca/cad
+    consumes:
+      records: ca/t2204.t2204_line_16
+    produces:
+      output: ca-ab/ab428_ei_premiums_line_29
