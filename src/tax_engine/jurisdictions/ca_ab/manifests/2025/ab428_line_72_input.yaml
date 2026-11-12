@@ -1,0 +1,13 @@
+# AB428 (2025) inputs a salary-only caller does not give.
+# Line 72: "Alberta political contributions tax credit (use Worksheet AB428) (maximum $1,000)". The
+# credit is a worksheet result the engine does not compute yet. A salary-only caller has no political
+# contributions, so a request that leaves the line out is read as blank, and the consumer (line 73)
+# reads that blank as 0.
+inputs:
+  - name: ca-ab/ab428_political_contributions_credit_line_72
+    title: "Alberta political contributions tax credit"
+    reference: "72"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 72: Alberta political contributions tax credit (use Worksheet AB428) (maximum $1,000)'
