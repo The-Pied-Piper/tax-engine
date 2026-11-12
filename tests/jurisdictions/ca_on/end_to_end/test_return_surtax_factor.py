@@ -116,7 +116,9 @@ def test_the_bundled_return_gives_the_factor_1_at_70000() -> None:
     assert summary.get(kinds.kind("ca/refund_or_balance_owing")).value == D("11497.09")
 
 
-def test_the_return_steps_for_the_base_and_the_factor_carry_no_line_reference() -> None:
+def test_the_return_steps_for_the_base_and_the_factor_carry_no_title_and_no_line_reference() -> (
+    None
+):
     worksheets = build_tax_computation().compute(
         CODE, 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
     )
@@ -125,6 +127,8 @@ def test_the_return_steps_for_the_base_and_the_factor_carry_no_line_reference() 
 
     assert summary.reference(kinds.kind(BASE).label) is None
     assert summary.reference(kinds.kind(FACTOR).label) is None
+    assert summary.title(kinds.kind(BASE).label) is None
+    assert summary.title(kinds.kind(FACTOR).label) is None
 
 
 @pytest.mark.parametrize(
