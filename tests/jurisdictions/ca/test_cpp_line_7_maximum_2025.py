@@ -15,7 +15,9 @@ from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    tax_engine.registrations.JURISDICTIONS.roots(),
+    tax_engine.registrations.parameter_parsers(),
+    tax_engine.registrations.units(),
 )
 FAMILY = "ca/cpp_line_7_maximum"
 

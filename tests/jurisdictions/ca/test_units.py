@@ -55,3 +55,17 @@ def test_every_registered_unit_has_english_text() -> None:
 
     assert len(units) == 4
     EnglishUnitTextRegistry.shared().require(units)
+
+
+def test_every_bundled_amount_dataset_is_measured_in_the_canadian_dollar() -> None:
+    roots = tax_engine.registrations.JURISDICTIONS.roots()
+    amounts = [
+        path
+        for namespace, root in roots.items()
+        if namespace.name.startswith("ca")
+        for path in (root / "parameters").rglob("*.yaml")
+        if "\nkind: amount\n" in path.read_text()
+    ]
+
+    assert amounts
+    assert [p for p in amounts if "\nunit: ca/cad\n" not in p.read_text()] == []

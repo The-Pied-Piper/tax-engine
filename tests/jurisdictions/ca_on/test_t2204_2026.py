@@ -16,7 +16,9 @@ from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 
 D = Decimal
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    tax_engine.registrations.JURISDICTIONS.roots(),
+    tax_engine.registrations.parameter_parsers(),
+    tax_engine.registrations.units(),
 )
 FAMILY = "ca/t2204_maximum_insurable_earnings"
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

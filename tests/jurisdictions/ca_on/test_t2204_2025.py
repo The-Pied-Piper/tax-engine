@@ -39,7 +39,9 @@ from tax_engine.jurisdictions.ca.capabilities.count_by_conditions import CountBy
 
 D = Decimal
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    tax_engine.registrations.JURISDICTIONS.roots(),
+    tax_engine.registrations.parameter_parsers(),
+    tax_engine.registrations.units(),
 )
 T2204_PDF = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2204/t2204-25e.pdf"
 CENT = RoundTo(D("0.01"), RoundingMode.HALF_UP)

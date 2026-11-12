@@ -21,7 +21,9 @@ from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
 from tax_engine.domain.registry import Namespace
 
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    tax_engine.registrations.JURISDICTIONS.roots(),
+    tax_engine.registrations.parameter_parsers(),
+    tax_engine.registrations.units(),
 )
 PROVISIONAL_HEADER = (
     "# Provisional: taken from the 2025 form text named in sources; to be confirmed against the "

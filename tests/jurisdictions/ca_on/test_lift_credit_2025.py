@@ -32,7 +32,9 @@ from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmoun
 
 D = Decimal
 SOURCE = YamlParameterSource(
-    tax_engine.registrations.JURISDICTIONS.roots(), tax_engine.registrations.parameter_parsers()
+    tax_engine.registrations.JURISDICTIONS.roots(),
+    tax_engine.registrations.parameter_parsers(),
+    tax_engine.registrations.units(),
 )
 RATE_FAMILY = "ca-on/lift_rate"
 MAXIMUM = "ca-on/lift_maximum"

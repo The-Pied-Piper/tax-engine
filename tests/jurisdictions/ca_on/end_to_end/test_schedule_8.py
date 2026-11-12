@@ -93,7 +93,11 @@ def service(tmp_path: Path) -> TaxComputationService:
         YamlJurisdictionSource(
             roots, tax_engine.registrations.artifact_kinds(), tax_engine.registrations.units()
         ),
-        YamlParameterSource(parameter_roots, tax_engine.registrations.parameter_parsers()),
+        YamlParameterSource(
+            parameter_roots,
+            tax_engine.registrations.parameter_parsers(),
+            tax_engine.registrations.units(),
+        ),
         tax_engine.registrations.capabilities(),
     )
 
