@@ -129,6 +129,12 @@ AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 """EI premiums credit amount, AB428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
 
+AB428_CPP_EI_AND_OTHER_LINE_32 = AmountKind.declare(
+    CATALOG, "ab428_cpp_ei_and_other_line_32", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, AB428 line 32 "Line 32: Add lines 27 to 31. = ^": the
+sum of lines 27 and 29. Lines 28, 30 and 31 are not built: a salary-only filer has none of them."""
+
 AB428_DIVIDEND_TAX_CREDIT_LINE_63 = AmountKind.declare(
     CATALOG, "ab428_dividend_tax_credit_line_63", non_negative=True
 )

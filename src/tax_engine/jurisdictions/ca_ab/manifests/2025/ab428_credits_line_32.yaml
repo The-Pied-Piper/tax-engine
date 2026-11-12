@@ -1,0 +1,17 @@
+# Form AB428 (CRA 5009-c) line 32: "Line 32: Add lines 27 to 31." Lines 28, 30 and 31 (the amounts from
+# lines 31000 and 31217 of your return, and adoption expenses) are left out: a salary-only filer has
+# none of them, as ON428 line 24 leaves out its equivalents. Step 1 adds lines 27 and 29 with core/sum.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    reference: "32"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        - ca-ab/ab428_cpp_contributions_line_27
+        - ca-ab/ab428_ei_premiums_line_29
+    produces:
+      output: ca-ab/ab428_cpp_ei_and_other_line_32
