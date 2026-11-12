@@ -1162,6 +1162,7 @@ REGISTERED = frozenset(
         "ca/federal_bracket_lower_bound_line_71",
         "ca/federal_taxable_income_over_lower_bound_line_72",
         "ca/federal_bracket_column_rate_line_73",
+        "ca/federal_marginal_rate",
         "ca/federal_excess_times_column_rate_line_74",
         "ca/federal_tax_at_column_start_line_75",
         "ca/federal_tax_on_taxable_income_line_76",

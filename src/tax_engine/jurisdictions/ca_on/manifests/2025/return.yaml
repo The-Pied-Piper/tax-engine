@@ -1,4 +1,4 @@
-# The Ontario take-home return's one output, T1 line 167 (refund or balance owing; positive is owing,
+# The Ontario take-home return's output, T1 line 167 (refund or balance owing; positive is owing,
 # negative is a refund). The T1 form exports it, another form's export is read only as a record list,
 # so core/record_total totals the one amount into the return's own `ca/refund_or_balance_owing`.
 capabilities:
@@ -10,3 +10,11 @@ capabilities:
       records: ca/t1_tax_and_credits.refund_or_balance_owing
     produces:
       output: ca/refund_or_balance_owing
+  # The federal marginal rate: the T1 form exports line 73's bracket column rate and
+  # core/record_total totals the one fraction into the return's own `ca/federal_marginal_rate`. It
+  # has no printed title or line, and is a manifest output until a later step reads it.
+  - name: core/record_total
+    consumes:
+      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+    produces:
+      output: ca/federal_marginal_rate
