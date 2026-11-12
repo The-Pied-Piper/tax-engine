@@ -42,6 +42,12 @@ AB428_CREDITS_TOTAL_LINE_52 = AmountKind.declare(
 """Credit amounts total, AB428 line 52 (line 58800) "Line 43 plus line 51 =": line 43 plus
 line 51, read by line 1 of Worksheet AB428."""
 
+AB428_DONATIONS_CREDIT_LINE_57 = AmountKind.declare(
+    CATALOG, "ab428_donations_credit_line_57", non_negative=True
+)
+"""Donations and gifts credit, AB428 line 57 (line 58969) "Line 57 and line 58969: Line 55 plus line
+56 =": a caller input, read as 0 when the filer has no donations or gifts."""
+
 AB428_NON_REFUNDABLE_CREDITS_LINE_58 = AmountKind.declare(
     CATALOG, "ab428_non_refundable_credits_line_58", non_negative=True
 )

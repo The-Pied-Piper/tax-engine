@@ -1,0 +1,11 @@
+# AB428 (2025) line 57's input, which a salary-only caller does not give.
+# Form text: "Line 57 and line 58969: Line 55 plus line 56" (5009-c-25e). Lines 55 and 56 are not
+# built, so a salary-only caller has none and a request that leaves the line out is read as blank.
+inputs:
+  - name: ca-ab/ab428_donations_credit_line_57
+    title: "Donations and gifts"
+    reference: "57"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 57 and line 58969: Line 55 plus line 56'
