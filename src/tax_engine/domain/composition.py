@@ -18,6 +18,7 @@ from tax_engine.domain.errors import (
     NegativeArtifactError,
 )
 from tax_engine.domain.figure_names import ImportedFigure
+from tax_engine.domain.unit import Unit
 from tax_engine.domain.worksheet import Worksheet
 
 
@@ -59,6 +60,7 @@ class Composition:
         form_title: str | None = None,
         figure_titles: Mapping[str, str] | None = None,
         figure_references: Mapping[str, str] | None = None,
+        figure_units: Mapping[str, Unit] | None = None,
         imported_figures: Mapping[str, ImportedFigure] | None = None,
         defaulted: Iterable[ArtifactKind[Any]] = (),
     ) -> Worksheet:
@@ -67,13 +69,15 @@ class Composition:
         The starting artifacts are exactly one of each input kind; only a kind in `blank_inputs` may
         be blank (else BlankNotAllowedError). A capability producing a value below zero for a
         non-negative kind raises CapabilityContractError naming it. `form_title`, `figure_titles`,
-        `figure_references`, `imported_figures` and `defaulted` only annotate the worksheet's trace.
+        `figure_references`, `figure_units`, `imported_figures` and `defaulted` only annotate the
+        worksheet's trace.
         """
         worksheet = Worksheet(
             *artifacts,
             form_title=form_title,
             figure_titles=figure_titles,
             figure_references=figure_references,
+            figure_units=figure_units,
             imported_figures=imported_figures,
             defaulted=defaulted,
         )

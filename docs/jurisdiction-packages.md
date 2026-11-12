@@ -9,6 +9,7 @@ Real jurisdiction names appear only there and in the mirrored `tests/jurisdictio
 | --- | --- |
 | `__init__.py` | `NAMESPACE = "..."`, the namespace of every identifier the package declares. Declare it at the top, before importing any module that uses `@capability`, which resolves it on import. A subpackage that declares identifiers repeats the namespace to inherit it. |
 | `catalog.py` or `catalog/` | The artifact kinds, on a `CATALOG`. |
+| `units.py` | Optional. The units its manifests may name with `unit:`, on a `UNITS` `UnitCatalog` in the package's namespace. |
 | `manifests/` | Manifests, see [Manifest format](manifest-format.md). |
 | `forms/` | Parts of forms that other manifests import. |
 | `parameters/` | Parameter datasets, see [Parameter files](parameter-files.md). |
@@ -24,7 +25,7 @@ and `parameter_parsers` hold the generic mechanisms.
 
 Nothing registers by being imported, apart from the decorators that fill the shared registry of
 English trace renderers. `tax_engine.registrations` lists the packages in `JURISDICTIONS` and builds
-the registries once each for the composition root: `artifact_kinds()` from every `catalog`,
+the registries once each for the composition root: `artifact_kinds()` from every `catalog`, `units()` from every `units` module,
 `capabilities()` from every `capabilities` package and `parameter_parsers()` from every
 `parameter_parsers` package, found by walking their modules. A new capability or parser is a new
 module in its package; a new jurisdiction is importing its package and listing it in

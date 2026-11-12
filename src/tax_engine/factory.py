@@ -8,6 +8,7 @@ from tax_engine.registrations import (
     artifact_kinds,
     capabilities,
     parameter_parsers,
+    units,
 )
 
 
@@ -16,7 +17,7 @@ def build_tax_computation() -> TaxComputationService:
     kinds = artifact_kinds()
     roots = JURISDICTIONS.roots()
     return TaxComputationService(
-        YamlJurisdictionSource(roots, kinds),
+        YamlJurisdictionSource(roots, kinds, units()),
         YamlParameterSource(roots, parameter_parsers()),
         capabilities(),
     )

@@ -56,7 +56,7 @@ class RoundedTotalRenderer:
         """The English sentence for `line`."""
         return (
             f"Based on {names.figure(line.base, line.base_amount)} gives "
-            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -70,9 +70,9 @@ class SumRenderer:
         """The English sentence for `line`."""
         terms = " plus ".join(names.figure(kind, amount) for kind, amount in line.parts)
         if not line.parts:
-            return f"Nothing to add, so {EnglishFigures.money(line.total)}"
+            return f"Nothing to add, so {names.shown(line.label, line.total)}"
         return (
-            f"{terms} gives {EnglishFigures.money(line.total)} "
+            f"{terms} gives {names.shown(line.label, line.total)} "
             f"({EnglishFigures.rounding(line.rounding)})"
         )
 
@@ -87,9 +87,9 @@ class SumNotBelowZeroRenderer:
         """The English sentence for `line`."""
         terms = " plus ".join(names.figure(kind, amount) for kind, amount in line.parts)
         if not line.parts:
-            return f"Nothing to add, not below 0, so {EnglishFigures.money(line.total)}"
+            return f"Nothing to add, not below 0, so {names.shown(line.label, line.total)}"
         return (
-            f"{terms}, not below 0, gives {EnglishFigures.money(line.total)} "
+            f"{terms}, not below 0, gives {names.shown(line.label, line.total)} "
             f"({EnglishFigures.rounding(line.rounding)})"
         )
 
@@ -105,7 +105,7 @@ class RateAppliedRenderer:
         return (
             f"{EnglishFigures.percent(line.rate.value)}% of "
             f"{names.figure(line.base, line.base_amount)} gives "
-            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -120,7 +120,7 @@ class DividedByRateRenderer:
         return (
             f"{names.figure(line.dividend, line.dividend_amount)} divided by "
             f"{EnglishFigures.percent(line.rate.value)}% gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -136,13 +136,13 @@ class SignChosenDifferenceRenderer:
             return (
                 f"{names.figure(line.difference, line.difference_amount)}, because "
                 f"{names.figure(line.sign, line.sign_amount)} is not negative, "
-                f"gives {EnglishFigures.money(line.result)}"
+                f"gives {names.shown(line.label, line.result)}"
             )
         return (
             f"{names.figure(line.sign, line.sign_amount)} is negative, so the lesser of "
             f"{names.figure(line.reference, line.reference_amount)} and the size of "
             f"{names.figure(line.difference, line.difference_amount)}, as a negative, "
-            f"gives {EnglishFigures.money(line.result)}"
+            f"gives {names.shown(line.label, line.result)}"
         )
 
 
@@ -157,7 +157,7 @@ class SubtractedRenderer:
         return (
             f"{names.figure(line.minuend, line.minuend_amount)} less "
             f"{names.figure(line.subtrahend, line.subtrahend_amount)} gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -172,7 +172,7 @@ class SubtractedNotBelowZeroRenderer:
         return (
             f"{names.figure(line.minuend, line.minuend_amount)} less "
             f"{names.figure(line.subtrahend, line.subtrahend_amount)}, not below 0, gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -201,7 +201,7 @@ class CappedAmountRenderer:
         return (
             f"Lesser of {names.figure(line.base, line.base_amount)} and "
             f"{names.parameter(line.cap)} gives "
-            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -216,8 +216,8 @@ class LesserOfRenderer:
         terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in line.parts])
         word = "Lesser" if len(line.parts) == 2 else "Least"
         if len(line.parts) == 1:
-            return f"{terms} gives {EnglishFigures.money(line.result)}"
-        return f"{word} of {terms} gives {EnglishFigures.money(line.result)}"
+            return f"{terms} gives {names.shown(line.label, line.result)}"
+        return f"{word} of {terms} gives {names.shown(line.label, line.result)}"
 
 
 @english_renderer
@@ -237,7 +237,7 @@ class LesserOfWithMaximumRenderer:
         word = "Lesser" if len(line.parts) == 1 else "Least"
         return (
             f"{word} of {terms} gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -252,8 +252,8 @@ class GreaterOfRenderer:
         terms = EnglishFigures.listing([names.figure(kind, amount) for kind, amount in line.parts])
         word = "Greater" if len(line.parts) == 2 else "Greatest"
         if len(line.parts) == 1:
-            return f"{terms} gives {EnglishFigures.money(line.result)}"
-        return f"{word} of {terms} gives {EnglishFigures.money(line.result)}"
+            return f"{terms} gives {names.shown(line.label, line.result)}"
+        return f"{word} of {terms} gives {names.shown(line.label, line.result)}"
 
 
 @english_renderer
@@ -267,7 +267,7 @@ class PerUnitAmountRenderer:
         return (
             f"{EnglishFigures.money(line.per_unit.value)} for each of "
             f"{names.figure(line.count_kind, line.count)} gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -283,7 +283,7 @@ class MultipleOverRenderer:
             f"{format(line.factor.value.normalize(), 'f')} × "
             f"{names.figure(line.base, line.base_amount)} less "
             f"{names.figure(line.less, line.less_amount)}, not below 0, gives "
-            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -336,7 +336,7 @@ class FractionAppliedRenderer:
         )
         return (
             f"{share} {names.figure(line.base, line.base_amount)} gives "
-            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -352,7 +352,7 @@ class PercentageAppliedRenderer:
             f"{names.of(line.percentage_kind)} "
             f"({format(line.percentage_value.normalize(), 'f')}%) of "
             f"{names.figure(line.amount_kind, line.amount_value)} gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -367,7 +367,7 @@ class MultipliedByRateRenderer:
         return (
             f"{names.of(line.rate_kind)} ({EnglishFigures.percent(line.rate_value)}%) of "
             f"{names.figure(line.base_kind, line.base_value)} gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -383,7 +383,7 @@ class RatioAppliedRenderer:
             f"{names.figure(line.amount_kind, line.amount_value)} × "
             f"{names.figure(line.numerator_kind, line.numerator_value)} / "
             f"{names.figure(line.denominator_kind, line.denominator_value)} gives "
-            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -398,7 +398,7 @@ class TimesCountRenderer:
         return (
             f"{names.figure(line.amount_kind, line.amount_value)} for each of "
             f"{names.figure(line.count_kind, line.count)} gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -413,7 +413,7 @@ class QuotientRenderer:
         return (
             f"{names.figure(line.dividend, line.dividend_amount)} divided by "
             f"{names.figure(line.divisor, line.divisor_amount)} gives "
-            f"{EnglishFigures.money(line.result)}"
+            f"{names.shown(line.label, line.result)}"
         )
 
 
@@ -432,10 +432,10 @@ class ThresholdGateRenderer:
         if line.gate_value >= line.threshold.value:
             return (
                 f"{amount}, because {gate} is at least {threshold}, gives "
-                f"{EnglishFigures.money(line.result)} ({rounded})"
+                f"{names.shown(line.label, line.result)} ({rounded})"
             )
         return (
-            f"{EnglishFigures.money(line.result)}, because {gate} is below {threshold}, "
+            f"{names.shown(line.label, line.result)}, because {gate} is below {threshold}, "
             f"so {amount} does not apply"
         )
 
@@ -454,13 +454,13 @@ class AmountOrDividedByRateRenderer:
         if line.amount_value <= line.limit.threshold:
             return (
                 f"{amount} is {limit} or less, so it stands as "
-                f"{EnglishFigures.money(line.result)} ({rounded})"
+                f"{names.shown(line.label, line.result)} ({rounded})"
             )
         return (
             f"{amount} is over {limit}, so "
             f"{names.figure(line.dividend_kind, line.dividend_value)} divided by "
             f"{EnglishFigures.percent(line.limit.rate.value)}% gives "
-            f"{EnglishFigures.money(line.result)} ({rounded})"
+            f"{names.shown(line.label, line.result)} ({rounded})"
         )
 
 
@@ -562,7 +562,7 @@ class RatioTruncatedRenderer:
         return (
             f"{names.figure(line.dividend, line.dividend_amount)} divided by "
             f"{names.figure(line.divisor, line.divisor_amount)}{cap} gives "
-            f"{EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.result)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -576,7 +576,7 @@ class PositivePartOfNegationRenderer:
         """The English sentence for `line`."""
         return (
             f"Negation of {names.figure(line.amount_kind, line.amount_value)}, not below 0, "
-            f"gives {EnglishFigures.money(line.result)}"
+            f"gives {names.shown(line.label, line.result)}"
         )
 
 
@@ -594,7 +594,7 @@ class LesserOfWhenPositiveRenderer:
         brackets = ", shown in brackets" if line.bracket else ""
         gate = "" if line.all_positive else ", not all positive"
         separator = "," if brackets or gate else ""
-        return f"{lesser}{brackets}{gate}{separator} gives {EnglishFigures.money(line.result)}"
+        return f"{lesser}{brackets}{gate}{separator} gives {names.shown(line.label, line.result)}"
 
 
 @english_renderer
@@ -610,6 +610,6 @@ class AmountWhenMoreRenderer:
         if line.more_value > line.than_value:
             return (
                 f"{names.figure(line.amount_kind, line.amount_value)}, because {more} is more "
-                f"than {than}, gives {EnglishFigures.money(line.result)}"
+                f"than {than}, gives {names.shown(line.label, line.result)}"
             )
-        return f"{EnglishFigures.money(line.result)}, because {more} is not more than {than}"
+        return f"{names.shown(line.label, line.result)}, because {more} is not more than {than}"

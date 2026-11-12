@@ -5,13 +5,16 @@ declares the `Form` that names them and registers them, so the composition resol
 """
 
 from collections.abc import Iterable, Mapping
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from tax_engine.domain.artifact import Artifact, ArtifactKind, ArtifactRegistry
 from tax_engine.domain.capability import Capability
 from tax_engine.domain.form import FormComposition
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.manifest import CapabilitySelection, Form, InputDeclaration
+
+if TYPE_CHECKING:  # the unit module is only needed to name a type
+    from tax_engine.domain.unit import Unit
 
 
 def _declared(
@@ -60,6 +63,7 @@ def composition(
     declared: Iterable[InputDeclaration] = (),
     fields: tuple[InputDeclaration, ...] = (),
     supplies: Mapping[str, str] | None = None,
+    units: "Mapping[str, Unit] | None" = None,
 ) -> FormComposition:
     """The `FormComposition` of the form `name` whose exports and instances are the given kinds."""
     form, kinds = _declared(
@@ -85,4 +89,5 @@ def composition(
         defaults=defaults,
         field_defaults=field_defaults,
         declared=declared,
+        **({} if units is None else {"units": units}),
     )

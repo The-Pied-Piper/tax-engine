@@ -68,7 +68,7 @@ class SurchargeTierRenderer:
             f"{EnglishFigures.percent(line.rate.value)}% of the part of "
             f"{names.figure(line.base, line.base_amount)} over "
             f"{EnglishFigures.money(line.threshold)}{at_most}, gives "
-            f"{EnglishFigures.money(line.amount)} ({EnglishFigures.rounding(line.rounding)})"
+            f"{names.shown(line.label, line.amount)} ({EnglishFigures.rounding(line.rounding)})"
         )
 
 
@@ -114,7 +114,7 @@ class ChosenRateAppliedRenderer:
         rule = line.rounding
         return (
             f"{names.of(rate_kind)} ({EnglishFigures.percent(rate.value)}%) of "
-            f"{names.figure(base, amount)} gives {EnglishFigures.money(line.amount)} "
+            f"{names.figure(base, amount)} gives {names.shown(line.label, line.amount)} "
             f"({EnglishFigures.rounding(rule)})"
         )
 
@@ -135,10 +135,10 @@ class AmountByBandRenderer:
                 f"{EnglishFigures.money(line.minus)}) "
                 f"× {EnglishFigures.percent(line.rate.value)}% plus "
                 f"{EnglishFigures.money(line.plus)} "
-                f"gives {EnglishFigures.money(line.result)}"
+                f"gives {names.shown(line.label, line.result)}"
             )
         else:
-            how = f"the amount is {EnglishFigures.money(line.result)}"
+            how = f"the amount is {names.shown(line.label, line.result)}"
         position = "is over" if line.base_amount > line.over else "is in the band starting at"
         return (
             f"{names.figure(line.base, line.base_amount)} {position} "

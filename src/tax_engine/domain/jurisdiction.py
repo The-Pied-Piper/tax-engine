@@ -6,19 +6,24 @@ the same year; the computation-date question (retroactive successors) is deferre
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, field
 
 from tax_engine.domain.errors import AmbiguousManifestError, NotFoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import Manifest
+from tax_engine.domain.unit import Unit
 
 
 @dataclass(frozen=True, slots=True)
 class Jurisdiction:
-    """A jurisdiction's code and every manifest stored for it, in any order."""
+    """A jurisdiction's code, every manifest stored for it in any order, and `units`: each unit
+    the manifests name, by the name they write.
+    """
 
     code: JurisdictionCode
     manifests: tuple[Manifest, ...]
+    units: Mapping[str, Unit] = field(default_factory=dict, compare=False)
 
     def manifest_for(self, tax_year: int) -> Manifest:
         """The manifest with the greatest `valid_from_tax_year` not after `tax_year`.

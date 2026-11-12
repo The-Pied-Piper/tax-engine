@@ -12,6 +12,7 @@ from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPacka
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.unit import UnitRegistry
 
 CORE_PACKAGES = (tax_engine.adapters.inbound.trace_english,)
 
@@ -32,6 +33,16 @@ def artifact_kinds() -> ArtifactRegistry:
     kinds = ArtifactRegistry()
     JURISDICTIONS.register(kinds)
     return kinds
+
+
+def units() -> UnitRegistry:
+    """A new registry of the units of every package in `JURISDICTIONS`.
+
+    Nothing is shared: each call builds its own, to be handed on by whoever wires the application.
+    """
+    registry = UnitRegistry()
+    JURISDICTIONS.register_units(registry)
+    return registry
 
 
 def capabilities() -> CapabilityRegistry:

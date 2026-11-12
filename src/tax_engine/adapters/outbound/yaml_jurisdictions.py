@@ -35,6 +35,7 @@ from tax_engine.domain.manifest import (
     Manifest,
 )
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import Unit, UnitRegistry
 
 _MANIFEST_KEYS = frozenset(
     {"jurisdiction", "version", "valid_from_tax_year", "inputs", "outputs", "capabilities"}
@@ -58,10 +59,10 @@ _OPTIONAL_FORM_KEYS = frozenset(
     }
 )
 _IMPORTED_PART_KEYS = frozenset({"form", "capabilities", "inputs"})
-_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference"})
+_OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference", "unit"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
-_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference"})
+_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference", "unit"})
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
@@ -118,20 +119,30 @@ class _Declaration(NamedTuple):
 class YamlJurisdictionSource:
     """Jurisdictions read from the `manifests/` directory of each jurisdiction package."""
 
-    def __init__(self, roots: Mapping[Namespace, Path], kinds: ArtifactRegistry) -> None:
+    def __init__(
+        self,
+        roots: Mapping[Namespace, Path],
+        kinds: ArtifactRegistry,
+        units: UnitRegistry | None = None,
+    ) -> None:
         """Read manifests under each namespace's package directory in `roots`.
 
-        Each manifest is built with `kinds`, which reads and checks what it declares.
+        Each manifest is built with `kinds`, which reads and checks what it declares, and `units`,
+        where the units it names are looked up; with none, a manifest may name no unit.
         """
         self._roots = dict(roots)
         self._kinds = kinds
+        self._units = UnitRegistry() if units is None else units
 
     def get_jurisdiction(self, code: JurisdictionCode) -> Jurisdiction:
         """The jurisdiction with every manifest in its package; see JurisdictionSource."""
         manifests = tuple(self._load_all(code))
         if not manifests:
             raise NotFoundError(f"no manifests for jurisdiction {code} in {self._manifests(code)}")
-        return Jurisdiction(code=code, manifests=manifests)
+        named: dict[str, Unit] = {}
+        for manifest in manifests:
+            named.update(self._units_named(manifest))
+        return Jurisdiction(code=code, manifests=manifests, units=named)
 
     def _load_all(self, code: JurisdictionCode) -> list[Manifest]:
         manifests = self._manifests(code)
@@ -631,7 +642,31 @@ class YamlJurisdictionSource:
             ),
         )
         self._check_supplied(manifest, forms_imported)
+        self._units_named(manifest)
         return manifest
+
+    def _units_named(self, manifest: Manifest) -> dict[str, Unit]:
+        """Each unit the declarations of `manifest` name, found for its jurisdiction, by name.
+
+        A name that is declared nowhere it looks, or in several places, is an InvalidManifestError.
+        """
+        declared = [
+            (f"input {name!r}", declaration.unit) for name, declaration in manifest.inputs.items()
+        ]
+        for form in manifest.forms:
+            declared.extend(
+                (f"field {field.name!r} of form {form.name!r}", field.unit) for field in form.fields
+            )
+            declared.extend((selection.name, selection.unit) for selection in form.capabilities)
+        found: dict[str, Unit] = {}
+        for who, name in declared:
+            if name is None or name in found:
+                continue
+            try:
+                found[name] = self._units.resolve(name, manifest.jurisdiction)
+            except (UnknownRegistrationError, InvalidRegistrationError) as exc:
+                raise InvalidManifestError(f"{who}: {exc}") from None
+        return found
 
     @staticmethod
     def _check_supplied(manifest: Manifest, imported: tuple[Form, ...]) -> None:
@@ -701,6 +736,7 @@ class YamlJurisdictionSource:
         basis = fields.optional_field("basis")
         title = fields.optional_field("title")
         reference = fields.optional_field("reference")
+        unit = fields.optional_field("unit")
         return InputDeclaration(
             name=name,
             required=required.require_boolean(),
@@ -708,6 +744,7 @@ class YamlJurisdictionSource:
             basis=None if basis is None else basis.require_non_empty_string(),
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
+            unit=None if unit is None else unit.require_non_empty_string(),
         )
 
     @staticmethod
@@ -763,6 +800,7 @@ class YamlJurisdictionSource:
         blank = fields.optional_field("blank")
         title = fields.optional_field("title")
         reference = fields.optional_field("reference")
+        unit = fields.optional_field("unit")
         return CapabilitySelection(
             name=name,
             params=self._bindings(fields.optional_field("params")),
@@ -772,6 +810,7 @@ class YamlJurisdictionSource:
             blank_fields=self._field_blank_rules(name, blank, consumes),
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
+            unit=None if unit is None else unit.require_non_empty_string(),
         )
 
     def _blank_rules(

@@ -6,6 +6,7 @@ A kind names a value type by a namespaced identifier; a package declares its kin
 
 from __future__ import annotations
 
+import dataclasses
 from collections.abc import Iterable
 from dataclasses import dataclass
 from decimal import Decimal
@@ -20,6 +21,7 @@ from tax_engine.domain.errors import (
     NegativeArtifactError,
 )
 from tax_engine.domain.registry import Namespace, Registry
+from tax_engine.domain.unit import Unit
 
 # Invariant on purpose. PEP 695 syntax would infer covariance from `value_type: type[V]`, and
 # mypy would then accept, say, an ArtifactKind[int] wired where an ArtifactKind[Decimal] is
@@ -121,15 +123,18 @@ class Artifact[T]:
 
     A NaN or infinite `Decimal` is an InvalidAmountError; a value below zero for a non-negative kind
     is a NegativeArtifactError (zero is accepted). `BLANK` is accepted for any kind: the kind's
-    checks are skipped and reading `value` is a BlankValueError.
+    checks are skipped and reading `value` is a BlankValueError. `unit` is the unit the manifest
+    gives the figure, `None` for none; it is no part of the artifact's equality.
     """
 
     kind: ArtifactKind[T]
     _content: T | Blank
+    unit: Unit | None = dataclasses.field(compare=False)
 
-    def __init__(self, kind: ArtifactKind[T], value: T | Blank) -> None:
+    def __init__(self, kind: ArtifactKind[T], value: T | Blank, unit: Unit | None = None) -> None:
         object.__setattr__(self, "kind", kind)
         object.__setattr__(self, "_content", value)
+        object.__setattr__(self, "unit", unit)
         if value is BLANK:
             return
         if not isinstance(value, kind.value_type):
@@ -145,6 +150,10 @@ class Artifact[T]:
                 identifier=kind.identifier,
                 value=value if isinstance(value, Decimal | int) else None,
             )
+
+    def with_unit(self, unit: Unit | None) -> Artifact[T]:
+        """This artifact with the unit `unit`."""
+        return Artifact(self.kind, self._content, unit)
 
     @property
     def is_blank(self) -> bool:

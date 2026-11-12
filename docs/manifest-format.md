@@ -180,8 +180,10 @@ Each entry of `inputs` (and of a form's `fields`) is a mapping:
 | `basis` | Optional input only. The printed sentence of the form that justifies the default. The loader keeps it and does not check it. |
 | `title` | The figure's printed title. Optional, for either kind. |
 | `reference` | What the form prints beside the figure, such as `10400` or `Box 14`. Optional, for either kind. |
+| `unit` | The name of the figure's unit, such as `months`; see Units. Optional, for either kind. |
 
-A required input takes neither `default` nor `basis`.
+A required input takes neither `default` nor `basis`. By convention an entry writes `name`, `title`,
+`reference` and `unit` first, then `required`, `default` and `basis`.
 
 ## Capability selections
 
@@ -196,6 +198,9 @@ Each entry of `capabilities` is a mapping:
 | `blank` | What a blank does (below). Optional; a consumed slot not named refuses a blank. |
 | `title` | The printed wording of the one figure the selection produces. A selection that produces several figures is rejected if it has one. |
 | `reference` | What the form prints beside that figure, as free text. Same one-figure rule. |
+| `unit` | The name of that figure's unit; see Units. Same one-figure rule. |
+
+A selection writes `name`, `title`, `reference` and `unit` before its other keys.
 
 ### Blank rules
 
@@ -214,3 +219,22 @@ slot: the rule then applies to that field in every record.
 
 `title` and `reference` are for the reader of a trace. All are non-empty text, optional, and never
 used to look anything up: the identifier stays the unique name.
+
+## Units
+
+`unit` on an input, a field or a selection names the unit of one figure: the words or symbol its
+number is written with in a trace, `EX$3500.00` or `12 months`. A unit is bare snake_case, never
+`<namespace>/<name>`, and a figure with none prints as it always has.
+
+A package declares units on a `UnitCatalog` in its `units.py` (see
+[Jurisdiction packages](jurisdiction-packages.md)). A manifest of jurisdiction `EX-ON` finds a name
+among the units of core, of `ex-on` and of its country `ex`: a province uses its federal package's
+units, never another province's. A name found nowhere is an `InvalidManifestError` naming the file
+and the declaration when the manifest is loaded, and a name found in more than one of those
+packages is refused as ambiguous.
+
+A unit is carried as data with the figure, as `Artifact.unit` and `Worksheet.unit`, so a reader of
+the results needs no English. A figure is read in one unit by every form that reads it and every
+form that produces it: forms that disagree, including one that names a unit and one that names
+none, are an `InvalidCompositionError` naming the figure and the forms. Real manifests and datasets
+name no unit.

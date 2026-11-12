@@ -32,5 +32,6 @@ class TaperedAmountRenderer:
             f"{EnglishFigures.money(taper.threshold)}, "
             f"spread over a range of {EnglishFigures.money(taper.range)}), "
             f"not below {EnglishFigures.money(taper.base)}, "
-            f"gives {EnglishFigures.money(line.result)} ({EnglishFigures.rounding(line.rounding)})"
+            f"gives {names.shown(line.label, line.result)} "
+            f"({EnglishFigures.rounding(line.rounding)})"
         )

@@ -18,6 +18,7 @@ from tax_engine.domain.artifact import ArtifactCatalog, ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.errors import DuplicateRegistrationError, InvalidRegistrationError
 from tax_engine.domain.registry import Namespace
+from tax_engine.domain.unit import UnitCatalog, UnitRegistry
 
 
 class JurisdictionPackages:
@@ -56,6 +57,17 @@ class JurisdictionPackages:
         catalogs = [self._catalog(name, namespace) for name, namespace in self._namespaces.items()]
         for catalog in catalogs:
             registry.register_catalog(catalog)
+
+    def register_units(self, registry: UnitRegistry) -> None:
+        """Register the units of every package that has a `units` module, its `UNITS` catalog.
+
+        A package without a `units` module has no units. Registering again is idempotent; a unit
+        identifier taken by another unit is an error.
+        """
+        catalogs = [self._units(name, namespace) for name, namespace in self._namespaces.items()]
+        for catalog in catalogs:
+            if catalog is not None:
+                registry.register_catalog(catalog)
 
     def register_capabilities(self, registry: CapabilityRegistry) -> None:
         """Register the capabilities of every package, found by walking its `capabilities` package.
@@ -120,6 +132,24 @@ class JurisdictionPackages:
             raise InvalidRegistrationError(
                 f"jurisdiction package {package} declares NAMESPACE {namespace.name!r} but its "
                 f"CATALOG is in namespace {catalog.namespace.name!r}"
+            )
+        return catalog
+
+    @staticmethod
+    def _units(package: str, namespace: Namespace) -> UnitCatalog | None:
+        module = JurisdictionPackages._subpackage(package, "units")
+        if module is None:
+            return None
+        catalog = getattr(module, "UNITS", None)
+        if not isinstance(catalog, UnitCatalog):
+            raise InvalidRegistrationError(
+                f"jurisdiction package {package} must declare UNITS as a UnitCatalog in its "
+                f"units.py, got {catalog!r}"
+            )
+        if catalog.namespace != namespace:
+            raise InvalidRegistrationError(
+                f"jurisdiction package {package} declares NAMESPACE {namespace.name!r} but its "
+                f"UNITS is in namespace {catalog.namespace.name!r}"
             )
         return catalog
 

@@ -37,7 +37,8 @@ class CapabilitySelection:
     or one artifact in a `BLANK_PER_ITEM` list, to a `BlankRule`; `blank_fields` maps a record-list
     slot to a `BlankRule` per field. A slot not named refuses a blank. `title` and `reference` are
     the printed wording and line label of the one figure the selection produces; `None` for none,
-    and a selection producing several figures may not have either.
+    and a selection producing several figures may not have either. `unit` names the unit of that
+    figure (`None` for none), under the same one-figure rule.
     """
 
     name: str
@@ -48,9 +49,14 @@ class CapabilitySelection:
     blank_fields: Mapping[str, Mapping[str, BlankRule]] = dataclasses.field(default_factory=dict)
     title: str | None = None
     reference: str | None = None
+    unit: str | None = None
 
     def __post_init__(self) -> None:
-        for key, given in (("title", self.title), ("reference", self.reference)):
+        for key, given in (
+            ("title", self.title),
+            ("reference", self.reference),
+            ("unit", self.unit),
+        ):
             if given is not None and len(self.produces) != 1:
                 raise InvalidManifestError(
                     f"{self.name}: a {key} belongs to the one figure a selection produces, "
@@ -88,7 +94,8 @@ class InputDeclaration:
     A required input takes no `default` or `basis`; an optional one declares both. `default` is the
     artifact read when the request leaves the line out (a blank artifact is a declared blank, `None`
     is no default); `basis` is the form's printed sentence justifying it, which nothing checks.
-    `title` and `reference` are the figure's printed title and line label (`None` for none).
+    `title` and `reference` are the figure's printed title and line label (`None` for none); `unit`
+    names its unit, as a manifest writes it.
     """
 
     name: str
@@ -97,6 +104,7 @@ class InputDeclaration:
     basis: str | None = None
     title: str | None = None
     reference: str | None = None
+    unit: str | None = None
 
     def __post_init__(self) -> None:
         Form.check_identifier("input", self.name)

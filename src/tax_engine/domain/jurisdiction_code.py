@@ -33,5 +33,14 @@ class JurisdictionCode:
         """The namespace of its jurisdiction package: the code lower-cased, `EX-ON` -> `ex-on`."""
         return Namespace(self.value.lower())
 
+    @property
+    def namespaces(self) -> tuple[str, ...]:
+        """The namespaces whose shared pieces this jurisdiction uses, its own first: `CA-ON` gives
+        `ca-on` then `ca`, so a province inherits the country's; a country gives only its own.
+        """
+        own = self.namespace.name
+        country = own.partition("-")[0]
+        return (own,) if country == own else (own, country)
+
     def __str__(self) -> str:
         return self.value

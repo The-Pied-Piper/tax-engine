@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
+from tax_engine.domain.unit import Unit
+
 __all__ = ["FigureNames", "ImportedFigure"]
 
 
@@ -13,13 +15,14 @@ class ImportedFigure:
     """A figure a form reads from another form's export, as the exporting form prints it.
 
     `one_instance` is whether the exporting form has no instances list, so the figure has no
-    item number to name.
+    item number to name. `unit` is the unit the exporting form gives the figure, if any.
     """
 
     form_title: str | None
     title: str | None
     reference: str | None
     one_instance: bool
+    unit: Unit | None = None
 
 
 class FigureNames(Protocol):
@@ -36,6 +39,10 @@ class FigureNames(Protocol):
 
     def reference(self, label: str) -> str | None:
         """What the form prints beside the figure `label`, if it prints anything."""
+        ...
+
+    def unit(self, label: str) -> Unit | None:
+        """The unit of the figure `label` on this form, if the manifest gives it one."""
         ...
 
     def imported(self, label: str) -> ImportedFigure | None:
