@@ -49,11 +49,8 @@ def test_a_request_that_leaves_out_line_51_is_read_as_blank(tmp_path: Path) -> N
     default = declaration.default_artifact(alberta_kinds().kind(IDENTIFIER))
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
-    assert default is not None and default.is_blank
-
-
-def test_line_51_is_declared_as_printed(tmp_path: Path) -> None:
-    declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     assert declaration.title == "Medical expenses"
     assert declaration.reference == "51"
     assert declaration.unit == "ca/cad"
+    assert default is not None and default.is_blank
+
