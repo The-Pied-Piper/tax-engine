@@ -1,0 +1,12 @@
+# AB428 (2025) line 34 input a salary-only caller does not give.
+# Line 34 and line 58360: "Line 34 and line 58360: Pension income amount (maximum $1,719)" (5009-c-25e).
+# A salary-only caller has no pension income, so a request that leaves the line out is read as 0,
+# not blank.
+inputs:
+  - name: ca-ab/ab428_pension_income_amount
+    title: "Pension income amount"
+    reference: "34"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: 'Line 34 and line 58360: Pension income amount (maximum $1,719)'

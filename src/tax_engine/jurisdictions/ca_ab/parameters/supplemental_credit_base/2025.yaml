@@ -1,0 +1,10 @@
+# Worksheet AB428 line 6: base amount for the Alberta supplemental tax credit, 2025 (CRA 5009-D).
+# Line 6 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca-ab/supplemental_credit_base
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-d/5009-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "4800"
