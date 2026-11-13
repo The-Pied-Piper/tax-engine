@@ -1,7 +1,8 @@
 """Multiply by rate: multiplies a money artifact by a rate artifact, a fraction from 0 to 1.
 
 The output is `rounding.apply(base × rate)`. The rate is a fraction (0.0915 is 9.15%), never a
-percentage; one outside 0 to 1 is an `InvalidRateError`.
+percentage; one outside 0 to 1 is an `InvalidRateError`. A blank `base` or `rate` follows the
+manifest's `blank:` rule (`pass_on` blanks the output).
 """
 
 from __future__ import annotations
@@ -27,6 +28,7 @@ class MultiplyByRate(Capability):
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[RoundingOnly]]] = {"rounding": ROUNDING_ONLY}
     CONSUMES: ClassVar[Mapping[str, type]] = {"base": Decimal, "rate": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"base", "rate"})
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
 
     def __init__(
