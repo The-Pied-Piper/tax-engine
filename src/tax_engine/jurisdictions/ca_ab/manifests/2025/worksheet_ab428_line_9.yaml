@@ -1,0 +1,17 @@
+# Worksheet AB428 (CRA 5009-D) line 9 (ca-ab/worksheet_ab428): "Line 8: Applicable rate 25% /
+# Line 9: Line 7 multiplied by the percentage from line 8 enter this amount on line 61545 of your
+# Form AB428. = ^". Line 8 is a printed rate, held in the `ca-ab/supplemental_credit_rate` dataset,
+# so line 9 is one calculation: 25% of line 7, rounded half-up to the cent. The form prints no title
+# for the line, so the step is untitled.
+form:
+  name: ca-ab/worksheet_ab428
+capabilities:
+  - name: core/apply_rate
+    reference: "9"
+    unit: ca/cad
+    params:
+      rate: ca-ab/supplemental_credit_rate
+    consumes:
+      base: ca-ab/worksheet_ab428_line_7
+    produces:
+      output: ca-ab/worksheet_ab428_supplemental_credit_line_9
