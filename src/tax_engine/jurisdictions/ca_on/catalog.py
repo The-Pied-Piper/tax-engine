@@ -448,6 +448,30 @@ ONTARIO_BRACKET_MARGINAL_RATE = AmountKind.declare(
 """Ontario bracket marginal rate, ON428 line 5 "Line 5: Rate" times the surtax factor of lines 66
 and 67, before the gate. An exact product, not printed on the form."""
 
+ONTARIO_TAX_REDUCTION_RETURN = AmountKind.declare(
+    CATALOG, "ontario_tax_reduction_return", non_negative=True
+)
+"""Ontario tax reduction, ON428 line 80: the one amount of ON428's export totalled into the return
+summary's own artifact, the base of the Ontario reduction gate."""
+
+ONTARIO_REDUCTION_GATE = AmountKind.declare(CATALOG, "ontario_reduction_gate", non_negative=True)
+"""Ontario reduction gate: 0 where the Ontario tax reduction (ON428 line 80) is 0.00 and 1 where it
+is at least one cent, from the `ca-on/marginal_rate_gate` dataset. A plain figure, not printed on
+the form."""
+
+ONTARIO_REDUCTION_PHASE_OUT_RATE = AmountKind.declare(
+    CATALOG, "ontario_reduction_phase_out_rate", non_negative=True
+)
+"""Ontario reduction phase-out rate: the Ontario bracket marginal rate where the Ontario tax
+reduction is above zero, and 0 where it is not, the extra tax on a further dollar while the
+reduction is phased out. An exact product, not printed on the form."""
+
+ONTARIO_BRACKET_RATE_WITH_REDUCTION = AmountKind.declare(
+    CATALOG, "ontario_bracket_rate_with_reduction", non_negative=True
+)
+"""Ontario bracket rate with the reduction: the Ontario bracket marginal rate plus the reduction
+phase-out rate, before the Ontario gate. An exact sum, not printed on the form."""
+
 ONTARIO_MARGINAL_RATE = AmountKind.declare(CATALOG, "ontario_marginal_rate", non_negative=True)
 """Ontario marginal rate: the Ontario bracket marginal rate (line 5 rate times the surtax factor of
 lines 66 and 67) where the Ontario tax after the tax reduction is above zero, and 0 where it is
