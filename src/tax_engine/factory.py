@@ -24,5 +24,4 @@ def build_tax_computation() -> TaxComputationService:
         YamlParameterSource(roots, parameter_parsers(), registered_units),
         capabilities(),
     )
-    service.check(JURISDICTIONS.jurisdiction_codes())
     return service

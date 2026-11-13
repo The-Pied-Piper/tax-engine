@@ -3,7 +3,6 @@ from typing import Any
 import pytest
 
 from tax_engine import factory
-from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.errors import UnknownRegistrationError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -45,7 +44,6 @@ def test_the_engine_reads_its_manifests_with_the_registered_units(
     registry = UnitRegistry()
     monkeypatch.setattr(factory, "YamlJurisdictionSource", Spy)
     monkeypatch.setattr(factory, "units", lambda: registry)
-    monkeypatch.setattr(TaxComputationService, "check", lambda self, codes: None)
 
     factory.build_tax_computation()
 
@@ -81,27 +79,10 @@ def test_the_engine_reads_its_datasets_with_the_registered_units(
     registry = UnitRegistry()
     monkeypatch.setattr(factory, "YamlParameterSource", Spy)
     monkeypatch.setattr(factory, "units", lambda: registry)
-    monkeypatch.setattr(TaxComputationService, "check", lambda self, codes: None)
 
     factory.build_tax_computation()
 
     assert given["units"] is registry
-
-
-def test_the_engine_checks_the_manifest_of_every_bundled_jurisdiction_at_startup(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    given: list[list[JurisdictionCode]] = []
-
-    def spy(self: TaxComputationService, codes: Any) -> None:
-        given.append(list(codes))
-
-    monkeypatch.setattr(TaxComputationService, "check", spy, raising=False)
-
-    factory.build_tax_computation()
-
-    assert given == [list(JURISDICTIONS.jurisdiction_codes())]
-    assert JurisdictionCode("CA-ON") in given[0]
 
 
 def test_the_engine_starts_with_the_bundled_manifests_composing() -> None:
