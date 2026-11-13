@@ -11,11 +11,12 @@ The real line part and the real line 41 input part are loaded from the package. 
 two form declarations (AB428 credits, exporting line 41, and the worksheet, exporting line 2) are
 made up here, because the shared scaffold owns them. Alberta is not yet listed in the
 registrations, so the service is built here over the Alberta package list of `support.py`. The
-zero figures at every salary are hand-computed from the printed forms (not a CRA example).
+zero figures at every salary follow from line 41 being blank and read as 0 (not a CRA example).
 """
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
@@ -82,18 +83,21 @@ WORKSHEET_FORM = dedent("""\
     """)
 
 
+def _part_files() -> Iterator[Path]:
+    yield INPUT_PART
+    yield LINE_PART
+
+
 def _service(tmp_path: Path) -> TaxComputationService:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
-    texts = (
-        HEADER,
-        INPUT_PART.read_text(encoding="utf-8"),
-        CREDITS_FORM,
-        WORKSHEET_FORM,
-        LINE_PART.read_text(encoding="utf-8"),
-    )
-    for number, text in enumerate(texts):
-        (folder / f"{number:02d}_part.yaml").write_text(text, encoding="utf-8")
+    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
+    (folder / "02_worksheet_form.yaml").write_text(WORKSHEET_FORM, encoding="utf-8")
+    for number, part in enumerate(_part_files(), start=3):
+        (folder / f"{number:02d}_{part.name}").write_text(
+            part.read_text(encoding="utf-8"), encoding="utf-8"
+        )
     roots = {**alberta_packages().roots(), Namespace("ca-ab"): tmp_path}
     return TaxComputationService(
         YamlJurisdictionSource(roots, alberta_kinds(), alberta_units()),
