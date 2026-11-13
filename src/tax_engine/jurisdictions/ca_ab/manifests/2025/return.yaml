@@ -1,0 +1,13 @@
+# The Alberta take-home return: T1 line 167 "Refund or balance owing" (positive is owing, negative
+# is a refund). The T1 form exports it, and another form's export is read only as a record list, so
+# the one step is core/record_total over the T1 export, totalling the one amount into the return's
+# own `ca/refund_or_balance_owing`.
+capabilities:
+  - name: core/record_total
+    title: "Refund or balance owing"
+    reference: "167"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.refund_or_balance_owing
+    produces:
+      output: ca/refund_or_balance_owing
