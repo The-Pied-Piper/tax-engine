@@ -1,0 +1,16 @@
+# Form AB428 (CRA 5009-c) line 39: "Line 39: Add lines 36 to 38. = ^". Lines 37 and 38 are the
+# disability amounts, which are not built, so core/sum reads line 36 alone, as ON428 line 31 reads
+# its line 28.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    reference: "39"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        - ca-ab/ab428_credits_subtotal_line_36
+    produces:
+      output: ca-ab/ab428_credits_subtotal_line_39
