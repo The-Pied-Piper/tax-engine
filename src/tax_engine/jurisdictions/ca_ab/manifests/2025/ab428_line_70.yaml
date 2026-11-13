@@ -1,0 +1,21 @@
+# Form AB428 (Alberta Tax and Credits, 2025, CRA 5009-c) line 70 "Line 70: Line 68 minus line 69
+# (if negative, enter "0") = ^". One core/subtract_not_below_zero step: the Alberta tax (line 68,
+# `ca-ab/ab428_tax_line_68`) less the provincial foreign tax credit (line 69,
+# `ca-ab/ab428_provincial_foreign_tax_credit_line_69`), not below 0. Line 69 is an optional input
+# that a caller without foreign tax leaves out, read as blank and then as 0 by the blank rule. The
+# form prints no title for the line, so the step has none.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "70"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/ab428_tax_line_68
+      less: ca-ab/ab428_provincial_foreign_tax_credit_line_69
+    blank:
+      less: "0"
+    produces:
+      output: ca-ab/ab428_tax_line_70

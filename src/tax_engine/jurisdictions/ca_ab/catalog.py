@@ -326,3 +326,8 @@ cent."""
 AB428_TAX_LINE_68 = AmountKind.declare(CATALOG, "ab428_tax_line_68")
 """AB428 line 68 "Line 68: Line 66 plus line 67 = ^": line 66 (the tax after credits) plus line 67
 (the additional minimum tax), rounded to the cent; signed, as the form prints no floor."""
+
+AB428_TAX_LINE_70 = AmountKind.declare(CATALOG, "ab428_tax_line_70", non_negative=True)
+"""AB428 line 70 "Line 70: Line 68 minus line 69 (if negative, enter "0") = ^": line 68 (the tax)
+minus line 69 (the provincial foreign tax credit, read as 0 when blank), floored at 0 as the form
+prints, rounded to the cent."""
