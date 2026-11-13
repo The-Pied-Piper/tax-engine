@@ -1,0 +1,14 @@
+# Form AB428 (Alberta Tax and Credits, 2025, CRA 5009-c) line 62 "Line 62: Alberta non-refundable
+# tax credits from line 58 ^". Line 58 (of the credits form, `ca-ab/ab428_credits`) says "Enter
+# this amount on line 62". Another form reads an export only as a record list, so the one step is
+# core/record_total over the line 58 export. Line 58 is always computed, so there is no blank rule.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/record_total
+    reference: "62"
+    unit: ca/cad
+    consumes:
+      records: ca-ab/ab428_credits.ab428_non_refundable_credits_line_58
+    produces:
+      output: ca-ab/ab428_credits_from_line_58_line_62
