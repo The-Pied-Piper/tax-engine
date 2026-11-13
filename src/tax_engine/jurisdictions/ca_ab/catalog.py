@@ -167,6 +167,10 @@ WORKSHEET_AB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_ab428_line_6", n
 """Base amount, Worksheet AB428 line 6 "Line 6: Base amount 4,800.00": the base amount of the
 Alberta supplemental tax credit."""
 
+WORKSHEET_AB428_LINE_1 = AmountKind.declare(CATALOG, "worksheet_ab428_line_1", non_negative=True)
+"""Amount from AB428 line 58800, Worksheet AB428 line 1 "Line 1: Amount from line 58800 of your Form
+AB428": the total credits of Form AB428 line 52, read as the worksheet's first figure."""
+
 WORKSHEET_AB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_ab428_line_2", non_negative=True)
 """Amount from AB428 line 58560, Worksheet AB428 line 2 "Line 2: Amount from line 58560 of your Form
 AB428": the unused tuition amount of Form AB428 line 41, read as the worksheet's second figure."""
