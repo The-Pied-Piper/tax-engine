@@ -1,0 +1,19 @@
+# Worksheet AB428 (2025) line 2 (CRA 5009-d-25e): "Line 2: Amount from line 58560 of your Form
+# AB428". Line 58560 is AB428 line 41, exported by ca-ab/ab428_credits as
+# `ca-ab/ab428_unused_tuition_line_41`, and another form reads an export only as a record list, so
+# the one step is core/record_total over those records (as ca-on/on428 line 1 is, in
+# on428_line_3.yaml). Line 41 is an optional input, blank for a salary-only filer: the step reads
+# the blank as 0 and prints its own "left blank, taken as 0" row.
+form:
+  name: ca-ab/worksheet_ab428
+capabilities:
+  - name: core/record_total
+    reference: "2"
+    unit: ca/cad
+    consumes:
+      records: ca-ab/ab428_credits.ab428_unused_tuition_line_41
+    blank:
+      records:
+        ca-ab/ab428_unused_tuition_line_41: "0"
+    produces:
+      output: ca-ab/worksheet_ab428_line_2
