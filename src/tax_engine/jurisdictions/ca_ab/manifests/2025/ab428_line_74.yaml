@@ -1,0 +1,13 @@
+# Form AB428 (CRA 5009-c) line 74 "Line 74 and line 61545: Alberta supplemental tax credit (use
+# Worksheet AB428)". Worksheet AB428 (CRA 5009-D) line 9 says "enter this amount on line 61545 of
+# your Form AB428", so the one step is core/record_total over the worksheet's line 9 export.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/record_total
+    reference: "74"
+    unit: ca/cad
+    consumes:
+      records: ca-ab/worksheet_ab428.worksheet_ab428_supplemental_credit_line_9
+    produces:
+      output: ca-ab/ab428_supplemental_tax_credit_line_74
