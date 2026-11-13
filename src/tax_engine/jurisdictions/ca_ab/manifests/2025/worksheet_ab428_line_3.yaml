@@ -1,0 +1,20 @@
+# Worksheet AB428 (2025) line 3 (CRA 5009-d-25e): "Line 3: Line 1 minus line 2 = ^". Line 1 is
+# `ca-ab/worksheet_ab428_line_1` and line 2 is `ca-ab/worksheet_ab428_line_2`; neither is ever
+# blank, so the step has no blank rule.
+#
+# The form prints no floor on line 3 (unlike lines 4 and 7), so core/subtract gives a negative
+# figure as is, rounded to the cent by the ca-ab/cent_rounding dataset. The form prints no title
+# for the line, so the step is untitled. The result is the signed `ca-ab/worksheet_ab428_line_3`.
+form:
+  name: ca-ab/worksheet_ab428
+capabilities:
+  - name: core/subtract
+    reference: "3"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/worksheet_ab428_line_1
+      less: ca-ab/worksheet_ab428_line_2
+    produces:
+      output: ca-ab/worksheet_ab428_line_3
