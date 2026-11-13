@@ -57,7 +57,6 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
-from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
 D = Decimal
@@ -234,6 +233,8 @@ def test_line_61_is_line_59_when_line_60_is_left_out(
         ("20000", "12.34", "1599.14"),
         # The upper table: 19,820.89 + 1,234.56 = 21,055.45.
         ("200000", "1234.56", "21055.45"),
+        # The form prints no floor for line 61, so a line 60 below minus line 59 is not refused.
+        ("70000", "-6000.00", "-266.50"),
     ],
 )
 def test_line_61_is_line_59_plus_line_60_when_line_60_is_given(
@@ -302,11 +303,11 @@ def test_the_part_names_the_form_and_has_one_untitled_sum_step() -> None:
     assert step["produces"] == {"output": LINE_61}
 
 
-def test_line_61_is_a_registered_non_negative_amount_kind() -> None:
+def test_line_61_is_a_registered_signed_amount_kind() -> None:
     kinds = alberta_kinds()
 
     assert LINE_61 in kinds.identifiers()
     kind = kinds.kind(LINE_61)
     assert isinstance(kind, AmountKind)
-    assert non_negative(kind)
+    assert not kind.non_negative
     assert kind is AB428_TAX_LINE_61
