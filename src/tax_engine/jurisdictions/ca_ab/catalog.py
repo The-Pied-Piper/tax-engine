@@ -85,6 +85,12 @@ AB428_CREDITS_TOTAL_LINE_52 = AmountKind.declare(
 """Credit amounts total, AB428 line 52 (line 58800) "Line 43 plus line 51 =": line 43 plus
 line 51, read by line 1 of Worksheet AB428."""
 
+AB428_CREDITS_AT_RATE_LINE_54 = AmountKind.declare(
+    CATALOG, "ab428_credits_at_rate_line_54", non_negative=True
+)
+"""Credit amounts at the credit rate, AB428 line 54 (line 58840) "Line 52 multiplied by the
+percentage from line 53 =": line 52 multiplied by the 8% of line 53, rounded half-up to the cent."""
+
 AB428_DONATIONS_CREDIT_LINE_57 = AmountKind.declare(
     CATALOG, "ab428_donations_credit_line_57", non_negative=True
 )
