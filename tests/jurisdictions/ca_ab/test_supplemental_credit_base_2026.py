@@ -1,6 +1,6 @@
 """The 2026 `ca-ab/supplemental_credit_base` dataset: the Alberta supplemental credit base amount.
 
-The figure is the 2025 amount of 4,800 indexed by 2% (the federal 2026 indexation factor):
+The figure is the 2025 amount of 4,800 indexed by 2%:
 4,800 x 1.02 = 4,896.00, which agrees with the 4,896 that T4127 (Alberta, January 2026) prints for
 payroll. It is inferred, because the 2026 Worksheet AB428 (CRA 5009-d) is not yet published; the
 dataset header says so. The amount is not income-tested, so it is a `credit` dataset, rounded
@@ -27,9 +27,8 @@ PROVISIONAL_HEADER = (
     "2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: the 2025 amount of 4,800 x 1.02 (the federal 2026 indexation factor) = 4,896, "
-    "the figure T4127 prints for payroll; inferred, as the 2026 Worksheet AB428 (CRA 5009-D) is "
-    "not yet published."
+    "# Derivation: the 2025 amount of 4,800 x 1.02 = 4,896, the figure T4127 prints for "
+    "payroll; inferred, as the 2026 Worksheet AB428 (CRA 5009-D) is not yet published."
 )
 
 
