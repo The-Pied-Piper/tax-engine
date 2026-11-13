@@ -45,6 +45,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import (
     SubtractNotBelowZero,
 )
@@ -292,10 +293,6 @@ def test_the_step_keys_are_in_the_house_order() -> None:
 
 
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
-    from tax_engine.jurisdictions.ca_ab.catalog import (  # noqa: PLC0415
-        AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11,
-    )
-
     kind = alberta_kinds().kind(LINE_11)
 
     assert kind is AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11
