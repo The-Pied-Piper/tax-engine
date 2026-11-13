@@ -175,6 +175,10 @@ WORKSHEET_AB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_ab428_line_2", n
 """Amount from AB428 line 58560, Worksheet AB428 line 2 "Line 2: Amount from line 58560 of your Form
 AB428": the unused tuition amount of Form AB428 line 41, read as the worksheet's second figure."""
 
+WORKSHEET_AB428_LINE_3 = AmountKind.declare(CATALOG, "worksheet_ab428_line_3")
+"""Line 1 minus line 2, Worksheet AB428 line 3 "Line 3: Line 1 minus line 2": the total credits less
+the unused tuition amount. The form prints no floor, so it is signed."""
+
 AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "ab428_ei_premiums_line_29", non_negative=True
 )
