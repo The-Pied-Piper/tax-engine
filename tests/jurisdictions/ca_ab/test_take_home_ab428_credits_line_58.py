@@ -189,6 +189,7 @@ def test_the_part_names_the_form_and_has_one_sum_step_like_ontario_line_50() -> 
     (step,) = part["capabilities"]
     assert list(step) == [
         "name",
+        "title",
         "reference",
         "unit",
         "params",
@@ -198,6 +199,7 @@ def test_the_part_names_the_form_and_has_one_sum_step_like_ontario_line_50() -> 
     ]
     assert step == {
         "name": "core/sum",
+        "title": "Alberta non-refundable tax credits",
         "reference": "58",
         "unit": "ca/cad",
         "params": {"rounding": "ca-ab/cent_rounding"},

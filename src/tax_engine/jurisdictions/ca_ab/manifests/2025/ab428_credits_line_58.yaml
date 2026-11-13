@@ -8,6 +8,7 @@ form:
   name: ca-ab/ab428_credits
 capabilities:
   - name: core/sum
+    title: "Alberta non-refundable tax credits"
     reference: "58"
     unit: ca/cad
     params:
