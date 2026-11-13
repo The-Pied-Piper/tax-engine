@@ -18,15 +18,18 @@ and AB428, exporting line 74) are made up here, because the shared scaffold owns
 
 Figures: worksheet line 5 is 1,877.42, 2,135.38 and 2,140.53 at the three salaries, below the
 4,800.00 of line 6, so line 7 and line 9 are 0.00 and so is line 74 at all three. The positive side
-cannot be reached by a salary alone (line 9 turns on only past a line 52 of 60,000), so it is
-exercised on the capability the part builds, over a given line 9 record list: 25.00 gives 25.00 and
-113.00 gives 113.00, and an empty list totals 0.00.
+cannot be reached by a salary alone: line 9 turns on only when worksheet line 3 (line 52 less
+line 41, equal to line 52 when line 41 is blank) is above 60,000, where 8% of it passes line 6's
+4,800.00. It is reached through the real chain by a given line 51 (`ab428_medical_expenses_line_51`)
+of 200,000, which lifts line 52 and so line 3: line 74 is then worksheet line 9, 3,269.36, 3,333.85
+and 3,335.13 at the three salaries. It is also exercised on the capability the part builds, over a
+given line 9 record list: 25.00 gives 25.00 and 113.00 gives 113.00, and an empty list totals 0.00.
 """
 
 from __future__ import annotations
 
 from collections.abc import Iterator
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from textwrap import dedent
 from typing import Any
@@ -48,7 +51,9 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_ab.catalog import (
+    AB428_MEDICAL_EXPENSES_LINE_51,
     AB428_SUPPLEMENTAL_TAX_CREDIT_LINE_74,
+    WORKSHEET_AB428_LINE_3,
     WORKSHEET_AB428_LINE_5,
     WORKSHEET_AB428_LINE_7,
     WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9,
@@ -164,10 +169,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheets(tmp_path: Path, salary: str) -> dict[str, Worksheet]:
-    worksheets = _service(tmp_path).compute(
-        JurisdictionCode("CA-AB"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
-    )
+def _sheets(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> dict[str, Worksheet]:
+    given = [Artifact(EMPLOYMENT_INCOME, D(salary)), *extra]
+    worksheets = _service(tmp_path).compute(JurisdictionCode("CA-AB"), 2025, *given)
     (ab428,) = worksheets["ca-ab/ab428"]
     (worksheet,) = worksheets["ca-ab/worksheet_ab428"]
     return {"ab428": ab428, "worksheet": worksheet}
@@ -188,6 +192,33 @@ def test_line_74_is_line_9_at_each_salary(tmp_path: Path, salary: str, line_5: s
     assert str(line_74) == "0.00"
     assert line_74.as_tuple().exponent == -2
     assert not line_74.is_signed()
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"), [("20000", "3269.36"), ("70000", "3333.85"), ("200000", "3335.13")]
+)
+def test_line_74_is_line_9_when_a_given_line_51_lifts_line_3(
+    tmp_path: Path, salary: str, expected: str
+) -> None:
+    sheets = _sheets(tmp_path, salary, Artifact(AB428_MEDICAL_EXPENSES_LINE_51, D("200000")))
+    worksheet = sheets["worksheet"]
+
+    # Recomputed from the real line 3: line 5 is 8% of it, line 7 is line 5 less 4,800.00 and
+    # line 9 is 25% of line 7, each rounded half-up to the cent.
+    line_3 = worksheet.get(WORKSHEET_AB428_LINE_3).value
+    assert line_3 > D("60000")
+    line_5 = (line_3 * D("0.08")).quantize(D("0.01"), rounding=ROUND_HALF_UP)
+    line_7 = max(line_5 - D("4800.00"), D("0.00"))
+    line_9 = (line_7 * D("0.25")).quantize(D("0.01"), rounding=ROUND_HALF_UP)
+    assert worksheet.get(WORKSHEET_AB428_LINE_5).value == line_5
+    assert worksheet.get(WORKSHEET_AB428_LINE_7).value == line_7
+    assert line_7 > D("0")
+    assert worksheet.get(WORKSHEET_AB428_SUPPLEMENTAL_CREDIT_LINE_9).value == line_9
+    line_74 = sheets["ab428"].get(AB428_SUPPLEMENTAL_TAX_CREDIT_LINE_74).value
+    assert line_74 == line_9
+    assert line_74 == D(expected)
+    assert str(line_74) == expected
+    assert line_74.as_tuple().exponent == -2
 
 
 def test_the_trace_has_a_row_for_line_74(tmp_path: Path) -> None:
