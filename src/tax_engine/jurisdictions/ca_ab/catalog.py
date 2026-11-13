@@ -198,6 +198,12 @@ AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 181,481,
 where lines 9 to 15 apply."""
 
+AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "ab428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, AB428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero; blank when line 3 is blank."""
+
 AB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "ab428_bracket_tax_at_start_line_7", non_negative=True
 )
