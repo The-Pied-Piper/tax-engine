@@ -1,0 +1,16 @@
+# Form AB428 (CRA 5009-c) line 54 (ca-ab/ab428_credits): "Line 53: Alberta non-refundable tax credit
+# rate 8% / Line 54 and line 58840: Line 52 multiplied by the percentage from line 53 =".
+# Line 53 is a printed rate, held in the `ca-ab/credit_rate` dataset, so line 54 is one calculation:
+# 8% of line 52, rounded half-up to the cent. Line 52 is read from its source part, not copied.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "54"
+    unit: ca/cad
+    params:
+      rate: ca-ab/credit_rate
+    consumes:
+      base: ca-ab/ab428_credits_total_line_52
+    produces:
+      output: ca-ab/ab428_credits_at_rate_line_54
