@@ -2,7 +2,7 @@
 
 Form text (T1 General 5006-R, line 167): "Line 167: Line 149 minus line 166 ... Refund or balance
 owing". The Alberta return's one output is that line, read from the T1 tax and credits form:
-`return.yaml` mirrors the Ontario part. Its one step is a core/record_total over the T1 form's
+`return.yaml` mirrors the Ontario part. Its first step is a core/record_total over the T1 form's
 export `ca/t1_tax_and_credits.refund_or_balance_owing`, a cross-form read (another form's export is
 read only as a record list), producing the return's own `ca/refund_or_balance_owing`. Positive is
 a balance owing, negative a refund. The step has no `form` key (the return is the default form) and
@@ -54,6 +54,8 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
+      - ca-ab/average_income_tax_rate
+      - ca-ab/marginal_tax_rate
     capabilities: []
     """)
 T1_FORM = dedent("""\
@@ -62,6 +64,26 @@ T1_FORM = dedent("""\
       required: true
       exports:
         - ca/refund_or_balance_owing
+        - ca/total_payable
+        - ca/federal_bracket_column_rate_line_73
+        - ca/federal_tax_after_credits
+    capabilities: []
+    """)
+AB428_CREDITS_FORM = dedent("""\
+    form:
+      name: ca-ab/ab428_credits
+      required: true
+      exports:
+        - ca-ab/ab428_bracket_rate_line_5
+        - ca-ab/ab428_bracket_rate_line_12
+    capabilities: []
+    """)
+AB428_FORM = dedent("""\
+    form:
+      name: ca-ab/ab428
+      required: true
+      exports:
+        - ca-ab/ab428_tax_line_68
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
@@ -88,12 +110,70 @@ T1_STEP = dedent("""\
           output: ca/refund_or_balance_owing
     """)
 
+# Stand-ins for the other figures the return reads (the rates, the total payable, the taxes): each
+# is the salary itself, a made-up figure, because this test is about line 167 only; the rates are in
+# `end_to_end/test_return_rates.py`.
+OTHER_STEPS = [
+    (form, out)
+    for form, out in (
+        ("ca/t1_tax_and_credits", "ca/total_payable"),
+        ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73"),
+        ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits"),
+        ("ca-ab/ab428_credits", "ca-ab/ab428_tax_on_taxable_income_line_8"),
+        ("ca-ab/ab428_credits", "ca-ab/ab428_tax_on_taxable_income_line_15"),
+        ("ca-ab/ab428_credits", "ca-ab/ab428_bracket_rate_line_5"),
+        ("ca-ab/ab428_credits", "ca-ab/ab428_bracket_rate_line_12"),
+        ("ca-ab/ab428", "ca-ab/ab428_tax_line_68"),
+    )
+]
+
 # salary, credits, line 167: a balance owing, a refund and zero.
 CASES = [
     ("70000", "11497.09", "58502.91"),
     ("20000", "21474.91", "-1474.91"),
     ("10000", "10000.00", "0.00"),
 ]
+
+
+def _other_step(form: str, output: str) -> str:
+    """A stand-in step for a figure the return reads: the gate of the salary for a rate (1, a rate
+    is at most 1), the salary itself for an amount."""
+    if output.endswith("line_12"):
+        # The other bracket rate is blank, so 0: two amounts of the same form, both the salary.
+        step = f"""\
+              - name: core/subtract
+                unit: core/percent
+                params:
+                  rounding: ca/cent_rounding
+                consumes:
+                  amount: ca-ab/ab428_tax_on_taxable_income_line_8
+                  less: ca-ab/ab428_tax_on_taxable_income_line_15
+                produces:
+                  output: {output}
+            """
+    elif "rate" in output:
+        step = f"""\
+              - name: core/amount_by_band_rate
+                unit: core/percent
+                params:
+                  table: ca-ab/marginal_rate_gate
+                consumes:
+                  base: ca/employment_income
+                produces:
+                  output: {output}
+            """
+    else:
+        step = f"""\
+              - name: core/sum
+                unit: ca/cad
+                params:
+                  rounding: ca/cent_rounding
+                consumes:
+                  parts: [ca/employment_income]
+                produces:
+                  output: {output}
+            """
+    return f"form:\n  name: {form}\ncapabilities:\n" + dedent(step)
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -106,6 +186,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("01_t1_form.yaml", T1_FORM),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
+        ("03a_ab428_credits_form.yaml", AB428_CREDITS_FORM),
+        ("03b_ab428_form.yaml", AB428_FORM),
+        *[
+            (f"03c_{number}.yaml", _other_step(form, out))
+            for number, (form, out) in enumerate(OTHER_STEPS)
+        ],
         ("04_salary.yaml", (ALBERTA_PARTS / "salary.yaml").read_text(encoding="utf-8")),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
@@ -149,11 +235,11 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_has_one_record_total_step_and_no_form_key() -> None:
+def test_the_first_step_is_the_line_167_record_total_and_the_part_has_no_form_key() -> None:
     part = _part()
 
     assert list(part) == ["capabilities"]
-    (step,) = part["capabilities"]
+    step = part["capabilities"][0]
     assert list(step) == ["name", "title", "reference", "unit", "consumes", "produces"]
     assert step["name"] == "core/record_total"
     assert step["title"] == "Refund or balance owing"
@@ -161,3 +247,11 @@ def test_the_part_has_one_record_total_step_and_no_form_key() -> None:
     assert step["unit"] == "ca/cad"
     assert step["consumes"] == {"records": "ca/t1_tax_and_credits.refund_or_balance_owing"}
     assert step["produces"] == {"output": "ca/refund_or_balance_owing"}
+
+
+def test_the_return_has_steps_beyond_line_167_for_the_two_rates() -> None:
+    outputs = [step["produces"]["output"] for step in _part()["capabilities"]]
+
+    assert outputs[0] == "ca/refund_or_balance_owing"
+    assert "ca-ab/average_income_tax_rate" in outputs
+    assert outputs[-1] == "ca-ab/marginal_tax_rate"

@@ -1,4 +1,5 @@
-"""The Alberta form `ca-ab/ab428_credits` (Form AB428, lines 1 to 58) and the five kinds it exports.
+"""The Alberta form `ca-ab/ab428_credits` (Form AB428, lines 1 to 58) and the seven kinds it
+exports.
 
 The part file names the form and its exports; line parts carry the capabilities. The Alberta
 manifest is partial and Alberta is not yet listed, so the part is read as YAML and the kinds are
@@ -26,7 +27,9 @@ PART = (
 )
 
 EXPORTS = [
+    "ca-ab/ab428_bracket_rate_line_5",
     "ca-ab/ab428_tax_on_taxable_income_line_8",
+    "ca-ab/ab428_bracket_rate_line_12",
     "ca-ab/ab428_tax_on_taxable_income_line_15",
     "ca-ab/ab428_unused_tuition_line_41",
     "ca-ab/ab428_credits_total_line_52",
@@ -48,7 +51,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_the_five_lines_other_forms_read_in_order() -> None:
+def test_the_form_exports_the_seven_lines_other_forms_and_the_return_read_in_order() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 

@@ -336,3 +336,49 @@ AB428_TAX_LINE_73 = AmountKind.declare(CATALOG, "ab428_tax_line_73", non_negativ
 """AB428 line 73 "Line 73: Line 70 minus line 72 (if negative, enter "0") = ^": line 70 (the tax)
 minus line 72 (the Alberta political contributions tax credit, read as 0 when blank), floored at 0
 as the form prints, rounded to the cent."""
+
+AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
+"""Average income tax rate, the Alberta return summary's own figure (no form prints it): T1 line
+43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Alberta
+income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1598 is 15.98%. CPP
+and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+
+ALBERTA_BRACKET_RATE_LINE_5_RETURN = AmountKind.declare(
+    CATALOG, "alberta_bracket_rate_line_5_return", non_negative=True
+)
+"""Alberta bracket rate, AB428 line 5 "Line 5: Rate": the printed rate of the table 1 column that
+line 1 falls in (taxable income up to 181,481 for 2025, 185,111 for 2026), read from AB428 into the
+return summary, 0 where the line is blank."""
+
+ALBERTA_BRACKET_RATE_LINE_12_RETURN = AmountKind.declare(
+    CATALOG, "alberta_bracket_rate_line_12_return", non_negative=True
+)
+"""Alberta bracket rate, AB428 line 12 "Line 12: Rate": the printed rate of the table 2 column that
+line 1 falls in (taxable income above 181,481 for 2025, 185,111 for 2026), read from AB428 into the
+return summary, 0 where the line is blank."""
+
+ALBERTA_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "alberta_bracket_rate_return", non_negative=True
+)
+"""Alberta bracket rate: AB428 line 5 plus line 12, of which one is always blank, so the rate of the
+bracket the taxable income falls in. Not printed on the form."""
+
+ALBERTA_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(CATALOG, "alberta_tax_after_credits_return")
+"""Alberta tax after the credits, AB428 line 68 "Line 66 plus line 67": the one
+amount of AB428's export totalled into the return summary's own artifact, the base of the Alberta
+rate gate. Signed, as the form prints no floor."""
+
+ALBERTA_RATE_GATE = AmountKind.declare(CATALOG, "alberta_rate_gate", non_negative=True)
+"""Alberta rate gate: 0 where the Alberta tax after the credits (AB428 line 68) is 0.00 and 1 where
+it is at least one cent, from the `ca-ab/marginal_rate_gate` dataset. A plain figure, not printed on
+the form."""
+
+ALBERTA_MARGINAL_RATE = AmountKind.declare(CATALOG, "alberta_marginal_rate", non_negative=True)
+"""Alberta marginal rate: the Alberta bracket rate (AB428 line 5 or line 12) where the Alberta tax
+after the credits (line 68) is above zero, and 0 where it is not: the rate a further dollar of
+income is taxed at in Alberta, on the return summary. Not printed on the form."""
+
+MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
+"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
+marginal rate and the Alberta marginal rate (Alberta has no surtax or health premium), on the
+return summary. Not printed on the form."""
