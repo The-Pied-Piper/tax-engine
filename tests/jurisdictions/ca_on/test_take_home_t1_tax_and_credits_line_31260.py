@@ -2,7 +2,7 @@
 salary and the optional line 10400 input.
 
 Line 31260 is "Line 92 and line 31260: Canada employment amount: Enter whichever is less: $1,471 or
-line 1 plus line 2." (T1 General 5006-R, CRA 5006-R-25E, confirmed, line 538). Line 1 is line 10100
+line 1 plus line 2." (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 1 is line 10100
 employment income and line 2 is
 line 10400 other employment income. The General Guide 5000-G gives the cook example: "if you are a
 cook who received $35,000 in employment income in

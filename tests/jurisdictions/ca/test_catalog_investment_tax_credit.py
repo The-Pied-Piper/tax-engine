@@ -113,8 +113,8 @@ TOTALS: tuple[tuple[str, ArtifactKind[Decimal]], ...] = (
     ("ca/itc_nonrefundable_credits", ITC_NONREFUNDABLE_CREDITS),
 )
 
-# The Part D caller's lines, from Form T2038(IND) Part D (confirmed from the PDF; no .txt
-# published): amount 1, "ITC opening balance and carry forward
+# The Part D caller's lines, from Form T2038(IND) Part D (confirmed from the PDF; CRA publishes no
+# .txt): amount 1, "ITC opening balance and carry forward
 # from prior years (net of expired amounts)"; amount 6, "Adjustment for a graduated rate estate,
 # enter the amount of ITC allocated to beneficiaries from box 40 of your T3 slip."; and amount 15,
 # "Enter your claim on this line:", the claim the filer chooses (an election, never negative).
