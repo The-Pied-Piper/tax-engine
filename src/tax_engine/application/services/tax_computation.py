@@ -6,7 +6,6 @@ it is safe because `FormSet.compute` never writes to the forms.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 from threading import Lock
 from typing import Any
 
@@ -15,7 +14,6 @@ from tax_engine.application.ports.parameter_source import ParameterSource
 from tax_engine.domain.artifact import Artifact, ArtifactRegistry
 from tax_engine.domain.capability import Capability, CapabilityRegistry
 from tax_engine.domain.capability_builder import CapabilityBuilder
-from tax_engine.domain.errors import DomainError, InvalidManifestError
 from tax_engine.domain.form import FormComposition, FormSet
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.manifest import CapabilitySelection
@@ -51,22 +49,6 @@ class TaxComputationService:
             if key not in self._composed:
                 self._composed[key] = self._compose(code, tax_year)
             return self._composed[key]
-
-    def check(self, codes: Iterable[JurisdictionCode]) -> None:
-        """Compose every manifest of each of `codes`, for the tax year it is valid from.
-
-        A manifest that does not compose is an `InvalidManifestError` naming the jurisdiction and
-        year. The composed forms are kept, as by `compose`.
-        """
-        for code in codes:
-            for manifest in self._jurisdictions.get_jurisdiction(code).manifests:
-                year = manifest.valid_from_tax_year
-                try:
-                    self.compose(code, year)
-                except DomainError as exc:
-                    raise InvalidManifestError(
-                        f"{code}, manifest valid from {year}: {exc}"
-                    ) from exc
 
     def _compose(self, code: JurisdictionCode, tax_year: int) -> FormSet:
         manifest = self._jurisdictions.get_jurisdiction(code).manifest_for(tax_year)
