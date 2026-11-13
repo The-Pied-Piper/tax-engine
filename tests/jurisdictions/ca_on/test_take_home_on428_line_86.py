@@ -1,6 +1,6 @@
 """ON428 (2025) lines 85 and 86, from the salary alone, real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, lines 275-280): "Line 85 and line 62140: Low-income
+Form text (Form ON428, CRA 5006-c-25e.txt): "Line 85 and line 62140: Low-income
 individuals and families tax (LIFT) credit (complete Schedule ON428-A)" and "Line 86: Line 84 minus
 line 85 (if negative, enter "0") =". Line 84 is a copy of line 83, so line 86 is one
 core/subtract_not_below_zero: line 83 (`ca-on/on428_tax_after_foreign_tax_credit_line_83`) less

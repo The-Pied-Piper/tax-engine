@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 1, employment income and other employment income (column 1
 "You"), as the Ontario take-home manifest part wires it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, lines 130-133): "Line 1: Employment
+Form text (5000-S6 2025): "Line 1: Employment
 income and other employment income from line 10100 and line 10400 of the return", then "Column 1
 You". Line 1 is a calculation: the sum of T1 line 10100 (`ca/employment_income`) and T1 line 10400
 (`ca/other_employment_income`). Line 10400 is optional and reads as 0 when the caller gives none

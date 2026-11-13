@@ -1,6 +1,6 @@
 # Schedule 6 (5000-S6, 2025) line 1, employment income and other employment income (column 1 "You").
 # The form prints: "Line 1: Employment income and other employment income from line 10100 and line
-# 10400 of the return" and "Column 1 You" (docs/cra-forms-2025/5000-s6-25e.txt, lines 130-133).
+# 10400 of the return" and "Column 1 You".
 #
 # Line 1 is a sum of T1 line 10100 (`ca/employment_income`, the salary input) and T1 line 10400
 # (`ca/other_employment_income`, the optional input). Line 10400 reads as 0 when the filer has none,

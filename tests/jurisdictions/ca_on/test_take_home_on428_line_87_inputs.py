@@ -1,6 +1,6 @@
 """ON428 (2025) line 87's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 87 and line 62150: Enter the
+Form text (ON428, CRA 5006-c-25e.txt): "Line 87 and line 62150: Enter the
 amount of qualifying donations that have also been claimed as a charitable donation. ^". The
 input is the qualifying donations, as the form takes them; the 25% is computed by the line 87
 part, not by the caller. A salary-only caller makes no community food program donation, so a

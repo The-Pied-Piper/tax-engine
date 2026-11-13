@@ -1,6 +1,6 @@
 """AB428 (2025) line 6, line 4 multiplied by the line 5 rate, real engine.
 
-Form text (Form AB428, CRA 5009-c-25e.txt, cra-docs repo): "Line 6: Line 4 multiplied by the
+Form text (Form AB428, CRA 5009-c-25e.txt): "Line 6: Line 4 multiplied by the
 percentage from line 5 = ^". Line 4 is the taxable income over the lower bound of the column line 1
 falls in and line 5 is that column's printed rate (8%, 10% or 12%), so line 6 is their product,
 rounded half-up to the cent by `ca-ab/cent_rounding`. It is blank when lines 4 and 5 are blank (a

@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 22, the basic Canada workers benefit before reduction, as the
 Ontario take-home manifest parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, line 296): "Line 22: Enter whichever
+Form text (5000-S6 2025): "Line 22: Enter whichever
 is less: amount from line 20 or line 21." Line 20 is the working income rate amount, 27% of line 18
 (`ca/cwb_working_income_rate_line_20`, from schedule_6_line_20.yaml). Line 21 is the printed $1,633
 maximum for a filer with no eligible spouse and no eligible dependant (`ca/cwb_maximum`, from

@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 25, the net income over the base amount, as the Ontario take-home
 manifest parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, line 304): "Line 25: Line 23 minus
+Form text (5000-S6 2025): "Line 25: Line 23 minus
 line 24 (if negative, enter "0")". Line 23 is a copy of line 15 ("Adjusted family net income from
 line 15", no step), so line 25 reads line 15 directly. Line 24 is the base amount, 26,855.00 for a
 filer with no eligible spouse or dependant. Line 25 is one core/subtract_not_below_zero of line 24

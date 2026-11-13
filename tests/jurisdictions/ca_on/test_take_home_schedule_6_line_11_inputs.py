@@ -1,6 +1,6 @@
 """Schedule 6 (2025) line 11's input, as the Ontario take-home manifest part declares it.
 
-Form text (Schedule 6, CRA 5000-s6-25e.txt in docs/cra-forms-2025):
+Form text (Schedule 6, CRA 5000-s6-25e.txt):
 "Line 11: Total of UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)" is
 the line's basis in the take-home part. A salary-only caller has no UCCB or RDSP income, so a
 request that leaves the line out is read as blank, and the line 12 part reads that blank as 0.

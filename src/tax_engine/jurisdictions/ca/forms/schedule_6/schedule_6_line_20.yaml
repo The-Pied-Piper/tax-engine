@@ -1,6 +1,5 @@
 # Schedule 6 (5000-S6, 2025) line 20, the working income rate amount. The form prints:
 # "Line 19: Rate 27%" and "Line 20: Line 18 multiplied by the percentage from line 19"
-# (docs/cra-forms-2025/5000-s6-25e.txt, lines 288-290).
 #
 # Line 19 is the printed 27%, held in the rate dataset `ca/cwb_rate` (from cwb_rate/2025.yaml), so
 # it has no step. Line 18 is `ca/cwb_working_income_over_base_amount` (from
