@@ -184,3 +184,10 @@ AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, AB428 line 3 "Line 3: 0.00" (60,000.00; 151,234.00): the printed lower
 bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 181,481,
 where lines 9 to 15 apply."""
+
+AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
+    CATALOG, "ab428_alberta_tax_on_taxable_income_line_59", non_negative=True
+)
+"""Alberta tax on taxable income, AB428 line 59 "Line 59: Alberta tax on taxable income from line 8
+or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
+blank."""
