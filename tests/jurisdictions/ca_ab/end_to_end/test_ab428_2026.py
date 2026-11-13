@@ -3,10 +3,14 @@ composed end to end for tax year 2026, through the registered engine.
 
 The Alberta 2026 datasets are PROVISIONAL: each carries a `# Provisional:` header, the 2026 forms
 (Form AB428, CRA 5009-c; Worksheet AB428, CRA 5009-d; Schedule 6, CRA 5009-S6) are not yet
-published, and the figures come from T4127 (Jan 2026) or are carried forward or inferred from 2025
-(the four Alberta Schedule 6 figures and the supplemental credit base are inferred). The pinned
-figures are therefore not confirmed CRA figures: they follow the provisional datasets, and must be
-re-checked when CRA publishes the 2026 forms.
+published, and the figures come from T4127 (Jan 2026) or are carried forward or derived from 2025.
+The brackets and the basic personal amount are T4127's. The Schedule 6 base amount and rate, the
+credit rate, the minimum tax rate, the cent rounding and the supplemental credit rate are carried
+forward unchanged from 2025. The Schedule 6 maximum and reduction threshold are the 2025 amounts
+x 1.02 (the federal 2026 factor), the threshold rounded down as in 2025. The supplemental credit
+base is inferred (4,800 x 1.02 = 4,896). The pinned figures are therefore not confirmed CRA
+figures: they follow the provisional datasets, and must be re-checked when CRA publishes the 2026
+forms.
 
 The Alberta manifest is 2025-only but the engine runs 2026 on it, reading each dataset family's
 2026 file. The bundled engine (`build_tax_computation`, Alberta listed in
