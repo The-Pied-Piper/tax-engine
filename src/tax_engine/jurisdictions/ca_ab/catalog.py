@@ -19,6 +19,13 @@ AB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 """Taxable income, AB428 line 1 "Enter your taxable income from line 26000 of your return": the
 T1 taxable income, the base of the bracket columns read by lines 3 and 4."""
 
+AB428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "ab428_bracket_rate_line_5", non_negative=True
+)
+"""Bracket column rate, AB428 line 5 (each column prints "Line 5: Rate" with 8%, 10% or 12%): the
+printed rate of the column that line 1 falls in, blank when line 1 is outside the lines 2 to 8
+table."""
+
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, AB428 line 16 (line 58040) "Basic personal amount Claim $22,323": the
 amount claimed, the first part of the total of the Alberta credit amounts."""
@@ -190,3 +197,16 @@ AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, AB428 line 3 "Line 3: 0.00" (60,000.00; 151,234.00): the printed lower
 bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 181,481,
 where lines 9 to 15 apply."""
+
+AB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "ab428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, AB428 line 7 "Line 7: 0.00" (4,800.00; 13,923.40): the printed
+tax at the start of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
+above 181,481, where lines 9 to 15 apply."""
+
+AB428_BRACKET_RATE_LINE_12 = AmountKind.declare(
+    CATALOG, "ab428_bracket_rate_line_12", non_negative=True
+)
+"""Bracket column rate, AB428 line 12 (the columns print "Line 12: Rate" with 13%, 14% or 15%): the
+printed rate of the column that line 1 falls in; blank when line 1 is 181,481.00 or less."""

@@ -1,0 +1,22 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) Part A, line 7. Each of the three columns
+# prints "Line 7:" with the tax at the column's start: 0.00, 4,800.00 and 13,923.40, under "Column
+# 1: Line 1 is $60,000 or less", "Column 2: Line 1 is more than $60,000 but not more than $151,234"
+# and "Column 3: Line 1 is more than $151,234 but not more than $181,481". Line 7 is the printed
+# tax at the start of the column that line 1 falls in: the amount of that column, not a figure
+# computed from its rates. Above 181,481 the table does not apply (lines 9 to 15 do), so line 7 is
+# blank.
+#
+# Line 1 (`ca-ab/ab428_taxable_income_line_1`) is produced by ab428_credits_line_1.yaml; this part
+# reads it directly. Line 2 is a copy of line 1 and has no step of its own.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "7"
+    unit: ca/cad
+    params:
+      schedule: ca-ab/brackets_lines_2_to_8
+    consumes:
+      base: ca-ab/ab428_taxable_income_line_1
+    produces:
+      output: ca-ab/ab428_bracket_tax_at_start_line_7
