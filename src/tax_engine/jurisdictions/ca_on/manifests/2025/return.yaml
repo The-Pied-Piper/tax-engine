@@ -51,7 +51,9 @@
 # It also counts the Ontario bracket rate once, where the Ontario tax reduction (ON428 lines 74 to
 # 80, factor S of T4127) is being phased out and a further dollar of tax is reduced by the reduction
 # it removes, so the true rate there is twice the bracket rate; that band runs from the first salary
-# with ON428 line 81 above zero to the first with the reduction at zero.
+# with ON428 line 81 above zero to the first with the reduction at zero. For 2025, salary only, it
+# runs from a salary of 19,868.74 (the first with line 81 above zero) to 26,168.36 (the reduction
+# reaches zero at 26,168.37), where the Ontario part should be twice the bracket rate.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
