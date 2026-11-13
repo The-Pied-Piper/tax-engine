@@ -1,10 +1,9 @@
-# Alberta 2026 brackets, Form AB428 (Alberta Tax and Credits, CRA 5009-c) Part A, lines 2 to 8.
-# The 2026 AB428 form text (CRA 5009-c) is not yet published. The source is T4127 Table 8.1
-# (Alberta), to be re-checked against the printed form once it is out.
-# Thresholds and rates are from T4127 Table 8.1, confirmed by alberta.ca: lower bounds 0.00,
-# 61,200.00, 154,259.00; rates 8%, 10%, 12%. Each bracket's `tax_at_start` is derived as the
-# cumulative tax on the earlier brackets, exact and not rounded (each comes out to the cent):
-# 0.00, 4,896.00, 14,201.90. It is kept with `rounding: none`, as for 2025.
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: thresholds and rates as printed in T4127 Table 8.1; tax_at_start calculated as the cumulative tax on the earlier brackets, rounded half-up to the cent (reproduces the 2025 printed constants).
+# Alberta income tax brackets, 2026 tax year, Form AB428 (CRA 5009-c) Part A, lines 2 to 8, from T4127 (Jan 2026), Table 8.1.
+# The 2026 AB428 is not yet published, so these figures are not yet confirmed against it.
+# Each bracket's `tax_at_start` is the cumulative tax on the earlier brackets: exact, every
+# value comes out to the cent, so nothing is rounded (kept with `rounding: none`).
 # `up_to`: the table covers line 1 of 185,111.00 or less. Above it lines 9 to 15 apply and this
 # line is blank. The split between the two files moves from 181,481 (2025) to 185,111, which is
 # this file's `up_to` and the first lower bound of the lines 9 to 15 file.

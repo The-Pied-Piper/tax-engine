@@ -25,6 +25,15 @@ D = Decimal
 SOURCE = YamlParameterSource(alberta_packages().roots(), alberta_parameter_parsers())
 FAMILY = "ca-ab/brackets_lines_9_to_15"
 LOW_FAMILY = "ca-ab/brackets_lines_2_to_8"
+PROVISIONAL_HEADER = (
+    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text "
+    "when CRA publishes it."
+)
+DERIVATION_HEADER = (
+    "# Derivation: thresholds and rates as printed in T4127 Table 8.1; tax_at_start calculated "
+    "as the cumulative tax on the earlier brackets, rounded half-up to the cent (reproduces the "
+    "2025 printed constants)."
+)
 T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
 
 # T4127 Table 8.1 (Alberta) as printed, in bracket order across both line sets.
@@ -129,13 +138,12 @@ def test_the_tax_on_an_amount_is_worked_by_hand(amount: str, tax: str) -> None:
     assert _schedule().tax_on(D(amount)) == D(tax)
 
 
-def test_the_2026_file_says_the_form_text_is_not_yet_published() -> None:
+def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     root = alberta_packages().roots()[Namespace("ca-ab")]
-    text = (root / "parameters" / "brackets_lines_9_to_15" / "2026.yaml").read_text()
+    lines = (root / "parameters" / "brackets_lines_9_to_15" / "2026.yaml").read_text().splitlines()
 
-    assert text.splitlines()[0].startswith("# Alberta 2026 brackets")
-    assert "not yet published" in text
-    assert "T4127 Table 8.1" in text
+    assert lines[0] == PROVISIONAL_HEADER
+    assert lines[1] == DERIVATION_HEADER
 
 
 def test_2025_brackets_are_unchanged() -> None:

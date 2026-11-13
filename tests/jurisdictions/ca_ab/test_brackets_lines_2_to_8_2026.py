@@ -24,6 +24,15 @@ D = Decimal
 # Alberta is not in `registrations.JURISDICTIONS` yet, so the source is built over its own packages.
 SOURCE = YamlParameterSource(alberta_packages().roots(), alberta_parameter_parsers())
 FAMILY = "ca-ab/brackets_lines_2_to_8"
+PROVISIONAL_HEADER = (
+    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text "
+    "when CRA publishes it."
+)
+DERIVATION_HEADER = (
+    "# Derivation: thresholds and rates as printed in T4127 Table 8.1; tax_at_start calculated "
+    "as the cumulative tax on the earlier brackets, rounded half-up to the cent (reproduces the "
+    "2025 printed constants)."
+)
 T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
 
 # T4127 Table 8.1 (Alberta) as printed, in bracket order across both line sets.
@@ -31,7 +40,7 @@ THRESHOLDS = ["61200", "154259", "185111", "246813", "370220"]
 LOWERS = ["0", *THRESHOLDS[:2]]
 RATES = ["0.08", "0.10", "0.12"]
 TAX_AT_START = ["0.00", "4896.00", "14201.90"]
-# The rate and threshold that follow this file's last bracket (the first two of lines 9 to 15).
+# The first lower bound of lines 9 to 15, where this table ends.
 NEXT_LOWER = "185111"
 
 
@@ -124,13 +133,12 @@ def test_the_tax_at_the_split_equals_the_next_tables_tax_at_start() -> None:
     assert _schedule().tax_on(D("185111.00")) == high.brackets[0].tax_at_start
 
 
-def test_the_2026_file_says_the_form_text_is_not_yet_published() -> None:
+def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     root = alberta_packages().roots()[Namespace("ca-ab")]
-    text = (root / "parameters" / "brackets_lines_2_to_8" / "2026.yaml").read_text()
+    lines = (root / "parameters" / "brackets_lines_2_to_8" / "2026.yaml").read_text().splitlines()
 
-    assert text.splitlines()[0].startswith("# Alberta 2026 brackets")
-    assert "not yet published" in text
-    assert "T4127 Table 8.1" in text
+    assert lines[0] == PROVISIONAL_HEADER
+    assert lines[1] == DERIVATION_HEADER
 
 
 def test_2025_brackets_are_unchanged() -> None:
