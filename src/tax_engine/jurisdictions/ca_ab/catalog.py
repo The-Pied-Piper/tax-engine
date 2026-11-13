@@ -184,6 +184,10 @@ WORKSHEET_AB428_LINE_5 = AmountKind.declare(CATALOG, "worksheet_ab428_line_5")
 from line 4": line 3 multiplied by the 8% of line 4, rounded half-up to the cent. The form prints no
 floor on line 3 or line 5 (the floor is on line 7), so it is signed like line 3."""
 
+WORKSHEET_AB428_LINE_7 = AmountKind.declare(CATALOG, "worksheet_ab428_line_7", non_negative=True)
+"""Line 5 less line 6, Worksheet AB428 line 7 "Line 7: Line 5 minus line 6 (if negative, enter
+"0")": line 5 minus line 6, not below zero, rounded half-up to the cent."""
+
 AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "ab428_ei_premiums_line_29", non_negative=True
 )
