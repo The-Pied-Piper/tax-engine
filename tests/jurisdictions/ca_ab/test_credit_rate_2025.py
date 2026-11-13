@@ -2,7 +2,9 @@
 
 Form AB428 (5009-c-25e.txt), line 53: "Alberta non-refundable tax credit rate 8%". The printed
 percentage is a rate of 0.08, read by line 54 (and by Worksheet AB428 line 4); both are
-dollars-and-cents lines, so the product rounds half-up to the cent.
+dollars-and-cents lines, so the product rounds half-up to the cent. Worksheet AB428
+(5009-d-25e.txt), line 4, prints the same "Alberta non-refundable tax credit rate 8%" and reads the
+same figure, so the dataset cites both form texts, Form AB428 first.
 """
 
 from __future__ import annotations
@@ -19,6 +21,7 @@ D = Decimal
 SOURCE = YamlParameterSource(alberta_packages().roots(), alberta_parameter_parsers())
 FAMILY = "ca-ab/credit_rate"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt"
+CRA_WORKSHEET_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-d/5009-d-25e.txt"
 
 
 def test_2025_credit_rate_is_8_percent() -> None:
@@ -33,7 +36,7 @@ def test_2025_credit_rate_rounds_half_up_to_the_cent() -> None:
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-def test_2025_credit_rate_cites_the_form_ab428_text() -> None:
+def test_2025_credit_rate_cites_the_form_ab428_and_worksheet_ab428_texts() -> None:
     data = SOURCE.get(FAMILY, 2025, RATE)
 
-    assert data.sources == (CRA_FORM_TEXT,)
+    assert data.sources == (CRA_FORM_TEXT, CRA_WORKSHEET_TEXT)

@@ -4,7 +4,8 @@ Form text (Worksheet AB428, CRA 5009-D): "Line 4: Alberta non-refundable tax cre
 "Line 5: Line 3 multiplied by the percentage from line 4 = ^". Line 4 is a printed rate, so it is
 the `ca-ab/credit_rate` dataset figure (the same 8% as AB428 line 53) and has no step of its own;
 line 5 is one core/apply_rate step over line 3, rounded half-up to the cent by the dataset's own
-rule. The form prints no title text for the line, so the step is untitled.
+rule. The form prints no title text for the line, so the step is untitled, and it prints no floor
+on line 3 or line 5 (the floor is on line 7), so line 5 is signed like line 3.
 
 The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real
 AB428 credits parts up to line 52, the real `worksheet_ab428_line_1.yaml`,
@@ -233,9 +234,14 @@ def _line_5_at(line_3_amount: str) -> Decimal:
         ("1.5624", "0.12"),
         ("1.5625", "0.13"),
         ("26692.23", "2135.38"),
+        ("-500.00", "-40.00"),
+        ("-0.0624", "0.00"),
+        ("-0.0625", "-0.01"),
+        ("-1.5625", "-0.13"),
+        ("-26692.23", "-2135.38"),
     ],
 )
-def test_line_5_rounds_half_up_to_the_cent_at_the_half_cent_boundary(
+def test_line_5_is_signed_and_rounds_half_up_away_from_zero_at_the_half_cent(
     line_3: str, expected: str
 ) -> None:
     assert _line_5_at(line_3) == D(expected)
@@ -264,7 +270,7 @@ def test_the_part_names_the_form_and_has_one_untitled_apply_rate_step() -> None:
     }
 
 
-def test_line_5_is_a_registered_non_negative_decimal_amount_kind() -> None:
+def test_line_5_is_a_registered_signed_decimal_amount_kind() -> None:
     kinds = alberta_kinds()
 
     assert KIND in kinds.identifiers()
@@ -272,4 +278,4 @@ def test_line_5_is_a_registered_non_negative_decimal_amount_kind() -> None:
     assert kind is WORKSHEET_AB428_LINE_5
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
-    assert non_negative(kind)
+    assert non_negative(kind) is False

@@ -179,9 +179,10 @@ WORKSHEET_AB428_LINE_3 = AmountKind.declare(CATALOG, "worksheet_ab428_line_3")
 """Line 1 minus line 2, Worksheet AB428 line 3 "Line 3: Line 1 minus line 2": the total credits less
 the unused tuition amount. The form prints no floor, so it is signed."""
 
-WORKSHEET_AB428_LINE_5 = AmountKind.declare(CATALOG, "worksheet_ab428_line_5", non_negative=True)
+WORKSHEET_AB428_LINE_5 = AmountKind.declare(CATALOG, "worksheet_ab428_line_5")
 """Line 3 times the line 4 rate, Worksheet AB428 line 5 "Line 5: Line 3 multiplied by the percentage
-from line 4": line 3 multiplied by the 8% of line 4, rounded half-up to the cent."""
+from line 4": line 3 multiplied by the 8% of line 4, rounded half-up to the cent. The form prints no
+floor on line 3 or line 5 (the floor is on line 7), so it is signed like line 3."""
 
 AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "ab428_ei_premiums_line_29", non_negative=True
