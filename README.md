@@ -107,7 +107,7 @@ Check any result against the CRA's own forms or with a professional before relyi
 
 ## Contributing
 
-Issues and pull requests are welcome. Developer setup, and checks are in [CONTRIBUTING.md](CONTRIBUTING.md).
+Issues and pull requests are welcome. Developer setup and checks are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
