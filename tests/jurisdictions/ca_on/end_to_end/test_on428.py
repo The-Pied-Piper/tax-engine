@@ -277,10 +277,10 @@ def test_the_form_exports_line_90_the_figure_t1_line_42800_reads(
     assert sheet.get(ON428_ONTARIO_TAX_LINE_90).value == D("3911.45")
 
 
-def test_the_form_exports_line_90_and_the_surtax_base_line_65_and_the_line_5_rate(
+def test_the_form_exports_lines_90_65_5_81_and_80(
     take_home_service: TakeHomeService,
 ) -> None:
-    # Every other line is read only inside the form: the form exports lines 90, 65 and 5.
+    # Every other line is read only inside the form: the form exports lines 90, 65, 5, 81 and 80.
     service = take_home_service(HEADER, FORM, *PARTS)
     code = JurisdictionCode("CA-ON")
     (form,) = (f for f in service.compose(code, 2025).forms if f.name == "ca-on/on428")
@@ -288,6 +288,8 @@ def test_the_form_exports_line_90_and_the_surtax_base_line_65_and_the_line_5_rat
         ON428_ONTARIO_TAX_LINE_90.identifier,
         ON428_SURTAX_BASE_LINE_65.identifier,
         ON428_BRACKET_COLUMN_RATE_LINE_5.identifier,
+        ON428_TAX_AFTER_TAX_REDUCTION_LINE_81.identifier,
+        ON428_ONTARIO_TAX_REDUCTION_LINE_80.identifier,
     )
 
     worksheets = service.compute(code, 2025, Artifact(EMPLOYMENT_INCOME, D("70000")))
@@ -297,6 +299,8 @@ def test_the_form_exports_line_90_and_the_surtax_base_line_65_and_the_line_5_rat
         D("3911.45"),
         D("3311.45"),
         D("0.0915"),
+        D("3311.45"),
+        D("0.00"),
     ]
 
 

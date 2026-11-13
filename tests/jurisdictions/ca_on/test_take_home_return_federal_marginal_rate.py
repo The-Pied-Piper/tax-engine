@@ -5,9 +5,10 @@ chart prints "Line 73: Rate" with 14.5%, 20.5%, 26%, 29% or 33%. The existing st
 `ca/federal_bracket_column_rate_line_73` of `ca/t1_tax_and_credits` is the printed rate of the
 column that line 70 falls in. The return summary reads it as a cross-form read: the T1 form exports
 it, and one `core/record_total` step of `return.yaml` totals the one amount into the return's own
-amount kind `ca/federal_marginal_rate`. The step has no printed title and no printed line, and
-carries the unit `core/percent`, so the summary shows it untitled, with no reference, and a trace
-prints the fraction 0.205 as the form prints it, "20.5%".
+amount kind `ca/federal_bracket_rate_return`; `ca/federal_marginal_rate` is that rate gated by T1
+line 42900 "Basic federal tax" (0 where no federal tax is paid). The step has no printed title
+and no printed line, and carries the unit `core/percent`, so the summary shows it untitled, with no
+reference, and a trace prints the fraction 0.205 as the form prints it, "20.5%".
 
 The test composes the real salary, Schedule 8, T1 taxable income, T2204, Schedule 6, ON428 parts and
 the real T1 parts, as the line 167 test does. The header and the form are the real files:
@@ -41,6 +42,8 @@ T1_FORM = "ca/t1_tax_and_credits"
 RETURN_FORM = "ca-on/return"
 LINE_73 = "ca/federal_bracket_column_rate_line_73"
 MARGINAL_RATE = "ca/federal_marginal_rate"
+BRACKET_RATE_RETURN = "ca/federal_bracket_rate_return"
+BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits"
 LINE_167 = "ca/refund_or_balance_owing"
 # The real header and form, read from the take-home folder, not test-local: the manifest's header
 # and the T1 tax and credits form declaration.
@@ -129,7 +132,24 @@ def test_the_federal_marginal_rate_is_the_line_73_rate_of_the_column(
 
 
 @pytest.mark.parametrize("salary", ["10000", "20000", "70000", "100000", "150000", "275000"])
-def test_the_federal_marginal_rate_equals_line_73_read_from_the_t1_sheet(
+def test_the_federal_bracket_rate_return_equals_line_73_read_from_the_t1_sheet(
+    take_home_service: TakeHomeService, salary: str
+) -> None:
+    # The raw line 73 rate, read into its own kind, whatever the tax: the federal marginal
+    # rate is this rate gated by T1 line 42900, so it differs from it where no tax is paid.
+    worksheets = _worksheets(take_home_service, salary)
+    (t1_sheet,) = worksheets[T1_FORM]
+    (summary,) = worksheets[RETURN_FORM]
+    kinds = bundled_kinds()
+
+    assert (
+        summary.get(kinds.kind(BRACKET_RATE_RETURN)).value
+        == t1_sheet.get(kinds.kind(LINE_73)).value
+    )
+
+
+@pytest.mark.parametrize("salary", ["20000", "70000", "100000", "150000", "275000"])
+def test_the_federal_marginal_rate_equals_line_73_where_basic_federal_tax_is_positive(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
     worksheets = _worksheets(take_home_service, salary)
@@ -137,7 +157,21 @@ def test_the_federal_marginal_rate_equals_line_73_read_from_the_t1_sheet(
     (summary,) = worksheets[RETURN_FORM]
     kinds = bundled_kinds()
 
+    assert t1_sheet.get(kinds.kind(BASIC_FEDERAL_TAX)).value > 0
     assert summary.get(kinds.kind(MARGINAL_RATE)).value == t1_sheet.get(kinds.kind(LINE_73)).value
+
+
+def test_the_federal_marginal_rate_is_zero_at_10000_where_no_federal_tax_is_paid(
+    take_home_service: TakeHomeService,
+) -> None:
+    worksheets = _worksheets(take_home_service, "10000")
+    (t1_sheet,) = worksheets[T1_FORM]
+    (summary,) = worksheets[RETURN_FORM]
+    kinds = bundled_kinds()
+
+    assert t1_sheet.get(kinds.kind(BASIC_FEDERAL_TAX)).value == D("0")
+    assert t1_sheet.get(kinds.kind(LINE_73)).value == D("0.145")
+    assert summary.get(kinds.kind(MARGINAL_RATE)).value == D("0")
 
 
 def test_the_return_summary_still_carries_line_167(take_home_service: TakeHomeService) -> None:
@@ -167,10 +201,10 @@ def test_the_federal_marginal_rate_prints_as_the_percentage_the_form_prints(
     assert any("gives 20.5%" in line for line in lines)
 
 
-def test_the_real_t1_form_exports_include_line_167_and_the_line_73_rate() -> None:
+def test_the_real_t1_form_exports_include_line_167_the_line_73_rate_and_line_42900() -> None:
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
-    assert {LINE_167, LINE_73} <= set(exports)
+    assert {LINE_167, LINE_73, BASIC_FEDERAL_TAX} <= set(exports)
 
 
 def test_the_real_ontario_manifest_computes_the_federal_marginal_rate_at_70000() -> None:

@@ -19,8 +19,10 @@ Figures (the real bundled manifest, salary the only input), each the exact sum o
 worked by hand from the printed rates. Taxable income is the T1 figure the line 73 column and the
 line 89 chart row are chosen by:
 
-- $20,000: 0.145 + 0.0505 + 0 = 0.1955 (19.55%); taxable income 19,835.00 is under the 20,000 row
-- $22,000: 0.145 + 0.0505 + 0.06 = 0.2555 (25.55%); taxable income 21,815.00 is in the 6% row
+- $20,000: 0.145 + 0.101 + 0 = 0.246 (24.6%); taxable income 19,835.00 is under the 20,000 row; the
+  Ontario part is twice the 5.05% bracket rate while the Ontario tax reduction (ON428 line 80) is
+  above 0 and takes the tax away at the same rate
+- $22,000: 0.145 + 0.101 + 0.06 = 0.306 (30.6%); taxable income 21,815.00 is in the 6% row
   (20,000 to 25,000)
 - $48,800: 0.145 + 0.0505 + 0.25 = 0.4455 (44.55%); taxable income 48,347.00 is in the 25% row
   (48,000 to 48,600)
@@ -28,6 +30,11 @@ line 89 chart row are chosen by:
 - $120,000: 0.26 + 0.1116 x 1.56 + 0 = 0.26 + 0.174096 = 0.434096 (43.4096%); line 65 is 8,110.12,
   over the 7,307 threshold of the 36% surtax
 - $275,000: 0.33 + 0.1316 x 1.56 + 0 = 0.33 + 0.205296 = 0.535296 (53.5296%), the top brackets
+
+Each bracket-rate part counts only where its own tax is above zero: the federal marginal rate
+is the T1 line 73 rate gated by T1 line 42900 "Basic federal tax", the Ontario marginal rate the
+bracket rate times the surtax factor gated by ON428 line 81. The gates and the thresholds are in
+`test_return_marginal_tax_rate_gates.py`.
 
 The return's step wiring is pinned in `test_take_home_manifest.py`.
 """
@@ -73,8 +80,8 @@ PARTS = (
 # Salary, the federal marginal rate, the Ontario marginal rate, the health premium slope and the
 # marginal tax rate, from runs of the real parts.
 FIGURES = [
-    ("20000", "0.145", "0.0505", "0", "0.1955"),
-    ("22000", "0.145", "0.0505", "0.06", "0.2555"),
+    ("20000", "0.145", "0.101", "0", "0.246"),
+    ("22000", "0.145", "0.101", "0.06", "0.306"),
     ("48800", "0.145", "0.0505", "0.25", "0.4455"),
     ("70000", "0.205", "0.0915", "0", "0.2965"),
     ("120000", "0.26", "0.174096", "0", "0.434096"),
@@ -239,7 +246,7 @@ def test_the_marginal_tax_rate_comes_last_in_the_trace(
     ("salary", "sentence"),
     [
         ("70000", r"\(20\.5%\) plus .+ \(9\.15%\) plus .+ \(0(\.0+)?%\) gives 29\.65%"),
-        ("22000", r"\(14\.5%\) plus .+ \(5\.05%\) plus .+ \(6(\.0+)?%\) gives 25\.55%"),
+        ("22000", r"\(14\.5%\) plus .+ \(10\.1%\) plus .+ \(6(\.0+)?%\) gives 30\.6%"),
         ("275000", r"\(33(\.0+)?%\) plus .+ \(20\.5296%\) plus .+ \(0(\.0+)?%\) gives 53\.5296%"),
     ],
 )

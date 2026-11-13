@@ -1,0 +1,16 @@
+# Marginal rate gate, 2025 tax year. Not a CRA figure and not printed on any form: the rows are a
+# switch the Ontario return summary uses so that a bracket rate counts only where its own tax is
+# above zero. A base of 0.00 gives the rate 0 and a base of one cent or more gives the rate 1; the
+# summary reads T1 line 42900 "Basic federal tax" and ON428 line 81 through it. The form is listed
+# as a source only because the gated figure, ON428 line 81, is on it; the rows are not from it.
+# A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no
+# cent amount is in the first band but 0.00, and 0.01 is in the second.
+family: ca-on/marginal_rate_gate
+tax_year: 2025
+kind: amount_by_band
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-c/5006-c-25e.txt
+rounding: none
+rows:
+  - {over: "0", amount: "0"}
+  - {over: "0.005", minus: "0", rate: "1", plus: "0"}
