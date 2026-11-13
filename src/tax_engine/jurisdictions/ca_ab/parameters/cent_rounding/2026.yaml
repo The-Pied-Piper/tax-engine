@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Alberta cent rounding, 2026 tax year: the rule for every Alberta form line that is a
+# dollars-and-cents box and is read from a "(if negative, enter "0")" or "(cannot be negative)"
+# difference, from a sum, or from a product of two lines: Form AB428 (5009-c-25e) and the
+# supplemental credit worksheet (5009-d-25e). The forms state no rounding rule, so half-up to the
+# cent is the project's choice. A line that needs a different rule gets a dataset of its own.
+family: ca-ab/cent_rounding
+tax_year: 2026
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-d/5009-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
