@@ -1,0 +1,16 @@
+# Worksheet AB428 (CRA 5009-D) line 7 (ca-ab/worksheet_ab428): "Line 7: Line 5 minus line 6 (if
+# negative, enter "0") = ^". One calculation: line 5 minus line 6, not below zero, rounded half-up
+# to the cent. The form prints no title for the line, so the step is untitled.
+form:
+  name: ca-ab/worksheet_ab428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "7"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/worksheet_ab428_line_5
+      less: ca-ab/worksheet_ab428_line_6
+    produces:
+      output: ca-ab/worksheet_ab428_line_7
