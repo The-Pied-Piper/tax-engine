@@ -217,3 +217,10 @@ AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
 """Alberta tax on taxable income, AB428 line 59 "Line 59: Alberta tax on taxable income from line 8
 or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
 blank."""
+
+AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
+    CATALOG, "ab428_taxable_income_over_lower_bound_line_11", non_negative=True
+)
+"""Taxable income over the lower bound, AB428 line 11 "Line 11: Line 9 minus line 10 (cannot be
+negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 181,481.00
+or less, where line 10 is blank."""
