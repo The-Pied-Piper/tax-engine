@@ -1,0 +1,20 @@
+# Form AB428 (CRA 5009-c) line 52: "Line 52 and line 58800: Line 43 plus line 51 = ^". It sums the
+# credits subtotal (line 43, `ca-ab/ab428_credits_subtotal_line_43`) and the medical expense amount
+# (line 51, `ca-ab/ab428_medical_expenses_line_51`). Lines 44 to 50, the medical expense working,
+# are not built: line 51 is an optional input that a salary-only caller leaves out, read as blank
+# and then as 0 by the blank rule below. Line 52 is the output `ca-ab/ab428_credits_total_line_52`,
+# which the form exports for Worksheet AB428 line 1.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    reference: "52"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts: [ca-ab/ab428_credits_subtotal_line_43, ca-ab/ab428_medical_expenses_line_51]
+    blank:
+      ca-ab/ab428_medical_expenses_line_51: "0"
+    produces:
+      output: ca-ab/ab428_credits_total_line_52
