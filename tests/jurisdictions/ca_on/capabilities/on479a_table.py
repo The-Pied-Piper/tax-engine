@@ -1,7 +1,7 @@
 """ON479-A's rate table, shared by the ca-on capability tests of lines 7 and 8.
 
 The "Family adjusted income and Tax credit rate" table copied row for row from
-`docs/cra-forms-2025/5006-tca-25e.txt`, the 9% row as printed ("more than $132,000 but not more
+the form, the 9% row as printed ("more than $132,000 but not more
 than $136,500: 9%", overlapping "more than $135,600 but not more than $139,200: 7%"), read for a
 made-up family income kind from a made-up dataset family.
 """
@@ -83,5 +83,5 @@ def table(
         RATE_TABLE,
         values or on479a_table(),
         rounding,
-        ("docs/cra-forms-2025/5006-tca-25e.txt",),
+        ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-tca/5006-tca-25e.txt",),
     )

@@ -1,8 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) Step 5 Part B line 84 "Add lines 77 to 83. =", from the salary
 alone.
 
-Line 84 is "Add lines 77 to 83." (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt). Line 77 is the basic personal amount, line 30000
+Line 84 is "Add lines 77 to 83." (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 77 is the
+basic personal amount, line 30000
 (`ca/basic_personal_amount`), read directly as a real part. Lines 78 to 83 are 0 for the
 take-home filer (salary the only income, single, basic credits only), so they are left out.
 Line 84 is therefore one `core/sum` over line 77 alone, rounded half-up to the cent with the

@@ -1,6 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 line 134 and line 40600 "Line 134 and line 40600:
-# Line 132 minus line 133 (if negative, enter "0") Federal tax =" (CRA 5006-R-25E,
-# docs/cra-forms-2025/5006-r-25e.txt). Line 132 is `ca/federal_tax_with_itc_recapture`; line 133 is
+# Line 132 minus line 133 (if negative, enter "0") Federal tax =" (CRA 5006-R-25E). Line 132 is `ca/federal_tax_with_itc_recapture`; line 133 is
 # `ca/federal_logging_tax_credit`, an optional input that the part's own inputs file declares with blank
 # fallback 0. The line prints "(if negative, enter "0")", so the difference is floored at 0 by
 # core/subtract_not_below_zero, rounded half-up to the cent through the shared `ca/cent_rounding` dataset,

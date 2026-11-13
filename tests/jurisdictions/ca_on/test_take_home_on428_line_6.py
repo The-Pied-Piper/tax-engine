@@ -1,7 +1,7 @@
 """ON428 (2025) line 6, line 4 multiplied by the percentage from line 5, computed from the real part
 file through the real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, repo copy docs/cra-forms-2025/5006-c-25e.txt): each
+Form text (Form ON428, CRA 5006-c-25e.txt): each
 Part A column prints "Line 6: Line 4 multiplied by the percentage from line 5 =". Line 5 is a
 rate held as a fraction (0.0915 is 9.15%), so line 6 is line 4 times line 5, with no division by
 100.

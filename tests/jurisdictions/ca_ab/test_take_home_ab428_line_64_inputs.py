@@ -1,6 +1,6 @@
 """AB428 (2025) line 64's input, as the Alberta take-home manifest part declares it.
 
-Form text (AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 64 and line 61540: Amount from
+Form text (AB428, CRA 5009-c-25e.txt): "Line 64 and line 61540: Amount from
 line 40427 of your return" is the line's basis in the part. The input is the amount from the T1
 (line 40427), which the engine does not compute; the 35% is computed by the next part, not by the
 caller. A caller with no minimum tax carryover leaves the input out, so the request is read as 0,

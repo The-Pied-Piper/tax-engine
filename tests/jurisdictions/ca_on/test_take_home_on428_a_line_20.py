@@ -1,6 +1,6 @@
 """ON428-A (2025) line 20, as the Ontario take-home manifest part wires it.
 
-Form text (ON428-A, CRA 5006-a-25e.txt in docs/cra-forms-2025): "Line 14: Amount from line 5 above
+Form text (ON428-A, CRA 5006-a-25e.txt): "Line 14: Amount from line 5 above
 (maximum $875) / Line 20: Line 14 minus line 19 (if negative, enter "0") Enter this amount on line
 62140 of your Form ON428." Line 14 is a copy of line 5, so line 20 reads line 5 itself
 (`ca-on/lift_maximum_credit`, a plain starting input here). Line 19 is `ca-on/lift_reduction`, also
