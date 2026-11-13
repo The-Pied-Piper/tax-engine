@@ -163,7 +163,7 @@ Alberta supplemental tax credit."""
 
 WORKSHEET_AB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_ab428_line_2", non_negative=True)
 """Amount from AB428 line 58560, Worksheet AB428 line 2 "Line 2: Amount from line 58560 of your Form
-AB428": the unused tuition amount of Form AB428 line 41, read as the worksheet's first figure."""
+AB428": the unused tuition amount of Form AB428 line 41, read as the worksheet's second figure."""
 
 AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "ab428_ei_premiums_line_29", non_negative=True
