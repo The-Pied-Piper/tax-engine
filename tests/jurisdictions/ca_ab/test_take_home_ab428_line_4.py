@@ -1,6 +1,7 @@
 """AB428 (2025) line 4, the taxable income over the column's lower bound, real engine.
 
-Form text (Form AB428, CRA 5009-c-25e.txt, repo copy docs/cra-forms-2025/5009-c-25e.txt): "Line 4:
+Form text (Form AB428, CRA 5009-c-25e.txt, cra-docs copy
+cra-docs/docs/cra-forms-2025/5009-c-25e.txt): "Line 4:
 Line 2 minus line 3 (cannot be negative) =". Line 2 is a copy of line 1 (the T1 taxable income,
 line 26000) and line 3 is the printed lower bound of the column that line 1 falls in. Line 4 is
 therefore line 1 less line 3, floored at zero, and it is blank when line 3 is blank (a line 1
