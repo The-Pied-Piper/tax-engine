@@ -19,8 +19,9 @@ and every optional input left blank. It asserts the Alberta tax of AB428 line 75
 T1 line 167 ("ca/refund_or_balance_owing") at salaries of $20,000, $70,000 and $200,000, and the
 intermediate figures of the form on the way (lines 54, 62, 66 and 68).
 
-Form text (Form AB428, CRA 5009-c): "Line 75: Line 73 minus line 74 (if negative, enter "0")
-Enter this amount on line 42800 of your return. Alberta tax =".
+Form text (Form AB428, CRA 5009-c, 2025 text; the 2026 form is not yet published): "Line 75:
+Line 73 minus line 74 (if negative, enter "0") Enter this amount on line 42800 of your return.
+Alberta tax =".
 
 Every figure here was computed by hand, independently of the engine, with plain decimal
 arithmetic from the 2026 Alberta and federal datasets (CPP and EI per the datasets, T4127 for the
