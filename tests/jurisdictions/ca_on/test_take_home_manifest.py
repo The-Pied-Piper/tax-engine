@@ -32,7 +32,7 @@ def test_the_salary_is_the_only_required_input() -> None:
 
 def test_the_return_exports_line_167_and_the_marginal_and_average_rates() -> None:
     # The federal marginal rate, the Ontario marginal rate and the health premium slope are read
-    # inside the return by the final sum, so they are no longer exported.
+    # inside the return by the final sum, so they are no longer exported (nor are the gates).
     (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
 
     assert set(default.exports) == {
@@ -64,19 +64,108 @@ def test_the_return_ends_with_the_sum_of_the_three_rates_exactly() -> None:
 
 
 def test_the_return_multiplies_the_bracket_rate_by_the_surtax_factor_exactly() -> None:
-    # The marginal rate step reads the factor as its base and the bracket rate as its rate, with
-    # the dataset that rounds nothing; both are read inside the return, not exported.
-    (default,) = (form for form in _manifest().forms if form.name == "ca-on/return")
-
+    # The factor is the base and the bracket rate the rate, with the dataset that rounds nothing;
+    # the product is the ungated `ca-on/ontario_bracket_marginal_rate` (#820 gates it afterwards).
     assert (
         "core/multiply_by_rate",
         {"rounding": "ca-on/exact_rounding"},
         {"base": "ca-on/ontario_surtax_factor", "rate": "ca-on/ontario_bracket_rate_return"},
-        {"output": "ca-on/ontario_marginal_rate"},
-    ) in [
-        (step.name, dict(step.params), dict(step.consumes), dict(step.produces))
-        for step in default.capabilities
+        {"output": "ca-on/ontario_bracket_marginal_rate"},
+    ) in _return_steps()
+
+
+def test_the_t1_exports_line_42000_net_federal_tax_for_the_return() -> None:
+    (t1,) = (form for form in _manifest().forms if form.name == "ca/t1_tax_and_credits")
+
+    assert "ca/net_federal_tax" in t1.exports
+
+
+def test_the_return_reads_net_federal_tax_and_the_ontario_tax_before_the_premium() -> None:
+    # The two gate bases: T1 line 42000 and ON428 line 88 (not line 90), each totalled with
+    # core/record_total into the return's own kind, in Canadian dollars.
+    on428_line_88 = "ca-on/on428.on428_tax_after_farmers_food_donation_credit_line_88"
+    steps = [
+        (name, params, consumes, produces)
+        for name, params, consumes, produces in _return_steps()
+        if name == "core/record_total"
     ]
+
+    assert (
+        {},
+        {"records": "ca/t1_tax_and_credits.net_federal_tax"},
+        {"output": "ca/net_federal_tax_return"},
+    ) in [step[1:] for step in steps]
+    assert (
+        {},
+        {"records": on428_line_88},
+        {"output": "ca-on/ontario_tax_before_premium_return"},
+    ) in [step[1:] for step in steps]
+
+
+def test_the_return_reads_the_line_73_rate_into_the_federal_bracket_rate_return() -> None:
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca/t1_tax_and_credits.federal_bracket_column_rate_line_73"},
+        {"output": "ca/federal_bracket_rate_return"},
+    ) in _return_steps()
+
+
+def test_the_return_turns_each_tax_into_a_gate_rate_from_the_marginal_rate_gate_dataset() -> None:
+    steps = _return_steps()
+
+    assert (
+        "core/amount_by_band_rate",
+        {"table": "ca-on/marginal_rate_gate"},
+        {"base": "ca/net_federal_tax_return"},
+        {"output": "ca/federal_rate_gate"},
+    ) in steps
+    assert (
+        "core/amount_by_band_rate",
+        {"table": "ca-on/marginal_rate_gate"},
+        {"base": "ca-on/ontario_tax_before_premium_return"},
+        {"output": "ca-on/ontario_rate_gate"},
+    ) in steps
+
+
+def test_the_return_gates_the_federal_and_the_ontario_marginal_rates_exactly() -> None:
+    # The gate (0 or 1) is the base and the bracket rate the rate, as the surtax factor is the base
+    # of the product above; the dataset that rounds nothing.
+    steps = _return_steps()
+
+    assert (
+        "core/multiply_by_rate",
+        {"rounding": "ca-on/exact_rounding"},
+        {"base": "ca/federal_rate_gate", "rate": "ca/federal_bracket_rate_return"},
+        {"output": "ca/federal_marginal_rate"},
+    ) in steps
+    assert (
+        "core/multiply_by_rate",
+        {"rounding": "ca-on/exact_rounding"},
+        {"base": "ca-on/ontario_rate_gate", "rate": "ca-on/ontario_bracket_marginal_rate"},
+        {"output": "ca-on/ontario_marginal_rate"},
+    ) in steps
+
+
+def test_the_gates_come_after_their_tax_and_before_the_gated_rates() -> None:
+    outputs = [produces["output"] for _, _, _, produces in _return_steps()]
+
+    order = [
+        "ca/net_federal_tax_return",
+        "ca/federal_rate_gate",
+        "ca/federal_marginal_rate",
+        "ca-on/ontario_tax_before_premium_return",
+        "ca-on/ontario_rate_gate",
+        "ca-on/ontario_bracket_marginal_rate",
+        "ca-on/ontario_marginal_rate",
+        "ca-on/marginal_tax_rate",
+    ]
+    positions = [outputs.index(name) for name in order]
+    assert positions[0] < positions[1] < positions[2] < positions[7]
+    assert positions[3] < positions[4] < positions[6] < positions[7]
+    assert positions[5] < positions[6]
+    # The unchanged final sum is still the last step.
+    assert outputs[-1] == "ca-on/marginal_tax_rate"
 
 
 def test_schedule_8_is_a_required_form_without_instances() -> None:
@@ -128,13 +217,14 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
     } <= set(_manifest().inputs)
 
 
-def test_on428_exports_line_90_the_surtax_base_line_65_and_the_line_5_rate() -> None:
+def test_on428_exports_lines_90_and_88_the_surtax_base_line_65_and_the_line_5_rate() -> None:
     (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
 
     assert set(on428.exports) == {
         "ca-on/on428_ontario_tax_line_90",
         "ca-on/on428_surtax_base_line_65",
         "ca-on/on428_bracket_column_rate_line_5",
+        "ca-on/on428_tax_after_farmers_food_donation_credit_line_88",
     }
 
 
