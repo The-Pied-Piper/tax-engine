@@ -1,0 +1,18 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) Part A, line 5. Each of the three columns
+# of lines 2 to 8 prints "Line 5:" with its rate: "Line 5: Rate 8%", "Line 5: Rate 10%" and
+# "Line 5: Rate 12%". Line 5 is the printed rate of the column that line 1 falls in, and a line 1
+# exactly at a column's upper bound falls in the lower column. When line 1 is above the table's
+# range (181,481) the line is left blank, so the schedule gives a blank. Line 1 is read from its
+# producing part (ab428_credits_line_1.yaml), so this part does not produce it again.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/bracket_column_rate
+    title: "Rate"
+    reference: "5"
+    params:
+      schedule: ca-ab/brackets_lines_2_to_8
+    consumes:
+      base: ca-ab/ab428_taxable_income_line_1
+    produces:
+      output: ca-ab/ab428_bracket_rate_line_5
