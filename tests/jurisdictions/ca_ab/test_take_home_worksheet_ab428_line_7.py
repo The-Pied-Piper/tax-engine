@@ -242,7 +242,7 @@ def _line_7_at(line_5_amount: str, line_6_amount: str) -> Artifact[Decimal]:
     """Line 7 over given lines 5 and 6: the capability the part builds, with the real dataset."""
     line_5, line_6, line_7 = _amount_kind(LINE_5), _amount_kind(LINE_6), _amount_kind(KIND)
     capability = SubtractNotBelowZero(_rounding(), line_5, line_6, line_7)
-    result = capability.run(
+    result = capability.compute(
         (Artifact(line_5, D(line_5_amount)), Artifact(line_6, D(line_6_amount)))
     )
     (output,) = result.outputs
@@ -288,7 +288,7 @@ def test_a_floored_zero_and_an_exact_equal_are_the_same_positive_cent_zero() -> 
 def test_the_positive_row_traces_the_subtraction_with_the_rounding_named() -> None:
     kinds = alberta_kinds()
     line_5, line_6, line_7 = _amount_kind(LINE_5), _amount_kind(LINE_6), _amount_kind(KIND)
-    result = SubtractNotBelowZero(_rounding(), line_5, line_6, line_7).run(
+    result = SubtractNotBelowZero(_rounding(), line_5, line_6, line_7).compute(
         (Artifact(line_5, D("5252.00")), Artifact(line_6, D("4800.00")))
     )
 
