@@ -5,7 +5,7 @@
 #
 # The return's second output is the average income tax rate, which no form prints (so its step has
 # no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus
-# line 148's Alberta tax: the federal and the Alberta income tax) divided by the salary, T1 line
+# line 147's Alberta tax: the federal and the Alberta income tax) divided by the salary, T1 line
 # 10100 (`ca/employment_income`). T1 exports line 43500, so a core/record_total step reads it into
 # the return's own `ca/total_payable`, then core/divide divides it by the salary, rounding once
 # with `ca-ab/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
@@ -21,12 +21,19 @@
 # `ca/federal_marginal_rate`, exact (`ca-ab/exact_rounding`).
 #
 # The Alberta bracket rate is printed on AB428 line 5 (table 1, lines 2 to 8, taxable income up to
-# 181,481) or on line 12 (table 2, lines 9 to 15, above it); the other is blank. AB428 exports
-# both, each is totalled into the return's own kind with a blank read as 0, and core/sum adds them
-# into the Alberta bracket rate. The Alberta gate reads AB428 line 68 "Line 66 plus line 67", the
-# counterpart of ON428 line 81: the Alberta tax after the credits that payroll applies and before
-# line 69 (provincial foreign tax credit), line 72 (political contributions) and line 74
-# (supplemental tax credit), which only come back when filing, so line 74 is not a payroll term.
+# 181,481 for 2025, 185,111 for 2026) or on line 12 (table 2, lines 9 to 15, above it); the other is
+# blank. AB428 exports both, each is totalled into the return's own kind with a blank read as 0, and
+# core/sum adds them into the Alberta bracket rate. The Alberta gate reads AB428 line 68 "Line 66
+# plus line 67", chosen as the counterpart of ON428 line 81: the Alberta tax after the credits and
+# before line 69 (provincial foreign tax credit), line 72 (political contributions) and line 74
+# (supplemental tax credit). Payroll (T4127) applies the personal amounts, CPP and EI and the other
+# credits (K1P to K3P); the dividend credit, the minimum tax carry-over and additional minimum tax
+# in lines 63, 64 and 67 are not payroll terms and are blank for the take-home filer. The July 2025
+# edition adds K5P, the Alberta supplemental tax credit (AB428 line 74), which is
+# ((K1P + K2P) - 3,600) x 0.04/0.06 for 2025 and ((K1P + K2P) - 4,800) x 0.02/0.08 for 2026, not
+# below 0; the January 2025 edition has no such term. For the take-home filer K1P + K2P is below
+# those amounts, so K5P is 0 and gating on line 68 is exact; a filer with higher personal credits
+# is outside the take-home scope.
 # Alberta has no tax reduction, so line 68 is also the figure after it. The gate multiplies the
 # Alberta bracket rate into `ca-ab/alberta_marginal_rate`, exact. The last step adds the federal and
 # the Alberta marginal rate with core/sum into `ca-ab/marginal_tax_rate`; it is exact too, is not

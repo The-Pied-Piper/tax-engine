@@ -347,15 +347,15 @@ ALBERTA_BRACKET_RATE_LINE_5_RETURN = AmountKind.declare(
     CATALOG, "alberta_bracket_rate_line_5_return", non_negative=True
 )
 """Alberta bracket rate, AB428 line 5 "Line 5: Rate": the printed rate of the table 1 column that
-line 1 falls in (taxable income up to 181,481), read from AB428 into the return summary, 0 where the
-line is blank."""
+line 1 falls in (taxable income up to 181,481 for 2025, 185,111 for 2026), read from AB428 into the
+return summary, 0 where the line is blank."""
 
 ALBERTA_BRACKET_RATE_LINE_12_RETURN = AmountKind.declare(
     CATALOG, "alberta_bracket_rate_line_12_return", non_negative=True
 )
 """Alberta bracket rate, AB428 line 12 "Line 12: Rate": the printed rate of the table 2 column that
-line 1 falls in (taxable income above 181,481), read from AB428 into the return summary, 0 where
-the line is blank."""
+line 1 falls in (taxable income above 181,481 for 2025, 185,111 for 2026), read from AB428 into the
+return summary, 0 where the line is blank."""
 
 ALBERTA_BRACKET_RATE_RETURN = AmountKind.declare(
     CATALOG, "alberta_bracket_rate_return", non_negative=True
@@ -364,7 +364,7 @@ ALBERTA_BRACKET_RATE_RETURN = AmountKind.declare(
 bracket the taxable income falls in. Not printed on the form."""
 
 ALBERTA_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(CATALOG, "alberta_tax_after_credits_return")
-"""Alberta tax after the credits payroll applies, AB428 line 68 "Line 66 plus line 67": the one
+"""Alberta tax after the credits, AB428 line 68 "Line 66 plus line 67": the one
 amount of AB428's export totalled into the return summary's own artifact, the base of the Alberta
 rate gate. Signed, as the form prints no floor."""
 

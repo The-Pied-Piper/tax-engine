@@ -17,9 +17,11 @@ federal 14.5% to 57,375 and 20.5% to 114,750, 26% to 177,882, 29% above (2025; 2
 to 151,234, 12% to 181,481 (AB428 line 5), then 13% (AB428 line 12). Taxable income is a little
 under the salary (the CPP enhanced deduction), so each salary below sits well inside its bracket.
 
-The gates open at the zero-tax boundaries, measured by running the real return and bisecting to the
-cent (the federal and the Alberta tax are first above 0.00 at these salaries, and the part is 0
-one cent below):
+The gates open at the zero-tax boundaries, measured by running the real return cent by cent (the
+part is 0 one cent below and counts at the cent pinned). The 2025 Alberta line 68 is not monotone
+just under its boundary because of cent rounding: it is 0.01 from 23,931.13 to 23,931.21, 0.00 from
+23,931.22 to 23,931.24 and 0.01 from 23,931.25 on, so the pinned cents are a closed and an open
+point, not the first salary with tax:
 
 - 2025: federal at 18,820.27 (T1 line 42900 is 0.00 at 18,820.26 and 0.01 at 18,820.27); Alberta
   at 23,931.25 (AB428 line 68 is 0.00 at 23,931.24 and 0.01 at 23,931.25)
