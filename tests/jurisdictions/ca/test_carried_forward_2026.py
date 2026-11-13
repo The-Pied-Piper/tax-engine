@@ -1,4 +1,4 @@
-"""The seventeen 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
+"""The eighteen 2026 datasets carried forward unchanged from 2025 (structure or a rule, not an
 indexed dollar amount): each equals its 2025 file apart from the year, and its 2026 file opens
 with the provisional and derivation header lines.
 """
@@ -12,6 +12,7 @@ import pytest
 import tax_engine.registrations
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.amount import AMOUNT
+from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND
 from tax_engine.domain.parameters.conditions import CONDITIONS
 from tax_engine.domain.parameters.credit import CREDIT
 from tax_engine.domain.parameters.fraction import FRACTION
@@ -48,6 +49,7 @@ FAMILIES: list[tuple[str, ParameterKind[Any]]] = [
     ("ca-on/lift_rate", RATE),
     ("ca-on/lift_single_rate", RATE),
     ("ca-on/tax_reduction_multiplier", FRACTION),
+    ("ca-on/marginal_rate_gate", AMOUNT_BY_BAND),
 ]
 
 
