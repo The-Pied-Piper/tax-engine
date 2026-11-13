@@ -42,6 +42,12 @@ AB428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
 """Lower bound of the column, AB428 line 10 "Line 10: 181,481.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 181,481 or less."""
 
+AB428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
+    CATALOG, "ab428_bracket_tax_at_start_line_14", non_negative=True
+)
+"""Tax at the start of the column, AB428 line 14 "Line 14: 17,553.04": the printed tax at the start
+of the column of lines 9 to 15 that line 1 falls in, blank when line 1 is 181,481 or less."""
+
 AB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "ab428_tax_on_taxable_income_line_8", non_negative=True
 )
@@ -189,12 +195,24 @@ AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, AB428 line 34 "Line 34 and line 58360: Pension income amount (maximum
 $1,719)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
 
+AB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_36", non_negative=True
+)
+"""Credits subtotal, AB428 line 36 "Line 36: Add lines 33 to 35. = ^": line 35 (caregiver amount) is
+not built, so the sum adds line 33 and the line 34 pension income amount."""
+
 AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "ab428_bracket_lower_bound_line_3", non_negative=True
 )
 """Lower bound of the column, AB428 line 3 "Line 3: 0.00" (60,000.00; 151,234.00): the printed lower
 bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 181,481,
 where lines 9 to 15 apply."""
+
+AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "ab428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, AB428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero; blank when line 3 is blank."""
 
 AB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "ab428_bracket_tax_at_start_line_7", non_negative=True
@@ -208,3 +226,10 @@ AB428_BRACKET_RATE_LINE_12 = AmountKind.declare(
 )
 """Bracket column rate, AB428 line 12 (the columns print "Line 12: Rate" with 13%, 14% or 15%): the
 printed rate of the column that line 1 falls in; blank when line 1 is 181,481.00 or less."""
+
+AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
+    CATALOG, "ab428_alberta_tax_on_taxable_income_line_59", non_negative=True
+)
+"""Alberta tax on taxable income, AB428 line 59 "Line 59: Alberta tax on taxable income from line 8
+or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
+blank."""

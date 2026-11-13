@@ -1,0 +1,18 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) Part A, line 14. Each of the columns 1 to 3 of lines 9
+# to 15 prints "Line 14:" with the tax at the column's start: 17,553.04, 25,417.13 and 42,355.31.
+# Column 1 is "Line 1 is more than $181,481 but not more than $241,974", column 2 "more than $241,974
+# but not more than $362,961" and column 3 "more than $362,961". Line 14 is the printed tax at the
+# start of the column that line 1 falls in, and is blank when line 1 is $181,481 or less. Line 9 is
+# a copy of line 1 and has no step of its own: line 14 reads line 1 directly.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "14"
+    unit: ca/cad
+    params:
+      schedule: ca-ab/brackets_lines_9_to_15
+    consumes:
+      base: ca-ab/ab428_taxable_income_line_1
+    produces:
+      output: ca-ab/ab428_bracket_tax_at_start_line_14
