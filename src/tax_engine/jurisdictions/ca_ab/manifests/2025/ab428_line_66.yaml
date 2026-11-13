@@ -1,0 +1,18 @@
+# Form AB428 (Alberta Tax and Credits, 2025, CRA 5009-c) line 66 "Line 66: Line 61 minus line 65
+# (if negative, enter "0") = ^". One core/subtract_not_below_zero step: the Alberta tax (line 61,
+# `ca-ab/ab428_tax_line_61`) less the credits subtotal (line 65,
+# `ca-ab/ab428_credits_subtotal_line_65`), not below 0. Both lines are always computed, so there is
+# no blank rule. The form prints no title for the line, so the step has none.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "66"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/ab428_tax_line_61
+      less: ca-ab/ab428_credits_subtotal_line_65
+    produces:
+      output: ca-ab/ab428_tax_after_credits_line_66

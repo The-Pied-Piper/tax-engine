@@ -315,3 +315,10 @@ AB428_CREDITS_SUBTOTAL_LINE_65 = AmountKind.declare(
 """Alberta credits subtotal, AB428 line 65 "Line 65: Add lines 62 to 64. = ^": line 62 (the
 non-refundable credits) plus line 63 (the dividend tax credit, blank read as 0) plus line 64 (the
 minimum tax carryover), rounded to the cent."""
+
+AB428_TAX_AFTER_CREDITS_LINE_66 = AmountKind.declare(
+    CATALOG, "ab428_tax_after_credits_line_66", non_negative=True
+)
+"""Alberta tax after credits, AB428 line 66 "Line 66: Line 61 minus line 65 (if negative, enter "0")
+= ^": line 61 (the Alberta tax) minus line 65 (the credits subtotal), not below 0, rounded to the
+cent."""
