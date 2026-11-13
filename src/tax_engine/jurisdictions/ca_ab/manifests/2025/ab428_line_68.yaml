@@ -1,0 +1,18 @@
+# Form AB428 (Alberta Tax and Credits, 2025, CRA 5009-c) line 68 "Line 68: Line 66 plus line 67 =
+# ^". One core/sum step: the Alberta tax after credits (line 66,
+# `ca-ab/ab428_tax_after_credits_line_66`) plus the additional minimum tax (line 67,
+# `ca-ab/ab428_additional_minimum_tax_line_67`). Both lines are always computed, so there is no
+# blank rule. The form prints no title for the line, so the step has none.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/sum
+    reference: "68"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        [ca-ab/ab428_tax_after_credits_line_66, ca-ab/ab428_additional_minimum_tax_line_67]
+    produces:
+      output: ca-ab/ab428_tax_line_68
