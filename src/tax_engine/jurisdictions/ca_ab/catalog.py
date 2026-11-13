@@ -197,6 +197,12 @@ AB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
 """Credits subtotal, AB428 line 36 "Line 36: Add lines 33 to 35. = ^": line 35 (caregiver amount) is
 not built, so the sum adds line 33 and the line 34 pension income amount."""
 
+AB428_CREDITS_SUBTOTAL_LINE_39 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_39", non_negative=True
+)
+"""Credits subtotal, AB428 line 39 "Line 39: Add lines 36 to 38. = ^": lines 37 and 38 (the
+disability amounts) are not built, so the sum reads line 36 alone."""
+
 AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "ab428_bracket_lower_bound_line_3", non_negative=True
 )
