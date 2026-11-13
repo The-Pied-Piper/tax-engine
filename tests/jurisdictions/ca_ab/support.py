@@ -1,10 +1,11 @@
-"""The Alberta package list and the registries built over it, for the Alberta tests.
+"""The Alberta package list and the registries built over it, for the older Alberta tests.
 
-Alberta is not in `tax_engine.registrations.JURISDICTIONS` until the end-to-end ticket lists
-it, because a partial Alberta manifest would fail the startup check. Until then the Alberta tests
-build their own package list (core, federal, Alberta) and take their kinds, units, capabilities and
-parameter parsers from it, as `tests/kinds.py` and `tests/capabilities.py` do for the bundled list.
-Each registry is built once per test process; never register into one.
+Alberta is listed in `tax_engine.registrations.JURISDICTIONS` (as is Ontario), and a test of the
+registered engine takes the `take_home_service` fixture of `conftest.py` or the registries of
+`tax_engine.registrations`. The tests written before the listing build their own package list
+(core, federal, Alberta) here and take their kinds, units, capabilities and parameter parsers from
+it, as `tests/kinds.py` and `tests/capabilities.py` do for the bundled list. Each registry is
+built once per test process; never register into one.
 """
 
 from __future__ import annotations

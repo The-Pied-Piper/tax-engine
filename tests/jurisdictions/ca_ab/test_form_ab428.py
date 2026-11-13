@@ -3,7 +3,8 @@
 Form text (Form AB428, CRA 5009-c-25e.txt): "Line 75: Line 73 minus line 74 (if negative, enter "0")
 Enter this amount on line 42800 of your return. Alberta tax =".
 The form exports line 75 and supplies it as `ca/provincial_tax.amount`, the name the federal T1
-reads for line 42800. Line 75 has no step yet, so it is declared as an input of the test header.
+reads for line 42800. Line 75 is declared as an input of the test header: this test loads only
+the form declaration (`ab428.yaml`), not the step of `ab428_line_75.yaml`, which has its own test.
 """
 
 from __future__ import annotations

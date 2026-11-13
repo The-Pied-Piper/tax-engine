@@ -12,9 +12,8 @@
 # is a refund). Alberta uses the standard federal CPP and EI (no QPP), so Schedule 8 and T2204 are
 # imported unchanged.
 #
-# Alberta is not yet listed in `registrations.JURISDICTIONS`: the startup check builds every listed
-# manifest, and this one is partial until the AB428 forms exist (T1 needs `ca/provincial_tax.amount`,
-# which no Alberta form supplies yet). The end-to-end ticket lists it.
+# Alberta is listed in `registrations.JURISDICTIONS`: the startup check builds every listed
+# manifest, and this one is complete, AB428 line 75 supplying `ca/provincial_tax.amount` for T1.
 jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
