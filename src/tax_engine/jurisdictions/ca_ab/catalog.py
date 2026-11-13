@@ -161,6 +161,10 @@ WORKSHEET_AB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_ab428_line_6", n
 """Base amount, Worksheet AB428 line 6 "Line 6: Base amount 4,800.00": the base amount of the
 Alberta supplemental tax credit."""
 
+WORKSHEET_AB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_ab428_line_2", non_negative=True)
+"""Amount from AB428 line 58560, Worksheet AB428 line 2 "Line 2: Amount from line 58560 of your Form
+AB428": the unused tuition amount of Form AB428 line 41, read as the worksheet's second figure."""
+
 AB428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "ab428_ei_premiums_line_29", non_negative=True
 )
@@ -235,3 +239,10 @@ AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
 """Alberta tax on taxable income, AB428 line 59 "Line 59: Alberta tax on taxable income from line 8
 or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
 blank."""
+
+AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
+    CATALOG, "ab428_taxable_income_over_lower_bound_line_11", non_negative=True
+)
+"""Taxable income over the lower bound, AB428 line 11 "Line 11: Line 9 minus line 10 (cannot be
+negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 181,481.00
+or less, where line 10 is blank."""
