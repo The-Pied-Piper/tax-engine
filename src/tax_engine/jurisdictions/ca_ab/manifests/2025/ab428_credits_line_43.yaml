@@ -1,0 +1,19 @@
+# Form AB428 (CRA 5009-c) line 43: "Line 43: Add lines 39 to 42. = ^". It sums the credits subtotal
+# (line 39, `ca-ab/ab428_credits_subtotal_line_39`) and the unused tuition and education amounts
+# (line 41, `ca-ab/ab428_unused_tuition_line_41`). Lines 40 and 42 are not built. Line 41 is an
+# optional input that a salary-only caller leaves out, read as blank and then as 0 by the blank
+# rule below. Line 43 is the output `ca-ab/ab428_credits_subtotal_line_43`.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    reference: "43"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts: [ca-ab/ab428_credits_subtotal_line_39, ca-ab/ab428_unused_tuition_line_41]
+    blank:
+      ca-ab/ab428_unused_tuition_line_41: "0"
+    produces:
+      output: ca-ab/ab428_credits_subtotal_line_43
