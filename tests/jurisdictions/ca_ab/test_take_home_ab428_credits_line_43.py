@@ -4,7 +4,7 @@ Form text (Form AB428, CRA 5009-c-25e.txt, read 2026-11-12): "Line 43: Add lines
 Lines 40 and 42 are not built; line 41, "Your unused tuition and education amounts (attach Schedule
 AB(S11))", is an optional input, blank for a salary-only filer. Line 43 is one core/sum over line 39
 and the line 41 input, as Ontario line 44 is; the blank line 41 is read as 0 and the step prints
-its own "left blank, taken as 0" row.
+its own "Left blank, taken as 0" row.
 
 The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
 16, line 25, line 27, line 29, line 32, line 33, line 36 and line 39 parts, the line 34 inputs
@@ -143,7 +143,7 @@ def test_line_43_adds_line_41_when_it_is_given(tmp_path: Path) -> None:
 def test_a_blank_line_41_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
     rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
 
-    assert any("left blank, taken as 0" in row for row in rows)
+    assert any("Left blank, taken as 0" in row for row in rows)
 
 
 def _part() -> dict[str, Any]:
