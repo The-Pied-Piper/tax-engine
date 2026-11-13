@@ -49,6 +49,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, MultipliedByRateLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAX_ON_EXCESS_LINE_13
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -277,8 +278,6 @@ def test_the_part_is_one_multiply_by_rate_step_over_lines_11_and_12() -> None:
 
 
 def test_line_13_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAX_ON_EXCESS_LINE_13
-
     kind = alberta_kinds().kind(LINE_13)
 
     assert kind is AB428_TAX_ON_EXCESS_LINE_13
