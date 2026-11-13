@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 27, the reduction amount, as the Ontario take-home manifest
 parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, lines 306-308): "Line 26: Rate 15%"
+Form text (5000-S6 2025): "Line 26: Rate 15%"
 and "Line 27: Line 25 multiplied by the percentage from line 26". Line 25 is the net income over
 the base amount (`ca/cwb_net_income_over_base_amount`, from schedule_6_line_25.yaml), and line 26
 is the printed 15%, which is the rate dataset `ca/cwb_reduction_rate`, so line 27 is one

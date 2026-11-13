@@ -1,6 +1,6 @@
 """ON428 (2025) line 50, as the Ontario take-home manifest part wires it.
 
-Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 50 and line 61500: Line 46
+Form text (ON428, CRA 5006-c-25e.txt): "Line 50 and line 61500: Line 46
 plus line 49 Enter this amount on line 52. Ontario non-refundable tax credits =". Line 49 is
 "Line 49 and line 58969: Line 47 plus line 48" (donations), an optional input with blank fallback
 0, in its own part file (on428_line_49_inputs.yaml). Line 50 is one core/sum over line 46 then

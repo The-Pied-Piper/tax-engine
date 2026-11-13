@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 6, family working income, as the Ontario take-home manifest parts
 wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, line 156): "Line 6: Add the amounts
+Form text (5000-S6 2025): "Line 6: Add the amounts
 from line 5 in columns 1 and 2. Enter this amount on line 16. Family working income". Line 6 is a
 calculation: the sum of line 5 over the columns. The take-home calculator is single with no eligible
 spouse, so column 2 (`ca/cwb_spouse_working_income`) is left out and the sum has one part: line 5

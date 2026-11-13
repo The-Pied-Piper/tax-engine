@@ -1,6 +1,6 @@
 """ON428 (2025) line 43's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in docs/cra-forms-2025): "Line 43 and line 58769: Line 41 plus
+Form text (ON428, CRA 5006-c-25e.txt): "Line 43 and line 58769: Line 41 plus
 line 42 =". A salary-only caller has no medical expenses, so a request that leaves the line out is
 read as blank, and the line 44 part reads that blank as 0.
 

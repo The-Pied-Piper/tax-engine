@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 20, the working income rate amount, as the Ontario take-home
 manifest parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, lines 288-290): "Line 19: Rate 27%"
+Form text (5000-S6 2025): "Line 19: Rate 27%"
 and "Line 20: Line 18 multiplied by the percentage from line 19". Line 18 is the working income
 over the base amount and line 19 is the printed 27%, which is the rate dataset `ca/cwb_rate`, so
 line 20 is one core/apply_rate of line 18 by that rate, rounded half-up to the cent.

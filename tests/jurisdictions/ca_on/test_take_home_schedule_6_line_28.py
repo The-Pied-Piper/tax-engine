@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 28, the Canada workers benefit to T1 line 45300, as the Ontario
 take-home manifest parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, lines 310-311): "Line 28: Line 22
+Form text (5000-S6 2025): "Line 28: Line 22
 minus line 27 (if negative, enter "0") If you are not completing Step 3, enter this amount on line
 45300 of your return." Line 22 is the basic benefit before reduction
 (`ca/cwb_basic_benefit_line_22`, from schedule_6_line_22.yaml) and line 27 is the reduction amount

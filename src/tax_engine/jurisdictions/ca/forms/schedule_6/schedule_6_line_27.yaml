@@ -1,6 +1,5 @@
 # Schedule 6 (5000-S6, 2025) line 27, the reduction amount. The form prints:
 # "Line 26: Rate 15%" and "Line 27: Line 25 multiplied by the percentage from line 26"
-# (docs/cra-forms-2025/5000-s6-25e.txt, lines 306-308).
 #
 # Line 26 is the printed 15%, held in the rate dataset `ca/cwb_reduction_rate` (from
 # cwb_reduction_rate/2025.yaml), so it has no step. Line 25 is `ca/cwb_net_income_over_base_amount`
