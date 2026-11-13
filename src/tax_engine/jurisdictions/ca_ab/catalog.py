@@ -253,3 +253,10 @@ AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
 """Taxable income over the lower bound, AB428 line 11 "Line 11: Line 9 minus line 10 (cannot be
 negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 181,481.00
 or less, where line 10 is blank."""
+
+AB428_TAX_ON_EXCESS_LINE_13 = AmountKind.declare(
+    CATALOG, "ab428_tax_on_excess_line_13", non_negative=True
+)
+"""Tax on the excess over the lower bound, AB428 line 13 "Line 13: Line 11 multiplied by the
+percentage from line 12 =": line 11 times the line 12 rate, rounded to the cent; blank when line 11
+or line 12 is blank."""
