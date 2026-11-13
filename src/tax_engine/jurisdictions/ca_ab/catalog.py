@@ -283,6 +283,13 @@ AB428_CREDITS_FROM_LINE_58_LINE_62 = AmountKind.declare(
 tax credits from line 58 ^": the total of the credits form's line 58, which says to enter it
 here."""
 
+AB428_SUPPLEMENTAL_TAX_CREDIT_LINE_74 = AmountKind.declare(
+    CATALOG, "ab428_supplemental_tax_credit_line_74", non_negative=True
+)
+"""Alberta supplemental tax credit, AB428 line 74 "Line 74 and line 61545: Alberta supplemental tax
+credit (use Worksheet AB428)": the amount of the worksheet's line 9, which says to enter it on line
+61545 of the form."""
+
 AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
     CATALOG, "ab428_taxable_income_over_lower_bound_line_11", non_negative=True
 )
