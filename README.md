@@ -34,7 +34,7 @@ line 90: Line 88 (3311.45) plus line 89 (600.00) gives 3911.45 (rounded to the n
 - **Explains itself.** A trace for every line: inputs, operation, result, rounding. A renderer turns it into text in any language; English is built today.
 - **Mirrors the forms.** One form line is one capability, so engine steps read like the form itself.
 - **Rules are data.** Rates, thresholds and limits are datasets copied as printed, never recomputed in code.
-- **Checked against official sources.** Results are compared with the CRA payroll deductions calculator, CRA's T4127 guide and, for 2025, the printed forms.
+- **Follows the published forms.** The engine follows the CRA's published forms and formulas, including the T4127 payroll guide, line by line. It is an independent estimation tool and has not been reviewed or approved by the CRA.
 - **Exact arithmetic.** `Decimal` everywhere, rounding only where the form says to round.
 - **Jurisdiction-agnostic core.** Jurisdictions are plugins that add forms, datasets and capabilities; adding one does not change the core.
 
@@ -96,7 +96,7 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 | Ontario | 2025, 2026 (provisional) | ON428 (Ontario tax), ON428-A (LIFT credit) |
 | Alberta | 2025, 2026 (provisional) | AB428 (Alberta tax), Worksheet AB428 (Alberta supplemental tax credit) |
 
-Roadmap: more forms and lines, and other provinces and territories. Forms are added one at a time, each checked against the CRA's own text.
+Roadmap: more forms and lines, and other provinces and territories. Forms are added one at a time, each built line by line from the CRA's own text.
 
 ## Disclaimer and limits
 
