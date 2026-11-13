@@ -24,7 +24,9 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.blank import BLANK, PASS_ON, Blank
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     InvalidCapabilityError,
     InvalidRateError,
     MissingArtifactError,
@@ -39,7 +41,7 @@ from tax_engine.domain.parameters.rounding import (
     RoundTo,
 )
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
-from tax_engine.domain.trace import MultipliedByRateLine
+from tax_engine.domain.trace import BlankPassedOnLine, MultipliedByRateLine
 from tax_engine.jurisdictions.core.capabilities.multiply_by_rate import MultiplyByRate
 from tests.capabilities import bundled_capabilities
 
@@ -320,3 +322,50 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank base or rate ---------------------------------------------------------------------
+
+
+def test_allows_a_blank_in_its_base_and_its_rate() -> None:
+    assert MultiplyByRate.BLANK_ALLOWED == frozenset({"base", "rate"})
+
+
+def test_a_blank_base_with_no_rule_is_refused_naming_the_line() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'excess_income'.*'base'"):
+        capability().run((Artifact(BASE, BLANK), Artifact(RATE_KIND, D("0.1"))))
+
+
+def test_a_blank_rate_with_no_rule_is_refused_naming_the_line() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'column_rate'.*'rate'"):
+        capability().run((Artifact(BASE, D("100")), Artifact(RATE_KIND, BLANK)))
+
+
+@pytest.mark.parametrize(
+    ("base", "rate", "because"),
+    [
+        (BLANK, D("0.1"), (BASE,)),
+        (D("100"), BLANK, (RATE_KIND,)),
+        (BLANK, BLANK, (RATE_KIND, BASE)),
+    ],
+)
+def test_a_blank_passed_on_gives_a_blank_output_and_no_rounding(
+    base: Decimal | Blank, rate: Decimal | Blank, because: tuple[AmountKind, ...]
+) -> None:
+    # A rounding rule that would raise on any figure shows that nothing is rounded.
+    wired = capability(rounding(CENT)).with_blank_rules({"base": PASS_ON, "rate": PASS_ON})
+
+    result = wired.run((Artifact(BASE, base), Artifact(RATE_KIND, rate)))
+
+    assert result.outputs == (Artifact(OUTPUT, BLANK),)
+    assert result.trace == (BlankPassedOnLine(OUTPUT, because),)
+
+
+def test_filled_figures_are_the_same_with_or_without_the_blank_rules() -> None:
+    wired = capability(rounding(CENT)).with_blank_rules({"base": PASS_ON, "rate": PASS_ON})
+
+    ruled = wired.run(inputs("16449", "0.0915"))
+    plain = capability(rounding(CENT)).run(inputs("16449", "0.0915"))
+
+    assert ruled == plain
+    assert ruled.outputs == (Artifact(OUTPUT, D("1505.08")),)
