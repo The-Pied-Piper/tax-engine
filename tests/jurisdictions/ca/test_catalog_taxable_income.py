@@ -21,4 +21,4 @@ def test_the_taxable_income_kinds_are_money() -> None:
 # --- more than one disposition: notes (1) to (3) and the order of the claims ---------------------
 #
 # The kinds are the sums of the earlier runs and the lines as corrected, each with a docstring that
-# quotes the form's own words (`docs/cra-forms-2025/t2048-25e.pdf`).
+# quotes the form's own words.

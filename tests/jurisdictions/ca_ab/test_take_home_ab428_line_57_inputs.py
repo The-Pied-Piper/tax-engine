@@ -1,6 +1,6 @@
 """AB428 (2025) line 57's input, as the Alberta take-home manifest part declares it.
 
-Form text (Form AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 57 and line 58969: Line 55
+Form text (Form AB428, CRA 5009-c-25e.txt): "Line 57 and line 58969: Line 55
 plus line 56 =". Line 57 is the donations and gifts credit, taken as one input figure (lines 55 and
 56 are not built). A salary-only caller gives no donations, so a request that leaves the line out
 is read as blank, not as 0: the lines that read it take the blank as 0.

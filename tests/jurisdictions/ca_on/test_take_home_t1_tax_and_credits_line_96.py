@@ -1,7 +1,7 @@
 """T1 General 2025 (5006-R, Ontario) Step 5 Part B line 96, from the salary alone.
 
-Line 96 is "Line 96: Add lines 86 to 95." (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt, line 548). The take-home filer has three of the lines 86 to 95:
+Line 96 is "Line 96: Add lines 86 to 95." (T1 General 5006-R, CRA 5006-R-25E, confirmed).
+The take-home filer has three of the lines 86 to 95:
 line 86 (`ca/cpp_base_contributions_line_86`, the base CPP of Schedule 8 for T1 line 30800), line 88
 (`ca/ei_premiums_line_88`, the EI premiums of T2204 line 16 for T1 line 31200) and line 92
 (`ca/canada_employment_amount`, the Canada employment amount of T1 line 31260). The other lines

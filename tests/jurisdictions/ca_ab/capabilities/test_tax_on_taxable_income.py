@@ -1,7 +1,7 @@
 """Unit tests for the TaxOnTaxableIncome capability (`ca-ab/tax_on_taxable_income`), with made-up
 kinds.
 
-AB428 line 59 (cra-docs, docs/cra-forms-2025/5009-c-25e.txt): "Line 59: Alberta tax on taxable
+AB428 line 59: "Line 59: Alberta tax on taxable
 income from line 8 or line 15". The form prints two tables (lines 2 to 8 and lines 9 to 15), and a
 taxable income is in exactly one of them: the other table's line 8 or line 15 is left blank.
 The capability reads both lines as record lists, because another form reads an export only as a

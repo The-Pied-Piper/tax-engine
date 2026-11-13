@@ -1,6 +1,6 @@
 # Schedule 6 (5000-S6, 2025, CRA 5000-S6-25E) line 7. Line 7: "Net income from line 23600 of the return
 # (or the amount you would have entered if the instructions on line 23600 said "if negative, show in
-# brackets")", column 1 "You" (docs/cra-forms-2025/5000-s6-25e.txt, lines 193-197).
+# brackets")", column 1 "You".
 #
 # Line 7 is a step of its own, not a read: the T1 form exports the net income before its floor
 # (`ca/net_income_signed`, line 23600 unfloored), and another form reads an export only as a record
