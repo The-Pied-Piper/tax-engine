@@ -276,6 +276,11 @@ AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
 or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
 blank."""
 
+AB428_TAX_LINE_61 = AmountKind.declare(CATALOG, "ab428_tax_line_61", non_negative=True)
+"""Alberta tax with split income, AB428 line 61 "Line 61: Line 59 plus line 60 = ^" (Form AB428, CRA
+5009-c): the Alberta tax on taxable income of line 59 plus the tax on split income of line 60, which
+is left blank by a salary-only caller and read as 0."""
+
 AB428_CREDITS_FROM_LINE_58_LINE_62 = AmountKind.declare(
     CATALOG, "ab428_credits_from_line_58_line_62", non_negative=True
 )
