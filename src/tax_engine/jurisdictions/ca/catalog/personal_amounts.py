@@ -44,12 +44,14 @@ FEDERAL_BRACKET_RATE_RETURN = AmountKind.declare(
 20.5%, 26%, 29% or 33%): the printed rate of the column that line 70 falls in, read from the T1
 form's export into the return summary."""
 
-NET_FEDERAL_TAX_RETURN = AmountKind.declare(CATALOG, "net_federal_tax_return", non_negative=True)
-"""Net federal tax, T1 line 42000 "Net federal tax": the one amount of the T1 form's export totalled
-into the return summary's own artifact, the base of the federal rate gate."""
+FEDERAL_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "federal_tax_after_credits_return", non_negative=True
+)
+"""Basic federal tax, T1 line 42900 "Basic federal tax": the one amount of the T1 form's export
+totalled into the return summary's own artifact, the base of the federal rate gate."""
 
 FEDERAL_RATE_GATE = AmountKind.declare(CATALOG, "federal_rate_gate", non_negative=True)
-"""Federal rate gate: 0 where the net federal tax (T1 line 42000) is 0.00 and 1 where it is at
+"""Federal rate gate: 0 where the basic federal tax (T1 line 42900) is 0.00 and 1 where it is at
 least one cent, read through a two-band gate dataset. A plain figure, not printed on the form."""
 
 FEDERAL_MARGINAL_RATE = AmountKind.declare(CATALOG, "federal_marginal_rate", non_negative=True)

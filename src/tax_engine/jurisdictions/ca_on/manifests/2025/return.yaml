@@ -30,8 +30,9 @@
 # The step after those multiplies the bracket rate by the surtax factor (lines 5, 66 and 67) into
 # the Ontario bracket marginal rate. It is an exact product, a rate with no printed rounding rule,
 # so the `ca-on/exact_rounding` dataset rounds nothing. It has no title.
-# Each bracket rate counts only where its own tax is above zero. The T1 form exports line 42000
-# "Net federal tax" (`ca/net_federal_tax`) and ON428 exports line 81, the Ontario tax after the
+# Each bracket rate counts only where its own tax is above zero. The T1 form exports line 42900
+# "Basic federal tax" (`ca/federal_tax_after_credits`), the tax after the credits payroll applies
+# (the credits between it and line 42000 are return-only), and ON428 exports line 81, the Ontario tax after the
 # personal credits and the Ontario tax reduction (`ca-on/on428_tax_after_tax_reduction_line_81`);
 # the CRA payroll deductions formulas (T4127, January 2025 edition) apply both, so the Ontario part
 # counts when that tax is positive. The LIFT credit is return-only and not stated in T4127, so it
@@ -113,15 +114,15 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
-      records: ca/t1_tax_and_credits.net_federal_tax
+      records: ca/t1_tax_and_credits.federal_tax_after_credits
     produces:
-      output: ca/net_federal_tax_return
+      output: ca/federal_tax_after_credits_return
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-on/marginal_rate_gate
     consumes:
-      base: ca/net_federal_tax_return
+      base: ca/federal_tax_after_credits_return
     produces:
       output: ca/federal_rate_gate
   - name: core/multiply_by_rate
