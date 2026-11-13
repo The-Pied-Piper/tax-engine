@@ -1,0 +1,21 @@
+# Form AB428 (Alberta Tax and Credits, 2025, CRA 5009-c) line 61, "Line 61: Line 59 plus line 60 = ^".
+# It sums the Alberta tax on taxable income (line 59,
+# `ca-ab/ab428_alberta_tax_on_taxable_income_line_59`) and the tax on split income (line 60,
+# `ca-ab/ab428_tax_on_split_income_line_60`). Line 60 is an optional input that a salary-only caller
+# leaves out, read as blank and then as 0 by the blank rule below. Line 61 is the output
+# `ca-ab/ab428_tax_line_61`.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/sum
+    reference: "61"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        [ca-ab/ab428_alberta_tax_on_taxable_income_line_59, ca-ab/ab428_tax_on_split_income_line_60]
+    blank:
+      ca-ab/ab428_tax_on_split_income_line_60: "0"
+    produces:
+      output: ca-ab/ab428_tax_line_61
