@@ -1,0 +1,16 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: 2025 amount 1,750 x 1.02 (the federal 2026 factor) = 1,785 exactly, so no rounding step applies.
+# Alberta Schedule 6, 2026 tax year, line 21: "If you had an eligible spouse or an eligible
+# dependant, enter $2,619. If not, enter $1,750." (2025 text.) The figure for a filer with no
+# eligible spouse or dependant, claimed whole. It replaces `ca/cwb_maximum` in the Alberta
+# manifest's import of Schedule 6. Rounds half-up to the cent, which changes nothing.
+# The 2026 Alberta Schedule 6 is not yet published; the figure is not confirmed against it.
+# Doubt: it is not confirmed that alberta.ca's 2% covers Schedule 6.
+# MUST BE REPLACED from the printed figures when CRA posts the 2026 Alberta Schedule 6 (expected January or February).
+family: ca-ab/cwb_maximum
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-s6/5009-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "1785"
