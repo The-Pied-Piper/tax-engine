@@ -1,0 +1,20 @@
+# Form AB428 (Alberta Tax and Credits, 2025, CRA 5009-c) line 75 "Line 75: Line 73 minus line 74
+# (if negative, enter "0") Enter this amount on line 42800 of your return. Alberta tax = ^". One
+# core/subtract_not_below_zero step: the Alberta tax after the political contributions credit
+# (line 73, `ca-ab/ab428_tax_line_73`) less the supplemental tax credit (line 74,
+# `ca-ab/ab428_supplemental_tax_credit_line_74`), not below 0. Line 74 is always computed, so the
+# step has no blank rule. Line 75 is the Alberta tax entered on line 42800, supplied through the
+# form's `ca/provincial_tax.amount`. The form prints no title for the line, so the step has none.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "75"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/ab428_tax_line_73
+      less: ca-ab/ab428_supplemental_tax_credit_line_74
+    produces:
+      output: ca-ab/ab428_alberta_tax_line_75
