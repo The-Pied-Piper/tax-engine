@@ -1,9 +1,10 @@
 """The 2026 `ca-ab/supplemental_credit_base` dataset: the Alberta supplemental credit base amount.
 
-The figure is taken from T4127 (Alberta, January 2026), because the 2026 Worksheet AB428
-(CRA 5009-d) is not yet published; the dataset header says so. The amount is not income-tested,
-so it is a `credit` dataset, rounded half-up to the cent like 2025. It is the 2025 amount of 4,800
-indexed by 2%: 4,800 x 1.02 = 4,896.00, which T4127 prints as 4,896.
+The figure is the 2025 amount of 4,800 indexed by 2% (the federal 2026 indexation factor):
+4,800 x 1.02 = 4,896.00, which agrees with the 4,896 that T4127 (Alberta, January 2026) prints for
+payroll. It is inferred, because the 2026 Worksheet AB428 (CRA 5009-d) is not yet published; the
+dataset header says so. The amount is not income-tested, so it is a `credit` dataset, rounded
+half-up to the cent like 2025.
 """
 
 from __future__ import annotations
@@ -19,14 +20,16 @@ from tests.jurisdictions.ca_ab.support import alberta_packages, alberta_paramete
 D = Decimal
 SOURCE = YamlParameterSource(alberta_packages().roots(), alberta_parameter_parsers())
 FAMILY = "ca-ab/supplemental_credit_base"
+FORM_TEXT_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-d/5009-d-25e.txt"
 T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf"
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text "
-    "when CRA publishes it."
+    "# Provisional: taken from the 2025 form text named in sources; to be confirmed against the "
+    "2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: figure as printed in T4127 (4,896), which agrees with the 2025 amount of "
-    "4,800 indexed by 2% (4,800 x 1.02 = 4,896.00); no rounding applied here."
+    "# Derivation: the 2025 amount of 4,800 x 1.02 (the federal 2026 indexation factor) = 4,896, "
+    "the figure T4127 prints for payroll; inferred, as the 2026 Worksheet AB428 (CRA 5009-D) is "
+    "not yet published."
 )
 
 
@@ -49,10 +52,10 @@ def test_2026_amount_rounds_half_up_to_the_cent() -> None:
     assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
-def test_2026_amount_cites_t4127_only() -> None:
+def test_2026_amount_cites_the_2025_form_text_and_t4127() -> None:
     data = SOURCE.get(FAMILY, 2026, CREDIT)
 
-    assert data.sources == (T4127_URL,)
+    assert data.sources == (FORM_TEXT_URL, T4127_URL)
 
 
 def test_2026_amount_is_for_tax_year_2026() -> None:
