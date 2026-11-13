@@ -272,6 +272,13 @@ AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
 or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
 blank."""
 
+AB428_CREDITS_FROM_LINE_58_LINE_62 = AmountKind.declare(
+    CATALOG, "ab428_credits_from_line_58_line_62", non_negative=True
+)
+"""Alberta non-refundable tax credits from line 58, AB428 line 62 "Line 62: Alberta non-refundable
+tax credits from line 58 ^": the total of the credits form's line 58, which says to enter it
+here."""
+
 AB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
     CATALOG, "ab428_taxable_income_over_lower_bound_line_11", non_negative=True
 )
