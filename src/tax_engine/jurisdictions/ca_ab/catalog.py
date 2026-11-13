@@ -301,3 +301,10 @@ AB428_TAX_ON_EXCESS_LINE_13 = AmountKind.declare(
 """Tax on the excess over the lower bound, AB428 line 13 "Line 13: Line 11 multiplied by the
 percentage from line 12 =": line 11 times the line 12 rate, rounded to the cent; blank when line 11
 or line 12 is blank."""
+
+AB428_CREDITS_SUBTOTAL_LINE_65 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_65", non_negative=True
+)
+"""Alberta credits subtotal, AB428 line 65 "Line 65: Add lines 62 to 64. = ^": line 62 (the
+non-refundable credits) plus line 63 (the dividend tax credit, blank read as 0) plus line 64 (the
+minimum tax carryover), rounded to the cent."""
