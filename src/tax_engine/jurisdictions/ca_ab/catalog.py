@@ -207,6 +207,12 @@ AB428_CREDITS_SUBTOTAL_LINE_39 = AmountKind.declare(
 """Credits subtotal, AB428 line 39 "Line 39: Add lines 36 to 38. = ^": lines 37 and 38 (the
 disability amounts) are not built, so the sum reads line 36 alone."""
 
+AB428_CREDITS_SUBTOTAL_LINE_43 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_43", non_negative=True
+)
+"""Credits subtotal, AB428 line 43 "Line 43: Add lines 39 to 42. = ^": lines 40 and 42 are not
+built, so the sum adds line 39 and the line 41 unused tuition and education amounts."""
+
 AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "ab428_bracket_lower_bound_line_3", non_negative=True
 )
