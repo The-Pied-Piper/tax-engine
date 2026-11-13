@@ -16,25 +16,33 @@ part now reads a gate: 0 where its tax is 0.00 and 1 where it is a cent or more.
   (`ca-on/on428_tax_after_tax_reduction_line_81`, read into
   `ca-on/ontario_tax_after_reduction_return`), the tax after the personal credits and the tax
   reduction, before the LIFT credit and the health premium, gives `ca-on/ontario_rate_gate`; the
-  Ontario marginal rate (`ca-on/ontario_marginal_rate`) is that gate times the bracket rate times
-  the surtax factor (`ca-on/ontario_bracket_marginal_rate`). Not line 88 (after the LIFT credit and
-  the farmers' food donation credit) and not line 90 (adds the health premium).
+  Ontario marginal rate (`ca-on/ontario_marginal_rate`) is that gate times the bracket rate with
+  the tax reduction phase-out (`ca-on/ontario_bracket_rate_with_reduction`). Not line 88 (after
+  the LIFT credit and the farmers' food donation credit) and not line 90 (adds the health
+  premium).
+- The Ontario tax reduction phase-out: ON428 line 80 "Ontario tax reduction"
+  (`ca-on/on428_ontario_tax_reduction_line_80`, read into `ca-on/ontario_tax_reduction_return`)
+  gives `ca-on/ontario_reduction_gate` (1 while it is above 0). While lines 80 and 81 are both above
+  0, line 81 is 2 x line 73 less 588, so a further dollar of income adds the bracket tax and takes
+  the same amount of tax reduction away: `ca-on/ontario_reduction_phase_out_rate` is that gate times
+  the bracket rate times the surtax factor (`ca-on/ontario_bracket_marginal_rate`), and
+  `ca-on/ontario_bracket_rate_with_reduction` is the bracket product plus it, so the Ontario part
+  is double (10.1%) in that band.
 - The health premium slope is unchanged: the rate of the ON428 line 89 chart row of the taxable
   income (6% from 20,000 to 25,000, 0 in a flat row).
 
 No new form text is quoted (the printed rates are those pinned in the marginal rate test file;
 the thresholds are measured). Thresholds, salary only, 2025: basic federal tax (line 42900) is first
-positive at
-18,820.27 (at 18,820.26 the tax before credits equals the credits, 2,706.72) and ON428 line 81 at
-19,868.74 (0.02; 0.00 at 19,868.73).
+positive at 18,820.27 (at 18,820.26 the tax before credits equals the credits, 2,706.72), ON428
+line 81 at 19,868.74 (0.02; 0.00 at 19,868.73) and ON428 line 80 is 0.01 at 26,168.36 and 0.00 from
+26,168.37.
 
 Taxable income (T1 line 26000) is the salary less the enhanced CPP deduction, 1% of the salary over
 3,500 rounded to the cent (19,835.00 at 20,000): 19,705.04 at 19,868.73 (slope 0), 24,785.00 at
-25,000 (6% row), 29,735.00 at 30,000 and 32,030.39 at 32,318.58 (flat 300 row, slope 0). The surtax
-base is under 5,710 there, so the surtax factor is 1.
+25,000 (6% row), 29,735.00 at 30,000 and 32,030.39 at 32,318.58 (flat 300 row, slope 0) and
+25,941.68 at 26,168.36 (flat row). The surtax base is under 5,710 there, so the surtax factor is 1.
 
-Known limit: the rate stays the bracket rate, so it ignores the phase-out slopes of the Ontario tax
-reduction and the LIFT credit and the effect of CPP and EI on income tax.
+Known limit: the rate ignores the LIFT credit phase-out and the effect of CPP and EI on income tax.
 """
 
 from __future__ import annotations
@@ -56,6 +64,9 @@ RETURN = "ca-on/return"
 
 BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits_return"
 TAX_AFTER_REDUCTION = "ca-on/ontario_tax_after_reduction_return"
+TAX_REDUCTION = "ca-on/ontario_tax_reduction_return"
+REDUCTION_GATE = "ca-on/ontario_reduction_gate"
+WITH_REDUCTION = "ca-on/ontario_bracket_rate_with_reduction"
 FEDERAL_GATE = "ca/federal_rate_gate"
 ONTARIO_GATE = "ca-on/ontario_rate_gate"
 FEDERAL_BRACKET = "ca/federal_bracket_rate_return"
@@ -76,11 +87,17 @@ PARTS = [
     ("18820.27", "0.145", "0", "0", "0.145"),
     ("19868.73", "0.145", "0", "0", "0.145"),
     # ON428 line 81 is first positive at 19,868.74: the Ontario part, 5.05% times the factor 1.
-    ("19868.74", "0.145", "0.0505", "0", "0.1955"),
-    ("20000", "0.145", "0.0505", "0", "0.1955"),
+    # While the Ontario tax reduction (line 80) is also above 0, line 81 falls by twice the line 73
+    # bracket tax, so the Ontario part is double: 2 x 5.05% = 10.1%.
+    ("19868.74", "0.145", "0.101", "0", "0.246"),
+    ("20000", "0.145", "0.101", "0", "0.246"),
     # The health premium slope shows (6% in the 20,000 to 25,000 row, 0 in the flat row).
-    ("22000", "0.145", "0.0505", "0.06", "0.2555"),
-    ("25000", "0.145", "0.0505", "0.06", "0.2555"),
+    ("22000", "0.145", "0.101", "0.06", "0.306"),
+    ("25000", "0.145", "0.101", "0.06", "0.306"),
+    # Line 80 is 0.01 at 26,168.36 (taxable income 25,941.68, flat row) and 0.00 at 26,168.37: the
+    # Ontario part is single again.
+    ("26168.36", "0.145", "0.101", "0", "0.246"),
+    ("26168.37", "0.145", "0.0505", "0", "0.1955"),
     ("30000", "0.145", "0.0505", "0", "0.1955"),
     ("32318.58", "0.145", "0.0505", "0", "0.1955"),
     # Unchanged by the gates (both taxes are positive).
@@ -178,3 +195,48 @@ def test_the_ontario_gate_follows_line_81_and_not_line_88() -> None:
     ).value == D("0")
     assert _value(summary, TAX_AFTER_REDUCTION) > 0
     assert _value(summary, ONTARIO_GATE) == D("1")
+
+
+@pytest.mark.parametrize(
+    ("salary", "reduction_is_positive"),
+    [
+        ("19868.74", True),
+        ("20000", True),
+        ("25000", True),
+        ("26168.36", True),
+        ("26168.37", False),
+        ("30000", False),
+        ("70000", False),
+    ],
+)
+def test_the_reduction_gate_follows_the_ontario_tax_reduction(
+    salary: str, reduction_is_positive: bool
+) -> None:
+    # ON428 line 80 is 0.01 at 26,168.36 and 0.00 at 26,168.37 (not the line 81 gate: line 81 is
+    # above 0 from 19,868.74 on).
+    summary = _summary(salary)
+
+    assert (_value(summary, TAX_REDUCTION) > 0) is reduction_is_positive
+    assert _value(summary, REDUCTION_GATE) == D(int(reduction_is_positive))
+
+
+@pytest.mark.parametrize(
+    ("salary", "with_reduction"),
+    [
+        ("19868.74", "0.101"),
+        ("25000", "0.101"),
+        ("26168.36", "0.101"),
+        ("26168.37", "0.0505"),
+        ("30000", "0.0505"),
+        ("70000", "0.0915"),
+    ],
+)
+def test_the_bracket_rate_with_the_reduction_doubles_while_line_80_is_positive(
+    salary: str, with_reduction: str
+) -> None:
+    summary = _summary(salary)
+
+    assert _value(summary, WITH_REDUCTION) == D(with_reduction)
+    assert _value(summary, WITH_REDUCTION) == _value(summary, ONTARIO_BRACKET) * (
+        1 + _value(summary, REDUCTION_GATE)
+    )

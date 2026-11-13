@@ -142,8 +142,52 @@ def test_the_return_gates_the_federal_and_the_ontario_marginal_rates_exactly() -
     assert (
         "core/multiply_by_rate",
         {"rounding": "ca-on/exact_rounding"},
-        {"base": "ca-on/ontario_rate_gate", "rate": "ca-on/ontario_bracket_marginal_rate"},
+        {"base": "ca-on/ontario_rate_gate", "rate": "ca-on/ontario_bracket_rate_with_reduction"},
         {"output": "ca-on/ontario_marginal_rate"},
+    ) in steps
+
+
+def test_the_return_reads_on428_line_80_the_tax_reduction_into_its_own_kind() -> None:
+    assert (
+        "core/record_total",
+        {},
+        {"records": "ca-on/on428.on428_ontario_tax_reduction_line_80"},
+        {"output": "ca-on/ontario_tax_reduction_return"},
+    ) in _return_steps()
+
+
+def test_the_return_gates_on_the_tax_reduction_with_the_marginal_rate_gate_dataset() -> None:
+    # 1 while the Ontario tax reduction (line 80) is above 0.
+    assert (
+        "core/amount_by_band_rate",
+        {"table": "ca-on/marginal_rate_gate"},
+        {"base": "ca-on/ontario_tax_reduction_return"},
+        {"output": "ca-on/ontario_reduction_gate"},
+    ) in _return_steps()
+
+
+def test_the_return_adds_the_phase_out_to_the_bracket_rate_exactly() -> None:
+    # While lines 80 and 81 are both above 0, line 81 falls by 2 x the line 73 bracket tax less a
+    # constant, so the rate is the bracket rate (times the surtax factor) twice: the phase-out rate
+    # is the reduction gate times the ungated product, and the sum adds it to that product.
+    steps = _return_steps()
+
+    assert (
+        "core/multiply_by_rate",
+        {"rounding": "ca-on/exact_rounding"},
+        {"base": "ca-on/ontario_reduction_gate", "rate": "ca-on/ontario_bracket_marginal_rate"},
+        {"output": "ca-on/ontario_reduction_phase_out_rate"},
+    ) in steps
+    assert (
+        "core/sum",
+        {"rounding": "ca-on/exact_rounding"},
+        {
+            "parts": (
+                "ca-on/ontario_bracket_marginal_rate",
+                "ca-on/ontario_reduction_phase_out_rate",
+            )
+        },
+        {"output": "ca-on/ontario_bracket_rate_with_reduction"},
     ) in steps
 
 
@@ -159,11 +203,18 @@ def test_the_gates_come_after_their_tax_and_before_the_gated_rates() -> None:
         "ca-on/ontario_bracket_marginal_rate",
         "ca-on/ontario_marginal_rate",
         "ca-on/marginal_tax_rate",
+        "ca-on/ontario_tax_reduction_return",
+        "ca-on/ontario_reduction_gate",
+        "ca-on/ontario_reduction_phase_out_rate",
+        "ca-on/ontario_bracket_rate_with_reduction",
     ]
     positions = [outputs.index(name) for name in order]
     assert positions[0] < positions[1] < positions[2] < positions[7]
     assert positions[3] < positions[4] < positions[6] < positions[7]
     assert positions[5] < positions[6]
+    # The line 80 read, its gate, the phase-out multiply and the sum come after the ungated Ontario
+    # product and before the gated Ontario multiply that reads their sum.
+    assert positions[5] < positions[8] < positions[9] < positions[10] < positions[11] < positions[6]
     # The unchanged final sum is still the last step.
     assert outputs[-1] == "ca-on/marginal_tax_rate"
 
@@ -217,7 +268,7 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
     } <= set(_manifest().inputs)
 
 
-def test_on428_exports_lines_90_and_81_the_surtax_base_line_65_and_the_line_5_rate() -> None:
+def test_on428_exports_lines_90_81_and_80_the_surtax_base_line_65_and_the_line_5_rate() -> None:
     (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
 
     assert set(on428.exports) == {
@@ -225,6 +276,7 @@ def test_on428_exports_lines_90_and_81_the_surtax_base_line_65_and_the_line_5_ra
         "ca-on/on428_surtax_base_line_65",
         "ca-on/on428_bracket_column_rate_line_5",
         "ca-on/on428_tax_after_tax_reduction_line_81",
+        "ca-on/on428_ontario_tax_reduction_line_80",
     }
 
 
