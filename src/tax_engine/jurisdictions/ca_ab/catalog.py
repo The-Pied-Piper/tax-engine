@@ -192,6 +192,13 @@ AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 181,481,
 where lines 9 to 15 apply."""
 
+AB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "ab428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, AB428 line 7 "Line 7: 0.00" (4,800.00; 13,923.40): the printed
+tax at the start of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
+above 181,481, where lines 9 to 15 apply."""
+
 AB428_BRACKET_RATE_LINE_12 = AmountKind.declare(
     CATALOG, "ab428_bracket_rate_line_12", non_negative=True
 )
