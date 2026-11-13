@@ -1,0 +1,13 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 Table 8.2, Alberta row; consistent with 22,323 x 1.02 = 22,769.46 rounded down to 22,769.
+# Alberta basic personal amount, 2026 tax year (Form AB428 line 58040; CRA 5009-c): T4127 Table 8.2, row AB,
+# basic amount 22,769. Not income-tested. The credit rate is its own dataset.
+# The 2026 AB428 text is not yet published, so the figure is not yet confirmed against it.
+# Rounds half-up to the cent, the project's choice, as a dollars-and-cents box.
+family: ca-ab/basic_personal_amount
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "22769"
