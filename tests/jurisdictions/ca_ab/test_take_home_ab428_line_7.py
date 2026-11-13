@@ -1,7 +1,7 @@
 """AB428 (2025) line 7, the tax at the start of the column for lines 2 to 8, real engine.
 
-Form text (Form AB428, CRA 5009-c-25e.txt, https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt,
-read 2026-11-12): "Column 1: Line 1 is $60,000 or less / ... Line 7: 0.00", "Column 2: Line 1 is
+Form text (Form AB428, CRA 5009-c-25e.txt, read 2026-11-12):
+"Column 1: Line 1 is $60,000 or less / ... Line 7: 0.00", "Column 2: Line 1 is
 more than $60,000 but not more than $151,234 / ... Line 7: 4,800.00", "Column 3: Line 1 is more
 than $151,234 but not more than $181,481 / ... Line 7: 13,923.40". Line 7 is the printed tax at the
 start of the column that line 1 falls in, used as printed. Above 181,481 the table

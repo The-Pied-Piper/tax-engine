@@ -6,8 +6,8 @@
 # computed from its rates. Above 181,481 the table does not apply (lines 9 to 15 do), so line 7 is
 # blank.
 #
-# Line 1 is produced by ab428_line_3.yaml's base (`ca-ab/ab428_taxable_income_line_1`); this part
-# reads that line 1 directly. Line 2 is a copy of line 1 and has no step of its own.
+# Line 1 (`ca-ab/ab428_taxable_income_line_1`) is produced by ab428_credits_line_1.yaml; this part
+# reads it directly. Line 2 is a copy of line 1 and has no step of its own.
 form:
   name: ca-ab/ab428_credits
 capabilities:
