@@ -19,6 +19,13 @@ AB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 """Taxable income, AB428 line 1 "Enter your taxable income from line 26000 of your return": the
 T1 taxable income, the base of the bracket columns read by lines 3 and 4."""
 
+AB428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "ab428_bracket_rate_line_5", non_negative=True
+)
+"""Bracket column rate, AB428 line 5 (each column prints "Line 5: Rate" with 8%, 10% or 12%): the
+printed rate of the column that line 1 falls in, blank when line 1 is outside the lines 2 to 8
+table."""
+
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, AB428 line 16 (line 58040) "Basic personal amount Claim $22,323": the
 amount claimed, the first part of the total of the Alberta credit amounts."""
