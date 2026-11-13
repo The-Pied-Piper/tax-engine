@@ -1,0 +1,21 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) line 15, "Line 15: Line 13 plus line 14
+# Alberta tax on taxable income =": the Alberta tax on taxable income for the column that line 1
+# falls in. It sums line 13 (`ca-ab/ab428_tax_on_excess_line_13`) and line 14
+# (`ca-ab/ab428_bracket_tax_at_start_line_14`). Line 15 is blank when lines 13 and 14 are blank.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    title: "Alberta tax on taxable income"
+    reference: "15"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        [ca-ab/ab428_tax_on_excess_line_13, ca-ab/ab428_bracket_tax_at_start_line_14]
+    blank:
+      ca-ab/ab428_tax_on_excess_line_13: pass_on
+      ca-ab/ab428_bracket_tax_at_start_line_14: pass_on
+    produces:
+      output: ca-ab/ab428_tax_on_taxable_income_line_15
