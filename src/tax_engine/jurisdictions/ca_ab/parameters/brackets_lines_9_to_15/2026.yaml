@@ -1,0 +1,19 @@
+# Alberta 2026 brackets, Form AB428 (Alberta Tax and Credits, CRA 5009-c) Part A, lines 9 to 15.
+# The 2026 AB428 form text (CRA 5009-c) is not yet published. The source is T4127 Table 8.1
+# (Alberta), to be re-checked against the printed form once it is out.
+# Thresholds and rates are from T4127 Table 8.1, confirmed by alberta.ca: lower bounds 185,111.00,
+# 246,813.00, 370,220.00; rates 13%, 14%, 15%. Each bracket's `tax_at_start` is derived as the
+# cumulative tax on the earlier brackets, exact and not rounded (each comes out to the cent):
+# 17,904.14, 25,925.40, 43,202.38. It is kept with `rounding: none`, as for 2025.
+# The split between the two files moves from 181,481 (2025) to 185,111, which is the first lower
+# bound here and the `up_to` of the lines 2 to 8 file.
+family: ca-ab/brackets_lines_9_to_15
+tax_year: 2026
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: none
+brackets:
+  - {from: "185111.00", rate: "0.13", tax_at_start: "17904.14"}
+  - {from: "246813.00", rate: "0.14", tax_at_start: "25925.40"}
+  - {from: "370220.00", rate: "0.15", tax_at_start: "43202.38"}
