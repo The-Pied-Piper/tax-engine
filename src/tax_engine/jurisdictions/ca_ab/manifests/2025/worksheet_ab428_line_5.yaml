@@ -1,0 +1,17 @@
+# Worksheet AB428 (CRA 5009-D) lines 4 and 5 (ca-ab/worksheet_ab428): "Line 4: Alberta non-refundable
+# tax credit rate 8% / Line 5: Line 3 multiplied by the percentage from line 4 = ^".
+# Line 4 is a printed rate, held in the `ca-ab/credit_rate` dataset, so line 5 is one calculation:
+# 8% of line 3, rounded half-up to the cent. The form prints no title for the line, so the step is
+# untitled.
+form:
+  name: ca-ab/worksheet_ab428
+capabilities:
+  - name: core/apply_rate
+    reference: "5"
+    unit: ca/cad
+    params:
+      rate: ca-ab/credit_rate
+    consumes:
+      base: ca-ab/worksheet_ab428_line_3
+    produces:
+      output: ca-ab/worksheet_ab428_line_5
