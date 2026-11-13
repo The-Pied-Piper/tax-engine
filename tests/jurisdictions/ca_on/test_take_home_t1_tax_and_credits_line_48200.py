@@ -1,7 +1,6 @@
 """T1 General 2025 (5006-R, Ontario) line 48200 "Total credits", from the salary alone.
 
-5006-R-25E (cra-docs/docs/cra-forms-2025/5006-r-25e.txt): "Line 166 and line 48200: Add lines 150 to
-165.
+5006-R-25E: "Line 166 and line 48200: Add lines 150 to 165.
 Total credits". The take-home filer has two of those credits. T1 line 45000 is the EI overpayment:
 T2204 line 15, "Enter whichever is less: amount from line 9 or line 14. If this amount is more than
 $1, enter it on line 45000 of your return." T1 line 45300 is the Canada workers benefit: Schedule 6

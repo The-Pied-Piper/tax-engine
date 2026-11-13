@@ -1,8 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 13, family net income, as the Ontario take-home manifest parts
 wire it.
 
-Form text (5000-S6 2025, cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, lines 224-225): "Line 13: Add
-the
+Form text (5000-S6 2025): "Line 13: Add the
 amounts from line 12 in columns 1 and 2. If you had an eligible spouse, continue at line 14; if
 not, continue at line 15." Line 13 is a calculation: the sum of line 12 over the columns. The
 take-home calculator is single with no eligible spouse, so column 2 is left out and the sum has one

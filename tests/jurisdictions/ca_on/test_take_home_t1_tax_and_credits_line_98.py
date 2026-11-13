@@ -1,9 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) Step 5 Part B line 98 "Add lines 85, 96, and 97. =", from the
 salary alone.
 
-Line 98 is "Add lines 85, 96, and 97." (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 85 is a copy of line 84
-(`ca/credit_amounts_line_84`),
+Line 98 is "Add lines 85, 96, and 97." (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 85 is a
+copy of line 84 (`ca/credit_amounts_line_84`),
 so it is not a step of its own and line 84 is read directly. Line 96 is
 `ca/credits_subtotal_line_96` (the CPP, EI and Canada employment amounts). Line 97 is 0 for the
 take-home filer and is left out.

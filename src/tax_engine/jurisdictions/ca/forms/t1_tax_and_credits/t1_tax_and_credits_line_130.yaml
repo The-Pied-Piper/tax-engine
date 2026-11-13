@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 line 130 "Line 130: Line 128 minus line 129 ="
-# (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 128 is `ca/federal_tax_with_surtax`; line
+# (CRA 5006-R-25E). Line 128 is `ca/federal_tax_with_surtax`; line
 # 129 is line 40500, the federal foreign tax credit (`ca/federal_foreign_tax_credit`, Form T2209), an
 # optional input that the part's own inputs file declares with blank fallback 0. The line prints no
 # "(if negative, enter 0)", so there is no floor: core/subtract takes line 129 off line 128 and the

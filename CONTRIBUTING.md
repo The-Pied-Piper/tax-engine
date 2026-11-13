@@ -46,10 +46,6 @@ Remove the line in the pull request that confirms the figure against the form. O
 
 For 2026 only, a figure CRA has not yet printed on a form may be calculated, carried forward from 2025, or indexed. This overrides the rule that printed constants are never recomputed, for 2026 files only. Such a file keeps the Provisional line first, followed on the next line by a `# Derivation:` line stating which of the three it is and how the figure was made, for example `# Derivation: thresholds and rates as printed in T4127 Table 8.1; tax_at_start calculated as the cumulative tax on the earlier brackets, rounded half-up to the cent (reproduces the 2025 printed constants).`
 
-## CRA reference archive
-
-The CRA reference archive lives in the separate repository [cra-docs](https://github.com/The-Pied-Piper/cra-docs) (`docs/cra-forms-2025/README.md` there). It holds the saved forms, guides and source provenance used to verify the Canadian calculations.
-
 ## Docstrings
 
 A docstring tells a reader what a module, class or function is and does now.

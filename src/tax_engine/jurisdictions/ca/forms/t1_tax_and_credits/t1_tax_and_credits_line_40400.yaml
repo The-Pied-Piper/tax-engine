@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 Part C line 121 (line 40400), "Line 121
-# and line 40400: Line 119 plus line 120" (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt).
+# and line 40400: Line 119 plus line 120" (CRA 5006-R-25E).
 # Line 119 is "Enter the amount from line 76.", a pure copy of line 76, so line 76
 # (`ca/federal_tax_on_taxable_income_line_76`) is read directly as a part and is not a step. Line
 # 120 is "Federal tax on split income (TOSI) (complete Form T1206)", which is 0 for a salary-only

@@ -337,8 +337,7 @@ def test_the_part_a_change_in_use_checked_rows_docstrings_name_part_a_and_their_
 
 
 def test_the_part_a_change_in_use_kinds_docstrings_quote_the_part_a_guide_text() -> None:
-    # The Guide's Part A column 3 text, quoted as the guide prints it
-    # (cra-docs/docs/cra-forms-2025).
+    # The Guide's Part A column 3 text, quoted as the guide prints it.
     quote = (
         "If you owned property for personal use and then started using it for employment in 2025, "
         "there is a change in use. In most cases when this happens, the amount you will enter in "

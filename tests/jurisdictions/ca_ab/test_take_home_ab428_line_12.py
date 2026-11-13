@@ -1,6 +1,6 @@
 """AB428 (2025) line 12, the rate of the column for lines 9 to 15, from the real parts.
 
-Form text (Form AB428, CRA 5009-c-25e.txt, in the cra-docs repo): "Column 1: Line 1 is
+Form text (Form AB428, CRA 5009-c-25e.txt): "Column 1: Line 1 is
 more than $181,481 but not more than $241,974  Line 12: Rate 13%", "Column 2: Line 1 is more than
 $241,974 but not more than $362,961  Line 12: Rate 14%", "Column 3: Line 1 is more than $362,961
 Line 12: Rate 15%". Line 12 is `core/bracket_column_rate` over line 1

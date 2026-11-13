@@ -1,8 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 10 "Add lines 7 to 9." (column 1, You), from the salary alone.
 
-Line 10 is "Add lines 7 to 9." (Schedule 6, CRA 5000-S6-25E, confirmed in
-cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, lines 211-213, column 1 "You"). The take-home filer
-has only
+Line 10 is "Add lines 7 to 9." (Schedule 6, CRA 5000-S6-25E, confirmed, lines 211-213, column 1
+"You"). The take-home filer has only
 line 7 of the three lines (lines 8 and 9 are left out), so line 10 is a `core/sum` over the one
 part `ca/cwb_net_income_line_7`, the line 7 amount of this form, and its output is the registered
 kind `ca/cwb_net_income_total_line_10`. The form text of line 10 has no floor at zero, so the

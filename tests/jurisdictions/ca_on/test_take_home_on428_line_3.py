@@ -1,7 +1,6 @@
 """ON428 (2025) lines 1 and 3, from the salary alone, real engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, repo copy cra-docs/docs/cra-forms-2025/5006-c-25e.txt):
-each of
+Form text (Form ON428, CRA 5006-c-25e.txt): each of
 the five columns prints "Line 3:" with its lower bound, 0.00, 52,886.00, 105,775.00, 150,000.00 and
 220,000.00. The Transcriber's Note says: "Use the amount from column 1 if the amount on line 1 is
 $52,886 or less. Use the amount from column 2 if the amount on line 1 is more than $52,886 but not

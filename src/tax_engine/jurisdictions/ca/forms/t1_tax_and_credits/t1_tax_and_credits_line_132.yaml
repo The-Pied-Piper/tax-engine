@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 line 132 "Line 130 plus line 131 ="
-# (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 130 is `ca/federal_tax_less_foreign_tax_credit`.
+# (CRA 5006-R-25E). Line 130 is `ca/federal_tax_less_foreign_tax_credit`.
 # Line 131, the recapture of investment tax credit (Form T2038(IND)), is absent for a take-home filer, so
 # it is left out and not wired. The sum is built even with its one part present: core/sum adds line 130
 # and rounds the total once, half-up to the cent, through the shared `ca/cent_rounding` dataset, producing

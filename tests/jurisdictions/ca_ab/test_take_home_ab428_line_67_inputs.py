@@ -1,7 +1,6 @@
 """AB428 (2025) line 67's input, as the Alberta take-home manifest part declares it.
 
-Form text (AB428, CRA 5009-c-25e.txt in cra-docs/docs/cra-forms-2025): "Alberta additional tax for
-minimum
+Form text (AB428, CRA 5009-c-25e.txt): "Alberta additional tax for minimum
 tax purposes: Line 67: Form T691: line 1 minus line 2 of Part 7 ^ multiplied by 35% = ^" is the
 line's printed text; the part takes the text before the ^ marker as its basis. The form prints no
 floor, so the kind is not non_negative. A caller with no minimum tax to report leaves the line out,

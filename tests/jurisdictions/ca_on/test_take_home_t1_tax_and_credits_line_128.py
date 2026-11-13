@@ -1,8 +1,7 @@
 """T1 General 2025 (5006-R, Ontario) line 128 "Line 126 plus line 127 =", from the salary alone.
 
-Line 128 is "Line 126 plus line 127 =" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 126 is line 42900
-(`ca/federal_tax_after_credits`). Line
+Line 128 is "Line 126 plus line 127 =" (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 126 is
+line 42900 (`ca/federal_tax_after_credits`). Line
 127 (the federal surtax on income earned outside Canada, Form T2203) is zero for the salary-only
 filer, who has no income allocated outside Canada, so it is left out and not wired. Line
 128 is therefore one `core/sum` over line 42900 only, rounded half-up to the cent with the shared

@@ -1,8 +1,7 @@
 """T1 General 2025 (5006-R, Ontario) line 130 "Line 128 minus line 129 =", from the salary alone.
 
-Line 130 is "Line 128 minus line 129" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 128 is `ca/federal_tax_with_surtax`; line 129 is
-line
+Line 130 is "Line 128 minus line 129" (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 128 is
+`ca/federal_tax_with_surtax`; line 129 is line
 40500, the federal foreign tax credit (`ca/federal_foreign_tax_credit`, Form T2209). The line
 prints no "(if negative, enter 0)", so it is one `core/subtract` with no floor, rounded half-up to
 the cent with the shared `ca/cent_rounding` dataset, and produces

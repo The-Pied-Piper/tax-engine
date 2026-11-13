@@ -1,8 +1,7 @@
 """Schedule 6 (2025) line 14's input, the secondary earner exemption, as the Ontario take-home
 manifest part declares it.
 
-Form text (Schedule 6, CRA 5000-s6-25e.txt in cra-docs/docs/cra-forms-2025, lines 229-234): "Line
-14: If your
+Form text (Schedule 6, CRA 5000-s6-25e.txt, lines 229-234): "Line 14: If your
 working income (line 5) is less than your eligible spouse's working income, enter whichever is less
 from column 1: amount from line 5 or line 12. If your working income (line 5) is equal to or more
 than your eligible spouse's working income, enter whichever is less from column 2: amount from line

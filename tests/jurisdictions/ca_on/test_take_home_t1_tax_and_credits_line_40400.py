@@ -1,9 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) Step 5 Part C line 121 (line 40400) "Federal tax with the tax
 on split income", from the salary alone.
 
-Line 121 is "Line 119 plus line 120" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 119 is "Enter the amount from line 76", a pure
-copy of
+Line 121 is "Line 119 plus line 120" (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 119 is
+"Enter the amount from line 76", a pure copy of
 line 76 (`ca/federal_tax_on_taxable_income_line_76`, read directly because it is the same form), so
 it is no step.
 Line 120 is the federal tax on split income (TOSI), 0 for the take-home filer (salary the only

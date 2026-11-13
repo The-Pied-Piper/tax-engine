@@ -1,7 +1,6 @@
 """Schedule 6 (5000-S6, 2025) line 12 "Line 10 minus line 11" (column 1, You).
 
-Form text (5000-S6-25E, cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, lines 215-220): line 11 is
-"Total of
+Form text (5000-S6-25E): line 11 is "Total of
 UCCB (line 11700 of the return) and RDSP income (line 12500 of the return)" and line 12 is "Line 10
 minus line 11 (if negative, enter "0")". Line 12 is a `core/subtract_not_below_zero` of line 10
 (`ca/cwb_net_income_total_line_10`) less line 11, with a blank line 11 read as 0. Line 11 is an

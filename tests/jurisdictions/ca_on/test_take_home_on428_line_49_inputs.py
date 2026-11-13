@@ -1,7 +1,6 @@
 """ON428 (2025) line 49's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 49 and line 58969: Line
-47
+Form text (ON428, CRA 5006-c-25e.txt): "Line 49 and line 58969: Line 47
 plus line 48". A salary-only caller has no donations credit, so a request
 that leaves the line out is read as 0, not blank.
 

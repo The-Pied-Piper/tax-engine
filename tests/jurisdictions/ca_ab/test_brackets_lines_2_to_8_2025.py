@@ -1,7 +1,6 @@
 """2025 `ca-ab/brackets_lines_2_to_8`, checked against Form AB428 (5009-C, 2025), Part A.
 
-Form text (cra-docs/docs/cra-forms-2025/5009-c-25e.txt): "Column 1: Line 1 is $60,000 or less",
-"Line 3:
+Form text: "Column 1: Line 1 is $60,000 or less", "Line 3:
 0.00", "Rate 8%", "Line 7: 0.00"; "Column 2: Line 1 is more than $60,000 but not more than
 $151,234", "Line 3: 60,000.00", "Rate 10%", "Line 7: 4,800.00"; "Column 3: Line 1 is more than
 $151,234 but not more than $181,481", "Line 3: 151,234.00", "Rate 12%", "Line 7: 13,923.40".

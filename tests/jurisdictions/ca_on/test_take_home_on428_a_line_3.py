@@ -1,7 +1,6 @@
 """ON428-A (2025) line 3, as the Ontario take-home manifest part wires it.
 
-Form text (ON428-A, CRA 5006-a-25e.txt in cra-docs/docs/cra-forms-2025): "Line 1: Amount from line
-10100
+Form text (ON428-A, CRA 5006-a-25e.txt): "Line 1: Amount from line 10100
 of your return / Line 2: Amount from line 10400 of your return / Line 3: Line 1 plus line 2 =".
 Line 1 is the salary input (`ca/employment_income`). Line 2 is `ca/other_employment_income`
 (line 10400, optional, owned by another ticket), a plain starting input here. Line 3 is one

@@ -1,7 +1,6 @@
 """Ontario return summary: the federal marginal rate, the bracket rate of the taxable income.
 
-5006-R-25E (cra-docs/docs/cra-forms-2025/5006-r-25e.txt), Step 5 Part A: each column of the federal
-tax
+5006-R-25E, Step 5 Part A: each column of the federal tax
 chart prints "Line 73: Rate" with 14.5%, 20.5%, 26%, 29% or 33%. The existing step
 `ca/federal_bracket_column_rate_line_73` of `ca/t1_tax_and_credits` is the printed rate of the
 column that line 70 falls in. The return summary reads it as a cross-form read: the T1 form exports

@@ -1,7 +1,6 @@
 """ON428 (2025) line 27's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 27 and line 58360:
-Pension
+Form text (ON428, CRA 5006-c-25e.txt): "Line 27 and line 58360: Pension
 income amount (maximum $1,762)". A salary-only caller has no pension income amount, so a request
 that leaves the line out is read as 0, not blank.
 

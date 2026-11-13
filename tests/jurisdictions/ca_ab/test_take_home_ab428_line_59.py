@@ -1,6 +1,6 @@
 """AB428 (2025) line 59, Alberta tax on taxable income from line 8 or line 15, real part.
 
-Form text (cra-docs, docs/cra-forms-2025/5009-c-25e.txt; Form AB428, CRA 5009-c): "Line 59: Alberta
+Form text (Form AB428, CRA 5009-c): "Line 59: Alberta
 tax on taxable income from line 8 or line 15 ^". Under line 8: "If you completed lines 2 to 8 for a
 column above, enter the amount from line 8 on line 59 and continue on line 16." Under line 15: "If
 you completed lines 9 to 15 for a column above, enter the amount from line 15 on line 59 and

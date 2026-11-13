@@ -1,7 +1,6 @@
 """ON428 (2025) line 57's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in cra-docs/docs/cra-forms-2025): "Line 57 and line and line
-61520:
+Form text (ON428, CRA 5006-c-25e.txt): "Line 57 and line and line 61520:
 Ontario dividend tax credit (use Worksheet ON428)" is the line's basis in the take-home part. A
 salary-only caller has no dividend income, so a request that leaves the line out is read as blank,
 and the line 71 part reads that blank as 0.

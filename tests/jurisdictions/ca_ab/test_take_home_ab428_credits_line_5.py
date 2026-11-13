@@ -1,8 +1,7 @@
 """AB428 (2025) line 5, the bracket column rate, computed from the real part file through the real
 engine.
 
-Form text (Form AB428, CRA 5009-c-25e.txt, cra-docs copy
-cra-docs/docs/cra-forms-2025/5009-c-25e.txt): each of
+Form text (Form AB428, CRA 5009-c-25e.txt): each of
 the three columns of lines 2 to 8 prints its rate on "Line 5": "Line 5: Rate 8%", "Line 5: Rate 10%"
 and "Line 5: Rate 12%". Line 5 is the printed rate of the column that taxable income falls in, and a
 taxable income exactly at a column's upper bound falls in that lower column. A taxable income above

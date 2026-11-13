@@ -1,7 +1,7 @@
 """T1 General 2025 (5006-R, Ontario) line 126 (42900) "Basic federal tax", from the salary alone.
 
-Line 126 is "Line 121 minus line 125 (if negative, enter "0")" (T1 General 5006-R, CRA 5006-R-25E,
-confirmed in cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Line 121 is line 40400
+Line 126 is "Line 121 minus line 125 (if negative, enter "0")" (T1 General 5006-R, CRA 5006-R-25E).
+Line 121 is line 40400
 (`ca/federal_tax_with_split_income`) and line 125 is `ca/credits_against_basic_federal_tax`. Line
 42900 is one `core/subtract_not_below_zero`, rounded half-up to the cent with the shared
 `ca/cent_rounding` dataset, and produces `ca/federal_tax_after_credits`, a non-negative kind.

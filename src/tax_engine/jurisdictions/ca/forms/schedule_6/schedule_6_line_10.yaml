@@ -1,5 +1,4 @@
 # Schedule 6 (5000-S6, 2025, CRA 5000-S6-25E) line 10. Line 10: "Add lines 7 to 9.", column 1 "You"
-# (cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, lines 211-213).
 #
 # Line 10 is a sum of lines 7, 8 and 9. The take-home filer has none of lines 8 and 9 (lines 8 and 9
 # are left out), so the sum has one part: line 7 (`ca/cwb_net_income_line_7`). The result is signed,

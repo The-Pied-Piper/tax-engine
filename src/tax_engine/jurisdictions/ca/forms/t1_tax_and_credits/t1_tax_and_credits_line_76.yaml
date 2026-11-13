@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 Part A lines 70 to 76, "Federal tax on
-# taxable income" (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt). Part A starts with "Use the
+# taxable income" (CRA 5006-R-25E). Part A starts with "Use the
 # amount from line 26000 to complete the appropriate column below." Line 70 is "Amount from line
 # 26000", a copy of T1 line 26000, so it is a step: another form's export is read only as a record
 # list (`ca/t1_taxable_income.taxable_income`), and core/record_total totals the one amount into

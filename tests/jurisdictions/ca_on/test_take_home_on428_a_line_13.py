@@ -1,8 +1,7 @@
 """ON428-A (Ontario LIFT credit, 2025) lines 6 and 13, from the salary alone, real engine.
 
 Line 13 is "Line 9 minus line 12 (if negative, enter "0") Your adjusted net income" (ON428-A, CRA
-5006-A-25E, confirmed in cra-docs/docs/cra-forms-2025/5006-a-25e.txt). Line 9 adds lines 6 to 8, and
-the
+5006-A-25E). Line 9 adds lines 6 to 8, and the
 take-home filer has only line 6: T1 line 23600, net income. The T1 form exports the net income
 before its floor as `ca/net_income_signed`, which reaches this form only as the record list
 `ca/t1_taxable_income.net_income_signed`.

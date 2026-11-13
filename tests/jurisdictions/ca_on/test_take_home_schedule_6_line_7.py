@@ -1,8 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 7 "Net income" (column 1, You), from the salary alone.
 
 Line 7 is "Net income from line 23600 of the return (or the amount you would have entered if the
-instructions on line 23600 said "if negative, show in brackets")" (Schedule 6, CRA 5000-S6-25E,
-confirmed in cra-docs/docs/cra-forms-2025/5000-s6-25e.txt, lines 193-197, column 1 "You"). The
+instructions on line 23600 said "if negative, show in brackets")" (Schedule 6, CRA 5000-S6-25E). The
 take-home
 filer has only that one line of the column, so line 7 is a `core/record_total` over the T1 net
 income record list `ca/t1_taxable_income.net_income_signed`: the engine lets one form read another

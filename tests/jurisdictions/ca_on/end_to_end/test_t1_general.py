@@ -11,13 +11,11 @@ reads from Schedule 8 and T2204. It is not a worked return: no return file, no s
 The partial CPP2 range (salary between 71,300 and 81,200) is covered by one salary in ANCHORS and
 by the boundary salaries (BOUNDARY_ANCHORS).
 
-Form text: T1 General (CRA 5006-R, 2025, cra-docs/docs/cra-forms-2025/5006-r-25e.txt) "Line 75"
-columns
+Form text: T1 General (CRA 5006-R, 2025) "Line 75" columns
 "Line 26000 is more than $57,375 but not more than $114,750" and the printed constants 8,319.38,
 20,081.25, 36,495.57, 58,399.85; "Line 74: Line 72 multiplied by the percentage from line 73";
-"Line 76: Line 74 plus line 75"; "Line 167: Line 149 minus line 166". ON428 (CRA 5006-C, 2025,
-cra-docs/docs/cra-forms-2025/5006-c-25e.txt) Part A columns "Line 1 is more than $52,886 but not
-more than
+"Line 76: Line 74 plus line 75"; "Line 167: Line 149 minus line 166". ON428 (CRA 5006-C, 2025) Part
+A columns "Line 1 is more than $52,886 but not more than
 $105,775", line 7 constants 2,670.74, 7,510.09, 12,445.60, 20,957.60, and "Line 90: Line 88 plus
 line 89 Enter this amount on line 42800 of your return". Schedule 8 (CRA 5000-S8) lines 12 and 28
 give line 22215 (maximum $1,074.00). A taxable income equal to a column's upper bound belongs to

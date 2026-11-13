@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), line 139 and line 41700 "Line 139 and line 41700:
-# Line 134 minus line 138 (if negative, enter "0")" (CRA 5006-R-25E, cra-docs/docs/cra-forms-2025/5006-r-25e.txt).
+# Line 134 minus line 138 (if negative, enter "0")" (CRA 5006-R-25E).
 # Line 134 is `ca/federal_tax` (line 40600); line 138 is `ca/credits_against_federal_tax` (line 41600).
 # The line prints "(if negative, enter "0")", so the difference is floored at 0 by
 # core/subtract_not_below_zero, rounded half-up to the cent through the shared `ca/cent_rounding` dataset,

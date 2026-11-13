@@ -1,6 +1,6 @@
 """ON428 (2025) line 82's input, as the Ontario take-home manifest part declares it.
 
-Form text (ON428, CRA 5006-c-25e.txt in cra-docs/docs/cra-forms-2025):
+Form text (ON428, CRA 5006-c-25e.txt):
 "Line 82: Provincial foreign tax credit (complete Form T2036)" is the line's basis in the
 take-home part. A salary-only caller has no foreign income, so a request that leaves the line out
 is read as blank, and the line 83 part reads that blank as 0.
