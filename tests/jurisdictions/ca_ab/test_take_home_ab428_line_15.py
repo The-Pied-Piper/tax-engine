@@ -50,6 +50,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAX_ON_TAXABLE_INCOME_LINE_15
 from tests.jurisdictions.ca_ab.support import (
     alberta_capabilities,
     alberta_kinds,
@@ -176,6 +177,17 @@ def _kind(identifier: str) -> AmountKind:
     [
         # Line 1 is 198,926.00: line 13 is 2,267.85 and line 14 is 17,553.04.
         ("200000", "19820.89"),
+    ],
+)
+def test_line_15_is_line_13_plus_line_14_for_the_salary(
+    tmp_path: Path, salary: str, expected: str
+) -> None:
+    assert _sheet(tmp_path, salary).get(_kind(LINE_15)).value == D(expected)
+
+
+@pytest.mark.parametrize(
+    ("salary", "expected"),
+    [
         # Line 1 of 181,481.01 is column 1: line 13 0.00 and line 14 17,553.04.
         ("182555.01", "17553.04"),
         # Line 1 of exactly 241,974.00 is still column 1: line 13 7,864.09 and line 14 17,553.04.
@@ -190,9 +202,7 @@ def _kind(identifier: str) -> AmountKind:
         ("365035.00", "42505.31"),
     ],
 )
-def test_line_15_is_line_13_plus_line_14_for_the_salary(
-    tmp_path: Path, salary: str, expected: str
-) -> None:
+def test_line_15_at_the_column_boundaries(tmp_path: Path, salary: str, expected: str) -> None:
     assert _sheet(tmp_path, salary).get(_kind(LINE_15)).value == D(expected)
 
 
@@ -258,8 +268,6 @@ def test_the_part_is_one_sum_step_over_lines_13_and_14() -> None:
 
 
 def test_line_15_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    from tax_engine.jurisdictions.ca_ab.catalog import AB428_TAX_ON_TAXABLE_INCOME_LINE_15
-
     kind = alberta_kinds().kind(LINE_15)
 
     assert kind is AB428_TAX_ON_TAXABLE_INCOME_LINE_15
