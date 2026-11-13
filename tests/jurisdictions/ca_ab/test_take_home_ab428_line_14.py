@@ -49,6 +49,7 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BracketColumnFigureLine, BracketOutsideRangeLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_ab.catalog import AB428_BRACKET_TAX_AT_START_LINE_14
 from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnTaxAtStart,
 )
@@ -277,8 +278,6 @@ def test_the_step_keys_mirror_the_ontario_on428_line_7_step() -> None:
 
 
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
-    from tax_engine.jurisdictions.ca_ab.catalog import AB428_BRACKET_TAX_AT_START_LINE_14
-
     kind = alberta_kinds().kind(LINE_14)
 
     assert kind is AB428_BRACKET_TAX_AT_START_LINE_14
