@@ -323,6 +323,6 @@ AB428_TAX_AFTER_CREDITS_LINE_66 = AmountKind.declare(
 = ^": line 61 (the Alberta tax) minus line 65 (the credits subtotal), not below 0, rounded to the
 cent."""
 
-AB428_TAX_LINE_68 = AmountKind.declare(CATALOG, "ab428_tax_line_68", non_negative=True)
-"""Alberta tax, AB428 line 68 "Line 68: Line 66 plus line 67 = ^": line 66 (the tax after credits)
-plus line 67 (the additional minimum tax), rounded to the cent."""
+AB428_TAX_LINE_68 = AmountKind.declare(CATALOG, "ab428_tax_line_68")
+"""AB428 line 68 "Line 68: Line 66 plus line 67 = ^": line 66 (the tax after credits) plus line 67
+(the additional minimum tax), rounded to the cent; signed, as the form prints no floor."""
