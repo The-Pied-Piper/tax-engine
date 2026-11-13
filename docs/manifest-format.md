@@ -148,9 +148,8 @@ and no identifier is listed twice.
   files name it and is replaced once, so `a: b` with `b: c` reads `b` for `a` and `c` for `b`,
   never `c` for `a`. A family no part of the form reads is
   rejected. A target with no dataset, or of another kind than the slot takes, is rejected when the
-  return is composed, as for any selection. The engine composes every bundled manifest at startup,
-  so such a target refuses to start, naming the jurisdiction, the year and the family. An entry
-  with no `datasets` is the bare identifier.
+  return is composed, as for any selection. An entry with
+  no `datasets` is the bare identifier.
 - The forms run in this order: the default form, the imported forms in `imports` order, then the
   manifest's own.
 - An imported form that reads a derived figure (a `<form>.<export>` or a supplied identifier) that

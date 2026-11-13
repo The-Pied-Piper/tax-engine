@@ -1,8 +1,8 @@
 """Alberta is listed in `tax_engine.registrations.JURISDICTIONS`, and the engine starts over it.
 
-The startup check (`TaxComputationService.check`, called by `factory.build_tax_computation` for
-every listed code) builds the real Alberta 2025 manifest, over the registries that
-`tax_engine.registrations` builds and not the Alberta package list of `support.py`. The
+The real Alberta 2025 manifest composes over the registries that `tax_engine.registrations`
+builds, not the Alberta package list of `support.py`; every resolvable year of every listed
+jurisdiction is composed by `tests/application/services/test_every_resolvable_year.py`. The
 sanity figures are the ones the Alberta AB428 line 75 tests pin; the full Alberta end-to-end
 return is not this module's.
 """
@@ -38,7 +38,7 @@ def test_alberta_is_listed() -> None:
     assert ALBERTA in JURISDICTIONS.jurisdiction_codes()
 
 
-def test_the_startup_check_builds_the_alberta_manifest_over_the_registered_registries() -> None:
+def test_the_alberta_manifest_composes_over_the_registered_registries() -> None:
     kinds = artifact_kinds()
     registered_units = units()
     service = TaxComputationService(
@@ -46,8 +46,6 @@ def test_the_startup_check_builds_the_alberta_manifest_over_the_registered_regis
         YamlParameterSource(JURISDICTIONS.roots(), parameter_parsers(), registered_units),
         capabilities(),
     )
-
-    service.check([ALBERTA])
 
     assert service.compose(ALBERTA, 2025) is not None
 
