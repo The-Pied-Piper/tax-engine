@@ -118,6 +118,7 @@ ALBERTA_LINE_PARTS = (
     "ab428_credits_line_36.yaml",
     "ab428_credits_line_39.yaml",
     "ab428_line_41_input.yaml",
+    "ab428_credits_line_41.yaml",
     "ab428_credits_line_43.yaml",
     "ab428_line_51_inputs.yaml",
     "ab428_credits_line_52.yaml",
@@ -175,7 +176,7 @@ CREDITS_FORM = dedent("""\
         - ca-ab/ab428_tax_on_excess_line_13
         - ca-ab/ab428_bracket_tax_at_start_line_14
         - ca-ab/ab428_tax_on_taxable_income_line_15
-        - ca-ab/ab428_unused_tuition_line_41
+        - ca-ab/ab428_unused_tuition_rounded_line_41
         - ca-ab/ab428_credits_total_line_52
         - ca-ab/ab428_non_refundable_credits_line_58
     capabilities: []

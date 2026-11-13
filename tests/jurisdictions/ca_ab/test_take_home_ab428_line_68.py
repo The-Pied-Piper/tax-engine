@@ -112,6 +112,7 @@ ALBERTA_LINE_PARTS = (
     "ab428_credits_line_36.yaml",
     "ab428_credits_line_39.yaml",
     "ab428_line_41_input.yaml",
+    "ab428_credits_line_41.yaml",
     "ab428_credits_line_43.yaml",
     "ab428_line_51_inputs.yaml",
     "ab428_credits_line_52.yaml",

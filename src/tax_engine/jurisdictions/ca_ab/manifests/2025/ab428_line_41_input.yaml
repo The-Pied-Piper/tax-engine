@@ -1,8 +1,9 @@
 # AB428 (2025) inputs a salary-only caller does not give.
 # Line 41: "Line 41 and line 58560: Your unused tuition and education amounts (attach Schedule
 # AB(S11))". The figure comes from Schedule AB(S11), which the engine does not compute. A salary-only
-# caller has none, so a request that leaves the line out is read as blank, and the consumers (line 43
-# and line 2 of Worksheet AB428) read that blank as 0.
+# caller has none, so a request that leaves the line out is read as blank. The line 41 part
+# (ab428_credits_line_41.yaml) reads that blank as 0 and rounds the figure to the cent; line 43 and
+# line 2 of Worksheet AB428 read that rounded figure.
 inputs:
   - name: ca-ab/ab428_unused_tuition_line_41
     title: "Your unused tuition and education amounts"
