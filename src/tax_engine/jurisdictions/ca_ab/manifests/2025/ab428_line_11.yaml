@@ -1,0 +1,19 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) Part A, line 11: "Line 11: Line 9 minus
+# line 10 (cannot be negative) =". Line 9 is a copy of line 1 and has no step of its own, so the
+# step reads line 1 directly: line 11 is line 1 minus line 10, not below zero. Line 10 is blank
+# when line 1 is $181,481 or less, so a blank line 10 is passed on and line 11 is blank there.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "11"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/ab428_taxable_income_line_1
+      less: ca-ab/ab428_bracket_lower_bound_line_10
+    blank:
+      less: pass_on
+    produces:
+      output: ca-ab/ab428_taxable_income_over_lower_bound_line_11
