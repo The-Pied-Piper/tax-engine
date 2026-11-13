@@ -45,7 +45,7 @@ def dataset_years(roots: Iterable[Path]) -> set[int]:
 
 
 def resolvable_years(roots: Iterable[Path], jurisdiction: Jurisdiction) -> list[int]:
-    """Each year from the earliest manifest's start to the greatest dataset or manifest start year."""
+    """Each year from the earliest manifest start to the greatest dataset or manifest start."""
     starts = [manifest.valid_from_tax_year for manifest in jurisdiction.manifests]
     first = min(starts)
     last = max([*dataset_years(roots), *starts])
