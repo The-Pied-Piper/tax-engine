@@ -2,7 +2,7 @@
 of the marginal-rate series), from the real `ca-on/health_premium_rows` dataset through the real
 engine.
 
-Form text (Form ON428, CRA 5006-c-25e.txt, docs/cra-forms-2025/5006-c-25e.txt): line 89 "Ontario
+Form text (Form ON428, CRA 5006-c-25e.txt): line 89 "Ontario
 health premium (complete the chart below)"; the chart's rows are each a flat amount or a sloped
 amount (the income over a threshold, times 6% or 25%, plus an amount). The slope is the printed
 rate of the row the taxable income falls in, and 0 for a flat row. No new figure is printed: the

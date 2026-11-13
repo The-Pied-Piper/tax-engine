@@ -1,5 +1,5 @@
 # Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) Part C, line 59 "Line 59: Alberta tax on
-# taxable income from line 8 or line 15 ^" (cra-docs, docs/cra-forms-2025/5009-c-25e.txt). Line 8
+# taxable income from line 8 or line 15 ^". Line 8
 # says "enter the amount from line 8 on line 59" and line 15 says "enter the amount from line 15
 # on line 59". A taxable income is in one table only, so the other line is blank; this form reads
 # both exports of `ca-ab/ab428_credits` and gives the one that has a figure.

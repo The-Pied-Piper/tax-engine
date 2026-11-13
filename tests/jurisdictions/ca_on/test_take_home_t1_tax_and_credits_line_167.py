@@ -1,6 +1,6 @@
 """T1 General 2025 (5006-R, Ontario) line 167 "Refund or balance owing", from the salary alone.
 
-5006-R-25E (docs/cra-forms-2025/5006-r-25e.txt): "Line 167: Line 149 minus line 166 If the amount
+5006-R-25E: "Line 167: Line 149 minus line 166 If the amount
 is negative, enter it on line 48400 below. If the amount is positive, enter it on line 48500 below.
 Refund or balance owing". Line 149 is line 43500 "Total payable" (`ca/total_payable`) and line 166
 is line 48200 "Total credits" (`ca/total_credits`), so line 167 is `core/subtract` of the two:

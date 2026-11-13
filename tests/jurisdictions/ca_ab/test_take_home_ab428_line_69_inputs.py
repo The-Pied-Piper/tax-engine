@@ -1,6 +1,6 @@
 """AB428 (2025) line 69's input, as the Alberta take-home manifest part declares it.
 
-Form text (AB428, CRA 5009-c-25e.txt in docs/cra-forms-2025): "Line 69: Provincial foreign tax
+Form text (AB428, CRA 5009-c-25e.txt): "Line 69: Provincial foreign tax
 credit (complete Form T2036)" is the line's basis in the part. A caller with no provincial foreign
 tax credit leaves the line out, so the request is read as blank.
 

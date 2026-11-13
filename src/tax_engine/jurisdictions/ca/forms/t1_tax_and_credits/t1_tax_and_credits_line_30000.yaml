@@ -1,7 +1,7 @@
 # T1 General 2025 (form 5006-R), Step 5 Part A line 30000 "Basic personal amount",
 # "If the amount on line 23600 is $177,882 or less, enter $16,129. If the amount on line 23600 is
 # $253,414 or more, enter $14,538. Otherwise, use the Federal Worksheet to calculate the amount to
-# enter. (maximum $16,129)" (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt, line 77 and line
+# enter. (maximum $16,129)" (CRA 5006-R-25E, line 77 and line
 # 30000). The amount is calculated on Federal Worksheet 5000-D1 (CRA 5000-D1-25E), lines 1 to 11.
 # Line 3, "Amount from line 23600 of your return", is a copy of T1 line 23600, so it is a step: another
 # form's export is read only as a record list (`ca/t1_taxable_income.net_income`), and

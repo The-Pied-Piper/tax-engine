@@ -1,8 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) Step 5 Part B line 106 "Add lines 101 to 105.", from the
 salary alone.
 
-Line 106 is "Add lines 101 to 105." (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt). Line 101 is `ca/credit_amounts_subtotal`. Lines 102 to 105 are
+Line 106 is "Add lines 101 to 105." (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 101 is
+`ca/credit_amounts_subtotal`. Lines 102 to 105 are
 0 for the take-home filer and are left out.
 Line 106 is therefore one `core/sum` over line 101 only, rounded half-up to the cent with the shared
 `ca/cent_rounding` dataset, and produces `ca/credit_amounts_line_106`, a non-negative kind.

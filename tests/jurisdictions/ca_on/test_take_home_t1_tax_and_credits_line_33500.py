@@ -1,8 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) line 113 / line 33500 "Line 106 plus line 112", from the
 salary alone.
 
-Line 33500 is "Line 106 plus line 112" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt). Line 106 is `ca/credit_amounts_line_106`. Line 112 (line
+Line 33500 is "Line 106 plus line 112" (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 106 is
+`ca/credit_amounts_line_106`. Line 112 (line
 33200, medical expenses) needs medical expense inputs the take-home filer never has and is left out.
 Line 33500 is therefore one `core/sum` over line 106 only, rounded half-up to the cent with the
 shared `ca/cent_rounding` dataset, and produces `ca/non_refundable_credit_amounts`, a non-negative

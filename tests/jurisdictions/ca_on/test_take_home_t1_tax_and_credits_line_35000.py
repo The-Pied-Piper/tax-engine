@@ -1,8 +1,8 @@
 """T1 General 2025 (5006-R, Ontario) line 118 / line 35000 "Add lines 115 to 117. Total federal
 non-refundable tax credits", from the salary alone.
 
-Line 35000 is "Add lines 115 to 117" (T1 General 5006-R, CRA 5006-R-25E, confirmed in
-docs/cra-forms-2025/5006-r-25e.txt). Line 115 is line 33800 (`ca/credit_amounts_at_credit_rate`).
+Line 35000 is "Add lines 115 to 117" (T1 General 5006-R, CRA 5006-R-25E, confirmed). Line 115 is
+line 33800 (`ca/credit_amounts_at_credit_rate`).
 Line 116 (line 34900, donations and gifts) is 0 for a filer with no donations, and line 117 (line
 34990, the top-up tax credit) is 0 because the top-up only applies above 8,319.38 of line 33800,
 which a salary-only line 33800 never reaches, so both are left out. Line 35000 is therefore one

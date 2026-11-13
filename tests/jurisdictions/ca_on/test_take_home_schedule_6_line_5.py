@@ -1,7 +1,7 @@
 """Schedule 6 (5000-S6, 2025) line 5, working income (column 1 "You"), as the Ontario take-home
 manifest parts wire it.
 
-Form text (5000-S6 2025, docs/cra-forms-2025/5000-s6-25e.txt, lines 152-154): "Line 5: Add lines 1
+Form text (5000-S6 2025): "Line 5: Add lines 1
 to 4. Enter the result, even if it is "0". Working income". Line 5 is a calculation: the sum of
 lines 1 to 4. Lines 2 (scholarships), 3 (self-employment) and 4 (tax-exempt working income on a
 reserve, volunteer allowance) are out of scope for the take-home calculator, so the sum has one

@@ -1,5 +1,5 @@
 # T1 General 2025 (form 5006-R), Step 5 line 118 / line 35000 "Add lines 115 to 117.
-# Total federal non-refundable tax credits" (CRA 5006-R-25E, docs/cra-forms-2025/5006-r-25e.txt).
+# Total federal non-refundable tax credits" (CRA 5006-R-25E).
 # Line 115 is `ca/credit_amounts_at_credit_rate` (line 33800). Line 116 (line 34900, donations and
 # gifts) and line 117 (line 34990, top-up tax credit) are 0 for the take-home filer and are left
 # out: there are no donations, and the top-up only applies above 8,319.38 of line 33800, which a
