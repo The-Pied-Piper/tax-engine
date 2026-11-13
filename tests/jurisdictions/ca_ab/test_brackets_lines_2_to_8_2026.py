@@ -3,9 +3,9 @@
 The 2026 Form AB428 (CRA 5009-c) text is not yet published, so the dataset cites T4127 and its
 header says so. The thresholds are 61,200 / 154,259 / 185,111 / 246,813 / 370,220 and the rates are
 8%, 10%, 12% (lines 2 to 8) and 13%, 14%, 15% (lines 9 to 15). This table covers line 1 of
-185,111.00 or less. Each `tax_at_start` is the printed constant of its column, carried unrounded;
-here it is also recomputed exactly from the rates and thresholds (the cumulative tax on the earlier
-brackets, with no rounding needed).
+185,111.00 or less. Each `tax_at_start` is the cumulative tax on the earlier brackets, calculated exactly from the
+rates and thresholds (every value is already exact to the cent, so no rounding is needed) and
+carried unrounded, because the 2026 form's printed constants are not yet published.
 """
 
 from __future__ import annotations
