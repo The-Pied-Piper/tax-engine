@@ -276,6 +276,11 @@ AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
 or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
 blank."""
 
+AB428_TAX_LINE_61 = AmountKind.declare(CATALOG, "ab428_tax_line_61")
+"""AB428 line 61 "Line 61: Line 59 plus line 60 = ^" (Form AB428, CRA 5009-c): line 59 plus line 60,
+which a salary-only caller leaves blank and the step reads as 0. The form prints no floor for the
+line, so the kind is signed."""
+
 AB428_CREDITS_FROM_LINE_58_LINE_62 = AmountKind.declare(
     CATALOG, "ab428_credits_from_line_58_line_62", non_negative=True
 )
@@ -296,3 +301,10 @@ AB428_TAX_ON_EXCESS_LINE_13 = AmountKind.declare(
 """Tax on the excess over the lower bound, AB428 line 13 "Line 13: Line 11 multiplied by the
 percentage from line 12 =": line 11 times the line 12 rate, rounded to the cent; blank when line 11
 or line 12 is blank."""
+
+AB428_CREDITS_SUBTOTAL_LINE_65 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_65", non_negative=True
+)
+"""Alberta credits subtotal, AB428 line 65 "Line 65: Add lines 62 to 64. = ^": line 62 (the
+non-refundable credits) plus line 63 (the dividend tax credit, blank read as 0) plus line 64 (the
+minimum tax carryover), rounded to the cent."""
