@@ -210,3 +210,10 @@ AB428_BRACKET_RATE_LINE_12 = AmountKind.declare(
 )
 """Bracket column rate, AB428 line 12 (the columns print "Line 12: Rate" with 13%, 14% or 15%): the
 printed rate of the column that line 1 falls in; blank when line 1 is 181,481.00 or less."""
+
+AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
+    CATALOG, "ab428_alberta_tax_on_taxable_income_line_59", non_negative=True
+)
+"""Alberta tax on taxable income, AB428 line 59 "Line 59: Alberta tax on taxable income from line 8
+or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
+blank."""

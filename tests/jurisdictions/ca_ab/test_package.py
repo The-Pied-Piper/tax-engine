@@ -22,6 +22,15 @@ def test_importing_the_package_imports_its_capabilities() -> None:
     assert capabilities.NAMESPACE == "ca-ab"
 
 
+def test_importing_the_package_imports_its_trace_and_trace_english_packages() -> None:
+    trace = sys.modules["tax_engine.jurisdictions.ca_ab.trace"]
+    trace_english = sys.modules["tax_engine.jurisdictions.ca_ab.trace_english"]
+
+    assert tax_engine.jurisdictions.ca_ab.trace is trace
+    assert tax_engine.jurisdictions.ca_ab.trace_english is trace_english
+    assert {"trace", "trace_english"} <= set(tax_engine.jurisdictions.ca_ab.__all__)
+
+
 def test_the_catalog_is_in_the_alberta_namespace() -> None:
     from tax_engine.jurisdictions.ca_ab.catalog import CATALOG
 
