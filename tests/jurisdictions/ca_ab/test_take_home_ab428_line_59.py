@@ -10,14 +10,14 @@ Line 59 is one calculation step, the Alberta capability `ca-ab/tax_on_taxable_in
 (`ab428_line_59.yaml`), not a copy line: it reads the line 8 and line 15 exports of
 `ca-ab/ab428_credits` as record lists (another form reads an export only as a record list, and
 `core/record_total` and `core/sum` read one list or plain amounts), and gives the one that has a
-figure. The other is blank, because line 1 is outside its table (#660, #773). Its output is
+figure. The other is blank, because line 1 is outside its table. Its output is
 `ca-ab/ab428_alberta_tax_on_taxable_income_line_59`, on the form `ca-ab/ab428`.
 
-STAND-IN: lines 8 and 15 are not built yet (#674 and #680). This test supplies them as two optional
+STAND-IN: the line 8 and line 15 parts are not built yet. This test supplies them as two optional
 inputs of the line 8 and line 15 kinds, and a test-local `ca-ab/ab428_credits` form that exports
 them, so the line 8 and line 15 record lists exist and the real line 59 part can read them. It is
-replaced by the real line 8 and line 15 parts, with the salary as the only input, once #674 and #680
-are on main. The test-local `ca-ab/ab428` form declaration exports line 59 only.
+replaced by the real line 8 and line 15 parts, with the salary as the only input, once they are on
+main. The test-local `ca-ab/ab428` form declaration exports line 59 only.
 
 Figures (hand-computed from the printed forms and the repo figures, not a CRA example; a salary of
 20,000 / 70,000 / 200,000 is a taxable income, line 1, of 19,835.00 / 69,335.00 / 198,926.00):
@@ -84,7 +84,7 @@ HEADER = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
-# The stand-in for lines 8 and 15 (#674, #680): two optional inputs, blank when left out, and the
+# The stand-in for the line 8 and line 15 parts: two optional inputs, blank when left out, and the
 # form that exports them.
 STAND_IN_INPUTS = dedent(f"""\
     inputs:
@@ -93,13 +93,13 @@ STAND_IN_INPUTS = dedent(f"""\
         unit: ca/cad
         required: false
         default: null
-        basis: stand-in for AB428 line 8 until the line 8 part is built (#674)
+        basis: stand-in for AB428 line 8 until the line 8 part is built
       - name: {LINE_15}
         reference: "15"
         unit: ca/cad
         required: false
         default: null
-        basis: stand-in for AB428 line 15 until the line 15 part is built (#680)
+        basis: stand-in for AB428 line 15 until the line 15 part is built
     """)
 CREDITS_FORM = dedent(f"""\
     form:

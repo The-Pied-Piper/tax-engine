@@ -3,7 +3,7 @@ kinds.
 
 AB428 line 59 (cra-docs, docs/cra-forms-2025/5009-c-25e.txt): "Line 59: Alberta tax on taxable
 income from line 8 or line 15". The form prints two tables (lines 2 to 8 and lines 9 to 15), and a
-taxable income is in exactly one of them: the other table's line 8 or line 15 is left blank (#660).
+taxable income is in exactly one of them: the other table's line 8 or line 15 is left blank.
 The capability reads both lines as record lists, because another form reads an export only as a
 record list, and gives the one that has a figure.
 
@@ -164,6 +164,24 @@ def test_rejects_one_list_kind_as_both_lines() -> None:
     assert "'line_15'" in message
 
 
+def test_rejects_a_two_field_list_kind_for_a_line() -> None:
+    two = RecordListKind("ex/credits.two", fields=(LINE_8, LINE_15))
+
+    with pytest.raises(InvalidCapabilityError, match="TaxOnTaxableIncome.*'line_8'.*one"):
+        TaxOnTaxableIncome(two, LINE_15_LIST, LINE_59)
+    with pytest.raises(InvalidCapabilityError, match="TaxOnTaxableIncome.*'line_15'.*one"):
+        TaxOnTaxableIncome(LINE_8_LIST, two, LINE_59)
+
+
+def test_rejects_a_non_amount_list_kind_for_a_line() -> None:
+    counts = RecordListKind("ex/credits.counts", fields=(CountKind("ex/count"),))
+
+    with pytest.raises(InvalidCapabilityError, match="TaxOnTaxableIncome.*'line_8'.*amount"):
+        TaxOnTaxableIncome(counts, LINE_15_LIST, LINE_59)
+    with pytest.raises(InvalidCapabilityError, match="TaxOnTaxableIncome.*'line_15'.*amount"):
+        TaxOnTaxableIncome(LINE_8_LIST, counts, LINE_59)
+
+
 # --- computing ---------------------------------------------------------------------------------
 
 
@@ -248,6 +266,26 @@ def test_a_refusal_is_a_validation_error_and_not_a_missing_or_blank_error() -> N
         with pytest.raises(ValidationError) as raised:
             compute(eight, fifteen)
         assert not isinstance(raised.value, MissingArtifactError | BlankNotAllowedError)
+
+
+def test_an_empty_line_8_list_is_refused() -> None:
+    with pytest.raises(ValidationError, match="line 8.*exactly one record"):
+        capability().compute((line_8(), line_15("19820.89")))
+
+
+def test_an_empty_line_15_list_is_refused() -> None:
+    with pytest.raises(ValidationError, match="line 15.*exactly one record"):
+        capability().compute((line_8("1586.80"), line_15()))
+
+
+def test_two_line_8_records_are_refused() -> None:
+    with pytest.raises(ValidationError, match="line 8.*exactly one record"):
+        capability().compute((line_8("1586.80", None), line_15(None)))
+
+
+def test_two_line_15_records_are_refused() -> None:
+    with pytest.raises(ValidationError, match="line 15.*exactly one record"):
+        capability().compute((line_8(None), line_15("19820.89", None)))
 
 
 # --- blank rules (what the manifest wires) ------------------------------------------------------

@@ -13,7 +13,7 @@ from typing import Any, ClassVar
 
 from tax_engine.domain.artifact import Artifact, Money
 from tax_engine.domain.capability import Capability, CapabilityResult, capability
-from tax_engine.domain.errors import ValidationError
+from tax_engine.domain.errors import InvalidCapabilityError, ValidationError
 from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca_ab.trace import TaxOnTaxableIncomeLine
@@ -30,6 +30,17 @@ class TaxOnTaxableIncome(Capability):
     def __init__(self, line_8: RecordListKind, line_15: RecordListKind, output: Money) -> None:
         """Wire the capability: the two record lists it reads, the kind it makes."""
         super().__init__(line_8=line_8, line_15=line_15, output=output)
+        name = type(self).__name__
+        for slot, kind in (("line_8", line_8), ("line_15", line_15)):
+            if not isinstance(kind, RecordListKind):
+                raise InvalidCapabilityError(
+                    f"{name}: CONSUMES slot '{slot}' must be a record-list kind"
+                )
+            if len(kind.fields) != 1 or not issubclass(kind.fields[0].value_type, Decimal):
+                raise InvalidCapabilityError(
+                    f"{name}: CONSUMES slot '{slot}' must be a record list of exactly one "
+                    "amount field"
+                )
         self._line_8 = line_8
         self._line_15 = line_15
         self._output = output
@@ -38,8 +49,15 @@ class TaxOnTaxableIncome(Capability):
         name = type(self).__name__
         field_8 = self._line_8.fields[0]
         field_15 = self._line_15.fields[0]
-        record_8 = self._input(inputs, self._line_8).value.records[0]
-        record_15 = self._input(inputs, self._line_15).value.records[0]
+        records_8 = self._input(inputs, self._line_8).value.records
+        records_15 = self._input(inputs, self._line_15).value.records
+        for slot, records in (("line 8", records_8), ("line 15", records_15)):
+            if len(records) != 1:
+                raise ValidationError(
+                    f"{name}: {slot} must have exactly one record, not {len(records)}"
+                )
+        record_8 = records_8[0]
+        record_15 = records_15[0]
         blank_8 = record_8.is_blank(field_8)
         blank_15 = record_15.is_blank(field_15)
         if blank_8 and blank_15:
