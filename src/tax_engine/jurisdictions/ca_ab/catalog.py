@@ -185,6 +185,12 @@ AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, AB428 line 34 "Line 34 and line 58360: Pension income amount (maximum
 $1,719)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
 
+AB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
+    CATALOG, "ab428_credits_subtotal_line_36", non_negative=True
+)
+"""Credits subtotal, AB428 line 36 "Line 36: Add lines 33 to 35. = ^": line 35 (caregiver amount) is
+not built, so the sum adds line 33 and the line 34 pension income amount."""
+
 AB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "ab428_bracket_lower_bound_line_3", non_negative=True
 )
