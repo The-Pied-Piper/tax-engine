@@ -2,16 +2,17 @@
 
 Form text (CRA 5009-d-25e.txt): "Line 2: Amount from line 58560 of your Form AB428 ^". Line 2 is a
 calculation, not an input: its one step is a core/record_total over the AB428 line 41 export
-(`ca-ab/ab428_credits.ab428_unused_tuition_line_41`), as Ontario's line 1 reads a cross-form
-export. The form prints no title text for the line, so the step is untitled. Line 41 is an optional
-input, blank for a salary-only filer, and the step reads the blank as 0 and prints its own
-"left blank, taken as 0" row.
+(`ca-ab/ab428_credits.ab428_unused_tuition_rounded_line_41`), as Ontario's line 1 reads a
+cross-form export. The form prints no title text for the line, so the step is untitled. The export
+is the line 41 step's whole-cent figure (#831), never blank, so line 2 has no blank rule and prints
+no "left blank" row of its own; a line 41 with fractional cents is rounded before line 2 copies it.
 
-The real line part and the real line 41 input part are loaded from the package. The header and the
-two form declarations (AB428 credits, exporting line 41, and the worksheet, exporting line 2) are
-made up here, because the shared scaffold owns them. Alberta is not yet listed in the
-registrations, so the service is built here over the Alberta package list of `support.py`. The
-zero figures at every salary follow from line 41 being blank and read as 0 (not a CRA example).
+The real line part, the real line 41 input part and the real line 41 step part are loaded from the
+package. The header and the two form declarations (AB428 credits, exporting line 41, and the
+worksheet, exporting line 2) are made up here, because the shared scaffold owns them. Alberta is
+not yet listed in the registrations, so the service is built here over the Alberta package list
+of `support.py`. The zero figures at every salary follow from line 41 being blank and read as 0
+(not a CRA example).
 """
 
 from __future__ import annotations
@@ -53,6 +54,7 @@ D = Decimal
 PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
 LINE_PART = PARTS / "worksheet_ab428_line_2.yaml"
 INPUT_PART = PARTS / "ab428_line_41_input.yaml"
+LINE_41_PART = PARTS / "ab428_credits_line_41.yaml"
 KIND = "ca-ab/worksheet_ab428_line_2"
 
 HEADER = dedent("""\
@@ -70,7 +72,7 @@ CREDITS_FORM = dedent("""\
       name: ca-ab/ab428_credits
       required: true
       exports:
-        - ca-ab/ab428_unused_tuition_line_41
+        - ca-ab/ab428_unused_tuition_rounded_line_41
     capabilities: []
     """)
 WORKSHEET_FORM = dedent("""\
@@ -85,6 +87,7 @@ WORKSHEET_FORM = dedent("""\
 
 def _part_files() -> Iterator[Path]:
     yield INPUT_PART
+    yield LINE_41_PART
     yield LINE_PART
 
 
@@ -127,10 +130,28 @@ def test_line_2_is_line_41_when_it_is_given(tmp_path: Path) -> None:
     assert sheet.get(WORKSHEET_AB428_LINE_2).value == D("1500.00")
 
 
-def test_a_blank_line_41_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    ("line_41", "expected"),
+    [("100.00", "100.00"), ("100.005", "100.01"), ("100.004", "100.00")],
+)
+def test_line_2_is_line_41_rounded_to_the_cent(tmp_path: Path, line_41: str, expected: str) -> None:
+    sheet = _sheet(tmp_path, "70000", Artifact(AB428_UNUSED_TUITION_LINE_41, D(line_41)))
+
+    assert sheet.get(WORKSHEET_AB428_LINE_2).value == D(expected)
+
+
+def test_line_2_never_prints_a_non_cent_amount(tmp_path: Path) -> None:
+    sheet = _sheet(tmp_path, "70000", Artifact(AB428_UNUSED_TUITION_LINE_41, D("100.005")))
+    rows = EnglishTraceRenderer().render_all(sheet.trace)
+
+    assert not any("100.005" in row for row in rows)
+    assert any("100.01" in row for row in rows)
+
+
+def test_a_blank_line_41_prints_no_left_blank_row_on_line_2(tmp_path: Path) -> None:
     rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
 
-    assert any("left blank, taken as 0" in row for row in rows)
+    assert not any("left blank, taken as 0" in row.lower() for row in rows)
 
 
 def _line() -> dict[str, Any]:
@@ -145,11 +166,13 @@ def test_the_part_names_the_form_and_has_one_untitled_record_total_step() -> Non
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-ab/worksheet_ab428"}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "consumes", "blank", "produces"]
+    assert list(step) == ["name", "reference", "unit", "consumes", "produces"]
     assert step["name"] == "core/record_total"
     assert step["reference"] == "2"
     assert step["unit"] == "ca/cad"
-    assert step["consumes"] == {"records": "ca-ab/ab428_credits.ab428_unused_tuition_line_41"}
+    assert step["consumes"] == {
+        "records": "ca-ab/ab428_credits.ab428_unused_tuition_rounded_line_41"
+    }
     assert step["produces"] == {"output": KIND}
 
 

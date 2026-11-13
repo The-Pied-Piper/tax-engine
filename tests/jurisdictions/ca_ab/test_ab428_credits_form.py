@@ -31,7 +31,7 @@ EXPORTS = [
     "ca-ab/ab428_tax_on_taxable_income_line_8",
     "ca-ab/ab428_bracket_rate_line_12",
     "ca-ab/ab428_tax_on_taxable_income_line_15",
-    "ca-ab/ab428_unused_tuition_line_41",
+    "ca-ab/ab428_unused_tuition_rounded_line_41",
     "ca-ab/ab428_credits_total_line_52",
     "ca-ab/ab428_non_refundable_credits_line_58",
 ]
