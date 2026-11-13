@@ -331,3 +331,8 @@ AB428_TAX_LINE_70 = AmountKind.declare(CATALOG, "ab428_tax_line_70", non_negativ
 """AB428 line 70 "Line 70: Line 68 minus line 69 (if negative, enter "0") = ^": line 68 (the tax)
 minus line 69 (the provincial foreign tax credit, read as 0 when blank), floored at 0 as the form
 prints, rounded to the cent."""
+
+AB428_TAX_LINE_73 = AmountKind.declare(CATALOG, "ab428_tax_line_73", non_negative=True)
+"""AB428 line 73 "Line 73: Line 70 minus line 72 (if negative, enter "0") = ^": line 70 (the tax)
+minus line 72 (the Alberta political contributions tax credit, read as 0 when blank), floored at 0
+as the form prints, rounded to the cent."""
