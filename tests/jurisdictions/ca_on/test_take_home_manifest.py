@@ -80,10 +80,10 @@ def test_the_t1_exports_line_42000_net_federal_tax_for_the_return() -> None:
     assert "ca/net_federal_tax" in t1.exports
 
 
-def test_the_return_reads_net_federal_tax_and_the_ontario_tax_before_the_premium() -> None:
-    # The two gate bases: T1 line 42000 and ON428 line 88 (not line 90), each totalled with
+def test_the_return_reads_net_federal_tax_and_the_ontario_tax_after_the_reduction() -> None:
+    # The two gate bases: T1 line 42000 and ON428 line 81 (not line 88 or 90), each totalled with
     # core/record_total into the return's own kind, in Canadian dollars.
-    on428_line_88 = "ca-on/on428.on428_tax_after_farmers_food_donation_credit_line_88"
+    on428_line_81 = "ca-on/on428.on428_tax_after_tax_reduction_line_81"
     steps = [
         (name, params, consumes, produces)
         for name, params, consumes, produces in _return_steps()
@@ -97,8 +97,8 @@ def test_the_return_reads_net_federal_tax_and_the_ontario_tax_before_the_premium
     ) in [step[1:] for step in steps]
     assert (
         {},
-        {"records": on428_line_88},
-        {"output": "ca-on/ontario_tax_before_premium_return"},
+        {"records": on428_line_81},
+        {"output": "ca-on/ontario_tax_after_reduction_return"},
     ) in [step[1:] for step in steps]
 
 
@@ -123,7 +123,7 @@ def test_the_return_turns_each_tax_into_a_gate_rate_from_the_marginal_rate_gate_
     assert (
         "core/amount_by_band_rate",
         {"table": "ca-on/marginal_rate_gate"},
-        {"base": "ca-on/ontario_tax_before_premium_return"},
+        {"base": "ca-on/ontario_tax_after_reduction_return"},
         {"output": "ca-on/ontario_rate_gate"},
     ) in steps
 
@@ -154,7 +154,7 @@ def test_the_gates_come_after_their_tax_and_before_the_gated_rates() -> None:
         "ca/net_federal_tax_return",
         "ca/federal_rate_gate",
         "ca/federal_marginal_rate",
-        "ca-on/ontario_tax_before_premium_return",
+        "ca-on/ontario_tax_after_reduction_return",
         "ca-on/ontario_rate_gate",
         "ca-on/ontario_bracket_marginal_rate",
         "ca-on/ontario_marginal_rate",
@@ -217,14 +217,14 @@ def test_the_ontario_manifest_declares_the_federal_inputs_by_importing_their_for
     } <= set(_manifest().inputs)
 
 
-def test_on428_exports_lines_90_and_88_the_surtax_base_line_65_and_the_line_5_rate() -> None:
+def test_on428_exports_lines_90_and_81_the_surtax_base_line_65_and_the_line_5_rate() -> None:
     (on428,) = (form for form in _manifest().forms if form.name == "ca-on/on428")
 
     assert set(on428.exports) == {
         "ca-on/on428_ontario_tax_line_90",
         "ca-on/on428_surtax_base_line_65",
         "ca-on/on428_bracket_column_rate_line_5",
-        "ca-on/on428_tax_after_farmers_food_donation_credit_line_88",
+        "ca-on/on428_tax_after_tax_reduction_line_81",
     }
 
 

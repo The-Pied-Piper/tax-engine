@@ -59,7 +59,7 @@ RETURN_PART = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 RETURN = "ca-on/return"
 RATE = "ca-on/ontario_bracket_rate_return"
 FACTOR = "ca-on/ontario_surtax_factor"
-# The pure product; `ca-on/ontario_marginal_rate` is now this product gated by ON428 line 88 (#820).
+# The pure product; `ca-on/ontario_marginal_rate` is now this product gated by ON428 line 81 (#820).
 MARGINAL = "ca-on/ontario_bracket_marginal_rate"
 
 PARTS = (
