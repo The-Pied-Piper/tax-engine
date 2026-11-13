@@ -11,8 +11,10 @@
 #     column line 70 falls in; the return totals it into its `ca/federal_bracket_rate_return`.
 #   - Line 42900 (`ca/federal_tax_after_credits`, "Basic federal tax") is the tax the federal bracket
 #     rate is gated on: the tax after the personal-amount, CPP/EI and employment credits that
-#     payroll applies. The credits between line 42900 and line 42000 are return-only, so they do
-#     not move the gate. The return counts the rate only where this is above zero.
+#     payroll applies. The lines between 42900 and 42000 (surtax on income earned outside
+#     Canada, foreign tax credit, investment tax credit recapture, logging tax credit and the
+#     line 41600 credits) are, for the take-home filer, not applied in payroll or not given, so
+#     they do not move the gate. The return counts the rate only where this is above zero.
 # Line 76 (`ca/federal_tax_on_taxable_income_line_76`, "Line 74 plus line 75 Federal tax on
 # taxable income") is read inside the form by line 40400 only, and line 70 by line 76, so neither
 # is exported.

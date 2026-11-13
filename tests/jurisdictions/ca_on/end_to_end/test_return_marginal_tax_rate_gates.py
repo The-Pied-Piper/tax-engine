@@ -1,4 +1,4 @@
-"""The marginal tax rate counts each bracket-rate part only where its own tax is above zero (#820),
+"""The marginal tax rate counts each bracket-rate part only where its own tax is above zero,
 through the real engine.
 
 The marginal tax rate is the income tax on the next dollar, including the Ontario surtax and health
@@ -120,7 +120,7 @@ def test_each_part_and_the_total_of_the_marginal_tax_rate(
 
 
 def test_the_marginal_tax_rate_at_a_salary_of_100_is_0_not_19_55_percent() -> None:
-    # Tax payable is 0.00 and the next dollar adds no tax; the rate was 0.1955 before #820.
+    # Tax payable is 0.00 and the next dollar adds no tax; the rate was 0.1955 before the gates.
     summary = _summary("100")
 
     assert _value(summary, MARGINAL) == D("0")

@@ -12,7 +12,7 @@ The return summary has one `core/multiply_by_rate` step in `return.yaml`: base
 `ca-on/ontario_surtax_factor`, rate `ca-on/ontario_bracket_rate_return`, the dataset
 `ca-on/exact_rounding` (`rounding: none`, the product is exact), unit `core/percent`, producing the
 new non-negative Ontario amount kind `ca-on/ontario_bracket_marginal_rate` (named
-`ca-on/ontario_marginal_rate` before #820, which gates it). The return's exports are that
+`ca-on/ontario_marginal_rate` before the gates, which now gate it). The return's exports are that
 rate and T1 line 167: the bracket rate and the surtax factor are now read inside the return, so
 they are no longer exported.
 
@@ -59,7 +59,7 @@ RETURN_PART = (TAKE_HOME / "return.yaml").read_text(encoding="utf-8")
 RETURN = "ca-on/return"
 RATE = "ca-on/ontario_bracket_rate_return"
 FACTOR = "ca-on/ontario_surtax_factor"
-# The pure product; `ca-on/ontario_marginal_rate` is now this product gated by ON428 line 81 (#820).
+# The pure product; `ca-on/ontario_marginal_rate` is now this product gated by ON428 line 81.
 MARGINAL = "ca-on/ontario_bracket_marginal_rate"
 
 PARTS = (

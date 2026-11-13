@@ -32,7 +32,8 @@
 # so the `ca-on/exact_rounding` dataset rounds nothing. It has no title.
 # Each bracket rate counts only where its own tax is above zero. The T1 form exports line 42900
 # "Basic federal tax" (`ca/federal_tax_after_credits`), the tax after the credits payroll applies
-# (the credits between it and line 42000 are return-only), and ON428 exports line 81, the Ontario tax after the
+# (the lines between it and line 42000 are not applied in payroll or not given by the take-home
+# filer), and ON428 exports line 81, the Ontario tax after the
 # personal credits and the Ontario tax reduction (`ca-on/on428_tax_after_tax_reduction_line_81`);
 # the CRA payroll deductions formulas (T4127, January 2025 edition) apply both, so the Ontario part
 # counts when that tax is positive. The LIFT credit is return-only and not stated in T4127, so it
@@ -46,7 +47,11 @@
 # `ca-on/marginal_tax_rate`, the income tax rate on a further dollar of salary; it is exact too, is
 # not printed on the form and has no title or line.
 # Known limit: the rate is the bracket rate gated on each tax being above zero. It still ignores
-# the LIFT credit phase-out and the tax effect of CPP and EI.
+# the LIFT credit phase-out (return-only, not stated in T4127) and the tax effect of CPP and EI.
+# It also counts the Ontario bracket rate once, where the Ontario tax reduction (ON428 lines 74 to
+# 80, factor S of T4127) is being phased out and a further dollar of tax is reduced by the reduction
+# it removes, so the true rate there is twice the bracket rate; that band runs from the first salary
+# with ON428 line 81 above zero to the first with the reduction at zero.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"

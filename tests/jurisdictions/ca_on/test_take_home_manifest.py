@@ -65,7 +65,7 @@ def test_the_return_ends_with_the_sum_of_the_three_rates_exactly() -> None:
 
 def test_the_return_multiplies_the_bracket_rate_by_the_surtax_factor_exactly() -> None:
     # The factor is the base and the bracket rate the rate, with the dataset that rounds nothing;
-    # the product is the ungated `ca-on/ontario_bracket_marginal_rate` (#820 gates it afterwards).
+    # the product is the ungated `ca-on/ontario_bracket_marginal_rate` (gated afterwards).
     assert (
         "core/multiply_by_rate",
         {"rounding": "ca-on/exact_rounding"},

@@ -29,7 +29,7 @@ line 89 chart row are chosen by:
   over the 7,307 threshold of the 36% surtax
 - $275,000: 0.33 + 0.1316 x 1.56 + 0 = 0.33 + 0.205296 = 0.535296 (53.5296%), the top brackets
 
-Each bracket-rate part counts only where its own tax is above zero (#820): the federal marginal rate
+Each bracket-rate part counts only where its own tax is above zero: the federal marginal rate
 is the T1 line 73 rate gated by T1 line 42900 "Basic federal tax", the Ontario marginal rate the
 bracket rate times the surtax factor gated by ON428 line 81. The gates and the thresholds are in
 `test_return_marginal_tax_rate_gates.py`.

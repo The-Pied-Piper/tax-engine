@@ -55,9 +55,9 @@ FEDERAL_RATE_GATE = AmountKind.declare(CATALOG, "federal_rate_gate", non_negativ
 least one cent, read through a two-band gate dataset. A plain figure, not printed on the form."""
 
 FEDERAL_MARGINAL_RATE = AmountKind.declare(CATALOG, "federal_marginal_rate", non_negative=True)
-"""Federal marginal rate: the federal bracket rate (T1 line 73 "Line 73: Rate") where the net
-federal tax is above zero, and 0 where it is not, a fraction (0.205 for 20.5%), on the return
-summary.
+"""Federal marginal rate: the federal bracket rate (T1 line 73 "Line 73: Rate") where the basic
+federal tax (T1 line 42900) is above zero, and 0 where it is not, a fraction (0.205 for 20.5%),
+on the return summary.
 """
 
 FEDERAL_EXCESS_TIMES_COLUMN_RATE_LINE_74 = AmountKind.declare(

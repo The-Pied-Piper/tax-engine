@@ -6,7 +6,7 @@ chart prints "Line 73: Rate" with 14.5%, 20.5%, 26%, 29% or 33%. The existing st
 column that line 70 falls in. The return summary reads it as a cross-form read: the T1 form exports
 it, and one `core/record_total` step of `return.yaml` totals the one amount into the return's own
 amount kind `ca/federal_bracket_rate_return`; `ca/federal_marginal_rate` is that rate gated by T1
-line 42900 "Basic federal tax" (#820: 0 where no federal tax is paid). The step has no printed title
+line 42900 "Basic federal tax" (0 where no federal tax is paid). The step has no printed title
 and no printed line, and carries the unit `core/percent`, so the summary shows it untitled, with no
 reference, and a trace prints the fraction 0.205 as the form prints it, "20.5%".
 
@@ -135,7 +135,7 @@ def test_the_federal_marginal_rate_is_the_line_73_rate_of_the_column(
 def test_the_federal_bracket_rate_return_equals_line_73_read_from_the_t1_sheet(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
-    # The raw line 73 rate, read into its own kind (#820), whatever the tax: the federal marginal
+    # The raw line 73 rate, read into its own kind, whatever the tax: the federal marginal
     # rate is this rate gated by T1 line 42900, so it differs from it where no tax is paid.
     worksheets = _worksheets(take_home_service, salary)
     (t1_sheet,) = worksheets[T1_FORM]
