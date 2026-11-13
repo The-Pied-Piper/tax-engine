@@ -1,8 +1,8 @@
 """The 2025 `ca-on/marginal_rate_gate` dataset: a two-band gate that is 0 where a tax is 0.00 and 1
 where it is at least one cent (#820).
 
-Not a printed form figure: no CRA text is quoted. The Ontario return summary reads T1 line 42000
-"Net federal tax" and ON428 line 81 through it (two `core/amount_by_band_rate` steps), so that the
+Not a printed form figure: no CRA text is quoted. The Ontario return summary reads T1 line 42900
+"Basic federal tax" and ON428 line 81 through it (two `core/amount_by_band_rate` steps), so that the
 bracket-rate part of the marginal tax rate counts only where its own tax is above zero. A base of
 0.00 gives the rate 0 and a base of 0.01 or more gives the rate 1. The rate is the band's `rate`,
 as the health premium slope is (`ca-on/health_premium_rows`).

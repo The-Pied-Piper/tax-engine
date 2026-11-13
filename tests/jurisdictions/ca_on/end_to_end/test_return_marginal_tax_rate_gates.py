@@ -6,10 +6,12 @@ premium; CPP and EI are not counted. Before the fix every part read the bracket 
 income row, so the rate was 19.55% at a salary of 100 and at every salary below 18,820.27. Each
 part now reads a gate: 0 where its tax is 0.00 and 1 where it is a cent or more.
 
-- Federal: T1 line 42000 "Net federal tax" (`ca/net_federal_tax`, read into
-  `ca/net_federal_tax_return`) gives `ca/federal_rate_gate`; the federal marginal rate
+- Federal: T1 line 42900 "Basic federal tax" (`ca/federal_tax_after_credits`, read into
+  `ca/federal_tax_after_credits_return`) gives `ca/federal_rate_gate`; the federal marginal rate
   (`ca/federal_marginal_rate`) is that gate times the T1 line 73 "Line 73: Rate"
-  (`ca/federal_bracket_rate_return`).
+  (`ca/federal_bracket_rate_return`). Not line 42000: the lines between 42900 and 42000 (foreign
+  tax credit, logging credit, political and other credits, ITC recapture, T2203 surtax) are
+  return-only and must not move the gate.
 - Ontario: ON428 line 81 "Ontario tax after the Ontario tax reduction"
   (`ca-on/on428_tax_after_tax_reduction_line_81`, read into
   `ca-on/ontario_tax_after_reduction_return`), the tax after the personal credits and the tax
@@ -21,7 +23,8 @@ part now reads a gate: 0 where its tax is 0.00 and 1 where it is a cent or more.
   income (6% from 20,000 to 25,000, 0 in a flat row).
 
 No new form text is quoted (the printed rates are those pinned in the marginal rate test file;
-the thresholds are measured). Thresholds, salary only, 2025: net federal tax is first positive at
+the thresholds are measured). Thresholds, salary only, 2025: basic federal tax (line 42900) is first
+positive at
 18,820.27 (at 18,820.26 the tax before credits equals the credits, 2,706.72) and ON428 line 81 at
 19,868.74 (0.02; 0.00 at 19,868.73).
 
@@ -51,7 +54,7 @@ D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 RETURN = "ca-on/return"
 
-NET_FEDERAL_TAX = "ca/net_federal_tax_return"
+BASIC_FEDERAL_TAX = "ca/federal_tax_after_credits_return"
 TAX_AFTER_REDUCTION = "ca-on/ontario_tax_after_reduction_return"
 FEDERAL_GATE = "ca/federal_rate_gate"
 ONTARIO_GATE = "ca-on/ontario_rate_gate"
@@ -65,11 +68,11 @@ MARGINAL = "ca-on/marginal_tax_rate"
 # Salary, then the federal marginal rate, the Ontario marginal rate, the health premium slope and
 # the marginal tax rate, worked by hand from the printed rates and the gates.
 PARTS = [
-    # Net federal tax is 0.00 (and so ON428 line 81): both parts are 0 although the bracket rates
+    # Basic federal tax is 0.00 (and so ON428 line 81): both parts are 0 although the bracket rates
     # are 14.5% and 5.05%.
     ("100", "0", "0", "0", "0"),
     ("18820.26", "0", "0", "0", "0"),
-    # Net federal tax is first positive: the federal part only.
+    # Basic federal tax is first positive: the federal part only.
     ("18820.27", "0.145", "0", "0", "0.145"),
     ("19868.73", "0.145", "0", "0", "0.145"),
     # ON428 line 81 is first positive at 19,868.74: the Ontario part, 5.05% times the factor 1.
@@ -144,7 +147,7 @@ def test_the_gates_open_with_the_taxes_they_read(
 ) -> None:
     summary = _summary(salary)
 
-    assert (_value(summary, NET_FEDERAL_TAX) > 0) is federal_tax_is_positive
+    assert (_value(summary, BASIC_FEDERAL_TAX) > 0) is federal_tax_is_positive
     assert (_value(summary, TAX_AFTER_REDUCTION) > 0) is ontario_tax_is_positive
     assert _value(summary, FEDERAL_GATE) == D(int(federal_tax_is_positive))
     assert _value(summary, ONTARIO_GATE) == D(int(ontario_tax_is_positive))

@@ -74,14 +74,14 @@ def test_the_return_multiplies_the_bracket_rate_by_the_surtax_factor_exactly() -
     ) in _return_steps()
 
 
-def test_the_t1_exports_line_42000_net_federal_tax_for_the_return() -> None:
+def test_the_t1_exports_line_42900_basic_federal_tax_for_the_return() -> None:
     (t1,) = (form for form in _manifest().forms if form.name == "ca/t1_tax_and_credits")
 
-    assert "ca/net_federal_tax" in t1.exports
+    assert "ca/federal_tax_after_credits" in t1.exports
 
 
-def test_the_return_reads_net_federal_tax_and_the_ontario_tax_after_the_reduction() -> None:
-    # The two gate bases: T1 line 42000 and ON428 line 81 (not line 88 or 90), each totalled with
+def test_the_return_reads_basic_federal_tax_and_the_ontario_tax_after_the_reduction() -> None:
+    # The two gate bases: T1 line 42900 and ON428 line 81 (not line 88 or 90), each totalled with
     # core/record_total into the return's own kind, in Canadian dollars.
     on428_line_81 = "ca-on/on428.on428_tax_after_tax_reduction_line_81"
     steps = [
@@ -92,8 +92,8 @@ def test_the_return_reads_net_federal_tax_and_the_ontario_tax_after_the_reductio
 
     assert (
         {},
-        {"records": "ca/t1_tax_and_credits.net_federal_tax"},
-        {"output": "ca/net_federal_tax_return"},
+        {"records": "ca/t1_tax_and_credits.federal_tax_after_credits"},
+        {"output": "ca/federal_tax_after_credits_return"},
     ) in [step[1:] for step in steps]
     assert (
         {},
@@ -117,7 +117,7 @@ def test_the_return_turns_each_tax_into_a_gate_rate_from_the_marginal_rate_gate_
     assert (
         "core/amount_by_band_rate",
         {"table": "ca-on/marginal_rate_gate"},
-        {"base": "ca/net_federal_tax_return"},
+        {"base": "ca/federal_tax_after_credits_return"},
         {"output": "ca/federal_rate_gate"},
     ) in steps
     assert (
@@ -151,7 +151,7 @@ def test_the_gates_come_after_their_tax_and_before_the_gated_rates() -> None:
     outputs = [produces["output"] for _, _, _, produces in _return_steps()]
 
     order = [
-        "ca/net_federal_tax_return",
+        "ca/federal_tax_after_credits_return",
         "ca/federal_rate_gate",
         "ca/federal_marginal_rate",
         "ca-on/ontario_tax_after_reduction_return",

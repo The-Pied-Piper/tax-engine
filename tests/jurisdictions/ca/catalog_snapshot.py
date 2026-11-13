@@ -1165,7 +1165,7 @@ REGISTERED = frozenset(
         "ca/federal_marginal_rate",
         "ca/federal_bracket_rate_return",
         "ca/federal_rate_gate",
-        "ca/net_federal_tax_return",
+        "ca/federal_tax_after_credits_return",
         "ca/federal_excess_times_column_rate_line_74",
         "ca/federal_tax_at_column_start_line_75",
         "ca/federal_tax_on_taxable_income_line_76",
