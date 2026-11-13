@@ -30,7 +30,6 @@ from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
 
 import pytest
 import yaml
@@ -204,7 +203,7 @@ def test_the_blank_line_4_says_it_passed_on_line_3s_blank(tmp_path: Path) -> Non
 
 
 def test_the_part_is_one_subtract_not_below_zero_step_over_lines_1_and_3() -> None:
-    part: Any = yaml.safe_load(LINE_4_PART.read_text(encoding="utf-8"))
+    part = yaml.safe_load(LINE_4_PART.read_text(encoding="utf-8"))
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
