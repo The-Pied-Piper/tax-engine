@@ -1,0 +1,18 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: 2025 amount 26,159 x 1.02 (the federal 2026 factor) = 26,682.18, rounded down to 26,682 as in 2025.
+# Alberta Schedule 6, 2026 tax year, line 24, for a filer with no eligible spouse and no eligible
+# dependant: "If you had an eligible spouse or an eligible dependant, enter $32,772. If not, enter
+# $26,159." (2025 text.) The "If not" figure, claimed whole through core/credit_amount. It replaces
+# `ca/cwb_reduction_threshold` in the Alberta manifest's import of Schedule 6. Rounds half-up to
+# the cent, which changes nothing.
+# The 2026 Alberta Schedule 6 is not yet published; the figure is not confirmed against it.
+# Doubt: it is not confirmed that alberta.ca's 2% covers Schedule 6; the threshold could print
+# as 26,683, which changes the credit by at most 15 cents.
+# MUST BE REPLACED from the printed figures when CRA posts the 2026 Alberta Schedule 6 (expected January or February).
+family: ca-ab/cwb_reduction_threshold
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-s6/5009-s6-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "26682"
