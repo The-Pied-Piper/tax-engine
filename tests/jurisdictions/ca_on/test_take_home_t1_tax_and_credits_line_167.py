@@ -41,6 +41,7 @@ D = Decimal
 ONTARIO = JurisdictionCode("CA-ON")
 FORM = "ca/t1_tax_and_credits"
 LINE_43500 = "ca/total_payable"
+NET_FEDERAL_TAX = "ca/net_federal_tax"
 LINE_48200 = "ca/total_credits"
 LINE_167 = "ca/refund_or_balance_owing"
 FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 = "ca/federal_tax_on_taxable_income_line_76"
@@ -175,11 +176,16 @@ def test_line_167_names_line_43500_line_48200_and_its_rounding_in_the_trace(
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
 
-def test_the_real_t1_form_header_exports_line_167_total_payable_and_the_line_73_rate() -> None:
+def test_the_real_t1_form_header_exports_167_43500_the_73_rate_and_net_federal_tax() -> None:
     # Line 76 is read inside the form by line 40400 only, so it is not exported.
     exports = yaml.safe_load(REAL_FORM)["form"]["exports"]
 
-    assert set(exports) == {LINE_167, LINE_43500, FEDERAL_BRACKET_COLUMN_RATE_LINE_73}
+    assert set(exports) == {
+        LINE_167,
+        LINE_43500,
+        FEDERAL_BRACKET_COLUMN_RATE_LINE_73,
+        NET_FEDERAL_TAX,
+    }
     assert FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 not in exports
 
 
