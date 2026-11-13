@@ -209,13 +209,22 @@ def test_the_part_is_one_subtract_not_below_zero_step_over_lines_1_and_3() -> No
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
+    assert list(step) == [
+        "name",
+        "reference",
+        "unit",
+        "params",
+        "consumes",
+        "blank",
+        "produces",
+    ]
     assert step == {
         "name": "core/subtract_not_below_zero",
         "reference": "4",
         "unit": "ca/cad",
         "params": {"rounding": "ca-ab/cent_rounding"},
         "consumes": {"amount": LINE_1, "less": LINE_3},
+        "blank": {"less": "pass_on"},
         "produces": {"output": LINE_4},
     }
 

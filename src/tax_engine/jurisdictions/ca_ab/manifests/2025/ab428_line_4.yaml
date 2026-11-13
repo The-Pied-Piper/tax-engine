@@ -1,0 +1,20 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) line 4, "Line 4: Line 2 minus line 3
+# (cannot be negative) =": the taxable income over the column's lower bound. Line 2 is a copy of
+# line 1 (the T1 taxable income) and has no step of its own, so line 4 reads line 1 directly. Line 3
+# is the printed lower bound of the column that line 1 falls in. The result is not below zero, and
+# it is blank when line 3 is blank.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "4"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      amount: ca-ab/ab428_taxable_income_line_1
+      less: ca-ab/ab428_bracket_lower_bound_line_3
+    blank:
+      less: pass_on
+    produces:
+      output: ca-ab/ab428_taxable_income_over_lower_bound_line_4
