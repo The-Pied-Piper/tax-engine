@@ -57,6 +57,7 @@ from tests.jurisdictions.ca_ab.support import (
     alberta_parameter_parsers,
     alberta_units,
 )
+from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
 D = Decimal
@@ -309,5 +310,5 @@ def test_line_61_is_a_registered_signed_amount_kind() -> None:
     assert LINE_61 in kinds.identifiers()
     kind = kinds.kind(LINE_61)
     assert isinstance(kind, AmountKind)
-    assert not kind.non_negative
+    assert not non_negative(kind)
     assert kind is AB428_TAX_LINE_61
