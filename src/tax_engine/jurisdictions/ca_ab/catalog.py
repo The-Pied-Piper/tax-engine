@@ -70,8 +70,15 @@ AB428_UNUSED_TUITION_LINE_41 = AmountKind.declare(
     CATALOG, "ab428_unused_tuition_line_41", non_negative=True
 )
 """Unused tuition and education amounts, AB428 line 41 (line 58560) "Your unused tuition and
-education amounts": the unused tuition and education amounts from Schedule AB(S11), read by line 2
-of Worksheet AB428."""
+education amounts": the unused tuition and education amounts from Schedule AB(S11), an optional
+input as the filer gives it; the line 41 part reads it and produces the rounded figure."""
+
+AB428_UNUSED_TUITION_ROUNDED_LINE_41 = AmountKind.declare(
+    CATALOG, "ab428_unused_tuition_rounded_line_41", non_negative=True
+)
+"""Unused tuition and education amounts, AB428 line 41 (line 58560) "Your unused tuition and
+education amounts": the input rounded to the cent and read as 0 when blank, read by line 43 and by
+line 2 of Worksheet AB428."""
 
 AB428_MEDICAL_EXPENSES_LINE_51 = AmountKind.declare(
     CATALOG, "ab428_medical_expenses_line_51", non_negative=True

@@ -3,7 +3,7 @@
 # and line 12 (`ca-ab/ab428_bracket_rate_line_12`), the bracket rates the return summary reads for
 # the Alberta marginal rate; line 8 (`ca-ab/ab428_tax_on_taxable_income_line_8`) and line 15
 # (`ca-ab/ab428_tax_on_taxable_income_line_15`), which line 59 on the tax form reads;
-# line 41 (`ca-ab/ab428_unused_tuition_line_41`) and line 52 (`ca-ab/ab428_credits_total_line_52`),
+# line 41 rounded to the cent (`ca-ab/ab428_unused_tuition_rounded_line_41`) and line 52 (`ca-ab/ab428_credits_total_line_52`),
 # which Worksheet AB428 reads on its lines 2 and 1; and line 58
 # (`ca-ab/ab428_non_refundable_credits_line_58`), which line 62 on the tax form reads.
 form:
@@ -15,7 +15,7 @@ form:
     - ca-ab/ab428_tax_on_taxable_income_line_8
     - ca-ab/ab428_bracket_rate_line_12
     - ca-ab/ab428_tax_on_taxable_income_line_15
-    - ca-ab/ab428_unused_tuition_line_41
+    - ca-ab/ab428_unused_tuition_rounded_line_41
     - ca-ab/ab428_credits_total_line_52
     - ca-ab/ab428_non_refundable_credits_line_58
 capabilities: []

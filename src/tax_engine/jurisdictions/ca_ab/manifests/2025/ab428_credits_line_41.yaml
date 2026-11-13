@@ -1,0 +1,20 @@
+# AB428 (2025) line 41, rounded to the cent. Form AB428 (CRA 5009-c): "Line 41 and line 58560: Your
+# unused tuition and education amounts (attach Schedule AB(S11))". Line 41 is an optional input
+# (`ca-ab/ab428_unused_tuition_line_41`, in ab428_line_41_input.yaml), blank for a salary-only filer.
+# One core/sum step over the input alone, as line 25 is over line 16 (ab428_line_25.yaml), reads the
+# blank as 0 and rounds to the cent, so line 43 and Worksheet AB428 line 2 read the same whole-cent
+# figure, `ca-ab/ab428_unused_tuition_rounded_line_41`.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/sum
+    reference: "41"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts: [ca-ab/ab428_unused_tuition_line_41]
+    blank:
+      ca-ab/ab428_unused_tuition_line_41: "0"
+    produces:
+      output: ca-ab/ab428_unused_tuition_rounded_line_41
