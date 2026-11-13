@@ -45,10 +45,11 @@ def dataset_years(roots: Iterable[Path]) -> set[int]:
 
 
 def resolvable_years(roots: Iterable[Path], jurisdiction: Jurisdiction) -> list[int]:
-    """Each year from the jurisdiction's earliest manifest to the greatest dataset year."""
-    first = min(manifest.valid_from_tax_year for manifest in jurisdiction.manifests)
-    last = max(dataset_years(roots), default=first)
-    return list(range(first, max(first, last) + 1))
+    """Each year from the earliest manifest's start to the greatest dataset or manifest start year."""
+    starts = [manifest.valid_from_tax_year for manifest in jurisdiction.manifests]
+    first = min(starts)
+    last = max([*dataset_years(roots), *starts])
+    return list(range(first, last + 1))
 
 
 def composition_failures(
@@ -85,6 +86,10 @@ def test_every_resolvable_tax_year_of_a_listed_jurisdiction_composes(
     jurisdiction = YamlJurisdictionSource(roots, artifact_kinds(), units()).get_jurisdiction(code)
 
     require_every_year_composes(service, code, resolvable_years(roots.values(), jurisdiction))
+
+
+def test_the_listed_jurisdictions_are_not_empty() -> None:
+    assert JurisdictionCode("CA-ON") in JURISDICTIONS.jurisdiction_codes()
 
 
 # --- the guard itself, on made-up packages ---------------------------------------------------
