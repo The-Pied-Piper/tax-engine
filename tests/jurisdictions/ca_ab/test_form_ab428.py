@@ -2,9 +2,11 @@
 
 Form text (Form AB428, CRA 5009-c-25e.txt): "Line 75: Line 73 minus line 74 (if negative, enter "0")
 Enter this amount on line 42800 of your return. Alberta tax =".
-The form exports line 75 and supplies it as `ca/provincial_tax.amount`, the name the federal T1
-reads for line 42800. Line 75 is declared as an input of the test header: this test loads only
-the form declaration (`ab428.yaml`), not the step of `ab428_line_75.yaml`, which has its own test.
+The form exports line 68 (the Alberta tax after the credits payroll applies, which the return
+summary gates the Alberta marginal rate on) and line 75, and supplies line 75 as
+`ca/provincial_tax.amount`, the name the federal T1 reads for line 42800. Lines 68 and 75 are
+declared as inputs of the test header: this test loads only the form declaration (`ab428.yaml`),
+not the steps of `ab428_line_68.yaml` and `ab428_line_75.yaml`, which have their own tests.
 """
 
 from __future__ import annotations
@@ -16,6 +18,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tests.jurisdictions.ca_ab.support import alberta_kinds, alberta_packages, alberta_units
 
 PART = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025" / "ab428.yaml"
+LINE_68 = "ca-ab/ab428_tax_line_68"
 LINE_75 = "ca-ab/ab428_alberta_tax_line_75"
 
 HEADER = f"""\
@@ -23,6 +26,8 @@ jurisdiction: CA-AB
 version: 1
 valid_from_tax_year: 2025
 inputs:
+  - name: {LINE_68}
+    required: true
   - name: {LINE_75}
     required: true
 outputs:
@@ -43,5 +48,5 @@ def test_the_form_is_declared_with_its_export_and_supply(tmp_path: Path) -> None
     (ab428,) = (form for form in manifest.forms if form.name == "ca-ab/ab428")
     assert ab428.required is True
     assert ab428.title == "Form AB428: Alberta Tax and Credits"
-    assert tuple(ab428.exports) == (LINE_75,)
+    assert tuple(ab428.exports) == (LINE_68, LINE_75)
     assert dict(ab428.supplies) == {"ca/provincial_tax.amount": LINE_75}

@@ -1,0 +1,11 @@
+# Alberta exact rounding, 2025 tax year: the rule for an Alberta figure that is not a dollars-and-cents
+# box, the gated rates and the marginal rates on the return summary (the gate times the T1 line 73
+# or AB428 line 5 or 12 rate, core/multiply_by_rate, and the sums of rates, core/sum). They are
+# exact and the forms print no rounding rule for them (the project's choice is no rounding); the
+# form is cited for lines 5, 12 and 68 only. The cent rule of `ca-ab/cent_rounding` does not apply.
+family: ca-ab/exact_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5009-c/5009-c-25e.txt
+rounding: none

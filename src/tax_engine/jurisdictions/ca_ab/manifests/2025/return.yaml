@@ -2,6 +2,38 @@
 # is a refund). The T1 form exports it, and another form's export is read only as a record list, so
 # the one step is core/record_total over the T1 export, totalling the one amount into the return's
 # own `ca/refund_or_balance_owing`.
+#
+# The return's second output is the average income tax rate, which no form prints (so its step has
+# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus
+# line 148's Alberta tax: the federal and the Alberta income tax) divided by the salary, T1 line
+# 10100 (`ca/employment_income`). T1 exports line 43500, so a core/record_total step reads it into
+# the return's own `ca/total_payable`, then core/divide divides it by the salary, rounding once
+# with `ca-ab/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
+#
+# The third output is the marginal rate, the income tax rate on a further dollar of salary, as
+# Ontario's but without the surtax, the health premium and the tax reduction, which Alberta does
+# not have (CRA payroll deductions formulas T4127, January 2025 edition: factor S applies only to
+# Ontario and British Columbia, and Alberta has no V1 or V2). The federal part is read as in the
+# Ontario return: the T1 form exports line 73's bracket column rate and line 42900 "Basic federal
+# tax", each totalled into the return's own kind, and core/amount_by_band_rate reads line 42900
+# through the `ca-ab/marginal_rate_gate` dataset (0 where the tax is 0.00, 1 from one cent) so that
+# the rate counts only where its own tax is above zero; the gate multiplies the rate into
+# `ca/federal_marginal_rate`, exact (`ca-ab/exact_rounding`).
+#
+# The Alberta bracket rate is printed on AB428 line 5 (table 1, lines 2 to 8, taxable income up to
+# 181,481) or on line 12 (table 2, lines 9 to 15, above it); the other is blank. AB428 exports
+# both, each is totalled into the return's own kind with a blank read as 0, and core/sum adds them
+# into the Alberta bracket rate. The Alberta gate reads AB428 line 68 "Line 66 plus line 67", the
+# counterpart of ON428 line 81: the Alberta tax after the credits that payroll applies and before
+# line 69 (provincial foreign tax credit), line 72 (political contributions) and line 74
+# (supplemental tax credit), which only come back when filing, so line 74 is not a payroll term.
+# Alberta has no tax reduction, so line 68 is also the figure after it. The gate multiplies the
+# Alberta bracket rate into `ca-ab/alberta_marginal_rate`, exact. The last step adds the federal and
+# the Alberta marginal rate with core/sum into `ca-ab/marginal_tax_rate`; it is exact too, is not
+# printed on the form and has no title or line.
+#
+# Only line 167 carries a line reference: the steps below read figures for the rates and are
+# engine-internal, so they carry none. Known limit: the rate ignores the tax effect of CPP and EI.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -11,3 +43,108 @@ capabilities:
       records: ca/t1_tax_and_credits.refund_or_balance_owing
     produces:
       output: ca/refund_or_balance_owing
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.total_payable
+    produces:
+      output: ca/total_payable
+  - name: core/divide
+    unit: core/percent
+    params:
+      rounding: ca-ab/rate_rounding
+    consumes:
+      dividend: ca/total_payable
+      divisor: ca/employment_income
+    produces:
+      output: ca-ab/average_income_tax_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+    produces:
+      output: ca/federal_bracket_rate_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.federal_tax_after_credits
+    produces:
+      output: ca/federal_tax_after_credits_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ab/marginal_rate_gate
+    consumes:
+      base: ca/federal_tax_after_credits_return
+    produces:
+      output: ca/federal_rate_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      base: ca/federal_rate_gate
+      rate: ca/federal_bracket_rate_return
+    produces:
+      output: ca/federal_marginal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca-ab/ab428_credits.ab428_bracket_rate_line_5
+    blank:
+      records:
+        ca-ab/ab428_bracket_rate_line_5: "0"
+    produces:
+      output: ca-ab/alberta_bracket_rate_line_5_return
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca-ab/ab428_credits.ab428_bracket_rate_line_12
+    blank:
+      records:
+        ca-ab/ab428_bracket_rate_line_12: "0"
+    produces:
+      output: ca-ab/alberta_bracket_rate_line_12_return
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      parts:
+        - ca-ab/alberta_bracket_rate_line_5_return
+        - ca-ab/alberta_bracket_rate_line_12_return
+    produces:
+      output: ca-ab/alberta_bracket_rate_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-ab/ab428.ab428_tax_line_68
+    produces:
+      output: ca-ab/alberta_tax_after_credits_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-ab/marginal_rate_gate
+    consumes:
+      base: ca-ab/alberta_tax_after_credits_return
+    produces:
+      output: ca-ab/alberta_rate_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      base: ca-ab/alberta_rate_gate
+      rate: ca-ab/alberta_bracket_rate_return
+    produces:
+      output: ca-ab/alberta_marginal_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-ab/exact_rounding
+    consumes:
+      parts:
+        - ca/federal_marginal_rate
+        - ca-ab/alberta_marginal_rate
+    produces:
+      output: ca-ab/marginal_tax_rate

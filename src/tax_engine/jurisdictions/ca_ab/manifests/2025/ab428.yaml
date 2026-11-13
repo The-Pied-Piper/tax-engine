@@ -1,12 +1,15 @@
 # Form AB428 Alberta Tax and Credits 2025 (CRA 5009-c), lines 59 to 75 (Part C, Alberta tax). This
-# part names the form and its export; line parts carry capabilities. Export: line 75, the Alberta
-# tax (`ca-ab/ab428_alberta_tax_line_75`), which line 75 says to enter on line 42800 of the return.
-# The form supplies line 75 as `ca/provincial_tax.amount`, the name the federal T1 reads.
+# part names the form and its exports; line parts carry capabilities. Exports: line 68, the Alberta
+# tax after the credits payroll applies (`ca-ab/ab428_tax_line_68`), which the return summary gates
+# the Alberta marginal rate on; and line 75, the Alberta tax (`ca-ab/ab428_alberta_tax_line_75`),
+# which line 75 says to enter on line 42800 of the return. The form supplies line 75 as
+# `ca/provincial_tax.amount`, the name the federal T1 reads.
 form:
   name: ca-ab/ab428
   title: "Form AB428: Alberta Tax and Credits"
   required: true
   exports:
+    - ca-ab/ab428_tax_line_68
     - ca-ab/ab428_alberta_tax_line_75
   supplies:
     ca/provincial_tax.amount: ca-ab/ab428_alberta_tax_line_75
