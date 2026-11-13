@@ -23,17 +23,29 @@
 # exports it), into its own `ca-on/ontario_bracket_rate_return`; it has no title of its own.
 # The health premium slope is the rate of the ON428 line 89 chart row that the T1 taxable income
 # falls in, 0 for a flat row. The taxable income is totalled into the return's own kind, and the
-# slope is read from the `ca-on/health_premium_rows` dataset. The federal marginal rate is read the
-# same way as the bracket rate: the T1 form exports line 73's bracket column rate
-# (`ca/federal_bracket_column_rate_line_73`, "Line 73: Rate"), and the last step totals the one
-# fraction into its own `ca/federal_marginal_rate`, with no title or line of its own.
-# The step after those multiplies the bracket rate by the surtax factor (lines 5, 66 and 67) into the Ontario
-# marginal rate, the rate a further dollar of income is taxed at with the surtax. It is an exact
-# product, a rate with no printed rounding rule, so the `ca-on/exact_rounding` dataset rounds
-# nothing. It has no title. The last step adds the federal marginal rate, the Ontario marginal rate
-# and the health premium slope with core/sum into `ca-on/marginal_tax_rate`, the income tax rate on a
-# further dollar of salary; it is exact too (`ca-on/exact_rounding`), is not printed on the form and
-# has no title or line.
+# slope is read from the `ca-on/health_premium_rows` dataset. The federal bracket rate is read the
+# same way as the Ontario one: the T1 form exports line 73's bracket column rate
+# (`ca/federal_bracket_column_rate_line_73`, "Line 73: Rate"), and a step totals the one fraction
+# into its own `ca/federal_bracket_rate_return`, with no title or line of its own.
+# The step after those multiplies the bracket rate by the surtax factor (lines 5, 66 and 67) into
+# the Ontario bracket marginal rate. It is an exact product, a rate with no printed rounding rule,
+# so the `ca-on/exact_rounding` dataset rounds nothing. It has no title.
+# Each bracket rate counts only where its own tax is above zero. The T1 form exports line 42000
+# "Net federal tax" (`ca/net_federal_tax`) and ON428 exports line 81, the Ontario tax after the
+# personal credits and the Ontario tax reduction (`ca-on/on428_tax_after_tax_reduction_line_81`);
+# the CRA payroll deductions formulas (T4127, January 2025 edition) apply both, so the Ontario part
+# counts when that tax is positive. The LIFT credit is return-only and not stated in T4127, so it
+# is not applied here, and line 90 adds the health premium, so it is not the base. Each tax is
+# totalled into the return's own kind, and core/amount_by_band_rate reads it through the
+# `ca-on/marginal_rate_gate` dataset (0 where the tax is 0.00, 1 from one cent) into a gate. The
+# federal gate multiplies the federal bracket rate into `ca/federal_marginal_rate` and the Ontario
+# gate multiplies the Ontario bracket marginal rate into `ca-on/ontario_marginal_rate`, both exact
+# (`ca-on/exact_rounding`) and with no title or line. The last step adds the federal marginal rate,
+# the Ontario marginal rate and the health premium slope with core/sum into
+# `ca-on/marginal_tax_rate`, the income tax rate on a further dollar of salary; it is exact too, is
+# not printed on the form and has no title or line.
+# Known limit: the rate is the bracket rate gated on each tax being above zero. It still ignores
+# the LIFT credit phase-out and the tax effect of CPP and EI.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -97,6 +109,29 @@ capabilities:
     consumes:
       records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
     produces:
+      output: ca/federal_bracket_rate_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.net_federal_tax
+    produces:
+      output: ca/net_federal_tax_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-on/marginal_rate_gate
+    consumes:
+      base: ca/net_federal_tax_return
+    produces:
+      output: ca/federal_rate_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca/federal_rate_gate
+      rate: ca/federal_bracket_rate_return
+    produces:
       output: ca/federal_marginal_rate
   - name: core/multiply_by_rate
     unit: core/percent
@@ -105,6 +140,29 @@ capabilities:
     consumes:
       base: ca-on/ontario_surtax_factor
       rate: ca-on/ontario_bracket_rate_return
+    produces:
+      output: ca-on/ontario_bracket_marginal_rate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-on/on428.on428_tax_after_tax_reduction_line_81
+    produces:
+      output: ca-on/ontario_tax_after_reduction_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-on/marginal_rate_gate
+    consumes:
+      base: ca-on/ontario_tax_after_reduction_return
+    produces:
+      output: ca-on/ontario_rate_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-on/exact_rounding
+    consumes:
+      base: ca-on/ontario_rate_gate
+      rate: ca-on/ontario_bracket_marginal_rate
     produces:
       output: ca-on/ontario_marginal_rate
   - name: core/sum

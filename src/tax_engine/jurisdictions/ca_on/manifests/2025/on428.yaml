@@ -3,7 +3,9 @@
 # 90 says to enter on line 42800 of the return, and line 65, the surtax base
 # (`ca-on/on428_surtax_base_line_65`), which the return reads for the surtax factor of lines 66 and
 # 67, and line 5, the bracket column rate (`ca-on/on428_bracket_column_rate_line_5`, the printed
-# rate of the column line 1 falls in), which the return reads too. The form also supplies line 90 as
+# rate of the column line 1 falls in), which the return reads too, and line 81, the Ontario tax after the personal credits and the Ontario tax reduction
+# (`ca-on/on428_tax_after_tax_reduction_line_81`), which the return reads to count the bracket
+# rate only where it is above zero. The form also supplies line 90 as
 # `ca/provincial_tax.amount`, the name the federal T1 reads.
 form:
   name: ca-on/on428
@@ -13,6 +15,7 @@ form:
     - ca-on/on428_ontario_tax_line_90
     - ca-on/on428_surtax_base_line_65
     - ca-on/on428_bracket_column_rate_line_5
+    - ca-on/on428_tax_after_tax_reduction_line_81
   supplies:
     ca/provincial_tax.amount: ca-on/on428_ontario_tax_line_90
 capabilities: []

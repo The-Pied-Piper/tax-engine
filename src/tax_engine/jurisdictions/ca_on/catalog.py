@@ -430,10 +430,29 @@ RETURN_HEALTH_PREMIUM_SLOPE = AmountKind.declare(
 """Health premium slope, ON428 line 89 chart: the printed rate of the chart row that the taxable
 income falls in (6% or 25%), 0 for a flat row."""
 
+ONTARIO_TAX_AFTER_REDUCTION_RETURN = AmountKind.declare(
+    CATALOG, "ontario_tax_after_reduction_return", non_negative=True
+)
+"""Ontario tax after the tax reduction, ON428 line 81: the tax after the personal credits and the
+Ontario tax reduction, before the LIFT credit and the health premium. The one amount of ON428's
+export totalled into the return summary's own artifact, the base of the Ontario rate gate."""
+
+ONTARIO_RATE_GATE = AmountKind.declare(CATALOG, "ontario_rate_gate", non_negative=True)
+"""Ontario rate gate: 0 where the Ontario tax after the tax reduction (ON428 line 81) is 0.00 and 1
+where it is at least one cent, from the `ca-on/marginal_rate_gate` dataset. A plain figure, not
+printed on the form."""
+
+ONTARIO_BRACKET_MARGINAL_RATE = AmountKind.declare(
+    CATALOG, "ontario_bracket_marginal_rate", non_negative=True
+)
+"""Ontario bracket marginal rate, ON428 line 5 "Line 5: Rate" times the surtax factor of lines 66
+and 67, before the gate. An exact product, not printed on the form."""
+
 ONTARIO_MARGINAL_RATE = AmountKind.declare(CATALOG, "ontario_marginal_rate", non_negative=True)
-"""Ontario marginal rate, ON428 line 5 "Line 5: Rate" times the surtax factor of lines 66 and 67:
-the rate a further dollar of income is taxed at in Ontario with the surtax, on the return summary.
-An exact product, not printed on the form."""
+"""Ontario marginal rate: the Ontario bracket marginal rate (line 5 rate times the surtax factor of
+lines 66 and 67) where the Ontario tax after the tax reduction is above zero, and 0 where it is
+not: the rate a further dollar of income is taxed at in Ontario with the surtax, on the return
+summary. Not printed on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
 """Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
