@@ -1,0 +1,19 @@
+# Form AB428 (Alberta Tax and Credits, 2025, 5009-c-25e) line 13, "Line 13: Line 11 multiplied by the
+# percentage from line 12 =": the tax on the part of the taxable income over the column's lower
+# bound. It is blank when line 11 or line 12 is blank.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/multiply_by_rate
+    reference: "13"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      base: ca-ab/ab428_taxable_income_over_lower_bound_line_11
+      rate: ca-ab/ab428_bracket_rate_line_12
+    blank:
+      base: pass_on
+      rate: pass_on
+    produces:
+      output: ca-ab/ab428_tax_on_excess_line_13
