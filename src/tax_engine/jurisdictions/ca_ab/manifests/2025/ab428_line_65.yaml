@@ -1,0 +1,23 @@
+# Form AB428 (Alberta Tax and Credits, 2025, CRA 5009-c) line 65 "Line 65: Add lines 62 to 64. = ^".
+# One core/sum step over line 62 (`ca-ab/ab428_credits_from_line_58_line_62`), line 63 (the dividend
+# tax credit, `ca-ab/ab428_dividend_tax_credit_line_63`) and line 64 (the minimum tax carryover,
+# `ca-ab/ab428_minimum_tax_carryover_line_64`). Line 63 is an input a salary-only caller leaves out,
+# so the blank rule below reads it as 0; lines 62 and 64 are always computed and need none. The
+# form prints no title for the line, so the step has none.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/sum
+    reference: "65"
+    unit: ca/cad
+    params:
+      rounding: ca-ab/cent_rounding
+    consumes:
+      parts:
+        - ca-ab/ab428_credits_from_line_58_line_62
+        - ca-ab/ab428_dividend_tax_credit_line_63
+        - ca-ab/ab428_minimum_tax_carryover_line_64
+    blank:
+      ca-ab/ab428_dividend_tax_credit_line_63: "0"
+    produces:
+      output: ca-ab/ab428_credits_subtotal_line_65
