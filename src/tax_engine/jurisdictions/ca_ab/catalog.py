@@ -276,6 +276,11 @@ AB428_ALBERTA_TAX_ON_TAXABLE_INCOME_LINE_59 = AmountKind.declare(
 or line 15 ^": the amount of line 8 or of line 15, whichever the taxable income is in; the other is
 blank."""
 
+AB428_TAX_LINE_61 = AmountKind.declare(CATALOG, "ab428_tax_line_61")
+"""AB428 line 61 "Line 61: Line 59 plus line 60 = ^" (Form AB428, CRA 5009-c): line 59 plus line 60,
+which a salary-only caller leaves blank and the step reads as 0. The form prints no floor for the
+line, so the kind is signed."""
+
 AB428_CREDITS_FROM_LINE_58_LINE_62 = AmountKind.declare(
     CATALOG, "ab428_credits_from_line_58_line_62", non_negative=True
 )
