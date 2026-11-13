@@ -24,6 +24,10 @@ PROVISIONAL_HEADER = (
     "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text "
     "when CRA publishes it."
 )
+DERIVATION_HEADER = (
+    "# Derivation: figure as printed in T4127 Table 8.2, Alberta row (22,769); no rounding "
+    "applied here."
+)
 
 
 def test_2026_amount_is_22769() -> None:
@@ -55,7 +59,7 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     lines = (root / "parameters" / "basic_personal_amount" / "2026.yaml").read_text().splitlines()
 
     assert lines[0] == PROVISIONAL_HEADER
-    assert lines[1].startswith("# Derivation:")
+    assert lines[1] == DERIVATION_HEADER
 
 
 def test_2025_amount_is_unchanged() -> None:
