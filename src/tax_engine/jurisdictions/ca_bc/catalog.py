@@ -34,6 +34,13 @@ BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
 """Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
+BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_over_lower_bound_line_11", non_negative=True
+)
+"""Taxable income over the lower bound, BC428 line 11 "Line 11: Line 9 minus line 10 (cannot be
+negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 137,407.00
+or less, where line 10 is blank."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
@@ -83,6 +90,12 @@ BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, BC428 line 3 "Line 3: 0.00" (49,279.00; 98,560.00; 113,158.00): the
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 137,407, where lines 9 to 15 apply."""
+
+BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, BC428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero; blank when line 3 is blank."""
 
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
