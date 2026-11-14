@@ -9,7 +9,7 @@ rounded start. The table's range is line 1 above 137,407.00: a base at 137,407.0
 this table gives a blank there, and 137,407.01 is in the first column.
 
 Not tested here: the low table's `up_to` (`ca-bc/brackets_lines_2_to_8`) equal to this table's first
-`from`. That table is a parallel ticket (#906); add the check when it lands.
+`from`. That table is built by a parallel change; add the check when it lands.
 """
 
 from __future__ import annotations

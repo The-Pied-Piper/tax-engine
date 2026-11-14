@@ -6,7 +6,7 @@ more than $259,829  Line 10: 186,306.00", "Column 3: Line 1 is more than $259,82
 259,829.00". Line 9 is a copy of line 1 and has no step. Line 10 is
 `core/bracket_column_lower_bound` over line 1 (`ca-bc/bc428_taxable_income_line_1`) with the
 `ca-bc/brackets_lines_9_to_15` schedule, output `ca-bc/bc428_bracket_lower_bound_line_10`, as
-British Columbia's line 10 is.
+Alberta's line 10 is.
 
 The table covers only a line 1 above 137,407.00, so line 10 is left blank there: at $17,000,
 $20,000, $30,000 and $70,000 it is blank, at $200,000 (line 1 is 198,926.00) it is 186,306.00. A
@@ -173,7 +173,7 @@ def test_line_10_is_blank_when_line_1_is_137407_or_less(tmp_path: Path, salary: 
     assert sheet.get(british_columbia_kinds().kind(LINE_10)).is_blank
 
 
-def test_a_salary_of_200000_gives_the_column_1_lower_bound(tmp_path: Path) -> None:
+def test_a_salary_of_200000_gives_the_column_2_lower_bound(tmp_path: Path) -> None:
     # Line 1 is 198,926.00, over 186,306 and not over 259,829: column 2.
     sheet = _sheet(tmp_path, "200000")
 
