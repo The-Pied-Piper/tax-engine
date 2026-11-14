@@ -1,0 +1,12 @@
+# Form BC479 British Columbia Credits 2025 (CRA 5010-TC), lines 1 to 45. This part names the form
+# and its export; the form is one form, so its lines read each other directly. Export: line 45, the
+# British Columbia credits (`ca-bc/bc479_british_columbia_credits_line_45`), which line 45 says to
+# enter on line 47900 of the return. The form declares no `supplies` yet: the neutral name for the
+# T1 line 47900 credits is added with the T1 line 47900 change, and the supply is wired then.
+form:
+  name: ca-bc/bc479
+  title: "Form BC479: British Columbia Credits"
+  required: true
+  exports:
+    - ca-bc/bc479_british_columbia_credits_line_45
+capabilities: []
