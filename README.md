@@ -7,7 +7,7 @@
 
 **tax-engine is a personal income tax calculation library where every number is a line on a real tax form, and every result explains itself in a readable trace.**
 
-Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from.
+Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from. It powers the live take-home calculator at [aftertaxlens.com](https://aftertaxlens.com).
 
 Supported today: Canada (federal), Ontario and Alberta, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
