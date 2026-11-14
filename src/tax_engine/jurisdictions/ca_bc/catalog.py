@@ -14,9 +14,21 @@ from tax_engine.jurisdictions.ca_bc import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+BC428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, BC428 line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by lines 3, 4, 10 and 11."""
+
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, BC428 line 16 (line 58040) "Basic personal amount Claim $12,932": the
 amount claimed, the first part of the total of the British Columbia credit amounts."""
+
+BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
+    CATALOG, "bc428_bracket_lower_bound_line_10", non_negative=True
+)
+"""Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
+column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
@@ -47,3 +59,9 @@ BC428_MEDICAL_EXPENSES_LINE_53 = AmountKind.declare(
 )
 """Medical expenses, BC428 line 53 (line 58769) "Line 51 plus line 52 =": line 51 plus line 52, an
 optional input; a blank is read as 0 by the step that reads it."""
+
+BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
+    CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
+)
+"""BC428 line 33 "Add lines 27 to 32.": the sum of lines
+27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""

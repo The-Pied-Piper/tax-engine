@@ -1,0 +1,11 @@
+# BC 2025 brackets, BC428 Part A lines 9 to 15 (columns 1 to 3; each tax_at_start is the printed line 14 constant)
+family: ca-bc/brackets_lines_9_to_15
+tax_year: 2025
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-c/5010-c-25e.txt
+rounding: none
+brackets:
+  - {from: "137407.00", rate: "0.147", tax_at_start: "10801.15"}
+  - {from: "186306.00", rate: "0.168", tax_at_start: "17989.30"}
+  - {from: "259829.00", rate: "0.205", tax_at_start: "30341.16"}
