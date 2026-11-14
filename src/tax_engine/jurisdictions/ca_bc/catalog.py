@@ -224,6 +224,12 @@ the T1 return before its floor, read from the signed T1 net income export (`ca/n
 not the floored `ca/net_income`). Column 1 only. The form asks for the amount with a negative shown
 in brackets, so the kind is signed."""
 
+BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
+    CATALOG, "bc479_income_with_repayments_line_3", non_negative=False
+)
+"""Income with repayments, BC479 line 3 "Line 1 plus line 2": line 1 plus line 2, the UCCB and RDSP
+repayments input read as 0 when blank. The result is signed, because line 1 is signed."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
