@@ -224,6 +224,12 @@ the T1 return before its floor, read from the signed T1 net income export (`ca/n
 not the floored `ca/net_income`). Column 1 only. The form asks for the amount with a negative shown
 in brackets, so the kind is signed."""
 
+BC428_NET_INCOME_LINE_74 = AmountKind.declare(
+    CATALOG, "bc428_net_income_line_74", non_negative=True
+)
+"""Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
+income, line 23600 after its floor."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
