@@ -41,3 +41,12 @@ def test_the_roots_map_the_british_columbia_namespace_to_its_directory() -> None
     directory = Path(tax_engine.jurisdictions.ca_bc.__file__).parent
 
     assert british_columbia_packages().roots()[Namespace("ca-bc")] == directory
+
+
+def test_importing_the_package_imports_its_trace_and_trace_english_packages() -> None:
+    trace = sys.modules["tax_engine.jurisdictions.ca_bc.trace"]
+    trace_english = sys.modules["tax_engine.jurisdictions.ca_bc.trace_english"]
+
+    assert tax_engine.jurisdictions.ca_bc.trace is trace
+    assert tax_engine.jurisdictions.ca_bc.trace_english is trace_english
+    assert {"trace", "trace_english"} <= set(tax_engine.jurisdictions.ca_bc.__all__)
