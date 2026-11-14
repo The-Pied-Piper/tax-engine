@@ -1,0 +1,12 @@
+# BC428 (2025) inputs a salary-only caller does not give.
+# Line 62: "Line 62 and line 61510: British Columbia tax on split income (complete Form T1206)". A
+# caller with no split income leaves the line out, so a request that leaves it out is read as
+# blank, and the line 63 part reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_tax_on_split_income_line_62
+    title: "British Columbia tax on split income"
+    reference: "62"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 62 and line 61510: British Columbia tax on split income (complete Form T1206)'
