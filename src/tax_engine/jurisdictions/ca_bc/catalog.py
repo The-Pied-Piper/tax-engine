@@ -48,6 +48,12 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
+    CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
+)
+"""Donations and gifts, BC428 line 57 and line 58969 "Donations and gifts (use Worksheet BC428)":
+the amount the filer claims, a caller input that is read as blank when left out."""
+
 BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "bc428_ei_premiums_line_29", non_negative=True
 )
