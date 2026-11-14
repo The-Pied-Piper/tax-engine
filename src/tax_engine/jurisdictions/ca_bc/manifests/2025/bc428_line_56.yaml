@@ -1,0 +1,17 @@
+# Form BC428 (CRA 5010-C) line 56 (ca-bc/bc428): "Line 55: British Columbia non-refundable tax
+# credit rate 5.06% / Line 56 and line 58840: Line 54 multiplied by the percentage from line 55 =
+# ^". Line 55 is a printed rate, held in the `ca-bc/credit_rate` dataset, so line 56 is one
+# calculation: 5.06% of line 54, rounded half-up to the cent. Line 54 is read from its source part,
+# not copied.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/apply_rate
+    reference: "56"
+    unit: ca/cad
+    params:
+      rate: ca-bc/credit_rate
+    consumes:
+      base: ca-bc/bc428_total_line_54
+    produces:
+      output: ca-bc/bc428_at_rate_line_56
