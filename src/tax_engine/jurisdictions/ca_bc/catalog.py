@@ -104,6 +104,13 @@ BC428_BRACKET_RATE_LINE_5 = AmountKind.declare(
 the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 137,407, where
 lines 9 to 15 apply."""
 
+BC428_BRACKET_TAX_LINE_6 = AmountKind.declare(
+    CATALOG, "bc428_bracket_tax_line_6", non_negative=True
+)
+"""Tax on the part over the lower bound, BC428 line 6 "Line 6: Line 4 multiplied by the percentage
+from line 5 =": line 4 times the line 5 rate, rounded to the cent; blank when line 4 or line 5 is
+blank."""
+
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
 )
