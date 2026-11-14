@@ -24,11 +24,22 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, BC428 line 16 (line 58040) "Basic personal amount Claim $12,932": the
 amount claimed, the first part of the total of the British Columbia credit amounts."""
 
+BC428_SUBTOTAL_LINE_25 = AmountKind.declare(CATALOG, "bc428_subtotal_line_25", non_negative=True)
+"""Subtotal of credit amounts, BC428 line 25 "Line 25: Add lines 16, 17, 20, 23 and 24.": the sum of
+those lines, here the basic personal amount (line 16) alone."""
+
 BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_10", non_negative=True
 )
 """Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
+
+BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_over_lower_bound_line_11", non_negative=True
+)
+"""Taxable income over the lower bound, BC428 line 11 "Line 11: Line 9 minus line 10 (cannot be
+negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 137,407.00
+or less, where line 10 is blank."""
 
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
@@ -55,6 +66,13 @@ BC428_QUALIFYING_GIFTS_LINE_59 = AmountKind.declare(
 of qualifying gifts also claimed on line 57 multiplied by 25%": the amount the filer also claims on
 line 57, a caller input that is read as blank when left out."""
 
+BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
+    CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
+)
+"""Amount from line 40427 of the return, BC428 line 66 "Line 66 and line 61540: Amount from line
+40427 of your return": the minimum tax carryover amount, a caller input that is read as blank when
+left out."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
@@ -67,6 +85,12 @@ BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 """EI premiums credit amount, BC428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
 
+BC428_MEDICAL_EXPENSES_LINE_53 = AmountKind.declare(
+    CATALOG, "bc428_medical_expenses_line_53", non_negative=True
+)
+"""Medical expenses, BC428 line 53 (line 58769) "Line 51 plus line 52 =": line 51 plus line 52, an
+optional input; a blank is read as 0 by the step that reads it."""
+
 BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_3", non_negative=True
 )
@@ -74,8 +98,24 @@ BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 137,407, where lines 9 to 15 apply."""
 
+BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, BC428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero; blank when line 3 is blank."""
+
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
 )
 """BC428 line 33 "Add lines 27 to 32.": the sum of lines
 27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""
+
+BC428_SUBTOTAL_LINE_35 = AmountKind.declare(CATALOG, "bc428_subtotal_line_35", non_negative=True)
+"""Subtotal, BC428 line 35 "Line 35: Add lines 26, 33 and 34.": the sum of line 26 (a copy of line
+25), line 33 and line 34. Line 34 (adoption expenses) is not built: a salary-only filer has none."""
+
+BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
+    CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
+)
+"""British Columbia credits, BC479 line 45 "Enter this amount on line 47900 of your return.": the
+British Columbia credits, entered on T1 line 47900."""

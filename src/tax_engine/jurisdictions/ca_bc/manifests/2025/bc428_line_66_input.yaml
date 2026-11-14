@@ -1,0 +1,12 @@
+# BC428 (2025) inputs a salary-only caller does not give.
+# Line 66: "Line 66 and line 61540: Amount from line 40427 of your return" (5010-c). A salary-only
+# caller has no minimum tax carryover, so a request that leaves the line out is read as blank; the
+# step that multiplies it by the printed rate reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_minimum_tax_carryover_amount
+    title: "Amount from line 40427 of your return"
+    reference: "66"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 66 and line 61540: Amount from line 40427 of your return'
