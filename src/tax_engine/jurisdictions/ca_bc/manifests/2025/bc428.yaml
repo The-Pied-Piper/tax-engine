@@ -1,0 +1,15 @@
+# Form BC428 British Columbia Tax 2025 (CRA 5010-C), lines 1 to 91 (Parts A to C: British Columbia
+# tax on taxable income, non-refundable tax credits, and the tax and tax reduction). This part names
+# the form and its export; the form is one form, so its lines read each other directly. Export: line
+# 91, the British Columbia tax (`ca-bc/bc428_british_columbia_tax_line_91`), which line 91 says to
+# enter on line 42800 of the return. The form supplies line 91 as `ca/provincial_tax.amount`, the
+# name the federal T1 reads.
+form:
+  name: ca-bc/bc428
+  title: "Form BC428: British Columbia Tax"
+  required: true
+  exports:
+    - ca-bc/bc428_british_columbia_tax_line_91
+  supplies:
+    ca/provincial_tax.amount: ca-bc/bc428_british_columbia_tax_line_91
+capabilities: []
