@@ -130,6 +130,13 @@ BC428_BRACKET_TAX_LINE_6 = AmountKind.declare(
 from line 5 =": line 4 times the line 5 rate, rounded to the cent; blank when line 4 or line 5 is
 blank."""
 
+BC428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "bc428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""British Columbia tax on taxable income, BC428 line 8 "Line 6 plus line 7 British Columbia tax on
+taxable income =": line 6 plus line 7 of the column that line 1 falls in; blank when lines 6 and 7
+are blank."""
+
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
 )
