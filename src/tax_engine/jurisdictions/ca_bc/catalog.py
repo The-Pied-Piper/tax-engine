@@ -200,6 +200,10 @@ BC428_AT_RATE_LINE_56 = AmountKind.declare(CATALOG, "bc428_at_rate_line_56", non
 percentage from line 55 = ^": line 54 multiplied by the 5.06% of line 55, rounded half-up to the
 cent."""
 
+BC428_SUBTOTAL_LINE_58 = AmountKind.declare(CATALOG, "bc428_subtotal_line_58", non_negative=True)
+"""Subtotal, BC428 line 58 "Line 56 plus line 57 = ^": line 56 plus line 57, the donations and gifts
+input read as 0 when blank."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
