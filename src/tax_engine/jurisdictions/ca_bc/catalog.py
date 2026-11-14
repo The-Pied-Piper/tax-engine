@@ -24,6 +24,10 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, BC428 line 16 (line 58040) "Basic personal amount Claim $12,932": the
 amount claimed, the first part of the total of the British Columbia credit amounts."""
 
+BC428_SUBTOTAL_LINE_25 = AmountKind.declare(CATALOG, "bc428_subtotal_line_25", non_negative=True)
+"""Subtotal of credit amounts, BC428 line 25 "Line 25: Add lines 16, 17, 20, 23 and 24.": the sum of
+those lines, here the basic personal amount (line 16) alone."""
+
 BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_10", non_negative=True
 )
@@ -66,6 +70,12 @@ BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 )
 """EI premiums credit amount, BC428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+BC428_MEDICAL_EXPENSES_LINE_53 = AmountKind.declare(
+    CATALOG, "bc428_medical_expenses_line_53", non_negative=True
+)
+"""Medical expenses, BC428 line 53 (line 58769) "Line 51 plus line 52 =": line 51 plus line 52, an
+optional input; a blank is read as 0 by the step that reads it."""
 
 BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_3", non_negative=True
