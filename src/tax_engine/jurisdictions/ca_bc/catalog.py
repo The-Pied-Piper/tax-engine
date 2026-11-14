@@ -34,12 +34,24 @@ BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
 """Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
+BC428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
+    CATALOG, "bc428_bracket_tax_at_start_line_14", non_negative=True
+)
+"""Tax at the start of the column, BC428 line 14 "Line 14: 10,801.15": the printed tax at the start
+of the column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
+
 BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
     CATALOG, "bc428_taxable_income_over_lower_bound_line_11", non_negative=True
 )
 """Taxable income over the lower bound, BC428 line 11 "Line 11: Line 9 minus line 10 (cannot be
 negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 137,407.00
 or less, where line 10 is blank."""
+
+BC428_BRACKET_RATE_LINE_12 = AmountKind.declare(
+    CATALOG, "bc428_bracket_rate_line_12", non_negative=True
+)
+"""Rate, BC428 line 12 "Line 12: Rate 14.7%; 16.8%; 20.5%": the printed rate of the column of lines
+9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
@@ -91,6 +103,13 @@ BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 137,407, where lines 9 to 15 apply."""
 
+BC428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "bc428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, BC428 line 7 "Line 7: 0.00" (2,493.52; 6,288.15; 7,820.94): the
+printed tax at the start of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1
+is above 137,407, where lines 9 to 15 apply."""
+
 BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
     CATALOG, "bc428_taxable_income_over_lower_bound_line_4", non_negative=True
 )
@@ -124,6 +143,14 @@ BC428_SUBTOTAL_LINE_35 = AmountKind.declare(CATALOG, "bc428_subtotal_line_35", n
 BC428_SUBTOTAL_LINE_37 = AmountKind.declare(CATALOG, "bc428_subtotal_line_37", non_negative=True)
 """Subtotal, BC428 line 37 "Line 37: Line 35 plus line 36 = ^": the sum of line 35 and line 36, the
 pension income amount, an optional input read as 0 when the filer has none."""
+
+BC428_SUBTOTAL_LINE_40 = AmountKind.declare(CATALOG, "bc428_subtotal_line_40", non_negative=True)
+"""Subtotal, BC428 line 40 "Line 40: Add lines 37 to 39. = ^": the sum of line 37. Lines 38 and 39
+are the disability amounts, not built: a salary-only filer has none."""
+
+BC428_SUBTOTAL_LINE_45 = AmountKind.declare(CATALOG, "bc428_subtotal_line_45", non_negative=True)
+"""Subtotal, BC428 line 45 "Line 45: Add lines 40 to 44. = ^": the sum of line 40. Lines 41 to 44
+are student loan interest, tuition and transfers, not built: a salary-only filer has none."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True

@@ -1,0 +1,16 @@
+# Form BC428 (CRA 5010-C) line 45: "Line 45: Add lines 40 to 44. = ^". Lines 41 to 44 are student
+# loan interest, tuition and transfers, which are not built, so core/sum reads line 40 alone, as
+# bc428_line_40 reads its line 37.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "45"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc428_subtotal_line_40
+    produces:
+      output: ca-bc/bc428_subtotal_line_45
