@@ -67,6 +67,12 @@ BC428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 on taxable income =": line 13 plus line 14 of the column that line 1 falls in; blank when lines 13
 and 14 are blank."""
 
+BC428_BASE_AMOUNT_LINE_75 = AmountKind.declare(
+    CATALOG, "bc428_base_amount_line_75", non_negative=True
+)
+"""Base amount, BC428 line 75 "Line 75: Base amount 25,020.00": the printed amount the British
+Columbia tax reduction starts from."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
@@ -223,12 +229,31 @@ BC428_SUBTOTAL_LINE_58 = AmountKind.declare(CATALOG, "bc428_subtotal_line_58", n
 """Subtotal, BC428 line 58 "Line 56 plus line 57 = ^": line 56 plus line 57, the donations and gifts
 input read as 0 when blank."""
 
+BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59 = AmountKind.declare(
+    CATALOG, "bc428_farmers_food_donation_credit_line_59", non_negative=True
+)
+"""Farmers' food donation credit amount, BC428 line 59 "Line 59 and line 58980: Amount of qualifying
+gifts also claimed on line 57 multiplied by 25% = ^": the qualifying gifts times the 25% of the
+dataset, rounded half-up to the cent; blank gifts are taken as 0."""
+
+BC428_NON_REFUNDABLE_CREDITS_LINE_60 = AmountKind.declare(
+    CATALOG, "bc428_non_refundable_credits_line_60", non_negative=True
+)
+"""Non-refundable tax credits, BC428 line 60 "Line 60 and line 61500: Line 58 plus line 59 Enter
+this amount on line 64.": line 58 plus line 59."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
 the T1 return before its floor, read from the signed T1 net income export (`ca/net_income_signed`,
 not the floored `ca/net_income`). Column 1 only. The form asks for the amount with a negative shown
 in brackets, so the kind is signed."""
+
+BC428_NET_INCOME_LINE_74 = AmountKind.declare(
+    CATALOG, "bc428_net_income_line_74", non_negative=True
+)
+"""Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
+income, line 23600 after its floor."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
@@ -244,9 +269,29 @@ repayment (line 21300 of the return) and the registered disability savings plan 
 repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
 that is read as blank when left out, column 1 (you) only."""
 
+BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
+    CATALOG, "bc479_income_with_repayments_line_3", non_negative=False
+)
+"""Income with repayments, BC479 line 3 "Line 1 plus line 2": line 1 plus line 2, the UCCB and RDSP
+repayments input read as 0 when blank. The result is signed, because line 1 is signed."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
 """British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
 income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
 in; the other is blank."""
+
+BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
+    CATALOG, "bc428_tax_with_split_income_line_63"
+)
+"""Tax with split income, BC428 line 63 "Line 63: Line 61 plus line 62 = ^": line 61 plus line 62,
+the tax on split income input read as 0 when blank. The form prints no floor for the line, so the
+kind is signed."""
+
+BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
+    CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
+)
+"""UCCB and RDSP income, BC479 line 4 "Total of the UCCB income (line 11700 of the return) and the
+RDSP income (line 12500 of the return)": the total of the two incomes, a caller input that is read
+as blank when left out, column 1 (you) only."""

@@ -1,0 +1,20 @@
+# Form BC479 (2025, CRA 5010-TC) line 3. Line 3: "Line 1 plus line 2".
+#
+# Line 1 (`ca-bc/bc479_net_income_line_1`) stays signed, so the sum is signed too. Line 2
+# (`ca-bc/bc479_uccb_rdsp_repayments_line_2`) is an optional input that a salary-only caller leaves
+# out; the step reads it as blank, then as 0, by the blank rule below.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/sum
+    reference: "3"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        [ca-bc/bc479_net_income_line_1, ca-bc/bc479_uccb_rdsp_repayments_line_2]
+    blank:
+      ca-bc/bc479_uccb_rdsp_repayments_line_2: "0"
+    produces:
+      output: ca-bc/bc479_income_with_repayments_line_3
