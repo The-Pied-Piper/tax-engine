@@ -26,6 +26,12 @@ BC428_BRITISH_COLUMBIA_TAX_LINE_91 = AmountKind.declare(
 """British Columbia tax, BC428 line 91 "Enter this amount on line 42800 of your return.": the
 British Columbia tax, entered on T1 line 42800."""
 
+BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "bc428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
+$1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+
 BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "bc428_ei_premiums_line_29", non_negative=True
 )
