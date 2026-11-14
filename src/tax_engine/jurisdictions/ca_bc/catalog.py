@@ -25,3 +25,9 @@ BC428_BRITISH_COLUMBIA_TAX_LINE_91 = AmountKind.declare(
 )
 """British Columbia tax, BC428 line 91 "Enter this amount on line 42800 of your return.": the
 British Columbia tax, entered on T1 line 42800."""
+
+BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
+    CATALOG, "bc428_ei_premiums_line_29", non_negative=True
+)
+"""EI premiums credit amount, BC428 line 29 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
