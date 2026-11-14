@@ -1,0 +1,18 @@
+# Form BC428 (CRA 5010-C) line 58: "Line 58: Line 56 plus line 57 = ^". It sums the credit amounts
+# at the credit rate (line 56, `ca-bc/bc428_at_rate_line_56`) and the donations and gifts (line 57,
+# `ca-bc/bc428_donations_and_gifts_line_57`). Line 57 is an optional input that a salary-only
+# caller leaves out, read as blank and then as 0 by the blank rule below.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "58"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts: [ca-bc/bc428_at_rate_line_56, ca-bc/bc428_donations_and_gifts_line_57]
+    blank:
+      ca-bc/bc428_donations_and_gifts_line_57: "0"
+    produces:
+      output: ca-bc/bc428_subtotal_line_58
