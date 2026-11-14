@@ -53,6 +53,13 @@ BC428_BRACKET_RATE_LINE_12 = AmountKind.declare(
 """Rate, BC428 line 12 "Line 12: Rate 14.7%; 16.8%; 20.5%": the printed rate of the column of lines
 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
+BC428_BRACKET_TAX_LINE_13 = AmountKind.declare(
+    CATALOG, "bc428_bracket_tax_line_13", non_negative=True
+)
+"""Tax on the part over the lower bound, BC428 line 13 "Line 13: Line 11 multiplied by the
+percentage from line 12 =": line 11 times the line 12 rate, rounded to the cent; blank when line 11
+or line 12 is blank, that is when line 1 is 137,407 or less."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
@@ -70,6 +77,13 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 )
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+
+BC428_QUALIFYING_GIFTS_LINE_59 = AmountKind.declare(
+    CATALOG, "bc428_qualifying_gifts_line_59", non_negative=True
+)
+"""Amount of qualifying gifts also claimed on line 57, BC428 line 59 "Line 59 and line 58980: Amount
+of qualifying gifts also claimed on line 57 multiplied by 25%": the amount the filer also claims on
+line 57, a caller input that is read as blank when left out."""
 
 BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
     CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
