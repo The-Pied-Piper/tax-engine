@@ -78,6 +78,12 @@ BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
 40427 of your return": the minimum tax carryover amount, a caller input that is read as blank when
 left out."""
 
+BC428_DIVIDEND_TAX_CREDIT_LINE_65 = AmountKind.declare(
+    CATALOG, "bc428_dividend_tax_credit_line_65", non_negative=True
+)
+"""British Columbia dividend tax credit, BC428 line 65 "Line 65 and line 61520: British Columbia
+dividend tax credit (use Worksheet BC428)": a caller input that is read as blank when left out."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
