@@ -145,6 +145,10 @@ BC428_SUBTOTAL_LINE_45 = AmountKind.declare(CATALOG, "bc428_subtotal_line_45", n
 """Subtotal, BC428 line 45 "Line 45: Add lines 40 to 44. = ^": the sum of line 40. Lines 41 to 44
 are student loan interest, tuition and transfers, not built: a salary-only filer has none."""
 
+BC428_TOTAL_LINE_54 = AmountKind.declare(CATALOG, "bc428_total_line_54", non_negative=True)
+"""Total, BC428 line 54 and line 58800 "Line 45 plus line 53 = ^": line 45 plus line 53, the medical
+expenses input read as 0 when blank."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
