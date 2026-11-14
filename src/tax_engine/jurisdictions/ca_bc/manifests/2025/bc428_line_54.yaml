@@ -1,0 +1,18 @@
+# Form BC428 (CRA 5010-C) line 54: "Line 54 and line 58800: Line 45 plus line 53 = ^". It sums the
+# subtotal (line 45, `ca-bc/bc428_subtotal_line_45`) and the medical expenses (line 53,
+# `ca-bc/bc428_medical_expenses_line_53`). Line 53 is an optional input that a salary-only caller
+# leaves out, read as blank and then as 0 by the blank rule below.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "54"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts: [ca-bc/bc428_subtotal_line_45, ca-bc/bc428_medical_expenses_line_53]
+    blank:
+      ca-bc/bc428_medical_expenses_line_53: "0"
+    produces:
+      output: ca-bc/bc428_total_line_54
