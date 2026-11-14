@@ -1,0 +1,18 @@
+# Form BC428 (British Columbia Tax, 2025, 5010-c-25e) Part A, line 10. Each of the columns 1 to 3 of lines 9
+# to 15 prints "Line 10:" with its lower bound: 137,407.00, 186,306.00 and 259,829.00. Column 1 is
+# "Line 1 is more than $137,407 but not more than $186,306", column 2 "more than $186,306 but not
+# more than $259,829" and column 3 "more than $259,829". Line 10 is the printed lower bound of the
+# column that line 1 falls in, and is blank when line 1 is $137,407 or less. Line 9 is a copy of
+# line 1 and has no step of its own: line 10 reads line 1 directly.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "10"
+    unit: ca/cad
+    params:
+      schedule: ca-bc/brackets_lines_9_to_15
+    consumes:
+      base: ca-bc/bc428_taxable_income_line_1
+    produces:
+      output: ca-bc/bc428_bracket_lower_bound_line_10
