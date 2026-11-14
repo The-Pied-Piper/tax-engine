@@ -236,6 +236,11 @@ BC428_NON_REFUNDABLE_CREDITS_LINE_60 = AmountKind.declare(
 """Non-refundable tax credits, BC428 line 60 "Line 60 and line 61500: Line 58 plus line 59 Enter
 this amount on line 64.": line 58 plus line 59."""
 
+BC428_TOTAL_LINE_67 = AmountKind.declare(CATALOG, "bc428_total_line_67", non_negative=True)
+"""Total, BC428 line 67 "Line 67: Add lines 64 to 66. = ^": line 64 (the non-refundable credits, a
+copy of line 60) plus line 65 (the dividend tax credit, blank read as 0) plus line 66 (the minimum
+tax carryover), rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
