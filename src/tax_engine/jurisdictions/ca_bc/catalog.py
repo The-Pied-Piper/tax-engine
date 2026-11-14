@@ -92,6 +92,13 @@ BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
 40427 of your return": the minimum tax carryover amount, a caller input that is read as blank when
 left out."""
 
+BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
+    CATALOG, "bc428_additional_minimum_tax_amount_line_69"
+)
+"""Amount from line 14 of Part 7 of Form T691, BC428 line 69 "Amount from line 14 of Part 7 of Form
+T691 multiplied by 34.9% =": the amount from Form T691, an optional input that a caller with no
+minimum tax leaves out. The multiply is a separate step."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
