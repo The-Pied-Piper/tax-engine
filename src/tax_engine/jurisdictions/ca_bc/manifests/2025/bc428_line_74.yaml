@@ -1,0 +1,14 @@
+# Form BC428 line 74: "Enter your net income from line 23600 of your return." The form names no
+# label for the line, so the step has no title. The T1 exports the unfloored net income (line 23600,
+# which may be negative) only as a record list, so the one step is core/record_total over it, as
+# ON428-A line 6 and Schedule 6 line 7 are.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/record_total
+    reference: "74"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income_signed
+    produces:
+      output: ca-bc/bc428_net_income_line_74
