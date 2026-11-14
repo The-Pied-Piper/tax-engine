@@ -153,7 +153,7 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_35_and_the_pensi
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-bc/bc428"}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
     assert step == {
         "name": "core/sum",
         "reference": "37",
@@ -165,6 +165,7 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_35_and_the_pensi
                 "ca-bc/bc428_pension_income_amount",
             ]
         },
+        "blank": {"ca-bc/bc428_pension_income_amount": "0"},
         "produces": {"output": IDENTIFIER},
     }
 
