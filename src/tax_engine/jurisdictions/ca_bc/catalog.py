@@ -246,7 +246,8 @@ income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the t
 in; the other is blank."""
 
 BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
-    CATALOG, "bc428_tax_with_split_income_line_63", non_negative=True
+    CATALOG, "bc428_tax_with_split_income_line_63"
 )
 """Tax with split income, BC428 line 63 "Line 63: Line 61 plus line 62 = ^": line 61 plus line 62,
-the tax on split income input read as 0 when blank."""
+the tax on split income input read as 0 when blank. The form prints no floor for the line, so the
+kind is signed."""

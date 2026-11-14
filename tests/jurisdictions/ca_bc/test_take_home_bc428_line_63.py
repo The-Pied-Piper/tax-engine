@@ -215,10 +215,12 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_61_and_line_62()
     }
 
 
-def test_line_63_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    kind = british_columbia_kinds().kind(IDENTIFIER)
+def test_line_63_is_a_registered_signed_decimal_amount_kind() -> None:
+    kinds = british_columbia_kinds()
 
-    assert kind is BC428_TAX_WITH_SPLIT_INCOME_LINE_63
+    assert IDENTIFIER in kinds.identifiers()
+    kind = kinds.kind(IDENTIFIER)
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
-    assert non_negative(kind)
+    assert not non_negative(kind)
+    assert kind is BC428_TAX_WITH_SPLIT_INCOME_LINE_63
