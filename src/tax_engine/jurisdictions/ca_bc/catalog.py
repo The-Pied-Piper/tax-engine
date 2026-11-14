@@ -14,6 +14,12 @@ from tax_engine.jurisdictions.ca_bc import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+BC428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, BC428 line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by lines 3, 4, 10 and 11."""
+
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, BC428 line 16 (line 58040) "Basic personal amount Claim $12,932": the
 amount claimed, the first part of the total of the British Columbia credit amounts."""
