@@ -47,6 +47,13 @@ BC428_BRACKET_RATE_LINE_12 = AmountKind.declare(
 """Rate, BC428 line 12 "Line 12: Rate 14.7%; 16.8%; 20.5%": the printed rate of the column of lines
 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
+BC428_BRACKET_TAX_LINE_13 = AmountKind.declare(
+    CATALOG, "bc428_bracket_tax_line_13", non_negative=True
+)
+"""Tax on the part over the lower bound, BC428 line 13 "Line 13: Line 11 multiplied by the
+percentage from line 12 =": line 11 times the line 12 rate, rounded to the cent; blank when line 11
+or line 12 is blank, that is when line 1 is 137,407 or less."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
