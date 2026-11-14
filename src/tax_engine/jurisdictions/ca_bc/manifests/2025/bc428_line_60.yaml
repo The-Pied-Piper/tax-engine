@@ -1,0 +1,18 @@
+# Form BC428 (CRA 5010-C) line 60: "Line 60 and line 61500: Line 58 plus line 59 Enter this amount on
+# line 64." It sums line 58 (`ca-bc/bc428_subtotal_line_58`) and line 59
+# (`ca-bc/bc428_farmers_food_donation_credit_line_59`). Both parts are always produced, since their
+# own steps read a blank input as 0, so line 60 has no blank rule of its own. Line 64 copies it.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "60"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc428_subtotal_line_58
+        - ca-bc/bc428_farmers_food_donation_credit_line_59
+    produces:
+      output: ca-bc/bc428_non_refundable_credits_line_60

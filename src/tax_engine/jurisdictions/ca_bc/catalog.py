@@ -210,6 +210,19 @@ BC428_SUBTOTAL_LINE_58 = AmountKind.declare(CATALOG, "bc428_subtotal_line_58", n
 """Subtotal, BC428 line 58 "Line 56 plus line 57 = ^": line 56 plus line 57, the donations and gifts
 input read as 0 when blank."""
 
+BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59 = AmountKind.declare(
+    CATALOG, "bc428_farmers_food_donation_credit_line_59", non_negative=True
+)
+"""Farmers' food donation credit amount, BC428 line 59 "Line 59 and line 58980: Amount of qualifying
+gifts also claimed on line 57 multiplied by 25% = ^": the qualifying gifts times the 25% of the
+dataset, rounded half-up to the cent; blank gifts are taken as 0."""
+
+BC428_NON_REFUNDABLE_CREDITS_LINE_60 = AmountKind.declare(
+    CATALOG, "bc428_non_refundable_credits_line_60", non_negative=True
+)
+"""Non-refundable tax credits, BC428 line 60 "Line 60 and line 61500: Line 58 plus line 59 Enter
+this amount on line 64.": line 58 plus line 59."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of

@@ -1,0 +1,19 @@
+# Form BC428 (CRA 5010-C) line 59: "Line 59 and line 58980: Amount of qualifying gifts also claimed on
+# line 57 multiplied by 25% = ^". The 25% is a printed rate, held in the `ca-bc/farmers_food_donation_rate`
+# dataset, so line 59 is one calculation: the gifts input (`ca-bc/bc428_qualifying_gifts_line_59`,
+# in bc428_line_59_input.yaml) times 25%, rounded half-up to the cent. The gifts input is optional,
+# and a salary-only caller leaves it out, so the blank rule below reads it as 0 and prints that row.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/apply_rate
+    reference: "59"
+    unit: ca/cad
+    params:
+      rate: ca-bc/farmers_food_donation_rate
+    consumes:
+      base: ca-bc/bc428_qualifying_gifts_line_59
+    blank:
+      base: "0"
+    produces:
+      output: ca-bc/bc428_farmers_food_donation_credit_line_59
