@@ -244,3 +244,9 @@ BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
 """British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
 income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
 in; the other is blank."""
+
+BC428_BASIC_REDUCTION_LINE_73 = AmountKind.declare(
+    CATALOG, "bc428_basic_reduction_line_73", non_negative=True
+)
+"""Basic reduction, BC428 line 73 "Basic reduction Claim $562": the amount claimed, the British
+Columbia basic tax reduction, claimed whole at every salary (line 79 phases it out)."""
