@@ -20,7 +20,6 @@ from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
 
 import pytest
 import yaml
@@ -38,6 +37,7 @@ from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
     BC428_DONATIONS_AND_GIFTS_LINE_57,
+    BC428_NON_REFUNDABLE_CREDITS_LINE_60,
     BC428_QUALIFYING_GIFTS_LINE_59,
 )
 from tests.jurisdictions.ca_bc.support import (
@@ -84,12 +84,6 @@ CASES = [
     ("70000", "875.44"),
     ("200000", "878.70"),
 ]
-
-
-def _output() -> AmountKind:
-    kind = british_columbia_kinds().kind(IDENTIFIER)
-    assert isinstance(kind, AmountKind)
-    return kind
 
 
 def _part_files() -> Iterator[Path]:
@@ -153,14 +147,14 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
 def test_line_60_is_line_58_when_no_gifts_are_given(
     tmp_path: Path, salary: str, expected: str
 ) -> None:
-    assert _sheet(tmp_path, salary).get(_output()).value == D(expected)
+    assert _sheet(tmp_path, salary).get(BC428_NON_REFUNDABLE_CREDITS_LINE_60).value == D(expected)
 
 
 def test_line_60_adds_line_59_to_line_58(tmp_path: Path) -> None:
     # Line 58 is 875.44 at $70,000 with no line 57; line 59 is 100.00 times 25%, 25.00.
     sheet = _sheet(tmp_path, "70000", Artifact(BC428_QUALIFYING_GIFTS_LINE_59, D("100.00")))
 
-    assert sheet.get(_output()).value == D("900.44")
+    assert sheet.get(BC428_NON_REFUNDABLE_CREDITS_LINE_60).value == D("900.44")
 
 
 def test_line_60_adds_line_57_through_line_58_as_well_as_line_59(tmp_path: Path) -> None:
@@ -172,10 +166,10 @@ def test_line_60_adds_line_57_through_line_58_as_well_as_line_59(tmp_path: Path)
     )
 
     # Line 58 is 975.44 with the line 57 gifts; line 59 is 25.00.
-    assert sheet.get(_output()).value == D("1000.44")
+    assert sheet.get(BC428_NON_REFUNDABLE_CREDITS_LINE_60).value == D("1000.44")
 
 
-def _part() -> dict[str, Any]:
+def _part() -> dict[str, object]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     return part
@@ -186,7 +180,10 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_58_and_line_59()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-bc/bc428"}
-    (step,) = part["capabilities"]
+    capabilities = part["capabilities"]
+    assert isinstance(capabilities, list)
+    (step,) = capabilities
+    assert isinstance(step, dict)
     assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
     assert step == {
         "name": "core/sum",
@@ -199,9 +196,10 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_58_and_line_59()
 
 
 def test_line_60_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    kind = _output()
+    kind = british_columbia_kinds().kind(IDENTIFIER)
 
-    assert kind.identifier == IDENTIFIER
+    assert kind is BC428_NON_REFUNDABLE_CREDITS_LINE_60
     assert isinstance(kind, AmountKind)
+    assert kind.identifier == IDENTIFIER
     assert kind.value_type is Decimal
     assert non_negative(kind)

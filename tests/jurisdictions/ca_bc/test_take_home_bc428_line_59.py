@@ -20,7 +20,6 @@ from __future__ import annotations
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
 
 import pytest
 import yaml
@@ -38,7 +37,10 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankFallbackLine, RateAppliedLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_bc.catalog import BC428_QUALIFYING_GIFTS_LINE_59
+from tax_engine.jurisdictions.ca_bc.catalog import (
+    BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59,
+    BC428_QUALIFYING_GIFTS_LINE_59,
+)
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -77,12 +79,6 @@ CASES = [
     ("0.02", "0.01"),
     ("10.02", "2.51"),
 ]
-
-
-def _output() -> AmountKind:
-    kind = british_columbia_kinds().kind(IDENTIFIER)
-    assert isinstance(kind, AmountKind)
-    return kind
 
 
 def _part_files() -> list[Path]:
@@ -127,11 +123,11 @@ def _sheet(tmp_path: Path, *extra: Artifact[Decimal]) -> Worksheet:
 def test_line_59_is_the_gifts_times_25_percent(tmp_path: Path, gifts: str, expected: str) -> None:
     sheet = _sheet(tmp_path, Artifact(BC428_QUALIFYING_GIFTS_LINE_59, D(gifts)))
 
-    assert sheet.get(_output()).value == D(expected)
+    assert sheet.get(BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59).value == D(expected)
 
 
 def test_line_59_is_zero_when_no_gifts_are_given(tmp_path: Path) -> None:
-    assert _sheet(tmp_path).get(_output()).value == D("0")
+    assert _sheet(tmp_path).get(BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59).value == D("0")
 
 
 def test_a_blank_gifts_line_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
@@ -153,14 +149,15 @@ def test_the_product_is_traced_with_its_base_and_the_rate(tmp_path: Path) -> Non
     (line,) = (
         each
         for each in sheet.trace
-        if isinstance(each, RateAppliedLine) and each.output is _output()
+        if isinstance(each, RateAppliedLine)
+        and each.output is BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59
     )
     assert line.base_amount == D("100.00")
     assert line.rate == Rate(D("0.25"))
     assert line.result == D("25.00")
 
 
-def _part() -> dict[str, Any]:
+def _part() -> dict[str, object]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     return part
@@ -171,7 +168,10 @@ def test_the_part_names_the_form_and_has_one_apply_rate_step_over_the_gifts_inpu
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-bc/bc428"}
-    (step,) = part["capabilities"]
+    capabilities = part["capabilities"]
+    assert isinstance(capabilities, list)
+    (step,) = capabilities
+    assert isinstance(step, dict)
     assert list(step) == [
         "name",
         "reference",
@@ -193,9 +193,10 @@ def test_the_part_names_the_form_and_has_one_apply_rate_step_over_the_gifts_inpu
 
 
 def test_line_59_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    kind = _output()
+    kind = british_columbia_kinds().kind(IDENTIFIER)
 
-    assert kind.identifier == IDENTIFIER
+    assert kind is BC428_FARMERS_FOOD_DONATION_CREDIT_LINE_59
     assert isinstance(kind, AmountKind)
+    assert kind.identifier == IDENTIFIER
     assert kind.value_type is Decimal
     assert non_negative(kind)
