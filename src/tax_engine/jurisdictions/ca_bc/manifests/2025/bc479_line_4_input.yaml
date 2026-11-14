@@ -1,0 +1,12 @@
+# BC479 (2025) inputs a salary-only caller does not give.
+# Line 4: "Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the
+# return)" (5010-tc). Column 1 (you) only. A salary-only caller has neither income, so a request
+# that leaves the line out is read as blank; the step that consumes it reads that blank as 0.
+inputs:
+  - name: ca-bc/bc479_uccb_rdsp_income_line_4
+    title: "Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)"
+    reference: "4"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 4: Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)'
