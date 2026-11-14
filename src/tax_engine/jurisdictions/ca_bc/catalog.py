@@ -28,6 +28,12 @@ BC428_SUBTOTAL_LINE_25 = AmountKind.declare(CATALOG, "bc428_subtotal_line_25", n
 """Subtotal of credit amounts, BC428 line 25 "Line 25: Add lines 16, 17, 20, 23 and 24.": the sum of
 those lines, here the basic personal amount (line 16) alone."""
 
+BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
+    CATALOG, "bc428_bracket_lower_bound_line_10", non_negative=True
+)
+"""Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
+column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
