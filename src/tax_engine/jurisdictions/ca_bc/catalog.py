@@ -34,6 +34,13 @@ BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
 """Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
+BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_over_lower_bound_line_11", non_negative=True
+)
+"""Taxable income over the lower bound, BC428 line 11 "Line 11: Line 9 minus line 10 (cannot be
+negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 137,407.00
+or less, where line 10 is blank."""
+
 BC428_BRACKET_RATE_LINE_12 = AmountKind.declare(
     CATALOG, "bc428_bracket_rate_line_12", non_negative=True
 )
@@ -90,11 +97,32 @@ BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 137,407, where lines 9 to 15 apply."""
 
+BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "bc428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, BC428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero; blank when line 3 is blank."""
+
+BC428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "bc428_bracket_rate_line_5", non_negative=True
+)
+"""Rate of the column, BC428 line 5 "Line 5: Rate" (5.06%; 7.7%; 10.5%; 12.29%): the printed rate of
+the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is above 137,407, where
+lines 9 to 15 apply."""
+
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
 )
 """BC428 line 33 "Add lines 27 to 32.": the sum of lines
 27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""
+
+BC428_SUBTOTAL_LINE_35 = AmountKind.declare(CATALOG, "bc428_subtotal_line_35", non_negative=True)
+"""Subtotal, BC428 line 35 "Line 35: Add lines 26, 33 and 34.": the sum of line 26 (a copy of line
+25), line 33 and line 34. Line 34 (adoption expenses) is not built: a salary-only filer has none."""
+
+BC428_SUBTOTAL_LINE_37 = AmountKind.declare(CATALOG, "bc428_subtotal_line_37", non_negative=True)
+"""Subtotal, BC428 line 37 "Line 37: Line 35 plus line 36 = ^": the sum of line 35 and line 36, the
+pension income amount, an optional input read as 0 when the filer has none."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
