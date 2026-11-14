@@ -2,9 +2,9 @@
 
 Form text (Form BC428, CRA 5010-c-25e.txt): "Line 74: Enter your net income from line 23600 of
 your return." The form names no label for the line, so the step has no title. Line 23600 is read
-as the T1 form exports it before its floor, `ca/t1_taxable_income.net_income_signed`, which reaches
-this form only as a record list: line 74 is a core/record_total over it, as ON428-A line 6 is. Line
-23600 may be negative ("if negative, show in brackets"), so the kind is signed.
+as the T1 form exports it, floored, `ca/t1_taxable_income.net_income`, which reaches this form only
+as a record list: line 74 is a core/record_total over it, as ON428-A line 6 is. The kind is
+non-negative.
 
 The test composes the real British Columbia salary part, the real federal parts the T1 taxable
 income form needs (Schedule 8 for line 23300, and the T1 lines 15000, 23300, 23400, 23600, 23600
@@ -12,9 +12,6 @@ signed and 26000 with their inputs) and the real `bc428_line_74.yaml`, and types
 salary. The BC428 form declaration is made up here, exporting only line 74, because the real
 header is owned by another change. British Columbia is not in `registrations.JURISDICTIONS`, so
 the service is built over the British Columbia package list of `support.py`.
-
-A negative net income cannot be made from a salary alone, so the negative branch gives T1 line
-23500 (social benefits repayment) above line 23400: line 74 keeps the negative amount as it is.
 """
 
 from __future__ import annotations
@@ -120,9 +117,9 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _line_74(tmp_path: Path, salary: str, *extra: Artifact[Any]) -> Decimal:
+def _line_74(tmp_path: Path, salary: str) -> Decimal:
     worksheets = _service(tmp_path).compute(
-        JurisdictionCode("CA-BC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary)), *extra
+        JurisdictionCode("CA-BC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca-bc/bc428"]
     return sheet.get(BC428_NET_INCOME_LINE_74).value
@@ -153,20 +150,12 @@ def test_line_74_is_the_t1_net_income(tmp_path: Path, salary: str, expected: str
     assert _line_74(tmp_path, salary) == D(expected)
 
 
-def test_a_negative_net_income_is_line_74_as_printed_in_brackets(tmp_path: Path) -> None:
-    # Line 23500 of 75,000 is more than line 23400 of 69,335.00, so net income is -5,665.00; the
-    # form says "if negative, show in brackets", so line 74 keeps the sign.
-    repayment = Artifact(british_columbia_kinds().kind("ca/social_benefits_repayment"), D("75000"))
-
-    assert _line_74(tmp_path, "70000", repayment) == D("-5665.00")
-
-
-def test_the_part_is_one_untitled_record_total_step_over_the_t1_signed_net_income() -> None:
+def test_the_part_is_one_untitled_record_total_step_over_the_t1_net_income() -> None:
     assert _step() == {
         "name": "core/record_total",
         "reference": "74",
         "unit": "ca/cad",
-        "consumes": {"records": "ca/t1_taxable_income.net_income_signed"},
+        "consumes": {"records": "ca/t1_taxable_income.net_income"},
         "produces": {"output": IDENTIFIER},
     }
 
@@ -175,10 +164,10 @@ def test_the_step_keys_are_in_order_and_there_is_no_title() -> None:
     assert list(_step()) == ["name", "reference", "unit", "consumes", "produces"]
 
 
-def test_the_kind_is_a_registered_signed_decimal_amount() -> None:
+def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = british_columbia_kinds().kind(IDENTIFIER)
 
     assert kind is BC428_NET_INCOME_LINE_74
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
-    assert not non_negative(kind)
+    assert non_negative(kind)

@@ -207,10 +207,10 @@ percentage from line 55 = ^": line 54 multiplied by the 5.06% of line 55, rounde
 cent."""
 
 BC428_NET_INCOME_LINE_74 = AmountKind.declare(
-    CATALOG, "bc428_net_income_line_74", non_negative=False
+    CATALOG, "bc428_net_income_line_74", non_negative=True
 )
 """Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
-income before its floor, signed because line 23600 may be negative."""
+income, line 23600 after its floor."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
