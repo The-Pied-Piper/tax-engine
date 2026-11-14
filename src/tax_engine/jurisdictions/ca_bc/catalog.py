@@ -78,6 +78,13 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+BC428_QUALIFYING_GIFTS_LINE_59 = AmountKind.declare(
+    CATALOG, "bc428_qualifying_gifts_line_59", non_negative=True
+)
+"""Amount of qualifying gifts also claimed on line 57, BC428 line 59 "Line 59 and line 58980: Amount
+of qualifying gifts also claimed on line 57 multiplied by 25%": the amount the filer also claims on
+line 57, a caller input that is read as blank when left out."""
+
 BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
     CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
 )
@@ -136,6 +143,13 @@ BC428_BRACKET_TAX_LINE_6 = AmountKind.declare(
 """Tax on the part over the lower bound, BC428 line 6 "Line 6: Line 4 multiplied by the percentage
 from line 5 =": line 4 times the line 5 rate, rounded to the cent; blank when line 4 or line 5 is
 blank."""
+
+BC428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "bc428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""British Columbia tax on taxable income, BC428 line 8 "Line 6 plus line 7 British Columbia tax on
+taxable income =": line 6 plus line 7 of the column that line 1 falls in; blank when lines 6 and 7
+are blank."""
 
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
