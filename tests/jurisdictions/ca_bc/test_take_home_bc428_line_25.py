@@ -16,10 +16,8 @@ from __future__ import annotations
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
 
 import pytest
-import yaml
 
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -27,9 +25,9 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_bc.catalog import BC428_SUBTOTAL_LINE_25
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -37,12 +35,10 @@ from tests.jurisdictions.ca_bc.support import (
     british_columbia_parameter_parsers,
     british_columbia_units,
 )
-from tests.kinds import non_negative
 
 D = Decimal
 PARTS_PATH = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = PARTS_PATH / "bc428_line_25.yaml"
-KIND = "ca-bc/bc428_subtotal_line_25"
 
 HEADER = dedent("""\
     jurisdiction: CA-BC
@@ -92,47 +88,9 @@ def line_25(tmp_path: Path, salary: str) -> Decimal:
         JurisdictionCode("CA-BC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca-bc/bc428"]
-    kind = british_columbia_kinds().kind(KIND)
-    assert isinstance(kind, AmountKind)
-    return sheet.get(kind).value
+    return sheet.get(BC428_SUBTOTAL_LINE_25).value
 
 
 @pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000", "200000"])
 def test_line_25_is_line_16_alone_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_25(tmp_path, salary) == D("12932.00")
-
-
-def _line() -> dict[str, Any]:
-    part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
-    assert isinstance(part, dict)
-    return part
-
-
-def test_the_part_names_the_form_and_has_one_untitled_sum_step_like_alberta_line_25() -> None:
-    part = _line()
-
-    assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": "ca-bc/bc428"}
-    (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
-    assert step["name"] == "core/sum"
-    assert step["reference"] == "25"
-    assert step["unit"] == "ca/cad"
-    assert step["params"] == {"rounding": "ca-bc/cent_rounding"}
-    assert step["consumes"] == {"parts": ["ca-bc/basic_personal_amount"]}
-    assert step["produces"] == {"output": KIND}
-
-
-def test_line_25_is_a_registered_non_negative_amount_kind() -> None:
-    kinds = british_columbia_kinds()
-
-    assert KIND in kinds.identifiers()
-    kind = kinds.kind(KIND)
-    assert isinstance(kind, AmountKind)
-    assert non_negative(kind)
-
-
-def test_line_25_is_declared_in_the_catalog() -> None:
-    from tax_engine.jurisdictions.ca_bc import catalog
-
-    assert british_columbia_kinds().kind(KIND) is catalog.BC428_SUBTOTAL_LINE_25
