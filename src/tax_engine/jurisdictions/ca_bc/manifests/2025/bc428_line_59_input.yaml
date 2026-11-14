@@ -1,0 +1,12 @@
+# BC428 (2025) inputs a salary-only caller does not give.
+# Line 59: "Line 59 and line 58980: Amount of qualifying gifts also claimed on line 57 multiplied by
+# 25%" (5010-c). A caller with no such gifts has nothing to enter, so a request that leaves the
+# line out is read as blank; the step that reads line 59 reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_qualifying_gifts_line_59
+    title: "Amount of qualifying gifts also claimed on line 57"
+    reference: "59"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 59 and line 58980: Amount of qualifying gifts also claimed on line 57'

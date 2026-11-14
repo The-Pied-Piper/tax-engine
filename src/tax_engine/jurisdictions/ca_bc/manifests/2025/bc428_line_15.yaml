@@ -1,0 +1,23 @@
+# Form BC428 (British Columbia Tax, 2025, 5010-c-25e) Part A, line 15. Each of the columns 1 to 3 of
+# lines 9 to 15 prints "Line 15: Line 13 plus line 14 British Columbia tax on taxable income = ^",
+# under "Column 1: Line 1 is more than $137,407 but not more than $186,306", "Column 2: Line 1 is
+# more than $186,306 but not more than $259,829" and "Column 3: Line 1 is more than $259,829". It
+# sums line 13 (`ca-bc/bc428_bracket_tax_line_13`) and line 14
+# (`ca-bc/bc428_bracket_tax_at_start_line_14`). Line 15 is blank when lines 13 and 14 are blank.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    title: "British Columbia tax on taxable income"
+    reference: "15"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        [ca-bc/bc428_bracket_tax_line_13, ca-bc/bc428_bracket_tax_at_start_line_14]
+    blank:
+      ca-bc/bc428_bracket_tax_line_13: pass_on
+      ca-bc/bc428_bracket_tax_at_start_line_14: pass_on
+    produces:
+      output: ca-bc/bc428_tax_on_taxable_income_line_15
