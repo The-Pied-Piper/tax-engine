@@ -163,6 +163,11 @@ BC428_TOTAL_LINE_54 = AmountKind.declare(CATALOG, "bc428_total_line_54", non_neg
 """Total, BC428 line 54 and line 58800 "Line 45 plus line 53 = ^": line 45 plus line 53, the medical
 expenses input read as 0 when blank."""
 
+BC428_TAX_ON_SPLIT_INCOME_LINE_62 = AmountKind.declare(CATALOG, "bc428_tax_on_split_income_line_62")
+"""British Columbia tax on split income, BC428 line 62 "Line 62 and line 61510: British Columbia tax
+on split income (complete Form T1206)": the tax from Form T1206, an optional input that a
+salary-only caller leaves out."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
