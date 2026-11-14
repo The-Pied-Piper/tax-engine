@@ -1,0 +1,14 @@
+# BC428 (2025) line 75, the base amount. Form BC428 (CRA 5010-c-25e): "Line 75: Base amount
+# 25,020.00". The 25,020.00 is the `ca-bc/tax_reduction_base_amount` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/credit_amount
+    title: "Base amount"
+    reference: "75"
+    unit: ca/cad
+    params:
+      amount: ca-bc/tax_reduction_base_amount
+    produces:
+      output: ca-bc/bc428_base_amount_line_75
