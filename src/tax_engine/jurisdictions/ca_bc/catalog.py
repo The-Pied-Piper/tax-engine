@@ -42,6 +42,13 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
+    CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
+)
+"""Amount from line 40427 of the return, BC428 line 66 "Line 66 and line 61540: Amount from line
+40427 of your return": the minimum tax carryover amount, a caller input that is read as blank when
+left out."""
+
 BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
     CATALOG, "bc428_ei_premiums_line_29", non_negative=True
 )
