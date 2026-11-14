@@ -270,6 +270,13 @@ BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
 income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
 in; the other is blank."""
 
+BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
+    CATALOG, "bc428_tax_with_split_income_line_63"
+)
+"""Tax with split income, BC428 line 63 "Line 63: Line 61 plus line 62 = ^": line 61 plus line 62,
+the tax on split income input read as 0 when blank. The form prints no floor for the line, so the
+kind is signed."""
+
 BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
     CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
 )
