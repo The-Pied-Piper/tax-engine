@@ -1,0 +1,18 @@
+# Form BC428 (CRA 5010-C) line 33: "Line 33: Add lines 27 to 32." Lines 28 (line 31000 of your
+# return), 30 (line 31217), 31 (volunteer firefighters) and 32 (search and rescue volunteers) are
+# left out: a salary-only filer has none of them, as AB428 line 32 leaves out its equivalents. Step 1
+# adds lines 27 and 29 with core/sum.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "33"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc428_cpp_contributions_line_27
+        - ca-bc/bc428_ei_premiums_line_29
+    produces:
+      output: ca-bc/bc428_cpp_ei_and_other_line_33

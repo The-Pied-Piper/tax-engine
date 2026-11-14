@@ -54,3 +54,9 @@ BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, BC428 line 3 "Line 3: 0.00" (49,279.00; 98,560.00; 113,158.00): the
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 137,407, where lines 9 to 15 apply."""
+
+BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
+    CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
+)
+"""BC428 line 33 "Add lines 27 to 32.": the sum of lines
+27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""
