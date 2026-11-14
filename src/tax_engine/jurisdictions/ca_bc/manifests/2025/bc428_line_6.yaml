@@ -1,0 +1,22 @@
+# Form BC428 (British Columbia Tax, 2025, 5010-c-25e) Part A, line 6. Each of the four columns
+# prints "Line 6: Line 4 multiplied by the percentage from line 5 =", under "Column 1: Line 1 is
+# $49,279 or less", "Column 2: Line 1 is more than $49,279 but not more than $98,560", "Column 3:
+# Line 1 is more than $98,560 but not more than $113,158" and "Column 4: Line 1 is more than
+# $113,158 but not more than $137,407". Line 6 is the tax on the part of the taxable income over
+# the column's lower bound. It is blank when line 4 or line 5 is blank.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/multiply_by_rate
+    reference: "6"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      base: ca-bc/bc428_taxable_income_over_lower_bound_line_4
+      rate: ca-bc/bc428_bracket_rate_line_5
+    blank:
+      base: pass_on
+      rate: pass_on
+    produces:
+      output: ca-bc/bc428_bracket_tax_line_6

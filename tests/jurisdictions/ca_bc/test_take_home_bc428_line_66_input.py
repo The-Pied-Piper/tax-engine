@@ -2,7 +2,8 @@
 
 Form text (Form BC428, CRA 5010-C, docs/cra-forms-2025): "Line 66 and line 61540: Amount from
 line 40427 of your return". A salary-only caller has no minimum tax carryover amount, so a request
-that leaves the line out is read as blank, and the step that multiplies it reads that blank as 0.
+that leaves the line out is read as 0, not blank, as Alberta's line 64 input is: the step that
+multiplies it by the printed rate cannot take a blank.
 
 British Columbia is not yet listed in the registrations, so the real part is loaded under a
 test-local header over the British Columbia package list of `support.py`.
@@ -11,6 +12,7 @@ test-local header over the British Columbia package list of `support.py`.
 from __future__ import annotations
 
 import shutil
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -69,7 +71,7 @@ def test_the_part_declares_only_the_minimum_tax_carryover_input() -> None:
             "reference": "66",
             "unit": "ca/cad",
             "required": False,
-            "default": None,
+            "default": "0",
             "basis": PRINTED_BASIS,
         }
     ]
@@ -92,10 +94,11 @@ def test_the_minimum_tax_carryover_amount_is_a_non_negative_amount_kind() -> Non
     assert non_negative(kind)
 
 
-def test_a_request_that_leaves_out_line_66_is_read_as_blank(tmp_path: Path) -> None:
+def test_a_request_that_leaves_out_line_66_is_read_as_0(tmp_path: Path) -> None:
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
-    assert default is not None and default.is_blank
+    assert default is not None and not default.is_blank
+    assert default.value == Decimal(0)

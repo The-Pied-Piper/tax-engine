@@ -1,0 +1,22 @@
+# Form BC428 (British Columbia Tax, 2025, 5010-c-25e) Part A, line 13. Each of the columns 1 to 3 of
+# lines 9 to 15 prints "Line 13: Line 11 multiplied by the percentage from line 12 =". Column 1 is
+# "Line 1 is more than $137,407 but not more than $186,306", column 2 "more than $186,306 but not
+# more than $259,829" and column 3 "more than $259,829". Line 13 is the tax on the part of line 1
+# over the column's lower bound. It is blank when line 11 or line 12 is blank, that is when line 1
+# is $137,407 or less.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/multiply_by_rate
+    reference: "13"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      base: ca-bc/bc428_taxable_income_over_lower_bound_line_11
+      rate: ca-bc/bc428_bracket_rate_line_12
+    blank:
+      base: pass_on
+      rate: pass_on
+    produces:
+      output: ca-bc/bc428_bracket_tax_line_13
