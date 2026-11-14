@@ -67,6 +67,12 @@ BC428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 on taxable income =": line 13 plus line 14 of the column that line 1 falls in; blank when lines 13
 and 14 are blank."""
 
+BC428_BASE_AMOUNT_LINE_75 = AmountKind.declare(
+    CATALOG, "bc428_base_amount_line_75", non_negative=True
+)
+"""Base amount, BC428 line 75 "Line 75: Base amount 25,020.00": the printed amount the British
+Columbia tax reduction starts from."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
