@@ -1,0 +1,12 @@
+# BC428 (2025) inputs a salary-only caller does not give.
+# Line 36: "Line 36 and line 58360: Pension income amount (maximum $1,000)" (5010-c). A salary-only
+# caller has no pension income amount, so a request that leaves the line out is read as blank; the
+# step that reads line 36 (line 37) reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_pension_income_amount
+    title: "Pension income amount"
+    reference: "36"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 36 and line 58360: Pension income amount (maximum $1,000)'
