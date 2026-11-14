@@ -222,3 +222,10 @@ BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
 )
 """British Columbia credits, BC479 line 45 "Enter this amount on line 47900 of your return.": the
 British Columbia credits, entered on T1 line 47900."""
+
+BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
+)
+"""British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
+income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
+in; the other is blank."""
