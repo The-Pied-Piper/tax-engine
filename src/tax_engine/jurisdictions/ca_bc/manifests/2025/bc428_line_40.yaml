@@ -1,0 +1,16 @@
+# Form BC428 (CRA 5010-C) line 40: "Line 40: Add lines 37 to 39. = ^". Lines 38 and 39 are the
+# disability amounts, which are not built, so core/sum reads line 37 alone, as ab428_credits_line_39
+# reads its line 36.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "40"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc428_subtotal_line_37
+    produces:
+      output: ca-bc/bc428_subtotal_line_40
