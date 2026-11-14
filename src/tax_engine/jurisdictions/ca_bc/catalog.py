@@ -107,6 +107,10 @@ BC428_SUBTOTAL_LINE_35 = AmountKind.declare(CATALOG, "bc428_subtotal_line_35", n
 """Subtotal, BC428 line 35 "Line 35: Add lines 26, 33 and 34.": the sum of line 26 (a copy of line
 25), line 33 and line 34. Line 34 (adoption expenses) is not built: a salary-only filer has none."""
 
+BC428_SUBTOTAL_LINE_37 = AmountKind.declare(CATALOG, "bc428_subtotal_line_37", non_negative=True)
+"""Subtotal, BC428 line 37 "Line 37: Line 35 plus line 36 = ^": the sum of line 35 and line 36, the
+pension income amount, an optional input read as 0 when the filer has none."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
