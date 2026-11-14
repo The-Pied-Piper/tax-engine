@@ -30,13 +30,16 @@ from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
-from tax_engine.domain.artifact import Artifact, ArtifactKind
+from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_bc.catalog import BC479_UCCB_RDSP_REPAYMENTS_LINE_2
+from tax_engine.jurisdictions.ca_bc.catalog import (
+    BC479_INCOME_WITH_REPAYMENTS_LINE_3,
+    BC479_UCCB_RDSP_REPAYMENTS_LINE_2,
+)
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -51,7 +54,6 @@ D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = BC_PARTS / "bc479_line_3.yaml"
-IDENTIFIER = "ca-bc/bc479_income_with_repayments_line_3"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
     "t1_taxable_income_line_15000.yaml",
@@ -135,13 +137,9 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
     return sheet
 
 
-def _line_3_kind() -> ArtifactKind[Any]:
-    return british_columbia_kinds().kind(IDENTIFIER)
-
-
 @pytest.mark.parametrize(("salary", "expected"), CASES)
 def test_line_3_is_line_1_when_line_2_is_blank(tmp_path: Path, salary: str, expected: str) -> None:
-    assert _sheet(tmp_path, salary).get(_line_3_kind()).value == D(expected)
+    assert _sheet(tmp_path, salary).get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D(expected)
 
 
 def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
@@ -151,7 +149,7 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
         Artifact(BC479_UCCB_RDSP_REPAYMENTS_LINE_2, D("100.50")),
     )
 
-    assert sheet.get(_line_3_kind()).value == D("69435.50")
+    assert sheet.get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D("69435.50")
 
 
 def test_a_blank_line_2_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
@@ -170,7 +168,7 @@ def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
         Artifact(kinds.kind("ca/social_benefits_repayment"), D("75000")),
     )
 
-    assert sheet.get(_line_3_kind()).value == D("-5665.00")
+    assert sheet.get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D("-5665.00")
 
 
 def _part() -> dict[str, Any]:
@@ -209,14 +207,14 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_1_and_line_2() -
             ]
         },
         "blank": {"ca-bc/bc479_uccb_rdsp_repayments_line_2": "0"},
-        "produces": {"output": IDENTIFIER},
+        "produces": {"output": BC479_INCOME_WITH_REPAYMENTS_LINE_3.identifier},
     }
 
 
 def test_line_3_is_a_registered_signed_amount_kind() -> None:
-    kind = _line_3_kind()
+    kind = british_columbia_kinds().kind(BC479_INCOME_WITH_REPAYMENTS_LINE_3.identifier)
 
-    assert kind.identifier == IDENTIFIER
+    assert kind is BC479_INCOME_WITH_REPAYMENTS_LINE_3
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert not non_negative(kind)
