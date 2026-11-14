@@ -34,6 +34,12 @@ BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
 """Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
+BC428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
+    CATALOG, "bc428_bracket_tax_at_start_line_14", non_negative=True
+)
+"""Tax at the start of the column, BC428 line 14 "Line 14: 10,801.15": the printed tax at the start
+of the column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
+
 BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
     CATALOG, "bc428_taxable_income_over_lower_bound_line_11", non_negative=True
 )
@@ -96,6 +102,13 @@ BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, BC428 line 3 "Line 3: 0.00" (49,279.00; 98,560.00; 113,158.00): the
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 137,407, where lines 9 to 15 apply."""
+
+BC428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "bc428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, BC428 line 7 "Line 7: 0.00" (2,493.52; 6,288.15; 7,820.94): the
+printed tax at the start of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1
+is above 137,407, where lines 9 to 15 apply."""
 
 BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
     CATALOG, "bc428_taxable_income_over_lower_bound_line_4", non_negative=True
