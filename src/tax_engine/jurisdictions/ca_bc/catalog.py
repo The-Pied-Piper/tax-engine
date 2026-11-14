@@ -41,3 +41,9 @@ BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 )
 """EI premiums credit amount, BC428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
+    CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
+)
+"""BC428 line 33 "Add lines 27 to 32.": the sum of lines
+27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""
