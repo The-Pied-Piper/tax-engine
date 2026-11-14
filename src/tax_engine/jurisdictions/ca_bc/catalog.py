@@ -67,6 +67,12 @@ BC428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 on taxable income =": line 13 plus line 14 of the column that line 1 falls in; blank when lines 13
 and 14 are blank."""
 
+BC428_BASE_AMOUNT_LINE_75 = AmountKind.declare(
+    CATALOG, "bc428_base_amount_line_75", non_negative=True
+)
+"""Base amount, BC428 line 75 "Line 75: Base amount 25,020.00": the printed amount the British
+Columbia tax reduction starts from."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
@@ -110,6 +116,13 @@ BC428_DIVIDEND_TAX_CREDIT_LINE_65 = AmountKind.declare(
 )
 """British Columbia dividend tax credit, BC428 line 65 "Line 65 and line 61520: British Columbia
 dividend tax credit (use Worksheet BC428)": a caller input that is read as blank when left out."""
+
+BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
+    CATALOG, "bc428_additional_minimum_tax_amount_line_69"
+)
+"""Amount from line 14 of Part 7 of Form T691, BC428 line 69 "Amount from line 14 of Part 7 of Form
+T691 multiplied by 34.9% =": the amount from Form T691, an optional input that a caller with no
+minimum tax leaves out. The multiply is a separate step."""
 
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
@@ -206,6 +219,10 @@ BC428_AT_RATE_LINE_56 = AmountKind.declare(CATALOG, "bc428_at_rate_line_56", non
 percentage from line 55 = ^": line 54 multiplied by the 5.06% of line 55, rounded half-up to the
 cent."""
 
+BC428_SUBTOTAL_LINE_58 = AmountKind.declare(CATALOG, "bc428_subtotal_line_58", non_negative=True)
+"""Subtotal, BC428 line 58 "Line 56 plus line 57 = ^": line 56 plus line 57, the donations and gifts
+input read as 0 when blank."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -213,11 +230,32 @@ the T1 return before its floor, read from the signed T1 net income export (`ca/n
 not the floored `ca/net_income`). Column 1 only. The form asks for the amount with a negative shown
 in brackets, so the kind is signed."""
 
+BC428_NET_INCOME_LINE_74 = AmountKind.declare(
+    CATALOG, "bc428_net_income_line_74", non_negative=True
+)
+"""Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
+income, line 23600 after its floor."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
 """British Columbia credits, BC479 line 45 "Enter this amount on line 47900 of your return.": the
 British Columbia credits, entered on T1 line 47900."""
+
+BC479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
+    CATALOG, "bc479_uccb_rdsp_repayments_line_2", non_negative=True
+)
+"""UCCB and RDSP repayments, BC479 line 2 "Total of the universal child care benefit (UCCB)
+repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
+repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
+that is read as blank when left out, column 1 (you) only."""
+
+BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
+)
+"""British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
+income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
+in; the other is blank."""
 
 BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
     CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
