@@ -53,7 +53,10 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, MultipliedByRateLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_bc.catalog import BC428_TAXABLE_INCOME_LINE_1
+from tax_engine.jurisdictions.ca_bc.catalog import (
+    BC428_BRACKET_TAX_LINE_6,
+    BC428_TAXABLE_INCOME_LINE_1,
+)
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -159,8 +162,14 @@ def _part_files() -> Iterator[tuple[str, str]]:
     yield LINE_6_PART.name, LINE_6_PART.read_text(encoding="utf-8")
 
 
-def _service_over(folder_root: Path) -> TaxComputationService:
-    roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): folder_root}
+def _service(tmp_path: Path) -> TaxComputationService:
+    folder = tmp_path / "manifests" / "2025"
+    folder.mkdir(parents=True)
+    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
+    (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
+    for number, (name, text) in enumerate(_part_files(), start=2):
+        (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
+    roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
     return TaxComputationService(
         YamlJurisdictionSource(roots, british_columbia_kinds(), british_columbia_units()),
         YamlParameterSource(
@@ -170,16 +179,6 @@ def _service_over(folder_root: Path) -> TaxComputationService:
         ),
         british_columbia_capabilities(),
     )
-
-
-def _service(tmp_path: Path) -> TaxComputationService:
-    folder = tmp_path / "manifests" / "2025"
-    folder.mkdir(parents=True)
-    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "01_form.yaml").write_text(FORM_TEXT, encoding="utf-8")
-    for number, (name, text) in enumerate(_part_files(), start=2):
-        (folder / f"{number:02d}_{name}").write_text(text, encoding="utf-8")
-    return _service_over(tmp_path)
 
 
 def _sheet(tmp_path: Path, salary: str) -> Worksheet:
@@ -228,7 +227,17 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
             part.read_text(encoding="utf-8"), encoding="utf-8"
         )
     given = Artifact(BC428_TAXABLE_INCOME_LINE_1, D(taxable_income))
-    (sheet,) = _service_over(tmp_path).compute(CODE, 2025, given)[FORM]
+    roots = {**british_columbia_packages().roots(), Namespace("ca-bc"): tmp_path}
+    service = TaxComputationService(
+        YamlJurisdictionSource(roots, british_columbia_kinds(), british_columbia_units()),
+        YamlParameterSource(
+            british_columbia_packages().roots(),
+            british_columbia_parameter_parsers(),
+            british_columbia_units(),
+        ),
+        british_columbia_capabilities(),
+    )
+    (sheet,) = service.compute(CODE, 2025, given)[FORM]
     return sheet.get(_kind(LINE_6))
 
 
@@ -356,8 +365,6 @@ def test_the_part_is_one_multiply_by_rate_step_over_lines_4_and_5() -> None:
 
 
 def test_line_6_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    from tax_engine.jurisdictions.ca_bc.catalog import BC428_BRACKET_TAX_LINE_6
-
     kind = british_columbia_kinds().kind(LINE_6)
 
     assert kind is BC428_BRACKET_TAX_LINE_6
