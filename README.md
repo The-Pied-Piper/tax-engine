@@ -1,6 +1,7 @@
 # tax-engine: an open-source income tax calculation engine in Python
 
 [![CI](https://github.com/The-Pied-Piper/tax-engine/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/The-Pied-Piper/tax-engine/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/tax-engine.svg)](https://pypi.org/project/tax-engine/)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
 
@@ -26,7 +27,7 @@ Given only a gross salary, the engine works out the contributions and tax from t
 Every figure the engine computes comes with a trace saying how it was reached. Each trace line is about one figure (`line.label`), and its sentence names the figures it uses as the form prints them, so a caller shows the figure beside the sentence. This is the trace for the last Ontario line (ON428 line 90, "Ontario tax"):
 
 ```text
-line 90: Line 88 (3311.45) plus line 89 (600.00) gives 3911.45 (rounded to the nearest cent).
+line 90: Line 88 (CA$3311.45) plus line 89 (CA$600.00) gives CA$3911.45 (rounded to the nearest cent).
 ```
 
 ## Why tax-engine
@@ -40,7 +41,13 @@ line 90: Line 88 (3311.45) plus line 89 (600.00) gives 3911.45 (rounded to the n
 
 ## Quick start
 
-Requires Python 3.12 or newer. Install from a checkout:
+Requires Python 3.12 or newer. Install from [PyPI](https://pypi.org/project/tax-engine/):
+
+```sh
+pip install tax-engine
+```
+
+To work on the engine itself, install from a checkout instead:
 
 ```sh
 git clone https://github.com/The-Pied-Piper/tax-engine.git
