@@ -24,6 +24,10 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, BC428 line 16 (line 58040) "Basic personal amount Claim $12,932": the
 amount claimed, the first part of the total of the British Columbia credit amounts."""
 
+BC428_SUBTOTAL_LINE_25 = AmountKind.declare(CATALOG, "bc428_subtotal_line_25", non_negative=True)
+"""Subtotal of credit amounts, BC428 line 25 "Line 25: Add lines 16, 17, 20, 23 and 24.": the sum of
+those lines, here the basic personal amount (line 16) alone."""
+
 BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_10", non_negative=True
 )
@@ -55,6 +59,13 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
+    CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
+)
+"""Amount from line 40427 of the return, BC428 line 66 "Line 66 and line 61540: Amount from line
+40427 of your return": the minimum tax carryover amount, a caller input that is read as blank when
+left out."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
@@ -66,6 +77,12 @@ BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 )
 """EI premiums credit amount, BC428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+BC428_MEDICAL_EXPENSES_LINE_53 = AmountKind.declare(
+    CATALOG, "bc428_medical_expenses_line_53", non_negative=True
+)
+"""Medical expenses, BC428 line 53 (line 58769) "Line 51 plus line 52 =": line 51 plus line 52, an
+optional input; a blank is read as 0 by the step that reads it."""
 
 BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
     CATALOG, "bc428_bracket_lower_bound_line_3", non_negative=True
@@ -79,3 +96,9 @@ BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
 )
 """BC428 line 33 "Add lines 27 to 32.": the sum of lines
 27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""
+
+BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
+    CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
+)
+"""British Columbia credits, BC479 line 45 "Enter this amount on line 47900 of your return.": the
+British Columbia credits, entered on T1 line 47900."""
