@@ -148,6 +148,28 @@ def _kind(identifier: str) -> AmountKind:
 
 
 @pytest.mark.parametrize(
+    ("salary", "line_1"),
+    [
+        ("20000", "19835.00"),
+        ("70000", "69335.00"),
+        ("200000", "198926.00"),
+        ("49741.41", "49279.00"),
+        ("49741.42", "49279.01"),
+        ("99634", "98560.00"),
+        ("99635", "98561.00"),
+        ("114232", "113158.00"),
+        ("114233", "113159.00"),
+        ("138481", "137407.00"),
+        ("138482", "137408.00"),
+    ],
+)
+def test_the_salaries_give_the_line_1_figures_the_line_3_cases_rest_on(
+    tmp_path: Path, salary: str, line_1: str
+) -> None:
+    assert _sheet(tmp_path, salary).get(_kind(LINE_1)).value == D(line_1)
+
+
+@pytest.mark.parametrize(
     ("salary", "expected"),
     [
         # Line 1 is 16,865.00, 19,835.00 and 29,735.00: column 1.
@@ -156,6 +178,14 @@ def _kind(identifier: str) -> AmountKind:
         ("30000", "0.00"),
         # Line 1 is 69,335.00, over 49,279 and not over 98,560: column 2.
         ("70000", "49279.00"),
+        # Line 1 on each column's upper edge stays in that column; one cent more is the next.
+        ("49741.41", "0.00"),
+        ("49741.42", "49279.00"),
+        ("99634", "49279.00"),
+        ("99635", "98560.00"),
+        ("114232", "98560.00"),
+        ("114233", "113158.00"),
+        ("138481", "113158.00"),
     ],
 )
 def test_line_3_is_the_lower_bound_of_the_column_line_1_falls_in(
@@ -164,8 +194,9 @@ def test_line_3_is_the_lower_bound_of_the_column_line_1_falls_in(
     assert _sheet(tmp_path, salary).get(_kind(LINE_3)).value == D(expected)
 
 
-def test_line_3_is_blank_when_line_1_is_above_137407(tmp_path: Path) -> None:
-    assert _sheet(tmp_path, "200000").get(_kind(LINE_3)).is_blank
+@pytest.mark.parametrize("salary", ["200000", "138482"])
+def test_line_3_is_blank_when_line_1_is_above_137407(tmp_path: Path, salary: str) -> None:
+    assert _sheet(tmp_path, salary).get(_kind(LINE_3)).is_blank
 
 
 def test_the_blank_says_why_in_the_trace(tmp_path: Path) -> None:

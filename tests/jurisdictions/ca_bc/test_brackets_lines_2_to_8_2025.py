@@ -4,8 +4,9 @@ Form text (read 2026-11-14): "Column 1: Line 1 is $49,279 or less", "Line 3: 0.0
 Line 1 is more than $49,279 but not more than $98,560", "Line 3: 49,279.00"; "Column 3: Line 1 is
 more than $98,560 but not more than $113,158", "Line 3: 98,560.00"; "Column 4: Line 1 is more than
 $113,158 but not more than $137,407", "Line 3: 113,158.00". The rates (5.06%, 7.7%, 10.5%, 12.29%)
-and the line 7 constants (0.00, 2,493.52, 6,288.15, 7,820.94) are the ticket's printed figures; the
-form text for them is to be confirmed (the ticket quotes only the lower bounds).
+and the line 7 constants (0.00, 2,493.52, 6,288.15, 7,820.94) are the figures the ticket's dataset
+block gives as printed; they do not feed line 3, and the ticket quotes only the lower bounds as
+form text.
 
 Each bracket holds the form's column: its lower bound (line 3), its rate and the printed tax at its
 start (line 7), carried as printed. The dataset has no rounding rule. The table covers line 1 of
