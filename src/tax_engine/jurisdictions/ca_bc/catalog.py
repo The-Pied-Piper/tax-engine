@@ -60,6 +60,13 @@ BC428_BRACKET_TAX_LINE_13 = AmountKind.declare(
 percentage from line 12 =": line 11 times the line 12 rate, rounded to the cent; blank when line 11
 or line 12 is blank, that is when line 1 is 137,407 or less."""
 
+BC428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
+    CATALOG, "bc428_tax_on_taxable_income_line_15", non_negative=True
+)
+"""British Columbia tax on taxable income, BC428 line 15 "Line 13 plus line 14 British Columbia tax
+on taxable income =": line 13 plus line 14 of the column that line 1 falls in; blank when lines 13
+and 14 are blank."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
@@ -78,12 +85,25 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+BC428_QUALIFYING_GIFTS_LINE_59 = AmountKind.declare(
+    CATALOG, "bc428_qualifying_gifts_line_59", non_negative=True
+)
+"""Amount of qualifying gifts also claimed on line 57, BC428 line 59 "Line 59 and line 58980: Amount
+of qualifying gifts also claimed on line 57 multiplied by 25%": the amount the filer also claims on
+line 57, a caller input that is read as blank when left out."""
+
 BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
     CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
 )
 """Amount from line 40427 of the return, BC428 line 66 "Line 66 and line 61540: Amount from line
-40427 of your return": the minimum tax carryover amount, a caller input that is read as blank when
-left out."""
+40427 of your return": the minimum tax carryover amount, a caller input that is read as 0 when left
+out."""
+
+BC428_MINIMUM_TAX_CARRYOVER_LINE_66 = AmountKind.declare(
+    CATALOG, "bc428_minimum_tax_carryover_line_66", non_negative=True
+)
+"""British Columbia minimum tax carryover, BC428 line 66 and line 61540 "Amount from line 40427 of
+your return multiplied by 34.9% =": calculated, the amount from line 40427 multiplied by 34.9%."""
 
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
@@ -137,6 +157,13 @@ BC428_BRACKET_TAX_LINE_6 = AmountKind.declare(
 from line 5 =": line 4 times the line 5 rate, rounded to the cent; blank when line 4 or line 5 is
 blank."""
 
+BC428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "bc428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""British Columbia tax on taxable income, BC428 line 8 "Line 6 plus line 7 British Columbia tax on
+taxable income =": line 6 plus line 7 of the column that line 1 falls in; blank when lines 6 and 7
+are blank."""
+
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
 )
@@ -167,6 +194,11 @@ BC428_TAX_ON_SPLIT_INCOME_LINE_62 = AmountKind.declare(CATALOG, "bc428_tax_on_sp
 """British Columbia tax on split income, BC428 line 62 "Line 62 and line 61510: British Columbia tax
 on split income (complete Form T1206)": the tax from Form T1206, an optional input that a
 salary-only caller leaves out."""
+
+BC428_AT_RATE_LINE_56 = AmountKind.declare(CATALOG, "bc428_at_rate_line_56", non_negative=True)
+"""Credit amounts at the credit rate, BC428 line 56 (line 58840) "Line 54 multiplied by the
+percentage from line 55 = ^": line 54 multiplied by the 5.06% of line 55, rounded half-up to the
+cent."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
