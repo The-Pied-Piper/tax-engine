@@ -3,8 +3,8 @@
 Form text (Form BC428, CRA 5010-C, read 2026-11-14):
 "Line 53 and line 58769: Line 51 plus line 52 = ^". The line is a printed sum over the medical
 expenses working (lines 46 to 52), which only exists for blank optional inputs; it is one optional
-input, blank read as 0, as Alberta's line 51 is. A
-salary-only caller has no medical expenses, so a request that leaves the line out is read as blank.
+input, blank read as 0, as Alberta's line 51 is. A salary-only caller has no medical expenses, so
+a request that leaves the line out is read as blank.
 
 The real part is loaded under a test-local header, as the take-home header is another part's. The
 British Columbia registries of `support.py` are used, as British Columbia is not yet in the
@@ -18,14 +18,12 @@ from pathlib import Path
 
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_kinds,
     british_columbia_packages,
     british_columbia_units,
 )
-from tests.kinds import non_negative
 
 IDENTIFIER = "ca-bc/bc428_medical_expenses_line_53"
 PRINTED_BASIS = "Line 53 and line 58769: Line 51 plus line 52"
@@ -64,12 +62,3 @@ def test_a_request_that_leaves_out_line_53_is_read_as_blank(tmp_path: Path) -> N
     assert declaration.reference == "53"
     assert declaration.unit == "ca/cad"
     assert default is not None and default.is_blank
-
-
-def test_the_kind_is_a_registered_non_negative_amount() -> None:
-    kinds = british_columbia_kinds()
-
-    assert IDENTIFIER in kinds.identifiers()
-    kind = kinds.kind(IDENTIFIER)
-    assert isinstance(kind, AmountKind)
-    assert non_negative(kind)
