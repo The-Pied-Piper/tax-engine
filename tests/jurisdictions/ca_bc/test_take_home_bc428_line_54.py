@@ -18,7 +18,6 @@ from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
 
 import pytest
 import yaml
@@ -153,7 +152,7 @@ def test_a_blank_line_53_prints_the_steps_own_left_blank_row(tmp_path: Path) -> 
     assert any("Left blank, taken as 0" in row for row in rows)
 
 
-def _part() -> dict[str, Any]:
+def _part() -> dict[str, object]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     return part
@@ -164,7 +163,10 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_45_and_line_53()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-bc/bc428"}
-    (step,) = part["capabilities"]
+    capabilities = part["capabilities"]
+    assert isinstance(capabilities, list)
+    (step,) = capabilities
+    assert isinstance(step, dict)
     assert list(step) == [
         "name",
         "reference",
