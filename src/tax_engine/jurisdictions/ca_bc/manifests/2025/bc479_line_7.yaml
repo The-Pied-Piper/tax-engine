@@ -1,0 +1,15 @@
+# BC479 (2025) line 7, the threshold. Form BC479 (CRA 5010-TC-25e): "Line 7: If you had a spouse or
+# common-law partner on December 31, 2025, enter $18,000. If not, enter $15,000." The $15,000 is the
+# `ca-bc/sales_tax_credit_threshold` dataset, claimed whole through core/credit_amount, so it is the
+# same at every salary. The $18,000 branch is not built.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/credit_amount
+    title: "Threshold"
+    reference: "7"
+    unit: ca/cad
+    params:
+      amount: ca-bc/sales_tax_credit_threshold
+    produces:
+      output: ca-bc/bc479_threshold_line_7

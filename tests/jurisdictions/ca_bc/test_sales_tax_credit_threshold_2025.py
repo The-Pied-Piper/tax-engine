@@ -1,0 +1,46 @@
+"""The 2025 `ca-bc/sales_tax_credit_threshold` dataset: the British Columbia threshold, no spouse.
+
+Form text (Form BC479, CRA 5010-TC, read 2026-11-14): "Line 7: If you had a spouse or common-law
+partner on December 31, 2025, enter $18,000. If not, enter $15,000." The $15,000 branch is the one
+this dataset carries (a single filer). Line 7 is a printed dollar amount, so the dataset is a
+`credit`, and it rounds half-up to the cent (the project's choice, as the form states no rounding
+rule). Only the BC479 text is cited here.
+"""
+
+from __future__ import annotations
+
+from decimal import Decimal
+
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tests.jurisdictions.ca_bc.support import (
+    british_columbia_packages,
+    british_columbia_parameter_parsers,
+)
+
+SOURCE = YamlParameterSource(
+    british_columbia_packages().roots(), british_columbia_parameter_parsers()
+)
+FAMILY = "ca-bc/sales_tax_credit_threshold"
+
+
+def test_2025_threshold_is_15000() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
+
+    assert data.values == Credit(amount=Decimal("15000"))
+
+
+def test_2025_threshold_rounds_half_up_to_the_cent() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
+
+    assert data.rounding == RoundTo(Decimal("0.01"), RoundingMode.HALF_UP)
+
+
+def test_2025_threshold_cites_the_bc479_text() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
+
+    assert (
+        "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-tc/5010-tc-25e.txt"
+        in data.sources
+    )
