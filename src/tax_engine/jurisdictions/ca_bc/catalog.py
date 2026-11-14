@@ -105,6 +105,12 @@ BC428_MINIMUM_TAX_CARRYOVER_LINE_66 = AmountKind.declare(
 """British Columbia minimum tax carryover, BC428 line 66 and line 61540 "Amount from line 40427 of
 your return multiplied by 34.9% =": calculated, the amount from line 40427 multiplied by 34.9%."""
 
+BC428_DIVIDEND_TAX_CREDIT_LINE_65 = AmountKind.declare(
+    CATALOG, "bc428_dividend_tax_credit_line_65", non_negative=True
+)
+"""British Columbia dividend tax credit, BC428 line 65 "Line 65 and line 61520: British Columbia
+dividend tax credit (use Worksheet BC428)": a caller input that is read as blank when left out."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
@@ -203,6 +209,13 @@ cent."""
 BC428_SUBTOTAL_LINE_58 = AmountKind.declare(CATALOG, "bc428_subtotal_line_58", non_negative=True)
 """Subtotal, BC428 line 58 "Line 56 plus line 57 = ^": line 56 plus line 57, the donations and gifts
 input read as 0 when blank."""
+
+BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
+"""Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
+entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
+the T1 return before its floor, read from the signed T1 net income export (`ca/net_income_signed`,
+not the floored `ca/net_income`). Column 1 only. The form asks for the amount with a negative shown
+in brackets, so the kind is signed."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
