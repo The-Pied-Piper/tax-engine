@@ -97,6 +97,10 @@ BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
 """BC428 line 33 "Add lines 27 to 32.": the sum of lines
 27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""
 
+BC428_SUBTOTAL_LINE_35 = AmountKind.declare(CATALOG, "bc428_subtotal_line_35", non_negative=True)
+"""Subtotal, BC428 line 35 "Line 35: Add lines 26, 33 and 34.": the sum of line 26 (a copy of line
+25), line 33 and line 34. Line 34 (adoption expenses) is not built: a salary-only filer has none."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )

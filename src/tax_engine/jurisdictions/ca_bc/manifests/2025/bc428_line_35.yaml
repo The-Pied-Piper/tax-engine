@@ -1,0 +1,17 @@
+# Form BC428 (CRA 5010-C) line 35: "Line 35: Add lines 26, 33 and 34." Line 26 is "Amount from line 25
+# of the previous page", a copy of line 25, so it has no step. Line 34 (adoption expenses) is not
+# built: a salary-only filer has none. Step 1 adds line 25 and line 33 with core/sum.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "35"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc428_subtotal_line_25
+        - ca-bc/bc428_cpp_ei_and_other_line_33
+    produces:
+      output: ca-bc/bc428_subtotal_line_35
