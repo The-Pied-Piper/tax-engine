@@ -22,7 +22,7 @@ import yaml
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
-from tax_engine.jurisdictions.ca_bc import catalog
+from tax_engine.jurisdictions.ca_bc.catalog import BC479_UCCB_RDSP_REPAYMENTS_LINE_2
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_kinds,
     british_columbia_packages,
@@ -30,7 +30,7 @@ from tests.jurisdictions.ca_bc.support import (
 )
 from tests.kinds import non_negative
 
-IDENTIFIER = "ca-bc/bc479_uccb_rdsp_repayments_line_2"
+IDENTIFIER = BC479_UCCB_RDSP_REPAYMENTS_LINE_2.identifier
 PRINTED_TITLE = (
     "Total of the universal child care benefit (UCCB) repayment (line 21300 of the return) and "
     "the registered disability savings plan (RDSP) income repayment (included on line 23200 of "
@@ -96,7 +96,7 @@ def test_the_uccb_and_rdsp_repayments_are_a_non_negative_amount_kind() -> None:
     kind = british_columbia_kinds().kind(IDENTIFIER)
 
     assert IDENTIFIER == "ca-bc/bc479_uccb_rdsp_repayments_line_2"
-    assert kind is catalog.BC479_UCCB_RDSP_REPAYMENTS_LINE_2
+    assert kind is BC479_UCCB_RDSP_REPAYMENTS_LINE_2
     assert non_negative(kind)
 
 
