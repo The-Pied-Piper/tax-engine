@@ -218,3 +218,10 @@ BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
 )
 """British Columbia credits, BC479 line 45 "Enter this amount on line 47900 of your return.": the
 British Columbia credits, entered on T1 line 47900."""
+
+BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
+    CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
+)
+"""UCCB and RDSP income, BC479 line 4 "Total of the UCCB income (line 11700 of the return) and the
+RDSP income (line 12500 of the return)": the total of the two incomes, a caller input that is read
+as blank when left out, column 1 (you) only."""
