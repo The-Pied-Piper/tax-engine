@@ -1,6 +1,6 @@
 """BC428 (2025) line 73, the basic reduction, as the BC take-home manifest part wires it.
 
-Form text (Form BC428, CRA 5010-c-25e.txt, to be confirmed against docs/cra-forms-2025): "Line 73:
+Form text (Form BC428, CRA 5010-c-25e.txt): "Line 73:
 Basic reduction Claim $562". The amount is the `ca-bc/tax_reduction_basic` dataset, claimed whole
 through core/credit_amount, so it is the same at every salary (line 79 takes it down to 0 from net
 income 40,807, which is not built here).

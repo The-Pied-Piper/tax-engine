@@ -1,6 +1,6 @@
 """The 2025 `ca-bc/tax_reduction_basic` dataset: the British Columbia basic tax reduction.
 
-Form text (Form BC428, CRA 5010-c-25e.txt, to be confirmed against docs/cra-forms-2025): "Line 73:
+Form text (Form BC428, CRA 5010-c-25e.txt): "Line 73:
 Basic reduction Claim $562". The amount is not income-tested here, so it is a `credit` dataset (the
 line 79 phase-out is a later step). Line 73 is a dollars-and-cents box, so it rounds half-up to the
 cent (the project's choice, as the form states no rounding rule). Only the BC428 text is cited here.
