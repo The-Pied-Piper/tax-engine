@@ -52,6 +52,13 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
+    CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
+)
+"""Amount from line 40427 of the return, BC428 line 66 "Line 66 and line 61540: Amount from line
+40427 of your return": the minimum tax carryover amount, a caller input that is read as blank when
+left out."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
@@ -86,3 +93,9 @@ BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
 BC428_SUBTOTAL_LINE_35 = AmountKind.declare(CATALOG, "bc428_subtotal_line_35", non_negative=True)
 """Subtotal, BC428 line 35 "Line 35: Add lines 26, 33 and 34.": the sum of line 26 (a copy of line
 25), line 33 and line 34. Line 34 (adoption expenses) is not built: a salary-only filer has none."""
+
+BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
+    CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
+)
+"""British Columbia credits, BC479 line 45 "Enter this amount on line 47900 of your return.": the
+British Columbia credits, entered on T1 line 47900."""
