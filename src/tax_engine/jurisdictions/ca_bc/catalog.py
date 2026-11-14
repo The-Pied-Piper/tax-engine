@@ -256,3 +256,10 @@ BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
 """British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
 income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
 in; the other is blank."""
+
+BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
+    CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
+)
+"""UCCB and RDSP income, BC479 line 4 "Total of the UCCB income (line 11700 of the return) and the
+RDSP income (line 12500 of the return)": the total of the two incomes, a caller input that is read
+as blank when left out, column 1 (you) only."""
