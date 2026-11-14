@@ -78,6 +78,13 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+BC428_QUALIFYING_GIFTS_LINE_59 = AmountKind.declare(
+    CATALOG, "bc428_qualifying_gifts_line_59", non_negative=True
+)
+"""Amount of qualifying gifts also claimed on line 57, BC428 line 59 "Line 59 and line 58980: Amount
+of qualifying gifts also claimed on line 57 multiplied by 25%": the amount the filer also claims on
+line 57, a caller input that is read as blank when left out."""
+
 BC428_MINIMUM_TAX_CARRYOVER_AMOUNT = AmountKind.declare(
     CATALOG, "bc428_minimum_tax_carryover_amount", non_negative=True
 )
