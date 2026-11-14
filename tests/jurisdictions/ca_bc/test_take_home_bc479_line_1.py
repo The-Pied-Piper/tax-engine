@@ -160,8 +160,9 @@ def test_the_part_names_the_form_and_has_one_record_total_step_like_schedule_6_l
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": "ca-bc/bc479"}
     (step,) = part["capabilities"]
-    assert list(step) == ["name", "reference", "unit", "consumes", "produces"]
+    assert list(step) == ["name", "title", "reference", "unit", "consumes", "produces"]
     assert step["name"] == "core/record_total"
+    assert step["title"] == "Net income from line 23600 of the return"
     assert step["reference"] == "1"
     assert step["unit"] == "ca/cad"
     assert step["consumes"] == {"records": "ca/t1_taxable_income.net_income_signed"}
