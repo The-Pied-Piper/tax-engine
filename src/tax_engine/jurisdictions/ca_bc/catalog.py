@@ -53,3 +53,9 @@ BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
 )
 """BC428 line 33 "Add lines 27 to 32.": the sum of lines
 27 and 29. Lines 28, 30, 31 and 32 are not built: a salary-only filer has none of them."""
+
+BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
+    CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
+)
+"""British Columbia credits, BC479 line 45 "Enter this amount on line 47900 of your return.": the
+British Columbia credits, entered on T1 line 47900."""
