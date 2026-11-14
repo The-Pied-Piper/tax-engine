@@ -14,6 +14,12 @@ from tax_engine.jurisdictions.ca_bc import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
+    CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
+)
+"""CPP or QPP contributions, BC428 line 27 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
 BC428_BRITISH_COLUMBIA_TAX_LINE_91 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_line_91", non_negative=True
 )
@@ -25,3 +31,9 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 )
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+
+BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
+    CATALOG, "bc428_ei_premiums_line_29", non_negative=True
+)
+"""EI premiums credit amount, BC428 line 29 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
