@@ -58,6 +58,13 @@ BC428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
 """EI premiums credit amount, BC428 line 29 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
 
+BC428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "bc428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, BC428 line 3 "Line 3: 0.00" (49,279.00; 98,560.00; 113,158.00): the
+printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
+above 137,407, where lines 9 to 15 apply."""
+
 BC428_CPP_EI_AND_OTHER_LINE_33 = AmountKind.declare(
     CATALOG, "bc428_cpp_ei_and_other_line_33", non_negative=True
 )
