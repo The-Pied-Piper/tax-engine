@@ -27,7 +27,7 @@ Given only a gross salary, the engine works out the contributions and tax from t
 Every figure the engine computes comes with a trace saying how it was reached. Each trace line is about one figure (`line.label`), and its sentence names the figures it uses as the form prints them, so a caller shows the figure beside the sentence. This is the trace for the last Ontario line (ON428 line 90, "Ontario tax"):
 
 ```text
-line 90: Line 88 (3311.45) plus line 89 (600.00) gives 3911.45 (rounded to the nearest cent).
+line 90: Line 88 (CA$3311.45) plus line 89 (CA$600.00) gives CA$3911.45 (rounded to the nearest cent).
 ```
 
 ## Why tax-engine
