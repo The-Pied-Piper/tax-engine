@@ -1,0 +1,12 @@
+# BC428 (2025) inputs a salary-only caller does not give.
+# Line 65: "Line 65 and line 61520: British Columbia dividend tax credit (use Worksheet BC428)"
+# (5010-c). Worksheet BC428 is not built. A salary-only caller has no dividend tax credit, so a
+# request that leaves the line out is read as blank; the step that consumes it reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_dividend_tax_credit_line_65
+    title: "British Columbia dividend tax credit"
+    reference: "65"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 65 and line 61520: British Columbia dividend tax credit (use Worksheet BC428)'
