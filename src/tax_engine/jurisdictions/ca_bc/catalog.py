@@ -41,6 +41,12 @@ BC428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
 negative)": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 137,407.00
 or less, where line 10 is blank."""
 
+BC428_BRACKET_RATE_LINE_12 = AmountKind.declare(
+    CATALOG, "bc428_bracket_rate_line_12", non_negative=True
+)
+"""Rate, BC428 line 12 "Line 12: Rate 14.7%; 16.8%; 20.5%": the printed rate of the column of lines
+9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
