@@ -107,6 +107,13 @@ BC428_SUBTOTAL_LINE_35 = AmountKind.declare(CATALOG, "bc428_subtotal_line_35", n
 """Subtotal, BC428 line 35 "Line 35: Add lines 26, 33 and 34.": the sum of line 26 (a copy of line
 25), line 33 and line 34. Line 34 (adoption expenses) is not built: a salary-only filer has none."""
 
+BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
+"""Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
+entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
+the T1 return before its floor, read from the signed T1 net income export (`ca/net_income_signed`,
+not the floored `ca/net_income`). Column 1 only. The form asks for the amount with a negative shown
+in brackets, so the kind is signed."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
