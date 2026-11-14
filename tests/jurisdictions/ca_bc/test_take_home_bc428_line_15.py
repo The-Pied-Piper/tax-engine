@@ -21,7 +21,7 @@ Lines 1, 10, 11, 12, 13 and 14 are composed from their real parts as they are: l
 is test-local. British Columbia is not in `registrations.JURISDICTIONS`, so the service is built
 over the package list of `support.py`.
 
-Figures (ticket, hand-computed, not a CRA example): taxable income is the salary less the CPP
+Figures (hand-computed, not a CRA example): taxable income is the salary less the CPP
 enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so
 line 15 is blank for salaries of 17,000 / 20,000 / 30,000 / 70,000, and for 200,000 it is
 2,120.16 + 17,989.30 = 20,109.46 (line 11 is 12,620.00 at 16.8%).
@@ -60,7 +60,10 @@ from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import BlankPassedOnLine, SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_bc.catalog import BC428_TAXABLE_INCOME_LINE_1
+from tax_engine.jurisdictions.ca_bc.catalog import (
+    BC428_TAX_ON_TAXABLE_INCOME_LINE_15,
+    BC428_TAXABLE_INCOME_LINE_1,
+)
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -339,10 +342,6 @@ def test_the_part_is_one_sum_step_over_lines_13_and_14() -> None:
 
 
 def test_line_15_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    from tax_engine.jurisdictions.ca_bc.catalog import (  # noqa: PLC0415
-        BC428_TAX_ON_TAXABLE_INCOME_LINE_15,
-    )
-
     kind = british_columbia_kinds().kind(LINE_15)
 
     assert kind is BC428_TAX_ON_TAXABLE_INCOME_LINE_15
