@@ -1,0 +1,14 @@
+# Form BC428 line 27 (58240) "Amount from line 30800 of your return" is a copy; the amount is read from
+# Schedule 8 line 25, which arrives as a record list, so the one step is core/record_total over those
+# records (same as ON428 line 19, on428_line_19.yaml). Form text read from CRA 5010-C.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/record_total
+    title: "CPP or QPP contributions"
+    reference: "27"
+    unit: ca/cad
+    consumes:
+      records: ca/schedule_8.schedule_8_cpp_base_contributions_on_return
+    produces:
+      output: ca-bc/bc428_cpp_contributions_line_27
