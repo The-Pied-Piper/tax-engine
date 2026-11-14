@@ -163,6 +163,11 @@ BC428_TOTAL_LINE_54 = AmountKind.declare(CATALOG, "bc428_total_line_54", non_neg
 """Total, BC428 line 54 and line 58800 "Line 45 plus line 53 = ^": line 45 plus line 53, the medical
 expenses input read as 0 when blank."""
 
+BC428_AT_RATE_LINE_56 = AmountKind.declare(CATALOG, "bc428_at_rate_line_56", non_negative=True)
+"""Credit amounts at the credit rate, BC428 line 56 (line 58840) "Line 54 multiplied by the
+percentage from line 55 = ^": line 54 multiplied by the 5.06% of line 55, rounded half-up to the
+cent."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
