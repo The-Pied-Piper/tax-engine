@@ -34,6 +34,12 @@ BC428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
 """Lower bound of the column, BC428 line 10 "Line 10: 137,407.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
 
+BC428_BRACKET_RATE_LINE_12 = AmountKind.declare(
+    CATALOG, "bc428_bracket_rate_line_12", non_negative=True
+)
+"""Rate, BC428 line 12 "Line 12: Rate 14.7%; 16.8%; 20.5%": the printed rate of the column of lines
+9 to 15 that line 1 falls in, blank when line 1 is 137,407 or less."""
+
 BC428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "bc428_cpp_contributions_line_27", non_negative=True
 )
