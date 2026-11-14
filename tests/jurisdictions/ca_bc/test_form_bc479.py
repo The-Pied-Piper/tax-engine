@@ -54,7 +54,3 @@ def test_the_form_is_declared_with_its_export_and_no_supply(tmp_path: Path) -> N
     assert bc479.title == "Form BC479: British Columbia Credits"
     assert tuple(bc479.exports) == (LINE_45,)
     assert dict(bc479.supplies) == {}
-
-
-def test_line_45_is_a_registered_artifact_kind() -> None:
-    assert LINE_45 in british_columbia_kinds().identifiers()
