@@ -266,6 +266,12 @@ BC428_NET_INCOME_OVER_BASE_LINE_76 = AmountKind.declare(
 """Net income over the base amount, BC428 line 76 "Line 76: Line 74 minus line 75 (if negative,
 enter "0") =": line 74 less line 75, not below zero."""
 
+BC428_REDUCTION_CLAWBACK_LINE_78 = AmountKind.declare(
+    CATALOG, "bc428_reduction_clawback_line_78", non_negative=True
+)
+"""British Columbia tax reduction clawback, BC428 line 78 "Line 76 multiplied by the percentage from
+line 77 =": line 76 times the printed rate of line 77."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
