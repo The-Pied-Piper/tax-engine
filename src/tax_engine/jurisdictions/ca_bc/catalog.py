@@ -280,6 +280,12 @@ BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
 """Income with repayments, BC479 line 3 "Line 1 plus line 2": line 1 plus line 2, the UCCB and RDSP
 repayments input read as 0 when blank. The result is signed, because line 1 is signed."""
 
+BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
+    CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
+)
+"""Basic sales tax credit, BC479 line 9 (line 60330) "Basic sales tax credit Claim $75": the amount
+claimed, the same at every income."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
