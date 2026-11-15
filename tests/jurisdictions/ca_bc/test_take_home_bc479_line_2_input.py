@@ -1,10 +1,8 @@
 """BC479 (2025) line 2's input, as the British Columbia take-home manifest part declares it.
 
-Form text (Form BC479, CRA 5010-TC, docs/cra-forms-2025): "Line 2: Total of the universal child
-care benefit (UCCB) repayment (line 21300 of the return) and the registered disability savings plan
-(RDSP) income repayment (included on line 23200 of the return)", with "Column 1: You" and
-"Column 2: Your spouse or common-law partner". Only column 1 (you) is taken: the take-home scope is
-a single filer. A salary-only caller has no such repayment, so a request that leaves the line out
+Form BC479 (CRA 5010-TC), line 2, as printed on the form, which has a column for the filer and a
+column for the spouse or common-law partner. Only the filer's column is taken: the take-home scope
+is a single filer. A salary-only caller has no such repayment, so a request that leaves the line out
 is read as blank, and each step that consumes it prints its own blank row.
 
 British Columbia is not yet listed in the registrations, so the real part is loaded under a

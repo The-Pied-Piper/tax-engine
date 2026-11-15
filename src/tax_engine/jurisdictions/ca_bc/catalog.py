@@ -284,6 +284,12 @@ BC428_NET_INCOME_OVER_BASE_LINE_76 = AmountKind.declare(
 """Net income over the base amount, BC428 line 76 "Line 76: Line 74 minus line 75 (if negative,
 enter "0") =": line 74 less line 75, not below zero."""
 
+BC428_REDUCTION_CLAWBACK_LINE_78 = AmountKind.declare(
+    CATALOG, "bc428_reduction_clawback_line_78", non_negative=True
+)
+"""British Columbia tax reduction clawback, BC428 line 78 "Line 76 multiplied by the percentage from
+line 77 =": line 76 times the printed rate of line 77."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
@@ -304,12 +310,30 @@ BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
 """Income with repayments, BC479 line 3 "Line 1 plus line 2": line 1 plus line 2, the UCCB and RDSP
 repayments input read as 0 when blank. The result is signed, because line 1 is signed."""
 
+BC479_ADJUSTED_NET_INCOME_LINE_5 = AmountKind.declare(
+    CATALOG, "bc479_adjusted_net_income_line_5", non_negative=True
+)
+"""Adjusted net income, BC479 line 5 "Line 5: Line 3 minus line 4 (if negative, enter "0")": line 3
+(the income with repayments) minus line 4 (the UCCB and RDSP income, read as 0 when blank), floored
+at 0 as the form prints, rounded to the cent."""
+
+BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", non_negative=True)
+"""Threshold, BC479 line 7 "Line 7: If you had a spouse or common-law partner on December 31, 2025,
+enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse
+amount is not built."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
 """British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
 income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
 in; the other is blank."""
+
+BC428_BASIC_REDUCTION_LINE_73 = AmountKind.declare(
+    CATALOG, "bc428_basic_reduction_line_73", non_negative=True
+)
+"""Basic reduction, BC428 line 73 "Basic reduction Claim $562": the amount claimed, the British
+Columbia basic tax reduction, claimed whole at every salary (line 79 phases it out)."""
 
 BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
     CATALOG, "bc428_tax_with_split_income_line_63"
