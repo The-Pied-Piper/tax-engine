@@ -1,8 +1,8 @@
 """BC428 (2025) line 36's input, as the British Columbia take-home manifest part declares it.
 
-Form text (Form BC428, CRA 5010-C, docs/cra-forms-2025): "Line 36 and line 58360: Pension
-income amount (maximum $1,000)". A salary-only caller has no pension income amount, so a request
-that leaves the line out is read as blank, and the line 37 step reads that blank as 0.
+Form BC428 (CRA 5010-C), line 36, as printed on the form. A salary-only caller has no pension income
+amount, so a request that leaves the line out is read as blank, and the line 37 step reads that
+blank as 0.
 
 British Columbia is not yet listed in the registrations, so the real part is loaded under a
 test-local header over the British Columbia package list of `support.py`.
