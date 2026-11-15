@@ -124,6 +124,12 @@ BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
 T691 multiplied by 34.9% =": the amount from Form T691, an optional input that a caller with no
 minimum tax leaves out. The multiply is a separate step."""
 
+BC428_ADDITIONAL_MINIMUM_TAX_LINE_69 = AmountKind.declare(
+    CATALOG, "bc428_additional_minimum_tax_line_69", non_negative=True
+)
+"""British Columbia additional tax for minimum tax purposes, BC428 line 69 "Amount from line 14 of
+Part 7 of Form T691 multiplied by 34.9% =": calculated, the Form T691 amount multiplied by 34.9%."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
@@ -268,12 +274,25 @@ repayment (line 21300 of the return) and the registered disability savings plan 
 repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
 that is read as blank when left out, column 1 (you) only."""
 
+BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
+    CATALOG, "bc479_income_with_repayments_line_3", non_negative=False
+)
+"""Income with repayments, BC479 line 3 "Line 1 plus line 2": line 1 plus line 2, the UCCB and RDSP
+repayments input read as 0 when blank. The result is signed, because line 1 is signed."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
 """British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
 income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
 in; the other is blank."""
+
+BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
+    CATALOG, "bc428_tax_with_split_income_line_63"
+)
+"""Tax with split income, BC428 line 63 "Line 63: Line 61 plus line 62 = ^": line 61 plus line 62,
+the tax on split income input read as 0 when blank. The form prints no floor for the line, so the
+kind is signed."""
 
 BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
     CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
