@@ -305,6 +305,11 @@ BC479_ADJUSTED_NET_INCOME_LINE_5 = AmountKind.declare(
 (the income with repayments) minus line 4 (the UCCB and RDSP income, read as 0 when blank), floored
 at 0 as the form prints, rounded to the cent."""
 
+BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", non_negative=True)
+"""Threshold, BC479 line 7 "Line 7: If you had a spouse or common-law partner on December 31, 2025,
+enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse
+amount is not built."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
