@@ -23,6 +23,7 @@ class ApplyRate(Capability):
 
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[Rate]]] = {"rate": RATE}
     CONSUMES: ClassVar[Mapping[str, type]] = {"base": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"base"})
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
 
     def __init__(self, rate: ParameterDataset[Rate], base: Money, output: Money) -> None:
