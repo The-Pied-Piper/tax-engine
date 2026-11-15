@@ -260,6 +260,12 @@ BC428_NET_INCOME_LINE_74 = AmountKind.declare(
 """Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
 income, line 23600 after its floor."""
 
+BC428_NET_INCOME_OVER_BASE_LINE_76 = AmountKind.declare(
+    CATALOG, "bc428_net_income_over_base_line_76", non_negative=True
+)
+"""Net income over the base amount, BC428 line 76 "Line 76: Line 74 minus line 75 (if negative,
+enter "0") =": line 74 less line 75, not below zero."""
+
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
 )
