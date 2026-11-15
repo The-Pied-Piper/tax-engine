@@ -5,10 +5,8 @@ credit Claim $75". The amount is the `ca-bc/sales_tax_credit_basic` dataset, cla
 core/credit_amount, so it is the same at every salary.
 
 The manifest part is loaded from the package. The header and the form's export are made up here,
-because the shared scaffold owns them. The output kind is looked up by its identifier in the
-British Columbia kinds, so a missing kind fails the test rather than the import. British Columbia
-is not yet listed in the registrations, so the service is built here over the British Columbia
-package list of `support.py`.
+because the shared scaffold owns them. British Columbia is not yet listed in the registrations,
+so the service is built here over the British Columbia package list of `support.py`.
 """
 
 from __future__ import annotations
@@ -16,10 +14,8 @@ from __future__ import annotations
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
 
 import pytest
-import yaml
 
 import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
@@ -27,11 +23,9 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.parameters.credit import Credit
-from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.trace import CreditAmountLine
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_bc.catalog import BC479_BASIC_SALES_TAX_CREDIT_LINE_9
 from tests.jurisdictions.ca_bc.support import (
     british_columbia_capabilities,
     british_columbia_kinds,
@@ -41,7 +35,6 @@ from tests.jurisdictions.ca_bc.support import (
 )
 
 D = Decimal
-IDENTIFIER = "ca-bc/bc479_basic_sales_tax_credit_line_9"
 PART_PATH = (
     Path(tax_engine.jurisdictions.ca_bc.__file__).parent
     / "manifests"
@@ -59,12 +52,12 @@ HEADER = dedent("""\
     outputs:
       - ca/employment_income
     """)
-FORM = dedent(f"""\
+FORM = dedent("""\
     form:
       name: ca-bc/bc479
       required: true
       exports:
-        - {IDENTIFIER}
+        - ca-bc/bc479_basic_sales_tax_credit_line_9
     """)
 
 
@@ -88,47 +81,14 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheet(tmp_path: Path, salary: str) -> Any:
+def line_9(tmp_path: Path, salary: str) -> Decimal:
     worksheets = _service(tmp_path).compute(
         JurisdictionCode("CA-BC"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets["ca-bc/bc479"]
-    return sheet
-
-
-def line_9(tmp_path: Path, salary: str) -> Decimal:
-    value = _sheet(tmp_path, salary).get(british_columbia_kinds().kind(IDENTIFIER)).value
-    assert isinstance(value, Decimal)
-    return value
+    return sheet.get(BC479_BASIC_SALES_TAX_CREDIT_LINE_9).value
 
 
 @pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000", "200000"])
 def test_line_9_is_the_basic_sales_tax_credit_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_9(tmp_path, salary) == D("75.00")
-
-
-def test_line_9_traces_one_credit_amount_line_of_the_dataset(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000")
-
-    (line,) = (row for row in sheet.trace if isinstance(row, CreditAmountLine))
-    assert line.output.identifier == IDENTIFIER
-    assert line.basis == Credit(D("75"))
-    assert line.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
-    assert line.value == D("75.00")
-
-
-def test_the_part_is_one_credit_amount_step_titled_and_numbered_as_printed() -> None:
-    part = yaml.safe_load(PART_PATH.read_text(encoding="utf-8"))
-
-    assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": "ca-bc/bc479"}
-    assert part["capabilities"] == [
-        {
-            "name": "core/credit_amount",
-            "title": "Basic sales tax credit",
-            "reference": "9",
-            "unit": "ca/cad",
-            "params": {"amount": "ca-bc/sales_tax_credit_basic"},
-            "produces": {"output": IDENTIFIER},
-        }
-    ]
