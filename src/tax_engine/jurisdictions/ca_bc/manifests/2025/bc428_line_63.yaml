@@ -1,0 +1,24 @@
+# Form BC428 (CRA 5010-C, 5010-c-25e) line 63: "Line 63: Line 61 plus line 62 = ^". It sums the
+# British Columbia tax on taxable income (line 61,
+# `ca-bc/bc428_british_columbia_tax_on_taxable_income_line_61`) and the British Columbia tax on
+# split income (line 62, `ca-bc/bc428_tax_on_split_income_line_62`). Line 62 is an optional input
+# that a salary-only caller leaves out, read as blank and then as 0 by the blank rule below. Line 63
+# is the output `ca-bc/bc428_tax_with_split_income_line_63`.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "63"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        [
+          ca-bc/bc428_british_columbia_tax_on_taxable_income_line_61,
+          ca-bc/bc428_tax_on_split_income_line_62,
+        ]
+    blank:
+      ca-bc/bc428_tax_on_split_income_line_62: "0"
+    produces:
+      output: ca-bc/bc428_tax_with_split_income_line_63
