@@ -298,6 +298,13 @@ BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
 """Income with repayments, BC479 line 3 "Line 1 plus line 2": line 1 plus line 2, the UCCB and RDSP
 repayments input read as 0 when blank. The result is signed, because line 1 is signed."""
 
+BC479_ADJUSTED_NET_INCOME_LINE_5 = AmountKind.declare(
+    CATALOG, "bc479_adjusted_net_income_line_5", non_negative=True
+)
+"""Adjusted net income, BC479 line 5 "Line 5: Line 3 minus line 4 (if negative, enter "0")": line 3
+(the income with repayments) minus line 4 (the UCCB and RDSP income, read as 0 when blank), floored
+at 0 as the form prints, rounded to the cent."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
