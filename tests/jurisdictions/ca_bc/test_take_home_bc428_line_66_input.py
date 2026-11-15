@@ -1,9 +1,8 @@
 """BC428 (2025) line 66's input, as the British Columbia take-home manifest part declares it.
 
-Form text (Form BC428, CRA 5010-C, docs/cra-forms-2025): "Line 66 and line 61540: Amount from
-line 40427 of your return". A salary-only caller has no minimum tax carryover amount, so a request
-that leaves the line out is read as 0, not blank, as Alberta's line 64 input is: the step that
-multiplies it by the printed rate cannot take a blank.
+Form BC428 (CRA 5010-C), line 66, as printed on the form. A salary-only caller has no minimum tax
+carryover amount, so a request that leaves the line out is read as 0, not blank, as Alberta's line
+64 input is: the step that multiplies it by the printed rate cannot take a blank.
 
 British Columbia is not yet listed in the registrations, so the real part is loaded under a
 test-local header over the British Columbia package list of `support.py`.
