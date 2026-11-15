@@ -124,6 +124,12 @@ BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
 T691 multiplied by 34.9% =": the amount from Form T691, an optional input that a caller with no
 minimum tax leaves out. The multiply is a separate step."""
 
+BC428_ADDITIONAL_MINIMUM_TAX_LINE_69 = AmountKind.declare(
+    CATALOG, "bc428_additional_minimum_tax_line_69", non_negative=True
+)
+"""British Columbia additional tax for minimum tax purposes, BC428 line 69 "Amount from line 14 of
+Part 7 of Form T691 multiplied by 34.9% =": calculated, the Form T691 amount multiplied by 34.9%."""
+
 BC428_DONATIONS_AND_GIFTS_LINE_57 = AmountKind.declare(
     CATALOG, "bc428_donations_and_gifts_line_57", non_negative=True
 )
