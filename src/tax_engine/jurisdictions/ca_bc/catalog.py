@@ -253,6 +253,12 @@ BC428_TOTAL_LINE_67 = AmountKind.declare(CATALOG, "bc428_total_line_67", non_neg
 copy of line 60) plus line 65 (the dividend tax credit, blank read as 0) plus line 66 (the minimum
 tax carryover), rounded to the cent."""
 
+BC428_TAX_AFTER_CREDITS_LINE_68 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_credits_line_68", non_negative=True
+)
+"""Tax after credits, BC428 line 68 "Line 68: Line 63 minus line 67 (if negative, enter "0") = ^":
+line 63 (the tax with split income) minus line 67 (the total), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
