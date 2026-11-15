@@ -117,6 +117,12 @@ BC428_DIVIDEND_TAX_CREDIT_LINE_65 = AmountKind.declare(
 """British Columbia dividend tax credit, BC428 line 65 "Line 65 and line 61520: British Columbia
 dividend tax credit (use Worksheet BC428)": a caller input that is read as blank when left out."""
 
+BC428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "bc428_provincial_foreign_tax_credit_line_71", non_negative=True
+)
+"""British Columbia provincial foreign tax credit, BC428 line 71 "Line 71: Provincial foreign tax
+credit (complete Form T2036)": a caller input that is read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
@@ -247,6 +253,12 @@ BC428_TOTAL_LINE_67 = AmountKind.declare(CATALOG, "bc428_total_line_67", non_neg
 copy of line 60) plus line 65 (the dividend tax credit, blank read as 0) plus line 66 (the minimum
 tax carryover), rounded to the cent."""
 
+BC428_TAX_AFTER_CREDITS_LINE_68 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_credits_line_68", non_negative=True
+)
+"""Tax after credits, BC428 line 68 "Line 68: Line 63 minus line 67 (if negative, enter "0") = ^":
+line 63 (the tax with split income) minus line 67 (the total), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -259,6 +271,12 @@ BC428_NET_INCOME_LINE_74 = AmountKind.declare(
 )
 """Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
 income, line 23600 after its floor."""
+
+BC428_NET_INCOME_OVER_BASE_LINE_76 = AmountKind.declare(
+    CATALOG, "bc428_net_income_over_base_line_76", non_negative=True
+)
+"""Net income over the base amount, BC428 line 76 "Line 76: Line 74 minus line 75 (if negative,
+enter "0") =": line 74 less line 75, not below zero."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
