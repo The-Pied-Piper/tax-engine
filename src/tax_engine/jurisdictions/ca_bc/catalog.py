@@ -123,6 +123,13 @@ BC428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_71 = AmountKind.declare(
 """British Columbia provincial foreign tax credit, BC428 line 71 "Line 71: Provincial foreign tax
 credit (complete Form T2036)": a caller input that is read as blank when left out."""
 
+BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "bc428_political_contribution_tax_credit_line_84", non_negative=True
+)
+"""British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
+political contribution tax credit (use Worksheet BC428) (maximum $500)": a caller input that is
+read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
