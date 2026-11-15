@@ -1,8 +1,7 @@
 """BC428 (2025) line 59's input, as the British Columbia take-home manifest part declares it.
 
-Form text (Form BC428, CRA 5010-C, docs/cra-forms-2025): "Line 59 and line 58980: Amount of
-qualifying gifts also claimed on line 57". A caller with no such gifts has nothing to enter, so a
-request that leaves the line out is read as blank.
+Form BC428 (CRA 5010-C), line 59, as printed on the form. A caller with no such gifts has nothing to
+enter, so a request that leaves the line out is read as blank.
 
 British Columbia is not yet listed in the registrations, so the real part is loaded under a
 test-local header over the British Columbia package list of `support.py`.
