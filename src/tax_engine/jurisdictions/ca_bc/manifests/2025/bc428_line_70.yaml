@@ -1,0 +1,17 @@
+# Form BC428 (CRA 5010-C) line 70 "Line 70: Line 68 plus line 69 = ^". One core/sum step: the tax
+# after credits (line 68, `ca-bc/bc428_tax_after_credits_line_68`) plus the additional minimum tax
+# (line 69, `ca-bc/bc428_additional_minimum_tax_line_69`). Both lines are always computed, so there
+# is no blank rule. The form prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/sum
+    reference: "70"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        [ca-bc/bc428_tax_after_credits_line_68, ca-bc/bc428_additional_minimum_tax_line_69]
+    produces:
+      output: ca-bc/bc428_tax_with_minimum_tax_line_70
