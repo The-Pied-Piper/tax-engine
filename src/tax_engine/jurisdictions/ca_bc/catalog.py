@@ -311,6 +311,13 @@ BC479_ADJUSTED_NET_INCOME_LINE_5 = AmountKind.declare(
 (the income with repayments) minus line 4 (the UCCB and RDSP income, read as 0 when blank), floored
 at 0 as the form prints, rounded to the cent."""
 
+BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6 = AmountKind.declare(
+    CATALOG, "bc479_adjusted_family_net_income_line_6", non_negative=True
+)
+"""Adjusted family net income, BC479 line 6 "Line 6: Add the amounts from line 5 of columns 1 and
+2.": the sum of line 5 of the two columns; the spouse column is not built, so it is line 5 of column
+1 alone."""
+
 BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", non_negative=True)
 """Threshold, BC479 line 7 "Line 7: If you had a spouse or common-law partner on December 31, 2025,
 enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse

@@ -1,0 +1,17 @@
+# Form BC479 (2025, CRA 5010-TC) line 6. Line 6: "Add the amounts from line 5 of columns 1 and 2."
+# The spouse column (column 2) is left blank for a single filer and is not built, so line 6 is the
+# sum of line 5 of column 1 alone, with one core/sum step (as ON428 line 77 sums one part).
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/sum
+    title: Adjusted family net income
+    reference: "6"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc479_adjusted_net_income_line_5
+    produces:
+      output: ca-bc/bc479_adjusted_family_net_income_line_6
