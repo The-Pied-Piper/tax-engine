@@ -1,0 +1,20 @@
+# Form BC479 (2025, CRA 5010-TC) line 5. Line 5: "Line 3 minus line 4 (if negative, enter "0")".
+# One core/subtract_not_below_zero step: line 3 (`ca-bc/bc479_income_with_repayments_line_3`,
+# signed) less line 4 (`ca-bc/bc479_uccb_rdsp_income_line_4`), floored at 0 as the form prints.
+# Line 4 is an optional input that a salary-only caller leaves out, read as blank and then as 0 by
+# the blank rule below. The form prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "5"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc479_income_with_repayments_line_3
+      less: ca-bc/bc479_uccb_rdsp_income_line_4
+    blank:
+      less: "0"
+    produces:
+      output: ca-bc/bc479_adjusted_net_income_line_5
