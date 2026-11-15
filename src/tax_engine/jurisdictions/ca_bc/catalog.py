@@ -117,6 +117,12 @@ BC428_DIVIDEND_TAX_CREDIT_LINE_65 = AmountKind.declare(
 """British Columbia dividend tax credit, BC428 line 65 "Line 65 and line 61520: British Columbia
 dividend tax credit (use Worksheet BC428)": a caller input that is read as blank when left out."""
 
+BC428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "bc428_provincial_foreign_tax_credit_line_71", non_negative=True
+)
+"""British Columbia provincial foreign tax credit, BC428 line 71 "Line 71: Provincial foreign tax
+credit (complete Form T2036)": a caller input that is read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
@@ -265,6 +271,12 @@ BC428_NET_INCOME_LINE_74 = AmountKind.declare(
 )
 """Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
 income, line 23600 after its floor."""
+
+BC428_NET_INCOME_OVER_BASE_LINE_76 = AmountKind.declare(
+    CATALOG, "bc428_net_income_over_base_line_76", non_negative=True
+)
+"""Net income over the base amount, BC428 line 76 "Line 76: Line 74 minus line 75 (if negative,
+enter "0") =": line 74 less line 75, not below zero."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
