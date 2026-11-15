@@ -3,7 +3,7 @@
 # `ca-bc/tax_reduction_rate` dataset and has no step. One core/apply_rate step: line 76
 # (`ca-bc/bc428_net_income_over_base_line_76`) times that rate, rounded half-up to the cent by the
 # dataset's rule. Line 76 is never blank (it is floored at 0), so the step has no blank rule. The
-# form's "$40,807 or more, enter 0 on line 79" instruction belongs to line 79, not to this line.
+# form's net income gate for the tax reduction belongs to line 79, not to this line.
 # The form prints no title for the line, so the step has none.
 form:
   name: ca-bc/bc428
