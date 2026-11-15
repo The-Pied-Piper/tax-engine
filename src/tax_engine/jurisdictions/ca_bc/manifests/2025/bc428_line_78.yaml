@@ -1,0 +1,19 @@
+# Form BC428 (British Columbia Tax, 2025, CRA 5010-c-25e) line 78: "Line 78: Line 76 multiplied by
+# the percentage from line 77 = ^". Line 77 is a printed rate, so it is the 3.56% in the
+# `ca-bc/tax_reduction_rate` dataset and has no step. One core/apply_rate step: line 76
+# (`ca-bc/bc428_net_income_over_base_line_76`) times that rate, rounded half-up to the cent by the
+# dataset's rule. Line 76 is never blank (it is floored at 0), so the step has no blank rule. The
+# form's net income gate for the tax reduction belongs to line 79, not to this line.
+# The form prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/apply_rate
+    reference: "78"
+    unit: ca/cad
+    params:
+      rate: ca-bc/tax_reduction_rate
+    consumes:
+      base: ca-bc/bc428_net_income_over_base_line_76
+    produces:
+      output: ca-bc/bc428_reduction_clawback_line_78
