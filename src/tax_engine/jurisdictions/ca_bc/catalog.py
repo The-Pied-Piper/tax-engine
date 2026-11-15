@@ -322,6 +322,12 @@ BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", n
 enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse
 amount is not built."""
 
+BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
+    CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
+)
+"""Basic sales tax credit, BC479 line 9 (line 60330) "Basic sales tax credit Claim $75": the amount
+claimed, the same at every income."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
