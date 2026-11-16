@@ -29,7 +29,6 @@ from tests.jurisdictions.ca_bc.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = BC479_VENTURE_CAPITAL_CREDIT_LINE_25.identifier
-PRINTED_TITLE = "British Columbia venture capital tax credit"
 PRINTED_BASIS = "Line 25: Add lines 20, 21, and 23. (maximum $300,000)"
 PART = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / (
     "manifests/2025/bc479_line_25_input.yaml"
@@ -67,7 +66,6 @@ def test_the_part_declares_only_the_venture_capital_credit_input() -> None:
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
-            "title": PRINTED_TITLE,
             "reference": "25",
             "unit": "ca/cad",
             "required": False,
@@ -77,7 +75,6 @@ def test_the_part_declares_only_the_venture_capital_credit_input() -> None:
     ]
     assert list(part["inputs"][0]) == [
         "name",
-        "title",
         "reference",
         "unit",
         "required",

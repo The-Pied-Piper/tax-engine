@@ -4,7 +4,6 @@
 # consumes it reads that blank as 0. The printed maximum is stated, not enforced.
 inputs:
   - name: ca-bc/bc479_venture_capital_credit_line_25
-    title: "British Columbia venture capital tax credit"
     reference: "25"
     unit: ca/cad
     required: false
