@@ -7,9 +7,8 @@ Ontario's line 19 is (`on428_line_19.yaml`).
 
 The test composes the real British Columbia salary part, the real Schedule 8 parts and the real line
 part (`bc428_line_27.yaml`), and types in only the salary. The form declaration is made up here,
-exporting the line read, because British Columbia is not yet listed in the registrations and the
-real form part is owned by another change. The figures are hand-computed from the printed forms
-(not a CRA example).
+exporting the line read, because the real form part is owned by another change. The figures are
+hand-computed from the printed forms (not a CRA example).
 """
 
 from __future__ import annotations

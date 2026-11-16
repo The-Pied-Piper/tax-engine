@@ -2,9 +2,8 @@
 Columbia manifest composed end to end.
 
 Every BC428 line part has its own test with its neighbours typed in. This module runs the whole
-chain: the engine over the real British Columbia 2025 manifest (`british_columbia_service`, the
-British Columbia package list standing in for `registrations.JURISDICTIONS`, which does not list
-British Columbia yet), with the gross salary (`ca/employment_income`) the only input and every
+chain: the registered engine (`build_tax_computation`) over the real British Columbia 2025 manifest,
+with the gross salary (`ca/employment_income`) the only input and every
 optional input left blank. It asserts the British Columbia tax of BC428 line 91 at salaries of
 $17,000, $20,000, $30,000, $70,000 and $200,000, the intermediate lines of the form on the way
 (1, 74 and 79), and the return's T1 line 167 ("ca/refund_or_balance_owing").
@@ -32,12 +31,13 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine import build_tax_computation
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_bc.support import british_columbia_kinds, british_columbia_service
+from tax_engine.registrations import artifact_kinds
 
 D = Decimal
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
@@ -51,13 +51,13 @@ LINE_167 = "ca/refund_or_balance_owing"
 
 
 def _figure(sheet: Worksheet, name: str) -> Decimal:
-    kind = british_columbia_kinds().kind(name)
+    kind = artifact_kinds().kind(name)
     assert isinstance(kind, AmountKind)
     return sheet.get(kind).value
 
 
 def _worksheets(salary: str) -> dict[str, tuple[Worksheet, ...]]:
-    return british_columbia_service().compute(
+    return build_tax_computation().compute(
         BRITISH_COLUMBIA, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
 

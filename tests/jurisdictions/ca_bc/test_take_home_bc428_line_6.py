@@ -17,8 +17,8 @@ Lines 1, 3, 4 and 5 are composed from their real parts as they are: line 1
 `ca-bc/bc428_bracket_rate_line_5` (`bc428_line_5.yaml`). Line 6 is `core/multiply_by_rate` with
 `base` = line 4 and `rate` = line 5, output `ca-bc/bc428_bracket_tax_line_6`, in the part
 `bc428_line_6.yaml`. The capability refuses a blank in a slot with no blank rule, so both slots
-carry `pass_on`. The form declaration is test-local. British Columbia is not in
-`registrations.JURISDICTIONS`, so the service is built over the package list of `support.py`.
+carry `pass_on`. The form declaration is test-local. The service is built over the package list of
+`support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): taxable income is the salary less the CPP
 enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so

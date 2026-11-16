@@ -5,8 +5,8 @@ Form text (Form BC479, CRA 5010-TC), under the heading "British Columbia trainin
 T1014-1 and T1014-2 credits) are not computed by the engine, and the form prints no maximum. A
 request that leaves the line out is read as blank.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

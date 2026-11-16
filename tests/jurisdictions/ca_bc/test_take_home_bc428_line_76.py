@@ -9,9 +9,8 @@ line 75 gives a computed 0.00, not a blank. Line 76 has no income gate: at $70,0
 
 The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts, the
 line 74 part (`bc428_line_74.yaml`), the line 75 part (`bc428_line_75.yaml`) and
-`bc428_line_76.yaml`. The form declaration and header are test-local, and British Columbia is not
-in `registrations.JURISDICTIONS`, so the service is built over the British Columbia package list of
-`support.py`.
+`bc428_line_76.yaml`. The form declaration and header are test-local, and the service is built over
+the British Columbia package list of `support.py`.
 """
 
 from __future__ import annotations

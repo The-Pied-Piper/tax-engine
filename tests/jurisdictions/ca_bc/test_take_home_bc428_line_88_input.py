@@ -5,8 +5,8 @@ Form text (Form BC428, CRA 5010-C): "Line 88: Line 86 plus line 87 (maximum $2,0
 enforced. A salary-only caller has no ESOP or EVCC credits, so a request that leaves the line out
 is read as blank, and the step that consumes it (line 89) reads that blank as 0.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

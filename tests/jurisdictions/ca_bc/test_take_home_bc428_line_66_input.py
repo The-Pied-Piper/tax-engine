@@ -4,8 +4,8 @@ Form BC428 (CRA 5010-C), line 66, as printed on the form. A salary-only caller h
 carryover amount, so a request that leaves the line out is read as 0, not blank, as Alberta's line
 64 input is: the step that multiplies it by the printed rate cannot take a blank.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

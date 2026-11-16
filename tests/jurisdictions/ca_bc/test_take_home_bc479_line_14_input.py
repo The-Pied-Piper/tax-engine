@@ -5,8 +5,8 @@ your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^". Si
 columns. The $10,000 maximum is stated in the basis and is not enforced. A request that leaves the
 line out is read as blank; the step that consumes it reads blank as 0.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

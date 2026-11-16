@@ -1,8 +1,8 @@
 """The British Columbia return exports the two rates and the forms export the lines it reads, both
 years.
 
-Through the engine over the British Columbia package list (`british_columbia_service().compute`, as
-the line tests read the return; British Columbia is not yet in `registrations.JURISDICTIONS`): the
+Through the registered engine (`build_tax_computation().compute`, as the line tests read the
+return): the
 return summary holds the average and the marginal income tax rate, and the BC428 form holds the
 line 5 and line 12 rates, the line 78 reduction clawback, the line 79 tax reduction and line 80 it
 exports. The 2025 manifest serves 2026 (a dataset with only one year is fatal for the other), so
@@ -16,19 +16,20 @@ from decimal import Decimal
 
 import pytest
 
+from tax_engine import build_tax_computation
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_bc.support import british_columbia_kinds, british_columbia_service
+from tax_engine.registrations import artifact_kinds
 
 D = Decimal
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
 
 
 def _sheet(year: int, salary: str, form: str) -> Worksheet:
-    worksheets = british_columbia_service().compute(
+    worksheets = build_tax_computation().compute(
         BRITISH_COLUMBIA, year, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets[form]
@@ -36,7 +37,7 @@ def _sheet(year: int, salary: str, form: str) -> Worksheet:
 
 
 def _value(sheet: Worksheet, name: str) -> Decimal:
-    kind = british_columbia_kinds().kind(name)
+    kind = artifact_kinds().kind(name)
     assert isinstance(kind, AmountKind)
     return sheet.get(kind).value
 

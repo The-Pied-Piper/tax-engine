@@ -20,8 +20,7 @@ cent: 0.00, 0.00, 167.85 (167.854), 1,577.61 (1,577.614) and 6,191.05 (6,191.053
 The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts, the
 line 74 part (`bc428_line_74.yaml`), the line 75 part (`bc428_line_75.yaml`), the line 76 part
 (`bc428_line_76.yaml`) and `bc428_line_78.yaml`. The form declaration and header are test-local, and
-British Columbia is not in `registrations.JURISDICTIONS`, so the service is built over the British
-Columbia package list of `support.py`.
+the service is built over the British Columbia package list of `support.py`.
 """
 
 from __future__ import annotations

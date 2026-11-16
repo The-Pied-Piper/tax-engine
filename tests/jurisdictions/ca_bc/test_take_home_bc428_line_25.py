@@ -6,9 +6,9 @@ salary-only single filer under 65 has none, so only line 16, the basic personal 
 contributes, at every salary. Alberta's line 25 is the analogue (`ab428_line_25.yaml`). The figures
 are hand-computed from the printed form (not a CRA example).
 
-The manifest parts are loaded from the package. The header and the form's exports are made up
-here, because the shared scaffold owns them. British Columbia is not yet listed in the
-registrations, so the service is built here over the British Columbia package list of `support.py`.
+The manifest parts are loaded from the package. The header and the form's exports are made up here,
+because the shared scaffold owns them. The service is built here over the British Columbia package
+list of `support.py`.
 """
 
 from __future__ import annotations

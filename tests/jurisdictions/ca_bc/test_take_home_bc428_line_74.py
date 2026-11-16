@@ -8,10 +8,9 @@ non-negative.
 
 The test composes the real British Columbia salary part, the real federal parts the T1 taxable
 income form needs (Schedule 8 for line 23300, and the T1 lines 15000, 23300, 23400, 23600, 23600
-signed and 26000 with their inputs) and the real `bc428_line_74.yaml`, and types in only the
-salary. The BC428 form declaration is made up here, exporting only line 74, because the real
-header is owned by another change. British Columbia is not in `registrations.JURISDICTIONS`, so
-the service is built over the British Columbia package list of `support.py`.
+signed and 26000 with their inputs) and the real `bc428_line_74.yaml`, and types in only the salary.
+The BC428 form declaration is made up here, exporting only line 74, because the real header is owned
+by another change. The service is built over the British Columbia package list of `support.py`.
 """
 
 from __future__ import annotations

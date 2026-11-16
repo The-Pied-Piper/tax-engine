@@ -5,8 +5,8 @@ share tax credit (complete Form T1231)". Form T1231 is not built, and no maximum
 salary-only caller has no mining flow-through share credit, so a request that leaves the line out
 is read as blank, and the step that consumes it (line 91) reads that blank as 0.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

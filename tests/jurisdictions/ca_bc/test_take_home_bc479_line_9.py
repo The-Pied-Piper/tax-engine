@@ -5,8 +5,8 @@ credit Claim $75". The amount is the `ca-bc/sales_tax_credit_basic` dataset, cla
 core/credit_amount, so it is the same at every salary.
 
 The manifest part is loaded from the package. The header and the form's export are made up here,
-because the shared scaffold owns them. British Columbia is not yet listed in the registrations,
-so the service is built here over the British Columbia package list of `support.py`.
+because the shared scaffold owns them. The service is built here over the British Columbia package
+list of `support.py`.
 """
 
 from __future__ import annotations

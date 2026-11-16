@@ -12,10 +12,9 @@ Line 7 is one `core/bracket_column_tax_at_start` step over line 1 with that sche
 `ca-bc/bc428_taxable_income_line_1`, its part `bc428_line_1.yaml`, composed as it is; line 7 reads
 it directly, so lines 3 and 4 are not composed.
 
-The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts,
-lines 1 and 7. The form declaration is test-local, exporting lines 1 and 7. British Columbia is
-not in `registrations.JURISDICTIONS`, so the service is built over the package list of
-`support.py`.
+The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts, lines
+1 and 7. The form declaration is test-local, exporting lines 1 and 7. The service is built over the
+package list of `support.py`.
 
 Figures (ticket, hand-computed): taxable income is the salary less the CPP enhanced and
 second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so line 7 is

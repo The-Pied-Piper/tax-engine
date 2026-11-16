@@ -5,8 +5,8 @@ Form text (Form BC428, CRA 5010-C): "Line 62 and line 61510: British Columbia ta
 as blank (as Alberta's line 60), and the step that consumes line 62 reads that blank as 0. The form
 prints no floor on this line, so the kind is not a non-negative amount.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

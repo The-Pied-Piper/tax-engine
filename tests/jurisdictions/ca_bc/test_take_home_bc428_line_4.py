@@ -14,10 +14,9 @@ they are. Line 4 is `core/subtract_not_below_zero` with `amount` = line 1 and `l
 output `ca-bc/bc428_taxable_income_over_lower_bound_line_4`, in the part `bc428_line_4.yaml`. Line 2
 is a copy of line 1 and has no step of its own.
 
-The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts,
-lines 1, 3 and 4. The form declaration is test-local, exporting lines 1, 3 and 4. British Columbia
-is not in `registrations.JURISDICTIONS`, so the service is built over the package list of
-`support.py`.
+The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts, lines
+1, 3 and 4. The form declaration is test-local, exporting lines 1, 3 and 4. The service is built
+over the package list of `support.py`.
 
 Figures (ticket, hand-computed): taxable income is the salary less the CPP enhanced and
 second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so line 4 is

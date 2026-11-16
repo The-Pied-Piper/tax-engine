@@ -3,8 +3,8 @@
 Form BC428 (CRA 5010-C), line 59, as printed on the form. A caller with no such gifts has nothing to
 enter, so a request that leaves the line out is read as blank.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

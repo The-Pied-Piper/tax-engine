@@ -9,10 +9,10 @@ table (`ca-bc/brackets_lines_2_to_8`) does not apply (lines 9 to 15 do), so line
 Line 3 is one `core/bracket_column_lower_bound` step over line 1 with that schedule, output
 `ca-bc/bc428_bracket_lower_bound_line_3`, in the part `bc428_line_3.yaml`.
 
-Line 1 is the real `bc428_line_1.yaml` (#903). The real parts composed: the British Columbia
-salary, Schedule 8, the T1 taxable-income parts, `bc428_line_1.yaml` and `bc428_line_3.yaml`. The
-form declaration is test-local, exporting lines 1 and 3. British Columbia is not in
-`registrations.JURISDICTIONS`, so the service is built over the package list of `support.py`.
+Line 1 is the real `bc428_line_1.yaml` (#903). The real parts composed: the British Columbia salary,
+Schedule 8, the T1 taxable-income parts, `bc428_line_1.yaml` and `bc428_line_3.yaml`. The form
+declaration is test-local, exporting lines 1 and 3. The service is built over the package list of
+`support.py`.
 
 Figures (ticket, hand-computed): taxable income is the salary less the CPP enhanced and
 second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so line 3 is

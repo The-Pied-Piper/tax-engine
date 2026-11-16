@@ -5,8 +5,8 @@ Form text (Form BC428, CRA 5010-c-25e.txt): "Line 75: Base amount 25,020.00". Th
 same at every salary.
 
 The manifest part is loaded from the package. The header and the form's export are made up here,
-because the shared scaffold owns them. British Columbia is not yet listed in the registrations,
-so the service is built here over the British Columbia package list of `support.py`.
+because the shared scaffold owns them. The service is built here over the British Columbia package
+list of `support.py`.
 """
 
 from __future__ import annotations

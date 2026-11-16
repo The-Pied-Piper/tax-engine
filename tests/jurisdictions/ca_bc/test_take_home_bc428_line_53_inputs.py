@@ -7,8 +7,7 @@ input, blank read as 0, as Alberta's line 51 is. A salary-only caller has no med
 a request that leaves the line out is read as blank.
 
 The real part is loaded under a test-local header, as the take-home header is another part's. The
-British Columbia registries of `support.py` are used, as British Columbia is not yet in the
-registrations.
+British Columbia registries of `support.py` are used.
 """
 
 from __future__ import annotations
