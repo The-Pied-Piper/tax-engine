@@ -197,6 +197,7 @@ Each entry of `capabilities` is a mapping:
 | `params` | Slot to parameter family. Optional. |
 | `consumes` | Slot to an artifact identifier, or to a list of identifiers kept in order. Optional. |
 | `blank` | What a blank does (below). Optional; a consumed slot not named refuses a blank. |
+| `optional` | Consumed slots that may go without a producer (below). Optional; default none, every slot is required. |
 | `title` | The printed wording of the one figure the selection produces. A selection that produces several figures is rejected if it has one. |
 | `reference` | What the form prints beside that figure, as free text. Same one-figure rule. |
 | `unit` | The full identifier of that figure's unit; see Units. Same one-figure rule. |
@@ -215,6 +216,16 @@ one of:
 
 A name may instead map to a mapping of record field identifier to rule, for a consumed record-list
 slot: the rule then applies to that field in every record.
+
+### Optional slots
+
+`optional` lists consumed slots, each holding one identifier (not a list), each named once; an
+unknown or listed slot is an `InvalidManifestError` naming the file and the capability. A
+form-set otherwise refuses a form that reads a record list no form exports or supplies. A record
+list read only through optional slots may have no producer: it is then read as a blank, as a blank
+input is, and the slot's `blank` rule decides (`pass_on` blanks what the selection produces; a
+slot with no rule refuses the blank). A producer that exists is read as usual. A figure no form supplies is a record list of one amount field, so only a neutral identifier labelled `.amount` may be read this way. A capability must
+list the slot in `BLANK_ALLOWED` for a blank rule to be allowed there.
 
 ## Titles
 

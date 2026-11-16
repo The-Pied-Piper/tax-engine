@@ -1,7 +1,8 @@
 """RecordTotal: adds one amount field over the records of a record list, exactly.
 
 The record-list kind has one amount field, which may be blank per the manifest's `blank:` rule for
-the field; an empty list totals zero. It never rounds; items are named by position from 1.
+the field, and the whole list may be blank per its rule for `records`; an empty list totals zero. It
+never rounds; items are named by position from 1.
 """
 
 from __future__ import annotations
@@ -24,6 +25,7 @@ class RecordTotal(Capability):
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"records": RecordList}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"records"})
     BLANK_RECORD_FIELDS: ClassVar[frozenset[str]] = frozenset({"records"})
 
     def __init__(self, records: RecordListKind, output: Money) -> None:

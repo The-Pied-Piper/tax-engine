@@ -1,0 +1,23 @@
+# T1 General 2025 (form 5006-R), line 47900 "Provincial or territorial credits". The T1 text for the line is to be
+# confirmed.
+#
+# Form BC479 (CRA 5010-TC) prints "Line 45: Line 36 plus line 44 Enter this amount on line 47900 of your
+# return", and British Columbia's BC479 form supplies that line as the record list
+# `ca/provincial_credits.amount`. The read is optional: a province whose form supplies nothing (Ontario and
+# Alberta here) has no such figure, and line 47900 is then blank, the `pass_on` of the blank rule below,
+# exactly as a blank input would be. core/record_total totals the one amount into line 47900
+# (`ca/provincial_credits_line_47900`), with no step of its own for the pure copy.
+form:
+  name: ca/t1_tax_and_credits
+capabilities:
+  - name: core/record_total
+    title: "Provincial or territorial credits"
+    reference: "47900"
+    unit: ca/cad
+    consumes:
+      records: ca/provincial_credits.amount
+    optional: [records]
+    blank:
+      records: pass_on
+    produces:
+      output: ca/provincial_credits_line_47900

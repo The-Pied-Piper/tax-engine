@@ -24,7 +24,7 @@ from tax_engine.domain.errors import (
     InvalidRegistrationError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import Unit
 
@@ -36,10 +36,12 @@ class CapabilitySelection:
     `params` maps parameter slots to families; `consumes` and `produces` map artifact slots to
     identifiers (a consumed slot may map to a list, kept as a tuple). `blank` maps a consumed slot,
     or one artifact in a `BLANK_PER_ITEM` list, to a `BlankRule`; `blank_fields` maps a record-list
-    slot to a `BlankRule` per field. A slot not named refuses a blank. `title` and `reference` are
-    the printed wording and line label of the one figure the selection produces; `None` for none,
-    and a selection producing several figures may not have either. `unit` names the unit of that
-    figure (`None` for none), under the same one-figure rule.
+    slot to a `BlankRule` per field. A slot not named refuses a blank. `optional` lists the consumed
+    slots that may go without a producer: a record list read through one that no form supplies is
+    a blank, which the slot's blank rule decides (default none: every slot is required).
+    `title` and `reference` are the printed wording and line label of the one figure the selection
+    produces; `None` for none, and a selection producing several figures may not have either. `unit`
+    names the unit of that figure (`None` for none), under the same one-figure rule.
     """
 
     name: str
@@ -48,6 +50,7 @@ class CapabilitySelection:
     produces: Mapping[str, str]
     blank: Mapping[str, BlankRule] = dataclasses.field(default_factory=dict)
     blank_fields: Mapping[str, Mapping[str, BlankRule]] = dataclasses.field(default_factory=dict)
+    optional: tuple[str, ...] = ()
     title: str | None = None
     reference: str | None = None
     unit: str | None = None
@@ -65,6 +68,7 @@ class CapabilitySelection:
                 )
         for name in ("params", "produces", "blank"):
             object.__setattr__(self, name, MappingProxyType(dict(getattr(self, name))))
+        object.__setattr__(self, "optional", tuple(self.optional))
         object.__setattr__(
             self,
             "blank_fields",
@@ -85,7 +89,14 @@ class CapabilitySelection:
         fields = frozenset(
             (slot, frozenset(rules.items())) for slot, rules in self.blank_fields.items()
         )
-        return hash((self.name, *(frozenset(mapping.items()) for mapping in bindings), fields))
+        return hash(
+            (
+                self.name,
+                *(frozenset(mapping.items()) for mapping in bindings),
+                fields,
+                self.optional,
+            )
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -364,6 +375,7 @@ class Manifest:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
+        derived += self._stand_ins(derived)
         self._check_derived(derived)
         kinds = self.artifacts.extended(derived)
         object.__setattr__(self, "kinds", kinds)
@@ -392,6 +404,33 @@ class Manifest:
                 self.forms,
             )
         )
+
+    def _stand_ins(self, derived: list[RecordListKind]) -> list[RecordListKind]:
+        """The record list of each neutral figure that a form reads through an optional slot and no
+        form supplies, so that its blank can be read: a list of one amount field.
+
+        Only a figure labelled `amount` can stand in, as no form tells what else its field is.
+        """
+        made: dict[str, RecordListKind] = {}
+        for form in self.forms:
+            for selection in form.capabilities:
+                for slot in selection.optional:
+                    named = selection.consumes[slot]
+                    assert isinstance(
+                        named, str
+                    )  # the loader and the selection take one identifier
+                    if named in made or named in {kind.identifier for kind in derived}:
+                        continue
+                    if "." not in named or named in self.artifacts.identifiers():
+                        continue
+                    stem, _, label = named.partition(".")
+                    if label != "amount":
+                        raise InvalidManifestError(
+                            f"form {form.name!r}: {named!r} is read through an optional slot and "
+                            "no form supplies it; only a figure labelled 'amount' can stand in"
+                        )
+                    made[named] = RecordListKind(named, fields=(AmountKind(f"{stem}_amount"),))
+        return list(made.values())
 
     @staticmethod
     def _check_derived(derived: list[RecordListKind]) -> None:

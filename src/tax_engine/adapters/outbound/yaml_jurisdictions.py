@@ -62,7 +62,9 @@ _IMPORTED_PART_KEYS = frozenset({"form", "capabilities", "inputs"})
 _OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference", "unit"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
-_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference", "unit"})
+_OPTIONAL_CAPABILITY_KEYS = frozenset(
+    {"params", "consumes", "blank", "optional", "title", "reference", "unit"}
+)
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
@@ -670,7 +672,8 @@ class YamlJurisdictionSource:
 
     @staticmethod
     def _check_supplied(manifest: Manifest, imported: tuple[Form, ...]) -> None:
-        """Refuse an imported form that reads a derived figure no form of the manifest derives."""
+        """Refuse an imported form that reads a derived figure no form of the manifest derives,
+        unless it reads it through an optional slot."""
         derived = {
             kind.identifier
             for form in manifest.forms
@@ -678,7 +681,9 @@ class YamlJurisdictionSource:
         }
         for form in imported:
             for selection in form.capabilities:
-                for slot in selection.consumes.values():
+                for name, slot in selection.consumes.items():
+                    if name in selection.optional:
+                        continue
                     for identifier in (slot,) if isinstance(slot, str) else slot:
                         if "." in identifier and identifier not in derived:
                             raise InvalidManifestError(
@@ -808,10 +813,39 @@ class YamlJurisdictionSource:
             produces=self._produced(fields.field("produces")),
             blank=self._blank_rules(name, blank, consumes),
             blank_fields=self._field_blank_rules(name, blank, consumes),
+            optional=self._optional_slots(name, fields.optional_field("optional"), consumes),
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
             unit=None if unit is None else unit.require_non_empty_string(),
         )
+
+    @staticmethod
+    def _optional_slots(
+        who: str,
+        node: YamlNode | None,
+        consumes: Mapping[str, str | tuple[str, ...]],
+    ) -> tuple[str, ...]:
+        """The slots `node` lists as optional: distinct consumed slots, each holding one identifier,
+        in the order written; no `optional` key is no optional slot."""
+        if node is None:
+            return ()
+        if not node.is_list():
+            raise InvalidManifestError(f"{who}: optional must be a list of consumed slot names")
+        slots = tuple(item.require_non_empty_string() for item in node.items())
+        for position, slot in enumerate(slots):
+            if slot not in consumes:
+                raise InvalidManifestError(
+                    f"{who}: optional slot {slot!r} is not a consumed slot of the selection"
+                )
+            if not isinstance(consumes[slot], str):
+                raise InvalidManifestError(
+                    f"{who}: optional slot {slot!r} takes a list, not one identifier"
+                )
+            if slot in slots[:position]:
+                raise InvalidManifestError(
+                    f"{who}: optional slot {slot!r} is listed more than once"
+                )
+        return slots
 
     def _blank_rules(
         self,
