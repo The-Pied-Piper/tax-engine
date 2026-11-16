@@ -409,6 +409,13 @@ BC479_SPOUSE_ADDITIONAL_CREDIT_LINE_10 = AmountKind.declare(
 your spouse or common-law partner": the credit claimed for a spouse or common-law partner, a caller
 input that is read as blank when left out."""
 
+BC479_HOME_RENOVATION_EXPENSES_LINE_14 = AmountKind.declare(
+    CATALOG, "bc479_home_renovation_expenses_line_14", non_negative=True
+)
+"""Home renovation expenses, BC479 line 14 "Enter your home renovation expenses from line 5 of your
+Schedule BC(S12). (maximum $10,000)": the amount from line 5 of Schedule BC(S12), a caller input
+that is read as blank when left out."""
+
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
 )
