@@ -130,6 +130,12 @@ BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
 political contribution tax credit (use Worksheet BC428) (maximum $500)": a caller input that is
 read as blank when left out."""
 
+BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
+    CATALOG, "bc428_esop_evcc_credits_line_88", non_negative=True
+)
+"""British Columbia total ESOP and EVCC credits, BC428 line 88 "Line 88: Line 86 plus line 87
+(maximum $2,000)": a caller input that is read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
@@ -279,6 +285,13 @@ BC428_TAX_AFTER_FOREIGN_CREDIT_LINE_72 = AmountKind.declare(
 enter "0") = ^": line 70 (the tax with the additional minimum tax) minus line 71 (the provincial
 foreign tax credit, blank read as 0), not below 0, rounded to the cent."""
 
+BC428_BRITISH_COLUMBIA_TAX_REDUCTION_LINE_79 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_tax_reduction_line_79", non_negative=True
+)
+"""British Columbia tax reduction, BC428 line 79 "Line 79: Line 73 minus line 78 (if negative, enter
+"0") British Columbia tax reduction = ^": line 73 (the basic reduction) minus line 78 (the
+reduction clawback), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -343,6 +356,13 @@ BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", n
 enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse
 amount is not built."""
 
+BC479_INCOME_FOR_SALES_TAX_CREDIT_LINE_8 = AmountKind.declare(
+    CATALOG, "bc479_income_for_sales_tax_credit_line_8", non_negative=True
+)
+"""Income for the sales tax credit, BC479 line 8 "Line 8: Line 6 minus line 7 (if negative, enter
+"0") Income for the sales tax credit = ^": line 6 (the adjusted family net income) minus line 7 (the
+threshold), not below 0, rounded to the cent."""
+
 BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
     CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
 )
@@ -369,6 +389,12 @@ BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
 the tax on split income input read as 0 when blank. The form prints no floor for the line, so the
 kind is signed."""
 
+BC428_LOGGING_TAX_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "bc428_logging_tax_credit_line_81", non_negative=True
+)
+"""British Columbia logging tax credit, BC428 line 81 "Line 81: British Columbia logging tax credit
+from Form FIN 542S or Form FIN 542P": a caller input that is read as blank when left out."""
+
 BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
     CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
 )
@@ -389,3 +415,9 @@ BC479_HOME_RENOVATION_EXPENSES_LINE_14 = AmountKind.declare(
 """Home renovation expenses, BC479 line 14 "Enter your home renovation expenses from line 5 of your
 Schedule BC(S12). (maximum $10,000)": the amount from line 5 of Schedule BC(S12), a caller input
 that is read as blank when left out."""
+
+BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
+    CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
+)
+"""Credit before the income reduction, BC479 line 11 "Line 11: Line 9 plus line 10 = ^": the basic
+sales tax credit (line 9) plus the spouse or common-law partner additional credit (line 10)."""
