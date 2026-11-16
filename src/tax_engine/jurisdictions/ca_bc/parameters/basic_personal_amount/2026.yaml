@@ -1,0 +1,15 @@
+# Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 Table 8.2, British Columbia row (13,216); no rounding applied here.
+# British Columbia basic personal amount, 2026 tax year (Form BC428 line 58040; CRA 5010-c): T4127
+# Table 8.2, row BC, basic amount 13,216, indexed at BC's own 2.2% (12,932 x 1.022 = 13,216.50).
+# Not income-tested. The 2026 BC428 text is not yet published, so the figure is not yet confirmed
+# against it.
+# Line 58040 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+family: ca-bc/basic_personal_amount
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "13216"
