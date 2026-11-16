@@ -511,3 +511,10 @@ BC479_CLEAN_BUILDINGS_CREDIT_LINE_30 = AmountKind.declare(
 """Total allowable credit, BC479 line 30 "Line 30: Total allowable credit: Line 28 plus line 29
 = ^": lines 28 and 29 are not built, so the total is a caller input that is read as blank when
 left out."""
+
+BC479_PAGE_2_TOTAL_LINE_35 = AmountKind.declare(
+    CATALOG, "bc479_page_2_total_line_35", non_negative=True
+)
+"""Page 2 total, BC479 line 35 "Line 35: Add lines 16, 25, 26, 30 and 34. = ^": the page 1 total
+(line 15, carried by line 16) plus the venture capital, mining exploration, clean buildings and
+training credits, each blank one read as 0, rounded to the cent."""

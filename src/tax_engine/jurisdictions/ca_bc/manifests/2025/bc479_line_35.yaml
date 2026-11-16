@@ -1,0 +1,30 @@
+# Form BC479 (2025, CRA 5010-TC) line 35. Line 35: "Add lines 16, 25, 26, 30 and 34. = ^". One core/sum
+# step over line 15 (`ca-bc/bc479_page_1_total_line_15`; line 16, "Enter the amount from line 15 of the
+# previous page", is a page carry with no step, so line 35 reads line 15) and the four optional
+# inputs for lines 25, 26, 30 and 34 (venture capital, mining exploration, clean buildings and
+# training credits), rounded half-up to the cent. A salary-only caller leaves those four blank, so
+# the blank rule reads each as 0 and the step prints its own "left blank, taken as 0" row for each.
+# The printed $300,000 maximum on line 25 is stated in that input's basis, not enforced here. The
+# form prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/sum
+    reference: "35"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc479_page_1_total_line_15
+        - ca-bc/bc479_venture_capital_credit_line_25
+        - ca-bc/bc479_mining_exploration_credit_line_26
+        - ca-bc/bc479_clean_buildings_credit_line_30
+        - ca-bc/bc479_training_credits_line_34
+    blank:
+      ca-bc/bc479_venture_capital_credit_line_25: "0"
+      ca-bc/bc479_mining_exploration_credit_line_26: "0"
+      ca-bc/bc479_clean_buildings_credit_line_30: "0"
+      ca-bc/bc479_training_credits_line_34: "0"
+    produces:
+      output: ca-bc/bc479_page_2_total_line_35
