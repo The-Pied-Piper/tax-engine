@@ -37,9 +37,12 @@ net income are the salary less the CPP enhanced contribution (1% of the salary l
 credits (T1 line 42900) is the bracket tax less 14% of the basic personal amount (14,829 plus the
 supplement of 1,623, reduced from a net income of 181,440 over 77,042), the CPP base contribution
 (4.95% of the salary less 3,500), the EI premium (1.63% to 68,900) and the Canada employment
-amount (1,501 or the salary if less). The British Columbia tax (BC428 line 91, equal to line 80
-here) is the bracket tax less 5.60% of the same credits with the British Columbia basic personal
-amount of 13,216, less the reduction of line 79. The total payable is their sum: for example
+amount (1,501 or the salary if less); the credits are summed and multiplied by the rate once, as
+the form does (rounding each credit separately would shift the 19,200.18 boundary). The British
+Columbia tax (BC428 line 91, equal to line 80 here) is the bracket tax less 5.60% of the credits
+of BC428 Part B, which here are the British Columbia basic personal amount of 13,216, the CPP base
+contribution and the EI premium only (no Canada employment amount, no supplement), summed and
+multiplied once, less the reduction of line 79. The total payable is their sum: for example
 7,278.19 + 3,293.84 = 10,572.03 at 70,000.
 
 The gates open at the zero-tax boundaries, found cent by cent from the same derivation (the part is
@@ -54,21 +57,26 @@ The reduction's slope starts at a net income of 25,570.15 and ends at 44,951.88,
 printed 25,570.00 and 44,952.00: line 78 is a dollars-and-cents box (0.14 x 3.56% rounds to 0.00,
 0.15 x 3.56% to 0.01), so line 78 is 0.00 up to a net income of 25,570.14 (a salary of 25,793.07);
 and line 79 is 0.00 from a net income of 44,951.89 (a salary of 45,370.60, line 78 is then 690.00),
-which is where the printed form already reads 0. The rate kinds and the trace shape are the same
-as for 2025 and are pinned there.
+which is where the printed form already reads 0.
 """
 
 from __future__ import annotations
 
+import re
 from decimal import Decimal
 
 import pytest
 
+from tax_engine import build_tax_computation
+from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
+from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_bc.support import british_columbia_kinds, british_columbia_service
+from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
@@ -87,6 +95,22 @@ SLOPE = "ca-bc/british_columbia_reduction_slope"
 PHASE_OUT = "ca-bc/british_columbia_reduction_phase_out_rate"
 WITH_REDUCTION = "ca-bc/british_columbia_bracket_rate_with_reduction"
 LINE_91 = "ca-bc/bc428_british_columbia_tax_line_91"
+NEW_KINDS = [
+    AVERAGE,
+    MARGINAL,
+    BC_RATE,
+    LINE_5_RETURN,
+    LINE_12_RETURN,
+    BRACKET,
+    "ca-bc/british_columbia_tax_after_reduction_return",
+    RATE_GATE,
+    "ca-bc/british_columbia_tax_reduction_return",
+    REDUCTION_GATE,
+    "ca-bc/british_columbia_reduction_clawback_return",
+    SLOPE,
+    PHASE_OUT,
+    WITH_REDUCTION,
+]
 
 # Salary, federal part, British Columbia part, marginal rate, T1 line 43500 total payable, average.
 FIGURES = [
@@ -166,6 +190,30 @@ def _value(summary: Worksheet, name: str) -> Decimal:
     value = summary.get(british_columbia_kinds().kind(name)).value
     assert isinstance(value, Decimal)
     return value
+
+
+def _sum_line(sheet: Worksheet) -> SumLine:
+    """The one trace line of the marginal tax rate step, found by its output kind."""
+    label = british_columbia_kinds().kind(MARGINAL).label
+    (line,) = [
+        line for line in sheet.trace if isinstance(line, SumLine) and line.output.label == label
+    ]
+    return line
+
+
+@pytest.mark.parametrize("name", NEW_KINDS)
+def test_the_new_kinds_are_registered_decimal_amounts(name: str) -> None:
+    kind = british_columbia_kinds().kind(name)
+
+    assert kind.identifier == name
+    assert kind.value_type is Decimal
+
+
+@pytest.mark.parametrize(
+    "name", [MARGINAL, AVERAGE, BC_RATE, BRACKET, SLOPE, PHASE_OUT, WITH_REDUCTION]
+)
+def test_the_rate_kinds_are_non_negative(name: str) -> None:
+    assert non_negative(british_columbia_kinds().kind(name))
 
 
 @pytest.mark.parametrize(("salary", "federal", "british_columbia", "marginal"), PART_FIGURES)
@@ -302,3 +350,87 @@ def test_the_2025_british_columbia_tax_anchors_do_not_move(salary: str, line_91:
     (bc428,) = _worksheets(salary, 2025)["ca-bc/bc428"]
 
     assert _value(bc428, LINE_91) == D(line_91)
+
+
+def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() -> None:
+    summary = _summary("70000")
+    kinds = british_columbia_kinds()
+
+    for name in (MARGINAL, AVERAGE):
+        unit = summary.unit(kinds.kind(name).label)
+        assert unit is not None
+        assert unit.identifier == "core/percent"
+
+
+def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
+    summary = _summary("70000")
+    kinds = british_columbia_kinds()
+
+    for name in NEW_KINDS:
+        label = kinds.kind(name).label
+        assert summary.reference(label) is None
+        assert summary.title(label) is None
+
+
+def test_the_marginal_rate_is_traced_as_one_exact_sum_of_the_federal_then_the_bc_part() -> None:
+    sheet = _summary("200000")
+    kinds = british_columbia_kinds()
+
+    line = _sum_line(sheet)
+
+    assert [(kind.label, value) for kind, value in line.parts] == [
+        (kinds.kind(FEDERAL).label, D("0.29")),
+        (kinds.kind(BC_RATE).label, D("0.168")),
+    ]
+    assert line.rounding == NO_ROUNDING
+    assert line.total == D("0.458")
+    assert line.amount == sheet.get(kinds.kind(MARGINAL)).value
+
+
+def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
+    sheet = _summary("70000")
+
+    text = EnglishTraceRenderer().render(_sum_line(sheet), sheet)
+
+    assert re.fullmatch(
+        r".*\(20\.5%\) plus .+ \(7\.7(0+)?%\) gives 28\.2(0+)?% \(not rounded\)\.?", text
+    )
+
+
+def test_the_marginal_rate_comes_last_in_the_trace() -> None:
+    sheet = _summary("100000")
+    kinds = british_columbia_kinds()
+    labels = [line.label for line in sheet.trace]
+
+    marginal = labels.index(kinds.kind(MARGINAL).label)
+
+    assert marginal == len(labels) - 1
+    assert labels.count(kinds.kind(MARGINAL).label) == 1
+    for part in (FEDERAL, BC_RATE):
+        assert labels.index(kinds.kind(part).label) < marginal
+
+
+def test_the_ontario_and_alberta_anchors_do_not_move() -> None:
+    # Ontario 2025 at 70,000: take-home is the salary less CPP, EI and T1 line 167, 53,468.68.
+    # Alberta 2025 at 70,000: AB428 line 75 is 3,598.12.
+    kinds = bundled_kinds()
+    service = build_tax_computation()
+    ontario = service.compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+    )
+    (schedule_8,) = ontario["ca/schedule_8"]
+    (t2204,) = ontario["ca/t2204"]
+    (summary,) = ontario["ca-on/return"]
+    cpp = (
+        schedule_8.get(kinds.kind("ca/schedule_8_cpp_base_contributions_on_return")).value
+        + schedule_8.get(kinds.kind("ca/schedule_8_cpp_enhanced_contributions_on_return")).value
+    )
+    ei = t2204.get(kinds.kind("ca/t2204_premiums_deducted")).value
+    line_167 = summary.get(kinds.kind("ca/refund_or_balance_owing")).value
+    alberta = service.compute(
+        JurisdictionCode("CA-AB"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
+    )
+    (ab428,) = alberta["ca-ab/ab428"]
+
+    assert D("70000") - cpp - ei - line_167 == D("53468.68")
+    assert ab428.get(kinds.kind("ca-ab/ab428_alberta_tax_line_75")).value == D("3598.12")
