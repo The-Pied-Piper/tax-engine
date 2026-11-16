@@ -456,3 +456,10 @@ BC479_VENTURE_CAPITAL_CREDIT_LINE_25 = AmountKind.declare(
 """British Columbia venture capital tax credit, BC479 line 25 "Add lines 20, 21, and 23. (maximum
 $300,000)": the total of the venture capital tax credit lines, a caller input that is read as blank
 when left out; the $300,000 maximum is stated, not enforced."""
+
+BC479_MINING_EXPLORATION_CREDIT_LINE_26 = AmountKind.declare(
+    CATALOG, "bc479_mining_exploration_credit_line_26", non_negative=True
+)
+"""British Columbia mining exploration tax credit, BC479 line 26 "Enter the amount from line 23 of
+your Form T88": the credit taken from Form T88, a caller input that is read as blank when left
+out."""
