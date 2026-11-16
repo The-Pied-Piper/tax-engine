@@ -1,0 +1,13 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# British Columbia cent rounding, 2026 tax year: the rule for every British Columbia step that
+# rounds a dollars-and-cents box: Form BC428 (5010-c-25e) and Form BC479 (5010-tc-25e). The forms
+# print no rounding rule, so half-up to the cent follows Alberta and Ontario. A line that needs a
+# different rule gets a dataset of its own.
+family: ca-bc/cent_rounding
+tax_year: 2026
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-c/5010-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-tc/5010-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}

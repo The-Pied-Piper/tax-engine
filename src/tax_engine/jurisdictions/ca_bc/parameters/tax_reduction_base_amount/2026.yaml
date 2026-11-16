@@ -1,0 +1,14 @@
+# Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the base amount is printed in the British Columbia "S" formula of T4127 (July 2026 edition, and the
+# January edition agrees) as 25,570, the 2025 figure 25,020 indexed at British Columbia's own 2.2%, not the federal 2%.
+# British Columbia tax reduction base amount, 2026 tax year (Form BC428 line 75). Not
+# income-tested.
+# Line 75 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+family: ca-bc/tax_reduction_base_amount
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "25570"
