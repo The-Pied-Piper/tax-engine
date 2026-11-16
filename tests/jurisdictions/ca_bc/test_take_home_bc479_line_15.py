@@ -211,7 +211,7 @@ def test_the_step_traces_one_sum_line_over_lines_13_and_14_with_the_cent_roundin
         (kinds.kind(LINE_14), D("123.46")),
     )
     assert line.total == D("161.16")
-    assert line.rounding.increment == D("0.01")
+    assert line.rounding.apply(D("0.005")) == D("0.01")
 
 
 def test_the_trace_row_for_line_15_reads_in_english(tmp_path: Path) -> None:
