@@ -382,3 +382,9 @@ BC479_SPOUSE_ADDITIONAL_CREDIT_LINE_10 = AmountKind.declare(
 """Additional credit for your spouse or common-law partner, BC479 line 10 "Additional credit for
 your spouse or common-law partner": the credit claimed for a spouse or common-law partner, a caller
 input that is read as blank when left out."""
+
+BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
+    CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
+)
+"""Credit before the income reduction, BC479 line 11 "Line 11: Line 9 plus line 10 = ^": the basic
+sales tax credit (line 9) plus the spouse or common-law partner additional credit (line 10)."""
