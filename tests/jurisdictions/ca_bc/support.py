@@ -16,6 +16,9 @@ import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
+from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
+from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
+from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
 from tax_engine.domain.unit import UnitRegistry
@@ -63,3 +66,18 @@ def british_columbia_parameter_parsers() -> ParameterParserRegistry:
     registry = ParameterParserRegistry()
     british_columbia_packages().register_parameter_parsers(registry)
     return registry
+
+
+def british_columbia_service() -> TaxComputationService:
+    """The engine over the British Columbia package list and the real British Columbia manifest.
+
+    Stands in for `build_tax_computation` until British Columbia is listed in
+    `tax_engine.registrations.JURISDICTIONS`; a new service on every call, over the shared
+    registries.
+    """
+    roots = british_columbia_packages().roots()
+    return TaxComputationService(
+        YamlJurisdictionSource(roots, british_columbia_kinds(), british_columbia_units()),
+        YamlParameterSource(roots, british_columbia_parameter_parsers(), british_columbia_units()),
+        british_columbia_capabilities(),
+    )
