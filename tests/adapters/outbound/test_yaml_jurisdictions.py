@@ -2673,3 +2673,62 @@ def test_a_manifest_title_in_two_parts_is_rejected(tmp_path: Path) -> None:
 
     with pytest.raises(InvalidManifestError, match="key 'title' is already set in"):
         source(tmp_path).get_jurisdiction(EX_ON)
+
+
+OPTIONAL_MANIFEST = """\
+jurisdiction: EX-ON
+version: 1
+valid_from_tax_year: 2025
+inputs: [{{name: ex/income, required: true}}, {{name: ex/deduction, required: true}}]
+outputs: [ex/net]
+capabilities:
+  - name: ex/subtract
+    consumes:
+      amount: ex/income
+      less: ex/deduction
+      parts: [ex/income, ex/deduction]
+{optional}    blank:
+      less: "0"
+    produces:
+      output: ex/net
+"""
+
+
+def optional_slots(tmp_path: Path, text: str) -> tuple[str, ...]:
+    write(tmp_path, "ex-on/manifests/v1.yaml", OPTIONAL_MANIFEST.format(optional=text))
+    manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
+    (selection,) = returned(manifest).capabilities
+    return tuple(selection.optional)
+
+
+def test_a_selection_without_optional_has_every_slot_required(tmp_path: Path) -> None:
+    assert optional_slots(tmp_path, "") == ()
+
+
+def test_parses_the_optional_slots_of_a_selection(tmp_path: Path) -> None:
+    assert optional_slots(tmp_path, "    optional: [less]\n") == ("less",)
+
+
+def test_parses_several_optional_slots_in_order(tmp_path: Path) -> None:
+    assert optional_slots(tmp_path, "    optional: [less, amount]\n") == ("less", "amount")
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "    optional: [typo]\n",  # not a consumed slot
+        "    optional: [output]\n",  # a produced slot
+        "    optional: [parts]\n",  # a list slot: not one identifier
+        "    optional: less\n",  # not a list
+        "    optional: [less, less]\n",  # named twice
+    ],
+)
+def test_a_bad_optional_list_fails_at_load_naming_the_file(tmp_path: Path, text: str) -> None:
+    path = write(tmp_path, "ex-on/manifests/v1.yaml", OPTIONAL_MANIFEST.format(optional=text))
+
+    with pytest.raises(InvalidManifestError, match="optional") as excinfo:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert str(path) in str(excinfo.value)
+    assert "ex/subtract" in str(excinfo.value)
+    assert "unknown keys" not in str(excinfo.value)

@@ -58,6 +58,7 @@ def test_has_no_params_family() -> None:
         "produces",
         "blank",
         "blank_fields",
+        "optional",
         "title",
         "reference",
         "unit",
