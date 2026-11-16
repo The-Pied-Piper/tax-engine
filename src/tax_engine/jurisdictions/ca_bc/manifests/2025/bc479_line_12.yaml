@@ -1,0 +1,18 @@
+# Form BC479 (2025, CRA 5010-TC) line 12. Line 12: "Amount from line 8 ^ multiplied by 2% = ^".
+# The 2% is printed in the line text, so it is the `ca-bc/sales_tax_credit_rate` dataset figure and
+# has no step of its own. One core/apply_rate step: line 8
+# (`ca-bc/bc479_income_for_sales_tax_credit_line_8`) times that rate, rounded half-up to the cent by
+# the dataset's rule. Line 8 is never blank (it is floored at 0), so the step has no blank rule.
+# The form prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/apply_rate
+    reference: "12"
+    unit: ca/cad
+    params:
+      rate: ca-bc/sales_tax_credit_rate
+    consumes:
+      base: ca-bc/bc479_income_for_sales_tax_credit_line_8
+    produces:
+      output: ca-bc/bc479_income_reduction_line_12

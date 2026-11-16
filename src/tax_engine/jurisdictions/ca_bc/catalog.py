@@ -363,6 +363,12 @@ BC479_INCOME_FOR_SALES_TAX_CREDIT_LINE_8 = AmountKind.declare(
 "0") Income for the sales tax credit = ^": line 6 (the adjusted family net income) minus line 7 (the
 threshold), not below 0, rounded to the cent."""
 
+BC479_INCOME_REDUCTION_LINE_12 = AmountKind.declare(
+    CATALOG, "bc479_income_reduction_line_12", non_negative=True
+)
+"""Income reduction, BC479 line 12 "Line 12: Amount from line 8 ^ multiplied by 2% = ^": line 8
+(the income for the sales tax credit) times the printed 2%, rounded to the cent."""
+
 BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
     CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
 )
