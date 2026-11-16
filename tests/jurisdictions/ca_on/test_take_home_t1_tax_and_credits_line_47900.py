@@ -1,12 +1,14 @@
 """T1 General 2025 (5006-R, Ontario) line 47900 "Provincial or territorial credits": blank.
 
+T1 General 2025 (CRA 5006-R-25E): "Line 165 and line 47900: Provincial or territorial credits
+(complete Form 479, if it applies)".
+
 No Ontario form supplies `ca/provincial_credits.amount` (only British Columbia's BC479 does), and
 the T1 part marks that read optional with the blank rule `pass_on`, so line 47900
 (`ca/provincial_credits_line_47900`) is blank for the Ontario take-home filer: it has no figure,
-and the T1 form still computes. The T1 text for line 47900 is to be confirmed. The real bundled
-manifest is run with the salary the only input. Every Ontario figure is unchanged, pinned here by
-the $70,000 take-home (salary less CPP, EI and total tax, done outside the engine, as the
-README says).
+and the T1 form still computes. The real bundled manifest is run with the salary the only input.
+Every Ontario figure is unchanged, pinned here by the $70,000 take-home (salary less CPP, EI and
+total tax, done outside the engine, as the README says).
 """
 
 from __future__ import annotations
