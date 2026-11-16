@@ -1,0 +1,13 @@
+# BC428 (2025) inputs a salary-only caller does not give.
+# Line 81: "Line 81: British Columbia logging tax credit from Form FIN 542S or Form FIN 542P"
+# (Form BC428, CRA 5010-C). Forms FIN 542S and FIN 542P are not built. A salary-only caller has no
+# logging tax credit, so a request that leaves the line out is read as blank; the step that
+# consumes it reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_logging_tax_credit_line_81
+    title: "British Columbia logging tax credit"
+    reference: "81"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 81: British Columbia logging tax credit from Form FIN 542S or Form FIN 542P'

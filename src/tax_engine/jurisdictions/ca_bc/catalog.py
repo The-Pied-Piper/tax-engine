@@ -279,6 +279,13 @@ BC428_TAX_AFTER_FOREIGN_CREDIT_LINE_72 = AmountKind.declare(
 enter "0") = ^": line 70 (the tax with the additional minimum tax) minus line 71 (the provincial
 foreign tax credit, blank read as 0), not below 0, rounded to the cent."""
 
+BC428_BRITISH_COLUMBIA_TAX_REDUCTION_LINE_79 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_tax_reduction_line_79", non_negative=True
+)
+"""British Columbia tax reduction, BC428 line 79 "Line 79: Line 73 minus line 78 (if negative, enter
+"0") British Columbia tax reduction = ^": line 73 (the basic reduction) minus line 78 (the
+reduction clawback), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -376,9 +383,22 @@ BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
 the tax on split income input read as 0 when blank. The form prints no floor for the line, so the
 kind is signed."""
 
+BC428_LOGGING_TAX_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "bc428_logging_tax_credit_line_81", non_negative=True
+)
+"""British Columbia logging tax credit, BC428 line 81 "Line 81: British Columbia logging tax credit
+from Form FIN 542S or Form FIN 542P": a caller input that is read as blank when left out."""
+
 BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
     CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
 )
 """UCCB and RDSP income, BC479 line 4 "Total of the UCCB income (line 11700 of the return) and the
 RDSP income (line 12500 of the return)": the total of the two incomes, a caller input that is read
 as blank when left out, column 1 (you) only."""
+
+BC479_SPOUSE_ADDITIONAL_CREDIT_LINE_10 = AmountKind.declare(
+    CATALOG, "bc479_spouse_additional_credit_line_10", non_negative=True
+)
+"""Additional credit for your spouse or common-law partner, BC479 line 10 "Additional credit for
+your spouse or common-law partner": the credit claimed for a spouse or common-law partner, a caller
+input that is read as blank when left out."""
