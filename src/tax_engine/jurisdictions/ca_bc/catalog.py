@@ -395,3 +395,10 @@ BC479_SPOUSE_ADDITIONAL_CREDIT_LINE_10 = AmountKind.declare(
 """Additional credit for your spouse or common-law partner, BC479 line 10 "Additional credit for
 your spouse or common-law partner": the credit claimed for a spouse or common-law partner, a caller
 input that is read as blank when left out."""
+
+BC479_MINING_EXPLORATION_CREDIT_LINE_26 = AmountKind.declare(
+    CATALOG, "bc479_mining_exploration_credit_line_26", non_negative=True
+)
+"""British Columbia mining exploration tax credit, BC479 line 26 "Enter the amount from line 23 of
+your Form T88": the credit taken from Form T88, a caller input that is read as blank when left
+out."""
