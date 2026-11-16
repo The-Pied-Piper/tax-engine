@@ -388,3 +388,10 @@ BC479_SPOUSE_ADDITIONAL_CREDIT_LINE_10 = AmountKind.declare(
 """Additional credit for your spouse or common-law partner, BC479 line 10 "Additional credit for
 your spouse or common-law partner": the credit claimed for a spouse or common-law partner, a caller
 input that is read as blank when left out."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_25 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_25", non_negative=True
+)
+"""British Columbia venture capital tax credit, BC479 line 25 "Add lines 20, 21, and 23. (maximum
+$300,000)": the total of the venture capital tax credit lines, a caller input that is read as blank
+when left out; the $300,000 maximum is stated, not enforced."""
