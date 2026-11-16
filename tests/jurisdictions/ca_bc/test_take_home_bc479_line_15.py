@@ -7,8 +7,8 @@ plus line 14 = ^". Line 15 is one core/sum step (`bc479_line_15.yaml`), rounded 
 (`ca-bc/bc479_home_renovation_credit_line_14`), producing `ca-bc/bc479_page_1_total_line_15`, a
 non-negative kind, reference "15", with no title (the form prints none). Neither part is ever blank
 (line 13 is a computed figure, line 14 reads its blank expenses as 0), so the step has no blank
-rule. Line 16 is a page carry with no step. The spouse branch of line 10 is not built (ticket
-#1192), so there is no spouse gate here.
+rule. Line 16 is a page carry with no step. The spouse branch of line 10 is not built, so
+there is no spouse gate here.
 
 The test composes the real salary part, the real Schedule 8 and T1 taxable income parts, the real
 line 1 to line 14 parts and the new line 15 part, and types in the salary and, in some tests, the
