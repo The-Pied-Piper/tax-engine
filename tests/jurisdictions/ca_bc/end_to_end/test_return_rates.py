@@ -1,7 +1,6 @@
 """The British Columbia return summary carries the average and the marginal income tax rate (2025),
-through the real engine (the real British Columbia manifest over the British Columbia package list,
-which stands in for `registrations.JURISDICTIONS` until British Columbia is listed; salary the only
-input).
+through the registered engine (`build_tax_computation`, which lists British Columbia; salary the
+only input).
 
 Calculated the same way as Alberta's and Ontario's, with the British Columbia tax reduction:
 
@@ -62,7 +61,7 @@ from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tests.jurisdictions.ca_bc.support import british_columbia_kinds, british_columbia_service
+from tax_engine.registrations import artifact_kinds
 from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
@@ -159,7 +158,7 @@ REDUCTION_FIGURES = [
 
 
 def _worksheets(salary: str) -> dict[str, tuple[Worksheet, ...]]:
-    return british_columbia_service().compute(
+    return build_tax_computation().compute(
         BRITISH_COLUMBIA, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
 
@@ -170,14 +169,14 @@ def _summary(salary: str) -> Worksheet:
 
 
 def _value(summary: Worksheet, name: str) -> Decimal:
-    value = summary.get(british_columbia_kinds().kind(name)).value
+    value = summary.get(artifact_kinds().kind(name)).value
     assert isinstance(value, Decimal)
     return value
 
 
 def _sum_line(sheet: Worksheet) -> SumLine:
     """The one trace line of the marginal tax rate step, found by its output kind."""
-    label = british_columbia_kinds().kind(MARGINAL).label
+    label = artifact_kinds().kind(MARGINAL).label
     (line,) = [
         line for line in sheet.trace if isinstance(line, SumLine) and line.output.label == label
     ]
@@ -186,7 +185,7 @@ def _sum_line(sheet: Worksheet) -> SumLine:
 
 @pytest.mark.parametrize("name", NEW_KINDS)
 def test_the_new_kinds_are_registered_decimal_amounts(name: str) -> None:
-    kind = british_columbia_kinds().kind(name)
+    kind = artifact_kinds().kind(name)
 
     assert kind.identifier == name
     assert kind.value_type is Decimal
@@ -196,7 +195,7 @@ def test_the_new_kinds_are_registered_decimal_amounts(name: str) -> None:
     "name", [MARGINAL, AVERAGE, BC_RATE, BRACKET, SLOPE, PHASE_OUT, WITH_REDUCTION]
 )
 def test_the_rate_kinds_are_non_negative(name: str) -> None:
-    assert non_negative(british_columbia_kinds().kind(name))
+    assert non_negative(artifact_kinds().kind(name))
 
 
 @pytest.mark.parametrize(("salary", "federal", "british_columbia", "marginal"), PART_FIGURES)
@@ -309,7 +308,7 @@ def test_the_marginal_rate_is_not_rounded_to_the_cent() -> None:
 
 def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() -> None:
     summary = _summary("70000")
-    kinds = british_columbia_kinds()
+    kinds = artifact_kinds()
 
     for name in (MARGINAL, AVERAGE):
         unit = summary.unit(kinds.kind(name).label)
@@ -319,7 +318,7 @@ def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() 
 
 def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
     summary = _summary("70000")
-    kinds = british_columbia_kinds()
+    kinds = artifact_kinds()
 
     for name in NEW_KINDS:
         label = kinds.kind(name).label
@@ -329,7 +328,7 @@ def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
 
 def test_the_marginal_rate_is_traced_as_one_exact_sum_of_the_federal_then_the_bc_part() -> None:
     sheet = _summary("200000")
-    kinds = british_columbia_kinds()
+    kinds = artifact_kinds()
 
     line = _sum_line(sheet)
 
@@ -354,7 +353,7 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
 
 def test_the_marginal_rate_comes_last_in_the_trace() -> None:
     sheet = _summary("100000")
-    kinds = british_columbia_kinds()
+    kinds = artifact_kinds()
     labels = [line.label for line in sheet.trace]
 
     marginal = labels.index(kinds.kind(MARGINAL).label)
@@ -370,12 +369,12 @@ def test_the_marginal_rate_comes_last_in_the_trace() -> None:
     [("30000", "364.81"), ("70000", "3162.39"), ("200000", "19230.76")],
 )
 def test_the_british_columbia_tax_anchors_do_not_move(salary: str, line_91: str) -> None:
-    worksheets = british_columbia_service().compute(
+    worksheets = build_tax_computation().compute(
         BRITISH_COLUMBIA, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (bc428,) = worksheets["ca-bc/bc428"]
 
-    assert bc428.get(british_columbia_kinds().kind(LINE_91)).value == D(line_91)
+    assert bc428.get(artifact_kinds().kind(LINE_91)).value == D(line_91)
 
 
 def test_the_ontario_and_alberta_anchors_do_not_move() -> None:
