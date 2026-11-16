@@ -434,3 +434,10 @@ BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
 )
 """Credit before the income reduction, BC479 line 11 "Line 11: Line 9 plus line 10 = ^": the basic
 sales tax credit (line 9) plus the spouse or common-law partner additional credit (line 10)."""
+
+BC479_SALES_TAX_CREDIT_LINE_13 = AmountKind.declare(
+    CATALOG, "bc479_sales_tax_credit_line_13", non_negative=True
+)
+"""Sales tax credit, BC479 line 13 "Line 13: Line 11 minus line 12 (if negative, enter "0") Sales
+tax credit = ^": line 11 (the credit before the income reduction) minus line 12 (the income
+reduction), not below 0, rounded to the cent."""
