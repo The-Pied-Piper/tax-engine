@@ -376,6 +376,12 @@ BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
 the tax on split income input read as 0 when blank. The form prints no floor for the line, so the
 kind is signed."""
 
+BC428_LOGGING_TAX_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "bc428_logging_tax_credit_line_81", non_negative=True
+)
+"""British Columbia logging tax credit, BC428 line 81 "Line 81: British Columbia logging tax credit
+from Form FIN 542S or Form FIN 542P": a caller input that is read as blank when left out."""
+
 BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
     CATALOG, "bc479_uccb_rdsp_income_line_4", non_negative=True
 )
