@@ -1,0 +1,12 @@
+# BC479 (2025) input that a salary-only caller does not give.
+# Line 30: "Total allowable credit" (5010-tc), "Line 28 plus line 29". Lines 28 and 29 are not built;
+# the total comes from Form T1356, which the engine does not compute. A salary-only caller has no
+# clean buildings tax credit, so a request that leaves the line out is read as blank.
+inputs:
+  - name: ca-bc/bc479_clean_buildings_credit_line_30
+    title: "Total allowable credit"
+    reference: "30"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 30: Total allowable credit'

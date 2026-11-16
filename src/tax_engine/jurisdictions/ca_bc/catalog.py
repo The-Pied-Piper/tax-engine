@@ -408,3 +408,10 @@ BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
 )
 """Credit before the income reduction, BC479 line 11 "Line 11: Line 9 plus line 10 = ^": the basic
 sales tax credit (line 9) plus the spouse or common-law partner additional credit (line 10)."""
+
+BC479_CLEAN_BUILDINGS_CREDIT_LINE_30 = AmountKind.declare(
+    CATALOG, "bc479_clean_buildings_credit_line_30", non_negative=True
+)
+"""Total allowable credit, BC479 line 30 "Line 30: Total allowable credit: Line 28 plus line 29
+= ^": lines 28 and 29 are not built, so the total is a caller input that is read as blank when
+left out."""
