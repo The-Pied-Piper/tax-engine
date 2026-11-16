@@ -2,8 +2,8 @@
 
 Form text (Form BC479, British Columbia Credits, CRA 5010-TC): line 45 "Line 36 plus line 44
 Enter this amount on line 47900 of your return. British Columbia credits". The form is one form
-(lines 1 to 45) and exports line 45, the British Columbia credits. It declares no `supplies`: the
-neutral name for these credits is introduced later, so this form supplies nothing yet. Line 45 is
+(lines 1 to 45) and exports line 45, the British Columbia credits, and supplies line 45 as
+`ca/provincial_credits.amount`, the name the federal T1 reads for line 47900. Line 45 is
 declared as an input of the test header: this test loads only the form declaration (`bc479.yaml`),
 not the line parts, which have their own tests.
 """
@@ -36,7 +36,7 @@ capabilities: []
 """
 
 
-def test_the_form_is_declared_with_its_export_and_no_supply(tmp_path: Path) -> None:
+def test_the_form_is_declared_with_its_export_and_its_supply(tmp_path: Path) -> None:
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
@@ -53,4 +53,4 @@ def test_the_form_is_declared_with_its_export_and_no_supply(tmp_path: Path) -> N
     assert bc479.required is True
     assert bc479.title == "Form BC479: British Columbia Credits"
     assert tuple(bc479.exports) == (LINE_45,)
-    assert dict(bc479.supplies) == {}
+    assert dict(bc479.supplies) == {"ca/provincial_credits.amount": LINE_45}
