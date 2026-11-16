@@ -136,6 +136,13 @@ BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
 """British Columbia total ESOP and EVCC credits, BC428 line 88 "Line 88: Line 86 plus line 87
 (maximum $2,000)": a caller input that is read as blank when left out."""
 
+BC428_MINING_FLOW_THROUGH_CREDIT_LINE_90 = AmountKind.declare(
+    CATALOG, "bc428_mining_flow_through_credit_line_90", non_negative=True
+)
+"""British Columbia mining flow-through share tax credit, BC428 line 90 "Line 90 and line 68810:
+British Columbia mining flow-through share tax credit (complete Form T1231)": a caller input that
+is read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
