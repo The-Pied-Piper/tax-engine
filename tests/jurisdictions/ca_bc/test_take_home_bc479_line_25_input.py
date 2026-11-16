@@ -1,9 +1,9 @@
 """BC479 (2025) line 25's input, as the British Columbia take-home manifest part declares it.
 
 Form text (Form BC479, CRA 5010-TC): "Line 25: Add lines 20, 21, and 23. (maximum $300,000)", under
-the section heading "British Columbia venture capital tax credit" (confirmed from the 5010-tc 2025 .txt). The
-printed maximum is not enforced, as for BC428 lines 36 and 84. A single filer has no certificates, so a request that
-leaves the line out is read as blank.
+the section heading "British Columbia venture capital tax credit" (confirmed from the
+5010-tc 2025 .txt). The printed maximum is not enforced, as for BC428 lines 36 and 84. A single
+filer has no certificates, so a request that leaves the line out is read as blank.
 
 British Columbia is not yet listed in the registrations, so the real part is loaded under a
 test-local header over the British Columbia package list of `support.py`.
