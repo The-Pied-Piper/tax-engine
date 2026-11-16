@@ -1,0 +1,15 @@
+# Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: the July 2026 T4127 states "for 2026 and subsequent years, the basic reduction is increased from $562 to
+# $690" and prints 690 in its "S" formula. It is not the January edition's indexed 575, which the July edition
+# supersedes, and not the prorated 805, which is the payroll catch-up for the second half of 2026.
+# British Columbia basic tax reduction, 2026 tax year (Form BC428 line 73). Claimed whole, and
+# line 79 takes it down to 0 from net income 44,952, so it is a plain `credit` dataset here.
+# Line 73 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca-bc/tax_reduction_basic
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "690"
