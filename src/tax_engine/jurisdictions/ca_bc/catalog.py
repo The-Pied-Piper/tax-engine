@@ -437,6 +437,13 @@ of your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^":
 (the expenses) times the printed 10%, rounded to the cent. The printed $10,000 maximum is not
 enforced."""
 
+BC479_PAGE_1_TOTAL_LINE_15 = AmountKind.declare(
+    CATALOG, "bc479_page_1_total_line_15", non_negative=True
+)
+"""Page 1 total, BC479 line 15 "Line 15: Line 13 plus line 14 = ^": the sales tax credit (line 13)
+plus the home renovation credit (line 14), rounded to the cent. Line 16 carries it to the next
+page with no step of its own."""
+
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
 )
