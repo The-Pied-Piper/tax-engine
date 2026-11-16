@@ -219,13 +219,20 @@ slot: the rule then applies to that field in every record.
 
 ### Optional slots
 
-`optional` lists consumed slots, each holding one identifier (not a list), each named once; an
-unknown or listed slot is an `InvalidManifestError` naming the file and the capability. A
-form-set otherwise refuses a form that reads a record list no form exports or supplies. A record
-list read only through optional slots may have no producer: it is then read as a blank, as a blank
-input is, and the slot's `blank` rule decides (`pass_on` blanks what the selection produces; a
-slot with no rule refuses the blank). A producer that exists is read as usual. A figure no form supplies is a record list of one amount field, so only a neutral identifier labelled `.amount` may be read this way. A capability must
-list the slot in `BLANK_ALLOWED` for a blank rule to be allowed there.
+`optional` lists consumed slots, each holding one identifier of the form `<form>.<label>` (a
+form's figure, not a list), each named once; a slot that is unknown, list-valued or repeated is an
+`InvalidManifestError` naming the file and the capability. A form set otherwise refuses a form
+that reads a record list no form exports or supplies. A record list read only through optional
+slots may have no producer: it is then read as a blank, as a blank input is, and the slot's
+`blank` rule decides (`pass_on` blanks what the selection produces). A slot with no `blank` rule
+and no producer is refused when the forms are composed, naming the form and the slot. A producer
+that exists is read as usual. A list that the form also reads through a list slot, or through a
+slot not marked optional, is a required read.
+
+A figure no form supplies is a record list of one field, the registered kind that the identifier's
+stem names (`ca/provincial_credits` for `ca/provincial_credits.amount`): the stem must be a
+registered amount, count or record list, or the manifest is refused naming the form and the figure.
+A capability must list the slot in `BLANK_ALLOWED` for a blank rule to be allowed there.
 
 ## Titles
 

@@ -2684,8 +2684,8 @@ outputs: [ex/net]
 capabilities:
   - name: ex/subtract
     consumes:
-      amount: ex/income
-      less: ex/deduction
+      amount: ex/income.total
+      less: ex/deduction.total
       parts: [ex/income, ex/deduction]
 {optional}    blank:
       less: "0"

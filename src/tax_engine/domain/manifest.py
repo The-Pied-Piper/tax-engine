@@ -22,9 +22,10 @@ from tax_engine.domain.blank import BlankRule
 from tax_engine.domain.errors import (
     InvalidManifestError,
     InvalidRegistrationError,
+    UnknownRegistrationError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind, RecordListKind
+from tax_engine.domain.kinds import RecordListKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.unit import Unit
 
@@ -82,6 +83,30 @@ class CapabilitySelection:
             for slot, named in self.consumes.items()
         }
         object.__setattr__(self, "consumes", MappingProxyType(consumes))
+        self._check_optional()
+
+    def _check_optional(self) -> None:
+        """Refuse an `optional` entry that is not a consumed slot holding one form-export figure,
+        or that is listed twice."""
+        for position, slot in enumerate(self.optional):
+            if slot not in self.consumes:
+                raise InvalidManifestError(
+                    f"{self.name}: optional slot {slot!r} is not a consumed slot of the selection"
+                )
+            named = self.consumes[slot]
+            if not isinstance(named, str):
+                raise InvalidManifestError(
+                    f"{self.name}: optional slot {slot!r} takes a list, not one identifier"
+                )
+            if "." not in named:
+                raise InvalidManifestError(
+                    f"{self.name}: optional slot {slot!r} reads {named!r}, which is not a form's "
+                    "figure of the form <form>.<label>"
+                )
+            if slot in self.optional[:position]:
+                raise InvalidManifestError(
+                    f"{self.name}: optional slot {slot!r} is listed more than once"
+                )
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mappings are unhashable."""
@@ -189,6 +214,28 @@ class Form:
         )
         return own + tuple(
             self._supplied(neutral, kinds.kind(export)) for neutral, export in self.supplies.items()
+        )
+
+    @property
+    def optionally_read(self) -> frozenset[str]:
+        """The identifiers this form reads only through slots marked optional: a list-valued read
+        of the same identifier, or an unmarked slot, makes it a required read."""
+        required: set[str] = set()
+        optional: set[str] = set()
+        for selection in self.capabilities:
+            for slot, named in selection.consumes.items():
+                identifiers = (named,) if isinstance(named, str) else named
+                (optional if slot in selection.optional else required).update(identifiers)
+        return frozenset(optional - required)
+
+    @property
+    def unruled_optional(self) -> tuple[tuple[str, str], ...]:
+        """The optional slots with no blank rule, each as (slot, identifier), in selection order."""
+        return tuple(
+            (slot, str(selection.consumes[slot]))
+            for selection in self.capabilities
+            for slot in selection.optional
+            if slot not in selection.blank
         )
 
     def _supplied(self, neutral: str, export: ArtifactKind[Any]) -> RecordListKind:
@@ -406,31 +453,42 @@ class Manifest:
         )
 
     def _stand_ins(self, derived: list[RecordListKind]) -> list[RecordListKind]:
-        """The record list of each neutral figure that a form reads through an optional slot and no
-        form supplies, so that its blank can be read: a list of one amount field.
+        """The record list of each figure that a form reads through an optional slot and no form
+        supplies, so that its blank can be read: a list of one field, the registered kind that the
+        figure's stem (`<stem>.<label>`) names.
 
-        Only a figure labelled `amount` can stand in, as no form tells what else its field is.
+        A stem that is not a registered amount, count or record list cannot stand in, as no form
+        tells what the field is.
         """
         made: dict[str, RecordListKind] = {}
+        known = {kind.identifier for kind in derived} | self.artifacts.identifiers()
         for form in self.forms:
             for selection in form.capabilities:
                 for slot in selection.optional:
-                    named = selection.consumes[slot]
-                    assert isinstance(
-                        named, str
-                    )  # the loader and the selection take one identifier
-                    if named in made or named in {kind.identifier for kind in derived}:
+                    named = str(selection.consumes[slot])
+                    if named in made or named in known:
                         continue
-                    if "." not in named or named in self.artifacts.identifiers():
-                        continue
-                    stem, _, label = named.partition(".")
-                    if label != "amount":
-                        raise InvalidManifestError(
-                            f"form {form.name!r}: {named!r} is read through an optional slot and "
-                            "no form supplies it; only a figure labelled 'amount' can stand in"
-                        )
-                    made[named] = RecordListKind(named, fields=(AmountKind(f"{stem}_amount"),))
+                    stem = named.partition(".")[0]
+                    made[named] = RecordListKind(
+                        named, fields=(self._field_kind(form, named, stem),)
+                    )
         return list(made.values())
+
+    def _field_kind(self, form: Form, named: str, stem: str) -> ArtifactKind[Any]:
+        """The registered kind `stem` names, for the record list standing in for `named`."""
+        try:
+            field = self.artifacts.kind(stem)
+        except UnknownRegistrationError:
+            raise InvalidManifestError(
+                f"form {form.name!r}: {named!r} is read through an optional slot and no form "
+                f"supplies it, and {stem!r} is not a registered kind to stand in for it"
+            ) from None
+        if not isinstance(field, RecordField):
+            raise InvalidManifestError(
+                f"form {form.name!r}: {named!r} is read through an optional slot and no form "
+                f"supplies it, and {stem!r} is not an amount, a count or a record list"
+            )
+        return field
 
     @staticmethod
     def _check_derived(derived: list[RecordListKind]) -> None:

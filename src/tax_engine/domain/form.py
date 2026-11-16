@@ -119,20 +119,16 @@ class FormComposition:
             )
         self._inputs = fields | frozenset(read & starting)
         # A kind read only through slots the form marks optional may go without a producer.
-        by_marking = [
-            (kinds.kind(consumed), slot in selection.optional)
-            for selection in form.capabilities
-            for slot, consumed in selection.consumes.items()
-            if isinstance(consumed, str)
-        ]
-        required_reads = {kind for kind, optional in by_marking if not optional}
-        self._optional_imports = frozenset(
-            kind for kind, optional in by_marking if optional and kind not in required_reads
-        ) & (self._imports)
+        self._optional_imports = (
+            frozenset(kinds.kind(identifier) for identifier in form.optionally_read) & self._imports
+        )
+        self._unruled_optional = tuple(
+            (slot, kinds.kind(identifier)) for slot, identifier in form.unruled_optional
+        )
         self._field_defaults = {artifact.kind: artifact for artifact in field_defaults}
         self._blank_inputs = (
             self._blank_kinds(defaults, self._field_defaults.values()) & self._inputs
-        ) | self._optional_imports
+        )
         stray = self._field_defaults.keys() - fields
         if stray:
             kind = min(stray, key=Composition.sort_key)
@@ -144,7 +140,7 @@ class FormComposition:
                 wired,
                 inputs=self._inputs | self._imports | self._earlier,
                 outputs=frozenset(listed),
-                blank_inputs=self._blank_inputs,
+                blank_inputs=self._blank_inputs | self._optional_imports,
             )
         except InvalidCompositionError as exc:
             raise InvalidCompositionError(f"form {name!r}: {exc}") from exc
@@ -231,6 +227,11 @@ class FormComposition:
         """The imports read only through slots marked optional: no form need supply them, and one
         no form supplies is read as a blank."""
         return self._optional_imports
+
+    @property
+    def unruled_optional(self) -> tuple[tuple[str, ArtifactKind[Any]], ...]:
+        """The optional slots with no blank rule, each as (slot, kind it reads)."""
+        return self._unruled_optional
 
     @property
     def earlier(self) -> frozenset[RecordListKind]:
@@ -598,6 +599,12 @@ class FormSet:
                 if kind not in self._producers:
                     raise InvalidCompositionError(
                         f"form {form.name!r}: no form exports {kind.label!r}, which it imports"
+                    )
+            for slot, kind in form.unruled_optional:
+                if kind in form.optional_imports and kind not in self._producers:
+                    raise InvalidCompositionError(
+                        f"form {form.name!r}: optional slot {slot!r} reads {kind.label!r}, which "
+                        "no form exports, and has no blank rule to read it as a blank"
                     )
 
     def _check_inputs_are_read(

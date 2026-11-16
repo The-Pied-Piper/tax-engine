@@ -5,7 +5,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.domain.artifact import ArtifactRegistry
-from tax_engine.domain.kinds import RecordListKind
+from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.domain.record_list import RecordList
 from tax_engine.jurisdictions.ca.catalog import (
     CANADA_TRAINING_CREDIT,
@@ -51,9 +51,11 @@ from tax_engine.jurisdictions.ca.catalog import (
     NET_PROFESSIONAL_INCOME,
     PART_XII_2_TAX_CREDIT,
     PROVINCIAL_CREDITS,
+    PROVINCIAL_CREDITS_LINE_47900,
     REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT,
     TAX_PAID_BY_INSTALMENTS,
 )
+from tests.jurisdictions.ca.catalog_snapshot import REGISTERED, SIGNED
 from tests.kinds import non_negative
 
 
@@ -237,3 +239,20 @@ def test_the_home_renovations_are_a_record_list_of_three_fields(registry: Artifa
         HOME_RENOVATION_CLAIMED_BY_OTHERS,
     )
     assert registry.get("ca/home_renovations") is HOME_RENOVATIONS
+
+
+def test_the_provincial_credits_line_47900_kind_is_registered(registry: ArtifactRegistry) -> None:
+    assert registry.get("ca/provincial_credits_line_47900") is PROVINCIAL_CREDITS_LINE_47900
+
+
+def test_the_provincial_credits_line_47900_is_a_non_negative_amount_beside_the_credits() -> None:
+    # T1 line 47900 "Provincial or territorial credits": the total of the provincial credits
+    # record list, a credit total.
+    assert isinstance(PROVINCIAL_CREDITS_LINE_47900, AmountKind)
+    assert non_negative(PROVINCIAL_CREDITS_LINE_47900) is True
+    assert PROVINCIAL_CREDITS_LINE_47900 is not PROVINCIAL_CREDITS
+    assert "ca/provincial_credits_line_47900" not in SIGNED
+
+
+def test_the_provincial_credits_line_47900_is_in_the_catalog_snapshot() -> None:
+    assert "ca/provincial_credits_line_47900" in REGISTERED

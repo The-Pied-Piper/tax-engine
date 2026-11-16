@@ -681,11 +681,13 @@ class YamlJurisdictionSource:
         }
         for form in imported:
             for selection in form.capabilities:
-                for name, slot in selection.consumes.items():
-                    if name in selection.optional:
-                        continue
+                for slot in selection.consumes.values():
                     for identifier in (slot,) if isinstance(slot, str) else slot:
-                        if "." in identifier and identifier not in derived:
+                        if (
+                            "." in identifier
+                            and identifier not in derived
+                            and identifier not in form.optionally_read
+                        ):
                             raise InvalidManifestError(
                                 f"form {form.name!r}: needs {identifier!r}, which no form of "
                                 "this manifest supplies"
@@ -813,39 +815,21 @@ class YamlJurisdictionSource:
             produces=self._produced(fields.field("produces")),
             blank=self._blank_rules(name, blank, consumes),
             blank_fields=self._field_blank_rules(name, blank, consumes),
-            optional=self._optional_slots(name, fields.optional_field("optional"), consumes),
+            optional=self._optional_slots(name, fields.optional_field("optional")),
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
             unit=None if unit is None else unit.require_non_empty_string(),
         )
 
     @staticmethod
-    def _optional_slots(
-        who: str,
-        node: YamlNode | None,
-        consumes: Mapping[str, str | tuple[str, ...]],
-    ) -> tuple[str, ...]:
-        """The slots `node` lists as optional: distinct consumed slots, each holding one identifier,
-        in the order written; no `optional` key is no optional slot."""
+    def _optional_slots(who: str, node: YamlNode | None) -> tuple[str, ...]:
+        """The slot names `node` lists as optional, in the order written; none if there is no
+        `optional` key. The selection says which of them it may take."""
         if node is None:
             return ()
         if not node.is_list():
             raise InvalidManifestError(f"{who}: optional must be a list of consumed slot names")
-        slots = tuple(item.require_non_empty_string() for item in node.items())
-        for position, slot in enumerate(slots):
-            if slot not in consumes:
-                raise InvalidManifestError(
-                    f"{who}: optional slot {slot!r} is not a consumed slot of the selection"
-                )
-            if not isinstance(consumes[slot], str):
-                raise InvalidManifestError(
-                    f"{who}: optional slot {slot!r} takes a list, not one identifier"
-                )
-            if slot in slots[:position]:
-                raise InvalidManifestError(
-                    f"{who}: optional slot {slot!r} is listed more than once"
-                )
-        return slots
+        return tuple(item.require_non_empty_string() for item in node.items())
 
     def _blank_rules(
         self,

@@ -1,9 +1,9 @@
 """T1 General 2025 (5006-R, British Columbia) line 47900 "Provincial or territorial credits", from
 the salary alone.
 
-Form text (Form BC479, CRA 5010-TC, read 2026-11-14, as recorded on the ticket): "Line 45: Line 36
-plus line 44 Enter this amount on line 47900 of your return." The T1 text for line 47900 itself is
-to be confirmed. British Columbia's BC479 form supplies its line 45 as
+T1 General 2025 (CRA 5006-R-25E): "Line 165 and line 47900: Provincial or territorial credits
+(complete Form 479, if it applies)". Form BC479 (CRA 5010-TC): "Line 45: Line 36 plus line 44 Enter
+this amount on line 47900 of your return." British Columbia's BC479 form supplies its line 45 as
 `ca/provincial_credits.amount`, so the T1 part reads it through `core/record_total` into the new
 non-negative kind `ca/provincial_credits_line_47900`, and line 47900 is a copy of BC479 line 45.
 
