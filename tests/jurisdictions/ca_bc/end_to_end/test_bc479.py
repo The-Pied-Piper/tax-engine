@@ -18,10 +18,8 @@ over the 15,000.00 threshold of line 7, not below 0, and line 15 is the page 1 t
 net income of line 1 is 16,865.00, so the credit is 75.00 - 37.30 = 37.70; from a net income of
 18,750.00 it is nil. The renter's credit of line 44 is left blank and read as 0.
 
-Not yet wired: T1 line 47900 is not built (no T1 step reads BC479 line 45), so the line 45 figure is
-the form's export but does not reach T1 line 167. At $17,000 the return's line 167 (see
-`test_bc428.py`) is therefore short of this 37.70 credit. Wiring it is a change to the shared T1
-form, and is not done here.
+The line 45 figure reaches T1 line 167 through T1 line 47900: at $17,000 the return's line 167 (see
+`test_bc428.py`) includes this 37.70 credit.
 """
 
 from __future__ import annotations

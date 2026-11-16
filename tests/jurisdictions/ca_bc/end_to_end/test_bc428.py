@@ -22,9 +22,8 @@ The lines 1, 74 and 79 figures follow from the salary: the taxable income (line 
 income (line 74) are the salary less the Schedule 8 enhanced contributions, and line 79 is the
 reduction above. The T1
 line 167 figures are the engine's own, not computed by hand: they pin the current output of the
-whole chain. They do not include the sales tax credit of BC479 line 45: T1 line 47900 is not built,
-so the BC479 credit does not yet reach line 167 (the credit is pinned in `test_bc479.py`). Line
-167 is the refund (negative) or balance owing (positive) of the return.
+whole chain, including the sales tax credit of BC479 line 45 (T1 line 47900, pinned in
+`test_bc479.py`). Line 167 is the refund (negative) or balance owing (positive) of the return.
 """
 
 from __future__ import annotations
