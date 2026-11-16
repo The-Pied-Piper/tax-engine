@@ -1,0 +1,20 @@
+# The British Columbia take-home return: T1 line 167 "Refund or balance owing" (positive is owing,
+# negative is a refund). The T1 form exports it, and another form's export is read only as a record
+# list, so the one step is core/record_total over the T1 export, totalling the one amount into the
+# return's own `ca/refund_or_balance_owing`. This mirrors Alberta's and Ontario's `return.yaml`.
+#
+# Only line 167 is built here. The average and marginal income tax rates the Alberta and Ontario
+# returns also carry are separate tickets (the British Columbia marginal rate includes the tax
+# reduction, BC428 lines 73 to 79, payroll-applied per T4127 factor S, and the sales tax credit
+# phase-out), so the manifest header exports line 167 only. The T1 line 167 figure itself needs
+# BC428 line 91 and BC479 line 45, which are not all on main yet; this step reads the T1 export
+# whatever those totals are, so it is correct as soon as they are wired.
+capabilities:
+  - name: core/record_total
+    title: "Refund or balance owing"
+    reference: "167"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.refund_or_balance_owing
+    produces:
+      output: ca/refund_or_balance_owing

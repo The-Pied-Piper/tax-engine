@@ -136,6 +136,13 @@ BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
 """British Columbia total ESOP and EVCC credits, BC428 line 88 "Line 88: Line 86 plus line 87
 (maximum $2,000)": a caller input that is read as blank when left out."""
 
+BC428_MINING_FLOW_THROUGH_CREDIT_LINE_90 = AmountKind.declare(
+    CATALOG, "bc428_mining_flow_through_credit_line_90", non_negative=True
+)
+"""British Columbia mining flow-through share tax credit, BC428 line 90 "Line 90 and line 68810:
+British Columbia mining flow-through share tax credit (complete Form T1231)": a caller input that
+is read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
@@ -456,6 +463,13 @@ BC479_TRAINING_CREDITS_LINE_34 = AmountKind.declare(
 )
 """Training credits total, BC479 line 34 "Line 34: Add lines 31 to 33": the sum of lines 31 to 33
 (the T1014, T1014-1 and T1014-2 credits), a caller input that is read as blank when left out."""
+
+BC479_RENTERS_CREDIT_LINE_44 = AmountKind.declare(
+    CATALOG, "bc479_renters_credit_line_44", non_negative=True
+)
+"""British Columbia renter's tax credit, BC479 line 44 (line 60576) "Line 38 minus line 43 (if
+negative, enter "0")": a caller input, read as blank when left out; the rent table and lines 37 to
+43 are not built."""
 
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
