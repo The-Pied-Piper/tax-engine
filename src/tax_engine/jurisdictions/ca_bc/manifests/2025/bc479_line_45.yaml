@@ -1,0 +1,24 @@
+# Form BC479 (2025, CRA 5010-TC) line 45. Line 45: "Line 36 plus line 44 Enter this amount on line
+# 47900 of your return. British Columbia credits = ^". One core/sum step over line 35
+# (`ca-bc/bc479_page_2_total_line_35`; line 36 is a page carry of it, with no step, so line 45 reads
+# line 35) and the line 44 input (the renter's tax credit), rounded half-up to the cent. A salary-only
+# caller leaves line 44 blank, so the blank rule reads it as 0 and the step prints its own "left blank,
+# taken as 0" row. The output is the form's export; T1 line 47900 is not read yet, so the form
+# declares no `supplies`.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/sum
+    title: "British Columbia credits"
+    reference: "45"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts:
+        - ca-bc/bc479_page_2_total_line_35
+        - ca-bc/bc479_renters_credit_line_44
+    blank:
+      ca-bc/bc479_renters_credit_line_44: "0"
+    produces:
+      output: ca-bc/bc479_british_columbia_credits_line_45
