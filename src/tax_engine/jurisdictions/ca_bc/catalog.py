@@ -463,6 +463,13 @@ BC479_SALES_TAX_CREDIT_LINE_13 = AmountKind.declare(
 tax credit = ^": line 11 (the credit before the income reduction) minus line 12 (the income
 reduction), not below 0, rounded to the cent."""
 
+BC479_PAGE_1_TOTAL_LINE_15 = AmountKind.declare(
+    CATALOG, "bc479_page_1_total_line_15", non_negative=True
+)
+"""Page 1 total, BC479 line 15 "Line 15: Line 13 plus line 14 = ^": the sales tax credit (line 13)
+plus the home renovation credit (line 14), rounded to the cent. Line 16 carries it to the next
+page with no step of its own."""
+
 BC479_VENTURE_CAPITAL_CREDIT_LINE_25 = AmountKind.declare(
     CATALOG, "bc479_venture_capital_credit_line_25", non_negative=True
 )
