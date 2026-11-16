@@ -95,6 +95,7 @@ def test_a_request_that_leaves_out_line_25_is_read_as_blank(tmp_path: Path) -> N
     declaration = _manifest(tmp_path).inputs[IDENTIFIER]
     default = declaration.default_artifact(british_columbia_kinds().kind(IDENTIFIER))
 
+    assert declaration.title is None
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
     assert default is not None and default.is_blank
