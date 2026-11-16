@@ -265,6 +265,13 @@ BC428_TAX_WITH_MINIMUM_TAX_LINE_70 = AmountKind.declare(
 """Tax with the additional minimum tax, BC428 line 70 "Line 70: Line 68 plus line 69 = ^": line 68
 (the tax after credits) plus line 69 (the additional minimum tax), rounded to the cent."""
 
+BC428_TAX_AFTER_FOREIGN_CREDIT_LINE_72 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_foreign_credit_line_72", non_negative=True
+)
+"""Tax after the foreign tax credit, BC428 line 72 "Line 72: Line 70 minus line 71 (if negative,
+enter "0") = ^": line 70 (the tax with the additional minimum tax) minus line 71 (the provincial
+foreign tax credit, blank read as 0), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
