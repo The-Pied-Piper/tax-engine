@@ -55,8 +55,6 @@ from tests.manifest_support import inputs_without_form
 D = Decimal
 CODE = JurisdictionCode("CA-BC")
 FORM = "ca-bc/bc479"
-LINE_11 = "ca-bc/bc479_credit_before_reduction_line_11"
-LINE_12 = "ca-bc/bc479_income_reduction_line_12"
 LINE_13 = "ca-bc/bc479_sales_tax_credit_line_13"
 LINE_14 = "ca-bc/bc479_home_renovation_credit_line_14"
 LINE_15 = "ca-bc/bc479_page_1_total_line_15"
