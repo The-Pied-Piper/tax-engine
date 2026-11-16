@@ -5,8 +5,8 @@ Lines 28 and 29 are not built; line 30 is taken as one figure, an input the engi
 (it comes from Form T1356). A salary-only caller has no clean buildings tax credit, so a request
 that leaves the line out is read as blank.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

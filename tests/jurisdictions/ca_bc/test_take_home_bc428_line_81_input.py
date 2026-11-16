@@ -5,8 +5,8 @@ Form text (Form BC428, CRA 5010-C): "Line 81: British Columbia logging tax credi
 logging tax credit, so a request that leaves the line out is read as blank, and the step that
 consumes it reads that blank as 0.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

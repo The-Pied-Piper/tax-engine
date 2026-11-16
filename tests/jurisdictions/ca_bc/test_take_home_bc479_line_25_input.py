@@ -5,8 +5,8 @@ the section heading "British Columbia venture capital tax credit" (confirmed fro
 5010-tc 2025 .txt). The printed maximum is not enforced, as for BC428 lines 36 and 84. A single
 filer has no certificates, so a request that leaves the line out is read as blank.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

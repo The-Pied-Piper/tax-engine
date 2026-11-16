@@ -5,8 +5,8 @@ column for the spouse or common-law partner. Only the filer's column is taken: t
 is a single filer. A salary-only caller has no such repayment, so a request that leaves the line out
 is read as blank, and each step that consumes it prints its own blank row.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

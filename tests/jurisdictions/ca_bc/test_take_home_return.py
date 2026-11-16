@@ -9,8 +9,7 @@ over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a cro
 key (the return is the default form) and no params. The steps after it read the figures of the two
 rates (`end_to_end/test_return_rates.py`); here they run over stand-ins.
 
-British Columbia is not yet listed in `registrations.JURISDICTIONS` (BC428 and BC479 are not all
-built), so the test composes the real British Columbia salary part and the real `return.yaml` over
+The test composes the real British Columbia salary part and the real `return.yaml` over
 a temporary manifest. The header, the declaration of the T1 tax and credits form (exporting
 `ca/refund_or_balance_owing`) and the step producing that export are made up here, because the
 shared scaffold and the T1 form own them: the stand-in step takes a given `ca/total_credits` off

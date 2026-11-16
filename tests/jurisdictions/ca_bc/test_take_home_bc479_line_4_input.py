@@ -5,8 +5,8 @@ and the RDSP income (line 12500 of the return)", Column 1: You, Column 2: Your s
 common-law partner. Only column 1 is built. A caller with neither the UCCB nor the RDSP has
 nothing to enter, so a request that leaves the line out is read as blank.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

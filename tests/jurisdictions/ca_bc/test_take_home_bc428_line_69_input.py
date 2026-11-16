@@ -5,8 +5,8 @@ Form BC428 (CRA 5010-C), line 69, as printed on the form; the part takes the pri
 minimum tax to report leaves the line out, so the request is read as 0, not blank, because the step
 that multiplies it by the rate needs a base.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations

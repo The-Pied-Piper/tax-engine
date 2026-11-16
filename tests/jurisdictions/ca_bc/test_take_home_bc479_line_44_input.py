@@ -5,8 +5,8 @@ enter "0") = ^". Single amount. The rent table and lines 37 to 43 are not built;
 maximum is stated in the basis and is not enforced. A request that leaves the line out is read as
 blank; the step that consumes it reads blank as 0.
 
-British Columbia is not yet listed in the registrations, so the real part is loaded under a
-test-local header over the British Columbia package list of `support.py`.
+The real part is loaded under a test-local header over the British Columbia package list of
+`support.py`.
 """
 
 from __future__ import annotations
