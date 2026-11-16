@@ -350,6 +350,13 @@ BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", n
 enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse
 amount is not built."""
 
+BC479_INCOME_FOR_SALES_TAX_CREDIT_LINE_8 = AmountKind.declare(
+    CATALOG, "bc479_income_for_sales_tax_credit_line_8", non_negative=True
+)
+"""Income for the sales tax credit, BC479 line 8 "Line 8: Line 6 minus line 7 (if negative, enter
+"0") Income for the sales tax credit = ^": line 6 (the adjusted family net income) minus line 7 (the
+threshold), not below 0, rounded to the cent."""
+
 BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
     CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
 )
