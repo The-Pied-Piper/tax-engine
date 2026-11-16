@@ -299,6 +299,13 @@ BC428_TAX_AFTER_REDUCTION_LINE_80 = AmountKind.declare(
 negative, enter "0") = ^": line 72 (the tax after the foreign tax credit) minus line 79 (the British
 Columbia tax reduction), not below 0, rounded to the cent."""
 
+BC428_TAX_AFTER_LOGGING_CREDIT_LINE_82 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_logging_credit_line_82", non_negative=True
+)
+"""Tax after the logging tax credit, BC428 line 82 "Line 82: Line 80 minus line 81 (if negative,
+enter "0") = ^": line 80 (the tax after the British Columbia tax reduction) minus line 81 (the
+logging tax credit, read as 0 when blank), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
