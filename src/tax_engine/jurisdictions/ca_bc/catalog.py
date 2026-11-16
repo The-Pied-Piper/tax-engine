@@ -130,6 +130,12 @@ BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
 political contribution tax credit (use Worksheet BC428) (maximum $500)": a caller input that is
 read as blank when left out."""
 
+BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
+    CATALOG, "bc428_esop_evcc_credits_line_88", non_negative=True
+)
+"""British Columbia total ESOP and EVCC credits, BC428 line 88 "Line 88: Line 86 plus line 87
+(maximum $2,000)": a caller input that is read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
