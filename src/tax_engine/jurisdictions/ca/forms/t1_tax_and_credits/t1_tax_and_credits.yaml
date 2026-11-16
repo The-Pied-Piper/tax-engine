@@ -15,10 +15,6 @@
 #     Canada, foreign tax credit, investment tax credit recapture, logging tax credit and the
 #     line 41600 credits) are, for the take-home filer, not applied in payroll or not given, so
 #     they do not move the gate. The return counts the rate only where this is above zero.
-#   - Line 47900 (`ca/provincial_credits_line_47900`, "Provincial or territorial credits") is read
-#     by no form yet (line 48200 will). It is exported because the engine refuses a figure that
-#     is produced and read by nothing, and it is the figure the line 47900 part exists for: blank
-#     where no provincial form supplies the credits.
 # Line 76 (`ca/federal_tax_on_taxable_income_line_76`, "Line 74 plus line 75 Federal tax on
 # taxable income") is read inside the form by line 40400 only, and line 70 by line 76, so neither
 # is exported.
@@ -31,5 +27,4 @@ form:
     - ca/total_payable
     - ca/federal_bracket_column_rate_line_73
     - ca/federal_tax_after_credits
-    - ca/provincial_credits_line_47900
 capabilities: []

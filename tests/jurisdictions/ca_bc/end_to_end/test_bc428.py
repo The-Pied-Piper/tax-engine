@@ -100,7 +100,8 @@ def test_the_lines_leading_to_line_91(salary: str, line_1: str, line_74: str, li
 @pytest.mark.parametrize(
     ("salary", "refund_or_balance_owing"),
     [
-        ("17000", "-1633.00"),
+        # Line 48200: 1,633.00 (Canada workers benefit) plus 37.70 (BC479 line 45), against no tax.
+        ("17000", "-1670.70"),
         ("20000", "-1474.91"),
         ("30000", "661.85"),
         ("70000", "10748.03"),

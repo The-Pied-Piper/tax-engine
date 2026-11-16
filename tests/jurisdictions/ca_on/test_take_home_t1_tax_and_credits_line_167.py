@@ -186,7 +186,6 @@ def test_the_real_t1_form_header_exports_167_43500_the_73_rate_and_basic_federal
         LINE_43500,
         FEDERAL_BRACKET_COLUMN_RATE_LINE_73,
         FEDERAL_TAX_AFTER_CREDITS,
-        "ca/provincial_credits_line_47900",
     }
     assert FEDERAL_TAX_ON_TAXABLE_INCOME_LINE_76 not in exports
 

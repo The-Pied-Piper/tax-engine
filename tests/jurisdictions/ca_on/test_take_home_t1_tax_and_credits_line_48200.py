@@ -35,6 +35,7 @@ import pytest
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.trace import BlankFallbackLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_on.conftest import TAKE_HOME, TakeHomeService
@@ -45,6 +46,7 @@ ONTARIO = JurisdictionCode("CA-ON")
 FORM = "ca/t1_tax_and_credits"
 LINE_45000 = "ca/ei_overpayment_line_45000"
 LINE_45300 = "ca/cwb_line_45300"
+LINE_47900 = "ca/provincial_credits_line_47900"
 LINE_48200 = "ca/total_credits"
 PARTS = (
     "salary.yaml",
@@ -61,6 +63,7 @@ PARTS = (
     "t1_taxable_income_line_10400_inputs.yaml",
     *(part.name for part in sorted(TAKE_HOME.rglob("t2204*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
+    "t1_tax_and_credits_line_47900.yaml",
     "t1_tax_and_credits_line_48200.yaml",
 )
 HEADER = dedent("""\
@@ -172,12 +175,37 @@ def test_the_total_credits_kind_stays_registered_and_signed() -> None:
     assert non_negative(kind) is False
 
 
-def test_line_48200_names_lines_45000_and_45300_and_its_rounding_in_the_trace(
+def test_line_48200_names_lines_45000_45300_and_47900_and_its_rounding_in_the_trace(
     take_home_service: TakeHomeService,
 ) -> None:
     sheet = _sheet(take_home_service, "70000")
 
     assert (
-        "Line 45000 (CA$0.00) plus line 45300 (CA$0.00) gives CA$0.00 "
+        "Line 45000 (CA$0.00) plus line 45300 (CA$0.00) plus line 47900 (CA$0.00) gives CA$0.00 "
         "(rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
+
+
+@pytest.mark.parametrize(("salary", "total"), [("70000", "0.00"), ("20000", "1633.00")])
+def test_ontarios_blank_line_47900_is_taken_as_0_in_line_48200(
+    take_home_service: TakeHomeService, salary: str, total: str
+) -> None:
+    sheet = _sheet(take_home_service, salary)
+    kinds = bundled_kinds()
+
+    assert sheet.get(kinds.kind(LINE_47900)).is_blank
+    assert sheet.get(kinds.kind(LINE_48200)).value == D(total)
+
+
+def test_line_48200_prints_a_left_blank_row_for_the_blank_line_47900(
+    take_home_service: TakeHomeService,
+) -> None:
+    sheet = _sheet(take_home_service, "70000")
+    kind = bundled_kinds().kind(LINE_47900)
+
+    (blank,) = [
+        each for each in sheet.trace if isinstance(each, BlankFallbackLine) and each.kind is kind
+    ]
+    assert blank.fallback == 0
+    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
+    assert any("Left blank, taken as" in row and "0.00" in row for row in rows)
