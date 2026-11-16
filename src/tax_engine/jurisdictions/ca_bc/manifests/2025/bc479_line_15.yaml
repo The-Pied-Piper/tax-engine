@@ -1,0 +1,18 @@
+# Form BC479 (2025, CRA 5010-TC) line 15. Line 15: "Line 13 plus line 14 = ^". One core/sum step over
+# the sales tax credit (line 13, `ca-bc/bc479_sales_tax_credit_line_13`) and the home renovation
+# credit (line 14, `ca-bc/bc479_home_renovation_credit_line_14`), rounded half-up to the cent. Neither
+# part is ever blank (line 13 is computed, line 14 reads its blank expenses as 0), so the step has no
+# blank rule. The form prints no title for the line, so the step has none. Line 16, "Enter the amount
+# from line 15 of the previous page", is a page carry with no step: line 35 reads line 15.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/sum
+    reference: "15"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      parts: [ca-bc/bc479_sales_tax_credit_line_13, ca-bc/bc479_home_renovation_credit_line_14]
+    produces:
+      output: ca-bc/bc479_page_1_total_line_15
