@@ -1,0 +1,20 @@
+# Form BC428 (CRA 5010-C) line 79 "Line 79: Line 73 minus line 78 (if negative, enter "0") British
+# Columbia tax reduction = ^". One core/subtract_not_below_zero step: the basic reduction (line 73,
+# `ca-bc/bc428_basic_reduction_line_73`) less the reduction clawback (line 78,
+# `ca-bc/bc428_reduction_clawback_line_78`), not below 0. The printed instruction "if your net
+# income is $40,807 or more, enter 0 on line 79" needs no condition of its own: 15,787 x 3.56% is
+# 562.02, so the subtraction already gives 0 from net income 40,807.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: British Columbia tax reduction
+    reference: "79"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_basic_reduction_line_73
+      less: ca-bc/bc428_reduction_clawback_line_78
+    produces:
+      output: ca-bc/bc428_british_columbia_tax_reduction_line_79

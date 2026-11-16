@@ -1,0 +1,18 @@
+# Form BC479 (2025, CRA 5010-TC) line 8. Line 8: "Line 6 minus line 7 (if negative, enter "0")
+# Income for the sales tax credit = ^". One core/subtract_not_below_zero step: the adjusted family
+# net income (line 6, `ca-bc/bc479_adjusted_family_net_income_line_6`) less the threshold (line 7,
+# `ca-bc/bc479_threshold_line_7`), not below 0.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: Income for the sales tax credit
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc479_adjusted_family_net_income_line_6
+      less: ca-bc/bc479_threshold_line_7
+    produces:
+      output: ca-bc/bc479_income_for_sales_tax_credit_line_8
