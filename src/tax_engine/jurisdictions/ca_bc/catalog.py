@@ -463,3 +463,10 @@ BC479_MINING_EXPLORATION_CREDIT_LINE_26 = AmountKind.declare(
 """British Columbia mining exploration tax credit, BC479 line 26 "Enter the amount from line 23 of
 your Form T88": the credit taken from Form T88, a caller input that is read as blank when left
 out."""
+
+BC479_CLEAN_BUILDINGS_CREDIT_LINE_30 = AmountKind.declare(
+    CATALOG, "bc479_clean_buildings_credit_line_30", non_negative=True
+)
+"""Total allowable credit, BC479 line 30 "Line 30: Total allowable credit: Line 28 plus line 29
+= ^": lines 28 and 29 are not built, so the total is a caller input that is read as blank when
+left out."""
