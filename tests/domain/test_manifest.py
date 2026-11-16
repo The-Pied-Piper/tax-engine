@@ -842,16 +842,18 @@ def test_a_predicate_that_is_not_a_yes_no_count_is_refused(kind: ArtifactKind[An
 
 # --- optional slots ------------------------------------------------------------------------------
 #
-# A selection may list `optional` consumed slots (default none). Each must be a consumed slot that
-# holds one identifier, in the `<x>.<label>` style of a form's export, and be listed once. A
-# manifest builds, for each such figure no form supplies, a record list of the registered kind its
-# stem names, so that the figure can be read as a blank.
+# A selection may declare `optional`: a mapping from a consumed slot to the identifier of the
+# registered amount, count or record list kind that the optional read is a list of. Each slot must
+# be a consumed slot that holds one identifier, in the `<x>.<label>` style of a form's export. A
+# manifest builds, for each such figure no form supplies, a record list of the declared kind, so
+# that the figure can be read as a blank. A supplied figure ignores the declaration, unless the
+# supplier's field is a kind of another shape (class, value type, sign rule).
 
 CREDITS = AmountKind("ex/credits", non_negative=True)
 CREDITS_ID = "ex/credits.total"
 
 
-def reader(consumes: dict[str, Any], optional_slots: tuple[str, ...]) -> CapabilitySelection:
+def reader(consumes: dict[str, Any], optional_slots: dict[str, str]) -> CapabilitySelection:
     return CapabilitySelection(
         name="ex/total",
         params={},
@@ -861,24 +863,48 @@ def reader(consumes: dict[str, Any], optional_slots: tuple[str, ...]) -> Capabil
     )
 
 
-def test_an_optional_slot_is_kept_in_the_order_given() -> None:
-    chosen = reader({"a": CREDITS_ID, "b": "ex/more.total"}, ("b", "a"))
+def test_an_optional_slot_is_kept_with_its_declared_kind_in_the_order_given() -> None:
+    chosen = reader({"a": CREDITS_ID, "b": "ex/more.total"}, {"b": "ex/more", "a": "ex/credits"})
 
-    assert chosen.optional == ("b", "a")
+    assert chosen.optional == {"b": "ex/more", "a": "ex/credits"}
+    assert list(chosen.optional) == ["b", "a"]
+
+
+def test_the_optional_mapping_is_read_only_and_part_of_the_hash() -> None:
+    declared = {"a": "ex/credits"}
+    chosen = reader({"a": CREDITS_ID}, declared)
+    declared["a"] = "ex/other"
+
+    assert chosen.optional == {"a": "ex/credits"}
+    with pytest.raises(TypeError):
+        chosen.optional["a"] = "ex/other"  # type: ignore[index]
+    assert hash(chosen) == hash(reader({"a": CREDITS_ID}, {"a": "ex/credits"}))
+    assert chosen != reader({"a": CREDITS_ID}, {"a": "ex/other"})
 
 
 @pytest.mark.parametrize(
     ("consumes", "slots", "message"),
     [
-        ({"a": CREDITS_ID}, ("typo",), "optional slot 'typo' is not a consumed slot"),
-        ({"a": CREDITS_ID}, ("output",), "optional slot 'output' is not a consumed slot"),
-        ({"a": (CREDITS_ID,)}, ("a",), "optional slot 'a' takes a list, not one identifier"),
-        ({"a": CREDITS_ID}, ("a", "a"), "optional slot 'a' is listed more than once"),
-        ({"a": "ex/credits"}, ("a",), "optional slot 'a' reads 'ex/credits', which is not"),
+        ({"a": CREDITS_ID}, {"typo": "ex/credits"}, "optional slot 'typo' is not a consumed slot"),
+        (
+            {"a": CREDITS_ID},
+            {"output": "ex/credits"},
+            "optional slot 'output' is not a consumed slot",
+        ),
+        (
+            {"a": (CREDITS_ID,)},
+            {"a": "ex/credits"},
+            "optional slot 'a' takes a list, not one identifier",
+        ),
+        (
+            {"a": "ex/credits"},
+            {"a": "ex/credits"},
+            "optional slot 'a' reads 'ex/credits', which is not",
+        ),
     ],
 )
-def test_a_bad_optional_list_is_refused_naming_the_selection(
-    consumes: dict[str, Any], slots: tuple[str, ...], message: str
+def test_a_bad_optional_mapping_is_refused_naming_the_selection(
+    consumes: dict[str, Any], slots: dict[str, str], message: str
 ) -> None:
     with pytest.raises(InvalidManifestError, match=message) as caught:
         reader(consumes, slots)
@@ -894,12 +920,12 @@ def strict(*kinds: ArtifactKind[Any]) -> ArtifactRegistry:
     return found
 
 
-def reading_form(named: str = CREDITS_ID, **changes: Any) -> Form:
+def reading_form(named: str = CREDITS_ID, kind: str = "ex/credits", **changes: Any) -> Form:
     fields: dict[str, Any] = {
         "name": "ex-on/summary",
         "instances": None,
         "exports": ("ex/levy",),
-        "capabilities": (reader({"records": named}, ("records",)),),
+        "capabilities": (reader({"records": named}, {"records": kind}),),
         "required": True,
     }
     return Form(**{**fields, **changes})
@@ -916,44 +942,70 @@ def with_reading(*forms: Form, artifacts: ArtifactRegistry) -> Manifest:
     )
 
 
-def test_an_unsupplied_optional_figure_stands_in_as_a_list_of_its_stems_registered_kind() -> None:
+def test_an_unsupplied_optional_figure_stands_in_as_a_list_of_its_declared_kind() -> None:
     found = with_reading(reading_form(), artifacts=strict(CREDITS))
 
     assert found.kinds.kind(CREDITS_ID) == RecordListKind(CREDITS_ID, fields=(CREDITS,))
 
 
-def test_the_stand_in_takes_its_field_from_the_stem_whatever_the_label() -> None:
-    found = with_reading(reading_form("ex/credits.anything"), artifacts=strict(CREDITS))
+def test_the_stand_in_takes_its_field_from_the_declaration_not_from_the_name() -> None:
+    other = AmountKind("ex/other")
+
+    found = with_reading(
+        reading_form("ex/credits.anything", "ex/other"), artifacts=strict(CREDITS, other)
+    )
 
     assert found.kinds.kind("ex/credits.anything") == RecordListKind(
-        "ex/credits.anything", fields=(CREDITS,)
+        "ex/credits.anything", fields=(other,)
+    )
+
+
+def supplier_of(field: str) -> Form:
+    return Form(
+        name="ex-on/credits",
+        instances=None,
+        exports=(field,),
+        capabilities=(),
+        required=True,
+        supplies={CREDITS_ID: field},
     )
 
 
 def test_a_figure_a_form_supplies_is_not_stood_in_for() -> None:
-    supplier = Form(
-        name="ex-on/credits",
-        instances=None,
-        exports=("ex/other",),
-        capabilities=(),
-        required=True,
-        supplies={CREDITS_ID: "ex/other"},
-    )
-    other = AmountKind("ex/other")
+    found = with_reading(reading_form(), supplier_of("ex/credits"), artifacts=strict(CREDITS))
 
-    found = with_reading(reading_form(), supplier, artifacts=strict(CREDITS, other))
+    assert found.kinds.kind(CREDITS_ID) == RecordListKind(CREDITS_ID, fields=(CREDITS,))
+
+
+def test_a_supplier_whose_field_is_a_kind_of_the_same_shape_is_accepted() -> None:
+    other = AmountKind("ex/other", non_negative=True)
+
+    found = with_reading(reading_form(), supplier_of("ex/other"), artifacts=strict(CREDITS, other))
 
     assert found.kinds.kind(CREDITS_ID) == RecordListKind(CREDITS_ID, fields=(other,))
 
 
-def test_an_unregistered_stem_is_refused_naming_the_form_and_the_figure() -> None:
+@pytest.mark.parametrize(
+    "other", [CountKind("ex/other", non_negative=True), AmountKind("ex/other")]
+)
+def test_a_supplier_whose_field_is_a_different_kind_than_the_declared_one_is_refused(
+    other: ArtifactKind[Any],
+) -> None:
     with pytest.raises(
-        InvalidManifestError, match="form 'ex-on/summary': 'ex/credits.total'.*ex/credits"
+        InvalidManifestError,
+        match="form 'ex-on/summary': 'ex/credits.total'.*declares 'ex/credits'.*'ex/other'",
+    ):
+        with_reading(reading_form(), supplier_of("ex/other"), artifacts=strict(CREDITS, other))
+
+
+def test_an_unregistered_declared_kind_is_refused_naming_the_form_and_the_figure() -> None:
+    with pytest.raises(
+        InvalidManifestError, match="form 'ex-on/summary': 'ex/credits.total'.*'ex/credits'"
     ):
         with_reading(reading_form(), artifacts=strict())
 
 
-def test_a_stem_that_is_not_a_record_field_kind_is_refused_naming_the_form_and_the_figure() -> None:
+def test_a_declared_kind_that_is_not_a_record_field_kind_is_refused() -> None:
     with pytest.raises(
         InvalidManifestError, match="form 'ex-on/summary': 'ex/credits.total'.*not an amount"
     ):
@@ -966,7 +1018,10 @@ def test_an_optional_only_figure_is_one_a_form_reads_through_optional_slots_alon
         instances=None,
         exports=("ex/levy",),
         capabilities=(
-            reader({"records": CREDITS_ID, "more": "ex/more.total"}, ("records", "more")),
+            reader(
+                {"records": CREDITS_ID, "more": "ex/more.total"},
+                {"records": "ex/credits", "more": "ex/more"},
+            ),
             CapabilitySelection(
                 name="ex/sum",
                 params={},
@@ -989,7 +1044,7 @@ def test_an_optional_slot_without_a_blank_rule_is_listed_by_the_form() -> None:
         consumes={"records": CREDITS_ID, "more": "ex/more.total"},
         produces={"output": "ex/levy"},
         blank={"records": Decimal("0")},
-        optional=("records", "more"),
+        optional={"records": "ex/credits", "more": "ex/more"},
     )
 
     assert reading_form(capabilities=(ruled,)).unruled_optional == (("more", "ex/more.total"),)

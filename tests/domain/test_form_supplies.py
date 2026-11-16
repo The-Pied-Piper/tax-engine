@@ -157,9 +157,11 @@ def test_without_a_supplier_the_reader_is_refused_naming_the_form() -> None:
 # --- optional slots ---------------------------------------------------------------------------
 
 READER = "ex/federal"
+# The slot marked optional, with the kind its read is a list of (the field of `NEUTRAL`).
+OPTIONAL = {"records": TAX.identifier}
 
 
-def reader(*, optional: tuple[str, ...], rule: bool | None = None) -> FormComposition:
+def reader(*, optional: dict[str, str], rule: bool | None = None) -> FormComposition:
     """The federal form: totals the neutral figure; `optional` names the slots marked optional and
     `rule` gives the `records` slot the blank rule `pass_on`."""
     ruled = bool(optional) if rule is None else rule
@@ -206,30 +208,30 @@ def build(federal: FormComposition, *, supplied: bool) -> FormSet:
 def test_a_selection_is_required_throughout_by_default() -> None:
     selection = CapabilitySelection(name="a/b", params={}, consumes={}, produces={})
 
-    assert selection.optional == ()
+    assert selection.optional == {}
 
 
-def test_the_optional_slots_are_kept_as_given() -> None:
+def test_the_optional_slots_are_kept_with_their_declared_kinds() -> None:
     selection = CapabilitySelection(
         name="a/b",
         params={},
         consumes={"records": NEUTRAL_ID},
         produces={},
-        optional=("records",),
+        optional=OPTIONAL,
     )
 
-    assert selection.optional == ("records",)
+    assert selection.optional == {"records": "ex-on/tax"}
 
 
 def test_an_optional_import_is_listed_but_is_not_a_blank_input_of_the_form() -> None:
-    form = reader(optional=("records",))
+    form = reader(optional=OPTIONAL)
 
     assert NEUTRAL in form.optional_imports
     assert NEUTRAL not in form.blank_inputs
 
 
 def test_a_required_import_is_neither_optional_nor_blank() -> None:
-    form = reader(optional=())
+    form = reader(optional={})
 
     assert NEUTRAL not in form.optional_imports
     assert NEUTRAL not in form.blank_inputs
@@ -248,7 +250,7 @@ def test_an_import_also_read_through_a_list_slot_is_required() -> None:
         consumes={"records": NEUTRAL_ID},
         produces={"output": FEDERAL_TOTAL.identifier},
         blank={"records": PASS_ON},
-        optional=("records",),
+        optional=OPTIONAL,
     )
     form = Form(
         name=READER,
@@ -267,13 +269,13 @@ def test_an_import_also_read_through_a_list_slot_is_required() -> None:
 
 
 def test_an_optional_read_that_nothing_supplies_is_blank_and_passes_on() -> None:
-    found = sheet(build(reader(optional=("records",)), supplied=False))
+    found = sheet(build(reader(optional=OPTIONAL), supplied=False))
 
     assert found.get(FEDERAL_TOTAL).is_blank
 
 
 def test_the_blank_pass_on_is_traced_by_the_existing_blank_line() -> None:
-    found = sheet(build(reader(optional=("records",)), supplied=False))
+    found = sheet(build(reader(optional=OPTIONAL), supplied=False))
 
     (line,) = [each for each in found.trace if isinstance(each, BlankPassedOnLine)]
     assert line.output is FEDERAL_TOTAL
@@ -281,7 +283,7 @@ def test_the_blank_pass_on_is_traced_by_the_existing_blank_line() -> None:
 
 
 def test_an_optional_read_that_is_supplied_gives_the_normal_total() -> None:
-    found = sheet(build(reader(optional=("records",)), supplied=True))
+    found = sheet(build(reader(optional=OPTIONAL), supplied=True))
 
     assert found.get(FEDERAL_TOTAL).value == D("600")
     assert not [each for each in found.trace if isinstance(each, BlankPassedOnLine)]
@@ -289,17 +291,17 @@ def test_an_optional_read_that_is_supplied_gives_the_normal_total() -> None:
 
 def test_a_read_not_marked_optional_is_still_refused_without_a_supplier() -> None:
     with pytest.raises(InvalidCompositionError, match="ex/federal.*no form exports"):
-        build(reader(optional=()), supplied=False)
+        build(reader(optional={}), supplied=False)
 
 
 def test_an_optional_read_without_a_blank_rule_or_a_supplier_is_refused_when_composed() -> None:
     with pytest.raises(
         InvalidCompositionError, match="ex/federal.*optional slot 'records'.*no blank rule"
     ):
-        build(reader(optional=("records",), rule=False), supplied=False)
+        build(reader(optional=OPTIONAL, rule=False), supplied=False)
 
 
 def test_an_optional_read_without_a_blank_rule_still_totals_when_supplied() -> None:
-    found = sheet(build(reader(optional=("records",), rule=False), supplied=True))
+    found = sheet(build(reader(optional=OPTIONAL, rule=False), supplied=True))
 
     assert found.get(FEDERAL_TOTAL).value == D("600")

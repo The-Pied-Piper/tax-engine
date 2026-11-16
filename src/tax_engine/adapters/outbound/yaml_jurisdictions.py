@@ -822,14 +822,25 @@ class YamlJurisdictionSource:
         )
 
     @staticmethod
-    def _optional_slots(who: str, node: YamlNode | None) -> tuple[str, ...]:
-        """The slot names `node` lists as optional, in the order written; none if there is no
-        `optional` key. The selection says which of them it may take."""
+    def _optional_slots(who: str, node: YamlNode | None) -> dict[str, str]:
+        """The optional slots `node` maps, each to the identifier of the registered kind its read
+        is a list of, in the order written; none if there is no `optional` key. The selection says
+        which slots it may take and the manifest which kinds can stand in."""
         if node is None:
-            return ()
-        if not node.is_list():
-            raise InvalidManifestError(f"{who}: optional must be a list of consumed slot names")
-        return tuple(item.require_non_empty_string() for item in node.items())
+            return {}
+        if not node.is_mapping():
+            raise InvalidManifestError(
+                f"{who}: optional must map each optional consumed slot to the kind its read is "
+                "a list of"
+            )
+        declared: dict[str, str] = {}
+        for slot, kind in node.fields():
+            if not isinstance(kind.value, str) or not kind.value:
+                raise InvalidManifestError(
+                    f"{who}: optional slot {slot!r} must name a kind as non-empty text"
+                )
+            declared[slot] = kind.value
+        return declared
 
     def _blank_rules(
         self,

@@ -3,7 +3,8 @@
 #
 # Form BC479 (CRA 5010-TC) prints "Line 45: Line 36 plus line 44 Enter this amount on line 47900 of
 # your return", and British Columbia's BC479 form supplies that line as the record list
-# `ca/provincial_credits.amount`. The read is optional: a province whose form supplies nothing
+# `ca/provincial_credits.amount`. The read is optional, and declares the kind it is a list of
+# (`ca/provincial_credits`, the amount): a province whose form supplies nothing
 # (Ontario and Alberta here) has no such figure, and line 47900 is then blank, the `pass_on` of the
 # blank rule below, exactly as a blank input would be. core/record_total totals the one amount into
 # line 47900 (`ca/provincial_credits_line_47900`), with no step of its own for the pure copy.
@@ -16,7 +17,8 @@ capabilities:
     unit: ca/cad
     consumes:
       records: ca/provincial_credits.amount
-    optional: [records]
+    optional:
+      records: ca/provincial_credits
     blank:
       records: pass_on
     produces:

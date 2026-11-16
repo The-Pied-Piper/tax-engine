@@ -12,7 +12,8 @@ from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 PROVINCIAL_CREDITS = AmountKind.declare(CATALOG, "provincial_credits", non_negative=True)
 """Provincial or territorial credits, the credits of the filer's province: the amount of the
 provincial credits record list, whose neutral name `ca/provincial_credits.amount` a form supplies
-and a manifest may read optionally (a read nothing supplies takes this kind as its field)."""
+and a manifest may read optionally: line 47900's part declares this kind as the one that read is a
+list of, and a read nothing supplies takes it as its field."""
 
 PROVINCIAL_CREDITS_LINE_47900 = AmountKind.declare(
     CATALOG, "provincial_credits_line_47900", non_negative=True
