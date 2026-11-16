@@ -1,0 +1,12 @@
+# BC479 (2025) inputs a salary-only caller does not give.
+# Line 34: "British Columbia training tax credit", Add lines 31 to 33 (5010-tc). Lines 31 to 33 (the
+# T1014, T1014-1 and T1014-2 credits) are not computed here, and the form prints no maximum. A
+# salary-only caller leaves the line blank; the step that consumes it reads that blank as 0.
+inputs:
+  - name: ca-bc/bc479_training_credits_line_34
+    title: "British Columbia training tax credit"
+    reference: "34"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 34: Add lines 31 to 33'

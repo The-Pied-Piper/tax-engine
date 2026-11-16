@@ -444,6 +444,12 @@ of your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^":
 (the expenses) times the printed 10%, rounded to the cent. The printed $10,000 maximum is not
 enforced."""
 
+BC479_TRAINING_CREDITS_LINE_34 = AmountKind.declare(
+    CATALOG, "bc479_training_credits_line_34", non_negative=True
+)
+"""Training credits total, BC479 line 34 "Line 34: Add lines 31 to 33": the sum of lines 31 to 33
+(the T1014, T1014-1 and T1014-2 credits), a caller input that is read as blank when left out."""
+
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
 )
@@ -470,3 +476,10 @@ BC479_MINING_EXPLORATION_CREDIT_LINE_26 = AmountKind.declare(
 """British Columbia mining exploration tax credit, BC479 line 26 "Enter the amount from line 23 of
 your Form T88": the credit taken from Form T88, a caller input that is read as blank when left
 out."""
+
+BC479_CLEAN_BUILDINGS_CREDIT_LINE_30 = AmountKind.declare(
+    CATALOG, "bc479_clean_buildings_credit_line_30", non_negative=True
+)
+"""Total allowable credit, BC479 line 30 "Line 30: Total allowable credit: Line 28 plus line 29
+= ^": lines 28 and 29 are not built, so the total is a caller input that is read as blank when
+left out."""
