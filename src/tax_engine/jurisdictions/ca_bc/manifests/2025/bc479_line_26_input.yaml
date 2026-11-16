@@ -1,8 +1,8 @@
 # BC479 (2025) inputs a salary-only caller does not give.
-# Line 26: "Enter the amount from line 23 of your Form T88" (5010-tc), section "British Columbia
-# mining exploration tax credit". Form T88 is not built and a salary-only caller has no mining
-# exploration credit, so a request that leaves the line out is read as blank; the step that consumes
-# it reads that blank as 0.
+# Line 26 and line 60510: "Enter the amount from line 23 of your Form T88" (5010-tc), section
+# "British Columbia mining exploration tax credit". Form T88 is not built and a salary-only caller
+# has no mining exploration credit, so a request that leaves the line out is read as blank; the step
+# that consumes it reads that blank as 0.
 inputs:
   - name: ca-bc/bc479_mining_exploration_credit_line_26
     title: "British Columbia mining exploration tax credit"
@@ -10,4 +10,4 @@ inputs:
     unit: ca/cad
     required: false
     default: null
-    basis: 'Line 26: Enter the amount from line 23 of your Form T88'
+    basis: 'Line 26 and line 60510: Enter the amount from line 23 of your Form T88'

@@ -30,7 +30,7 @@ from tests.kinds import non_negative
 
 IDENTIFIER = BC479_MINING_EXPLORATION_CREDIT_LINE_26.identifier
 PRINTED_TITLE = "British Columbia mining exploration tax credit"
-PRINTED_BASIS = "Line 26: Enter the amount from line 23 of your Form T88"
+PRINTED_BASIS = "Line 26 and line 60510: Enter the amount from line 23 of your Form T88"
 PART = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / (
     "manifests/2025/bc479_line_26_input.yaml"
 )
