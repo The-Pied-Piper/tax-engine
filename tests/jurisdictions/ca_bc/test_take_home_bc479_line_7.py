@@ -106,13 +106,12 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_one_credit_amount_step_titled_threshold() -> None:
+def test_the_part_names_the_form_and_has_one_untitled_credit_amount_step() -> None:
     assert _part() == {
         "form": {"name": "ca-bc/bc479"},
         "capabilities": [
             {
                 "name": "core/credit_amount",
-                "title": "Threshold",
                 "reference": "7",
                 "unit": "ca/cad",
                 "params": {"amount": "ca-bc/sales_tax_credit_threshold"},
