@@ -491,7 +491,7 @@ class Manifest:
     def _check_supplier(form: Form, supplier: RecordListKind, declared: ArtifactKind[Any]) -> None:
         """Refuse a supplied figure whose field is not a kind of the shape the optional read
         declares: the same kind class, value type and sign rule. The identifier may differ, as a
-        province's form supplies its own figure (`ca-bc/...`) for a neutral list."""
+        form may supply its own namespaced figure for a neutral list."""
         (found,) = supplier.fields
         shape = (type(found), found.value_type, getattr(found, "non_negative", None))
         wanted = (type(declared), declared.value_type, getattr(declared, "non_negative", None))
