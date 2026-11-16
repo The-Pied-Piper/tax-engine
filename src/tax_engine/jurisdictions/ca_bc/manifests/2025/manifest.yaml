@@ -1,4 +1,5 @@
-# British Columbia 2025 take-home manifest: the return's identity and its export. The caller gives
+# British Columbia 2025 take-home manifest: the return's identity and its exports (the refund or balance
+# owing, the average income tax rate and the marginal tax rate). The caller gives
 # the gross salary and nothing else (salary.yaml). British Columbia's own forms are in parts
 # beside this one, so a line ticket adds only its own part file; the federal forms are imported by
 # name below, their parts in the `ca` package (`ca/forms/<name>/`).
@@ -7,7 +8,7 @@
 # supplies `ca/provincial_tax.amount` for T1 line 42800, and `ca-bc/bc479` (BC479), which supplies
 # the provincial credits figure for T1 line 47900.
 #
-# The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
+# The default form's first export is T1 line 167, refund or balance owing (positive is owing, negative
 # is a refund). British Columbia uses the standard federal CPP and EI (no QPP), so Schedule 8 and
 # T2204 are imported unchanged. It has no Schedule 6 edition of its own, so the federal Schedule 6
 # is imported unchanged.
@@ -23,6 +24,8 @@ valid_from_tax_year: 2025
 title: Return summary
 outputs:
   - ca/refund_or_balance_owing
+  - ca-bc/average_income_tax_rate
+  - ca-bc/marginal_tax_rate
 capabilities: []
 imports:
   - ca/t1_taxable_income

@@ -518,3 +518,98 @@ BC479_PAGE_2_TOTAL_LINE_35 = AmountKind.declare(
 """Page 2 total, BC479 line 35 "Line 35: Add lines 16, 25, 26, 30 and 34. = ^": the page 1 total
 (line 15, carried by line 16) plus the venture capital, mining exploration, clean buildings and
 training credits, each blank one read as 0, rounded to the cent."""
+
+AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
+"""Average income tax rate, the British Columbia return summary's own figure (no form prints it): T1
+line 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the
+British Columbia income tax) divided by the salary (`ca/employment_income`), as a fraction, so
+0.1598 is 15.98%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+
+BRITISH_COLUMBIA_BRACKET_RATE_LINE_5_RETURN = AmountKind.declare(
+    CATALOG, "british_columbia_bracket_rate_line_5_return", non_negative=True
+)
+"""British Columbia bracket rate, BC428 line 5 "Line 5: Rate": the printed rate of the table 1
+column that line 1 falls in (taxable income up to 137,407), read from BC428 into the return
+summary, 0 where the line is blank."""
+
+BRITISH_COLUMBIA_BRACKET_RATE_LINE_12_RETURN = AmountKind.declare(
+    CATALOG, "british_columbia_bracket_rate_line_12_return", non_negative=True
+)
+"""British Columbia bracket rate, BC428 line 12 "Line 12: Rate": the printed rate of the table 2
+column that line 1 falls in (taxable income above 137,407), read from BC428 into the return
+summary, 0 where the line is blank."""
+
+BRITISH_COLUMBIA_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "british_columbia_bracket_rate_return", non_negative=True
+)
+"""British Columbia bracket rate: BC428 line 5 plus line 12, of which one is always blank, so the
+rate of the bracket the taxable income falls in. Not printed on the form."""
+
+BRITISH_COLUMBIA_TAX_AFTER_REDUCTION_RETURN = AmountKind.declare(
+    CATALOG, "british_columbia_tax_after_reduction_return", non_negative=True
+)
+"""British Columbia tax after the tax reduction, BC428 line 80 "Line 72 minus line 79 (if negative,
+enter "0")": the one amount of BC428's export totalled into the return summary's own artifact, the
+base of the British Columbia rate gate."""
+
+BRITISH_COLUMBIA_RATE_GATE = AmountKind.declare(
+    CATALOG, "british_columbia_rate_gate", non_negative=True
+)
+"""British Columbia rate gate: 0 where the British Columbia tax after the tax reduction (BC428 line
+80) is 0.00 and 1 where it is at least one cent, from the `ca-bc/marginal_rate_gate` dataset. A
+plain figure, not printed on the form."""
+
+BRITISH_COLUMBIA_TAX_REDUCTION_RETURN = AmountKind.declare(
+    CATALOG, "british_columbia_tax_reduction_return", non_negative=True
+)
+"""British Columbia tax reduction, BC428 line 79: the one amount of BC428's export totalled into the
+return summary's own artifact, the base of the reduction gate."""
+
+BRITISH_COLUMBIA_REDUCTION_GATE = AmountKind.declare(
+    CATALOG, "british_columbia_reduction_gate", non_negative=True
+)
+"""British Columbia reduction gate: 0 where the British Columbia tax reduction (BC428 line 79) is
+0.00 and 1 where it is at least one cent, from the `ca-bc/marginal_rate_gate` dataset: the
+reduction's slope counts only up to the net income where the reduction reaches zero (40,807). A
+plain figure, not printed on the form."""
+
+BRITISH_COLUMBIA_REDUCTION_CLAWBACK_RETURN = AmountKind.declare(
+    CATALOG, "british_columbia_reduction_clawback_return", non_negative=True
+)
+"""British Columbia tax reduction clawback, BC428 line 78 "Line 76 multiplied by the percentage from
+line 77": the one amount of BC428's export totalled into the return summary's own artifact, the
+base of the reduction slope."""
+
+BRITISH_COLUMBIA_REDUCTION_SLOPE = AmountKind.declare(
+    CATALOG, "british_columbia_reduction_slope", non_negative=True
+)
+"""British Columbia reduction slope: 0 where the tax reduction clawback (BC428 line 78) is 0.00 and
+the printed 3.56% of line 77 where it is at least one cent, from the `ca-bc/reduction_slope`
+dataset, with no rounding: the reduction falls by this much for each further dollar of net income
+above 25,020. Not printed on the form."""
+
+BRITISH_COLUMBIA_REDUCTION_PHASE_OUT_RATE = AmountKind.declare(
+    CATALOG, "british_columbia_reduction_phase_out_rate", non_negative=True
+)
+"""British Columbia reduction phase-out rate: the reduction gate (BC428 line 79 above zero) times
+the reduction slope (line 78 above zero): 3.56% inside the range where the tax reduction falls with
+income, 0 outside it. Exact. Not printed on the form."""
+
+BRITISH_COLUMBIA_BRACKET_RATE_WITH_REDUCTION = AmountKind.declare(
+    CATALOG, "british_columbia_bracket_rate_with_reduction", non_negative=True
+)
+"""British Columbia bracket rate with the tax reduction: the bracket rate plus the reduction
+phase-out rate, since a further dollar of income also takes away the reduction. Exact. Not printed
+on the form."""
+
+BRITISH_COLUMBIA_MARGINAL_RATE = AmountKind.declare(
+    CATALOG, "british_columbia_marginal_rate", non_negative=True
+)
+"""British Columbia marginal rate: the bracket rate with the reduction where the British Columbia
+tax after the tax reduction (BC428 line 80) is above zero, and 0 where it is not: the rate a further
+dollar of income is taxed at in British Columbia, on the return summary. Not printed on the form."""
+
+MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
+"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
+marginal rate and the British Columbia marginal rate (British Columbia has no surtax or health
+premium), on the return summary. Not printed on the form."""
