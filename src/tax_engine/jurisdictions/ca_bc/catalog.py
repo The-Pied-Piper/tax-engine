@@ -449,3 +449,10 @@ BC479_SALES_TAX_CREDIT_LINE_13 = AmountKind.declare(
 """Sales tax credit, BC479 line 13 "Line 13: Line 11 minus line 12 (if negative, enter "0") Sales
 tax credit = ^": line 11 (the credit before the income reduction) minus line 12 (the income
 reduction), not below 0, rounded to the cent."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_25 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_25", non_negative=True
+)
+"""British Columbia venture capital tax credit, BC479 line 25 "Add lines 20, 21, and 23. (maximum
+$300,000)": the total of the venture capital tax credit lines, a caller input that is read as blank
+when left out; the $300,000 maximum is stated, not enforced."""
