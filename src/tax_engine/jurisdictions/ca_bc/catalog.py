@@ -382,3 +382,10 @@ BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
 """UCCB and RDSP income, BC479 line 4 "Total of the UCCB income (line 11700 of the return) and the
 RDSP income (line 12500 of the return)": the total of the two incomes, a caller input that is read
 as blank when left out, column 1 (you) only."""
+
+BC479_SPOUSE_ADDITIONAL_CREDIT_LINE_10 = AmountKind.declare(
+    CATALOG, "bc479_spouse_additional_credit_line_10", non_negative=True
+)
+"""Additional credit for your spouse or common-law partner, BC479 line 10 "Additional credit for
+your spouse or common-law partner": the credit claimed for a spouse or common-law partner, a caller
+input that is read as blank when left out."""
