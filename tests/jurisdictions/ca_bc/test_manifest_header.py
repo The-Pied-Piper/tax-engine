@@ -1,4 +1,4 @@
-"""The header of the British Columbia 2025 manifest: the return's identity, its output and its
+"""The header of the British Columbia 2025 manifest: the return's identity, its outputs and its
 federal imports. It declares no inputs yet; the salary input comes with its own ticket."""
 
 from __future__ import annotations
@@ -30,10 +30,16 @@ def test_the_return_identity() -> None:
     assert header["title"] == "Return summary"
 
 
-def test_the_return_exports_the_refund_or_balance_owing_and_declares_no_capabilities() -> None:
+def test_the_return_exports_the_refund_and_the_average_and_marginal_rates_and_no_capabilities() -> (
+    None
+):
     header = _header()
 
-    assert header["outputs"] == ["ca/refund_or_balance_owing"]
+    assert header["outputs"] == [
+        "ca/refund_or_balance_owing",
+        "ca-bc/average_income_tax_rate",
+        "ca-bc/marginal_tax_rate",
+    ]
     assert header["capabilities"] == []
 
 
