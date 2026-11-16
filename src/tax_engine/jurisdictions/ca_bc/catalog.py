@@ -123,6 +123,13 @@ BC428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_71 = AmountKind.declare(
 """British Columbia provincial foreign tax credit, BC428 line 71 "Line 71: Provincial foreign tax
 credit (complete Form T2036)": a caller input that is read as blank when left out."""
 
+BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "bc428_political_contribution_tax_credit_line_84", non_negative=True
+)
+"""British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
+political contribution tax credit (use Worksheet BC428) (maximum $500)": a caller input that is
+read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
@@ -259,6 +266,19 @@ BC428_TAX_AFTER_CREDITS_LINE_68 = AmountKind.declare(
 """Tax after credits, BC428 line 68 "Line 68: Line 63 minus line 67 (if negative, enter "0") = ^":
 line 63 (the tax with split income) minus line 67 (the total), not below 0, rounded to the cent."""
 
+BC428_TAX_WITH_MINIMUM_TAX_LINE_70 = AmountKind.declare(
+    CATALOG, "bc428_tax_with_minimum_tax_line_70", non_negative=True
+)
+"""Tax with the additional minimum tax, BC428 line 70 "Line 70: Line 68 plus line 69 = ^": line 68
+(the tax after credits) plus line 69 (the additional minimum tax), rounded to the cent."""
+
+BC428_TAX_AFTER_FOREIGN_CREDIT_LINE_72 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_foreign_credit_line_72", non_negative=True
+)
+"""Tax after the foreign tax credit, BC428 line 72 "Line 72: Line 70 minus line 71 (if negative,
+enter "0") = ^": line 70 (the tax with the additional minimum tax) minus line 71 (the provincial
+foreign tax credit, blank read as 0), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -322,6 +342,12 @@ BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", n
 """Threshold, BC479 line 7 "Line 7: If you had a spouse or common-law partner on December 31, 2025,
 enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse
 amount is not built."""
+
+BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
+    CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
+)
+"""Basic sales tax credit, BC479 line 9 (line 60330) "Basic sales tax credit Claim $75": the amount
+claimed, the same at every income."""
 
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
