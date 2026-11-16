@@ -1,0 +1,15 @@
+# BC428 (2025) line 73, the basic reduction. Form BC428 (CRA 5010-c-25e): "Line 73: Basic reduction
+# Claim $562". The $562 is the `ca-bc/tax_reduction_basic` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary. Line 79 takes it down to 0 from net income
+# 40,807, which is not built here.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/credit_amount
+    title: "Basic reduction"
+    reference: "73"
+    unit: ca/cad
+    params:
+      amount: ca-bc/tax_reduction_basic
+    produces:
+      output: ca-bc/bc428_basic_reduction_line_73

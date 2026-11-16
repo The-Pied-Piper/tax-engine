@@ -1,11 +1,9 @@
 """BC428 (2025) line 69's input, as the British Columbia take-home manifest part declares it.
 
-Form text (Form BC428, CRA 5010-C, docs/cra-forms-2025): "British Columbia additional tax for
-minimum tax purposes: Line 69: Amount from line 14 of Part 7 of Form T691 ^ multiplied by 34.9% =
-^" is the line's printed text; the part takes the text before the ^ marker as its basis. The form
-prints no floor, so the kind is not non_negative. A caller with no minimum tax to report leaves
-the line out, so the request is read as 0, not blank, because the step that multiplies it by the
-rate needs a base.
+Form BC428 (CRA 5010-C), line 69, as printed on the form; the part takes the printed text before its
+^ marker as its basis. The form prints no floor, so the kind is not non_negative. A caller with no
+minimum tax to report leaves the line out, so the request is read as 0, not blank, because the step
+that multiplies it by the rate needs a base.
 
 British Columbia is not yet listed in the registrations, so the real part is loaded under a
 test-local header over the British Columbia package list of `support.py`.

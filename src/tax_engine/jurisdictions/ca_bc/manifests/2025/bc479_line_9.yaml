@@ -1,0 +1,14 @@
+# Form BC479 (2025, CRA 5010-TC) line 9. "Line 9 and line 60330: Basic sales tax credit Claim $75".
+# The $75 is the `ca-bc/sales_tax_credit_basic` dataset, claimed whole through core/credit_amount,
+# so it is the same at every salary.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/credit_amount
+    title: "Basic sales tax credit"
+    reference: "9"
+    unit: ca/cad
+    params:
+      amount: ca-bc/sales_tax_credit_basic
+    produces:
+      output: ca-bc/bc479_basic_sales_tax_credit_line_9
