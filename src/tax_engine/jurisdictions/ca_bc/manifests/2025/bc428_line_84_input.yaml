@@ -1,0 +1,13 @@
+# BC428 (2025) inputs a salary-only caller does not give.
+# Line 84: "Line 84: British Columbia political contribution tax credit (use Worksheet BC428)
+# (maximum $500)" (5010-c). Worksheet BC428 is not built, and the $500 maximum is not enforced. A
+# salary-only caller has no political contribution tax credit, so a request that leaves the line
+# out is read as blank; the step that consumes it (line 85) reads that blank as 0.
+inputs:
+  - name: ca-bc/bc428_political_contribution_tax_credit_line_84
+    title: "British Columbia political contribution tax credit"
+    reference: "84"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 84: British Columbia political contribution tax credit (use Worksheet BC428) (maximum $500)'

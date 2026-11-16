@@ -1,0 +1,21 @@
+# Form BC428 (CRA 5010-C) line 72 "Line 72: Line 70 minus line 71 (if negative, enter "0") = ^". One
+# core/subtract_not_below_zero step: the tax with the additional minimum tax (line 70,
+# `ca-bc/bc428_tax_with_minimum_tax_line_70`) less the provincial foreign tax credit (line 71,
+# `ca-bc/bc428_provincial_foreign_tax_credit_line_71`), not below 0. Line 71 is an optional input
+# that a salary-only caller leaves out, read as blank and then as 0 by the blank rule below. The
+# form prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "72"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_tax_with_minimum_tax_line_70
+      less: ca-bc/bc428_provincial_foreign_tax_credit_line_71
+    blank:
+      less: "0"
+    produces:
+      output: ca-bc/bc428_tax_after_foreign_credit_line_72

@@ -117,6 +117,19 @@ BC428_DIVIDEND_TAX_CREDIT_LINE_65 = AmountKind.declare(
 """British Columbia dividend tax credit, BC428 line 65 "Line 65 and line 61520: British Columbia
 dividend tax credit (use Worksheet BC428)": a caller input that is read as blank when left out."""
 
+BC428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "bc428_provincial_foreign_tax_credit_line_71", non_negative=True
+)
+"""British Columbia provincial foreign tax credit, BC428 line 71 "Line 71: Provincial foreign tax
+credit (complete Form T2036)": a caller input that is read as blank when left out."""
+
+BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "bc428_political_contribution_tax_credit_line_84", non_negative=True
+)
+"""British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
+political contribution tax credit (use Worksheet BC428) (maximum $500)": a caller input that is
+read as blank when left out."""
+
 BC428_ADDITIONAL_MINIMUM_TAX_AMOUNT_LINE_69 = AmountKind.declare(
     CATALOG, "bc428_additional_minimum_tax_amount_line_69"
 )
@@ -247,6 +260,25 @@ BC428_TOTAL_LINE_67 = AmountKind.declare(CATALOG, "bc428_total_line_67", non_neg
 copy of line 60) plus line 65 (the dividend tax credit, blank read as 0) plus line 66 (the minimum
 tax carryover), rounded to the cent."""
 
+BC428_TAX_AFTER_CREDITS_LINE_68 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_credits_line_68", non_negative=True
+)
+"""Tax after credits, BC428 line 68 "Line 68: Line 63 minus line 67 (if negative, enter "0") = ^":
+line 63 (the tax with split income) minus line 67 (the total), not below 0, rounded to the cent."""
+
+BC428_TAX_WITH_MINIMUM_TAX_LINE_70 = AmountKind.declare(
+    CATALOG, "bc428_tax_with_minimum_tax_line_70", non_negative=True
+)
+"""Tax with the additional minimum tax, BC428 line 70 "Line 70: Line 68 plus line 69 = ^": line 68
+(the tax after credits) plus line 69 (the additional minimum tax), rounded to the cent."""
+
+BC428_TAX_AFTER_FOREIGN_CREDIT_LINE_72 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_foreign_credit_line_72", non_negative=True
+)
+"""Tax after the foreign tax credit, BC428 line 72 "Line 72: Line 70 minus line 71 (if negative,
+enter "0") = ^": line 70 (the tax with the additional minimum tax) minus line 71 (the provincial
+foreign tax credit, blank read as 0), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -259,6 +291,18 @@ BC428_NET_INCOME_LINE_74 = AmountKind.declare(
 )
 """Net income, BC428 line 74 "Enter your net income from line 23600 of your return": the T1 net
 income, line 23600 after its floor."""
+
+BC428_NET_INCOME_OVER_BASE_LINE_76 = AmountKind.declare(
+    CATALOG, "bc428_net_income_over_base_line_76", non_negative=True
+)
+"""Net income over the base amount, BC428 line 76 "Line 76: Line 74 minus line 75 (if negative,
+enter "0") =": line 74 less line 75, not below zero."""
+
+BC428_REDUCTION_CLAWBACK_LINE_78 = AmountKind.declare(
+    CATALOG, "bc428_reduction_clawback_line_78", non_negative=True
+)
+"""British Columbia tax reduction clawback, BC428 line 78 "Line 76 multiplied by the percentage from
+line 77 =": line 76 times the printed rate of line 77."""
 
 BC479_BRITISH_COLUMBIA_CREDITS_LINE_45 = AmountKind.declare(
     CATALOG, "bc479_british_columbia_credits_line_45", non_negative=True
@@ -280,12 +324,43 @@ BC479_INCOME_WITH_REPAYMENTS_LINE_3 = AmountKind.declare(
 """Income with repayments, BC479 line 3 "Line 1 plus line 2": line 1 plus line 2, the UCCB and RDSP
 repayments input read as 0 when blank. The result is signed, because line 1 is signed."""
 
+BC479_ADJUSTED_NET_INCOME_LINE_5 = AmountKind.declare(
+    CATALOG, "bc479_adjusted_net_income_line_5", non_negative=True
+)
+"""Adjusted net income, BC479 line 5 "Line 5: Line 3 minus line 4 (if negative, enter "0")": line 3
+(the income with repayments) minus line 4 (the UCCB and RDSP income, read as 0 when blank), floored
+at 0 as the form prints, rounded to the cent."""
+
+BC479_ADJUSTED_FAMILY_NET_INCOME_LINE_6 = AmountKind.declare(
+    CATALOG, "bc479_adjusted_family_net_income_line_6", non_negative=True
+)
+"""Adjusted family net income, BC479 line 6 "Line 6: Add the amounts from line 5 of columns 1 and
+2.": the sum of line 5 of the two columns; the spouse column is not built, so it is line 5 of column
+1 alone."""
+
+BC479_THRESHOLD_LINE_7 = AmountKind.declare(CATALOG, "bc479_threshold_line_7", non_negative=True)
+"""Threshold, BC479 line 7 "Line 7: If you had a spouse or common-law partner on December 31, 2025,
+enter $18,000. If not, enter $15,000.": the printed amount without a spouse, $15,000; the spouse
+amount is not built."""
+
+BC479_BASIC_SALES_TAX_CREDIT_LINE_9 = AmountKind.declare(
+    CATALOG, "bc479_basic_sales_tax_credit_line_9", non_negative=True
+)
+"""Basic sales tax credit, BC479 line 9 (line 60330) "Basic sales tax credit Claim $75": the amount
+claimed, the same at every income."""
+
 BC428_BRITISH_COLUMBIA_TAX_ON_TAXABLE_INCOME_LINE_61 = AmountKind.declare(
     CATALOG, "bc428_british_columbia_tax_on_taxable_income_line_61", non_negative=True
 )
 """British Columbia tax on taxable income, BC428 line 61 "Line 61: British Columbia tax on taxable
 income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever the taxable income is
 in; the other is blank."""
+
+BC428_BASIC_REDUCTION_LINE_73 = AmountKind.declare(
+    CATALOG, "bc428_basic_reduction_line_73", non_negative=True
+)
+"""Basic reduction, BC428 line 73 "Basic reduction Claim $562": the amount claimed, the British
+Columbia basic tax reduction, claimed whole at every salary (line 79 phases it out)."""
 
 BC428_TAX_WITH_SPLIT_INCOME_LINE_63 = AmountKind.declare(
     CATALOG, "bc428_tax_with_split_income_line_63"

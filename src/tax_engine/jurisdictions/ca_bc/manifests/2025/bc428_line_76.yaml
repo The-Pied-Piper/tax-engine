@@ -1,0 +1,21 @@
+# Form BC428 (British Columbia Tax, 2025, CRA 5010-c-25e) line 76: "Line 76: Line 74 minus line 75
+# (if negative, enter "0") =". One core/subtract_not_below_zero step: the net income on line 74
+# (`ca-bc/bc428_net_income_line_74`) less the base amount on line 75
+# (`ca-bc/bc428_base_amount_line_75`), not below 0. Neither input is ever blank (line 74 is
+# computed and line 75 is the printed base amount), so the step has no blank rule. Line 76 has no
+# income gate: at $70,000 it is 44,315.00. The form's "$40,807 or more, enter 0 on line 79"
+# instruction belongs to line 79, not to this line. The form prints no title for the line, so the
+# step has none.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "76"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_net_income_line_74
+      less: ca-bc/bc428_base_amount_line_75
+    produces:
+      output: ca-bc/bc428_net_income_over_base_line_76
