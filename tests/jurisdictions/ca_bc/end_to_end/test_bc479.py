@@ -13,15 +13,15 @@ Form text (Form BC479, CRA 5010-tc): "Line 45: Line 36 plus line 44 Enter this a
 of your return. British Columbia credits = ^".
 
 The line 45 figures are hand-computed from the printed form: 37.70 / 0.00 / 0.00 / 0.00 / 0.00. The
-basic credit of line 9 is 75.00; line 15 is that less 2% of the net income over the 15,000.00
-threshold of line 7, not below 0. At $17,000 the net income of line 1 is 16,865.00, so the credit is
-75.00 - 37.30 = 37.70; from a net income of 18,750.00 it is nil. The renter's credit of line 44 is
-left blank and read as 0.
+basic credit of line 9 is 75.00; the sales tax credit (line 13) is that less 2% of the net income
+over the 15,000.00 threshold of line 7, not below 0, and line 15 is the page 1 total. At $17,000 the
+net income of line 1 is 16,865.00, so the credit is 75.00 - 37.30 = 37.70; from a net income of
+18,750.00 it is nil. The renter's credit of line 44 is left blank and read as 0.
 
-Not yet wired: T1 line 47900 and line 48200 are not built, so the line 45 figure is the form's
-export but does not reach T1 line 167. At $17,000 the return's line 167 (see `test_bc428.py`) is
-therefore short of this 37.70 credit. Wiring it is a change to the shared T1 form, and is not done
-here.
+Not yet wired: T1 line 47900 is not built (no T1 step reads BC479 line 45), so the line 45 figure is
+the form's export but does not reach T1 line 167. At $17,000 the return's line 167 (see
+`test_bc428.py`) is therefore short of this 37.70 credit. Wiring it is a change to the shared T1
+form, and is not done here.
 """
 
 from __future__ import annotations

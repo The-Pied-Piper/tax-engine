@@ -13,13 +13,14 @@ Form text (Form BC428, CRA 5010-c): "Line 91: Line 89 minus line 90 (if negative
 Enter this amount on line 42800 of your return. British Columbia tax =".
 
 The line 91 figures are hand-computed from the printed form: 0.00 / 0.00 / 364.81 / 3,162.39 /
-19,230.76. At $30,000 the taxable income is 29,735.00, the tax before credits 758.96 after the
-credits, and the printed reduction (562.00 less 3.56% of the net income over 25,020.00) is 562.00 -
+19,230.76. At $30,000 the taxable income is 29,735.00 and the tax after credits (line 72) is
+758.96; the printed reduction (562.00 less 3.56% of the net income over 25,020.00) is 562.00 -
 167.85 = 394.15, leaving 364.81. At $17,000 and $20,000 the reduction of 562.00 takes the tax after
-credits (nothing, and 291.37) to 0.00. From a net income of 40,807.00 the reduction is 0.00.
+credits (151.09 and 291.37) to 0.00. From a net income of 40,807.00 the reduction is 0.00.
 
-The lines 1, 74 and 79 figures are the printed form's: the taxable income and the net income are
-the salary less the Schedule 8 enhanced contributions, and line 79 is the reduction above. The T1
+The lines 1, 74 and 79 figures follow from the salary: the taxable income (line 1) and the net
+income (line 74) are the salary less the Schedule 8 enhanced contributions, and line 79 is the
+reduction above. The T1
 line 167 figures are the engine's own, not computed by hand: they pin the current output of the
 whole chain. They do not include the sales tax credit of BC479 line 45: T1 line 47900 is not built,
 so the BC479 credit does not yet reach line 167 (the credit is pinned in `test_bc479.py`). Line
