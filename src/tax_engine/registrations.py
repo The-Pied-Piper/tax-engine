@@ -7,6 +7,7 @@ docs/jurisdiction-packages.md.
 import tax_engine.adapters.inbound.trace_english
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_ab
+import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.ca_on
 import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
@@ -23,6 +24,7 @@ JURISDICTIONS = JurisdictionPackages(
         tax_engine.jurisdictions.ca,
         tax_engine.jurisdictions.ca_on,
         tax_engine.jurisdictions.ca_ab,
+        tax_engine.jurisdictions.ca_bc,
     )
 )
 
