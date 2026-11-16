@@ -2,8 +2,8 @@
 
 Form text (Form BC428, CRA 5010-C): Line 79: Line 73 minus line 78 (if negative, enter "0")
 British Columbia tax reduction = ^
-The ticket (#960) titles the step "British Columbia tax reduction", so the step carries that title
-(the line 72 step has none because its form line prints none; this one follows the ticket).
+The step carries the title "British Columbia tax reduction", which the form prints on the line
+(the line 72 step has none because its form line prints none).
 
 Line 79 is one core/subtract_not_below_zero step (`bc428_line_79.yaml`), rounded through
 `ca-bc/cent_rounding`, taking the clawback on line 78 (`ca-bc/bc428_reduction_clawback_line_78`)
