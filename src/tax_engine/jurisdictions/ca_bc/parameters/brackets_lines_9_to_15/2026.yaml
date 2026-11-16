@@ -1,0 +1,17 @@
+# Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: thresholds are T4127 Table 8.1 (BC indexes at its own 2.2%, not the federal factor) and the rates are as printed there, the first rate rising from 5.06% to 5.60% for 2026 on (the July edition only; the January edition still shows 5.06%). tax_at_start is derived, not printed: the cumulative tax on the earlier brackets at those rates, rounded half-up to the cent (reproduces the 2025 printed constants).
+# British Columbia income tax brackets, 2026 tax year, Form BC428 (CRA 5010-c) Part A, lines 9 to 15,
+# from T4127 (Jul 2026), Table 8.1. The 2026 BC428 is not yet published, so these figures are not
+# yet confirmed against it.
+# The split between the two files moves from 137,407 (2025) to 140,430, which is the first lower
+# bound here and the `up_to` of the lines 2 to 8 file.
+family: ca-bc/brackets_lines_9_to_15
+tax_year: 2026
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-07-26e.pdf
+rounding: none
+brackets:
+  - {from: "140430.00", rate: "0.147", tax_at_start: "11310.74"}
+  - {from: "190405.00", rate: "0.168", tax_at_start: "18657.07"}
+  - {from: "265545.00", rate: "0.205", tax_at_start: "31280.59"}
