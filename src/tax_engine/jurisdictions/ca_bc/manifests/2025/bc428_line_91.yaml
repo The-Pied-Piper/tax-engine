@@ -1,0 +1,24 @@
+# Form BC428 (CRA 5010-C) line 91 "Line 91: Line 89 minus line 90 (if negative, enter "0") Enter
+# this amount on line 42800 of your return. British Columbia tax = ^". One
+# core/subtract_not_below_zero step: the tax after the ESOP and EVCC credits (line 89,
+# `ca-bc/bc428_tax_after_esop_evcc_line_89`) less the British Columbia mining flow-through share tax
+# credit (line 90, `ca-bc/bc428_mining_flow_through_credit_line_90`), not below 0. Line 90 is an
+# optional input that a salary-only caller leaves out, read as blank and then as 0 by the blank rule
+# below. Line 91 is the British Columbia tax entered on line 42800, supplied through the form's
+# `ca/provincial_tax.amount`. The step is titled with the printed label, as Ontario's line 90 is.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "British Columbia tax"
+    reference: "91"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_tax_after_esop_evcc_line_89
+      less: ca-bc/bc428_mining_flow_through_credit_line_90
+    blank:
+      less: "0"
+    produces:
+      output: ca-bc/bc428_british_columbia_tax_line_91
