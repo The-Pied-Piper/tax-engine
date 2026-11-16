@@ -299,6 +299,13 @@ BC428_TAX_AFTER_REDUCTION_LINE_80 = AmountKind.declare(
 negative, enter "0") = ^": line 72 (the tax after the foreign tax credit) minus line 79 (the British
 Columbia tax reduction), not below 0, rounded to the cent."""
 
+BC428_TAX_AFTER_LOGGING_CREDIT_LINE_82 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_logging_credit_line_82", non_negative=True
+)
+"""Tax after the logging tax credit, BC428 line 82 "Line 82: Line 80 minus line 81 (if negative,
+enter "0") = ^": line 80 (the tax after the British Columbia tax reduction) minus line 81 (the
+logging tax credit, read as 0 when blank), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -415,13 +422,6 @@ BC479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
 RDSP income (line 12500 of the return)": the total of the two incomes, a caller input that is read
 as blank when left out, column 1 (you) only."""
 
-BC479_SPOUSE_ADDITIONAL_CREDIT_LINE_10 = AmountKind.declare(
-    CATALOG, "bc479_spouse_additional_credit_line_10", non_negative=True
-)
-"""Additional credit for your spouse or common-law partner, BC479 line 10 "Additional credit for
-your spouse or common-law partner": the credit claimed for a spouse or common-law partner, a caller
-input that is read as blank when left out."""
-
 BC479_HOME_RENOVATION_EXPENSES_LINE_14 = AmountKind.declare(
     CATALOG, "bc479_home_renovation_expenses_line_14", non_negative=True
 )
@@ -442,3 +442,10 @@ BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
 )
 """Credit before the income reduction, BC479 line 11 "Line 11: Line 9 plus line 10 = ^": the basic
 sales tax credit (line 9) plus the spouse or common-law partner additional credit (line 10)."""
+
+BC479_SALES_TAX_CREDIT_LINE_13 = AmountKind.declare(
+    CATALOG, "bc479_sales_tax_credit_line_13", non_negative=True
+)
+"""Sales tax credit, BC479 line 13 "Line 13: Line 11 minus line 12 (if negative, enter "0") Sales
+tax credit = ^": line 11 (the credit before the income reduction) minus line 12 (the income
+reduction), not below 0, rounded to the cent."""
