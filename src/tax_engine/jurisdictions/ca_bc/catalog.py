@@ -279,6 +279,13 @@ BC428_TAX_AFTER_FOREIGN_CREDIT_LINE_72 = AmountKind.declare(
 enter "0") = ^": line 70 (the tax with the additional minimum tax) minus line 71 (the provincial
 foreign tax credit, blank read as 0), not below 0, rounded to the cent."""
 
+BC428_BRITISH_COLUMBIA_TAX_REDUCTION_LINE_79 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_tax_reduction_line_79", non_negative=True
+)
+"""British Columbia tax reduction, BC428 line 79 "Line 79: Line 73 minus line 78 (if negative, enter
+"0") British Columbia tax reduction = ^": line 73 (the basic reduction) minus line 78 (the
+reduction clawback), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
