@@ -14,8 +14,8 @@ in a slot with no blank rule, so both slots carry `pass_on`, as Alberta's line 6
 
 The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts and
 `bc428_line_1.yaml`, `bc428_line_10.yaml`, `bc428_line_11.yaml`, `bc428_line_12.yaml` and
-`bc428_line_13.yaml`. The form declaration and header are test-local, and British Columbia is not in
-`registrations.JURISDICTIONS`, so the service is built over the package list of `support.py`.
+`bc428_line_13.yaml`. The form declaration and header are test-local, and the service is built over
+the package list of `support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): line 1 is 16,865.00 / 19,835.00 / 29,735.00 /
 69,335.00 / 198,926.00, so line 13 is blank for the first four, and for $200,000 line 11 is

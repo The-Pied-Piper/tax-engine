@@ -10,10 +10,10 @@ Line 5 is one `core/bracket_column_rate` step over line 1 with that schedule, ou
 `ca-bc/bc428_bracket_rate_line_5`, in the part `bc428_line_5.yaml`. The rate is a Decimal artifact,
 not rounded; the ticket table's 0.05 is rounded, the dataset's printed rate is 0.0506.
 
-Line 1 is the real `bc428_line_1.yaml` (#903). The real parts composed: the British Columbia
-salary, Schedule 8, the T1 taxable-income parts, `bc428_line_1.yaml` and `bc428_line_5.yaml`. The
-form declaration is test-local, exporting lines 1 and 5. British Columbia is not in
-`registrations.JURISDICTIONS`, so the service is built over the package list of `support.py`.
+Line 1 is the real `bc428_line_1.yaml` (#903). The real parts composed: the British Columbia salary,
+Schedule 8, the T1 taxable-income parts, `bc428_line_1.yaml` and `bc428_line_5.yaml`. The form
+declaration is test-local, exporting lines 1 and 5. The service is built over the package list of
+`support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): taxable income is the salary less the CPP
 enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so

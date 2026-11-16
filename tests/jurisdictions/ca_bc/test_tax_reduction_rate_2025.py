@@ -18,8 +18,7 @@ from tests.jurisdictions.ca_bc.support import (
 )
 
 D = Decimal
-# British Columbia is not in `registrations.JURISDICTIONS` yet, so the source is built over its own
-# packages.
+# The source is built over its own packages.
 SOURCE = YamlParameterSource(
     british_columbia_packages().roots(), british_columbia_parameter_parsers()
 )

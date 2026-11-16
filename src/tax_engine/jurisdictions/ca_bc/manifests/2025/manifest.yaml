@@ -13,10 +13,7 @@
 # T2204 are imported unchanged. It has no Schedule 6 edition of its own, so the federal Schedule 6
 # is imported unchanged.
 #
-# British Columbia is not yet listed in `registrations.JURISDICTIONS`: the startup check builds
-# every listed manifest, and this one is partial until the BC428 and BC479 forms exist (T1 needs
-# `ca/provincial_tax.amount`, which no British Columbia form supplies yet). Its input is in
-# salary.yaml, not here. The end-to-end ticket lists it.
+# Its input is in salary.yaml, not here.
 jurisdiction: CA-BC
 version: 1
 valid_from_tax_year: 2025

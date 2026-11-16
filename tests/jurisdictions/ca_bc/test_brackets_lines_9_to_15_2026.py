@@ -26,7 +26,7 @@ from tests.jurisdictions.ca_bc.support import (
 
 D = Decimal
 CENT = D("0.01")
-# British Columbia is not in `registrations.JURISDICTIONS` yet; the source uses its own packages.
+# The source is built over the British Columbia package list of `support.py`.
 SOURCE = YamlParameterSource(
     british_columbia_packages().roots(), british_columbia_parameter_parsers()
 )

@@ -12,8 +12,7 @@ artifact, not rounded; the ticket table's 0.17 is rounded, the dataset's printed
 
 Line 1 is the real `bc428_line_1.yaml`. The real parts composed: the British Columbia salary,
 Schedule 8, the T1 taxable-income parts, `bc428_line_1.yaml` and `bc428_line_12.yaml`. The form
-declaration is test-local. British Columbia is not in `registrations.JURISDICTIONS`, so the service
-is built over the package list of `support.py`.
+declaration is test-local. The service is built over the package list of `support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): line 1 is 16,865.00 / 19,835.00 / 29,735.00 /
 69,335.00 / 198,926.00, so line 12 is blank for the first four and 0.168 for $200,000.

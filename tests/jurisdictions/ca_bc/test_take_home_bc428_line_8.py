@@ -16,10 +16,9 @@ Lines 1, 3, 4, 5, 6 and 7 are composed from their real parts as they are: line 1
 `ca-bc/bc428_taxable_income_over_lower_bound_line_4` (`bc428_line_4.yaml`), line 5
 `ca-bc/bc428_bracket_rate_line_5` (`bc428_line_5.yaml`), line 6 `ca-bc/bc428_bracket_tax_line_6`
 (`bc428_line_6.yaml`) and line 7 `ca-bc/bc428_bracket_tax_at_start_line_7` (`bc428_line_7.yaml`).
-Line 8 is one `core/sum` step over lines 6 and 7, output
-`ca-bc/bc428_tax_on_taxable_income_line_8`, in the part `bc428_line_8.yaml`. The form declaration is
-test-local. British Columbia is not in `registrations.JURISDICTIONS`, so the service is built over
-the package list of `support.py`.
+Line 8 is one `core/sum` step over lines 6 and 7, output `ca-bc/bc428_tax_on_taxable_income_line_8`,
+in the part `bc428_line_8.yaml`. The form declaration is test-local. The service is built over the
+package list of `support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): taxable income is the salary less the CPP
 enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so

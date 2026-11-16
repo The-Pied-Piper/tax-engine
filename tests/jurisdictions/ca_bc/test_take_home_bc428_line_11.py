@@ -17,8 +17,8 @@ capability and the real cent rounding dataset directly.
 
 The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts, the
 line 1 part (`bc428_line_1.yaml`), `bc428_line_10.yaml` and `bc428_line_11.yaml`. The form
-declaration and header are test-local, and British Columbia is not in
-`registrations.JURISDICTIONS`, so the service is built over the package list of `support.py`.
+declaration and header are test-local, and the service is built over the package list of
+`support.py`.
 """
 
 from __future__ import annotations

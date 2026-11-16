@@ -13,9 +13,8 @@ the one that has a figure; the other is blank because line 1 is outside its tabl
 
 The salary is the only input. Line 61 is composed from the real parts that lead to it: the salary,
 the federal T1 taxable income parts, line 1, lines 3 to 8 and lines 10 to 15 (`bc428_line_*.yaml`)
-and line 61. The form declaration is test-local (the real `bc428.yaml` exports line 91, which is
-not built). British Columbia is not in `registrations.JURISDICTIONS`, so the service is built over
-the package list of `support.py`.
+and line 61. The form declaration is test-local (the real `bc428.yaml` exports line 91, which is not
+built). The service is built over the package list of `support.py`.
 
 Figures (hand-computed from the printed form, not a CRA example; a salary of 17,000 / 20,000 /
 30,000 / 70,000 / 200,000 is a taxable income, line 1, of 16,865.00 / 19,835.00 / 29,735.00 /
