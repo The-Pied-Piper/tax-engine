@@ -299,6 +299,13 @@ BC428_TAX_AFTER_REDUCTION_LINE_80 = AmountKind.declare(
 negative, enter "0") = ^": line 72 (the tax after the foreign tax credit) minus line 79 (the British
 Columbia tax reduction), not below 0, rounded to the cent."""
 
+BC428_TAX_AFTER_LOGGING_CREDIT_LINE_82 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_logging_credit_line_82", non_negative=True
+)
+"""Tax after the logging tax credit, BC428 line 82 "Line 82: Line 80 minus line 81 (if negative,
+enter "0") = ^": line 80 (the tax after the British Columbia tax reduction) minus line 81 (the
+logging tax credit, read as 0 when blank), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
@@ -422,6 +429,14 @@ BC479_HOME_RENOVATION_EXPENSES_LINE_14 = AmountKind.declare(
 Schedule BC(S12). (maximum $10,000)": the amount from line 5 of Schedule BC(S12), a caller input
 that is read as blank when left out."""
 
+BC479_HOME_RENOVATION_CREDIT_LINE_14 = AmountKind.declare(
+    CATALOG, "bc479_home_renovation_credit_line_14", non_negative=True
+)
+"""Home renovation credit, BC479 line 14 "Line 14: Enter your home renovation expenses from line 5
+of your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^": line 14 input
+(the expenses) times the printed 10%, rounded to the cent. The printed $10,000 maximum is not
+enforced."""
+
 BC479_TRAINING_CREDITS_LINE_34 = AmountKind.declare(
     CATALOG, "bc479_training_credits_line_34", non_negative=True
 )
@@ -433,3 +448,31 @@ BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
 )
 """Credit before the income reduction, BC479 line 11 "Line 11: Line 9 plus line 10 = ^": the basic
 sales tax credit (line 9) plus the spouse or common-law partner additional credit (line 10)."""
+
+BC479_SALES_TAX_CREDIT_LINE_13 = AmountKind.declare(
+    CATALOG, "bc479_sales_tax_credit_line_13", non_negative=True
+)
+"""Sales tax credit, BC479 line 13 "Line 13: Line 11 minus line 12 (if negative, enter "0") Sales
+tax credit = ^": line 11 (the credit before the income reduction) minus line 12 (the income
+reduction), not below 0, rounded to the cent."""
+
+BC479_VENTURE_CAPITAL_CREDIT_LINE_25 = AmountKind.declare(
+    CATALOG, "bc479_venture_capital_credit_line_25", non_negative=True
+)
+"""British Columbia venture capital tax credit, BC479 line 25 "Add lines 20, 21, and 23. (maximum
+$300,000)": the total of the venture capital tax credit lines, a caller input that is read as blank
+when left out; the $300,000 maximum is stated, not enforced."""
+
+BC479_MINING_EXPLORATION_CREDIT_LINE_26 = AmountKind.declare(
+    CATALOG, "bc479_mining_exploration_credit_line_26", non_negative=True
+)
+"""British Columbia mining exploration tax credit, BC479 line 26 "Enter the amount from line 23 of
+your Form T88": the credit taken from Form T88, a caller input that is read as blank when left
+out."""
+
+BC479_CLEAN_BUILDINGS_CREDIT_LINE_30 = AmountKind.declare(
+    CATALOG, "bc479_clean_buildings_credit_line_30", non_negative=True
+)
+"""Total allowable credit, BC479 line 30 "Line 30: Total allowable credit: Line 28 plus line 29
+= ^": lines 28 and 29 are not built, so the total is a caller input that is read as blank when
+left out."""
