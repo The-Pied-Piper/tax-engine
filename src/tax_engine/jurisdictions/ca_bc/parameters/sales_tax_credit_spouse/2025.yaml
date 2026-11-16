@@ -1,0 +1,8 @@
+# BC479 line 10: additional sales tax credit for a spouse or common-law partner, 2025
+family: ca-bc/sales_tax_credit_spouse
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-tc/5010-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "75"
