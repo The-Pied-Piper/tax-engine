@@ -450,6 +450,13 @@ BC479_TRAINING_CREDITS_LINE_34 = AmountKind.declare(
 """Training credits total, BC479 line 34 "Line 34: Add lines 31 to 33": the sum of lines 31 to 33
 (the T1014, T1014-1 and T1014-2 credits), a caller input that is read as blank when left out."""
 
+BC479_RENTERS_CREDIT_LINE_44 = AmountKind.declare(
+    CATALOG, "bc479_renters_credit_line_44", non_negative=True
+)
+"""British Columbia renter's tax credit, BC479 line 44 (line 60576) "Line 38 minus line 43 (if
+negative, enter "0")": a caller input, read as blank when left out; the rent table and lines 37 to
+43 are not built."""
+
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
 )
