@@ -422,6 +422,13 @@ BC479_HOME_RENOVATION_EXPENSES_LINE_14 = AmountKind.declare(
 Schedule BC(S12). (maximum $10,000)": the amount from line 5 of Schedule BC(S12), a caller input
 that is read as blank when left out."""
 
+BC479_RENTERS_CREDIT_LINE_44 = AmountKind.declare(
+    CATALOG, "bc479_renters_credit_line_44", non_negative=True
+)
+"""British Columbia renter's tax credit, BC479 line 44 (line 60576) "Line 38 minus line 43 (if
+negative, enter "0")": a caller input, read as blank when left out; the rent table and lines 37 to
+43 are not built."""
+
 BC479_CREDIT_BEFORE_REDUCTION_LINE_11 = AmountKind.declare(
     CATALOG, "bc479_credit_before_reduction_line_11", non_negative=True
 )
