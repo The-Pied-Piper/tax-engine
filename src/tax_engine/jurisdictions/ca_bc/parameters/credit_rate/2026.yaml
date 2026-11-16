@@ -1,0 +1,14 @@
+# Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 (July 2026) for British Columbia: from 2026 the lowest rate is
+# 5.60%, up from 5.06% (announced 17 February 2026); the January 2026 edition still shows 5.06% and is not used.
+# British Columbia non-refundable tax credit rate, 2026 tax year (Form BC428 line 55): 5.60%, the
+# lowest bracket rate. The line 56 product is a dollars-and-cents box, so it rounds half-up to the
+# cent, the project's choice, as the form states no rounding rule.
+# The 2026 BC428 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-bc/credit_rate
+tax_year: 2026
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.056"
