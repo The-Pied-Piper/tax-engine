@@ -1,0 +1,21 @@
+# Form BC428 (CRA 5010-C) line 89 "Line 89: Line 85 minus line 88 (if negative, enter "0") = ^". One
+# core/subtract_not_below_zero step: the tax after the political contribution tax credit (line 85,
+# `ca-bc/bc428_tax_after_political_credit_line_85`) less the total ESOP and EVCC credits (line 88,
+# `ca-bc/bc428_esop_evcc_credits_line_88`), not below 0. Line 88 is an optional input that a
+# salary-only caller leaves out, read as blank and then as 0 by the blank rule below. The form
+# prints no title for the line, so the step has none.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "89"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_tax_after_political_credit_line_85
+      less: ca-bc/bc428_esop_evcc_credits_line_88
+    blank:
+      less: "0"
+    produces:
+      output: ca-bc/bc428_tax_after_esop_evcc_line_89

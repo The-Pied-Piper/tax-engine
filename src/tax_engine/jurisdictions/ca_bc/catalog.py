@@ -320,6 +320,13 @@ BC428_TAX_AFTER_POLITICAL_CREDIT_LINE_85 = AmountKind.declare(
 (if negative, enter "0") = ^": line 82 (the tax after the logging tax credit) minus line 84 (the
 political contribution tax credit, read as 0 when blank), not below 0, rounded to the cent."""
 
+BC428_TAX_AFTER_ESOP_EVCC_LINE_89 = AmountKind.declare(
+    CATALOG, "bc428_tax_after_esop_evcc_line_89", non_negative=True
+)
+"""Tax after the ESOP and EVCC credits, BC428 line 89 "Line 89: Line 85 minus line 88 (if negative,
+enter "0") = ^": line 85 (the tax after the political contribution tax credit) minus line 88 (the
+total ESOP and EVCC credits, read as 0 when blank), not below 0, rounded to the cent."""
+
 BC479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "bc479_net_income_line_1", non_negative=False)
 """Net income, BC479 line 1 "Net income from line 23600 of the return (or the amount you would have
 entered if the instructions on line 23600 said "if negative, show in brackets")": the net income of
