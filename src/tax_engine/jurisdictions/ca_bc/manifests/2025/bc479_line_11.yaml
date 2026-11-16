@@ -1,9 +1,11 @@
 # Form BC479 (2025, CRA 5010-TC) line 11. Line 11: "Line 9 plus line 10 = ^".
 #
 # The form prints no title after the line number, so the step has none. Line 9
-# (`ca-bc/bc479_basic_sales_tax_credit_line_9`) is the basic sales tax credit. Line 10
-# (`ca-bc/bc479_spouse_additional_credit_line_10`) is an optional input that a salary-only caller
-# leaves out; the step reads it as blank, then as 0, by the blank rule below.
+# (`ca-bc/bc479_basic_sales_tax_credit_line_9`) is the basic sales tax credit. Line 10, "Additional
+# credit for your spouse or common-law partner Claim $75" (the `ca-bc/sales_tax_credit_spouse`
+# dataset), is the spouse branch and is not built: the take-home build is a single filer, who has
+# no spouse or common-law partner to claim it for, and the engine has no spouse-status fact yet
+# (line 7's $18,000 branch is unbuilt for the same reason). So the sum reads line 9 alone.
 form:
   name: ca-bc/bc479
 capabilities:
@@ -13,12 +15,6 @@ capabilities:
     params:
       rounding: ca-bc/cent_rounding
     consumes:
-      parts:
-        [
-          ca-bc/bc479_basic_sales_tax_credit_line_9,
-          ca-bc/bc479_spouse_additional_credit_line_10,
-        ]
-    blank:
-      ca-bc/bc479_spouse_additional_credit_line_10: "0"
+      parts: [ca-bc/bc479_basic_sales_tax_credit_line_9]
     produces:
       output: ca-bc/bc479_credit_before_reduction_line_11

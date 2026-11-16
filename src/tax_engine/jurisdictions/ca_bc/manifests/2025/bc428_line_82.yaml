@@ -1,0 +1,21 @@
+# Form BC428 (CRA 5010-C) line 82 "Line 82: Line 80 minus line 81 (if negative, enter "0") = ^". One
+# core/subtract_not_below_zero step: the tax after the British Columbia tax reduction (line 80,
+# `ca-bc/bc428_tax_after_reduction_line_80`) less the logging tax credit (line 81,
+# `ca-bc/bc428_logging_tax_credit_line_81`), not below 0. Line 81 is an optional input that a
+# salary-only caller leaves out, read as blank and then as 0 by the blank rule below. The form prints
+# no title for the line, so the step has none.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "82"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc428_tax_after_reduction_line_80
+      less: ca-bc/bc428_logging_tax_credit_line_81
+    blank:
+      less: "0"
+    produces:
+      output: ca-bc/bc428_tax_after_logging_credit_line_82

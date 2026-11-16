@@ -1,0 +1,19 @@
+# Form BC479 (2025, CRA 5010-TC) line 13. Line 13: "Line 11 minus line 12 (if negative, enter "0")
+# Sales tax credit = ^". One core/subtract_not_below_zero step: the credit before the income
+# reduction (line 11, `ca-bc/bc479_credit_before_reduction_line_11`) less the income reduction
+# (line 12, `ca-bc/bc479_income_reduction_line_12`), not below 0. Both lines are never blank, so the
+# step has no blank rule.
+form:
+  name: ca-bc/bc479
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: Sales tax credit
+    reference: "13"
+    unit: ca/cad
+    params:
+      rounding: ca-bc/cent_rounding
+    consumes:
+      amount: ca-bc/bc479_credit_before_reduction_line_11
+      less: ca-bc/bc479_income_reduction_line_12
+    produces:
+      output: ca-bc/bc479_sales_tax_credit_line_13

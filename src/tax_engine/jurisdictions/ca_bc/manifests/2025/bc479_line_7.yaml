@@ -2,11 +2,11 @@
 # common-law partner on December 31, 2025, enter $18,000. If not, enter $15,000." The $15,000 is the
 # `ca-bc/sales_tax_credit_threshold` dataset, claimed whole through core/credit_amount, so it is the
 # same at every salary. The $18,000 branch is not built.
+# The form prints no title on line 7, so the step is untitled.
 form:
   name: ca-bc/bc479
 capabilities:
   - name: core/credit_amount
-    title: "Threshold"
     reference: "7"
     unit: ca/cad
     params:
