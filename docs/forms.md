@@ -51,6 +51,20 @@ to the length of its list uniformly.
 It refuses at construction a group that names only one form, or in which two forms always have
 instances (each could never hold).
 
+## Optional reads
+
+A form must be able to read every record list it imports: a form set refuses a form whose import
+no form exports or supplies. A capability selection may mark a consumed slot `optional`, declaring
+the kind the read is a list of (default: every slot is required), so that a list read through it,
+and only through optional slots of the form, may have no producer. A jurisdiction whose forms supply
+nothing for it then gives the slot a blank, taken as a blank input is: the blank reaches the step
+only when no form in the manifest supplies the figure, the slot's `blank` rule decides, and
+`pass_on` leaves what the selection produces blank, traced by the usual blank line. A slot with no
+blank rule is refused when the forms are composed. When some form does supply the list, it is read
+as usual. For example, the
+T1 form reads the provincial credits optionally, so line 47900 is the British Columbia credits
+where that province's form supplies them and blank elsewhere.
+
 ## Supplied figures
 
 A form's `supplies` maps a neutral identifier `<namespace>/<snake_case>.<label>` to one of its own

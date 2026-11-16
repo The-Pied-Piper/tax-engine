@@ -91,6 +91,7 @@ PARTS = (
     *(part.name for part in sorted(TAKE_HOME.rglob("on428*.yaml"))),
     *(part.name for part in sorted(TAKE_HOME.rglob("schedule_6*.yaml"))),
     "t1_tax_and_credits_line_43500.yaml",
+    "t1_tax_and_credits_line_47900.yaml",
     "t1_tax_and_credits_line_48200.yaml",
     "t1_tax_and_credits_line_167.yaml",
     "return.yaml",

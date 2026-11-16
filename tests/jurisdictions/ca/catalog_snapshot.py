@@ -1631,6 +1631,7 @@ REGISTERED = frozenset(
         "ca/cwb_maximum",
         "ca/canada_training_credit",
         "ca/provincial_credits",
+        "ca/provincial_credits_line_47900",
         "ca/part_xii_2_tax_credit",
         "ca/employee_and_partner_gst_hst_rebate",
         "ca/educator_supplies_expenses",

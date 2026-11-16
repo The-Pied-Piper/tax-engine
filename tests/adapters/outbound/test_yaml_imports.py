@@ -610,6 +610,48 @@ def test_a_province_that_imports_the_form_without_supplying_the_figure_is_refuse
         source(tmp_path).get_jurisdiction(EX_ON)
 
 
+FEDERAL_OPTIONAL = FEDERAL.replace(
+    "    produces: {output: ex/federal_total}\n",
+    "    optional: {records: ex/provincial_tax}\n    blank: {records: pass_on}\n"
+    "    produces: {output: ex/federal_total}\n",
+)
+FEDERAL_OPTIONAL_AND_LISTED = FEDERAL_OPTIONAL + (
+    "  - name: core/sum\n"
+    "    consumes: {parts: [ex/provincial_tax.amount]}\n"
+    "    produces: {output: ex/federal_total}\n"
+)
+
+
+def test_a_form_reading_the_figure_through_an_optional_slot_needs_no_supplier(
+    tmp_path: Path,
+) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL_OPTIONAL})
+    plain = "\n".join(
+        line for line in province_form("ex-on").splitlines() if "supplies" not in line
+    )
+    write_province(tmp_path, form=plain + "\n")
+
+    assert "ex/federal" in names(manifest_of(tmp_path))
+
+
+def test_a_supplied_optional_read_ignores_the_declared_kind(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL_OPTIONAL})
+    write_province(tmp_path, "ex-on")
+
+    assert "ex/federal" in names(manifest_of(tmp_path))
+
+
+def test_a_figure_also_read_through_a_list_slot_is_still_needed(tmp_path: Path) -> None:
+    write_federal(tmp_path, {"00-federal.yaml": FEDERAL_OPTIONAL_AND_LISTED})
+    plain = "\n".join(
+        line for line in province_form("ex-on").splitlines() if "supplies" not in line
+    )
+    write_province(tmp_path, form=plain + "\n")
+
+    with pytest.raises(InvalidManifestError, match="needs 'ex/provincial_tax.amount'"):
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+
 def test_one_province_not_supplying_does_not_stop_the_other_from_computing(
     tmp_path: Path,
 ) -> None:

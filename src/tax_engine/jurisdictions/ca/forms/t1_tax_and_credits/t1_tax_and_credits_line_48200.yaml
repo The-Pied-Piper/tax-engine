@@ -17,8 +17,8 @@
 #   - 150 (43700, tax deducted) is always 0 with no T4 slip.
 #   - 151 (44000, the Quebec abatement) applies to Quebec only.
 #   - 152 (44800, the CPP overpayment) is 0 because CPP is computed from salary, not overpaid.
-#   - 165 (47900, provincial or territorial credits) has credits that all need inputs the filer never has, so
-#     it is 0.
+#   - 165 (47900, provincial or territorial credits) is, on a British Columbia return, BC479 line 45
+#     (the line 47900 part); it is not summed into this line yet, and is blank elsewhere.
 #   - The other lines (153 to 164 other than 45000 and 45300) need slips, receipts or expenses the
 #     filer does not have.
 form:

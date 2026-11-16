@@ -118,6 +118,13 @@ class FormComposition:
                 f"form {name!r}: instance field {kind.label!r} is also a starting artifact"
             )
         self._inputs = fields | frozenset(read & starting)
+        # A kind read only through slots the form marks optional may go without a producer.
+        self._optional_imports = (
+            frozenset(kinds.kind(identifier) for identifier in form.optionally_read) & self._imports
+        )
+        self._unruled_optional = tuple(
+            (slot, kinds.kind(identifier)) for slot, identifier in form.unruled_optional
+        )
         self._field_defaults = {artifact.kind: artifact for artifact in field_defaults}
         self._blank_inputs = (
             self._blank_kinds(defaults, self._field_defaults.values()) & self._inputs
@@ -133,7 +140,7 @@ class FormComposition:
                 wired,
                 inputs=self._inputs | self._imports | self._earlier,
                 outputs=frozenset(listed),
-                blank_inputs=self._blank_inputs,
+                blank_inputs=self._blank_inputs | self._optional_imports,
             )
         except InvalidCompositionError as exc:
             raise InvalidCompositionError(f"form {name!r}: {exc}") from exc
@@ -214,6 +221,17 @@ class FormComposition:
     def imports(self) -> frozenset[ArtifactKind[Any]]:
         """The kinds of other forms' exports that this form reads."""
         return self._imports
+
+    @property
+    def optional_imports(self) -> frozenset[ArtifactKind[Any]]:
+        """The imports read only through slots marked optional: no form need supply them, and one
+        no form supplies is read as a blank."""
+        return self._optional_imports
+
+    @property
+    def unruled_optional(self) -> tuple[tuple[str, ArtifactKind[Any]], ...]:
+        """The optional slots with no blank rule, each as (slot, kind it reads)."""
+        return self._unruled_optional
 
     @property
     def earlier(self) -> frozenset[RecordListKind]:
@@ -339,7 +357,10 @@ class FormSet:
         store: Mapping[ArtifactKind[Any], Artifact[Any]],
         defaulted: frozenset[ArtifactKind[Any]],
     ) -> Iterable[Worksheet]:
-        imported = [store[kind] for kind in sorted(form.imports, key=Composition.sort_key)]
+        imported = [
+            Artifact(kind, BLANK) if self._unsupplied(form, kind) else store[kind]
+            for kind in sorted(form.imports, key=Composition.sort_key)
+        ]
         instances = form.instances
         fields = () if instances is None else instances.fields
         shared = [
@@ -360,6 +381,10 @@ class FormSet:
             )
             done.append(worksheet)
             yield worksheet
+
+    def _unsupplied(self, form: FormComposition, kind: ArtifactKind[Any]) -> bool:
+        """Whether `kind` is an optional import of `form` that no form supplies."""
+        return kind in form.optional_imports and kind not in self._producers
 
     @staticmethod
     def _field(form: FormComposition, record: Record, kind: ArtifactKind[Any]) -> Artifact[Any]:
@@ -403,7 +428,7 @@ class FormSet:
     def _imported_figures(self, form: FormComposition) -> dict[str, ImportedFigure]:
         """Each figure `form` imports, by label, as the form that exports it prints it."""
         found: dict[str, ImportedFigure] = {}
-        for kind in form.imports:
+        for kind in form.imports & self._producers.keys():
             exporter = self.form(self._producers[kind])
             assert isinstance(kind, RecordListKind)  # a form export is read as a record list
             (export,) = kind.fields
@@ -570,10 +595,16 @@ class FormSet:
 
     def _check_imports(self, forms: tuple[FormComposition, ...]) -> None:
         for form in forms:
-            for kind in sorted(form.imports, key=Composition.sort_key):
+            for kind in sorted(form.imports - form.optional_imports, key=Composition.sort_key):
                 if kind not in self._producers:
                     raise InvalidCompositionError(
                         f"form {form.name!r}: no form exports {kind.label!r}, which it imports"
+                    )
+            for slot, kind in form.unruled_optional:
+                if kind in form.optional_imports and kind not in self._producers:
+                    raise InvalidCompositionError(
+                        f"form {form.name!r}: optional slot {slot!r} reads {kind.label!r}, which "
+                        "no form exports, and has no blank rule to read it as a blank"
                     )
 
     def _check_inputs_are_read(
@@ -588,7 +619,10 @@ class FormSet:
 
     def _order(self, forms: tuple[FormComposition, ...]) -> tuple[FormComposition, ...]:
         """The forms so that each runs after every form it imports from; ties by name."""
-        needs = {form.name: {self._producers[kind] for kind in form.imports} for form in forms}
+        needs = {
+            form.name: {self._producers[kind] for kind in form.imports & self._producers.keys()}
+            for form in forms
+        }
         pending = sorted(forms, key=lambda form: form.name)
         done: set[str] = set()
         order: list[FormComposition] = []

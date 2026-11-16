@@ -10,8 +10,16 @@ from tax_engine.domain.kinds import AmountKind, RecordListKind
 from tax_engine.jurisdictions.ca.catalog.base import CATALOG
 
 PROVINCIAL_CREDITS = AmountKind.declare(CATALOG, "provincial_credits", non_negative=True)
-"""Provincial or territorial credits, T1 line 165 and line 47900 "Provincial or territorial credits
-(complete Form 479, if it applies)": the credits of the filer's province."""
+"""Provincial or territorial credits, the credits of the filer's province: the amount of the
+provincial credits record list, whose neutral name `ca/provincial_credits.amount` a form supplies
+and a manifest may read optionally: line 47900's part declares this kind as the one that read is a
+list of, and a read nothing supplies takes it as its field."""
+
+PROVINCIAL_CREDITS_LINE_47900 = AmountKind.declare(
+    CATALOG, "provincial_credits_line_47900", non_negative=True
+)
+"""Provincial or territorial credits, T1 line 47900 "Provincial or territorial credits": the total
+of the provincial credits record list, blank when no provincial form supplies one."""
 
 CANADA_TRAINING_CREDIT = AmountKind.declare(CATALOG, "canada_training_credit", non_negative=True)
 """Canada training credit, Schedule 11 line 5 "Enter this amount on line 45350 of your return. Your

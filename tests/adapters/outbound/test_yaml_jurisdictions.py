@@ -2673,3 +2673,71 @@ def test_a_manifest_title_in_two_parts_is_rejected(tmp_path: Path) -> None:
 
     with pytest.raises(InvalidManifestError, match="key 'title' is already set in"):
         source(tmp_path).get_jurisdiction(EX_ON)
+
+
+OPTIONAL_MANIFEST = """\
+jurisdiction: EX-ON
+version: 1
+valid_from_tax_year: 2025
+inputs: [{{name: ex/income, required: true}}, {{name: ex/deduction, required: true}}]
+outputs: [ex/net]
+capabilities:
+  - name: ex/subtract
+    consumes:
+      amount: ex/income.total
+      less: ex/deduction.total
+      parts: [ex/income, ex/deduction]
+{optional}    blank:
+      less: "0"
+    produces:
+      output: ex/net
+"""
+
+
+def optional_slots(tmp_path: Path, text: str) -> dict[str, str]:
+    write(tmp_path, "ex-on/manifests/v1.yaml", OPTIONAL_MANIFEST.format(optional=text))
+    manifest = source(tmp_path).get_jurisdiction(EX_ON).manifests[0]
+    (selection,) = returned(manifest).capabilities
+    return dict(selection.optional)
+
+
+def test_a_selection_without_optional_has_every_slot_required(tmp_path: Path) -> None:
+    assert optional_slots(tmp_path, "") == {}
+
+
+def test_parses_the_optional_slots_of_a_selection_with_their_declared_kinds(
+    tmp_path: Path,
+) -> None:
+    assert optional_slots(tmp_path, "    optional: {less: ex/deduction}\n") == {
+        "less": "ex/deduction"
+    }
+
+
+def test_parses_several_optional_slots_in_order(tmp_path: Path) -> None:
+    found = optional_slots(tmp_path, "    optional: {less: ex/deduction, amount: ex/income}\n")
+
+    assert list(found.items()) == [("less", "ex/deduction"), ("amount", "ex/income")]
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "    optional: {typo: ex/deduction}\n",  # not a consumed slot
+        "    optional: {output: ex/net}\n",  # a produced slot
+        "    optional: {parts: ex/deduction}\n",  # a list slot: not one identifier
+        "    optional: [less]\n",  # the old list form: no declared kind
+        "    optional: less\n",  # not a mapping
+        '    optional: {less: ""}\n',  # an empty kind
+        "    optional: {less: 3}\n",  # not text
+        "    optional: {less: [ex/deduction]}\n",  # not one identifier
+    ],
+)
+def test_a_bad_optional_mapping_fails_at_load_naming_the_file(tmp_path: Path, text: str) -> None:
+    path = write(tmp_path, "ex-on/manifests/v1.yaml", OPTIONAL_MANIFEST.format(optional=text))
+
+    with pytest.raises(InvalidManifestError, match="optional") as excinfo:
+        source(tmp_path).get_jurisdiction(EX_ON)
+
+    assert str(path) in str(excinfo.value)
+    assert "ex/subtract" in str(excinfo.value)
+    assert "unknown keys" not in str(excinfo.value)

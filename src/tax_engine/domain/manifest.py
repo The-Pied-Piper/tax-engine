@@ -22,6 +22,7 @@ from tax_engine.domain.blank import BlankRule
 from tax_engine.domain.errors import (
     InvalidManifestError,
     InvalidRegistrationError,
+    UnknownRegistrationError,
 )
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import RecordListKind
@@ -36,10 +37,14 @@ class CapabilitySelection:
     `params` maps parameter slots to families; `consumes` and `produces` map artifact slots to
     identifiers (a consumed slot may map to a list, kept as a tuple). `blank` maps a consumed slot,
     or one artifact in a `BLANK_PER_ITEM` list, to a `BlankRule`; `blank_fields` maps a record-list
-    slot to a `BlankRule` per field. A slot not named refuses a blank. `title` and `reference` are
-    the printed wording and line label of the one figure the selection produces; `None` for none,
-    and a selection producing several figures may not have either. `unit` names the unit of that
-    figure (`None` for none), under the same one-figure rule.
+    slot to a `BlankRule` per field. A slot not named refuses a blank. `optional` maps each consumed
+    slot that may go without a producer to the identifier of the registered amount, count or record
+    list kind the read is a list of: a record list read through one that no form supplies is a
+    list of that kind and a blank, which the slot's blank rule decides (default none: every slot is
+    required). The manifest checks the kind, as only it has the registry.
+    `title` and `reference` are the printed wording and line label of the one figure the selection
+    produces; `None` for none, and a selection producing several figures may not have either. `unit`
+    names the unit of that figure (`None` for none), under the same one-figure rule.
     """
 
     name: str
@@ -48,6 +53,7 @@ class CapabilitySelection:
     produces: Mapping[str, str]
     blank: Mapping[str, BlankRule] = dataclasses.field(default_factory=dict)
     blank_fields: Mapping[str, Mapping[str, BlankRule]] = dataclasses.field(default_factory=dict)
+    optional: Mapping[str, str] = dataclasses.field(default_factory=dict)
     title: str | None = None
     reference: str | None = None
     unit: str | None = None
@@ -63,7 +69,7 @@ class CapabilitySelection:
                     f"{self.name}: a {key} belongs to the one figure a selection produces, "
                     f"but it produces {len(self.produces)}"
                 )
-        for name in ("params", "produces", "blank"):
+        for name in ("params", "produces", "blank", "optional"):
             object.__setattr__(self, name, MappingProxyType(dict(getattr(self, name))))
         object.__setattr__(
             self,
@@ -78,14 +84,39 @@ class CapabilitySelection:
             for slot, named in self.consumes.items()
         }
         object.__setattr__(self, "consumes", MappingProxyType(consumes))
+        self._check_optional()
+
+    def _check_optional(self) -> None:
+        """Refuse an `optional` entry that is not a consumed slot holding one form-export figure."""
+        for slot in self.optional:
+            if slot not in self.consumes:
+                raise InvalidManifestError(
+                    f"{self.name}: optional slot {slot!r} is not a consumed slot of the selection"
+                )
+            named = self.consumes[slot]
+            if not isinstance(named, str):
+                raise InvalidManifestError(
+                    f"{self.name}: optional slot {slot!r} takes a list, not one identifier"
+                )
+            if "." not in named:
+                raise InvalidManifestError(
+                    f"{self.name}: optional slot {slot!r} reads {named!r}, which is not a form's "
+                    "figure of the form <form>.<label>"
+                )
 
     def __hash__(self) -> int:
         """Hash by value, like the frozen dataclass it is; the read-only mappings are unhashable."""
-        bindings = (self.params, self.consumes, self.produces, self.blank)
+        bindings = (self.params, self.consumes, self.produces, self.blank, self.optional)
         fields = frozenset(
             (slot, frozenset(rules.items())) for slot, rules in self.blank_fields.items()
         )
-        return hash((self.name, *(frozenset(mapping.items()) for mapping in bindings), fields))
+        return hash(
+            (
+                self.name,
+                *(frozenset(mapping.items()) for mapping in bindings),
+                fields,
+            )
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -178,6 +209,28 @@ class Form:
         )
         return own + tuple(
             self._supplied(neutral, kinds.kind(export)) for neutral, export in self.supplies.items()
+        )
+
+    @property
+    def optionally_read(self) -> frozenset[str]:
+        """The identifiers this form reads only through slots marked optional: a list-valued read
+        of the same identifier, or an unmarked slot, makes it a required read."""
+        required: set[str] = set()
+        optional: set[str] = set()
+        for selection in self.capabilities:
+            for slot, named in selection.consumes.items():
+                identifiers = (named,) if isinstance(named, str) else named
+                (optional if slot in selection.optional else required).update(identifiers)
+        return frozenset(optional - required)
+
+    @property
+    def unruled_optional(self) -> tuple[tuple[str, str], ...]:
+        """The optional slots with no blank rule, each as (slot, identifier), in selection order."""
+        return tuple(
+            (slot, str(selection.consumes[slot]))
+            for selection in self.capabilities
+            for slot in selection.optional
+            if slot not in selection.blank
         )
 
     def _supplied(self, neutral: str, export: ArtifactKind[Any]) -> RecordListKind:
@@ -364,6 +417,7 @@ class Manifest:
                 raise InvalidManifestError(f"input {name!r} is declared as {declaration.name!r}")
         self._check_predicates()
         derived = [kind for form in self.forms for kind in form.derived_kinds(self.artifacts)]
+        derived += self._stand_ins(derived)
         self._check_derived(derived)
         kinds = self.artifacts.extended(derived)
         object.__setattr__(self, "kinds", kinds)
@@ -392,6 +446,61 @@ class Manifest:
                 self.forms,
             )
         )
+
+    def _stand_ins(self, derived: list[RecordListKind]) -> list[RecordListKind]:
+        """The record list of each figure that a form reads through an optional slot and no form
+        supplies, so that its blank can be read: a list of one field, the registered kind that the
+        slot's declaration names.
+
+        A declared kind that is not a registered amount, count or record list cannot be listed. A
+        figure a form does supply ignores the declaration, unless the supplier's field is another
+        kind than the declared one.
+        """
+        made: dict[str, RecordListKind] = {}
+        supplied = {kind.identifier: kind for kind in derived}
+        known = self.artifacts.identifiers()
+        for form in self.forms:
+            for selection in form.capabilities:
+                for slot, declared in selection.optional.items():
+                    named = str(selection.consumes[slot])
+                    field = self._declared_kind(form, named, declared)
+                    if named in supplied:
+                        self._check_supplier(form, supplied[named], field)
+                    elif named not in made and named not in known:
+                        made[named] = RecordListKind(named, fields=(field,))
+        return list(made.values())
+
+    def _declared_kind(self, form: Form, named: str, declared: str) -> ArtifactKind[Any]:
+        """The registered amount, count or record list `declared` names, for the optional read of
+        `named`."""
+        try:
+            field = self.artifacts.kind(declared)
+        except UnknownRegistrationError:
+            raise InvalidManifestError(
+                f"form {form.name!r}: {named!r} is read through an optional slot that declares "
+                f"{declared!r}, which is not a registered kind"
+            ) from None
+        if not isinstance(field, RecordField):
+            raise InvalidManifestError(
+                f"form {form.name!r}: {named!r} is read through an optional slot that declares "
+                f"{declared!r}, which is not an amount, a count or a record list"
+            )
+        return field
+
+    @staticmethod
+    def _check_supplier(form: Form, supplier: RecordListKind, declared: ArtifactKind[Any]) -> None:
+        """Refuse a supplied figure whose field is not a kind of the shape the optional read
+        declares: the same kind class, value type and sign rule. The identifier may differ, as a
+        form may supply its own namespaced figure for a neutral list."""
+        (found,) = supplier.fields
+        shape = (type(found), found.value_type, getattr(found, "non_negative", None))
+        wanted = (type(declared), declared.value_type, getattr(declared, "non_negative", None))
+        if shape != wanted:
+            raise InvalidManifestError(
+                f"form {form.name!r}: {supplier.identifier!r} is read through an optional slot "
+                f"that declares {declared.identifier!r}, but the form that supplies it lists "
+                f"{found.identifier!r}, a different kind"
+            )
 
     @staticmethod
     def _check_derived(derived: list[RecordListKind]) -> None:

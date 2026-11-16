@@ -62,7 +62,9 @@ _IMPORTED_PART_KEYS = frozenset({"form", "capabilities", "inputs"})
 _OPTIONAL_INPUT_KEYS = frozenset({"default", "basis", "title", "reference", "unit"})
 _DEFAULT_FORM = "return"
 _CAPABILITY_KEYS = frozenset({"name", "produces"})
-_OPTIONAL_CAPABILITY_KEYS = frozenset({"params", "consumes", "blank", "title", "reference", "unit"})
+_OPTIONAL_CAPABILITY_KEYS = frozenset(
+    {"params", "consumes", "blank", "optional", "title", "reference", "unit"}
+)
 _SCALAR_KEYS = ("jurisdiction", "version", "valid_from_tax_year", "title")
 _IDENTIFIER_LISTS = ("inputs", "outputs", "imports")
 _PATTERNS = ("*.yaml", "*.yml")
@@ -670,7 +672,8 @@ class YamlJurisdictionSource:
 
     @staticmethod
     def _check_supplied(manifest: Manifest, imported: tuple[Form, ...]) -> None:
-        """Refuse an imported form that reads a derived figure no form of the manifest derives."""
+        """Refuse an imported form that reads a derived figure no form of the manifest derives,
+        unless it reads it through an optional slot."""
         derived = {
             kind.identifier
             for form in manifest.forms
@@ -680,7 +683,11 @@ class YamlJurisdictionSource:
             for selection in form.capabilities:
                 for slot in selection.consumes.values():
                     for identifier in (slot,) if isinstance(slot, str) else slot:
-                        if "." in identifier and identifier not in derived:
+                        if (
+                            "." in identifier
+                            and identifier not in derived
+                            and identifier not in form.optionally_read
+                        ):
                             raise InvalidManifestError(
                                 f"form {form.name!r}: needs {identifier!r}, which no form of "
                                 "this manifest supplies"
@@ -808,10 +815,32 @@ class YamlJurisdictionSource:
             produces=self._produced(fields.field("produces")),
             blank=self._blank_rules(name, blank, consumes),
             blank_fields=self._field_blank_rules(name, blank, consumes),
+            optional=self._optional_slots(name, fields.optional_field("optional")),
             title=None if title is None else self._title(title),
             reference=None if reference is None else self._title(reference),
             unit=None if unit is None else unit.require_non_empty_string(),
         )
+
+    @staticmethod
+    def _optional_slots(who: str, node: YamlNode | None) -> dict[str, str]:
+        """The optional slots `node` maps, each to the identifier of the registered kind its read
+        is a list of, in the order written; none if there is no `optional` key. The selection says
+        which slots it may take and the manifest which kinds can stand in."""
+        if node is None:
+            return {}
+        if not node.is_mapping():
+            raise InvalidManifestError(
+                f"{who}: optional must map each optional consumed slot to the kind its read is "
+                "a list of"
+            )
+        declared: dict[str, str] = {}
+        for slot, kind in node.fields():
+            if not isinstance(kind.value, str) or not kind.value:
+                raise InvalidManifestError(
+                    f"{who}: optional slot {slot!r} must name a kind as non-empty text"
+                )
+            declared[slot] = kind.value
+        return declared
 
     def _blank_rules(
         self,

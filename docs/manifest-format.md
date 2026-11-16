@@ -197,6 +197,7 @@ Each entry of `capabilities` is a mapping:
 | `params` | Slot to parameter family. Optional. |
 | `consumes` | Slot to an artifact identifier, or to a list of identifiers kept in order. Optional. |
 | `blank` | What a blank does (below). Optional; a consumed slot not named refuses a blank. |
+| `optional` | Mapping of a consumed slot that may go without a producer to the kind its read is a list of (below). Optional; default none, every slot is required. |
 | `title` | The printed wording of the one figure the selection produces. A selection that produces several figures is rejected if it has one. |
 | `reference` | What the form prints beside that figure, as free text. Same one-figure rule. |
 | `unit` | The full identifier of that figure's unit; see Units. Same one-figure rule. |
@@ -215,6 +216,31 @@ one of:
 
 A name may instead map to a mapping of record field identifier to rule, for a consumed record-list
 slot: the rule then applies to that field in every record.
+
+### Optional slots
+
+`optional` maps consumed slots to the identifier of the registered kind the read is a list of:
+
+```yaml
+optional:
+  records: ca/provincial_credits
+```
+
+Each slot holds one identifier of the form `<form>.<label>` (a form's figure, not a list); a slot
+that is unknown or list-valued, or a figure not of that form, is an `InvalidManifestError` naming
+the file and the capability. A form set otherwise refuses a form that reads a record list no form
+exports or supplies. A record list read only through optional slots may have no producer: it is
+then read as a blank, as a blank input is, and the slot's `blank` rule decides (`pass_on` blanks
+what the selection produces). A slot with no `blank` rule and no producer is refused when the forms
+are composed, naming the form and the slot. A producer that exists is read as usual. A list that
+the form also reads through a list slot, or through a slot not marked optional, is a required read.
+
+A figure no form supplies is a record list of one field, the declared kind (`ca/provincial_credits`
+for `ca/provincial_credits.amount`): it must be a registered amount, count or record list, or the
+manifest is refused naming the form and the figure. Nothing is inferred from the figure's name. A
+figure some form of the manifest does supply ignores the declaration, except that a supplier whose
+field is another kind than the declared one is refused when the manifest is built.
+A capability must list the slot in `BLANK_ALLOWED` for a blank rule to be allowed there.
 
 ## Titles
 

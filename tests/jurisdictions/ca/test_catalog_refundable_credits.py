@@ -51,6 +51,7 @@ from tax_engine.jurisdictions.ca.catalog import (
     NET_PROFESSIONAL_INCOME,
     PART_XII_2_TAX_CREDIT,
     PROVINCIAL_CREDITS,
+    PROVINCIAL_CREDITS_LINE_47900,
     REFUNDABLE_MEDICAL_EXPENSE_SUPPLEMENT,
     TAX_PAID_BY_INSTALMENTS,
 )
@@ -59,6 +60,7 @@ from tests.kinds import non_negative
 
 def test_the_refundable_credits_kinds_are_the_registered_ones(registry: ArtifactRegistry) -> None:
     assert registry.get("ca/provincial_credits") is PROVINCIAL_CREDITS
+    assert registry.get("ca/provincial_credits_line_47900") is PROVINCIAL_CREDITS_LINE_47900
     assert registry.get("ca/canada_training_credit") is CANADA_TRAINING_CREDIT
     assert registry.get("ca/part_xii_2_tax_credit") is PART_XII_2_TAX_CREDIT
     assert (
@@ -142,6 +144,7 @@ def test_the_refundable_credits_kinds_are_the_registered_ones(registry: Artifact
 def test_the_refundable_credits_kinds_are_money() -> None:
     for kind in (
         PROVINCIAL_CREDITS,
+        PROVINCIAL_CREDITS_LINE_47900,
         CANADA_TRAINING_CREDIT,
         PART_XII_2_TAX_CREDIT,
         EMPLOYEE_AND_PARTNER_GST_HST_REBATE,
