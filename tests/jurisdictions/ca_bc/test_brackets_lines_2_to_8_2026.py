@@ -1,7 +1,8 @@
-"""2026 `ca-bc/brackets_lines_2_to_8`, taken from T4127 Table 8.1 (British Columbia), July 2026.
+"""2026 `ca-bc/brackets_lines_2_to_8`, from T4127 (Jul 2026) Table 8.1 (British Columbia).
 
 The 2026 Form BC428 (CRA 5010-c) text is not yet published, so the dataset cites T4127 and its
-header says so. The thresholds are 50,363 / 100,728 / 115,648 / 140,430 / 190,405 / 265,545 (BC's
+header says so (the first rate is from the July change notice).
+The thresholds are 50,363 / 100,728 / 115,648 / 140,430 / 190,405 / 265,545 (BC's
 own 2.2% index) and the rates are 5.60% (up from 5.06%; the July edition only), 7.70%, 10.50%,
 12.29% (lines 2 to 8) and 14.70%, 16.80%, 20.50% (lines 9 to 15). This table covers line 1 of
 140,430.00 or less. Each `tax_at_start` is derived, not printed: the cumulative tax on the earlier
@@ -36,11 +37,13 @@ PROVISIONAL_HEADER = (
     "when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: thresholds are T4127 Table 8.1 (BC indexes at its own 2.2%, not the federal "
-    "factor) and the rates are as printed there, the first rate rising from 5.06% to 5.60% for "
-    "2026 on (the July edition only; the January edition still shows 5.06%). tax_at_start is "
-    "derived, not printed: the cumulative tax on the earlier brackets at those rates, rounded "
-    "half-up to the cent (reproduces the 2025 printed constants)."
+    "# Derivation: the thresholds and the six rates after the first are as printed in T4127 "
+    "(Jul 2026) Table 8.1 (BC's index rate is 0.022 in T4127 Table 8.2, consistent with the "
+    "thresholds, not the federal factor). The first rate, 5.60% (up from 5.06% for 2026 on), "
+    "is from the July edition's BC change notice and Chapter 5 table; Table 8.1 prints the "
+    "prorated payroll rate 6.14%, which is not the form rate. tax_at_start is derived, not "
+    "printed: the cumulative tax on the earlier brackets at those rates, rounded half-up to "
+    "the cent (reproduces the 2025 printed constants)."
 )
 T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-07-26e.pdf"
 
@@ -57,7 +60,7 @@ def _schedule() -> BracketSchedule:
     return SOURCE.get(FAMILY, 2026, BRACKETS).values
 
 
-def test_2026_brackets_are_the_three_columns_from_t4127() -> None:
+def test_2026_brackets_are_the_four_columns_from_t4127() -> None:
     data = SOURCE.get(FAMILY, 2026, BRACKETS)
 
     assert [(b.lower, b.rate, b.tax_at_start) for b in data.values.brackets] == [

@@ -1,5 +1,5 @@
 # Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: thresholds are T4127 Table 8.1 (BC indexes at its own 2.2%, not the federal factor) and the rates are as printed there, the first rate rising from 5.06% to 5.60% for 2026 on (the July edition only; the January edition still shows 5.06%). tax_at_start is derived, not printed: the cumulative tax on the earlier brackets at those rates, rounded half-up to the cent (reproduces the 2025 printed constants).
+# Derivation: the thresholds and the six rates after the first are as printed in T4127 (Jul 2026) Table 8.1 (BC's index rate is 0.022 in T4127 Table 8.2, consistent with the thresholds, not the federal factor). The first rate, 5.60% (up from 5.06% for 2026 on), is from the July edition's BC change notice and Chapter 5 table; Table 8.1 prints the prorated payroll rate 6.14%, which is not the form rate. tax_at_start is derived, not printed: the cumulative tax on the earlier brackets at those rates, rounded half-up to the cent (reproduces the 2025 printed constants).
 # British Columbia income tax brackets, 2026 tax year, Form BC428 (CRA 5010-c) Part A, lines 2 to 8,
 # from T4127 (Jul 2026), Table 8.1. The 2026 BC428 is not yet published, so these figures are not
 # yet confirmed against it.

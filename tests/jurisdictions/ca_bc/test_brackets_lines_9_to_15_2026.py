@@ -1,4 +1,4 @@
-"""2026 `ca-bc/brackets_lines_9_to_15`, taken from T4127 Table 8.1 (British Columbia), July 2026.
+"""2026 `ca-bc/brackets_lines_9_to_15`, from T4127 (Jul 2026) Table 8.1 (British Columbia).
 
 The 2026 Form BC428 (CRA 5010-c) text is not yet published, so the dataset cites T4127 and its
 header says so. This table covers line 1 above 140,430.00 (the 2025 split was 137,407.00): its
@@ -37,11 +37,13 @@ PROVISIONAL_HEADER = (
     "when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: thresholds are T4127 Table 8.1 (BC indexes at its own 2.2%, not the federal "
-    "factor) and the rates are as printed there, the first rate rising from 5.06% to 5.60% for "
-    "2026 on (the July edition only; the January edition still shows 5.06%). tax_at_start is "
-    "derived, not printed: the cumulative tax on the earlier brackets at those rates, rounded "
-    "half-up to the cent (reproduces the 2025 printed constants)."
+    "# Derivation: the thresholds and the six rates after the first are as printed in T4127 "
+    "(Jul 2026) Table 8.1 (BC's index rate is 0.022 in T4127 Table 8.2, consistent with the "
+    "thresholds, not the federal factor). The first rate, 5.60% (up from 5.06% for 2026 on), "
+    "is from the July edition's BC change notice and Chapter 5 table; Table 8.1 prints the "
+    "prorated payroll rate 6.14%, which is not the form rate. tax_at_start is derived, not "
+    "printed: the cumulative tax on the earlier brackets at those rates, rounded half-up to "
+    "the cent (reproduces the 2025 printed constants)."
 )
 T4127_URL = "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-07-26e.pdf"
 
@@ -142,7 +144,7 @@ def test_the_column_is_the_one_t4127_gives_for_the_amount(amount: str, lower: st
     ("amount", "tax"),
     [
         ("140430.01", "11310.74147"),  # 11,310.74 + 0.147 x 0.01 (the rounded start, then the rate)
-        ("160000.00", "14176.97"),  # 11,310.74 + 0.147 x (160,000 - 140,430)
+        ("160000.00", "14187.53"),  # 11,310.74 + 0.147 x (160,000 - 140,430)
         ("200000.00", "20269.03"),  # 18,657.07 + 0.168 x (200,000 - 190,405)
         ("250000.00", "28669.03"),  # 18,657.07 + 0.168 x (250,000 - 190,405)
         ("265545.00", "31280.59"),  # 18,657.07 + 0.168 x 75,140: the 31,280.59 start, to the cent
