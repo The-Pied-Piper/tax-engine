@@ -76,6 +76,12 @@ MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
 split income (complete Form T1206)": a caller input, read as blank when left out; line 60 reads
 it."""
 
+MB428_TAX_BEFORE_CREDITS_LINE_60 = AmountKind.declare(
+    CATALOG, "mb428_tax_before_credits_line_60", non_negative=True
+)
+"""MB428 line 60 "Line 60: Line 58 plus line 59 =": the sum of line 58 and line 59, where a blank
+line 59 is read as 0."""
+
 MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
 )
