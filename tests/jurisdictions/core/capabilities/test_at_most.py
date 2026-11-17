@@ -18,15 +18,19 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.errors import (
+    BlankNotAllowedError,
     DomainError,
     InputAboveBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
+    ValidationError,
 )
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import AtMostLine
+from tax_engine.domain.trace.blank import BlankPassedOnLine
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 from tests.capabilities import bundled_capabilities
 
@@ -285,6 +289,10 @@ def test_an_input_above_bound_error_is_not_a_wiring_error() -> None:
     assert not issubclass(InputAboveBoundError, InvalidCapabilityError)
 
 
+def test_an_input_above_bound_error_is_a_validation_error() -> None:
+    assert issubclass(InputAboveBoundError, ValidationError)
+
+
 # --- trace ------------------------------------------------------------------------------------
 
 
@@ -335,3 +343,57 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank amount -----------------------------------------------------------------------------
+
+
+def blank_amount_inputs(bound: str) -> tuple[Artifact[Any], ...]:
+    return (Artifact(CLAIMED, BLANK), Artifact(LIMIT, D(bound)))
+
+
+def test_declares_that_the_amount_may_be_blank() -> None:
+    assert AtMost.BLANK_ALLOWED == frozenset({"amount"})
+
+
+def test_without_rules_a_blank_amount_is_refused_naming_the_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'amount'"):
+        capability().run(blank_amount_inputs("100"))
+
+
+def test_pass_on_blanks_the_output_for_a_blank_amount() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON})
+
+    result = passing.run(blank_amount_inputs("100"))
+
+    assert result.outputs == (Artifact(ALLOWED, BLANK),)
+    assert result.trace == (BlankPassedOnLine(ALLOWED, (CLAIMED,)),)
+
+
+def test_pass_on_never_checks_the_bound_of_a_blank_amount() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON})
+
+    for bound in ("100", "0", "-5"):
+        result = passing.run(blank_amount_inputs(bound))
+        assert result.outputs == (Artifact(ALLOWED, BLANK),)
+
+
+def test_an_amount_over_the_bound_still_raises_when_pass_on_is_declared() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON})
+
+    with pytest.raises(InputAboveBoundError):
+        passing.run(inputs("101", "100"))
+
+
+def test_a_filled_amount_is_unchanged_when_pass_on_is_declared() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON})
+
+    result = passing.run(inputs("40.50", "100"))
+
+    assert result.outputs == (Artifact(ALLOWED, D("40.50")),)
+    assert isinstance(result.trace[0], AtMostLine)
+
+
+def test_a_rule_for_the_bound_is_refused() -> None:
+    with pytest.raises(InvalidCapabilityError, match="'bound'"):
+        capability().with_blank_rules({"bound": PASS_ON})

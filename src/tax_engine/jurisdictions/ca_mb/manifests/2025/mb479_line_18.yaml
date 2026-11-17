@@ -1,0 +1,16 @@
+# Form MB479 (2025, CRA 5007-TC) line 18: "Line 18: Amount from line 6 above multiplied by 1% =".
+# The 1% is a printed rate, held in the `ca-mb/personal_tax_credit_reduction_rate` dataset, so the
+# multiplication is one calculation: 1% of the family income of line 6, rounded half-up to the
+# cent. The form names no label for the line, so the step has no title.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/apply_rate
+    reference: "18"
+    unit: ca/cad
+    params:
+      rate: ca-mb/personal_tax_credit_reduction_rate
+    consumes:
+      base: ca-mb/mb479_family_income_line_6
+    produces:
+      output: ca-mb/mb479_reduction_line_18
