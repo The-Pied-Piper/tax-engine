@@ -143,3 +143,11 @@ would have entered if the instructions on line 23600 said "if negative, show in 
 net income of the T1 return before its floor, read from the signed T1 net income export
 (`ca/net_income_signed`, not the floored `ca/net_income`). Column 1 only. The form shows a negative
 net income in brackets, so the kind is signed."""
+
+MB479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
+    CATALOG, "mb479_uccb_rdsp_repayments_line_2", non_negative=True
+)
+"""UCCB and RDSP repayments, MB479 line 2 "Total of the universal child care benefit (UCCB)
+repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
+repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
+that is read as blank when left out, column 1 (you) only."""
