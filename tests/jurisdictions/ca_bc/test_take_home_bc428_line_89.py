@@ -136,6 +136,8 @@ BC_LINE_PARTS = (
     "bc428_line_81_input.yaml",
     "bc428_line_82.yaml",
     "bc428_line_84_input.yaml",
+    "bc428_political_contribution_tax_credit_maximum.yaml",
+    "bc428_line_84.yaml",
     "bc428_line_85.yaml",
     "bc428_line_88_input.yaml",
     LINE_PART.name,
