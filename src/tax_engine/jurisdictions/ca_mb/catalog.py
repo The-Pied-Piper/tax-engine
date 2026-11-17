@@ -208,3 +208,9 @@ MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
 )
 """CPP, EI and other credit amounts subtotal, MB428 line 28 "Line 28: Add lines 19 to 27. = ^": the
 sum of lines 19 and 21. Lines 20 and 22 to 27 are not built: a salary-only filer has none."""
+
+MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_29", non_negative=True
+)
+"""Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
+28."""
