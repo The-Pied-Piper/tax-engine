@@ -57,6 +57,7 @@ LINE_PART = MB_PARTS / "mb428_credits_line_33.yaml"
 IDENTIFIER = "ca-mb/mb428_credits_subtotal_line_33"
 LINE_29 = "ca-mb/mb428_credits_subtotal_line_29"
 PENSION = "ca-mb/mb428_pension_income_amount"
+LINE_31 = "ca-mb/mb428_pension_income_amount_line_31"
 FORM_NAME = "ca-mb/mb428_credits"
 CREDIT_PARTS = (
     "mb428_credits_line_9.yaml",
@@ -66,6 +67,7 @@ CREDIT_PARTS = (
     "mb428_credits_line_18.yaml",
     "mb428_credits_line_29.yaml",
     "mb428_credits_line_31_input.yaml",
+    "mb428_credits_line_31.yaml",
 )
 WORKSHEET_PARTS = (
     "worksheet_mb428_basic_personal_amount_line_1.yaml",
@@ -221,10 +223,19 @@ def test_the_part_names_the_form_and_has_one_sum_step_like_alberta_line_36() -> 
         "reference": "33",
         "unit": "ca/cad",
         "params": {"rounding": "ca-mb/cent_rounding"},
-        "consumes": {"parts": [LINE_29, PENSION]},
-        "blank": {PENSION: "0"},
+        "consumes": {"parts": [LINE_29, LINE_31]},
+        "blank": {LINE_31: "0"},
         "produces": {"output": IDENTIFIER},
     }
+
+
+def test_line_33_consumes_the_line_31_kind_not_the_input_kind() -> None:
+    (step,) = _part()["capabilities"]
+
+    assert PENSION not in step["consumes"]["parts"]
+    assert PENSION not in step["blank"]
+    assert step["consumes"]["parts"][1] == LINE_31
+    assert step["blank"] == {LINE_31: "0"}
 
 
 def test_line_33_is_a_registered_non_negative_decimal_amount_kind() -> None:

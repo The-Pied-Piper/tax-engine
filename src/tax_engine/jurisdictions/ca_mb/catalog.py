@@ -42,7 +42,21 @@ MB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "mb428_pension_income_amount", non_negative=True
 )
 """Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
-$1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+$1,000)": the amount the filer claims, a caller input that is read as blank when left out; the
+line 31 step checks it against the printed maximum."""
+
+MB428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on MB428 line 31 "(maximum $1,000)": the printed
+maximum, from the `ca-mb/pension_income_amount_maximum` dataset; the bound line 31 cannot pass."""
+
+MB428_PENSION_INCOME_AMOUNT_LINE_31 = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount_line_31", non_negative=True
+)
+"""Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
+$1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
+left out; above the maximum it is refused, not capped."""
 
 MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "mb428_medical_expenses_line_50", non_negative=True
@@ -126,6 +140,12 @@ MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
 """Manitoba political contribution tax credit, MB428 line 69 "Line 69: Manitoba political
 contribution tax credit (use Worksheet MB428) (maximum $1,000)": a caller input, read as blank
 when left out."""
+
+MB428_LABOUR_SPONSORED_FUNDS_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "mb428_labour_sponsored_funds_credit_line_71", non_negative=True
+)
+"""Labour-sponsored funds tax credit, MB428 line 71 (line 60800) "Enter your labour-sponsored funds
+tax credit from Slip T2C (MAN.).": a caller input, read as blank when left out."""
 
 MB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "mb428_provincial_foreign_tax_credit_line_73", non_negative=True
@@ -427,6 +447,13 @@ MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
 """Geothermal heat pump cost, MB479 line 68 "Line 68 and line 61390: 7.5% of the adjusted cost of
 geothermal heat pumps": the adjusted cost of geothermal heat pumps the 7.5% is taken of, a caller
 input that is read as blank when left out."""
+
+MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
+    CATALOG, "mb479_geothermal_heat_pump_credit_line_68", non_negative=True
+)
+"""Green energy equipment tax credit (manufacturer), MB479 line 68 "Line 68 and line 61390: 7.5% of
+the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
+heat pumps, rounded half-up to the cent."""
 
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True

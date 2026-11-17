@@ -1,7 +1,7 @@
 # MB428 (2025) inputs a salary-only caller does not give.
 # Line 31: "Line 31 and line 58360: Pension income amount (maximum $1,000)" (Form MB428, CRA 5007-c).
 # A salary-only caller has no pension income amount, so a request that leaves the line out is read
-# as blank; the step that reads line 31 (line 33) reads that blank as 0.
+# as blank; line 31 (mb428_credits_line_31.yaml) passes that blank on and line 33 reads it as 0.
 inputs:
   - name: ca-mb/mb428_pension_income_amount
     title: "Pension income amount"

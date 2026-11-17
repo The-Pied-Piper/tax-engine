@@ -154,7 +154,21 @@ AB428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_72 = AmountKind.declare(
 )
 """Alberta political contributions tax credit, AB428 line 72 "Line 72: Alberta political
 contributions tax credit (use Worksheet AB428) (maximum $1,000)": the credit from the worksheet, an
-optional input that a salary-only caller leaves out, read by line 73."""
+optional input that a salary-only caller leaves out, checked against its maximum by line 72."""
+
+POLITICAL_CONTRIBUTIONS_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "political_contributions_tax_credit_maximum", non_negative=True
+)
+"""Political contributions tax credit maximum, "Line 72: Alberta political contributions tax credit
+(use Worksheet AB428) (maximum $1,000)": the printed maximum the line 72 amount may not exceed, a
+dataset figure."""
+
+AB428_ALBERTA_POLITICAL_CONTRIBUTIONS_TAX_CREDIT_LINE_72 = AmountKind.declare(
+    CATALOG, "ab428_alberta_political_contributions_tax_credit_line_72", non_negative=True
+)
+"""Alberta political contributions tax credit, AB428 line 72 "Alberta political contributions tax
+credit (use Worksheet AB428) (maximum $1,000)": the amount entered, checked not to exceed the
+maximum and passed on unchanged (left blank when the input is); line 73 reads it."""
 
 AB428_ALBERTA_TAX_LINE_75 = AmountKind.declare(
     CATALOG, "ab428_alberta_tax_line_75", non_negative=True
@@ -224,6 +238,18 @@ AB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 )
 """Pension income amount, AB428 line 34 "Line 34 and line 58360: Pension income amount (maximum
 $1,719)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
+
+PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, "Line 34 and line 58360: Pension income amount (maximum $1,719)":
+the printed maximum the line 34 claim may not exceed, a dataset figure."""
+
+AB428_PENSION_INCOME_AMOUNT_LINE_34 = AmountKind.declare(
+    CATALOG, "ab428_pension_income_amount_line_34", non_negative=True
+)
+"""Pension income amount, AB428 line 34 and line 58360 "Pension income amount (maximum $1,719)": the
+claim, checked not to exceed the maximum and passed on unchanged; line 36 adds it."""
 
 AB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
     CATALOG, "ab428_credits_subtotal_line_36", non_negative=True
