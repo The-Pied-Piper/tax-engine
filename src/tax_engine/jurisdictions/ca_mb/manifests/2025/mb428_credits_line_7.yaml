@@ -1,0 +1,19 @@
+# Form MB428 (Manitoba Tax, CRA 5007-C) Part A, line 7. Each of the three columns prints "Line 7:"
+# with the tax at the column's start: 0.00, 5,076.00 and 11,833.50, under "Column 1: Line 1 is
+# $47,000 or less", "Column 2: Line 1 is more than $47,000 but not more than $100,000" and "Column
+# 3: Line 1 is more than $100,000". Line 7 is the printed tax at the start of the column that line 1
+# falls in: the amount of that column, not a figure computed from its rates.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 7 reads line 1 directly.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "7"
+    unit: ca/cad
+    params:
+      schedule: ca-mb/brackets_lines_2_to_8
+    consumes:
+      base: ca-mb/mb428_taxable_income_line_1
+    produces:
+      output: ca-mb/mb428_bracket_tax_at_start_line_7

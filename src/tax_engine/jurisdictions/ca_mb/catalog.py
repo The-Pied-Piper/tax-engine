@@ -77,6 +77,12 @@ MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
 line 40427 of your return": a caller input, read as blank when left out; the carryover credit step
 reads it."""
 
+MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "mb428_minimum_tax_carryover_credit_line_63", non_negative=True
+)
+"""Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
+return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
@@ -223,6 +229,12 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
 personal tax credits."""
 
+MB479_PRIMARY_CAREGIVER_CREDIT_LINE_59 = AmountKind.declare(
+    CATALOG, "mb479_primary_caregiver_credit_line_59", non_negative=True
+)
+"""Primary caregiver tax credit, MB479 line 59 "Line 59 and line 61260: Primary caregiver tax
+credit": a caller input that is read as blank when left out."""
+
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
 )
@@ -242,6 +254,18 @@ MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
 """Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
 28."""
 
+MB428_CREDITS_SUBTOTAL_LINE_33 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_33", non_negative=True
+)
+"""Credits subtotal, MB428 line 33 "Line 33: Add lines 30 to 32. = ^": the sum of line 30 (a copy of
+line 29) and the line 31 pension income amount; line 32, the caregiver amount, is not built."""
+
+MB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_36", non_negative=True
+)
+"""Credits subtotal, MB428 line 36 "Line 36: Add lines 33 to 35. = ^": lines 34 and 35, the
+disability amounts, are not built, so the sum reads line 33 alone."""
+
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
 )
@@ -253,6 +277,24 @@ MB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 )
 """Lower bound of the column, MB428 line 3 "Line 3: 0.00" (47,000.00; 100,000.00): the printed lower
 bound of the column of lines 2 to 8 that line 1 falls in."""
+
+MB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "mb428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, MB428 line 4 "Line 4: Line 2 minus line 3 (can not be
+negative) =": line 1 minus line 3, not below zero."""
+
+MB428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "mb428_bracket_rate_line_5", non_negative=True
+)
+"""Bracket column rate, MB428 line 5 (each column prints "Line 5: Rate" with 10.8%, 12.75% or
+17.4%): the printed rate of the column of lines 2 to 8 that line 1 falls in."""
+
+MB428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "mb428_tax_on_excess_line_6", non_negative=True
+)
+"""Tax on the taxable income over the lower bound, MB428 line 6 "Line 6: Line 4 multiplied by the
+percentage from line 5 =": line 4 times the line 5 rate, rounded half-up to the cent."""
 
 MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8", non_negative=True)
 """Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
@@ -314,6 +356,31 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, MB428 line 7 "Line 7: 0.00" (5,076.00; 11,833.50): the printed
+tax at the start of the column of lines 2 to 8 that line 1 falls in. Column 3 is unbounded, so it is
+never blank."""
+
+MB479_FAMILY_INCOME_LINE_6 = AmountKind.declare(
+    CATALOG, "mb479_family_income_line_6", non_negative=True
+)
+"""Family income, MB479 line 6: line 5 of column 1 (you) plus line 5 of column 2 (your spouse or
+common-law partner), the amount that later lines refer to as "Amount from line 6". Column 2 is taken
+as 0 when left out."""
+
+MB479_REDUCTION_LINE_18 = AmountKind.declare(CATALOG, "mb479_reduction_line_18", non_negative=True)
+"""Reduction, MB479 line 18: the amount from line 6 multiplied by 1%, the printed rate held in the
+`ca-mb/personal_tax_credit_reduction_rate` dataset, rounded half-up to the cent."""
+
+MB479_FERTILITY_TREATMENT_EXPENSES_LINE_61 = AmountKind.declare(
+    CATALOG, "mb479_fertility_treatment_expenses_line_61", non_negative=True
+)
+"""Fertility treatment expenses, MB479 line 61 "Line 61: Eligible medical expenses for fertility
+treatments Line 61268 multiplied by 40% (maximum $16,000)": the eligible medical expenses of the
+first box, a caller input that is read as blank when left out."""
 
 MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
     CATALOG, "mb428_t691_amount_line_66", non_negative=True
