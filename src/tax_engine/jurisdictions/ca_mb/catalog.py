@@ -241,6 +241,12 @@ MB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, MB428 line 3 "Line 3: 0.00" (47,000.00; 100,000.00): the printed lower
 bound of the column of lines 2 to 8 that line 1 falls in."""
 
+MB428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "mb428_bracket_rate_line_5", non_negative=True
+)
+"""Bracket column rate, MB428 line 5 (each column prints "Line 5: Rate" with 10.8%, 12.75% or
+17.4%): the printed rate of the column of lines 2 to 8 that line 1 falls in."""
+
 MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8", non_negative=True)
 """Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
 Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
