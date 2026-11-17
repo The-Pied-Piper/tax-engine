@@ -1,0 +1,13 @@
+# Worksheet MB428 (CRA 5007-D) line 2: "Line 2: Amount from line 23600 of your return". The form names
+# no label for the line, so the step has no title. The amount arrives as a record list from the T1
+# (net income, line 23600 after its floor), so the one step is core/record_total over those records.
+form:
+  name: ca-mb/worksheet_mb428
+capabilities:
+  - name: core/record_total
+    reference: "2"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca-mb/worksheet_mb428_line_2
