@@ -20,6 +20,7 @@ between $71,300 and $81,200, each rounded half-up to the cent.
 
 from __future__ import annotations
 
+import ast
 from collections.abc import Iterator
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -50,7 +51,6 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_parameter_parsers,
     manitoba_units,
 )
-from tests.jurisdictions.ca_mb.test_worksheet_mb428_form import docstring_of, squashed
 from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
@@ -91,6 +91,27 @@ FORM = dedent("""\
         - ca-mb/worksheet_mb428_line_2
     capabilities: []
     """)
+
+
+def squashed(text: str) -> str:
+    return " ".join(text.split())
+
+
+def docstring_of(identifier: str) -> str:
+    """The string right after the declaration of the kind `identifier` in the Manitoba catalog."""
+    path = Path(mb_catalog.__file__)
+    body = ast.parse(path.read_text(encoding="utf-8")).body
+    for statement, following in zip(body, body[1:], strict=False):
+        if not (isinstance(statement, ast.Assign) and isinstance(statement.value, ast.Call)):
+            continue
+        constants = [each.value for each in statement.value.args if isinstance(each, ast.Constant)]
+        if (
+            identifier.rpartition("/")[2] in constants
+            and isinstance(following, ast.Expr)
+            and isinstance(following.value, ast.Constant)
+        ):
+            return str(following.value.value)
+    raise AssertionError(f"no declaration of {identifier!r} followed by a docstring")
 
 
 def _part_files() -> Iterator[Path]:
