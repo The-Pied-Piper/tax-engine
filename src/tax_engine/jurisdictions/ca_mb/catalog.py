@@ -26,6 +26,19 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
+)
+"""Manitoba basic personal amount, Worksheet MB428 line 9 "Line 9: Line 1 minus line 8 (if negative,
+enter "0") Enter this amount on line 58040 of your Form MB428.": the basic personal amount entered
+on line 58040 of Form MB428."""
+
+MB479_MANITOBA_CREDITS_LINE_81 = AmountKind.declare(
+    CATALOG, "mb479_manitoba_credits_line_81", non_negative=True
+)
+"""Manitoba credits, MB479 line 81 "Add lines 78 to 80. Enter this amount on line 47900 of your
+return.": the Manitoba credits, entered on T1 line 47900."""
+
 MB428_A_FAMILY_TAX_BENEFIT_LINE_12 = AmountKind.declare(
     CATALOG, "mb428_a_family_tax_benefit_line_12", non_negative=True
 )
