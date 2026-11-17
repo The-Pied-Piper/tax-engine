@@ -31,6 +31,12 @@ MB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+MB428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
+    CATALOG, "mb428_donations_credit_line_56", non_negative=True
+)
+"""Donations and gifts credit, MB428 line 56 (line 58969) "Line 56 and line 58969: Line 54 plus line
+55 =": a caller input, read as blank when left out; line 57 reads it."""
+
 MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
 )
