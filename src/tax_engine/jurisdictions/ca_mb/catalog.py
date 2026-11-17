@@ -123,3 +123,9 @@ the T1 taxable income, read directly by lines 3 and 4."""
 WORKSHEET_MB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_mb428_line_6", non_negative=True)
 """Net income over the threshold as a share of the threshold, Worksheet MB428 line 6 "Line 6: Line 4
 divided by line 5 = ^": the ratio of line 4 to line 5, a fraction (0.25 is a quarter), not money."""
+
+MB428_A_BASIC_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_a_basic_amount_line_1", non_negative=True
+)
+"""Basic amount, Schedule MB428-A line 1 "Line 1: Basic amount 2,065.00": the basic amount of the
+family tax benefit."""
