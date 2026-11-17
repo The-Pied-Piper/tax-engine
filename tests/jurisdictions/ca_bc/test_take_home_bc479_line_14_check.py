@@ -6,8 +6,8 @@ line: an amount above the printed maximum is rejected with `InputAboveBoundError
 before the 10% step reads it. The maximum is a dataset figure
 (`ca-bc/home_renovation_expenses_maximum`), never an input.
 
-Two new parts sit ahead of the line 14 step. `bc479_line_14_maximum.yaml` is `core/credit_amount`
-over that dataset and produces `ca-bc/bc479_home_renovation_expenses_maximum`; the maximum is an
+Two new parts sit ahead of the line 14 step. `bc479_home_renovation_expenses_maximum.yaml` is
+`core/credit_amount` over that dataset and produces `ca-bc/bc479_home_renovation_expenses_maximum`; the maximum is an
 intermediate step and carries no line number in its title, reference or kind name.
 `bc479_line_14_check.yaml` is `core/at_most`, consuming the input
 `ca-bc/bc479_home_renovation_expenses_line_14` against that maximum and producing
@@ -34,7 +34,7 @@ from tests.jurisdictions.ca_bc.support import british_columbia_kinds
 from tests.kinds import non_negative
 
 PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
-MAXIMUM_PART = PARTS / "bc479_line_14_maximum.yaml"
+MAXIMUM_PART = PARTS / "bc479_home_renovation_expenses_maximum.yaml"
 CHECK_PART = PARTS / "bc479_line_14_check.yaml"
 FORM = "ca-bc/bc479"
 INPUT = "ca-bc/bc479_home_renovation_expenses_line_14"

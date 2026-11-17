@@ -56,7 +56,7 @@ from tests.kinds import non_negative
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc479_line_14.yaml"
-MAXIMUM_PART = BC_PARTS / "bc479_line_14_maximum.yaml"
+MAXIMUM_PART = BC_PARTS / "bc479_home_renovation_expenses_maximum.yaml"
 CHECK_PART = BC_PARTS / "bc479_line_14_check.yaml"
 EXPENSES = BC479_HOME_RENOVATION_EXPENSES_LINE_14
 CHECKED = "ca-bc/bc479_home_renovation_expenses_checked"
