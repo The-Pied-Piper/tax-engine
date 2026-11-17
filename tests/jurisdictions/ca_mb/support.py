@@ -13,6 +13,7 @@ import tax_engine.jurisdictions.core
 from tax_engine.adapters.outbound.jurisdiction_packages import JurisdictionPackages
 from tax_engine.domain.artifact import ArtifactRegistry
 from tax_engine.domain.capability import CapabilityRegistry
+from tax_engine.domain.unit import UnitRegistry
 
 
 @cache
@@ -33,6 +34,14 @@ def manitoba_kinds() -> ArtifactRegistry:
     kinds = ArtifactRegistry()
     manitoba_packages().register(kinds)
     return kinds
+
+
+@cache
+def manitoba_units() -> UnitRegistry:
+    """The units of the Manitoba package list; never register into it."""
+    registry = UnitRegistry()
+    manitoba_packages().register_units(registry)
+    return registry
 
 
 @cache
