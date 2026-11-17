@@ -91,3 +91,7 @@ WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_5 = AmountKind.declare(
 )
 """Income threshold, Worksheet MB428 line 5 "Line 5: Income threshold 200,000.00": the income
 threshold of the basic personal amount section."""
+
+WORKSHEET_MB428_LINE_4 = AmountKind.declare(CATALOG, "worksheet_mb428_line_4", non_negative=True)
+"""Net income over the threshold, Worksheet MB428 line 4 "Line 4: Line 2 minus line 3 (if negative,
+enter "0")": line 2 minus line 3, not below zero."""
