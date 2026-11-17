@@ -1,0 +1,15 @@
+# Form MB428 (Manitoba Tax, CRA 5007-C) line 58 (ca-mb/mb428). "Line 58: Manitoba tax on taxable income
+# from line 8 ^" (Part A: "Enter the amount from line 8 on line 58 and continue at line 9."). Line 58 is
+# a copy of line 8, which sits on the other form `ca-mb/mb428_credits` (lines 1 to 57), so the one
+# step is core/record_total over that form's line 8 export, read as a record list.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/record_total
+    title: "Manitoba tax on taxable income from line 8"
+    reference: "58"
+    unit: ca/cad
+    consumes:
+      records: ca-mb/mb428_credits.mb428_tax_on_taxable_income_line_8
+    produces:
+      output: ca-mb/mb428_manitoba_tax_on_taxable_income_line_58
