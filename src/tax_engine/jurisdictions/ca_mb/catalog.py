@@ -39,6 +39,12 @@ MB479_MANITOBA_CREDITS_LINE_81 = AmountKind.declare(
 """Manitoba credits, MB479 line 81 "Add lines 78 to 80. Enter this amount on line 47900 of your
 return.": the Manitoba credits, entered on T1 line 47900."""
 
+MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
+    CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
+)
+"""Manitoba tax, MB428 line 82 "Enter this amount on line 42800 of your return.": the Manitoba
+tax, entered on T1 line 42800."""
+
 MB428_A_FAMILY_TAX_BENEFIT_LINE_12 = AmountKind.declare(
     CATALOG, "mb428_a_family_tax_benefit_line_12", non_negative=True
 )
