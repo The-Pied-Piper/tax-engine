@@ -1,9 +1,8 @@
 """MB428 (2025) line 21, the employment insurance premiums, from the salary alone, real parts.
 
-Form text (Form MB428, Manitoba Tax, CRA 5007-c-25e.txt, read 2026-11-14, to be confirmed against
-the repository's copy of the form): "Employment insurance premiums: Line 21 and line 58300: Amount
-from line 31200 of your return". Line 31200 is T2204 line 16, the EI premiums credit amount. Another
-form's export arrives only as a record list of one amount, so line 21 is a core/record_total over
+Form text (Form MB428, Manitoba Tax, CRA 5007-c-25e.txt): "Employment insurance premiums: Line 21
+and line 58300: Amount from line 31200 of your return". Line 31200 is T2204 line 16, the EI premiums
+credit amount. Another form's export arrives only as a record list of one amount, so line 21 is a core/record_total over
 that export, as British Columbia's line 29 is.
 
 The test composes the real Manitoba salary part, the real Schedule 8 and T2204 parts and the real
