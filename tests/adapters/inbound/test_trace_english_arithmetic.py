@@ -38,6 +38,7 @@ from tax_engine.domain.trace import (
     PercentageAppliedLine,
     PerUnitAmountLine,
     PositivePartOfNegationLine,
+    ProductLine,
     QuotientLine,
     RatioAppliedLine,
     RatioTruncatedLine,
@@ -220,6 +221,35 @@ def test_a_quotient_by_zero_names_no_rounding_whatever_the_rule() -> None:
     assert render(line) == "Wages (10.00) divided by bonus (0.00), which is zero, gives 0.00."
 
 
+def test_an_exact_product() -> None:
+    line = ProductLine(OUT, WAGES, D("10"), BONUS, D("4"), NO_ROUNDING, D("40"))
+
+    assert render(line) == "Wages (10.00) multiplied by bonus (4.00) gives 40.00 (not rounded)."
+
+
+def test_a_rounded_product_names_its_rounding_rule() -> None:
+    line = ProductLine(OUT, WAGES, D("0.49463"), BONUS, D("15780"), CENT, D("7805.26"))
+
+    assert render(line) == (
+        "Wages (0.49463) multiplied by bonus (15780.00) gives 7805.26 "
+        "(rounded to the nearest cent)."
+    )
+
+
+def test_a_product_rounded_to_ten_thousandths_names_its_increment() -> None:
+    line = ProductLine(OUT, WAGES, D("1"), BONUS, D("0.33333"), TEN_THOUSANDTH, D("0.3333"))
+
+    assert render(line) == (
+        "Wages (1.00) multiplied by bonus (0.33333) gives 0.3333 (rounded half-up to 0.0001)."
+    )
+
+
+def test_a_product_with_a_zero_factor_reads_like_any_other() -> None:
+    line = ProductLine(OUT, WAGES, D("0"), BONUS, D("15780"), NO_ROUNDING, D("0"))
+
+    assert render(line) == "Wages (0.00) multiplied by bonus (15780.00) gives 0.00 (not rounded)."
+
+
 def test_a_threshold_gate_that_is_met() -> None:
     line = ThresholdGateLine(
         OUT, WAGES, D("500"), INCOME, D("1000"), Amount(D("800")), NO_ROUNDING, D("500")
@@ -361,6 +391,7 @@ def test_an_amount_when_one_figure_is_more_than_another() -> None:
 def test_figures_are_named_as_lines_when_the_form_prints_references() -> None:
     printed = _Printed({}, {"wages": "2", "bonus": "B", "floor": "5a"})
     quotient = QuotientLine(OUT, WAGES, D("10"), BONUS, D("4"), NO_ROUNDING, D("2.5"))
+    product = ProductLine(OUT, WAGES, D("10"), BONUS, D("4"), NO_ROUNDING, D("40"))
     at_most = AtMostLine(OUT, WAGES, D("100"), FLOOR, D("150"))
     two = LesserOfLine(OUT, ((WAGES, D("10")), (EXTRA, D("4.5"))), D("4.5"))
     renderer = EnglishTraceRenderer()
@@ -368,6 +399,10 @@ def test_figures_are_named_as_lines_when_the_form_prints_references() -> None:
     assert (
         renderer.render(quotient, printed)
         == "Line 2 (10.00) divided by line B (4.00) gives 2.50 (not rounded)."
+    )
+    assert (
+        renderer.render(product, printed)
+        == "Line 2 (10.00) multiplied by line B (4.00) gives 40.00 (not rounded)."
     )
     assert renderer.render(at_most, printed) == "Line 2 (100.00), at most line 5a (150.00)."
     assert renderer.render(two, printed) == "Lesser of line 2 (10.00) and extra (4.50) gives 4.50."

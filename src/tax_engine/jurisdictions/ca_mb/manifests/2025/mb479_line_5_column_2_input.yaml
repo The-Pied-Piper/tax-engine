@@ -1,0 +1,13 @@
+# MB479 (2025) line 5's column 2 input, which a salary-only caller does not give.
+# Line 5: "Line 3 minus line 4 (if negative, enter "0")" (Form MB479, CRA 5007-TC), column 2 (your
+# spouse or common-law partner), taken as one figure: the spouse's own lines 1 to 4 are not
+# modelled. A salary-only single filer has no spouse, so a request that leaves the line out is read
+# as blank.
+inputs:
+  - name: ca-mb/mb479_family_income_column_2_line_5
+    title: 'Line 3 minus line 4 (if negative, enter "0")'
+    reference: "5 (column 2)"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 5: Line 3 minus line 4 (if negative, enter "0")'
