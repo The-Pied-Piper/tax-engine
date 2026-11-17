@@ -357,6 +357,13 @@ partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the numbe
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
 
+MB479_GREEN_ENERGY_PURCHASER_CREDIT_LINE_67 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_purchaser_credit_line_67", non_negative=True
+)
+"""Green energy equipment tax credit (purchaser), MB479 line 67 "Line 67 and line 61380: Complete
+Form T1294": the credit worked out on Form T1294, which is not built, a caller input that is read
+as blank when left out."""
+
 MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
     CATALOG, "mb479_geothermal_heat_pump_cost_line_68", non_negative=True
 )
