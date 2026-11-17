@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-tax-engine has not had a stable release yet. Security fixes are made on the `main` branch. Once releases are published, this section will list which versions receive fixes.
+tax-engine is pre-1.0. Security fixes are made on the `main` branch and published as a new release on [PyPI](https://pypi.org/project/tax-engine/). Only the latest release is supported.
 
 ## Reporting a vulnerability
 
