@@ -6,10 +6,12 @@ $1,000)". The form prints no title for line 73 beyond its label, so the step is 
 
 Line 73 is one core/subtract_not_below_zero step (`ab428_line_73.yaml`), rounded through
 `ca-ab/cent_rounding`, with `amount` line 70 (`ca-ab/ab428_tax_line_70`, non-negative) and `less`
-line 72 (`ca-ab/ab428_political_contributions_credit_line_72`, an optional input, from
-`ab428_line_72_input.yaml`). A salary-only caller has no political contributions, so line 72 is
-left blank, and the step has a blank rule reading it as 0 and prints its own "Left blank, taken as
-0" row. The form floors line 73 at 0 (printed), so the output `ca-ab/ab428_tax_line_73` is a
+line 72 (`ca-ab/ab428_alberta_political_contributions_tax_credit_line_72`, the optional input
+`ca-ab/ab428_political_contributions_credit_line_72` of `ab428_line_72_input.yaml` checked against
+its printed maximum by `ab428_line_72.yaml`, and left blank when the input is). A salary-only
+caller has no political contributions, so line 72 is left blank, and the step has a blank rule
+reading it as 0 and prints its own "Left blank, taken as 0" row. The form floors line 73 at 0
+(printed), so the output `ca-ab/ab428_tax_line_73` is a
 non-negative kind on the form `ca-ab/ab428`.
 
 The test composes the real parts that lead to line 70 (the salary, the federal T1 taxable income
@@ -67,7 +69,8 @@ D = Decimal
 CODE = JurisdictionCode("CA-AB")
 TAX = "ca-ab/ab428"
 LINE_70 = "ca-ab/ab428_tax_line_70"
-LINE_72 = "ca-ab/ab428_political_contributions_credit_line_72"
+INPUT_72 = "ca-ab/ab428_political_contributions_credit_line_72"
+LINE_72 = "ca-ab/ab428_alberta_political_contributions_tax_credit_line_72"
 LINE_73 = "ca-ab/ab428_tax_line_73"
 ROUNDING = "ca-ab/cent_rounding"
 ALBERTA_PARTS = Path(tax_engine.jurisdictions.ca_ab.__file__).parent / "manifests" / "2025"
@@ -87,7 +90,7 @@ T1_PARTS = (
 )
 # The real Alberta parts after the federal ones, in composition order: lines 1 to 15 and 59 to 61
 # (the line 61 test's), then lines 16 to 58 and 62 to 65 (the line 65 test's), then lines 66 and
-# 67, then lines 68 to 70, then line 72, then line 73.
+# 67, then lines 68 to 70, then the line 72 maximum, input and part, then line 73.
 ALBERTA_LINE_PARTS = (
     "ab428_credits_line_1.yaml",
     "ab428_line_3.yaml",
@@ -135,7 +138,9 @@ ALBERTA_LINE_PARTS = (
     "ab428_line_68.yaml",
     "ab428_line_69_inputs.yaml",
     "ab428_line_70.yaml",
+    "ab428_political_contributions_tax_credit_maximum.yaml",
     "ab428_line_72_input.yaml",
+    "ab428_line_72.yaml",
     LINE_PART.name,
 )
 
@@ -241,7 +246,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, line_72: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_72 is not None:
-        given.append(Artifact(_amount_kind(LINE_72), D(line_72)))
+        given.append(Artifact(_amount_kind(INPUT_72), D(line_72)))
     worksheets = _service(tmp_path).compute(CODE, 2025, *given)
     (sheet,) = worksheets[TAX]
     return sheet

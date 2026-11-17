@@ -1,0 +1,19 @@
+# AB428 (2025) line 72. Form AB428 (CRA 5009-c): "Line 72: Alberta political contributions tax
+# credit (use Worksheet AB428) (maximum $1,000)". Worksheet AB428 is not built, so line 72 is an
+# entry line: the amount the filer enters may not exceed the printed maximum. core/at_most passes it
+# on unchanged, and an amount above the maximum is rejected, not capped. A blank (a caller without
+# political contributions) passes on as blank, and line 73 reads it as 0.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/at_most
+    title: "Alberta political contributions tax credit"
+    reference: "72"
+    unit: ca/cad
+    consumes:
+      amount: ca-ab/ab428_political_contributions_credit_line_72
+      bound: ca-ab/political_contributions_tax_credit_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-ab/ab428_alberta_political_contributions_tax_credit_line_72

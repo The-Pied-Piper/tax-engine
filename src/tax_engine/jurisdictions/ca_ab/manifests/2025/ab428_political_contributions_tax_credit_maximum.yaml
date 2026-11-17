@@ -1,0 +1,14 @@
+# AB428 (2025) line 72 maximum. Form AB428 (CRA 5009-c): "Line 72: Alberta political contributions
+# tax credit (use Worksheet AB428) (maximum $1,000)". The $1,000 is the
+# `ca-ab/political_contributions_tax_credit_maximum` dataset, produced whole through
+# core/credit_amount; line 72 checks the amount against it.
+form:
+  name: ca-ab/ab428
+capabilities:
+  - name: core/credit_amount
+    title: "Political contributions tax credit maximum"
+    unit: ca/cad
+    params:
+      amount: ca-ab/political_contributions_tax_credit_maximum
+    produces:
+      output: ca-ab/political_contributions_tax_credit_maximum
