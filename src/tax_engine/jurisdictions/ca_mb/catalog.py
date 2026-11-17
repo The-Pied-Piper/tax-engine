@@ -25,6 +25,13 @@ MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
 """Basic personal amount, MB428 line 9 and line 58040 "Basic personal amount (use Worksheet MB428)":
 the amount of Worksheet MB428 line 9, which says to enter it on line 58040."""
 
+MB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_18", non_negative=True
+)
+"""Credits subtotal, MB428 line 18 "Line 18: Add lines 9, 10, 13, 16, and 17. = ^": only the basic
+personal amount, line 9, is summed here, because a salary-only single filer has no age, spouse,
+eligible dependant or infirm dependant amount."""
+
 MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
     CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
 )
