@@ -50,6 +50,13 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
+    CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
+)
+"""Minimum tax carryover amount, MB428 line 63 (line 40427) "Line 63 and line 61540: Amount from
+line 40427 of your return": a caller input, read as blank when left out; the carryover credit step
+reads it."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
