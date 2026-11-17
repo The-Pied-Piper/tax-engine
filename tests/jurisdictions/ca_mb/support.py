@@ -54,14 +54,6 @@ def manitoba_capabilities() -> CapabilityRegistry:
 
 
 @cache
-def manitoba_units() -> UnitRegistry:
-    """The units of the Manitoba package list; never register into it."""
-    registry = UnitRegistry()
-    manitoba_packages().register_units(registry)
-    return registry
-
-
-@cache
 def manitoba_parameter_parsers() -> ParameterParserRegistry:
     """The parameter parsers of the Manitoba package list; never register into it."""
     registry = ParameterParserRegistry()
