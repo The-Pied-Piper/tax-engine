@@ -1,6 +1,6 @@
 # Worksheet MB428 lines 3 and 5: income threshold of the basic personal amount, 2025 (CRA 5007-D).
-# Lines 3 and 5 are dollars-and-cents boxes, so the amount rounds half-up to the cent, the
-# project's choice, as the form states no rounding rule.
+# Lines 3 and 5 print the figure with cents (200,000.00), so the amount rounds half-up to the
+# cent, the project's choice, as the form states no rounding rule.
 family: ca-mb/basic_personal_amount_threshold
 tax_year: 2025
 kind: credit
