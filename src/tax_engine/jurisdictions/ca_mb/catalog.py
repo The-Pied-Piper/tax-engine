@@ -42,7 +42,21 @@ MB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "mb428_pension_income_amount", non_negative=True
 )
 """Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
-$1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+$1,000)": the amount the filer claims, a caller input that is read as blank when left out; the
+line 31 step checks it against the printed maximum."""
+
+MB428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on MB428 line 31 "(maximum $1,000)": the printed
+maximum, from the `ca-mb/pension_income_amount_maximum` dataset; the bound line 31 cannot pass."""
+
+MB428_PENSION_INCOME_AMOUNT_LINE_31 = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount_line_31", non_negative=True
+)
+"""Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
+$1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
+left out; above the maximum it is refused, not capped."""
 
 MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "mb428_medical_expenses_line_50", non_negative=True
