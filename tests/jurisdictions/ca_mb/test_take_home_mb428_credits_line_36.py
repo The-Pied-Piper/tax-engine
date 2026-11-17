@@ -62,6 +62,7 @@ CREDIT_PARTS = (
     "mb428_credits_line_18.yaml",
     "mb428_credits_line_29.yaml",
     "mb428_credits_line_31_input.yaml",
+    "mb428_credits_line_31.yaml",
     "mb428_credits_line_33.yaml",
 )
 WORKSHEET_PARTS = (

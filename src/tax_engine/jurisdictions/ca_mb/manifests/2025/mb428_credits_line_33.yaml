@@ -1,7 +1,7 @@
 # Form MB428 (CRA 5007-c) line 33: "Line 33: Add lines 30 to 32. = ^". Line 30 is a copy of line 29, so
 # it gets no step of its own and core/sum consumes line 29 directly. Line 31, the pension income
-# amount, is an optional input read as 0 when blank (mb428_credits_line_31_input.yaml). Line 32, the
-# caregiver amount (Worksheet MB428), is not built.
+# amount, is the entry checked against its printed maximum (mb428_credits_line_31.yaml), read as 0
+# when blank. Line 32, the caregiver amount (Worksheet MB428), is not built.
 form:
   name: ca-mb/mb428_credits
 capabilities:
@@ -13,8 +13,8 @@ capabilities:
     consumes:
       parts:
         - ca-mb/mb428_credits_subtotal_line_29
-        - ca-mb/mb428_pension_income_amount
+        - ca-mb/mb428_pension_income_amount_line_31
     blank:
-      ca-mb/mb428_pension_income_amount: "0"
+      ca-mb/mb428_pension_income_amount_line_31: "0"
     produces:
       output: ca-mb/mb428_credits_subtotal_line_33
