@@ -129,3 +129,7 @@ MB428_A_BASIC_AMOUNT_LINE_1 = AmountKind.declare(
 )
 """Basic amount, Schedule MB428-A line 1 "Line 1: Basic amount 2,065.00": the basic amount of the
 family tax benefit."""
+
+MB428_A_LINE_10 = AmountKind.declare(CATALOG, "mb428_a_line_10", non_negative=True)
+"""Sum of lines 1 to 9, Schedule MB428-A line 10 "Line 10: Add lines 1 to 9.": the basic amount of
+the family tax benefit, the only line of the block that is built."""
