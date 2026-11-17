@@ -1,0 +1,33 @@
+# Manitoba 2025 take-home manifest: the return's identity and its export (the refund or balance
+# owing). The caller gives the gross salary and nothing else (salary.yaml). Manitoba's own forms
+# are in parts beside this one, so a line ticket adds only its own part file; the federal forms
+# are imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
+#
+# Manitoba builds five forms, split so that no form reads another in a loop: `ca-mb/mb428_credits`
+# (MB428 lines 1 to 57), `ca-mb/worksheet_mb428` (the basic personal amount section of Worksheet
+# MB428), `ca-mb/mb428` (MB428 lines 58 to 82), which supplies `ca/provincial_tax.amount` for T1
+# line 42800, `ca-mb/mb428_a` (Schedule MB428-A) and `ca-mb/mb479` (MB479), which supplies
+# `ca/provincial_credits.amount` for T1 line 47900.
+#
+# The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
+# is a refund). Manitoba uses the standard federal CPP and EI (no QPP), so Schedule 8 and T2204 are
+# imported unchanged. CRA publishes no Manitoba edition of Schedule 6, so the federal Schedule 6 is
+# imported unchanged.
+#
+# Manitoba is not listed in `registrations.JURISDICTIONS` until it is complete: the startup check
+# builds every listed manifest, and this one is partial until MB428 supplies
+# `ca/provincial_tax.amount` for T1.
+jurisdiction: CA-MB
+version: 1
+valid_from_tax_year: 2025
+# The title is the engine's own wording for the default form, not a printed form heading.
+title: Return summary
+outputs:
+  - ca/refund_or_balance_owing
+capabilities: []
+imports:
+  - ca/t1_taxable_income
+  - ca/t1_tax_and_credits
+  - ca/schedule_6
+  - ca/schedule_8
+  - ca/t2204
