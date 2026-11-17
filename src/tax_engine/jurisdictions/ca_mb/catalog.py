@@ -422,6 +422,13 @@ MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
 geothermal heat pumps": the adjusted cost of geothermal heat pumps the 7.5% is taken of, a caller
 input that is read as blank when left out."""
 
+MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "mb479_book_publishing_credit_line_71", non_negative=True
+)
+"""Book publishing tax credit, MB479 line 71 "Line 71 and line 61430: Enter your book publishing
+tax credit from Form T1299": the credit worked out on Form T1299, which is not built, a caller
+input that is read as blank when left out."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
