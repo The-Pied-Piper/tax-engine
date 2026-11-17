@@ -215,3 +215,9 @@ MB428_FAMILY_TAX_BENEFIT_LINE_41 = AmountKind.declare(
 """Family tax benefit, MB428 line 41 and line 61470 "Line 41 and line 61470: Family tax benefit
 (attach Schedule MB428-A)": the amount of Schedule MB428-A line 12, which says to enter it on line
 61470 of Form MB428."""
+
+MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_29", non_negative=True
+)
+"""Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
+28."""
