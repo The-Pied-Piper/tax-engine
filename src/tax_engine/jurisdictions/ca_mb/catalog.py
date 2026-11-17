@@ -299,6 +299,12 @@ MB428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
 """MB428 line 51 "Line 51 and line 58800: Line 42 plus line 50 = ^": the sum of line 42 and the
 line 50 medical expense amount; lines 43 to 49, the medical expense working, are not built."""
 
+MB428_CREDITS_AT_RATE_LINE_53 = AmountKind.declare(
+    CATALOG, "mb428_credits_at_rate_line_53", non_negative=True
+)
+"""MB428 line 53 (line 58840) "Line 51 multiplied by the percentage from line 52 = ^": line 51
+multiplied by the 10.8% of line 52, rounded half-up to the cent."""
+
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
 )
