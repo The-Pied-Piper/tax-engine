@@ -195,3 +195,10 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
 )
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
 personal tax credits."""
+
+MB479_HOMEOWNER_RENTER_SENIOR_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "mb479_homeowner_renter_senior_credits_line_53", non_negative=True
+)
+"""Homeowners, renters and seniors credits, MB479 line 53 "Line 53: Line 41 plus line 52 = ^": the
+printed collecting sum of the skipped block of lines 20 to 52 (homeowners affordability, renters
+affordability, seniors school tax rebate), a caller input that is read as blank when left out."""
