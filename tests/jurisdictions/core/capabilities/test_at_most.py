@@ -18,6 +18,7 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.blank import BLANK, PASS_ON
 from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
@@ -27,6 +28,7 @@ from tax_engine.domain.errors import (
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.kind import ParameterKind
 from tax_engine.domain.trace import AtMostLine
+from tax_engine.domain.trace.blank import BlankPassedOnLine
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
 from tests.capabilities import bundled_capabilities
 
@@ -335,3 +337,32 @@ def test_trace_holds_no_text() -> None:
 
     for line in trace:
         assert not any(isinstance(getattr(line, f.name), str) for f in fields(line))
+
+
+# --- a blank amount ---------------------------------------------------------------------------
+
+
+def test_declares_that_only_the_amount_may_be_blank() -> None:
+    assert AtMost.BLANK_ALLOWED == frozenset({"amount"})
+
+
+def test_pass_on_for_the_amount_blanks_the_output() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON})
+
+    result = passing.run((Artifact(CLAIMED, BLANK), Artifact(LIMIT, D("100"))))
+
+    assert result.outputs == (Artifact(ALLOWED, BLANK),)
+    assert result.trace == (BlankPassedOnLine(ALLOWED, (CLAIMED,)),)
+
+
+def test_a_blank_amount_passed_on_is_not_compared_with_the_bound() -> None:
+    passing = capability().with_blank_rules({"amount": PASS_ON})
+
+    result = passing.run((Artifact(CLAIMED, BLANK), Artifact(LIMIT, D("0"))))
+
+    assert result.outputs == (Artifact(ALLOWED, BLANK),)
+
+
+def test_the_bound_slot_refuses_a_blank_rule() -> None:
+    with pytest.raises(InvalidCapabilityError, match="slot 'bound' may not be blank"):
+        capability().with_blank_rules({"bound": PASS_ON})
