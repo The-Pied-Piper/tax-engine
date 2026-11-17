@@ -1,4 +1,4 @@
-"""A salary-only $70,000 Ontario run is unchanged by the line 27 maximum (ticket 1297).
+"""A salary-only $70,000 Ontario run is unchanged by the line 27 maximum.
 
 Line 27, the pension income amount, now passes through a `core/at_most` against the printed
 maximum ($1,762); a salary-only caller leaves it out, it reads 0, and the take-home does not move:
