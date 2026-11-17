@@ -461,6 +461,13 @@ MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
 the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
 heat pumps, rounded half-up to the cent."""
 
+MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
+    CATALOG, "mb479_community_enterprise_development_tax_credit_line_75", non_negative=True
+)
+"""Community enterprise development tax credit, MB479 line 75 "Line 75 and line 61484: Enter your
+Manitoba community enterprise development tax credit from line 4 of Form T1256": the credit worked
+out on Form T1256, which is not built, a caller input that is read as blank when left out."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
