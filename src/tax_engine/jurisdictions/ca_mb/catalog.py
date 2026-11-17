@@ -19,6 +19,12 @@ MB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Manitoba tax on taxable income, MB428 line 8 "Line 6 plus line 7 Manitoba tax on taxable income
 =": line 6 plus line 7 of the column that line 1 falls in, read by line 58 on the tax form."""
 
+MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
+    CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
+)
+"""CPP or QPP contributions, MB428 line 19 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
 MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
 )
