@@ -191,7 +191,7 @@ def test_line_17_adds_all_six_inputs_and_the_basic_credit(tmp_path: Path) -> Non
     )
 
     assert _total(sheet) == D("195.00") + sum(values, D(0))
-    assert _total(sheet) == D("1095.00")
+    assert _total(sheet) == D("1295.00")
 
 
 def test_blank_inputs_print_one_left_blank_row_each(tmp_path: Path) -> None:
