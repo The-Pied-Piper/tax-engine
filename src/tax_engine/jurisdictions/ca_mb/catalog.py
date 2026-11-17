@@ -13,6 +13,26 @@ from tax_engine.jurisdictions.ca_mb import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+MB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "mb428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Manitoba tax on taxable income, MB428 line 8 "Line 6 plus line 7 Manitoba tax on taxable income
+=": line 6 plus line 7 of the column that line 1 falls in, read by line 58 on the tax form."""
+
+MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
+    CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
+)
+"""Manitoba non-refundable tax credits, MB428 line 57 "Line 57 and line 61500: Line 53 plus line 56
+Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
+line 61 on the tax form."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
+)
+"""Manitoba basic personal amount, Worksheet MB428 line 9 "Line 9: Line 1 minus line 8 (if negative,
+enter "0") Enter this amount on line 58040 of your Form MB428.": the basic personal amount entered
+on line 58040 of Form MB428."""
+
 MB479_MANITOBA_CREDITS_LINE_81 = AmountKind.declare(
     CATALOG, "mb479_manitoba_credits_line_81", non_negative=True
 )
