@@ -25,6 +25,13 @@ MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
 """Basic personal amount, MB428 line 9 and line 58040 "Basic personal amount (use Worksheet MB428)":
 the amount of Worksheet MB428 line 9, which says to enter it on line 58040."""
 
+MB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_18", non_negative=True
+)
+"""Credits subtotal, MB428 line 18 "Line 18: Add lines 9, 10, 13, 16, and 17. = ^": only the basic
+personal amount, line 9, is summed here, because a salary-only single filer has no age, spouse,
+eligible dependant or infirm dependant amount."""
+
 MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
     CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
 )
@@ -202,3 +209,87 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
 )
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
 personal tax credits."""
+
+MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
+    CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, MB428 line 28 "Line 28: Add lines 19 to 27. = ^": the
+sum of lines 19 and 21. Lines 20 and 22 to 27 are not built: a salary-only filer has none."""
+
+MB428_FAMILY_TAX_BENEFIT_LINE_41 = AmountKind.declare(
+    CATALOG, "mb428_family_tax_benefit_line_41", non_negative=True
+)
+"""Family tax benefit, MB428 line 41 and line 61470 "Line 41 and line 61470: Family tax benefit
+(attach Schedule MB428-A)": the amount of Schedule MB428-A line 12, which says to enter it on line
+61470 of Form MB428."""
+
+MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_29", non_negative=True
+)
+"""Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
+28."""
+
+MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
+    CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
+)
+"""Family income, MB479 line 5 "Line 3 minus line 4 (if negative, enter "0")": line 3 less the UCCB
+and RDSP income of line 4, floored at 0, column 1 (you) only."""
+
+MB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "mb428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, MB428 line 3 "Line 3: 0.00" (47,000.00; 100,000.00): the printed lower
+bound of the column of lines 2 to 8 that line 1 falls in."""
+
+MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8", non_negative=True)
+"""Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
+Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
+
+MB479_SPOUSE_CREDITS_LINE_12 = AmountKind.declare(
+    CATALOG, "mb479_spouse_credits_line_12", non_negative=True
+)
+"""Spouse or common-law partner credits, MB479 line 12 "Line 12 and line 60900: Add lines 9 to 11.":
+the printed sum of lines 9 to 11, taken as one figure because those lines are not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
+    CATALOG, "mb479_eligible_dependant_credit_line_13", non_negative=True
+)
+"""Eligible dependant credit, MB479 line 13 "Credit for an eligible dependant claimed on line 58160
+of your Form MB428 Claim $195": the credit of the box, a caller input that is read as blank when
+left out."""
+
+MB479_DISABILITY_CREDIT_LINE_14 = AmountKind.declare(
+    CATALOG, "mb479_disability_credit_line_14", non_negative=True
+)
+"""Disability credit, MB479 line 14 "Number of disability claims Line 60950 multiplied by $113": the
+product box, taken as one figure because the count above it is not modelled, a caller input that is
+read as blank when left out."""
+
+MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15 = AmountKind.declare(
+    CATALOG, "mb479_disabled_dependants_credit_line_15", non_negative=True
+)
+"""Disabled dependants credit, MB479 line 15 "Number of disabled dependants Line 60970 multiplied by
+$62": the product box, taken as one figure because the count above it is not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16 = AmountKind.declare(
+    CATALOG, "mb479_dependent_children_credit_line_16", non_negative=True
+)
+"""Dependent children credit, MB479 line 16 "Number of dependent children Line 60999 multiplied by
+$26": the product box, taken as one figure because the count above it is not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_TOTAL_CREDITS_LINE_17 = AmountKind.declare(
+    CATALOG, "mb479_total_credits_line_17", non_negative=True
+)
+"""Total credits, MB479 line 17 "Line 17 and line 61050: Add lines 7, 8, and 12 to 16. Total
+credits": the basic credit of line 7 plus the credits of lines 8 and 12 to 16, each blank one taken
+as 0."""
+
+MB479_HOMEOWNER_RENTER_SENIOR_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "mb479_homeowner_renter_senior_credits_line_53", non_negative=True
+)
+"""Homeowners, renters and seniors credits, MB479 line 53 "Line 53: Line 41 plus line 52 = ^": the
+printed collecting sum of the skipped block of lines 20 to 52 (homeowners affordability, renters
+affordability, seniors school tax rebate), a caller input that is read as blank when left out."""
