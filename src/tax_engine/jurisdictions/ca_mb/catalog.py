@@ -242,6 +242,12 @@ MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
 """Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
 28."""
 
+MB428_CREDITS_SUBTOTAL_LINE_33 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_33", non_negative=True
+)
+"""Credits subtotal, MB428 line 33 "Line 33: Add lines 30 to 32. = ^": the sum of line 30 (a copy of
+line 29) and the line 31 pension income amount; line 32, the caregiver amount, is not built."""
+
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
 )
