@@ -44,3 +44,9 @@ MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
 )
 """Manitoba tax, MB428 line 82 "Enter this amount on line 42800 of your return.": the Manitoba
 tax, entered on T1 line 42800."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_1", non_negative=True
+)
+"""Base amount, Worksheet MB428 line 1 "Line 1: Base amount 15,780.00": the base amount of the
+basic personal amount section."""
