@@ -31,6 +31,12 @@ MB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
 
+MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
+    CATALOG, "mb428_medical_expenses_line_50", non_negative=True
+)
+"""Medical expenses, MB428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
+optional input; a blank is read as 0 by the line 51 step."""
+
 MB428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
     CATALOG, "mb428_donations_credit_line_56", non_negative=True
 )
@@ -97,3 +103,19 @@ WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_5 = AmountKind.declare(
 )
 """Income threshold, Worksheet MB428 line 5 "Line 5: Income threshold 200,000.00": the income
 threshold of the basic personal amount section."""
+
+WORKSHEET_MB428_LINE_4 = AmountKind.declare(CATALOG, "worksheet_mb428_line_4", non_negative=True)
+"""Net income over the threshold, Worksheet MB428 line 4 "Line 4: Line 2 minus line 3 (if negative,
+enter "0")": line 2 minus line 3, not below zero."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_7", non_negative=True
+)
+"""Base amount, Worksheet MB428 line 7 "Line 7: Base amount 15,780.00": the base amount of the
+basic personal amount section."""
+
+MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
+the T1 taxable income, read directly by lines 3 and 4."""
