@@ -1,4 +1,4 @@
-# Form MB428 (Manitoba Tax and Credits, 2025, CRA 5007-C) line 63 (ca-mb/mb428). "Manitoba minimum
+# Form MB428 (Manitoba Tax, 2025, CRA 5007-C) line 63 (ca-mb/mb428). "Manitoba minimum
 # tax carryover:" / "Line 63 and line 61540: Amount from line 40427 of your return ^ multiplied by
 # 50% = ^". The 50% is a printed rate, held in the `ca-mb/minimum_tax_rate` dataset, so line 63 is
 # one calculation: 50% of the amount, rounded half-up to the cent. The amount is an optional input
