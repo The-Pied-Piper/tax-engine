@@ -314,3 +314,10 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB479_FAMILY_INCOME_LINE_6 = AmountKind.declare(
+    CATALOG, "mb479_family_income_line_6", non_negative=True
+)
+"""Family income, MB479 line 6: line 5 of column 1 (you) plus line 5 of column 2 (your spouse or
+common-law partner), the amount that later lines refer to as "Amount from line 6". Column 2 is taken
+as 0 when left out."""
