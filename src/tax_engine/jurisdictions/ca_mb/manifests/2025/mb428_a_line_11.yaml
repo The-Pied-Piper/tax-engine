@@ -1,0 +1,15 @@
+# Schedule MB428-A (CRA 5007-A) line 11: "Line 11: Net income from line 23600 of your return" ...
+# multiplied by 9%. This part is the first box of the line, the read; the multiplication is a
+# separate line step. The form names no label for the box, so the step has no title. The amount
+# arrives as a record list from the T1 (net income, line 23600 after its floor), so the one step is
+# core/record_total over those records.
+form:
+  name: ca-mb/mb428_a
+capabilities:
+  - name: core/record_total
+    reference: "11"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income
+    produces:
+      output: ca-mb/mb428_a_net_income_line_11

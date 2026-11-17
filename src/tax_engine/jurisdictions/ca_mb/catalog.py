@@ -129,3 +129,10 @@ MB428_A_BASIC_AMOUNT_LINE_1 = AmountKind.declare(
 )
 """Basic amount, Schedule MB428-A line 1 "Line 1: Basic amount 2,065.00": the basic amount of the
 family tax benefit."""
+
+MB428_A_NET_INCOME_LINE_11 = AmountKind.declare(
+    CATALOG, "mb428_a_net_income_line_11", non_negative=True
+)
+"""Net income, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line 23600 of your
+return": the first box of the line, the net income read from the T1, before the multiplication
+by 9%."""
