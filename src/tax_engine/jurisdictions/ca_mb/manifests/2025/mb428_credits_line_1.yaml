@@ -1,0 +1,15 @@
+# Form MB428 (CRA 5007-C) line 1 "Enter your taxable income from line 26000 of your return." is the T1
+# taxable income. The T1 form exports it as `ca/taxable_income`, and another form reads an export
+# only as a record list (`ca/t1_taxable_income.taxable_income`), so the one step is core/record_total
+# over those records (same as ca-ab/ab428_credits line 1, ab428_credits_line_1.yaml). Line 2 is a
+# copy of line 1 and has no step of its own: lines 3 and 4 read line 1 directly.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/record_total
+    reference: "1"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.taxable_income
+    produces:
+      output: ca-mb/mb428_taxable_income_line_1
