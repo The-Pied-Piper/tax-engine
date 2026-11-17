@@ -13,11 +13,18 @@ from typing import Any
 
 import yaml
 
-import tax_engine.jurisdictions
+import tax_engine.jurisdictions.ca_mb
 
-PART = (
-    Path(tax_engine.jurisdictions.__file__).parent / "ca_mb" / "manifests" / "2025" / "salary.yaml"
-)
+FOLDER = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
+PART = FOLDER / "salary.yaml"
+
+
+def test_the_manifest_folder_holds_the_header_and_the_salary_part_to_compose() -> None:
+    names = sorted(path.name for path in FOLDER.rglob("*.yaml"))
+
+    assert names == ["manifest.yaml", "salary.yaml"]
+    header = yaml.safe_load((FOLDER / "manifest.yaml").read_text(encoding="utf-8"))
+    assert "inputs" not in header
 
 
 def _inputs() -> list[dict[str, Any]]:
