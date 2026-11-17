@@ -151,3 +151,10 @@ MB479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
 repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
 repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
 that is read as blank when left out, column 1 (you) only."""
+
+MB479_FAMILY_INCOME_COLUMN_2_LINE_5 = AmountKind.declare(
+    CATALOG, "mb479_family_income_column_2_line_5", non_negative=True
+)
+"""Family income of your spouse or common-law partner, MB479 line 5 "Line 3 minus line 4 (if
+negative, enter "0")": column 2 (your spouse or common-law partner), taken as one figure because the
+spouse's own lines 1 to 4 are not modelled, a caller input that is read as blank when left out."""
