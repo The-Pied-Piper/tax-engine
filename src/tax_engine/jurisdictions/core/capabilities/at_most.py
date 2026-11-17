@@ -1,8 +1,10 @@
 """AtMost: a money artifact that may not exceed another, passed on unchanged.
 
 An amount at or below the bound is produced as is, with its own scale; never rounded or floored. An
-amount above the bound is an `InputAboveBoundError`, not capped. A blank amount passes on as blank
-and is not compared with the bound.
+amount above the bound is an `InputAboveBoundError`, not capped.
+
+A blank `amount` is allowed. Under a `pass_on` rule it blanks the output, and the bound is not
+checked; without a rule it is refused.
 """
 
 from __future__ import annotations
@@ -22,8 +24,8 @@ class AtMost(Capability):
     """Produces `output`: the consumed `amount`, unchanged, when it is at most the `bound`."""
 
     CONSUMES: ClassVar[Mapping[str, type]] = {"amount": Decimal, "bound": Decimal}
-    PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
     BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"amount"})
+    PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
 
     def __init__(self, amount: Money, bound: Money, output: Money) -> None:
         """Wire the capability: the kind checked, the kind it may not exceed, the kind produced."""
