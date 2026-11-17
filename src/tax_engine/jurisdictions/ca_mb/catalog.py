@@ -96,6 +96,12 @@ MB428_TAX_BEFORE_CREDITS_LINE_60 = AmountKind.declare(
 """MB428 line 60 "Line 60: Line 58 plus line 59 =": the sum of line 58 and line 59, where a blank
 line 59 is read as 0."""
 
+MB428_NON_REFUNDABLE_CREDITS_LINE_61 = AmountKind.declare(
+    CATALOG, "mb428_non_refundable_credits_line_61", non_negative=True
+)
+"""Manitoba non-refundable tax credits, MB428 line 61 "Line 61: Manitoba non-refundable tax credits
+from line 57 ^": line 57 of the credits form, read across the forms."""
+
 MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
 )
