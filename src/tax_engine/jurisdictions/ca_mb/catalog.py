@@ -95,3 +95,7 @@ threshold of the basic personal amount section."""
 WORKSHEET_MB428_LINE_4 = AmountKind.declare(CATALOG, "worksheet_mb428_line_4", non_negative=True)
 """Net income over the threshold, Worksheet MB428 line 4 "Line 4: Line 2 minus line 3 (if negative,
 enter "0")": line 2 minus line 3, not below zero."""
+
+WORKSHEET_MB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_mb428_line_6", non_negative=True)
+"""Net income over the threshold as a share of the threshold, Worksheet MB428 line 6 "Line 6: Line 4
+divided by line 5 = ^": the ratio of line 4 to line 5, a fraction (0.25 is a quarter), not money."""
