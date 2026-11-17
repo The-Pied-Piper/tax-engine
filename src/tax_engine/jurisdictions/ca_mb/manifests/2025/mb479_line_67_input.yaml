@@ -1,0 +1,12 @@
+# MB479 (2025) line 67's input, which a salary-only caller does not give.
+# Line 67: "Line 67 and line 61380: Complete Form T1294." (Form MB479, CRA 5007-TC), in the green
+# energy equipment tax credit (purchaser) part. The form prints no name for the line (its heading
+# is a section heading), so the input has no title. A salary-only caller has no such equipment, so
+# a request that leaves the line out is read as blank.
+inputs:
+  - name: ca-mb/mb479_green_energy_purchaser_credit_line_67
+    reference: "67"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 67 and line 61380: Complete Form T1294.'
