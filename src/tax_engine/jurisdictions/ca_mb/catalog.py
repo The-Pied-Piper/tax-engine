@@ -202,3 +202,9 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
 )
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
 personal tax credits."""
+
+MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
+    CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, MB428 line 28 "Line 28: Add lines 19 to 27. = ^": the
+sum of lines 19 and 21. Lines 20 and 22 to 27 are not built: a salary-only filer has none."""
