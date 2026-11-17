@@ -381,3 +381,9 @@ MB479_FERTILITY_TREATMENT_EXPENSES_LINE_61 = AmountKind.declare(
 """Fertility treatment expenses, MB479 line 61 "Line 61: Eligible medical expenses for fertility
 treatments Line 61268 multiplied by 40% (maximum $16,000)": the eligible medical expenses of the
 first box, a caller input that is read as blank when left out."""
+
+MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
+    CATALOG, "mb428_t691_amount_line_66", non_negative=True
+)
+"""Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a caller
+input, read as blank when left out; the 50% multiplication step reads it."""
