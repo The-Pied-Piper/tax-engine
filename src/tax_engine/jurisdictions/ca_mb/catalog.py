@@ -91,3 +91,25 @@ MB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
 )
 """EI premiums credit amount, MB428 line 21 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_5 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_5", non_negative=True
+)
+"""Income threshold, Worksheet MB428 line 5 "Line 5: Income threshold 200,000.00": the income
+threshold of the basic personal amount section."""
+
+WORKSHEET_MB428_LINE_4 = AmountKind.declare(CATALOG, "worksheet_mb428_line_4", non_negative=True)
+"""Net income over the threshold, Worksheet MB428 line 4 "Line 4: Line 2 minus line 3 (if negative,
+enter "0")": line 2 minus line 3, not below zero."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_7", non_negative=True
+)
+"""Base amount, Worksheet MB428 line 7 "Line 7: Base amount 15,780.00": the base amount of the
+basic personal amount section."""
+
+MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
+the T1 taxable income, read directly by lines 3 and 4."""

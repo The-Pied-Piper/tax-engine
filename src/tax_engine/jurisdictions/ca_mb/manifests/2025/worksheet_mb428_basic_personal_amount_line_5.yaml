@@ -1,0 +1,15 @@
+# Worksheet MB428 (2025), section "Line 58040 - Basic personal amount", line 5, the income
+# threshold. Worksheet MB428 (CRA 5007-D): "Line 5: Income threshold 200,000.00". The 200,000.00 is
+# the `ca-mb/basic_personal_amount_threshold` dataset, claimed whole through core/credit_amount, so
+# it is the same at every salary.
+form:
+  name: ca-mb/worksheet_mb428
+capabilities:
+  - name: core/credit_amount
+    title: "Income threshold"
+    reference: "5"
+    unit: ca/cad
+    params:
+      amount: ca-mb/basic_personal_amount_threshold
+    produces:
+      output: ca-mb/worksheet_mb428_basic_personal_amount_line_5
