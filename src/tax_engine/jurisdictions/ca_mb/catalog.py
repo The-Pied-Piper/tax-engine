@@ -90,6 +90,12 @@ MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
 split income (complete Form T1206)": a caller input, read as blank when left out; line 60 reads
 it."""
 
+MB428_TAX_BEFORE_CREDITS_LINE_60 = AmountKind.declare(
+    CATALOG, "mb428_tax_before_credits_line_60", non_negative=True
+)
+"""MB428 line 60 "Line 60: Line 58 plus line 59 =": the sum of line 58 and line 59, where a blank
+line 59 is read as 0."""
+
 MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
 )
@@ -102,6 +108,12 @@ MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
 )
 """Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
 return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
+
+MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
+    CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
+)
+"""Manitoba additional tax for minimum tax purposes, MB428 line 66 "Line 66: Form T691: line 1 minus
+line 2 of Part 7 multiplied by 50% =": calculated, the Form T691 amount multiplied by 50%."""
 
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
@@ -312,6 +324,12 @@ MB428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
 )
 """MB428 line 51 "Line 51 and line 58800: Line 42 plus line 50 = ^": the sum of line 42 and the
 line 50 medical expense amount; lines 43 to 49, the medical expense working, are not built."""
+
+MB428_CREDITS_AT_RATE_LINE_53 = AmountKind.declare(
+    CATALOG, "mb428_credits_at_rate_line_53", non_negative=True
+)
+"""MB428 line 53 (line 58840) "Line 51 multiplied by the percentage from line 52 = ^": line 51
+multiplied by the 10.8% of line 52, rounded half-up to the cent."""
 
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
