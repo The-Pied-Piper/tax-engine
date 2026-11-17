@@ -119,3 +119,7 @@ MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 )
 """Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
 the T1 taxable income, read directly by lines 3 and 4."""
+
+WORKSHEET_MB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_mb428_line_6", non_negative=True)
+"""Net income over the threshold as a share of the threshold, Worksheet MB428 line 6 "Line 6: Line 4
+divided by line 5 = ^": the ratio of line 4 to line 5, a fraction (0.25 is a quarter), not money."""
