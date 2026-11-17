@@ -73,3 +73,9 @@ WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_1 = AmountKind.declare(
 )
 """Base amount, Worksheet MB428 line 1 "Line 1: Base amount 15,780.00": the base amount of the
 basic personal amount section."""
+
+MB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
+    CATALOG, "mb428_ei_premiums_line_21", non_negative=True
+)
+"""EI premiums credit amount, MB428 line 21 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
