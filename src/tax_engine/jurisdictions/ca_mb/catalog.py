@@ -276,9 +276,8 @@ are left blank and not built."""
 MB428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
     CATALOG, "mb428_credits_total_line_51", non_negative=True
 )
-"""Credits total, MB428 line 51 "Line 51 and line 58800: Line 42 plus line 50 = ^": the sum of
-line 42 and the line 50 medical expense amount; lines 43 to 49, the medical expense working, are
-not built."""
+"""MB428 line 51 "Line 51 and line 58800: Line 42 plus line 50 = ^": the sum of line 42 and the
+line 50 medical expense amount; lines 43 to 49, the medical expense working, are not built."""
 
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
