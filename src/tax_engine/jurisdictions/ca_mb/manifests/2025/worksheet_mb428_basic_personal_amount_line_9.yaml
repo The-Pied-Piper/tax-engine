@@ -1,0 +1,17 @@
+# Worksheet MB428 (CRA 5007-D) line 9: "Line 9: Line 1 minus line 8 (if negative, enter "0") Enter this
+# amount on line 58040 of your Form MB428. = ^".
+# One calculation: line 1 minus line 8, not below zero, rounded half-up to the cent. The form prints
+# no title for the line, so the step is untitled.
+form:
+  name: ca-mb/worksheet_mb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "9"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/worksheet_mb428_basic_personal_amount_line_1
+      less: ca-mb/worksheet_mb428_line_8
+    produces:
+      output: ca-mb/worksheet_mb428_basic_personal_amount_line_9
