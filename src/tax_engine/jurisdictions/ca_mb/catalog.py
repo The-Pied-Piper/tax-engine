@@ -227,3 +227,9 @@ MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
 )
 """Family income, MB479 line 5 "Line 3 minus line 4 (if negative, enter "0")": line 3 less the UCCB
 and RDSP income of line 4, floored at 0, column 1 (you) only."""
+
+MB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "mb428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, MB428 line 3 "Line 3: 0.00" (47,000.00; 100,000.00): the printed lower
+bound of the column of lines 2 to 8 that line 1 falls in."""
