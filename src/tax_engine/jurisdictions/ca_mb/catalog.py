@@ -162,3 +162,10 @@ the family tax benefit, the only line of the block that is built."""
 MB428_A_LINE_11 = AmountKind.declare(CATALOG, "mb428_a_line_11", non_negative=True)
 """Net income multiplied by 9%, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line
 23600 of your return multiplied by 9%": the net income of the first box times the printed rate."""
+
+MB479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
+    CATALOG, "mb479_uccb_rdsp_income_line_4", non_negative=True
+)
+"""UCCB and RDSP income, MB479 line 4 "Total of the UCCB income (line 11700 of the return) and RDSP
+income (line 12500 of the return)": the total of the two incomes, a caller input that is read as
+blank when left out, column 1 (you) only."""
