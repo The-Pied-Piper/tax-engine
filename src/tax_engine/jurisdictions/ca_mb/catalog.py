@@ -79,3 +79,9 @@ MB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
 )
 """EI premiums credit amount, MB428 line 21 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
+the T1 taxable income, read directly by lines 3 and 4."""
