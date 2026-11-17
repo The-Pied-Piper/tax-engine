@@ -414,3 +414,17 @@ MB479_PERSONAL_TAX_CREDIT_LINE_19 = AmountKind.declare(
 """Personal tax credit, MB479 line 19 "Line 19: Line 17 minus line 18 (if negative, enter "0")
 Enter this amount on line 54. Personal tax credit =": line 17 and line 18 (total credits less the
 reduction, not below 0), rounded to the cent."""
+
+MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
+    CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True
+)
+"""Fertility treatment tax credit before its maximum, MB479 line 61 "Line 61: Eligible medical
+expenses for fertility treatments Line 61268 multiplied by 40% (maximum $16,000) =" before the
+maximum: the eligible medical expenses multiplied by 40%."""
+
+MB479_FERTILITY_TREATMENT_CREDIT_LINE_61 = AmountKind.declare(
+    CATALOG, "mb479_fertility_treatment_credit_line_61", non_negative=True
+)
+"""Fertility treatment tax credit, MB479 line 61 "Line 61: Eligible medical expenses for fertility
+treatments Line 61268 multiplied by 40% (maximum $16,000) =": calculated, the eligible medical
+expenses multiplied by 40%, then at most the printed maximum of $16,000."""
