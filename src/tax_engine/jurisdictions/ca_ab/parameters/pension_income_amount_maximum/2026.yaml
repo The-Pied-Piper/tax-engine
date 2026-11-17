@@ -1,5 +1,7 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
 # Derivation: 2025 amount 1,719 x 1.02 (Alberta's 2026 indexation factor, as used by the 2026 basic personal amount) = 1,753.38, rounded down to 1,753 whole dollars.
+# The 2026 AB428 is not yet published; the figure is not confirmed against it.
+# MUST BE REPLACED from the printed figure when CRA posts the 2026 Alberta AB428 (expected January or February).
 # Alberta pension income amount maximum, 2026 tax year (Form AB428 line 34). The 2026 AB428 text is not
 # yet published, so the figure is not yet confirmed against it. Rounds half-up to the cent like 2025.
 family: ca-ab/pension_income_amount_maximum
