@@ -119,3 +119,11 @@ MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 )
 """Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
 the T1 taxable income, read directly by lines 3 and 4."""
+
+MB479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
+    CATALOG, "mb479_uccb_rdsp_repayments_line_2", non_negative=True
+)
+"""UCCB and RDSP repayments, MB479 line 2 "Total of the universal child care benefit (UCCB)
+repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
+repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
+that is read as blank when left out, column 1 (you) only."""
