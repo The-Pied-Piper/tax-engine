@@ -1,0 +1,17 @@
+# Worksheet MB428 (CRA 5007-D) line 6: "Line 6: Line 4 divided by line 5 = ^".
+# One calculation: line 4 divided by line 5. The form prints no rounding for the line, so it uses
+# ca-mb/exact_rounding (no rounding). Line 5 is always 200,000.00, so the quotient is a short exact
+# decimal; line 8 rounds the product to the cent. The ratio is neither dollars nor a percent, so the
+# step has no unit, and the form prints no title for the line, so it is untitled.
+form:
+  name: ca-mb/worksheet_mb428
+capabilities:
+  - name: core/divide
+    reference: "6"
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      dividend: ca-mb/worksheet_mb428_line_4
+      divisor: ca-mb/worksheet_mb428_basic_personal_amount_line_5
+    produces:
+      output: ca-mb/worksheet_mb428_line_6
