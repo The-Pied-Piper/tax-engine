@@ -339,6 +339,13 @@ partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the numbe
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
 
+MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
+    CATALOG, "mb479_geothermal_heat_pump_cost_line_68", non_negative=True
+)
+"""Geothermal heat pump cost, MB479 line 68 "Line 68 and line 61390: 7.5% of the adjusted cost of
+geothermal heat pumps": the adjusted cost of geothermal heat pumps the 7.5% is taken of, a caller
+input that is read as blank when left out."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
