@@ -293,3 +293,11 @@ MB479_HOMEOWNER_RENTER_SENIOR_CREDITS_LINE_53 = AmountKind.declare(
 """Homeowners, renters and seniors credits, MB479 line 53 "Line 53: Line 41 plus line 52 = ^": the
 printed collecting sum of the skipped block of lines 20 to 52 (homeowners affordability, renters
 affordability, seniors school tax rebate), a caller input that is read as blank when left out."""
+
+MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
+    CATALOG, "mb479_eia_mspd_number_line_56", non_negative=True
+)
+"""EIA or MSPD number, MB479 line 56 "Line 56 and line 61255: If you (or your spouse or common-law
+partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
+your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
+0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
