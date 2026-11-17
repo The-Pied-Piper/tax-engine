@@ -1,0 +1,11 @@
+# MB479 (2025) line 65's input, which a salary-only caller does not give.
+# Line 65 and line 61340: "Enter your unused odour-control tax credit from your 2024 notice of
+# assessment or reassessment" (Form MB479, CRA 5007-TC), which the form prints with no label. A
+# salary-only caller has no such credit, so a request that leaves the line out is read as blank.
+inputs:
+  - name: ca-mb/mb479_odour_control_credit_line_65
+    reference: "65"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 65 and line 61340: Enter your unused odour-control tax credit from your 2024 notice of assessment or reassessment.'
