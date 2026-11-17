@@ -235,6 +235,13 @@ MB479_PRIMARY_CAREGIVER_CREDIT_LINE_59 = AmountKind.declare(
 """Primary caregiver tax credit, MB479 line 59 "Line 59 and line 61260: Primary caregiver tax
 credit": a caller input that is read as blank when left out."""
 
+MB479_ODOUR_CONTROL_CREDIT_LINE_65 = AmountKind.declare(
+    CATALOG, "mb479_odour_control_credit_line_65", non_negative=True
+)
+"""Unused odour-control tax credit, MB479 line 65 "Line 65 and line 61340: Enter your unused
+odour-control tax credit from your 2024 notice of assessment or reassessment.": a caller input that
+is read as blank when left out."""
+
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
 )
