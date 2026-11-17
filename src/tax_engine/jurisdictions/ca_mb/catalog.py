@@ -101,3 +101,9 @@ WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_7 = AmountKind.declare(
 )
 """Base amount, Worksheet MB428 line 7 "Line 7: Base amount 15,780.00": the base amount of the
 basic personal amount section."""
+
+MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
+the T1 taxable income, read directly by lines 3 and 4."""
