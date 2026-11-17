@@ -124,5 +124,33 @@ WORKSHEET_MB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_mb428_line_6", n
 """Net income over the threshold as a share of the threshold, Worksheet MB428 line 6 "Line 6: Line 4
 divided by line 5 = ^": the ratio of line 4 to line 5, a fraction (0.25 is a quarter), not money."""
 
+MB428_A_BASIC_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_a_basic_amount_line_1", non_negative=True
+)
+"""Basic amount, Schedule MB428-A line 1 "Line 1: Basic amount 2,065.00": the basic amount of the
+family tax benefit."""
+
+MB428_A_NET_INCOME_LINE_11 = AmountKind.declare(
+    CATALOG, "mb428_a_net_income_line_11", non_negative=True
+)
+"""Net income, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line 23600 of your
+return": the first box of the line, the net income read from the T1, before the multiplication
+by 9%."""
+
+MB479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "mb479_net_income_line_1", non_negative=False)
+"""Net income, MB479 line 1 "Line 1: Net income from line 23600 of the return (or the amount you
+would have entered if the instructions on line 23600 said "if negative, show in brackets")": the
+net income of the T1 return before its floor, read from the signed T1 net income export
+(`ca/net_income_signed`, not the floored `ca/net_income`). Column 1 only. The form shows a negative
+net income in brackets, so the kind is signed."""
+
+MB479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
+    CATALOG, "mb479_uccb_rdsp_repayments_line_2", non_negative=True
+)
+"""UCCB and RDSP repayments, MB479 line 2 "Total of the universal child care benefit (UCCB)
+repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
+repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
+that is read as blank when left out, column 1 (you) only."""
+
 WORKSHEET_MB428_LINE_8 = AmountKind.declare(CATALOG, "worksheet_mb428_line_8", non_negative=True)
 """Worksheet MB428 line 8 "Line 8: Line 6 multiplied by line 7 = ^": line 6 times line 7, money."""

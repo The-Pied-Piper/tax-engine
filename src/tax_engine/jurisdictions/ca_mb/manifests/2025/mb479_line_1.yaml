@@ -1,0 +1,20 @@
+# Form MB479 (2025, CRA 5007-TC) line 1. Line 1: "Net income from line 23600 of the return (or the
+# amount you would have entered if the instructions on line 23600 said "if negative, show in
+# brackets")", column 1 only.
+#
+# The T1 form exports the net income before its floor (`ca/net_income_signed`, line 23600 unfloored),
+# and another form reads an export only as a record list (`ca/t1_taxable_income.net_income_signed`),
+# so the one step is core/record_total over those records (as Schedule 6 line 7 is, in
+# schedule_6_line_7.yaml). The result is signed, because the form asks for a negative net income
+# shown in brackets.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/record_total
+    title: "Net income from line 23600 of the return"
+    reference: "1"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income_signed
+    produces:
+      output: ca-mb/mb479_net_income_line_1

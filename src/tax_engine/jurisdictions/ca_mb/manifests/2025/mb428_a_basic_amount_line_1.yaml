@@ -1,0 +1,15 @@
+# Schedule MB428-A (2025), line 1, the basic amount.
+# Schedule MB428-A (CRA 5007-A): "Line 1: Basic amount 2,065.00". The 2,065.00 is the
+# `ca-mb/family_tax_benefit_basic_amount` dataset, claimed whole through core/credit_amount, so it
+# is the same at every salary.
+form:
+  name: ca-mb/mb428_a
+capabilities:
+  - name: core/credit_amount
+    title: "Basic amount"
+    reference: "1"
+    unit: ca/cad
+    params:
+      amount: ca-mb/family_tax_benefit_basic_amount
+    produces:
+      output: ca-mb/mb428_a_basic_amount_line_1
