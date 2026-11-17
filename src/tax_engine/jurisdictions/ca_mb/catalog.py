@@ -189,3 +189,10 @@ MB479_FAMILY_INCOME_BEFORE_BENEFITS_LINE_3 = AmountKind.declare(
 """Family income before benefits, MB479 line 3 "Line 3: Line 1 plus line 2": the net income of
 line 1 plus the UCCB and RDSP repayments of line 2, column 1 (you) only. Line 1 can be negative, so
 the kind is signed."""
+
+MB428_FAMILY_TAX_BENEFIT_LINE_41 = AmountKind.declare(
+    CATALOG, "mb428_family_tax_benefit_line_41", non_negative=True
+)
+"""Family tax benefit, MB428 line 41 and line 61470 "Line 41 and line 61470: Family tax benefit
+(attach Schedule MB428-A)": the amount of Schedule MB428-A line 12, which says to enter it on line
+61470 of Form MB428."""
