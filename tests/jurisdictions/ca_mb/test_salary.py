@@ -13,11 +13,10 @@ from typing import Any
 
 import yaml
 
-import tax_engine.jurisdictions
+import tax_engine.jurisdictions.ca_mb
 
-PART = (
-    Path(tax_engine.jurisdictions.__file__).parent / "ca_mb" / "manifests" / "2025" / "salary.yaml"
-)
+FOLDER = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
+PART = FOLDER / "salary.yaml"
 
 
 def _inputs() -> list[dict[str, Any]]:
