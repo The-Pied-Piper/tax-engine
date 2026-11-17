@@ -101,3 +101,9 @@ WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_7 = AmountKind.declare(
 )
 """Base amount, Worksheet MB428 line 7 "Line 7: Base amount 15,780.00": the base amount of the
 basic personal amount section."""
+
+MB428_A_BASIC_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "mb428_a_basic_amount_line_1", non_negative=True
+)
+"""Basic amount, Schedule MB428-A line 1 "Line 1: Basic amount 2,065.00": the basic amount of the
+family tax benefit."""
