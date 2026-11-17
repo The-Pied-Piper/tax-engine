@@ -266,6 +266,13 @@ MB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
 """Credits subtotal, MB428 line 36 "Line 36: Add lines 33 to 35. = ^": lines 34 and 35, the
 disability amounts, are not built, so the sum reads line 33 alone."""
 
+MB428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_42", non_negative=True
+)
+"""Credits subtotal, MB428 line 42 "Line 42: Add lines 36 to 41. = ^": the sum of line 36 and the
+line 41 family tax benefit; lines 37 to 40, the optional student loan, tuition and transfer amounts,
+are left blank and not built."""
+
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
 )
@@ -357,6 +364,13 @@ partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the numbe
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
 
+MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
+    CATALOG, "mb479_geothermal_heat_pump_cost_line_68", non_negative=True
+)
+"""Geothermal heat pump cost, MB479 line 68 "Line 68 and line 61390: 7.5% of the adjusted cost of
+geothermal heat pumps": the adjusted cost of geothermal heat pumps the 7.5% is taken of, a caller
+input that is read as blank when left out."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
@@ -387,6 +401,19 @@ MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
 )
 """Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a caller
 input, read as blank when left out; the 50% multiplication step reads it."""
+
+MB479_PAID_WORK_EXPERIENCE_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "mb479_paid_work_experience_credit_line_63", non_negative=True
+)
+"""Paid work experience tax credit, MB479 line 63 "Line 63 and line 61310: Paid work experience tax
+credit": the credit of the line, a caller input that is read as blank when left out."""
+
+MB479_PERSONAL_TAX_CREDIT_LINE_19 = AmountKind.declare(
+    CATALOG, "mb479_personal_tax_credit_line_19", non_negative=True
+)
+"""Personal tax credit, MB479 line 19 "Line 19: Line 17 minus line 18 (if negative, enter "0")
+Enter this amount on line 54. Personal tax credit =": line 17 and line 18 (total credits less the
+reduction, not below 0), rounded to the cent."""
 
 MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
     CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True
