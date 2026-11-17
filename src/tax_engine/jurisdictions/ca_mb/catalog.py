@@ -159,6 +159,13 @@ MB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
 """Provincial foreign tax credit, MB428 line 73 "Line 73: Provincial foreign tax credit (complete
 Form T2036)": a caller input, read as blank when left out."""
 
+MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "mb428_employee_share_purchase_tax_credit_line_79", non_negative=True
+)
+"""Manitoba employee share purchase tax credit, MB428 line 79 "Line 79 and line 60860: Manitoba
+employee share purchase tax credit (complete Form T1256-2)": a caller input, read as blank when left
+out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
