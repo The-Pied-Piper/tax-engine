@@ -4,14 +4,15 @@ Form text (Form AB428, CRA 5009-c-25e.txt, read 2026-11-12): "Line 34 and line 5
 income amount (maximum $1,719)", "Line 35 and line 58400: Caregiver amount (use Worksheet AB428)"
 and "Line 36: Add lines 33 to 35 = ^". Line 35, the caregiver amount, is not built (Ontario skips
 its equivalent), so line 36 is one core/sum over line 33 then the line 34 pension income amount
-input, which a salary-only caller leaves out and the input part reads as 0.
+figure, the pension income amount input checked against its printed maximum (`core/at_most`), which
+a salary-only caller leaves out and the input part reads as 0.
 
 The test composes the real Alberta salary part, the real Schedule 8 and T2204 parts, the real line
-16, line 25, line 27, line 29, line 32 and line 33 parts, the line 34 inputs part and the new
-`ab428_credits_line_36.yaml`, and types in only the salary (and, in one test, the pension income
-amount). The form declaration is made up here, exporting only line 36. The figures are
-hand-computed from the printed forms (not a CRA example): line 33 is 22,323.00 plus line 32 at
-every salary, plus the pension income amount of 0.
+16, line 25, line 27, line 29, line 32 and line 33 parts, the pension income amount maximum part,
+the line 34 inputs part, the line 34 part and `ab428_credits_line_36.yaml`, and types in only the
+salary (and, in one test, the pension income amount). The form declaration is made up here,
+exporting only line 36. The figures are hand-computed from the printed forms (not a CRA example):
+line 33 is 22,323.00 plus line 32 at every salary, plus the pension income amount of 0.
 """
 
 from __future__ import annotations
@@ -87,7 +88,9 @@ def _part_files() -> Iterator[Path]:
     yield ALBERTA_PARTS / "ab428_line_29.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_32.yaml"
     yield ALBERTA_PARTS / "ab428_credits_line_33.yaml"
+    yield ALBERTA_PARTS / "ab428_pension_income_amount_maximum.yaml"
     yield ALBERTA_PARTS / "ab428_line_34_inputs.yaml"
+    yield ALBERTA_PARTS / "ab428_credits_line_34.yaml"
     yield LINE_PART
 
 
@@ -157,7 +160,7 @@ def test_the_part_names_the_form_and_has_one_sum_step_like_ontario_line_28() -> 
         "consumes": {
             "parts": [
                 "ca-ab/ab428_credits_subtotal_line_33",
-                "ca-ab/ab428_pension_income_amount",
+                "ca-ab/ab428_pension_income_amount_line_34",
             ]
         },
         "produces": {"output": IDENTIFIER},
