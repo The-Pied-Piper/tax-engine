@@ -107,3 +107,10 @@ MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 )
 """Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
 the T1 taxable income, read directly by lines 3 and 4."""
+
+MB428_A_NET_INCOME_LINE_11 = AmountKind.declare(
+    CATALOG, "mb428_a_net_income_line_11", non_negative=True
+)
+"""Net income, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line 23600 of your
+return": the first box of the line, the net income read from the T1, before the multiplication
+by 9%."""
