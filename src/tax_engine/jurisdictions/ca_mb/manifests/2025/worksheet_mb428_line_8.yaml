@@ -1,0 +1,18 @@
+# Worksheet MB428 (CRA 5007-D) line 8: "Line 8: Line 6 multiplied by line 7 = ^".
+# One calculation: line 6 multiplied by line 7, rounded to the cent through ca-mb/cent_rounding,
+# because line 8 is a dollars-and-cents box. Line 6 is a ratio that passes 1 above 400,000 net
+# income, which is why core/multiply is used rather than core/multiply_by_rate, which refuses a
+# rate above 1. The form prints no title for the line, so the step is untitled.
+form:
+  name: ca-mb/worksheet_mb428
+capabilities:
+  - name: core/multiply
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      multiplicand: ca-mb/worksheet_mb428_line_6
+      multiplier: ca-mb/worksheet_mb428_basic_personal_amount_line_7
+    produces:
+      output: ca-mb/worksheet_mb428_line_8
