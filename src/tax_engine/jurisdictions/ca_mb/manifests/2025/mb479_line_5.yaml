@@ -1,0 +1,19 @@
+# Form MB479 (2025, CRA 5007-TC) line 5. Line 5: "Line 3 minus line 4 (if negative, enter "0")",
+# column 1 only. Line 3 is read from its source part,
+# and line 4 (`ca-mb/mb479_uccb_rdsp_income_line_4`) is an optional input that a salary-only caller
+# leaves out, read as blank and then as 0 by the blank rule of core/subtract_not_below_zero.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "5"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/mb479_family_income_before_benefits_line_3
+      less: ca-mb/mb479_uccb_rdsp_income_line_4
+    blank:
+      less: "0"
+    produces:
+      output: ca-mb/mb479_family_income_column_1_line_5
