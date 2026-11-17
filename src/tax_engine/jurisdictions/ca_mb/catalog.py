@@ -19,6 +19,12 @@ MB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Manitoba tax on taxable income, MB428 line 8 "Line 6 plus line 7 Manitoba tax on taxable income
 =": line 6 plus line 7 of the column that line 1 falls in, read by line 58 on the tax form."""
 
+MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
+    CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
+)
+"""CPP or QPP contributions, MB428 line 19 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
 MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
 )
@@ -44,6 +50,23 @@ MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
 )
 """Manitoba tax, MB428 line 82 "Enter this amount on line 42800 of your return.": the Manitoba
 tax, entered on T1 line 42800."""
+
+MB428_A_FAMILY_TAX_BENEFIT_LINE_12 = AmountKind.declare(
+    CATALOG, "mb428_a_family_tax_benefit_line_12", non_negative=True
+)
+"""Family tax benefit, Schedule MB428-A line 12 "Line 12: Line 10 minus line 11 (if negative, enter
+"0") Enter this amount on line 61470 of your Form MB428.": the family tax benefit entered on line
+61470 of Form MB428."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_3", non_negative=True
+)
+"""Income threshold, Worksheet MB428 line 3 "Line 3: Income threshold 200,000.00": the income
+threshold of the basic personal amount section."""
+
+WORKSHEET_MB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_mb428_line_2", non_negative=True)
+"""Net income, Worksheet MB428 line 2 "Line 2: Amount from line 23600 of your return": the T1 net
+income, line 23600 after its floor."""
 
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_1 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_1", non_negative=True
