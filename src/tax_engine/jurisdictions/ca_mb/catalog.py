@@ -176,3 +176,10 @@ MB479_FAMILY_INCOME_COLUMN_2_LINE_5 = AmountKind.declare(
 """Family income of your spouse or common-law partner, MB479 line 5 "Line 3 minus line 4 (if
 negative, enter "0")": column 2 (your spouse or common-law partner), taken as one figure because the
 spouse's own lines 1 to 4 are not modelled, a caller input that is read as blank when left out."""
+
+MB479_FAMILY_INCOME_BEFORE_BENEFITS_LINE_3 = AmountKind.declare(
+    CATALOG, "mb479_family_income_before_benefits_line_3", non_negative=False
+)
+"""Family income before benefits, MB479 line 3 "Line 3: Line 1 plus line 2": the net income of
+line 1 plus the UCCB and RDSP repayments of line 2, column 1 (you) only. Line 1 can be negative, so
+the kind is signed."""
