@@ -1,0 +1,18 @@
+# Form MB479 (2025, CRA 5007-TC) line 19: "Line 19: Line 17 minus line 18 (if negative, enter "0")
+# Enter this amount on line 54. Personal tax credit =". It is line 17 (total credits,
+# `ca-mb/mb479_total_credits_line_17`) less line 18 (the reduction, `ca-mb/mb479_reduction_line_18`),
+# floored at 0. Both inputs are always produced, so the step needs no blank rows.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Personal tax credit"
+    reference: "19"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/mb479_total_credits_line_17
+      less: ca-mb/mb479_reduction_line_18
+    produces:
+      output: ca-mb/mb479_personal_tax_credit_line_19
