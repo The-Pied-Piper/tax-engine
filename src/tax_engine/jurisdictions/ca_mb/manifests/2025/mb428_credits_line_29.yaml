@@ -1,0 +1,16 @@
+# Form MB428 (CRA 5007-c) line 29: "Line 29: Line 18 plus line 28." Step 1 adds lines 18 and 28 with
+# core/sum.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/sum
+    reference: "29"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb428_credits_subtotal_line_18
+        - ca-mb/mb428_cpp_ei_and_other_line_28
+    produces:
+      output: ca-mb/mb428_credits_subtotal_line_29
