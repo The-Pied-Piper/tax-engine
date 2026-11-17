@@ -1,7 +1,7 @@
 # Manitoba fertility treatment credit rate, 2025 tax year (Form MB479 line 61): 40%.
 # Line 61 applies it to the eligible medical expenses for fertility treatments. The product is a
 # dollars-and-cents line, so it rounds half-up to the cent, the project's choice, as the form
-# states no rounding rule. The "(maximum $16,000)" wording is not part of this dataset.
+# states no rounding rule. The maximum has its own dataset.
 family: ca-mb/fertility_treatment_credit_rate
 tax_year: 2025
 kind: rate

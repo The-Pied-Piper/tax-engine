@@ -1,16 +1,16 @@
 # Form MB479 (Manitoba Credits, 2025, CRA 5007-TC) line 61 (ca-mb/mb479). "Fertility treatment tax
-# credit: Line 61: Eligible medical expenses for fertility treatments Line 61268 ^ multiplied by 40%
-# (maximum $16,000) = ^". The 40% is a printed rate, held in the
-# `ca-mb/fertility_treatment_credit_rate` dataset, so line 61 is one calculation: 40% of the
-# expenses, rounded half-up to the cent. The expenses are an optional input (read as 0 when left
-# out), declared by their own part. The "(maximum $16,000)" wording is ambiguous (it could cap the
-# expenses or the credit), so it is not built.
+# credit: Line 61: Eligible medical expenses for fertility treatments Line 61268 ^ multiplied by
+# 40% (maximum $16,000) = ^". The 40% is a printed rate, held in the
+# `ca-mb/fertility_treatment_credit_rate` dataset, and the $16,000 is a printed maximum, held in
+# the `ca-mb/fertility_treatment_credit_maximum` dataset. The maximum is printed between
+# "multiplied by 40%" and "=", so it bounds the line's result: the expenses multiplied by 40%,
+# then at most the maximum. The expenses are an optional input (read as 0 when left out),
+# declared by their own part.
 form:
   name: ca-mb/mb479
 capabilities:
+  # Line 61, first operation: "multiplied by 40%", to the cent.
   - name: core/apply_rate
-    title: "Fertility treatment tax credit"
-    reference: "61"
     unit: ca/cad
     params:
       rate: ca-mb/fertility_treatment_credit_rate
@@ -18,5 +18,16 @@ capabilities:
       base: ca-mb/mb479_fertility_treatment_expenses_line_61
     blank:
       base: "0"
+    produces:
+      output: ca-mb/mb479_fertility_treatment_credit_before_maximum_line_61
+  # Line 61, second operation: "(maximum $16,000)", at most the printed maximum.
+  - name: core/capped_amount
+    title: "Fertility treatment tax credit"
+    reference: "61"
+    unit: ca/cad
+    params:
+      cap: ca-mb/fertility_treatment_credit_maximum
+    consumes:
+      base: ca-mb/mb479_fertility_treatment_credit_before_maximum_line_61
     produces:
       output: ca-mb/mb479_fertility_treatment_credit_line_61
