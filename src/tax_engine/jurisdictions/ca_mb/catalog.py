@@ -25,6 +25,12 @@ MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
 """CPP or QPP contributions, MB428 line 19 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
 
+MB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
+$1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+
 MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
 )
