@@ -1,0 +1,12 @@
+# MB479 (2025) line 68's input, which a salary-only caller does not give.
+# Line 68: "Line 68 and line 61390: 7.5% of the adjusted cost of geothermal heat pumps" (Form MB479,
+# CRA 5007-TC), in the green energy equipment tax credit (manufacturer) part. The form prints no
+# name for the line, so the input has no title. A salary-only caller has no such equipment, so a
+# request that leaves the line out is read as blank.
+inputs:
+  - name: ca-mb/mb479_geothermal_heat_pump_cost_line_68
+    reference: "68"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 68 and line 61390: 7.5% of the adjusted cost of geothermal heat pumps'
