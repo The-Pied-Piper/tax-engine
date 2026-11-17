@@ -32,3 +32,9 @@ WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
 """Manitoba basic personal amount, Worksheet MB428 line 9 "Line 9: Line 1 minus line 8 (if negative,
 enter "0") Enter this amount on line 58040 of your Form MB428.": the basic personal amount entered
 on line 58040 of Form MB428."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_3", non_negative=True
+)
+"""Income threshold, Worksheet MB428 line 3 "Line 3: Income threshold 200,000.00": the income
+threshold of the basic personal amount section."""
