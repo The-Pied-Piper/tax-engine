@@ -141,6 +141,13 @@ MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
 contribution tax credit (use Worksheet MB428) (maximum $1,000)": a caller input, read as blank
 when left out."""
 
+MB428_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
+    CATALOG, "mb428_community_enterprise_development_tax_credit_line_75", non_negative=True
+)
+"""Manitoba community enterprise development tax credit, MB428 line 75 "Line 75 and line 60830:
+Manitoba community enterprise development tax credit (complete Form T1256)": a caller input, read
+as blank when left out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
