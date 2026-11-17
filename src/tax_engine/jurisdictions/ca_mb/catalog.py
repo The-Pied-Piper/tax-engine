@@ -314,3 +314,10 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, MB428 line 7 "Line 7: 0.00" (5,076.00; 11,833.50): the printed
+tax at the start of the column of lines 2 to 8 that line 1 falls in. Column 3 is unbounded, so it is
+never blank."""
