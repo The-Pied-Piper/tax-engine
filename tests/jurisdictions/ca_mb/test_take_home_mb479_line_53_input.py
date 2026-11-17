@@ -29,8 +29,7 @@ from tests.jurisdictions.ca_mb.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = MB479_HOMEOWNER_RENTER_SENIOR_CREDITS_LINE_53.identifier
-PRINTED_TITLE = "Line 41 plus line 52"
-PRINTED_BASIS = "Line 53: " + PRINTED_TITLE
+PRINTED_BASIS = "Line 53: Line 41 plus line 52"
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / (
     "manifests/2025/mb479_line_53_input.yaml"
 )
@@ -65,7 +64,6 @@ def test_the_part_declares_only_the_line_53_input() -> None:
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
-            "title": PRINTED_TITLE,
             "reference": "53",
             "unit": "ca/cad",
             "required": False,
@@ -75,7 +73,6 @@ def test_the_part_declares_only_the_line_53_input() -> None:
     ]
     assert list(part["inputs"][0]) == [
         "name",
-        "title",
         "reference",
         "unit",
         "required",
