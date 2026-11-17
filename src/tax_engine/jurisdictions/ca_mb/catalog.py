@@ -208,3 +208,10 @@ MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
 )
 """CPP, EI and other credit amounts subtotal, MB428 line 28 "Line 28: Add lines 19 to 27. = ^": the
 sum of lines 19 and 21. Lines 20 and 22 to 27 are not built: a salary-only filer has none."""
+
+MB428_FAMILY_TAX_BENEFIT_LINE_41 = AmountKind.declare(
+    CATALOG, "mb428_family_tax_benefit_line_41", non_negative=True
+)
+"""Family tax benefit, MB428 line 41 and line 61470 "Line 41 and line 61470: Family tax benefit
+(attach Schedule MB428-A)": the amount of Schedule MB428-A line 12, which says to enter it on line
+61470 of Form MB428."""
