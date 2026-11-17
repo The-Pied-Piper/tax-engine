@@ -2,8 +2,8 @@
 
 Form text (Form MB428, Manitoba Tax, CRA 5007-c-25e.txt): "Employment insurance premiums: Line 21
 and line 58300: Amount from line 31200 of your return". Line 31200 is T2204 line 16, the EI premiums
-credit amount. Another form's export arrives only as a record list of one amount, so line 21 is a core/record_total over
-that export, as British Columbia's line 29 is.
+credit amount. Another form's export arrives only as a record list of one amount, so line 21 is a
+core/record_total over that export, as British Columbia's line 29 is.
 
 The test composes the real Manitoba salary part, the real Schedule 8 and T2204 parts and the real
 `mb428_credits_line_21.yaml`, and types in only the salary. The MB428 form declaration is made up
