@@ -158,3 +158,7 @@ WORKSHEET_MB428_LINE_8 = AmountKind.declare(CATALOG, "worksheet_mb428_line_8", n
 MB428_A_LINE_10 = AmountKind.declare(CATALOG, "mb428_a_line_10", non_negative=True)
 """Sum of lines 1 to 9, Schedule MB428-A line 10 "Line 10: Add lines 1 to 9.": the basic amount of
 the family tax benefit, the only line of the block that is built."""
+
+MB428_A_LINE_11 = AmountKind.declare(CATALOG, "mb428_a_line_11", non_negative=True)
+"""Net income multiplied by 9%, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line
+23600 of your return multiplied by 9%": the net income of the first box times the printed rate."""
