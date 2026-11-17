@@ -25,6 +25,13 @@ MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
 """Basic personal amount, MB428 line 9 and line 58040 "Basic personal amount (use Worksheet MB428)":
 the amount of Worksheet MB428 line 9, which says to enter it on line 58040."""
 
+MB428_CREDITS_SUBTOTAL_LINE_18 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_18", non_negative=True
+)
+"""Credits subtotal, MB428 line 18 "Line 18: Add lines 9, 10, 13, 16, and 17. = ^": only the basic
+personal amount, line 9, is summed here, because a salary-only single filer has no age, spouse,
+eligible dependant or infirm dependant amount."""
+
 MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
     CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
 )
@@ -189,6 +196,18 @@ MB479_FAMILY_INCOME_BEFORE_BENEFITS_LINE_3 = AmountKind.declare(
 """Family income before benefits, MB479 line 3 "Line 3: Line 1 plus line 2": the net income of
 line 1 plus the UCCB and RDSP repayments of line 2, column 1 (you) only. Line 1 can be negative, so
 the kind is signed."""
+
+MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_line_7", non_negative=True
+)
+"""Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
+personal tax credits."""
+
+MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
+    CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, MB428 line 28 "Line 28: Add lines 19 to 27. = ^": the
+sum of lines 19 and 21. Lines 20 and 22 to 27 are not built: a salary-only filer has none."""
 
 MB428_FAMILY_TAX_BENEFIT_LINE_41 = AmountKind.declare(
     CATALOG, "mb428_family_tax_benefit_line_41", non_negative=True
