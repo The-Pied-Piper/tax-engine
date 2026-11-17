@@ -387,3 +387,9 @@ MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
 )
 """Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a caller
 input, read as blank when left out; the 50% multiplication step reads it."""
+
+MB479_PAID_WORK_EXPERIENCE_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "mb479_paid_work_experience_credit_line_63", non_negative=True
+)
+"""Paid work experience tax credit, MB479 line 63 "Line 63 and line 61310: Paid work experience tax
+credit": the credit of the line, a caller input that is read as blank when left out."""
