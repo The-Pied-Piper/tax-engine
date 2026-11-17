@@ -1,0 +1,18 @@
+# Form MB479 (2025, CRA 5007-TC) line 3. Line 3: "Line 1 plus line 2", column 1 only. It sums the
+# net income (line 1, `ca-mb/mb479_net_income_line_1`) and the UCCB and RDSP repayments (line 2,
+# `ca-mb/mb479_uccb_rdsp_repayments_line_2`). Line 2 is an optional input that a salary-only caller
+# leaves out, read as blank and then as 0 by the blank rule below.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "3"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb479_net_income_line_1, ca-mb/mb479_uccb_rdsp_repayments_line_2]
+    blank:
+      ca-mb/mb479_uccb_rdsp_repayments_line_2: "0"
+    produces:
+      output: ca-mb/mb479_family_income_before_benefits_line_3
