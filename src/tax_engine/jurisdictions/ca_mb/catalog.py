@@ -50,6 +50,13 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
+    CATALOG, "mb428_tax_on_split_income_line_59", non_negative=True
+)
+"""Manitoba tax on split income, MB428 line 59 (line 61510) "Line 59 and line 61510: Manitoba tax on
+split income (complete Form T1206)": a caller input, read as blank when left out; line 60 reads
+it."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
