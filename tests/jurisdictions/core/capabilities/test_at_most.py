@@ -18,16 +18,23 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.composition import Composition
 from tax_engine.domain.errors import (
     DomainError,
     InputAboveBoundError,
+    InputBelowBoundError,
     InvalidCapabilityError,
     MissingArtifactError,
+    ValidationError,
 )
 from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.parameters.credit import CREDIT, Credit
+from tax_engine.domain.parameters.datasets import ParameterDataset
 from tax_engine.domain.parameters.kind import ParameterKind
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.trace import AtMostLine
 from tax_engine.jurisdictions.core.capabilities.at_most import AtMost
+from tax_engine.jurisdictions.core.capabilities.credit_amount import CreditAmount
 from tests.capabilities import bundled_capabilities
 
 D = Decimal
@@ -283,6 +290,43 @@ def test_an_input_above_bound_error_is_a_domain_error() -> None:
 
 def test_an_input_above_bound_error_is_not_a_wiring_error() -> None:
     assert not issubclass(InputAboveBoundError, InvalidCapabilityError)
+
+
+def test_an_input_above_bound_error_is_a_validation_error() -> None:
+    assert issubclass(InputAboveBoundError, ValidationError)
+
+
+def test_an_input_below_bound_error_is_unchanged() -> None:
+    assert issubclass(InputBelowBoundError, DomainError)
+    assert not issubclass(InputBelowBoundError, ValidationError)
+    assert not issubclass(InputBelowBoundError, InvalidCapabilityError)
+
+
+# --- the printed maximum supplied by a credit amount --------------------------------------------
+
+
+def maximum_composition() -> Composition:
+    """A made-up credit dataset of 1926 supplies the bound the claim is checked against."""
+    printed = ParameterDataset(
+        "ex/claim_maximum", 2025, CREDIT, Credit(D("1926")), NO_ROUNDING, ("https://example.org/m",)
+    )
+    return Composition(
+        [CreditAmount(printed, LIMIT), AtMost(CLAIMED, LIMIT, ALLOWED)],
+        inputs=frozenset({CLAIMED}),
+        outputs=frozenset({ALLOWED}),
+    )
+
+
+def test_a_credit_amount_supplies_the_bound_an_amount_is_checked_against() -> None:
+    worksheet = maximum_composition().compute(Artifact(CLAIMED, D("1926.00")))
+
+    assert worksheet is not None
+    assert worksheet.get(ALLOWED).value == D("1926.00")
+
+
+def test_an_amount_above_the_credit_amount_bound_is_an_input_above_bound_error() -> None:
+    with pytest.raises(InputAboveBoundError, match="ex/claimed_amount 1926.01 is above"):
+        maximum_composition().compute(Artifact(CLAIMED, D("1926.01")))
 
 
 # --- trace ------------------------------------------------------------------------------------

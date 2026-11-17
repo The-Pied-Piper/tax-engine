@@ -82,8 +82,12 @@ class InvalidTextError(DomainError):
     """A text is not what its kind accepts, such as a digits kind given other than its digits."""
 
 
-class InputAboveBoundError(DomainError):
-    """An amount was given above the bound it may not exceed."""
+class InputAboveBoundError(ValidationError):
+    """An amount was given above the bound it may not exceed.
+
+    A ValidationError like `InputOutOfRangeError`: the amount is the caller's input, so it is
+    mapped to 422 with no entry of its own.
+    """
 
 
 class InputBelowBoundError(DomainError):
