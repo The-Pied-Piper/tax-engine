@@ -1,0 +1,15 @@
+# Form MB428 (CRA 5007-C) line 41 "Line 41 and line 61470: Family tax benefit (attach Schedule MB428-A)".
+# Schedule MB428-A line 12 says to enter its amount on line 61470 of Form MB428, so the one step is
+# core/record_total over the schedule's line 12 export (same as mb428_credits_line_9.yaml and
+# mb428_credits_line_19.yaml). Form text read from CRA 5007-C.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/record_total
+    title: "Family tax benefit"
+    reference: "41"
+    unit: ca/cad
+    consumes:
+      records: ca-mb/mb428_a.mb428_a_family_tax_benefit_line_12
+    produces:
+      output: ca-mb/mb428_family_tax_benefit_line_41

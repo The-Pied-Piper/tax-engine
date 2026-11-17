@@ -1,0 +1,31 @@
+# Form MB479 (2025, CRA 5007-TC) line 17. Line 17 and line 61050: "Add lines 7, 8, and 12 to 16.
+# Total credits". It sums the basic credit (line 7, `ca-mb/mb479_basic_credit_line_7`) and the six
+# optional credit inputs of lines 8 and 12 to 16, which a salary-only caller leaves out, each read as
+# blank and then as 0 by the blank rule below.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    title: "Total credits"
+    reference: "17"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb479_basic_credit_line_7
+        - ca-mb/mb479_age_credit_line_8
+        - ca-mb/mb479_spouse_credits_line_12
+        - ca-mb/mb479_eligible_dependant_credit_line_13
+        - ca-mb/mb479_disability_credit_line_14
+        - ca-mb/mb479_disabled_dependants_credit_line_15
+        - ca-mb/mb479_dependent_children_credit_line_16
+    blank:
+      ca-mb/mb479_age_credit_line_8: "0"
+      ca-mb/mb479_spouse_credits_line_12: "0"
+      ca-mb/mb479_eligible_dependant_credit_line_13: "0"
+      ca-mb/mb479_disability_credit_line_14: "0"
+      ca-mb/mb479_disabled_dependants_credit_line_15: "0"
+      ca-mb/mb479_dependent_children_credit_line_16: "0"
+    produces:
+      output: ca-mb/mb479_total_credits_line_17
