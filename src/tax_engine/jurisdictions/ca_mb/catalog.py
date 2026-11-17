@@ -333,3 +333,10 @@ MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 """Tax at the start of the column, MB428 line 7 "Line 7: 0.00" (5,076.00; 11,833.50): the printed
 tax at the start of the column of lines 2 to 8 that line 1 falls in. Column 3 is unbounded, so it is
 never blank."""
+
+MB479_FAMILY_INCOME_LINE_6 = AmountKind.declare(
+    CATALOG, "mb479_family_income_line_6", non_negative=True
+)
+"""Family income, MB479 line 6: line 5 of column 1 (you) plus line 5 of column 2 (your spouse or
+common-law partner), the amount that later lines refer to as "Amount from line 6". Column 2 is taken
+as 0 when left out."""
