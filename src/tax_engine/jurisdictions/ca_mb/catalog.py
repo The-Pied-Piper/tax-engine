@@ -189,3 +189,9 @@ MB479_FAMILY_INCOME_BEFORE_BENEFITS_LINE_3 = AmountKind.declare(
 """Family income before benefits, MB479 line 3 "Line 3: Line 1 plus line 2": the net income of
 line 1 plus the UCCB and RDSP repayments of line 2, column 1 (you) only. Line 1 can be negative, so
 the kind is signed."""
+
+MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
+    CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, MB428 line 28 "Line 28: Add lines 19 to 27. = ^": the
+sum of lines 19 and 21. Lines 20 and 22 to 27 are not built: a salary-only filer has none."""

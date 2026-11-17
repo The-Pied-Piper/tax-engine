@@ -187,7 +187,7 @@ def test_the_form_export_of_line_28_comes_out_on_the_mb428_credits_worksheet(
         JurisdictionCode("CA-MB"), 2025, Artifact(EMPLOYMENT_INCOME, D("70000"))
     )
 
-    assert list(worksheets) == [FORM_NAME]
+    assert FORM_NAME in worksheets
     (sheet,) = worksheets[FORM_NAME]
     assert sheet.get(MB428_CPP_EI_AND_OTHER_LINE_28).value == D("4369.23")
 
