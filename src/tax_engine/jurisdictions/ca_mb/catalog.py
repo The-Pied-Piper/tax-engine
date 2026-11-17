@@ -123,3 +123,6 @@ the T1 taxable income, read directly by lines 3 and 4."""
 WORKSHEET_MB428_LINE_6 = AmountKind.declare(CATALOG, "worksheet_mb428_line_6", non_negative=True)
 """Net income over the threshold as a share of the threshold, Worksheet MB428 line 6 "Line 6: Line 4
 divided by line 5 = ^": the ratio of line 4 to line 5, a fraction (0.25 is a quarter), not money."""
+
+WORKSHEET_MB428_LINE_8 = AmountKind.declare(CATALOG, "worksheet_mb428_line_8", non_negative=True)
+"""Worksheet MB428 line 8 "Line 8: Line 6 multiplied by line 7 = ^": line 6 times line 7, money."""
