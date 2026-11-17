@@ -1,0 +1,18 @@
+# Form MB428 (Manitoba Tax, CRA 5007-C) Part A, line 3. Each of the three columns prints "Line 3:"
+# with its lower bound: 0.00, 47,000.00 and 100,000.00, under "Column 1: Line 1 is $47,000 or
+# less", "Column 2: Line 1 is more than $47,000 but not more than $100,000" and "Column 3: Line 1
+# is more than $100,000". Line 3 is the printed lower bound of the column that line 1 falls in.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 3 reads line 1 directly.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "3"
+    unit: ca/cad
+    params:
+      schedule: ca-mb/brackets_lines_2_to_8
+    consumes:
+      base: ca-mb/mb428_taxable_income_line_1
+    produces:
+      output: ca-mb/mb428_bracket_lower_bound_line_3

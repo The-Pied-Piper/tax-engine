@@ -63,6 +63,26 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
+    CATALOG, "mb428_tax_on_split_income_line_59", non_negative=True
+)
+"""Manitoba tax on split income, MB428 line 59 (line 61510) "Line 59 and line 61510: Manitoba tax on
+split income (complete Form T1206)": a caller input, read as blank when left out; line 60 reads
+it."""
+
+MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
+    CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
+)
+"""Minimum tax carryover amount, MB428 line 63 (line 40427) "Line 63 and line 61540: Amount from
+line 40427 of your return": a caller input, read as blank when left out; the carryover credit step
+reads it."""
+
+MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "mb428_minimum_tax_carryover_credit_line_63", non_negative=True
+)
+"""Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
+return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
@@ -75,6 +95,12 @@ MB479_MANITOBA_CREDITS_LINE_81 = AmountKind.declare(
 )
 """Manitoba credits, MB479 line 81 "Add lines 78 to 80. Enter this amount on line 47900 of your
 return.": the Manitoba credits, entered on T1 line 47900."""
+
+MB428_DIVIDEND_TAX_CREDIT_LINE_62 = AmountKind.declare(
+    CATALOG, "mb428_dividend_tax_credit_line_62", non_negative=True
+)
+"""Manitoba dividend tax credit, MB428 line 62 (line 61520) "Line 62 and line 61520: Manitoba
+dividend tax credit (use Worksheet MB428)": a caller input, read as blank when left out."""
 
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
@@ -221,3 +247,114 @@ MB428_FAMILY_TAX_BENEFIT_LINE_41 = AmountKind.declare(
 """Family tax benefit, MB428 line 41 and line 61470 "Line 41 and line 61470: Family tax benefit
 (attach Schedule MB428-A)": the amount of Schedule MB428-A line 12, which says to enter it on line
 61470 of Form MB428."""
+
+MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_29", non_negative=True
+)
+"""Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
+28."""
+
+MB428_CREDITS_SUBTOTAL_LINE_33 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_33", non_negative=True
+)
+"""Credits subtotal, MB428 line 33 "Line 33: Add lines 30 to 32. = ^": the sum of line 30 (a copy of
+line 29) and the line 31 pension income amount; line 32, the caregiver amount, is not built."""
+
+MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
+    CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
+)
+"""Family income, MB479 line 5 "Line 3 minus line 4 (if negative, enter "0")": line 3 less the UCCB
+and RDSP income of line 4, floored at 0, column 1 (you) only."""
+
+MB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "mb428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, MB428 line 3 "Line 3: 0.00" (47,000.00; 100,000.00): the printed lower
+bound of the column of lines 2 to 8 that line 1 falls in."""
+
+MB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "mb428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, MB428 line 4 "Line 4: Line 2 minus line 3 (can not be
+negative) =": line 1 minus line 3, not below zero."""
+
+MB428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "mb428_bracket_rate_line_5", non_negative=True
+)
+"""Bracket column rate, MB428 line 5 (each column prints "Line 5: Rate" with 10.8%, 12.75% or
+17.4%): the printed rate of the column of lines 2 to 8 that line 1 falls in."""
+
+MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8", non_negative=True)
+"""Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
+Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
+
+MB479_SPOUSE_CREDITS_LINE_12 = AmountKind.declare(
+    CATALOG, "mb479_spouse_credits_line_12", non_negative=True
+)
+"""Spouse or common-law partner credits, MB479 line 12 "Line 12 and line 60900: Add lines 9 to 11.":
+the printed sum of lines 9 to 11, taken as one figure because those lines are not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
+    CATALOG, "mb479_eligible_dependant_credit_line_13", non_negative=True
+)
+"""Eligible dependant credit, MB479 line 13 "Credit for an eligible dependant claimed on line 58160
+of your Form MB428 Claim $195": the credit of the box, a caller input that is read as blank when
+left out."""
+
+MB479_DISABILITY_CREDIT_LINE_14 = AmountKind.declare(
+    CATALOG, "mb479_disability_credit_line_14", non_negative=True
+)
+"""Disability credit, MB479 line 14 "Number of disability claims Line 60950 multiplied by $113": the
+product box, taken as one figure because the count above it is not modelled, a caller input that is
+read as blank when left out."""
+
+MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15 = AmountKind.declare(
+    CATALOG, "mb479_disabled_dependants_credit_line_15", non_negative=True
+)
+"""Disabled dependants credit, MB479 line 15 "Number of disabled dependants Line 60970 multiplied by
+$62": the product box, taken as one figure because the count above it is not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16 = AmountKind.declare(
+    CATALOG, "mb479_dependent_children_credit_line_16", non_negative=True
+)
+"""Dependent children credit, MB479 line 16 "Number of dependent children Line 60999 multiplied by
+$26": the product box, taken as one figure because the count above it is not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_TOTAL_CREDITS_LINE_17 = AmountKind.declare(
+    CATALOG, "mb479_total_credits_line_17", non_negative=True
+)
+"""Total credits, MB479 line 17 "Line 17 and line 61050: Add lines 7, 8, and 12 to 16. Total
+credits": the basic credit of line 7 plus the credits of lines 8 and 12 to 16, each blank one taken
+as 0."""
+
+MB479_HOMEOWNER_RENTER_SENIOR_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "mb479_homeowner_renter_senior_credits_line_53", non_negative=True
+)
+"""Homeowners, renters and seniors credits, MB479 line 53 "Line 53: Line 41 plus line 52 = ^": the
+printed collecting sum of the skipped block of lines 20 to 52 (homeowners affordability, renters
+affordability, seniors school tax rebate), a caller input that is read as blank when left out."""
+
+MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
+    CATALOG, "mb479_eia_mspd_number_line_56", non_negative=True
+)
+"""EIA or MSPD number, MB479 line 56 "Line 56 and line 61255: If you (or your spouse or common-law
+partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
+your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
+0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, MB428 line 7 "Line 7: 0.00" (5,076.00; 11,833.50): the printed
+tax at the start of the column of lines 2 to 8 that line 1 falls in. Column 3 is unbounded, so it is
+never blank."""
+
+MB479_FAMILY_INCOME_LINE_6 = AmountKind.declare(
+    CATALOG, "mb479_family_income_line_6", non_negative=True
+)
+"""Family income, MB479 line 6: line 5 of column 1 (you) plus line 5 of column 2 (your spouse or
+common-law partner), the amount that later lines refer to as "Amount from line 6". Column 2 is taken
+as 0 when left out."""

@@ -1,0 +1,17 @@
+# Form MB428 (Manitoba Tax, CRA 5007-C) Part A, line 5. Each of the three columns prints "Line 5:"
+# with its rate: "Line 5: Rate 10.8%" (column 1), "Line 5: Rate 12.75%" (column 2) and "Line 5:
+# Rate 17.4%" (column 3), under "Column 1: Line 1 is $47,000 or less", "Column 2: Line 1 is more
+# than $47,000 but not more than $100,000" and "Column 3: Line 1 is more than $100,000". Line 5
+# is the printed rate of the column that line 1 falls in.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/bracket_column_rate
+    title: "Rate"
+    reference: "5"
+    params:
+      schedule: ca-mb/brackets_lines_2_to_8
+    consumes:
+      base: ca-mb/mb428_taxable_income_line_1
+    produces:
+      output: ca-mb/mb428_bracket_rate_line_5

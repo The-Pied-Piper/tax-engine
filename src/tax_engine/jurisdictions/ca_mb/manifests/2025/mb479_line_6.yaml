@@ -1,0 +1,18 @@
+# Form MB479 (2025, CRA 5007-TC) line 6. Line 6 is the family income: the sum of line 5 of column 1
+# (you, `ca-mb/mb479_family_income_column_1_line_5`) and line 5 of column 2 (your spouse or
+# common-law partner, `ca-mb/mb479_family_income_column_2_line_5`). Column 2 is an optional input
+# that a salary-only single filer leaves out, read as blank and then as 0 by the blank rule below.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "6"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb479_family_income_column_1_line_5, ca-mb/mb479_family_income_column_2_line_5]
+    blank:
+      ca-mb/mb479_family_income_column_2_line_5: "0"
+    produces:
+      output: ca-mb/mb479_family_income_line_6

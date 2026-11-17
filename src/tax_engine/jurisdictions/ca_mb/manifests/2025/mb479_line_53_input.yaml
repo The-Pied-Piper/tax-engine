@@ -1,0 +1,13 @@
+# MB479 (2025) line 53's input, which a salary-only caller does not give.
+# Line 53: "Line 41 plus line 52" (Form MB479, CRA 5007-TC), which the form prints with no name.
+# It collects the skipped block of lines 20 to 52 (homeowners affordability, renters affordability
+# and seniors school tax rebate) as one figure. A salary-only single filer claims none of those
+# credits, so a request that leaves the line out is read as blank. Line 55 (a later step) reads it
+# and applies the blank rule.
+inputs:
+  - name: ca-mb/mb479_homeowner_renter_senior_credits_line_53
+    reference: "53"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 53: Line 41 plus line 52'
