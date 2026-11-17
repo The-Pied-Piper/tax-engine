@@ -69,19 +69,19 @@ LINES = [
         MB479_DISABILITY_CREDIT_LINE_14,
         "ca-mb/mb479_disability_credit_line_14",
         "14",
-        "Number of disability claims",
+        "Number of disability claims multiplied by $113",
     ),
     (
         MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15,
         "ca-mb/mb479_disabled_dependants_credit_line_15",
         "15",
-        "Number of disabled dependants",
+        "Number of disabled dependants multiplied by $62",
     ),
     (
         MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16,
         "ca-mb/mb479_dependent_children_credit_line_16",
         "16",
-        "Number of dependent children",
+        "Number of dependent children multiplied by $26",
     ),
 ]
 

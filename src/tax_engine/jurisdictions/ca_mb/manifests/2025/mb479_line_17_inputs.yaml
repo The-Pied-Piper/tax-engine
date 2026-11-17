@@ -26,23 +26,23 @@ inputs:
     default: null
     basis: 'Line 13: Credit for an eligible dependant claimed on line 58160 of your Form MB428'
   - name: ca-mb/mb479_disability_credit_line_14
-    title: "Number of disability claims"
+    title: "Number of disability claims multiplied by $113"
     reference: "14"
     unit: ca/cad
     required: false
     default: null
-    basis: 'Line 14: Number of disability claims'
+    basis: 'Line 14: Number of disability claims multiplied by $113'
   - name: ca-mb/mb479_disabled_dependants_credit_line_15
-    title: "Number of disabled dependants"
+    title: "Number of disabled dependants multiplied by $62"
     reference: "15"
     unit: ca/cad
     required: false
     default: null
-    basis: 'Line 15: Number of disabled dependants'
+    basis: 'Line 15: Number of disabled dependants multiplied by $62'
   - name: ca-mb/mb479_dependent_children_credit_line_16
-    title: "Number of dependent children"
+    title: "Number of dependent children multiplied by $26"
     reference: "16"
     unit: ca/cad
     required: false
     default: null
-    basis: 'Line 16: Number of dependent children'
+    basis: 'Line 16: Number of dependent children multiplied by $26'
