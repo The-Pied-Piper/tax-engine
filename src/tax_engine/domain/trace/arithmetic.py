@@ -44,6 +44,7 @@ __all__ = [
     "RatioAppliedLine",
     "TimesCountLine",
     "QuotientLine",
+    "ProductLine",
     "ThresholdGateLine",
     "AmountOrDividedByRateLine",
     "CountAtLeastLine",
@@ -605,6 +606,31 @@ class QuotientLine(TraceLine):
     @property
     def amount(self) -> Decimal:
         """The rounded quotient."""
+        return self.result
+
+    @property
+    def label(self) -> str | None:
+        """The label of the figure this line is about."""
+        return self.output.label
+
+
+@dataclass(frozen=True)
+class ProductLine(TraceLine):
+    """The `result` produced as `output`: `multiplicand` (worth `multiplicand_amount`) multiplied by
+    `multiplier` (worth `multiplier_amount`), the exact product rounded once with `rounding`.
+    """
+
+    output: Money
+    multiplicand: Money
+    multiplicand_amount: Decimal
+    multiplier: Money
+    multiplier_amount: Decimal
+    rounding: RoundingRule
+    result: Decimal
+
+    @property
+    def amount(self) -> Decimal:
+        """The rounded product."""
         return self.result
 
     @property
