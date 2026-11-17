@@ -266,6 +266,13 @@ MB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
 """Credits subtotal, MB428 line 36 "Line 36: Add lines 33 to 35. = ^": lines 34 and 35, the
 disability amounts, are not built, so the sum reads line 33 alone."""
 
+MB428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_42", non_negative=True
+)
+"""Credits subtotal, MB428 line 42 "Line 42: Add lines 36 to 41. = ^": the sum of line 36 and the
+line 41 family tax benefit; lines 37 to 40, the optional student loan, tuition and transfer amounts,
+are left blank and not built."""
+
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
 )
