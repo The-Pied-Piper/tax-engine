@@ -77,6 +77,12 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+MB428_MANITOBA_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
+    CATALOG, "mb428_manitoba_tax_on_taxable_income_line_58", non_negative=True
+)
+"""Manitoba tax on taxable income, MB428 line 58 "Line 58: Manitoba tax on taxable income from
+line 8": line 8 of the Manitoba tax form's Part A, read across the forms."""
+
 MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
     CATALOG, "mb428_tax_on_split_income_line_59", non_negative=True
 )
