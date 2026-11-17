@@ -25,7 +25,7 @@ the cent (the project's cent rounding), and the module's oracle does the same.
 Oracles by salary: $70,000 Return DD (traced in the Schedule 8, T2204, ON428 and Schedule 6
 audits); $20,000, $275,000 and $2,010 from the PDOC check and T4127 (CRA, 121st
 edition), as recorded in the project's validation notes; the bracket salaries from arithmetic on
-the printed constants above; the boundary salaries are engine pins checked against the TaxTips.ca
+the printed constants above; the boundary salaries are engine pins checked against an independent
 2025 calculator (see BOUNDARY_ANCHORS). Line 167 literals exist only at the anchor and boundary
 salaries; at the other salaries line 167 is checked against the federal tax after credits and
 Ontario line 90. The take-home subtraction (salary less CPP, EI and tax) lives in the calculator,
@@ -189,7 +189,7 @@ ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
 # on ON428 line 65), every federal and Ontario bracket edge (also covered by BRACKET_SALARIES),
 # and the federal basic personal amount taper (177,882 to 253,414). A label like "ON bracket 2"
 # names the top of bracket 2. Oracle: the engine's own cents as a regression pin; the independent
-# TaxTips.ca 2025 calculator (dollar-rounded, not CRA) agreed within $1 on every figure at every
+# calculation (dollar-rounded, not CRA) agreed within $1 on every figure at every
 # salary here when the rows were made (8 Nov 2026), and the edge constants are the printed ones.
 # Where a pin cannot show its own edge (the tax reduction end), the group comment says so.
 BOUNDARY_ANCHORS: list[tuple[str, str, str, str, str, str, str]] = [
