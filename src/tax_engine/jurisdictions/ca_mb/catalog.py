@@ -314,3 +314,10 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB479_FERTILITY_TREATMENT_EXPENSES_LINE_61 = AmountKind.declare(
+    CATALOG, "mb479_fertility_treatment_expenses_line_61", non_negative=True
+)
+"""Fertility treatment expenses, MB479 line 61 "Line 61: Eligible medical expenses for fertility
+treatments Line 61268 multiplied by 40% (maximum $16,000)": the eligible medical expenses of the
+first box, a caller input that is read as blank when left out."""

@@ -1,0 +1,13 @@
+# MB479 (2025) line 61's input, which a salary-only caller does not give.
+# Line 61: "Eligible medical expenses for fertility treatments Line 61268 multiplied by 40%
+# (maximum $16,000)" (Form MB479, CRA 5007-TC). Only the first box, the eligible medical expenses,
+# is the input; the multiplication by 40% is a later step. A salary-only caller has no such
+# expenses, so a request that leaves the line out is read as blank.
+inputs:
+  - name: ca-mb/mb479_fertility_treatment_expenses_line_61
+    title: "Eligible medical expenses for fertility treatments"
+    reference: "61"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 61: Eligible medical expenses for fertility treatments Line 61268'
