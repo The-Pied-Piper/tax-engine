@@ -136,3 +136,7 @@ MB428_A_NET_INCOME_LINE_11 = AmountKind.declare(
 """Net income, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line 23600 of your
 return": the first box of the line, the net income read from the T1, before the multiplication
 by 9%."""
+
+MB428_A_LINE_11 = AmountKind.declare(CATALOG, "mb428_a_line_11", non_negative=True)
+"""Net income multiplied by 9%, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line
+23600 of your return multiplied by 9%": the net income of the first box times the printed rate."""
