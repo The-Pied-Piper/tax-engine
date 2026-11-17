@@ -63,6 +63,12 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+MB428_MANITOBA_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
+    CATALOG, "mb428_manitoba_tax_on_taxable_income_line_58", non_negative=True
+)
+"""Manitoba tax on taxable income, MB428 line 58 "Line 58: Manitoba tax on taxable income from
+line 8": line 8 of the Manitoba tax form's Part A, read across the forms."""
+
 MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
     CATALOG, "mb428_tax_on_split_income_line_59", non_negative=True
 )
@@ -389,6 +395,13 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB479_GREEN_ENERGY_PURCHASER_CREDIT_LINE_67 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_purchaser_credit_line_67", non_negative=True
+)
+"""Green energy equipment tax credit (purchaser), MB479 line 67 "Line 67 and line 61380: Complete
+Form T1294": the credit worked out on Form T1294, which is not built, a caller input that is read
+as blank when left out."""
 
 MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
     CATALOG, "mb479_geothermal_heat_pump_cost_line_68", non_negative=True
