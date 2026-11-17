@@ -6,12 +6,14 @@ input is the eligible medical expenses (`ca-mb/mb479_fertility_treatment_expense
 the line 61 input part declares as optional, read as 0 when left out. Line 61 is one calculation:
 40% of the expenses, a printed rate held in the `ca-mb/fertility_treatment_credit_rate` dataset,
 rounded half-up to the cent. The output is `ca-mb/mb479_fertility_treatment_credit_line_61`. The
-step is titled with the heading the form prints above the line, "Fertility treatment tax credit".
-Because the input is blank for a salary-only caller, the step prints its own "left blank, taken as
-0" row.
+capping step is titled with the heading the form prints above the line, "Fertility treatment tax
+credit".
 
-The "(maximum $16,000)" is not built: the form wording is ambiguous (it does not say whether the
-cap applies to the expenses or to the product), and the ticket (#1089) rules the cap unbuilt.
+The form prints the maximum between "multiplied by 40%" and "=", so it bounds the line's result, as
+the same form prints it on line 32 and as Ontario's LIFT line 5 is built. Line 61 is therefore two
+steps: 40% of the expenses rounded half-up to the cent (`core/apply_rate`, read as 0 when the
+input is left out, so it prints the "left blank, taken as 0" row), then that figure capped at the
+printed maximum of 16000.00 (`core/capped_amount`, `ca-mb/fertility_treatment_credit_maximum`).
 
 The salary part, the input part and the line 61 part are loaded under a test-local header and form
 declaration, over the Manitoba package list of `support.py`.
@@ -38,6 +40,7 @@ from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.domain.worksheet import Worksheet
+from tax_engine.jurisdictions.ca_mb import catalog
 from tax_engine.jurisdictions.ca_mb.catalog import MB479_FERTILITY_TREATMENT_CREDIT_LINE_61
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
@@ -52,6 +55,7 @@ D = Decimal
 CODE = JurisdictionCode("CA-MB")
 FORM_NAME = "ca-mb/mb479"
 AMOUNT = "ca-mb/mb479_fertility_treatment_expenses_line_61"
+BEFORE_MAXIMUM = "ca-mb/mb479_fertility_treatment_credit_before_maximum_line_61"
 LINE_61 = "ca-mb/mb479_fertility_treatment_credit_line_61"
 SALARY = "ca/employment_income"
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
@@ -111,14 +115,15 @@ def _line_61(tmp_path: Path, salary: str, amount: str | None) -> Decimal:
     return value
 
 
-def _step() -> dict[str, Any]:
+def _steps() -> list[dict[str, Any]]:
     part = yaml.safe_load(PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
-    (step,) = part["capabilities"]
-    assert isinstance(step, dict)
-    return step
+    steps = part["capabilities"]
+    assert isinstance(steps, list)
+    assert all(isinstance(step, dict) for step in steps)
+    return steps
 
 
 @pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
@@ -146,10 +151,16 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
         ("0.03", "0.01"),
         # 0.38 x 40% = 0.152, rounded half-up to 0.15.
         ("0.38", "0.15"),
-        # The "(maximum $16,000)" is NOT built. The form wording is ambiguous (the cap could bound
-        # the expenses or the product) and the ticket rules the cap unbuilt, so 50000.00 gives
-        # 20000.00, not 6400.00 or 16000.00.
-        ("50000.00", "20000.00"),
+        # The printed "(maximum $16,000)" bounds the result: 50000.00 x 40% = 20000.00, capped.
+        ("50000.00", "16000.00"),
+        # 40000.00 x 40% = 16000.00 exactly, the boundary.
+        ("40000.00", "16000.00"),
+        # 40000.01 x 40% = 16000.004, rounded half-up to 16000.00 and capped (still 16000.00).
+        ("40000.01", "16000.00"),
+        # 39999.99 x 40% = 15999.996, which rounds half-up to 16000.00 at the first step.
+        ("39999.99", "16000.00"),
+        # 39999.97 x 40% = 15999.988, rounded half-up to 15999.99, under the maximum.
+        ("39999.97", "15999.99"),
     ],
 )
 def test_line_61_is_40_percent_of_the_amount_rounded_half_up(
@@ -186,34 +197,59 @@ def test_a_given_amount_prints_no_left_blank_row(tmp_path: Path) -> None:
     assert not any("left blank, taken as 0" in row.lower() for row in rows)
 
 
-def test_the_part_is_one_apply_rate_step_over_the_line_61_amount() -> None:
-    assert _step() == {
-        "name": "core/apply_rate",
-        "title": "Fertility treatment tax credit",
-        "reference": "61",
-        "unit": "ca/cad",
-        "params": {"rate": "ca-mb/fertility_treatment_credit_rate"},
-        "consumes": {"base": AMOUNT},
-        "blank": {"base": "0"},
-        "produces": {"output": LINE_61},
-    }
-
-
-def test_the_step_keys_are_in_the_order_of_the_neighbouring_parts() -> None:
-    assert list(_step()) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "blank",
-        "produces",
+def test_the_part_is_an_apply_rate_step_then_a_capped_amount_step() -> None:
+    assert _steps() == [
+        {
+            "name": "core/apply_rate",
+            "unit": "ca/cad",
+            "params": {"rate": "ca-mb/fertility_treatment_credit_rate"},
+            "consumes": {"base": AMOUNT},
+            "blank": {"base": "0"},
+            "produces": {"output": BEFORE_MAXIMUM},
+        },
+        {
+            "name": "core/capped_amount",
+            "title": "Fertility treatment tax credit",
+            "reference": "61",
+            "unit": "ca/cad",
+            "params": {"cap": "ca-mb/fertility_treatment_credit_maximum"},
+            "consumes": {"base": BEFORE_MAXIMUM},
+            "produces": {"output": LINE_61},
+        },
     ]
 
 
-def test_the_step_is_titled_with_the_heading_the_form_prints_above_the_line() -> None:
-    assert _step()["title"] == "Fertility treatment tax credit"
+def test_the_step_keys_are_in_the_order_of_on428_a_line_5() -> None:
+    rate, cap = _steps()
+
+    assert list(rate) == ["name", "unit", "params", "consumes", "blank", "produces"]
+    assert list(cap) == ["name", "title", "reference", "unit", "params", "consumes", "produces"]
+
+
+def test_the_capping_step_is_titled_with_the_heading_the_form_prints_above_the_line() -> None:
+    _, cap = _steps()
+
+    assert cap["title"] == "Fertility treatment tax credit"
+
+
+def test_the_intermediate_step_is_untitled_and_unreferenced() -> None:
+    rate, _ = _steps()
+
+    assert "title" not in rate
+    assert "reference" not in rate
+
+
+def test_the_before_maximum_kind_is_a_registered_non_negative_decimal_amount() -> None:
+    constant = catalog.MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61
+    kind = manitoba_kinds().kind(BEFORE_MAXIMUM)
+
+    assert kind is constant
+    assert isinstance(kind, AmountKind)
+    assert kind.identifier == BEFORE_MAXIMUM
+    assert kind.value_type is Decimal
+    assert non_negative(kind)
+    with pytest.raises(NegativeArtifactError):
+        Artifact(kind, D("-0.01"))
 
 
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:

@@ -3,7 +3,7 @@
 Form MB479, line 61: the eligible medical expenses for fertility treatments "multiplied by 40%
 (maximum $16,000) =". The printed percentage is a rate of 0.4, read by line 61's multiplication;
 the line is a dollars-and-cents line, so the product rounds half-up to the cent, the project's
-choice, as the form states no rounding rule. The maximum is not part of this dataset.
+choice, as the form states no rounding rule. The maximum has its own dataset.
 """
 
 from __future__ import annotations
