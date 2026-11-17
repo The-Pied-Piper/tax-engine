@@ -215,7 +215,7 @@ def test_the_trace_names_the_bracket_line_1_falls_in(
     assert (
         EnglishTraceRenderer()
         .render(line)
-        .endswith(f"falls in the bracket that starts at {D(expected):,.2f}")
+        .endswith(f"falls in the bracket that starts at {D(expected):.2f}.")
     )
 
 
