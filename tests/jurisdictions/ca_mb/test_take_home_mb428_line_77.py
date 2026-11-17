@@ -49,7 +49,7 @@ LINE_PART = MB_PARTS / "mb428_line_77.yaml"
 MAXIMUM = "ca-mb/mb428_venture_capital_credit_maximum"
 LINE_77 = "ca-mb/mb428_venture_capital_credit_line_77"
 CREDIT = "ca-mb/mb428_venture_capital_credit"
-FORM_NAME = "ca-mb/mb428_credits"
+FORM_NAME = "ca-mb/mb428"
 
 HEADER = dedent("""\
     jurisdiction: CA-MB
@@ -63,7 +63,7 @@ HEADER = dedent("""\
     """)
 FORM = dedent("""\
     form:
-      name: ca-mb/mb428_credits
+      name: ca-mb/mb428
       required: true
       exports:
         - ca-mb/mb428_venture_capital_credit_line_77
