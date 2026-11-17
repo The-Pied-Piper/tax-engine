@@ -7,8 +7,8 @@ before the 10% step reads it. The maximum is a dataset figure
 (`ca-bc/home_renovation_expenses_maximum`), never an input.
 
 Two new parts sit ahead of the line 14 step. `bc479_home_renovation_expenses_maximum.yaml` is
-`core/credit_amount` over that dataset and produces `ca-bc/bc479_home_renovation_expenses_maximum`; the maximum is an
-intermediate step and carries no line number in its title, reference or kind name.
+`core/credit_amount` over that dataset and produces `ca-bc/bc479_home_renovation_expenses_maximum`;
+the maximum is an intermediate step and carries no line number in its title, reference or kind name.
 `bc479_line_14_check.yaml` is `core/at_most`, consuming the input
 `ca-bc/bc479_home_renovation_expenses_line_14` against that maximum and producing
 `ca-bc/bc479_home_renovation_expenses_checked`, the amount the 10% step multiplies. It carries no
