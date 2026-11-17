@@ -63,6 +63,13 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
+    CATALOG, "mb428_tax_on_split_income_line_59", non_negative=True
+)
+"""Manitoba tax on split income, MB428 line 59 (line 61510) "Line 59 and line 61510: Manitoba tax on
+split income (complete Form T1206)": a caller input, read as blank when left out; line 60 reads
+it."""
+
 MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
 )
@@ -82,6 +89,12 @@ MB479_MANITOBA_CREDITS_LINE_81 = AmountKind.declare(
 )
 """Manitoba credits, MB479 line 81 "Add lines 78 to 80. Enter this amount on line 47900 of your
 return.": the Manitoba credits, entered on T1 line 47900."""
+
+MB428_DIVIDEND_TAX_CREDIT_LINE_62 = AmountKind.declare(
+    CATALOG, "mb428_dividend_tax_credit_line_62", non_negative=True
+)
+"""Manitoba dividend tax credit, MB428 line 62 (line 61520) "Line 62 and line 61520: Manitoba
+dividend tax credit (use Worksheet MB428)": a caller input, read as blank when left out."""
 
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
@@ -307,3 +320,10 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, MB428 line 7 "Line 7: 0.00" (5,076.00; 11,833.50): the printed
+tax at the start of the column of lines 2 to 8 that line 1 falls in. Column 3 is unbounded, so it is
+never blank."""
