@@ -102,6 +102,13 @@ MB428_DIVIDEND_TAX_CREDIT_LINE_62 = AmountKind.declare(
 """Manitoba dividend tax credit, MB428 line 62 (line 61520) "Line 62 and line 61520: Manitoba
 dividend tax credit (use Worksheet MB428)": a caller input, read as blank when left out."""
 
+MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
+    CATALOG, "mb428_political_contribution_tax_credit_line_69", non_negative=True
+)
+"""Manitoba political contribution tax credit, MB428 line 69 "Line 69: Manitoba political
+contribution tax credit (use Worksheet MB428) (maximum $1,000)": a caller input, read as blank
+when left out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
