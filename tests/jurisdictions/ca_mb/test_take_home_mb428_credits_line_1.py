@@ -216,7 +216,7 @@ def test_line_1_is_a_registered_non_negative_amount_kind() -> None:
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert non_negative(kind)
-    assert kind is getattr(mb_catalog, "MB428_TAXABLE_INCOME_LINE_1")  # noqa: B009
+    assert kind is mb_catalog.MB428_TAXABLE_INCOME_LINE_1
 
 
 def test_the_kind_rejects_a_negative_amount() -> None:
