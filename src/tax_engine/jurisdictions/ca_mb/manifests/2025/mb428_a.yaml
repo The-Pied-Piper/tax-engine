@@ -1,0 +1,11 @@
+# Schedule MB428-A (CRA 5007-A) 2025, Manitoba family tax benefit. This part names the form and its
+# export: line 12 (`ca-mb/mb428_a_family_tax_benefit_line_12`), which the form says to enter on
+# line 61470 of Form MB428: "Line 12: Line 10 minus line 11 (if negative, enter "0") Enter this
+# amount on line 61470 of your Form MB428." Line parts carry the capabilities.
+form:
+  name: ca-mb/mb428_a
+  title: "Schedule MB428-A: Manitoba Family Tax Benefit"
+  required: true
+  exports:
+    - ca-mb/mb428_a_family_tax_benefit_line_12
+capabilities: []
