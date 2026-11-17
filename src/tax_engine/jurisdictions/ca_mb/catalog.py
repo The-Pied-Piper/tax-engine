@@ -113,3 +113,10 @@ MB428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 )
 """Taxable income, Form MB428 Line 1 "Enter your taxable income from line 26000 of your return":
 the T1 taxable income, read directly by lines 3 and 4."""
+
+MB479_NET_INCOME_LINE_1 = AmountKind.declare(CATALOG, "mb479_net_income_line_1", non_negative=False)
+"""Net income, MB479 line 1 "Line 1: Net income from line 23600 of the return (or the amount you
+would have entered if the instructions on line 23600 said "if negative, show in brackets")": the
+net income of the T1 return before its floor, read from the signed T1 net income export
+(`ca/net_income_signed`, not the floored `ca/net_income`). Column 1 only. The form shows a negative
+net income in brackets, so the kind is signed."""
