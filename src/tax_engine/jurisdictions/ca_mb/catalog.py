@@ -151,3 +151,9 @@ MB479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
 repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
 repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
 that is read as blank when left out, column 1 (you) only."""
+
+MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_line_7", non_negative=True
+)
+"""Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
+personal tax credits."""
