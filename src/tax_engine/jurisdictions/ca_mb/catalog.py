@@ -38,3 +38,7 @@ MB479_MANITOBA_CREDITS_LINE_81 = AmountKind.declare(
 )
 """Manitoba credits, MB479 line 81 "Add lines 78 to 80. Enter this amount on line 47900 of your
 return.": the Manitoba credits, entered on T1 line 47900."""
+
+WORKSHEET_MB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_mb428_line_2", non_negative=True)
+"""Net income, Worksheet MB428 line 2 "Line 2: Amount from line 23600 of your return": the T1 net
+income, line 23600 after its floor."""
