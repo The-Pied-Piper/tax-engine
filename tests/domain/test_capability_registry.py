@@ -25,6 +25,7 @@ from tax_engine.jurisdictions.core.capabilities.bracket_column_figure import (
     BracketColumnRate,
     BracketColumnTaxAtStart,
 )
+from tax_engine.jurisdictions.core.capabilities.multiply import Multiply
 from tax_engine.jurisdictions.core.capabilities.multiply_by_rate import MultiplyByRate
 from tax_engine.jurisdictions.core.capabilities.progressive_tax import ProgressiveTax
 from tax_engine.jurisdictions.core.capabilities.subtract_not_below_zero import SubtractNotBelowZero
@@ -172,6 +173,7 @@ def test_a_subclass_of_a_decorated_class_carries_no_identifier_of_its_own() -> N
         ("core/progressive_tax", ProgressiveTax),
         ("core/apply_rate", ApplyRate),
         ("core/multiply_by_rate", MultiplyByRate),
+        ("core/multiply", Multiply),
         ("core/subtract_not_below_zero", SubtractNotBelowZero),
         ("core/bracket_column_lower_bound", BracketColumnLowerBound),
         ("core/bracket_column_rate", BracketColumnRate),
