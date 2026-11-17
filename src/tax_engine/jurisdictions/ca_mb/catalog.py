@@ -195,3 +195,49 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
 )
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
 personal tax credits."""
+
+MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8", non_negative=True)
+"""Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
+Claim $113": the credit of the first box, a caller input that is read as blank when left out."""
+
+MB479_SPOUSE_CREDITS_LINE_12 = AmountKind.declare(
+    CATALOG, "mb479_spouse_credits_line_12", non_negative=True
+)
+"""Spouse or common-law partner credits, MB479 line 12 "Line 12 and line 60900: Add lines 9 to 11.":
+the printed sum of lines 9 to 11, taken as one figure because those lines are not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_ELIGIBLE_DEPENDANT_CREDIT_LINE_13 = AmountKind.declare(
+    CATALOG, "mb479_eligible_dependant_credit_line_13", non_negative=True
+)
+"""Eligible dependant credit, MB479 line 13 "Credit for an eligible dependant claimed on line 58160
+of your Form MB428 Claim $195": the credit of the box, a caller input that is read as blank when
+left out."""
+
+MB479_DISABILITY_CREDIT_LINE_14 = AmountKind.declare(
+    CATALOG, "mb479_disability_credit_line_14", non_negative=True
+)
+"""Disability credit, MB479 line 14 "Number of disability claims Line 60950 multiplied by $113": the
+product box, taken as one figure because the count above it is not modelled, a caller input that is
+read as blank when left out."""
+
+MB479_DISABLED_DEPENDANTS_CREDIT_LINE_15 = AmountKind.declare(
+    CATALOG, "mb479_disabled_dependants_credit_line_15", non_negative=True
+)
+"""Disabled dependants credit, MB479 line 15 "Number of disabled dependants Line 60970 multiplied by
+$62": the product box, taken as one figure because the count above it is not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_DEPENDENT_CHILDREN_CREDIT_LINE_16 = AmountKind.declare(
+    CATALOG, "mb479_dependent_children_credit_line_16", non_negative=True
+)
+"""Dependent children credit, MB479 line 16 "Number of dependent children Line 60999 multiplied by
+$26": the product box, taken as one figure because the count above it is not modelled, a caller
+input that is read as blank when left out."""
+
+MB479_TOTAL_CREDITS_LINE_17 = AmountKind.declare(
+    CATALOG, "mb479_total_credits_line_17", non_negative=True
+)
+"""Total credits, MB479 line 17 "Line 17 and line 61050: Add lines 7, 8, and 12 to 16. Total
+credits": the basic credit of line 7 plus the credits of lines 8 and 12 to 16, each blank one taken
+as 0."""
