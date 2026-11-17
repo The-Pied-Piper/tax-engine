@@ -1,0 +1,15 @@
+# Worksheet MB428 (2025), section "Line 58040 - Basic personal amount", line 7, the base amount.
+# Worksheet MB428 (CRA 5007-D): "Line 7: Base amount 15,780.00". The 15,780.00 is the
+# `ca-mb/basic_personal_amount` dataset, claimed whole through core/credit_amount, so it is the
+# same at every salary.
+form:
+  name: ca-mb/worksheet_mb428
+capabilities:
+  - name: core/credit_amount
+    title: "Base amount"
+    reference: "7"
+    unit: ca/cad
+    params:
+      amount: ca-mb/basic_personal_amount
+    produces:
+      output: ca-mb/worksheet_mb428_basic_personal_amount_line_7
