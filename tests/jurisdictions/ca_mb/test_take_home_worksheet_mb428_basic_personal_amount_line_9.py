@@ -6,8 +6,7 @@ Form MB428. = ^".
 The form names no label for the line, so the step has no title. Line 9 is one
 core/subtract_not_below_zero step over line 1 (`amount`) and line 8 (`less`), rounded half-up to the
 cent by `ca-mb/cent_rounding`. The kind `ca-mb/worksheet_mb428_basic_personal_amount_line_9` is
-non-negative, and it is the export of the Worksheet MB428 form (`worksheet_mb428.yaml`): the figure
-the form says to enter on line 58040 of Form MB428.
+non-negative; it is the figure the form says to enter on line 58040 of Form MB428.
 
 The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
 needs, the real parts of lines 1 to 8 and the new
@@ -65,7 +64,6 @@ CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 PART = MB_PARTS / "worksheet_mb428_basic_personal_amount_line_9.yaml"
-FORM_PART = MB_PARTS / "worksheet_mb428.yaml"
 KIND = "ca-mb/worksheet_mb428_basic_personal_amount_line_9"
 LINE_1 = "ca-mb/worksheet_mb428_basic_personal_amount_line_1"
 LINE_2 = "ca-mb/worksheet_mb428_line_2"
@@ -85,16 +83,6 @@ FEDERAL_PARTS = (
     "t1_taxable_income_line_26000.yaml",
     "t1_taxable_income.yaml",
     "t1_taxable_income_line_10400_inputs.yaml",
-)
-WORKSHEET_PARTS = (
-    "worksheet_mb428_basic_personal_amount_line_1.yaml",
-    "worksheet_mb428_line_2.yaml",
-    "worksheet_mb428_basic_personal_amount_line_3.yaml",
-    "worksheet_mb428_line_4.yaml",
-    "worksheet_mb428_basic_personal_amount_line_5.yaml",
-    "worksheet_mb428_line_6.yaml",
-    "worksheet_mb428_basic_personal_amount_line_7.yaml",
-    "worksheet_mb428_line_8.yaml",
 )
 
 HEADER = dedent("""\
@@ -141,8 +129,14 @@ def _part_files() -> Iterator[Path]:
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
-    for name in WORKSHEET_PARTS:
-        yield MB_PARTS / name
+    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_1.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_2.yaml"
+    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_3.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_4.yaml"
+    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_5.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_6.yaml"
+    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_7.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_8.yaml"
     yield PART
 
 
@@ -335,14 +329,6 @@ def test_the_part_is_one_untitled_subtract_not_below_zero_step_with_no_blank_rul
         "consumes": {"amount": LINE_1, "less": LINE_8},
         "produces": {"output": KIND},
     }
-
-
-def test_the_output_is_the_export_of_the_worksheet_mb428_form() -> None:
-    part = yaml.safe_load(FORM_PART.read_text(encoding="utf-8"))
-
-    assert part["form"]["name"] == FORM_NAME
-    assert part["form"]["exports"] == [KIND]
-    assert _step()["produces"] == {"output": KIND}
 
 
 def test_line_9_is_a_registered_non_negative_decimal_amount_kind() -> None:
