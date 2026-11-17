@@ -51,3 +51,9 @@ MB428_A_FAMILY_TAX_BENEFIT_LINE_12 = AmountKind.declare(
 """Family tax benefit, Schedule MB428-A line 12 "Line 12: Line 10 minus line 11 (if negative, enter
 "0") Enter this amount on line 61470 of your Form MB428.": the family tax benefit entered on line
 61470 of Form MB428."""
+
+MB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
+    CATALOG, "mb428_ei_premiums_line_21", non_negative=True
+)
+"""EI premiums credit amount, MB428 line 21 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
