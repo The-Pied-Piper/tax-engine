@@ -33,6 +33,12 @@ WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
 enter "0") Enter this amount on line 58040 of your Form MB428.": the basic personal amount entered
 on line 58040 of Form MB428."""
 
+MB479_MANITOBA_CREDITS_LINE_81 = AmountKind.declare(
+    CATALOG, "mb479_manitoba_credits_line_81", non_negative=True
+)
+"""Manitoba credits, MB479 line 81 "Add lines 78 to 80. Enter this amount on line 47900 of your
+return.": the Manitoba credits, entered on T1 line 47900."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
