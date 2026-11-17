@@ -67,3 +67,7 @@ threshold of the basic personal amount section."""
 WORKSHEET_MB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_mb428_line_2", non_negative=True)
 """Net income, Worksheet MB428 line 2 "Line 2: Amount from line 23600 of your return": the T1 net
 income, line 23600 after its floor."""
+
+WORKSHEET_MB428_LINE_4 = AmountKind.declare(CATALOG, "worksheet_mb428_line_4", non_negative=True)
+"""Net income over the threshold, Worksheet MB428 line 4 "Line 4: Line 2 minus line 3 (if negative,
+enter "0")": line 2 minus line 3, not below zero."""
