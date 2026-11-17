@@ -157,7 +157,8 @@ def _sheet(tmp_path: Path, *artifacts: Artifact[Any]) -> Worksheet:
 
 
 def _total(sheet: Worksheet) -> Decimal:
-    return sheet.get(manitoba_kinds().kind(KIND)).value
+    value: Decimal = sheet.get(manitoba_kinds().kind(KIND)).value
+    return value
 
 
 @pytest.mark.parametrize("salary", SALARIES)
