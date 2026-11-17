@@ -221,3 +221,9 @@ MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
 )
 """Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
 28."""
+
+MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
+    CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
+)
+"""Family income, MB479 line 5 "Line 3 minus line 4 (if negative, enter "0")": line 3 less the UCCB
+and RDSP income of line 4, floored at 0, column 1 (you) only."""
