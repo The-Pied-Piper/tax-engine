@@ -189,3 +189,9 @@ MB479_FAMILY_INCOME_BEFORE_BENEFITS_LINE_3 = AmountKind.declare(
 """Family income before benefits, MB479 line 3 "Line 3: Line 1 plus line 2": the net income of
 line 1 plus the UCCB and RDSP repayments of line 2, column 1 (you) only. Line 1 can be negative, so
 the kind is signed."""
+
+MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_line_7", non_negative=True
+)
+"""Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
+personal tax credits."""
