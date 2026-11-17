@@ -1,0 +1,19 @@
+# Form MB428 (Manitoba Tax, CRA 5007-C) line 8, "Line 8: Line 6 plus line 7 Manitoba tax on taxable
+# income =": the Manitoba tax on taxable income for the column that line 1 falls in. It sums line 6
+# (`ca-mb/mb428_tax_on_excess_line_6`) and line 7 (`ca-mb/mb428_bracket_tax_at_start_line_7`).
+# Lines 6 and 7 are never blank in Manitoba (the last column has no upper boundary), so line 8 is
+# never blank and the step has no blank block.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/sum
+    title: "Manitoba tax on taxable income"
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        [ca-mb/mb428_tax_on_excess_line_6, ca-mb/mb428_bracket_tax_at_start_line_7]
+    produces:
+      output: ca-mb/mb428_tax_on_taxable_income_line_8
