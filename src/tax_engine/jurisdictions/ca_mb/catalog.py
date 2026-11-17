@@ -25,6 +25,12 @@ MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
 """CPP or QPP contributions, MB428 line 19 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
 
+MB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
+$1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+
 MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "mb428_non_refundable_credits_line_57", non_negative=True
 )
@@ -67,6 +73,24 @@ threshold of the basic personal amount section."""
 WORKSHEET_MB428_LINE_2 = AmountKind.declare(CATALOG, "worksheet_mb428_line_2", non_negative=True)
 """Net income, Worksheet MB428 line 2 "Line 2: Amount from line 23600 of your return": the T1 net
 income, line 23600 after its floor."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_1", non_negative=True
+)
+"""Base amount, Worksheet MB428 line 1 "Line 1: Base amount 15,780.00": the base amount of the
+basic personal amount section."""
+
+MB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
+    CATALOG, "mb428_ei_premiums_line_21", non_negative=True
+)
+"""EI premiums credit amount, MB428 line 21 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_5 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_5", non_negative=True
+)
+"""Income threshold, Worksheet MB428 line 5 "Line 5: Income threshold 200,000.00": the income
+threshold of the basic personal amount section."""
 
 WORKSHEET_MB428_LINE_4 = AmountKind.declare(CATALOG, "worksheet_mb428_line_4", non_negative=True)
 """Net income over the threshold, Worksheet MB428 line 4 "Line 4: Line 2 minus line 3 (if negative,
