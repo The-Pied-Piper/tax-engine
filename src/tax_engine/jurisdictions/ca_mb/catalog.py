@@ -208,3 +208,9 @@ MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
 )
 """CPP, EI and other credit amounts subtotal, MB428 line 28 "Line 28: Add lines 19 to 27. = ^": the
 sum of lines 19 and 21. Lines 20 and 22 to 27 are not built: a salary-only filer has none."""
+
+MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
+    CATALOG, "mb428_t691_amount_line_66", non_negative=True
+)
+"""Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a caller
+input, read as blank when left out; the 50% multiplication step reads it."""
