@@ -364,3 +364,7 @@ MB479_FAMILY_INCOME_LINE_6 = AmountKind.declare(
 """Family income, MB479 line 6: line 5 of column 1 (you) plus line 5 of column 2 (your spouse or
 common-law partner), the amount that later lines refer to as "Amount from line 6". Column 2 is taken
 as 0 when left out."""
+
+MB479_REDUCTION_LINE_18 = AmountKind.declare(CATALOG, "mb479_reduction_line_18", non_negative=True)
+"""Reduction, MB479 line 18: the amount from line 6 multiplied by 1%, the printed rate held in the
+`ca-mb/personal_tax_credit_reduction_rate` dataset, rounded half-up to the cent."""
