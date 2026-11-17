@@ -141,8 +141,24 @@ BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
     CATALOG, "bc428_political_contribution_tax_credit_line_84", non_negative=True
 )
 """British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
-political contribution tax credit (use Worksheet BC428) (maximum $500)": a caller input that is
-read as blank when left out."""
+political contribution tax credit (use Worksheet BC428) (maximum $500)": the amount the filer
+claims, a caller input that is read as blank when left out; the line 84 step checks it against the
+printed maximum."""
+
+BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "bc428_political_contribution_tax_credit_maximum", non_negative=True
+)
+"""British Columbia political contribution tax credit maximum, printed on BC428 line 84 "(maximum
+$500)": the printed maximum, from the `ca-bc/political_contribution_tax_credit_maximum` dataset; the
+bound line 84 cannot pass."""
+
+BC428_BRITISH_COLUMBIA_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_political_contribution_tax_credit_line_84", non_negative=True
+)
+"""British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
+political contribution tax credit (use Worksheet BC428) (maximum $500)": the entered amount, passed
+on unchanged when it is at most the printed maximum, blank when left out; above the maximum it is
+refused, not capped."""
 
 BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
     CATALOG, "bc428_esop_evcc_credits_line_88", non_negative=True
