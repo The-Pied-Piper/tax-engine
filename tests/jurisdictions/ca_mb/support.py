@@ -44,6 +44,7 @@ def manitoba_capabilities() -> CapabilityRegistry:
     return registry
 
 
+@cache
 def manitoba_units() -> UnitRegistry:
     """The units of the Manitoba package list; never register into it."""
     registry = UnitRegistry()
