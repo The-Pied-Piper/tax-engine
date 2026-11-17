@@ -1,0 +1,19 @@
+# MB479 (2025) line 56's input, which a caller who received no EIA or MSPD payments does not give.
+# Line 56: "Line 56 and line 61255: If you (or your spouse or common-law partner) did receive EIA or
+# MSPD payments from Manitoba in 2025, enter the number from box 14 of your (or your spouse's or
+# common-law partner's) Form T5007, Statement of Benefits (even if it is 0.00)." (Form MB479, CRA
+# 5007-TC). The form prints no label for the line, so the input has no title.
+# Left blank the number reads 1, so line 57 (line 55 multiplied by line 56) takes line 55; an
+# entered 0.00 gives 0.
+inputs:
+  - name: ca-mb/mb479_eia_mspd_number_line_56
+    reference: "56"
+    unit: ca/cad
+    required: false
+    default: "1"
+    basis: >-
+      Line 56 and line 61255: If you (or your spouse or common-law partner) did receive EIA or MSPD
+      payments from Manitoba in 2025, enter the number from box 14 of your (or your spouse's or
+      common-law partner's) Form T5007, Statement of Benefits (even if it is 0.00). If you and your
+      spouse or common-law partner both received EIA or MSPD payments from Manitoba in 2025, enter
+      the number shown in 61255 box 14 of your T5007 slip or theirs, whichever is less.

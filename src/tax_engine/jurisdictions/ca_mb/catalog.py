@@ -195,3 +195,11 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
 )
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
 personal tax credits."""
+
+MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
+    CATALOG, "mb479_eia_mspd_number_line_56", non_negative=True
+)
+"""EIA or MSPD number, MB479 line 56 "Line 56 and line 61255: If you (or your spouse or common-law
+partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
+your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
+0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
