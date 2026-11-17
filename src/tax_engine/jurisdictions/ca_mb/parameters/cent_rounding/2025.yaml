@@ -1,0 +1,15 @@
+# Manitoba cent rounding, 2025 tax year: the rule for every Manitoba form line that is a
+# dollars-and-cents box and is read from a "(if negative, enter "0")" or "(cannot be negative)"
+# difference, from a sum, or from a product of two lines: Form MB428 (5007-C), the MB428 worksheet
+# (5007-D), Schedule MB428-A (5007-A) and Form MB479 (5007-TC). The forms state no rounding rule,
+# so half-up to the cent is the project's choice. A line that needs a different rule gets a
+# dataset of its own.
+family: ca-mb/cent_rounding
+tax_year: 2025
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-c/5007-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-d/5007-d-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-a/5007-a-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-tc/5007-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
