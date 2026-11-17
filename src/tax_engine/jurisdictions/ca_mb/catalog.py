@@ -387,3 +387,10 @@ MB428_T691_AMOUNT_LINE_66 = AmountKind.declare(
 )
 """Form T691 amount, MB428 line 66 "Line 66: Form T691: line 1 minus line 2 of Part 7": a caller
 input, read as blank when left out; the 50% multiplication step reads it."""
+
+MB479_PERSONAL_TAX_CREDIT_LINE_19 = AmountKind.declare(
+    CATALOG, "mb479_personal_tax_credit_line_19", non_negative=True
+)
+"""Personal tax credit, MB479 line 19 "Line 19: Line 17 minus line 18 (if negative, enter "0")
+Enter this amount on line 54. Personal tax credit =": line 17 and line 18 (total credits less the
+reduction, not below 0), rounded to the cent."""
