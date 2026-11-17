@@ -189,3 +189,9 @@ MB479_FAMILY_INCOME_BEFORE_BENEFITS_LINE_3 = AmountKind.declare(
 """Family income before benefits, MB479 line 3 "Line 3: Line 1 plus line 2": the net income of
 line 1 plus the UCCB and RDSP repayments of line 2, column 1 (you) only. Line 1 can be negative, so
 the kind is signed."""
+
+MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
+    CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
+)
+"""Family income, MB479 line 5 "Line 3 minus line 4 (if negative, enter "0")": line 3 less the UCCB
+and RDSP income of line 4, floored at 0, column 1 (you) only."""
