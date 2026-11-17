@@ -85,3 +85,9 @@ MB428_EI_PREMIUMS_LINE_21 = AmountKind.declare(
 )
 """EI premiums credit amount, MB428 line 21 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_5 = AmountKind.declare(
+    CATALOG, "worksheet_mb428_basic_personal_amount_line_5", non_negative=True
+)
+"""Income threshold, Worksheet MB428 line 5 "Line 5: Income threshold 200,000.00": the income
+threshold of the basic personal amount section."""
