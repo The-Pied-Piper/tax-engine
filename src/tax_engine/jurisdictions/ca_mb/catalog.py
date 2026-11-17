@@ -42,7 +42,21 @@ MB428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "mb428_pension_income_amount", non_negative=True
 )
 """Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
-$1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+$1,000)": the amount the filer claims, a caller input that is read as blank when left out; the
+line 31 step checks it against the printed maximum."""
+
+MB428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on MB428 line 31 "(maximum $1,000)": the printed
+maximum, from the `ca-mb/pension_income_amount_maximum` dataset; the bound line 31 cannot pass."""
+
+MB428_PENSION_INCOME_AMOUNT_LINE_31 = AmountKind.declare(
+    CATALOG, "mb428_pension_income_amount_line_31", non_negative=True
+)
+"""Pension income amount, MB428 line 31 "Line 31 and line 58360: Pension income amount (maximum
+$1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
+left out; above the maximum it is refused, not capped."""
 
 MB428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "mb428_medical_expenses_line_50", non_negative=True
@@ -63,12 +77,24 @@ MB428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 Enter this amount on line 61. Manitoba non-refundable tax credits =": line 53 plus line 56, read by
 line 61 on the tax form."""
 
+MB428_MANITOBA_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
+    CATALOG, "mb428_manitoba_tax_on_taxable_income_line_58", non_negative=True
+)
+"""Manitoba tax on taxable income, MB428 line 58 "Line 58: Manitoba tax on taxable income from
+line 8": line 8 of the Manitoba tax form's Part A, read across the forms."""
+
 MB428_TAX_ON_SPLIT_INCOME_LINE_59 = AmountKind.declare(
     CATALOG, "mb428_tax_on_split_income_line_59", non_negative=True
 )
 """Manitoba tax on split income, MB428 line 59 (line 61510) "Line 59 and line 61510: Manitoba tax on
 split income (complete Form T1206)": a caller input, read as blank when left out; line 60 reads
 it."""
+
+MB428_TAX_BEFORE_CREDITS_LINE_60 = AmountKind.declare(
+    CATALOG, "mb428_tax_before_credits_line_60", non_negative=True
+)
+"""MB428 line 60 "Line 60: Line 58 plus line 59 =": the sum of line 58 and line 59, where a blank
+line 59 is read as 0."""
 
 MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
@@ -82,6 +108,12 @@ MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
 )
 """Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
 return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
+
+MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
+    CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
+)
+"""Manitoba additional tax for minimum tax purposes, MB428 line 66 "Line 66: Form T691: line 1 minus
+line 2 of Part 7 multiplied by 50% =": calculated, the Form T691 amount multiplied by 50%."""
 
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
@@ -101,6 +133,13 @@ MB428_DIVIDEND_TAX_CREDIT_LINE_62 = AmountKind.declare(
 )
 """Manitoba dividend tax credit, MB428 line 62 (line 61520) "Line 62 and line 61520: Manitoba
 dividend tax credit (use Worksheet MB428)": a caller input, read as blank when left out."""
+
+MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
+    CATALOG, "mb428_political_contribution_tax_credit_line_69", non_negative=True
+)
+"""Manitoba political contribution tax credit, MB428 line 69 "Line 69: Manitoba political
+contribution tax credit (use Worksheet MB428) (maximum $1,000)": a caller input, read as blank
+when left out."""
 
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
@@ -235,6 +274,13 @@ MB479_PRIMARY_CAREGIVER_CREDIT_LINE_59 = AmountKind.declare(
 """Primary caregiver tax credit, MB479 line 59 "Line 59 and line 61260: Primary caregiver tax
 credit": a caller input that is read as blank when left out."""
 
+MB479_ODOUR_CONTROL_CREDIT_LINE_65 = AmountKind.declare(
+    CATALOG, "mb479_odour_control_credit_line_65", non_negative=True
+)
+"""Unused odour-control tax credit, MB479 line 65 "Line 65 and line 61340: Enter your unused
+odour-control tax credit from your 2024 notice of assessment or reassessment.": a caller input that
+is read as blank when left out."""
+
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
 )
@@ -265,6 +311,25 @@ MB428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
 )
 """Credits subtotal, MB428 line 36 "Line 36: Add lines 33 to 35. = ^": lines 34 and 35, the
 disability amounts, are not built, so the sum reads line 33 alone."""
+
+MB428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_42", non_negative=True
+)
+"""Credits subtotal, MB428 line 42 "Line 42: Add lines 36 to 41. = ^": the sum of line 36 and the
+line 41 family tax benefit; lines 37 to 40, the optional student loan, tuition and transfer amounts,
+are left blank and not built."""
+
+MB428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
+    CATALOG, "mb428_credits_total_line_51", non_negative=True
+)
+"""MB428 line 51 "Line 51 and line 58800: Line 42 plus line 50 = ^": the sum of line 42 and the
+line 50 medical expense amount; lines 43 to 49, the medical expense working, are not built."""
+
+MB428_CREDITS_AT_RATE_LINE_53 = AmountKind.declare(
+    CATALOG, "mb428_credits_at_rate_line_53", non_negative=True
+)
+"""MB428 line 53 (line 58840) "Line 51 multiplied by the percentage from line 52 = ^": line 51
+multiplied by the 10.8% of line 52, rounded half-up to the cent."""
 
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
@@ -357,6 +422,13 @@ partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the numbe
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
 
+MB479_GREEN_ENERGY_PURCHASER_CREDIT_LINE_67 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_purchaser_credit_line_67", non_negative=True
+)
+"""Green energy equipment tax credit (purchaser), MB479 line 67 "Line 67 and line 61380: Complete
+Form T1294": the credit worked out on Form T1294, which is not built, a caller input that is read
+as blank when left out."""
+
 MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
     CATALOG, "mb479_geothermal_heat_pump_cost_line_68", non_negative=True
 )
@@ -407,3 +479,17 @@ MB479_PERSONAL_TAX_CREDIT_LINE_19 = AmountKind.declare(
 """Personal tax credit, MB479 line 19 "Line 19: Line 17 minus line 18 (if negative, enter "0")
 Enter this amount on line 54. Personal tax credit =": line 17 and line 18 (total credits less the
 reduction, not below 0), rounded to the cent."""
+
+MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
+    CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True
+)
+"""Fertility treatment tax credit before its maximum, MB479 line 61 "Line 61: Eligible medical
+expenses for fertility treatments Line 61268 multiplied by 40% (maximum $16,000) =" before the
+maximum: the eligible medical expenses multiplied by 40%."""
+
+MB479_FERTILITY_TREATMENT_CREDIT_LINE_61 = AmountKind.declare(
+    CATALOG, "mb479_fertility_treatment_credit_line_61", non_negative=True
+)
+"""Fertility treatment tax credit, MB479 line 61 "Line 61: Eligible medical expenses for fertility
+treatments Line 61268 multiplied by 40% (maximum $16,000) =": calculated, the eligible medical
+expenses multiplied by 40%, then at most the printed maximum of $16,000."""
