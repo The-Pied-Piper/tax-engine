@@ -3,8 +3,7 @@
 Form MB479 (CRA 5007-TC), line 53, printed "Line 53: Line 41 plus line 52". It collects the skipped
 block of lines 20 to 52 (homeowners affordability, renters affordability and seniors school tax
 rebate) as one figure. The form says to enter "0" on line 53 when none of those credits is claimed,
-so a salary-only filer's request that leaves the line out is read as blank. No step in this part
-reads the line: the step that reads it belongs to a later ticket.
+so a salary-only filer's request that leaves the line out is read as blank.
 
 The real part is loaded under a test-local header over the Manitoba package list of `support.py`.
 """
@@ -96,22 +95,3 @@ def test_a_request_that_leaves_out_line_53_is_read_as_blank(tmp_path: Path) -> N
     assert not declaration.required
     assert declaration.basis == PRINTED_BASIS
     assert default is not None and default.is_blank
-
-
-def test_no_step_reads_line_53_in_this_part(tmp_path: Path) -> None:
-    manifest = _manifest(tmp_path)
-    consumed = {
-        name
-        for form in manifest.forms
-        for selection in form.capabilities
-        for value in selection.consumes.values()
-        for name in ((value,) if isinstance(value, str) else value)
-    }
-    mentions = [
-        found.name
-        for found in PART.parent.glob("*.yaml")
-        if found != PART and IDENTIFIER in found.read_text(encoding="utf-8")
-    ]
-
-    assert IDENTIFIER not in consumed
-    assert mentions == []
