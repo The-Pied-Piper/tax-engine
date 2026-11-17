@@ -1,0 +1,15 @@
+# Form MB479 (2025), line 7, the basic credit.
+# Form MB479 (CRA 5007-TC): "Line 7: Basic credit 195.00". The 195.00 is the
+# `ca-mb/personal_tax_credit_basic` dataset, claimed whole through core/credit_amount, so it
+# is the same at every salary.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/credit_amount
+    title: "Basic credit"
+    reference: "7"
+    unit: ca/cad
+    params:
+      amount: ca-mb/personal_tax_credit_basic
+    produces:
+      output: ca-mb/mb479_basic_credit_line_7

@@ -1,0 +1,17 @@
+# Schedule MB428-A (CRA 5007-A) line 11 (ca-mb/mb428_a): "Line 11: Net income from line 23600 of
+# your return multiplied by 9% =". The 9% is a printed rate, held in the
+# `ca-mb/family_tax_benefit_rate` dataset, so the multiplication is one calculation: 9% of the net
+# income of the first box, rounded half-up to the cent. The form names no label for the line, so
+# the step has no title.
+form:
+  name: ca-mb/mb428_a
+capabilities:
+  - name: core/apply_rate
+    reference: "11"
+    unit: ca/cad
+    params:
+      rate: ca-mb/family_tax_benefit_rate
+    consumes:
+      base: ca-mb/mb428_a_net_income_line_11
+    produces:
+      output: ca-mb/mb428_a_line_11

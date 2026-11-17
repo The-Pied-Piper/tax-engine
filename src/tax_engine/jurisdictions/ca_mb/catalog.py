@@ -19,6 +19,12 @@ MB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Manitoba tax on taxable income, MB428 line 8 "Line 6 plus line 7 Manitoba tax on taxable income
 =": line 6 plus line 7 of the column that line 1 falls in, read by line 58 on the tax form."""
 
+MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
+    CATALOG, "mb428_basic_personal_amount_line_9", non_negative=True
+)
+"""Basic personal amount, MB428 line 9 and line 58040 "Basic personal amount (use Worksheet MB428)":
+the amount of Worksheet MB428 line 9, which says to enter it on line 58040."""
+
 MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
     CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
 )
@@ -161,3 +167,38 @@ that is read as blank when left out, column 1 (you) only."""
 
 WORKSHEET_MB428_LINE_8 = AmountKind.declare(CATALOG, "worksheet_mb428_line_8", non_negative=True)
 """Worksheet MB428 line 8 "Line 8: Line 6 multiplied by line 7 = ^": line 6 times line 7, money."""
+
+MB428_A_LINE_10 = AmountKind.declare(CATALOG, "mb428_a_line_10", non_negative=True)
+"""Sum of lines 1 to 9, Schedule MB428-A line 10 "Line 10: Add lines 1 to 9.": the basic amount of
+the family tax benefit, the only line of the block that is built."""
+
+MB428_A_LINE_11 = AmountKind.declare(CATALOG, "mb428_a_line_11", non_negative=True)
+"""Net income multiplied by 9%, Schedule MB428-A (CRA 5007-A) line 11 "Line 11: Net income from line
+23600 of your return multiplied by 9%": the net income of the first box times the printed rate."""
+
+MB479_UCCB_RDSP_INCOME_LINE_4 = AmountKind.declare(
+    CATALOG, "mb479_uccb_rdsp_income_line_4", non_negative=True
+)
+"""UCCB and RDSP income, MB479 line 4 "Total of the UCCB income (line 11700 of the return) and RDSP
+income (line 12500 of the return)": the total of the two incomes, a caller input that is read as
+blank when left out, column 1 (you) only."""
+
+MB479_FAMILY_INCOME_COLUMN_2_LINE_5 = AmountKind.declare(
+    CATALOG, "mb479_family_income_column_2_line_5", non_negative=True
+)
+"""Family income of your spouse or common-law partner, MB479 line 5 "Line 3 minus line 4 (if
+negative, enter "0")": column 2 (your spouse or common-law partner), taken as one figure because the
+spouse's own lines 1 to 4 are not modelled, a caller input that is read as blank when left out."""
+
+MB479_FAMILY_INCOME_BEFORE_BENEFITS_LINE_3 = AmountKind.declare(
+    CATALOG, "mb479_family_income_before_benefits_line_3", non_negative=False
+)
+"""Family income before benefits, MB479 line 3 "Line 3: Line 1 plus line 2": the net income of
+line 1 plus the UCCB and RDSP repayments of line 2, column 1 (you) only. Line 1 can be negative, so
+the kind is signed."""
+
+MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
+    CATALOG, "mb479_basic_credit_line_7", non_negative=True
+)
+"""Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
+personal tax credits."""
