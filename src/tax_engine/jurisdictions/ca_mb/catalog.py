@@ -242,6 +242,12 @@ MB428_CREDITS_SUBTOTAL_LINE_29 = AmountKind.declare(
 """Credits subtotal, MB428 line 29 "Line 29: Line 18 plus line 28.": the sum of line 18 and line
 28."""
 
+MB428_CREDITS_SUBTOTAL_LINE_33 = AmountKind.declare(
+    CATALOG, "mb428_credits_subtotal_line_33", non_negative=True
+)
+"""Credits subtotal, MB428 line 33 "Line 33: Add lines 30 to 32. = ^": the sum of line 30 (a copy of
+line 29) and the line 31 pension income amount; line 32, the caregiver amount, is not built."""
+
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
 )
@@ -253,6 +259,12 @@ MB428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 )
 """Lower bound of the column, MB428 line 3 "Line 3: 0.00" (47,000.00; 100,000.00): the printed lower
 bound of the column of lines 2 to 8 that line 1 falls in."""
+
+MB428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "mb428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, MB428 line 4 "Line 4: Line 2 minus line 3 (can not be
+negative) =": line 1 minus line 3, not below zero."""
 
 MB479_AGE_CREDIT_LINE_8 = AmountKind.declare(CATALOG, "mb479_age_credit_line_8", non_negative=True)
 """Age credit for self, MB479 line 8 "Age credit for self (if you were born in 1960 or earlier)
@@ -314,6 +326,13 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, MB428 line 7 "Line 7: 0.00" (5,076.00; 11,833.50): the printed
+tax at the start of the column of lines 2 to 8 that line 1 falls in. Column 3 is unbounded, so it is
+never blank."""
 
 MB479_FAMILY_INCOME_LINE_6 = AmountKind.declare(
     CATALOG, "mb479_family_income_line_6", non_negative=True
