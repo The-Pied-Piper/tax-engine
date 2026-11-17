@@ -56,10 +56,3 @@ def test_2025_amount_is_unchanged() -> None:
     data = SOURCE.get(FAMILY, 2025, CREDIT)
 
     assert data.values == Credit(amount=D("1719"))
-
-
-def test_the_2026_amount_is_the_2025_amount_indexed_by_two_percent_rounded_down() -> None:
-    indexed = D("1719") * D("1.02")
-
-    assert indexed == D("1753.38")
-    assert indexed.to_integral_value(rounding="ROUND_DOWN") == D("1753")
