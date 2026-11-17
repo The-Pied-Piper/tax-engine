@@ -203,6 +203,12 @@ MB479_BASIC_CREDIT_LINE_7 = AmountKind.declare(
 """Basic credit, MB479 line 7 "Line 7: Basic credit 195.00": the basic credit of the Manitoba
 personal tax credits."""
 
+MB479_PRIMARY_CAREGIVER_CREDIT_LINE_59 = AmountKind.declare(
+    CATALOG, "mb479_primary_caregiver_credit_line_59", non_negative=True
+)
+"""Primary caregiver tax credit, MB479 line 59 "Line 59 and line 61260: Primary caregiver tax
+credit": a caller input that is read as blank when left out."""
+
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
 )
