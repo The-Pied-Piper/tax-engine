@@ -81,7 +81,7 @@ def test_the_part_declares_only_the_line_67_input() -> None:
     assert "title" not in part["inputs"][0]
 
 
-def test_the_line_67_cost_is_a_non_negative_amount_kind() -> None:
+def test_the_line_67_credit_is_a_non_negative_amount_kind() -> None:
     kind = manitoba_kinds().kind(IDENTIFIER)
 
     assert IDENTIFIER == "ca-mb/mb479_green_energy_purchaser_credit_line_67"
