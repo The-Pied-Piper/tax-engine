@@ -1,0 +1,18 @@
+# Form MB428 (CRA 5007-c) line 42: "Line 42: Add lines 36 to 41. = ^". Lines 37 to 40 are the
+# optional student loan, tuition and transfer amounts, which are left blank, so they are not built.
+# It sums the credits subtotal (line 36, `ca-mb/mb428_credits_subtotal_line_36`) and the family tax
+# benefit (line 41, `ca-mb/mb428_family_tax_benefit_line_41`). Line 36 and line 41 already read
+# their blanks, so this step has no blank rule. Line 42 is the output
+# `ca-mb/mb428_credits_subtotal_line_42`.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/sum
+    reference: "42"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb428_credits_subtotal_line_36, ca-mb/mb428_family_tax_benefit_line_41]
+    produces:
+      output: ca-mb/mb428_credits_subtotal_line_42
