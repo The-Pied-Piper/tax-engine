@@ -279,3 +279,10 @@ MB479_TOTAL_CREDITS_LINE_17 = AmountKind.declare(
 """Total credits, MB479 line 17 "Line 17 and line 61050: Add lines 7, 8, and 12 to 16. Total
 credits": the basic credit of line 7 plus the credits of lines 8 and 12 to 16, each blank one taken
 as 0."""
+
+MB479_HOMEOWNER_RENTER_SENIOR_CREDITS_LINE_53 = AmountKind.declare(
+    CATALOG, "mb479_homeowner_renter_senior_credits_line_53", non_negative=True
+)
+"""Homeowners, renters and seniors credits, MB479 line 53 "Line 53: Line 41 plus line 52 = ^": the
+printed collecting sum of the skipped block of lines 20 to 52 (homeowners affordability, renters
+affordability, seniors school tax rebate), a caller input that is read as blank when left out."""
