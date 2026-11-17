@@ -1,0 +1,17 @@
+# Schedule MB428-A (CRA 5007-A) line 12 (ca-mb/mb428_a): "Line 12: Line 10 minus line 11 (if negative,
+# enter "0") Enter this amount on line 61470 of your Form MB428." One calculation: line 10 minus
+# line 11, not below zero, rounded half-up to the cent. The form prints no title for the line, so
+# the step is untitled.
+form:
+  name: ca-mb/mb428_a
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "12"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/mb428_a_line_10
+      less: ca-mb/mb428_a_line_11
+    produces:
+      output: ca-mb/mb428_a_family_tax_benefit_line_12
