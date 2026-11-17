@@ -1,8 +1,9 @@
 # Form BC428 (CRA 5010-C) line 85 "Line 85: Line 82 minus line 84 (if negative, enter "0") = ^". One
 # core/subtract_not_below_zero step: the tax after the logging tax credit (line 82,
 # `ca-bc/bc428_tax_after_logging_credit_line_82`) less the political contribution tax credit (line
-# 84, `ca-bc/bc428_political_contribution_tax_credit_line_84`), not below 0. Line 84 is an optional
-# input that a salary-only caller leaves out, read as blank and then as 0 by the blank rule below.
+# 84, `ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84`), not below 0.
+# Line 84 is the entry checked against its printed maximum (bc428_line_84.yaml), blank when a
+# salary-only caller leaves it out and read as 0 by the blank rule below.
 # The form prints no title for the line, so the step has none.
 form:
   name: ca-bc/bc428
@@ -14,7 +15,7 @@ capabilities:
       rounding: ca-bc/cent_rounding
     consumes:
       amount: ca-bc/bc428_tax_after_logging_credit_line_82
-      less: ca-bc/bc428_political_contribution_tax_credit_line_84
+      less: ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84
     blank:
       less: "0"
     produces:

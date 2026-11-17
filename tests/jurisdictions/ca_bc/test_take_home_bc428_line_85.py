@@ -4,15 +4,18 @@ Form text (Form BC428, CRA 5010-C): Line 85: Line 82 minus line 84 (if negative,
 The form prints no title for the line beyond its label, so the step is untitled.
 
 Line 85 is one core/subtract_not_below_zero step (`bc428_line_85.yaml`), rounded through
-`ca-bc/cent_rounding`, taking line 84 (`ca-bc/bc428_political_contribution_tax_credit_line_84`, an
-input a salary-only caller leaves out) off line 82 (`ca-bc/bc428_tax_after_logging_credit_line_82`).
-Line 84 left
-blank is taken as 0 by the step's own blank rule (`blank: less: "0"`), which prints its own
+`ca-bc/cent_rounding`, taking line 84 (the `core/at_most` output
+`ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84`, over the input
+`ca-bc/bc428_political_contribution_tax_credit_line_84`, which a salary-only caller leaves out)
+off line 82 (`ca-bc/bc428_tax_after_logging_credit_line_82`).
+Line 84 left blank is taken as 0 by the
+step's own blank rule (`blank: less: "0"`), which prints its own
 "left blank, taken as 0" row. The output is `ca-bc/bc428_tax_after_political_credit_line_85`, a
 non-negative kind on the form `ca-bc/bc428`.
 
 The test composes the real parts that lead to line 82 (the salary, Schedule 8, T2204, the federal
-T1 taxable income parts and BC428 lines 1 to 82), the line 84 input part, plus the new
+T1 taxable income parts and BC428 lines 1 to 82), the line 84 input, maximum and line parts,
+plus the new
 `bc428_line_85.yaml`. The header and the form declaration are made up here, because the shared
 scaffold owns them.
 
@@ -77,7 +80,8 @@ LINE_79 = "ca-bc/bc428_british_columbia_tax_reduction_line_79"
 LINE_80 = "ca-bc/bc428_tax_after_reduction_line_80"
 LINE_81 = "ca-bc/bc428_logging_tax_credit_line_81"
 LINE_82 = "ca-bc/bc428_tax_after_logging_credit_line_82"
-LINE_84 = "ca-bc/bc428_political_contribution_tax_credit_line_84"
+LINE_84_INPUT = "ca-bc/bc428_political_contribution_tax_credit_line_84"
+LINE_84 = "ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84"
 LINE_85 = "ca-bc/bc428_tax_after_political_credit_line_85"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
@@ -136,6 +140,8 @@ BC_LINE_PARTS = (
     "bc428_line_81_input.yaml",
     "bc428_line_82.yaml",
     "bc428_line_84_input.yaml",
+    "bc428_political_contribution_tax_credit_maximum.yaml",
+    "bc428_line_84.yaml",
     LINE_PART.name,
 )
 
@@ -259,7 +265,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
 def _sheet(tmp_path: Path, salary: str, credit: str | None = None) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if credit is not None:
-        given.append(Artifact(_amount_kind(LINE_84), D(credit)))
+        given.append(Artifact(_amount_kind(LINE_84_INPUT), D(credit)))
     worksheets = _service(tmp_path).compute(CODE, 2025, *given)
     (sheet,) = worksheets[TAX]
     return sheet
