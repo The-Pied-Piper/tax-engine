@@ -1,0 +1,18 @@
+# Form MB428 (CRA 5007-c) line 28: "Line 28: Add lines 19 to 27." Lines 20 and 22 to 27 (self-employment
+# CPP and EI, volunteer firefighters, search and rescue, fitness, children's arts, adoption) are
+# optional claims left out: a salary-only filer has none of them, as Alberta's line 32 leaves out its
+# equivalents. Step 1 adds lines 19 and 21 with core/sum.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/sum
+    reference: "28"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb428_cpp_contributions_line_19
+        - ca-mb/mb428_ei_premiums_line_21
+    produces:
+      output: ca-mb/mb428_cpp_ei_and_other_line_28
