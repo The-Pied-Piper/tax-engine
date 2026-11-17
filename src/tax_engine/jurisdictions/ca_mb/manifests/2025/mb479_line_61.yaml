@@ -1,0 +1,22 @@
+# Form MB479 (Manitoba Credits, 2025, CRA 5007-TC) line 61 (ca-mb/mb479). "Fertility treatment tax
+# credit: Line 61: Eligible medical expenses for fertility treatments Line 61268 ^ multiplied by 40%
+# (maximum $16,000) = ^". The 40% is a printed rate, held in the
+# `ca-mb/fertility_treatment_credit_rate` dataset, so line 61 is one calculation: 40% of the
+# expenses, rounded half-up to the cent. The expenses are an optional input (read as 0 when left
+# out), declared by their own part. The "(maximum $16,000)" wording is ambiguous (it could cap the
+# expenses or the credit), so it is not built.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/apply_rate
+    title: "Fertility treatment tax credit"
+    reference: "61"
+    unit: ca/cad
+    params:
+      rate: ca-mb/fertility_treatment_credit_rate
+    consumes:
+      base: ca-mb/mb479_fertility_treatment_expenses_line_61
+    blank:
+      base: "0"
+    produces:
+      output: ca-mb/mb479_fertility_treatment_credit_line_61
