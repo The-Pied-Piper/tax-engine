@@ -19,6 +19,12 @@ MB428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Manitoba tax on taxable income, MB428 line 8 "Line 6 plus line 7 Manitoba tax on taxable income
 =": line 6 plus line 7 of the column that line 1 falls in, read by line 58 on the tax form."""
 
+MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
+    CATALOG, "mb428_basic_personal_amount_line_9", non_negative=True
+)
+"""Basic personal amount, MB428 line 9 and line 58040 "Basic personal amount (use Worksheet MB428)":
+the amount of Worksheet MB428 line 9, which says to enter it on line 58040."""
+
 MB428_CPP_CONTRIBUTIONS_LINE_19 = AmountKind.declare(
     CATALOG, "mb428_cpp_contributions_line_19", non_negative=True
 )
