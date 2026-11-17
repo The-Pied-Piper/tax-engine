@@ -422,6 +422,13 @@ MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
 geothermal heat pumps": the adjusted cost of geothermal heat pumps the 7.5% is taken of, a caller
 input that is read as blank when left out."""
 
+MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
+    CATALOG, "mb479_geothermal_heat_pump_credit_line_68", non_negative=True
+)
+"""Green energy equipment tax credit (manufacturer), MB479 line 68 "Line 68 and line 61390: 7.5% of
+the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
+heat pumps, rounded half-up to the cent."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )

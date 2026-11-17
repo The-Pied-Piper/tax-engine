@@ -1,0 +1,21 @@
+# Form MB479 (Manitoba Credits, 2025, CRA 5007-TC) line 68 (ca-mb/mb479). "Green energy equipment
+# tax credit (manufacturer): Line 68 and line 61390: 7.5% of the adjusted cost of geothermal heat
+# pumps ^". The 7.5% is a printed rate, held in the `ca-mb/geothermal_heat_pump_credit_rate`
+# dataset. The form prints no maximum for line 68. The adjusted cost is an optional input (read as
+# 0 when left out), declared by its own part. The heading above the line is a section heading, so
+# the step carries no title.
+form:
+  name: ca-mb/mb479
+capabilities:
+  # Line 68: "7.5% of the adjusted cost of geothermal heat pumps", to the cent.
+  - name: core/apply_rate
+    reference: "68"
+    unit: ca/cad
+    params:
+      rate: ca-mb/geothermal_heat_pump_credit_rate
+    consumes:
+      base: ca-mb/mb479_geothermal_heat_pump_cost_line_68
+    blank:
+      base: "0"
+    produces:
+      output: ca-mb/mb479_geothermal_heat_pump_credit_line_68
