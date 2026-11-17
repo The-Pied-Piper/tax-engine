@@ -12,9 +12,9 @@ capabilities:
     reference: "84"
     unit: ca/cad
     consumes:
-      amount: ca-bc/bc428_political_contribution_tax_credit
+      amount: ca-bc/bc428_political_contribution_tax_credit_line_84
       bound: ca-bc/bc428_political_contribution_tax_credit_maximum
     blank:
       amount: pass_on
     produces:
-      output: ca-bc/bc428_political_contribution_tax_credit_line_84
+      output: ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84

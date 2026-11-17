@@ -6,9 +6,10 @@ built, so line 84 is an entry line: the entered amount is rejected above the pri
 capped. The maximum is the `ca-bc/political_contribution_tax_credit_maximum` dataset, supplied by
 `bc428_political_contribution_tax_credit_maximum.yaml`, a `core/credit_amount` step that carries no
 title and no line number (it is not a line of the form). `bc428_line_84.yaml` is `core/at_most`,
-line 84, titled and referenced "84", consuming the `ca-bc/bc428_political_contribution_tax_credit`
-input against that maximum and producing `ca-bc/bc428_political_contribution_tax_credit_line_84`,
-which line 85 subtracts. A blank input (the default) is passed on as blank.
+line 84, titled and referenced "84", consuming the
+`ca-bc/bc428_political_contribution_tax_credit_line_84` input against that maximum and producing
+`ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84`, which line 85 subtracts.
+A blank input (the default) is passed on as blank.
 
 The real input part and the two new parts are loaded under a test-local header and form, the shared
 scaffold owning those, and only the salary is typed in (plus, in some tests, the input).
@@ -48,9 +49,9 @@ BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / 
 INPUT_PART = BC_PARTS / "bc428_line_84_input.yaml"
 MAXIMUM_PART = BC_PARTS / "bc428_political_contribution_tax_credit_maximum.yaml"
 LINE_PART = BC_PARTS / "bc428_line_84.yaml"
-INPUT = "ca-bc/bc428_political_contribution_tax_credit"
+INPUT = "ca-bc/bc428_political_contribution_tax_credit_line_84"
 MAXIMUM = "ca-bc/bc428_political_contribution_tax_credit_maximum"
-LINE_84 = "ca-bc/bc428_political_contribution_tax_credit_line_84"
+LINE_84 = "ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84"
 FORM_NAME = "ca-bc/bc428"
 
 HEADER = dedent("""\
@@ -68,7 +69,7 @@ FORM = dedent("""\
       name: ca-bc/bc428
       required: true
       exports:
-        - ca-bc/bc428_political_contribution_tax_credit_line_84
+        - ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84
     capabilities: []
     """)
 

@@ -4,11 +4,12 @@ Form text (Form BC428, CRA 5010-C): Line 85: Line 82 minus line 84 (if negative,
 The form prints no title for the line beyond its label, so the step is untitled.
 
 Line 85 is one core/subtract_not_below_zero step (`bc428_line_85.yaml`), rounded through
-`ca-bc/cent_rounding`, taking line 84 (`ca-bc/bc428_political_contribution_tax_credit_line_84`, the
-`core/at_most` output over the input `ca-bc/bc428_political_contribution_tax_credit`, which a
-salary-only caller leaves out) off line 82 (`ca-bc/bc428_tax_after_logging_credit_line_82`).
-Line 84 left
-blank is taken as 0 by the step's own blank rule (`blank: less: "0"`), which prints its own
+`ca-bc/cent_rounding`, taking line 84 (the `core/at_most` output
+`ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84`, over the input
+`ca-bc/bc428_political_contribution_tax_credit_line_84`, which a salary-only caller leaves out)
+off line 82 (`ca-bc/bc428_tax_after_logging_credit_line_82`).
+Line 84 left blank is taken as 0 by the
+step's own blank rule (`blank: less: "0"`), which prints its own
 "left blank, taken as 0" row. The output is `ca-bc/bc428_tax_after_political_credit_line_85`, a
 non-negative kind on the form `ca-bc/bc428`.
 
@@ -79,8 +80,8 @@ LINE_79 = "ca-bc/bc428_british_columbia_tax_reduction_line_79"
 LINE_80 = "ca-bc/bc428_tax_after_reduction_line_80"
 LINE_81 = "ca-bc/bc428_logging_tax_credit_line_81"
 LINE_82 = "ca-bc/bc428_tax_after_logging_credit_line_82"
-LINE_84_INPUT = "ca-bc/bc428_political_contribution_tax_credit"
-LINE_84 = "ca-bc/bc428_political_contribution_tax_credit_line_84"
+LINE_84_INPUT = "ca-bc/bc428_political_contribution_tax_credit_line_84"
+LINE_84 = "ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84"
 LINE_85 = "ca-bc/bc428_tax_after_political_credit_line_85"
 ROUNDING = "ca-bc/cent_rounding"
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"

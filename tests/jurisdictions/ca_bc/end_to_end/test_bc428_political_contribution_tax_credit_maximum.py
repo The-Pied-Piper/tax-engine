@@ -30,9 +30,9 @@ from tax_engine.registrations import artifact_kinds
 
 D = Decimal
 BRITISH_COLUMBIA = JurisdictionCode("CA-BC")
-INPUT = "ca-bc/bc428_political_contribution_tax_credit"
+INPUT = "ca-bc/bc428_political_contribution_tax_credit_line_84"
 MAXIMUM = "ca-bc/bc428_political_contribution_tax_credit_maximum"
-LINE_84 = "ca-bc/bc428_political_contribution_tax_credit_line_84"
+LINE_84 = "ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84"
 LINE_85 = "ca-bc/bc428_tax_after_political_credit_line_85"
 BC428 = "ca-bc/bc428"
 SALARY = "70000"

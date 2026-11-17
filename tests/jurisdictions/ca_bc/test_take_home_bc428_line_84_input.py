@@ -2,10 +2,9 @@
 
 Form text (Form BC428, CRA 5010-C): "Line 84: British Columbia political contribution tax credit
 (use Worksheet BC428) (maximum $500)". Worksheet BC428 is not built. The input is
-`ca-bc/bc428_political_contribution_tax_credit`, with no line number in its name;
-`bc428_line_84.yaml` checks it against the printed maximum. A
-salary-only caller has no British Columbia political contribution tax credit, so a request that
-leaves the line out is read as blank, which the line 84 step passes on.
+`ca-bc/bc428_political_contribution_tax_credit_line_84`; `bc428_line_84.yaml` checks it against the
+printed maximum. A salary-only caller has no British Columbia political contribution tax credit, so
+a request that leaves the line out is read as blank, which the line 84 step passes on.
 
 The real part is loaded under a test-local header over the British Columbia package list of
 `support.py`.
@@ -23,7 +22,7 @@ import tax_engine.jurisdictions.ca_bc
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_bc.catalog import (
-    BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT,
+    BC428_BRITISH_COLUMBIA_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84,
     BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84,
     BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM,
 )
@@ -34,7 +33,7 @@ from tests.jurisdictions.ca_bc.support import (
 )
 from tests.kinds import non_negative
 
-IDENTIFIER = BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT.identifier
+IDENTIFIER = BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84.identifier
 PRINTED_BASIS = (
     "Line 84: British Columbia political contribution tax credit "
     "(use Worksheet BC428) (maximum $500)"
@@ -97,16 +96,18 @@ def test_the_part_declares_only_the_political_contribution_tax_credit_input() ->
 def test_the_input_is_a_non_negative_amount_kind_without_a_line_number() -> None:
     kind = british_columbia_kinds().kind(IDENTIFIER)
 
-    assert IDENTIFIER == "ca-bc/bc428_political_contribution_tax_credit"
-    assert kind is BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT
+    assert IDENTIFIER == "ca-bc/bc428_political_contribution_tax_credit_line_84"
+    assert kind is BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84
     assert non_negative(kind)
 
 
 def test_the_line_84_and_maximum_kinds_are_non_negative_amount_kinds() -> None:
-    line_84 = british_columbia_kinds().kind("ca-bc/bc428_political_contribution_tax_credit_line_84")
+    line_84 = british_columbia_kinds().kind(
+        "ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84"
+    )
     maximum = british_columbia_kinds().kind("ca-bc/bc428_political_contribution_tax_credit_maximum")
 
-    assert line_84 is BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84
+    assert line_84 is BC428_BRITISH_COLUMBIA_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84
     assert maximum is BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM
     assert non_negative(line_84)
     assert non_negative(maximum)

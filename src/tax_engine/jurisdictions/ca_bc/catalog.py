@@ -123,8 +123,8 @@ BC428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_71 = AmountKind.declare(
 """British Columbia provincial foreign tax credit, BC428 line 71 "Line 71: Provincial foreign tax
 credit (complete Form T2036)": a caller input that is read as blank when left out."""
 
-BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT = AmountKind.declare(
-    CATALOG, "bc428_political_contribution_tax_credit", non_negative=True
+BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "bc428_political_contribution_tax_credit_line_84", non_negative=True
 )
 """British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
 political contribution tax credit (use Worksheet BC428) (maximum $500)": the amount the filer
@@ -138,8 +138,8 @@ BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM = AmountKind.declare(
 $500)": the printed maximum, from the `ca-bc/political_contribution_tax_credit_maximum` dataset; the
 bound line 84 cannot pass."""
 
-BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
-    CATALOG, "bc428_political_contribution_tax_credit_line_84", non_negative=True
+BC428_BRITISH_COLUMBIA_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_political_contribution_tax_credit_line_84", non_negative=True
 )
 """British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
 political contribution tax credit (use Worksheet BC428) (maximum $500)": the entered amount, passed
