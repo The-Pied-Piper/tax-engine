@@ -116,6 +116,13 @@ MB428_DIVIDEND_TAX_CREDIT_LINE_62 = AmountKind.declare(
 """Manitoba dividend tax credit, MB428 line 62 (line 61520) "Line 62 and line 61520: Manitoba
 dividend tax credit (use Worksheet MB428)": a caller input, read as blank when left out."""
 
+MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
+    CATALOG, "mb428_political_contribution_tax_credit_line_69", non_negative=True
+)
+"""Manitoba political contribution tax credit, MB428 line 69 "Line 69: Manitoba political
+contribution tax credit (use Worksheet MB428) (maximum $1,000)": a caller input, read as blank
+when left out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
@@ -249,6 +256,13 @@ MB479_PRIMARY_CAREGIVER_CREDIT_LINE_59 = AmountKind.declare(
 """Primary caregiver tax credit, MB479 line 59 "Line 59 and line 61260: Primary caregiver tax
 credit": a caller input that is read as blank when left out."""
 
+MB479_ODOUR_CONTROL_CREDIT_LINE_65 = AmountKind.declare(
+    CATALOG, "mb479_odour_control_credit_line_65", non_negative=True
+)
+"""Unused odour-control tax credit, MB479 line 65 "Line 65 and line 61340: Enter your unused
+odour-control tax credit from your 2024 notice of assessment or reassessment.": a caller input that
+is read as blank when left out."""
+
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
 )
@@ -286,6 +300,12 @@ MB428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
 """Credits subtotal, MB428 line 42 "Line 42: Add lines 36 to 41. = ^": the sum of line 36 and the
 line 41 family tax benefit; lines 37 to 40, the optional student loan, tuition and transfer amounts,
 are left blank and not built."""
+
+MB428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
+    CATALOG, "mb428_credits_total_line_51", non_negative=True
+)
+"""MB428 line 51 "Line 51 and line 58800: Line 42 plus line 50 = ^": the sum of line 42 and the
+line 50 medical expense amount; lines 43 to 49, the medical expense working, are not built."""
 
 MB479_FAMILY_INCOME_COLUMN_1_LINE_5 = AmountKind.declare(
     CATALOG, "mb479_family_income_column_1_line_5", non_negative=True
@@ -377,6 +397,13 @@ MB479_EIA_MSPD_NUMBER_LINE_56 = AmountKind.declare(
 partner) did receive EIA or MSPD payments from Manitoba in 2025, enter the number from box 14 of
 your (or your spouse's or common-law partner's) Form T5007, Statement of Benefits (even if it is
 0.00)": the number from box 14 of Form T5007, a caller input that is read as 1 when left out."""
+
+MB479_GREEN_ENERGY_PURCHASER_CREDIT_LINE_67 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_purchaser_credit_line_67", non_negative=True
+)
+"""Green energy equipment tax credit (purchaser), MB479 line 67 "Line 67 and line 61380: Complete
+Form T1294": the credit worked out on Form T1294, which is not built, a caller input that is read
+as blank when left out."""
 
 MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
     CATALOG, "mb479_geothermal_heat_pump_cost_line_68", non_negative=True
