@@ -30,6 +30,7 @@ from tax_engine.domain.trace.arithmetic import (
     PercentageAppliedLine,
     PerUnitAmountLine,
     PositivePartOfNegationLine,
+    ProductLine,
     QuotientLine,
     RateAppliedLine,
     RatioAppliedLine,
@@ -417,6 +418,23 @@ class QuotientRenderer:
             return f"{dividend} divided by {divisor}, which is zero, gives {result}"
         return (
             f"{dividend} divided by {divisor} gives {result} "
+            f"({EnglishFigures.rounding(line.rounding)})"
+        )
+
+
+@english_renderer
+class ProductRenderer:
+    """English text for ProductLine."""
+
+    line_class = ProductLine
+
+    def render(self, line: ProductLine, names: EnglishNames) -> str:
+        """The English sentence for `line`."""
+        multiplicand = names.figure(line.multiplicand, line.multiplicand_amount)
+        multiplier = names.figure(line.multiplier, line.multiplier_amount)
+        result = names.shown(line.label, line.result)
+        return (
+            f"{multiplicand} multiplied by {multiplier} gives {result} "
             f"({EnglishFigures.rounding(line.rounding)})"
         )
 

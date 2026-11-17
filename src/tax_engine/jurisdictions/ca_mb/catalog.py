@@ -151,3 +151,6 @@ MB479_UCCB_RDSP_REPAYMENTS_LINE_2 = AmountKind.declare(
 repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
 repayment (included on line 23200 of the return)": the total of the two repayments, a caller input
 that is read as blank when left out, column 1 (you) only."""
+
+WORKSHEET_MB428_LINE_8 = AmountKind.declare(CATALOG, "worksheet_mb428_line_8", non_negative=True)
+"""Worksheet MB428 line 8 "Line 8: Line 6 multiplied by line 7 = ^": line 6 times line 7, money."""
