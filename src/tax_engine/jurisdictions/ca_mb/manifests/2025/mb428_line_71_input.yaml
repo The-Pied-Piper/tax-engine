@@ -1,0 +1,12 @@
+# MB428 (2025) line 71's input, which a salary-only caller does not give.
+# Line 71: "Line 71 and line 60800: Enter your labour-sponsored funds tax credit from Slip T2C (MAN.)."
+# (Form MB428, CRA 5007-c). The form prints no label for the line, so the input carries no title. A
+# salary-only caller has no labour-sponsored funds tax credit, so a request that leaves the line out
+# is read as blank; the step that reads line 71 reads that blank as 0.
+inputs:
+  - name: ca-mb/mb428_labour_sponsored_funds_credit_line_71
+    reference: "71"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 71 and line 60800: Enter your labour-sponsored funds tax credit from Slip T2C (MAN.).'

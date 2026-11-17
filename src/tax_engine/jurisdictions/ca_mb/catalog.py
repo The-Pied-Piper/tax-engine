@@ -141,6 +141,12 @@ MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
 contribution tax credit (use Worksheet MB428) (maximum $1,000)": a caller input, read as blank
 when left out."""
 
+MB428_LABOUR_SPONSORED_FUNDS_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "mb428_labour_sponsored_funds_credit_line_71", non_negative=True
+)
+"""Labour-sponsored funds tax credit, MB428 line 71 (line 60800) "Enter your labour-sponsored funds
+tax credit from Slip T2C (MAN.).": a caller input, read as blank when left out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
