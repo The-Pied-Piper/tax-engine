@@ -321,3 +321,9 @@ MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 """Tax at the start of the column, MB428 line 7 "Line 7: 0.00" (5,076.00; 11,833.50): the printed
 tax at the start of the column of lines 2 to 8 that line 1 falls in. Column 3 is unbounded, so it is
 never blank."""
+
+MB479_PAID_WORK_EXPERIENCE_CREDIT_LINE_63 = AmountKind.declare(
+    CATALOG, "mb479_paid_work_experience_credit_line_63", non_negative=True
+)
+"""Paid work experience tax credit, MB479 line 63 "Line 63 and line 61310: Paid work experience tax
+credit": the credit of the line, a caller input that is read as blank when left out."""
