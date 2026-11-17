@@ -9,14 +9,13 @@ The test composes the real Manitoba salary part, the real Schedule 8 and T2204 p
 `mb428_credits_line_21.yaml`, and types in only the salary. The MB428 form declaration is made up
 here, exporting only line 21, because the real header is owned by another change. Manitoba is not
 yet in `registrations.JURISDICTIONS`, so the service is built over the Manitoba package list of
-`support.py`, with its parameter parsers built here from the same package list.
+`support.py`.
 """
 
 from __future__ import annotations
 
 from collections.abc import Iterator
 from decimal import Decimal
-from functools import cache
 from pathlib import Path
 from textwrap import dedent
 from typing import Any
@@ -26,7 +25,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
-from tax_engine.adapters.outbound.parameter_parser import ParameterParserRegistry
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -40,6 +38,7 @@ from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
     manitoba_packages,
+    manitoba_parameter_parsers,
     manitoba_units,
 )
 from tests.kinds import non_negative
@@ -69,14 +68,6 @@ FORM = dedent("""\
     """)
 
 
-@cache
-def _parameter_parsers() -> ParameterParserRegistry:
-    """The parameter parsers of the Manitoba package list; never register into it."""
-    registry = ParameterParserRegistry()
-    manitoba_packages().register_parameter_parsers(registry)
-    return registry
-
-
 def _part_files() -> Iterator[Path]:
     yield MB_PARTS / "salary.yaml"
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
@@ -103,7 +94,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
         YamlJurisdictionSource(roots, manitoba_kinds(), manitoba_units()),
         YamlParameterSource(
             manitoba_packages().roots(),
-            _parameter_parsers(),
+            manitoba_parameter_parsers(),
             manitoba_units(),
         ),
         manitoba_capabilities(),
