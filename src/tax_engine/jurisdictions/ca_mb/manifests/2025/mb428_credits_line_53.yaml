@@ -1,0 +1,16 @@
+# Form MB428 (CRA 5007-c) line 53 (ca-mb/mb428_credits): "Line 52: Manitoba non-refundable tax credits
+# rate 10.8% / Line 53 and line 58840: Line 51 multiplied by the percentage from line 52 =".
+# Line 52 is a printed rate, held in the `ca-mb/credit_rate` dataset, so line 53 is one calculation:
+# 10.8% of line 51, rounded half-up to the cent. Line 51 is read from its source part, not copied.
+form:
+  name: ca-mb/mb428_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "53"
+    unit: ca/cad
+    params:
+      rate: ca-mb/credit_rate
+    consumes:
+      base: ca-mb/mb428_credits_total_line_51
+    produces:
+      output: ca-mb/mb428_credits_at_rate_line_53
