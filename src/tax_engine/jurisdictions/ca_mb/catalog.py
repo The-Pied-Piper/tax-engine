@@ -374,3 +374,10 @@ as 0 when left out."""
 MB479_REDUCTION_LINE_18 = AmountKind.declare(CATALOG, "mb479_reduction_line_18", non_negative=True)
 """Reduction, MB479 line 18: the amount from line 6 multiplied by 1%, the printed rate held in the
 `ca-mb/personal_tax_credit_reduction_rate` dataset, rounded half-up to the cent."""
+
+MB479_FERTILITY_TREATMENT_EXPENSES_LINE_61 = AmountKind.declare(
+    CATALOG, "mb479_fertility_treatment_expenses_line_61", non_negative=True
+)
+"""Fertility treatment expenses, MB479 line 61 "Line 61: Eligible medical expenses for fertility
+treatments Line 61268 multiplied by 40% (maximum $16,000)": the eligible medical expenses of the
+first box, a caller input that is read as blank when left out."""
