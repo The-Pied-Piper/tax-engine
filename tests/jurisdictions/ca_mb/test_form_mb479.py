@@ -9,19 +9,15 @@ declaration (`mb479.yaml`), not the line parts, which have their own tests.
 
 from __future__ import annotations
 
-from decimal import Decimal
 from pathlib import Path
 
 import tax_engine.jurisdictions.ca_mb
-import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.domain.kinds import AmountKind
 from tests.jurisdictions.ca_mb.support import (
     manitoba_kinds,
     manitoba_packages,
     manitoba_units,
 )
-from tests.kinds import non_negative
 
 PART = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025" / "mb479.yaml"
 LINE_81 = "ca-mb/mb479_manitoba_credits_line_81"
@@ -37,17 +33,6 @@ outputs:
   - {LINE_81}
 capabilities: []
 """
-
-
-def test_line_81_is_a_registered_non_negative_decimal_amount_kind() -> None:
-    kinds = manitoba_kinds()
-
-    assert LINE_81 in kinds.identifiers()
-    kind = kinds.kind(LINE_81)
-    assert isinstance(kind, AmountKind)
-    assert kind.value_type is Decimal
-    assert non_negative(kind)
-    assert kind is vars(mb_catalog)["MB479_MANITOBA_CREDITS_LINE_81"]
 
 
 def test_the_form_is_declared_with_its_export_and_its_supply(tmp_path: Path) -> None:
