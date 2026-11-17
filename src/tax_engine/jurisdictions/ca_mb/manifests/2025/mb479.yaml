@@ -1,0 +1,13 @@
+# Form MB479 Manitoba Credits 2025 (CRA 5007-TC), lines 1 to 81. This part names the form and its
+# export; the form is one form, so its lines read each other directly. Export: line 81, the Manitoba
+# credits (`ca-mb/mb479_manitoba_credits_line_81`), which line 81 says to enter on line 47900 of the
+# return. The form supplies line 81 as `ca/provincial_credits.amount`, the name the federal T1 reads.
+form:
+  name: ca-mb/mb479
+  title: "Form MB479: Manitoba Credits"
+  required: true
+  exports:
+    - ca-mb/mb479_manitoba_credits_line_81
+  supplies:
+    ca/provincial_credits.amount: ca-mb/mb479_manitoba_credits_line_81
+capabilities: []

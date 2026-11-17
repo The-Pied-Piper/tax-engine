@@ -38,6 +38,14 @@ def manitoba_kinds() -> ArtifactRegistry:
 
 
 @cache
+def manitoba_units() -> UnitRegistry:
+    """The units of the Manitoba package list; never register into it."""
+    registry = UnitRegistry()
+    manitoba_packages().register_units(registry)
+    return registry
+
+
+@cache
 def manitoba_capabilities() -> CapabilityRegistry:
     """The capabilities of the Manitoba package list; never register into it."""
     registry = CapabilityRegistry()
