@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Manitoba minimum tax rate, 2026 tax year (Form MB428 lines 63 and 66): 50%.
+# Line 63 applies it to the amount from line 40427 of the return, and line 66 to the Form T691
+# amount. Each product is a dollars-and-cents line, so it rounds half-up to the cent,
+# the project's choice, as the form states no rounding rule.
+# The 2026 MB428/MB479 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-mb/minimum_tax_rate
+tax_year: 2026
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-c/5007-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.5"

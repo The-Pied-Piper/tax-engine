@@ -1,0 +1,25 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: thresholds 47,000 and 100,000 and rates 10.80%, 12.75%, 17.40% as printed in T4127 (Jan 2026) Table 8.1 (Manitoba thresholds are not indexed); tax_at_start carried from the 2025 form's printed line 7 constants, which these thresholds and rates still reproduce.
+# Manitoba 2026 brackets, Form MB428 (CRA 5007-C) Part A, lines 2 to 8, columns 1 to 3. Column
+# headings: "Column 1: Line 1 is $47,000 or less"; "Column 2: Line 1 is more than $47,000 but not
+# more than $100,000"; "Column 3: Line 1 is more than $100,000". In every column: line 3 the
+# column's lower bound (0.00, 47,000.00, 100,000.00); line 5 "Rate" (10.8%, 12.75%, 17.4%); line 7
+# the printed constant (0.00, 5,076.00, 11,833.50). Lines 3, 5 and 7 are the printed figures; lines
+# 2, 4, 6 and 8 are computed.
+# Each bracket's `tax_at_start` is the line 7 constant of its column, taken as printed: the
+# constants are not recomputed from the rates, and not rounded.
+# This dataset has no rounding rule, as the form states none. The take-home build rounds line 6
+# half-up to the cent in its own part (ca-mb/cent_rounding).
+# There is no `up_to`: column 3 is unbounded ("more than $100,000"), and the form prints one set
+# of three columns, so every line 1 falls in a column.
+# The 2026 MB428/MB479 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-mb/brackets_lines_2_to_8
+tax_year: 2026
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: none
+brackets:
+  - {from: "0.00", rate: "0.108", tax_at_start: "0.00"}
+  - {from: "47000.00", rate: "0.1275", tax_at_start: "5076.00"}
+  - {from: "100000.00", rate: "0.174", tax_at_start: "11833.50"}

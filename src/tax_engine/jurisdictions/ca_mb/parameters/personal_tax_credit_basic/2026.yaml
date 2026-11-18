@@ -1,0 +1,13 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan and Jul 2026) does not print this amount and the July edition states no change for Manitoba, so the 2026 form is not yet published and the figure is unconfirmed.
+# Form MB479 line 7: personal tax credit basic amount, 2026 (CRA 5007-TC). Line 7 prints the
+# figure with cents (195.00), so the amount rounds half-up to the cent, the project's choice, as
+# the form states no rounding rule.
+# The 2026 MB428/MB479 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-mb/personal_tax_credit_basic
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-tc/5007-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "195"

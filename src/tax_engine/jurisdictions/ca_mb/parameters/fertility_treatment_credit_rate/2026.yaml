@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Manitoba fertility treatment credit rate, 2026 tax year (Form MB479 line 61): 40%.
+# Line 61 applies it to the eligible medical expenses for fertility treatments. The product is a
+# dollars-and-cents line, so it rounds half-up to the cent, the project's choice, as the form
+# states no rounding rule. The maximum has its own dataset.
+# The 2026 MB428/MB479 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-mb/fertility_treatment_credit_rate
+tax_year: 2026
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-tc/5007-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.4"
