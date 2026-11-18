@@ -1,0 +1,16 @@
+# Form SK428 (CRA 5008-c) line 38: "Line 38: Add lines 35 to 37. =". Lines 36 and 37 (the disability
+# amounts) are not built, being zero for a salary-only filer: the one step is a core/sum over line 35
+# alone, as ca-on/on428 line 77 is. The form prints no label for line 38.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    reference: "38"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        - ca-sk/sk428_credits_subtotal_line_35
+    produces:
+      output: ca-sk/sk428_credits_subtotal_line_38
