@@ -1,0 +1,13 @@
+# Newfoundland and Labrador amount for an eligible dependant, base amount, 2025 tax year (Form
+# NL428 line 21): "Base amount 9,948.00", from which line 23 takes line 22, the eligible
+# dependant's net income. It borrows the credit kind because it is claimed whole, as the basic
+# personal amount is.
+# Line 21 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca-nl/eligible_dependant_amount_base
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "9948.00"
