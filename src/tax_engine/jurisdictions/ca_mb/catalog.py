@@ -650,3 +650,7 @@ expenses multiplied by 40%, then at most the printed maximum of $16,000."""
 MB479_CREDITS_LINE_62 = AmountKind.declare(CATALOG, "mb479_credits_line_62", non_negative=True)
 """Credits, MB479 line 62 "Line 62: Line 60 plus line 61 =": line 60 plus line 61 (the fertility
 treatment tax credit, already at most its $16,000 maximum), rounded to the cent."""
+
+MB479_CREDITS_LINE_64 = AmountKind.declare(CATALOG, "mb479_credits_line_64", non_negative=True)
+"""Credits, MB479 line 64 "Line 64: Line 62 plus line 63 =": line 62 plus line 63 (the paid work
+experience tax credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
