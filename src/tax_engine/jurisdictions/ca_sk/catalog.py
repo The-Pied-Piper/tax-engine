@@ -47,6 +47,6 @@ copy of Schedule 8 line 25, the CPP base contributions on the return."""
 SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65 = AmountKind.declare(
     CATALOG, "sk428_minimum_tax_carryover_amount_line_65", non_negative=True
 )
-"""Saskatchewan minimum tax carryover amount, SK428 line 65 and line 61540 "Amount from line 40427
+"""Saskatchewan minimum tax carryover amount, SK428 line 65 (line 61540) "Amount from line 40427
 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
 read as blank when left out."""

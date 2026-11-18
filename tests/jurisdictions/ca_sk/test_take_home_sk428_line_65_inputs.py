@@ -33,7 +33,7 @@ from tests.jurisdictions.ca_sk.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65.identifier
-PRINTED_BASIS = "Line 65 and line 61540: Amount from line 40427 of your return"
+PRINTED_BASIS = "Line 65: Amount from line 40427 of your return Line 61540"
 PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / (
     "manifests/2025/sk428_line_65_inputs.yaml"
 )
