@@ -1,0 +1,22 @@
+# Saskatchewan 2025 brackets, Form SK428 (CRA 5008-C) Part A, lines 2 to 8, columns 1 to 3. Column
+# headings: "Column 1: Line 1 is $53,463 or less"; "Column 2: Line 1 is more than $53,463 but not
+# more than $152,750"; "Column 3: Line 1 is more than $152,750". In every column: line 3 the
+# column's lower bound (0.00, 53,463.00, 152,750.00); line 5 the rate (10.5%, 12.5%, 14.5%); line 7
+# the printed constant (0.00, 5,613.62, 18,024.49). Lines 3, 5 and 7 are the printed figures; lines
+# 2, 4, 6 and 8 are computed.
+# Each bracket's `tax_at_start` is the line 7 constant of its column, taken as printed: the
+# constants are not recomputed from the rates, and not rounded.
+# This dataset has no rounding rule, as the form states none. The take-home build rounds line 6
+# half-up to the cent in its own part (ca-sk/cent_rounding).
+# There is no `up_to`: column 3 is unbounded ("more than $152,750"), and the form prints one set
+# of three columns, so every line 1 falls in a column.
+family: ca-sk/brackets
+tax_year: 2025
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-c/5008-c-25e.txt
+rounding: none
+brackets:
+  - {from: "0.00", rate: "0.105", tax_at_start: "0.00"}
+  - {from: "53463.00", rate: "0.125", tax_at_start: "5613.62"}
+  - {from: "152750.00", rate: "0.145", tax_at_start: "18024.49"}
