@@ -1,0 +1,20 @@
+# Form MB428 (CRA 5007-c) line 64: "Line 64: Add lines 61 to 63. = ^". The form prints no label and
+# no maximum. It sums line 61 (`ca-mb/mb428_non_refundable_credits_line_61`), the line 62 optional
+# input (`ca-mb/mb428_dividend_tax_credit_line_62`) and line 63
+# (`ca-mb/mb428_minimum_tax_carryover_credit_line_63`). A salary-only caller leaves line 62 blank,
+# and the blank rule reads it as 0; line 63 is always computed. The output is
+# `ca-mb/mb428_credits_total_line_64`, which is not exported yet.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/sum
+    reference: "64"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb428_non_refundable_credits_line_61, ca-mb/mb428_dividend_tax_credit_line_62, ca-mb/mb428_minimum_tax_carryover_credit_line_63]
+    blank:
+      ca-mb/mb428_dividend_tax_credit_line_62: "0"
+    produces:
+      output: ca-mb/mb428_credits_total_line_64
