@@ -1,0 +1,18 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 69, "Line 69: Line 67 plus line 68 = ^". One
+# core/sum step over line 67 (the tax after credits, `ca-sk/sk428_tax_after_credits_line_67`) and
+# line 68 (the additional minimum tax, `ca-sk/sk428_minimum_tax_additional_line_68`). Both lines
+# are always computed, so neither is ever blank and the step has no blank rule. The form prints no
+# title for the line, so the step has none. Line 69 is the output `ca-sk/sk428_tax_line_69`.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/sum
+    reference: "69"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        [ca-sk/sk428_tax_after_credits_line_67, ca-sk/sk428_minimum_tax_additional_line_68]
+    produces:
+      output: ca-sk/sk428_tax_line_69
