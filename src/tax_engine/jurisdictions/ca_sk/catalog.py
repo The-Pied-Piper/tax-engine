@@ -91,3 +91,10 @@ SK428_DIVIDEND_TAX_CREDIT_LINE_64 = AmountKind.declare(
 """Saskatchewan dividend tax credit, SK428 line 64 (line 61520) "Line 64 and line 61520:
 Saskatchewan dividend tax credit (use Worksheet SK428)": a caller input, read as blank when left
 out."""
+
+SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_carryover_amount_line_65", non_negative=True
+)
+"""Saskatchewan minimum tax carryover amount, SK428 line 65 (line 61540) "Amount from line 40427
+of your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
+read as blank when left out."""

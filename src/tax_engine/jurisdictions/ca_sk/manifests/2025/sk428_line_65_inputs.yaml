@@ -1,0 +1,12 @@
+# SK428 (2025) line 65's input, which a salary-only caller does not give.
+# Line 65: "Amount from line 40427 of your return Line 61540" (Form SK428, CRA 5008-c).
+# The form prints no label for the line, so the input carries no title. A salary-only caller has no
+# minimum tax carryover, so a request that leaves box A out is read as blank; the step that reads
+# line 65 reads that blank as 0.
+inputs:
+  - name: ca-sk/sk428_minimum_tax_carryover_amount_line_65
+    reference: "65 box A"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 65: Amount from line 40427 of your return Line 61540'
