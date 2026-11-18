@@ -374,7 +374,7 @@ def test_the_trace_row_for_line_74_reads_in_english_with_the_rounding_named(
 ) -> None:
     rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", "100.00").trace)
 
-    (row,) = [r for r in rows if "not below 0" in r and "(5092.30)" in r]
+    (row,) = [r for r in rows if "not below 0" in r and "(5092.30)" in r and "(100.00)" in r]
     assert "(100.00)" in row
     assert " less " in row
     assert row.endswith(", not below 0, gives 4992.30 (rounded to the nearest cent).")
