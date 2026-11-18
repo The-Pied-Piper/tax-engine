@@ -172,6 +172,17 @@ def _blank_rows(sheet: Worksheet) -> list[str]:
     return [row for row in rows if row.lower().startswith("left blank, taken as ca$0")]
 
 
+def _steps() -> list[dict[str, Any]]:
+    part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
+    assert isinstance(part, dict)
+    assert list(part) == ["form", "capabilities"]
+    assert part["form"] == {"name": FORM_NAME}
+    steps = part["capabilities"]
+    assert isinstance(steps, list)
+    assert all(isinstance(step, dict) for step in steps)
+    return steps
+
+
 @pytest.mark.parametrize(("salary", "expected"), CASES)
 def test_line_60_is_line_57_when_line_59_is_blank(
     tmp_path: Path, salary: str, expected: str
@@ -222,12 +233,7 @@ def test_the_sheet_prints_no_title_and_the_reference_of_line_60(tmp_path: Path) 
 
 
 def test_the_part_is_one_untitled_sum_step_over_lines_57_and_59() -> None:
-    part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
-    assert isinstance(part, dict)
-    assert list(part) == ["form", "capabilities"]
-    assert part["form"] == {"name": FORM_NAME}
-    steps: list[dict[str, Any]] = part["capabilities"]
-    (step,) = steps
+    (step,) = _steps()
 
     assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
     assert step == {
