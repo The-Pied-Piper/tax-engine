@@ -273,3 +273,10 @@ SK428_CREDITS_FROM_LINE_57_LINE_63 = AmountKind.declare(
 """Saskatchewan non-refundable tax credits from line 57, SK428 line 63 "Line 63: Saskatchewan
 non-refundable tax credits from line 57" (Form SK428, CRA 5008-c-25e): the amount of line 57, read
 from the credits form."""
+
+SK428_CREDITS_SUBTOTAL_LINE_66 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_66", non_negative=True
+)
+"""Saskatchewan credits subtotal, SK428 line 66 "Line 66: Add lines 63 to 65. =": line 63 (the
+credits from line 57) plus line 64 (the dividend tax credit, blank read as 0) plus line 65 (the
+minimum tax carryover), rounded to the cent."""
