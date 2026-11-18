@@ -19,6 +19,12 @@ SK428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Saskatchewan tax on taxable income, SK428 line 8 "Line 6 plus line 7 Saskatchewan tax on taxable
 income =": line 6 plus line 7, read by line 58 on the tax form."""
 
+SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
+    CATALOG, "sk428_medical_expenses_line_50", non_negative=True
+)
+"""Medical expenses, SK428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
+optional input; a blank is read as 0 by the line 51 step."""
+
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
 )
