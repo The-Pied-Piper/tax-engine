@@ -144,9 +144,11 @@ def test_the_trace_has_a_row_for_line_167(tmp_path: Path) -> None:
 
 
 def test_the_sheet_carries_the_printed_title_and_reference(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", "11497.09").trace)
+    sheet = _sheet(tmp_path, "70000", "11497.09")
+    label = REFUND_OR_BALANCE_OWING.label
 
-    assert any("Refund or balance owing" in row and "167" in row for row in rows)
+    assert sheet.title(label) == "Refund or balance owing"
+    assert sheet.reference(label) == "167"
 
 
 def _part() -> dict[str, Any]:
