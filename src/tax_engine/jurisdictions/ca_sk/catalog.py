@@ -19,6 +19,12 @@ SK428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Saskatchewan tax on taxable income, SK428 line 8 "Line 6 plus line 7 Saskatchewan tax on taxable
 income =": line 6 plus line 7, read by line 58 on the tax form."""
 
+SK428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
+    CATALOG, "sk428_donations_credit_line_56", non_negative=True
+)
+"""Donations and gifts credit, SK428 line 56 (line 58969) "Line 56 and line 58969: Line 54 plus line
+55 =": a caller input, read as blank when left out; line 57 reads it."""
+
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
 )
