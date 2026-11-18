@@ -232,7 +232,11 @@ the file and the capability. A form set otherwise refuses a form that reads a re
 exports or supplies. A record list read only through optional slots may have no producer: it is
 then read as a blank, as a blank input is, and the slot's `blank` rule decides (`pass_on` blanks
 what the selection produces). A slot with no `blank` rule and no producer is refused when the forms
-are composed, naming the form and the slot. A producer that exists is read as usual. A list that
+are composed, naming the form and the slot. A producer that exists is read as usual.
+
+The engine cannot tell a figure no form supplies from a misspelt name, so an optional read of a name no
+form supplies reads as a blank and the line comes out blank, where a required read of that name is
+refused when the manifest is loaded. Check the name against the form that supplies it. A list that
 the form also reads through a list slot, or through a slot not marked optional, is a required read.
 
 A figure no form supplies is a record list of one field, the declared kind (`ca/provincial_credits`
