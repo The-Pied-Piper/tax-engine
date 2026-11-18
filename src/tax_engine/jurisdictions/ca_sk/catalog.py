@@ -201,3 +201,9 @@ SK428_CREDITS_SUBTOTAL_LINE_35 = AmountKind.declare(
 )
 """Saskatchewan credits subtotal, SK428 line 35 "Line 35: Add lines 32 to 34. =": line 32 plus
 the pension income amount on line 33, line 34 (the caregiver amount) not being built."""
+
+SK428_CREDITS_SUBTOTAL_LINE_38 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_38", non_negative=True
+)
+"""Saskatchewan credits subtotal, SK428 line 38 "Line 38: Add lines 35 to 37. =": line 35, lines 36
+and 37 (the disability amounts) not being built."""
