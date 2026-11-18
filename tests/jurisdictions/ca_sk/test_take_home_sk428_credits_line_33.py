@@ -3,10 +3,10 @@
 Form text (Form SK428, CRA 5008-c-25e.txt): "Line 33 and line 58360: Pension income amount
 (maximum $1,000)". No arithmetic is printed, so line 33 is an entry line: the entered amount is
 rejected above the printed maximum, not capped. The maximum is the `ca-sk/pension_income_amount_
-maximum` dataset, supplied by a first `core/credit_amount` step that carries no title and no line
-number (it is not a line of the form); the second step, `core/at_most`, is line 33 and carries the
-title "Pension income amount" and the reference "33". The input is optional and read as 0 when left
-out, so the checked amount is never blank.
+maximum` dataset, supplied by a first `core/credit_amount` step that carries a plain-words
+title and no line number (it is not a line of the form); the second step, `core/at_most`, is
+line 33 and carries the title "Pension income amount" and the reference "33". The input is
+optional and read as 0 when left out, so the checked amount is never blank.
 
 The real input part and the new `sk428_credits_line_33.yaml` are loaded under a test-local header
 and form, and only the salary is typed in (plus, in some tests, the pension income amount).
@@ -183,13 +183,13 @@ def test_the_part_names_the_form_and_has_two_steps_in_order() -> None:
     assert second["name"] == "core/at_most"
 
 
-def test_the_first_step_supplies_the_printed_maximum_with_no_title_and_no_reference() -> None:
+def test_the_first_step_supplies_the_printed_maximum_with_a_plain_title_and_no_reference() -> None:
     first, _ = _part()["capabilities"]
 
-    assert "title" not in first
     assert "reference" not in first
     assert first == {
         "name": "core/credit_amount",
+        "title": "Most you can claim for pension income",
         "unit": "ca/cad",
         "params": {"amount": "ca-sk/pension_income_amount_maximum"},
         "produces": {"output": MAXIMUM},
