@@ -1,0 +1,28 @@
+# MB428 (2025) line 77, the Manitoba small business venture capital tax credit for individuals. Form
+# MB428 (CRA 5007-c): "Line 77 and line 60850: Manitoba small business venture capital tax credit
+# for individuals (complete Form T1256-1) (maximum $120,000)". No arithmetic is printed, so line 77
+# is an entry line in two steps. The first, core/credit_amount, supplies the printed maximum from the
+# `ca-mb/venture_capital_credit_maximum` dataset; it is not a line of the form, so it has no title
+# and no reference. The second, core/at_most, is line 77: the entered amount
+# (mb428_line_77_input.yaml) passed on unchanged. An entry above the printed maximum is refused, not
+# capped. A blank entry passes on as blank.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-mb/venture_capital_credit_maximum
+    produces:
+      output: ca-mb/mb428_venture_capital_credit_maximum
+  - name: core/at_most
+    title: "Manitoba small business venture capital tax credit for individuals"
+    reference: "77"
+    unit: ca/cad
+    consumes:
+      amount: ca-mb/mb428_venture_capital_credit
+      bound: ca-mb/mb428_venture_capital_credit_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-mb/mb428_venture_capital_credit_line_77
