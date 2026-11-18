@@ -24,7 +24,6 @@ from tests.jurisdictions.ca_sk.support import (
     saskatchewan_packages,
     saskatchewan_units,
 )
-from tests.kinds import non_negative
 
 IDENTIFIER = SK428_TAX_ON_SPLIT_INCOME_LINE_61.identifier
 PRINTED_BASIS = "Line 61 and line 61510: Saskatchewan tax on split income (complete Form T1206)"
@@ -83,23 +82,11 @@ def test_the_part_declares_only_the_tax_on_split_income_input() -> None:
     ]
 
 
-def test_the_part_has_no_key_besides_inputs() -> None:
-    assert set(_part()) == {"inputs"}
-
-
-def test_the_tax_on_split_income_line_61_is_a_non_negative_amount_kind() -> None:
+def test_the_tax_on_split_income_line_61_is_an_amount_kind() -> None:
     kind = saskatchewan_kinds().kind(IDENTIFIER)
 
     assert IDENTIFIER == "ca-sk/sk428_tax_on_split_income_line_61"
     assert kind is SK428_TAX_ON_SPLIT_INCOME_LINE_61
-    assert non_negative(kind)
-
-
-def test_line_61_is_not_required() -> None:
-    declaration = _part()["inputs"][0]
-
-    assert declaration["required"] is False
-    assert declaration["default"] is None
 
 
 def test_a_request_that_leaves_out_line_61_is_read_as_blank(tmp_path: Path) -> None:

@@ -56,9 +56,7 @@ SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
 """CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
 
-SK428_TAX_ON_SPLIT_INCOME_LINE_61 = AmountKind.declare(
-    CATALOG, "sk428_tax_on_split_income_line_61", non_negative=True
-)
+SK428_TAX_ON_SPLIT_INCOME_LINE_61 = AmountKind.declare(CATALOG, "sk428_tax_on_split_income_line_61")
 """Saskatchewan tax on split income, SK428 line 61 (line 61510) "Line 61 and line 61510:
 Saskatchewan tax on split income (complete Form T1206)": a caller input, read as blank when left
 out."""
