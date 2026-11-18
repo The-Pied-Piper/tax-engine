@@ -13,6 +13,12 @@ from tax_engine.jurisdictions.ca_sk import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+SK428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "sk428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form SK428 Line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by lines 3 and 4."""
+
 SK428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "sk428_tax_on_taxable_income_line_8", non_negative=True
 )
