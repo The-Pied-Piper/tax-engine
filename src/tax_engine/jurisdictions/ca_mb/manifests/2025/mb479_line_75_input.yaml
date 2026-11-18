@@ -2,7 +2,8 @@
 # Line 75: "Line 75 and line 61484: Enter your Manitoba community enterprise development tax credit
 # from line 4 of Form T1256" (Form MB479, CRA 5007-TC). The form prints no name for the line, so the
 # input has no title. A salary-only caller does not give the credit, so a request that leaves the
-# line out is read as blank.
+# line out is read as blank; the line 75 step (mb479_line_75.yaml) checks it against the printed
+# maximum and passes that blank on.
 inputs:
   - name: ca-mb/mb479_community_enterprise_development_tax_credit_line_75
     reference: "75"

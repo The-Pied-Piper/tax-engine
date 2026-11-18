@@ -1,17 +1,17 @@
 """MB479 (2025) line 76, line 74 plus line 75, from the salary alone, real parts.
 
 Form text (Form MB479, CRA 5007-tc-25e.txt): "Line 76: Line 74 plus line 75 = ^". Line 76 prints no
-label, so its step has no title. It is one core/sum over line 74 and the line 75 input (the
+label, so its step has no title. It is one core/sum over line 74 and the checked line 75 (the
 community enterprise development tax credit, an input the form prints with a maximum of $27,000 that
-is not checked here), which is blank unless entered and read as 0 when blank, so the step carries a
-blank block and prints its own "left blank, taken as 0" row.
+the line 75 step checks), which is blank unless entered and read as 0 when blank, so the step
+carries a blank block and prints its own "left blank, taken as 0" row.
 
 The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18, 19, 53, 55, 56, 57, 59 to 75 and the new
-`mb479_line_76.yaml`, and types in only the salary (and, in some tests, lines 71, 73 and 75). The
-MB479 form declaration is made up here, exporting only lines 74, 75 and 76. The figures are line 74
-with line 75 blank (95.65 / 0.00 / 0.00 / 0.00). They are hand-computed from the printed forms, not
-a CRA example.
+`mb479_line_75.yaml` and `mb479_line_76.yaml`, and types in only the salary (and, in some tests,
+lines 71, 73 and 75). The MB479 form declaration is made up here, exporting only lines 74, 75
+and 76. The figures are line 74 with line 75 blank (95.65 / 0.00 / 0.00 / 0.00). They are
+hand-computed from the printed forms, not a CRA example.
 """
 
 from __future__ import annotations
@@ -59,7 +59,8 @@ IDENTIFIER = "ca-mb/mb479_credits_line_76"
 LINE_74 = "ca-mb/mb479_credits_line_74"
 LINE_71 = "ca-mb/mb479_book_publishing_credit_line_71"
 LINE_73_INPUT = "ca-mb/mb479_cultural_industries_printing_credit_line_73"
-LINE_75 = "ca-mb/mb479_community_enterprise_development_tax_credit_line_75"
+LINE_75_INPUT = "ca-mb/mb479_community_enterprise_development_tax_credit_line_75"
+LINE_75 = "ca-mb/mb479_community_enterprise_development_tax_credit_checked_line_75"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
     "t1_taxable_income_line_15000.yaml",
@@ -109,6 +110,7 @@ MB479_PARTS = (
     "mb479_line_73.yaml",
     "mb479_line_74.yaml",
     "mb479_line_75_input.yaml",
+    "mb479_line_75.yaml",
 )
 
 HEADER = dedent("""\
@@ -125,7 +127,7 @@ FORM = dedent("""\
       required: true
       exports:
         - ca-mb/mb479_credits_line_74
-        - ca-mb/mb479_community_enterprise_development_tax_credit_line_75
+        - ca-mb/mb479_community_enterprise_development_tax_credit_checked_line_75
         - ca-mb/mb479_credits_line_76
     capabilities: []
     """)
@@ -187,7 +189,7 @@ def _sheet(
     if line_73 is not None:
         given.append(Artifact(kinds.kind(LINE_73_INPUT), D(line_73)))
     if line_75 is not None:
-        given.append(Artifact(kinds.kind(LINE_75), D(line_75)))
+        given.append(Artifact(kinds.kind(LINE_75_INPUT), D(line_75)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-MB"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
