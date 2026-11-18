@@ -188,3 +188,9 @@ SK428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
 )
 """Taxable income over the lower bound, SK428 line 4 "Line 4: Line 2 minus line 3 (cannot be
 negative) =": line 1 minus line 3, not below zero."""
+
+SK428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "sk428_tax_on_excess_line_6", non_negative=True
+)
+"""Tax on the excess, SK428 line 6 "Line 6: Line 4 multiplied by the percentage from line 5 =":
+line 4 times the rate of line 5, rounded to the cent."""
