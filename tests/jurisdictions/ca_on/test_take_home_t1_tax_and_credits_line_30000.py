@@ -198,7 +198,7 @@ def test_line_30000_names_its_base_and_its_rounded_reduction_in_the_trace(
     assert sheet.get(output).value == D(expected)
     assert (
         f"14538.00 plus 1591.00, less {reduction} "
-        '(the reduction for "Net income used for the basic personal amount" '
+        '(the reduction for "Amount from line 23600 of your return" '
         f"(CA${line_23600}) over 177882.00, spread over a range of 75532.00), "
         f"not below 14538.00, gives CA${expected} (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)
@@ -234,7 +234,7 @@ def test_line_30000_names_line_3_and_the_range_in_the_trace(
 
     assert (
         "14538.00 plus 1591.00, less 0.00 "
-        '(the reduction for "Net income used for the basic personal amount" '
+        '(the reduction for "Amount from line 23600 of your return" '
         "(CA$69335.00) over 177882.00, spread over a range of 75532.00), "
         "not below 14538.00, gives CA$16129.00 (rounded to the nearest cent)."
     ) in EnglishTraceRenderer().render_all(sheet.trace, sheet)

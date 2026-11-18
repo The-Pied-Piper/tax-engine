@@ -64,20 +64,18 @@ class BlankPassedOnRenderer:
     line_class = BlankPassedOnLine
 
     def render(self, line: BlankPassedOnLine, names: EnglishNames) -> str:
-        """The English sentence for `line`."""
-        if (
-            names.printed is not None
-            and not line.because_fields
-            and not any(names.is_named(kind.label) for kind in line.because)
-        ):
-            # A figure no form names (one a form of another province may supply) is not described
-            # by its internal label.
+        """The English sentence for `line`.
+
+        With a worksheet, a cause no form names is not described by its internal label: it is
+        counted as a figure nothing was supplied for.
+        """
+        shown = names.printed is None
+        kinds = [kind for kind in line.because if shown or names.is_named(kind.label)]
+        unnamed = len(line.because) - len(kinds)
+        named = [names.of(kind) for kind in kinds] + [_where(f, names) for f in line.because_fields]
+        if not named:
             return "blank because nothing was supplied for it"
-        named = [
-            names.of(kind)
-            for kind in line.because
-            if names.printed is None or names.is_named(kind.label)
-        ] + [_where(f, names) for f in line.because_fields]
         causes = EnglishFigures.listing(named)
         verb = "was" if len(named) == 1 else "were"
-        return f"blank because {causes} {verb} blank"
+        text = f"blank because {causes} {verb} blank"
+        return f"{text}, and nothing was supplied for another figure" if unnamed else text

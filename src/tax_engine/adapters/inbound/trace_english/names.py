@@ -1,7 +1,8 @@
 """EnglishNames: how a trace line's text names a figure.
 
-By the form's reference ("line 4"), else its title in quotes, else its label in plain words, never
-an invented title; a dataset's figure by its `title`, unquoted.
+By the form's reference ("line 4"), else its title in quotes (the form's printed wording, or plain
+words for a step the form does not print that a numbered line's sentence names), else its label in
+plain words as a last resort; a dataset's figure by its `title`, unquoted.
 """
 
 from __future__ import annotations
@@ -143,11 +144,10 @@ class EnglishNames:
         reference, a title, or the name another form prints for it."""
         if self._printed is None:
             return False
-        return (
-            self._printed.imported(label) is not None
-            or self._printed.reference(label) is not None
-            or self._printed.title(label) is not None
-        )
+        imported = self._printed.imported(label)
+        if imported is not None:
+            return imported.reference is not None or imported.title is not None
+        return self._printed.reference(label) is not None or self._printed.title(label) is not None
 
     def of_label(self, label: str) -> str:
         """The name of the figure `label` for a sentence."""

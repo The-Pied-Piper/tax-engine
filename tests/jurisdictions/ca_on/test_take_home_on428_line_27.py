@@ -4,9 +4,9 @@ Form text (Form ON428, Ontario Tax, CRA 5006-c-25e.txt line 117): "Line 27 and l
 income amount (maximum $1,762)". No arithmetic is printed, so line 27 is an entry line: the entered
 amount is rejected above the printed maximum, not capped. The maximum is the
 `ca-on/pension_income_amount_maximum` dataset, supplied by a first `core/credit_amount` step that
-carries no title, no reference and no line number (it is not a line of the form); the second step,
-`core/at_most`, is line 27 and carries "Pension income amount" and "27". The input defaults to 0,
-so no blank rule is needed.
+carries a plain-words title but no reference and no line number (it is not a line of the form);
+the second step, `core/at_most`, is line 27 and carries "Pension income amount" and "27". The input
+defaults to 0, so no blank rule is needed.
 
 The real input part and the new `on428_line_27.yaml` are loaded under a test-local header and form,
 the shared scaffold owning those, and only the salary is typed in (plus the pension amount).

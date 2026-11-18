@@ -62,3 +62,28 @@ def test_an_input_taken_as_its_default() -> None:
         render(DefaultedInputLine(LIMIT, Decimal("0.00")))
         == "No value given, so the form's default gives 0.00."
     )
+
+
+def test_a_blank_passed_on_from_a_figure_no_form_names_does_not_name_its_label() -> None:
+    from tax_engine.adapters.inbound.trace_english import EnglishNames
+    from tax_engine.domain.worksheet import Worksheet
+
+    named = Worksheet(figure_titles={"chart_gain": "Chart gain"})
+    unnamed = Worksheet()
+    line = BlankPassedOnLine(DEDUCTION, (CHART_GAIN,))
+    renderer = EnglishTraceRenderer()
+
+    assert renderer.render(line, named) == 'Blank because "Chart gain" was blank.'
+    assert renderer.render(line, unnamed) == "Blank because nothing was supplied for it."
+    assert EnglishNames(unnamed).is_named("chart_gain") is False
+
+
+def test_a_named_cause_and_one_no_form_names_say_so_in_one_sentence() -> None:
+    from tax_engine.domain.worksheet import Worksheet
+
+    sheet = Worksheet(figure_titles={"chart_gain": "Chart gain"})
+    line = BlankPassedOnLine(DEDUCTION, (CHART_GAIN, LIMIT))
+
+    assert EnglishTraceRenderer().render(line, sheet) == (
+        'Blank because "Chart gain" was blank, and nothing was supplied for another figure.'
+    )

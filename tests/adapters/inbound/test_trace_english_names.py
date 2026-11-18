@@ -170,3 +170,15 @@ def test_a_box_of_a_line_is_a_line_of_the_form() -> None:
 
     assert names.of(GROSS) == "line 87 box A"
     assert names.of(LESS) == "line 87 box B"
+
+
+def test_a_figure_is_named_when_the_form_gives_it_a_reference_or_a_title() -> None:
+    names = EnglishNames(_Printed({"allowance": "Allowance"}, {"gross_pay": "4"}))
+
+    assert names.is_named("gross_pay") is True
+    assert names.is_named("allowance") is True
+    assert names.is_named("net_pay") is False
+
+
+def test_with_no_worksheet_no_figure_is_named() -> None:
+    assert EnglishNames().is_named("gross_pay") is False
