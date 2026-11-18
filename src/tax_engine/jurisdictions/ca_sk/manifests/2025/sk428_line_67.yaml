@@ -1,0 +1,19 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 67, "Line 67: Line 62 minus line 66 (if negative,
+# enter "0") =". One core/subtract_not_below_zero step over line 62 (the tax after line 61,
+# `ca-sk/sk428_tax_line_62`) and line 66 (the credits subtotal,
+# `ca-sk/sk428_credits_subtotal_line_66`), floored at 0. Both lines are always computed, so
+# neither is ever blank and the step has no blank rule. The form prints no title for the line, so
+# the step has none. Line 67 is the output `ca-sk/sk428_tax_after_credits_line_67`.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "67"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      amount: ca-sk/sk428_tax_line_62
+      less: ca-sk/sk428_credits_subtotal_line_66
+    produces:
+      output: ca-sk/sk428_tax_after_credits_line_67
