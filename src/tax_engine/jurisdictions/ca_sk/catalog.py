@@ -176,3 +176,9 @@ SK428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
 )
 """Saskatchewan credit amounts subtotal, SK428 line 32 "Line 32: Line 21 plus line 31 =": line 21,
 a copy of line 20, plus line 31, read by line 35."""
+
+SK428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "sk428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, Form SK428 line 7 "Column 1: Line 7: 0.00" (5,613.62; 18,024.49):
+the printed tax at the start of the column of lines 2 to 8 that line 1 falls in."""
