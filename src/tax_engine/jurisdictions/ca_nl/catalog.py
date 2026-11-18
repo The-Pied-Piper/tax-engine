@@ -55,6 +55,13 @@ NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
 Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
 tax form."""
 
+NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
+    CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
+)
+"""Newfoundland and Labrador tax, NL428 line 105 "Line 105: Line 94 minus line 104 (if negative,
+enter "0") Enter this amount on line 42800 of your return.": line 94 less line 104, not below 0,
+entered on T1 line 42800."""
+
 NL428_DISABILITY_AMOUNT_SELF_CLAIMED_LINE_40 = CountKind.declare(
     CATALOG, "nl428_disability_amount_self_claimed_line_40", non_negative=True
 )
