@@ -351,7 +351,7 @@ def test_the_sheet_prints_no_title_and_the_reference_of_line_76(tmp_path: Path) 
     label = manitoba_kinds().kind(IDENTIFIER).label
 
     assert sheet.title(label) is None
-    assert sheet.reference(label) == "74"
+    assert sheet.reference(label) == "76"
 
 
 def test_the_trace_row_for_line_76_reads_in_english_with_the_rounding_named(
@@ -391,7 +391,7 @@ def test_the_part_names_the_form_and_has_one_untitled_step_with_a_blank_rule_on_
     assert list(step) == ["name", "reference", "unit", "params", "consumes", "blank", "produces"]
     assert step == {
         "name": "core/subtract_not_below_zero",
-        "reference": "74",
+        "reference": "76",
         "unit": "ca/cad",
         "params": {"rounding": "ca-mb/cent_rounding"},
         "consumes": {"amount": LINE_74, "less": LINE_75},
