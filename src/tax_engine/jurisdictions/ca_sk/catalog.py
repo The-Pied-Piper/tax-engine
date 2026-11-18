@@ -25,3 +25,9 @@ SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 """Saskatchewan non-refundable tax credits, SK428 line 57 "Line 57 and line 61500: Line 53 plus line
 56 Enter this amount on line 63. Saskatchewan non-refundable tax credits =": line 53 plus line 56,
 read by line 63 on the tax form."""
+
+SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
+    CATALOG, "sk428_cpp_contributions_line_22", non_negative=True
+)
+"""CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
