@@ -1,0 +1,25 @@
+# Form MB479 (CRA 5007-TC) line 81: "Line 81: Add lines 78 to 80. Enter this amount on line 47900 of
+# your return. Manitoba credits = ^". One core/sum step over line 78 (`ca-mb/mb479_credits_line_78`),
+# line 79 (`ca-mb/mb479_teaching_expense_credit_line_79`, a computed line that is never blank) and the
+# line 80 input (the rental housing construction incentive tax credit), rounded half-up to the cent.
+# A caller who leaves line 80 blank has it read as 0 by the blank rule, and the step prints its own
+# "left blank, taken as 0" row. The output is the form's export, which the form supplies to the T1 as
+# `ca/provincial_credits.amount` (see mb479.yaml), so this line is what T1 line 47900 shows.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    title: "Manitoba credits"
+    reference: "81"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb479_credits_line_78
+        - ca-mb/mb479_teaching_expense_credit_line_79
+        - ca-mb/mb479_rental_housing_construction_incentive_tax_credit_line_80
+    blank:
+      ca-mb/mb479_rental_housing_construction_incentive_tax_credit_line_80: "0"
+    produces:
+      output: ca-mb/mb479_manitoba_credits_line_81
