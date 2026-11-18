@@ -576,6 +576,27 @@ MB479_TEACHING_SUPPLIES_EXPENSES_LINE_79 = AmountKind.declare(
 input read as blank when left out; the printed maximum $1,000 is checked by the step that reads
 it."""
 
+MB479_TEACHING_SUPPLIES_EXPENSES_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb479_teaching_supplies_expenses_maximum", non_negative=True
+)
+"""Teaching supplies expenses maximum, printed on MB479 line 79 "(maximum $1,000)": the printed
+maximum, from the `ca-mb/teaching_supplies_expenses_maximum` dataset; the bound line 79 cannot
+pass."""
+
+MB479_TEACHING_SUPPLIES_EXPENSES_CHECKED_LINE_79 = AmountKind.declare(
+    CATALOG, "mb479_teaching_supplies_expenses_checked_line_79", non_negative=True
+)
+"""Teaching expense tax credit, MB479 line 79 "Line 79: Eligible teaching supplies expenses
+(maximum $1,000) Line 61495": the entered amount, passed on unchanged when it is at most the printed
+maximum, blank when left out; above the maximum it is refused, not capped."""
+
+MB479_TEACHING_EXPENSE_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "mb479_teaching_expense_credit_line_79", non_negative=True
+)
+"""Teaching expense tax credit, MB479 line 79 "Line 79: Eligible teaching supplies expenses
+(maximum $1,000) Line 61495 multiplied by 15% =": calculated, the checked eligible teaching supplies
+expenses multiplied by 15%, rounded half-up to the cent, with a blank entry read as 0."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
