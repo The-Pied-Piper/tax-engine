@@ -131,16 +131,16 @@ def _part(path: Path) -> dict[str, Any]:
     return part
 
 
-def test_the_maximum_part_is_one_credit_amount_step_with_no_title_and_no_reference() -> None:
+def test_the_maximum_part_is_one_credit_amount_step_with_a_title_and_no_reference() -> None:
     part = _part(MAXIMUM_PART)
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM_NAME}
     (step,) = part["capabilities"]
-    assert "title" not in step
     assert "reference" not in step
     assert step == {
         "name": "core/credit_amount",
+        "title": "Political contribution tax credit maximum",
         "unit": "ca/cad",
         "params": {"amount": "ca-bc/political_contribution_tax_credit_maximum"},
         "produces": {"output": MAXIMUM},

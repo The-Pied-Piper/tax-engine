@@ -67,7 +67,7 @@ class BlankPassedOnRenderer:
         """The English sentence for `line`.
 
         With a worksheet, a cause no form names is not described by its internal label: it is
-        counted as a figure nothing was supplied for.
+        counted as a figure nothing was supplied for. A blank record field is named as before.
         """
         shown = names.printed is None
         kinds = [kind for kind in line.because if shown or names.is_named(kind.label)]
