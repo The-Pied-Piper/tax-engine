@@ -280,3 +280,9 @@ SK428_CREDITS_SUBTOTAL_LINE_66 = AmountKind.declare(
 """Saskatchewan credits subtotal, SK428 line 66 "Line 66: Add lines 63 to 65. =": line 63 (the
 credits from line 57) plus line 64 (the dividend tax credit, blank read as 0) plus line 65 (the
 minimum tax carryover), rounded to the cent."""
+
+SK428_TAX_AFTER_CREDITS_LINE_67 = AmountKind.declare(
+    CATALOG, "sk428_tax_after_credits_line_67", non_negative=True
+)
+"""Saskatchewan tax after credits, SK428 line 67 "Line 67: Line 62 minus line 66 (if negative, enter
+"0") =": line 62 less line 66, never below zero."""
