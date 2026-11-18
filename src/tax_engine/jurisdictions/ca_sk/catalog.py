@@ -43,6 +43,12 @@ SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
 """Medical expenses, SK428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
 optional input; a blank is read as 0 by the line 51 step."""
 
+SK428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
+    CATALOG, "sk428_donations_credit_line_56", non_negative=True
+)
+"""Donations and gifts credit, SK428 line 56 (58969) "Line 56 and 58969: Line 54 plus line
+55 =": a caller input, read as blank when left out; line 57 reads it."""
+
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
 )
