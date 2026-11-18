@@ -133,6 +133,10 @@ MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
 """Manitoba additional tax for minimum tax purposes, MB428 line 66 "Line 66: Form T691: line 1 minus
 line 2 of Part 7 multiplied by 50% =": calculated, the Form T691 amount multiplied by 50%."""
 
+MB428_TAX_LINE_67 = AmountKind.declare(CATALOG, "mb428_tax_line_67", non_negative=True)
+"""Manitoba tax, MB428 line 67 "Line 67: Line 65 plus line 66 =": calculated, line 65 plus line
+66."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
@@ -206,6 +210,12 @@ MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
 """Manitoba employee share purchase tax credit, MB428 line 79 "Line 79 and line 60860: Manitoba
 employee share purchase tax credit (complete Form T1256-2)": a caller input, read as blank when left
 out."""
+
+MB428_MINERAL_EXPLORATION_TAX_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "mb428_mineral_exploration_tax_credit_line_81", non_negative=True
+)
+"""Manitoba mineral exploration tax credit, MB428 line 81 "Line 81 and line 60920: Manitoba mineral
+exploration tax credit (complete Form T1241)": a caller input, read as blank when left out."""
 
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
