@@ -144,3 +144,9 @@ SK428_MINERAL_EXPLORATION_CREDIT_LINE_79 = AmountKind.declare(
 )
 """Saskatchewan mineral exploration tax credit, SK428 line 79 "Line 79: Saskatchewan mineral
 exploration tax credit (complete Form T1279)": a caller input, read as blank when left out."""
+
+SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_20", non_negative=True
+)
+"""Saskatchewan credits subtotal, SK428 line 20 "Line 20: Add lines 9, 10, 13, and 16 to 19. =": the
+sum of the personal amounts claimed, here the basic personal amount alone."""
