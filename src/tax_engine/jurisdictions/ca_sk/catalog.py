@@ -316,3 +316,8 @@ SK428_POLITICAL_CONTRIBUTIONS_CREDIT_CHECKED_LINE_73 = AmountKind.declare(
 contribution tax credit (use Worksheet SK428) (maximum $650)": the entered amount, passed on
 unchanged when it is at most the printed maximum, blank when left out; above the maximum it is
 refused, not capped."""
+
+SK428_TAX_LINE_78 = AmountKind.declare(CATALOG, "sk428_tax_line_78", non_negative=True)
+"""Saskatchewan tax after the labour-sponsored venture capital credit, SK428 line 78 "Line 78: Line
+74 minus line 77 (if negative, enter "0") = ^": line 74 less the credit of line 77 (blank read as
+0), never below zero."""
