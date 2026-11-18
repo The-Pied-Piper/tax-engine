@@ -1,0 +1,11 @@
+# Form MB428 line 77: venture capital credit, maximum, 2025 (CRA 5007-c). Line 77 prints "Manitoba
+# small business venture capital tax credit for individuals (complete Form T1256-1) (maximum
+# $120,000)", a figure with no cents, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca-mb/venture_capital_credit_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-c/5007-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "120000"
