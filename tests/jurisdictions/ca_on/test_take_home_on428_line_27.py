@@ -4,9 +4,9 @@ Form text (Form ON428, Ontario Tax, CRA 5006-c-25e.txt line 117): "Line 27 and l
 income amount (maximum $1,762)". No arithmetic is printed, so line 27 is an entry line: the entered
 amount is rejected above the printed maximum, not capped. The maximum is the
 `ca-on/pension_income_amount_maximum` dataset, supplied by a first `core/credit_amount` step that
-carries no title, no reference and no line number (it is not a line of the form); the second step,
-`core/at_most`, is line 27 and carries "Pension income amount" and "27". The input defaults to 0,
-so no blank rule is needed.
+carries a plain-words title but no reference and no line number (it is not a line of the form);
+the second step, `core/at_most`, is line 27 and carries "Pension income amount" and "27". The input
+defaults to 0, so no blank rule is needed.
 
 The real input part and the new `on428_line_27.yaml` are loaded under a test-local header and form,
 the shared scaffold owning those, and only the salary is typed in (plus the pension amount).
@@ -105,13 +105,13 @@ def test_the_part_names_the_form_and_has_two_steps_in_order() -> None:
     assert second["name"] == "core/at_most"
 
 
-def test_the_first_step_supplies_the_printed_maximum_with_no_title_and_no_reference() -> None:
+def test_the_first_step_supplies_the_printed_maximum_with_a_title_and_no_reference() -> None:
     first, _ = _part()["capabilities"]
 
-    assert "title" not in first
     assert "reference" not in first
     assert first == {
         "name": "core/credit_amount",
+        "title": "Most you can claim for pension income",
         "unit": "ca/cad",
         "params": {"amount": "ca-on/pension_income_amount_maximum"},
         "produces": {"output": MAXIMUM},

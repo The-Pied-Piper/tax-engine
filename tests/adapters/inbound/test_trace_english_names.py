@@ -170,3 +170,27 @@ def test_a_box_of_a_line_is_a_line_of_the_form() -> None:
 
     assert names.of(GROSS) == "line 87 box A"
     assert names.of(LESS) == "line 87 box B"
+
+
+def test_a_figure_is_named_when_the_form_gives_it_a_reference_or_a_title() -> None:
+    names = EnglishNames(_Printed({"allowance": "Allowance"}, {"gross_pay": "4"}))
+
+    assert names.is_named("gross_pay") is True
+    assert names.is_named("allowance") is True
+    assert names.is_named("net_pay") is False
+
+
+def test_with_no_worksheet_no_figure_is_named() -> None:
+    assert EnglishNames().is_named("gross_pay") is False
+
+
+def test_a_figure_another_form_exports_is_named_only_if_that_form_prints_a_name_for_it() -> None:
+    titled = ImportedFigure("Form EX1", "Credit", None, True)
+    referenced = ImportedFigure("Form EX1", None, "45", True)
+    bare = ImportedFigure("Form EX1", None, None, True)
+    sheet = Worksheet(imported_figures={"titled": titled, "referenced": referenced, "bare": bare})
+    names = EnglishNames(sheet)
+
+    assert names.is_named("titled") is True
+    assert names.is_named("referenced") is True
+    assert names.is_named("bare") is False

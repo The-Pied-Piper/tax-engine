@@ -10,6 +10,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: core/sum
+    title: "Insured pay plus self-employment and other earnings eligible for EI, before the limit"
     unit: ca/cad
     params:
       rounding: ca/cent_rounding

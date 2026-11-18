@@ -11,9 +11,9 @@ Two new parts sit ahead of the line 14 step. `bc479_home_renovation_expenses_max
 the maximum is an intermediate step and carries no line number in its title, reference or kind name.
 `bc479_line_14_check.yaml` is `core/at_most`, consuming the input
 `ca-bc/bc479_home_renovation_expenses_line_14` against that maximum and producing
-`ca-bc/bc479_home_renovation_expenses_checked`, the amount the 10% step multiplies. It carries no
-title or reference either; only the final step for the line does. A blank input passes through as
-blank.
+`ca-bc/bc479_home_renovation_expenses_checked`, the amount the 10% step multiplies. It carries a
+plain-words title but no reference; only the final step for the line carries the reference. A
+blank input passes through as blank.
 
 The part layout is checked here on the real files; the behaviour (passing, rejection, trace) is
 checked end to end in `end_to_end/test_bc479_home_renovation_expenses_maximum.py`.
@@ -64,14 +64,14 @@ def test_the_maximum_part_is_one_credit_amount_step_with_no_line_number() -> Non
     assert "consumes" not in step
 
 
-def test_the_check_part_is_one_at_most_step_with_no_line_number_or_title() -> None:
+def test_the_check_part_is_one_at_most_step_with_a_title_and_no_line_number() -> None:
     part = _part(CHECK_PART)
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
     (step,) = part["capabilities"]
     assert step["name"] == "core/at_most"
-    assert "title" not in step
+    assert step["title"] == "Home renovation expenses claimed"
     assert "reference" not in step
     assert step["unit"] == "ca/cad"
     assert step["consumes"] == {"amount": INPUT, "bound": MAXIMUM}

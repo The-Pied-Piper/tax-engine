@@ -21,6 +21,7 @@ form:
   name: ca/t2204
 capabilities:
   - name: ca/count_by_conditions
+    title: "Multiplier that is 1 unless the low-pay rule applies"
     params:
       conditions: ca/t2204_line_1_conditions
     consumes:
