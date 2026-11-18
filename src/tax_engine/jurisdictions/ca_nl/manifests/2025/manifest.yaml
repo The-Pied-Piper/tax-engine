@@ -5,18 +5,22 @@
 # their parts in the `ca` package (`ca/forms/<name>/`).
 #
 # Newfoundland and Labrador builds three forms, split so that no form reads another in a loop:
-# `ca-nl/nl428_credits` (NL428 lines 1 to 62), `ca-nl/nl428` (NL428 lines 63 to 108), which
+# `ca-nl/nl428_credits` (NL428 lines 1 to 62), `ca-nl/nl428` (NL428 lines 63 to 105), which
 # supplies `ca/provincial_tax.amount` for T1 line 42800 (NL428 line 105 is the figure that goes to
-# T1 line 42800), and `ca-nl/nl428_worksheet` (Worksheet NL428).
+# T1 line 42800), and `ca-nl/nl428_worksheet` (Worksheet NL428, built only for the age amount, line
+# 58080). NL428 lines 106 to 108 (the unused reduction of a spouse or common-law partner) are not
+# built.
 #
-# Form NL479 and Schedules NL(S2) and NL(S11) are not built: their credits need receipts or Form
-# T1129, so none contributes a line for a salary-only filer.
+# Form NL479 is not built: its only credits (physical activity, and research and development) are
+# claims that need receipts or Form T1129. Schedules NL(S2) (amounts transferred from a spouse or
+# common-law partner) and NL(S11) (tuition and education amounts) are not built: a salary-only
+# single filer has neither.
 #
 # The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
 # is a refund). Newfoundland and Labrador uses the standard federal CPP and EI (no QPP), so Schedule
-# 8 and T2204 are imported unchanged. CRA publishes no Newfoundland and Labrador Schedule 6 (its
-# Newfoundland and Labrador package lists NL428, NL479, NL(S2) and NL(S11) only), so the federal
-# Schedule 6 is imported unchanged.
+# 8 and T2204 are imported unchanged. No Newfoundland and Labrador Schedule 6 has been found (CRA's
+# Newfoundland and Labrador package lists NL428, NL479, NL(S2) and NL(S11) only, and 5001-s6 is not
+# published), so the federal Schedule 6 is imported unchanged.
 #
 # Newfoundland and Labrador is not yet listed in `registrations.JURISDICTIONS`; that is done by the
 # end-to-end ticket, last, after the 2026 datasets exist.
