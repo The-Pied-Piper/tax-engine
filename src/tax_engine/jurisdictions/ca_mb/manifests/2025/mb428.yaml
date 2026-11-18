@@ -1,13 +1,15 @@
 # Form MB428 Manitoba Tax 2025 (CRA 5007-C), lines 58 to 82 (Part C, Manitoba tax). This part names
-# the form and its export; the form is one form, so its lines read each other directly. Export: line
-# 82, the Manitoba tax (`ca-mb/mb428_manitoba_tax_line_82`), which line 82 says to enter on line
-# 42800 of the return. The form supplies line 82 as `ca/provincial_tax.amount`, the name the
+# the form and its exports; the form is one form, so its lines read each other directly. Exports:
+# line 65, the tax after the credits (`ca-mb/mb428_tax_after_credits_line_65`), which the return
+# summary reads for the marginal tax rate; and line 82, the Manitoba tax
+# (`ca-mb/mb428_manitoba_tax_line_82`), which line 82 says to enter on line 42800 of the return. The form supplies line 82 as `ca/provincial_tax.amount`, the name the
 # federal T1 reads.
 form:
   name: ca-mb/mb428
   title: "Form MB428: Manitoba Tax"
   required: true
   exports:
+    - ca-mb/mb428_tax_after_credits_line_65
     - ca-mb/mb428_manitoba_tax_line_82
   supplies:
     ca/provincial_tax.amount: ca-mb/mb428_manitoba_tax_line_82

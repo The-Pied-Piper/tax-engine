@@ -1,12 +1,14 @@
 # Form MB428 Manitoba Tax 2025 (CRA 5007-c), lines 1 to 57. This part names the form and its
-# exports; line parts carry capabilities. Exports: line 8
-# (`ca-mb/mb428_tax_on_taxable_income_line_8`), which line 58 on the tax form reads; and line 57
-# (`ca-mb/mb428_non_refundable_credits_line_57`), which line 61 on the tax form reads.
+# exports; line parts carry capabilities. Exports: line 5 (`ca-mb/mb428_bracket_rate_line_5`), the
+# rate of the column line 1 falls in, which the return summary reads for the marginal tax rate;
+# line 8 (`ca-mb/mb428_tax_on_taxable_income_line_8`), which line 58 on the tax form reads; and line
+# 57 (`ca-mb/mb428_non_refundable_credits_line_57`), which line 61 on the tax form reads.
 form:
   name: ca-mb/mb428_credits
   title: "Form MB428: Manitoba Tax"
   required: true
   exports:
+    - ca-mb/mb428_bracket_rate_line_5
     - ca-mb/mb428_tax_on_taxable_income_line_8
     - ca-mb/mb428_non_refundable_credits_line_57
 capabilities: []
