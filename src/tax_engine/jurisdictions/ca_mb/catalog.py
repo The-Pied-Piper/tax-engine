@@ -518,6 +518,15 @@ MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
 Manitoba community enterprise development tax credit from line 4 of Form T1256": the credit worked
 out on Form T1256, which is not built, a caller input that is read as blank when left out."""
 
+MB479_RENTAL_HOUSING_CONSTRUCTION_INCENTIVE_TAX_CREDIT_LINE_80 = AmountKind.declare(
+    CATALOG,
+    "mb479_rental_housing_construction_incentive_tax_credit_line_80",
+    non_negative=True,
+)
+"""Rental housing construction incentive tax credit, MB479 line 80 "Line 80: Certificate number:
+Line 61496 Tax credit amount from your certificate": the credit amount on the certificate, a caller
+input that is read as blank when left out; the certificate number is not read."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
