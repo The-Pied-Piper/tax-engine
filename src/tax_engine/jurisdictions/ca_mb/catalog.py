@@ -188,6 +188,12 @@ line 60850: Manitoba small business venture capital tax credit for individuals (
 T1256-1) (maximum $120,000)": the entered amount, passed on unchanged when it is at most the printed
 maximum, blank when left out; above the maximum it is refused, not capped."""
 
+MB428_MINERAL_EXPLORATION_TAX_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "mb428_mineral_exploration_tax_credit_line_81", non_negative=True
+)
+"""Manitoba mineral exploration tax credit, MB428 line 81 "Line 81 and line 60920: Manitoba mineral
+exploration tax credit (complete Form T1241)": a caller input, read as blank when left out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
