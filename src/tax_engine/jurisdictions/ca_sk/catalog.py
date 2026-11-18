@@ -35,7 +35,8 @@ SK428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "sk428_pension_income_amount", non_negative=True
 )
 """Pension income amount, SK428 line 33 "Line 33 and line 58360: Pension income amount (maximum
-$1,000)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
+$1,000)": the amount the filer claims, a caller input that is read as 0 when it is left out;
+the line 33 step checks it against the printed maximum."""
 
 SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
     CATALOG, "sk428_medical_expenses_line_50", non_negative=True
@@ -200,7 +201,8 @@ SK428_CREDITS_SUBTOTAL_LINE_35 = AmountKind.declare(
     CATALOG, "sk428_credits_subtotal_line_35", non_negative=True
 )
 """Saskatchewan credits subtotal, SK428 line 35 "Line 35: Add lines 32 to 34. =": line 32 plus
-the pension income amount on line 33, line 34 (the caregiver amount) not being built."""
+the pension income amount on line 33 after the line 33 step has checked it, line 34 (the caregiver
+amount) not being built."""
 
 SK428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
     CATALOG, "sk428_tax_on_excess_line_6", non_negative=True
@@ -220,6 +222,26 @@ SK428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
 """Saskatchewan credits subtotal, SK428 line 42 "Line 42: Add lines 38 to 41. =": line 38, lines 39
 to 41 (student loan interest, unused tuition and education amounts, amounts transferred from a
 spouse) not being built."""
+
+SK428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "sk428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on SK428 line 33 "(maximum $1,000)": the printed maximum,
+from the `ca-sk/pension_income_amount_maximum` dataset; the bound line 33 cannot pass."""
+
+SK428_PENSION_INCOME_AMOUNT_CHECKED_LINE_33 = AmountKind.declare(
+    CATALOG, "sk428_pension_income_amount_checked_line_33", non_negative=True
+)
+"""Pension income amount, SK428 line 33 "Line 33 and line 58360: Pension income amount (maximum
+$1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, read as 0
+when left out; above the maximum it is refused, not capped."""
+
+SK428_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
+    CATALOG, "sk428_tax_on_taxable_income_line_58", non_negative=True
+)
+"""Saskatchewan tax on taxable income from line 8, SK428 line 58 "Line 58: Saskatchewan tax on
+taxable income from line 8 ^" ("Enter the amount from line 8 on line 58 and continue at line 9."):
+the amount of line 8, read from the credits form."""
 
 SK428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
     CATALOG, "sk428_credits_total_line_51", non_negative=True
