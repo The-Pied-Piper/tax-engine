@@ -170,3 +170,9 @@ SK428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, Form SK428 line 3 "Column 1: Line 1 is $53,463 or less / Line 3: 0.00"
 (53,463.00; 152,750.00): the printed lower bound of the column of lines 2 to 8 that line 1 falls
 in."""
+
+SK428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "sk428_bracket_rate_line_5", non_negative=True
+)
+"""Rate of the column, Form SK428 line 5 "Column 1: Line 1 is $53,463 or less / Line 5: Rate 10.5%"
+(12.5%; 14.5%): the printed rate of the column of lines 2 to 8 that line 1 falls in."""
