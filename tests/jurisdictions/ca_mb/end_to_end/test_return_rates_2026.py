@@ -2,9 +2,10 @@
 the registered engine (`build_tax_computation`, which lists Manitoba; salary the only input).
 
 The Manitoba 2026 datasets are PROVISIONAL: the 2026 Form MB428 and Worksheet MB428 are not yet
-published, and the figures follow the provisional 2026 datasets, taken from T4127 (January and July
-2026) or carried forward from 2025. Every figure pinned here follows those datasets and was derived
-by hand; it must be re-checked when CRA publishes the 2026 forms.
+published, and the figures follow the provisional 2026 datasets, which are carried forward from the
+2025 forms (Form MB428, Worksheet MB428) or taken from T4127. Every figure pinned here follows those
+provisional datasets and was derived by hand; every Manitoba and federal 2026 figure below is
+provisional and must be re-checked when CRA publishes the 2026 forms.
 
 The rates are calculated the same way as for 2025 (see `test_return_rates.py`), with the Manitoba
 basic personal amount phase-out in the place of a tax reduction:
@@ -17,12 +18,14 @@ basic personal amount phase-out in the place of a tax reduction:
   (`ca-mb/manitoba_marginal_rate`): the MB428 line 5 rate plus the slope of the basic personal
   amount phase-out, counted only where MB428 line 65 is above 0. CPP and EI are not counted.
 
-The 2026 figures: the Manitoba rates (10.8%, 12.75%, 17.4%) and bounds (47,000 and 100,000) are
-unchanged, and so are the basic personal amount of 15,780 and its income threshold of 200,000
-(Worksheet MB428 lines 1, 3, 5 and 7; T4127 January 2026 prints no change); the federal rates are
-the 2026 ones (14%, 20.5%, 26%, 29%, 33% from taxable income of 58,523, 117,045, 181,440 and
-258,482) with a credit rate of 14%, a basic personal amount of 16,452 (14,829 from a net income of
-258,482, reduced over 77,042 from 181,440) and a Canada employment amount of 1,501. Inside the
+The provisional 2026 figures: the Manitoba rates (10.8%, 12.75%, 17.4%) and bounds (47,000 and
+100,000) are carried forward unchanged from the 2025 Form MB428, and so are the basic personal
+amount of 15,780 and its income threshold of 200,000 (Worksheet MB428 lines 1, 3, 5 and 7, the
+printed figures, which decide here rather than the 15,969 of the T4127 formula); the provisional
+federal figures are the 2026 dataset ones (14%, 20.5%, 26%, 29%, 33% from taxable income of
+58,523, 117,045, 181,440 and 258,482) with a credit rate of 14%, a basic personal amount of 16,452
+(14,829 from a net income of 258,482, reduced over 77,042 from 181,440) and a Canada employment
+amount of 1,501. Inside the
 phase-out range a further dollar of income is taxed at 15,780 / 200,000 x 10.8% = 0.0085212 more
 (0.852 points), so the Manitoba part is 17.4% + 0.85212 points = 18.25212% at a net income between
 200,000 and 400,000 (while line 65 is above zero).
@@ -34,19 +37,20 @@ between 74,600 and 85,000, to the cent; 1,127.00 from a salary of 85,000 up). Th
 credits (T1 line 42900) is the bracket tax less 14% of the basic personal amount, the CPP base
 contribution (4.95% of the salary less 3,500, to the cent), the EI premium (1.63% to 68,900) and
 the Canada employment amount (1,501 or the salary if less), summed and multiplied once. The
-Manitoba tax (MB428 line 65, equal to line 82 here) is the bracket tax less 10.8% of the credits
-(Worksheet MB428 line 9 basic personal amount, the CPP base contribution, the EI premium and, at a
-low income, the family tax benefit basic amount of 2,065 less 9% of the net income), summed and
-multiplied once. The total payable is their sum.
+Manitoba tax (MB428 line 65, equal to line 82 here) is the bracket tax less 10.8% (line 52) of the
+credits (line 51; Worksheet MB428 line 9 basic personal amount, the CPP base contribution, the EI
+premium and, at a low income, the family tax benefit basic amount of 2,065 less 9% of the net
+income), summed and multiplied once. The total payable is their sum.
 
 At 70,000 (taxable income and net income 69,335.00; CPP base 3,291.75 and EI 1,123.07):
 
 - federal: 8,193.22 + 20.5% of (69,335.00 - 58,523) = 10,409.68 bracket tax, less 14% of (16,452.00
   + 3,291.75 + 1,123.07 + 1,501.00 = 22,367.82) = 3,131.49, so T1 line 42900 is 7,278.19, with the
   20.5% bracket rate as the federal part;
-- Manitoba: 5,076.00 + 12.75% of (69,335.00 - 47,000) = 7,923.71 bracket tax, less 10.8% of line 33
-  (15,780.00 + 3,291.75 + 1,123.07 = 20,194.82) = 2,181.04, so MB428 line 65 is 5,742.67, with the
-  12.75% bracket rate as the Manitoba part (no phase-out term);
+- Manitoba: 5,076.00 + 12.75% of (69,335.00 - 47,000) = 7,923.71 bracket tax, less 10.8% of the
+  credits subtotal (line 33; line 41, the family tax benefit, is 0 here) (15,780.00 + 3,291.75 +
+  1,123.07 = 20,194.82) = 2,181.04, so MB428 line 65 is 5,742.67, with the 12.75%
+  bracket rate as the Manitoba part (no phase-out term);
 - the marginal rate is 20.5% + 12.75% = 33.25%; the total payable is 7,278.19 + 5,742.67 =
   13,020.86 and the average rate 13,020.86 / 70,000 = 0.186012, rounded to 0.1860.
 
@@ -61,8 +65,10 @@ The bracket columns change at a taxable income of 47,000.00 (salary 47,439.39) a
 (47,439.40), and at 100,000.00 (salary 101,127.00) and 100,000.01 (101,127.01).
 
 The phase-out's slope starts at a net income of 200,000.07 (salary 201,127.07) and ends at
-399,999.94 (salary 401,126.94), not at the printed 200,000.00 and 400,000.00: Worksheet MB428 line
-8 is a dollars-and-cents box (0.06 x 0.0789 rounds to 0.00, 0.07 x 0.0789 to 0.01), so it is 0.00
+399,999.94 (salary 401,126.94), not at the printed 200,000.00 and 400,000.00. The worksheet prints
+no rounding rule for line 8 ("Line 6 multiplied by line 7"), so this follows the project's reading,
+the same as for 2025 and set by the datasets' cent rounding: line 8 is a dollars-and-cents amount
+(0.06 x 0.0789 rounds to 0.00, 0.07 x 0.0789 to 0.01), so it is 0.00
 up to a net income of 200,000.06; and line 9 is 0.00 from a net income of 399,999.94 (line 8 is
 then 15,780.00), which is where the printed form already reads 0.
 """
