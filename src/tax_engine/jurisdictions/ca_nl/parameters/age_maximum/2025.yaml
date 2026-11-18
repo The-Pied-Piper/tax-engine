@@ -1,0 +1,12 @@
+# Age amount, maximum, 2025 tax year (Worksheet NL428, form 5001-D): "Line 58080 -
+# Age amount", line 1 "Maximum amount 7,064.00". It borrows the credit kind because it is
+# claimed whole, as the basic reduction is.
+# Line 1 is a dollars-and-cents box, so the amount rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+family: ca-nl/age_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-d/5001-d-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "7064.00"
