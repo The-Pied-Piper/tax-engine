@@ -341,6 +341,28 @@ MB479_ODOUR_CONTROL_CREDIT_LINE_65 = AmountKind.declare(
 odour-control tax credit from your 2024 notice of assessment or reassessment.": a caller input that
 is read as blank when left out."""
 
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_line_77", non_negative=True
+)
+"""Employee share purchase tax credit, MB479 line 77 "Line 77 and line 61490: Enter your Manitoba
+employee share purchase tax credit from line 6 of Form T1256-2. (maximum $27,000)": a caller input
+that is read as blank when left out; the line 77 step checks it against the printed maximum."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_maximum", non_negative=True
+)
+"""Employee share purchase tax credit maximum, printed on MB479 line 77 "(maximum $27,000)": the
+printed maximum, from the `ca-mb/employee_share_purchase_credit_maximum` dataset; the bound line 77
+cannot pass."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_CHECKED_LINE_77 = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_checked_line_77", non_negative=True
+)
+"""Employee share purchase tax credit, MB479 line 77 "Line 77 and line 61490: Enter your Manitoba
+employee share purchase tax credit from line 6 of Form T1256-2. (maximum $27,000)": the entered
+amount, passed on unchanged when it is at most the printed maximum, blank when left out; above the
+maximum it is refused, not capped."""
+
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
 )
