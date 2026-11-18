@@ -6,7 +6,7 @@ credit amount. Another form's export arrives only as a record list of one amount
 core/record_total over that export, as Manitoba's line 21 and British Columbia's line 29 are.
 
 The test composes the real Schedule 8 and T2204 parts and the real `sk428_credits_line_24.yaml`, and
-types in only the salary. The Saskatchewan salary part (ticket #858) is not yet on main, so the test
+types in only the salary. The Saskatchewan salary part is not yet on main, so the test
 writes it itself, as an inline YAML string (the same content as the Manitoba salary part). The
 SK428 form declaration is made up here, exporting only line 24, because the real header is owned by
 another change. Saskatchewan is not yet in `registrations.JURISDICTIONS`, so the service is built
