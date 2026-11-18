@@ -336,3 +336,8 @@ SK428_LABOUR_SPONSORED_CREDIT_CHECKED_LINE_77 = AmountKind.declare(
 """Labour-sponsored venture capital tax credit, SK428 line 77 "Line 77 and line 63557: Line 75 plus
 line 76 (maximum $875)": the entered amount, passed on unchanged when it is at most the printed
 maximum, blank when left out; above the maximum it is refused, not capped."""
+
+SK428_TAX_LINE_80 = AmountKind.declare(CATALOG, "sk428_tax_line_80", non_negative=True)
+"""Saskatchewan tax after the mineral exploration tax credit, SK428 line 80 "Line 80: Line 78
+minus line 79 (if negative, enter "0") = ^": line 78 less the credit of line 79 (blank read as 0),
+never below zero."""
