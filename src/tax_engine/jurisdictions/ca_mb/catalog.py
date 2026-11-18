@@ -475,6 +475,13 @@ MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
 tax credit from Form T1299": the credit worked out on Form T1299, which is not built, a caller
 input that is read as blank when left out."""
 
+MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_LINE_73 = AmountKind.declare(
+    CATALOG, "mb479_cultural_industries_printing_credit_line_73", non_negative=True
+)
+"""Cultural industries printing tax credit, MB479 line 73 "Line 73 and line 61480: Cultural
+industries printing tax credit (maximum $1,100,000)": the credit of the line, a caller input that is
+read as blank when left out; the printed maximum $1,100,000 is checked by the step that reads it."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )

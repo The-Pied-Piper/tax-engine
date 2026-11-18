@@ -1,0 +1,13 @@
+# MB479 (2025) line 73's input, which a salary-only caller does not give.
+# Line 73: "Line 73 and line 61480: Cultural industries printing tax credit (maximum $1,100,000)" (Form MB479, CRA 5007-TC).
+# A salary-only single filer claims no cultural industries printing credit, so a request that leaves
+# the line out is read as blank. The step that reads it (a later one) applies the blank rule and the
+# printed maximum.
+inputs:
+  - name: ca-mb/mb479_cultural_industries_printing_credit_line_73
+    title: "Cultural industries printing tax credit"
+    reference: "73"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 73 and line 61480: Cultural industries printing tax credit (maximum $1,100,000)'
