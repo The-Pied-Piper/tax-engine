@@ -65,8 +65,8 @@ as usual. For example, the
 T1 form reads the provincial credits optionally, so line 47900 is the British Columbia credits
 where that province's form supplies them and blank elsewhere.
 
-An optional read of a name no form supplies, such as a misspelt one, reads as a blank and is not
-refused as a required read would be, so check the name against the supplying form.
+An optional read of a misspelt name reads as a blank and is not refused as a required read would
+be, so check the name against the supplying form.
 
 ## Supplied figures
 
