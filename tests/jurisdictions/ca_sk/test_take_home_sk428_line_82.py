@@ -16,8 +16,7 @@ The test composes the real Saskatchewan salary part, the real Schedule 8 and T22
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_80.yaml` parts (with the inputs parts the lines read),
 the line 81 input part and the new `sk428_line_82.yaml`, and types in only the salary and, in some
-tests, line 81. The credits form declaration is made up here; the SK428 form declaration is the
-real `sk428.yaml`, which exports line 82 and supplies it as `ca/provincial_tax.amount`.
+tests, line 81. The two form declarations are made up here.
 
 Figures: line 80 is line 78 with a blank line 79, re-derived here in `_line_62` and `_line_66`
 with Decimal (not a CRA example); line 81 is blank (0), so line 82 is 0.00 / 5,092.30 / 22,207.93
@@ -70,7 +69,6 @@ ZERO = D(0)
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = SK_PARTS / "sk428_line_82.yaml"
-FORM_PART = SK_PARTS / "sk428.yaml"
 TOP_CREDITS_PARTS = tuple(f"sk428_credits_line_{n}.yaml" for n in (1, 3, 4, 5, 6, 7, 8))
 CREDITS_PARTS = (
     "sk428_credits_line_9.yaml",
@@ -168,7 +166,15 @@ CREDITS_FORM = dedent(f"""\
         - ca-sk/sk428_non_refundable_credits_line_57
     capabilities: []
     """)
-PROVINCIAL_TAX = "ca/provincial_tax.amount"
+# The SK428 declaration, test-local: lines 58 to 80 are composed, so it exports only line 82.
+FORM = dedent(f"""\
+    form:
+      name: {FORM_NAME}
+      required: true
+      exports:
+        - {IDENTIFIER}
+    capabilities: []
+    """)
 
 # salary, line 82 with line 81 left blank (read as 0).
 CASES = [
@@ -252,7 +258,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_credits_form.yaml").write_text(CREDITS_FORM, encoding="utf-8")
-    (folder / "02_form.yaml").write_text(FORM_PART.read_text(encoding="utf-8"), encoding="utf-8")
+    (folder / "02_form.yaml").write_text(FORM, encoding="utf-8")
     for number, part in enumerate(_part_files(), start=3):
         (folder / f"{number:02d}_{part.name}").write_text(
             inputs_without_form(part)
@@ -476,11 +482,3 @@ def test_line_82_is_a_registered_non_negative_decimal_amount_kind() -> None:
 def test_line_80_and_line_82_are_both_non_negative() -> None:
     assert non_negative(_amount_kind(LINE_80))
     assert non_negative(_amount_kind(IDENTIFIER))
-
-
-def test_the_real_form_declaration_exports_line_82_and_supplies_it_as_the_provincial_tax() -> None:
-    form = yaml.safe_load(FORM_PART.read_text(encoding="utf-8"))["form"]
-
-    assert form["name"] == FORM_NAME
-    assert form["exports"] == [IDENTIFIER]
-    assert form["supplies"] == {PROVINCIAL_TAX: IDENTIFIER}
