@@ -56,6 +56,12 @@ SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 56 Enter this amount on line 63. Saskatchewan non-refundable tax credits =": line 53 plus line 56,
 read by line 63 on the tax form."""
 
+SK428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_70 = AmountKind.declare(
+    CATALOG, "sk428_provincial_foreign_tax_credit_line_70", non_negative=True
+)
+"""Provincial foreign tax credit, SK428 line 70 "Line 70: Provincial foreign tax credit (complete
+Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
+
 SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "sk428_saskatchewan_tax_line_82", non_negative=True
 )
@@ -91,6 +97,27 @@ SK428_DIVIDEND_TAX_CREDIT_LINE_64 = AmountKind.declare(
 """Saskatchewan dividend tax credit, SK428 line 64 (line 61520) "Line 64 and line 61520:
 Saskatchewan dividend tax credit (use Worksheet SK428)": a caller input, read as blank when left
 out."""
+
+SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_carryover_amount_line_65", non_negative=True
+)
+"""Saskatchewan minimum tax carryover amount, SK428 line 65 (line 61540) "Amount from line 40427
+of your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
+read as blank when left out."""
+
+SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_t691_amount_line_68"
+)
+"""Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
+minus Line 2 of Part 7 multiplied by 50%": the amount from Form T691, an optional input that a
+salary-only caller leaves out. The 50% multiply is a separate step."""
+
+SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
+    CATALOG, "sk428_political_contributions_credit_line_73", non_negative=True
+)
+"""Saskatchewan political contribution tax credit, SK428 line 73 "Line 73: Saskatchewan political
+contribution tax credit (use Worksheet SK428) (maximum $650)": the credit from the worksheet, an
+optional input that a salary-only caller leaves out."""
 
 SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
     CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
