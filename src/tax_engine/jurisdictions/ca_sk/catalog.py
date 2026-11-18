@@ -108,9 +108,9 @@ read as blank when left out."""
 SK428_MINIMUM_TAX_CARRYOVER_LINE_65 = AmountKind.declare(
     CATALOG, "sk428_minimum_tax_carryover_line_65", non_negative=True
 )
-"""Saskatchewan minimum tax carryover, SK428 line 65 (line 61540) "Amount from line 40427 of your
-return multiplied by 50% =": calculated, box B of the line, the amount from line 40427 multiplied
-by 50%."""
+"""Saskatchewan minimum tax carryover, SK428 line 65 "Amount from line 40427 of your return
+multiplied by 50% =": calculated, box B of the line, the amount from line 40427 multiplied by
+50%."""
 
 SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "sk428_minimum_tax_t691_amount_line_68"
