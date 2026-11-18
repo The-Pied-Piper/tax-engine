@@ -1,8 +1,8 @@
-# Form BC479 (2025) line 14, the entry checked against its printed maximum. Form BC479 (CRA 5010-TC):
-# "Line 14: Enter your home renovation expenses from line 5 of your Schedule BC(S12). (maximum
-# $10,000)". The entered amount (bc479_line_14_input.yaml) is passed on unchanged when it is at most
-# the printed maximum (bc479_home_renovation_expenses_maximum.yaml); an entry above the maximum is rejected, not capped,
-# so the 10% step never reads it. A blank entry passes on as blank. This step carries no line number
+# Form BC479 (2025) line 14, the entry checked against its printed maximum. Form BC479 (CRA
+# 5010-TC): "Line 14: Enter your home renovation expenses from line 5 of your Schedule BC(S12).
+# (maximum $10,000)". The entered amount (bc479_line_14_input.yaml) is passed on unchanged when it
+# is at most the printed maximum (bc479_home_renovation_expenses_maximum.yaml); an entry above the
+# maximum is rejected, not capped, so the 10% step never reads it. A blank entry passes on as blank. This step carries no line number
 # because it is not the line's final step: the multiply step (bc479_line_14.yaml), which prints the
 # line 14 figure, is the final step and carries the line number. Its title is plain words, not
 # printed wording, because the sentence of line 14 names this figure.

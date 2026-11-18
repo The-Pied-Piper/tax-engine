@@ -8,7 +8,7 @@ bound is titled by hand and pinned by its own part's test.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable
 from decimal import Decimal
 from itertools import product
 
@@ -45,40 +45,26 @@ def record_label_fallbacks(monkeypatch: pytest.MonkeyPatch) -> list[str]:
     return labels
 
 
-def numbered_sentences(
+def sentence_failures(
     sheet: Worksheet, lines: Iterable[TraceLine], fallbacks: list[str]
-) -> Iterator[tuple[TraceLine, str, list[str]]]:
-    """Each of `lines` the form numbers, its sentence, and the labels that sentence fell back to
-    (read from `fallbacks`, which the rendering fills).
+) -> list[str]:
+    """One line for each sentence of `lines` the form numbers that names a figure by its internal
+    label or has more than `MAXIMUM_WORDS` words; `fallbacks` is the list the rendering fills.
     """
     renderer = EnglishTraceRenderer()
+    failures: list[str] = []
     for line in lines:
         fallbacks.clear()
         text = renderer.render(line, sheet)
-        if line.label is not None and sheet.reference(line.label):
-            yield line, text, list(fallbacks)
+        if line.label is None or not sheet.reference(line.label):
+            continue  # the page hides a line the form does not number
+        failures += [f"{line.label} names {label}" for label in fallbacks]
+        if len(text.split()) > MAXIMUM_WORDS:
+            failures.append(f"{line.label} is {len(text.split())} words: {text}")
+    return failures
 
 
-def test_the_guard_sees_a_sentence_that_names_a_figure_by_its_label(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    gross, less, net = (AmountKind(f"ex/{name}") for name in ("gross_pay", "allowance", "net_pay"))
-    line = SubtractedNotBelowZeroLine(
-        output=net,
-        minuend=gross,
-        minuend_amount=Decimal("70000.00"),
-        subtrahend=less,
-        subtrahend_amount=Decimal("71300.00"),
-        result=Decimal("0.00"),
-        rounding=NO_ROUNDING,
-    )
-    sheet = Worksheet(figure_references={"net_pay": "4", "gross_pay": "2"})
-
-    fallbacks = record_label_fallbacks(monkeypatch)
-
-    assert [labels for _, _, labels in numbered_sentences(sheet, (line,), fallbacks)] == [
-        ["allowance"]
-    ]
+# --- the real jurisdictions ---------------------------------------------------------------------
 
 
 @pytest.mark.parametrize("code", JURISDICTIONS.jurisdiction_codes(), ids=str)
@@ -89,16 +75,61 @@ def test_numbered_lines_never_name_a_figure_by_its_internal_label(
     roots = JURISDICTIONS.roots()
     jurisdiction = YamlJurisdictionSource(roots, artifact_kinds(), units()).get_jurisdiction(code)
     engine = build_tax_computation()
-    by_label: list[str] = []
-    too_long: list[str] = []
+    failures: list[str] = []
     for year, salary in product(resolvable_years(roots.values(), jurisdiction), SALARIES):
         sheets = engine.compute(code, year, Artifact(EMPLOYMENT_INCOME, Decimal(salary)))
         for form, form_sheets in sheets.items():
             for sheet in form_sheets:
-                for line, text, labels in numbered_sentences(sheet, sheet.trace, fallbacks):
-                    where = f"{form} {line.label}"
-                    by_label += [f"{where} names {label}" for label in labels]
-                    if len(text.split()) > MAXIMUM_WORDS:
-                        too_long.append(f"{where}: {text}")
-    assert by_label == []
-    assert too_long == []
+                failures += [
+                    f"{form} {failure}"
+                    for failure in sentence_failures(sheet, sheet.trace, fallbacks)
+                ]
+    assert failures == []
+
+
+# --- the guard itself, on made-up kinds ---------------------------------------------------------
+
+GROSS, ALLOWANCE, NET = (AmountKind(f"ex/{name}") for name in ("gross_pay", "allowance", "net_pay"))
+LINE = SubtractedNotBelowZeroLine(
+    output=NET,
+    minuend=GROSS,
+    minuend_amount=Decimal("70000.00"),
+    subtrahend=ALLOWANCE,
+    subtrahend_amount=Decimal("71300.00"),
+    result=Decimal("0.00"),
+    rounding=NO_ROUNDING,
+)
+
+
+def test_the_guard_sees_a_sentence_that_names_a_figure_by_its_label(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    sheet = Worksheet(figure_references={"net_pay": "4", "gross_pay": "2"})
+
+    failures = sentence_failures(sheet, (LINE,), record_label_fallbacks(monkeypatch))
+
+    assert failures == ["net_pay names allowance"]
+
+
+def test_the_guard_passes_a_sentence_that_names_every_figure_as_printed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    sheet = Worksheet(figure_references={"net_pay": "4", "gross_pay": "2", "allowance": "B"})
+
+    assert sentence_failures(sheet, (LINE,), record_label_fallbacks(monkeypatch)) == []
+
+
+def test_the_guard_skips_a_line_the_form_does_not_number(monkeypatch: pytest.MonkeyPatch) -> None:
+    assert sentence_failures(Worksheet(), (LINE,), record_label_fallbacks(monkeypatch)) == []
+
+
+def test_the_guard_sees_a_sentence_over_the_word_limit(monkeypatch: pytest.MonkeyPatch) -> None:
+    long_title = " ".join(["word"] * MAXIMUM_WORDS)
+    sheet = Worksheet(
+        figure_references={"net_pay": "4", "gross_pay": "2"},
+        figure_titles={"allowance": long_title},
+    )
+
+    (failure,) = sentence_failures(sheet, (LINE,), record_label_fallbacks(monkeypatch))
+
+    assert failure.startswith("net_pay is ")

@@ -4,9 +4,9 @@ Form text (Form BC428, CRA 5010-c-25e.txt line 285-286, confirmed): "Line 84: Br
 political contribution tax credit (use Worksheet BC428) (maximum $500)". Worksheet BC428 is not
 built, so line 84 is an entry line: the entered amount is rejected above the printed maximum, not
 capped. The maximum is the `ca-bc/political_contribution_tax_credit_maximum` dataset, supplied by
-`bc428_political_contribution_tax_credit_maximum.yaml`, a `core/credit_amount` step that carries no
-title and no line number (it is not a line of the form). `bc428_line_84.yaml` is `core/at_most`,
-line 84, titled and referenced "84", consuming the
+`bc428_political_contribution_tax_credit_maximum.yaml`, a `core/credit_amount` step that carries a
+plain-words title and no line number (it is not a line of the form). `bc428_line_84.yaml` is
+`core/at_most`, line 84, titled and referenced "84", consuming the
 `ca-bc/bc428_political_contribution_tax_credit_line_84` input against that maximum and producing
 `ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84`, which line 85 subtracts.
 A blank input (the default) is passed on as blank.
