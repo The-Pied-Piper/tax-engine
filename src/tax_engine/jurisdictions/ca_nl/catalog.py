@@ -14,6 +14,12 @@ from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_line_7", non_negative=True
+)
+"""Age amount, Worksheet NL428 line 7 "Line 7: Line 1 minus line 6 (if negative, enter "0") Enter
+this amount on line 58080 of your Form NL428.": the amount entered on line 58080 of Form NL428."""
+
 NL428_BRACKET_RATE_LINE_5 = AmountKind.declare(
     CATALOG, "nl428_bracket_rate_line_5", non_negative=True
 )
