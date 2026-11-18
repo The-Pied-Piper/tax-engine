@@ -1,0 +1,23 @@
+# Form MB428 (CRA 5007-c) line 82 "Line 82: Line 80 minus line 81 (if negative, enter "0") Enter
+# this amount on line 42800 of your return. Manitoba tax = ^". One core/subtract_not_below_zero
+# step: the Manitoba tax (line 80, `ca-mb/mb428_tax_line_80`) less the Manitoba mineral exploration
+# tax credit (line 81, `ca-mb/mb428_mineral_exploration_tax_credit_line_81`), not below 0. Line 81
+# is an optional input that a salary-only caller leaves blank, read as blank and then as 0 by the
+# blank rule below. Line 82 is the Manitoba tax entered on line 42800. The step is titled with the
+# printed label, as British Columbia's line 91 is.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    title: "Manitoba tax"
+    reference: "82"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/mb428_tax_line_80
+      less: ca-mb/mb428_mineral_exploration_tax_credit_line_81
+    blank:
+      less: "0"
+    produces:
+      output: ca-mb/mb428_manitoba_tax_line_82
