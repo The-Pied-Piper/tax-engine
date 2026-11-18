@@ -519,6 +519,12 @@ MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
 the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
 heat pumps, rounded half-up to the cent."""
 
+MB479_GREEN_ENERGY_CREDITS_LINE_69 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_credits_line_69", non_negative=True
+)
+"""Green energy credits, MB479 line 69 "Line 69: Line 67 plus line 68 = ^": calculated, line 67 plus
+line 68, with a blank line 67 read as 0."""
+
 MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
     CATALOG, "mb479_book_publishing_credit_line_71", non_negative=True
 )
