@@ -32,7 +32,7 @@ D = Decimal
 IDENTIFIER = SK428_PENSION_INCOME_AMOUNT.identifier
 PRINTED_BASIS = "Line 33 and line 58360: Pension income amount (maximum $1,000)"
 PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / (
-    "manifests/2025/sk428_credits_line_33_input.yaml"
+    "manifests/2025/sk428_line_33_inputs.yaml"
 )
 HEADER = """\
 jurisdiction: CA-SK
