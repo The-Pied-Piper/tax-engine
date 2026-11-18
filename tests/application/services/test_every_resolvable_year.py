@@ -74,6 +74,16 @@ def require_every_year_composes(
         pytest.fail("\n".join(failures), pytrace=False)
 
 
+SUPPORTED_YEARS = (2025, 2026)
+
+
+def require_supported_years(code: JurisdictionCode, years: Iterable[int]) -> None:
+    """Fail if a year we serve is missing from `years`, so dropping its datasets cannot pass."""
+    missing = [year for year in SUPPORTED_YEARS if year not in set(years)]
+    if missing:
+        pytest.fail(f"{code}: supported tax years {missing} are not resolvable", pytrace=False)
+
+
 # --- the real jurisdictions -------------------------------------------------------------------
 
 
@@ -85,7 +95,10 @@ def test_every_resolvable_tax_year_of_a_listed_jurisdiction_composes(
     service = factory.build_tax_computation()
     jurisdiction = YamlJurisdictionSource(roots, artifact_kinds(), units()).get_jurisdiction(code)
 
-    require_every_year_composes(service, code, resolvable_years(roots.values(), jurisdiction))
+    years = resolvable_years(roots.values(), jurisdiction)
+
+    require_supported_years(code, years)
+    require_every_year_composes(service, code, years)
 
 
 def test_the_listed_jurisdictions_are_not_empty() -> None:
@@ -172,6 +185,17 @@ def test_every_failing_year_is_reported_not_just_the_first(tmp_path: Path) -> No
         "EX-ON, tax year 2026",
         "EX-ON, tax year 2027",
     ]
+
+
+def test_losing_every_2026_dataset_fails_the_supported_years_floor(tmp_path: Path) -> None:
+    two_family_form(tmp_path)
+    province(tmp_path, "[ex/benefit]")
+    dataset(tmp_path, "ex/base", 2025)
+    dataset(tmp_path, "ex/second", 2025)
+
+    require_every_year_composes(checking(tmp_path), EX_ON, years_of(tmp_path))
+    with pytest.raises(pytest.fail.Exception, match=r"EX-ON: supported tax years \[2026\]"):
+        require_supported_years(EX_ON, years_of(tmp_path))
 
 
 def test_a_jurisdiction_whose_every_family_has_every_year_passes(tmp_path: Path) -> None:
