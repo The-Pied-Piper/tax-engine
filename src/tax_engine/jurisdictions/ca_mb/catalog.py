@@ -115,6 +115,12 @@ MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
 """Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
 return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
 
+MB428_CREDITS_TOTAL_LINE_64 = AmountKind.declare(
+    CATALOG, "mb428_credits_total_line_64", non_negative=True
+)
+"""Total credits, MB428 line 64 "Line 64: Add lines 61 to 63. =": calculated, lines 61 to 63 added
+(line 62 read as 0 when left blank)."""
+
 MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
     CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
 )
@@ -518,6 +524,12 @@ MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
 """Green energy equipment tax credit (manufacturer), MB479 line 68 "Line 68 and line 61390: 7.5% of
 the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
 heat pumps, rounded half-up to the cent."""
+
+MB479_GREEN_ENERGY_CREDITS_LINE_69 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_credits_line_69", non_negative=True
+)
+"""Green energy credits, MB479 line 69 "Line 69: Line 67 plus line 68 = ^": calculated, line 67 plus
+line 68, with a blank line 67 read as 0."""
 
 MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
     CATALOG, "mb479_book_publishing_credit_line_71", non_negative=True
