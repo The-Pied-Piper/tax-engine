@@ -1,4 +1,4 @@
-"""The 2026 `ca-mb/fertility_treatment_credit_maximum` dataset, provisional (ticket #1364).
+"""The 2026 `ca-mb/fertility_treatment_credit_maximum` dataset, provisional.
 
 Pins the 2026 figure, rounding, sources, tax year, and the two header comment lines of the file.
 """

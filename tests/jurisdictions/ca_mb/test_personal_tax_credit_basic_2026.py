@@ -1,4 +1,4 @@
-"""The 2026 `ca-mb/personal_tax_credit_basic` dataset, provisional (ticket #1364).
+"""The 2026 `ca-mb/personal_tax_credit_basic` dataset, provisional.
 
 Pins the 2026 figure, rounding, sources, tax year, and the two header comment lines of the file.
 """
@@ -22,8 +22,9 @@ PROVISIONAL_HEADER = (
     "against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not"
-    " yet published."
+    "# Derivation: carried forward unchanged from the 2025 file; T4127 (Jan and Jul 2026) "
+    "does not print this amount and the July edition states no change for Manitoba, so the "
+    "2026 form is not yet published and the figure is unconfirmed."
 )
 
 

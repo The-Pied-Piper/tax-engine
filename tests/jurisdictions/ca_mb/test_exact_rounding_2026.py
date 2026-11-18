@@ -1,4 +1,4 @@
-"""The 2026 `ca-mb/exact_rounding` dataset, provisional (ticket #1364).
+"""The 2026 `ca-mb/exact_rounding` dataset, provisional.
 
 Pins the 2026 figure, rounding, sources, tax year, and the two header comment lines of the file.
 """

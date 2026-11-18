@@ -1,4 +1,4 @@
-"""The 2026 `ca-mb/basic_personal_amount_threshold` dataset, provisional (ticket #1364).
+"""The 2026 `ca-mb/basic_personal_amount_threshold` dataset, provisional.
 
 Pins the 2026 figure, rounding, sources, tax year, and the two header comment lines of the file.
 """
@@ -16,14 +16,15 @@ from tests.jurisdictions.ca_mb.support import manitoba_packages, manitoba_parame
 D = Decimal
 SOURCE = YamlParameterSource(manitoba_packages().roots(), manitoba_parameter_parsers())
 FAMILY = "ca-mb/basic_personal_amount_threshold"
-SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-d/5007-d-25e.txt",)
+SOURCES = ("https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf",)
 PROVISIONAL_HEADER = (
-    "# Provisional: taken from the 2025 form text named in sources; to be confirmed "
-    "against the 2026 form text when CRA publishes it."
+    "# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 "
+    "form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not"
-    " yet published."
+    "# Derivation: figure as printed in T4127 (Jan 2026) Manitoba Basic Personal Amount "
+    "formula (the full amount applies at net income of $200,000 or less and is reduced "
+    "above it); no rounding applied here."
 )
 
 
@@ -63,10 +64,8 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
     assert lines[1] == DERIVATION_HEADER
 
 
-def test_2026_is_carried_forward_unchanged_from_2025() -> None:
-    carried = SOURCE.get(FAMILY, 2026, CREDIT)
-    original = SOURCE.get(FAMILY, 2025, CREDIT)
+def test_2025_basic_personal_amount_threshold_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
 
-    assert carried.values == original.values
-    assert carried.rounding == original.rounding
-    assert carried.sources == original.sources
+    assert data.values == Credit(amount=D("200000"))
+    assert data.sources != SOURCES

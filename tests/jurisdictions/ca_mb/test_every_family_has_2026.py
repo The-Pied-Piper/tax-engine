@@ -1,4 +1,4 @@
-"""Every `ca-mb` dataset family that 2025 declares has a 2026 file (ticket #1364)."""
+"""Every `ca-mb` dataset family that 2025 declares has a 2026 file."""
 
 from __future__ import annotations
 
