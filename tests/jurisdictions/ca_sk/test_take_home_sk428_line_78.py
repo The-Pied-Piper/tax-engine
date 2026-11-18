@@ -6,18 +6,20 @@ for line 78, so the step is untitled.
 
 Line 78 is one core/subtract_not_below_zero step (`sk428_line_78.yaml`), rounded through
 `ca-sk/cent_rounding`, with `amount` line 74 (`ca-sk/sk428_tax_line_74`, non-negative) and `less`
-line 77 (`ca-sk/sk428_labour_sponsored_credit_line_77`, an optional input). A salary-only caller
-has no labour-sponsored venture capital credit, so line 77 is left blank, and the step has a blank
-rule reading it as 0 and prints its own "left blank, taken as 0" row, as line 74 does for its
-line 73. The output `ca-sk/sk428_tax_line_78` is a non-negative kind on the form `ca-sk/sk428`.
-The $875 maximum of line 77 is not tested here.
+line 77 (`ca-sk/sk428_labour_sponsored_credit_checked_line_77`, the optional input checked against
+its printed maximum). A salary-only caller has no labour-sponsored venture capital credit, so
+line 77 is left blank, and the step has a blank rule reading it as 0 and prints its own "left
+blank, taken as 0" row, as line 74 does for its line 73. The output `ca-sk/sk428_tax_line_78` is a
+non-negative kind on the form `ca-sk/sk428`. The $875 maximum of line 77 is tested with
+`sk428_line_77.yaml`, not here.
 
 The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_74.yaml` parts (line 71 consumes line 70, so the line 70
 inputs part is composed; line 74 consumes the checked line 73, so the line 73 input part and the
-line 73 part are composed), the line 77 input part and the new `sk428_line_78.yaml`, and types in
-only the salary and, in some tests, line 77. The two form declarations are made up here.
+line 73 part are composed), the line 77 input part, `sk428_line_77.yaml` and the new
+`sk428_line_78.yaml`, and types in only the salary and, in some tests, line 77. The two form
+declarations are made up here.
 
 Figures: line 74 is line 71 (line 67, line 68 being 0 here) with a blank line 73, re-derived here
 in `_line_62` and `_line_66` with Decimal (not a CRA example); line 77 is blank (0), so line 78 is
@@ -44,6 +46,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -110,6 +113,7 @@ SK_LINE_PARTS = (
     "sk428_line_73.yaml",
     "sk428_line_74.yaml",
     "sk428_line_77_input.yaml",
+    "sk428_line_77.yaml",
 )
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
@@ -133,7 +137,8 @@ LINE_68 = "ca-sk/sk428_minimum_tax_additional_line_68"
 LINE_71 = "ca-sk/sk428_tax_line_71"
 LINE_73 = "ca-sk/sk428_political_contributions_credit_line_73"
 LINE_74 = "ca-sk/sk428_tax_line_74"
-LINE_77 = "ca-sk/sk428_labour_sponsored_credit_line_77"
+LINE_77 = "ca-sk/sk428_labour_sponsored_credit_checked_line_77"
+CREDIT_77 = "ca-sk/sk428_labour_sponsored_credit_line_77"
 IDENTIFIER = "ca-sk/sk428_tax_line_78"
 ROUNDING = "ca-sk/cent_rounding"
 BASIC_PERSONAL_AMOUNT = D("19491")
@@ -283,7 +288,7 @@ def _sheet(
 ) -> Worksheet:
     given = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if line_77 is not None:
-        given.append(Artifact(_amount_kind(LINE_77), D(line_77)))
+        given.append(Artifact(_amount_kind(CREDIT_77), D(line_77)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -335,6 +340,23 @@ def test_line_78_is_line_74_minus_line_77_not_below_zero_when_line_77_is_given(
     assert line_78.as_tuple().exponent == -2
     # The floor is the cent zero of the rounding dataset: printed 0.00, never -0.00.
     assert not line_78.is_signed()
+
+
+def _line_78_through(service: TaxComputationService, line_77: str) -> Decimal:
+    given = [
+        Artifact(EMPLOYMENT_INCOME, D("70000")),
+        Artifact(_amount_kind(CREDIT_77), D(line_77)),
+    ]
+    (sheet,) = service.compute(JurisdictionCode("CA-SK"), 2025, *given)[FORM_NAME]
+    return _line(sheet, IDENTIFIER)
+
+
+def test_a_line_77_above_the_maximum_is_rejected_through_line_78(tmp_path: Path) -> None:
+    service = _service(tmp_path)
+
+    assert _line_78_through(service, "875") == D("4217.30")
+    with pytest.raises(InputAboveBoundError):
+        _line_78_through(service, "875.01")
 
 
 def _left_blank_rows(rows: Sequence[str]) -> int:

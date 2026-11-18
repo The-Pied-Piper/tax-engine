@@ -2,7 +2,8 @@
 
 Form SK428 (CRA 5008-C), line 77, as printed on the form. A salary-only caller has no
 labour-sponsored venture capital tax credit (lines 75 and 76 are not built), so a request that
-leaves the line out is read as blank; the step that reads line 77 reads that blank as 0.
+leaves the line out is read as blank; the step that checks line 77 against its printed maximum
+passes that blank on, and the step that reads the checked line reads it as 0.
 
 The real part is loaded under a test-local header over the Saskatchewan package list of
 `support.py`.
