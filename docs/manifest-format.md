@@ -235,6 +235,10 @@ what the selection produces). A slot with no `blank` rule and no producer is ref
 are composed, naming the form and the slot. A producer that exists is read as usual. A list that
 the form also reads through a list slot, or through a slot not marked optional, is a required read.
 
+The engine cannot tell a figure no form supplies from a misspelt name, so an optional read of a
+misspelt name is read as a blank and the line comes out blank, where a required read of it is
+refused when the forms are composed. Check the name against the form that supplies it.
+
 A figure no form supplies is a record list of one field, the declared kind (`ca/provincial_credits`
 for `ca/provincial_credits.amount`): it must be a registered amount, count or record list, or the
 manifest is refused naming the form and the figure. Nothing is inferred from the figure's name. A
