@@ -105,13 +105,13 @@ def test_the_part_names_the_form_and_has_two_steps_in_order() -> None:
     assert second["name"] == "core/at_most"
 
 
-def test_the_first_step_supplies_the_printed_maximum_with_no_title_and_no_reference() -> None:
+def test_the_first_step_supplies_the_printed_maximum_with_a_title_and_no_reference() -> None:
     first, _ = _part()["capabilities"]
 
-    assert "title" not in first
     assert "reference" not in first
     assert first == {
         "name": "core/credit_amount",
+        "title": "Most you can claim for pension income",
         "unit": "ca/cad",
         "params": {"amount": "ca-on/pension_income_amount_maximum"},
         "produces": {"output": MAXIMUM},

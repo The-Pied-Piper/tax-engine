@@ -65,9 +65,19 @@ class BlankPassedOnRenderer:
 
     def render(self, line: BlankPassedOnLine, names: EnglishNames) -> str:
         """The English sentence for `line`."""
-        named = [names.of(kind) for kind in line.because] + [
-            _where(f, names) for f in line.because_fields
-        ]
+        if (
+            names.printed is not None
+            and not line.because_fields
+            and not any(names.is_named(kind.label) for kind in line.because)
+        ):
+            # A figure no form names (one a form of another province may supply) is not described
+            # by its internal label.
+            return "blank because nothing was supplied for it"
+        named = [
+            names.of(kind)
+            for kind in line.because
+            if names.printed is None or names.is_named(kind.label)
+        ] + [_where(f, names) for f in line.because_fields]
         causes = EnglishFigures.listing(named)
         verb = "was" if len(named) == 1 else "were"
         return f"blank because {causes} {verb} blank"

@@ -138,6 +138,17 @@ class EnglishNames:
         name = dataset.title or _plain_words(dataset.family.rsplit("/", 1)[-1])
         return f"the {name} ({self._written(dataset.values.value, dataset.unit)})"
 
+    def is_named(self, label: str) -> bool:
+        """Whether the form that makes or reads the figure `label` gives it a name to print: a
+        reference, a title, or the name another form prints for it."""
+        if self._printed is None:
+            return False
+        return (
+            self._printed.imported(label) is not None
+            or self._printed.reference(label) is not None
+            or self._printed.title(label) is not None
+        )
+
     def of_label(self, label: str) -> str:
         """The name of the figure `label` for a sentence."""
         if self._printed is None:

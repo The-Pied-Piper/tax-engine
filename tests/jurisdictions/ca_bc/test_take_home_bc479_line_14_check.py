@@ -64,14 +64,14 @@ def test_the_maximum_part_is_one_credit_amount_step_with_no_line_number() -> Non
     assert "consumes" not in step
 
 
-def test_the_check_part_is_one_at_most_step_with_no_line_number_or_title() -> None:
+def test_the_check_part_is_one_at_most_step_with_a_title_and_no_line_number() -> None:
     part = _part(CHECK_PART)
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
     (step,) = part["capabilities"]
     assert step["name"] == "core/at_most"
-    assert "title" not in step
+    assert step["title"] == "Home renovation expenses claimed"
     assert "reference" not in step
     assert step["unit"] == "ca/cad"
     assert step["consumes"] == {"amount": INPUT, "bound": MAXIMUM}

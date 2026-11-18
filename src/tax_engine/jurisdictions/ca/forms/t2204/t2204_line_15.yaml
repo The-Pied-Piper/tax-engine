@@ -36,6 +36,7 @@ capabilities:
     produces:
       output: ca/t2204_line_15_count
   - name: core/times_count
+    title: "EI overpayment"
     unit: ca/cad
     params:
       rounding: ca/cent_rounding

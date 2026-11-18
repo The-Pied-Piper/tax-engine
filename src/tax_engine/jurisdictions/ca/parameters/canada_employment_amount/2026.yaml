@@ -3,6 +3,7 @@
 # 2026), Table 8.2 "Other rates and amounts for 2026", row Federal: CEA 1,501 (and K4 =
 # 0.14 x $1,501). A plain amount, as in 2025; the lesser rounds half-up to the cent.
 family: ca/canada_employment_amount
+title: "maximum"
 tax_year: 2026
 kind: amount
 unit: ca/cad

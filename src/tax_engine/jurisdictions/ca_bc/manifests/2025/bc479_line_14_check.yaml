@@ -9,6 +9,7 @@ form:
   name: ca-bc/bc479
 capabilities:
   - name: core/at_most
+    title: "Home renovation expenses claimed"
     unit: ca/cad
     consumes:
       amount: ca-bc/bc479_home_renovation_expenses_line_14

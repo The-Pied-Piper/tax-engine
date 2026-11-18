@@ -7,6 +7,7 @@
 # Line 92 is a dollars-and-cents box, so the lesser rounds half-up to the cent, the
 # project's choice, as the form states no rounding rule.
 family: ca/canada_employment_amount
+title: "maximum"
 tax_year: 2025
 kind: amount
 unit: ca/cad

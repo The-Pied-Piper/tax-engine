@@ -29,7 +29,9 @@ def test_the_worksheets_carry_the_titles_the_manifest_gives() -> None:
     assert on428.title("on428_taxable_income_line_1") is None
     assert on428.title("on428_pension_income_amount_line_27") == "Pension income amount"
     assert on428.reference("on428_pension_income_amount_line_27") == "27"
-    assert on428.title("on428_pension_income_amount_maximum") is None
+    assert on428.title("on428_pension_income_amount_maximum") == (
+        "Most you can claim for pension income"
+    )
     assert on428.reference("on428_pension_income_amount_maximum") is None
     assert on428.title("on428_medical_expenses_line_43") == "Medical expenses"
     assert on428.reference("on428_medical_expenses_line_43") == "43"
