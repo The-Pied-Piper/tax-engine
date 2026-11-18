@@ -37,6 +37,12 @@ SK428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, SK428 line 33 "Line 33 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
 
+SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
+    CATALOG, "sk428_medical_expenses_line_50", non_negative=True
+)
+"""Medical expenses, SK428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
+optional input; a blank is read as 0 by the line 51 step."""
+
 SK428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
     CATALOG, "sk428_donations_credit_line_56", non_negative=True
 )
@@ -55,6 +61,11 @@ SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
 )
 """Saskatchewan tax, SK428 line 82 "Enter this amount on line 42800 of your return.": the
 Saskatchewan tax, entered on T1 line 42800."""
+
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, SK428 line 9 and line 58040 "Basic personal amount Claim $19,491": the
+amount claimed, one of the credit amounts that the Saskatchewan non-refundable credits total is
+built from."""
 
 SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
     CATALOG, "sk428_cpp_contributions_line_22", non_negative=True
