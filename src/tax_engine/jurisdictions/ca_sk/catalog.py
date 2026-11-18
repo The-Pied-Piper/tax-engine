@@ -84,3 +84,10 @@ SK428_TAX_ON_SPLIT_INCOME_LINE_61 = AmountKind.declare(CATALOG, "sk428_tax_on_sp
 """Saskatchewan tax on split income, SK428 line 61 (line 61510) "Line 61 and line 61510:
 Saskatchewan tax on split income (complete Form T1206)": a caller input, read as blank when left
 out."""
+
+SK428_DIVIDEND_TAX_CREDIT_LINE_64 = AmountKind.declare(
+    CATALOG, "sk428_dividend_tax_credit_line_64", non_negative=True
+)
+"""Saskatchewan dividend tax credit, SK428 line 64 (line 61520) "Line 64 and line 61520:
+Saskatchewan dividend tax credit (use Worksheet SK428)": a caller input, read as blank when left
+out."""
