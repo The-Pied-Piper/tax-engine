@@ -43,7 +43,8 @@ class CapabilitySelection:
     list of that kind and a blank, which the slot's blank rule decides (default none: every slot is
     required). The manifest checks the kind, as only it has the registry.
     `title` and `reference` are the printed wording and line label of the one figure the selection
-    produces; `None` for none, and a selection producing several figures may not have either. `unit`
+    produces (a step the form does not print may carry plain words as its title, and no reference);
+    `None` for none, and a selection producing several figures may not have either. `unit`
     names the unit of that figure (`None` for none), under the same one-figure rule.
     """
 

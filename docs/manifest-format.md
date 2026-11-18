@@ -198,7 +198,7 @@ Each entry of `capabilities` is a mapping:
 | `consumes` | Slot to an artifact identifier, or to a list of identifiers kept in order. Optional. |
 | `blank` | What a blank does (below). Optional; a consumed slot not named refuses a blank. |
 | `optional` | Mapping of a consumed slot that may go without a producer to the kind its read is a list of (below). Optional; default none, every slot is required. |
-| `title` | The printed wording of the one figure the selection produces. A selection that produces several figures is rejected if it has one. |
+| `title` | The printed wording of the one figure the selection produces. A step the form does not print may carry plain words instead, but only when the sentence of a numbered line names it, so that the sentence does not name it by its internal label; such a step has no `reference`. A selection that produces several figures is rejected if it has one. |
 | `reference` | What the form prints beside that figure, as free text. Same one-figure rule. |
 | `unit` | The full identifier of that figure's unit; see Units. Same one-figure rule. |
 

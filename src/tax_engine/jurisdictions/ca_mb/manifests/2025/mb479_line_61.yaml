@@ -11,6 +11,7 @@ form:
 capabilities:
   # Line 61, first operation: "multiplied by 40%", to the cent.
   - name: core/apply_rate
+    title: "Fertility treatment credit before the maximum"
     unit: ca/cad
     params:
       rate: ca-mb/fertility_treatment_credit_rate
