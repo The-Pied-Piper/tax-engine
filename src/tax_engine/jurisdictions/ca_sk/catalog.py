@@ -150,3 +150,9 @@ SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
 )
 """Saskatchewan credits subtotal, SK428 line 20 "Line 20: Add lines 9, 10, 13, and 16 to 19. =": the
 sum of the personal amounts claimed, here the basic personal amount alone."""
+
+SK428_MINIMUM_TAX_ADDITIONAL_LINE_68 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_additional_line_68"
+)
+"""Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
+minus Line 2 of Part 7 multiplied by 50% =": 50% of the Form T691 amount."""
