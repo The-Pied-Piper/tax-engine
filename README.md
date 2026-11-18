@@ -105,7 +105,7 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 | Alberta | 2025, 2026 (provisional) | AB428 (Alberta tax), Worksheet AB428 (Alberta supplemental tax credit) |
 | British Columbia | 2025, 2026 (provisional) | BC428 (British Columbia tax), BC479 (BC refundable tax credits) |
 | Manitoba | 2025, 2026 (provisional) | MB428 (Manitoba tax), Worksheet MB428 (basic personal amount), MB428-A (family tax benefit), MB479 (Manitoba credits) |
-| Saskatchewan | 2025, 2026 (provisional) | SK428 (Saskatchewan tax and credits) |
+| Saskatchewan | 2025, 2026 (provisional) | SK428 (Saskatchewan tax) |
 
 Roadmap: more forms and lines, and the other provinces and territories. Forms are added one at a time, each built line by line from the CRA's own text.
 
