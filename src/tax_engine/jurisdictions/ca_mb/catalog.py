@@ -145,6 +145,10 @@ MB428_TAX_LINE_72 = AmountKind.declare(CATALOG, "mb428_tax_line_72", non_negativ
 """Manitoba tax, MB428 line 72 "Line 72: Line 70 minus line 71 (if negative, enter "0") =":
 calculated, line 70 less line 71 (line 71 read as 0 when blank), not below 0."""
 
+MB428_TAX_LINE_74 = AmountKind.declare(CATALOG, "mb428_tax_line_74", non_negative=True)
+"""Manitoba tax, MB428 line 74 "Line 74: Line 72 minus line 73 (if negative, enter "0") =":
+calculated, line 72 less line 73 (line 73 read as 0 when blank), not below 0."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
@@ -700,3 +704,7 @@ credit, an optional input a caller leaves blank, read as 0), rounded to the cent
 MB479_CREDITS_LINE_70 = AmountKind.declare(CATALOG, "mb479_credits_line_70", non_negative=True)
 """Credits, MB479 line 70 "Line 70: Line 66 plus line 69 = ^": line 66 plus line 69 (the green
 energy credits), rounded to the cent."""
+
+MB479_CREDITS_LINE_72 = AmountKind.declare(CATALOG, "mb479_credits_line_72", non_negative=True)
+"""Credits, MB479 line 72 "Line 72: Line 70 plus line 71 = ^": line 70 plus line 71 (the book
+publishing credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
