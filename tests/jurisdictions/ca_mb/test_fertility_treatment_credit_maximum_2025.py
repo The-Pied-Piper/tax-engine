@@ -13,12 +13,16 @@ from decimal import Decimal
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.amount import AMOUNT, Amount
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
-from tests.jurisdictions.ca_mb.support import manitoba_packages, manitoba_parameter_parsers
+from tests.jurisdictions.ca_mb.support import (
+    manitoba_packages,
+    manitoba_parameter_parsers,
+    manitoba_units,
+)
 
 D = Decimal
-# Manitoba is not in `registrations.JURISDICTIONS` yet, so the source is built over its own
-# packages.
-SOURCE = YamlParameterSource(manitoba_packages().roots(), manitoba_parameter_parsers())
+SOURCE = YamlParameterSource(
+    manitoba_packages().roots(), manitoba_parameter_parsers(), manitoba_units()
+)
 FAMILY = "ca-mb/fertility_treatment_credit_maximum"
 CRA_FORM_TEXT = "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-tc/5007-tc-25e.txt"
 
