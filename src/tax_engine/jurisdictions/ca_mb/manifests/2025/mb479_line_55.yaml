@@ -1,0 +1,21 @@
+# Form MB479 (2025, CRA 5007-TC) line 55: "Line 55: Line 53 plus line 54 =". Line 54 reads
+# "Line 54: Enter your personal tax credit from line 19.", a copy of line 19
+# (`ca-mb/mb479_personal_tax_credit_line_19`), so it gets no step. Line 53
+# (`ca-mb/mb479_homeowner_renter_senior_credits_line_53`) is an optional input that a salary-only
+# caller leaves out, read as blank and then as 0 by the blank rule below.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "55"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb479_homeowner_renter_senior_credits_line_53
+        - ca-mb/mb479_personal_tax_credit_line_19
+    blank:
+      ca-mb/mb479_homeowner_renter_senior_credits_line_53: "0"
+    produces:
+      output: ca-mb/mb479_credits_line_55

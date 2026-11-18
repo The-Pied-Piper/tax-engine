@@ -115,6 +115,12 @@ MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
 """Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
 return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
 
+MB428_CREDITS_TOTAL_LINE_64 = AmountKind.declare(
+    CATALOG, "mb428_credits_total_line_64", non_negative=True
+)
+"""Total credits, MB428 line 64 "Line 64: Add lines 61 to 63. =": calculated, lines 61 to 63 added
+(line 62 read as 0 when left blank)."""
+
 MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
     CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
 )
@@ -589,6 +595,10 @@ MB479_PERSONAL_TAX_CREDIT_LINE_19 = AmountKind.declare(
 """Personal tax credit, MB479 line 19 "Line 19: Line 17 minus line 18 (if negative, enter "0")
 Enter this amount on line 54. Personal tax credit =": line 17 and line 18 (total credits less the
 reduction, not below 0), rounded to the cent."""
+
+MB479_CREDITS_LINE_55 = AmountKind.declare(CATALOG, "mb479_credits_line_55", non_negative=True)
+"""Credits, MB479 line 55 "Line 55: Line 53 plus line 54 =": line 53 (the homeowner, renter and
+senior credits, blank read as 0) plus line 54 (a copy of line 19), rounded to the cent."""
 
 MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
     CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True
