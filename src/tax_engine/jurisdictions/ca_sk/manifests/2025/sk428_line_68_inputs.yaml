@@ -1,0 +1,12 @@
+# SK428 (2025) inputs a salary-only caller does not give.
+# Line 68: "Saskatchewan additional tax for minimum tax purposes: Line 68: Form T691: Line 1 minus Line 2
+# of Part 7 multiplied by 50%". A caller with no minimum tax to report leaves the line out, so a
+# request that leaves it out is read as 0. The 50% multiply is a separate step.
+inputs:
+  - name: ca-sk/sk428_minimum_tax_t691_amount_line_68
+    title: "Saskatchewan additional tax for minimum tax purposes"
+    reference: "68 box A"
+    unit: ca/cad
+    required: false
+    default: "0"
+    basis: 'Line 68: Form T691: Line 1 minus Line 2 of Part 7'
