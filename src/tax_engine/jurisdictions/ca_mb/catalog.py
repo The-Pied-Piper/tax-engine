@@ -482,6 +482,14 @@ MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_LINE_73 = AmountKind.declare(
 industries printing tax credit (maximum $1,100,000)": the credit of the line, a caller input that is
 read as blank when left out; the printed maximum $1,100,000 is checked by the step that reads it."""
 
+MB479_TEACHING_SUPPLIES_EXPENSES_LINE_79 = AmountKind.declare(
+    CATALOG, "mb479_teaching_supplies_expenses_line_79", non_negative=True
+)
+"""Teaching expense tax credit, MB479 line 79 "Line 79: Eligible teaching supplies expenses
+(maximum $1,000) Line 61495": the eligible teaching supplies expenses the 15% is taken of, a caller
+input read as blank when left out; the printed maximum $1,000 is checked by the step that reads
+it."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )

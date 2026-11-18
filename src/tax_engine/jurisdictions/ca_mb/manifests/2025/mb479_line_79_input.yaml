@@ -1,0 +1,13 @@
+# MB479 (2025) line 79's input, which a salary-only caller does not give.
+# Line 79: "Line 79: Eligible teaching supplies expenses (maximum $1,000) Line 61495" (Form MB479, CRA 5007-TC).
+# A salary-only single filer claims no teaching expense tax credit, so a request that leaves
+# the line out is read as blank. The step that reads it (a later one) applies the blank rule and the
+# printed maximum.
+inputs:
+  - name: ca-mb/mb479_teaching_supplies_expenses_line_79
+    title: "Eligible teaching supplies expenses"
+    reference: "79"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 79: Eligible teaching supplies expenses (maximum $1,000) Line 61495'
