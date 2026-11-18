@@ -25,3 +25,9 @@ SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 """Saskatchewan non-refundable tax credits, SK428 line 57 "Line 57 and line 61500: Line 53 plus line
 56 Enter this amount on line 63. Saskatchewan non-refundable tax credits =": line 53 plus line 56,
 read by line 63 on the tax form."""
+
+SK428_EI_PREMIUMS_LINE_24 = AmountKind.declare(
+    CATALOG, "sk428_ei_premiums_line_24", non_negative=True
+)
+"""EI premiums credit amount, SK428 line 24 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
