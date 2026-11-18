@@ -597,6 +597,15 @@ MB479_TEACHING_EXPENSE_CREDIT_LINE_79 = AmountKind.declare(
 (maximum $1,000) Line 61495 multiplied by 15% =": calculated, the checked eligible teaching supplies
 expenses multiplied by 15%, rounded half-up to the cent, with a blank entry read as 0."""
 
+MB479_RENTAL_HOUSING_CONSTRUCTION_INCENTIVE_TAX_CREDIT_LINE_80 = AmountKind.declare(
+    CATALOG,
+    "mb479_rental_housing_construction_incentive_tax_credit_line_80",
+    non_negative=True,
+)
+"""Rental housing construction incentive tax credit, MB479 line 80 "Line 80: Certificate number:
+Line 61496 Tax credit amount from your certificate": the credit amount on the certificate, a caller
+input that is read as blank when left out; the certificate number is not read."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
