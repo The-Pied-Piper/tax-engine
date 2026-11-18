@@ -1,0 +1,10 @@
+# Form SK428 line 73: political contribution tax credit, maximum, 2025 (CRA 5008-c).
+# Line 73 prints "(maximum $650)", a figure with no cents, so the amount rounds half-up to the
+# cent, the project's choice, as the form states no rounding rule.
+family: ca-sk/political_contribution_credit_maximum
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-c/5008-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "650"

@@ -6,17 +6,20 @@ Form text (Form SK428, CRA 5008-c-25e): "Line 73: Saskatchewan political contrib
 
 Line 74 is one core/subtract_not_below_zero step (`sk428_line_74.yaml`), rounded through
 `ca-sk/cent_rounding`, with `amount` line 71 (`ca-sk/sk428_tax_line_71`, non-negative) and `less`
-line 73 (`ca-sk/sk428_political_contributions_credit_line_73`, an optional input). A salary-only
-caller has no political contributions, so line 73 is left blank, and the step has a blank rule
-reading it as 0 and prints its own "left blank, taken as 0" row, as line 71 does for its line 70.
-The output `ca-sk/sk428_tax_line_74` is a non-negative kind on the form `ca-sk/sk428`. The $650
-maximum of line 73 is not tested here.
+line 73 as checked (`ca-sk/sk428_political_contributions_credit_checked_line_73`, the output of
+`sk428_line_73.yaml`, which rejects the optional input above its printed $650 and passes a blank on
+as blank). A salary-only caller has no political contributions, so line 73 is left blank, and the
+step has a blank rule reading it as 0 and prints its own "left blank, taken as 0" row, as line 71
+does for its line 70. The output `ca-sk/sk428_tax_line_74` is a non-negative kind on the form
+`ca-sk/sk428`. The $650 maximum itself is tested with line 73; here only that line 74 reads the
+checked figure, so an entry above $650 is rejected through it.
 
 The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_71.yaml` parts (line 71 consumes line 70, so the line 70
-inputs part is composed), the line 73 input part and the new `sk428_line_74.yaml`, and types in
-only the salary and, in some tests, line 73. The two form declarations are made up here.
+inputs part is composed), the line 73 input part, the `sk428_line_73.yaml` part and the new
+`sk428_line_74.yaml`, and types in only the salary and, in some tests, line 73. The two form
+declarations are made up here.
 
 Figures: line 71 is line 69 (line 67, line 68 being 0 here) with a blank line 70, re-derived here
 in `_line_62` and `_line_66` with Decimal (not a CRA example); line 73 is blank (0), so line 74 is
@@ -43,6 +46,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -106,6 +110,7 @@ SK_LINE_PARTS = (
     "sk428_line_70_inputs.yaml",
     "sk428_line_71.yaml",
     "sk428_line_73_input.yaml",
+    "sk428_line_73.yaml",
 )
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
@@ -128,6 +133,7 @@ LINE_67 = "ca-sk/sk428_tax_after_credits_line_67"
 LINE_68 = "ca-sk/sk428_minimum_tax_additional_line_68"
 LINE_71 = "ca-sk/sk428_tax_line_71"
 LINE_73 = "ca-sk/sk428_political_contributions_credit_line_73"
+CHECKED_73 = "ca-sk/sk428_political_contributions_credit_checked_line_73"
 IDENTIFIER = "ca-sk/sk428_tax_line_74"
 ROUNDING = "ca-sk/cent_rounding"
 BASIC_PERSONAL_AMOUNT = D("19491")
@@ -310,6 +316,7 @@ def test_line_74_is_line_71_when_line_73_is_left_blank(
 
     # Line 71 is recomputed from the real parts, and line 73 is blank, read as 0.
     assert sheet.get(_amount_kind(LINE_73)).is_blank
+    assert sheet.get(_amount_kind(CHECKED_73)).is_blank
     line_74 = _line(sheet, IDENTIFIER)
     assert line_74 == D(expected)
     assert line_74 == _line(sheet, LINE_71)
@@ -362,7 +369,7 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
         output=kinds.kind(IDENTIFIER),
         minuend=kinds.kind(LINE_71),
         minuend_amount=D("5092.30"),
-        subtrahend=kinds.kind(LINE_73),
+        subtrahend=kinds.kind(CHECKED_73),
         subtrahend_amount=D("100.00"),
         rounding=_rounding().rounding,
         result=D("4992.30"),
@@ -391,7 +398,7 @@ def _line_74_at(line_71_amount: str, line_73_amount: str) -> Artifact[Decimal]:
     """Line 74 over given lines 71 and 73: the capability the part builds, with the real dataset."""
     line_71, line_73, line_74 = (
         _amount_kind(LINE_71),
-        _amount_kind(LINE_73),
+        _amount_kind(CHECKED_73),
         _amount_kind(IDENTIFIER),
     )
     capability = SubtractNotBelowZero(_rounding(), line_71, line_73, line_74)
@@ -445,11 +452,28 @@ def test_the_part_names_the_form_and_has_one_untitled_step_with_a_blank_rule_on_
         "reference": "74",
         "unit": "ca/cad",
         "params": {"rounding": ROUNDING},
-        "consumes": {"amount": LINE_71, "less": LINE_73},
+        "consumes": {"amount": LINE_71, "less": CHECKED_73},
         "blank": {"less": "0"},
         "produces": {"output": IDENTIFIER},
     }
     assert "title" not in step
+
+
+def test_line_74_reads_line_73_as_checked_so_an_entry_above_650_is_rejected(
+    tmp_path: Path,
+) -> None:
+    assert _line(_sheet(tmp_path, "70000", "650.00"), IDENTIFIER) == D("4442.30")
+    with pytest.raises(InputAboveBoundError):
+        _sheet(tmp_path / "above", "70000", "650.01")
+
+
+def test_a_blank_line_73_still_gives_line_71_as_line_74_through_the_checked_line(
+    tmp_path: Path,
+) -> None:
+    sheet = _sheet(tmp_path, "70000")
+
+    assert sheet.get(_amount_kind(CHECKED_73)).is_blank
+    assert _line(sheet, IDENTIFIER) == _line(sheet, LINE_71) == D("5092.30")
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_74(tmp_path: Path) -> None:

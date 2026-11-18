@@ -1,0 +1,28 @@
+# SK428 (2025) line 73, the political contribution tax credit. Form SK428 (CRA 5008-c): "Line 73:
+# Saskatchewan political contribution tax credit (use Worksheet SK428) (maximum $650)". No
+# arithmetic is printed, so line 73 is an entry line in two steps. The first, core/credit_amount,
+# supplies the printed maximum from the `ca-sk/political_contribution_credit_maximum` dataset; it is
+# not a line of the form, so it has no title and no reference. The second, core/at_most, is line 73:
+# the entered amount (sk428_line_73_input.yaml) passed on unchanged, titled "Saskatchewan political
+# contribution tax credit". An entry above the printed maximum is refused, not capped. A blank
+# entry passes on as blank.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-sk/political_contribution_credit_maximum
+    produces:
+      output: ca-sk/sk428_political_contribution_credit_maximum
+  - name: core/at_most
+    title: "Saskatchewan political contribution tax credit"
+    reference: "73"
+    unit: ca/cad
+    consumes:
+      amount: ca-sk/sk428_political_contributions_credit_line_73
+      bound: ca-sk/sk428_political_contribution_credit_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-sk/sk428_political_contributions_credit_checked_line_73
