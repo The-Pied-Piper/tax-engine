@@ -118,3 +118,9 @@ SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
 """Saskatchewan political contribution tax credit, SK428 line 73 "Line 73: Saskatchewan political
 contribution tax credit (use Worksheet SK428) (maximum $650)": the credit from the worksheet, an
 optional input that a salary-only caller leaves out."""
+
+SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
+63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out."""
