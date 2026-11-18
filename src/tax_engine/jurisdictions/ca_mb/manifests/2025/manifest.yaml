@@ -14,9 +14,10 @@
 # imported unchanged. CRA publishes no Manitoba edition of Schedule 6, so the federal Schedule 6 is
 # imported unchanged.
 #
-# Manitoba is listed in `registrations.JURISDICTIONS`: the startup check builds every listed
-# manifest, and this one is complete, MB428 line 82 supplying `ca/provincial_tax.amount` for T1 and
-# MB479 line 81 supplying `ca/provincial_credits.amount`.
+# Manitoba is listed in `registrations.JURISDICTIONS`: the all-years test composes every listed
+# manifest for every year, and this one is complete, MB428 line 82 supplying
+# `ca/provincial_tax.amount` for T1 and MB479 line 81 supplying
+# `ca/provincial_credits.amount`.
 jurisdiction: CA-MB
 version: 1
 valid_from_tax_year: 2025
