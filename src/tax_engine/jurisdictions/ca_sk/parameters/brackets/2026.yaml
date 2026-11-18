@@ -4,10 +4,10 @@
 # headings: "Column 1: Line 1 is $54,532 or less"; "Column 2: Line 1 is more than $54,532 but not
 # more than $155,805"; "Column 3: Line 1 is more than $155,805". In every column: line 3 the
 # column's lower bound (0.00, 54,532.00, 155,805.00); line 5 the rate (10.5%, 12.5%, 14.5%); line 7
-# the printed constant (0.00, 5,725.86, 18,384.99). Lines 3, 5 and 7 are the printed figures; lines
-# 2, 4, 6 and 8 are computed.
-# Each bracket's `tax_at_start` is the line 7 constant of its column, taken as printed: the
-# constants are not recomputed from the rates, and not rounded.
+# the constant (0.00, 5,725.86, 18,384.99), derived in the Derivation line because the 2026 form is
+# not published. Lines 3, 5 and 7 are the form's figures; lines 2, 4, 6 and 8 are computed.
+# Each bracket's `tax_at_start` is the line 7 constant of its column: once the 2026 form prints
+# them they are taken as printed, not recomputed from the rates.
 # This dataset has no rounding rule, as the form states none. The take-home build rounds line 6
 # half-up to the cent in its own part (ca-sk/cent_rounding).
 # There is no `up_to`: column 3 is unbounded ("more than $155,805"), and the form prints one set
