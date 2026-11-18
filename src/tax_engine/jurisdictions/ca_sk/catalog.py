@@ -250,6 +250,11 @@ SK428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
 subtotal of line 42 plus the medical expense amount of line 50, read as 0 when blank, lines 43 to
 49 (the medical expense working) not being built."""
 
+SK428_TAX_LINE_60 = AmountKind.declare(CATALOG, "sk428_tax_line_60")
+"""Saskatchewan tax after line 59, SK428 line 60 "Line 60: Line 58 minus line 59 =": line 58 less
+the farm and small business capital gains tax credit of line 59, read as 0 when left out. The form
+prints no floor, so the amount is signed."""
+
 SK428_CREDITS_AT_RATE_LINE_53 = AmountKind.declare(
     CATALOG, "sk428_credits_at_rate_line_53", non_negative=True
 )
