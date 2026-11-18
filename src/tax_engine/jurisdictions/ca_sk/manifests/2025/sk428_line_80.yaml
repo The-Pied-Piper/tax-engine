@@ -1,0 +1,22 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 80, "Line 80: Line 78 minus line 79 (if negative,
+# enter "0") = ^". One core/subtract_not_below_zero step: the Saskatchewan tax after the labour-
+# sponsored venture capital credit (line 78, `ca-sk/sk428_tax_line_78`) less the mineral exploration
+# tax credit (line 79, `ca-sk/sk428_mineral_exploration_credit_line_79`), not below 0. Line 79 is an
+# optional input that a caller without that credit leaves out, read as blank and then as 0 by the
+# blank rule. The form prints no title for the line, so the step has none. Line 80 is the output
+# `ca-sk/sk428_tax_line_80`.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "80"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      amount: ca-sk/sk428_tax_line_78
+      less: ca-sk/sk428_mineral_exploration_credit_line_79
+    blank:
+      less: "0"
+    produces:
+      output: ca-sk/sk428_tax_line_80
