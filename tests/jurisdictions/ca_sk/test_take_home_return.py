@@ -2,8 +2,8 @@
 
 Form text (T1 General 5006-R, line 167): "Line 167: Line 149 minus line 166 ... Refund or balance
 owing". The Saskatchewan return's one output is that line, read from the T1 tax and credits form:
-`return.yaml` mirrors the Manitoba part (the Alberta and Ontario parts before it). Its one step is a
-core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a
+`return.yaml` mirrors the Manitoba part (the Alberta and Ontario parts before it). Its first step is
+a core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a
 cross-form read (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
 key (the return is the default form) and no params. The steps after it read the figures of the two

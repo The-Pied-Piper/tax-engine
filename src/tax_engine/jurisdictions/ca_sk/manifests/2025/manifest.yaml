@@ -1,7 +1,7 @@
 # Saskatchewan 2025 take-home manifest: the return's identity and its exports (the refund or balance
-# owing, the average income tax rate and the marginal tax rate). The caller gives the gross salary and nothing else. Saskatchewan's own forms are in parts
-# beside this one, so a line ticket adds only its own part file; the federal forms are imported by
-# name below, their parts in the `ca` package (`ca/forms/<name>/`).
+# owing, the average income tax rate and the marginal tax rate). The caller gives the gross salary
+# and nothing else. Saskatchewan's own forms are in parts beside this one, so a line ticket adds
+# only its own part file; the federal forms are imported by name below, their parts in the `ca` package (`ca/forms/<name>/`).
 #
 # Saskatchewan builds two forms, split so that no form reads another in a loop:
 # `ca-sk/sk428_credits` (SK428 lines 1 to 57) and `ca-sk/sk428` (SK428 lines 58 to 82), which

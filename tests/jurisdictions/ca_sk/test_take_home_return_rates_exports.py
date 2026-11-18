@@ -3,8 +3,9 @@
 Through the registered engine (`build_tax_computation().compute`, as the line tests read the
 return): the return summary holds the average and the marginal income tax rate, the SK428 credits
 form holds the line 5 rate, and the SK428 form holds line 67 "Line 62 minus line 66 (if negative,
-enter "0")". The export lists themselves are pinned in `test_manifest_header.py`,
-`test_form_sk428_credits.py` and `test_form_sk428.py`.
+enter "0")". The 2025 manifest serves 2026, so the return summary and line 5 checks run for both
+years; line 67 is pinned for 2025. The export lists themselves are pinned in
+`test_manifest_header.py`, `test_form_sk428_credits.py` and `test_form_sk428.py`.
 """
 
 from __future__ import annotations
@@ -54,14 +55,17 @@ def test_the_return_summary_holds_each_of_its_three_outputs(year: int, name: str
     assert isinstance(_value(sheet, name), Decimal)
 
 
+@pytest.mark.parametrize("year", [2025, 2026])
 @pytest.mark.parametrize(
     ("salary", "line_5"),
     [("20000", "0.105"), ("70000", "0.125"), ("200000", "0.145")],
 )
-def test_the_sk428_credits_form_exports_the_line_5_rate(salary: str, line_5: str) -> None:
+def test_the_sk428_credits_form_exports_the_line_5_rate(
+    year: int, salary: str, line_5: str
+) -> None:
     # Line 5 prints the rate of the column line 1 falls in: 10.5% up to 53,463, 12.5% up to
     # 152,750 and 14.5% above it.
-    sheet = _sheet(2025, salary, "ca-sk/sk428_credits")
+    sheet = _sheet(year, salary, "ca-sk/sk428_credits")
 
     assert _value(sheet, "ca-sk/sk428_bracket_rate_line_5") == D(line_5)
 

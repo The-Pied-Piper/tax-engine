@@ -1,7 +1,7 @@
 """The 2026 `ca-sk/exact_rounding` dataset: the rule of a Saskatchewan product or sum that is
 not a dollars-and-cents box, so nothing is rounded (`rounding: none`). The Saskatchewan
-marginal rate on the return summary (a gated bracket rate, and the sum of the federal and British
-Columbia parts) uses it: a rate is an exact fraction, so the cent rule of `ca-sk/cent_rounding`
+marginal rate on the return summary (a gated bracket rate, and the sum of the federal and
+Saskatchewan parts) uses it: a rate is an exact fraction, so the cent rule of `ca-sk/cent_rounding`
 must not touch it.
 The 2026 file is carried forward unchanged from 2025 (provisional)."""
 

@@ -1,6 +1,6 @@
 """The 2026 `ca-sk/marginal_rate_gate` dataset: a two-band gate that is 0 where a tax is 0.00 and
-1 where it is at least one cent, Saskatchewan's own copy of the Ontario gate (jurisdictions do
-not read each other's datasets).
+1 where it is at least one cent, Saskatchewan's own copy of the British Columbia gate
+(jurisdictions do not read each other's datasets).
 
 Not a printed form figure: no CRA text is quoted. The Saskatchewan return summary reads T1 line
 42900 "Basic federal tax", and SK428 line 67 "Line 62 minus line 66"

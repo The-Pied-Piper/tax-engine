@@ -26,13 +26,16 @@
 # The Saskatchewan gate reads SK428 line 67 "Line 62 minus line 66 (if negative, enter "0")": the
 # Saskatchewan tax after the credits that payroll applies (CRA payroll deductions formulas T4127,
 # Saskatchewan: K1P, the basic personal amount credit at the lowest rate, and the credits for CPP
-# and EI and the other credit amounts, all of them in line 66 through line 63), before line 68
+# and EI and the other credit amounts, which reach line 66 through line 63), before line 68
 # (minimum tax additional), line 70 (foreign tax credit) and lines 73, 79 and 81, which only come
-# back when filing and are not payroll terms. Line 77 (the labour-sponsored venture capital credit)
-# is the counterpart of T4127's LCP, which payroll does apply, but it needs an investment a
-# salary-only filer does not have, so the gate before it is exact for that filer. It is the
-# counterpart of ON428 line 81, AB428 line 68 and BC428 line 80. Gated through
-# `ca-sk/marginal_rate_gate`, it multiplies the bracket rate into `ca-sk/saskatchewan_marginal_rate`.
+# back when filing and are not payroll terms. Line 62 also holds line 59 (farm and small business
+# capital gains tax credit) and line 61 (tax on split income), and line 66 holds line 64 (dividend
+# tax credit) and line 65 (minimum tax carryover): none of those four is a payroll term, and all
+# four are blank for a salary-only filer, so the gate is exact for that filer. Line 77 (the
+# labour-sponsored venture capital credit) is the counterpart of T4127's LCP, which payroll does
+# apply, but it needs an investment a salary-only filer does not have. The gate is the counterpart
+# of ON428 line 81, AB428 line 68 and BC428 line 80. Gated through `ca-sk/marginal_rate_gate`, it
+# multiplies the bracket rate into `ca-sk/saskatchewan_marginal_rate`.
 #
 # Saskatchewan has no tax reduction, clawback or income-tested basic amount: SK428 and T4127 print
 # none (line 9 prints a flat basic personal amount, and the T4127 Saskatchewan section has no S,
