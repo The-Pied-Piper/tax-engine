@@ -235,3 +235,10 @@ SK428_PENSION_INCOME_AMOUNT_CHECKED_LINE_33 = AmountKind.declare(
 """Pension income amount, SK428 line 33 "Line 33 and line 58360: Pension income amount (maximum
 $1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, read as 0
 when left out; above the maximum it is refused, not capped."""
+
+SK428_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
+    CATALOG, "sk428_tax_on_taxable_income_line_58", non_negative=True
+)
+"""Saskatchewan tax on taxable income from line 8, SK428 line 58 "Line 58: Saskatchewan tax on
+taxable income from line 8 ^" ("Enter the amount from line 8 on line 58 and continue at line 9."):
+the amount of line 8, read from the credits form."""
