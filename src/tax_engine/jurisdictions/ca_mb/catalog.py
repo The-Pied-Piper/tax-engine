@@ -231,6 +231,10 @@ MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
 employee share purchase tax credit (complete Form T1256-2)": a caller input, read as blank when left
 out."""
 
+MB428_TAX_LINE_80 = AmountKind.declare(CATALOG, "mb428_tax_line_80", non_negative=True)
+"""Manitoba tax, MB428 line 80 "Line 80: Line 78 minus line 79 (if negative, enter "0") =":
+calculated, line 78 less line 79 (line 79 read as 0 when blank), not below 0."""
+
 MB428_MINERAL_EXPLORATION_TAX_CREDIT_LINE_81 = AmountKind.declare(
     CATALOG, "mb428_mineral_exploration_tax_credit_line_81", non_negative=True
 )
@@ -736,3 +740,8 @@ MB479_CREDITS_LINE_74 = AmountKind.declare(CATALOG, "mb479_credits_line_74", non
 """Credits, MB479 line 74 "Line 74: Line 72 plus line 73 = ^": line 72 plus line 73 (the cultural
 industries printing credit, checked against its printed maximum, blank when left out and read as 0),
 rounded to the cent."""
+
+MB479_CREDITS_LINE_76 = AmountKind.declare(CATALOG, "mb479_credits_line_76", non_negative=True)
+"""Credits, MB479 line 76 "Line 76: Line 74 plus line 75 = ^": line 74 plus line 75 (the community
+enterprise development tax credit, an optional input a caller leaves blank, read as 0), rounded to
+the cent."""
