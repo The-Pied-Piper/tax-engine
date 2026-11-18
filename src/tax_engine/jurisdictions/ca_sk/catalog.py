@@ -50,6 +50,11 @@ SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
 """Saskatchewan tax, SK428 line 82 "Enter this amount on line 42800 of your return.": the
 Saskatchewan tax, entered on T1 line 42800."""
 
+BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
+"""Basic personal amount, SK428 line 9 and line 58040 "Basic personal amount Claim $19,491": the
+amount claimed, one of the credit amounts that the Saskatchewan non-refundable credits total is
+built from."""
+
 SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
     CATALOG, "sk428_cpp_contributions_line_22", non_negative=True
 )
