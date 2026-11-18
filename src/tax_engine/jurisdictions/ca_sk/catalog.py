@@ -124,3 +124,9 @@ SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
 )
 """Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
 63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out."""
+
+SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_20", non_negative=True
+)
+"""Saskatchewan credits subtotal, SK428 line 20 "Line 20: Add lines 9, 10, 13, and 16 to 19. =": the
+sum of the personal amounts claimed, here the basic personal amount alone."""

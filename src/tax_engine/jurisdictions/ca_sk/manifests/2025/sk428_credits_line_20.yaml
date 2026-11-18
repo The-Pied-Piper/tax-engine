@@ -1,0 +1,17 @@
+# Form SK428 (CRA 5008-c) line 20, the sum of lines 9, 10, 13 and 16 to 19. "Line 20: Add lines 9,
+# 10, 13, and 16 to 19. =" The take-home filer is a salary-only single filer, so only line 9 (basic
+# personal amount, ca-sk/basic_personal_amount) contributes; lines 10, 13 and 16 to 19 are blank
+# optional claims that filer cannot make, so they are not built. A single part is still a sum, so
+# the step is built. The form prints no label for line 20, so the step has no title.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    reference: "20"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts: [ca-sk/basic_personal_amount]
+    produces:
+      output: ca-sk/sk428_credits_subtotal_line_20
