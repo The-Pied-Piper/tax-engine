@@ -1,0 +1,22 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 62, "Line 62: Line 60 plus line 61 =". Line 60 is
+# `ca-sk/sk428_tax_line_60` and line 61 is the optional input
+# `ca-sk/sk428_tax_on_split_income_line_61`, which a salary-only caller leaves out, read as blank
+# and then as 0 by the blank rule below.
+#
+# The form prints no floor on line 62, so core/sum gives a negative figure as is, rounded to the
+# cent by the ca-sk/cent_rounding dataset. The form prints no title for the line, so the step is
+# untitled. The result is the signed `ca-sk/sk428_tax_line_62`.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/sum
+    reference: "62"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts: [ca-sk/sk428_tax_line_60, ca-sk/sk428_tax_on_split_income_line_61]
+    blank:
+      ca-sk/sk428_tax_on_split_income_line_61: "0"
+    produces:
+      output: ca-sk/sk428_tax_line_62
