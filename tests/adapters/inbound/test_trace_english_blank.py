@@ -14,6 +14,7 @@ from tax_engine.domain.trace import (
     DefaultedInputLine,
     TraceLine,
 )
+from tax_engine.domain.worksheet import Worksheet
 
 CHART_GAIN = AmountKind("ex/chart_gain")
 LIMIT = AmountKind("ex/limit")
@@ -21,8 +22,8 @@ DEDUCTION = AmountKind("ex/deduction")
 HOUSEHOLD = CountKind("ex/household_count")
 
 
-def render(line: TraceLine) -> str:
-    return EnglishTraceRenderer().render(line)
+def render(line: TraceLine, sheet: Worksheet | None = None) -> str:
+    return EnglishTraceRenderer().render(line, sheet)
 
 
 def test_the_blank_renderer_module_registers_each_line() -> None:
@@ -65,25 +66,27 @@ def test_an_input_taken_as_its_default() -> None:
 
 
 def test_a_blank_passed_on_from_a_figure_no_form_names_does_not_name_its_label() -> None:
-    from tax_engine.adapters.inbound.trace_english import EnglishNames
-    from tax_engine.domain.worksheet import Worksheet
-
-    named = Worksheet(figure_titles={"chart_gain": "Chart gain"})
-    unnamed = Worksheet()
     line = BlankPassedOnLine(DEDUCTION, (CHART_GAIN,))
-    renderer = EnglishTraceRenderer()
 
-    assert renderer.render(line, named) == 'Blank because "Chart gain" was blank.'
-    assert renderer.render(line, unnamed) == "Blank because nothing was supplied for it."
-    assert EnglishNames(unnamed).is_named("chart_gain") is False
+    assert render(line, Worksheet(figure_titles={"chart_gain": "Chart gain"})) == (
+        'Blank because "Chart gain" was blank.'
+    )
+    assert render(line, Worksheet()) == "Blank because nothing was supplied for it."
 
 
 def test_a_named_cause_and_one_no_form_names_say_so_in_one_sentence() -> None:
-    from tax_engine.domain.worksheet import Worksheet
-
-    sheet = Worksheet(figure_titles={"chart_gain": "Chart gain"})
     line = BlankPassedOnLine(DEDUCTION, (CHART_GAIN, LIMIT))
 
-    assert EnglishTraceRenderer().render(line, sheet) == (
+    assert render(line, Worksheet(figure_titles={"chart_gain": "Chart gain"})) == (
         'Blank because "Chart gain" was blank, and nothing was supplied for another figure.'
+    )
+
+
+def test_two_causes_no_form_names_say_so_in_the_plural() -> None:
+    line = BlankPassedOnLine(DEDUCTION, (CHART_GAIN, LIMIT, HOUSEHOLD))
+    sheet = Worksheet(figure_titles={"household_count": "People in your household"})
+
+    assert render(line, sheet) == (
+        'Blank because "People in your household" was blank, '
+        "and nothing was supplied for other figures."
     )

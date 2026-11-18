@@ -1,14 +1,15 @@
 # Form BC428 (2025, CRA 5010-C) line 36, the pension income amount: "Line 36 and line 58360:
 # Pension income amount (maximum $1,000)". No arithmetic is printed, so line 36 is an entry line in
 # two steps. The first, core/credit_amount, supplies the printed maximum from the
-# `ca-bc/pension_income_amount_maximum` dataset; it is not a line of the form, so it has no title and
-# no reference. The second, core/at_most, is line 36: the entered amount
+# `ca-bc/pension_income_amount_maximum` dataset; it is not a line of the form, so it has no reference,
+# and its title is plain words, not printed wording, because the sentence of line 36 names it. The second, core/at_most, is line 36: the entered amount
 # (bc428_line_36_input.yaml) passed on unchanged. An entry above the printed maximum is refused,
 # not capped. A blank entry passes on as blank.
 form:
   name: ca-bc/bc428
 capabilities:
   - name: core/credit_amount
+    title: "Most you can claim for pension income"
     unit: ca/cad
     params:
       amount: ca-bc/pension_income_amount_maximum

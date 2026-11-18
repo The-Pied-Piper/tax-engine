@@ -182,3 +182,15 @@ def test_a_figure_is_named_when_the_form_gives_it_a_reference_or_a_title() -> No
 
 def test_with_no_worksheet_no_figure_is_named() -> None:
     assert EnglishNames().is_named("gross_pay") is False
+
+
+def test_a_figure_another_form_exports_is_named_only_if_that_form_prints_a_name_for_it() -> None:
+    titled = ImportedFigure("Form EX1", "Credit", None, True)
+    referenced = ImportedFigure("Form EX1", None, "45", True)
+    bare = ImportedFigure("Form EX1", None, None, True)
+    sheet = Worksheet(imported_figures={"titled": titled, "referenced": referenced, "bare": bare})
+    names = EnglishNames(sheet)
+
+    assert names.is_named("titled") is True
+    assert names.is_named("referenced") is True
+    assert names.is_named("bare") is False

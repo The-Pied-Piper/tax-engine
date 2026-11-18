@@ -6,6 +6,8 @@
 # the credit rate is applied to once.
 # Line 92 is a dollars-and-cents box, so the lesser rounds half-up to the cent, the
 # project's choice, as the form states no rounding rule.
+# The title is the name the form prints for line 31260, "Canada employment amount"; the form prints
+# no separate name for the dollar figure.
 family: ca/canada_employment_amount
 tax_year: 2025
 kind: amount

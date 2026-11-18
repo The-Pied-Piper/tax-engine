@@ -78,4 +78,7 @@ class BlankPassedOnRenderer:
         causes = EnglishFigures.listing(named)
         verb = "was" if len(named) == 1 else "were"
         text = f"blank because {causes} {verb} blank"
-        return f"{text}, and nothing was supplied for another figure" if unnamed else text
+        if not unnamed:
+            return text
+        other = "another figure" if unnamed == 1 else "other figures"
+        return f"{text}, and nothing was supplied for {other}"
