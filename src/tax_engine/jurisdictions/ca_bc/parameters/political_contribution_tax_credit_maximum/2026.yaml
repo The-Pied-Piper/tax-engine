@@ -1,0 +1,9 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from 2025; the 2026 BC428 is not published and the figure is not indexed. British Columbia political contribution tax credit maximum, 2026 tax year (Form BC428 line 84), rounding half-up to the cent like 2025.
+family: ca-bc/political_contribution_tax_credit_maximum
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-c/5010-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "500"

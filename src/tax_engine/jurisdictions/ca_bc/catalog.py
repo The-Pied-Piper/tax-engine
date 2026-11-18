@@ -89,7 +89,21 @@ BC428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "bc428_pension_income_amount", non_negative=True
 )
 """Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
-$1,000)": the amount the filer claims, a caller input that is read as blank when left out."""
+$1,000)": the amount the filer claims, a caller input that is read as blank when left out; the
+line 36 step checks it against the printed maximum."""
+
+BC428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "bc428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on BC428 line 36 "(maximum $1,000)": the printed maximum,
+from the `ca-bc/pension_income_amount_maximum` dataset; the bound line 36 cannot pass."""
+
+BC428_PENSION_INCOME_AMOUNT_LINE_36 = AmountKind.declare(
+    CATALOG, "bc428_pension_income_amount_line_36", non_negative=True
+)
+"""Pension income amount, BC428 line 36 "Line 36 and line 58360: Pension income amount (maximum
+$1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
+left out; above the maximum it is refused, not capped."""
 
 BC428_QUALIFYING_GIFTS_LINE_59 = AmountKind.declare(
     CATALOG, "bc428_qualifying_gifts_line_59", non_negative=True
@@ -127,8 +141,24 @@ BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
     CATALOG, "bc428_political_contribution_tax_credit_line_84", non_negative=True
 )
 """British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
-political contribution tax credit (use Worksheet BC428) (maximum $500)": a caller input that is
-read as blank when left out."""
+political contribution tax credit (use Worksheet BC428) (maximum $500)": the amount the filer
+claims, a caller input that is read as blank when left out; the line 84 step checks it against the
+printed maximum."""
+
+BC428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "bc428_political_contribution_tax_credit_maximum", non_negative=True
+)
+"""British Columbia political contribution tax credit maximum, printed on BC428 line 84 "(maximum
+$500)": the printed maximum, from the `ca-bc/political_contribution_tax_credit_maximum` dataset; the
+bound line 84 cannot pass."""
+
+BC428_BRITISH_COLUMBIA_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "bc428_british_columbia_political_contribution_tax_credit_line_84", non_negative=True
+)
+"""British Columbia political contribution tax credit, BC428 line 84 "Line 84: British Columbia
+political contribution tax credit (use Worksheet BC428) (maximum $500)": the entered amount, passed
+on unchanged when it is at most the printed maximum, blank when left out; above the maximum it is
+refused, not capped."""
 
 BC428_ESOP_EVCC_CREDITS_LINE_88 = AmountKind.declare(
     CATALOG, "bc428_esop_evcc_credits_line_88", non_negative=True
@@ -448,15 +478,31 @@ BC479_HOME_RENOVATION_EXPENSES_LINE_14 = AmountKind.declare(
 )
 """Home renovation expenses, BC479 line 14 "Enter your home renovation expenses from line 5 of your
 Schedule BC(S12). (maximum $10,000)": the amount from line 5 of Schedule BC(S12), a caller input
-that is read as blank when left out."""
+that is read as blank when left out; the line 14 check step checks it against the printed
+maximum."""
+
+BC479_HOME_RENOVATION_EXPENSES_MAXIMUM = AmountKind.declare(
+    CATALOG, "bc479_home_renovation_expenses_maximum", non_negative=True
+)
+"""Home renovation expenses maximum, printed on BC479 line 14 "(maximum $10,000)": the printed
+maximum, from the `ca-bc/home_renovation_expenses_maximum` dataset; the bound line 14 cannot
+pass."""
+
+BC479_HOME_RENOVATION_EXPENSES_CHECKED = AmountKind.declare(
+    CATALOG, "bc479_home_renovation_expenses_checked", non_negative=True
+)
+"""Home renovation expenses, BC479 line 14 "Enter your home renovation expenses from line 5 of your
+Schedule BC(S12). (maximum $10,000)": the entered amount, passed on unchanged when it is at most
+the printed maximum, blank when left out; above the maximum it is refused, not capped. Line 14
+multiplies it by 10%."""
 
 BC479_HOME_RENOVATION_CREDIT_LINE_14 = AmountKind.declare(
     CATALOG, "bc479_home_renovation_credit_line_14", non_negative=True
 )
 """Home renovation credit, BC479 line 14 "Line 14: Enter your home renovation expenses from line 5
-of your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^": line 14 input
-(the expenses) times the printed 10%, rounded to the cent. The printed $10,000 maximum is not
-enforced."""
+of your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^": the checked line 14
+expenses times the printed 10%, rounded to the cent. An amount above the printed $10,000 maximum is
+rejected before this step, not multiplied."""
 
 BC479_TRAINING_CREDITS_LINE_34 = AmountKind.declare(
     CATALOG, "bc479_training_credits_line_34", non_negative=True

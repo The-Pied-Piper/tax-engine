@@ -2,8 +2,9 @@
 
 Form text (Form BC428, CRA 5010-C, read 2026-11-14): "Line 36 and line 58360: Pension income
 amount (maximum $1,000)" and "Line 37: Line 35 plus line 36 = ^". Line 36, the pension income
-amount, is an input with no step, so line 37 is one core/sum over line 35 then the line 36 pension
-income amount input, which a salary-only caller leaves out and the input part reads as 0.
+amount, is an entry rejected above its printed maximum by `bc428_line_36.yaml`; line 37 is one
+core/sum over line 35 then the line 36 kind that step passes on. A salary-only caller leaves line 36
+out, the input part reads it as blank, line 36 passes it on as blank, and line 37 reads that as 0.
 
 The test composes the real British Columbia salary part, the real Schedule 8 and T2204 parts, the
 real line 16, 25, 27, 29, 33 and 35 parts, the line 36 input part and the new `bc428_line_37.yaml`,
@@ -29,6 +30,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -91,6 +93,7 @@ def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "bc428_line_33.yaml"
     yield BC_PARTS / "bc428_line_35.yaml"
     yield BC_PARTS / "bc428_line_36_input.yaml"
+    yield BC_PARTS / "bc428_line_36.yaml"
     yield LINE_PART
 
 
@@ -141,13 +144,19 @@ def test_line_37_adds_a_given_pension_income_amount_to_line_35(tmp_path: Path) -
     assert _line_37(tmp_path, "70000", "1000.00") == D("18301.23")
 
 
+def test_line_37_is_refused_a_pension_income_amount_above_the_maximum(tmp_path: Path) -> None:
+    # Line 36 is rejected above its printed maximum of 1,000.00, so line 37 never adds it.
+    with pytest.raises(InputAboveBoundError):
+        _line_37(tmp_path, "70000", "1000.01")
+
+
 def _part() -> dict[str, Any]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     return part
 
 
-def test_the_part_names_the_form_and_has_one_sum_step_over_line_35_and_the_pension_input() -> None:
+def test_the_part_names_the_form_and_has_one_sum_step_over_line_35_and_the_line_36_kind() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -162,12 +171,21 @@ def test_the_part_names_the_form_and_has_one_sum_step_over_line_35_and_the_pensi
         "consumes": {
             "parts": [
                 "ca-bc/bc428_subtotal_line_35",
-                "ca-bc/bc428_pension_income_amount",
+                "ca-bc/bc428_pension_income_amount_line_36",
             ]
         },
-        "blank": {"ca-bc/bc428_pension_income_amount": "0"},
+        "blank": {"ca-bc/bc428_pension_income_amount_line_36": "0"},
         "produces": {"output": IDENTIFIER},
     }
+
+
+def test_line_37_consumes_the_line_36_kind_not_the_input_kind() -> None:
+    (step,) = _part()["capabilities"]
+
+    assert "ca-bc/bc428_pension_income_amount" not in step["consumes"]["parts"]
+    assert "ca-bc/bc428_pension_income_amount" not in step["blank"]
+    assert step["consumes"]["parts"][1] == "ca-bc/bc428_pension_income_amount_line_36"
+    assert step["blank"] == {"ca-bc/bc428_pension_income_amount_line_36": "0"}
 
 
 def test_line_37_is_a_registered_non_negative_decimal_amount_kind() -> None:

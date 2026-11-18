@@ -1,11 +1,13 @@
 # Form BC479 (2025, CRA 5010-TC) line 14. Line 14: "Enter your home renovation expenses from line 5 of
-# your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^". The printed $10,000
-# maximum is not enforced: an amount above it is multiplied as given. The 10% is printed in the line
-# text, so it is the `ca-bc/home_renovation_credit_rate` dataset figure and has no step of its own.
-# One core/apply_rate step: the expenses input (`ca-bc/bc479_home_renovation_expenses_line_14`, in
-# bc479_line_14_input.yaml) times that rate, rounded half-up to the cent by the dataset's rule. The
-# expenses input is optional, and a salary-only caller leaves it out, so the blank rule below reads
-# it as 0 and prints that row. The form prints no title for the line, so the step has none.
+# your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^". The entered amount is
+# checked against the printed $10,000 maximum before this step (bc479_line_14_check.yaml): an amount
+# above it is rejected, not capped, so this step multiplies only an amount at most the maximum. The 10%
+# is printed in the line text, so it is the `ca-bc/home_renovation_credit_rate` dataset figure and has
+# no step of its own.
+# One core/apply_rate step: the checked expenses (`ca-bc/bc479_home_renovation_expenses_checked`) times
+# that rate, rounded half-up to the cent by the dataset's rule. The expenses input is optional, and a
+# salary-only caller leaves it out, so the blank rule below reads the checked amount as 0 and prints
+# that row. The form prints no title for the line, so the step has none.
 form:
   name: ca-bc/bc479
 capabilities:
@@ -15,7 +17,7 @@ capabilities:
     params:
       rate: ca-bc/home_renovation_credit_rate
     consumes:
-      base: ca-bc/bc479_home_renovation_expenses_line_14
+      base: ca-bc/bc479_home_renovation_expenses_checked
     blank:
       base: "0"
     produces:

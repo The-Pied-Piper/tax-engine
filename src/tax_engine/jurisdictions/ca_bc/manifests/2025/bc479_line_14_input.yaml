@@ -1,7 +1,9 @@
 # BC479 (2025) inputs a salary-only caller does not give.
 # Line 14: "Home renovation expenses from line 5 of your Schedule BC(S12)" (5010-tc). The printed $10,000
-# maximum is not enforced here. Line 14 is this input times a printed 10%, built by a later step. A
-# salary-only caller leaves the line blank; the step that consumes it reads that blank as 0.
+# maximum is checked by the step that reads this input (bc479_line_14_check.yaml), which rejects an
+# amount above it. Line 14 is the checked amount times a printed 10%, built by a later step. A
+# salary-only caller leaves the line blank; the check step passes that blank on and the step after it
+# reads the blank as 0.
 inputs:
   - name: ca-bc/bc479_home_renovation_expenses_line_14
     title: "Home renovation expenses from line 5 of your Schedule BC(S12)"

@@ -78,7 +78,7 @@ LINE_80 = "ca-bc/bc428_tax_after_reduction_line_80"
 LINE_81 = "ca-bc/bc428_logging_tax_credit_line_81"
 LINE_85 = "ca-bc/bc428_tax_after_political_credit_line_85"
 LINE_82 = "ca-bc/bc428_tax_after_logging_credit_line_82"
-LINE_84 = "ca-bc/bc428_political_contribution_tax_credit_line_84"
+LINE_84 = "ca-bc/bc428_british_columbia_political_contribution_tax_credit_line_84"
 LINE_88 = "ca-bc/bc428_esop_evcc_credits_line_88"
 LINE_89 = "ca-bc/bc428_tax_after_esop_evcc_line_89"
 LINE_90 = "ca-bc/bc428_mining_flow_through_credit_line_90"
@@ -114,6 +114,7 @@ BC_LINE_PARTS = (
     "bc428_line_33.yaml",
     "bc428_line_35.yaml",
     "bc428_line_36_input.yaml",
+    "bc428_line_36.yaml",
     "bc428_line_37.yaml",
     "bc428_line_40.yaml",
     "bc428_line_45.yaml",
@@ -139,6 +140,8 @@ BC_LINE_PARTS = (
     "bc428_line_81_input.yaml",
     "bc428_line_82.yaml",
     "bc428_line_84_input.yaml",
+    "bc428_political_contribution_tax_credit_maximum.yaml",
+    "bc428_line_84.yaml",
     "bc428_line_85.yaml",
     "bc428_line_88_input.yaml",
     "bc428_line_89.yaml",

@@ -2,8 +2,9 @@
 
 Form text (Form BC479, CRA 5010-TC): "Line 14: Enter your home renovation expenses from line 5 of
 your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10% = ^". Single amount, no
-columns. The $10,000 maximum is stated in the basis and is not enforced. A request that leaves the
-line out is read as blank; the step that consumes it reads blank as 0.
+columns. The $10,000 maximum is stated in the basis; the check part (`bc479_line_14_check.yaml`)
+rejects an amount above it, not this input. A request that leaves the line out is read as blank; the
+step that consumes it reads blank as 0.
 
 The real part is loaded under a test-local header over the British Columbia package list of
 `support.py`.
