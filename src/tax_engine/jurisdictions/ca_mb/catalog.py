@@ -166,6 +166,35 @@ MB428_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
 Manitoba community enterprise development tax credit (complete Form T1256)": a caller input, read
 as blank when left out."""
 
+MB428_VENTURE_CAPITAL_CREDIT = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit", non_negative=True
+)
+"""Manitoba small business venture capital tax credit for individuals, MB428 line 77 "Line 77 and
+line 60850: Manitoba small business venture capital tax credit for individuals (complete Form
+T1256-1) (maximum $120,000)": the amount the filer claims, a caller input that is read as blank when
+left out; the line 77 step checks it against the printed maximum."""
+
+MB428_VENTURE_CAPITAL_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit_maximum", non_negative=True
+)
+"""Venture capital credit maximum, printed on MB428 line 77 "(maximum $120,000)": the printed
+maximum, from the `ca-mb/venture_capital_credit_maximum` dataset; the bound line 77 cannot pass."""
+
+MB428_VENTURE_CAPITAL_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit_line_77", non_negative=True
+)
+"""Manitoba small business venture capital tax credit for individuals, MB428 line 77 "Line 77 and
+line 60850: Manitoba small business venture capital tax credit for individuals (complete Form
+T1256-1) (maximum $120,000)": the entered amount, passed on unchanged when it is at most the printed
+maximum, blank when left out; above the maximum it is refused, not capped."""
+
+MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "mb428_employee_share_purchase_tax_credit_line_79", non_negative=True
+)
+"""Manitoba employee share purchase tax credit, MB428 line 79 "Line 79 and line 60860: Manitoba
+employee share purchase tax credit (complete Form T1256-2)": a caller input, read as blank when left
+out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
@@ -305,6 +334,28 @@ MB479_ODOUR_CONTROL_CREDIT_LINE_65 = AmountKind.declare(
 """Unused odour-control tax credit, MB479 line 65 "Line 65 and line 61340: Enter your unused
 odour-control tax credit from your 2024 notice of assessment or reassessment.": a caller input that
 is read as blank when left out."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_line_77", non_negative=True
+)
+"""Employee share purchase tax credit, MB479 line 77 "Line 77 and line 61490: Enter your Manitoba
+employee share purchase tax credit from line 6 of Form T1256-2. (maximum $27,000)": a caller input
+that is read as blank when left out; the line 77 step checks it against the printed maximum."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_maximum", non_negative=True
+)
+"""Employee share purchase tax credit maximum, printed on MB479 line 77 "(maximum $27,000)": the
+printed maximum, from the `ca-mb/employee_share_purchase_credit_maximum` dataset; the bound line 77
+cannot pass."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_CHECKED_LINE_77 = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_checked_line_77", non_negative=True
+)
+"""Employee share purchase tax credit, MB479 line 77 "Line 77 and line 61490: Enter your Manitoba
+employee share purchase tax credit from line 6 of Form T1256-2. (maximum $27,000)": the entered
+amount, passed on unchanged when it is at most the printed maximum, blank when left out; above the
+maximum it is refused, not capped."""
 
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
@@ -481,6 +532,13 @@ MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_LINE_73 = AmountKind.declare(
 """Cultural industries printing tax credit, MB479 line 73 "Line 73 and line 61480: Cultural
 industries printing tax credit (maximum $1,100,000)": the credit of the line, a caller input that is
 read as blank when left out; the printed maximum $1,100,000 is checked by the step that reads it."""
+
+MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
+    CATALOG, "mb479_community_enterprise_development_tax_credit_line_75", non_negative=True
+)
+"""Community enterprise development tax credit, MB479 line 75 "Line 75 and line 61484: Enter your
+Manitoba community enterprise development tax credit from line 4 of Form T1256": the credit worked
+out on Form T1256, which is not built, a caller input that is read as blank when left out."""
 
 MB479_TEACHING_SUPPLIES_EXPENSES_LINE_79 = AmountKind.declare(
     CATALOG, "mb479_teaching_supplies_expenses_line_79", non_negative=True

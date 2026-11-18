@@ -1,0 +1,13 @@
+# MB428 (2025) line 79's input, which a salary-only caller does not give.
+# Line 79: "Line 79 and line 60860: Manitoba employee share purchase tax credit (complete Form
+# T1256-2)" (Form MB428, CRA 5007-c). The form prints no maximum on this line.
+# Form T1256-2 is not built, so a request that leaves the line out is read as blank; the step that
+# reads line 79 reads that blank as 0.
+inputs:
+  - name: ca-mb/mb428_employee_share_purchase_tax_credit_line_79
+    title: "Manitoba employee share purchase tax credit"
+    reference: "79"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 79 and line 60860: Manitoba employee share purchase tax credit (complete Form T1256-2)'
