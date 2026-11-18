@@ -170,3 +170,9 @@ SK428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, Form SK428 line 3 "Column 1: Line 1 is $53,463 or less / Line 3: 0.00"
 (53,463.00; 152,750.00): the printed lower bound of the column of lines 2 to 8 that line 1 falls
 in."""
+
+SK428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_32", non_negative=True
+)
+"""Saskatchewan credit amounts subtotal, SK428 line 32 "Line 32: Line 21 plus line 31 =": line 21,
+a copy of line 20, plus line 31, read by line 35."""
