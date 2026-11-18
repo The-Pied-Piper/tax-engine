@@ -149,6 +149,10 @@ MB428_TAX_LINE_74 = AmountKind.declare(CATALOG, "mb428_tax_line_74", non_negativ
 """Manitoba tax, MB428 line 74 "Line 74: Line 72 minus line 73 (if negative, enter "0") =":
 calculated, line 72 less line 73 (line 73 read as 0 when blank), not below 0."""
 
+MB428_TAX_LINE_76 = AmountKind.declare(CATALOG, "mb428_tax_line_76", non_negative=True)
+"""Manitoba tax, MB428 line 76 "Line 76: Line 74 minus line 75 (if negative, enter "0") =":
+calculated, line 74 less line 75 (line 75 read as 0 when blank), not below 0."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
