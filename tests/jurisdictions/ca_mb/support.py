@@ -1,8 +1,10 @@
 """The Manitoba package list and the registries built over it.
 
-Manitoba is not yet in `tax_engine.registrations.JURISDICTIONS`, so a test of the Manitoba package
-builds its own package list (core, federal, Manitoba) here and takes its kinds and capabilities
-from it. Each registry is built once per test process; never register into one.
+Manitoba is listed in `tax_engine.registrations.JURISDICTIONS`, and a test of the registered engine
+takes the `take_home_service` fixture of `conftest.py` or the registries of
+`tax_engine.registrations`. The tests written before the listing build their own package list
+(core, federal, Manitoba) here and take their kinds and capabilities from it. Each registry is
+built once per test process; never register into one.
 """
 
 from functools import cache
