@@ -4,17 +4,18 @@ the expenses input given or left out.
 Form text (Form BC479, CRA 5010-TC, read 2026-11-14): "Line 14: Enter your home renovation
 expenses from line 5 of your Schedule BC(S12). (maximum $10,000) Line 60480 ^ multiplied by 10%
 = ^". The printed 10% is a rate, held in the `ca-bc/home_renovation_credit_rate` dataset (0.10),
-so line 14 is one `core/apply_rate` step (`bc479_line_14.yaml`) over the expenses input
-(`ca-bc/bc479_home_renovation_expenses_line_14`), rounded half-up to the cent by the dataset's own
+so line 14 is one `core/apply_rate` step (`bc479_line_14.yaml`) over the checked expenses
+(`ca-bc/bc479_home_renovation_expenses_checked`), rounded half-up to the cent by the dataset's own
 rule, producing `ca-bc/bc479_home_renovation_credit_line_14`, a non-negative kind, reference "14",
 with no title. The expenses input is optional: a salary-only caller leaves it out, and the step's
-blank rule reads it as 0 and prints its own "left blank, taken as 0" row. The printed $10,000
-maximum is not enforced: an amount above it is multiplied as given.
+blank rule reads the checked amount as 0 and prints its own "left blank, taken as 0" row. The
+printed $10,000 maximum is checked before the step reads the amount (`bc479_line_14_check.yaml`):
+an amount above it is rejected with `InputAboveBoundError`, not multiplied.
 
-The test composes the real salary part, the real line 14 input part and the new
-`bc479_line_14.yaml`, and types in the salary and, in some tests, the expenses. The form
-declaration is made up here, exporting only line 14. The figures are hand-computed from the printed
-form (not a CRA example): the expenses times 0.10, rounded half-up to the cent.
+The test composes the real salary part, the real maximum and check parts, the real line 14 input
+part and the new `bc479_line_14.yaml`, and types in the salary and, in some tests, the expenses.
+The form declaration is made up here, exporting only line 14. The figures are hand-computed from
+the printed form (not a CRA example): the expenses times 0.10, rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -34,6 +35,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import Rate
@@ -54,7 +56,10 @@ from tests.kinds import non_negative
 D = Decimal
 BC_PARTS = Path(tax_engine.jurisdictions.ca_bc.__file__).parent / "manifests" / "2025"
 LINE_PART = BC_PARTS / "bc479_line_14.yaml"
+MAXIMUM_PART = BC_PARTS / "bc479_home_renovation_expenses_maximum.yaml"
+CHECK_PART = BC_PARTS / "bc479_line_14_check.yaml"
 EXPENSES = BC479_HOME_RENOVATION_EXPENSES_LINE_14
+CHECKED = "ca-bc/bc479_home_renovation_expenses_checked"
 IDENTIFIER = "ca-bc/bc479_home_renovation_credit_line_14"
 RATE_FAMILY = "ca-bc/home_renovation_credit_rate"
 FORM = "ca-bc/bc479"
@@ -81,8 +86,6 @@ CASES = [
     ("10000.00", "1000.00"),
     ("1234.56", "123.46"),
     ("0.05", "0.01"),
-    # above the printed $10,000 maximum: not clamped
-    ("12000.00", "1200.00"),
 ]
 
 SALARIES = ["17000", "20000", "30000", "70000", "200000"]
@@ -90,7 +93,9 @@ SALARIES = ["17000", "20000", "30000", "70000", "200000"]
 
 def _part_files() -> Iterator[Path]:
     yield BC_PARTS / "salary.yaml"
+    yield MAXIMUM_PART
     yield BC_PARTS / "bc479_line_14_input.yaml"
+    yield CHECK_PART
     yield LINE_PART
 
 
@@ -140,6 +145,11 @@ def test_line_14_is_the_expenses_times_10_percent(
     assert str(line_14.value) == expected
 
 
+def test_an_amount_above_the_printed_maximum_is_rejected_not_multiplied(tmp_path: Path) -> None:
+    with pytest.raises(InputAboveBoundError):
+        _sheet(tmp_path, "70000", Artifact(EXPENSES, D("12000.00")))
+
+
 @pytest.mark.parametrize("salary", SALARIES)
 def test_line_14_is_a_computed_zero_when_no_expenses_are_given(tmp_path: Path, salary: str) -> None:
     line_14 = _sheet(tmp_path, salary).get(_kind(IDENTIFIER))
@@ -155,7 +165,7 @@ def test_a_blank_expenses_line_prints_the_steps_own_left_blank_row(tmp_path: Pat
     (blank,) = [
         each
         for each in sheet.trace
-        if isinstance(each, BlankFallbackLine) and each.kind is EXPENSES
+        if isinstance(each, BlankFallbackLine) and each.kind is _kind(CHECKED)
     ]
     assert blank.fallback == 0
     rows = EnglishTraceRenderer().render_all(sheet.trace)
@@ -170,7 +180,7 @@ def test_the_product_is_traced_with_its_base_and_the_rate(tmp_path: Path) -> Non
         for each in sheet.trace
         if isinstance(each, RateAppliedLine) and each.output is _kind(IDENTIFIER)
     )
-    assert line.base == EXPENSES
+    assert line.base == _kind(CHECKED)
     assert line.base_amount == D("10000.00")
     assert line.rate == Rate(D("0.10"))
     assert line.result == D("1000.00")
@@ -182,7 +192,7 @@ def _part() -> dict[str, object]:
     return part
 
 
-def test_the_part_names_the_form_and_has_one_apply_rate_step_over_the_expenses_input() -> None:
+def test_the_part_names_the_form_and_has_one_apply_rate_step_over_the_checked_expenses() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
@@ -198,7 +208,7 @@ def test_the_part_names_the_form_and_has_one_apply_rate_step_over_the_expenses_i
         "reference": "14",
         "unit": "ca/cad",
         "params": {"rate": RATE_FAMILY},
-        "consumes": {"base": EXPENSES.identifier},
+        "consumes": {"base": CHECKED},
         "blank": {"base": "0"},
         "produces": {"output": IDENTIFIER},
     }

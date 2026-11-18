@@ -1,0 +1,12 @@
+# MB479 (2025) line 71's input, which a salary-only caller does not give.
+# Line 71: "Line 71 and line 61430: Enter your book publishing tax credit from Form T1299."
+# (Form MB479, CRA 5007-TC), after the line 70 total. The form prints no name for the line and no
+# heading of its own, so the input has no title. A salary-only caller has no book publishing tax
+# credit, so a request that leaves the line out is read as blank.
+inputs:
+  - name: ca-mb/mb479_book_publishing_credit_line_71
+    reference: "71"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 71 and line 61430: Enter your book publishing tax credit from Form T1299.'

@@ -1,0 +1,11 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Form BC479 line 14: home renovation expenses, maximum, 2026 tax year (CRA 5010-TC). Line 14 prints
+# "(maximum $10,000)", carried forward from 2025; rounds half-up to the cent like 2025.
+family: ca-bc/home_renovation_expenses_maximum
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5010-tc/5010-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "10000"
