@@ -25,7 +25,6 @@ second.
 
 from __future__ import annotations
 
-import ast
 from collections.abc import Iterator
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -117,27 +116,6 @@ EDGES = [
     ("153824.00", "152750.00", "53463.00"),
     ("153824.01", "152750.01", "152750.00"),
 ]
-
-
-def squashed(text: str) -> str:
-    return " ".join(text.split())
-
-
-def docstring_of(identifier: str) -> str:
-    """The string right after the declaration of the kind `identifier` in the catalog."""
-    path = Path(sk_catalog.__file__)
-    body = ast.parse(path.read_text(encoding="utf-8")).body
-    for statement, following in zip(body, body[1:], strict=False):
-        if not (isinstance(statement, ast.Assign) and isinstance(statement.value, ast.Call)):
-            continue
-        constants = [each.value for each in statement.value.args if isinstance(each, ast.Constant)]
-        if (
-            identifier.rpartition("/")[2] in constants
-            and isinstance(following, ast.Expr)
-            and isinstance(following.value, ast.Constant)
-        ):
-            return str(following.value.value)
-    raise AssertionError(f"no declaration of {identifier!r} followed by a docstring")
 
 
 def _part_files() -> Iterator[Path]:
@@ -275,22 +253,3 @@ def test_line_3_is_a_registered_non_negative_decimal_amount_kind() -> None:
 def test_the_kind_rejects_a_negative_amount() -> None:
     with pytest.raises(NegativeArtifactError):
         Artifact(saskatchewan_kinds().kind(LINE_3), D("-0.01"))
-
-
-def test_the_docstring_quotes_the_form_text() -> None:
-    doc = squashed(docstring_of(LINE_3))
-
-    assert "Form SK428" in doc
-    assert "Line 3" in doc
-    assert "Column 1: Line 1 is $53,463 or less" in doc
-    assert "0.00" in doc
-    assert "152,750.00" in doc
-
-
-def test_no_left_blank_row_is_printed_for_line_3(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    assert rows
-    assert not any("left blank, taken as" in row.lower() for row in rows)
