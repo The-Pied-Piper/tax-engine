@@ -163,3 +163,10 @@ SK428_MINIMUM_TAX_ADDITIONAL_LINE_68 = AmountKind.declare(
 )
 """Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
 minus Line 2 of Part 7 multiplied by 50% =": 50% of the Form T691 amount."""
+
+SK428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "sk428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, Form SK428 line 3 "Column 1: Line 1 is $53,463 or less / Line 3: 0.00"
+(53,463.00; 152,750.00): the printed lower bound of the column of lines 2 to 8 that line 1 falls
+in."""
