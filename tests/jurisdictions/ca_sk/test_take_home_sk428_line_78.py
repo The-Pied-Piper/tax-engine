@@ -45,6 +45,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -337,6 +338,22 @@ def test_line_78_is_line_74_minus_line_77_not_below_zero_when_line_77_is_given(
     assert line_78.as_tuple().exponent == -2
     # The floor is the cent zero of the rounding dataset: printed 0.00, never -0.00.
     assert not line_78.is_signed()
+
+
+def test_a_line_77_above_the_maximum_is_rejected_through_line_78(tmp_path: Path) -> None:
+    service = _service(tmp_path)
+
+    def compute(line_77: str) -> Worksheet:
+        given = [
+            Artifact(EMPLOYMENT_INCOME, D("70000")),
+            Artifact(_amount_kind(CREDIT_77), D(line_77)),
+        ]
+        (sheet,) = service.compute(JurisdictionCode("CA-SK"), 2025, *given)[FORM_NAME]
+        return sheet
+
+    assert _line(compute("875"), IDENTIFIER) == D("4217.30")
+    with pytest.raises(InputAboveBoundError):
+        compute("875.01")
 
 
 def _left_blank_rows(rows: Sequence[str]) -> int:
