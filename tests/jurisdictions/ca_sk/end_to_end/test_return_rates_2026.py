@@ -23,17 +23,22 @@ The 2026 figures: the Saskatchewan columns end at taxable income of 54,532 and 1
 20,381 (up from 19,491) at the credit rate of 10.5%. The federal rates are the 2026 ones (14%,
 20.5%, 26%, 29%, 33% from taxable income of 58,523, 117,045, 181,440 and 258,482), the federal basic
 personal amount is 14,829 plus a supplement of 1,623 reduced from a net income of 181,440 over
-77,042, the Canada employment amount is 1,501, the EI premium is 1.63% to 68,900 and the CPP base
-contribution 4.95% of the salary less 3,500.
+77,042, the Canada employment amount is 1,501 or the salary if less, the EI premium is 1.63% to
+68,900 and the CPP base contribution 4.95% of the salary less 3,500.
 
 Every expected figure is derived by hand with plain decimal arithmetic from those datasets, never
 read from the engine. Taxable income is the salary less the CPP enhanced contributions (1% of the
 salary less 3,500 to 74,600, 4% of the salary from 74,600 to 85,000, each to the cent). The federal
 tax after credits (T1 line 42900) is the bracket tax less 14% of the credits, summed and multiplied
 once as the form does: the basic personal amount, the CPP base contribution, the EI premium and
-the Canada employment amount. The Saskatchewan tax (SK428 line 67) is the bracket tax (rounded to
-the cent) less 10.5% of the credits: the Saskatchewan basic personal amount of 20,381, the CPP base
-contribution and the EI premium only. The total payable is their sum.
+the Canada employment amount (1,501 or the salary if less). The Saskatchewan tax after credits
+(SK428 line 67; it equals line 82, the form's "Saskatchewan tax", because the lines between are
+blank) is the bracket tax (rounded to the cent) less 10.5% of the credits: the Saskatchewan basic
+personal amount of 20,381, the CPP base contribution and the EI premium only. The total payable is
+their sum.
+
+The cent rounding of each line, the half-up rounding of the average rate to 0.0001 and the zero-tax
+gates are the project's choices: no form prints them.
 
 Worked at 70,000 (taxable income 69,335.00):
 
@@ -74,7 +79,7 @@ from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.registrations import artifact_kinds
-from tests.kinds import bundled_kinds
+from tests.kinds import bundled_kinds, non_negative
 
 D = Decimal
 SASKATCHEWAN = JurisdictionCode("CA-SK")
@@ -90,6 +95,14 @@ LINE_67_RETURN = "ca-sk/saskatchewan_tax_after_credits_return"
 RATE_GATE = "ca-sk/saskatchewan_rate_gate"
 LINE_67 = "ca-sk/sk428_tax_after_credits_line_67"
 LINE_82 = "ca-sk/sk428_saskatchewan_tax_line_82"
+NEW_KINDS = [
+    AVERAGE,
+    MARGINAL,
+    SK_RATE,
+    BRACKET,
+    LINE_67_RETURN,
+    RATE_GATE,
+]
 
 # Salary, federal tax (T1 line 42900), Saskatchewan tax (SK428 line 67), federal part,
 # Saskatchewan part, marginal rate, T1 line 43500 total payable, average.
@@ -154,6 +167,19 @@ def _sum_line(sheet: Worksheet) -> SumLine:
         line for line in sheet.trace if isinstance(line, SumLine) and line.output.label == label
     ]
     return line
+
+
+@pytest.mark.parametrize("name", NEW_KINDS)
+def test_the_new_kinds_are_registered_decimal_amounts(name: str) -> None:
+    kind = artifact_kinds().kind(name)
+
+    assert kind.identifier == name
+    assert kind.value_type is Decimal
+
+
+@pytest.mark.parametrize("name", [MARGINAL, AVERAGE, SK_RATE, BRACKET])
+def test_the_rate_kinds_are_non_negative(name: str) -> None:
+    assert non_negative(artifact_kinds().kind(name))
 
 
 @pytest.mark.parametrize(("salary", "federal", "saskatchewan", "marginal"), PART_FIGURES)
@@ -267,6 +293,16 @@ def test_the_return_prints_both_rates_as_percentages_in_the_core_percent_unit() 
         assert unit.identifier == "core/percent"
 
 
+def test_the_steps_after_line_167_have_no_reference_and_no_title() -> None:
+    summary = _summary("70000")
+    kinds = artifact_kinds()
+
+    for name in NEW_KINDS:
+        label = kinds.kind(name).label
+        assert summary.reference(label) is None
+        assert summary.title(label) is None
+
+
 def test_the_marginal_rate_is_traced_as_one_exact_sum_of_the_federal_then_the_sk_part() -> None:
     sheet = _summary("200000")
     kinds = artifact_kinds()
@@ -290,6 +326,19 @@ def test_the_marginal_rate_is_explained_in_english_as_percentages() -> None:
     assert re.fullmatch(
         r".*\(20\.5(0+)?%\) plus .+ \(12\.5(0+)?%\) gives 33(\.0+)?% \(not rounded\)\.?", text
     )
+
+
+def test_the_marginal_rate_comes_last_in_the_trace() -> None:
+    sheet = _summary("100000")
+    kinds = artifact_kinds()
+    labels = [line.label for line in sheet.trace]
+
+    marginal = labels.index(kinds.kind(MARGINAL).label)
+
+    assert marginal == len(labels) - 1
+    assert labels.count(kinds.kind(MARGINAL).label) == 1
+    for part in (FEDERAL, SK_RATE):
+        assert labels.index(kinds.kind(part).label) < marginal
 
 
 @pytest.mark.parametrize(
