@@ -1,0 +1,17 @@
+# Form SK428 (CRA 5008-C) line 31: "Line 31: Add lines 22 to 30." Lines 23 and 25 to 30 are left out:
+# they are a block of blank optional lines, zero for a salary-only filer. The one step adds lines 22
+# and 24 with core/sum, as ca-on/on428 line 24 does (on428_line_24.yaml).
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    reference: "31"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        - ca-sk/sk428_cpp_contributions_line_22
+        - ca-sk/sk428_ei_premiums_line_24
+    produces:
+      output: ca-sk/sk428_cpp_ei_and_other_line_31
