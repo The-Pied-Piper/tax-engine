@@ -13,6 +13,12 @@ from tax_engine.jurisdictions.ca_sk import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+SK428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "sk428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form SK428 Line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by lines 3 and 4."""
+
 SK428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
     CATALOG, "sk428_tax_on_taxable_income_line_8", non_negative=True
 )
@@ -24,6 +30,12 @@ SK428_EI_PREMIUMS_LINE_24 = AmountKind.declare(
 )
 """EI premiums credit amount, SK428 line 24 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
+
+SK428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "sk428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, SK428 line 33 "Line 33 and line 58360: Pension income amount (maximum
+$1,000)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
 
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
@@ -42,3 +54,9 @@ BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non
 """Basic personal amount, SK428 line 9 and line 58040 "Basic personal amount Claim $19,491": the
 amount claimed, one of the credit amounts that the Saskatchewan non-refundable credits total is
 built from."""
+
+SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
+    CATALOG, "sk428_cpp_contributions_line_22", non_negative=True
+)
+"""CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
+copy of Schedule 8 line 25, the CPP base contributions on the return."""
