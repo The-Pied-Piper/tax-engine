@@ -562,6 +562,14 @@ MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
 Manitoba community enterprise development tax credit from line 4 of Form T1256": the credit worked
 out on Form T1256, which is not built, a caller input that is read as blank when left out."""
 
+MB479_TEACHING_SUPPLIES_EXPENSES_LINE_79 = AmountKind.declare(
+    CATALOG, "mb479_teaching_supplies_expenses_line_79", non_negative=True
+)
+"""Teaching expense tax credit, MB479 line 79 "Line 79: Eligible teaching supplies expenses
+(maximum $1,000) Line 61495": the eligible teaching supplies expenses the 15% is taken of, a caller
+input read as blank when left out; the printed maximum $1,000 is checked by the step that reads
+it."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
@@ -614,6 +622,10 @@ MB479_CREDITS_LINE_57 = AmountKind.declare(CATALOG, "mb479_credits_line_57", non
 """Credits, MB479 line 57 "Line 57: If you entered a number on line 56, multiply line 55 by line
 56. Otherwise, enter the amount from line 55.": line 55 multiplied by line 56, a blank line 56 read
 as 1, rounded to the cent."""
+
+MB479_CREDITS_LINE_60 = AmountKind.declare(CATALOG, "mb479_credits_line_60", non_negative=True)
+"""Credits, MB479 line 60 "Line 60: Line 58 plus line 59 =": line 58 (a copy of line 57) plus line
+59 (the primary caregiver tax credit, blank read as 0), rounded to the cent."""
 
 MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
     CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True
