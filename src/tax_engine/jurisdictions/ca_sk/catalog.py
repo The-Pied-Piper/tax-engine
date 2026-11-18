@@ -60,3 +60,10 @@ SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
 )
 """CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
+    CATALOG, "sk428_political_contributions_credit_line_73", non_negative=True
+)
+"""Saskatchewan political contribution tax credit, SK428 line 73 "Line 73: Saskatchewan political
+contribution tax credit (use Worksheet SK428) (maximum $650)": the credit from the worksheet, an
+optional input that a salary-only caller leaves out."""
