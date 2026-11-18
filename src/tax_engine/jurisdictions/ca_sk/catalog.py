@@ -56,6 +56,12 @@ SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 56 Enter this amount on line 63. Saskatchewan non-refundable tax credits =": line 53 plus line 56,
 read by line 63 on the tax form."""
 
+SK428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_70 = AmountKind.declare(
+    CATALOG, "sk428_provincial_foreign_tax_credit_line_70", non_negative=True
+)
+"""Provincial foreign tax credit, SK428 line 70 "Line 70: Provincial foreign tax credit (complete
+Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
+
 SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "sk428_saskatchewan_tax_line_82", non_negative=True
 )
