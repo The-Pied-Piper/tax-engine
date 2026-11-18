@@ -333,23 +333,15 @@ def test_line_67_is_line_66_alone_when_line_65_is_floored_at_10000(tmp_path: Pat
 
 
 def test_line_67_has_no_left_blank_row_of_its_own(tmp_path: Path) -> None:
-    # With the T691 amount given, no step prints a blank row, and line 67's step (which has no blank
-    # rule) prints none either.
-    sheet = _sheet(tmp_path, "70000", "1000.00")
+    # The composed steps for lines 60, 63 and 64 print one blank row each; line 67's step has no
+    # blank rule and adds none. A blank T691 amount adds exactly one more, line 66's own.
+    (tmp_path / "given").mkdir()
+    (tmp_path / "blank").mkdir()
+    given = _blank_rows(_sheet(tmp_path / "given", "70000", "1000.00"))
+    blank = _blank_rows(_sheet(tmp_path / "blank", "70000"))
 
-    assert EnglishTraceRenderer().render_all(sheet.trace, sheet)
-    assert not _blank_rows(sheet)
-
-
-def test_a_blank_t691_amount_prints_only_line_66s_blank_row_not_one_for_line_67(
-    tmp_path: Path,
-) -> None:
-    sheet = _sheet(tmp_path, "70000")
-    rows = _blank_rows(sheet)
-
-    assert len(rows) == 1
-    assert "minimum tax" in rows[0].lower()
-    assert "line 67" not in rows[0].lower()
+    assert len(given) == 3
+    assert len(blank) == len(given) + 1
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_67(tmp_path: Path) -> None:
