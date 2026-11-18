@@ -1,0 +1,13 @@
+# SK428 (2025) input a salary-only caller does not give.
+# Line 73: "Saskatchewan political contribution tax credit (use Worksheet SK428) (maximum $650)" (Form SK428, CRA 5008-c).
+# The credit is a worksheet result the engine does not compute yet. A salary-only caller has no
+# political contributions, so a request that leaves the line out is read as blank. Line 74 will read
+# that blank.
+inputs:
+  - name: ca-sk/sk428_political_contributions_credit_line_73
+    title: "Saskatchewan political contribution tax credit"
+    reference: "73"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 73: Saskatchewan political contribution tax credit (use Worksheet SK428) (maximum $650)'

@@ -118,3 +118,22 @@ SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
 """Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
 minus Line 2 of Part 7 multiplied by 50%": the amount from Form T691, an optional input that a
 salary-only caller leaves out. The 50% multiply is a separate step."""
+
+SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
+    CATALOG, "sk428_political_contributions_credit_line_73", non_negative=True
+)
+"""Saskatchewan political contribution tax credit, SK428 line 73 "Line 73: Saskatchewan political
+contribution tax credit (use Worksheet SK428) (maximum $650)": the credit from the worksheet, an
+optional input that a salary-only caller leaves out."""
+
+SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
+63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out."""
+
+SK428_MINERAL_EXPLORATION_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "sk428_mineral_exploration_credit_line_79", non_negative=True
+)
+"""Saskatchewan mineral exploration tax credit, SK428 line 79 "Line 79: Saskatchewan mineral
+exploration tax credit (complete Form T1279)": a caller input, read as blank when left out."""
