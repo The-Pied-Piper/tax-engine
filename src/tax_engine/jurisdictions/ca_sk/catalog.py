@@ -73,6 +73,13 @@ SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
 """CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
 
+SK428_FARM_CAPITAL_GAINS_CREDIT_LINE_59 = AmountKind.declare(
+    CATALOG, "sk428_farm_capital_gains_credit_line_59", non_negative=True
+)
+"""Saskatchewan farm and small business capital gains tax credit, SK428 line 59 (line 61499) "Line
+59 and line 61499: Saskatchewan farm and small business capital gains tax credit (complete Form
+T1237)": a caller input, read as blank when left out; line 60 reads it."""
+
 SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "sk428_minimum_tax_t691_amount_line_68"
 )
