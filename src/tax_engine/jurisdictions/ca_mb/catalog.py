@@ -115,6 +115,12 @@ MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
 """Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
 return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
 
+MB428_CREDITS_TOTAL_LINE_64 = AmountKind.declare(
+    CATALOG, "mb428_credits_total_line_64", non_negative=True
+)
+"""Total credits, MB428 line 64 "Line 64: Add lines 61 to 63. =": calculated, lines 61 to 63 added
+(line 62 read as 0 when left blank)."""
+
 MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
     CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
 )
