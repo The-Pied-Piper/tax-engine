@@ -176,3 +176,9 @@ SK428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
 )
 """Saskatchewan credit amounts subtotal, SK428 line 32 "Line 32: Line 21 plus line 31 =": line 21,
 a copy of line 20, plus line 31, read by line 35."""
+
+SK428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "sk428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, SK428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero."""
