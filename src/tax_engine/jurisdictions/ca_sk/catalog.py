@@ -254,3 +254,8 @@ SK428_TAX_LINE_60 = AmountKind.declare(CATALOG, "sk428_tax_line_60")
 """Saskatchewan tax after line 59, SK428 line 60 "Line 60: Line 58 minus line 59 =": line 58 less
 the farm and small business capital gains tax credit of line 59, read as 0 when left out. The form
 prints no floor, so the amount is signed."""
+
+SK428_TAX_LINE_62 = AmountKind.declare(CATALOG, "sk428_tax_line_62")
+"""Saskatchewan tax after line 61, SK428 line 62 "Line 62: Line 60 plus line 61 =": line 60 plus the
+tax on split income of line 61, read as 0 when left out. The form prints no floor, so the amount is
+signed."""
