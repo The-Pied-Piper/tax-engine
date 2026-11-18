@@ -85,18 +85,9 @@ LINE_56_PART = MB_PARTS / "mb428_credits_line_56_input.yaml"
 FORM_NAME = "ca-mb/mb428"
 CREDITS_FORM_NAME = "ca-mb/mb428_credits"
 LINE_57 = "ca-mb/mb428_non_refundable_credits_line_57"
-LINE_60 = "ca-mb/mb428_tax_before_credits_line_60"
-LINE_64 = "ca-mb/mb428_credits_total_line_64"
-LINE_61 = "ca-mb/mb428_non_refundable_credits_line_61"
-LINE_62 = "ca-mb/mb428_dividend_tax_credit_line_62"
-LINE_63 = "ca-mb/mb428_minimum_tax_carryover_credit_line_63"
-LINE_65 = "ca-mb/mb428_tax_after_credits_line_65"
-LINE_66 = "ca-mb/mb428_additional_tax_minimum_tax_line_66"
 LINE_76 = "ca-mb/mb428_tax_line_76"
 LINE_77 = "ca-mb/mb428_venture_capital_credit_line_77"
 IDENTIFIER = "ca-mb/mb428_tax_line_78"
-LINE_70 = "ca-mb/mb428_tax_line_70"
-LINE_71 = "ca-mb/mb428_labour_sponsored_funds_credit_line_71"
 CREDIT_PARTS = (
     *(f"mb428_credits_line_{n}.yaml" for n in (1, 3, 4, 5, 6, 7, 8)),
     "mb428_credits_line_9.yaml",
