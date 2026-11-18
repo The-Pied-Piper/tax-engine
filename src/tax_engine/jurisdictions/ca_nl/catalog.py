@@ -1,6 +1,8 @@
-"""The Newfoundland and Labrador artifact catalog: its own kinds, named from its forms.
+"""The Newfoundland and Labrador artifact catalog: Newfoundland and Labrador's own kinds, named
+from the Newfoundland and Labrador forms.
 
-Federal kinds come from `tax_engine.jurisdictions.ca.catalog`; identifiers are stable.
+Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kinds come from
+`tax_engine.jurisdictions.ca.catalog`; identifiers are stable.
 """
 
 from __future__ import annotations
