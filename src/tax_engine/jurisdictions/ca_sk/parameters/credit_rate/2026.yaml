@@ -1,0 +1,13 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026) Table 8.1, Saskatchewan row (lowest rate 0.105); the lowest bracket rate is the credit rate.
+# Saskatchewan non-refundable tax credit rate, 2026 tax year (Form SK428 line 52): 10.5%.
+# Line 53 applies it to the amount from line 51. The product is a dollars-and-cents line, so it
+# rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+# The 2026 SK428 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-sk/credit_rate
+tax_year: 2026
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.105"
