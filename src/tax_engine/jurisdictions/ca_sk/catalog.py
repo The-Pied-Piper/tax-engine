@@ -79,3 +79,8 @@ SK428_FARM_CAPITAL_GAINS_CREDIT_LINE_59 = AmountKind.declare(
 """Saskatchewan farm and small business capital gains tax credit, SK428 line 59 (line 61499) "Line
 59 and line 61499: Saskatchewan farm and small business capital gains tax credit (complete Form
 T1237)": a caller input, read as blank when left out; line 60 reads it."""
+
+SK428_TAX_ON_SPLIT_INCOME_LINE_61 = AmountKind.declare(CATALOG, "sk428_tax_on_split_income_line_61")
+"""Saskatchewan tax on split income, SK428 line 61 (line 61510) "Line 61 and line 61510:
+Saskatchewan tax on split income (complete Form T1206)": a caller input, read as blank when left
+out."""
