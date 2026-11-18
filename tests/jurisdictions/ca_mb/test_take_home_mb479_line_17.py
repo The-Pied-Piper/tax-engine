@@ -56,7 +56,7 @@ D = Decimal
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 LINE_PART = MB_PARTS / "mb479_line_17.yaml"
 PARTS = (
-    MB_PARTS / "mb479_basic_credit_line_7.yaml",
+    MB_PARTS / "mb479_line_7.yaml",
     MB_PARTS / "mb479_line_17_inputs.yaml",
     LINE_PART,
 )

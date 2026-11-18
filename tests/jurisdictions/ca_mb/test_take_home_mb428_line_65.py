@@ -97,22 +97,22 @@ CREDIT_PARTS = (
     "mb428_credits_line_51.yaml",
 )
 SCHEDULE_PARTS = (
-    "mb428_a_basic_amount_line_1.yaml",
+    "mb428_a_line_1.yaml",
     "mb428_a_line_10.yaml",
     "mb428_a_line_11.yaml",
     "mb428_a_line_11_product.yaml",
     "mb428_a_line_12.yaml",
 )
 WORKSHEET_PARTS = (
-    "worksheet_mb428_basic_personal_amount_line_1.yaml",
+    "worksheet_mb428_line_1.yaml",
     "worksheet_mb428_line_2.yaml",
-    "worksheet_mb428_basic_personal_amount_line_3.yaml",
+    "worksheet_mb428_line_3.yaml",
     "worksheet_mb428_line_4.yaml",
-    "worksheet_mb428_basic_personal_amount_line_5.yaml",
+    "worksheet_mb428_line_5.yaml",
     "worksheet_mb428_line_6.yaml",
-    "worksheet_mb428_basic_personal_amount_line_7.yaml",
+    "worksheet_mb428_line_7.yaml",
     "worksheet_mb428_line_8.yaml",
-    "worksheet_mb428_basic_personal_amount_line_9.yaml",
+    "worksheet_mb428_line_9.yaml",
 )
 # The real federal parts the T1 taxable-income form needs, beside the salary and the worksheet.
 T1_PARTS = (

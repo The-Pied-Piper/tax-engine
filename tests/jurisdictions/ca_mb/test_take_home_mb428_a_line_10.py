@@ -63,8 +63,8 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    (folder / "02_mb428_a_basic_amount_line_1.yaml").write_text(
-        (PARTS_PATH / "mb428_a_basic_amount_line_1.yaml").read_text(encoding="utf-8"),
+    (folder / "02_mb428_a_line_1.yaml").write_text(
+        (PARTS_PATH / "mb428_a_line_1.yaml").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (folder / "03_mb428_a_line_10.yaml").write_text(
