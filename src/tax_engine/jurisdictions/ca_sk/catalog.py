@@ -242,3 +242,8 @@ SK428_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
 """Saskatchewan tax on taxable income from line 8, SK428 line 58 "Line 58: Saskatchewan tax on
 taxable income from line 8 ^" ("Enter the amount from line 8 on line 58 and continue at line 9."):
 the amount of line 8, read from the credits form."""
+
+SK428_TAX_LINE_60 = AmountKind.declare(CATALOG, "sk428_tax_line_60")
+"""Saskatchewan tax after line 59, SK428 line 60 "Line 60: Line 58 minus line 59 =": line 58 less
+the farm and small business capital gains tax credit of line 59, read as 0 when left out. The form
+prints no floor, so the amount is signed."""
