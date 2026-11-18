@@ -1,0 +1,19 @@
+# Form MB479 (CRA 5007-TC) line 66: "Line 66: Line 64 plus line 65 = ^". The step sums line 64
+# (`ca-mb/mb479_credits_line_64`) and the line 65 optional input
+# (`ca-mb/mb479_odour_control_credit_line_65`). A caller who leaves line 65 blank has it read as 0
+# by the blank rule. The form prints no label and no maximum for line 66, and the step is untitled.
+# The output is `ca-mb/mb479_credits_line_66`.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "66"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb479_credits_line_64, ca-mb/mb479_odour_control_credit_line_65]
+    blank:
+      ca-mb/mb479_odour_control_credit_line_65: "0"
+    produces:
+      output: ca-mb/mb479_credits_line_66
