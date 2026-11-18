@@ -1,0 +1,13 @@
+# SK428 (2025) line 61's input, which a salary-only caller does not give.
+# Line 61: "Line 61 and line 61510: Saskatchewan tax on split income (complete Form T1206)" (Form
+# SK428, CRA 5008-C).
+# Form T1206 is not built, so a request that leaves the line out is read as blank; the step that
+# reads line 61 reads that blank as 0.
+inputs:
+  - name: ca-sk/sk428_tax_on_split_income_line_61
+    title: "Saskatchewan tax on split income"
+    reference: "61"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 61 and line 61510: Saskatchewan tax on split income (complete Form T1206)'
