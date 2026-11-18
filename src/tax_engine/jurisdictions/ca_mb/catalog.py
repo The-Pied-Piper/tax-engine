@@ -137,6 +137,10 @@ MB428_TAX_LINE_67 = AmountKind.declare(CATALOG, "mb428_tax_line_67", non_negativ
 """Manitoba tax, MB428 line 67 "Line 67: Line 65 plus line 66 =": calculated, line 65 plus line
 66."""
 
+MB428_TAX_LINE_70 = AmountKind.declare(CATALOG, "mb428_tax_line_70", non_negative=True)
+"""Manitoba tax, MB428 line 70 "Line 70: Line 67 minus line 69 (if negative, enter "0") =":
+calculated, line 67 less line 69 (line 69 read as 0 when blank), not below 0."""
+
 WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_9 = AmountKind.declare(
     CATALOG, "worksheet_mb428_basic_personal_amount_line_9", non_negative=True
 )
@@ -684,3 +688,7 @@ treatment tax credit, already at most its $16,000 maximum), rounded to the cent.
 MB479_CREDITS_LINE_64 = AmountKind.declare(CATALOG, "mb479_credits_line_64", non_negative=True)
 """Credits, MB479 line 64 "Line 64: Line 62 plus line 63 =": line 62 plus line 63 (the paid work
 experience tax credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
+
+MB479_CREDITS_LINE_66 = AmountKind.declare(CATALOG, "mb479_credits_line_66", non_negative=True)
+"""Credits, MB479 line 66 "Line 66: Line 64 plus line 65 =": line 64 plus line 65 (the odour control
+credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
