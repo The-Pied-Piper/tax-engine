@@ -62,6 +62,13 @@ SK428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_70 = AmountKind.declare(
 """Provincial foreign tax credit, SK428 line 70 "Line 70: Provincial foreign tax credit (complete
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
 
+SK428_GRADUATE_TUITION_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "sk428_graduate_tuition_credit_line_81", non_negative=True
+)
+"""Saskatchewan graduate tuition tax credit, SK428 line 81 (line 63640) "Line 81 and line 63640:
+Saskatchewan graduate tuition tax credit (complete Form RC360)": the credit from Form RC360, an
+optional input that a salary-only caller leaves out."""
+
 SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "sk428_saskatchewan_tax_line_82", non_negative=True
 )
@@ -125,3 +132,15 @@ SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
 """Saskatchewan political contribution tax credit, SK428 line 73 "Line 73: Saskatchewan political
 contribution tax credit (use Worksheet SK428) (maximum $650)": the credit from the worksheet, an
 optional input that a salary-only caller leaves out."""
+
+SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
+63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out."""
+
+SK428_MINERAL_EXPLORATION_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "sk428_mineral_exploration_credit_line_79", non_negative=True
+)
+"""Saskatchewan mineral exploration tax credit, SK428 line 79 "Line 79: Saskatchewan mineral
+exploration tax credit (complete Form T1279)": a caller input, read as blank when left out."""
