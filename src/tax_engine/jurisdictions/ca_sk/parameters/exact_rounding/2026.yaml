@@ -1,0 +1,14 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Saskatchewan exact rounding, 2026 tax year: the rule for a Saskatchewan figure that is not a
+# dollars-and-cents box, the gated rates and the marginal rates on the return summary (a gate times
+# the T1 line 73 or SK428 line 5 rate, core/multiply_by_rate, and the sum of the two marginal
+# rates, core/sum). They are exact and the forms print no rounding rule for them (the project's
+# choice is no rounding); the form is cited for lines 5 and 67 only. The cent rule of
+# `ca-sk/cent_rounding` does not apply.
+family: ca-sk/exact_rounding
+tax_year: 2026
+kind: rounding_only
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-c/5008-c-25e.txt
+rounding: none

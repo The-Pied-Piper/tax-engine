@@ -1,13 +1,15 @@
 # Form SK428 Saskatchewan Tax 2025 (CRA 5008-C), lines 58 to 82 (Part C, Saskatchewan tax). This part
-# names the form and its export; the form is one form, so its lines read each other directly.
-# Export: line 82, the Saskatchewan tax (`ca-sk/sk428_saskatchewan_tax_line_82`), which line 82 says
-# to enter on line 42800 of the return. The form supplies line 82 as `ca/provincial_tax.amount`, the
-# name the federal T1 reads.
+# names the form and its exports; the form is one form, so its lines read each other directly.
+# Exports: line 67, the tax after the credits (`ca-sk/sk428_tax_after_credits_line_67`), which the
+# return summary gates the Saskatchewan marginal tax rate on; and line 82, the Saskatchewan tax
+# (`ca-sk/sk428_saskatchewan_tax_line_82`), which line 82 says to enter on line 42800 of the
+# return. The form supplies line 82 as `ca/provincial_tax.amount`, the name the federal T1 reads.
 form:
   name: ca-sk/sk428
   title: "Form SK428: Saskatchewan Tax"
   required: true
   exports:
+    - ca-sk/sk428_tax_after_credits_line_67
     - ca-sk/sk428_saskatchewan_tax_line_82
   supplies:
     ca/provincial_tax.amount: ca-sk/sk428_saskatchewan_tax_line_82

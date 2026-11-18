@@ -2,9 +2,11 @@
 
 Form text (Form SK428, Saskatchewan Tax, CRA 5008-C): line 82 "Enter this amount on line 42800 of
 your return." The form is one form (lines 58 to 82) and exports line 82, the Saskatchewan tax, and
-supplies line 82 as `ca/provincial_tax.amount`, the name the federal T1 reads for line 42800. Line
-82 is declared as an input of the test header: this test loads only the form declaration
-(`sk428.yaml`), not the line parts, which have their own tests.
+supplies line 82 as `ca/provincial_tax.amount`, the name the federal T1 reads for line 42800. The
+form also exports line 67, "Line 62 minus line 66 (if negative, enter "0")", the figure the return
+summary reads for the marginal tax rate. Each export is declared as an input of the test header:
+this test loads only the form declaration (`sk428.yaml`), not the line parts, which have their own
+tests.
 """
 
 from __future__ import annotations
@@ -20,6 +22,7 @@ from tests.jurisdictions.ca_sk.support import (
 )
 
 PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025" / "sk428.yaml"
+LINE_67 = "ca-sk/sk428_tax_after_credits_line_67"
 LINE_82 = "ca-sk/sk428_saskatchewan_tax_line_82"
 
 HEADER = f"""\
@@ -27,6 +30,8 @@ jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
 inputs:
+  - name: {LINE_67}
+    required: true
   - name: {LINE_82}
     required: true
 outputs:
@@ -51,5 +56,5 @@ def test_the_form_is_declared_with_its_export_and_supply(tmp_path: Path) -> None
     (sk428,) = (form for form in manifest.forms if form.name == "ca-sk/sk428")
     assert sk428.required is True
     assert sk428.title == "Form SK428: Saskatchewan Tax"
-    assert tuple(sk428.exports) == (LINE_82,)
+    assert tuple(sk428.exports) == (LINE_67, LINE_82)
     assert dict(sk428.supplies) == {"ca/provincial_tax.amount": LINE_82}

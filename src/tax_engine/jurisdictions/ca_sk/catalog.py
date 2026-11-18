@@ -341,3 +341,40 @@ SK428_TAX_LINE_80 = AmountKind.declare(CATALOG, "sk428_tax_line_80", non_negativ
 """Saskatchewan tax after the mineral exploration tax credit, SK428 line 80 "Line 80: Line 78
 minus line 79 (if negative, enter "0") = ^": line 78 less the credit of line 79 (blank read as 0),
 never below zero."""
+
+AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
+"""Average income tax rate, the Saskatchewan return summary's own figure (no form prints it): T1
+line 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the
+Saskatchewan income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1598
+is 15.98%. CPP and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+
+SASKATCHEWAN_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "saskatchewan_bracket_rate_return", non_negative=True
+)
+"""Saskatchewan bracket rate, SK428 line 5 "Line 5: Rate": the printed rate of the column that
+line 1 falls in (10.5%, 12.5% or 14.5%), read from SK428 into the return summary."""
+
+SASKATCHEWAN_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "saskatchewan_tax_after_credits_return", non_negative=True
+)
+"""Saskatchewan tax after the credits, SK428 line 67 "Line 67: Line 62 minus line 66 (if negative,
+enter "0") =": the one amount of SK428's export totalled into the return summary's own artifact,
+the base of the Saskatchewan rate gate."""
+
+SASKATCHEWAN_RATE_GATE = AmountKind.declare(CATALOG, "saskatchewan_rate_gate", non_negative=True)
+"""Saskatchewan rate gate: 0 where the Saskatchewan tax after the credits (SK428 line 67) is 0.00
+and 1 where it is at least one cent, from the `ca-sk/marginal_rate_gate` dataset. A plain figure,
+not printed on the form."""
+
+SASKATCHEWAN_MARGINAL_RATE = AmountKind.declare(
+    CATALOG, "saskatchewan_marginal_rate", non_negative=True
+)
+"""Saskatchewan marginal rate: the bracket rate (SK428 line 5) where the Saskatchewan tax after the
+credits (SK428 line 67) is above zero, and 0 where it is not: the rate a further dollar of income
+is taxed at in Saskatchewan, on the return summary. Saskatchewan has no tax reduction. Not printed
+on the form."""
+
+MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
+"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
+marginal rate and the Saskatchewan marginal rate (SK428 and T4127 print no surtax or health
+premium), on the return summary. Not printed on the form."""
