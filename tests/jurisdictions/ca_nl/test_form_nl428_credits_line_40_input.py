@@ -31,6 +31,10 @@ from tests.jurisdictions.ca_nl.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = NL428_DISABILITY_AMOUNT_SELF_CLAIMED_LINE_40.identifier
+PRINTED_BASIS = (
+    "Line 40 and line 58440: Disability amount for self (claim $7,467 or, if you were under 18 "
+    "years of age, use Worksheet NL428)"
+)
 PART = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / (
     "manifests/2025/nl428_credits_line_40_input.yaml"
 )
@@ -69,6 +73,8 @@ def test_the_part_declares_only_the_line_40_input_as_optional() -> None:
     assert declaration["reference"] == "40"
     assert declaration["required"] is False
     assert declaration["default"] is None
+    assert declaration["basis"] == PRINTED_BASIS
+    assert "title" not in declaration
 
 
 def test_the_claim_is_a_non_negative_count_kind() -> None:
