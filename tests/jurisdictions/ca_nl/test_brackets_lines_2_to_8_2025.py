@@ -9,8 +9,9 @@ not more than $220,910", "Line 3: 157,792.00", "Rate 17.8%", "Line 7: 21,219.03"
 Each bracket holds the form's column: its lower bound (line 3), its rate (line 5) and the printed
 tax at its start (line 7), carried as printed. The dataset has no rounding rule (the form states
 none). The table covers line 1 of 220,910.00 or less: its `up_to` is the form's printed boundary,
-220,910.00. The printed constants chain: each column's line 7 is the previous column's line 7 plus
-its rate on the width of the previous column, exactly.
+220,910.00. The printed constants are carried as printed: each column's line 7 is within a cent
+of the previous column's line 7 plus its rate on the width of the previous column, not always
+exactly.
 """
 
 from __future__ import annotations
@@ -71,21 +72,28 @@ def test_the_table_covers_220910_and_not_a_cent_more() -> None:
     assert not schedule.covers(D("220910.01"))
 
 
-def test_the_printed_constants_chain_to_the_cent() -> None:
-    brackets = _schedule().brackets
-    one_cent = D("0.01")
+@pytest.mark.parametrize(
+    ("column", "next_start", "next_constant"),
+    [
+        (0, "44192", "3844.70"),
+        (1, "88382", "10252.25"),
+        (2, "157792", "21219.03"),
+        # The next column of the high table: its start and its line 14 constant.
+        (3, "220910", "32454.04"),
+    ],
+)
+def test_the_printed_constants_chain_to_the_cent(
+    column: int, next_start: str, next_constant: str
+) -> None:
+    bracket = _schedule().brackets[column]
+    assert bracket.tax_at_start is not None
 
-    def chained(start: Decimal | None, upper: str, lower: str, rate: str) -> Decimal:
-        assert start is not None
-        return start + (D(upper) - D(lower)) * D(rate)
+    # The printed constants are carried as printed, not recomputed: each is within a cent of the
+    # previous constant plus the previous rate on its width (for example 3,844.704 against the
+    # printed 3,844.70, and 32,454.034 against the printed 32,454.04).
+    chained = bracket.tax_at_start + (D(next_start) - bracket.lower) * bracket.rate
 
-    # The printed constants are carried as printed, not recomputed: each differs from the chained
-    # figure by less than a cent (21,219.03 exactly; 32,454.034 against the printed 32,454.04).
-    assert chained(brackets[2].tax_at_start, "157792", "88382", "0.158") == D("21219.030")
-    assert (
-        abs(chained(brackets[3].tax_at_start, "220910", "157792", "0.178") - D("32454.04"))
-        < one_cent
-    )
+    assert abs(chained - D(next_constant)) < D("0.01")
 
 
 @pytest.mark.parametrize(
