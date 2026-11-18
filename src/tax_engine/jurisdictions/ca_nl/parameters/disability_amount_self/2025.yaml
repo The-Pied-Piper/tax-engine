@@ -1,0 +1,13 @@
+# Newfoundland and Labrador disability amount for self, 2025 tax year (Form NL428 line 40 and
+# line 58440): "Disability amount for self (claim $7,467 or, if you were under 18 years of age,
+# use Worksheet NL428)". It is the amount claimed whole by a filer 18 or older, so it takes the
+# credit kind.
+# Line 58440 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
+family: ca-nl/disability_amount_self
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "7467"

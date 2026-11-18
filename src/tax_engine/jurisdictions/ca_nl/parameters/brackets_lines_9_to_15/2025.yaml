@@ -1,0 +1,20 @@
+# Newfoundland and Labrador 2025 brackets, NL428 Part A lines 9 to 15, columns 1 to 4. Column
+# headings: "Column 1: Line 1 is more than $220,910 but not more than $282,214"; "Column 2: Line 1
+# is more than $282,214 but not more than $564,429"; "Column 3: Line 1 is more than $564,429 but
+# not more than $1,128,858"; "Column 4: Line 1 is more than $1,128,858". In every column: line 10
+# the column's lower bound (220,910.00, 282,214.00, 564,429.00, 1,128,858.00); line 12 "Rate"
+# (19.8%, 20.8%, 21.3%, 21.8%); line 14 the printed constant (32,454.04, 44,592.23, 103,292.95,
+# 223,516.33). Each tax_at_start is the printed line 14 constant, taken as printed, not
+# recomputed and not rounded. This dataset has no rounding rule, as the form states none. The
+# last column has no upper end.
+family: ca-nl/brackets_lines_9_to_15
+tax_year: 2025
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+rounding: none
+brackets:
+  - {from: "220910.00", rate: "0.198", tax_at_start: "32454.04"}
+  - {from: "282214.00", rate: "0.208", tax_at_start: "44592.23"}
+  - {from: "564429.00", rate: "0.213", tax_at_start: "103292.95"}
+  - {from: "1128858.00", rate: "0.218", tax_at_start: "223516.33"}
