@@ -1,0 +1,14 @@
+# BC428 (2025) line 84's printed maximum. Form BC428 (CRA 5010-c): "Line 84: British Columbia
+# political contribution tax credit (use Worksheet BC428) (maximum $500)". One core/credit_amount
+# step supplies the maximum from the `ca-bc/political_contribution_tax_credit_maximum` dataset; it is
+# not a line of the form, so it has no title and no reference. bc428_line_84.yaml checks the entry
+# against it.
+form:
+  name: ca-bc/bc428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-bc/political_contribution_tax_credit_maximum
+    produces:
+      output: ca-bc/bc428_political_contribution_tax_credit_maximum
