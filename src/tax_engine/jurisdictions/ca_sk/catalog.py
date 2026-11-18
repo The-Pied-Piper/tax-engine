@@ -286,3 +286,7 @@ SK428_TAX_AFTER_CREDITS_LINE_67 = AmountKind.declare(
 )
 """Saskatchewan tax after credits, SK428 line 67 "Line 67: Line 62 minus line 66 (if negative, enter
 "0") =": line 62 less line 66, never below zero."""
+
+SK428_TAX_LINE_69 = AmountKind.declare(CATALOG, "sk428_tax_line_69")
+"""Saskatchewan tax, SK428 line 69 "Line 69: Line 67 plus line 68 = ^": line 67 plus line 68,
+rounded to the cent. The form prints no floor, so the amount is signed."""
