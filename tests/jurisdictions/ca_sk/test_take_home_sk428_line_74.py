@@ -10,7 +10,7 @@ line 73 (`ca-sk/sk428_political_contributions_credit_line_73`, an optional input
 caller has no political contributions, so line 73 is left blank, and the step has a blank rule
 reading it as 0 and prints its own "left blank, taken as 0" row, as line 71 does for its line 70.
 The output `ca-sk/sk428_tax_line_74` is a non-negative kind on the form `ca-sk/sk428`. The $650
-maximum of line 73 is not tested here (ticket #1369).
+maximum of line 73 is not tested here.
 
 The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the T1
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
