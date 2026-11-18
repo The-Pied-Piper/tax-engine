@@ -1,0 +1,17 @@
+# Form SK428 (CRA 5008-c) line 35: "Line 35: Add lines 32 to 34. =". Line 34 (the caregiver amount,
+# Worksheet SK428) is not built, and line 33 is the pension income amount input, read as 0 when left
+# out: the one step adds line 32 and line 33 with core/sum.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    reference: "35"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        - ca-sk/sk428_credits_subtotal_line_32
+        - ca-sk/sk428_pension_income_amount
+    produces:
+      output: ca-sk/sk428_credits_subtotal_line_35

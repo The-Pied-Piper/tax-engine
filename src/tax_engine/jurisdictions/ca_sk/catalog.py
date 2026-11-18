@@ -189,6 +189,19 @@ SK428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
 """Taxable income over the lower bound, SK428 line 4 "Line 4: Line 2 minus line 3 (cannot be
 negative) =": line 1 minus line 3, not below zero."""
 
+SK428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "sk428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column of lines 2 to 8 (the engine's description; the form prints no
+title for line 7), Form SK428 line 7 "Column 1: Line 1 is $53,463 or less / Line 7: 0.00" (5,613.62;
+18,024.49): the figure printed on line 7 of the column that line 1 falls in."""
+
+SK428_CREDITS_SUBTOTAL_LINE_35 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_35", non_negative=True
+)
+"""Saskatchewan credits subtotal, SK428 line 35 "Line 35: Add lines 32 to 34. =": line 32 plus
+the pension income amount on line 33, line 34 (the caregiver amount) not being built."""
+
 SK428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
     CATALOG, "sk428_tax_on_excess_line_6", non_negative=True
 )

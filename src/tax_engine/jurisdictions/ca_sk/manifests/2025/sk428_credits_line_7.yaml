@@ -1,0 +1,19 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) Part A, line 7. Each of the three columns prints
+# "Line 7: <figure>" (0.00, 5,613.62 and 18,024.49) under its column heading ("Column 1: Line 1 is
+# $53,463 or less", "Column 2: Line 1 is more than $53,463 but not more than $152,750", "Column 3:
+# Line 1 is more than $152,750"). The step takes the figure of the column that line 1 falls in, as
+# printed, and does not compute it from the rates. The form prints no title for line 7.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 7 reads line 1 directly.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/bracket_column_tax_at_start
+    reference: "7"
+    unit: ca/cad
+    params:
+      schedule: ca-sk/brackets
+    consumes:
+      base: ca-sk/sk428_taxable_income_line_1
+    produces:
+      output: ca-sk/sk428_bracket_tax_at_start_line_7
