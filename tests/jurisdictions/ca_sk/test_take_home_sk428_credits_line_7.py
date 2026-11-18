@@ -1,10 +1,9 @@
-"""SK428 (2025) line 7, the tax at the start of the column for lines 2 to 8, from the salary alone.
+"""SK428 (2025) line 7, from the salary alone.
 
-Form text (Form SK428, CRA 5008-c, read 2026-11-14,
-https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-c/5008-c-25e.txt): "Column 1: Line 1
+Form text (Form SK428, CRA 5008-c-25e, lines 21 to 45, read 2026-11-14): "Column 1: Line 1
 is $53,463 or less / ... Line 7: 0.00", "Column 2: Line 1 is more than $53,463 but not more than
 $152,750 / ... Line 7: 5,613.62", "Column 3: Line 1 is more than $152,750 / ... Line 7: 18,024.49".
-Line 7 is the printed tax at the start of the column that line 1 falls in, used as printed and never
+The step takes the line 7 figure of the column that line 1 falls in, as printed and never
 recomputed from the rates. The form prints one set of three columns and the last has no upper
 boundary, so line 7 is never blank: the schedule (`ca-sk/brackets`) has no `up_to`.
 
@@ -90,7 +89,7 @@ HEADER = dedent("""\
       - ca/employment_income
     capabilities: []
     """)
-# The SK428 declaration, test-local: lines 1 and 3 are composed, so it exports those.
+# The SK428 declaration, test-local: lines 1 and 7 are composed, so it exports those.
 FORM = dedent(f"""\
     form:
       name: {FORM_NAME}
