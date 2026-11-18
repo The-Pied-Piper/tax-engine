@@ -1,0 +1,18 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) Part A, line 3. Each of the three columns prints "Line 3:"
+# with its lower bound: 0.00, 53,463.00 and 152,750.00, under "Column 1: Line 1 is $53,463 or
+# less", "Column 2: Line 1 is more than $53,463 but not more than $152,750" and "Column 3: Line 1
+# is more than $152,750". Line 3 is the printed lower bound of the column that line 1 falls in.
+#
+# Line 2 is a copy of line 1 and has no step of its own: line 3 reads line 1 directly.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "3"
+    unit: ca/cad
+    params:
+      schedule: ca-sk/brackets
+    consumes:
+      base: ca-sk/sk428_taxable_income_line_1
+    produces:
+      output: ca-sk/sk428_bracket_lower_bound_line_3

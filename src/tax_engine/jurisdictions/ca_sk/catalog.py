@@ -150,3 +150,10 @@ SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
 )
 """Saskatchewan credits subtotal, SK428 line 20 "Line 20: Add lines 9, 10, 13, and 16 to 19. =": the
 sum of the personal amounts claimed, here the basic personal amount alone."""
+
+SK428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "sk428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, Form SK428 line 3 "Column 1: Line 1 is $53,463 or less / Line 3: 0.00"
+(53,463.00; 152,750.00): the printed lower bound of the column of lines 2 to 8 that line 1 falls
+in."""
