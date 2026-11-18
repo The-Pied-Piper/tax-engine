@@ -213,3 +213,10 @@ SK428_CREDITS_SUBTOTAL_LINE_38 = AmountKind.declare(
 )
 """Saskatchewan credits subtotal, SK428 line 38 "Line 38: Add lines 35 to 37. =": line 35, lines 36
 and 37 (the disability amounts) not being built."""
+
+SK428_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
+    CATALOG, "sk428_tax_on_taxable_income_line_58", non_negative=True
+)
+"""Saskatchewan tax on taxable income from line 8, SK428 line 58 "Line 58: Saskatchewan tax on
+taxable income from line 8 ^" ("Enter the amount from line 8 on line 58 and continue at line 9."):
+the amount of line 8, read from the credits form."""
