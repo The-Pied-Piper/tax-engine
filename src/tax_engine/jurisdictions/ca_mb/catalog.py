@@ -654,3 +654,7 @@ treatment tax credit, already at most its $16,000 maximum), rounded to the cent.
 MB479_CREDITS_LINE_64 = AmountKind.declare(CATALOG, "mb479_credits_line_64", non_negative=True)
 """Credits, MB479 line 64 "Line 64: Line 62 plus line 63 =": line 62 plus line 63 (the paid work
 experience tax credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
+
+MB479_CREDITS_LINE_66 = AmountKind.declare(CATALOG, "mb479_credits_line_66", non_negative=True)
+"""Credits, MB479 line 66 "Line 66: Line 64 plus line 65 =": line 64 plus line 65 (the odour control
+credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
