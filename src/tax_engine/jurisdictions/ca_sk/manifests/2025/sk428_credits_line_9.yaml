@@ -1,0 +1,14 @@
+# Form SK428 (CRA 5008-c) line 9 and line 58040, the basic personal amount. "Basic personal amount
+# Claim $19,491". The $19,491 is the `ca-sk/basic_personal_amount` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/credit_amount
+    title: "Basic personal amount"
+    reference: "9"
+    unit: ca/cad
+    params:
+      amount: ca-sk/basic_personal_amount
+    produces:
+      output: ca-sk/basic_personal_amount
