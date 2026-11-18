@@ -37,6 +37,12 @@ SK428_PENSION_INCOME_AMOUNT = AmountKind.declare(
 """Pension income amount, SK428 line 33 "Line 33 and line 58360: Pension income amount (maximum
 $1,000)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
 
+SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
+    CATALOG, "sk428_medical_expenses_line_50", non_negative=True
+)
+"""Medical expenses, SK428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
+optional input; a blank is read as 0 by the line 51 step."""
+
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
 )
