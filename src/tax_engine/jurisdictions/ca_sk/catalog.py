@@ -49,3 +49,10 @@ SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
 )
 """CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+SK428_DIVIDEND_TAX_CREDIT_LINE_64 = AmountKind.declare(
+    CATALOG, "sk428_dividend_tax_credit_line_64", non_negative=True
+)
+"""Saskatchewan dividend tax credit, SK428 line 64 (line 61520) "Line 64 and line 61520:
+Saskatchewan dividend tax credit (use Worksheet SK428)": a caller input, read as blank when left
+out."""
