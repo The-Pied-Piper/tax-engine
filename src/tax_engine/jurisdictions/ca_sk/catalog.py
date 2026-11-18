@@ -295,3 +295,8 @@ SK428_TAX_LINE_71 = AmountKind.declare(CATALOG, "sk428_tax_line_71", non_negativ
 """Saskatchewan tax after the foreign tax credit, SK428 line 71 "Line 71: Line 69 minus line 70 (if
 negative, enter "0") = ^": line 69 less the provincial foreign tax credit of line 70 (blank read as
 0), never below zero."""
+
+SK428_TAX_LINE_74 = AmountKind.declare(CATALOG, "sk428_tax_line_74", non_negative=True)
+"""Saskatchewan tax after the political contribution tax credit, SK428 line 74 "Line 74: Line 71
+minus line 73 (if negative, enter "0") = ^": line 71 less the credit of line 73 (blank read as 0),
+never below zero."""
