@@ -246,7 +246,7 @@ def _line(sheet: Worksheet, identifier: str) -> Decimal:
 
 
 def _blank_rows(sheet: Worksheet) -> list[str]:
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
+    rows = EnglishTraceRenderer().render_all(sheet.trace)
     return [row for row in rows if "left blank, taken as 0" in row.lower()]
 
 
