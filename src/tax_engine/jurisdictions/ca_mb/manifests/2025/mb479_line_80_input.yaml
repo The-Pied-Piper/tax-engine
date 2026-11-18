@@ -1,0 +1,14 @@
+# MB479 (2025) line 80's input, which a salary-only caller does not give.
+# Line 80: "Rental housing construction incentive tax credit: Line 80: Certificate number: Line 61496
+# Tax credit amount from your certificate" (Form MB479, CRA 5007-TC). The line prints a heading naming
+# the credit and no maximum. The certificate number is not read, only the credit amount. A
+# salary-only single filer claims no such credit, so a request that leaves the line out is read as
+# blank.
+inputs:
+  - name: ca-mb/mb479_rental_housing_construction_incentive_tax_credit_line_80
+    title: "Rental housing construction incentive tax credit"
+    reference: "80"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 80: Certificate number: Line 61496 Tax credit amount from your certificate'

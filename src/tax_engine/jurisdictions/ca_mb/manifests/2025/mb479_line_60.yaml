@@ -1,0 +1,20 @@
+# Form MB479 (CRA 5007-TC) line 60: "Line 58: Amount from line 57 of the previous page" and "Line 60:
+# Line 58 plus line 59 = ^". Line 58 is a copy of line 57, so it has no step. The step sums line 57
+# (`ca-mb/mb479_credits_line_57`) and the line 59 optional input
+# (`ca-mb/mb479_primary_caregiver_credit_line_59`). A caller who leaves line 59 blank has it read as
+# 0 by the blank rule. The form prints no label for line 60, and the step is untitled. The output is
+# `ca-mb/mb479_credits_line_60`.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "60"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb479_credits_line_57, ca-mb/mb479_primary_caregiver_credit_line_59]
+    blank:
+      ca-mb/mb479_primary_caregiver_credit_line_59: "0"
+    produces:
+      output: ca-mb/mb479_credits_line_60
