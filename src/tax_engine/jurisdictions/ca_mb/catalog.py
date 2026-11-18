@@ -121,6 +121,12 @@ MB428_CREDITS_TOTAL_LINE_64 = AmountKind.declare(
 """Total credits, MB428 line 64 "Line 64: Add lines 61 to 63. =": calculated, lines 61 to 63 added
 (line 62 read as 0 when left blank)."""
 
+MB428_TAX_AFTER_CREDITS_LINE_65 = AmountKind.declare(
+    CATALOG, "mb428_tax_after_credits_line_65", non_negative=True
+)
+"""Manitoba tax after credits, MB428 line 65 "Line 65: Line 60 minus line 64 (if negative, enter
+"0") =": calculated, line 60 less line 64, not below 0."""
+
 MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
     CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
 )

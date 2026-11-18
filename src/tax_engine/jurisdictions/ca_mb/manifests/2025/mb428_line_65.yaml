@@ -1,0 +1,19 @@
+# Form MB428 (CRA 5007-c) line 65: "Line 65: Line 60 minus line 64 (if negative, enter "0") = ^".
+# One core/subtract_not_below_zero step: the Manitoba tax before credits (line 60,
+# `ca-mb/mb428_tax_before_credits_line_60`) less the credits total (line 64,
+# `ca-mb/mb428_credits_total_line_64`), not below 0. Both lines are always computed, so there is no
+# blank rule. The form prints no label for the line, so the step has none. The output is
+# `ca-mb/mb428_tax_after_credits_line_65`, which is not exported yet.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "65"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/mb428_tax_before_credits_line_60
+      less: ca-mb/mb428_credits_total_line_64
+    produces:
+      output: ca-mb/mb428_tax_after_credits_line_65
