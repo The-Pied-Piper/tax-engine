@@ -31,3 +31,10 @@ SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
 )
 """Saskatchewan tax, SK428 line 82 "Enter this amount on line 42800 of your return.": the
 Saskatchewan tax, entered on T1 line 42800."""
+
+SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_carryover_amount_line_65", non_negative=True
+)
+"""Saskatchewan minimum tax carryover amount, SK428 line 65 and line 61540 "Amount from line 40427
+of your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
+read as blank when left out."""
