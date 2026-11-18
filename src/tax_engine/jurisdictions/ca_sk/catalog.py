@@ -188,3 +188,10 @@ SK428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
 )
 """Taxable income over the lower bound, SK428 line 4 "Line 4: Line 2 minus line 3 (cannot be
 negative) =": line 1 minus line 3, not below zero."""
+
+SK428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "sk428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column of lines 2 to 8 (the engine's description; the form prints no
+title for line 7), Form SK428 line 7 "Column 1: Line 1 is $53,463 or less / Line 7: 0.00" (5,613.62;
+18,024.49): the figure printed on line 7 of the column that line 1 falls in."""
