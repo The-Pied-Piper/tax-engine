@@ -1,0 +1,23 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 60, "Line 60: Line 58 minus line 59 =". Line 58 is
+# `ca-sk/sk428_tax_on_taxable_income_line_58` and line 59 is the optional input
+# `ca-sk/sk428_farm_capital_gains_credit_line_59`, which a salary-only caller leaves out, read as
+# blank and then as 0 by the blank rule of core/subtract.
+#
+# The form prints no floor on line 60, so core/subtract gives a negative figure as is, rounded to
+# the cent by the ca-sk/cent_rounding dataset. The form prints no title for the line, so the step
+# is untitled. The result is the signed `ca-sk/sk428_tax_line_60`.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/subtract
+    reference: "60"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      amount: ca-sk/sk428_tax_on_taxable_income_line_58
+      less: ca-sk/sk428_farm_capital_gains_credit_line_59
+    blank:
+      less: "0"
+    produces:
+      output: ca-sk/sk428_tax_line_60
