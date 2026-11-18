@@ -1,0 +1,14 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 (Jan 2026) Saskatchewan labour-sponsored venture capital credit (LCP maximum $875 for the whole year); no rounding applied here.
+# Form SK428 line 77: labour-sponsored venture capital tax credit, maximum, 2026 (CRA 5008-c).
+# Line 77 prints "Line 77 and line 63557: Line 75 plus line 76 (maximum $875)", a figure with no
+# cents, so the amount rounds half-up to the cent, the project's choice, as the form states no
+# rounding rule.
+# The 2026 SK428 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-sk/labour_sponsored_credit_maximum
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "875"
