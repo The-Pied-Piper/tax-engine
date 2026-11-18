@@ -244,9 +244,8 @@ exploration tax credit (complete Form T1241)": a caller input, read as blank whe
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
-"""Manitoba tax, MB428 line 82 "Line 82: Line 80 minus line 81 (if negative, enter "0") Enter this
-amount on line 42800 of your return. Manitoba tax =": calculated, line 80 less line 81 (line 81 read
-as 0 when blank), not below 0."""
+"""Manitoba tax, MB428 line 82 "Enter this amount on line 42800 of your return.": the Manitoba
+tax, entered on T1 line 42800."""
 
 MB428_A_FAMILY_TAX_BENEFIT_LINE_12 = AmountKind.declare(
     CATALOG, "mb428_a_family_tax_benefit_line_12", non_negative=True
