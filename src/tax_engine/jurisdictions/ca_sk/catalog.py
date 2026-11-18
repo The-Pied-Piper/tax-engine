@@ -98,3 +98,10 @@ SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65 = AmountKind.declare(
 """Saskatchewan minimum tax carryover amount, SK428 line 65 (line 61540) "Amount from line 40427
 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
 read as blank when left out."""
+
+SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_t691_amount_line_68"
+)
+"""Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
+minus Line 2 of Part 7 multiplied by 50%": the amount from Form T691, an optional input that a
+salary-only caller leaves out. The 50% multiply is a separate step."""
