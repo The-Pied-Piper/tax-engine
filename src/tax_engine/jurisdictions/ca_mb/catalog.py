@@ -166,6 +166,28 @@ MB428_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
 Manitoba community enterprise development tax credit (complete Form T1256)": a caller input, read
 as blank when left out."""
 
+MB428_VENTURE_CAPITAL_CREDIT = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit", non_negative=True
+)
+"""Manitoba small business venture capital tax credit for individuals, MB428 line 77 "Line 77 and
+line 60850: Manitoba small business venture capital tax credit for individuals (complete Form
+T1256-1) (maximum $120,000)": the amount the filer claims, a caller input that is read as blank when
+left out; the line 77 step checks it against the printed maximum."""
+
+MB428_VENTURE_CAPITAL_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit_maximum", non_negative=True
+)
+"""Venture capital credit maximum, printed on MB428 line 77 "(maximum $120,000)": the printed
+maximum, from the `ca-mb/venture_capital_credit_maximum` dataset; the bound line 77 cannot pass."""
+
+MB428_VENTURE_CAPITAL_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit_line_77", non_negative=True
+)
+"""Manitoba small business venture capital tax credit for individuals, MB428 line 77 "Line 77 and
+line 60850: Manitoba small business venture capital tax credit for individuals (complete Form
+T1256-1) (maximum $120,000)": the entered amount, passed on unchanged when it is at most the printed
+maximum, blank when left out; above the maximum it is refused, not capped."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
