@@ -91,3 +91,9 @@ SK428_DIVIDEND_TAX_CREDIT_LINE_64 = AmountKind.declare(
 """Saskatchewan dividend tax credit, SK428 line 64 (line 61520) "Line 64 and line 61520:
 Saskatchewan dividend tax credit (use Worksheet SK428)": a caller input, read as blank when left
 out."""
+
+SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
+63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out."""
