@@ -1,0 +1,17 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) Part A, line 4, "Line 4: Line 2 minus line 3 (cannot be
+# negative) =": the taxable income over the column's lower bound. Line 2 is a copy of line 1 (the
+# T1 taxable income) and has no step of its own, so line 4 reads line 1 directly. Line 3 is the
+# printed lower bound of the column that line 1 falls in. The result is not below zero.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "4"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      amount: ca-sk/sk428_taxable_income_line_1
+      less: ca-sk/sk428_bracket_lower_bound_line_3
+    produces:
+      output: ca-sk/sk428_taxable_income_over_lower_bound_line_4
