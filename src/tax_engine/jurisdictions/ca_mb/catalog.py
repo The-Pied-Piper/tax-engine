@@ -611,6 +611,10 @@ MB479_CREDITS_LINE_57 = AmountKind.declare(CATALOG, "mb479_credits_line_57", non
 56. Otherwise, enter the amount from line 55.": line 55 multiplied by line 56, a blank line 56 read
 as 1, rounded to the cent."""
 
+MB479_CREDITS_LINE_60 = AmountKind.declare(CATALOG, "mb479_credits_line_60", non_negative=True)
+"""Credits, MB479 line 60 "Line 60: Line 58 plus line 59 =": line 58 (a copy of line 57) plus line
+59 (the primary caregiver tax credit, blank read as 0), rounded to the cent."""
+
 MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
     CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True
 )
