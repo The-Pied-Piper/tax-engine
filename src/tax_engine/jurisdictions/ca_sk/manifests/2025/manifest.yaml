@@ -13,8 +13,9 @@
 # are imported unchanged. CRA publishes no Saskatchewan Schedule 6, so the federal Schedule 6 is
 # imported unchanged.
 #
-# Saskatchewan is listed in `registrations.JURISDICTIONS`: the startup check builds every listed
-# manifest, and this one is complete, SK428 line 82 supplying `ca/provincial_tax.amount` for T1.
+# Saskatchewan is listed in `registrations.JURISDICTIONS`: the all-years test composes every listed
+# manifest for every year, and this one is complete, SK428 line 82 supplying
+# `ca/provincial_tax.amount` for T1.
 jurisdiction: CA-SK
 version: 1
 valid_from_tax_year: 2025
