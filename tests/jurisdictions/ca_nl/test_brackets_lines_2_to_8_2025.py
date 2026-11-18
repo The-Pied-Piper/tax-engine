@@ -71,11 +71,21 @@ def test_the_table_covers_220910_and_not_a_cent_more() -> None:
     assert not schedule.covers(D("220910.01"))
 
 
-def test_the_printed_constants_chain_exactly() -> None:
+def test_the_printed_constants_chain_to_the_cent() -> None:
     brackets = _schedule().brackets
+    one_cent = D("0.01")
 
-    assert brackets[2].tax_at_start + (D("157792") - D("88382")) * D("0.158") == D("21219.03")
-    assert brackets[3].tax_at_start + (D("220910") - D("157792")) * D("0.178") == D("32454.04")
+    def chained(start: Decimal | None, upper: str, lower: str, rate: str) -> Decimal:
+        assert start is not None
+        return start + (D(upper) - D(lower)) * D(rate)
+
+    # The printed constants are carried as printed, not recomputed: each differs from the chained
+    # figure by less than a cent (21,219.03 exactly; 32,454.034 against the printed 32,454.04).
+    assert chained(brackets[2].tax_at_start, "157792", "88382", "0.158") == D("21219.030")
+    assert (
+        abs(chained(brackets[3].tax_at_start, "220910", "157792", "0.178") - D("32454.04"))
+        < one_cent
+    )
 
 
 @pytest.mark.parametrize(
