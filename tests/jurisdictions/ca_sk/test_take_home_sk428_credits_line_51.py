@@ -11,7 +11,8 @@ The test composes the real Saskatchewan salary part, the real Schedule 8 and T22
 line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
 `_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`, `_line_38.yaml`,
 `_line_42.yaml`), the real `sk428_line_33_inputs.yaml`, the real
-`sk428_credits_line_50_input.yaml` and the new `sk428_credits_line_51.yaml`, and types in only the salary (and, in one test, line 50). The form
+`sk428_credits_line_50_input.yaml` and the new `sk428_credits_line_51.yaml`, and
+types in only the salary (and, in one test, line 50). The form
 declaration is made up here, exporting only line 51. The figures are not a CRA example: they are
 re-derived below with Decimal from the printed basic personal amount dataset (19,491), CPP at 4.95%
 of the salary above the $3,500 basic exemption to a maximum of $3,356.10, and EI at 1.64% to the
