@@ -376,5 +376,5 @@ on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
 """Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
-marginal rate and the Saskatchewan marginal rate (Saskatchewan has no surtax or health premium), on
-the return summary. Not printed on the form."""
+marginal rate and the Saskatchewan marginal rate (SK428 and T4127 print no surtax or health
+premium), on the return summary. Not printed on the form."""

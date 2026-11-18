@@ -1,4 +1,4 @@
-"""The Saskatchewan return exports the two rates and the forms export the lines it reads (2025).
+"""The Saskatchewan return exports the two rates and the forms export the lines it reads.
 
 Through the registered engine (`build_tax_computation().compute`, as the line tests read the
 return): the return summary holds the average and the marginal income tax rate, the SK428 credits
@@ -25,9 +25,9 @@ D = Decimal
 SASKATCHEWAN = JurisdictionCode("CA-SK")
 
 
-def _sheet(salary: str, form: str) -> Worksheet:
+def _sheet(year: int, salary: str, form: str) -> Worksheet:
     worksheets = build_tax_computation().compute(
-        SASKATCHEWAN, 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
+        SASKATCHEWAN, year, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
     (sheet,) = worksheets[form]
     return sheet
@@ -39,6 +39,7 @@ def _value(sheet: Worksheet, name: str) -> Decimal:
     return sheet.get(kind).value
 
 
+@pytest.mark.parametrize("year", [2025, 2026])
 @pytest.mark.parametrize(
     "name",
     [
@@ -47,8 +48,8 @@ def _value(sheet: Worksheet, name: str) -> Decimal:
         "ca-sk/marginal_tax_rate",
     ],
 )
-def test_the_return_summary_holds_each_of_its_three_outputs(name: str) -> None:
-    sheet = _sheet("70000", "ca-sk/return")
+def test_the_return_summary_holds_each_of_its_three_outputs(year: int, name: str) -> None:
+    sheet = _sheet(year, "70000", "ca-sk/return")
 
     assert isinstance(_value(sheet, name), Decimal)
 
@@ -60,7 +61,7 @@ def test_the_return_summary_holds_each_of_its_three_outputs(name: str) -> None:
 def test_the_sk428_credits_form_exports_the_line_5_rate(salary: str, line_5: str) -> None:
     # Line 5 prints the rate of the column line 1 falls in: 10.5% up to 53,463, 12.5% up to
     # 152,750 and 14.5% above it.
-    sheet = _sheet(salary, "ca-sk/sk428_credits")
+    sheet = _sheet(2025, salary, "ca-sk/sk428_credits")
 
     assert _value(sheet, "ca-sk/sk428_bracket_rate_line_5") == D(line_5)
 
@@ -71,6 +72,6 @@ def test_the_sk428_credits_form_exports_the_line_5_rate(salary: str, line_5: str
 )
 def test_the_sk428_form_exports_line_67(salary: str, line_67: str) -> None:
     # Nothing is subtracted after line 67 for a salary-only filer, so line 67 equals line 82.
-    sheet = _sheet(salary, "ca-sk/sk428")
+    sheet = _sheet(2025, salary, "ca-sk/sk428")
 
     assert _value(sheet, "ca-sk/sk428_tax_after_credits_line_67") == D(line_67)
