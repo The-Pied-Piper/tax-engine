@@ -300,3 +300,8 @@ SK428_TAX_LINE_74 = AmountKind.declare(CATALOG, "sk428_tax_line_74", non_negativ
 """Saskatchewan tax after the political contribution tax credit, SK428 line 74 "Line 74: Line 71
 minus line 73 (if negative, enter "0") = ^": line 71 less the credit of line 73 (blank read as 0),
 never below zero."""
+
+SK428_TAX_LINE_78 = AmountKind.declare(CATALOG, "sk428_tax_line_78", non_negative=True)
+"""Saskatchewan tax after the labour-sponsored venture capital credit, SK428 line 78 "Line 78: Line
+74 minus line 77 (if negative, enter "0") = ^": line 74 less the credit of line 77 (blank read as
+0), never below zero."""
