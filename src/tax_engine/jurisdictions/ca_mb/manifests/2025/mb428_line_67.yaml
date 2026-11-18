@@ -1,0 +1,16 @@
+# Form MB428 (CRA 5007-c) line 67: "Line 67: Line 65 plus line 66 = ^". The form prints no label and
+# no maximum. It sums line 65 (`ca-mb/mb428_tax_after_credits_line_65`) and line 66
+# (`ca-mb/mb428_additional_tax_minimum_tax_line_66`). Both lines are always computed, so there is no
+# blank rule. The output is `ca-mb/mb428_tax_line_67`, which is not exported yet.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/sum
+    reference: "67"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb428_tax_after_credits_line_65, ca-mb/mb428_additional_tax_minimum_tax_line_66]
+    produces:
+      output: ca-mb/mb428_tax_line_67

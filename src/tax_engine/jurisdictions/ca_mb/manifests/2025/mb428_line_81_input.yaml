@@ -1,0 +1,12 @@
+# MB428 (2025) line 81's input, which a salary-only caller does not give.
+# Line 81: "Line 81 and line 60920: Manitoba mineral exploration tax credit (complete Form T1241)"
+# (Form MB428, CRA 5007-c). Form T1241 is not built, so a request that leaves the line out is read as
+# blank; the step that reads line 81 reads that blank as 0.
+inputs:
+  - name: ca-mb/mb428_mineral_exploration_tax_credit_line_81
+    title: "Manitoba mineral exploration tax credit"
+    reference: "81"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 81 and line 60920: Manitoba mineral exploration tax credit (complete Form T1241)'
