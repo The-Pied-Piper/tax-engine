@@ -1,0 +1,15 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 63 (ca-sk/sk428). "Line 63: Saskatchewan non-refundable tax
+# credits from line 57" (line 57: "Enter this amount on line 63."). Line 63 is a copy of line 57, which sits
+# on the other form `ca-sk/sk428_credits` (lines 1 to 57), so the one step is core/record_total over that
+# form's line 57 export, read as a record list.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/record_total
+    title: "Saskatchewan non-refundable tax credits from line 57"
+    reference: "63"
+    unit: ca/cad
+    consumes:
+      records: ca-sk/sk428_credits.sk428_non_refundable_credits_line_57
+    produces:
+      output: ca-sk/sk428_credits_from_line_57_line_63
