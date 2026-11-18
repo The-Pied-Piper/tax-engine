@@ -1,0 +1,17 @@
+# Form SK428 (CRA 5008-c) line 42: "Line 42: Add lines 38 to 41. =". Lines 39 to 41 (student loan
+# interest, unused tuition and education amounts, amounts transferred from a spouse) are not built:
+# nothing in the take-home reads them, so the one step is a core/sum over line 38 alone. The form
+# prints no label for line 42.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    reference: "42"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        - ca-sk/sk428_credits_subtotal_line_38
+    produces:
+      output: ca-sk/sk428_credits_subtotal_line_42

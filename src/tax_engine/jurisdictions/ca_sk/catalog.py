@@ -216,6 +216,13 @@ SK428_CREDITS_SUBTOTAL_LINE_38 = AmountKind.declare(
 """Saskatchewan credits subtotal, SK428 line 38 "Line 38: Add lines 35 to 37. =": line 35, lines 36
 and 37 (the disability amounts) not being built."""
 
+SK428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_42", non_negative=True
+)
+"""Saskatchewan credits subtotal, SK428 line 42 "Line 42: Add lines 38 to 41. =": line 38, lines 39
+to 41 (student loan interest, unused tuition and education amounts, amounts transferred from a
+spouse) not being built."""
+
 SK428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
     CATALOG, "sk428_pension_income_amount_maximum", non_negative=True
 )
