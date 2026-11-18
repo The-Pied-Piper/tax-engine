@@ -192,7 +192,7 @@ CREDITS_FORM = dedent(f"""\
         - {LINE_57}
     capabilities: []
     """)
-# The MB428 declaration, test-local: lines 58 to 74 are composed, so it exports only line 76.
+# The MB428 declaration, test-local: lines 58 to 76 are composed, so it exports only line 76.
 FORM = dedent(f"""\
     form:
       name: {FORM_NAME}
