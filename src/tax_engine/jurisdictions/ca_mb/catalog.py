@@ -692,3 +692,7 @@ experience tax credit, an optional input a caller leaves blank, read as 0), roun
 MB479_CREDITS_LINE_66 = AmountKind.declare(CATALOG, "mb479_credits_line_66", non_negative=True)
 """Credits, MB479 line 66 "Line 66: Line 64 plus line 65 =": line 64 plus line 65 (the odour control
 credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
+
+MB479_CREDITS_LINE_70 = AmountKind.declare(CATALOG, "mb479_credits_line_70", non_negative=True)
+"""Credits, MB479 line 70 "Line 70: Line 66 plus line 69 = ^": line 66 plus line 69 (the green
+energy credits), rounded to the cent."""

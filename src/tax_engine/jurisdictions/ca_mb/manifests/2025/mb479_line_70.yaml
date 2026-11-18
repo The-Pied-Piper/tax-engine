@@ -1,0 +1,16 @@
+# Form MB479 (CRA 5007-TC) line 70: "Line 70: Line 66 plus line 69 = ^". The step sums line 66
+# (`ca-mb/mb479_credits_line_66`) and line 69 (`ca-mb/mb479_green_energy_credits_line_69`). The form
+# prints no label and no maximum for line 70, and the step is untitled. The output is
+# `ca-mb/mb479_credits_line_70`.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "70"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb479_credits_line_66, ca-mb/mb479_green_energy_credits_line_69]
+    produces:
+      output: ca-mb/mb479_credits_line_70
