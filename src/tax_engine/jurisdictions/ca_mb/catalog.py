@@ -736,3 +736,8 @@ MB479_CREDITS_LINE_74 = AmountKind.declare(CATALOG, "mb479_credits_line_74", non
 """Credits, MB479 line 74 "Line 74: Line 72 plus line 73 = ^": line 72 plus line 73 (the cultural
 industries printing credit, checked against its printed maximum, blank when left out and read as 0),
 rounded to the cent."""
+
+MB479_CREDITS_LINE_76 = AmountKind.declare(CATALOG, "mb479_credits_line_76", non_negative=True)
+"""Credits, MB479 line 76 "Line 76: Line 74 plus line 75 = ^": line 74 plus line 75 (the community
+enterprise development tax credit, an optional input a caller leaves blank, read as 0), rounded to
+the cent."""
