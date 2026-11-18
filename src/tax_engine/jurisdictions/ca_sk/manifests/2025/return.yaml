@@ -47,6 +47,9 @@
 # The last step adds the federal and the Saskatchewan marginal rate with core/sum into
 # `ca-sk/marginal_tax_rate`; it is exact too, is not printed on the form and has no title or line.
 #
+# The federal part ignores the federal basic personal amount phase-down and the Canada workers
+# benefit phase-out, as the Ontario, Alberta and British Columbia returns do.
+#
 # Only line 167 carries a line reference: the steps below read figures for the rates and are
 # engine-internal, so they carry none. Known limit: the rate ignores the tax effect of CPP and EI.
 capabilities:
