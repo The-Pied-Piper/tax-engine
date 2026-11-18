@@ -1,0 +1,15 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: carried forward unchanged from the 2025 file; the 2026 form is not yet published.
+# Manitoba fertility treatment credit maximum, 2026 tax year (Form MB479, CRA 5007-TC): line 61
+# "Eligible medical expenses for fertility treatments multiplied by 40% (maximum $16,000) =".
+# Line 61 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the
+# project's choice, as the form states no rounding rule.
+# The 2026 MB428/MB479 text is not yet published, so the figure is not yet confirmed against it.
+family: ca-mb/fertility_treatment_credit_maximum
+tax_year: 2026
+kind: amount
+title: "maximum"
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5007-tc/5007-tc-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "16000"
