@@ -6,8 +6,7 @@ gross salary (`ca/employment_income`) the only input and every optional input le
 asserts MB479 line 81, the Manitoba credits of T1 line 47900, and Schedule MB428-A line 12, the
 family tax benefit, at salaries of $10,000, $20,000, $70,000, $200,000 and $250,000.
 
-Form text (Form MB479, CRA 5007-TC): line 81 "Enter this amount on line 47900 of your return.";
-the wording of the line itself is to be confirmed, the form text is not in the forms folder.
+Form text (Form MB479, CRA 5007-TC): line 81 "Enter this amount on line 47900 of your return.".
 
 The MB479 line 81 figures are 95.65 at $10,000 (the personal tax credit, which pays out only
 where the Manitoba tax leaves it unused) and 0.00 at every other salary. The Schedule MB428-A

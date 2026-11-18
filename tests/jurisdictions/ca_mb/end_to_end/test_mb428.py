@@ -7,14 +7,16 @@ the gross salary (`ca/employment_income`) the only input and every optional inpu
 asserts the Manitoba tax of MB428 line 82 at salaries of $10,000, $20,000, $70,000, $200,000 and
 $250,000, and the basic personal amount of Worksheet MB428 line 9 at the same salaries.
 
-Form text (Form MB428, CRA 5007-C): line 82 "Enter this amount on line 42800 of your return.";
-the wording of the line itself is to be confirmed, the form text is not in the forms folder.
+Form text (Form MB428, CRA 5007-C): line 82 "Enter this amount on line 42800 of your return.".
 
 The line 82 figures are 0.00 / 284.08 / 5,747.59 / 26,863.55 / 35,980.46. At $70,000 they are
 derived apart from the engine in `test_line_82_at_70000_follows_from_the_printed_figures`. The
 Worksheet MB428 line 9 figure is the basic personal amount: 15,780.00 up to the printed income
-threshold, then reduced; at a salary of $250,000 the phase-out leaves 11,919.74. The 250,000 figures
-are the engine's own, not computed by hand; the form text of the worksheet is to be confirmed.
+threshold, then reduced. The phase-out case is a net income of exactly $250,000, reached at a salary
+of $251,074 (the CPP and EI deductions are fixed above that salary): the amount is reduced by 25%
+of the way from the $200,000 threshold to $400,000, 15,780.00 less 25% of itself, 11,835.00, derived
+apart from the engine in `test_worksheet_line_9_phases_out_from_a_net_income_of_250000`. At a salary
+of $250,000 (net income 248,926.00) the engine's figure is 11,919.74.
 """
 
 from __future__ import annotations
@@ -107,3 +109,16 @@ def test_worksheet_line_9_is_the_basic_personal_amount(
     (worksheet,) = _worksheets(salary)[WORKSHEET]
 
     assert _figure(worksheet, WORKSHEET_LINE_9) == D(basic_personal_amount)
+
+
+def test_worksheet_line_9_phases_out_from_a_net_income_of_250000() -> None:
+    worksheets = _worksheets("251074")
+    (credits_sheet,) = worksheets[MB428_CREDITS]
+    (worksheet,) = worksheets[WORKSHEET]
+    basic_personal_amount = D("15780.00")
+    share_of_the_way = (D("250000") - D("200000")) / (D("400000") - D("200000"))
+
+    assert _figure(credits_sheet, LINE_1) == D("250000.00")
+    assert share_of_the_way == D("0.25")
+    assert basic_personal_amount - basic_personal_amount * share_of_the_way == D("11835.00")
+    assert _figure(worksheet, WORKSHEET_LINE_9) == D("11835.00")

@@ -193,13 +193,13 @@ def test_the_first_step_supplies_the_printed_maximum_with_no_title_and_no_refere
     }
 
 
-def test_the_second_step_is_a_plain_words_titled_unreferenced_intermediate() -> None:
+def test_the_second_step_is_a_printed_title_unreferenced_intermediate() -> None:
     _, second, _ = _steps()
 
     assert "reference" not in second
     assert second == {
         "name": "core/at_most",
-        "title": "Teaching supplies expenses within the maximum",
+        "title": "Eligible teaching supplies expenses",
         "unit": "ca/cad",
         "consumes": {"amount": AMOUNT, "bound": MAXIMUM},
         "blank": {"amount": "pass_on"},

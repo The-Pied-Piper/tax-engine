@@ -1,8 +1,8 @@
 # MB479 (2025) line 79, the teaching expense tax credit. Form MB479 (CRA 5007-TC): "Teaching
 # expense tax credit: Line 79: Eligible teaching supplies expenses (maximum $1,000) Line 61495 ^
 # multiplied by 15% = ^". The heading is a section heading, so no step carries it as a title. The
-# second step has a plain-words title of the engine's own, since the form prints no label for the
-# checked amount and line 79's sentence names it. The printed $1,000 sits inside the entry's label,
+# second step carries the entry's printed label as its title, since line 79's sentence names the
+# checked amount. The printed $1,000 sits inside the entry's label,
 # before the box and before "multiplied by", so it bounds the entry, not the product: an entry
 # above it is rejected, not capped. Three steps.
 # The first, core/credit_amount, supplies the printed maximum from the
@@ -22,7 +22,7 @@ capabilities:
     produces:
       output: ca-mb/mb479_teaching_supplies_expenses_maximum
   - name: core/at_most
-    title: "Teaching supplies expenses within the maximum"
+    title: "Eligible teaching supplies expenses"
     unit: ca/cad
     consumes:
       amount: ca-mb/mb479_teaching_supplies_expenses_line_79
