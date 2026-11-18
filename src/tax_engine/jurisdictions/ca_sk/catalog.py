@@ -151,6 +151,13 @@ SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
 """Saskatchewan credits subtotal, SK428 line 20 "Line 20: Add lines 9, 10, 13, and 16 to 19. =": the
 sum of the personal amounts claimed, here the basic personal amount alone."""
 
+SK428_CPP_EI_AND_OTHER_LINE_31 = AmountKind.declare(
+    CATALOG, "sk428_cpp_ei_and_other_line_31", non_negative=True
+)
+"""CPP or QPP, EI and other credit amounts, SK428 line 31 "Line 31: Add lines 22 to 30.": the sum of
+the CPP or QPP contributions on line 22 and the EI premiums on line 24, the other lines being blank
+optional lines."""
+
 SK428_MINIMUM_TAX_ADDITIONAL_LINE_68 = AmountKind.declare(
     CATALOG, "sk428_minimum_tax_additional_line_68"
 )
