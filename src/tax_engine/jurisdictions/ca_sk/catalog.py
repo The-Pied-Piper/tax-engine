@@ -62,6 +62,13 @@ SK428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_70 = AmountKind.declare(
 """Provincial foreign tax credit, SK428 line 70 "Line 70: Provincial foreign tax credit (complete
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
 
+SK428_GRADUATE_TUITION_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "sk428_graduate_tuition_credit_line_81", non_negative=True
+)
+"""Saskatchewan graduate tuition tax credit, SK428 line 81 (line 63640) "Line 81 and line 63640:
+Saskatchewan graduate tuition tax credit (complete Form RC360)": the credit from Form RC360, an
+optional input that a salary-only caller leaves out."""
+
 SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "sk428_saskatchewan_tax_line_82", non_negative=True
 )
@@ -105,6 +112,13 @@ SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65 = AmountKind.declare(
 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
 read as blank when left out."""
 
+SK428_MINIMUM_TAX_CARRYOVER_LINE_65 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_carryover_line_65", non_negative=True
+)
+"""Saskatchewan minimum tax carryover, SK428 line 65 "Amount from line 40427 of your return
+multiplied by 50% =": calculated, box B of the line, the amount from line 40427 multiplied by
+50%."""
+
 SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "sk428_minimum_tax_t691_amount_line_68"
 )
@@ -124,6 +138,12 @@ SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
 )
 """Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
 63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out."""
+
+SK428_MINERAL_EXPLORATION_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "sk428_mineral_exploration_credit_line_79", non_negative=True
+)
+"""Saskatchewan mineral exploration tax credit, SK428 line 79 "Line 79: Saskatchewan mineral
+exploration tax credit (complete Form T1279)": a caller input, read as blank when left out."""
 
 SK428_CREDITS_SUBTOTAL_LINE_20 = AmountKind.declare(
     CATALOG, "sk428_credits_subtotal_line_20", non_negative=True

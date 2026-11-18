@@ -1,0 +1,20 @@
+# Form SK428 (Saskatchewan Tax, 2025, CRA 5008-C) line 65 (ca-sk/sk428). "Saskatchewan minimum
+# tax carryover:" / "Line 65: Amount from line 40427 of your return Line 61540 ^ multiplied by
+# 50% = ^". The 50% is a printed rate, held in the `ca-sk/minimum_tax_rate` dataset, so box B of
+# line 65 is one calculation: 50% of the amount, rounded half-up to the cent. The amount is an
+# optional input (read as 0 when left out), declared by its own part.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/apply_rate
+    title: "Saskatchewan minimum tax carryover"
+    reference: "65 box B"
+    unit: ca/cad
+    params:
+      rate: ca-sk/minimum_tax_rate
+    consumes:
+      base: ca-sk/sk428_minimum_tax_carryover_amount_line_65
+    blank:
+      base: "0"
+    produces:
+      output: ca-sk/sk428_minimum_tax_carryover_line_65
