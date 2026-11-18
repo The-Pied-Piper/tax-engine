@@ -242,3 +242,10 @@ SK428_TAX_ON_TAXABLE_INCOME_LINE_58 = AmountKind.declare(
 """Saskatchewan tax on taxable income from line 8, SK428 line 58 "Line 58: Saskatchewan tax on
 taxable income from line 8 ^" ("Enter the amount from line 8 on line 58 and continue at line 9."):
 the amount of line 8, read from the credits form."""
+
+SK428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
+    CATALOG, "sk428_credits_total_line_51", non_negative=True
+)
+"""Saskatchewan credits total, SK428 line 51 (line 58800) "Line 42 plus line 50 =": the credits
+subtotal of line 42 plus the medical expense amount of line 50, read as 0 when blank, lines 43 to
+49 (the medical expense working) not being built."""
