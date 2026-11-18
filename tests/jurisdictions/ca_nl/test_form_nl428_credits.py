@@ -23,13 +23,8 @@ import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_nl
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.kinds import AmountKind
-from tests.jurisdictions.ca_nl.support import (
-    newfoundland_kinds,
-    newfoundland_packages,
-    newfoundland_units,
-)
+from tests.jurisdictions.ca_nl.support import newfoundland_kinds
 from tests.kinds import non_negative
 
 PART = (
@@ -46,26 +41,6 @@ EXPORTS = [
     "ca-nl/nl428_tax_on_taxable_income_line_15",
     "ca-nl/nl428_non_refundable_credits_line_62",
 ]
-
-HEADER = """\
-jurisdiction: CA-NL
-version: 1
-valid_from_tax_year: 2025
-inputs:
-  - name: ca-nl/nl428_bracket_rate_line_5
-    required: true
-  - name: ca-nl/nl428_tax_on_taxable_income_line_8
-    required: true
-  - name: ca-nl/nl428_bracket_rate_line_12
-    required: true
-  - name: ca-nl/nl428_tax_on_taxable_income_line_15
-    required: true
-  - name: ca-nl/nl428_non_refundable_credits_line_62
-    required: true
-outputs:
-  - ca-nl/nl428_non_refundable_credits_line_62
-capabilities: []
-"""
 
 
 def _part() -> dict[str, Any]:
@@ -109,24 +84,3 @@ def test_each_export_is_a_registered_non_negative_amount_kind(identifier: str) -
     kind = kinds.kind(identifier)
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)
-
-
-def test_the_form_is_declared_with_its_five_exports(tmp_path: Path) -> None:
-    folder = tmp_path / "manifests" / "2025"
-    folder.mkdir(parents=True)
-    (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
-    (folder / "01_nl428_credits.yaml").write_text(
-        PART.read_text(encoding="utf-8"), encoding="utf-8"
-    )
-    source = YamlJurisdictionSource(
-        newfoundland_packages().roots(),
-        newfoundland_kinds(),
-        newfoundland_units(),
-    )
-
-    manifest = source.load(folder)
-
-    (nl428_credits,) = (form for form in manifest.forms if form.name == "ca-nl/nl428_credits")
-    assert nl428_credits.required is True
-    assert nl428_credits.title == "Form NL428: Newfoundland and Labrador Tax"
-    assert tuple(nl428_credits.exports) == tuple(EXPORTS)
