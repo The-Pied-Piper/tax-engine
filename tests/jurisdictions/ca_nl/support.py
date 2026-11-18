@@ -1,10 +1,8 @@
 """The Newfoundland and Labrador package list and the registries built over it.
 
-Newfoundland and Labrador is listed in `tax_engine.registrations.JURISDICTIONS`, and a test of the registered
-engine takes the `take_home_service` fixture of `conftest.py` or the registries of
-`tax_engine.registrations`. The tests written before the listing build their own package list
-(core, federal, Newfoundland and Labrador) here and take their kinds and capabilities from it. Each registry is
-built once per test process; never register into one.
+Newfoundland and Labrador is not in `tax_engine.registrations.JURISDICTIONS` yet, so the tests
+build their own package list (core, federal, Newfoundland and Labrador) here and take their kinds
+and capabilities from it. Each registry is built once per test process; never register into one.
 """
 
 from functools import cache
@@ -21,7 +19,7 @@ from tax_engine.domain.unit import UnitRegistry
 
 @cache
 def newfoundland_packages() -> JurisdictionPackages:
-    """The packages a Newfoundland and Labrador return needs: core, federal and Newfoundland and Labrador."""
+    """The packages a return needs: core, federal and Newfoundland and Labrador."""
     return JurisdictionPackages(
         (
             tax_engine.jurisdictions.core,
@@ -57,7 +55,7 @@ def newfoundland_capabilities() -> CapabilityRegistry:
 
 @cache
 def newfoundland_parameter_parsers() -> ParameterParserRegistry:
-    """The parameter parsers of the Newfoundland and Labrador package list; never register into it."""
+    """The parameter parsers of the package list; never register into it."""
     registry = ParameterParserRegistry()
     newfoundland_packages().register_parameter_parsers(registry)
     return registry
