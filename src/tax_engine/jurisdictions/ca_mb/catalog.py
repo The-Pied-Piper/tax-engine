@@ -531,6 +531,12 @@ MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
 the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
 heat pumps, rounded half-up to the cent."""
 
+MB479_GREEN_ENERGY_CREDITS_LINE_69 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_credits_line_69", non_negative=True
+)
+"""Green energy credits, MB479 line 69 "Line 69: Line 67 plus line 68 = ^": calculated, line 67 plus
+line 68, with a blank line 67 read as 0."""
+
 MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
     CATALOG, "mb479_book_publishing_credit_line_71", non_negative=True
 )
@@ -599,6 +605,11 @@ reduction, not below 0), rounded to the cent."""
 MB479_CREDITS_LINE_55 = AmountKind.declare(CATALOG, "mb479_credits_line_55", non_negative=True)
 """Credits, MB479 line 55 "Line 55: Line 53 plus line 54 =": line 53 (the homeowner, renter and
 senior credits, blank read as 0) plus line 54 (a copy of line 19), rounded to the cent."""
+
+MB479_CREDITS_LINE_57 = AmountKind.declare(CATALOG, "mb479_credits_line_57", non_negative=True)
+"""Credits, MB479 line 57 "Line 57: If you entered a number on line 56, multiply line 55 by line
+56. Otherwise, enter the amount from line 55.": line 55 multiplied by line 56, a blank line 56 read
+as 1, rounded to the cent."""
 
 MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
     CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True

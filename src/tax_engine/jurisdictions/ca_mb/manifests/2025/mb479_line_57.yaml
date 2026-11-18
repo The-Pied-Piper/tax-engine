@@ -1,0 +1,19 @@
+# Form MB479 (2025, CRA 5007-TC) line 57: "Line 57: If you entered a number on line 56, multiply
+# line 55 by line 56. Otherwise, enter the amount from line 55." One calculation: line 55 multiplied
+# by line 56, rounded to the cent through ca-mb/cent_rounding. A blank line 56 is read as 1 by its
+# own input default (`ca-mb/mb479_eia_mspd_number_line_56`), so line 57 then equals line 55 and the
+# step needs no blank rule; line 55 is always produced. The form prints no title for the line, so
+# the step is untitled.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/multiply
+    reference: "57"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      multiplicand: ca-mb/mb479_credits_line_55
+      multiplier: ca-mb/mb479_eia_mspd_number_line_56
+    produces:
+      output: ca-mb/mb479_credits_line_57
