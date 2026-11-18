@@ -1,0 +1,24 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 82, "Line 82: Line 80 minus line 81 (if negative,
+# enter "0") Enter this amount on line 42800 of your return. Saskatchewan tax = ^". One
+# core/subtract_not_below_zero step: the Saskatchewan tax after the mineral exploration tax credit
+# (line 80, `ca-sk/sk428_tax_line_80`) less the graduate tuition tax credit (line 81,
+# `ca-sk/sk428_graduate_tuition_credit_line_81`), not below 0. Line 81 is an optional input that a
+# caller without that credit leaves out, read as blank and then as 0 by the blank rule. The form
+# prints no title for the line, so the step has none. Line 82 is the output
+# `ca-sk/sk428_saskatchewan_tax_line_82`, the Saskatchewan tax entered on line 42800, supplied
+# through the form's `ca/provincial_tax.amount`.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "82"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      amount: ca-sk/sk428_tax_line_80
+      less: ca-sk/sk428_graduate_tuition_credit_line_81
+    blank:
+      less: "0"
+    produces:
+      output: ca-sk/sk428_saskatchewan_tax_line_82
