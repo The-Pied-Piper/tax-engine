@@ -3,7 +3,8 @@
 # `ca-mb/mb428_tax_before_credits_line_60`) less the credits total (line 64,
 # `ca-mb/mb428_credits_total_line_64`), not below 0. Both lines are always computed, so there is no
 # blank rule. The form prints no label for the line, so the step has none. The output is
-# `ca-mb/mb428_tax_after_credits_line_65`, which is not exported yet.
+# `ca-mb/mb428_tax_after_credits_line_65`, which the form exports for the return summary's marginal
+# tax rate.
 form:
   name: ca-mb/mb428
 capabilities:

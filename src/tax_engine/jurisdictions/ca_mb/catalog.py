@@ -768,3 +768,108 @@ MB479_CREDITS_LINE_78 = AmountKind.declare(CATALOG, "mb479_credits_line_78", non
 """Credits, MB479 line 78 "Line 78: Line 76 plus line 77 = ^": line 76 plus line 77 (the employee
 share purchase tax credit, an optional input a caller leaves blank, read as 0), rounded to the
 cent."""
+
+AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
+"""Average income tax rate, the Manitoba return summary's own figure (no form prints it): T1 line
+43500 "Total payable" (for the take-home filer, line 143 plus line 147: the federal and the Manitoba
+income tax) divided by the salary (`ca/employment_income`), as a fraction, so 0.1598 is 15.98%. CPP
+and EI are not income tax and are not in it. It is 0 when the salary is 0."""
+
+MANITOBA_BRACKET_RATE_RETURN = AmountKind.declare(
+    CATALOG, "manitoba_bracket_rate_return", non_negative=True
+)
+"""Manitoba bracket rate, MB428 line 5 "Line 5: Rate": the printed rate of the column that line 1
+falls in (10.8%, 12.75% or 17.4%), read from MB428 into the return summary. The form fills one
+column, so the line is never blank."""
+
+MANITOBA_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "manitoba_tax_after_credits_return", non_negative=True
+)
+"""Manitoba tax after the credits, MB428 line 65 "Line 60 minus line 64 (if negative, enter "0")":
+the one amount of MB428's export totalled into the return summary's own artifact, the base of the
+Manitoba rate gate."""
+
+MANITOBA_RATE_GATE = AmountKind.declare(CATALOG, "manitoba_rate_gate", non_negative=True)
+"""Manitoba rate gate: 0 where the Manitoba tax after the credits (MB428 line 65) is 0.00 and 1
+where it is at least one cent, from the `ca-mb/marginal_rate_gate` dataset. A plain figure, not
+printed on the form."""
+
+MANITOBA_PHASE_OUT_AMOUNT_RETURN = AmountKind.declare(
+    CATALOG, "manitoba_phase_out_amount_return", non_negative=True
+)
+"""Basic personal amount reduction, Worksheet MB428 line 8 "Line 6 multiplied by line 7": the one
+amount of the worksheet's export totalled into the return summary's own artifact, the base of the
+reduction slope."""
+
+MANITOBA_BASIC_PERSONAL_AMOUNT_RETURN = AmountKind.declare(
+    CATALOG, "manitoba_basic_personal_amount_return", non_negative=True
+)
+"""Basic personal amount, Worksheet MB428 line 9 "Line 1 minus line 8 (if negative, enter "0")": the
+one amount of the worksheet's export totalled into the return summary's own artifact, the base of
+the basic personal amount gate."""
+
+MANITOBA_BASE_AMOUNT_RETURN = AmountKind.declare(
+    CATALOG, "manitoba_base_amount_return", non_negative=True
+)
+"""Base amount, Worksheet MB428 line 7 "Line 7: Base amount 15,780.00": the one amount of the
+worksheet's export totalled into the return summary's own artifact, the dividend of the phase-out
+ratio."""
+
+MANITOBA_INCOME_THRESHOLD_RETURN = AmountKind.declare(
+    CATALOG, "manitoba_income_threshold_return", non_negative=True
+)
+"""Income threshold, Worksheet MB428 line 5 "Line 5: Income threshold 200,000.00": the one amount of
+the worksheet's export totalled into the return summary's own artifact, the divisor of the phase-out
+ratio."""
+
+MANITOBA_BASIC_PERSONAL_AMOUNT_GATE = AmountKind.declare(
+    CATALOG, "manitoba_basic_personal_amount_gate", non_negative=True
+)
+"""Manitoba basic personal amount gate: 0 where the basic personal amount (Worksheet MB428 line 9)
+is 0.00 and 1 where it is at least one cent, from the `ca-mb/marginal_rate_gate` dataset: the
+phase-out counts only up to the net income where the amount reaches zero (400,000). A plain figure,
+not printed on the form."""
+
+MANITOBA_REDUCTION_SLOPE = AmountKind.declare(
+    CATALOG, "manitoba_reduction_slope", non_negative=True
+)
+"""Manitoba reduction slope: 0 where the basic personal amount reduction (Worksheet MB428 line 8) is
+0.00 and the printed 10.8% of MB428 line 52 where it is at least one cent, from the
+`ca-mb/reduction_slope` dataset, with no rounding: the credit rate of the amount that falls away
+above a net income of 200,000. Not printed on the form."""
+
+MANITOBA_PHASE_OUT_RATIO = AmountKind.declare(
+    CATALOG, "manitoba_phase_out_ratio", non_negative=True
+)
+"""Manitoba phase-out ratio: Worksheet MB428 line 7 over line 5 (15,780 / 200,000 = 0.0789), the
+amount the basic personal amount falls by for each further dollar of net income. Exact. Not printed
+on the form."""
+
+MANITOBA_PHASE_OUT_CREDIT_RATE = AmountKind.declare(
+    CATALOG, "manitoba_phase_out_credit_rate", non_negative=True
+)
+"""Manitoba phase-out credit rate: the phase-out ratio times the reduction slope (0.0789 x 0.108 =
+0.0085212), the credit a further dollar of net income takes away where the reduction is above
+zero. Exact. Not printed on the form."""
+
+MANITOBA_PHASE_OUT_RATE = AmountKind.declare(CATALOG, "manitoba_phase_out_rate", non_negative=True)
+"""Manitoba phase-out rate: the basic personal amount gate (line 9 above zero) times the phase-out
+credit rate: 0.0085212 inside the range where the basic personal amount falls with income, 0
+outside it. Exact. Not printed on the form."""
+
+MANITOBA_BRACKET_RATE_WITH_PHASE_OUT = AmountKind.declare(
+    CATALOG, "manitoba_bracket_rate_with_phase_out", non_negative=True
+)
+"""Manitoba bracket rate with the phase-out: the bracket rate plus the phase-out rate, since a
+further dollar of income also takes away part of the basic personal amount. Exact. Not printed on
+the form."""
+
+MANITOBA_MARGINAL_RATE = AmountKind.declare(CATALOG, "manitoba_marginal_rate", non_negative=True)
+"""Manitoba marginal rate: the bracket rate with the phase-out where the Manitoba tax after the
+credits (MB428 line 65) is above zero, and 0 where it is not: the rate a further dollar of income
+is taxed at in Manitoba, on the return summary. Not printed on the form."""
+
+MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
+"""Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal
+marginal rate and the Manitoba marginal rate (Manitoba has no surtax or health premium), on the
+return summary. Not printed on the form."""
