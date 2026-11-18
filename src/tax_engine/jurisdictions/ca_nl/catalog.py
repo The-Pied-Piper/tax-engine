@@ -19,3 +19,45 @@ WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
 )
 """Age amount, Worksheet NL428 line 7 "Line 7: Line 1 minus line 6 (if negative, enter "0") Enter
 this amount on line 58080 of your Form NL428.": the amount entered on line 58080 of Form NL428."""
+
+NL428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "nl428_bracket_rate_line_5", non_negative=True
+)
+"""Bracket column rate, NL428 line 5 (each column prints "Line 5: Rate" with 8.7%, 14.5%, 15.8% or
+17.8%): the printed rate of the column that line 1 falls in, blank when line 1 is outside the
+table."""
+
+NL428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_taxable_income_line_8", non_negative=True
+)
+"""Newfoundland and Labrador tax on taxable income, NL428 line 8 "Line 6 plus line 7 Newfoundland
+and Labrador tax on taxable income =": line 6 plus line 7 of the column that line 1 falls in, read
+by line 63 on the tax form."""
+
+NL428_BRACKET_RATE_LINE_12 = AmountKind.declare(
+    CATALOG, "nl428_bracket_rate_line_12", non_negative=True
+)
+"""Bracket column rate, NL428 line 12 (each column prints "Line 12: Rate" with 19.8%, 20.8%, 21.3%
+or 21.8%): the printed rate of the column that line 1 falls in, blank when line 1 is outside the
+table."""
+
+NL428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_taxable_income_line_15", non_negative=True
+)
+"""Newfoundland and Labrador tax on taxable income, NL428 line 15 "Line 13 plus line 14
+Newfoundland and Labrador tax on taxable income =": line 13 plus line 14 of the column that line 1
+falls in, read by line 63 on the tax form."""
+
+NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
+    CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
+)
+"""Newfoundland and Labrador non-refundable tax credits, NL428 line 62 "Line 62 and line 61500:
+Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
+tax form."""
+
+NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
+    CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
+)
+"""Newfoundland and Labrador tax, NL428 line 105 "Line 105: Line 94 minus line 104 (if negative,
+enter "0") Enter this amount on line 42800 of your return.": line 94 less line 104, not below 0,
+entered on T1 line 42800."""
