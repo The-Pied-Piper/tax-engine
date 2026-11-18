@@ -15,9 +15,9 @@ The test composes the real Saskatchewan salary part, the real Schedule 8 and T22
 taxable income parts, the real line parts of `ca-sk/sk428_credits` that lines 8 and 57 need, the
 real `sk428_line_58.yaml` to `sk428_line_78.yaml` parts (line 71 consumes line 70, so the line 70
 inputs part is composed; line 74 consumes the checked line 73, so the line 73 input part and the
-line 73 part are composed; line 78 consumes line 77, so that input part is composed), the line 79
-input part and the new `sk428_line_80.yaml`, and types in only the salary and, in some tests,
-line 79. The two form declarations are made up here.
+line 73 part are composed; line 78 consumes the checked line 77, so the line 77 input part and the
+line 77 part are composed), the line 79 input part and the new `sk428_line_80.yaml`, and types in
+only the salary and, in some tests, line 79. The two form declarations are made up here.
 
 Figures: line 78 is line 74 (line 71, line 67, line 68 being 0 here) with blank lines 73 and 77,
 re-derived here in `_line_62` and `_line_66` with Decimal (not a CRA example); line 79 is blank
@@ -110,6 +110,7 @@ SK_LINE_PARTS = (
     "sk428_line_73.yaml",
     "sk428_line_74.yaml",
     "sk428_line_77_input.yaml",
+    "sk428_line_77.yaml",
     "sk428_line_78.yaml",
     "sk428_line_79_input.yaml",
 )

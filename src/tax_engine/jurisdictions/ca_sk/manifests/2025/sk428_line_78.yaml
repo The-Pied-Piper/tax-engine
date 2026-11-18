@@ -1,10 +1,11 @@
 # Form SK428 (Saskatchewan Tax, CRA 5008-C) line 78, "Line 78: Line 74 minus line 77 (if negative,
 # enter "0") = ^". One core/subtract_not_below_zero step: the Saskatchewan tax after the political
 # contribution tax credit (line 74, `ca-sk/sk428_tax_line_74`) less the labour-sponsored venture
-# capital credit (line 77, `ca-sk/sk428_labour_sponsored_credit_line_77`), not below 0. Line 77 is an
-# optional input that a caller without that credit leaves out, read as blank and then as 0 by the
-# blank rule. The form prints no title for the line, so the step has none. Line 78 is the output
-# `ca-sk/sk428_tax_line_78`.
+# capital credit (line 77 as checked against its printed maximum by the line 77 step,
+# `ca-sk/sk428_labour_sponsored_credit_checked_line_77`), not below 0. Line 77 is an optional input
+# that a caller without that credit leaves out; the line 77 step passes that blank on, and the blank
+# rule reads it as 0. The form prints no title for the line, so the step has none. Line 78 is the
+# output `ca-sk/sk428_tax_line_78`.
 form:
   name: ca-sk/sk428
 capabilities:
@@ -15,7 +16,7 @@ capabilities:
       rounding: ca-sk/cent_rounding
     consumes:
       amount: ca-sk/sk428_tax_line_74
-      less: ca-sk/sk428_labour_sponsored_credit_line_77
+      less: ca-sk/sk428_labour_sponsored_credit_checked_line_77
     blank:
       less: "0"
     produces:
