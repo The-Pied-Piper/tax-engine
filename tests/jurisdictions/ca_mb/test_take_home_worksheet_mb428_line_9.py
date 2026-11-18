@@ -10,7 +10,7 @@ non-negative; it is the figure the form says to enter on line 58040 of Form MB42
 
 The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
 needs, the real parts of lines 1 to 8 and the new
-`worksheet_mb428_basic_personal_amount_line_9.yaml`, and types in only the salary. The header and
+`worksheet_mb428_line_9.yaml`, and types in only the salary. The header and
 the Worksheet MB428 form declaration (exporting lines 1 to 9) are made up here, because the shared
 scaffold owns them.
 
@@ -63,7 +63,7 @@ D = Decimal
 CENT = D("0.01")
 MB_PARTS = Path(tax_engine.jurisdictions.ca_mb.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
-PART = MB_PARTS / "worksheet_mb428_basic_personal_amount_line_9.yaml"
+PART = MB_PARTS / "worksheet_mb428_line_9.yaml"
 KIND = "ca-mb/worksheet_mb428_basic_personal_amount_line_9"
 LINE_1 = "ca-mb/worksheet_mb428_basic_personal_amount_line_1"
 LINE_2 = "ca-mb/worksheet_mb428_line_2"
@@ -129,13 +129,13 @@ def _part_files() -> Iterator[Path]:
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
-    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_1.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_1.yaml"
     yield MB_PARTS / "worksheet_mb428_line_2.yaml"
-    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_3.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_3.yaml"
     yield MB_PARTS / "worksheet_mb428_line_4.yaml"
-    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_5.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_5.yaml"
     yield MB_PARTS / "worksheet_mb428_line_6.yaml"
-    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_7.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_7.yaml"
     yield MB_PARTS / "worksheet_mb428_line_8.yaml"
     yield PART
 

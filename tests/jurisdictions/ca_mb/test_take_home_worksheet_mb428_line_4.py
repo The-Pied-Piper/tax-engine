@@ -8,7 +8,7 @@ cent by `ca-mb/cent_rounding`. The kind `ca-mb/worksheet_mb428_line_4` is non-ne
 
 The test composes the real Manitoba salary part, the real federal parts the T1 taxable income form
 needs (as the line 2 test does), the real `worksheet_mb428_line_2.yaml` and
-`worksheet_mb428_basic_personal_amount_line_3.yaml` parts and the new
+`worksheet_mb428_line_3.yaml` parts and the new
 `worksheet_mb428_line_4.yaml`, and types in only the salary. The header and the Worksheet MB428
 form declaration (exporting lines 2, 3 and 4) are made up here, because the shared scaffold owns
 them.
@@ -118,7 +118,7 @@ def _part_files() -> Iterator[Path]:
     for name in FEDERAL_PARTS:
         yield next(FEDERAL_FORMS.rglob(name))
     yield MB_PARTS / "worksheet_mb428_line_2.yaml"
-    yield MB_PARTS / "worksheet_mb428_basic_personal_amount_line_3.yaml"
+    yield MB_PARTS / "worksheet_mb428_line_3.yaml"
     yield PART
 
 

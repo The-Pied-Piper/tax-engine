@@ -1,8 +1,8 @@
-"""Schedule MB428-A (2025), line 1, the basic
-amount, as the Manitoba take-home manifest part wires it.
+"""Worksheet MB428 (2025), section "Line 58040 - Basic personal amount", line 3, the income
+threshold, as the Manitoba take-home manifest part wires it.
 
-Form text (CRA 5007-a-25e.txt): "Line 1: Basic amount 2,065.00". The amount is the
-`ca-mb/family_tax_benefit_basic_amount` dataset, claimed whole through core/credit_amount, so it is
+Form text (CRA 5007-d-25e.txt): "Line 3: Income threshold 200,000.00". The amount is the
+`ca-mb/basic_personal_amount_threshold` dataset, claimed whole through core/credit_amount, so it is
 the same at every salary.
 
 The manifest part is loaded from the package. The header and the form's export are made up here,
@@ -26,7 +26,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
-from tax_engine.jurisdictions.ca_mb.catalog import MB428_A_BASIC_AMOUNT_LINE_1
+from tax_engine.jurisdictions.ca_mb.catalog import WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_3
 from tests.jurisdictions.ca_mb.support import (
     manitoba_capabilities,
     manitoba_kinds,
@@ -40,7 +40,7 @@ PART_PATH = (
     Path(tax_engine.jurisdictions.ca_mb.__file__).parent
     / "manifests"
     / "2025"
-    / "mb428_a_basic_amount_line_1.yaml"
+    / "worksheet_mb428_line_3.yaml"
 )
 
 HEADER = dedent("""\
@@ -55,10 +55,10 @@ HEADER = dedent("""\
     """)
 FORM = dedent("""\
     form:
-      name: ca-mb/mb428_a
+      name: ca-mb/worksheet_mb428
       required: true
       exports:
-        - ca-mb/mb428_a_basic_amount_line_1
+        - ca-mb/worksheet_mb428_basic_personal_amount_line_3
     """)
 
 
@@ -67,7 +67,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    (folder / "02_mb428_a_basic_amount_line_1.yaml").write_text(
+    (folder / "02_worksheet_mb428_line_3.yaml").write_text(
         PART_PATH.read_text(encoding="utf-8"), encoding="utf-8"
     )
     roots = {**manitoba_packages().roots(), Namespace("ca-mb"): tmp_path}
@@ -80,14 +80,14 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def line_1(tmp_path: Path, salary: str) -> Decimal:
+def line_3(tmp_path: Path, salary: str) -> Decimal:
     worksheets = _service(tmp_path).compute(
         JurisdictionCode("CA-MB"), 2025, Artifact(EMPLOYMENT_INCOME, D(salary))
     )
-    (sheet,) = worksheets["ca-mb/mb428_a"]
-    return sheet.get(MB428_A_BASIC_AMOUNT_LINE_1).value
+    (sheet,) = worksheets["ca-mb/worksheet_mb428"]
+    return sheet.get(WORKSHEET_MB428_BASIC_PERSONAL_AMOUNT_LINE_3).value
 
 
 @pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
-def test_line_1_is_the_base_amount_at_every_salary(tmp_path: Path, salary: str) -> None:
-    assert line_1(tmp_path, salary) == D("2065.00")
+def test_line_3_is_the_income_threshold_at_every_salary(tmp_path: Path, salary: str) -> None:
+    assert line_3(tmp_path, salary) == D("200000.00")

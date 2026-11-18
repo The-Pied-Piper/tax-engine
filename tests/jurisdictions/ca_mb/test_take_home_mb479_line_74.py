@@ -79,7 +79,7 @@ MB479_PARTS = (
     "mb479_line_5.yaml",
     "mb479_line_5_column_2_input.yaml",
     "mb479_line_6.yaml",
-    "mb479_basic_credit_line_7.yaml",
+    "mb479_line_7.yaml",
     "mb479_line_17_inputs.yaml",
     "mb479_line_17.yaml",
     "mb479_line_18.yaml",
