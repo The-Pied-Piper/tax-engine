@@ -1,0 +1,18 @@
+# Form SK428 (Saskatchewan Tax, 2025, CRA 5008-C) line 68 (ca-sk/sk428). "Saskatchewan additional
+# tax for minimum tax purposes:" / "Line 68: Form T691: Line 1 minus Line 2 of Part 7 ^ multiplied
+# by 50% = ^". The 50% is a printed rate, held in the `ca-sk/minimum_tax_rate` dataset, so box B of
+# line 68 is one calculation: 50% of the amount, rounded half-up to the cent. The amount is an
+# optional input that defaults to 0, declared by its own part, so the step needs no blank rule.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/apply_rate
+    title: "Saskatchewan additional tax for minimum tax purposes"
+    reference: "68 box B"
+    unit: ca/cad
+    params:
+      rate: ca-sk/minimum_tax_rate
+    consumes:
+      base: ca-sk/sk428_minimum_tax_t691_amount_line_68
+    produces:
+      output: ca-sk/sk428_minimum_tax_additional_line_68
