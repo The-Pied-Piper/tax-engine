@@ -1,0 +1,11 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 40: "Line 40 and line 58440: Disability amount for self (claim $7,467 or, if you were under 18
+# years of age, use Worksheet NL428)" (Form NL428, CRA 5001-C). The input is the eligibility claim,
+# a count: 1 when the disability tax credit is approved, 0 or blank when not. A salary-only caller
+# leaves it out, so a request that omits it is read as blank; the line 40 step reads that blank as 0.
+inputs:
+  - name: ca-nl/nl428_disability_amount_self_claimed_line_40
+    reference: "40"
+    required: false
+    default: null
+    basis: 'Line 40 and line 58440: Disability amount for self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)'

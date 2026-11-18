@@ -8,7 +8,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
@@ -54,3 +54,34 @@ NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
 """Newfoundland and Labrador non-refundable tax credits, NL428 line 62 "Line 62 and line 61500:
 Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
 tax form."""
+
+NL428_DISABILITY_AMOUNT_SELF_CLAIMED_LINE_40 = CountKind.declare(
+    CATALOG, "nl428_disability_amount_self_claimed_line_40", non_negative=True
+)
+"""Disability amount for self claimed, NL428 line 40
+"Line 40 and line 58440: Disability amount for
+self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the eligibility
+claim, 1 when the disability tax credit is approved and the amount is claimed, read as blank when
+left out."""
+
+NL428_DISABILITY_AMOUNT_SELF_CLAIMED_CHECKED_LINE_40 = CountKind.declare(
+    CATALOG, "nl428_disability_amount_self_claimed_checked_line_40", non_negative=True
+)
+"""Disability amount for self claim, checked, NL428 line 40
+"Line 40 and line 58440: Disability amount
+for self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the claim with
+a blank read as 0, refused above 1 so the amount cannot be claimed twice."""
+
+DISABILITY_AMOUNT_SELF = AmountKind.declare(CATALOG, "disability_amount_self", non_negative=True)
+"""Disability amount for self, NL428 line 40
+"Line 40 and line 58440: Disability amount for self (claim
+$7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467, the amount
+claimed when the disability tax credit is approved."""
+
+NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
+    CATALOG, "nl428_disability_amount_self_line_40", non_negative=True
+)
+"""Disability amount for self, NL428 line 40
+"Line 40 and line 58440: Disability amount for self (claim
+$7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when the
+claim is 1, 0 when the claim is blank or 0."""
