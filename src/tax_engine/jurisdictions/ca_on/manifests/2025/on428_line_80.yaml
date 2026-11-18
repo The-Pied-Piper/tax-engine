@@ -23,6 +23,7 @@ form:
   name: ca-on/on428
 capabilities:
   - name: core/subtract_not_below_zero
+    title: "Reduction before any exceptions"
     unit: ca/cad
     params:
       rounding: ca-on/cent_rounding
@@ -32,6 +33,7 @@ capabilities:
     produces:
       output: ca-on/on428_tax_reduction_before_conditions_line_80
   - name: ca/count_by_conditions
+    title: "Multiplier that is 0 when minimum tax was added"
     params:
       conditions: ca-on/on428_line_80_conditions
     consumes:

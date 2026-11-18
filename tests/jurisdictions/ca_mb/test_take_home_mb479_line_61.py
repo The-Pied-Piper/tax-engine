@@ -201,6 +201,7 @@ def test_the_part_is_an_apply_rate_step_then_a_capped_amount_step() -> None:
     assert _steps() == [
         {
             "name": "core/apply_rate",
+            "title": "Fertility treatment credit before the maximum",
             "unit": "ca/cad",
             "params": {"rate": "ca-mb/fertility_treatment_credit_rate"},
             "consumes": {"base": AMOUNT},
@@ -222,7 +223,7 @@ def test_the_part_is_an_apply_rate_step_then_a_capped_amount_step() -> None:
 def test_the_step_keys_are_in_the_order_of_on428_a_line_5() -> None:
     rate, cap = _steps()
 
-    assert list(rate) == ["name", "unit", "params", "consumes", "blank", "produces"]
+    assert list(rate) == ["name", "title", "unit", "params", "consumes", "blank", "produces"]
     assert list(cap) == ["name", "title", "reference", "unit", "params", "consumes", "produces"]
 
 
@@ -232,10 +233,10 @@ def test_the_capping_step_is_titled_with_the_heading_the_form_prints_above_the_l
     assert cap["title"] == "Fertility treatment tax credit"
 
 
-def test_the_intermediate_step_is_untitled_and_unreferenced() -> None:
+def test_the_intermediate_step_has_a_plain_words_title_and_no_reference() -> None:
     rate, _ = _steps()
 
-    assert "title" not in rate
+    assert rate["title"] == "Fertility treatment credit before the maximum"
     assert "reference" not in rate
 
 
