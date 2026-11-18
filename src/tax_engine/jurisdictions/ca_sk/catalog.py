@@ -132,7 +132,8 @@ SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
 )
 """Saskatchewan political contribution tax credit, SK428 line 73 "Line 73: Saskatchewan political
 contribution tax credit (use Worksheet SK428) (maximum $650)": the credit from the worksheet, an
-optional input that a salary-only caller leaves out."""
+optional input that a salary-only caller leaves out; the line 73 step checks it against the printed
+maximum."""
 
 SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
     CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
@@ -301,6 +302,21 @@ SK428_TAX_LINE_74 = AmountKind.declare(CATALOG, "sk428_tax_line_74", non_negativ
 """Saskatchewan tax after the political contribution tax credit, SK428 line 74 "Line 74: Line 71
 minus line 73 (if negative, enter "0") = ^": line 71 less the credit of line 73 (blank read as 0),
 never below zero."""
+
+SK428_POLITICAL_CONTRIBUTION_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "sk428_political_contribution_credit_maximum", non_negative=True
+)
+"""Political contribution tax credit maximum, printed on SK428 line 73 "(maximum $650)": the
+printed maximum, from the `ca-sk/political_contribution_credit_maximum` dataset; the bound line 73
+cannot pass."""
+
+SK428_POLITICAL_CONTRIBUTIONS_CREDIT_CHECKED_LINE_73 = AmountKind.declare(
+    CATALOG, "sk428_political_contributions_credit_checked_line_73", non_negative=True
+)
+"""Saskatchewan political contribution tax credit, SK428 line 73 "Line 73: Saskatchewan political
+contribution tax credit (use Worksheet SK428) (maximum $650)": the entered amount, passed on
+unchanged when it is at most the printed maximum, blank when left out; above the maximum it is
+refused, not capped."""
 
 SK428_TAX_LINE_78 = AmountKind.declare(CATALOG, "sk428_tax_line_78", non_negative=True)
 """Saskatchewan tax after the labour-sponsored venture capital credit, SK428 line 78 "Line 78: Line
