@@ -56,6 +56,12 @@ SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 56 Enter this amount on line 63. Saskatchewan non-refundable tax credits =": line 53 plus line 56,
 read by line 63 on the tax form."""
 
+SK428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_70 = AmountKind.declare(
+    CATALOG, "sk428_provincial_foreign_tax_credit_line_70", non_negative=True
+)
+"""Provincial foreign tax credit, SK428 line 70 "Line 70: Provincial foreign tax credit (complete
+Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
+
 SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "sk428_saskatchewan_tax_line_82", non_negative=True
 )
@@ -72,6 +78,39 @@ SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
 )
 """CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+SK428_FARM_CAPITAL_GAINS_CREDIT_LINE_59 = AmountKind.declare(
+    CATALOG, "sk428_farm_capital_gains_credit_line_59", non_negative=True
+)
+"""Saskatchewan farm and small business capital gains tax credit, SK428 line 59 (line 61499) "Line
+59 and line 61499: Saskatchewan farm and small business capital gains tax credit (complete Form
+T1237)": a caller input, read as blank when left out; line 60 reads it."""
+
+SK428_TAX_ON_SPLIT_INCOME_LINE_61 = AmountKind.declare(CATALOG, "sk428_tax_on_split_income_line_61")
+"""Saskatchewan tax on split income, SK428 line 61 (line 61510) "Line 61 and line 61510:
+Saskatchewan tax on split income (complete Form T1206)": a caller input, read as blank when left
+out."""
+
+SK428_DIVIDEND_TAX_CREDIT_LINE_64 = AmountKind.declare(
+    CATALOG, "sk428_dividend_tax_credit_line_64", non_negative=True
+)
+"""Saskatchewan dividend tax credit, SK428 line 64 (line 61520) "Line 64 and line 61520:
+Saskatchewan dividend tax credit (use Worksheet SK428)": a caller input, read as blank when left
+out."""
+
+SK428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_65 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_carryover_amount_line_65", non_negative=True
+)
+"""Saskatchewan minimum tax carryover amount, SK428 line 65 (line 61540) "Amount from line 40427
+of your return": the amount from line 40427 of the T1 return, an optional input, box A of the line,
+read as blank when left out."""
+
+SK428_MINIMUM_TAX_T691_AMOUNT_LINE_68 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_t691_amount_line_68"
+)
+"""Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
+minus Line 2 of Part 7 multiplied by 50%": the amount from Form T691, an optional input that a
+salary-only caller leaves out. The 50% multiply is a separate step."""
 
 SK428_POLITICAL_CONTRIBUTIONS_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "sk428_political_contributions_credit_line_73", non_negative=True
