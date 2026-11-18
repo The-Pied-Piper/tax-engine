@@ -6,7 +6,8 @@ owing". The Saskatchewan return's one output is that line, read from the T1 tax 
 core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a
 cross-form read (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
-key (the return is the default form) and no params.
+key (the return is the default form) and no params. The steps after it read the figures of the two
+rates (`end_to_end/test_return_rates.py`); here they run over stand-ins.
 
 The test composes the real Saskatchewan salary part and the real `return.yaml`. The header, the
 declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and the step
@@ -54,6 +55,8 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
+      - ca-sk/average_income_tax_rate
+      - ca-sk/marginal_tax_rate
     capabilities: []
     """)
 T1_FORM = dedent("""\
@@ -62,6 +65,25 @@ T1_FORM = dedent("""\
       required: true
       exports:
         - ca/refund_or_balance_owing
+        - ca/total_payable
+        - ca/federal_bracket_column_rate_line_73
+        - ca/federal_tax_after_credits
+    capabilities: []
+    """)
+SK428_CREDITS_FORM = dedent("""\
+    form:
+      name: ca-sk/sk428_credits
+      required: true
+      exports:
+        - ca-sk/sk428_bracket_rate_line_5
+    capabilities: []
+    """)
+SK428_FORM = dedent("""\
+    form:
+      name: ca-sk/sk428
+      required: true
+      exports:
+        - ca-sk/sk428_tax_after_credits_line_67
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
@@ -88,6 +110,17 @@ T1_STEP = dedent("""\
           output: ca/refund_or_balance_owing
     """)
 
+# Stand-ins for the other figures the return reads (the total payable, the rates and the taxes):
+# each is the salary itself or its gate, a made-up figure, because this test is about line 167
+# only; the rates are in `end_to_end/test_return_rates.py`. Form, output kind, unit.
+OTHER_STEPS = [
+    ("ca/t1_tax_and_credits", "ca/total_payable", "ca/cad"),
+    ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73", "core/percent"),
+    ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
+    ("ca-sk/sk428_credits", "ca-sk/sk428_bracket_rate_line_5", "core/percent"),
+    ("ca-sk/sk428", "ca-sk/sk428_tax_after_credits_line_67", "ca/cad"),
+]
+
 # salary, credits, line 167: a balance owing, a refund and zero.
 CASES = [
     ("70000", "11497.09", "58502.91"),
@@ -96,9 +129,37 @@ CASES = [
 ]
 
 
+def _other_step(form: str, output: str, unit: str) -> str:
+    """A stand-in step for a figure the return reads: the gate of the salary for a rate (1, a rate
+    is at most 1) and the salary itself for an amount."""
+    if unit == "core/percent":
+        step = f"""\
+          - name: core/amount_by_band_rate
+            unit: {unit}
+            params:
+              table: ca-sk/marginal_rate_gate
+            consumes:
+              base: ca/employment_income
+            produces:
+              output: {output}
+        """
+    else:
+        step = f"""\
+          - name: core/sum
+            unit: {unit}
+            params:
+              rounding: ca/cent_rounding
+            consumes:
+              parts: [ca/employment_income]
+            produces:
+              output: {output}
+        """
+    return f"form:\n  name: {form}\ncapabilities:\n" + dedent(step)
+
+
 def _service(tmp_path: Path) -> TaxComputationService:
-    """The engine over a temporary Saskatchewan manifest of a test header, the T1 form declaration,
-    the stand-in step and the real salary and return parts."""
+    """The engine over a temporary Saskatchewan manifest of a test header, the T1 and SK428 form
+    declarations, the stand-in steps and the real salary and return parts."""
     folder = tmp_path / "manifests" / "2025"
     folder.mkdir(parents=True)
     texts = [
@@ -106,6 +167,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("01_t1_form.yaml", T1_FORM),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
+        ("03a_sk428_credits_form.yaml", SK428_CREDITS_FORM),
+        ("03b_sk428_form.yaml", SK428_FORM),
+        *[
+            (f"03c_{number}.yaml", _other_step(form, out, unit))
+            for number, (form, out, unit) in enumerate(OTHER_STEPS)
+        ],
         ("04_salary.yaml", (SK_PARTS / "salary.yaml").read_text(encoding="utf-8")),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
@@ -157,11 +224,10 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_return_part_has_one_line_167_record_total_step() -> None:
+def test_the_first_step_is_the_line_167_record_total() -> None:
     part = _part()
 
     assert list(part) == ["capabilities"]
-    assert len(part["capabilities"]) == 1
     step = part["capabilities"][0]
     assert list(step) == ["name", "title", "reference", "unit", "consumes", "produces"]
     assert step["name"] == "core/record_total"
@@ -170,6 +236,14 @@ def test_the_return_part_has_one_line_167_record_total_step() -> None:
     assert step["unit"] == "ca/cad"
     assert step["consumes"] == {"records": "ca/t1_tax_and_credits.refund_or_balance_owing"}
     assert step["produces"] == {"output": "ca/refund_or_balance_owing"}
+
+
+def test_the_return_has_steps_beyond_line_167_for_the_two_rates() -> None:
+    outputs = [step["produces"]["output"] for step in _part()["capabilities"]]
+
+    assert outputs[0] == "ca/refund_or_balance_owing"
+    assert "ca-sk/average_income_tax_rate" in outputs
+    assert outputs[-1] == "ca-sk/marginal_tax_rate"
 
 
 def test_the_return_part_has_no_form_key() -> None:
