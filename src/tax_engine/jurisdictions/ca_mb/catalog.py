@@ -96,6 +96,12 @@ MB428_TAX_BEFORE_CREDITS_LINE_60 = AmountKind.declare(
 """MB428 line 60 "Line 60: Line 58 plus line 59 =": the sum of line 58 and line 59, where a blank
 line 59 is read as 0."""
 
+MB428_NON_REFUNDABLE_CREDITS_LINE_61 = AmountKind.declare(
+    CATALOG, "mb428_non_refundable_credits_line_61", non_negative=True
+)
+"""Manitoba non-refundable tax credits, MB428 line 61 "Line 61: Manitoba non-refundable tax credits
+from line 57 ^": line 57 of the credits form, read across the forms."""
+
 MB428_MINIMUM_TAX_CARRYOVER_LINE_63 = AmountKind.declare(
     CATALOG, "mb428_minimum_tax_carryover_line_63", non_negative=True
 )
@@ -140,6 +146,18 @@ MB428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_69 = AmountKind.declare(
 """Manitoba political contribution tax credit, MB428 line 69 "Line 69: Manitoba political
 contribution tax credit (use Worksheet MB428) (maximum $1,000)": a caller input, read as blank
 when left out."""
+
+MB428_LABOUR_SPONSORED_FUNDS_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "mb428_labour_sponsored_funds_credit_line_71", non_negative=True
+)
+"""Labour-sponsored funds tax credit, MB428 line 71 (line 60800) "Enter your labour-sponsored funds
+tax credit from Slip T2C (MAN.).": a caller input, read as blank when left out."""
+
+MB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
+    CATALOG, "mb428_provincial_foreign_tax_credit_line_73", non_negative=True
+)
+"""Provincial foreign tax credit, MB428 line 73 "Line 73: Provincial foreign tax credit (complete
+Form T2036)": a caller input, read as blank when left out."""
 
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
@@ -435,6 +453,13 @@ MB479_GEOTHERMAL_HEAT_PUMP_COST_LINE_68 = AmountKind.declare(
 """Geothermal heat pump cost, MB479 line 68 "Line 68 and line 61390: 7.5% of the adjusted cost of
 geothermal heat pumps": the adjusted cost of geothermal heat pumps the 7.5% is taken of, a caller
 input that is read as blank when left out."""
+
+MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
+    CATALOG, "mb479_geothermal_heat_pump_credit_line_68", non_negative=True
+)
+"""Green energy equipment tax credit (manufacturer), MB479 line 68 "Line 68 and line 61390: 7.5% of
+the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
+heat pumps, rounded half-up to the cent."""
 
 MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
     CATALOG, "mb479_book_publishing_credit_line_71", non_negative=True

@@ -1,0 +1,25 @@
+# ON428 (2025) line 27, the pension income amount. Form ON428 (CRA 5006-c): "Line 27 and line 58360:
+# Pension income amount (maximum $1,762)". No arithmetic is printed, so line 27 is an entry line in
+# two steps. The first, core/credit_amount, supplies the printed maximum from the
+# `ca-on/pension_income_amount_maximum` dataset; it is not a line of the form, so it has no title and
+# no reference. The second, core/at_most, is line 27: the entered amount
+# (on428_line_27_inputs.yaml) passed on unchanged. An entry above the printed maximum is refused,
+# not capped. The input is read as 0 when left out, so no blank rule is needed.
+form:
+  name: ca-on/on428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-on/pension_income_amount_maximum
+    produces:
+      output: ca-on/on428_pension_income_amount_maximum
+  - name: core/at_most
+    title: "Pension income amount"
+    reference: "27"
+    unit: ca/cad
+    consumes:
+      amount: ca-on/on428_pension_income_amount
+      bound: ca-on/on428_pension_income_amount_maximum
+    produces:
+      output: ca-on/on428_pension_income_amount_line_27

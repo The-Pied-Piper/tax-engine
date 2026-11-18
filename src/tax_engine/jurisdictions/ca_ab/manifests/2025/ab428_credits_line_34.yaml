@@ -1,0 +1,16 @@
+# AB428 (2025) line 34. Form AB428 (CRA 5009-c-25e): "Line 34 and line 58360: Pension income amount
+# (maximum $1,719)". The amount the filer claims (an optional input read as 0 when left out) may not
+# exceed the printed maximum: core/at_most passes it on unchanged, and an amount above the maximum is
+# rejected, not capped.
+form:
+  name: ca-ab/ab428_credits
+capabilities:
+  - name: core/at_most
+    title: "Pension income amount"
+    reference: "34"
+    unit: ca/cad
+    consumes:
+      amount: ca-ab/ab428_pension_income_amount
+      bound: ca-ab/pension_income_amount_maximum
+    produces:
+      output: ca-ab/ab428_pension_income_amount_line_34

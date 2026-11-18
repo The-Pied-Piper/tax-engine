@@ -319,7 +319,21 @@ ON428_PENSION_INCOME_AMOUNT = AmountKind.declare(
     CATALOG, "on428_pension_income_amount", non_negative=True
 )
 """Pension income amount, ON428 line 27 "Line 27 and line 58360: Pension income amount (maximum
-$1,762)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
+$1,762)": the amount the filer claims, a caller input that is read as 0 when it is left out; the
+line 27 step checks it against the printed maximum."""
+
+ON428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "on428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on ON428 line 27 "(maximum $1,762)": the printed maximum,
+from the `ca-on/pension_income_amount_maximum` dataset; the bound line 27 cannot pass."""
+
+ON428_PENSION_INCOME_AMOUNT_LINE_27 = AmountKind.declare(
+    CATALOG, "on428_pension_income_amount_line_27", non_negative=True
+)
+"""Pension income amount, ON428 line 27 "Line 27 and line 58360: Pension income amount (maximum
+$1,762)": the entered amount, passed on unchanged when it is at most the printed maximum, 0 when
+left out; above the maximum it is refused, not capped."""
 
 ON428_CREDITS_WITH_PENSION_LINE_28 = AmountKind.declare(
     CATALOG, "on428_credits_with_pension_line_28", non_negative=True

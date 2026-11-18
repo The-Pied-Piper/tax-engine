@@ -1,6 +1,8 @@
-# Form BC428 (CRA 5010-C) line 37: "Line 37: Line 35 plus line 36 = ^". Line 36 is the pension income
-# amount, an optional input read as 0 when the filer has none (bc428_line_36_input.yaml), so it has
-# no step. core/sum adds line 35 and the pension income amount, read as 0 by the blank rule below.
+# Form BC428 (CRA 5010-C) line 37: "Line 37: Line 35 plus line 36 = ^". Line 36, the pension income
+# amount, is an entry rejected above its printed maximum by bc428_line_36.yaml; line 37 reads the
+# amount that step passes on (ca-bc/bc428_pension_income_amount_line_36). A salary-only filer leaves
+# line 36 out, the input part reads it as blank (bc428_line_36_input.yaml), line 36 passes it on as
+# blank, and core/sum reads that blank as 0 by the blank rule below.
 form:
   name: ca-bc/bc428
 capabilities:
@@ -12,8 +14,8 @@ capabilities:
     consumes:
       parts:
         - ca-bc/bc428_subtotal_line_35
-        - ca-bc/bc428_pension_income_amount
+        - ca-bc/bc428_pension_income_amount_line_36
     blank:
-      ca-bc/bc428_pension_income_amount: "0"
+      ca-bc/bc428_pension_income_amount_line_36: "0"
     produces:
       output: ca-bc/bc428_subtotal_line_37
