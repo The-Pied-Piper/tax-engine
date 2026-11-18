@@ -1,8 +1,9 @@
 """The Newfoundland and Labrador package list and the registries built over it.
 
-Newfoundland and Labrador is not in `tax_engine.registrations.JURISDICTIONS` yet, so a test
-builds its own package list (core, federal, Newfoundland and Labrador) here and takes its kinds
-and capabilities from it. Each registry is built once per test process; never register into one.
+Newfoundland and Labrador is not yet listed in `tax_engine.registrations.JURISDICTIONS`, so the
+tests of this package build their own package list (core, federal, Newfoundland and Labrador)
+here and take their kinds and capabilities from it. Each registry is built once per test process;
+never register into one.
 """
 
 from functools import cache
@@ -19,7 +20,7 @@ from tax_engine.domain.unit import UnitRegistry
 
 @cache
 def newfoundland_packages() -> JurisdictionPackages:
-    """The packages a Newfoundland and Labrador return needs: core, federal and its own."""
+    """The packages a Newfoundland and Labrador return needs: core, federal and ca-nl."""
     return JurisdictionPackages(
         (
             tax_engine.jurisdictions.core,

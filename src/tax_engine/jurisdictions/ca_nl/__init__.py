@@ -1,5 +1,5 @@
-"""Newfoundland and Labrador (`CA-NL`): the `ca-nl/...` datasets, its capabilities and its
-trace lines.
+"""Newfoundland and Labrador (`CA-NL`): its artifact catalog, its capabilities, its trace lines and
+its manifest.
 
 Importing the package imports its `capabilities`, `trace` and `trace_english` packages.
 """
