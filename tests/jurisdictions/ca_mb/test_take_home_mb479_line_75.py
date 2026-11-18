@@ -161,7 +161,7 @@ def test_the_trace_row_for_line_75_reads_at_most_the_printed_maximum(tmp_path: P
 
     (row,) = [r for r in rows if ", at most " in r and "(CA$250.50)" in r]
     assert row.index("(CA$250.50)") < row.index(", at most ")
-    assert "(CA$27,000.00)" in row.split(", at most ")[1]
+    assert "(CA$27000.00)" in row.split(", at most ")[1]
 
 
 def _part() -> dict[str, Any]:
