@@ -28,7 +28,7 @@ from tests.jurisdictions.ca_sk.support import (
 from tests.kinds import non_negative
 
 IDENTIFIER = SK428_DONATIONS_CREDIT_LINE_56.identifier
-PRINTED_BASIS = "Line 56 and line 58969: Line 54 plus line 55"
+PRINTED_BASIS = "Line 56 and 58969: Line 54 plus line 55"
 PART = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / (
     "manifests/2025/sk428_credits_line_56_input.yaml"
 )
