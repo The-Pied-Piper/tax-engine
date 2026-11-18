@@ -1,0 +1,22 @@
+# Form MB428 (CRA 5007-c) line 78: "Line 78: Line 76 minus line 77 (if negative, enter "0") = ^".
+# One core/subtract_not_below_zero step: the Manitoba tax (line 76, `ca-mb/mb428_tax_line_76`) less
+# the small business venture capital tax credit for individuals (line 77,
+# `ca-mb/mb428_venture_capital_credit_line_77`), not below 0. Line 77 is an optional input that a
+# salary-only caller leaves blank, read as blank and then as 0 by the blank rule. The form prints
+# no title for the line, so the step has none. The output is `ca-mb/mb428_tax_line_78`, which is
+# not exported yet.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "78"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/mb428_tax_line_76
+      less: ca-mb/mb428_venture_capital_credit_line_77
+    blank:
+      less: "0"
+    produces:
+      output: ca-mb/mb428_tax_line_78

@@ -220,6 +220,10 @@ line 60850: Manitoba small business venture capital tax credit for individuals (
 T1256-1) (maximum $120,000)": the entered amount, passed on unchanged when it is at most the printed
 maximum, blank when left out; above the maximum it is refused, not capped."""
 
+MB428_TAX_LINE_78 = AmountKind.declare(CATALOG, "mb428_tax_line_78", non_negative=True)
+"""Manitoba tax, MB428 line 78 "Line 78: Line 76 minus line 77 (if negative, enter "0") =":
+calculated, line 76 less line 77 (line 77 read as 0 when blank), not below 0."""
+
 MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
     CATALOG, "mb428_employee_share_purchase_tax_credit_line_79", non_negative=True
 )
@@ -577,6 +581,21 @@ MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_LINE_73 = AmountKind.declare(
 industries printing tax credit (maximum $1,100,000)": the credit of the line, a caller input that is
 read as blank when left out; the printed maximum $1,100,000 is checked by the step that reads it."""
 
+MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb479_cultural_industries_printing_credit_maximum", non_negative=True
+)
+"""Cultural industries printing tax credit maximum, printed on MB479 line 73 "(maximum $1,100,000)":
+the printed maximum, from the `ca-mb/cultural_industries_printing_credit_maximum` dataset; the bound
+line 73 cannot pass."""
+
+MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_CHECKED_LINE_73 = AmountKind.declare(
+    CATALOG, "mb479_cultural_industries_printing_credit_checked_line_73", non_negative=True
+)
+"""Cultural industries printing tax credit, MB479 line 73 "Line 73 and line 61480: Cultural
+industries printing tax credit (maximum $1,100,000)": the entered amount, passed on unchanged when
+it is at most the printed maximum, blank when left out; above the maximum it is refused, not
+capped."""
+
 MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
     CATALOG, "mb479_community_enterprise_development_tax_credit_line_75", non_negative=True
 )
@@ -712,3 +731,8 @@ energy credits), rounded to the cent."""
 MB479_CREDITS_LINE_72 = AmountKind.declare(CATALOG, "mb479_credits_line_72", non_negative=True)
 """Credits, MB479 line 72 "Line 72: Line 70 plus line 71 = ^": line 70 plus line 71 (the book
 publishing credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
+
+MB479_CREDITS_LINE_74 = AmountKind.declare(CATALOG, "mb479_credits_line_74", non_negative=True)
+"""Credits, MB479 line 74 "Line 74: Line 72 plus line 73 = ^": line 72 plus line 73 (the cultural
+industries printing credit, checked against its printed maximum, blank when left out and read as 0),
+rounded to the cent."""
