@@ -1,5 +1,7 @@
-"""The Manitoba form `ca-mb/mb428_credits` (Form MB428, lines 1 to 57) and the two kinds it
-exports: line 8, Manitoba tax on taxable income, and line 57, Manitoba non-refundable tax credits.
+"""The Manitoba form `ca-mb/mb428_credits` (Form MB428, lines 1 to 57) and the three kinds it
+exports: line 5, the rate of the column line 1 is in (the return summary reads it for the marginal
+tax rate), line 8, Manitoba tax on taxable income, and line 57, Manitoba non-refundable tax
+credits.
 
 The part file names the form and its exports; line parts carry the capabilities. The Manitoba
 manifest is partial and Manitoba is not yet listed, so the part is read as YAML and the kinds are
@@ -27,6 +29,7 @@ PART = (
 )
 
 EXPORTS = [
+    "ca-mb/mb428_bracket_rate_line_5",
     "ca-mb/mb428_tax_on_taxable_income_line_8",
     "ca-mb/mb428_non_refundable_credits_line_57",
 ]
@@ -46,7 +49,7 @@ def test_the_form_is_named_titled_as_printed_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_the_two_lines_the_tax_form_reads_in_order() -> None:
+def test_the_form_exports_the_line_5_rate_and_the_two_lines_the_tax_form_reads_in_order() -> None:
     assert _part()["form"]["exports"] == EXPORTS
 
 

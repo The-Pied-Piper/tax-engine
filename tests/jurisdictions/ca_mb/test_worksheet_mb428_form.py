@@ -1,9 +1,12 @@
-"""The Manitoba form `ca-mb/worksheet_mb428` (Worksheet MB428, CRA 5007-D, 2025) and its export.
+"""The Manitoba form `ca-mb/worksheet_mb428` (Worksheet MB428, CRA 5007-D, 2025) and its exports.
 
 Only the section "Line 58040 - Basic personal amount" is built. Its line 9 reads (CRA 5007-D):
 "Line 9: Line 1 minus line 8 (if negative, enter "0") Enter this amount on line 58040 of your Form
-MB428." The part file declares the form and that one export; it has no capabilities, no dataset and
-no lines yet (those come with their own tickets).
+MB428." The part file declares the form and its exports: line 9, which Form MB428 reads, and lines
+5, 7 and 8 ("Line 5: Income threshold 200,000.00", "Line 7: Base amount 15,780.00", "Line 8: Line 6
+multiplied by line 7 = ^"), which the return summary reads for the slope of the basic personal
+amount's phase-out in the marginal tax rate. It has no capabilities of its own, no dataset and no
+supplies (the lines have their own parts).
 """
 
 from __future__ import annotations
@@ -26,6 +29,9 @@ from tests.kinds import non_negative
 
 MB_ROOT = Path(tax_engine.jurisdictions.ca_mb.__file__).parent
 PART = MB_ROOT / "manifests" / "2025" / "worksheet_mb428.yaml"
+LINE_5 = "ca-mb/worksheet_mb428_basic_personal_amount_line_5"
+LINE_7 = "ca-mb/worksheet_mb428_basic_personal_amount_line_7"
+LINE_8 = "ca-mb/worksheet_mb428_line_8"
 LINE_9 = "ca-mb/worksheet_mb428_basic_personal_amount_line_9"
 
 
@@ -64,8 +70,17 @@ def test_the_part_declares_the_form_name_title_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_only_the_basic_personal_amount_line_9() -> None:
-    assert _part()["form"]["exports"] == [LINE_9]
+def test_the_form_exports_lines_5_7_8_and_9() -> None:
+    assert _part()["form"]["exports"] == [LINE_5, LINE_7, LINE_8, LINE_9]
+
+
+@pytest.mark.parametrize("identifier", [LINE_5, LINE_7, LINE_8])
+def test_the_other_exported_lines_are_registered_non_negative_amounts(identifier: str) -> None:
+    kind = manitoba_kinds().kind(identifier)
+
+    assert kind.identifier == identifier
+    assert isinstance(kind, AmountKind)
+    assert non_negative(kind)
 
 
 def test_the_part_declares_no_capabilities_and_no_supplies() -> None:
