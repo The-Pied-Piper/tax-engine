@@ -1,0 +1,17 @@
+# Form SK428 (CRA 5008-c) line 32: "Line 32: Line 21 plus line 31 =". Line 21 reads "Amount from line
+# 20 of the previous page", a copy of line 20, so it gets no step: the one step adds line 20 and
+# line 31 with core/sum, as ca-on/on428 line 25 does (on428_line_25.yaml). The form prints no label.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    reference: "32"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts:
+        - ca-sk/sk428_credits_subtotal_line_20
+        - ca-sk/sk428_cpp_ei_and_other_line_31
+    produces:
+      output: ca-sk/sk428_credits_subtotal_line_32

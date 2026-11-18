@@ -157,3 +157,9 @@ SK428_CPP_EI_AND_OTHER_LINE_31 = AmountKind.declare(
 """CPP or QPP, EI and other credit amounts, SK428 line 31 "Line 31: Add lines 22 to 30.": the sum of
 the CPP or QPP contributions on line 22 and the EI premiums on line 24, the other lines being blank
 optional lines."""
+
+SK428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_32", non_negative=True
+)
+"""Saskatchewan credit amounts subtotal, SK428 line 32 "Line 32: Line 21 plus line 31 =": line 21,
+a copy of line 20, plus line 31, read by line 35."""
