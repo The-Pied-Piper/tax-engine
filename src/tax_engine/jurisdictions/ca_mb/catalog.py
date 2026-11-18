@@ -215,6 +215,12 @@ MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
 employee share purchase tax credit (complete Form T1256-2)": a caller input, read as blank when left
 out."""
 
+MB428_MINERAL_EXPLORATION_TAX_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "mb428_mineral_exploration_tax_credit_line_81", non_negative=True
+)
+"""Manitoba mineral exploration tax credit, MB428 line 81 "Line 81 and line 60920: Manitoba mineral
+exploration tax credit (complete Form T1241)": a caller input, read as blank when left out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
@@ -574,6 +580,36 @@ MB479_TEACHING_SUPPLIES_EXPENSES_LINE_79 = AmountKind.declare(
 input read as blank when left out; the printed maximum $1,000 is checked by the step that reads
 it."""
 
+MB479_TEACHING_SUPPLIES_EXPENSES_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb479_teaching_supplies_expenses_maximum", non_negative=True
+)
+"""Teaching supplies expenses maximum, printed on MB479 line 79 "(maximum $1,000)": the printed
+maximum, from the `ca-mb/teaching_supplies_expenses_maximum` dataset; the bound line 79 cannot
+pass."""
+
+MB479_TEACHING_SUPPLIES_EXPENSES_CHECKED_LINE_79 = AmountKind.declare(
+    CATALOG, "mb479_teaching_supplies_expenses_checked_line_79", non_negative=True
+)
+"""Teaching expense tax credit, MB479 line 79 "Line 79: Eligible teaching supplies expenses
+(maximum $1,000) Line 61495": the entered amount, passed on unchanged when it is at most the printed
+maximum, blank when left out; above the maximum it is refused, not capped."""
+
+MB479_TEACHING_EXPENSE_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "mb479_teaching_expense_credit_line_79", non_negative=True
+)
+"""Teaching expense tax credit, MB479 line 79 "Line 79: Eligible teaching supplies expenses
+(maximum $1,000) Line 61495 multiplied by 15% =": calculated, the checked eligible teaching supplies
+expenses multiplied by 15%, rounded half-up to the cent, with a blank entry read as 0."""
+
+MB479_RENTAL_HOUSING_CONSTRUCTION_INCENTIVE_TAX_CREDIT_LINE_80 = AmountKind.declare(
+    CATALOG,
+    "mb479_rental_housing_construction_incentive_tax_credit_line_80",
+    non_negative=True,
+)
+"""Rental housing construction incentive tax credit, MB479 line 80 "Line 80: Certificate number:
+Line 61496 Tax credit amount from your certificate": the credit amount on the certificate, a caller
+input that is read as blank when left out; the certificate number is not read."""
+
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
 )
@@ -648,3 +684,7 @@ expenses multiplied by 40%, then at most the printed maximum of $16,000."""
 MB479_CREDITS_LINE_62 = AmountKind.declare(CATALOG, "mb479_credits_line_62", non_negative=True)
 """Credits, MB479 line 62 "Line 62: Line 60 plus line 61 =": line 60 plus line 61 (the fertility
 treatment tax credit, already at most its $16,000 maximum), rounded to the cent."""
+
+MB479_CREDITS_LINE_64 = AmountKind.declare(CATALOG, "mb479_credits_line_64", non_negative=True)
+"""Credits, MB479 line 64 "Line 64: Line 62 plus line 63 =": line 62 plus line 63 (the paid work
+experience tax credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
