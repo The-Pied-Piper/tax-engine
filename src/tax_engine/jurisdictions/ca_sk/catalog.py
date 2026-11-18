@@ -19,6 +19,12 @@ SK428_TAX_ON_TAXABLE_INCOME_LINE_8 = AmountKind.declare(
 """Saskatchewan tax on taxable income, SK428 line 8 "Line 6 plus line 7 Saskatchewan tax on taxable
 income =": line 6 plus line 7, read by line 58 on the tax form."""
 
+SK428_EI_PREMIUMS_LINE_24 = AmountKind.declare(
+    CATALOG, "sk428_ei_premiums_line_24", non_negative=True
+)
+"""EI premiums credit amount, SK428 line 24 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
+
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
 )
@@ -26,8 +32,8 @@ SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
 56 Enter this amount on line 63. Saskatchewan non-refundable tax credits =": line 53 plus line 56,
 read by line 63 on the tax form."""
 
-SK428_EI_PREMIUMS_LINE_24 = AmountKind.declare(
-    CATALOG, "sk428_ei_premiums_line_24", non_negative=True
+SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
+    CATALOG, "sk428_saskatchewan_tax_line_82", non_negative=True
 )
-"""EI premiums credit amount, SK428 line 24 (line 58300) "Amount from line 31200 of your return": a
-copy of T2204 line 16, the EI premiums credit amount."""
+"""Saskatchewan tax, SK428 line 82 "Enter this amount on line 42800 of your return.": the
+Saskatchewan tax, entered on T1 line 42800."""
