@@ -157,3 +157,9 @@ SK428_CPP_EI_AND_OTHER_LINE_31 = AmountKind.declare(
 """CPP or QPP, EI and other credit amounts, SK428 line 31 "Line 31: Add lines 22 to 30.": the sum of
 the CPP or QPP contributions on line 22 and the EI premiums on line 24, the other lines being blank
 optional lines."""
+
+SK428_MINIMUM_TAX_ADDITIONAL_LINE_68 = AmountKind.declare(
+    CATALOG, "sk428_minimum_tax_additional_line_68"
+)
+"""Saskatchewan additional tax for minimum tax purposes, SK428 line 68 "Line 68: Form T691: Line 1
+minus Line 2 of Part 7 multiplied by 50% =": 50% of the Form T691 amount."""
