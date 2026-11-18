@@ -7,13 +7,13 @@ built, so it adds nothing. The form prints no label for line 35, so the step has
 
 The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the real
 line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
-`_line_31.yaml`, `_line_32.yaml`, `_line_35.yaml`) and the real `sk428_line_33_inputs.yaml`, and
-types in only the salary, or the salary and a pension income amount. The form declaration is made
-up here, exporting the lines read, because the real form part exports only the lines already
-built. The figures are not a CRA example: they are re-derived below with Decimal from the printed
-basic personal amount dataset (19,491), CPP at 4.95% of the salary above the $3,500 basic
-exemption to a maximum of $3,356.10, and EI at 1.64% to the $65,700 maximum insurable earnings,
-each rounded half-up to the cent.
+`_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`) and the real
+`sk428_line_33_inputs.yaml`, and types in only the salary, or the salary and a pension income
+amount. The form declaration is made up here, exporting the lines read, because the real form part
+exports only the lines already built. The figures are not a CRA example: they are re-derived below
+with Decimal from the printed basic personal amount dataset (19,491), CPP at 4.95% of the salary
+above the $3,500 basic exemption to a maximum of $3,356.10, and EI at 1.64% to the $65,700 maximum
+insurable earnings, each rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -33,6 +33,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -76,6 +77,7 @@ FORM = dedent("""\
         - ca-sk/sk428_cpp_contributions_line_22
         - ca-sk/sk428_ei_premiums_line_24
         - ca-sk/sk428_cpp_ei_and_other_line_31
+        - ca-sk/sk428_pension_income_amount_checked_line_33
         - ca-sk/sk428_credits_subtotal_line_32
         - ca-sk/sk428_credits_subtotal_line_35
     capabilities: []
@@ -108,6 +110,7 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "sk428_credits_line_22.yaml"
     yield SK_PARTS / "sk428_credits_line_24.yaml"
     yield SK_PARTS / "sk428_line_33_inputs.yaml"
+    yield SK_PARTS / "sk428_credits_line_33.yaml"
     yield SK_PARTS / "sk428_credits_line_31.yaml"
     yield SK_PARTS / "sk428_credits_line_32.yaml"
     yield PART
@@ -196,6 +199,16 @@ def test_line_35_adds_the_pension_income_amount_entered_on_line_33(
     assert _line_35(service, salary, pension) - _line_35(service, salary) == D(pension)
 
 
+def test_a_pension_income_amount_above_the_maximum_is_rejected_through_line_35(
+    tmp_path: Path,
+) -> None:
+    service = _service(tmp_path)
+
+    assert _line_35(service, "70000", "1000") == D("24860.23")
+    with pytest.raises(InputAboveBoundError):
+        _line_35(service, "70000", "1000.01")
+
+
 def test_the_part_is_one_untitled_sum_step_over_line_32_and_the_line_33_input() -> None:
     assert _step() == {
         "name": "core/sum",
@@ -205,7 +218,7 @@ def test_the_part_is_one_untitled_sum_step_over_line_32_and_the_line_33_input() 
         "consumes": {
             "parts": [
                 "ca-sk/sk428_credits_subtotal_line_32",
-                "ca-sk/sk428_pension_income_amount",
+                "ca-sk/sk428_pension_income_amount_checked_line_33",
             ]
         },
         "produces": {"output": IDENTIFIER},

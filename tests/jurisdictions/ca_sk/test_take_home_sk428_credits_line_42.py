@@ -9,13 +9,13 @@ lines 35 and 38. The form prints no label for line 42, so the step has no title.
 
 The test composes the real Saskatchewan salary part, the real Schedule 8 and T2204 parts, the real
 line parts (`sk428_credits_line_9.yaml`, `_line_20.yaml`, `_line_22.yaml`, `_line_24.yaml`,
-`_line_31.yaml`, `_line_32.yaml`, `_line_35.yaml`, `_line_38.yaml`, `_line_42.yaml`) and the real
-`sk428_line_33_inputs.yaml`, and types in only the salary, or the salary and a pension income
-amount. The form declaration is made up here, exporting the lines read, because the real form part
-exports only the lines already built. The figures are not a CRA example: they are re-derived below
-with Decimal from the printed basic personal amount dataset (19,491), CPP at 4.95% of the salary
-above the $3,500 basic exemption to a maximum of $3,356.10, and EI at 1.64% to the $65,700 maximum
-insurable earnings, each rounded half-up to the cent.
+`_line_31.yaml`, `_line_32.yaml`, `_line_33.yaml`, `_line_35.yaml`, `_line_38.yaml`,
+`_line_42.yaml`) and the real `sk428_line_33_inputs.yaml`, and types in only the salary, or the
+salary and a pension income amount. The form declaration is made up here, exporting the lines read,
+because the real form part exports only the lines already built. The figures are not a CRA example:
+they are re-derived below with Decimal from the printed basic personal amount dataset (19,491), CPP
+at 4.95% of the salary above the $3,500 basic exemption to a maximum of $3,356.10, and EI at 1.64%
+to the $65,700 maximum insurable earnings, each rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -114,6 +114,7 @@ def _part_files() -> Iterator[Path]:
     yield SK_PARTS / "sk428_line_33_inputs.yaml"
     yield SK_PARTS / "sk428_credits_line_31.yaml"
     yield SK_PARTS / "sk428_credits_line_32.yaml"
+    yield SK_PARTS / "sk428_credits_line_33.yaml"
     yield SK_PARTS / "sk428_credits_line_35.yaml"
     yield SK_PARTS / "sk428_credits_line_38.yaml"
     yield PART
