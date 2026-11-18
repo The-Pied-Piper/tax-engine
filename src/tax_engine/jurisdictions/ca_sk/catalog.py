@@ -220,3 +220,10 @@ SK428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
 """Saskatchewan credits subtotal, SK428 line 42 "Line 42: Add lines 38 to 41. =": line 38, lines 39
 to 41 (student loan interest, unused tuition and education amounts, amounts transferred from a
 spouse) not being built."""
+
+SK428_CREDITS_TOTAL_LINE_51 = AmountKind.declare(
+    CATALOG, "sk428_credits_total_line_51", non_negative=True
+)
+"""Saskatchewan credits total, SK428 line 51 (line 58800) "Line 42 plus line 50 =": the credits
+subtotal of line 42 plus the medical expense amount of line 50, read as 0 when blank, lines 43 to
+49 (the medical expense working) not being built."""
