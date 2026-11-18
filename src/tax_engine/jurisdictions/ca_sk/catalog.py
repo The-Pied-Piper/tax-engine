@@ -195,3 +195,9 @@ SK428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 """Tax at the start of the column of lines 2 to 8 (the engine's description; the form prints no
 title for line 7), Form SK428 line 7 "Column 1: Line 1 is $53,463 or less / Line 7: 0.00" (5,613.62;
 18,024.49): the figure printed on line 7 of the column that line 1 falls in."""
+
+SK428_CREDITS_SUBTOTAL_LINE_35 = AmountKind.declare(
+    CATALOG, "sk428_credits_subtotal_line_35", non_negative=True
+)
+"""Saskatchewan credits subtotal, SK428 line 35 "Line 35: Add lines 32 to 34. =": line 32 plus
+the pension income amount on line 33, line 34 (the caregiver amount) not being built."""
