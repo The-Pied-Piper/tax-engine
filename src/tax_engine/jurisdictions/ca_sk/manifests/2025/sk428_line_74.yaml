@@ -1,0 +1,22 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) line 74, "Line 74: Line 71 minus line 73 (if negative,
+# enter "0") = ^". One core/subtract_not_below_zero step: the Saskatchewan tax after the foreign tax
+# credit (line 71, `ca-sk/sk428_tax_line_71`) less the political contribution tax credit (line 73,
+# `ca-sk/sk428_political_contributions_credit_line_73`), not below 0. Line 73 is an optional input
+# that a caller without political contributions leaves out, read as blank and then as 0 by the
+# blank rule. The form prints no title for the line, so the step has none. Line 74 is the output
+# `ca-sk/sk428_tax_line_74`.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "74"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      amount: ca-sk/sk428_tax_line_71
+      less: ca-sk/sk428_political_contributions_credit_line_73
+    blank:
+      less: "0"
+    produces:
+      output: ca-sk/sk428_tax_line_74
