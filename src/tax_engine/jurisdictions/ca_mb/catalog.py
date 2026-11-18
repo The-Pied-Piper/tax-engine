@@ -628,3 +628,7 @@ MB479_FERTILITY_TREATMENT_CREDIT_LINE_61 = AmountKind.declare(
 """Fertility treatment tax credit, MB479 line 61 "Line 61: Eligible medical expenses for fertility
 treatments Line 61268 multiplied by 40% (maximum $16,000) =": calculated, the eligible medical
 expenses multiplied by 40%, then at most the printed maximum of $16,000."""
+
+MB479_CREDITS_LINE_62 = AmountKind.declare(CATALOG, "mb479_credits_line_62", non_negative=True)
+"""Credits, MB479 line 62 "Line 62: Line 60 plus line 61 =": line 60 plus line 61 (the fertility
+treatment tax credit, already at most its $16,000 maximum), rounded to the cent."""
