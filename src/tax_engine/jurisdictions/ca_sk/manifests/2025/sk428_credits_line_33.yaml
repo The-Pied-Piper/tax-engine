@@ -1,0 +1,26 @@
+# SK428 (2025) line 33, the pension income amount. Form SK428 (CRA 5008-c): "Line 33 and line
+# 58360: Pension income amount (maximum $1,000)". No arithmetic is printed, so line 33 is an entry
+# line in two steps. The first, core/credit_amount, supplies the printed maximum from the
+# `ca-sk/pension_income_amount_maximum` dataset; it is not a line of the form, so it has no title
+# and no reference. The second, core/at_most, is line 33: the entered amount
+# (sk428_line_33_inputs.yaml) passed on unchanged, titled "Pension income amount". An entry above
+# the printed maximum is refused, not capped. The input is read as 0 when left out, so the checked
+# amount is never blank and the step has no blank rule.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-sk/pension_income_amount_maximum
+    produces:
+      output: ca-sk/sk428_pension_income_amount_maximum
+  - name: core/at_most
+    title: "Pension income amount"
+    reference: "33"
+    unit: ca/cad
+    consumes:
+      amount: ca-sk/sk428_pension_income_amount
+      bound: ca-sk/sk428_pension_income_amount_maximum
+    produces:
+      output: ca-sk/sk428_pension_income_amount_checked_line_33

@@ -1,7 +1,7 @@
 # SK428 (2025) line 33 input a salary-only caller does not give.
 # Line 33 and line 58360: "Line 33 and line 58360: Pension income amount (maximum $1,000)" (Form SK428, CRA 5008-c).
 # A salary-only caller has no pension income, so a request that leaves the line out is read as 0,
-# not blank.
+# not blank; the line 33 step (sk428_credits_line_33.yaml) checks it against the printed maximum.
 inputs:
   - name: ca-sk/sk428_pension_income_amount
     title: "Pension income amount"
