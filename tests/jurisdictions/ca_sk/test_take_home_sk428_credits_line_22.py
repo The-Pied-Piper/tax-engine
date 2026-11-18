@@ -6,13 +6,11 @@ Schedule 8 export that gives T1 line 30800 (Schedule 8 line 25, the CPP base con
 return), as Manitoba's line 19 is (`mb428_credits_line_19.yaml`) and Alberta's line 27 is
 (`ab428_credits_line_27.yaml`).
 
-The test composes the real Schedule 8 parts and the real line part (`sk428_credits_line_22.yaml`),
-and types in only the salary. Saskatchewan has no salary part yet, so the test writes its own copy
-of the one input the Manitoba salary part declares (employment income, T1 line 10100), into the
-temporary package only. The form declaration is made up here, exporting the line read, because the
-real form part exports only the lines already built. The figures are hand-computed (not a CRA
-example): 4.95% of the salary above the $3,500 basic exemption, to the maximum of $3,356.10,
-rounded half-up to the cent.
+The test composes the real Saskatchewan salary part, the real Schedule 8 parts and the real line
+part (`sk428_credits_line_22.yaml`), and types in only the salary. The form declaration is made up
+here, exporting the line read, because the real form part exports only the lines already built.
+The figures are hand-computed (not a CRA example): 4.95% of the salary above the $3,500 basic
+exemption, to the maximum of $3,356.10, rounded half-up to the cent.
 """
 
 from __future__ import annotations
@@ -69,17 +67,6 @@ FORM = dedent("""\
         - ca-sk/sk428_cpp_contributions_line_22
     capabilities: []
     """)
-# The one input a Saskatchewan take-home caller gives, the same declaration as Manitoba's
-# `salary.yaml` (T1 line 10100). Saskatchewan has no salary part yet, so the test supplies it.
-SALARY = dedent("""\
-    inputs:
-      - name: ca/employment_income
-        title: "Employment income"
-        reference: "10100"
-        unit: ca/cad
-        required: true
-    """)
-
 CASES = [
     ("0", "0.00"),
     ("3500", "0.00"),
@@ -91,8 +78,8 @@ CASES = [
 ]
 
 
-def _part_files(salary: Path) -> Iterator[Path]:
-    yield salary
+def _part_files() -> Iterator[Path]:
+    yield SK_PARTS / "salary.yaml"
     yield from sorted(FEDERAL_FORMS.rglob("schedule_8*.yaml"))
     yield LINE_PART
 
@@ -102,11 +89,7 @@ def _service(tmp_path: Path) -> TaxComputationService:
     folder.mkdir(parents=True)
     (folder / "00_header.yaml").write_text(HEADER, encoding="utf-8")
     (folder / "01_form.yaml").write_text(FORM, encoding="utf-8")
-    parts = tmp_path / "parts"
-    parts.mkdir()
-    salary = parts / "salary.yaml"
-    salary.write_text(SALARY, encoding="utf-8")
-    for number, part in enumerate(_part_files(salary), start=2):
+    for number, part in enumerate(_part_files(), start=2):
         (folder / f"{number:02d}_{part.name}").write_text(
             inputs_without_form(part)
             if part.name.endswith("_inputs.yaml") and part.is_relative_to(FEDERAL_FORMS)
