@@ -1,0 +1,18 @@
+# Form SK428 (Saskatchewan Tax, CRA 5008-C) Part A, line 8, "Line 8: Line 6 plus line 7 Saskatchewan
+# tax on taxable income =": the Saskatchewan tax on taxable income. It sums line 6
+# (`ca-sk/sk428_tax_on_excess_line_6`) and line 7 (`ca-sk/sk428_bracket_tax_at_start_line_7`). Line 6
+# is already rounded to the cent and line 7 is a printed amount in cents, so the sum adds no rounding
+# of its own. Line 8 is the output `ca-sk/sk428_tax_on_taxable_income_line_8`.
+form:
+  name: ca-sk/sk428_credits
+capabilities:
+  - name: core/sum
+    title: "Saskatchewan tax on taxable income"
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-sk/cent_rounding
+    consumes:
+      parts: [ca-sk/sk428_tax_on_excess_line_6, ca-sk/sk428_bracket_tax_at_start_line_7]
+    produces:
+      output: ca-sk/sk428_tax_on_taxable_income_line_8
