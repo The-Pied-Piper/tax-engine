@@ -1,0 +1,21 @@
+# Form MB479 (CRA 5007-TC) line 74: "Line 74: Line 72 plus line 73 = ^". The step sums line 72
+# (`ca-mb/mb479_credits_line_72`) and line 73 (`ca-mb/mb479_cultural_industries_printing_credit_
+# checked_line_73`, the entered credit checked against its printed maximum). A caller who leaves
+# line 73 blank has it read as 0 by the blank rule. The form prints no label and no maximum for line
+# 74, and the step is untitled. The output is `ca-mb/mb479_credits_line_74`.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "74"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb479_credits_line_72
+        - ca-mb/mb479_cultural_industries_printing_credit_checked_line_73
+    blank:
+      ca-mb/mb479_cultural_industries_printing_credit_checked_line_73: "0"
+    produces:
+      output: ca-mb/mb479_credits_line_74
