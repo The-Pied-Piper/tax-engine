@@ -182,3 +182,9 @@ SK428_BRACKET_RATE_LINE_5 = AmountKind.declare(
 )
 """Rate of the column, Form SK428 line 5 "Column 1: Line 1 is $53,463 or less / Line 5: Rate 10.5%"
 (12.5%; 14.5%): the printed rate of the column of lines 2 to 8 that line 1 falls in."""
+
+SK428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "sk428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, SK428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero."""
