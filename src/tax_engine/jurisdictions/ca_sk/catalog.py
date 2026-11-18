@@ -138,7 +138,8 @@ SK428_LABOUR_SPONSORED_CREDIT_LINE_77 = AmountKind.declare(
     CATALOG, "sk428_labour_sponsored_credit_line_77", non_negative=True
 )
 """Labour-sponsored venture capital tax credit, SK428 line 77 (line 63557) "Line 77 and line
-63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out."""
+63557: Line 75 plus line 76 (maximum $875)": a caller input, read as blank when left out; the
+line 77 step checks it against the printed maximum."""
 
 SK428_MINERAL_EXPLORATION_CREDIT_LINE_79 = AmountKind.declare(
     CATALOG, "sk428_mineral_exploration_credit_line_79", non_negative=True
@@ -305,3 +306,17 @@ SK428_TAX_LINE_78 = AmountKind.declare(CATALOG, "sk428_tax_line_78", non_negativ
 """Saskatchewan tax after the labour-sponsored venture capital credit, SK428 line 78 "Line 78: Line
 74 minus line 77 (if negative, enter "0") = ^": line 74 less the credit of line 77 (blank read as
 0), never below zero."""
+
+SK428_LABOUR_SPONSORED_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "sk428_labour_sponsored_credit_maximum", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit maximum, printed on SK428 line 77 "(maximum $875)":
+the printed maximum, from the `ca-sk/labour_sponsored_credit_maximum` dataset; the bound line 77
+cannot pass."""
+
+SK428_LABOUR_SPONSORED_CREDIT_CHECKED_LINE_77 = AmountKind.declare(
+    CATALOG, "sk428_labour_sponsored_credit_checked_line_77", non_negative=True
+)
+"""Labour-sponsored venture capital tax credit, SK428 line 77 "Line 77 and line 63557: Line 75 plus
+line 76 (maximum $875)": the entered amount, passed on unchanged when it is at most the printed
+maximum, blank when left out; above the maximum it is refused, not capped."""

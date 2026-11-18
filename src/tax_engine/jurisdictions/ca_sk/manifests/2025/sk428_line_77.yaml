@@ -1,0 +1,27 @@
+# SK428 (2025) line 77, the labour-sponsored venture capital tax credit. Form SK428 (CRA 5008-c):
+# "Line 77 and line 63557: Line 75 plus line 76 (maximum $875) =". Lines 75 and 76 are not built, so
+# line 77 is an entry line in two steps. The first, core/credit_amount, supplies the printed maximum
+# from the `ca-sk/labour_sponsored_credit_maximum` dataset; it is not a line of the form, so it has
+# no title and no reference. The second, core/at_most, is line 77: the entered amount
+# (sk428_line_77_input.yaml) passed on unchanged. The form prints no label, so the step has no
+# title. An entry above the printed maximum is refused, not capped. A blank entry passes on as
+# blank; line 78 reads it as 0.
+form:
+  name: ca-sk/sk428
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-sk/labour_sponsored_credit_maximum
+    produces:
+      output: ca-sk/sk428_labour_sponsored_credit_maximum
+  - name: core/at_most
+    reference: "77"
+    unit: ca/cad
+    consumes:
+      amount: ca-sk/sk428_labour_sponsored_credit_line_77
+      bound: ca-sk/sk428_labour_sponsored_credit_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-sk/sk428_labour_sponsored_credit_checked_line_77
