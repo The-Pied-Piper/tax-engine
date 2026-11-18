@@ -400,9 +400,9 @@ def test_the_trace_row_for_line_69_reads_in_english_with_the_rounding_named(
 
     rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
 
-    (row,) = [r for r in rows if " plus " in r and "(5092.30)" in r and "(500.00)" in r]
-    assert row.index("(5092.30)") < row.index("(500.00)")
-    assert " gives 5592.30 " in row
+    (row,) = [r for r in rows if " plus " in r and "(CA$5092.30)" in r and "(CA$500.00)" in r]
+    assert row.index("(CA$5092.30)") < row.index("(CA$500.00)")
+    assert " gives CA$5592.30 " in row
     assert row.endswith("(rounded to the nearest cent).")
 
 
