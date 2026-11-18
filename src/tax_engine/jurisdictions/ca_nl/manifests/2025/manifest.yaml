@@ -1,0 +1,38 @@
+# Newfoundland and Labrador 2025 take-home manifest: the return's identity and its exports (the
+# refund or balance owing, the average income tax rate and the marginal tax rate). The caller gives
+# the gross salary and nothing else. Newfoundland and Labrador's own forms are in parts beside this
+# one, so a line ticket adds only its own part file; the federal forms are imported by name below,
+# their parts in the `ca` package (`ca/forms/<name>/`).
+#
+# Newfoundland and Labrador builds three forms, split so that no form reads another in a loop:
+# `ca-nl/nl428_credits` (NL428 lines 1 to 62), `ca-nl/nl428` (NL428 lines 63 to 108), which
+# supplies `ca/provincial_tax.amount` for T1 line 42800 (NL428 line 105 is the figure that goes to
+# T1 line 42800), and `ca-nl/nl428_worksheet` (Worksheet NL428).
+#
+# Form NL479 and Schedules NL(S2) and NL(S11) are not built: their credits need receipts or Form
+# T1129, so none contributes a line for a salary-only filer.
+#
+# The default form's export is T1 line 167, refund or balance owing (positive is owing, negative
+# is a refund). Newfoundland and Labrador uses the standard federal CPP and EI (no QPP), so Schedule
+# 8 and T2204 are imported unchanged. CRA publishes no Newfoundland and Labrador Schedule 6 (its
+# Newfoundland and Labrador package lists NL428, NL479, NL(S2) and NL(S11) only), so the federal
+# Schedule 6 is imported unchanged.
+#
+# Newfoundland and Labrador is not yet listed in `registrations.JURISDICTIONS`; that is done by the
+# end-to-end ticket, last, after the 2026 datasets exist.
+jurisdiction: CA-NL
+version: 1
+valid_from_tax_year: 2025
+# The title is the engine's own wording for the default form, not a printed form heading.
+title: Return summary
+outputs:
+  - ca/refund_or_balance_owing
+  - ca-nl/average_income_tax_rate
+  - ca-nl/marginal_tax_rate
+capabilities: []
+imports:
+  - ca/t1_taxable_income
+  - ca/t1_tax_and_credits
+  - ca/schedule_6
+  - ca/schedule_8
+  - ca/t2204
