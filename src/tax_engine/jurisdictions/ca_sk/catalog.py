@@ -43,6 +43,12 @@ SK428_MEDICAL_EXPENSES_LINE_50 = AmountKind.declare(
 """Medical expenses, SK428 line 50 (line 58769) "Line 48 plus line 49 =": line 48 plus line 49, an
 optional input; a blank is read as 0 by the line 51 step."""
 
+SK428_DONATIONS_CREDIT_LINE_56 = AmountKind.declare(
+    CATALOG, "sk428_donations_credit_line_56", non_negative=True
+)
+"""Donations and gifts credit, SK428 line 56 (58969) "Line 56 and 58969: Line 54 plus line
+55 =": a caller input, read as blank when left out; line 57 reads it."""
+
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
 )
@@ -66,6 +72,13 @@ SK428_CPP_CONTRIBUTIONS_LINE_22 = AmountKind.declare(
 )
 """CPP or QPP contributions, SK428 line 22 and line 58240 "Amount from line 30800 of your return": a
 copy of Schedule 8 line 25, the CPP base contributions on the return."""
+
+SK428_FARM_CAPITAL_GAINS_CREDIT_LINE_59 = AmountKind.declare(
+    CATALOG, "sk428_farm_capital_gains_credit_line_59", non_negative=True
+)
+"""Saskatchewan farm and small business capital gains tax credit, SK428 line 59 (line 61499) "Line
+59 and line 61499: Saskatchewan farm and small business capital gains tax credit (complete Form
+T1237)": a caller input, read as blank when left out; line 60 reads it."""
 
 SK428_TAX_ON_SPLIT_INCOME_LINE_61 = AmountKind.declare(CATALOG, "sk428_tax_on_split_income_line_61")
 """Saskatchewan tax on split income, SK428 line 61 (line 61510) "Line 61 and line 61510:
