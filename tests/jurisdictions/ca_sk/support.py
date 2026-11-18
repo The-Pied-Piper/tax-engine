@@ -1,8 +1,10 @@
 """The Saskatchewan package list and the registries built over it.
 
-Saskatchewan is not yet listed in `tax_engine.registrations.JURISDICTIONS`, so the tests build their
-own package list (core, federal, Saskatchewan) here and take their kinds and capabilities from it.
-Each registry is built once per test process; never register into one.
+Saskatchewan is listed in `tax_engine.registrations.JURISDICTIONS`, and a test of the registered
+engine takes the `take_home_service` fixture of `conftest.py` or the registries of
+`tax_engine.registrations`. The tests written before the listing build their own package list
+(core, federal, Saskatchewan) here and take their kinds and capabilities from it. Each registry is
+built once per test process; never register into one.
 """
 
 from functools import cache
