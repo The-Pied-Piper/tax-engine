@@ -1,0 +1,21 @@
+# Form MB479 (CRA 5007-TC) line 78: "Line 78: Line 76 plus line 77 = ^". The step sums line 76
+# (`ca-mb/mb479_credits_line_76`) and line 77 (`ca-mb/mb479_employee_share_purchase_credit_checked_
+# line_77`, the employee share purchase tax credit). A caller who leaves line 77 blank has it read
+# as 0 by the blank rule. The form prints no label for line 78, and the step is untitled. The
+# output is `ca-mb/mb479_credits_line_78`.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "78"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts:
+        - ca-mb/mb479_credits_line_76
+        - ca-mb/mb479_employee_share_purchase_credit_checked_line_77
+    blank:
+      ca-mb/mb479_employee_share_purchase_credit_checked_line_77: "0"
+    produces:
+      output: ca-mb/mb479_credits_line_78
