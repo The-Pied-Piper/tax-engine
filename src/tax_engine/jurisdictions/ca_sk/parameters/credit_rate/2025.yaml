@@ -1,0 +1,10 @@
+# Saskatchewan non-refundable tax credit rate, 2025 tax year (Form SK428 line 52): 10.5%.
+# Line 53 applies it to the amount from line 51. The product is a dollars-and-cents line, so it
+# rounds half-up to the cent, the project's choice, as the form states no rounding rule.
+family: ca-sk/credit_rate
+tax_year: 2025
+kind: rate
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5008-c/5008-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+rate: "0.105"
