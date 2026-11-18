@@ -31,6 +31,12 @@ SK428_EI_PREMIUMS_LINE_24 = AmountKind.declare(
 """EI premiums credit amount, SK428 line 24 (line 58300) "Amount from line 31200 of your return": a
 copy of T2204 line 16, the EI premiums credit amount."""
 
+SK428_PENSION_INCOME_AMOUNT = AmountKind.declare(
+    CATALOG, "sk428_pension_income_amount", non_negative=True
+)
+"""Pension income amount, SK428 line 33 "Line 33 and line 58360: Pension income amount (maximum
+$1,000)": the amount the filer claims, a caller input that is read as 0 when it is left out."""
+
 SK428_NON_REFUNDABLE_CREDITS_LINE_57 = AmountKind.declare(
     CATALOG, "sk428_non_refundable_credits_line_57", non_negative=True
 )
