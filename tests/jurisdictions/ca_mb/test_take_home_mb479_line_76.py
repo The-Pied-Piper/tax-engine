@@ -2,9 +2,9 @@
 
 Form text (Form MB479, CRA 5007-tc-25e.txt): "Line 76: Line 74 plus line 75 = ^". Line 76 prints no
 label, so its step has no title. It is one core/sum over line 74 and the line 75 input (the
-community enterprise development tax credit, a bare input with no printed maximum), which is blank
-unless entered and read as 0 when blank, so the step carries a blank block and prints its own "left
-blank, taken as 0" row.
+community enterprise development tax credit, an input the form prints with a maximum of $27,000 that
+is not checked here), which is blank unless entered and read as 0 when blank, so the step carries a
+blank block and prints its own "left blank, taken as 0" row.
 
 The test composes the real Manitoba salary part, the real Schedule 8 parts, the real T1 taxable
 income parts, the real MB479 parts of lines 1 to 7, 17, 18, 19, 53, 55, 56, 57, 59 to 75 and the new
@@ -233,7 +233,7 @@ def test_line_76_is_line_74_when_line_75_is_blank(
         ("10000", "10.00", "100.00", "205.65"),
         ("70000", None, "100.00", "100.00"),
         ("70000", None, "0", "0.00"),
-        ("200000", None, "1100000", "1100000.00"),
+        ("200000", None, "27000", "27000.00"),
     ],
 )
 def test_line_76_adds_a_given_line_75_to_line_74(
