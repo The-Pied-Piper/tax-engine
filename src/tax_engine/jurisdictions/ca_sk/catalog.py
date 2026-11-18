@@ -62,6 +62,13 @@ SK428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_70 = AmountKind.declare(
 """Provincial foreign tax credit, SK428 line 70 "Line 70: Provincial foreign tax credit (complete
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out."""
 
+SK428_GRADUATE_TUITION_CREDIT_LINE_81 = AmountKind.declare(
+    CATALOG, "sk428_graduate_tuition_credit_line_81", non_negative=True
+)
+"""Saskatchewan graduate tuition tax credit, SK428 line 81 (line 63640) "Line 81 and line 63640:
+Saskatchewan graduate tuition tax credit (complete Form RC360)": the credit from Form RC360, an
+optional input that a salary-only caller leaves out."""
+
 SK428_SASKATCHEWAN_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "sk428_saskatchewan_tax_line_82", non_negative=True
 )
