@@ -1,0 +1,42 @@
+# MB479 (2025) line 79, the teaching expense tax credit. Form MB479 (CRA 5007-TC): "Teaching
+# expense tax credit: Line 79: Eligible teaching supplies expenses (maximum $1,000) Line 61495 ^
+# multiplied by 15% = ^". The heading is a section heading, so no step carries a title. The
+# printed $1,000 sits inside the entry's label, before the box and before "multiplied by", so it
+# bounds the entry, not the product: an entry above it is rejected, not capped. Three steps.
+# The first, core/credit_amount, supplies the printed maximum from the
+# `ca-mb/teaching_supplies_expenses_maximum` dataset; it is not a line of the form, so it has no
+# title and no reference. The second, core/at_most, checks the entered amount
+# (mb479_line_79_input.yaml) against it and passes it on unchanged; a blank entry passes on as
+# blank. The third, core/apply_rate, is line 79: the checked amount multiplied by the 15% printed
+# rate, held in the `ca-mb/teaching_expense_credit_rate` dataset, to the cent. A blank entry is
+# read as 0.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-mb/teaching_supplies_expenses_maximum
+    produces:
+      output: ca-mb/mb479_teaching_supplies_expenses_maximum
+  - name: core/at_most
+    unit: ca/cad
+    consumes:
+      amount: ca-mb/mb479_teaching_supplies_expenses_line_79
+      bound: ca-mb/mb479_teaching_supplies_expenses_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-mb/mb479_teaching_supplies_expenses_checked_line_79
+  # Line 79: the eligible teaching supplies expenses "multiplied by 15%", to the cent.
+  - name: core/apply_rate
+    reference: "79"
+    unit: ca/cad
+    params:
+      rate: ca-mb/teaching_expense_credit_rate
+    consumes:
+      base: ca-mb/mb479_teaching_supplies_expenses_checked_line_79
+    blank:
+      base: "0"
+    produces:
+      output: ca-mb/mb479_teaching_expense_credit_line_79
