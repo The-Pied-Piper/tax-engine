@@ -96,3 +96,43 @@ def test_schedule_8_line_b_sentence_names_line_a_and_the_line_it_gives() -> None
         "Looking up line A (12 months) in the table gives CA$71300.00 for line B "
         "(rounded to the nearest cent)."
     )
+
+
+UNPRINTED_STEPS = [
+    (
+        "ca/schedule_8",
+        "cpp_part_3_line_7_difference",
+        "Earnings left after the Canada Pension Plan exemption",
+    ),
+    ("ca/t1_taxable_income", "net_income_signed", "Net income, which can be below zero"),
+    ("ca/t2204", "t2204_line_1_count", "Multiplier that is 1 unless the low-pay rule applies"),
+    (
+        "ca/t2204",
+        "t2204_line_1_plus_2",
+        "Insured pay plus self-employment and other earnings eligible for EI, before the limit",
+    ),
+    ("ca/t2204", "t2204_exemption", "Set amount taken off earnings"),
+    ("ca/t2204", "ei_overpayment", "EI overpayment"),
+    ("ca-on/on428_a", "lift_credit_before_maximum", "LIFT credit before the most is applied"),
+    (
+        "ca-on/on428",
+        "on428_tax_reduction_before_conditions_line_80",
+        "Reduction before any exceptions",
+    ),
+    (
+        "ca-on/on428",
+        "on428_tax_reduction_conditions_count_line_80",
+        "Multiplier that is 0 when minimum tax was added",
+    ),
+]
+
+
+def test_an_unprinted_step_a_numbered_line_names_has_a_plain_words_title_and_no_reference() -> None:
+    sheets = build_tax_computation().compute(
+        JurisdictionCode("CA-ON"), 2025, Artifact(EMPLOYMENT_INCOME, Decimal("70000"))
+    )
+
+    for form, label, title in UNPRINTED_STEPS:
+        (sheet,) = sheets[form]
+        assert sheet.title(label) == title, label
+        assert sheet.reference(label) is None, label
