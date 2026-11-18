@@ -1,10 +1,15 @@
 # Worksheet MB428 (CRA 5007-D) 2025, section "Line 58040 - Basic personal amount". This part names
-# the form and its export: line 9 (`ca-mb/worksheet_mb428_basic_personal_amount_line_9`), which the
-# form says to enter on line 58040 of Form MB428. Line parts carry the capabilities.
+# the form and its exports: line 9 (`ca-mb/worksheet_mb428_basic_personal_amount_line_9`), which the
+# form says to enter on line 58040 of Form MB428, and lines 5, 7 and 8, which the return summary
+# reads, with line 9, for the slope of the basic personal amount's phase-out in the marginal tax
+# rate. Line parts carry the capabilities.
 form:
   name: ca-mb/worksheet_mb428
   title: "Worksheet MB428"
   required: true
   exports:
+    - ca-mb/worksheet_mb428_basic_personal_amount_line_5
+    - ca-mb/worksheet_mb428_basic_personal_amount_line_7
+    - ca-mb/worksheet_mb428_line_8
     - ca-mb/worksheet_mb428_basic_personal_amount_line_9
 capabilities: []

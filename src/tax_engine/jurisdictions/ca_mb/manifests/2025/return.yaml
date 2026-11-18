@@ -1,7 +1,68 @@
 # The Manitoba take-home return: T1 line 167 "Refund or balance owing" (positive is owing, negative
 # is a refund). The T1 form exports it, and another form's export is read only as a record list, so
-# the one step is core/record_total over the T1 export, totalling the one amount into the return's
+# the first step is core/record_total over the T1 export, totalling the one amount into the return's
 # own `ca/refund_or_balance_owing`.
+#
+# The return's second output is the average income tax rate, which no form prints (so its step has
+# no title or reference): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus
+# line 147's Manitoba tax: the federal and the Manitoba income tax) divided by the salary, T1 line
+# 10100 (`ca/employment_income`). T1 exports line 43500, so a core/record_total step reads it into
+# the return's own `ca/total_payable`, then core/divide divides it by the salary, rounding once with
+# `ca-mb/rate_rounding` (half-up to 0.0001); a salary of 0 gives 0.
+#
+# The third output is the marginal rate, the income tax rate on a further dollar of salary, built
+# as the British Columbia, Alberta and Ontario returns build it (CRA payroll deductions formulas
+# T4127, Manitoba). The federal part is read as in the British Columbia return: the T1 form exports line 73's bracket column rate and line
+# 42900 "Basic federal tax", each totalled into the return's own kind, and
+# core/amount_by_band_rate reads line 42900 through the `ca-mb/marginal_rate_gate` dataset (0 where
+# the tax is 0.00, 1 from one cent) so that the rate counts only where its own tax is above zero;
+# the gate multiplies the rate into `ca/federal_marginal_rate`, exact (`ca-mb/exact_rounding`).
+#
+# The Manitoba bracket rate is printed on MB428 line 5 "Line 5: Rate" (10.8% to a taxable income of
+# 47,000, 12.75% to 100,000, 17.4% above). The form has one table of three columns and fills one,
+# so the line is never blank: MB428 credits exports it and a core/record_total step reads it into
+# the return's own kind, with no sum of two lines.
+#
+# The Manitoba gate reads MB428 line 65 "Line 60 minus line 64 (if negative, enter "0")": the
+# Manitoba tax after the credits that payroll applies, before line 66 (minimum tax additional) and
+# lines 69, 71, 73, 75, 77, 79 and 81, which only come back when filing and are not payroll terms.
+# It is the counterpart of ON428 line 81, AB428 line 68 and BC428 line 80. Gated through
+# `ca-mb/marginal_rate_gate`, it multiplies the bracket rate (with the phase-out, below) into
+# `ca-mb/manitoba_marginal_rate`.
+#
+# The basic personal amount phase-out (Worksheet MB428, "Line 58040 - Basic personal amount",
+# which MB428 line 9 reads; T4127 formula BPAMB) is a figure of 15,780.00 up to a net income of
+# 200,000.00, which falls by 15,780 / 200,000 for each further dollar and is 0 from 400,000. The
+# credit is the credit rate of MB428 line 52 (10.8%) of that amount, so between those two figures
+# the Manitoba rate is the bracket rate plus 15,780 / 200,000 x 10.8% = 0.0085212 exactly (0.852
+# points is that figure rounded): the amount's fall raises the tax. It is built from the printed
+# worksheet lines, in steps. Worksheet MB428 exports line 5 (the income threshold, 200,000.00),
+# line 7 (the base amount, 15,780.00), line 8 ("Line 6 multiplied by line 7") and line 9 ("Line 1
+# minus line 8 (if negative, enter "0")"), each totalled into the return's own kind. Line 8 is
+# read through the `ca-mb/reduction_slope` dataset (the printed MB428 line 52 rate of 0.108 where
+# line 8 is above zero, so the range starts above a net income of 200,000, and 0 where it is not);
+# the ratio of line 7 over line 5 (0.0789) times that slope is the credit rate of the amount's
+# fall; line 9 is read through `ca-mb/marginal_rate_gate` (above zero until a net income of
+# 400,000, so the range ends there); the two multiply into `ca-mb/manitoba_phase_out_rate`, exact;
+# and core/sum adds that to the bracket rate into `ca-mb/manitoba_bracket_rate_with_phase_out`,
+# before the line 65 gate multiplies it, so a phase-out that has taken the whole of the tax
+# (line 65 is 0.00) adds nothing. Every figure is a printed one, read from the forms; none is recomputed
+# from outside them.
+#
+# `ca-mb/reduction_slope` is a dataset of its own, apart from `ca-mb/credit_rate` (MB428 line 52
+# itself, the same 10.8%): that one rounds half-up to the cent, as it feeds a dollars-and-cents
+# box, and a rate of 0.108 would read 0.11. The slope reads line 8, which is rounded to the cent,
+# so it starts at the first cent of line 8, which is within cents of the printed net income of
+# 200,000.
+#
+# The last step adds the federal and the Manitoba marginal rate with core/sum into
+# `ca-mb/marginal_tax_rate`; it is exact too, is not printed on the form and has no title or line.
+#
+# Only line 167 carries a line reference: the steps below read figures for the rates and are
+# engine-internal, so they carry none. Known limits: the rate ignores the tax effect of CPP and
+# EI, and it leaves out the family tax benefit (MB428 line 41, Schedule MB428-A), which lowers the
+# credit by 0.972 points of net income between about 15,000 and 22,944 but which payroll
+# deductions do not apply.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -11,3 +72,163 @@ capabilities:
       records: ca/t1_tax_and_credits.refund_or_balance_owing
     produces:
       output: ca/refund_or_balance_owing
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.total_payable
+    produces:
+      output: ca/total_payable
+  - name: core/divide
+    unit: core/percent
+    params:
+      rounding: ca-mb/rate_rounding
+    consumes:
+      dividend: ca/total_payable
+      divisor: ca/employment_income
+    produces:
+      output: ca-mb/average_income_tax_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca/t1_tax_and_credits.federal_bracket_column_rate_line_73
+    produces:
+      output: ca/federal_bracket_rate_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.federal_tax_after_credits
+    produces:
+      output: ca/federal_tax_after_credits_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-mb/marginal_rate_gate
+    consumes:
+      base: ca/federal_tax_after_credits_return
+    produces:
+      output: ca/federal_rate_gate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca/federal_rate_gate
+      rate: ca/federal_bracket_rate_return
+    produces:
+      output: ca/federal_marginal_rate
+  - name: core/record_total
+    unit: core/percent
+    consumes:
+      records: ca-mb/mb428_credits.mb428_bracket_rate_line_5
+    produces:
+      output: ca-mb/manitoba_bracket_rate_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-mb/mb428.mb428_tax_after_credits_line_65
+    produces:
+      output: ca-mb/manitoba_tax_after_credits_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-mb/marginal_rate_gate
+    consumes:
+      base: ca-mb/manitoba_tax_after_credits_return
+    produces:
+      output: ca-mb/manitoba_rate_gate
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-mb/worksheet_mb428.worksheet_mb428_line_8
+    produces:
+      output: ca-mb/manitoba_phase_out_amount_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-mb/worksheet_mb428.worksheet_mb428_basic_personal_amount_line_9
+    produces:
+      output: ca-mb/manitoba_basic_personal_amount_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-mb/worksheet_mb428.worksheet_mb428_basic_personal_amount_line_7
+    produces:
+      output: ca-mb/manitoba_base_amount_return
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-mb/worksheet_mb428.worksheet_mb428_basic_personal_amount_line_5
+    produces:
+      output: ca-mb/manitoba_income_threshold_return
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-mb/marginal_rate_gate
+    consumes:
+      base: ca-mb/manitoba_basic_personal_amount_return
+    produces:
+      output: ca-mb/manitoba_basic_personal_amount_gate
+  - name: core/amount_by_band_rate
+    unit: core/percent
+    params:
+      table: ca-mb/reduction_slope
+    consumes:
+      base: ca-mb/manitoba_phase_out_amount_return
+    produces:
+      output: ca-mb/manitoba_reduction_slope
+  - name: core/divide
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      dividend: ca-mb/manitoba_base_amount_return
+      divisor: ca-mb/manitoba_income_threshold_return
+    produces:
+      output: ca-mb/manitoba_phase_out_ratio
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/manitoba_phase_out_ratio
+      rate: ca-mb/manitoba_reduction_slope
+    produces:
+      output: ca-mb/manitoba_phase_out_credit_rate
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/manitoba_basic_personal_amount_gate
+      rate: ca-mb/manitoba_phase_out_credit_rate
+    produces:
+      output: ca-mb/manitoba_phase_out_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      parts:
+        - ca-mb/manitoba_bracket_rate_return
+        - ca-mb/manitoba_phase_out_rate
+    produces:
+      output: ca-mb/manitoba_bracket_rate_with_phase_out
+  - name: core/multiply_by_rate
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      base: ca-mb/manitoba_rate_gate
+      rate: ca-mb/manitoba_bracket_rate_with_phase_out
+    produces:
+      output: ca-mb/manitoba_marginal_rate
+  - name: core/sum
+    unit: core/percent
+    params:
+      rounding: ca-mb/exact_rounding
+    consumes:
+      parts:
+        - ca/federal_marginal_rate
+        - ca-mb/manitoba_marginal_rate
+    produces:
+      output: ca-mb/marginal_tax_rate
