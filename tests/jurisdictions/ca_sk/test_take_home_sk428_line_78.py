@@ -340,20 +340,21 @@ def test_line_78_is_line_74_minus_line_77_not_below_zero_when_line_77_is_given(
     assert not line_78.is_signed()
 
 
+def _line_78_through(service: TaxComputationService, line_77: str) -> Decimal:
+    given = [
+        Artifact(EMPLOYMENT_INCOME, D("70000")),
+        Artifact(_amount_kind(CREDIT_77), D(line_77)),
+    ]
+    (sheet,) = service.compute(JurisdictionCode("CA-SK"), 2025, *given)[FORM_NAME]
+    return _line(sheet, IDENTIFIER)
+
+
 def test_a_line_77_above_the_maximum_is_rejected_through_line_78(tmp_path: Path) -> None:
     service = _service(tmp_path)
 
-    def compute(line_77: str) -> Worksheet:
-        given = [
-            Artifact(EMPLOYMENT_INCOME, D("70000")),
-            Artifact(_amount_kind(CREDIT_77), D(line_77)),
-        ]
-        (sheet,) = service.compute(JurisdictionCode("CA-SK"), 2025, *given)[FORM_NAME]
-        return sheet
-
-    assert _line(compute("875"), IDENTIFIER) == D("4217.30")
+    assert _line_78_through(service, "875") == D("4217.30")
     with pytest.raises(InputAboveBoundError):
-        compute("875.01")
+        _line_78_through(service, "875.01")
 
 
 def _left_blank_rows(rows: Sequence[str]) -> int:

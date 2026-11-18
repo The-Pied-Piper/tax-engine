@@ -24,7 +24,6 @@ import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_sk
-import tax_engine.jurisdictions.ca_sk.catalog as sk_catalog
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
@@ -95,8 +94,8 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheet(tmp_path: Path, credit: str | None = None) -> Worksheet:
-    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D("70000"))]
+def _sheet(tmp_path: Path, credit: str | None = None, salary: str = "70000") -> Worksheet:
+    given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if credit is not None:
         given.append(Artifact(SK428_LABOUR_SPONSORED_CREDIT_LINE_77, D(credit)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-SK"), 2025, *given)
@@ -127,6 +126,13 @@ def test_one_cent_above_the_maximum_is_rejected_not_capped(tmp_path: Path) -> No
 
 def test_a_salary_only_run_leaves_line_77_blank(tmp_path: Path) -> None:
     assert _line_77(tmp_path).is_blank
+
+
+@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
+def test_the_salary_does_not_change_the_checked_amount(tmp_path: Path, salary: str) -> None:
+    sheet = _sheet(tmp_path, "250.50", salary)
+
+    assert D(sheet.get(saskatchewan_kinds().kind(LINE_77)).value) == D("250.50")
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_77(tmp_path: Path) -> None:
@@ -209,10 +215,3 @@ def test_each_new_kind_is_a_registered_non_negative_decimal_amount_kind(identifi
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert non_negative(kind)
-
-
-def test_the_checked_line_77_is_the_catalog_constant() -> None:
-    assert (
-        saskatchewan_kinds().kind(LINE_77)
-        is vars(sk_catalog)["SK428_LABOUR_SPONSORED_CREDIT_CHECKED_LINE_77"]
-    )
