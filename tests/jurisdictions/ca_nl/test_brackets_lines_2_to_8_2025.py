@@ -82,7 +82,7 @@ def test_the_table_covers_220910_and_not_a_cent_more() -> None:
         (3, "220910", "32454.04"),
     ],
 )
-def test_the_printed_constants_chain_to_the_cent(
+def test_the_printed_constants_chain_within_a_cent(
     column: int, next_start: str, next_constant: str
 ) -> None:
     bracket = _schedule().brackets[column]
