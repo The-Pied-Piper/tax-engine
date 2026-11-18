@@ -1,0 +1,22 @@
+# Form MB428 (CRA 5007-c) line 74: "Line 74: Line 72 minus line 73 (if negative, enter "0") = ^".
+# One core/subtract_not_below_zero step: the Manitoba tax (line 72, `ca-mb/mb428_tax_line_72`) less
+# the provincial foreign tax credit (line 73,
+# `ca-mb/mb428_provincial_foreign_tax_credit_line_73`), not below 0. Line 73 is an optional input
+# that a salary-only caller leaves blank, read as blank and then as 0 by the blank rule. The form
+# prints no title for the line, so the step has none. The output is `ca-mb/mb428_tax_line_74`,
+# which is not exported yet.
+form:
+  name: ca-mb/mb428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "74"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      amount: ca-mb/mb428_tax_line_72
+      less: ca-mb/mb428_provincial_foreign_tax_credit_line_73
+    blank:
+      less: "0"
+    produces:
+      output: ca-mb/mb428_tax_line_74
