@@ -159,6 +159,35 @@ MB428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
 """Provincial foreign tax credit, MB428 line 73 "Line 73: Provincial foreign tax credit (complete
 Form T2036)": a caller input, read as blank when left out."""
 
+MB428_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
+    CATALOG, "mb428_community_enterprise_development_tax_credit_line_75", non_negative=True
+)
+"""Manitoba community enterprise development tax credit, MB428 line 75 "Line 75 and line 60830:
+Manitoba community enterprise development tax credit (complete Form T1256)": a caller input, read
+as blank when left out."""
+
+MB428_VENTURE_CAPITAL_CREDIT = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit", non_negative=True
+)
+"""Manitoba small business venture capital tax credit for individuals, MB428 line 77 "Line 77 and
+line 60850: Manitoba small business venture capital tax credit for individuals (complete Form
+T1256-1) (maximum $120,000)": the amount the filer claims, a caller input that is read as blank when
+left out; the line 77 step checks it against the printed maximum."""
+
+MB428_VENTURE_CAPITAL_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit_maximum", non_negative=True
+)
+"""Venture capital credit maximum, printed on MB428 line 77 "(maximum $120,000)": the printed
+maximum, from the `ca-mb/venture_capital_credit_maximum` dataset; the bound line 77 cannot pass."""
+
+MB428_VENTURE_CAPITAL_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "mb428_venture_capital_credit_line_77", non_negative=True
+)
+"""Manitoba small business venture capital tax credit for individuals, MB428 line 77 "Line 77 and
+line 60850: Manitoba small business venture capital tax credit for individuals (complete Form
+T1256-1) (maximum $120,000)": the entered amount, passed on unchanged when it is at most the printed
+maximum, blank when left out; above the maximum it is refused, not capped."""
+
 MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
     CATALOG, "mb428_employee_share_purchase_tax_credit_line_79", non_negative=True
 )
@@ -467,6 +496,27 @@ MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
 """Green energy equipment tax credit (manufacturer), MB479 line 68 "Line 68 and line 61390: 7.5% of
 the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
 heat pumps, rounded half-up to the cent."""
+
+MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
+    CATALOG, "mb479_book_publishing_credit_line_71", non_negative=True
+)
+"""Book publishing tax credit, MB479 line 71 "Line 71 and line 61430: Enter your book publishing
+tax credit from Form T1299": the credit worked out on Form T1299, which is not built, a caller
+input that is read as blank when left out."""
+
+MB479_CULTURAL_INDUSTRIES_PRINTING_CREDIT_LINE_73 = AmountKind.declare(
+    CATALOG, "mb479_cultural_industries_printing_credit_line_73", non_negative=True
+)
+"""Cultural industries printing tax credit, MB479 line 73 "Line 73 and line 61480: Cultural
+industries printing tax credit (maximum $1,100,000)": the credit of the line, a caller input that is
+read as blank when left out; the printed maximum $1,100,000 is checked by the step that reads it."""
+
+MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
+    CATALOG, "mb479_community_enterprise_development_tax_credit_line_75", non_negative=True
+)
+"""Community enterprise development tax credit, MB479 line 75 "Line 75 and line 61484: Enter your
+Manitoba community enterprise development tax credit from line 4 of Form T1256": the credit worked
+out on Form T1256, which is not built, a caller input that is read as blank when left out."""
 
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
