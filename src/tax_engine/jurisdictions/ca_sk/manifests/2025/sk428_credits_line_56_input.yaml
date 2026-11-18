@@ -1,0 +1,12 @@
+# SK428 (2025) line 56's input, which a salary-only caller does not give.
+# Line 56: "Line 56 and 58969: Line 54 plus line 55" (Form SK428, CRA 5008-c).
+# Lines 54 and 55 are not built, so a request that leaves the line out is read as blank; the step
+# that reads line 56 (line 57) reads that blank as 0.
+inputs:
+  - name: ca-sk/sk428_donations_credit_line_56
+    title: "Donations and gifts"
+    reference: "56"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 56 and 58969: Line 54 plus line 55'
