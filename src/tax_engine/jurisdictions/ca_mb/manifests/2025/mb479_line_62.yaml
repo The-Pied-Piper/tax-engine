@@ -1,0 +1,17 @@
+# Form MB479 (CRA 5007-TC) line 62: "Line 62: Line 60 plus line 61 = ^". The step sums line 60
+# (`ca-mb/mb479_credits_line_60`) and line 61 (`ca-mb/mb479_fertility_treatment_credit_line_61`).
+# Neither is a blank input: line 60 is computed, and line 61 is computed by its own step, which
+# reads blank expenses as 0 and applies its $16,000 maximum there. The form prints no label and no
+# maximum for line 62, and the step is untitled. The output is `ca-mb/mb479_credits_line_62`.
+form:
+  name: ca-mb/mb479
+capabilities:
+  - name: core/sum
+    reference: "62"
+    unit: ca/cad
+    params:
+      rounding: ca-mb/cent_rounding
+    consumes:
+      parts: [ca-mb/mb479_credits_line_60, ca-mb/mb479_fertility_treatment_credit_line_61]
+    produces:
+      output: ca-mb/mb479_credits_line_62
