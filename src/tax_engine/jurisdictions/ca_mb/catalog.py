@@ -700,3 +700,7 @@ credit, an optional input a caller leaves blank, read as 0), rounded to the cent
 MB479_CREDITS_LINE_70 = AmountKind.declare(CATALOG, "mb479_credits_line_70", non_negative=True)
 """Credits, MB479 line 70 "Line 70: Line 66 plus line 69 = ^": line 66 plus line 69 (the green
 energy credits), rounded to the cent."""
+
+MB479_CREDITS_LINE_72 = AmountKind.declare(CATALOG, "mb479_credits_line_72", non_negative=True)
+"""Credits, MB479 line 72 "Line 72: Line 70 plus line 71 = ^": line 70 plus line 71 (the book
+publishing credit, an optional input a caller leaves blank, read as 0), rounded to the cent."""
