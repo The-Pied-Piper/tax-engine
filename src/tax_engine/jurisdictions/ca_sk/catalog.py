@@ -177,6 +177,18 @@ SK428_CREDITS_SUBTOTAL_LINE_32 = AmountKind.declare(
 """Saskatchewan credit amounts subtotal, SK428 line 32 "Line 32: Line 21 plus line 31 =": line 21,
 a copy of line 20, plus line 31, read by line 35."""
 
+SK428_BRACKET_RATE_LINE_5 = AmountKind.declare(
+    CATALOG, "sk428_bracket_rate_line_5", non_negative=True
+)
+"""Rate of the column, Form SK428 line 5 "Column 1: Line 1 is $53,463 or less / Line 5: Rate 10.5%"
+(12.5%; 14.5%): the printed rate of the column of lines 2 to 8 that line 1 falls in."""
+
+SK428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "sk428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, SK428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero."""
+
 SK428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "sk428_bracket_tax_at_start_line_7", non_negative=True
 )
