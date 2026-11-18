@@ -20,6 +20,39 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Block private document paths
+        # This repository is public. Fail if any tracked file, or any tracked
+        # file's path, names the private document repository or the CRA form
+        # folders. Each pattern has one letter in brackets so that this step
+        # does not match itself.
+        shell: bash
+        run: |
+          set -u
+          pattern='cra-do[c]s|docs/cra-form[s]|cra-forms-2[0]'
+          found=0
+          if git grep -n -E -e "$pattern"; then
+            found=1
+          else
+            status=$?
+            if [ "$status" -ne 1 ]; then
+              echo "git grep failed with status $status" >&2
+              exit "$status"
+            fi
+          fi
+          if git ls-files | grep -n -E -e "$pattern"; then
+            found=1
+          else
+            status=$?
+            if [ "$status" -ne 1 ]; then
+              echo "path scan failed with status $status" >&2
+              exit "$status"
+            fi
+          fi
+          if [ "$found" -ne 0 ]; then
+            echo "::error::Private document paths must not appear in this public repository (matches above: file:line:text, or a file path)." >&2
+            exit 1
+          fi
+
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
