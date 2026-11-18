@@ -9,7 +9,7 @@
 
 Tax rules live as data taken as printed from the tax authority's own forms. Each form line is one small, tested step. You can follow any figure back to the form line it came from. It powers the live take-home calculator at [aftertaxlens.com](https://aftertaxlens.com).
 
-Supported today: Canada (federal), Ontario, Alberta and British Columbia, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
+Supported today: Canada (federal), Ontario, Alberta, British Columbia and Manitoba, tax years 2025 and 2026 (2026 is provisional). More forms, lines, years and jurisdictions are added over time (see [Coverage](#coverage)).
 
 ## Example: a $70,000 salary (tax year 2025)
 
@@ -90,7 +90,7 @@ for form, form_sheets in sheets.items():
             print(sentence if line.label is None else f"{names.of_label(line.label)}: {sentence}")
 ```
 
-The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta or `CA-BC` for British Columbia, and `2025` to `2026` for the provisional 2026 year.
+The example uses Ontario (`CA-ON`) and tax year 2025. Change `CA-ON` to `CA-AB` for Alberta, `CA-BC` for British Columbia or `CA-MB` for Manitoba, and `2025` to `2026` for the provisional 2026 year.
 
 ## How it works
 
@@ -104,6 +104,7 @@ A jurisdiction's manifest lists the forms that make up a return. Each form is bu
 | Ontario | 2025, 2026 (provisional) | ON428 (Ontario tax), ON428-A (LIFT credit) |
 | Alberta | 2025, 2026 (provisional) | AB428 (Alberta tax), Worksheet AB428 (Alberta supplemental tax credit) |
 | British Columbia | 2025, 2026 (provisional) | BC428 (British Columbia tax), BC479 (BC refundable tax credits) |
+| Manitoba | 2025, 2026 (provisional) | MB428 (Manitoba tax), Worksheet MB428 (basic personal amount), MB428-A (family tax benefit), MB479 (Manitoba credits) |
 
 Roadmap: more forms and lines, and the other provinces and territories. Forms are added one at a time, each built line by line from the CRA's own text.
 
@@ -111,7 +112,7 @@ Roadmap: more forms and lines, and the other provinces and territories. Forms ar
 
 tax-engine is not tax advice and is not an official CRA product. It comes with no warranty, as the Apache-2.0 license says.
 
-It covers tax years 2025 and 2026 (2026 is provisional), Canada (federal), Ontario, Alberta and British Columbia only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
+It covers tax years 2025 and 2026 (2026 is provisional), Canada (federal), Ontario, Alberta, British Columbia and Manitoba only, and only the forms and lines listed under Coverage. A return with items the engine does not model will not come out right. The take-home example assumes a single filer with salary as the only income.
 
 Check any result against the CRA's own forms or with a professional before relying on it.
 
