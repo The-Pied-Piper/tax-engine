@@ -188,6 +188,13 @@ line 60850: Manitoba small business venture capital tax credit for individuals (
 T1256-1) (maximum $120,000)": the entered amount, passed on unchanged when it is at most the printed
 maximum, blank when left out; above the maximum it is refused, not capped."""
 
+MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "mb428_employee_share_purchase_tax_credit_line_79", non_negative=True
+)
+"""Manitoba employee share purchase tax credit, MB428 line 79 "Line 79 and line 60860: Manitoba
+employee share purchase tax credit (complete Form T1256-2)": a caller input, read as blank when left
+out."""
+
 MB428_MANITOBA_TAX_LINE_82 = AmountKind.declare(
     CATALOG, "mb428_manitoba_tax_line_82", non_negative=True
 )
