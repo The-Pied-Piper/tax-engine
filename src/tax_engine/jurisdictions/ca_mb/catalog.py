@@ -605,7 +605,25 @@ MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
 )
 """Community enterprise development tax credit, MB479 line 75 "Line 75 and line 61484: Enter your
 Manitoba community enterprise development tax credit from line 4 of Form T1256": the credit worked
-out on Form T1256, which is not built, a caller input that is read as blank when left out."""
+out on Form T1256, which is not built, a caller input that is read as blank when left out; the
+line 75 step checks it against the printed maximum."""
+
+MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb479_community_enterprise_development_tax_credit_maximum", non_negative=True
+)
+"""Community enterprise development tax credit maximum, printed on MB479 line 75 "(maximum
+$27,000)": the printed maximum, from the `ca-mb/community_enterprise_development_tax_credit_maximum`
+dataset; the bound line 75 cannot pass."""
+
+MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_CHECKED_LINE_75 = AmountKind.declare(
+    CATALOG,
+    "mb479_community_enterprise_development_tax_credit_checked_line_75",
+    non_negative=True,
+)
+"""Community enterprise development tax credit, MB479 line 75 "Line 75 and line 61484: Enter your
+Manitoba community enterprise development tax credit from line 4 of Form T1256. (maximum
+$27,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank
+when left out; above the maximum it is refused, not capped."""
 
 MB479_TEACHING_SUPPLIES_EXPENSES_LINE_79 = AmountKind.declare(
     CATALOG, "mb479_teaching_supplies_expenses_line_79", non_negative=True

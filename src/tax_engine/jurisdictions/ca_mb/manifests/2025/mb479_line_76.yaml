@@ -1,7 +1,8 @@
 # Form MB479 (CRA 5007-TC) line 76: "Line 76: Line 74 plus line 75 = ^". The step sums line 74
 # (`ca-mb/mb479_credits_line_74`) and line 75 (`ca-mb/mb479_community_enterprise_development_tax_
-# credit_line_75`, the community enterprise development tax credit). A caller who leaves line 75
-# blank has it read as 0 by the blank rule. The form prints no label for line 76, and the step is
+# credit_checked_line_75`, the community enterprise development tax credit after the line 75 step
+# has checked it against the printed maximum). A caller who leaves line 75 blank has it read as 0 by
+# the blank rule. The form prints no label for line 76, and the step is
 # untitled. The output is `ca-mb/mb479_credits_line_76`.
 form:
   name: ca-mb/mb479
@@ -14,8 +15,8 @@ capabilities:
     consumes:
       parts:
         - ca-mb/mb479_credits_line_74
-        - ca-mb/mb479_community_enterprise_development_tax_credit_line_75
+        - ca-mb/mb479_community_enterprise_development_tax_credit_checked_line_75
     blank:
-      ca-mb/mb479_community_enterprise_development_tax_credit_line_75: "0"
+      ca-mb/mb479_community_enterprise_development_tax_credit_checked_line_75: "0"
     produces:
       output: ca-mb/mb479_credits_line_76
