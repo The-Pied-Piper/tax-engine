@@ -115,6 +115,18 @@ MB428_MINIMUM_TAX_CARRYOVER_CREDIT_LINE_63 = AmountKind.declare(
 """Manitoba minimum tax carryover, MB428 line 63 and line 61540 "Amount from line 40427 of your
 return multiplied by 50% =": calculated, the amount from line 40427 multiplied by 50%."""
 
+MB428_CREDITS_TOTAL_LINE_64 = AmountKind.declare(
+    CATALOG, "mb428_credits_total_line_64", non_negative=True
+)
+"""Total credits, MB428 line 64 "Line 64: Add lines 61 to 63. =": calculated, lines 61 to 63 added
+(line 62 read as 0 when left blank)."""
+
+MB428_TAX_AFTER_CREDITS_LINE_65 = AmountKind.declare(
+    CATALOG, "mb428_tax_after_credits_line_65", non_negative=True
+)
+"""Manitoba tax after credits, MB428 line 65 "Line 65: Line 60 minus line 64 (if negative, enter
+"0") =": calculated, line 60 less line 64, not below 0."""
+
 MB428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_66 = AmountKind.declare(
     CATALOG, "mb428_additional_tax_minimum_tax_line_66", non_negative=True
 )
@@ -187,6 +199,13 @@ MB428_VENTURE_CAPITAL_CREDIT_LINE_77 = AmountKind.declare(
 line 60850: Manitoba small business venture capital tax credit for individuals (complete Form
 T1256-1) (maximum $120,000)": the entered amount, passed on unchanged when it is at most the printed
 maximum, blank when left out; above the maximum it is refused, not capped."""
+
+MB428_EMPLOYEE_SHARE_PURCHASE_TAX_CREDIT_LINE_79 = AmountKind.declare(
+    CATALOG, "mb428_employee_share_purchase_tax_credit_line_79", non_negative=True
+)
+"""Manitoba employee share purchase tax credit, MB428 line 79 "Line 79 and line 60860: Manitoba
+employee share purchase tax credit (complete Form T1256-2)": a caller input, read as blank when left
+out."""
 
 MB428_MINERAL_EXPLORATION_TAX_CREDIT_LINE_81 = AmountKind.declare(
     CATALOG, "mb428_mineral_exploration_tax_credit_line_81", non_negative=True
@@ -333,6 +352,28 @@ MB479_ODOUR_CONTROL_CREDIT_LINE_65 = AmountKind.declare(
 """Unused odour-control tax credit, MB479 line 65 "Line 65 and line 61340: Enter your unused
 odour-control tax credit from your 2024 notice of assessment or reassessment.": a caller input that
 is read as blank when left out."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_LINE_77 = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_line_77", non_negative=True
+)
+"""Employee share purchase tax credit, MB479 line 77 "Line 77 and line 61490: Enter your Manitoba
+employee share purchase tax credit from line 6 of Form T1256-2. (maximum $27,000)": a caller input
+that is read as blank when left out; the line 77 step checks it against the printed maximum."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_maximum", non_negative=True
+)
+"""Employee share purchase tax credit maximum, printed on MB479 line 77 "(maximum $27,000)": the
+printed maximum, from the `ca-mb/employee_share_purchase_credit_maximum` dataset; the bound line 77
+cannot pass."""
+
+MB479_EMPLOYEE_SHARE_PURCHASE_CREDIT_CHECKED_LINE_77 = AmountKind.declare(
+    CATALOG, "mb479_employee_share_purchase_credit_checked_line_77", non_negative=True
+)
+"""Employee share purchase tax credit, MB479 line 77 "Line 77 and line 61490: Enter your Manitoba
+employee share purchase tax credit from line 6 of Form T1256-2. (maximum $27,000)": the entered
+amount, passed on unchanged when it is at most the printed maximum, blank when left out; above the
+maximum it is refused, not capped."""
 
 MB428_CPP_EI_AND_OTHER_LINE_28 = AmountKind.declare(
     CATALOG, "mb428_cpp_ei_and_other_line_28", non_negative=True
@@ -496,6 +537,12 @@ MB479_GEOTHERMAL_HEAT_PUMP_CREDIT_LINE_68 = AmountKind.declare(
 the adjusted cost of geothermal heat pumps": calculated, 7.5% of the adjusted cost of geothermal
 heat pumps, rounded half-up to the cent."""
 
+MB479_GREEN_ENERGY_CREDITS_LINE_69 = AmountKind.declare(
+    CATALOG, "mb479_green_energy_credits_line_69", non_negative=True
+)
+"""Green energy credits, MB479 line 69 "Line 69: Line 67 plus line 68 = ^": calculated, line 67 plus
+line 68, with a blank line 67 read as 0."""
+
 MB479_BOOK_PUBLISHING_CREDIT_LINE_71 = AmountKind.declare(
     CATALOG, "mb479_book_publishing_credit_line_71", non_negative=True
 )
@@ -516,6 +563,14 @@ MB479_COMMUNITY_ENTERPRISE_DEVELOPMENT_TAX_CREDIT_LINE_75 = AmountKind.declare(
 """Community enterprise development tax credit, MB479 line 75 "Line 75 and line 61484: Enter your
 Manitoba community enterprise development tax credit from line 4 of Form T1256": the credit worked
 out on Form T1256, which is not built, a caller input that is read as blank when left out."""
+
+MB479_TEACHING_SUPPLIES_EXPENSES_LINE_79 = AmountKind.declare(
+    CATALOG, "mb479_teaching_supplies_expenses_line_79", non_negative=True
+)
+"""Teaching expense tax credit, MB479 line 79 "Line 79: Eligible teaching supplies expenses
+(maximum $1,000) Line 61495": the eligible teaching supplies expenses the 15% is taken of, a caller
+input read as blank when left out; the printed maximum $1,000 is checked by the step that reads
+it."""
 
 MB428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
     CATALOG, "mb428_bracket_tax_at_start_line_7", non_negative=True
@@ -560,6 +615,19 @@ MB479_PERSONAL_TAX_CREDIT_LINE_19 = AmountKind.declare(
 """Personal tax credit, MB479 line 19 "Line 19: Line 17 minus line 18 (if negative, enter "0")
 Enter this amount on line 54. Personal tax credit =": line 17 and line 18 (total credits less the
 reduction, not below 0), rounded to the cent."""
+
+MB479_CREDITS_LINE_55 = AmountKind.declare(CATALOG, "mb479_credits_line_55", non_negative=True)
+"""Credits, MB479 line 55 "Line 55: Line 53 plus line 54 =": line 53 (the homeowner, renter and
+senior credits, blank read as 0) plus line 54 (a copy of line 19), rounded to the cent."""
+
+MB479_CREDITS_LINE_57 = AmountKind.declare(CATALOG, "mb479_credits_line_57", non_negative=True)
+"""Credits, MB479 line 57 "Line 57: If you entered a number on line 56, multiply line 55 by line
+56. Otherwise, enter the amount from line 55.": line 55 multiplied by line 56, a blank line 56 read
+as 1, rounded to the cent."""
+
+MB479_CREDITS_LINE_60 = AmountKind.declare(CATALOG, "mb479_credits_line_60", non_negative=True)
+"""Credits, MB479 line 60 "Line 60: Line 58 plus line 59 =": line 58 (a copy of line 57) plus line
+59 (the primary caregiver tax credit, blank read as 0), rounded to the cent."""
 
 MB479_FERTILITY_TREATMENT_CREDIT_BEFORE_MAXIMUM_LINE_61 = AmountKind.declare(
     CATALOG, "mb479_fertility_treatment_credit_before_maximum_line_61", non_negative=True
