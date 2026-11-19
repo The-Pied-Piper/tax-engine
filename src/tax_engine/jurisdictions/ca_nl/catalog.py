@@ -867,3 +867,8 @@ NL428_LOW_INCOME_REDUCTION_LINE_98 = AmountKind.declare(
 )
 """Low-income tax reduction, NL428 line 98 "Line 98: Add lines 95 to 97. (maximum $1,554)": lines 95
 to 97 added, and not more than the printed $1,554."""
+
+NL428_LINE_101 = AmountKind.declare(CATALOG, "nl428_line_101", non_negative=True)
+"""NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0") =": line 99 (a copy of
+line 93, the adjusted family income) less line 100 (the low-income threshold), floored at 0 as the
+form prints, rounded half-up to the cent."""
