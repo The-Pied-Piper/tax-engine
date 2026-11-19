@@ -14,6 +14,24 @@ from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+WORKSHEET_NL428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_net_income_line_2", non_negative=True
+)
+"""Net income, Worksheet NL428 line 2 "Line 2: Amount from line 23600 of your return": the net
+income of the return."""
+
+WORKSHEET_NL428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Income threshold, Worksheet NL428 line 3 "Line 3: Income threshold 38,712.00": the printed
+threshold."""
+
+WORKSHEET_NL428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_line_4", non_negative=True
+)
+"""Line 2 minus line 3, Worksheet NL428 line 4 "Line 4: Line 2 minus line 3 (if negative, enter "0")
+": the net income above the threshold, not below 0."""
+
 WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
     CATALOG, "worksheet_nl428_age_amount_line_7", non_negative=True
 )
@@ -55,6 +73,21 @@ NL428_SPOUSE_NET_INCOME_LINE_19 = AmountKind.declare(
 partner's net income from line 23600 of their return": the amount as the filer gives it, an
 optional input. It is signed because a spouse's net income can be a loss, and the form prints no
 floor; a blank input is read as blank."""
+
+NL428_ELIGIBLE_DEPENDANT_NET_INCOME_LINE_22 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_net_income_line_22", non_negative=False
+)
+"""Eligible dependant's net income, NL428 line 22 "Line 22: Your eligible dependant's net income
+from line 23600 of their return": the amount as the filer gives it, an optional input. It is signed
+because a dependant's net income can be a loss, and the form prints no floor; a blank input is read
+as blank."""
+
+NL428_INFIRM_DEPENDANTS_AMOUNT_LINE_24 = AmountKind.declare(
+    CATALOG, "nl428_infirm_dependants_amount_line_24", non_negative=True
+)
+"""Amount for infirm dependants age 18 or older, NL428 line 24 "Line 24 and line 58200: Amount for
+infirm dependants age 18 or older (use Worksheet NL428)": the amount as the filer gives it, an
+optional input; a blank input is read as blank."""
 
 NL428_QPP_CONTRIBUTIONS_LINE_28 = AmountKind.declare(
     CATALOG, "nl428_qpp_contributions_line_28", non_negative=True
@@ -107,3 +140,25 @@ the claim is 1, 0 when the claim is blank or 0."""
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, NL428 line 16 "Line 16 and line 58040: Basic personal amount Claim
 $11,067": the printed $11,067, claimed whole and not income-tested."""
+
+SPOUSE_AMOUNT_BASE = AmountKind.declare(CATALOG, "spouse_amount_base", non_negative=True)
+"""Spouse or common-law partner amount, base amount, NL428 line 18 "Base amount 9,948.00": the
+printed figure, from which line 20 takes line 19."""
+
+SPOUSE_AMOUNT_MAXIMUM = AmountKind.declare(CATALOG, "spouse_amount_maximum", non_negative=True)
+"""Spouse or common-law partner amount, maximum, NL428 line 20 "(maximum $9,043)": the printed
+figure, the most line 20 can be."""
+
+NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20 = AmountKind.declare(
+    CATALOG, "nl428_spouse_amount_before_maximum_line_20", non_negative=True
+)
+"""Spouse or common-law partner amount before the maximum, NL428 line 20 "Line 20 and line 58120:
+Line 18 minus line 19 (if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below
+0, before the maximum is applied."""
+
+NL428_SPOUSE_AMOUNT_LINE_20 = AmountKind.declare(
+    CATALOG, "nl428_spouse_amount_line_20", non_negative=True
+)
+"""Spouse or common-law partner amount, NL428 line 20 "Line 20 and line 58120: Line 18 minus line 19
+(if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below 0, at most the printed
+maximum."""
