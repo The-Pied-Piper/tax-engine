@@ -278,6 +278,14 @@ NL428_AMOUNTS_TRANSFERRED_FROM_YOUR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_46 = Amoun
 58640: Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))": the
 amount as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_CREDITS_SUBTOTAL_LINE_47 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_47", non_negative=True
+)
+"""Credits subtotal, NL428 line 47 "Line 47: Add lines 42 to 46. = ^": line 42 plus line 43 (the
+student loan interest) plus line 44 (the tuition and education amounts) plus line 45 (the tuition
+and education amounts transferred from a child or grandchild) plus line 46 (the amounts transferred
+from a spouse or common-law partner), lines 43 to 46 being read as 0 when blank."""
+
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
