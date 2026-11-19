@@ -2,7 +2,7 @@
 # are always figures (the basic personal amount, and the age amount, 0 unless born in 1960 or
 # earlier). Lines 20 and 23 are blank for a filer with no spouse or common-law partner and no
 # eligible dependant, and line 24 is an optional input left blank by a salary-only filer; the sum
-# reads each blank as 0, as ca-mb/mb428_credits line 18 and line 35 here do. Line 26 is a copy of
+# reads each blank as 0, as ca-mb/mb428_credits line 18 and NL428 line 35 (nl428_credits_line_35.yaml) do. Line 26 is a copy of
 # this figure and has no step. Step 1 adds them with core/sum.
 form:
   name: ca-nl/nl428_credits

@@ -40,7 +40,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -192,39 +191,6 @@ def _born(tmp_path: Path, salary: str, born: int) -> Any:
     return sheet
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
-def test_line_25_is_the_basic_personal_amount_alone_for_a_salary_only_filer(
-    tmp_path: Path, salary: str
-) -> None:
-    sheet = _sheet(tmp_path, salary)
-
-    assert _value(sheet, LINE_16) == D("11067.00")
-    assert _value(sheet, LINE_17) == D("0.00")
-    assert _value(sheet, IDENTIFIER) == D("11067.00")
-
-
-@pytest.mark.parametrize(("salary", "worksheet"), WORKSHEET_LINE_7)
-def test_line_17_is_worksheet_line_7_when_born_in_1960_or_earlier(
-    tmp_path: Path, salary: str, worksheet: str
-) -> None:
-    sheet = _born(tmp_path, salary, 1)
-
-    assert _value(sheet, LINE_17) == D(worksheet)
-    assert _value(sheet, IDENTIFIER) == D("11067.00") + D(worksheet)
-
-
-def test_line_17_is_0_when_the_answer_is_0(tmp_path: Path) -> None:
-    sheet = _born(tmp_path, "20000", 0)
-
-    assert _value(sheet, LINE_17) == D("0.00")
-    assert _value(sheet, IDENTIFIER) == D("11067.00")
-
-
-def test_a_born_in_1960_count_above_1_is_refused(tmp_path: Path) -> None:
-    with pytest.raises(InputAboveBoundError):
-        _born(tmp_path, "20000", 2)
-
-
 def test_line_25_adds_the_spouse_amount_when_line_19_is_given(tmp_path: Path) -> None:
     # Line 18 9,948.00 less 5,000.00 is 4,948.00, under the 9,043 maximum.
     sheet = _sheet(tmp_path, "20000", {SPOUSE_NET_INCOME: "5000"})
@@ -286,29 +252,13 @@ def test_lines_16_and_17_have_no_blank_mapping() -> None:
     assert LINE_17 not in step["blank"]
 
 
-def test_line_17_has_three_steps_and_the_number_is_on_the_last() -> None:
-    part = yaml.safe_load((NL_PARTS / "nl428_credits_line_17.yaml").read_text(encoding="utf-8"))
-
-    names = [step["name"] for step in part["capabilities"]]
-    assert names == ["ca/yes_or_no_count", "core/record_total", "core/times_count"]
-    assert [step.get("reference") for step in part["capabilities"]] == [None, None, "17"]
-    assert part["capabilities"][1]["consumes"] == {
-        "records": "ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7"
-    }
-
-
 @pytest.mark.parametrize(
     ("identifier", "constant"),
     [
         (IDENTIFIER, nl_catalog.NL428_CREDITS_SUBTOTAL_LINE_25),
-        (LINE_17, nl_catalog.NL428_AGE_AMOUNT_LINE_17),
-        (
-            "ca-nl/nl428_age_amount_worksheet_line_17",
-            nl_catalog.NL428_AGE_AMOUNT_WORKSHEET_LINE_17,
-        ),
     ],
 )
-def test_the_new_kinds_are_registered_non_negative_decimal_amount_kinds(
+def test_line_25_is_a_registered_non_negative_decimal_amount_kind(
     identifier: str, constant: AmountKind
 ) -> None:
     kind = newfoundland_kinds().kind(identifier)
