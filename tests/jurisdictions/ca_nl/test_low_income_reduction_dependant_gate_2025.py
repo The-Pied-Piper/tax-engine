@@ -61,9 +61,23 @@ def test_the_gate_has_two_bands_the_first_from_0_and_the_second_above_half_a_cen
 
 @pytest.mark.parametrize(
     ("base", "expected"),
-    [("0.00", "0"), ("0.01", "557"), ("9043.00", "557")],
+    [("0", "0"), ("0.00", "0"), ("0.005", "0"), ("0.01", "557"), ("9043.00", "557")],
 )
 def test_the_gate_gives_0_at_nothing_claimed_and_557_from_one_cent(
     base: str, expected: str
 ) -> None:
     assert _reduction(base) == D(expected)
+
+
+def test_the_gate_band_for_0_is_not_the_band_for_one_cent() -> None:
+    values = SOURCE.get(FAMILY, YEAR, AMOUNT_BY_BAND).values
+
+    assert values.band_for(D("0.00")) is values.bands[0]
+    assert values.band_for(D("0.005")) is values.bands[0]
+    assert values.band_for(D("0.01")) is values.bands[1]
+
+
+def test_the_gate_names_the_form_as_its_source() -> None:
+    data = SOURCE.get(FAMILY, YEAR, AMOUNT_BY_BAND)
+
+    assert data.sources
