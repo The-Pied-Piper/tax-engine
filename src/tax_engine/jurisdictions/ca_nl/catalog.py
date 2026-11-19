@@ -516,6 +516,12 @@ NL428_CREDITS_TOTAL_LINE_56 = AmountKind.declare(
 """Credits total, NL428 line 56 "Line 47 plus line 55": the credits subtotal of line 47 plus the
 allowable medical expenses of line 55."""
 
+NL428_CREDITS_AT_RATE_LINE_58 = AmountKind.declare(
+    CATALOG, "nl428_credits_at_rate_line_58", non_negative=True
+)
+"""Credits at the credit rate, NL428 line 58 "Line 56 multiplied by the percentage from line 57":
+line 56 times the printed 8.7% rate of line 57."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
