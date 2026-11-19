@@ -1,0 +1,30 @@
+# Form NL428 (CRA 5001-C) line 35: "Line 35: Add lines 27 to 34. = ^". Lines 27 and 29 (the amounts from
+# lines 30800 and 31200 of your return) are linked record totals; lines 28, 30, 31, 32, 33 and 34 are
+# optional inputs, left blank by a salary-only filer and read as 0. Step 1 adds them with core/sum.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "35"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_cpp_contributions_line_27
+        - ca-nl/nl428_qpp_contributions_line_28
+        - ca-nl/nl428_ei_premiums_line_29
+        - ca-nl/nl428_ei_premiums_line_30
+        - ca-nl/nl428_volunteer_firefighters_amount_line_31
+        - ca-nl/nl428_search_and_rescue_volunteers_amount_line_32
+        - ca-nl/nl428_child_care_amount_line_33
+        - ca-nl/nl428_adoption_expenses_line_34
+    blank:
+      ca-nl/nl428_qpp_contributions_line_28: "0"
+      ca-nl/nl428_ei_premiums_line_30: "0"
+      ca-nl/nl428_volunteer_firefighters_amount_line_31: "0"
+      ca-nl/nl428_search_and_rescue_volunteers_amount_line_32: "0"
+      ca-nl/nl428_child_care_amount_line_33: "0"
+      ca-nl/nl428_adoption_expenses_line_34: "0"
+    produces:
+      output: ca-nl/nl428_cpp_ei_and_other_line_35
