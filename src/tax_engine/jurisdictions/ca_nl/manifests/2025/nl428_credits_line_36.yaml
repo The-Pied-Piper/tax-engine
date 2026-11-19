@@ -1,0 +1,18 @@
+# Form NL428 (CRA 5001-C) line 36: "Line 36: Line 26 plus line 35 = ^". Line 26 is "Amount from line 25
+# of the previous page", a copy of line 25 with no step of its own, so step 1 adds line 25
+# (nl428_credits_line_25.yaml) and line 35 (nl428_credits_line_35.yaml) with core/sum. Both are always
+# figures, so nothing is blank.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "36"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_credits_subtotal_line_25
+        - ca-nl/nl428_cpp_ei_and_other_line_35
+    produces:
+      output: ca-nl/nl428_credits_subtotal_line_36

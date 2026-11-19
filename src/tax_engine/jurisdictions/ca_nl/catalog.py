@@ -153,6 +153,12 @@ NL428_CPP_EI_AND_OTHER_LINE_35 = AmountKind.declare(
 sum of lines 27 to 34, lines 28, 30, 31, 32, 33 and 34 being optional inputs read as 0.
 """
 
+NL428_CREDITS_SUBTOTAL_LINE_36 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_36", non_negative=True
+)
+"""Credits subtotal, NL428 line 36 "Line 36: Line 26 plus line 35 = ^": line 26 (a copy of line 25)
+plus line 35."""
+
 NL428_CAREGIVER_AMOUNT_LINE_38 = AmountKind.declare(
     CATALOG, "nl428_caregiver_amount_line_38", non_negative=True
 )
@@ -192,6 +198,19 @@ NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
 """Interest paid on your student loans, NL428 line 43 "Line 43 and line 58520: Interest paid on your
 student loans (amount from line 31900 of your return)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
+
+NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_line_48", non_negative=True
+)
+"""Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.declare(
+    CATALOG, "nl428_allowable_medical_expenses_for_other_dependants_line_54", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, NL428 line 54 "Line 54 and line
+58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
 
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
@@ -318,6 +337,13 @@ NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 """Taxable income, Form NL428 Line 1 "Enter your taxable income from line 26000 of your return": the
 T1 taxable income, read directly by line 2."""
 
+NL428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
+    CATALOG, "nl428_bracket_lower_bound_line_3", non_negative=True
+)
+"""Lower bound of the column, NL428 line 3 "Line 3: 0.00" (44,192.00; 88,382.00; 157,792.00): the
+printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
+above 220,910, where lines 9 to 15 apply."""
+
 NL428_NET_INCOME_LINE_49 = AmountKind.declare(
     CATALOG, "nl428_net_income_line_49", non_negative=True
 )
@@ -329,3 +355,9 @@ NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51 = AmountKind.declare(
 )
 """Net income multiplied by 3%, NL428 line 51 "Line 49 multiplied by the percentage from line 50":
 line 49 times the printed line 50 rate, rounded half-up to the cent."""
+
+NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
+    CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
+)
+"""Lower bound of the column, NL428 line 10 "Line 10: 220,910.00": the printed lower bound of the
+column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""

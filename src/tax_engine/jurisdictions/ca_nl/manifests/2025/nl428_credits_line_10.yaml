@@ -1,0 +1,19 @@
+# Form NL428 (Newfoundland and Labrador Tax, 2025, 5001-C) Part A, line 10. Each of the columns 1 to 4
+# of lines 9 to 15 prints "Line 10:" with its lower bound: 220,910.00, 282,214.00, 564,429.00 and
+# 1,128,858.00. Column 1 is "Line 1 is more than $220,910 but not more than $282,214", column 2
+# "more than $282,214 but not more than $564,429", column 3 "more than $564,429 but not more than
+# $1,128,858" and column 4 "more than $1,128,858". Line 10 is the printed lower bound of the column
+# that line 1 falls in, and is blank when line 1 is $220,910 or less. Line 9 is a copy of line 1
+# and has no step of its own: line 10 reads line 1 directly.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/bracket_column_lower_bound
+    reference: "10"
+    unit: ca/cad
+    params:
+      schedule: ca-nl/brackets_lines_9_to_15
+    consumes:
+      base: ca-nl/nl428_taxable_income_line_1
+    produces:
+      output: ca-nl/nl428_bracket_lower_bound_line_10
