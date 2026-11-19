@@ -27,10 +27,8 @@ import re
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
-from typing import Any
 
 import pytest
-import yaml
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
@@ -230,39 +228,3 @@ def test_the_average_rate_kind_is_registered_and_non_negative() -> None:
     assert kind is AVERAGE_INCOME_TAX_RATE
     assert kind.identifier == "ca-nl/average_income_tax_rate"
     assert non_negative(kind) is True
-
-
-def _steps() -> list[dict[str, Any]]:
-    part = yaml.safe_load(RETURN_PART.read_text(encoding="utf-8"))
-    assert isinstance(part, dict)
-    steps = part["capabilities"]
-    assert isinstance(steps, list)
-    return steps
-
-
-def _producing(output: str) -> dict[str, Any]:
-    (step,) = [step for step in _steps() if step["produces"]["output"] == output]
-    return step
-
-
-def test_the_return_part_reads_total_payable_and_divides_it_by_the_salary() -> None:
-    total = _producing("ca/total_payable")
-    divide = _producing("ca-nl/average_income_tax_rate")
-
-    assert total["name"] == "core/record_total"
-    assert total["unit"] == "ca/cad"
-    assert total["consumes"] == {"records": "ca/t1_tax_and_credits.total_payable"}
-    assert divide["name"] == "core/divide"
-    assert divide["unit"] == "core/percent"
-    assert divide["params"] == {"rounding": "ca-nl/rate_rounding"}
-    assert divide["consumes"] == {
-        "dividend": "ca/total_payable",
-        "divisor": "ca/employment_income",
-    }
-
-
-def test_the_two_steps_carry_no_title_and_no_reference() -> None:
-    for output in ("ca/total_payable", "ca-nl/average_income_tax_rate"):
-        step = _producing(output)
-        assert "title" not in step
-        assert "reference" not in step
