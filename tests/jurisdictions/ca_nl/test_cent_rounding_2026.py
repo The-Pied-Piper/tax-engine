@@ -8,7 +8,8 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
+from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
+from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY, RoundingOnly
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_packages,
@@ -30,6 +31,12 @@ DERIVATION_HEADER = (
 )
 
 
+def test_2026_cent_rounding_value() -> None:
+    data = SOURCE.get(FAMILY, 2026, ROUNDING_ONLY)
+
+    assert data.values == RoundingOnly()
+
+
 def test_2026_is_carried_forward_unchanged_from_2025() -> None:
     carried = SOURCE.get(FAMILY, 2026, ROUNDING_ONLY)
     original = SOURCE.get(FAMILY, 2025, ROUNDING_ONLY)
@@ -37,6 +44,12 @@ def test_2026_is_carried_forward_unchanged_from_2025() -> None:
     assert carried.values == original.values
     assert carried.rounding == original.rounding
     assert carried.sources == original.sources
+
+
+def test_2026_cent_rounding_rounding() -> None:
+    data = SOURCE.get(FAMILY, 2026, ROUNDING_ONLY)
+
+    assert data.rounding == RoundTo(D("0.01"), RoundingMode.HALF_UP)
 
 
 def test_2026_cent_rounding_sources() -> None:

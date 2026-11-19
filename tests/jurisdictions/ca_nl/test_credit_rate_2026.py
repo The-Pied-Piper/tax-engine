@@ -65,3 +65,10 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1] == DERIVATION_HEADER
+
+
+def test_2025_credit_rate_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, RATE)
+
+    assert data.values == Rate(D("0.087"))
+    assert data.sources != SOURCES

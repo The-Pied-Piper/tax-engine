@@ -1,5 +1,5 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: 2025 amount 557 x 1.011 (Newfoundland and Labrador's index rate in T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the printed 11,188) = 563.127, rounded down to 563 as in 2025; unconfirmed, as the 2026 NL428 is not yet published.
+# Derivation: 2025 amount 557 x 1.011 (Newfoundland and Labrador's index rate in T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the printed 11,188) = 563.127, rounded down to 563 (the project ruling for provisional indexed amounts); unconfirmed, as the 2026 NL428 is not yet published.
 # Newfoundland and Labrador spouse or common-law partner reduction, low income, 2026 tax year.
 family: ca-nl/low_income_reduction_spouse
 tax_year: 2026

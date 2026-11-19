@@ -70,3 +70,10 @@ def test_2026_is_carried_forward_unchanged_from_2025() -> None:
 
     assert carried.values == original.values
     assert carried.rounding == original.rounding
+    assert carried.sources == original.sources
+
+
+def test_2025_political_contribution_tax_credit_maximum_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
+
+    assert data.values == Credit(amount=D("500"))

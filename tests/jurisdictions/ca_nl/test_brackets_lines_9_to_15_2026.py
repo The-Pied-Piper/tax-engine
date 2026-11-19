@@ -69,3 +69,15 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1] == DERIVATION_HEADER
+
+
+def test_2025_brackets_lines_9_to_15_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, BRACKETS)
+
+    assert [(b.lower, b.rate, b.tax_at_start) for b in data.values.brackets] == [
+        (D("220910.00"), D("0.198"), D("32454.04")),
+        (D("282214.00"), D("0.208"), D("44592.23")),
+        (D("564429.00"), D("0.213"), D("103292.95")),
+        (D("1128858.00"), D("0.218"), D("223516.33")),
+    ]
+    assert data.sources != SOURCES

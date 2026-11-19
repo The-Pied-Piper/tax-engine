@@ -35,10 +35,10 @@ PROVISIONAL_HEADER = (
 DERIVATION_HEADER = (
     "# Derivation: the form's maximum is the sum of the basic reduction and one of the "
     "spouse or dependant reductions (2025: 997 + 557 = 1,554); the 2026 maximum is the "
-    "sum of those two amounts as indexed in the other low income reduction datasets "
-    "(1,007 + 563 = 1,570), each the 2025 figure x 1.011 (Newfoundland and Labrador's "
-    "index rate in T4127 (Jan 2026) Table 8.2) rounded down; unconfirmed, as the 2026 "
-    "NL428 is not yet published."
+    "sum of those two amounts as indexed in this directory (1,007 + 563 = 1,570), each "
+    "the 2025 figure x 1.011 (Newfoundland and Labrador's index rate in T4127 (Jan 2026) "
+    "Table 8.2) rounded down (the project ruling for provisional indexed amounts); "
+    "unconfirmed, as the 2026 NL428 is not yet published."
 )
 
 
@@ -73,3 +73,10 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1] == DERIVATION_HEADER
+
+
+def test_2025_low_income_reduction_maximum_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, AMOUNT)
+
+    assert data.values == Amount(D("1554"))
+    assert data.sources != SOURCES

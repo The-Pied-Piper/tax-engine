@@ -70,3 +70,10 @@ def test_2026_is_carried_forward_unchanged_from_2025() -> None:
 
     assert carried.values == original.values
     assert carried.rounding == original.rounding
+    assert carried.sources == original.sources
+
+
+def test_2025_minimum_tax_rate_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, RATE)
+
+    assert data.values == Rate(D("0.60"))

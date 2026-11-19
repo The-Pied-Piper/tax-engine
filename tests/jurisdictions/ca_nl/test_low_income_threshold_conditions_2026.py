@@ -9,6 +9,7 @@ from decimal import Decimal
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.conditions import CONDITIONS
+from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_packages,
@@ -37,6 +38,12 @@ def test_2026_is_carried_forward_unchanged_from_2025() -> None:
     assert carried.values == original.values
     assert carried.rounding == original.rounding
     assert carried.sources == original.sources
+
+
+def test_2026_low_income_threshold_conditions_rounding() -> None:
+    data = SOURCE.get(FAMILY, 2026, CONDITIONS)
+
+    assert data.rounding == NO_ROUNDING
 
 
 def test_2026_low_income_threshold_conditions_sources() -> None:

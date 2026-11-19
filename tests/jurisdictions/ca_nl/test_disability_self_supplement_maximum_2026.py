@@ -30,8 +30,8 @@ PROVISIONAL_HEADER = (
 DERIVATION_HEADER = (
     "# Derivation: 2025 amount 3514.00 x 1.011 (Newfoundland and Labrador's index rate in"
     " T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the "
-    "printed 11,188) = 3552.654, rounded down to 3552.00 as in 2025; unconfirmed, as the "
-    "2026 NL428 is not yet published."
+    "printed 11,188) = 3552.654, rounded down to 3552.00 (the project ruling for "
+    "provisional indexed amounts); unconfirmed, as the 2026 NL428 is not yet published."
 )
 
 
@@ -66,3 +66,10 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1] == DERIVATION_HEADER
+
+
+def test_2025_disability_self_supplement_maximum_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, CREDIT)
+
+    assert data.values == Credit(amount=D("3514.00"))
+    assert data.sources != SOURCES
