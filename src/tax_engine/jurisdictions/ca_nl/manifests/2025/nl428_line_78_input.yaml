@@ -1,0 +1,13 @@
+# NL428 (2025) line 78's input, which a salary-only caller does not give.
+# Line 78: "Line 78: Direct equity tax credit (complete Form T1272)" (Form NL428, CRA 5001-C).
+# Form T1272 is not built, so the line is taken as one optional input, as the form takes it. A
+# request that leaves the line out is read as blank; the step that reads line 78 reads that blank
+# as 0.
+inputs:
+  - name: ca-nl/nl428_direct_equity_tax_credit_line_78
+    title: "Direct equity tax credit"
+    reference: "78"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 78: Direct equity tax credit (complete Form T1272)"
