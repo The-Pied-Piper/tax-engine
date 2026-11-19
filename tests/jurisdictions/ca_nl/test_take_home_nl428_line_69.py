@@ -255,9 +255,6 @@ def _part() -> dict[str, Any]:
 
 
 def test_the_part_is_one_untitled_sum_step_over_lines_66_to_68() -> None:
-    kind = newfoundland_kinds().kind(IDENTIFIER)
-    assert kind is nl_catalog.NL428_CREDITS_TOTAL_LINE_69
-    assert non_negative(kind)
     assert _part() == {
         "form": {"name": FORM_NAME},
         "capabilities": [
@@ -272,3 +269,10 @@ def test_the_part_is_one_untitled_sum_step_over_lines_66_to_68() -> None:
             }
         ],
     }
+
+
+def test_line_69_is_a_registered_non_negative_amount_kind() -> None:
+    kind = newfoundland_kinds().kind(IDENTIFIER)
+
+    assert kind is nl_catalog.NL428_CREDITS_TOTAL_LINE_69
+    assert non_negative(kind)
