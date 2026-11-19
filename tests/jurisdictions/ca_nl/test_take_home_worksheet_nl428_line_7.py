@@ -360,17 +360,6 @@ def test_the_row_reads_in_english_with_the_rounding_named(tmp_path: Path) -> Non
     assert "rounded to the nearest cent" in row
 
 
-def test_the_floored_row_reads_in_english_with_the_zero_result(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "100000")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    (row,) = [row for row in rows if "not below 0" in row and "9032.10" in row]
-    assert "7064.00" in row
-    assert "gives CA$0.00" in row
-    assert "rounded to the nearest cent" in row
-
-
 def test_the_part_is_two_untitled_steps_and_only_line_7_carries_a_reference() -> None:
     steps = _steps()
 

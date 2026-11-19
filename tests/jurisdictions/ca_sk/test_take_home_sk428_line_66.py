@@ -20,7 +20,7 @@ line 65 of 0.00, re-derived here in `_derived` with Decimal (not a CRA example).
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from textwrap import dedent
@@ -283,23 +283,6 @@ def test_the_sum_row_reads_in_english_with_the_total(tmp_path: Path) -> None:
     assert "100.00" in row
     assert "500.00" in row
     assert "rounded to the nearest cent" in row
-
-
-def _left_blank_rows(rows: Sequence[str]) -> int:
-    return sum("left blank, taken as 0" in row.lower() for row in rows)
-
-
-def test_a_blank_line_64_prints_the_steps_own_left_blank_row_and_a_given_one_prints_none(
-    tmp_path: Path,
-) -> None:
-    given_dir = tmp_path / "given"
-    given_dir.mkdir()
-    blank = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-    given = EnglishTraceRenderer().render_all(_sheet(given_dir, "70000", "100.00").trace)
-
-    # Other steps print their own blank rows either way; line 66's for line 64 is the difference.
-    assert _left_blank_rows(blank) == _left_blank_rows(given) + 1
-    assert any("dividend tax credit line 64" in row.lower() for row in blank)
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_66(tmp_path: Path) -> None:

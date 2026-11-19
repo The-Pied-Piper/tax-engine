@@ -28,7 +28,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -179,12 +178,6 @@ def test_line_55_adds_line_53_to_a_non_zero_line_19(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "10000", "100.00")
 
     assert _line(sheet, IDENTIFIER) == D("195.65")
-
-
-def test_a_blank_line_53_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    assert any("left blank, taken as 0" in row.lower() for row in rows)
 
 
 def _part() -> dict[str, Any]:

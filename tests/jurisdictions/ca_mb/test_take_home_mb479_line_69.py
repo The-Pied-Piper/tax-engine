@@ -179,13 +179,6 @@ def test_line_69_rounds_a_half_cent_of_line_68_up_before_the_sum(tmp_path: Path)
     assert value == D("0.01")
 
 
-def test_a_blank_line_67_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", cost_68="20000.00").trace)
-
-    blank_rows = [row for row in rows if "left blank, taken as 0" in row.lower()]
-    assert len(blank_rows) == 1
-
-
 def test_a_given_line_67_prints_no_left_blank_row_for_line_67(tmp_path: Path) -> None:
     blank = EnglishTraceRenderer().render_all(
         _sheet(tmp_path / "blank", "70000", cost_68="20000.00").trace

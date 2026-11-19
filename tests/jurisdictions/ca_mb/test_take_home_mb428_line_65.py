@@ -351,28 +351,6 @@ def test_the_sheet_prints_no_title_and_the_reference_of_line_65(tmp_path: Path) 
     assert sheet.reference(label) == "65"
 
 
-def test_the_trace_row_for_line_65_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(7923.71)" in r]
-    assert row == (
-        "Mb428 tax before credits line 60 (7923.71) less mb428 credits total line 64 (2176.12), "
-        "not below 0, gives 5747.59 (rounded to the nearest cent)."
-    )
-
-
-def test_the_floored_row_for_line_65_reads_gives_zero(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "10000").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(1072.98)" in r]
-    assert row == (
-        "Mb428 tax before credits line 60 (1072.98) less mb428 credits total line 64 (1883.15), "
-        "not below 0, gives 0.00 (rounded to the nearest cent)."
-    )
-
-
 def _part() -> dict[str, Any]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)

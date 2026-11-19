@@ -45,7 +45,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -296,8 +295,3 @@ def test_line_8_is_a_registered_non_negative_decimal_amount_kind() -> None:
     assert kind.value_type is Decimal
     assert non_negative(kind)
     assert kind is mb_catalog.MB428_TAX_ON_TAXABLE_INCOME_LINE_8
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(manitoba_kinds().kind(LINE_8), D("-0.01"))

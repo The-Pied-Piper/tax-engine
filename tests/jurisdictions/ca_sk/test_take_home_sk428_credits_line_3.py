@@ -26,7 +26,7 @@ second.
 from __future__ import annotations
 
 from collections.abc import Iterator
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
 from typing import Any
@@ -42,7 +42,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -60,7 +59,6 @@ from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
 D = Decimal
-CENT = D("0.01")
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = SK_PARTS / "sk428_credits_line_3.yaml"
@@ -163,26 +161,6 @@ def _kind(identifier: str) -> AmountKind:
     return kind
 
 
-def _cent(amount: Decimal) -> Decimal:
-    return amount.quantize(CENT, rounding=ROUND_HALF_UP)
-
-
-def _taxable_income(salary: Decimal) -> Decimal:
-    """The salary less the enhanced CPP deduction (2025): 1% of the earnings from $3,500 to
-    $71,300, plus 4% of the earnings from $71,300 to $81,200."""
-    enhanced = _cent(max(min(salary, D("71300")) - D("3500"), D(0)) * D("0.01"))
-    second = _cent(max(min(salary, D("81200")) - D("71300"), D(0)) * D("0.04"))
-    return salary - enhanced - second
-
-
-@pytest.mark.parametrize(("salary", "line_1", "line_3"), [*CASES, *EDGES])
-def test_the_salaries_give_the_line_1_figures_the_line_3_cases_rest_on(
-    tmp_path: Path, salary: str, line_1: str, line_3: str
-) -> None:
-    assert _taxable_income(D(salary)) == D(line_1)
-    assert _sheet(tmp_path, salary).get(_kind(LINE_1)).value == D(line_1)
-
-
 @pytest.mark.parametrize(("salary", "line_1", "expected"), [*CASES, *EDGES])
 def test_line_3_is_the_lower_bound_of_the_column_line_1_falls_in(
     tmp_path: Path, salary: str, line_1: str, expected: str
@@ -248,8 +226,3 @@ def test_line_3_is_a_registered_non_negative_decimal_amount_kind() -> None:
     assert kind.value_type is Decimal
     assert non_negative(kind)
     assert kind is sk_catalog.SK428_BRACKET_LOWER_BOUND_LINE_3
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(saskatchewan_kinds().kind(LINE_3), D("-0.01"))

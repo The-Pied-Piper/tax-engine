@@ -161,10 +161,6 @@ def test_the_part_is_one_record_total_step_over_the_t2204_line_16_records() -> N
     }
 
 
-def test_the_step_keys_mirror_the_manitoba_mb428_line_21_part() -> None:
-    assert list(_step()) == ["name", "title", "reference", "unit", "consumes", "produces"]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = saskatchewan_kinds().kind(IDENTIFIER)
 

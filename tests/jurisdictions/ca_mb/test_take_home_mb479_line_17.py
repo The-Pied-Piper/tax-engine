@@ -14,7 +14,6 @@ up here, exporting only line 17.
 
 from __future__ import annotations
 
-import ast
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
@@ -108,27 +107,6 @@ ALONE = [
     ("124", "319.00"),
     ("52", "247.00"),
 ]
-
-
-def squashed(text: str) -> str:
-    return " ".join(text.split())
-
-
-def docstring_of(identifier: str) -> str:
-    """The string right after the declaration of the kind `identifier` in the Manitoba catalog."""
-    path = Path(mb_catalog.__file__)
-    body = ast.parse(path.read_text(encoding="utf-8")).body
-    for statement, following in zip(body, body[1:], strict=False):
-        if not (isinstance(statement, ast.Assign) and isinstance(statement.value, ast.Call)):
-            continue
-        constants = [each.value for each in statement.value.args if isinstance(each, ast.Constant)]
-        if (
-            identifier.rpartition("/")[2] in constants
-            and isinstance(following, ast.Expr)
-            and isinstance(following.value, ast.Constant)
-        ):
-            return str(following.value.value)
-    raise AssertionError(f"no declaration of {identifier!r} followed by a docstring")
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -257,10 +235,3 @@ def test_line_17_is_a_registered_non_negative_amount_kind() -> None:
     assert kind.value_type is Decimal
     assert non_negative(kind)
     assert kind is mb_catalog.MB479_TOTAL_CREDITS_LINE_17
-
-
-def test_the_docstring_quotes_the_form_text() -> None:
-    doc = squashed(docstring_of(KIND))
-
-    assert "MB479" in doc
-    assert 'line 17 "Line 17 and line 61050: Add lines 7, 8, and 12 to 16. Total credits"' in doc

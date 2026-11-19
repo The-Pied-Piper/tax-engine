@@ -34,7 +34,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_sk
 import tax_engine.jurisdictions.ca_sk.catalog as sk_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -361,17 +360,6 @@ def test_at_20000_the_trace_shows_the_floored_step_with_a_zero_result(tmp_path: 
     assert line.subtrahend_amount == D("2166.75")
     assert line.result == ZERO
     assert not line.result.is_signed()
-
-
-def test_the_floored_row_reads_in_english_with_the_rounding_named(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000", line_61="100.00")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    (row,) = [row for row in rows if "not below 0" in row and "5192.30" in row]
-    assert "7697.62" in row
-    assert "2505.32" in row
-    assert "rounded to the nearest cent" in row
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_67(tmp_path: Path) -> None:

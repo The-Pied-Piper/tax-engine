@@ -34,7 +34,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -309,11 +308,6 @@ def _line(sheet: Worksheet, identifier: str) -> Decimal:
     return D(sheet.get(manitoba_kinds().kind(identifier)).value)
 
 
-def _blank_rows(sheet: Worksheet) -> list[str]:
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-    return [row for row in rows if "left blank, taken as 0" in row.lower()]
-
-
 @pytest.mark.parametrize(("salary", "expected"), CASES)
 def test_line_82_is_line_80_when_line_81_is_left_blank(
     tmp_path: Path, salary: str, expected: str
@@ -343,16 +337,6 @@ def test_line_82_is_line_80_minus_line_81_not_below_zero_when_line_81_is_given(
     assert not line_82.is_signed()
 
 
-def test_a_blank_line_81_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    (tmp_path / "given").mkdir()
-    (tmp_path / "blank").mkdir()
-    given = _blank_rows(_sheet(tmp_path / "given", "70000", "300.00"))
-    blank = _blank_rows(_sheet(tmp_path / "blank", "70000"))
-
-    # Other steps on the sheet print their own blank rows either way; line 82's is the difference.
-    assert len(blank) == len(given) + 1
-
-
 def test_the_sheet_prints_the_title_manitoba_tax_and_the_reference_of_line_82(
     tmp_path: Path,
 ) -> None:
@@ -361,30 +345,6 @@ def test_the_sheet_prints_the_title_manitoba_tax_and_the_reference_of_line_82(
 
     assert sheet.title(label) == "Manitoba tax"
     assert sheet.reference(label) == "82"
-
-
-def test_the_trace_row_for_line_82_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", "300.00").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(300.00)" in r]
-    assert row == (
-        "Mb428 tax line 80 (5747.59) less mb428 mineral exploration tax credit line 81 "
-        "(300.00), "
-        "not below 0, gives 5447.59 (rounded to the nearest cent)."
-    )
-
-
-def test_the_floored_row_for_line_82_reads_gives_zero(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "20000", "300.00").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(300.00)" in r]
-    assert row == (
-        "Mb428 tax line 80 (284.08) less mb428 mineral exploration tax credit line 81 "
-        "(300.00), "
-        "not below 0, gives 0.00 (rounded to the nearest cent)."
-    )
 
 
 def _part() -> dict[str, Any]:

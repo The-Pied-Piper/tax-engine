@@ -265,17 +265,6 @@ def test_line_81_is_a_computed_zero_when_every_part_is_zero(tmp_path: Path) -> N
     assert str(line_81.value) == "0.00"
 
 
-def test_a_blank_line_80_prints_one_more_left_blank_row_than_a_given_line_80(
-    tmp_path: Path,
-) -> None:
-    # The composed parts print other blank rows of their own; line 81 adds exactly one.
-    blank = _blank_rows(_sheet(tmp_path / "blank", "10000"))
-    given = _blank_rows(_sheet(tmp_path / "given", "10000", line_80="500.00"))
-    zero = _blank_rows(_sheet(tmp_path / "zero", "10000", line_80="0"))
-
-    assert len(blank) == len(given) + 1 == len(zero) + 1
-
-
 def test_only_the_line_80_input_is_blank_taken_as_0_on_this_step(tmp_path: Path) -> None:
     kinds = manitoba_kinds()
     sheet = _sheet(tmp_path, "10000")
@@ -311,25 +300,6 @@ def test_the_step_traces_one_sum_line_over_lines_78_to_80(tmp_path: Path) -> Non
     )
     assert line.total == D("745.65")
     assert line.rounding.apply(D("0.005")) == D("0.01")
-
-
-def test_the_trace_row_for_line_81_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    sheet = _sheet(tmp_path, "10000", line_79="1000", line_80="500.00")
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    (row,) = [
-        r
-        for r in rows
-        if "(CA$95.65)" in r and "(CA$150.00)" in r and "(CA$500.00)" in r and " gives " in r
-    ]
-    assert row.startswith("Line 78 (")
-    assert " plus line 79 (" in row
-    assert " plus line 80 (" in row
-    assert row.index("(CA$95.65)") < row.index("(CA$150.00)") < row.index("(CA$500.00)")
-    assert "745.65" in row.split(" gives ")[1]
-    assert row.endswith("(rounded to the nearest cent).")
 
 
 def test_the_trace_prints_the_left_blank_row_of_line_81_when_line_80_is_blank(

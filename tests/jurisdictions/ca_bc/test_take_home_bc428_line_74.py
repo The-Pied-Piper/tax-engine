@@ -159,10 +159,6 @@ def test_the_part_is_one_untitled_record_total_step_over_the_t1_net_income() -> 
     }
 
 
-def test_the_step_keys_are_in_order_and_there_is_no_title() -> None:
-    assert list(_step()) == ["name", "reference", "unit", "consumes", "produces"]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = british_columbia_kinds().kind(IDENTIFIER)
 

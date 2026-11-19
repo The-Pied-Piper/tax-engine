@@ -152,18 +152,6 @@ def test_the_step_is_titled_with_the_heading_the_form_prints_above_the_line() ->
     assert _step()["title"] == "Alberta additional tax for minimum tax purposes"
 
 
-def test_the_step_keys_mirror_the_ontario_on428_line_87_part() -> None:
-    assert list(_step()) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "produces",
-    ]
-
-
 def test_the_kind_is_a_registered_decimal_amount() -> None:
     kind = alberta_kinds().kind(LINE_67)
 

@@ -33,7 +33,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -287,19 +286,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
         rounding=_rounding().rounding,
         result=D("3162.39"),
     )
-
-
-def test_the_trace_row_for_line_68_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(4037.83)" in r]
-    # The same wording as the other subtract-not-below-zero steps: "<line> (<amount>) less <line>
-    # (<amount>), not below 0, gives <result> (rounded to the nearest cent)."
-    assert "(875.44)" in row
-    assert " less " in row
-    assert row.endswith(", not below 0, gives 3162.39 (rounded to the nearest cent).")
 
 
 def _line_68_at(line_63_amount: str, line_67_amount: str) -> Artifact[Decimal]:

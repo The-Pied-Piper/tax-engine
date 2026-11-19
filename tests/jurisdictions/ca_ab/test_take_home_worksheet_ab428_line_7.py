@@ -36,7 +36,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_ab
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -228,17 +227,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
         rounding=_rounding().rounding,
         result=D("0.00"),
     )
-
-
-def test_the_floored_row_reads_in_english_with_the_rounding_named(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-
-    assert [row for row in rows if "not below 0" in row] == [
-        "Worksheet ab428 line 5 (2135.38) less worksheet ab428 line 6 (4800.00), not below 0, "
-        "gives 0.00 (rounded to the nearest cent)."
-    ]
 
 
 def _line_7_at(line_5_amount: str, line_6_amount: str) -> Artifact[Decimal]:

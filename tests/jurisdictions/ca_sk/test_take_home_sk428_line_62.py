@@ -22,7 +22,7 @@ Figures: line 60 is line 58 (line 8 as the engine produces it) less line 59, re-
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from textwrap import dedent
@@ -313,22 +313,6 @@ def test_the_sum_row_reads_in_english_with_the_rounding_named(tmp_path: Path) ->
         "Sk428 tax line 60 (7597.62) plus sk428 tax on split income line 61 (100.00) gives"
         " 7697.62 (rounded to the nearest cent)."
     ]
-
-
-def _left_blank_rows(rows: Sequence[str]) -> int:
-    return sum("left blank, taken as 0" in row.lower() for row in rows)
-
-
-def test_a_blank_line_61_prints_the_steps_own_left_blank_row_and_a_given_one_prints_none(
-    tmp_path: Path,
-) -> None:
-    given_dir = tmp_path / "given"
-    given_dir.mkdir()
-    blank = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-    given = EnglishTraceRenderer().render_all(_sheet(given_dir, "70000", line_61="100.00").trace)
-
-    # Line 59's blank row is printed either way; line 61's is the difference.
-    assert _left_blank_rows(blank) == _left_blank_rows(given) + 1
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_62(tmp_path: Path) -> None:

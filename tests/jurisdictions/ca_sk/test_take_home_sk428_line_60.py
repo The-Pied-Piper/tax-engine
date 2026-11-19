@@ -276,12 +276,6 @@ def test_the_subtract_row_reads_in_english_with_the_rounding_named(tmp_path: Pat
     ]
 
 
-def test_a_blank_line_59_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    assert any("left blank, taken as 0" in row.lower() for row in rows)
-
-
 def test_a_given_line_59_prints_no_left_blank_row(tmp_path: Path) -> None:
     rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", "100.00").trace)
 

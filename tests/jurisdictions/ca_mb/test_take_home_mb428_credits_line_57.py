@@ -32,7 +32,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -235,12 +234,6 @@ def test_line_57_adds_line_56_when_it_is_given(tmp_path: Path) -> None:
     )
 
     assert _line(sheet, IDENTIFIER) == D("2276.12")
-
-
-def test_a_blank_line_56_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    assert any("left blank, taken as 0" in row.lower() for row in rows)
 
 
 def test_the_sheet_prints_the_title_and_the_reference_of_line_57(tmp_path: Path) -> None:

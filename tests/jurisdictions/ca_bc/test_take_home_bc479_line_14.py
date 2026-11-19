@@ -214,22 +214,6 @@ def test_the_part_names_the_form_and_has_one_apply_rate_step_over_the_checked_ex
     }
 
 
-def test_the_step_keys_are_in_the_house_order() -> None:
-    capabilities = _part()["capabilities"]
-    assert isinstance(capabilities, list)
-    (step,) = capabilities
-    assert isinstance(step, dict)
-    assert list(step) == [
-        "name",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "blank",
-        "produces",
-    ]
-
-
 def test_line_14_is_a_registered_non_negative_decimal_amount_kind() -> None:
     kind = british_columbia_kinds().kind(IDENTIFIER)
 

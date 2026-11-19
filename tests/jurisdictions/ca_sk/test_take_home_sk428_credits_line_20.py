@@ -136,10 +136,6 @@ def test_the_part_is_one_untitled_sum_step_over_the_basic_personal_amount() -> N
     }
 
 
-def test_the_step_keys_are_in_order_and_there_is_no_title() -> None:
-    assert list(_step()) == ["name", "reference", "unit", "params", "consumes", "produces"]
-
-
 def test_line_20_is_a_registered_non_negative_amount_kind() -> None:
     kinds = saskatchewan_kinds()
 

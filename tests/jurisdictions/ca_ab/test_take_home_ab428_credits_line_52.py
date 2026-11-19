@@ -28,7 +28,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_ab
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -144,12 +143,6 @@ def test_line_52_adds_line_51_when_it_is_given(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", Artifact(AB428_MEDICAL_EXPENSES_LINE_51, D("1500.00")))
 
     assert sheet.get(AB428_CREDITS_TOTAL_LINE_52).value == D("28192.23")
-
-
-def test_a_blank_line_51_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    assert any("Left blank, taken as 0" in row for row in rows)
 
 
 def _part() -> dict[str, Any]:

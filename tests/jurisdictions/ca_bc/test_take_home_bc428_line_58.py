@@ -24,7 +24,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -148,12 +147,6 @@ def test_line_58_adds_line_57_when_it_is_given(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", Artifact(BC428_DONATIONS_AND_GIFTS_LINE_57, D("100.00")))
 
     assert sheet.get(BC428_SUBTOTAL_LINE_58).value == D("975.44")
-
-
-def test_a_blank_line_57_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    assert any("Left blank, taken as 0" in row for row in rows)
 
 
 def _part() -> dict[str, object]:

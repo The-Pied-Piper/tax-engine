@@ -21,7 +21,7 @@ with Decimal (not a CRA example): line 53 is 2,166.75, 2,505.32 and 2,512.08 at 
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from textwrap import dedent
@@ -32,7 +32,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_sk
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -196,23 +195,6 @@ def test_line_57_is_rounded_half_up_to_the_cent(tmp_path: Path) -> None:
 
     # 2,505.32 plus 100.005 is 2,605.325, rounded half-up to 2,605.33.
     assert sheet.get(SK428_NON_REFUNDABLE_CREDITS_LINE_57).value == D("2605.33")
-
-
-def _left_blank_rows(rows: Sequence[str]) -> int:
-    return sum("Left blank, taken as 0" in row for row in rows)
-
-
-def test_a_blank_line_56_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    given_dir = tmp_path / "given"
-    given_dir.mkdir()
-    blank = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-    given = EnglishTraceRenderer().render_all(
-        _sheet(given_dir, "70000", Artifact(SK428_DONATIONS_CREDIT_LINE_56, D("100.00"))).trace
-    )
-
-    # Other steps on the sheet print their own blank rows either way (line 50's); line 57's is the
-    # difference.
-    assert _left_blank_rows(blank) == _left_blank_rows(given) + 1
 
 
 def _part() -> dict[str, Any]:

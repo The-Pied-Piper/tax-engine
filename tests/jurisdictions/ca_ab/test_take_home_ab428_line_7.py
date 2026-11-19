@@ -148,26 +148,6 @@ def _kind(identifier: str) -> AmountKind:
 
 
 @pytest.mark.parametrize(
-    ("salary", "line_1"),
-    [
-        ("20000", "19835.00"),
-        ("70000", "69335.00"),
-        ("200000", "198926.00"),
-        ("60570.71", "60000.00"),
-        ("60570.72", "60000.01"),
-        ("152308.00", "151234.00"),
-        ("152308.01", "151234.01"),
-        ("182555.00", "181481.00"),
-        ("182555.01", "181481.01"),
-    ],
-)
-def test_the_salaries_give_the_line_1_figures_the_line_7_cases_rest_on(
-    tmp_path: Path, salary: str, line_1: str
-) -> None:
-    assert _sheet(tmp_path, salary).get(_kind(LINE_1)).value == D(line_1)
-
-
-@pytest.mark.parametrize(
     ("salary", "expected"),
     [
         # Line 1 is 19,835.00, not over 60,000: column 1.

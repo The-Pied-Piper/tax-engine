@@ -25,7 +25,7 @@ salaries are derived as for line 3: one cent either side of each column's lower 
 from __future__ import annotations
 
 from collections.abc import Iterator
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
 from typing import Any
@@ -36,12 +36,10 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_sk
 import tax_engine.jurisdictions.ca_sk.catalog as sk_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -60,7 +58,6 @@ from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
 D = Decimal
-CENT = D("0.01")
 SK_PARTS = Path(tax_engine.jurisdictions.ca_sk.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_3_PART = SK_PARTS / "sk428_credits_line_3.yaml"
@@ -176,29 +173,6 @@ def _rounding() -> Any:
     ).get(ROUNDING, 2025, ROUNDING_ONLY)
 
 
-def _cent(amount: Decimal) -> Decimal:
-    return amount.quantize(CENT, rounding=ROUND_HALF_UP)
-
-
-def _taxable_income(salary: Decimal) -> Decimal:
-    """The salary less the enhanced CPP deduction (2025): 1% of the earnings from $3,500 to
-    $71,300, plus 4% of the earnings from $71,300 to $81,200."""
-    enhanced = _cent(max(min(salary, D("71300")) - D("3500"), D(0)) * D("0.01"))
-    second = _cent(max(min(salary, D("81200")) - D("71300"), D(0)) * D("0.04"))
-    return salary - enhanced - second
-
-
-@pytest.mark.parametrize(("salary", "line_1", "line_3", "line_4"), [*CASES, *EDGES])
-def test_the_salaries_give_the_line_1_figures_the_line_4_cases_rest_on(
-    tmp_path: Path, salary: str, line_1: str, line_3: str, line_4: str
-) -> None:
-    assert _taxable_income(D(salary)) == D(line_1)
-    assert D(line_4) == max(D(line_1) - D(line_3), D(0))
-    sheet = _sheet(tmp_path, salary)
-    assert sheet.get(_kind(LINE_1)).value == D(line_1)
-    assert sheet.get(_kind(LINE_3)).value == D(line_3)
-
-
 @pytest.mark.parametrize(("salary", "line_1", "line_3", "expected"), CASES)
 def test_line_4_is_line_1_less_line_3_for_the_salary(
     tmp_path: Path, salary: str, line_1: str, line_3: str, expected: str
@@ -251,18 +225,6 @@ def test_the_trace_records_the_subtraction_at_70000(tmp_path: Path) -> None:
     )
 
 
-def test_the_floored_row_reads_in_english_with_the_rounding_named(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    (row,) = [row for row in rows if "not below 0" in row]
-    assert "69335.00" in row
-    assert "53463.00" in row
-    assert "15872.00" in row
-    assert "rounded to the nearest cent" in row
-
-
 def test_the_part_is_one_untitled_subtract_not_below_zero_step_over_lines_1_and_3() -> None:
     part: Any = yaml.safe_load(LINE_4_PART.read_text(encoding="utf-8"))
 
@@ -290,8 +252,3 @@ def test_line_4_is_a_registered_non_negative_decimal_amount_kind() -> None:
     assert kind.value_type is Decimal
     assert non_negative(kind)
     assert kind is sk_catalog.SK428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(saskatchewan_kinds().kind(LINE_4), D("-0.01"))

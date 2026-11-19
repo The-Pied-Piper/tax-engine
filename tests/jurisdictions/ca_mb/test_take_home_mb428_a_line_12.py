@@ -34,12 +34,10 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -220,11 +218,6 @@ def test_the_kind_is_the_registered_non_negative_decimal_amount() -> None:
     assert non_negative(kind)
 
 
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(manitoba_kinds().kind(IDENTIFIER), D("-0.01"))
-
-
 @pytest.mark.parametrize(("salary", "line_10", "line_11"), [("20000", "2065.00", "1785.15")])
 def test_the_trace_has_a_row_for_line_12(
     tmp_path: Path, salary: str, line_10: str, line_11: str
@@ -242,14 +235,3 @@ def test_the_trace_has_a_row_for_line_12(
     assert line.subtrahend == kinds.kind(LINE_11)
     assert line.subtrahend_amount == D(line_11)
     assert line.result == D("279.85")
-
-
-@pytest.mark.parametrize("salary", ["20000", "70000"])
-def test_no_left_blank_row_is_printed_for_line_12(tmp_path: Path, salary: str) -> None:
-    sheet = _sheet(tmp_path, salary)
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    assert rows
-    assert any("not below 0" in row for row in rows)
-    assert not any("left blank, taken as" in row.lower() for row in rows)

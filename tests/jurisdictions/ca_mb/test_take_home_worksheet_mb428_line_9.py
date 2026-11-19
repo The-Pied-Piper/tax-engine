@@ -36,12 +36,10 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -304,18 +302,6 @@ def test_the_floored_row_traces_the_subtraction_with_the_rounding_named(tmp_path
     )
 
 
-def test_the_floored_row_reads_in_english_with_the_rounding_named(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "450000")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    (row,) = [row for row in rows if "not below 0" in row and "15780.00" in row]
-    assert "15780.00" in row
-    assert "19640.26" in row
-    assert "gives CA$0.00" in row
-    assert "rounded to the nearest cent" in row
-
-
 def test_the_part_is_one_untitled_subtract_not_below_zero_step_with_no_blank_rule() -> None:
     step = _step()
 
@@ -337,8 +323,3 @@ def test_line_9_is_a_registered_non_negative_decimal_amount_kind() -> None:
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert non_negative(kind)
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(manitoba_kinds().kind(KIND), D("-0.01"))

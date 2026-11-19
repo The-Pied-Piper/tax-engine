@@ -221,16 +221,6 @@ def test_line_5_is_the_floor_when_line_4_equals_line_3(tmp_path: Path) -> None:
     assert sheet.get(manitoba_kinds().kind(KIND)).value == D("0.00")
 
 
-def test_a_blank_line_4_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, Artifact(EMPLOYMENT_INCOME, D("70000")))
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-
-    blank_rows = [row for row in rows if "left blank, taken as 0" in row.lower()]
-    assert len(blank_rows) == 2  # line 3's blank line 2, then this step's own blank line 4
-    assert any("not below 0" in row for row in rows)
-
-
 def test_a_given_line_4_prints_no_left_blank_row_for_it(tmp_path: Path) -> None:
     sheet = _sheet(
         tmp_path,

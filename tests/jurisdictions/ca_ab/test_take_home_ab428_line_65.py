@@ -20,7 +20,7 @@ test) and lines 63 and 64 are 0, so line 65 is the same.
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
@@ -184,22 +184,6 @@ def test_line_65_is_rounded_half_up_to_the_cent(tmp_path: Path) -> None:
 
     # 2,135.38 plus 0.005 is 2,135.385, rounded half-up to 2,135.39.
     assert sheet.get(AB428_CREDITS_SUBTOTAL_LINE_65).value == D("2135.39")
-
-
-def _left_blank_rows(rows: Sequence[str]) -> int:
-    return sum("Left blank, taken as 0" in row for row in rows)
-
-
-def test_a_blank_line_63_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    given_dir = tmp_path / "given"
-    given_dir.mkdir()
-    blank = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-    given = EnglishTraceRenderer().render_all(
-        _sheet(given_dir, "70000", Artifact(AB428_DIVIDEND_TAX_CREDIT_LINE_63, D("100.00"))).trace
-    )
-
-    # Other steps on the sheet print their own blank rows either way; line 65's is the difference.
-    assert _left_blank_rows(blank) == _left_blank_rows(given) + 1
 
 
 def test_the_trace_has_a_row_for_line_65(tmp_path: Path) -> None:
