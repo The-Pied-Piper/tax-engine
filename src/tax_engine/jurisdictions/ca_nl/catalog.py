@@ -327,6 +327,13 @@ NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
 40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
 line, as the filer gives it; a blank input is read as blank."""
 
+NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
+    CATALOG, "nl428_provincial_foreign_tax_credit_line_73", non_negative=True
+)
+"""Provincial foreign tax credit, NL428 line 73 "Line 73: Provincial foreign tax credit (complete
+Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out;
+a blank input is read as blank."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
