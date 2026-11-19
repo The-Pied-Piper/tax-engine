@@ -192,6 +192,13 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
+    CATALOG, "nl428_student_loan_interest_line_43", non_negative=True
+)
+"""Interest paid on your student loans, NL428 line 43 "Line 43 and line 58520: Interest paid on your
+student loans (amount from line 31900 of your return)": the amount as the filer gives it, an
+optional input; a blank input is read as blank."""
+
 NL428_AMOUNTS_TRANSFERRED_FROM_YOUR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_46 = AmountKind.declare(
     CATALOG,
     "nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46",
