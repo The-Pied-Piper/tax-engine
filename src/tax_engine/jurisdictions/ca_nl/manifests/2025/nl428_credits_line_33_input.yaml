@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 33: "Line 33 and line 58320: Child care amount" (Form NL428, CRA 5001-C).
+# The engine does not compute the child care amount, so the figure is taken as one
+# optional input the way the form takes it, a dollar amount entered on the line. A request that
+# leaves the line out is read as blank.
+inputs:
+  - name: ca-nl/nl428_child_care_amount_line_33
+    title: "Child care amount"
+    reference: "33"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 33 and line 58320: Child care amount"
