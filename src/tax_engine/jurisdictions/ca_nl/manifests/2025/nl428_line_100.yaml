@@ -14,7 +14,7 @@ form:
   name: ca-nl/nl428
 capabilities:
   - name: ca/count_by_conditions
-    title: "Claims on line 96 or line 97"
+    title: "Amount claimed on line 96 or line 97, counted as 1 or 0"
     params:
       conditions: ca-nl/low_income_threshold_conditions
     consumes:
@@ -34,7 +34,7 @@ capabilities:
     produces:
       output: ca-nl/low_income_threshold
   - name: core/credit_amount
-    title: "Low-income threshold with a spouse or dependant"
+    title: "Low-income threshold when line 96 or line 97 is claimed"
     unit: ca/cad
     params:
       amount: ca-nl/low_income_threshold_with_spouse_or_dependant

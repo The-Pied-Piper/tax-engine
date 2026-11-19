@@ -43,7 +43,7 @@ capabilities:
     produces:
       output: ca-nl/nl428_disability_amount_self_worksheet_line_40
   - name: core/choose_by_count
-    title: "Disability amount for self before the claim"
+    title: "Disability amount for self if you claim it"
     unit: ca/cad
     consumes:
       count: ca/under_18_on_december_31_checked
