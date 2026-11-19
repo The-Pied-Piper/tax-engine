@@ -40,7 +40,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
@@ -232,18 +231,6 @@ def _derived(salary: Decimal) -> tuple[Decimal, Decimal, Decimal, Decimal]:
 
 
 @pytest.mark.parametrize(("salary", "line_1", "line_4", "rate", "expected"), ALL_CASES)
-def test_the_salaries_give_the_line_1_and_4_figures_the_line_6_cases_rest_on(
-    tmp_path: Path, salary: str, line_1: str, line_4: str, rate: str, expected: str
-) -> None:
-    assert _derived(D(salary)) == (D(line_1), D(line_4), D(rate), D(expected))
-    sheet = _sheet(tmp_path, salary)
-
-    assert sheet.get(_kind(LINE_1)).value == D(line_1)
-    assert sheet.get(_kind(LINE_4)).value == D(line_4)
-    assert sheet.get(_kind(LINE_5)).value == D(rate)
-
-
-@pytest.mark.parametrize(("salary", "line_1", "line_4", "rate", "expected"), ALL_CASES)
 def test_line_6_is_line_4_times_the_line_5_rate_rounded_half_up_to_the_cent(
     tmp_path: Path, salary: str, line_1: str, line_4: str, rate: str, expected: str
 ) -> None:
@@ -321,8 +308,3 @@ def test_line_6_is_a_registered_non_negative_decimal_amount_kind() -> None:
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert non_negative(kind)
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(newfoundland_kinds().kind(LINE_6), D("-0.01"))

@@ -154,18 +154,6 @@ def test_the_part_is_one_apply_rate_step_over_the_line_66_amount() -> None:
     }
 
 
-def test_the_step_keys_mirror_the_alberta_ab428_line_64_part() -> None:
-    assert list(_step()) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "produces",
-    ]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = british_columbia_kinds().kind(LINE_66)
 

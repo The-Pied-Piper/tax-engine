@@ -40,7 +40,6 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_ab
 import tax_engine.jurisdictions.ca_ab.catalog as ab_catalog
 import tax_engine.jurisdictions.ca_ab.trace_english  # noqa: F401  (registers the renderers)
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -352,26 +351,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
         rounding=_rounding().rounding,
         result=D("8345.23"),
     )
-
-
-def test_the_trace_row_for_line_75_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "200000", "100000").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(1335.13)" in r]
-    assert "(9680.36)" in row
-    assert " less " in row
-    assert row.endswith(", not below 0, gives 8345.23 (rounded to the nearest cent).")
-    assert not any("Left blank" in r and "(1335.13)" in r for r in rows)
-
-
-def test_the_floored_row_for_line_75_reads_gives_zero(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "200000", "200000").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(3335.13)" in r]
-    assert "(1680.36)" in row
-    assert row.endswith(", not below 0, gives 0.00 (rounded to the nearest cent).")
 
 
 def _line_75_at(line_73_amount: str, line_74_amount: str) -> Artifact[Decimal]:

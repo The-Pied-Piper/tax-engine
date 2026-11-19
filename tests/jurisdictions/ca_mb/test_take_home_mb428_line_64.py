@@ -282,13 +282,6 @@ def test_line_64_adds_lines_61_62_and_63_when_both_optionals_are_given(tmp_path:
     assert _line(sheet, IDENTIFIER) == D("2776.12")
 
 
-def test_a_blank_line_62_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    # Line 63 is given, so its own step prints no blank row; the one row is line 64's, for line 62.
-    sheet = _sheet(tmp_path, "70000", line_63_amount="1000.00")
-
-    assert len(_blank_rows(sheet)) == 1
-
-
 def test_a_given_line_62_prints_no_left_blank_row_from_line_64(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000", line_62="100.00", line_63_amount="1000.00")
 

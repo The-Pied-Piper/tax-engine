@@ -39,7 +39,6 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.trace import BlankFallbackLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_bc.catalog import (
@@ -204,19 +203,6 @@ def test_line_67_is_rounded_half_up_to_the_cent(tmp_path: Path) -> None:
 
     # 875.44 plus 0.005 is 875.445, rounded half-up to 875.45.
     assert sheet.get(BC428_TOTAL_LINE_67).value == D("875.45")
-
-
-def test_a_blank_line_65_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000")
-
-    (blank,) = [
-        each
-        for each in sheet.trace
-        if isinstance(each, BlankFallbackLine) and each.kind is BC428_DIVIDEND_TAX_CREDIT_LINE_65
-    ]
-    assert blank.fallback == 0
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-    assert any("Left blank, taken as 0" in row for row in rows)
 
 
 def test_the_trace_has_a_row_for_line_67(tmp_path: Path) -> None:

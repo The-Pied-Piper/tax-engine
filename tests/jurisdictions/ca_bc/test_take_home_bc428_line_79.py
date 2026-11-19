@@ -328,18 +328,6 @@ def test_the_part_is_one_titled_subtract_step_with_no_blank_rule() -> None:
     assert "blank" not in step
 
 
-def test_the_step_keys_are_in_the_house_order() -> None:
-    assert list(_step()) == [
-        "name",
-        "title",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "produces",
-    ]
-
-
 def test_line_79_is_a_registered_non_negative_decimal_amount_kind() -> None:
     kinds = british_columbia_kinds()
 

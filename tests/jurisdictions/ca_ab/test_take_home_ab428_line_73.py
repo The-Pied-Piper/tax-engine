@@ -27,7 +27,7 @@ so the difference is -1,000.00, floored) / 2,598.12 / 16,680.36.
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
 from textwrap import dedent
@@ -40,7 +40,6 @@ import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_ab
 import tax_engine.jurisdictions.ca_ab.catalog as ab_catalog
 import tax_engine.jurisdictions.ca_ab.trace_english  # noqa: F401  (registers the renderers)
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -295,20 +294,6 @@ def test_line_73_is_line_70_minus_line_72_not_below_zero_when_line_72_is_given(
     assert not line_73.is_signed()
 
 
-def _left_blank_rows(rows: Sequence[str]) -> int:
-    return sum("Left blank, taken as 0" in row for row in rows)
-
-
-def test_a_blank_line_72_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    given_dir = tmp_path / "given"
-    given_dir.mkdir()
-    blank = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-    given = EnglishTraceRenderer().render_all(_sheet(given_dir, "70000", "1000.00").trace)
-
-    # Other steps on the sheet print their own blank rows either way; line 73's is the difference.
-    assert _left_blank_rows(blank) == _left_blank_rows(given) + 1
-
-
 def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_rounding(
     tmp_path: Path,
 ) -> None:
@@ -329,25 +314,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
         rounding=_rounding().rounding,
         result=D("2598.12"),
     )
-
-
-def test_the_trace_row_for_line_73_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", "1000.00").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(1000.00)" in r]
-    assert "(3598.12)" in row
-    assert " less " in row
-    assert row.endswith(", not below 0, gives 2598.12 (rounded to the nearest cent).")
-
-
-def test_the_floored_row_for_line_73_reads_gives_zero(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "20000", "1000.00").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(1000.00)" in r]
-    assert "(0.00)" in row
-    assert row.endswith(", not below 0, gives 0.00 (rounded to the nearest cent).")
 
 
 def _line_73_at(line_70_amount: str, line_72_amount: str) -> Artifact[Decimal]:

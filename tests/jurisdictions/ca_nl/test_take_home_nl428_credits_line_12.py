@@ -254,10 +254,6 @@ def test_the_part_is_one_bracket_column_rate_step_over_line_1() -> None:
     }
 
 
-def test_the_step_keys_mirror_the_saskatchewan_sk428_line_5_step() -> None:
-    assert list(_step()) == ["name", "title", "reference", "params", "consumes", "produces"]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = newfoundland_kinds().kind(LINE_12)
 

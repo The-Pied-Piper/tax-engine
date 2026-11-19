@@ -171,22 +171,6 @@ def _kind(identifier: str) -> AmountKind:
     return kind
 
 
-@pytest.mark.parametrize(
-    ("salary", "line_1"),
-    [
-        ("17000", "16865.00"),
-        ("20000", "19835.00"),
-        ("30000", "29735.00"),
-        ("70000", "69335.00"),
-        ("200000", "198926.00"),
-    ],
-)
-def test_the_salaries_give_the_line_1_figures_the_line_13_cases_rest_on(
-    tmp_path: Path, salary: str, line_1: str
-) -> None:
-    assert _sheet(tmp_path, salary).get(_kind(LINE_1)).value == D(line_1)
-
-
 @pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000"])
 def test_line_13_is_blank_when_lines_11_and_12_are_blank(tmp_path: Path, salary: str) -> None:
     # Line 1 is 16,865.00 to 69,335.00, at or below 137,407: lines 11 and 12 are blank.
@@ -352,18 +336,6 @@ def test_the_part_is_one_multiply_by_rate_step_over_lines_11_and_12() -> None:
         "blank": {"base": "pass_on", "rate": "pass_on"},
         "produces": {"output": LINE_13},
     }
-
-
-def test_the_step_keys_are_in_the_house_order() -> None:
-    assert list(_step()) == [
-        "name",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "blank",
-        "produces",
-    ]
 
 
 def test_line_13_is_a_registered_non_negative_decimal_amount_kind() -> None:

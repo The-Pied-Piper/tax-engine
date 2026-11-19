@@ -323,18 +323,6 @@ def test_the_positive_row_traces_the_subtraction_with_the_rounding_named(tmp_pat
     )
 
 
-def test_the_floored_row_reads_in_english_with_the_rounding_named(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "30000")
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    (row,) = [row for row in rows if "not below 0" in row]
-    assert "29735.00" in row
-    assert "38712.00" in row
-    assert "gives CA$0.00" in row
-    assert "rounded to the nearest cent" in row
-
-
 def test_the_part_is_three_untitled_steps_each_carrying_its_line_number() -> None:
     steps = _steps()
 

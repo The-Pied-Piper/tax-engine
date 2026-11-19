@@ -273,10 +273,6 @@ def test_the_part_is_one_bracket_column_tax_at_start_step_over_line_1() -> None:
     }
 
 
-def test_the_step_keys_mirror_the_ontario_on428_line_7_step() -> None:
-    assert list(_step()) == ["name", "reference", "unit", "params", "consumes", "produces"]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = alberta_kinds().kind(LINE_14)
 

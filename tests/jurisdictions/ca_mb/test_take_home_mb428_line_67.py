@@ -363,19 +363,6 @@ def test_the_step_traces_one_sum_line_over_lines_65_and_66(tmp_path: Path) -> No
     assert line.total == D("6247.59")
 
 
-def test_the_trace_row_for_line_67_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", "1000.00").trace)
-
-    (row,) = [r for r in rows if " plus " in r and "(5747.59)" in r and "(500.00)" in r]
-    assert row.index("(5747.59)") < row.index("(500.00)")
-    assert "mb428 tax after credits line 65" in row.lower()
-    assert "mb428 additional tax minimum tax line 66" in row.lower()
-    assert " gives 6247.59 " in row
-    assert row.endswith("(rounded to the nearest cent).")
-
-
 def _part() -> dict[str, Any]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)

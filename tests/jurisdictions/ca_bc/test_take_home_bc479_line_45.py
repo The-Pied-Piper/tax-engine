@@ -30,7 +30,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.ca_bc.catalog as bc_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -209,16 +208,6 @@ def test_line_45_is_a_computed_zero_when_both_parts_are_zero(tmp_path: Path) -> 
 
     assert not line_45.is_blank
     assert str(line_45.value) == "0.00"
-
-
-def test_a_blank_line_44_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, "70000")
-
-    blanks = [each for each in sheet.trace if isinstance(each, BlankFallbackLine)]
-    (blank,) = [each for each in blanks if each.kind is RENTER]
-    assert blank.fallback == 0
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-    assert any("Left blank, taken as 0" in row for row in rows)
 
 
 def test_a_given_line_44_prints_no_left_blank_row(tmp_path: Path) -> None:

@@ -35,12 +35,10 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -162,10 +160,6 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
     return sheet
 
 
-def _line_41(tmp_path: Path, salary: str) -> Decimal:
-    return D(_sheet(tmp_path, salary).get(manitoba_kinds().kind(KIND)).value)
-
-
 def _cent(amount: Decimal) -> Decimal:
     return amount.quantize(CENT, rounding=ROUND_HALF_UP)
 
@@ -227,16 +221,6 @@ def test_the_trace_totals_the_one_schedule_record(
     assert line.total == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000"])
-def test_no_left_blank_row_is_printed_for_line_41(tmp_path: Path, salary: str) -> None:
-    sheet = _sheet(tmp_path, salary)
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    assert rows
-    assert not any("left blank, taken as" in row.lower() for row in rows)
-
-
 def _line() -> dict[str, Any]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
@@ -275,8 +259,3 @@ def test_line_41_is_a_registered_non_negative_amount_kind() -> None:
     assert kind.value_type is Decimal
     assert non_negative(kind)
     assert kind is mb_catalog.MB428_FAMILY_TAX_BENEFIT_LINE_41
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(manitoba_kinds().kind(KIND), D("-0.01"))

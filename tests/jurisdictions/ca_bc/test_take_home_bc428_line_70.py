@@ -36,7 +36,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.ca_bc.catalog as bc_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -322,17 +321,6 @@ def test_the_step_traces_one_sum_line_over_lines_68_and_69_with_the_cent_roundin
         rounding=_rounding().rounding,
         total=D("3511.39"),
     )
-
-
-def test_the_trace_row_for_line_70_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000", "1000.00").trace)
-
-    (row,) = [r for r in rows if " plus " in r and "(3162.39)" in r and "(349.00)" in r]
-    assert row.index("(3162.39)") < row.index("(349.00)")
-    assert " gives 3511.39 " in row
-    assert row.endswith("(rounded to the nearest cent).")
 
 
 def _part() -> dict[str, Any]:

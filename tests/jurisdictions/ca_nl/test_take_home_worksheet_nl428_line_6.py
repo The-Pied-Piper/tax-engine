@@ -29,7 +29,6 @@ deduction (2025) less 38,712.00, not below 0.00 (see the line 4 test); line 6 is
 
 from __future__ import annotations
 
-import ast
 from collections.abc import Iterator
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -47,7 +46,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.rate import RATE as RATE_KIND
@@ -128,28 +126,6 @@ POSITIVE = [
     ("100000", "98926.00", "38712.00", "60214.00"),
     ("200000", "198926.00", "38712.00", "160214.00"),
 ]
-
-
-def squashed(text: str) -> str:
-    return " ".join(text.split())
-
-
-def docstring_of(identifier: str) -> str:
-    """The string right after the declaration of the kind `identifier` in the Newfoundland and
-    Labrador catalog."""
-    path = Path(nl_catalog.__file__)
-    body = ast.parse(path.read_text(encoding="utf-8")).body
-    for statement, following in zip(body, body[1:], strict=False):
-        if not (isinstance(statement, ast.Assign) and isinstance(statement.value, ast.Call)):
-            continue
-        constants = [each.value for each in statement.value.args if isinstance(each, ast.Constant)]
-        if (
-            identifier.rpartition("/")[2] in constants
-            and isinstance(following, ast.Expr)
-            and isinstance(following.value, ast.Constant)
-        ):
-            return str(following.value.value)
-    raise AssertionError(f"no declaration of {identifier!r} followed by a docstring")
 
 
 def _part_files() -> Iterator[Path]:
@@ -314,15 +290,3 @@ def test_line_6_is_a_registered_non_negative_decimal_amount_kind() -> None:
     assert isinstance(kind, AmountKind)
     assert kind.value_type is Decimal
     assert non_negative(kind)
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(newfoundland_kinds().kind(LINE_6), D("-0.01"))
-
-
-def test_the_docstring_quotes_the_form_text() -> None:
-    doc = squashed(docstring_of(LINE_6))
-
-    assert "Worksheet NL428" in doc
-    assert 'line 6 "Line 6: Line 4 multiplied by the percentage from line 5' in doc

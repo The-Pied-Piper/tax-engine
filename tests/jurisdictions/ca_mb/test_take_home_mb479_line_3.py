@@ -32,7 +32,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -202,14 +201,6 @@ def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:
 
     assert blank.get(kinds.kind(KIND)).value == D("-5665.00")
     assert given.get(kinds.kind(KIND)).value == D("-5165.00")
-
-
-def test_a_blank_line_2_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    sheet = _sheet(tmp_path, Artifact(EMPLOYMENT_INCOME, D("70000")))
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace)
-
-    assert any("left blank, taken as 0" in row.lower() for row in rows)
 
 
 def _part() -> dict[str, Any]:

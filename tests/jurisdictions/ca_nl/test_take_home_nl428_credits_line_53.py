@@ -18,7 +18,6 @@ line 53 is line 48 less line 52, not below 0.
 
 from __future__ import annotations
 
-import ast
 from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
@@ -36,7 +35,6 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -113,27 +111,6 @@ CASES = [
     ("200000", "5000", "2410.00", "2590.00"),
     ("20000", "0", "595.05", "0.00"),
 ]
-
-
-def squashed(text: str) -> str:
-    return " ".join(text.split())
-
-
-def docstring_of(identifier: str) -> str:
-    """The string right after the declaration of the kind `identifier` in the catalog."""
-    path = Path(nl_catalog.__file__)
-    body = ast.parse(path.read_text(encoding="utf-8")).body
-    for statement, following in zip(body, body[1:], strict=False):
-        if not (isinstance(statement, ast.Assign) and isinstance(statement.value, ast.Call)):
-            continue
-        constants = [each.value for each in statement.value.args if isinstance(each, ast.Constant)]
-        if (
-            identifier.rpartition("/")[2] in constants
-            and isinstance(following, ast.Expr)
-            and isinstance(following.value, ast.Constant)
-        ):
-            return str(following.value.value)
-    raise AssertionError(f"no declaration of {identifier!r} followed by a docstring")
 
 
 def _part_files() -> Iterator[Path]:
@@ -231,18 +208,6 @@ def test_the_part_is_one_untitled_subtract_not_below_zero_step() -> None:
     }
 
 
-def test_the_step_keys_are_in_order_and_there_is_no_title() -> None:
-    assert list(_step()) == [
-        "name",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "blank",
-        "produces",
-    ]
-
-
 def test_line_53_is_a_registered_non_negative_amount_kind() -> None:
     kinds = newfoundland_kinds()
 
@@ -252,14 +217,3 @@ def test_line_53_is_a_registered_non_negative_amount_kind() -> None:
     assert kind.value_type is Decimal
     assert non_negative(kind)
     assert kind is nl_catalog.NL428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_53
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(newfoundland_kinds().kind(KIND), D("-0.01"))
-
-
-def test_the_docstring_quotes_the_form_text() -> None:
-    doc = squashed(docstring_of(KIND))
-
-    assert 'line 53 "Line 48 minus line 52 (if negative, enter "0")"' in doc

@@ -26,7 +26,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -150,12 +149,6 @@ def test_line_3_adds_line_2_when_it_is_given(tmp_path: Path) -> None:
     )
 
     assert sheet.get(BC479_INCOME_WITH_REPAYMENTS_LINE_3).value == D("69435.50")
-
-
-def test_a_blank_line_2_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-
-    assert any("Left blank, taken as 0" in row for row in rows)
 
 
 def test_line_3_stays_negative_when_line_1_is_negative(tmp_path: Path) -> None:

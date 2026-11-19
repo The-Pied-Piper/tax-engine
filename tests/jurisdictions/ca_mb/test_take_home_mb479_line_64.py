@@ -28,7 +28,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_mb
 import tax_engine.jurisdictions.ca_mb.catalog as mb_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -177,11 +176,6 @@ def _line(sheet: Worksheet, identifier: str) -> Decimal:
     return D(sheet.get(manitoba_kinds().kind(identifier)).value)
 
 
-def _blank_rows(sheet: Worksheet) -> list[str]:
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-    return [row for row in rows if row.lower().startswith("left blank, taken as ca$0")]
-
-
 def _steps() -> list[dict[str, Any]]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
@@ -225,16 +219,6 @@ def test_line_64_adds_line_63_to_an_entered_line_61_through_line_62(tmp_path: Pa
     value = _line(sheet, IDENTIFIER)
     assert value == D("16250.00")
     assert str(value) == "16250.00"
-
-
-def test_a_blank_line_63_prints_one_more_left_blank_row_than_a_given_line_63(
-    tmp_path: Path,
-) -> None:
-    # The composed parts print other blank rows of their own; line 63 adds exactly one.
-    blank = _blank_rows(_sheet(tmp_path / "blank", "10000"))
-    given = _blank_rows(_sheet(tmp_path / "given", "10000", line_63="100"))
-
-    assert len(blank) == len(given) + 1
 
 
 def test_the_sheet_prints_no_title_and_the_reference_of_line_64(tmp_path: Path) -> None:

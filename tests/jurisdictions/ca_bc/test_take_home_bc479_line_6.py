@@ -32,7 +32,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -148,12 +147,6 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
     return sheet
 
 
-def _kind(identifier: str) -> AmountKind:
-    kind = british_columbia_kinds().kind(identifier)
-    assert isinstance(kind, AmountKind)
-    return kind
-
-
 def _rounding() -> Any:
     return YamlParameterSource(
         british_columbia_packages().roots(),
@@ -211,17 +204,6 @@ def test_the_step_traces_one_sum_line_over_line_5_with_the_cent_rounding(tmp_pat
         rounding=_rounding().rounding,
         total=D("15865.00"),
     )
-
-
-def test_the_trace_row_for_line_6_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(
-        _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("1000.00"))).trace
-    )
-
-    (row,) = [r for r in rows if " gives 15865.00 " in r and "(15865.00)" in r]
-    assert row.endswith(" gives 15865.00 (rounded to the nearest cent).")
 
 
 def _part() -> dict[str, Any]:

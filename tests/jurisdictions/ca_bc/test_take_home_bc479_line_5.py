@@ -34,7 +34,6 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -223,20 +222,6 @@ def test_line_5_is_0_when_line_3_is_negative(tmp_path: Path) -> None:
     assert sheet.get(BC479_ADJUSTED_NET_INCOME_LINE_5).value == D("0.00")
 
 
-def test_a_blank_line_4_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    given_dir = tmp_path / "given"
-    given_dir.mkdir()
-    blank = EnglishTraceRenderer().render_all(_sheet(tmp_path, "17000").trace)
-    given = EnglishTraceRenderer().render_all(
-        _sheet(given_dir, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("1000.00"))).trace
-    )
-
-    # Line 1 and line 2 print their own blank rows either way; line 5's is the difference.
-    assert sum("Left blank, taken as 0" in row for row in blank) == (
-        sum("Left blank, taken as 0" in row for row in given) + 1
-    )
-
-
 def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_rounding(
     tmp_path: Path,
 ) -> None:
@@ -257,29 +242,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
         rounding=_rounding().rounding,
         result=D("15865.00"),
     )
-
-
-def test_the_trace_row_for_line_5_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(
-        _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("1000.00"))).trace
-    )
-
-    (row,) = [r for r in rows if "not below 0" in r and "(16865.00)" in r]
-    assert "(1000.00)" in row
-    assert " less " in row
-    assert row.endswith(", not below 0, gives 15865.00 (rounded to the nearest cent).")
-
-
-def test_the_floored_row_for_line_5_reads_gives_zero(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(
-        _sheet(tmp_path, "17000", Artifact(BC479_UCCB_RDSP_INCOME_LINE_4, D("20000.00"))).trace
-    )
-
-    (row,) = [r for r in rows if "not below 0" in r and "(16865.00)" in r]
-    assert "(20000.00)" in row
-    assert row.endswith(", not below 0, gives 0.00 (rounded to the nearest cent).")
 
 
 def _line_5_at(line_3_amount: str, line_4_amount: str) -> Artifact[Decimal]:

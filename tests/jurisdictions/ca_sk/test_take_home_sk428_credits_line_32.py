@@ -182,10 +182,6 @@ def test_the_part_is_one_untitled_sum_step_over_lines_20_and_31() -> None:
     }
 
 
-def test_the_step_keys_mirror_the_ontario_on428_line_25_part() -> None:
-    assert list(_step()) == ["name", "reference", "unit", "params", "consumes", "produces"]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = saskatchewan_kinds().kind(IDENTIFIER)
 

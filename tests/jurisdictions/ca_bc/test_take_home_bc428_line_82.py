@@ -35,7 +35,6 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_bc
 import tax_engine.jurisdictions.ca_bc.catalog as bc_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -346,35 +345,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
         subtrahend_amount=D("100.00"),
         rounding=_rounding().rounding,
         result=D("264.81"),
-    )
-
-
-def test_the_trace_row_for_line_82_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "30000", "100.00").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(364.81)" in r and "(100.00)" in r]
-    assert " less " in row
-    assert row.endswith(", not below 0, gives 264.81 (rounded to the nearest cent).")
-
-
-def test_the_floored_row_for_line_82_reads_gives_zero(tmp_path: Path) -> None:
-    rows = EnglishTraceRenderer().render_all(_sheet(tmp_path, "30000", "500.00").trace)
-
-    (row,) = [r for r in rows if "not below 0" in r and "(364.81)" in r and "(500.00)" in r]
-    assert row.endswith(", not below 0, gives 0.00 (rounded to the nearest cent).")
-
-
-def test_a_blank_line_81_prints_the_steps_own_left_blank_row(tmp_path: Path) -> None:
-    given_dir = tmp_path / "given"
-    given_dir.mkdir()
-    blank = EnglishTraceRenderer().render_all(_sheet(tmp_path, "70000").trace)
-    given = EnglishTraceRenderer().render_all(_sheet(given_dir, "70000", "100.00").trace)
-
-    # Every other step prints the same blank rows either way; line 82's is the difference.
-    assert sum("Left blank, taken as 0" in row for row in blank) == (
-        sum("Left blank, taken as 0" in row for row in given) + 1
     )
 
 

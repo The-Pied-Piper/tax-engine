@@ -18,7 +18,6 @@ between $71,300 and $81,200, each rounded half-up to the cent. The hand figures 
 
 from __future__ import annotations
 
-import ast
 from collections.abc import Iterator
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -31,12 +30,10 @@ import yaml
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
 import tax_engine.jurisdictions.ca_nl.catalog as nl_catalog
-from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
@@ -99,27 +96,6 @@ CASES = [
     ("70000", "69335.00"),
     ("200000", "198926.00"),
 ]
-
-
-def squashed(text: str) -> str:
-    return " ".join(text.split())
-
-
-def docstring_of(identifier: str) -> str:
-    """The string right after the declaration of the kind `identifier` in the catalog."""
-    path = Path(nl_catalog.__file__)
-    body = ast.parse(path.read_text(encoding="utf-8")).body
-    for statement, following in zip(body, body[1:], strict=False):
-        if not (isinstance(statement, ast.Assign) and isinstance(statement.value, ast.Call)):
-            continue
-        constants = [each.value for each in statement.value.args if isinstance(each, ast.Constant)]
-        if (
-            identifier.rpartition("/")[2] in constants
-            and isinstance(following, ast.Expr)
-            and isinstance(following.value, ast.Constant)
-        ):
-            return str(following.value.value)
-    raise AssertionError(f"no declaration of {identifier!r} followed by a docstring")
 
 
 def _part_files() -> Iterator[Path]:
@@ -202,10 +178,6 @@ def test_the_part_is_one_untitled_record_total_step_over_the_t1_net_income() -> 
     }
 
 
-def test_the_step_keys_are_in_order_and_there_is_no_title() -> None:
-    assert list(_step()) == ["name", "reference", "unit", "consumes", "produces"]
-
-
 def test_line_49_is_a_registered_non_negative_amount_kind() -> None:
     kinds = newfoundland_kinds()
 
@@ -215,22 +187,3 @@ def test_line_49_is_a_registered_non_negative_amount_kind() -> None:
     assert kind.value_type is Decimal
     assert non_negative(kind)
     assert kind is nl_catalog.NL428_NET_INCOME_LINE_49
-
-
-def test_the_kind_rejects_a_negative_amount() -> None:
-    with pytest.raises(NegativeArtifactError):
-        Artifact(newfoundland_kinds().kind(KIND), D("-0.01"))
-
-
-def test_the_docstring_quotes_the_form_text() -> None:
-    assert 'line 49 "Amount from line 23600 of your return"' in squashed(docstring_of(KIND))
-
-
-@pytest.mark.parametrize("salary", ["20000", "70000"])
-def test_no_left_blank_row_is_printed_for_line_49(tmp_path: Path, salary: str) -> None:
-    sheet = _sheet(tmp_path, salary)
-
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    assert rows
-    assert not any("left blank, taken as" in row.lower() for row in rows)

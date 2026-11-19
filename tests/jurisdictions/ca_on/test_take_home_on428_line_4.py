@@ -27,6 +27,7 @@ from decimal import Decimal
 from textwrap import dedent
 
 import pytest
+import yaml
 
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
@@ -110,3 +111,22 @@ def test_the_kind_is_registered_and_not_negative() -> None:
     kind = kinds.kind(LINE_4)
     assert kind.identifier == LINE_4
     assert non_negative(kind)
+
+
+def test_the_part_is_one_subtract_not_below_zero_step_over_line_1_and_line_3() -> None:
+    # The floor and the two records read are only pinned here, so a swap to `core/subtract` or to
+    # another record fails this test.
+    part = yaml.safe_load((TAKE_HOME / "on428_line_4.yaml").read_text(encoding="utf-8"))
+
+    assert list(part) == ["form", "capabilities"]
+    assert part["form"] == {"name": FORM}
+    assert part["capabilities"] == [
+        {
+            "name": "core/subtract_not_below_zero",
+            "reference": "4",
+            "unit": "ca/cad",
+            "params": {"rounding": "ca-on/cent_rounding"},
+            "consumes": {"amount": LINE_1, "less": LINE_3},
+            "produces": {"output": LINE_4},
+        }
+    ]

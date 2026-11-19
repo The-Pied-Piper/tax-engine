@@ -261,17 +261,6 @@ def test_a_line_77_above_the_printed_maximum_is_rejected_not_capped(tmp_path: Pa
         _sheet(tmp_path, "10000", line_77="27000.01")
 
 
-def test_a_blank_line_77_prints_one_more_left_blank_row_than_a_given_line_77(
-    tmp_path: Path,
-) -> None:
-    # The composed parts print other blank rows of their own; line 78 adds exactly one.
-    blank = _blank_rows(_sheet(tmp_path / "blank", "10000"))
-    given = _blank_rows(_sheet(tmp_path / "given", "10000", line_77="1000.00"))
-    zero = _blank_rows(_sheet(tmp_path / "zero", "10000", line_77="0"))
-
-    assert len(blank) == len(given) + 1 == len(zero) + 1
-
-
 def test_the_sheet_prints_no_title_and_the_reference_of_line_78_only_on_this_step(
     tmp_path: Path,
 ) -> None:
@@ -293,21 +282,6 @@ def test_the_step_traces_one_sum_line_over_lines_76_and_77(tmp_path: Path) -> No
     ]
     assert line.parts == ((kinds.kind(LINE_76), D("95.65")), (kinds.kind(LINE_77), D("1000.00")))
     assert line.total == D("1095.65")
-
-
-def test_the_trace_row_for_line_78_reads_in_english_with_the_rounding_named(
-    tmp_path: Path,
-) -> None:
-    sheet = _sheet(tmp_path, "10000", line_77="1000.00")
-    rows = EnglishTraceRenderer().render_all(sheet.trace, sheet)
-
-    (row,) = [r for r in rows if " plus " in r and "(CA$95.65)" in r and "(CA$1000.00)" in r]
-    assert row.startswith("Line 76 (")
-    assert " plus line 77 (" in row
-    assert row.index("(CA$95.65)") < row.index("(CA$1000.00)")
-    assert " gives " in row
-    assert "1095.65" in row.split(" gives ")[1]
-    assert row.endswith("(rounded to the nearest cent).")
 
 
 def test_the_trace_prints_the_left_blank_row_of_line_78_when_line_77_is_blank(

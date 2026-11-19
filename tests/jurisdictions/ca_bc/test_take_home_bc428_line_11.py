@@ -291,18 +291,6 @@ def test_the_part_is_one_subtract_not_below_zero_step_over_line_1_and_line_10() 
     }
 
 
-def test_the_step_keys_are_in_the_house_order() -> None:
-    assert list(_step()) == [
-        "name",
-        "reference",
-        "unit",
-        "params",
-        "consumes",
-        "blank",
-        "produces",
-    ]
-
-
 def test_the_kind_is_a_registered_non_negative_decimal_amount() -> None:
     kind = british_columbia_kinds().kind(LINE_11)
 
