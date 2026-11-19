@@ -3,8 +3,8 @@
 # investment tax credit (line 81, `ca-nl/nl428_tax_line_81`) less the venture capital tax credit
 # (line 84, `ca-nl/nl428_venture_capital_tax_credit_line_84`), not below 0. Line 84 is an optional
 # input that a salary-only caller leaves blank, read as 0 by the blank rule. The form prints no
-# title for the line, so the step has none. The output is `ca-nl/nl428_tax_line_85`, which is not
-# exported yet.
+# title for the line, so the step has none. The output is `ca-nl/nl428_tax_line_85`, which the form
+# exports (nl428.yaml) for the return summary's marginal tax rate.
 form:
   name: ca-nl/nl428
 capabilities:
