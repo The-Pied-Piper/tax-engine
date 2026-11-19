@@ -313,6 +313,13 @@ NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
 Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
 tax form."""
 
+NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_ON_TAXABLE_INCOME_LINE_63 = AmountKind.declare(
+    CATALOG, "nl428_newfoundland_and_labrador_tax_on_taxable_income_line_63", non_negative=True
+)
+"""Newfoundland and Labrador tax on taxable income, NL428 line 63 "Line 63: Newfoundland and
+Labrador tax on taxable income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever
+the taxable income is in; the other is blank."""
+
 NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
     CATALOG, "nl428_tax_on_split_income_line_64", non_negative=True
 )
