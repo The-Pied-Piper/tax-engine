@@ -313,6 +313,13 @@ NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
 Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
 tax form."""
 
+NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_ON_TAXABLE_INCOME_LINE_63 = AmountKind.declare(
+    CATALOG, "nl428_newfoundland_and_labrador_tax_on_taxable_income_line_63", non_negative=True
+)
+"""Newfoundland and Labrador tax on taxable income, NL428 line 63 "Line 63: Newfoundland and
+Labrador tax on taxable income from line 8 or 15 ^": the amount of line 8 or of line 15, whichever
+the taxable income is in; the other is blank."""
+
 NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
     CATALOG, "nl428_tax_on_split_income_line_64", non_negative=True
 )
@@ -326,6 +333,13 @@ NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
 """Newfoundland and Labrador minimum tax carryover, NL428 line 68 (line 61540) "Amount from line
 40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
 line, as the filer gives it; a blank input is read as blank."""
+
+NL428_MINIMUM_TAX_CARRYOVER_LINE_68 = AmountKind.declare(
+    CATALOG, "nl428_minimum_tax_carryover_line_68", non_negative=True
+)
+"""Newfoundland and Labrador minimum tax carryover, NL428 line 68 and line 61540 "Amount from line
+40427 of your return multiplied by 60% =": calculated, the amount from line 40427 multiplied by
+60%."""
 
 NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "nl428_provincial_foreign_tax_credit_line_73", non_negative=True
@@ -523,6 +537,12 @@ NL428_CREDITS_TOTAL_LINE_56 = AmountKind.declare(
 """Credits total, NL428 line 56 "Line 47 plus line 55": the credits subtotal of line 47 plus the
 allowable medical expenses of line 55."""
 
+NL428_CREDITS_AT_RATE_LINE_58 = AmountKind.declare(
+    CATALOG, "nl428_credits_at_rate_line_58", non_negative=True
+)
+"""Credits at the credit rate, NL428 line 58 "Line 56 multiplied by the percentage from line 57":
+line 56 times the printed 8.7% rate of line 57."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
@@ -554,3 +574,17 @@ NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
 )
 """Tax at the start of the column, NL428 line 14 "Line 14: 32,454.04": the printed tax at the start
 of the column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""
+
+NL428_DIVIDEND_TAX_CREDIT_LINE_67 = AmountKind.declare(
+    CATALOG, "nl428_dividend_tax_credit_line_67", non_negative=True
+)
+"""Newfoundland and Labrador dividend tax credit, NL428 line 67 "Line 67 and line 61520:
+Newfoundland and Labrador dividend tax credit (use Worksheet NL428)": the amount as the filer gives
+it, an optional input; a blank input is read as blank."""
+
+NL428_T691_AMOUNT_LINE_71 = AmountKind.declare(
+    CATALOG, "nl428_t691_amount_line_71", non_negative=True
+)
+"""Form T691 amount, NL428 line 71 "Line 71: Amount from line 14 of Part 7 of Form T691 multiplied
+by 60% =": the amount from line 14 of Part 7 of Form T691 as the filer gives it, an optional input;
+a blank input is read as blank, and the 60% multiplication step reads it."""
