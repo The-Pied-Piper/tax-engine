@@ -1,0 +1,15 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 66 "Line 66: Newfoundland and Labrador
+# non-refundable tax credits from line 62 ^". Line 66 is a copy of line 62, which sits on the other
+# form `ca-nl/nl428_credits` (lines 1 to 62), so the one step is core/record_total over that form's
+# line 62 export, read as a record list. There is one record, so there is no blank.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/record_total
+    title: "Newfoundland and Labrador non-refundable tax credits from line 62"
+    reference: "66"
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_credits.nl428_non_refundable_credits_line_62
+    produces:
+      output: ca-nl/nl428_non_refundable_credits_line_66

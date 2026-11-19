@@ -1,0 +1,19 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 88, column 1 (you): "Line 88: Net
+# income from line 23600 of the return (or the amount you would have entered if the instructions on
+# line 23600 said "if negative, show in brackets")". The T1 form exports the net income before its
+# floor (`ca/net_income_signed`), and another form reads an export only as a record list
+# (`ca/t1_taxable_income.net_income_signed`), so the one step is core/record_total over those
+# records, as MB479 line 1 is. The result is signed, because the form asks for a negative net income
+# shown in brackets. Column 2 (your spouse or common-law partner) is an input, in
+# nl428_line_88_column_2_input.yaml.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/record_total
+    title: "Net income from line 23600 of the return"
+    reference: "88 (column 1)"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_taxable_income.net_income_signed
+    produces:
+      output: ca-nl/nl428_net_income_line_88
