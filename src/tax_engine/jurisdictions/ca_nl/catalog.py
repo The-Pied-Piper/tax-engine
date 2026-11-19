@@ -410,6 +410,14 @@ NL428_DIRECT_EQUITY_TAX_CREDIT_LINE_78 = AmountKind.declare(
 T1272)": the credit from Form T1272, an optional input that a salary-only caller leaves out; a
 blank input is read as blank."""
 
+NL428_VENTURE_CAPITAL_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_line_84", non_negative=True
+)
+"""Venture capital tax credit, NL428 line 84 "Line 84: Line 82 plus line 83": the venture capital
+tax credit from Certificate(s) NL VCTC (line 82) plus the unused credit from the most recent notice
+of assessment or reassessment (line 83), taken as one optional input that a salary-only caller
+leaves out; a blank input is read as blank."""
+
 NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
 )
@@ -753,6 +761,13 @@ NL428_SPOUSE_FAMILY_INCOME_LINE_90 = AmountKind.declare(
 common-law partner): the spouse's net income of line 88 plus the spouse's UCCB and RDSP repayments
 of line 89. Line 88 can be negative, so the kind is signed; both lines are optional inputs, so the
 result is blank when line 88 is."""
+
+NL428_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92 = AmountKind.declare(
+    CATALOG, "nl428_family_income_less_uccb_rdsp_line_92", non_negative=True
+)
+"""Line 90 minus line 91, NL428 line 92 "Line 90 minus line 91 (if negative, enter "0")", column 1
+(you): the family income of line 90 less the UCCB and RDSP income of line 91, not below 0, so the
+kind is non-negative."""
 
 NL428_ELIGIBLE_DEPENDANT_CLAIMED_LINE_97 = AmountKind.declare(
     CATALOG, "nl428_eligible_dependant_claimed_line_97", non_negative=True
