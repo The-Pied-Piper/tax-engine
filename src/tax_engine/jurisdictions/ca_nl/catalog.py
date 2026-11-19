@@ -522,6 +522,13 @@ NL428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 """Tax at the start of the column, NL428 line 7 "Line 7: 0.00": the printed tax at the start of the
 column of lines 2 to 8 that line 1 falls in, blank when line 1 is above 220,910."""
 
+NL428_TAX_ON_EXCESS_LINE_13 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_excess_line_13", non_negative=True
+)
+"""Tax on the taxable income over the lower bound, NL428 line 13 "Line 13: Line 11 multiplied by the
+percentage from line 12 =": line 11 times the line 12 rate, rounded half-up to the cent. It is
+blank when line 11 or line 12 is blank, at or below 220,910."""
+
 NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
     CATALOG, "nl428_bracket_tax_at_start_line_14", non_negative=True
 )
