@@ -842,3 +842,11 @@ NL428_LOW_INCOME_THRESHOLD_LINE_100 = AmountKind.declare(
 """Low-income threshold, NL428 line 100 "Line 100: If you claimed an amount on line 96 or line 97,
 enter $40,460; if not, enter $23,928": $40,460 when an amount is claimed on line 96 or line 97,
 else $23,928."""
+
+NL428_ADJUSTED_FAMILY_INCOME_LINE_93 = AmountKind.declare(
+    CATALOG, "nl428_adjusted_family_income_line_93", non_negative=True
+)
+"""Adjusted family income, NL428 line 93 "Line 93: Add the amounts from line 92 of columns 1 and 2.
+Enter this amount on line 99. Adjusted family income": line 92 of column 1 (you) plus line 92 of
+column 2 (your spouse or common-law partner), both not below 0, so the kind is non-negative.
+Column 2 is taken as 0 when left blank."""
