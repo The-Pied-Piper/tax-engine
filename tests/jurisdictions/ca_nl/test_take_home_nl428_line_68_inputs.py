@@ -3,9 +3,9 @@
 Form NL428 (CRA 5001-C), line 68, as printed on the form: "Newfoundland and Labrador minimum tax
 carryover: Line 68 and line 61540: Amount from line 40427 of your return ... multiplied by 60% =".
 The first box takes the amount from line 40427 of the return; the 60% is a later ticket. The input
-carries no title, as Saskatchewan's line 65 box A does. A salary-only caller has no minimum tax
-carryover, so a request that leaves the line out is read as blank; the step that reads line 68 reads
-that blank as 0.
+carries no title: the heading printed above the line names the line's result, not box A. A
+salary-only caller has no minimum tax carryover, so a request that leaves the line out is read as
+blank; the step that reads line 68 reads that blank as 0.
 
 The real part is loaded under a test-local header over the Newfoundland and Labrador package list
 of `support.py`.
