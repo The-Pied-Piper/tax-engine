@@ -335,3 +335,9 @@ NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51 = AmountKind.declare(
 )
 """Net income multiplied by 3%, NL428 line 51 "Line 49 multiplied by the percentage from line 50":
 line 49 times the printed line 50 rate, rounded half-up to the cent."""
+
+NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
+    CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
+)
+"""Lower bound of the column, NL428 line 10 "Line 10: 220,910.00": the printed lower bound of the
+column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""
