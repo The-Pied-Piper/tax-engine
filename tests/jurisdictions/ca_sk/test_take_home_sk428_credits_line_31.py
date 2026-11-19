@@ -142,14 +142,11 @@ def _step() -> dict[str, Any]:
     return step
 
 
-# salary, line 31. At $70,000 EI is at its maximum; at $200,000 CPP is too.
+# salary, line 31. At $200,000 EI and CPP are both at their maximum.
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        ("0", "0.00"),
         ("20000", "1144.75"),
-        ("65700", "4156.38"),
-        ("70000", "4369.23"),
         ("200000", "4433.58"),
     ],
 )

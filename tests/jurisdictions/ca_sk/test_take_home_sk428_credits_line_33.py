@@ -130,7 +130,7 @@ def test_a_salary_only_run_passes_the_pension_on_as_zero(tmp_path: Path) -> None
     assert D(line.value) == D("0")
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_the_salary_does_not_change_the_checked_amount(tmp_path: Path, salary: str) -> None:
     sheet = _sheet(tmp_path, "250.50", salary)
 

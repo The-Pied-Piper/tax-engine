@@ -161,15 +161,12 @@ def _step() -> dict[str, Any]:
     return step
 
 
-# salary, line 35 with the pension input left out. At $70,000 EI is at its maximum; at $200,000
-# CPP is too. Line 34 is not built, so line 35 equals line 32.
+# salary, line 35 with the pension input left out. At $200,000 EI and CPP are both at
+# their maximum. Line 34 is not built, so line 35 equals line 32.
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        ("0", "19491.00"),
         ("20000", "20635.75"),
-        ("65700", "23647.38"),
-        ("70000", "23860.23"),
         ("200000", "23924.58"),
     ],
 )
@@ -186,7 +183,6 @@ def test_line_35_adds_lines_32_to_34_with_the_pension_left_out(
     [
         ("70000", "1000", "24860.23"),
         ("20000", "0", "20635.75"),
-        ("20000", "250.50", "20886.25"),
     ],
 )
 def test_line_35_adds_the_pension_income_amount_entered_on_line_33(

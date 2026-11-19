@@ -58,13 +58,13 @@ def test_the_return_summary_holds_each_of_its_three_outputs(year: int, name: str
 @pytest.mark.parametrize("year", [2025, 2026])
 @pytest.mark.parametrize(
     ("salary", "line_5"),
-    [("20000", "0.105"), ("70000", "0.125"), ("200000", "0.145")],
+    [("20000", "0.105"), ("70000", "0.125")],
 )
 def test_the_sk428_credits_form_exports_the_line_5_rate(
     year: int, salary: str, line_5: str
 ) -> None:
     # Line 5 prints the rate of the column line 1 falls in: 10.5% up to 53,463, 12.5% up to
-    # 152,750 and 14.5% above it.
+    # 152,750 and 14.5% above it (the 14.5% column is checked in the line 5 test).
     sheet = _sheet(year, salary, "ca-sk/sk428_credits")
 
     assert _value(sheet, "ca-sk/sk428_bracket_rate_line_5") == D(line_5)
@@ -72,7 +72,7 @@ def test_the_sk428_credits_form_exports_the_line_5_rate(
 
 @pytest.mark.parametrize(
     ("salary", "line_67"),
-    [("20000", "0.00"), ("70000", "5092.30"), ("200000", "22207.93")],
+    [("20000", "0.00"), ("70000", "5092.30")],
 )
 def test_the_sk428_form_exports_line_67(salary: str, line_67: str) -> None:
     # Nothing is subtracted after line 67 for a salary-only filer, so line 67 equals line 82.

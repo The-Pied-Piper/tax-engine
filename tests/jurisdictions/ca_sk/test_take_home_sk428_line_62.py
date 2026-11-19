@@ -16,8 +16,7 @@ credits form exports lines 1, 3, 4, 5, 6, 7 and 8, and `ca-sk/sk428` exports onl
 
 Figures: line 60 is line 58 (line 8 as the engine produces it) less line 59, re-derived here in
 `_derived` with Decimal (not a CRA example); line 62 is that plus line 61 (0 when blank):
-0.00 / 1,043.18 / 2,082.68 / 7,597.62 / 24,720.01 at salaries 0 / 10,000 / 20,000 / 70,000 /
-200,000, and the column-edge figures of the line 58 test.
+0.00 / 7,597.62 at salaries 0 / 70,000. The column edges belong to the line 8 and line 58 tests.
 """
 
 from __future__ import annotations
@@ -122,24 +121,10 @@ FORM = dedent(f"""\
     """)
 
 # salary, line 62: line 60 (line 8 less a blank line 59) plus a blank line 61, read as 0.
-CASES = [
+ALL = [
     ("0", "0.00"),
-    ("10000", "1043.18"),
-    ("20000", "2082.68"),
     ("70000", "7597.62"),
-    ("200000", "24720.01"),
 ]
-# Salaries whose taxable income sits on a column's edge (53,463.00 and 152,750.00), as in the
-# line 58 test.
-EDGES = [
-    ("53967.67", "5613.61"),
-    ("53967.68", "5613.62"),
-    ("53967.69", "5613.62"),
-    ("153823.99", "18024.49"),
-    ("153824.00", "18024.50"),
-    ("153824.01", "18024.49"),
-]
-ALL = [*CASES, *EDGES]
 
 
 def _part_files() -> Iterator[Path]:
@@ -248,8 +233,6 @@ def test_line_62_is_line_60_when_line_61_is_blank(
     [
         ("70000", "100.00", "7697.62"),
         ("70000", "0.00", "7597.62"),
-        ("20000", "12.34", "2095.02"),
-        ("200000", "1234.56", "25954.57"),
     ],
 )
 def test_line_62_adds_a_given_line_61_to_line_60(

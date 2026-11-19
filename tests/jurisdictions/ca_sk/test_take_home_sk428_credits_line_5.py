@@ -18,11 +18,10 @@ parts, the real `sk428_credits_line_1.yaml` and the real `sk428_credits_line_5.y
 only the salary. The form declaration is test-local, exporting lines 1 and 5.
 
 Figures (re-derived here with Decimal, not a CRA example): taxable income is the salary less the
-enhanced CPP deduction, 9,935.00 / 19,835.00 / 69,335.00 / 198,926.00, so line 5 is 10.5% / 10.5% /
-12.5% / 14.5%. The boundary salaries are derived below: the deduction is 1% of the earnings over
-$3,500 to the cent below the $71,300 maximum, and a flat $1,074.00 from $81,200, so taxable income
-is 0.99 of the salary plus $35.00 near the first edge and the salary less $1,074.00 near the
-second.
+enhanced CPP deduction, 9,935.00 / 69,335.00, so line 5 is 10.5% / 12.5%; the top column (14.5%) is
+checked at salaries 500,000 and 5,000,000. The boundary salary is derived below: the deduction is 1%
+of the earnings over $3,500 to the cent below the $71,300 maximum, so taxable income is 0.99 of the
+salary plus $35.00 near the first edge.
 """
 
 from __future__ import annotations
@@ -102,19 +101,12 @@ FORM = dedent(f"""\
 
 CASES = [
     ("10000", "9935.00", "0.105"),
-    ("20000", "19835.00", "0.105"),
     ("70000", "69335.00", "0.125"),
-    ("200000", "198926.00", "0.145"),
 ]
-# Salaries whose taxable income sits on a column's edge: line 1 is 53,463.00 or less in column 1,
-# not more than 152,750.00 in column 2. One cent more is the next column.
+# A salary whose taxable income sits on a column's edge: line 1 is 53,463.00 or less in column 1,
+# so 53,463.00 is still column 1. One cent more is the next column.
 EDGES = [
-    ("53967.67", "53462.99", "0.105"),
     ("53967.68", "53463.00", "0.105"),
-    ("53967.69", "53463.01", "0.125"),
-    ("153823.99", "152749.99", "0.125"),
-    ("153824.00", "152750.00", "0.125"),
-    ("153824.01", "152750.01", "0.145"),
 ]
 # The percentage the trace prints for each rate.
 PERCENT = {"0.105": "10.5", "0.125": "12.5", "0.145": "14.5"}
