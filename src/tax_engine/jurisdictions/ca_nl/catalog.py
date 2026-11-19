@@ -912,9 +912,28 @@ NL428_LINE_103 = AmountKind.declare(CATALOG, "nl428_line_103", non_negative=True
 the printed line 102 rate of 16%, rounded half-up to the cent."""
 
 NL428_LINE_104 = AmountKind.declare(CATALOG, "nl428_line_104", non_negative=True)
-"""NL428 line 104 "Line 104: Line 98 minus line 103 (if negative, enter "0")": the low-income tax
-reduction of line 98 less the reduction of line 103, floored at 0 as the form prints, rounded
-half-up to the cent."""
+"""NL428 line 104 "Line 104: Line 98 minus line 103 (if negative, enter "0")", with the instruction
+under line 87 "If you are claiming an amount on line 86 ... enter "0" on line 104": 0.00 where an
+amount is claimed on line 86, otherwise line 98 less line 103, floored at 0 as the form prints,
+rounded half-up to the cent."""
+
+NL428_LINE_104_BEFORE_LINE_86_CHECK = AmountKind.declare(
+    CATALOG, "nl428_line_104_before_line_86_check", non_negative=True
+)
+"""NL428 line 104 before the line 86 check: line 98 less line 103, floored at 0 as the form prints,
+rounded half-up to the cent. Not printed on the form."""
+
+NL428_UNUSED_LOW_INCOME_REDUCTION_FROM_SPOUSE_CLAIMED_LINE_86 = AmountKind.declare(
+    CATALOG, "nl428_unused_low_income_reduction_from_spouse_claimed_line_86", non_negative=True
+)
+"""The amount claimed on NL428 line 86, a blank line 86 read as 0.00, so the line 86 gate can read
+it. Not printed on the form."""
+
+NL428_LINE_104_LINE_86_GATE = AmountKind.declare(
+    CATALOG, "nl428_line_104_line_86_gate", non_negative=True
+)
+"""The line 86 gate of NL428 line 104: 1 where line 86 is 0.00 and 0 where an amount is claimed on
+line 86. A switch, not printed on the form."""
 
 AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
 """Average income tax rate, the Newfoundland and Labrador return summary's own figure (no form
