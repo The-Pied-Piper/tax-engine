@@ -2,7 +2,7 @@
 # Reduction for an eligible dependant claimed on line 58160 Claim $557". The form prints no table;
 # the rows are a switch that gives the printed $557 only where an amount is claimed on line 58160
 # (NL428 line 23 above 0) and 0 where line 23 is 0.00. A base of 0.00 gives 0 and a base of one
-# cent or more gives 557. The figure is the one `ca-nl/low_income_reduction_dependant` holds.
+# cent or more gives 557, the figure the form prints.
 # A base exactly at a row's `over` is in the lower band, so the second row starts above 0.005: no
 # cent amount is in the first band but 0.00, and 0.01 is in the second.
 family: ca-nl/low_income_reduction_dependant_gate
