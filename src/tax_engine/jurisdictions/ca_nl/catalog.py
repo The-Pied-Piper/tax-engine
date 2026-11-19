@@ -32,6 +32,12 @@ WORKSHEET_NL428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
 """Line 2 minus line 3, Worksheet NL428 line 4 "Line 4: Line 2 minus line 3 (if negative, enter "0")
 ": the net income above the threshold, not below 0."""
 
+WORKSHEET_NL428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_line_6", non_negative=True
+)
+"""Line 4 multiplied by the line 5 rate, Worksheet NL428 line 6 "Line 6: Line 4 multiplied by the
+percentage from line 5 =": the age amount reduction, 15% of the net income above the threshold."""
+
 WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
     CATALOG, "worksheet_nl428_age_amount_line_7", non_negative=True
 )
