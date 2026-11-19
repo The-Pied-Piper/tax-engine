@@ -24,6 +24,7 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
+import tax_engine.jurisdictions.ca_nl.catalog as nl_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -38,6 +39,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
 D = Decimal
@@ -253,6 +255,9 @@ def _part() -> dict[str, Any]:
 
 
 def test_the_part_is_one_untitled_sum_step_over_lines_66_to_68() -> None:
+    kind = newfoundland_kinds().kind(IDENTIFIER)
+    assert kind is nl_catalog.NL428_CREDITS_TOTAL_LINE_69
+    assert non_negative(kind)
     assert _part() == {
         "form": {"name": FORM_NAME},
         "capabilities": [
