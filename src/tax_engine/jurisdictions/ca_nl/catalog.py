@@ -489,6 +489,12 @@ NL428_MEDICAL_EXPENSES_ALLOWABLE_LINE_55 = AmountKind.declare(
 """Allowable medical expenses, NL428 line 55 "Line 53 plus line 54": line 53 plus line 54, line 54
 being an optional input read as 0 when blank."""
 
+NL428_CREDITS_TOTAL_LINE_56 = AmountKind.declare(
+    CATALOG, "nl428_credits_total_line_56", non_negative=True
+)
+"""Credits total, NL428 line 56 "Line 47 plus line 55": the credits subtotal of line 47 plus the
+allowable medical expenses of line 55."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
