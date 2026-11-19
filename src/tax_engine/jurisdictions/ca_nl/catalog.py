@@ -385,6 +385,13 @@ NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
 repayment (included on line 23200 of the return)": the total of the two repayments as the filer
 gives it, an optional input; a blank input is read as blank, column 1 (you) only."""
 
+NL428_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
+    CATALOG, "nl428_uccb_rdsp_income_line_91", non_negative=True
+)
+"""UCCB and RDSP income, NL428 line 91 "Line 91: Total of the UCCB income (line 11700 of the return)
+and the RDSP income (line 12500 of the return)": the total of the two incomes as the filer gives it,
+an optional input; a blank input is read as blank, column 1 (you) only."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
