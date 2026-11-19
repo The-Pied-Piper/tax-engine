@@ -1,0 +1,13 @@
+# NL428 (2025) line 91's column 2 input, which a salary-only caller does not give.
+# Line 91: "Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the
+# return)" (Form NL428, CRA 5001-C), column 2 (your spouse or common-law partner). A salary-only
+# single filer has no spouse or common-law partner, so a request that leaves the line out is read as
+# blank.
+inputs:
+  - name: ca-nl/nl428_spouse_uccb_rdsp_income_line_91
+    title: "Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)"
+    reference: "91 (column 2)"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 91: Total of the UCCB income (line 11700 of the return) and the RDSP income (line 12500 of the return)"
