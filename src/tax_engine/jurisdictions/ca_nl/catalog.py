@@ -290,3 +290,9 @@ NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 )
 """Taxable income, Form NL428 Line 1 "Enter your taxable income from line 26000 of your return": the
 T1 taxable income, read directly by line 2."""
+
+NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
+    CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
+)
+"""Lower bound of the column, NL428 line 10 "Line 10: 220,910.00": the printed lower bound of the
+column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""
