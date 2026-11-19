@@ -1,0 +1,23 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 69 "Line 69: Add lines 66 to 68. =".
+# One core/sum step over line 66 (`ca-nl/nl428_non_refundable_credits_line_66`), line 67
+# (`ca-nl/nl428_dividend_tax_credit_line_67`) and line 68
+# (`ca-nl/nl428_minimum_tax_carryover_line_68`). Lines 66 and 68 are always computed and need no
+# blank rule; line 67 is an optional input a salary-only caller leaves out, so the blank rule below
+# reads it as 0. The form prints no title for the line, so the step has none.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/sum
+    reference: "69"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_non_refundable_credits_line_66
+        - ca-nl/nl428_dividend_tax_credit_line_67
+        - ca-nl/nl428_minimum_tax_carryover_line_68
+    blank:
+      ca-nl/nl428_dividend_tax_credit_line_67: "0"
+    produces:
+      output: ca-nl/nl428_credits_total_line_69

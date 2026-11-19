@@ -354,6 +354,13 @@ NL428_MINIMUM_TAX_CARRYOVER_LINE_68 = AmountKind.declare(
 40427 of your return multiplied by 60% =": calculated, the amount from line 40427 multiplied by
 60%."""
 
+NL428_CREDITS_TOTAL_LINE_69 = AmountKind.declare(
+    CATALOG, "nl428_credits_total_line_69", non_negative=True
+)
+"""Newfoundland and Labrador credits total, NL428 line 69 "Line 69: Add lines 66 to 68. =": line 66
+plus line 67 (the dividend tax credit, blank read as 0) plus line 68, rounded half-up to the
+cent."""
+
 NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "nl428_provincial_foreign_tax_credit_line_73", non_negative=True
 )
@@ -414,6 +421,29 @@ NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_LINE_96 = CountKind.dec
 """Reduction for spouse or common-law partner claimed, NL428 line 96 "Line 96 and line 61880:
 Reduction for spouse or common-law partner Claim $557": the eligibility claim, 1 when the reduction
 is claimed, read as blank when left out."""
+
+NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_CHECKED_LINE_96 = CountKind.declare(
+    CATALOG,
+    "nl428_reduction_for_spouse_or_common_law_partner_claimed_checked_line_96",
+    non_negative=True,
+)
+"""Reduction for spouse or common-law partner claim, checked, NL428 line 96 "Line 96 and line 61880:
+Reduction for spouse or common-law partner Claim $557": the claim with a blank read as 0, refused
+above 1 so the reduction cannot be claimed twice."""
+
+LOW_INCOME_REDUCTION_SPOUSE = AmountKind.declare(
+    CATALOG, "low_income_reduction_spouse", non_negative=True
+)
+"""Reduction for spouse or common-law partner, NL428 line 96 "Line 96 and line 61880: Reduction for
+spouse or common-law partner Claim $557": the printed $557, the amount claimed when the reduction is
+claimed."""
+
+NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_96 = AmountKind.declare(
+    CATALOG, "nl428_reduction_for_spouse_or_common_law_partner_line_96", non_negative=True
+)
+"""Reduction for spouse or common-law partner, NL428 line 96 "Line 96 and line 61880: Reduction for
+spouse or common-law partner Claim $557": the printed $557 when the claim is 1, 0 when the claim is
+blank or 0."""
 
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
@@ -704,16 +734,24 @@ NL428_FAMILY_INCOME_LINE_90 = AmountKind.declare(
 line 88 plus the UCCB and RDSP repayments of line 89. Line 88 can be negative, so the kind is
 signed."""
 
+NL428_SPOUSE_FAMILY_INCOME_LINE_90 = AmountKind.declare(
+    CATALOG, "nl428_spouse_family_income_line_90", non_negative=False
+)
+"""Line 88 plus line 89, NL428 line 90 "Line 90: Line 88 plus line 89", column 2 (your spouse or
+common-law partner): the spouse's net income of line 88 plus the spouse's UCCB and RDSP repayments
+of line 89. Line 88 can be negative, so the kind is signed; both lines are optional inputs, so the
+result is blank when line 88 is."""
+
 NL428_ELIGIBLE_DEPENDANT_CLAIMED_LINE_97 = AmountKind.declare(
     CATALOG, "nl428_eligible_dependant_claimed_line_97", non_negative=True
 )
 """Amount claimed on line 58160, read by NL428 line 97 "Line 97 and line 61890: Reduction for an
 eligible dependant claimed on line 58160 Claim $557": line 23 of the credits form, the amount for
-an eligible dependant, read across the forms. It is blank when line 23 is blank."""
+an eligible dependant, read across the forms. A blank line 23 is read as 0."""
 
 NL428_LOW_INCOME_REDUCTION_DEPENDANT_LINE_97 = AmountKind.declare(
     CATALOG, "nl428_low_income_reduction_dependant_line_97", non_negative=True
 )
 """Reduction for an eligible dependant, NL428 line 97 and line 61890 "Reduction for an eligible
 dependant claimed on line 58160 Claim $557": the printed 557 where an amount is claimed on line
-58160, and blank where line 23 is blank."""
+58160, and 0 where line 23 is 0 or blank."""
