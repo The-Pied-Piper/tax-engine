@@ -121,6 +121,13 @@ NL428_VOLUNTEER_FIREFIGHTERS_AMOUNT_LINE_31 = AmountKind.declare(
 """Volunteer firefighters' amount, NL428 line 31 "Line 31 and line 58315: Volunteer firefighters'
 amount": the amount as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_SEARCH_AND_RESCUE_VOLUNTEERS_AMOUNT_LINE_32 = AmountKind.declare(
+    CATALOG, "nl428_search_and_rescue_volunteers_amount_line_32", non_negative=True
+)
+"""Search and rescue volunteers' amount, NL428 line 32 "Line 32 and line 58316: Search and rescue
+volunteers' amount": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
