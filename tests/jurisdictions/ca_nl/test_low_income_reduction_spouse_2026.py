@@ -28,10 +28,11 @@ PROVISIONAL_HEADER = (
     "against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: 2025 amount 557 x 1.011 (Newfoundland and Labrador's index rate in "
-    "T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the "
-    "printed 11,188) = 563.127, rounded down to 563 (the project ruling for provisional "
-    "indexed amounts); unconfirmed, as the 2026 NL428 is not yet published."
+    "# Derivation: 2025 amount 557 x 1.011 (Newfoundland and Labrador's index rate in"
+    " T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives "
+    "the printed 11,188) = 563.127, rounded to the nearest dollar, a half going up, "
+    "to 563 (NL Income Tax Act, 2000 s.6.1(3)(c)); unconfirmed, as the 2026 NL428 is "
+    "not yet published."
 )
 
 
