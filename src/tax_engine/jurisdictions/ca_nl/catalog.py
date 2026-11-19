@@ -291,6 +291,13 @@ NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.decla
 58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_split_income_line_64", non_negative=True
+)
+"""Newfoundland and Labrador tax on split income, NL428 line 64 "Line 64 and line 61510:
+Newfoundland and Labrador tax on split income (complete Form T1206)": the amount as the filer gives
+it, an optional input; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
