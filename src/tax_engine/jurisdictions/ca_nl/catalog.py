@@ -443,6 +443,11 @@ NL428_TAX_LINE_85 = AmountKind.declare(CATALOG, "nl428_tax_line_85", non_negativ
 81 minus line 84 (if negative, enter "0") =": line 81 less the credit of line 84 (blank read as 0),
 floored at 0 as the form prints, rounded half-up to the cent."""
 
+NL428_TAX_LINE_87 = AmountKind.declare(CATALOG, "nl428_tax_line_87", non_negative=True)
+"""Newfoundland and Labrador tax after the spouse's unused low-income tax reduction, NL428 line 87
+"Line 87: Line 85 minus line 86 (if negative, enter "0") =": line 85 less the amount of line 86
+(blank read as 0), floored at 0 as the form prints, rounded half-up to the cent."""
+
 NL428_VENTURE_CAPITAL_TAX_CREDIT_LINE_84 = AmountKind.declare(
     CATALOG, "nl428_venture_capital_tax_credit_line_84", non_negative=True
 )
