@@ -1,0 +1,37 @@
+# NL428 (2025) line 20, the spouse or common-law partner amount. Form NL428 (CRA 5001-C): "Line 20
+# and line 58120: Line 18 minus line 19 (if negative, enter "0") (maximum $9,043) =". Line 18 is a
+# printed figure, held in the `ca-nl/spouse_amount_base` dataset (9,948), and is produced by
+# core/credit_amount so the subtraction can read it; line 19 is the optional input of its own part,
+# a blank read as 0.
+#
+# Line 20 takes two steps: the difference, not below 0, and then the printed maximum, which holds
+# the line's result at 9,043 (the `ca-nl/spouse_amount_maximum` dataset). The line's number is on
+# the final step only.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/credit_amount
+    params:
+      amount: ca-nl/spouse_amount_base
+    produces:
+      output: ca-nl/spouse_amount_base
+  - name: core/subtract_not_below_zero
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/spouse_amount_base
+      less: ca-nl/nl428_spouse_net_income_line_19
+    blank:
+      less: "0"
+    produces:
+      output: ca-nl/nl428_spouse_amount_before_maximum_line_20
+  - name: core/capped_amount
+    reference: "20"
+    unit: ca/cad
+    params:
+      cap: ca-nl/spouse_amount_maximum
+    consumes:
+      base: ca-nl/nl428_spouse_amount_before_maximum_line_20
+    produces:
+      output: ca-nl/nl428_spouse_amount_line_20

@@ -100,3 +100,21 @@ the claim is 1, 0 when the claim is blank or 0."""
 BASIC_PERSONAL_AMOUNT = AmountKind.declare(CATALOG, "basic_personal_amount", non_negative=True)
 """Basic personal amount, NL428 line 16 "Line 16 and line 58040: Basic personal amount Claim
 $11,067": the printed $11,067, claimed whole and not income-tested."""
+
+SPOUSE_AMOUNT_BASE = AmountKind.declare(CATALOG, "spouse_amount_base", non_negative=True)
+"""Spouse or common-law partner amount, base amount, NL428 line 18 "Base amount 9,948.00": the
+printed figure, from which line 20 takes line 19."""
+
+NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20 = AmountKind.declare(
+    CATALOG, "nl428_spouse_amount_before_maximum_line_20", non_negative=True
+)
+"""Spouse or common-law partner amount before the maximum, NL428 line 20 "Line 20 and line 58120:
+Line 18 minus line 19 (if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below
+0, before the maximum is applied."""
+
+NL428_SPOUSE_AMOUNT_LINE_20 = AmountKind.declare(
+    CATALOG, "nl428_spouse_amount_line_20", non_negative=True
+)
+"""Spouse or common-law partner amount, NL428 line 20 "Line 20 and line 58120: Line 18 minus line 19
+(if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below 0, at most the printed
+maximum."""
