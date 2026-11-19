@@ -909,3 +909,8 @@ form prints, rounded half-up to the cent."""
 NL428_LINE_103 = AmountKind.declare(CATALOG, "nl428_line_103", non_negative=True)
 """NL428 line 103 "Line 103: Line 101 multiplied by the percentage from line 102 =": line 101 times
 the printed line 102 rate of 16%, rounded half-up to the cent."""
+
+NL428_LINE_104 = AmountKind.declare(CATALOG, "nl428_line_104", non_negative=True)
+"""NL428 line 104 "Line 104: Line 98 minus line 103 (if negative, enter "0")": the low-income tax
+reduction of line 98 less the reduction of line 103, floored at 0 as the form prints, rounded
+half-up to the cent."""

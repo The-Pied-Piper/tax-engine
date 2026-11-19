@@ -28,6 +28,7 @@ from tax_engine.application.services.tax_computation import TaxComputationServic
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
+from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_nl.support import (
@@ -204,7 +205,7 @@ def _sheet(
     kinds = newfoundland_kinds()
     for identifier, amount in (given_lines or {}).items():
         kind = kinds.kind(identifier)
-        given.append(Artifact(kind, int(amount) if kind.value_type is int else D(amount)))
+        given.append(Artifact(kind, int(amount) if isinstance(kind, CountKind) else D(amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
     (sheet,) = worksheets[form]
     return sheet
