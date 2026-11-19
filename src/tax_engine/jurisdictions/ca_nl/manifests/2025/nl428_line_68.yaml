@@ -1,0 +1,20 @@
+# Form NL428 (Newfoundland and Labrador Tax, 2025, CRA 5001-C) line 68 (ca-nl/nl428). "Newfoundland and
+# Labrador minimum tax carryover:" / "Line 68 and line 61540: Amount from line 40427 of your return
+# multiplied by 60% =". The 60% is a printed rate, held in the `ca-nl/minimum_tax_rate` dataset, so
+# line 68 is one calculation: 60% of the amount, rounded half-up to the cent. The amount is an
+# optional input (read as 0 when left out), declared by its own part.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/apply_rate
+    title: "Newfoundland and Labrador minimum tax carryover"
+    reference: "68"
+    unit: ca/cad
+    params:
+      rate: ca-nl/minimum_tax_rate
+    consumes:
+      base: ca-nl/nl428_minimum_tax_carryover_amount_line_68
+    blank:
+      base: "0"
+    produces:
+      output: ca-nl/nl428_minimum_tax_carryover_line_68
