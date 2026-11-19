@@ -829,3 +829,15 @@ NL428_LOW_INCOME_THRESHOLD_LINE_100 = AmountKind.declare(
 """Low-income threshold, NL428 line 100 "Line 100: If you claimed an amount on line 96 or line 97,
 enter $40,460; if not, enter $23,928": $40,460 when an amount is claimed on line 96 or line 97,
 else $23,928."""
+
+NL428_LOW_INCOME_REDUCTION_BEFORE_MAXIMUM_LINE_98 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_before_maximum_line_98", non_negative=True
+)
+"""Low-income tax reduction before the maximum, NL428 line 98 "Line 98: Add lines 95 to 97. (maximum
+$1,554)": lines 95 to 97 added, before the maximum is applied."""
+
+NL428_LOW_INCOME_REDUCTION_LINE_98 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_line_98", non_negative=True
+)
+"""Low-income tax reduction, NL428 line 98 "Line 98: Add lines 95 to 97. (maximum $1,554)": lines 95
+to 97 added, and not more than the printed $1,554."""
