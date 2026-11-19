@@ -48,6 +48,14 @@ NL428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 Newfoundland and Labrador tax on taxable income =": line 13 plus line 14 of the column that line 1
 falls in, read by line 63 on the tax form."""
 
+NL428_SPOUSE_NET_INCOME_LINE_19 = AmountKind.declare(
+    CATALOG, "nl428_spouse_net_income_line_19", non_negative=False
+)
+"""Spouse or common-law partner's net income, NL428 line 19 "Line 19: Your spouse's or common-law
+partner's net income from line 23600 of their return": the amount as the filer gives it, an
+optional input. It is signed because a spouse's net income can be a loss, and the form prints no
+floor; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
