@@ -146,6 +146,13 @@ NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
 """Adoption expenses, NL428 line 34 "Line 34 and line 58330: Adoption expenses": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_CPP_EI_AND_OTHER_LINE_35 = AmountKind.declare(
+    CATALOG, "nl428_cpp_ei_and_other_line_35", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, NL428 line 35 "Line 35: Add lines 27 to 34. = ^": the
+sum of lines 27 to 34, lines 28, 30, 31, 32, 33 and 34 being optional inputs read as 0.
+"""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
