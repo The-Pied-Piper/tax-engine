@@ -393,6 +393,11 @@ NL428_RESORT_PROPERTY_INVESTMENT_TAX_CREDIT_LINE_80 = AmountKind.declare(
 credit (complete Form T1297)": the credit from Form T1297, an optional input that a salary-only
 caller leaves out; a blank input is read as blank."""
 
+NL428_TAX_LINE_81 = AmountKind.declare(CATALOG, "nl428_tax_line_81", non_negative=True)
+"""Newfoundland and Labrador tax after the resort property investment tax credit, NL428 line 81
+"Line 81: Line 79 minus line 80 (if negative, enter "0") =": line 79 less the credit of line 80
+(blank read as 0), floored at 0 as the form prints, rounded half-up to the cent."""
+
 NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_76 = AmountKind.declare(
     CATALOG, "nl428_political_contribution_tax_credit_claimed_line_76", non_negative=True
 )
