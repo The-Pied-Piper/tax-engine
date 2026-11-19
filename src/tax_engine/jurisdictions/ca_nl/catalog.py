@@ -146,6 +146,13 @@ NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
 """Adoption expenses, NL428 line 34 "Line 34 and line 58330: Adoption expenses": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_CPP_EI_AND_OTHER_LINE_35 = AmountKind.declare(
+    CATALOG, "nl428_cpp_ei_and_other_line_35", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, NL428 line 35 "Line 35: Add lines 27 to 34. = ^": the
+sum of lines 27 to 34, lines 28, 30, 31, 32, 33 and 34 being optional inputs read as 0.
+"""
+
 NL428_CAREGIVER_AMOUNT_LINE_38 = AmountKind.declare(
     CATALOG, "nl428_caregiver_amount_line_38", non_negative=True
 )
@@ -250,3 +257,9 @@ NL428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_23 = AmountKind.declare(
 """Amount for an eligible dependant, NL428 line 23 "Line 23 and line 58160: Line 21 minus line 22
 (if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below 0, at most the printed
 maximum."""
+
+NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "nl428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form NL428 Line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by line 2."""
