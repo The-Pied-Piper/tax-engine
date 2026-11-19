@@ -1,0 +1,17 @@
+# Form NL428 (CRA 5001-C) line 58: "Line 57: Newfoundland and Labrador non-refundable tax credit rate
+# 8.7% / Line 58 and line 58840: Line 56 multiplied by the percentage from line 57 =". Line 57 is a
+# printed rate, held in the `ca-nl/credit_rate` dataset, so line 58 is one calculation: 8.7% of line
+# 56 (nl428_credits_line_56.yaml), rounded half-up to the cent by the dataset's rule. The form names
+# no label for the line, so the step has no title.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "58"
+    unit: ca/cad
+    params:
+      rate: ca-nl/credit_rate
+    consumes:
+      base: ca-nl/nl428_credits_total_line_56
+    produces:
+      output: ca-nl/nl428_credits_at_rate_line_58
