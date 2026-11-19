@@ -199,6 +199,13 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_42", non_negative=True
+)
+"""Credits subtotal, NL428 line 42 "Line 42: Add lines 39 to 41. = ^": line 39 plus line 40 (the
+disability amount for self) plus line 41 (the disability amount transferred from a dependant),
+line 41 being read as 0 when blank."""
+
 NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
     CATALOG, "nl428_student_loan_interest_line_43", non_negative=True
 )
