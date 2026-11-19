@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 19: "Your spouse's or common-law partner's net income from line 23600 of their return" (Form
+# NL428, CRA 5001-C). A salary-only caller has no spouse or common-law partner net income to enter,
+# so a request that leaves the line out is read as blank. The figure is signed: a spouse's net
+# income can be a loss, and the form prints no floor. Line 20 (a later ticket) reads it.
+inputs:
+  - name: ca-nl/nl428_spouse_net_income_line_19
+    title: "Your spouse's or common-law partner's net income from line 23600 of their return"
+    reference: "19"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 19: Your spouse's or common-law partner's net income from line 23600 of their return"
