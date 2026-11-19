@@ -41,7 +41,6 @@ PRINTED_BASIS = (
     "Line 54 and line 58729: Allowable amount of medical expenses for other dependants "
     "(use Worksheet NL428)"
 )
-TITLE = "Allowable amount of medical expenses for other dependants (use Worksheet NL428)"
 PART = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / (
     "manifests/2025/nl428_credits_line_54_input.yaml"
 )
@@ -97,7 +96,9 @@ def test_the_part_declares_the_input_with_its_unit_reference_and_title() -> None
     assert part["inputs"] == [
         {
             "name": IDENTIFIER,
-            "title": TITLE,
+            "title": (
+                "Allowable amount of medical expenses for other dependants (use Worksheet NL428)"
+            ),
             "reference": "54",
             "unit": "ca/cad",
             "required": False,
