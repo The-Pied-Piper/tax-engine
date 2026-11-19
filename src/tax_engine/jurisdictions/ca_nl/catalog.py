@@ -342,6 +342,12 @@ NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51 = AmountKind.declare(
 """Net income multiplied by 3%, NL428 line 51 "Line 49 multiplied by the percentage from line 50":
 line 49 times the printed line 50 rate, rounded half-up to the cent."""
 
+NL428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_52 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_limited_amount_line_52", non_negative=True
+)
+"""Line 51 limited to $2,410, NL428 line 52 "Enter whichever is less: $2,410 or the amount on line
+51": the lesser of the printed $2,410 and line 51."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
