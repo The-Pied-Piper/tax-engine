@@ -299,6 +299,13 @@ NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.decla
 58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_DONATIONS_AND_GIFTS_CREDIT_LINE_61 = AmountKind.declare(
+    CATALOG, "nl428_donations_and_gifts_credit_line_61", non_negative=True
+)
+"""Donations and gifts credit, NL428 line 61 "Line 61 and line 58969: Line 59 plus line 60 =": the
+amount as the filer gives it, an optional input; lines 59 and 60 are not built, and a blank input
+is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
