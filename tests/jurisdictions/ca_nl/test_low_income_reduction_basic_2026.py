@@ -28,17 +28,18 @@ PROVISIONAL_HEADER = (
     "against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: 2025 amount 997 x 1.011 (Newfoundland and Labrador's index rate in "
-    "T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the "
-    "printed 11,188) = 1007.967, rounded down to 1007 (the project ruling for provisional"
-    " indexed amounts); unconfirmed, as the 2026 NL428 is not yet published."
+    "# Derivation: 2025 amount 997 x 1.011 (Newfoundland and Labrador's index rate in"
+    " T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives "
+    "the printed 11,188) = 1007.967, rounded to the nearest dollar, a half going up, "
+    "to 1008 (NL Income Tax Act, 2000 s.6.1(3)(c)); unconfirmed, as the 2026 NL428 is"
+    " not yet published."
 )
 
 
 def test_2026_low_income_reduction_basic_value() -> None:
     data = SOURCE.get(FAMILY, 2026, CREDIT)
 
-    assert data.values == Credit(amount=D("1007"))
+    assert data.values == Credit(amount=D("1008"))
 
 
 def test_2026_low_income_reduction_basic_rounding() -> None:

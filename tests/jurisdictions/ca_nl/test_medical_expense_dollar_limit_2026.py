@@ -33,17 +33,18 @@ PROVISIONAL_HEADER = (
     "against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: 2025 amount 2410 x 1.011 (Newfoundland and Labrador's index rate in "
-    "T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the "
-    "printed 11,188) = 2436.51, rounded down to 2436 (the project ruling for provisional "
-    "indexed amounts); unconfirmed, as the 2026 NL428 is not yet published."
+    "# Derivation: 2025 amount 2410 x 1.011 (Newfoundland and Labrador's index rate "
+    "in T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives "
+    "the printed 11,188) = 2436.51, rounded to the nearest dollar, a half going up, "
+    "to 2437 (NL Income Tax Act, 2000 s.6.1(3)(c)); unconfirmed, as the 2026 NL428 is"
+    " not yet published."
 )
 
 
 def test_2026_medical_expense_dollar_limit_value() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-    assert data.values == Amount(D("2436"))
+    assert data.values == Amount(D("2437"))
 
 
 def test_2026_medical_expense_dollar_limit_rounding() -> None:

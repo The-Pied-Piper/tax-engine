@@ -28,17 +28,18 @@ PROVISIONAL_HEADER = (
     "against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: 2025 amount 3514.00 x 1.011 (Newfoundland and Labrador's index rate in"
-    " T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the "
-    "printed 11,188) = 3552.654, rounded down to 3552.00 (the project ruling for "
-    "provisional indexed amounts); unconfirmed, as the 2026 NL428 is not yet published."
+    "# Derivation: 2025 amount 3514.00 x 1.011 (Newfoundland and Labrador's index "
+    "rate in T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it "
+    "gives the printed 11,188) = 3552.654, rounded to the nearest dollar, a half "
+    "going up, to 3553.00 (NL Income Tax Act, 2000 s.6.1(3)(c)); unconfirmed, as the "
+    "2026 NL428 is not yet published."
 )
 
 
 def test_2026_disability_self_supplement_maximum_value() -> None:
     data = SOURCE.get(FAMILY, 2026, CREDIT)
 
-    assert data.values == Credit(amount=D("3552.00"))
+    assert data.values == Credit(amount=D("3553.00"))
 
 
 def test_2026_disability_self_supplement_maximum_rounding() -> None:

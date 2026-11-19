@@ -33,19 +33,20 @@ PROVISIONAL_HEADER = (
     "against the 2026 form text when CRA publishes it."
 )
 DERIVATION_HEADER = (
-    "# Derivation: the form's maximum is the sum of the basic reduction and one of the "
-    "spouse or dependant reductions (2025: 997 + 557 = 1,554); the 2026 maximum is the "
-    "sum of those two amounts as indexed in this directory (1,007 + 563 = 1,570), each "
-    "the 2025 figure x 1.011 (Newfoundland and Labrador's index rate in T4127 (Jan 2026) "
-    "Table 8.2) rounded down (the project ruling for provisional indexed amounts); "
-    "unconfirmed, as the 2026 NL428 is not yet published."
+    "# Derivation: the form's maximum is the sum of the basic reduction and one of "
+    "the spouse or dependant reductions (2025: 997 + 557 = 1,554); the 2026 maximum "
+    "is the sum of those two amounts as indexed in this directory (1,008 + 563 = "
+    "1,571), each the 2025 figure x 1.011 (Newfoundland and Labrador's index rate in "
+    "T4127 (Jan 2026) Table 8.2) rounded to the nearest dollar, a half going up (NL "
+    "Income Tax Act, 2000 s.6.1(3)(c)); unconfirmed, as the 2026 NL428 is not yet "
+    "published."
 )
 
 
 def test_2026_low_income_reduction_maximum_value() -> None:
     data = SOURCE.get(FAMILY, 2026, AMOUNT)
 
-    assert data.values == Amount(D("1570"))
+    assert data.values == Amount(D("1571"))
 
 
 def test_2026_low_income_reduction_maximum_rounding() -> None:
