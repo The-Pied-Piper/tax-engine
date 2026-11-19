@@ -8,9 +8,10 @@
 # `ca-nl/nl428_credits` (NL428 lines 1 to 62), `ca-nl/nl428` (NL428 lines 63 to 105), which
 # supplies `ca/provincial_tax.amount` for T1 line 42800 (NL428 line 105 is the figure that goes to
 # T1 line 42800), and `ca-nl/nl428_worksheet` (Worksheet NL428, built only for the age amount, line
-# 58080, and the disability amount for self, line 58440). NL428 lines 106 to 108 ("Unused low-income tax reduction that your spouse or common-law
-# partner can claim": the filer's own unused amount, which the spouse enters on their line 86) are
-# not built: nothing reads them for a single filer, and they are deferred.
+# 58080, and the disability amount for self, line 58440). NL428 lines 106 to 108 ("Unused
+# low-income tax reduction that your spouse or common-law partner can claim": the filer's own unused
+# amount, which the spouse enters on their line 86) are not built: nothing
+# reads them for a single filer, and they are deferred.
 #
 # Form NL479 is not built: its only credits (physical activity, and research and development) are
 # claims that need receipts or Form T1129. Schedules NL(S2) and NL(S11) are not built: they feed
