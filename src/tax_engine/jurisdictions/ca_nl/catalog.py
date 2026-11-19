@@ -74,6 +74,14 @@ partner's net income from line 23600 of their return": the amount as the filer g
 optional input. It is signed because a spouse's net income can be a loss, and the form prints no
 floor; a blank input is read as blank."""
 
+NL428_ELIGIBLE_DEPENDANT_NET_INCOME_LINE_22 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_net_income_line_22", non_negative=False
+)
+"""Eligible dependant's net income, NL428 line 22 "Line 22: Your eligible dependant's net income
+from line 23600 of their return": the amount as the filer gives it, an optional input. It is signed
+because a dependant's net income can be a loss, and the form prints no floor; a blank input is read
+as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
