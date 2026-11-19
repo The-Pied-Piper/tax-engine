@@ -354,6 +354,13 @@ NL428_MINIMUM_TAX_CARRYOVER_LINE_68 = AmountKind.declare(
 40427 of your return multiplied by 60% =": calculated, the amount from line 40427 multiplied by
 60%."""
 
+NL428_CREDITS_TOTAL_LINE_69 = AmountKind.declare(
+    CATALOG, "nl428_credits_total_line_69", non_negative=True
+)
+"""Newfoundland and Labrador credits total, NL428 line 69 "Line 69: Add lines 66 to 68. =": line 66
+plus line 67 (the dividend tax credit, blank read as 0) plus line 68, rounded half-up to the
+cent."""
+
 NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "nl428_provincial_foreign_tax_credit_line_73", non_negative=True
 )
