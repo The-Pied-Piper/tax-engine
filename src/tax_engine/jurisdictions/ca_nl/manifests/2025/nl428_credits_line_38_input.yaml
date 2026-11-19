@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 38: "Line 38 and line 58400: Caregiver amount (use Worksheet NL428)" (Form NL428, CRA 5001-C).
+# The Worksheet NL428 section behind the line is a skipped block, so the figure is taken as one
+# optional input the way the form takes it, a dollar amount entered on the line. A request that
+# leaves the line out is read as blank.
+inputs:
+  - name: ca-nl/nl428_caregiver_amount_line_38
+    title: "Caregiver amount"
+    reference: "38"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 38 and line 58400: Caregiver amount (use Worksheet NL428)"

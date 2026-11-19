@@ -14,6 +14,12 @@ from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+WORKSHEET_NL428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_maximum_line_1", non_negative=True
+)
+"""Maximum amount, Worksheet NL428 line 1 "Line 1: Maximum amount 7,064.00": the printed
+maximum."""
+
 WORKSHEET_NL428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
     CATALOG, "worksheet_nl428_age_amount_net_income_line_2", non_negative=True
 )
@@ -128,11 +134,50 @@ NL428_SEARCH_AND_RESCUE_VOLUNTEERS_AMOUNT_LINE_32 = AmountKind.declare(
 volunteers' amount": the amount as the filer gives it, an optional input; a blank input is read as
 blank."""
 
+NL428_CHILD_CARE_AMOUNT_LINE_33 = AmountKind.declare(
+    CATALOG, "nl428_child_care_amount_line_33", non_negative=True
+)
+"""Child care amount, NL428 line 33 "Line 33 and line 58320: Child care amount": the amount as
+the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
     CATALOG, "nl428_adoption_expenses_line_34", non_negative=True
 )
 """Adoption expenses, NL428 line 34 "Line 34 and line 58330: Adoption expenses": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_CPP_EI_AND_OTHER_LINE_35 = AmountKind.declare(
+    CATALOG, "nl428_cpp_ei_and_other_line_35", non_negative=True
+)
+"""CPP, EI and other credit amounts subtotal, NL428 line 35 "Line 35: Add lines 27 to 34. = ^": the
+sum of lines 27 to 34, lines 28, 30, 31, 32, 33 and 34 being optional inputs read as 0.
+"""
+
+NL428_CAREGIVER_AMOUNT_LINE_38 = AmountKind.declare(
+    CATALOG, "nl428_caregiver_amount_line_38", non_negative=True
+)
+"""Caregiver amount, NL428 line 38 "Line 38 and line 58400: Caregiver amount (use Worksheet NL428)":
+the amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_PENSION_INCOME_AMOUNT_CLAIMED_LINE_37 = AmountKind.declare(
+    CATALOG, "nl428_pension_income_amount_claimed_line_37", non_negative=True
+)
+"""Pension income amount claimed, NL428 line 37 "Line 37 and line 58360: Pension income amount
+(maximum $1,000)": the amount as the filer gives it, an optional input; a blank input is read as
+blank, and the line 37 step checks it against the printed maximum."""
+
+NL428_PENSION_INCOME_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "nl428_pension_income_amount_maximum", non_negative=True
+)
+"""Pension income amount maximum, printed on NL428 line 37 "(maximum $1,000)": the printed maximum,
+from the `ca-nl/pension_income_amount_maximum` dataset; the bound line 37 cannot pass."""
+
+NL428_PENSION_INCOME_AMOUNT_LINE_37 = AmountKind.declare(
+    CATALOG, "nl428_pension_income_amount_line_37", non_negative=True
+)
+"""Pension income amount, NL428 line 37 "Line 37 and line 58360: Pension income amount (maximum
+$1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
+left out; above the maximum it is refused, not capped."""
 
 NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declare(
     CATALOG, "nl428_disability_amount_transferred_from_a_dependant_line_41", non_negative=True
@@ -239,3 +284,9 @@ NL428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_23 = AmountKind.declare(
 """Amount for an eligible dependant, NL428 line 23 "Line 23 and line 58160: Line 21 minus line 22
 (if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below 0, at most the printed
 maximum."""
+
+NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
+    CATALOG, "nl428_taxable_income_line_1", non_negative=True
+)
+"""Taxable income, Form NL428 Line 1 "Enter your taxable income from line 26000 of your return": the
+T1 taxable income, read directly by line 2."""
