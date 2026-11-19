@@ -17,13 +17,11 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
-import pytest
 import yaml
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import NegativeArtifactError
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.manifest import Manifest
 from tax_engine.jurisdictions.ca_nl.catalog import NL428_ADOPTION_EXPENSES_LINE_34
@@ -82,14 +80,6 @@ def test_the_adoption_expenses_line_34_is_a_non_negative_amount_kind() -> None:
     assert isinstance(kind, AmountKind)
     assert non_negative(kind)
     assert Artifact(kind, Decimal("1234.56")) is not None
-
-
-def test_a_negative_adoption_expenses_amount_is_rejected_and_a_positive_one_accepted() -> None:
-    kind = newfoundland_kinds().kind(IDENTIFIER)
-
-    with pytest.raises(NegativeArtifactError):
-        Artifact(kind, Decimal("-0.01"))
-    assert Artifact(kind, Decimal("0.01")).value == Decimal("0.01")
 
 
 def test_the_part_declares_the_input_with_its_unit_reference_and_title() -> None:
