@@ -8,7 +8,13 @@ from __future__ import annotations
 from decimal import Decimal
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
-from tax_engine.domain.parameters.conditions import CONDITIONS
+from tax_engine.domain.parameters.conditions import (
+    CONDITIONS,
+    Condition,
+    ConditionList,
+    ConditionPart,
+    ConditionTest,
+)
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_nl.support import (
@@ -29,6 +35,25 @@ DERIVATION_HEADER = (
     " does not print this figure and the 2026 form is not yet published, so it is "
     "unconfirmed."
 )
+
+
+def test_2026_low_income_threshold_conditions_are_an_amount_on_line_96_or_on_line_97() -> None:
+    data = SOURCE.get(FAMILY, 2026, CONDITIONS)
+
+    assert data.values == ConditionList(
+        1,
+        (
+            Condition(
+                "You claimed an amount on line 96",
+                (ConditionPart((ConditionTest("amount", 1, "more_than", D(0), None),)),),
+            ),
+            Condition(
+                "You claimed an amount on line 97",
+                (ConditionPart((ConditionTest("amount", 2, "more_than", D(0), None),)),),
+            ),
+        ),
+    )
+    assert data.values.count_when_none_applies == 0
 
 
 def test_2026_is_carried_forward_unchanged_from_2025() -> None:

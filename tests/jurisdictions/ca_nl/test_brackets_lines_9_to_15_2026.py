@@ -7,6 +7,8 @@ from __future__ import annotations
 
 from decimal import Decimal
 
+import pytest
+
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.brackets import BRACKETS
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
@@ -48,6 +50,25 @@ def test_2026_brackets_lines_9_to_15_rounding() -> None:
     data = SOURCE.get(FAMILY, 2026, BRACKETS)
 
     assert data.rounding == NO_ROUNDING
+    assert data.values.tax_at_start_rounding == NO_ROUNDING
+
+
+@pytest.mark.parametrize(
+    ("amount", "lower"),
+    [
+        ("223340.01", "223340.00"),
+        ("285319.00", "223340.00"),
+        ("285319.01", "285319.00"),
+        ("570638.00", "285319.00"),
+        ("570638.01", "570638.00"),
+        ("1141275.00", "570638.00"),
+        ("1141275.01", "1141275.00"),
+    ],
+)
+def test_the_column_is_the_one_t4127_gives_for_the_amount(amount: str, lower: str) -> None:
+    column = SOURCE.get(FAMILY, 2026, BRACKETS).values.column_for(D(amount))
+
+    assert column.lower == D(lower)
 
 
 def test_2026_brackets_lines_9_to_15_sources() -> None:
