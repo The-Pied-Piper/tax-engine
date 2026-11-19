@@ -1,0 +1,22 @@
+# Form NL428 (CRA 5001-C) line 42: "Line 42: Add lines 39 to 41. = ^". Line 39 is the credits subtotal
+# (nl428_credits_line_39.yaml), line 40 the disability amount for self (nl428_credits_line_40.yaml) and
+# line 41 the disability amount transferred from a dependant, an optional input
+# (nl428_credits_line_41_input.yaml). Line 40 is 0 unless claimed and line 41 is blank for a
+# salary-only filer, read as 0. Step 1 adds them with core/sum.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "42"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_credits_subtotal_line_39
+        - ca-nl/nl428_disability_amount_self_line_40
+        - ca-nl/nl428_disability_amount_transferred_from_a_dependant_line_41
+    blank:
+      ca-nl/nl428_disability_amount_transferred_from_a_dependant_line_41: "0"
+    produces:
+      output: ca-nl/nl428_credits_subtotal_line_42
