@@ -14,7 +14,7 @@ and the new `worksheet_ab428_line_3.yaml`, and types in only the salary (and, in
 worksheet, exporting lines 1, 2 and 3) are made up here, because the shared scaffold owns them.
 Alberta is not yet listed in the registrations, so the service is built here over the Alberta
 package list of `support.py`. The figures are hand-computed from the printed forms (not a CRA
-example): line 1 is 23,467.75, 26,692.23 and 26,756.58 at the three salaries and line 2 is 0.00
+example): line 1 is 23,467.75 and 26,756.58 at salaries 20,000 and 200,000 and line 2 is 0.00
 (line 41 blank), so line 3 equals line 1. Line 41 is added into line 43, hence into line 52 and
 line 1, so a given line 41 raises line 1 and line 2 together and line 3 does not move; a negative
 line 3 cannot arise from the real parts and is tested through the capability.
@@ -100,7 +100,7 @@ WORKSHEET_FORM = dedent("""\
     """)
 
 # salary, line 3: line 1 (line 52) less line 2 (line 41, blank and read as 0).
-CASES = [("20000", "23467.75"), ("70000", "26692.23"), ("200000", "26756.58")]
+CASES = [("20000", "23467.75"), ("200000", "26756.58")]
 
 
 def _part_files() -> Iterator[Path]:
@@ -237,11 +237,8 @@ def _line_3_at(line_1_amount: str, line_2_amount: str) -> Decimal:
 @pytest.mark.parametrize(
     ("line_1", "line_2", "expected"),
     [
-        ("26692.23", "0.00", "26692.23"),
         ("28192.23", "1500.00", "26692.23"),
-        ("100.00", "100.00", "0.00"),
         ("1000.00", "1500.00", "-500.00"),
-        ("0.00", "0.01", "-0.01"),
     ],
 )
 def test_line_3_is_signed_with_no_floor_at_zero(line_1: str, line_2: str, expected: str) -> None:

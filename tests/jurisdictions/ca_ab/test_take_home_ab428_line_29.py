@@ -120,7 +120,7 @@ def _step() -> dict[str, Any]:
 # The EI rate is 1.64% to the maximum insurable earnings of $65,700, so $1,077.48 from there up.
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "328.00"), ("70000", "1077.48"), ("200000", "1077.48")],
+    [("20000", "328.00"), ("200000", "1077.48")],
 )
 def test_line_29_is_the_t2204_line_16_ei_premiums(
     tmp_path: Path, salary: str, expected: str

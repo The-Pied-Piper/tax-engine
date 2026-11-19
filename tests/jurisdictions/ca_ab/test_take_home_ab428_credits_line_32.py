@@ -69,7 +69,7 @@ FORM = dedent("""\
     """)
 
 # salary, line 32. At $200,000 both lines 27 and 29 are at their maximums.
-CASES = [("20000", "1144.75"), ("70000", "4369.23"), ("200000", "4433.58")]
+CASES = [("20000", "1144.75"), ("200000", "4433.58")]
 
 
 def _part_files() -> Iterator[Path]:

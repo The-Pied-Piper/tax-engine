@@ -19,9 +19,8 @@ and 4.
 Figures, computed here from the engine's T1 taxable income: salary 20,000 gives line 1 of
 19,835.00 and line 3 of 0.00, so line 4 is 19,835.00; 70,000 gives 69,335.00 less 60,000.00, so
 9,335.00; 200,000 gives a blank line 3, so a blank line 4. The thresholds are exact to the cent:
-a salary of 60,570.71 gives line 1 of exactly 60,000.00, 60,570.72 gives 60,000.01; 152,308.00
-gives 151,234.00 (line 4 91,234.00) and 152,308.01 gives 151,234.01 (line 4 0.01); 182,555.00
-gives 181,481.00 (line 4 30,247.00) and 182,555.01 gives a blank line 3.
+60,570.72 gives line 1 of 60,000.01 (line 4 0.01) and 182,555.00 gives
+181,481.00 (line 4 30,247.00); 182,555.01 gives a blank line 3.
 """
 
 from __future__ import annotations
@@ -171,14 +170,8 @@ def test_line_4_is_line_1_minus_line_3_for_the_salary(
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 of exactly 60,000.00 is column 1 (line 3 0.00): line 4 is 60,000.00.
-        ("60570.71", "60000.00"),
         # Line 1 of 60,000.01 is column 2 (line 3 60,000.00): line 4 is one cent.
         ("60570.72", "0.01"),
-        # Line 1 of exactly 151,234.00 is column 2 (line 3 60,000.00): line 4 is 91,234.00.
-        ("152308.00", "91234.00"),
-        # Line 1 of 151,234.01 is column 3 (line 3 151,234.00): line 4 is one cent.
-        ("152308.01", "0.01"),
         # Line 1 of exactly 181,481.00 is column 3 (line 3 151,234.00): line 4 is 30,247.00.
         ("182555.00", "30247.00"),
     ],

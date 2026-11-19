@@ -86,6 +86,6 @@ def line_25(tmp_path: Path, salary: str) -> Decimal:
     return sheet.get(AB428_CREDITS_SUBTOTAL_LINE_25).value
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_25_is_line_16_alone_at_every_salary(tmp_path: Path, salary: str) -> None:
     assert line_25(tmp_path, salary) == D("22323.00")

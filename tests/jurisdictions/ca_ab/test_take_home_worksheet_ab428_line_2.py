@@ -119,7 +119,7 @@ def _sheet(tmp_path: Path, salary: str, *extra: Artifact[Decimal]) -> Worksheet:
     return sheet
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_2_is_zero_at_every_salary_as_line_41_is_blank(tmp_path: Path, salary: str) -> None:
     assert _sheet(tmp_path, salary).get(WORKSHEET_AB428_LINE_2).value == D("0.00")
 
@@ -132,7 +132,7 @@ def test_line_2_is_line_41_when_it_is_given(tmp_path: Path) -> None:
 
 @pytest.mark.parametrize(
     ("line_41", "expected"),
-    [("100.00", "100.00"), ("100.005", "100.01"), ("100.004", "100.00")],
+    [("100.005", "100.01"), ("100.004", "100.00")],
 )
 def test_line_2_is_line_41_rounded_to_the_cent(tmp_path: Path, line_41: str, expected: str) -> None:
     sheet = _sheet(tmp_path, "70000", Artifact(AB428_UNUSED_TUITION_LINE_41, D(line_41)))

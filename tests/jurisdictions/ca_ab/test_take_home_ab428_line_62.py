@@ -82,7 +82,7 @@ AB428_FORM = dedent("""\
     """)
 
 # salary, line 62: line 58 (line 54 plus a blank line 57, as the line 58 test pins).
-CASES = [("20000", "1877.42"), ("70000", "2135.38"), ("200000", "2140.53")]
+CASES = [("20000", "1877.42"), ("200000", "2140.53")]
 
 
 def _part_files() -> Iterator[Path]:

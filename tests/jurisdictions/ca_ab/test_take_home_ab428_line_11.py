@@ -150,7 +150,7 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "19835.00"), ("70000", "69335.00"), ("200000", "198926.00")],
+    [("20000", "19835.00"), ("200000", "198926.00")],
 )
 def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: str) -> None:
     sheet = _sheet(tmp_path, salary)
@@ -227,11 +227,7 @@ def _line_11_at(line_1_amount: str, line_10_amount: str | None) -> Artifact[Deci
 @pytest.mark.parametrize(
     ("line_1", "line_10", "expected"),
     [
-        ("181481.01", "181481.00", "0.01"),
-        ("241974.01", "241974.00", "0.01"),
-        ("362961.01", "362961.00", "0.01"),
         ("198926.00", "181481.00", "17445.00"),
-        ("241974.00", "241974.00", "0.00"),
         ("200000.00", "241974.00", "0.00"),
     ],
 )

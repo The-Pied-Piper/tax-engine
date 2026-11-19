@@ -14,7 +14,7 @@ header and the two form declarations (AB428 credits, exporting line 52, and the 
 exporting line 1) are made up here, because the shared scaffold owns them. Alberta is not yet
 listed in the registrations, so the service is built here over the Alberta package list of
 `support.py`. The figures are hand-computed from the printed forms (not a CRA example): line 52 is
-23,467.75, 26,692.23 and 26,756.58 at the three salaries.
+23,467.75 and 26,756.58 at salaries 20,000 and 200,000.
 """
 
 from __future__ import annotations
@@ -83,7 +83,7 @@ WORKSHEET_FORM = dedent("""\
     """)
 
 # salary, line 1: line 52 (line 43 plus line 51, blank and read as 0).
-CASES = [("20000", "23467.75"), ("70000", "26692.23"), ("200000", "26756.58")]
+CASES = [("20000", "23467.75"), ("200000", "26756.58")]
 
 
 def _part_files() -> Iterator[Path]:

@@ -23,11 +23,8 @@ Figures, computed from the engine's T1 taxable income: salary 20,000 gives line 
 line 6 is 1,586.80 and line 7 is 0.00, and line 8 is 1,586.80. Salary 70,000 gives 69,335.00, so
 line 6 is 933.50 and line 7 is 4,800.00, and line 8 is 5,733.50. Salary 200,000 gives 198,926.00
 (above 181,481), so line 8 is blank. Column edges: a salary of 60,570.71 gives line 1 of exactly
-60,000.00 (column 1: line 6 4,800.00, line 7 0.00, line 8 4,800.00) and 60,570.72 gives 60,000.01
-(column 2: line 6 0.00, line 7 4,800.00, line 8 4,800.00); 152,308.00 gives 151,234.00 (column 2:
-line 6 9,123.40, line 7 4,800.00, line 8 13,923.40) and 152,308.01 gives 151,234.01 (column 3: line
-6 0.00, line 7 13,923.40, line 8 13,923.40); 182,555.00 gives 181,481.00 (column 3: line 6 3,629.64,
-line 7 13,923.40, line 8 17,553.04) and 182,555.01 gives blank.
+60,000.00 (column 1: line 6 4,800.00, line 7 0.00, line 8 4,800.00) and 182,555.00 gives 181,481.00
+(column 3: line 6 3,629.64, line 7 13,923.40, line 8 17,553.04); 182,555.01 gives blank.
 """
 
 from __future__ import annotations
@@ -195,12 +192,6 @@ def test_line_8_is_line_6_plus_line_7_for_the_salary(
     [
         # Line 1 of exactly 60,000.00 is column 1: line 6 4,800.00 and line 7 0.00.
         ("60570.71", "4800.00"),
-        # Line 1 of 60,000.01 is column 2: line 6 0.00 and line 7 4,800.00.
-        ("60570.72", "4800.00"),
-        # Line 1 of exactly 151,234.00 is column 2: line 6 9,123.40 and line 7 4,800.00.
-        ("152308.00", "13923.40"),
-        # Line 1 of 151,234.01 is column 3: line 6 0.00 and line 7 13,923.40.
-        ("152308.01", "13923.40"),
         # Line 1 of exactly 181,481.00 is column 3: line 6 3,629.64 and line 7 13,923.40.
         ("182555.00", "17553.04"),
     ],

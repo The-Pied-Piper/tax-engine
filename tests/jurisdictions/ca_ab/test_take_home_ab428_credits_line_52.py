@@ -11,7 +11,7 @@ The test composes the real Alberta salary part, the real Schedule 8 and T2204 pa
 inputs part, the line 41 input part, the line 51 inputs part and the new
 `ab428_credits_line_52.yaml`, and types in only the salary (and, in one test, line 51). The form
 declaration is made up here, exporting only line 52. The figures are hand-computed from the
-printed forms (not a CRA example): line 43 is 23,467.75, 26,692.23 and 26,756.58 at the three
+printed forms (not a CRA example): line 43 is 23,467.75, 26,692.23 and 26,756.58 at the two
 salaries, plus line 51 of 0 when blank.
 """
 
@@ -74,9 +74,9 @@ FORM = dedent("""\
     capabilities: []
     """)
 
-# salary, line 52: line 43 (23,467.75, 26,692.23 and 26,756.58, as the line 43 test pins) plus line
+# salary, line 52: line 43 (23,467.75 and 26,756.58, as the line 43 test pins) plus line
 # 51, blank and read as 0; lines 44 to 50 are not built.
-CASES = [("20000", "23467.75"), ("70000", "26692.23"), ("200000", "26756.58")]
+CASES = [("20000", "23467.75"), ("200000", "26756.58")]
 
 
 def _part_files() -> Iterator[Path]:

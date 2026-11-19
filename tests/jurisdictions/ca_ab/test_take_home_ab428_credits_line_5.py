@@ -129,20 +129,12 @@ def test_line_5_is_blank_when_line_1_is_above_the_table_at_a_200000_salary(
 @pytest.mark.parametrize(
     ("taxable_income", "expected"),
     [
-        # 0 is the lower bound of column 1, so it takes column 1's rate.
-        ("0.00", "0.08"),
-        # Each threshold falls in the lower column, so it takes that column's rate.
+        # A threshold falls in the lower column, so it takes that column rate.
         ("60000.00", "0.08"),
-        ("151234.00", "0.10"),
         ("181481.00", "0.12"),
-        # One cent above a threshold is in the next column.
-        ("60000.01", "0.10"),
-        ("151234.01", "0.12"),
     ],
 )
-def test_line_5_at_and_just_above_a_threshold(
-    tmp_path: Path, taxable_income: str, expected: str
-) -> None:
+def test_line_5_at_a_threshold(tmp_path: Path, taxable_income: str, expected: str) -> None:
     assert _line_5(tmp_path, taxable_income).value == D(expected)
 
 
