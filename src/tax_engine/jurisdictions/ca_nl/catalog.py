@@ -96,6 +96,13 @@ NL428_QPP_CONTRIBUTIONS_LINE_28 = AmountKind.declare(
 of your return": the amount as the filer gives it, an optional input; a blank input is read as
 blank."""
 
+NL428_EI_PREMIUMS_LINE_30 = AmountKind.declare(
+    CATALOG, "nl428_ei_premiums_line_30", non_negative=True
+)
+"""Employment insurance premiums, NL428 line 30 "Line 30 and line 58305: Amount from line 31217
+of your return": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
