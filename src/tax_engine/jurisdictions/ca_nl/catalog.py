@@ -105,6 +105,10 @@ SPOUSE_AMOUNT_BASE = AmountKind.declare(CATALOG, "spouse_amount_base", non_negat
 """Spouse or common-law partner amount, base amount, NL428 line 18 "Base amount 9,948.00": the
 printed figure, from which line 20 takes line 19."""
 
+SPOUSE_AMOUNT_MAXIMUM = AmountKind.declare(CATALOG, "spouse_amount_maximum", non_negative=True)
+"""Spouse or common-law partner amount, maximum, NL428 line 20 "(maximum $9,043)": the printed
+figure, the most line 20 can be."""
+
 NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20 = AmountKind.declare(
     CATALOG, "nl428_spouse_amount_before_maximum_line_20", non_negative=True
 )

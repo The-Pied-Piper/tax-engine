@@ -3,11 +3,12 @@ wire it.
 
 Form text (Form NL428, CRA 5001-c-25e.txt, confirmed 2026-11-18): "Line 20 and line 58120: Line 18
 minus line 19 (if negative, enter "0") (maximum $9,043) =". Line 18 is the printed base amount 9,948
-(`ca-nl/spouse_amount_base`); line 19 is the optional input of its own part, a blank read as 0.
+(`ca-nl/spouse_amount_base`); line 19 is the optional input of its own part.
 
-The part has three steps: `core/credit_amount` produces the base amount,
+The part has four steps: `core/credit_amount` produces the base amount and the maximum,
 `core/subtract_not_below_zero` takes line 19 off it (rounded through `ca-nl/cent_rounding`), and
-`core/capped_amount` holds the result at the printed maximum 9,043.
+`core/lesser_of` holds the result at the printed maximum 9,043. A blank line 19 (no spouse) is
+passed on by both, so line 20 is blank.
 
 The real part files are loaded under a test-local header and form over the Newfoundland and
 Labrador package list of `support.py`.
@@ -31,7 +32,7 @@ from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
-from tax_engine.domain.trace import CappedAmountLine, SubtractedNotBelowZeroLine
+from tax_engine.domain.trace import LesserOfLine, SubtractedNotBelowZeroLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tax_engine.jurisdictions.ca_nl.catalog import (
@@ -39,6 +40,7 @@ from tax_engine.jurisdictions.ca_nl.catalog import (
     NL428_SPOUSE_AMOUNT_LINE_20,
     NL428_SPOUSE_NET_INCOME_LINE_19,
     SPOUSE_AMOUNT_BASE,
+    SPOUSE_AMOUNT_MAXIMUM,
 )
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
@@ -74,6 +76,7 @@ FORM_PART = dedent(f"""\
         - {IDENTIFIER}
         - ca-nl/nl428_spouse_amount_before_maximum_line_20
         - ca-nl/spouse_amount_base
+        - ca-nl/spouse_amount_maximum
     """)
 
 
@@ -109,9 +112,13 @@ def line_20(tmp_path: Path, salary: str, spouse_net_income: str | None = None) -
     return _sheet(tmp_path, salary, spouse_net_income).get(NL428_SPOUSE_AMOUNT_LINE_20).value
 
 
+def line_20_is_blank(tmp_path: Path, salary: str) -> bool:
+    return _sheet(tmp_path, salary).get(NL428_SPOUSE_AMOUNT_LINE_20).is_blank
+
+
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
-def test_line_20_is_the_maximum_when_line_19_is_left_blank(tmp_path: Path, salary: str) -> None:
-    assert line_20(tmp_path, salary) == D("9043.00")
+def test_line_20_is_blank_when_line_19_is_left_blank(tmp_path: Path, salary: str) -> None:
+    assert line_20_is_blank(tmp_path, salary)
 
 
 @pytest.mark.parametrize(
@@ -145,14 +152,15 @@ def test_the_steps_hold_the_base_amount_and_the_difference_before_the_maximum(
     assert sheet.get(NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20).value == D("4948.00")
 
 
-def test_the_difference_is_above_the_maximum_for_a_blank_line_19(tmp_path: Path) -> None:
+def test_a_blank_line_19_blanks_the_difference_as_well(tmp_path: Path) -> None:
     sheet = _sheet(tmp_path, "70000")
 
-    assert sheet.get(NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20).value == D("9948.00")
-    assert sheet.get(NL428_SPOUSE_AMOUNT_LINE_20).value == D("9043.00")
+    assert sheet.get(SPOUSE_AMOUNT_BASE).value == D("9948.00")
+    assert sheet.get(SPOUSE_AMOUNT_MAXIMUM).value == D("9043.00")
+    assert sheet.get(NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20).is_blank
 
 
-def test_the_trace_records_the_subtraction_and_the_maximum(tmp_path: Path) -> None:
+def test_the_trace_records_the_subtraction_and_the_lesser_of(tmp_path: Path) -> None:
     trace = _sheet(tmp_path, "70000", "5000").trace
 
     (subtracted,) = [line for line in trace if isinstance(line, SubtractedNotBelowZeroLine)]
@@ -162,9 +170,9 @@ def test_the_trace_records_the_subtraction_and_the_maximum(tmp_path: Path) -> No
     assert subtracted.subtrahend is NL428_SPOUSE_NET_INCOME_LINE_19
     assert subtracted.subtrahend_amount == D("5000")
     assert subtracted.result == D("4948.00")
-    (capped,) = [line for line in trace if isinstance(line, CappedAmountLine)]
-    assert capped.output is NL428_SPOUSE_AMOUNT_LINE_20
-    assert capped.result == D("4948.00")
+    (lesser,) = [line for line in trace if isinstance(line, LesserOfLine)]
+    assert lesser.output is NL428_SPOUSE_AMOUNT_LINE_20
+    assert lesser.result == D("4948.00")
 
 
 def _part() -> dict[str, Any]:
@@ -173,15 +181,18 @@ def _part() -> dict[str, Any]:
     return part
 
 
-def test_the_part_names_the_form_and_has_the_three_steps_in_order() -> None:
+def test_the_part_names_the_form_and_has_the_four_steps_in_order() -> None:
     part = _part()
 
     assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
-    base, subtract, capped = part["capabilities"]
+    base, maximum, subtract, lesser = part["capabilities"]
     assert base["name"] == "core/credit_amount"
     assert base["params"] == {"amount": "ca-nl/spouse_amount_base"}
     assert base["produces"] == {"output": "ca-nl/spouse_amount_base"}
+    assert maximum["name"] == "core/credit_amount"
+    assert maximum["params"] == {"amount": "ca-nl/spouse_amount_maximum"}
+    assert maximum["produces"] == {"output": "ca-nl/spouse_amount_maximum"}
     assert subtract["name"] == "core/subtract_not_below_zero"
     assert "reference" not in subtract
     assert subtract["unit"] == "ca/cad"
@@ -190,20 +201,30 @@ def test_the_part_names_the_form_and_has_the_three_steps_in_order() -> None:
         "amount": "ca-nl/spouse_amount_base",
         "less": "ca-nl/nl428_spouse_net_income_line_19",
     }
-    assert subtract["blank"] == {"less": "0"}
+    assert subtract["blank"] == {"less": "pass_on"}
     assert subtract["produces"] == {"output": "ca-nl/nl428_spouse_amount_before_maximum_line_20"}
-    assert capped["name"] == "core/capped_amount"
-    assert capped["reference"] == "20"
-    assert "title" not in capped
-    assert capped["unit"] == "ca/cad"
-    assert capped["params"] == {"cap": "ca-nl/spouse_amount_maximum"}
-    assert capped["consumes"] == {"base": "ca-nl/nl428_spouse_amount_before_maximum_line_20"}
-    assert capped["produces"] == {"output": IDENTIFIER}
+    assert lesser["name"] == "core/lesser_of"
+    assert lesser["reference"] == "20"
+    assert "title" not in lesser
+    assert lesser["unit"] == "ca/cad"
+    assert lesser["consumes"] == {
+        "amounts": [
+            "ca-nl/nl428_spouse_amount_before_maximum_line_20",
+            "ca-nl/spouse_amount_maximum",
+        ]
+    }
+    assert lesser["blank"] == {"amounts": "pass_on"}
+    assert lesser["produces"] == {"output": IDENTIFIER}
 
 
 @pytest.mark.parametrize(
     "kind",
-    [SPOUSE_AMOUNT_BASE, NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20, NL428_SPOUSE_AMOUNT_LINE_20],
+    [
+        SPOUSE_AMOUNT_BASE,
+        SPOUSE_AMOUNT_MAXIMUM,
+        NL428_SPOUSE_AMOUNT_BEFORE_MAXIMUM_LINE_20,
+        NL428_SPOUSE_AMOUNT_LINE_20,
+    ],
 )
 def test_the_amount_kinds_are_registered_non_negative_decimal_amounts(kind: AmountKind) -> None:
     assert newfoundland_kinds().kind(kind.identifier) is kind
