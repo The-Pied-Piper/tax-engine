@@ -611,3 +611,12 @@ NL428_T691_AMOUNT_LINE_71 = AmountKind.declare(
 """Form T691 amount, NL428 line 71 "Line 71: Amount from line 14 of Part 7 of Form T691 multiplied
 by 60% =": the amount from line 14 of Part 7 of Form T691 as the filer gives it, an optional input;
 a blank input is read as blank, and the 60% multiplication step reads it."""
+
+NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
+    CATALOG, "nl428_spouse_net_income_line_88", non_negative=False
+)
+"""Spouse or common-law partner's net income, NL428 line 88 column 2 "Line 88: Net income from line
+23600 of the return (or the amount you would have entered if the instructions on line 23600 said
+"if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
+signed because the line takes the amount as if negative were shown in brackets; a blank input is
+read as blank."""
