@@ -327,6 +327,12 @@ NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
 Newfoundland and Labrador tax on split income (complete Form T1206)": the amount as the filer gives
 it, an optional input; a blank input is read as blank."""
 
+NL428_TAX_BEFORE_CREDITS_LINE_65 = AmountKind.declare(
+    CATALOG, "nl428_tax_before_credits_line_65", non_negative=True
+)
+"""Newfoundland and Labrador tax before credits, NL428 line 65 "Line 65: Line 63 plus line 64 =":
+line 63 plus line 64 (the tax on split income, blank read as 0), rounded half-up to the cent."""
+
 NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
 )
