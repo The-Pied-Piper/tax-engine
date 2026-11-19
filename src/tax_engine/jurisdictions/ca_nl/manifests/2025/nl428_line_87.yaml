@@ -1,0 +1,23 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 87 "Line 87: Line 85 minus line 86 (if
+# negative, enter "0") =". One core/subtract_not_below_zero step: the tax after the venture capital
+# tax credit (line 85, `ca-nl/nl428_tax_line_85`) less the unused low-income tax reduction of a
+# spouse or common-law partner (line 86,
+# `ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86`), not below 0. Line 86 is an optional
+# input that a salary-only caller leaves blank, read as 0 by the blank rule. The form prints no
+# title for the line, so the step has none. The output is `ca-nl/nl428_tax_line_87`, which is not
+# exported yet.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "87"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_tax_line_85
+      less: ca-nl/nl428_unused_low_income_reduction_from_spouse_line_86
+    blank:
+      less: "0"
+    produces:
+      output: ca-nl/nl428_tax_line_87
