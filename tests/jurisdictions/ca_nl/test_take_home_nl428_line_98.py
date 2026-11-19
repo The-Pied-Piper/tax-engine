@@ -15,6 +15,7 @@ from textwrap import dedent
 from typing import Any
 
 import pytest
+import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
@@ -251,3 +252,24 @@ def test_the_kinds_are_registered_non_negative_amount_kinds() -> None:
         registered = newfoundland_kinds().kind(identifier)
         assert registered is kind
         assert non_negative(registered)
+
+
+def test_the_part_is_a_sum_step_then_a_capped_amount_step() -> None:
+    part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
+
+    assert part["form"] == {"name": FORM_NAME}
+    summed, capped = part["capabilities"]
+    assert summed["name"] == "core/sum"
+    assert summed["consumes"]["parts"] == [
+        "ca-nl/low_income_reduction_basic",
+        "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96",
+        "ca-nl/nl428_low_income_reduction_dependant_line_97",
+    ]
+    assert capped == {
+        "name": "core/capped_amount",
+        "reference": "98",
+        "unit": "ca/cad",
+        "params": {"cap": "ca-nl/low_income_reduction_maximum"},
+        "consumes": {"base": "ca-nl/nl428_low_income_reduction_before_maximum_line_98"},
+        "produces": {"output": IDENTIFIER},
+    }
