@@ -1,0 +1,10 @@
+# Provisional: taken from T4127 (Jul 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: figure as printed in T4127 (Jul 2026) Newfoundland and Labrador change notice (the Government of Newfoundland and Labrador announced on April 29, 2026 an increase of the basic personal amount from 11,188 to 13,094 effective January 1, 2026; the 15,000 printed there is the prorated payroll amount for July to December, not the annual amount); no rounding applied here.
+# Newfoundland and Labrador basic personal amount, 2026 tax year.
+family: ca-nl/basic_personal_amount
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jul/t4127-jul-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "13094"

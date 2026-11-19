@@ -1,0 +1,14 @@
+# Provisional: taken from T4127 (Jan 2026); to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: thresholds and rates as printed in T4127 (Jan 2026) Table 8.1, Newfoundland and Labrador row; tax_at_start calculated as the cumulative tax on the earlier brackets, rounded half-up to the cent (reproduces the 2025 printed constants), because the 2026 line 7 and line 14 constants are not yet published.
+# Newfoundland and Labrador 2026 brackets, Form NL428 Part A lines 9 to 15. The tax constants and rounding rule are as in the 2025 file.
+family: ca-nl/brackets_lines_9_to_15
+tax_year: 2026
+kind: brackets
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: none
+brackets:
+  - {from: "223340.00", rate: "0.198", tax_at_start: "32811.03"}
+  - {from: "285319.00", rate: "0.208", tax_at_start: "45082.88"}
+  - {from: "570638.00", rate: "0.213", tax_at_start: "104429.23"}
+  - {from: "1141275.00", rate: "0.218", tax_at_start: "225974.91"}

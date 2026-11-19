@@ -1,0 +1,11 @@
+# Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
+# Derivation: 2025 amount 557 x 1.011 (Newfoundland and Labrador's index rate in T4127 (Jan 2026) Table 8.2, which reproduces its 2026 thresholds and basic amount) = 563.127, rounded down to 563 as in 2025; unconfirmed, as the 2026 NL428 is not yet published.
+# Newfoundland and Labrador spouse or common-law partner reduction, low income, 2026 tax year.
+family: ca-nl/low_income_reduction_spouse
+tax_year: 2026
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pub/t4127-jan/t4127-01-26e.pdf
+rounding: {increment: "0.01", mode: half_up}
+amount: "563"
