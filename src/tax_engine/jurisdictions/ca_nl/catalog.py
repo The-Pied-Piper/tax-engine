@@ -333,6 +333,13 @@ NL428_TAX_BEFORE_CREDITS_LINE_65 = AmountKind.declare(
 """Newfoundland and Labrador tax before credits, NL428 line 65 "Line 65: Line 63 plus line 64 =":
 line 63 plus line 64 (the tax on split income, blank read as 0), rounded half-up to the cent."""
 
+NL428_NON_REFUNDABLE_CREDITS_LINE_66 = AmountKind.declare(
+    CATALOG, "nl428_non_refundable_credits_line_66", non_negative=True
+)
+"""Newfoundland and Labrador non-refundable tax credits, NL428 line 66 "Line 66: Newfoundland and
+Labrador non-refundable tax credits from line 62 ^": line 62 of the credits form, read across the
+forms."""
+
 NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
 )
@@ -376,6 +383,13 @@ NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_76 = AmountKind.declare(
 Newfoundland and Labrador political contribution tax credit (use Worksheet NL428) (maximum $500)":
 the entered amount, passed on unchanged when it is at most the printed maximum, blank when left
 out; above the maximum it is refused, not capped."""
+
+NL428_DIRECT_EQUITY_TAX_CREDIT_LINE_78 = AmountKind.declare(
+    CATALOG, "nl428_direct_equity_tax_credit_line_78", non_negative=True
+)
+"""Direct equity tax credit, NL428 line 78 "Line 78: Direct equity tax credit (complete Form
+T1272)": the credit from Form T1272, an optional input that a salary-only caller leaves out; a
+blank input is read as blank."""
 
 NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
@@ -641,6 +655,14 @@ NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
 "if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
 signed because the line takes the amount as if negative were shown in brackets; a blank input is
 read as blank."""
+
+NL428_SPOUSE_UCCB_AND_RDSP_REPAYMENT_LINE_89 = AmountKind.declare(
+    CATALOG, "nl428_spouse_uccb_and_rdsp_repayment_line_89", non_negative=True
+)
+"""Spouse or common-law partner's UCCB and RDSP repayment, NL428 line 89 column 2 "Line 89: Total of
+the universal child care benefit (UCCB) repayment (line 21300 of the return) and the registered
+disability savings plan (RDSP) income repayment (included on line 23200 of the return)": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
 
 NL428_SPOUSE_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
     CATALOG, "nl428_spouse_uccb_rdsp_income_line_91", non_negative=True
