@@ -1,7 +1,7 @@
 """The Newfoundland and Labrador trace lines: facts in the vocabulary of Newfoundland and
 Labrador's own forms.
 
-Tax on taxable income; each line's English text is in
+Feature modules: tax_on_taxable_income. Each line's English text is in
 `tax_engine.jurisdictions.ca_nl.trace_english`. The generic lines are in `tax_engine.domain.trace`.
 """
 

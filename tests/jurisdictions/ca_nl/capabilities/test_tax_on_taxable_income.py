@@ -2,7 +2,7 @@
 kinds.
 
 NL428 line 63: "Line 63: Newfoundland and Labrador tax on taxable
-income from line 8 or line 15". The form prints two tables (lines 2 to 8 and lines 9 to 15), and a
+income from line 8 or 15". The form prints two tables (lines 2 to 8 and lines 9 to 15), and a
 taxable income is in exactly one of them: the other table's line 8 or line 15 is left blank.
 The capability reads both lines as record lists, because another form reads an export only as a
 record list, and gives the one that has a figure.
@@ -186,14 +186,13 @@ def test_rejects_a_non_amount_list_kind_for_a_line() -> None:
 
 
 def test_line_8_alone_gives_line_8() -> None:
-    # A taxable income of 19,835.00 is in the table of lines 2 to 8: 8% of it is 1,586.80.
-    assert compute("1586.80", None) == Artifact(LINE_63, D("1586.80"))
+    # Line 8 of a salary of 20,000 (taxable income 19,835.00 at 8.7%) is 1,725.65.
+    assert compute("1725.65", None) == Artifact(LINE_63, D("1725.65"))
 
 
 def test_line_15_alone_gives_line_15() -> None:
-    # A taxable income of 198,926.00 is in the table of lines 9 to 15:
-    # 17,553.04 + 17,445.00 x 13% = 17,553.04 + 2,267.85 = 19,820.89.
-    assert compute(None, "19820.89") == Artifact(LINE_63, D("19820.89"))
+    # Line 15 of a salary of 250,000 (taxable income 248,926.00): 5,547.17 + 32,454.04 = 38,001.21.
+    assert compute(None, "38001.21") == Artifact(LINE_63, D("38001.21"))
 
 
 def test_a_line_8_of_zero_is_a_figure_so_line_15_blank_gives_zero() -> None:
