@@ -7,7 +7,7 @@ and Labrador tax =". One core/subtract_not_below_zero step over line 94 and line
 half-up to the cent by `ca-nl/cent_rounding`. Line 94 is a copy of line 87 and has no step (owner
 ruling, 18 Nov 2026), so the step reads line 87. The form prints no title for the line, so the step
 is untitled. The form's branch for a claim on line 86 (enter 0 on line 104) is not built here
-(#1682), so no test claims line 86.
+(a later review-track ticket), so no test claims line 86.
 
 Figures (hand-computed from the printed form, not a CRA example): line 87 is 663.23 / 6,147.49 /
 27,192.33 and line 104 is 997.00 / 0.00 / 0.00 at salaries of 20,000 / 70,000 / 200,000, so line
