@@ -8,7 +8,7 @@ Amounts are `Decimal`, non-negative unless the form prints no floor. Federal kin
 from __future__ import annotations
 
 from tax_engine.domain.artifact import ArtifactCatalog
-from tax_engine.domain.kinds import AmountKind
+from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
@@ -48,6 +48,14 @@ NL428_TAX_ON_TAXABLE_INCOME_LINE_15 = AmountKind.declare(
 Newfoundland and Labrador tax on taxable income =": line 13 plus line 14 of the column that line 1
 falls in, read by line 63 on the tax form."""
 
+NL428_SPOUSE_NET_INCOME_LINE_19 = AmountKind.declare(
+    CATALOG, "nl428_spouse_net_income_line_19", non_negative=False
+)
+"""Spouse or common-law partner's net income, NL428 line 19 "Line 19: Your spouse's or common-law
+partner's net income from line 23600 of their return": the amount as the filer gives it, an
+optional input. It is signed because a spouse's net income can be a loss, and the form prints no
+floor; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
@@ -61,3 +69,30 @@ NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
 """Newfoundland and Labrador tax, NL428 line 105 "Line 105: Line 94 minus line 104 (if negative,
 enter "0") Enter this amount on line 42800 of your return.": line 94 less line 104, not below 0,
 entered on T1 line 42800."""
+
+NL428_DISABILITY_AMOUNT_SELF_CLAIMED_LINE_40 = CountKind.declare(
+    CATALOG, "nl428_disability_amount_self_claimed_line_40", non_negative=True
+)
+"""Disability amount for self claimed, NL428 line 40 "Line 40 and line 58440: Disability amount for
+self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the eligibility
+claim, 1 when the disability tax credit is approved and the amount is claimed, read as blank when
+left out."""
+
+NL428_DISABILITY_AMOUNT_SELF_CLAIMED_CHECKED_LINE_40 = CountKind.declare(
+    CATALOG, "nl428_disability_amount_self_claimed_checked_line_40", non_negative=True
+)
+"""Disability amount for self claim, checked, NL428 line 40 "Line 40 and line 58440: Disability
+amount for self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the
+claim with a blank read as 0, refused above 1 so the amount cannot be claimed twice."""
+
+DISABILITY_AMOUNT_SELF = AmountKind.declare(CATALOG, "disability_amount_self", non_negative=True)
+"""Disability amount for self, NL428 line 40 "Line 40 and line 58440: Disability amount for self
+(claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467, the
+amount claimed when the disability tax credit is approved."""
+
+NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
+    CATALOG, "nl428_disability_amount_self_line_40", non_negative=True
+)
+"""Disability amount for self, NL428 line 40 "Line 40 and line 58440: Disability amount for self
+(claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when
+the claim is 1, 0 when the claim is blank or 0."""
