@@ -333,6 +333,13 @@ NL428_TAX_BEFORE_CREDITS_LINE_65 = AmountKind.declare(
 """Newfoundland and Labrador tax before credits, NL428 line 65 "Line 65: Line 63 plus line 64 =":
 line 63 plus line 64 (the tax on split income, blank read as 0), rounded half-up to the cent."""
 
+NL428_NON_REFUNDABLE_CREDITS_LINE_66 = AmountKind.declare(
+    CATALOG, "nl428_non_refundable_credits_line_66", non_negative=True
+)
+"""Newfoundland and Labrador non-refundable tax credits, NL428 line 66 "Line 66: Newfoundland and
+Labrador non-refundable tax credits from line 62 ^": line 62 of the credits form, read across the
+forms."""
+
 NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
 )
