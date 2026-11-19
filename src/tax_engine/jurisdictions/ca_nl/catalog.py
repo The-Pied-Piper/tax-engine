@@ -380,6 +380,12 @@ NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out;
 a blank input is read as blank."""
 
+NL428_TAX_LINE_74 = AmountKind.declare(CATALOG, "nl428_tax_line_74", non_negative=True)
+"""Newfoundland and Labrador tax, NL428 line 74 "Line 74: Line 72 minus line 73 (if negative, enter
+"0") =": line 72 (the tax with the additional tax for minimum tax purposes) less line 73 (the
+provincial foreign tax credit, blank read as 0), floored at 0 as the form prints, rounded half-up to
+the cent."""
+
 NL428_RESORT_PROPERTY_INVESTMENT_TAX_CREDIT_LINE_80 = AmountKind.declare(
     CATALOG, "nl428_resort_property_investment_tax_credit_line_80", non_negative=True
 )
