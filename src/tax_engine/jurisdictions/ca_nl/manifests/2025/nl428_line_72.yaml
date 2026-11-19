@@ -1,0 +1,20 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 72 "Line 72: Line 70 plus line 71 =".
+# One core/sum step over line 70 (`ca-nl/nl428_tax_line_70`) and line 71
+# (`ca-nl/nl428_additional_tax_minimum_tax_line_71`). Both lines are always computed (line 71's own
+# step reads its optional Form T691 amount as 0), so the step needs no blank rule. The form prints
+# no title for the line, so the step has none. The output is
+# `ca-nl/nl428_tax_with_minimum_tax_line_72`, which is not exported yet.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/sum
+    reference: "72"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_tax_line_70
+        - ca-nl/nl428_additional_tax_minimum_tax_line_71
+    produces:
+      output: ca-nl/nl428_tax_with_minimum_tax_line_72
