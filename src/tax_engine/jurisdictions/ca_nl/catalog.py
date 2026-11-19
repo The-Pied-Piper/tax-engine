@@ -416,6 +416,11 @@ Newfoundland and Labrador political contribution tax credit (use Worksheet NL428
 the entered amount, passed on unchanged when it is at most the printed maximum, blank when left
 out; above the maximum it is refused, not capped."""
 
+NL428_TAX_LINE_77 = AmountKind.declare(CATALOG, "nl428_tax_line_77", non_negative=True)
+"""Newfoundland and Labrador tax after the political contribution tax credit, NL428 line 77 "Line
+77: Line 74 minus line 76 (if negative, enter "0") =": line 74 less the credit of line 76 (blank
+read as 0), floored at 0 as the form prints, rounded half-up to the cent."""
+
 NL428_DIRECT_EQUITY_TAX_CREDIT_LINE_78 = AmountKind.declare(
     CATALOG, "nl428_direct_equity_tax_credit_line_78", non_negative=True
 )
@@ -862,3 +867,8 @@ NL428_LOW_INCOME_REDUCTION_LINE_98 = AmountKind.declare(
 )
 """Low-income tax reduction, NL428 line 98 "Line 98: Add lines 95 to 97. (maximum $1,554)": lines 95
 to 97 added, and not more than the printed $1,554."""
+
+NL428_LINE_101 = AmountKind.declare(CATALOG, "nl428_line_101", non_negative=True)
+"""NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0") =": line 99 (a copy of
+line 93, the adjusted family income) less line 100 (the low-income threshold), floored at 0 as the
+form prints, rounded half-up to the cent."""
