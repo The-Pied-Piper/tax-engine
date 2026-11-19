@@ -641,3 +641,11 @@ NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
 "if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
 signed because the line takes the amount as if negative were shown in brackets; a blank input is
 read as blank."""
+
+NL428_SPOUSE_UCCB_AND_RDSP_REPAYMENT_LINE_89 = AmountKind.declare(
+    CATALOG, "nl428_spouse_uccb_and_rdsp_repayment_line_89", non_negative=True
+)
+"""Spouse or common-law partner's UCCB and RDSP repayment, NL428 line 89 column 2 "Line 89: Total of
+the universal child care benefit (UCCB) repayment (line 21300 of the return) and the registered
+disability savings plan (RDSP) income repayment (included on line 23200 of the return)": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
