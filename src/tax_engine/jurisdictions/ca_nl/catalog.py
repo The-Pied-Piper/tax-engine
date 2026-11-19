@@ -474,6 +474,12 @@ NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
 """Lower bound of the column, NL428 line 10 "Line 10: 220,910.00": the printed lower bound of the
 column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""
 
+NL428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "nl428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, NL428 line 7 "Line 7: 0.00": the printed tax at the start of the
+column of lines 2 to 8 that line 1 falls in, blank when line 1 is above 220,910."""
+
 NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
     CATALOG, "nl428_bracket_tax_at_start_line_14", non_negative=True
 )
