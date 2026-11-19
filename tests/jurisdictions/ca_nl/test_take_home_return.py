@@ -7,7 +7,8 @@ the T1 tax and credits form: `return.yaml` mirrors the Saskatchewan and Manitoba
 a core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a
 cross-form read (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
-key (the return is the default form) and no params. The two rates are built by their own tickets.
+key (the return is the default form) and no params. The average rate step is pinned in
+`test_take_home_return_average_income_tax_rate.py`; the marginal rate is built by its own ticket.
 
 The test composes the real Newfoundland and Labrador salary part and the real `return.yaml`. The
 header, the declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and
@@ -55,6 +56,7 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
+      - ca-nl/average_income_tax_rate
     capabilities: []
     """)
 T1_FORM = dedent("""\
@@ -63,6 +65,7 @@ T1_FORM = dedent("""\
       required: true
       exports:
         - ca/refund_or_balance_owing
+        - ca/total_payable
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
@@ -73,7 +76,8 @@ CREDITS_INPUT = dedent("""\
         unit: ca/cad
         required: true
     """)
-# The stand-in for the T1 line 167 step: the salary less the given credits, signed.
+# The stand-ins for the T1 line 167 and line 43500 steps: the salary less the given credits, signed
+# (line 43500 is read by the average rate step, whose own test pins it).
 T1_STEP = dedent("""\
     form:
       name: ca/t1_tax_and_credits
@@ -87,6 +91,15 @@ T1_STEP = dedent("""\
           less: ca/total_credits
         produces:
           output: ca/refund_or_balance_owing
+      - name: core/subtract
+        unit: ca/cad
+        params:
+          rounding: ca/cent_rounding
+        consumes:
+          amount: ca/employment_income
+          less: ca/total_credits
+        produces:
+          output: ca/total_payable
     """)
 
 # salary, credits, line 167: a balance owing, a refund and zero.
