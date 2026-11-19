@@ -7,6 +7,8 @@
 # and refuses a count above 1 through ca/yes_or_no_count. Step 2 produces the printed $7,467 from the
 # `ca-nl/disability_amount_self` dataset through core/credit_amount. Step 3 reads the shared
 # `ca/under_18_on_december_31` answer, a blank read as 0 (18 or over), and refuses a count above 1.
+# Steps 1 and 5 are not lines of the form, so they have no reference, and their titles are plain
+# words, not printed wording, because the sentence of line 40 names them.
 # Step 4 reads the worksheet's line 7, which another form exports as a record list, through
 # core/record_total. Step 5 chooses between the two with core/choose_by_count: the printed $7,467 for
 # a filer 18 or over, the worksheet amount for a filer under 18. Step 6 multiplies the chosen amount
@@ -15,6 +17,7 @@ form:
   name: ca-nl/nl428_credits
 capabilities:
   - name: ca/yes_or_no_count
+    title: "Disability amount for self claimed"
     consumes:
       count: ca-nl/nl428_disability_amount_self_claimed_line_40
     blank:
@@ -40,6 +43,7 @@ capabilities:
     produces:
       output: ca-nl/nl428_disability_amount_self_worksheet_line_40
   - name: core/choose_by_count
+    title: "Disability amount for self if you claim it"
     unit: ca/cad
     consumes:
       count: ca/under_18_on_december_31_checked

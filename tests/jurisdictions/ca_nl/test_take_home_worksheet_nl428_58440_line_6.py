@@ -4,7 +4,7 @@ Form text (Worksheet NL428, CRA 5001-D, 2025, 5001-d-25e.txt, confirmed 2026-11-
 "Line 58440 - Disability amount for self": "Complete this calculation if you were under 18 years of
 age on December 31, 2025."
 "Line 2: Maximum amount 3,514.00" and "Line 6: Line 2 minus line 5 (if negative, enter "0")". Line 2
-is the `ca-nl/disability_self_supplement_maximum` dataset claimed whole (no reference). Line 6 is
+is the `ca-nl/disability_self_supplement_maximum` dataset claimed whole (reference "2"). Line 6 is
 core/subtract_not_below_zero rounded half-up to the cent. It carries the reference "6".
 
 Care expenses 4,987 give line 6 = 1,514.00; 2,987 or less give 3,514.00; 6,501 or more give 0.00.
@@ -164,7 +164,7 @@ def test_line_6_part_is_the_maximum_and_the_subtraction() -> None:
     assert maximum["name"] == "core/credit_amount"
     assert maximum["params"] == {"amount": "ca-nl/disability_self_supplement_maximum"}
     assert maximum["produces"] == {"output": LINE_2}
-    assert "reference" not in maximum
+    assert maximum["reference"] == "2"
     assert subtract["name"] == "core/subtract_not_below_zero"
     assert subtract["reference"] == "6"
     assert subtract["params"] == {"rounding": ROUNDING}

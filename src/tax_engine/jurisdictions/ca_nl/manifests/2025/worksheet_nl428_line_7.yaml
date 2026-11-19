@@ -1,14 +1,15 @@
 # Worksheet NL428 (CRA 5001-D) 2025, section "Line 58080 - Age amount", lines 1 and 7: "Line 1:
 # Maximum amount 7,064.00" and "Line 7: Line 1 minus line 6 (if negative, enter "0") Enter this
 # amount on line 58080 of your Form NL428. = ^". The form names no label for either line, so no
-# step has a title. Line 7 is the part's final step and carries the number; line 1 is a step toward
-# it, so it carries no reference. Line 1 is the printed maximum from the `ca-nl/age_maximum`
+# step has a title. Each of the two steps carries its printed line number as its
+# reference. Line 1 is the printed maximum from the `ca-nl/age_maximum`
 # dataset, claimed whole: core/credit_amount. Line 7 is line 1 minus line 6, not below zero,
 # rounded half-up to the cent. Neither input is ever blank, so the subtraction has no blank rule.
 form:
   name: ca-nl/nl428_worksheet
 capabilities:
   - name: core/credit_amount
+    reference: "1"
     unit: ca/cad
     params:
       amount: ca-nl/age_maximum

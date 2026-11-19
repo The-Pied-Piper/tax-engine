@@ -1,7 +1,7 @@
 # Worksheet NL428 (CRA 5001-D) 2025, section "Line 58440 - Disability amount for self", lines 2 and
 # 6: "Line 2: Maximum amount 3,514.00" and "Line 6: Line 2 minus line 5 (if negative, enter "0")".
-# The form names no label for either line, so no step has a title. Line 6 carries the number; line
-# 2 is a step toward it, so it carries no reference. Line 2 is the printed maximum from the
+# The form names no label for either line, so no step has a title. Each line carries its printed number as
+# its reference. Line 2 is the printed maximum from the
 # `ca-nl/disability_self_supplement_maximum` dataset, claimed whole: core/credit_amount. Line 6 is
 # line 2 minus line 5, not below zero, rounded half-up to the cent. Neither input is ever blank, so
 # the subtraction has no blank rule.
@@ -9,6 +9,7 @@ form:
   name: ca-nl/nl428_worksheet
 capabilities:
   - name: core/credit_amount
+    reference: "2"
     unit: ca/cad
     params:
       amount: ca-nl/disability_self_supplement_maximum

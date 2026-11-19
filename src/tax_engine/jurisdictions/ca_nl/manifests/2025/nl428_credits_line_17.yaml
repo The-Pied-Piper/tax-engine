@@ -6,11 +6,13 @@
 # through ca/yes_or_no_count. Step 2 reads the worksheet's line 7, which another form exports as a
 # record list, through core/record_total. Step 3 multiplies that amount by the checked count, so
 # line 17 is the worksheet amount when born in 1960 or earlier and 0.00 otherwise, as line 40 does
-# for its claim.
+# for its claim. Steps 1 and 2 are not lines of the form, so they have no reference, and their
+# titles are plain words, not printed wording, because the sentence of line 17 names them.
 form:
   name: ca-nl/nl428_credits
 capabilities:
   - name: ca/yes_or_no_count
+    title: "Born in 1960 or earlier"
     consumes:
       count: ca/born_in_1960_or_earlier
     blank:
@@ -18,6 +20,7 @@ capabilities:
     produces:
       output: ca/born_in_1960_or_earlier_checked
   - name: core/record_total
+    title: "Age amount from Worksheet NL428"
     unit: ca/cad
     consumes:
       records: ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7
