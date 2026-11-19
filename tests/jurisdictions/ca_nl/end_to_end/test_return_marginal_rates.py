@@ -2,9 +2,8 @@
 the real parts of the Newfoundland and Labrador manifest (salary the only input).
 
 Newfoundland and Labrador is not yet listed in the registered engine, so the engine is built over
-a temporary copy of the manifest folder (`tests/jurisdictions/ca_nl/support.py` lists the
-packages). The manifest also declares the average rate as an output; while that rate has no step
-in `return.yaml` the copy leaves its declaration out, so the engine can load.
+a temporary copy of the manifest folder (the `service` fixture of `tests/jurisdictions/ca_nl/
+conftest.py`; `support.py` lists the packages).
 
 Calculated the same way as British Columbia's, with the low-income tax reduction as British
 Columbia's tax reduction:
@@ -55,8 +54,6 @@ to a net income of 23,928.03; and line 104 is 0.00 from a net income of 30,159.2
 from __future__ import annotations
 
 import re
-import shutil
-from collections.abc import Iterator
 from decimal import Decimal
 from pathlib import Path
 
@@ -64,22 +61,15 @@ import pytest
 
 import tax_engine.jurisdictions.ca_nl
 from tax_engine.adapters.inbound.trace_english import EnglishTraceRenderer
-from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
-from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.parameters.rounding import NO_ROUNDING
-from tax_engine.domain.registry import Namespace
 from tax_engine.domain.trace import SumLine
 from tax_engine.domain.worksheet import Worksheet
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
 from tests.jurisdictions.ca_nl.support import (
-    newfoundland_capabilities,
     newfoundland_kinds,
-    newfoundland_packages,
-    newfoundland_parameter_parsers,
-    newfoundland_units,
 )
 from tests.kinds import non_negative
 
@@ -90,7 +80,6 @@ RETURN = "ca-nl/return"
 FEDERAL = "ca/federal_marginal_rate"
 NL_RATE = "ca-nl/newfoundland_and_labrador_marginal_rate"
 MARGINAL = "ca-nl/marginal_tax_rate"
-AVERAGE_OUTPUT = "  - ca-nl/average_income_tax_rate\n"
 LINE_5_RETURN = "ca-nl/newfoundland_and_labrador_bracket_rate_line_5_return"
 LINE_12_RETURN = "ca-nl/newfoundland_and_labrador_bracket_rate_line_12_return"
 BRACKET = "ca-nl/newfoundland_and_labrador_bracket_rate_return"
@@ -168,29 +157,6 @@ REDUCTION_FIGURES = [
     ("30428.51", "30159.22", "997.00", "0.00", "0.16", "0", "0", "0.087", "0.087"),
     ("40000", "39635.00", "2513.12", "0.00", "0.16", "0", "0", "0.087", "0.087"),
 ]
-
-
-@pytest.fixture(scope="module")
-def service(tmp_path_factory: pytest.TempPathFactory) -> Iterator[TaxComputationService]:
-    """The engine over a temporary copy of the real Newfoundland and Labrador manifest folder."""
-    root = tmp_path_factory.mktemp("newfoundland")
-    folder = root / "manifests" / "2025"
-    shutil.copytree(NL_PARTS, folder)
-    manifest = folder / "manifest.yaml"
-    if f"output: {AVERAGE_OUTPUT.strip()[2:]}" not in (folder / "return.yaml").read_text(
-        encoding="utf-8"
-    ):
-        manifest.write_text(
-            manifest.read_text(encoding="utf-8").replace(AVERAGE_OUTPUT, ""), encoding="utf-8"
-        )
-    roots = {**newfoundland_packages().roots(), Namespace("ca-nl"): root}
-    yield TaxComputationService(
-        YamlJurisdictionSource(roots, newfoundland_kinds(), newfoundland_units()),
-        YamlParameterSource(
-            newfoundland_packages().roots(), newfoundland_parameter_parsers(), newfoundland_units()
-        ),
-        newfoundland_capabilities(),
-    )
 
 
 def _worksheets(service: TaxComputationService, salary: str) -> dict[str, tuple[Worksheet, ...]]:

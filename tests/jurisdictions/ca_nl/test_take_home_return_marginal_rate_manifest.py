@@ -9,8 +9,8 @@ reduction's slope (16% where NL428 line 103 is above zero, from the `ca-nl/reduc
 dataset, switched off where line 104 is zero), and a last `core/sum` of the two marginal parts into
 `ca-nl/marginal_tax_rate`. The bracket rate plus the slope is gated on NL428 line 105 "Line 94
 minus line 104 (if negative, enter "0")". The figures are in
-`end_to_end/test_return_marginal_rates.py`. The average rate is built by its own ticket and is not
-pinned here.
+`end_to_end/test_return_marginal_rates.py`. The average rate is pinned in
+`test_take_home_return_average_rate_manifest.py`.
 """
 
 from __future__ import annotations

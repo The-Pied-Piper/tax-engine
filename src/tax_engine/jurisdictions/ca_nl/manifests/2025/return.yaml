@@ -16,7 +16,6 @@
 # it by the salary, rounding once with `ca-nl/rate_rounding` (half-up to 0.0001); a salary of 0
 # gives 0.
 #
-#
 # The marginal rate, the income tax rate on a further dollar of salary, is built as the British
 # Columbia return builds it. The federal part is read as there: the T1 form exports line 73's
 # bracket column rate and line 42900 "Basic federal tax", each totalled into the return's own kind,
