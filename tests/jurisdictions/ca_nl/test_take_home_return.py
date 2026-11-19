@@ -7,7 +7,9 @@ the T1 tax and credits form: `return.yaml` mirrors the Saskatchewan and Manitoba
 a core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a
 cross-form read (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
-key (the return is the default form) and no params. The two rates are built by their own tickets.
+key (the return is the default form) and no params. The steps after it read the figures of the
+marginal rate (`end_to_end/test_return_marginal_rates.py`); here they run over stand-ins. The
+average rate is built by its own ticket.
 
 The test composes the real Newfoundland and Labrador salary part and the real `return.yaml`. The
 header, the declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and
@@ -55,6 +57,7 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
+      - ca-nl/marginal_tax_rate
     capabilities: []
     """)
 T1_FORM = dedent("""\
@@ -63,6 +66,27 @@ T1_FORM = dedent("""\
       required: true
       exports:
         - ca/refund_or_balance_owing
+        - ca/federal_bracket_column_rate_line_73
+        - ca/federal_tax_after_credits
+    capabilities: []
+    """)
+NL428_CREDITS_FORM = dedent("""\
+    form:
+      name: ca-nl/nl428_credits
+      required: true
+      exports:
+        - ca-nl/nl428_bracket_rate_line_5
+        - ca-nl/nl428_bracket_rate_line_12
+    capabilities: []
+    """)
+NL428_FORM = dedent("""\
+    form:
+      name: ca-nl/nl428
+      required: true
+      exports:
+        - ca-nl/nl428_line_103
+        - ca-nl/nl428_line_104
+        - ca-nl/nl428_newfoundland_and_labrador_tax_line_105
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
@@ -89,12 +113,54 @@ T1_STEP = dedent("""\
           output: ca/refund_or_balance_owing
     """)
 
+# Stand-ins for the other figures the return reads (the federal rate and tax, the bracket rates,
+# the reduction clawback, the reduction and the tax): each is the salary itself or a made-up rate,
+# because this test is about line 167 only; the rate is in
+# `end_to_end/test_return_marginal_rates.py`. Form, output kind, unit.
+OTHER_STEPS = [
+    ("ca/t1_tax_and_credits", "ca/federal_bracket_column_rate_line_73", "core/percent"),
+    ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
+    ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_5", "core/percent"),
+    ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_12", "core/percent"),
+    ("ca-nl/nl428", "ca-nl/nl428_line_103", "ca/cad"),
+    ("ca-nl/nl428", "ca-nl/nl428_line_104", "ca/cad"),
+    ("ca-nl/nl428", "ca-nl/nl428_newfoundland_and_labrador_tax_line_105", "ca/cad"),
+]
+
 # salary, credits, line 167: a balance owing, a refund and zero.
 CASES = [
     ("70000", "11497.09", "58502.91"),
     ("20000", "21474.91", "-1474.91"),
     ("10000", "10000.00", "0.00"),
 ]
+
+
+def _other_step(form: str, output: str, unit: str) -> str:
+    """A stand-in step for a figure the return reads: the reduction slope of the salary for a rate
+    (0.16, a rate is at most 1) and the salary itself for an amount."""
+    if unit == "core/percent":
+        step = f"""\
+          - name: core/amount_by_band_rate
+            unit: {unit}
+            params:
+              table: ca-nl/reduction_slope
+            consumes:
+              base: ca/employment_income
+            produces:
+              output: {output}
+        """
+    else:
+        step = f"""\
+          - name: core/sum
+            unit: {unit}
+            params:
+              rounding: ca/cent_rounding
+            consumes:
+              parts: [ca/employment_income]
+            produces:
+              output: {output}
+        """
+    return f"form:\n  name: {form}\ncapabilities:\n" + dedent(step)
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -107,6 +173,12 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("01_t1_form.yaml", T1_FORM),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
+        ("03a_nl428_credits_form.yaml", NL428_CREDITS_FORM),
+        ("03a_nl428_form.yaml", NL428_FORM),
+        *[
+            (f"03b_{number}.yaml", _other_step(form, out, unit))
+            for number, (form, out, unit) in enumerate(OTHER_STEPS)
+        ],
         ("04_salary.yaml", (NL_PARTS / "salary.yaml").read_text(encoding="utf-8")),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
@@ -174,3 +246,10 @@ def test_the_first_step_is_the_line_167_record_total() -> None:
 
 def test_the_return_part_has_no_form_key() -> None:
     assert "form" not in _part()
+
+
+def test_the_return_has_the_marginal_rate_as_its_last_step() -> None:
+    outputs = [step["produces"]["output"] for step in _part()["capabilities"]]
+
+    assert outputs[0] == "ca/refund_or_balance_owing"
+    assert outputs[-1] == "ca-nl/marginal_tax_rate"
