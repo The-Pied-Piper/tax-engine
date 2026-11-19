@@ -413,6 +413,15 @@ NL428_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
 and the RDSP income (line 12500 of the return)": the total of the two incomes as the filer gives it,
 an optional input; a blank input is read as blank, column 1 (you) only."""
 
+NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_LINE_96 = CountKind.declare(
+    CATALOG,
+    "nl428_reduction_for_spouse_or_common_law_partner_claimed_line_96",
+    non_negative=True,
+)
+"""Reduction for spouse or common-law partner claimed, NL428 line 96 "Line 96 and line 61880:
+Reduction for spouse or common-law partner Claim $557": the eligibility claim, 1 when the reduction
+is claimed, read as blank when left out."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
