@@ -32,6 +32,12 @@ WORKSHEET_NL428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
 """Line 2 minus line 3, Worksheet NL428 line 4 "Line 4: Line 2 minus line 3 (if negative, enter "0")
 ": the net income above the threshold, not below 0."""
 
+WORKSHEET_NL428_AGE_AMOUNT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_line_6", non_negative=True
+)
+"""Line 4 multiplied by the line 5 rate, Worksheet NL428 line 6 "Line 6: Line 4 multiplied by the
+percentage from line 5 =": the age amount reduction, 15% of the net income above the threshold."""
+
 WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
     CATALOG, "worksheet_nl428_age_amount_line_7", non_negative=True
 )
@@ -94,6 +100,32 @@ NL428_QPP_CONTRIBUTIONS_LINE_28 = AmountKind.declare(
 )
 """Quebec Pension Plan contributions, NL428 line 28 "Line 28 and line 58280: Amount from line 31000
 of your return": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
+NL428_EI_PREMIUMS_LINE_29 = AmountKind.declare(
+    CATALOG, "nl428_ei_premiums_line_29", non_negative=True
+)
+"""EI premiums credit amount, NL428 line 29 (line 58300) "Amount from line 31200 of your return": a
+copy of T2204 line 16, the EI premiums credit amount."""
+
+NL428_EI_PREMIUMS_LINE_30 = AmountKind.declare(
+    CATALOG, "nl428_ei_premiums_line_30", non_negative=True
+)
+"""Employment insurance premiums, NL428 line 30 "Line 30 and line 58305: Amount from line 31217
+of your return": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
+NL428_VOLUNTEER_FIREFIGHTERS_AMOUNT_LINE_31 = AmountKind.declare(
+    CATALOG, "nl428_volunteer_firefighters_amount_line_31", non_negative=True
+)
+"""Volunteer firefighters' amount, NL428 line 31 "Line 31 and line 58315: Volunteer firefighters'
+amount": the amount as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_SEARCH_AND_RESCUE_VOLUNTEERS_AMOUNT_LINE_32 = AmountKind.declare(
+    CATALOG, "nl428_search_and_rescue_volunteers_amount_line_32", non_negative=True
+)
+"""Search and rescue volunteers' amount, NL428 line 32 "Line 32 and line 58316: Search and rescue
+volunteers' amount": the amount as the filer gives it, an optional input; a blank input is read as
 blank."""
 
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
@@ -167,4 +199,30 @@ NL428_SPOUSE_AMOUNT_LINE_20 = AmountKind.declare(
 )
 """Spouse or common-law partner amount, NL428 line 20 "Line 20 and line 58120: Line 18 minus line 19
 (if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below 0, at most the printed
+maximum."""
+
+ELIGIBLE_DEPENDANT_AMOUNT_BASE = AmountKind.declare(
+    CATALOG, "eligible_dependant_amount_base", non_negative=True
+)
+"""Amount for an eligible dependant, base amount, NL428 line 21 "Base amount 9,948.00": the printed
+figure, from which line 23 takes line 22."""
+
+ELIGIBLE_DEPENDANT_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "eligible_dependant_amount_maximum", non_negative=True
+)
+"""Amount for an eligible dependant, maximum, NL428 line 23 "(maximum $9,043)": the printed figure,
+the most line 23 can be."""
+
+NL428_ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_MAXIMUM_LINE_23 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_amount_before_maximum_line_23", non_negative=True
+)
+"""Amount for an eligible dependant before the maximum, NL428 line 23 "Line 23 and line 58160:
+Line 21 minus line 22 (if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below
+0, before the maximum is applied."""
+
+NL428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_23 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_amount_line_23", non_negative=True
+)
+"""Amount for an eligible dependant, NL428 line 23 "Line 23 and line 58160: Line 21 minus line 22
+(if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below 0, at most the printed
 maximum."""

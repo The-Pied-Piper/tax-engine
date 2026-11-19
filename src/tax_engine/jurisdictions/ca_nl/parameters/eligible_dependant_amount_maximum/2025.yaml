@@ -1,13 +1,13 @@
 # Newfoundland and Labrador amount for an eligible dependant, maximum, 2025 tax year (Form
 # NL428 line 23 and line 58160): "Line 21 minus line 22 (if negative, enter "0") (maximum
-# $9,043)". It is a plain cap, not a credit.
-# Line 23 is a dollars-and-cents box, so the capped amount rounds half-up to the cent, the
-# project's choice, as the form states no rounding rule.
+# $9,043)". It borrows the credit kind because it is held as a printed figure that line 23 reads
+# as an artifact, as the base amount is.
+# Line 23 is a dollars-and-cents box, so the amount rounds half-up to the cent, the project's
+# choice, as the form states no rounding rule.
 family: ca-nl/eligible_dependant_amount_maximum
 tax_year: 2025
-kind: amount
-unit: ca/cad
+kind: credit
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
 rounding: {increment: "0.01", mode: half_up}
-amount: "9043"
+amount: "9043.00"

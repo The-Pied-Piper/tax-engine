@@ -1,0 +1,18 @@
+# Worksheet NL428 (CRA 5001-D) 2025, section "Line 58080 - Age amount", lines 5 and 6: "Line 5:
+# Applicable rate 15%" and "Line 6: Line 4 multiplied by the percentage from line 5 =". The form
+# names no label for either line, so the step has no title. Line 5 is a printed rate, so it is the
+# `ca-nl/age_rate` dataset figure taken as printed and has no step of its own. Line 6 is line 4
+# times that rate, rounded half-up to the cent by the dataset's own rule (the form states no
+# rounding rule). Line 4 is never blank, so the step has no blank rule.
+form:
+  name: ca-nl/nl428_worksheet
+capabilities:
+  - name: core/apply_rate
+    reference: "6"
+    unit: ca/cad
+    params:
+      rate: ca-nl/age_rate
+    consumes:
+      base: ca-nl/worksheet_nl428_age_amount_line_4
+    produces:
+      output: ca-nl/worksheet_nl428_age_amount_line_6
