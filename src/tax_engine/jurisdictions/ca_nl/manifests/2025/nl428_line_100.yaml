@@ -7,7 +7,8 @@
 # from the `ca-nl/low_income_threshold` ($23,928) and
 # `ca-nl/low_income_threshold_with_spouse_or_dependant` ($40,460) datasets through
 # core/credit_amount; neither is a line of the form, so each has no title and no reference. Step 4
-# chooses between them with core/choose_by_count: $23,928 for a count of 0, $40,460 for a count of 1.
+# chooses between them with core/choose_by_count: $23,928 for a count of 0, $40,460 for a count
+# of 1.
 form:
   name: ca-nl/nl428
 capabilities:
