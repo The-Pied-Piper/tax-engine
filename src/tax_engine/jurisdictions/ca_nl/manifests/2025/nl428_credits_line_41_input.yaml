@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 41: "Line 41 and line 58480: Disability amount transferred from a dependant (use Worksheet
+# NL428)" (Form NL428, CRA 5001-C). The Worksheet NL428 section behind this line exists only to
+# compute a claim a salary-only caller leaves empty, so that block is skipped and the line is taken
+# as one optional input. A request that leaves the line out is read as blank.
+inputs:
+  - name: ca-nl/nl428_disability_amount_transferred_from_a_dependant_line_41
+    title: "Disability amount transferred from a dependant (use Worksheet NL428)"
+    reference: "41"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 41 and line 58480: Disability amount transferred from a dependant (use Worksheet NL428)'

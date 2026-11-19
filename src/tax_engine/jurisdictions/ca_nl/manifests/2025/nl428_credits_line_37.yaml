@@ -1,0 +1,28 @@
+# NL428 (2025) line 37, the pension income amount. Form NL428 (CRA 5001-C): "Line 37 and line 58360:
+# Pension income amount (maximum $1,000)". No arithmetic is printed, so line 37 is an entry line in
+# two steps. The first, core/credit_amount, supplies the printed maximum from the
+# `ca-nl/pension_income_amount_maximum` dataset; it is not a line of the form, so it has no title and
+# no reference. The second, core/at_most, is line 37: the entered amount
+# (nl428_credits_line_37_input.yaml) passed on unchanged. An entry above the printed maximum is
+# refused, not capped. A blank entry passes on as blank. Line 37 is not exported, as no later line
+# reads it yet.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/credit_amount
+    unit: ca/cad
+    params:
+      amount: ca-nl/pension_income_amount_maximum
+    produces:
+      output: ca-nl/nl428_pension_income_amount_maximum
+  - name: core/at_most
+    title: "Pension income amount"
+    reference: "37"
+    unit: ca/cad
+    consumes:
+      amount: ca-nl/nl428_pension_income_amount_claimed_line_37
+      bound: ca-nl/nl428_pension_income_amount_maximum
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-nl/nl428_pension_income_amount_line_37

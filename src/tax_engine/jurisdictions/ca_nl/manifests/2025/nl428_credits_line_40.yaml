@@ -1,0 +1,35 @@
+# NL428 (2025) line 40, the disability amount for self. Form NL428 (CRA 5001-C): "Line 40 and line
+# 58440: Disability amount for self (claim $7,467 or, if you were under 18 years of age, use
+# Worksheet NL428)". The under-18 branch (Worksheet NL428 line 58440) is a skipped block and is not
+# built.
+#
+# Step 1 reads the optional claim (1 when the disability tax credit is approved), a blank read as 0,
+# and refuses a count above 1 through ca/yes_or_no_count. Step 2 produces the printed $7,467 from the
+# `ca-nl/disability_amount_self` dataset through core/credit_amount. Step 3 multiplies that amount by
+# the checked claim, so line 40 is 7,467.00 when claimed and 0.00 otherwise.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca-nl/nl428_disability_amount_self_claimed_line_40
+    blank:
+      count: "0"
+    produces:
+      output: ca-nl/nl428_disability_amount_self_claimed_checked_line_40
+  - name: core/credit_amount
+    params:
+      amount: ca-nl/disability_amount_self
+    produces:
+      output: ca-nl/disability_amount_self
+  - name: core/times_count
+    title: "Disability amount for self"
+    reference: "40"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/disability_amount_self
+      count: ca-nl/nl428_disability_amount_self_claimed_checked_line_40
+    produces:
+      output: ca-nl/nl428_disability_amount_self_line_40
