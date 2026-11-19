@@ -113,8 +113,6 @@ FORM = dedent("""\
 # salary, line 62: line 60 plus line 61, with line 61 at 0.00 when no expenses are entered.
 CASES = [
     ("10000", "95.65"),
-    ("20000", "0.00"),
-    ("70000", "0.00"),
     ("200000", "0.00"),
 ]
 

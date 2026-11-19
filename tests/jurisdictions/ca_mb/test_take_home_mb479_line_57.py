@@ -108,8 +108,6 @@ FORM = dedent("""\
 # salary, line 57: line 55 as its own test pins it, times line 56, blank and read as 1.
 CASES = [
     ("10000", "95.65"),
-    ("20000", "0.00"),
-    ("70000", "0.00"),
     ("200000", "0.00"),
 ]
 

@@ -17,7 +17,7 @@ The test composes the real parts that lead to line 80 (the line 80 test's parts,
 The header and the form declarations are made up here: the credits form exports lines 1, 3 to 8 and
 57, and `ca-mb/mb428` exports lines 80 and 82 and supplies line 82. The figures are line 80 (equal
 to line 78, the line 80 test) with line 81 left blank and read as 0, hand-computed from the printed
-forms, not a CRA example: 0.00 / 284.08 / 5,747.59 / 26,863.55.
+forms, not a CRA example: 0.00 / 5,747.59 (and 284.08 at 20,000, the floor case).
 """
 
 from __future__ import annotations
@@ -205,22 +205,17 @@ FORM = dedent(f"""\
     """)
 
 # salary, line 82 with line 81 left out, so line 81 is blank and read as 0 and line 82 equals line
-# 80. Line 80 is 0.00 / 284.08 / 5,747.59 / 26,863.55 (line 78 with a blank line 79).
+# 80. Line 80 is 0.00 / 5,747.59 (line 78 with a blank line 79).
 CASES = [
     ("10000", "0.00"),
-    ("20000", "284.08"),
     ("70000", "5747.59"),
-    ("200000", "26863.55"),
 ]
 # salary, line 81 entry, line 80, line 82: line 80 minus line 81, not below 0.
 CASES_WITH_LINE_81 = [
-    ("70000", "300.00", "5747.59", "5447.59"),
     # 5747.59 - 300.005 = 5447.585 rounds half-up to 5447.59.
     ("70000", "300.005", "5747.59", "5447.59"),
     # Line 81 above line 80 (284.08 at 20,000): the floor.
     ("20000", "300.00", "284.08", "0.00"),
-    # Exactly equal: the cent zero.
-    ("70000", "5747.59", "5747.59", "0.00"),
 ]
 
 

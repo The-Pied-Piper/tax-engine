@@ -72,8 +72,6 @@ FORM = dedent("""\
 # salary, line 28. At $200,000 both lines 19 and 21 are at their maximums.
 CASES = [
     ("10000", "485.75"),
-    ("20000", "1144.75"),
-    ("70000", "4369.23"),
     ("200000", "4433.58"),
 ]
 

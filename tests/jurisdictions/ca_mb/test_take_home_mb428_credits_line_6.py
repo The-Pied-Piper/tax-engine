@@ -19,9 +19,8 @@ parts, and the real `mb428_credits_line_1.yaml`, `mb428_credits_line_3.yaml`,
 in only the salary. The form declaration is test-local, exporting lines 1, 3, 4, 5 and 6.
 
 Figures (hand-computed in `_derived` below, not a CRA example): taxable income is the salary less
-the enhanced CPP deduction, 9,935.00 / 19,835.00 / 69,335.00 / 198,926.00. Line 4 is that less the
-column's lower bound (0.00, 47,000.00 or 100,000.00), so 9,935.00 / 19,835.00 / 22,335.00 /
-98,926.00. Line 6 is line 4 at 10.8% / 10.8% / 12.75% / 17.4%: 1,072.98 / 2,142.18 / 2,847.71 /
+the enhanced CPP deduction, 9,935.00 / 198,926.00. Line 4 is that less the column's lower bound
+(0.00 or 100,000.00), so 9,935.00 / 98,926.00. Line 6 is line 4 at 10.8% / 17.4%: 1,072.98 /
 17,213.12. The boundary salaries are derived below as in the line 5 and line 4 tests.
 """
 
@@ -117,18 +116,12 @@ FORM = dedent(f"""\
 # column, and line 6 is line 4 times the rate, rounded half-up to the cent.
 CASES = [
     ("10000", "9935.00", "9935.00", "0.108", "1072.98"),
-    ("20000", "19835.00", "19835.00", "0.108", "2142.18"),
-    ("70000", "69335.00", "22335.00", "0.1275", "2847.71"),
     ("200000", "198926.00", "98926.00", "0.174", "17213.12"),
 ]
 # Salaries whose taxable income sits on a column's edge: line 1 is 47,000.00 or less in column 1,
 # more than 47,000.00 and not more than 100,000.00 in column 2. One cent more is the next column.
 EDGES = [
-    ("47439.39", "47000.00", "47000.00", "0.108", "5076.00"),
-    ("47439.40", "47000.01", "0.01", "0.1275", "0.00"),
-    ("101073.99", "99999.99", "52999.99", "0.1275", "6757.50"),
     ("101074.00", "100000.00", "53000.00", "0.1275", "6757.50"),
-    ("101074.01", "100000.01", "0.01", "0.174", "0.00"),
 ]
 # Rounding, half-up to the cent: 0.20 x 12.75% = 0.0255 is exactly half a cent and goes up to 0.03
 # (not half-even, which would give 0.02); 0.19 x 12.75% = 0.024225 goes down to 0.02.

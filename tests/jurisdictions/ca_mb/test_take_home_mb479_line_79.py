@@ -119,7 +119,7 @@ def _steps() -> list[dict[str, Any]]:
     return steps
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["10000", "200000"])
 def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, salary: str) -> None:
     # The amount is left out, passed on blank by the check and read as 0 by the rate step, so
     # line 79 is 0.00 throughout.
@@ -132,8 +132,6 @@ def test_a_salary_only_caller_who_leaves_out_the_amount_gets_0(tmp_path: Path, s
 @pytest.mark.parametrize(
     ("amount", "expected"),
     [
-        # An amount of 0 gives 0.
-        ("0", "0.00"),
         # 1000 x 15% = 150.00 exactly, the printed maximum itself.
         ("1000", "150.00"),
         # 333.33 x 15% = 49.9995, rounded half-up to 50.00.

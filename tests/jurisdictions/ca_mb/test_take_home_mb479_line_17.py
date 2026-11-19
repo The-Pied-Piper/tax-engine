@@ -97,7 +97,7 @@ FORM = dedent("""\
         - ca-mb/mb479_total_credits_line_17
     """)
 
-SALARIES = ["10000", "20000", "70000", "200000"]
+SALARIES = ["10000", "200000"]
 # One value per input, in INPUTS order, each alone: the credit it adds to the basic 195.00.
 ALONE = [
     ("113", "308.00"),

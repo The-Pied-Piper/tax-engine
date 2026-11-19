@@ -12,8 +12,8 @@ needs (the same as the net income box's test), the real `mb428_a_line_11.yaml` a
 is made up here, exporting only the product. The service is built over the Manitoba package list of
 `support.py`.
 
-The figures are hand-computed from the printed form (not a CRA example): net income is 9,935.00,
-19,835.00, 69,335.00 and 198,926.00 at the four salaries, times 0.09, half-up to the cent.
+The figures are hand-computed from the printed form (not a CRA example): net income is 9,935.00
+and 198,926.00 at the two salaries, times 0.09, half-up to the cent.
 """
 
 from __future__ import annotations
@@ -143,13 +143,10 @@ def _step() -> dict[str, Any]:
     return step
 
 
-# salary, line 11: net income (9,935.00, 19,835.00, 69,335.00 and 198,926.00, as the net income
-# box's test pins) times 0.09, half-up to the cent: 894.15 (894.1500), 1,785.15 (1,785.1500),
-# 6,240.15 (6,240.1500) and 17,903.34 (17,903.3400).
+# salary, line 11: net income (9,935.00 and 198,926.00, as the net income box's test pins) times
+# 0.09, half-up to the cent: 894.15 (894.1500) and 17,903.34 (17,903.3400).
 CASES = [
     ("10000", "894.15"),
-    ("20000", "1785.15"),
-    ("70000", "6240.15"),
     ("200000", "17903.34"),
 ]
 

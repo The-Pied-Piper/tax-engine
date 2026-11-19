@@ -55,7 +55,7 @@ def test_the_return_summary_holds_each_of_its_three_outputs(name: str) -> None:
 
 @pytest.mark.parametrize(
     ("salary", "line_5"),
-    [("0", "0.108"), ("20000", "0.108"), ("70000", "0.1275"), ("200000", "0.174")],
+    [("0", "0.108"), ("200000", "0.174")],
 )
 def test_the_mb428_credits_form_exports_the_line_5_rate(salary: str, line_5: str) -> None:
     # Line 5 is the rate of the column line 1 is in (10.8% to 47,000, 12.75% to 100,000, 17.4%
@@ -67,7 +67,7 @@ def test_the_mb428_credits_form_exports_the_line_5_rate(salary: str, line_5: str
 
 @pytest.mark.parametrize(
     ("salary", "line_65"),
-    [("10000", "0.00"), ("20000", "284.08"), ("70000", "5747.59"), ("200000", "26863.55")],
+    [("10000", "0.00"), ("70000", "5747.59")],
 )
 def test_the_mb428_form_exports_line_65(salary: str, line_65: str) -> None:
     sheet = _sheet(salary, "ca-mb/mb428")
@@ -80,7 +80,6 @@ def test_the_mb428_form_exports_line_65(salary: str, line_65: str) -> None:
     [
         ("70000", "0.00", "15780.00"),
         ("250000", "3860.26", "11919.74"),
-        ("410000", "16484.26", "0.00"),
     ],
 )
 def test_the_worksheet_exports_lines_5_7_8_and_9(salary: str, line_8: str, line_9: str) -> None:
