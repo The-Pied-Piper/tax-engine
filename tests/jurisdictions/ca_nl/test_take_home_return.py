@@ -7,7 +7,8 @@ the T1 tax and credits form: `return.yaml` mirrors the Saskatchewan and Manitoba
 a core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a
 cross-form read (another form's export is read only as a record list), producing the return's own
 `ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
-key (the return is the default form) and no params. The two rates are built by their own tickets.
+key (the return is the default form) and no params. The average rate step is pinned in
+`test_take_home_return_average_income_tax_rate.py`; the marginal rate is built by its own ticket.
 
 The test composes the real Newfoundland and Labrador salary part and the real `return.yaml`. The
 header, the declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and
@@ -55,6 +56,7 @@ HEADER = dedent("""\
     valid_from_tax_year: 2025
     outputs:
       - ca/refund_or_balance_owing
+      - ca-nl/average_income_tax_rate
     capabilities: []
     """)
 T1_FORM = dedent("""\
@@ -63,6 +65,7 @@ T1_FORM = dedent("""\
       required: true
       exports:
         - ca/refund_or_balance_owing
+        - ca/total_payable
     capabilities: []
     """)
 CREDITS_INPUT = dedent("""\
@@ -89,12 +92,34 @@ T1_STEP = dedent("""\
           output: ca/refund_or_balance_owing
     """)
 
+# Stand-ins for the other figures the return reads (the total payable): each amount is the salary
+# itself, a made-up figure, because this test is about line 167 only; the average rate is in
+# `test_take_home_return_average_income_tax_rate.py`. Form, output kind, unit.
+OTHER_STEPS = [
+    ("ca/t1_tax_and_credits", "ca/total_payable", "ca/cad"),
+]
+
 # salary, credits, line 167: a balance owing, a refund and zero.
 CASES = [
     ("70000", "11497.09", "58502.91"),
     ("20000", "21474.91", "-1474.91"),
     ("10000", "10000.00", "0.00"),
 ]
+
+
+def _other_step(form: str, output: str, unit: str) -> str:
+    """A stand-in step for a figure the return reads: the salary itself."""
+    step = f"""\
+        - name: core/sum
+          unit: {unit}
+          params:
+            rounding: ca/cent_rounding
+          consumes:
+            parts: [ca/employment_income]
+          produces:
+            output: {output}
+    """
+    return f"form:\n  name: {form}\ncapabilities:\n" + dedent(step)
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
@@ -107,6 +132,10 @@ def _service(tmp_path: Path) -> TaxComputationService:
         ("01_t1_form.yaml", T1_FORM),
         ("02_credits_input.yaml", CREDITS_INPUT),
         ("03_t1_step.yaml", T1_STEP),
+        *[
+            (f"03d_{number}.yaml", _other_step(form, out, unit))
+            for number, (form, out, unit) in enumerate(OTHER_STEPS)
+        ],
         ("04_salary.yaml", (NL_PARTS / "salary.yaml").read_text(encoding="utf-8")),
         ("05_return.yaml", RETURN_PART.read_text(encoding="utf-8")),
     ]
@@ -174,3 +203,10 @@ def test_the_first_step_is_the_line_167_record_total() -> None:
 
 def test_the_return_part_has_no_form_key() -> None:
     assert "form" not in _part()
+
+
+def test_the_return_has_a_step_beyond_line_167_for_the_average_rate() -> None:
+    outputs = [step["produces"]["output"] for step in _part()["capabilities"]]
+
+    assert outputs[0] == "ca/refund_or_balance_owing"
+    assert "ca-nl/average_income_tax_rate" in outputs

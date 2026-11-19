@@ -934,3 +934,10 @@ NL428_LINE_104_LINE_86_GATE = AmountKind.declare(
 )
 """The line 86 gate of NL428 line 104: 1 where line 86 is 0.00 and 0 where an amount is claimed on
 line 86. A switch, not printed on the form."""
+
+AVERAGE_INCOME_TAX_RATE = AmountKind.declare(CATALOG, "average_income_tax_rate", non_negative=True)
+"""Average income tax rate, the Newfoundland and Labrador return summary's own figure (no form
+prints it): T1 line 43500 "Total payable" (for the take-home filer, line 143 plus line 147: the
+federal and the Newfoundland and Labrador income tax) divided by the salary
+(`ca/employment_income`), as a fraction, so 0.1598 is 15.98%. CPP and EI are not income tax and are
+not in it. It is 0 when the salary is 0."""
