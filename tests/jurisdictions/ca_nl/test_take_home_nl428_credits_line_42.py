@@ -74,6 +74,10 @@ NL_PART_NAMES = (
     "worksheet_nl428_line_6.yaml",
     "worksheet_nl428_line_7.yaml",
     "worksheet_nl428_line_58080_input.yaml",
+    "worksheet_nl428_line_58440_input.yaml",
+    "worksheet_nl428_58440_line_5.yaml",
+    "worksheet_nl428_58440_line_6.yaml",
+    "worksheet_nl428_58440_line_7.yaml",
     "nl428_credits_line_16.yaml",
     "nl428_credits_line_17.yaml",
     "nl428_credits_line_19_input.yaml",
@@ -122,6 +126,7 @@ FORMS = dedent("""\
       required: true
       exports:
         - ca-nl/worksheet_nl428_age_amount_line_7
+        - ca-nl/worksheet_nl428_disability_self_line_7
     capabilities: []
     ---
     form:

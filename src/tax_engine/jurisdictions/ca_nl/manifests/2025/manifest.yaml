@@ -7,10 +7,11 @@
 # Newfoundland and Labrador builds three forms, split so that no form reads another in a loop:
 # `ca-nl/nl428_credits` (NL428 lines 1 to 62), `ca-nl/nl428` (NL428 lines 63 to 105), which
 # supplies `ca/provincial_tax.amount` for T1 line 42800 (NL428 line 105 is the figure that goes to
-# T1 line 42800), and `ca-nl/nl428_worksheet` (Worksheet NL428, built only for the age amount, line
-# 58080). NL428 lines 106 to 108 ("Unused low-income tax reduction that your spouse or common-law
-# partner can claim": the filer's own unused amount, which the spouse enters on their line 86) are
-# not built: nothing reads them for a single filer, and they are deferred.
+# T1 line 42800), and `ca-nl/nl428_worksheet` (Worksheet NL428, built only for the age amount,
+# line 58080, and the disability amount for self, line 58440). NL428 lines 106 to 108 ("Unused
+# low-income tax reduction that your spouse or common-law partner can claim": the filer's own
+# unused amount, which the spouse enters on their line 86) are not built: nothing reads them for a
+# single filer, and they are deferred.
 #
 # Form NL479 is not built: its only credits (physical activity, and research and development) are
 # claims that need receipts or Form T1129. Schedules NL(S2) and NL(S11) are not built: they feed
@@ -24,8 +25,9 @@
 # CRA package listing page read shows NL428, NL479, NL(S2) and NL(S11) only, and a 5001-s6 text file
 # was not found: 404 when tried), so the federal Schedule 6 is imported unchanged.
 #
-# Newfoundland and Labrador is not yet listed in `registrations.JURISDICTIONS`; that is done by the
-# end-to-end ticket, last, after the 2026 datasets exist.
+# Newfoundland and Labrador is listed in `registrations.JURISDICTIONS`: every listed jurisdiction is
+# composed by `tests/application/services/test_every_resolvable_year.py`, and this manifest is
+# complete, NL428 line 105 supplying `ca/provincial_tax.amount` for T1.
 jurisdiction: CA-NL
 version: 1
 valid_from_tax_year: 2025

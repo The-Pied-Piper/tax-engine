@@ -5,6 +5,7 @@
 family: ca-nl/medical_expense_dollar_limit
 tax_year: 2025
 kind: amount
+title: "medical expense dollar limit"
 unit: ca/cad
 sources:
   - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt

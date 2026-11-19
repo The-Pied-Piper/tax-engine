@@ -1,0 +1,19 @@
+# Form NL428 (Newfoundland and Labrador Tax, 2025, 5001-C) Part A, line 11: "Line 11: Line 9 minus
+# line 10 (cannot be negative) =". Line 9 is "Amount from line 1" and has no step of its own, so
+# the step reads line 1 directly: line 11 is line 1 minus line 10, not below zero. Line 10 is blank
+# when line 1 is $220,910 or less, so a blank line 10 is passed on and line 11 is blank there.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "11"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_taxable_income_line_1
+      less: ca-nl/nl428_bracket_lower_bound_line_10
+    blank:
+      less: pass_on
+    produces:
+      output: ca-nl/nl428_taxable_income_over_lower_bound_line_11

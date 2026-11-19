@@ -176,16 +176,6 @@ EDGES = [
 ]
 
 
-@pytest.mark.parametrize(("salary", "line_1", "line_3", "line_4"), [*CASES, *EDGES])
-def test_the_salaries_give_the_line_1_and_3_figures_the_line_4_cases_rest_on(
-    tmp_path: Path, salary: str, line_1: str, line_3: str, line_4: str
-) -> None:
-    assert D(line_4) == max(D(line_1) - D(line_3), D(0))
-    sheet = _sheet(tmp_path, salary)
-    assert sheet.get(_kind(LINE_1)).value == D(line_1)
-    assert sheet.get(_kind(LINE_3)).value == D(line_3)
-
-
 @pytest.mark.parametrize(("salary", "line_1", "line_3", "expected"), [*CASES, *EDGES])
 def test_line_4_is_line_1_less_line_3_for_the_salary(
     tmp_path: Path, salary: str, line_1: str, line_3: str, expected: str

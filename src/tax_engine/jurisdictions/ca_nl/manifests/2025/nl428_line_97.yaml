@@ -1,0 +1,61 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 97 and line 61890: "Reduction for an
+# eligible dependant claimed on line 58160 Claim $557". Line 58160 is line 23 of the other form
+# `ca-nl/nl428_credits`, which exports it, so the first step is a core/record_total over that export,
+# as line 66 reads line 62. The second step is core/amount_by_band over that figure: the
+# `ca-nl/low_income_reduction_dependant_gate` dataset gives the printed 557 where line 23 is above 0
+# and 0 where it is 0.00. A request that leaves line 22 blank has no eligible dependant, so line 23
+# is blank; the first step passes that blank on and so does the band step, so with no amount
+# claimed on line 58160 line 97 is BLANK, as on the paper form. A line 23 of 0.00 (a claim that
+# comes to nothing) still gives 0.00.
+# The spouse and the eligible dependant reductions are not both allowed: NL Income Tax Act, 2000,
+# s. 9(1)(b) gives the eligible dependant amount only to an individual who does not claim the spouse
+# amount, and s. 21.1(2.1)(b) gives one $557 for either. So line 97 reads line 96 (same form): the
+# gated figure above is unprinted, core/subtract takes line 96 off the $557 that line 96 itself
+# produces (line 97 prints the same $557) to give the most line 97 may be, and core/at_most is line
+# 97, passing the gated figure on or refusing the return when it is above that most (both claimed).
+# A blank line 96 is read as 0 by the subtract (no spouse claim), so the most is the whole $557; a
+# blank gated figure is passed on blank by the at_most.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_credits.nl428_eligible_dependant_amount_line_23
+    blank:
+      records:
+        ca-nl/nl428_eligible_dependant_amount_line_23: pass_on
+    produces:
+      output: ca-nl/nl428_eligible_dependant_claimed_line_97
+  - name: core/amount_by_band
+    unit: ca/cad
+    params:
+      table: ca-nl/low_income_reduction_dependant_gate
+    consumes:
+      base: ca-nl/nl428_eligible_dependant_claimed_line_97
+    blank:
+      base: pass_on
+    produces:
+      output: ca-nl/nl428_low_income_reduction_dependant_before_check_line_97
+  - name: core/subtract
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/low_income_reduction_spouse
+      less: ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96
+    blank:
+      less: "0"
+    produces:
+      output: ca-nl/nl428_low_income_reduction_dependant_most_line_97
+  - name: core/at_most
+    title: "Reduction for an eligible dependant claimed on line 58160"
+    reference: "97"
+    unit: ca/cad
+    consumes:
+      amount: ca-nl/nl428_low_income_reduction_dependant_before_check_line_97
+      bound: ca-nl/nl428_low_income_reduction_dependant_most_line_97
+    blank:
+      amount: pass_on
+    produces:
+      output: ca-nl/nl428_low_income_reduction_dependant_line_97

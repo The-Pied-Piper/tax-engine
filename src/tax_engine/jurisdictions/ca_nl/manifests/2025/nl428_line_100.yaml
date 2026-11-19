@@ -1,0 +1,51 @@
+# NL428 (2025) line 100, the low-income threshold. Form NL428 (CRA 5001-C): "Line 100: If you
+# claimed an amount on line 96 or line 97, enter $40,460; if not, enter $23,928."
+#
+# Step 1 counts the printed condition through ca/count_by_conditions: 1 when an amount is claimed on
+# line 96 or on line 97, else 0. Line 96 and line 97 are blank when nothing is claimed; the step
+# reads a blank as 0, so a blank line is no claim. Steps 2 and 3 produce the two printed figures
+# from the `ca-nl/low_income_threshold` ($23,928) and
+# `ca-nl/low_income_threshold_with_spouse_or_dependant` ($40,460) datasets through
+# core/credit_amount; neither is a line of the form, so each has no reference, and each title is plain words,
+# not printed wording, because the sentence of line 100 names it. Step 4
+# chooses between them with core/choose_by_count: $23,928 for a count of 0, $40,460 for a count
+# of 1.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: ca/count_by_conditions
+    title: "Amount claimed on line 96 or line 97, counted as 1 or 0"
+    params:
+      conditions: ca-nl/low_income_threshold_conditions
+    consumes:
+      counts: []
+      amounts:
+        - ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96
+        - ca-nl/nl428_low_income_reduction_dependant_line_97
+    blank:
+      amounts: "0"
+    produces:
+      output: ca-nl/nl428_low_income_threshold_conditions_count_line_100
+  - name: core/credit_amount
+    title: "Low-income threshold"
+    unit: ca/cad
+    params:
+      amount: ca-nl/low_income_threshold
+    produces:
+      output: ca-nl/low_income_threshold
+  - name: core/credit_amount
+    title: "Low-income threshold when line 96 or line 97 is claimed"
+    unit: ca/cad
+    params:
+      amount: ca-nl/low_income_threshold_with_spouse_or_dependant
+    produces:
+      output: ca-nl/low_income_threshold_with_spouse_or_dependant
+  - name: core/choose_by_count
+    reference: "100"
+    unit: ca/cad
+    consumes:
+      count: ca-nl/nl428_low_income_threshold_conditions_count_line_100
+      when_none: ca-nl/low_income_threshold
+      when_any: ca-nl/low_income_threshold_with_spouse_or_dependant
+    produces:
+      output: ca-nl/nl428_low_income_threshold_line_100

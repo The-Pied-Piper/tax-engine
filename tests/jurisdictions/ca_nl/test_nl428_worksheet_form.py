@@ -1,10 +1,13 @@
 """The Newfoundland and Labrador form `ca-nl/nl428_worksheet` (Worksheet NL428, CRA 5001-D, 2025)
-and its export.
+and its exports.
 
-Only the section "Line 58080 - Age amount" is built. Its line 7 reads (CRA 5001-D-25e.txt): "Line
-7: Line 1 minus line 6 (if negative, enter "0") Enter this amount on line 58080 of your Form
-NL428." The part file declares the form and that one export; it has no capabilities, no dataset
-and no supplies. The other sections are skipped blocks whose NL428 lines are optional inputs.
+Only the sections "Line 58080 - Age amount" and "Line 58440 - Disability amount for self" are
+built. The age amount's line 7 reads (CRA 5001-D-25e.txt): "Line 7: Line 1 minus line 6 (if
+negative, enter "0") Enter this amount on line 58080 of your Form NL428." The disability amount's
+line 7 reads: "Line 7: Line 1 plus line 6 Enter this amount on line 58440 of your Form NL428.
+(maximum $10,981)". The part file declares the form and those two exports; it has no capabilities,
+no dataset and no supplies. The other sections are skipped blocks whose NL428 lines are optional
+inputs.
 """
 
 from __future__ import annotations
@@ -28,6 +31,7 @@ from tests.kinds import non_negative
 NL_ROOT = Path(tax_engine.jurisdictions.ca_nl.__file__).parent
 PART = NL_ROOT / "manifests" / "2025" / "nl428_worksheet.yaml"
 LINE_7 = "ca-nl/worksheet_nl428_age_amount_line_7"
+DISABILITY_LINE_7 = "ca-nl/worksheet_nl428_disability_self_line_7"
 
 
 def _part() -> dict[str, Any]:
@@ -66,8 +70,8 @@ def test_the_part_declares_the_form_name_title_and_required() -> None:
     assert form["required"] is True
 
 
-def test_the_form_exports_only_the_age_amount_line_7() -> None:
-    assert _part()["form"]["exports"] == [LINE_7]
+def test_the_form_exports_only_the_two_line_7_amounts() -> None:
+    assert _part()["form"]["exports"] == [LINE_7, DISABILITY_LINE_7]
 
 
 def test_the_part_declares_no_capabilities_and_no_supplies() -> None:
@@ -106,4 +110,29 @@ def test_the_line_7_docstring_quotes_the_form_text() -> None:
     assert (
         '"Line 7: Line 1 minus line 6 (if negative, enter "0") Enter this amount on line '
         '58080 of your Form NL428."'
+    ) in doc
+
+
+def test_the_disability_line_7_kind_is_a_non_negative_amount_in_the_namespace() -> None:
+    kind = newfoundland_kinds().kind(DISABILITY_LINE_7)
+
+    assert isinstance(kind, AmountKind)
+    assert non_negative(kind)
+    assert DISABILITY_LINE_7.startswith("ca-nl/")
+
+
+def test_the_disability_line_7_kind_rejects_a_negative_amount() -> None:
+    kind = newfoundland_kinds().kind(DISABILITY_LINE_7)
+
+    with pytest.raises(NegativeArtifactError):
+        Artifact(kind, Decimal("-0.01"))
+
+
+def test_the_disability_line_7_docstring_quotes_the_form_text() -> None:
+    doc = squashed(docstring_of(DISABILITY_LINE_7))
+
+    assert "Worksheet NL428" in doc
+    assert (
+        '"Line 7: Line 1 plus line 6 Enter this amount on line 58440 of your Form NL428. '
+        '(maximum $10,981)"'
     ) in doc

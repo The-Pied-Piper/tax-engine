@@ -1,0 +1,30 @@
+# Worksheet NL428 (CRA 5001-D) 2025, section "Line 58440 - Disability amount for self", lines 3 to 5:
+# "Line 3: Total child care and attendant care expenses for you, claimed by you or another person",
+# "Line 4: Threshold for child and attendant care expenses 2,987.00" and "Line 5: Line 3 minus line
+# 4 (if negative, enter "0")". The form names no label for line 5, so the step has no title. Line 3
+# is an optional input (`ca/disability_self_care_expenses`), read as 0 when blank. Line 4 is the
+# printed threshold from the `ca-nl/disability_self_care_threshold` dataset, claimed whole:
+# core/credit_amount, printed line 4, so it carries the reference "4". Line 5 is line 3 minus line
+# 4, not below zero, rounded half-up to the cent.
+form:
+  name: ca-nl/nl428_worksheet
+capabilities:
+  - name: core/credit_amount
+    reference: "4"
+    unit: ca/cad
+    params:
+      amount: ca-nl/disability_self_care_threshold
+    produces:
+      output: ca-nl/worksheet_nl428_disability_self_care_threshold_line_4
+  - name: core/subtract_not_below_zero
+    reference: "5"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca/disability_self_care_expenses
+      less: ca-nl/worksheet_nl428_disability_self_care_threshold_line_4
+    blank:
+      amount: "0"
+    produces:
+      output: ca-nl/worksheet_nl428_disability_self_care_over_threshold_line_5

@@ -1,0 +1,21 @@
+# Condition of the low-income threshold on Form NL428 line 100, 2025 tax year (CRA 5001-C): "Line
+# 100: If you claimed an amount on line 96 or line 97, enter $40,460; if not, enter $23,928." The
+# two conditions are copied in the form's wording: "an amount on line 96" is the first amount and "an
+# amount on line 97" the second, each more than 0. The count is 1 when either applies and 0 when
+# neither does. The result is a count, not a dollars-and-cents box, so there is no rounding.
+family: ca-nl/low_income_threshold_conditions
+tax_year: 2025
+kind: conditions
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+rounding: none
+count_when_any_applies: "1"
+conditions:
+  - text: You claimed an amount on line 96
+    parts:
+      - tests:
+          - {reads: amount, position: "1", relation: more_than, than: "0"}
+  - text: You claimed an amount on line 97
+    parts:
+      - tests:
+          - {reads: amount, position: "2", relation: more_than, than: "0"}

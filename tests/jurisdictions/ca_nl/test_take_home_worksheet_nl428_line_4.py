@@ -8,8 +8,8 @@ The part `worksheet_nl428_line_4.yaml` is three steps. Line 2 is a core/record_t
 net income (`ca/t1_taxable_income.net_income`, line 23600 after its floor). Line 3 is a
 core/credit_amount over the `ca-nl/age_income_threshold` dataset (38,712.00, claimed whole). Line 4
 is a core/subtract_not_below_zero step over line 2 (`amount`) and line 3 (`less`), rounded half-up
-to the cent by `ca-nl/cent_rounding`. Only the final step carries the line number, as the reference
-"4". The three kinds are non-negative. The "born in 1960 or earlier" condition is not read here:
+to the cent by `ca-nl/cent_rounding`. Each step carries its line number as the reference ("2", "3",
+"4"). The three kinds are non-negative. The "born in 1960 or earlier" condition is not read here:
 line 4 is a plain subtraction.
 
 The test composes the real federal parts the T1 taxable income form needs (Schedule 8 and the T1
@@ -323,7 +323,7 @@ def test_the_positive_row_traces_the_subtraction_with_the_rounding_named(tmp_pat
     )
 
 
-def test_the_part_is_three_untitled_steps_and_only_line_4_carries_a_reference() -> None:
+def test_the_part_is_three_untitled_steps_each_carrying_its_line_number() -> None:
     steps = _steps()
 
     assert [step["name"] for step in steps] == [
@@ -332,15 +332,16 @@ def test_the_part_is_three_untitled_steps_and_only_line_4_carries_a_reference() 
         "core/subtract_not_below_zero",
     ]
     assert all("title" not in step for step in steps)
-    assert [step.get("reference") for step in steps] == [None, None, "4"]
+    assert [step.get("reference") for step in steps] == ["2", "3", "4"]
 
 
 def test_line_2_is_a_record_total_over_the_t1_net_income() -> None:
     step = _steps()[0]
 
-    assert list(step) == ["name", "unit", "consumes", "produces"]
+    assert list(step) == ["name", "reference", "unit", "consumes", "produces"]
     assert step == {
         "name": "core/record_total",
+        "reference": "2",
         "unit": "ca/cad",
         "consumes": {"records": "ca/t1_taxable_income.net_income"},
         "produces": {"output": LINE_2},
@@ -350,9 +351,10 @@ def test_line_2_is_a_record_total_over_the_t1_net_income() -> None:
 def test_line_3_is_the_age_income_threshold_claimed_whole() -> None:
     step = _steps()[1]
 
-    assert list(step) == ["name", "unit", "params", "produces"]
+    assert list(step) == ["name", "reference", "unit", "params", "produces"]
     assert step == {
         "name": "core/credit_amount",
+        "reference": "3",
         "unit": "ca/cad",
         "params": {"amount": THRESHOLD},
         "produces": {"output": LINE_3},

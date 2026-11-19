@@ -1,0 +1,36 @@
+# NL428 (2025) line 98, the low-income tax reduction. Form NL428 (CRA 5001-C): "Line 98: Add lines
+# 95 to 97. (maximum $1,554) =". Lines 95 to 97 are the basic reduction ($997), the reduction for a
+# spouse or common-law partner ($557) and the reduction for an eligible dependant ($557); lines 96
+# and 97 are blank when nothing is claimed, and the sum reads each blank as 0. All three together
+# would come to $2,111, but line 97 refuses a return that also claims line 96, so the sum is at most
+# $1,554; the printed maximum is still applied: core/capped_amount takes the lesser of the sum and
+# the `ca-nl/low_income_reduction_maximum` dataset ($1,554). The sum is not a line of the form, so
+# it has no reference, and its title is plain words, not printed wording, because the sentence of
+# line 98 names it; the line's number is on the capped step.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/sum
+    title: "Low-income reduction before the maximum"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/low_income_reduction_basic
+        - ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96
+        - ca-nl/nl428_low_income_reduction_dependant_line_97
+    blank:
+      ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96: "0"
+      ca-nl/nl428_low_income_reduction_dependant_line_97: "0"
+    produces:
+      output: ca-nl/nl428_low_income_reduction_before_maximum_line_98
+  - name: core/capped_amount
+    reference: "98"
+    unit: ca/cad
+    params:
+      cap: ca-nl/low_income_reduction_maximum
+    consumes:
+      base: ca-nl/nl428_low_income_reduction_before_maximum_line_98
+    produces:
+      output: ca-nl/nl428_low_income_reduction_line_98
