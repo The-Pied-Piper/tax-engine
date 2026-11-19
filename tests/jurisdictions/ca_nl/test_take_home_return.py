@@ -1,12 +1,13 @@
 """The Newfoundland and Labrador take-home return (2025): T1 line 167, "Refund or balance owing".
 
-Form text (T1 General 5006-R, line 167): "Line 167: Line 149 minus line 166 ... Refund or balance
-owing". The return's first output is that line, read from the T1 tax and credits form: `return.yaml`
-mirrors the Saskatchewan and Manitoba parts. Its step is a core/record_total over the T1 form's
-export `ca/t1_tax_and_credits.refund_or_balance_owing`, a cross-form read (another form's export is
-read only as a record list), producing the return's own `ca/refund_or_balance_owing`. Positive is a
-balance owing, negative a refund. The step has no `form` key (the return is the default form) and
-no params. The two rates are built by their own tickets.
+Form text (T1 General 5006-R, line 167): "Line 167: Line 149 minus line 166. If the amount is
+negative, enter it on line 48400 below. If the amount is positive, enter it on line 48500 below."
+The line is titled "Refund or balance owing". The return's first output is that line, read from
+the T1 tax and credits form: `return.yaml` mirrors the Saskatchewan and Manitoba parts. Its step is
+a core/record_total over the T1 form's export `ca/t1_tax_and_credits.refund_or_balance_owing`, a
+cross-form read (another form's export is read only as a record list), producing the return's own
+`ca/refund_or_balance_owing`. Positive is a balance owing, negative a refund. The step has no `form`
+key (the return is the default form) and no params. The two rates are built by their own tickets.
 
 The test composes the real Newfoundland and Labrador salary part and the real `return.yaml`. The
 header, the declaration of the T1 tax and credits form (exporting `ca/refund_or_balance_owing`) and

@@ -5,8 +5,8 @@
 # line 42800, which NL428 line 105 supplies (`ca/provincial_tax.amount`); T1 line 47900
 # "Provincial or territorial credits" has no Newfoundland and Labrador source for a salary-only
 # filer (Form NL479 is not built: its only credits, physical activity and research and
-# development, are claims needing receipts or Form T1129) and is read as 0, as in the other
-# provinces' returns.
+# development, are claims needing receipts or Form T1129): the T1 form reads it as optional and
+# passes it on blank, so it adds nothing to line 167, as in the Saskatchewan and Alberta returns.
 #
 # The average income tax rate and the marginal tax rate, the return's other two outputs, are built
 # by their own tickets, one step each in this part.
