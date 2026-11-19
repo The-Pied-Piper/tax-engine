@@ -268,8 +268,23 @@ def test_the_part_counts_the_claims_and_chooses_between_the_two_printed_figures(
     }
 
 
-def test_line_100_kind_is_a_registered_non_negative_amount() -> None:
-    registered = newfoundland_kinds().kind(IDENTIFIER)
+@pytest.mark.parametrize(
+    ("identifier", "kind"),
+    [
+        ("ca-nl/low_income_threshold", nl_catalog.LOW_INCOME_THRESHOLD),
+        (
+            "ca-nl/low_income_threshold_with_spouse_or_dependant",
+            nl_catalog.LOW_INCOME_THRESHOLD_WITH_SPOUSE_OR_DEPENDANT,
+        ),
+        (
+            "ca-nl/nl428_low_income_threshold_conditions_count_line_100",
+            nl_catalog.NL428_LOW_INCOME_THRESHOLD_CONDITIONS_COUNT_LINE_100,
+        ),
+        (IDENTIFIER, nl_catalog.NL428_LOW_INCOME_THRESHOLD_LINE_100),
+    ],
+)
+def test_line_100_kinds_are_registered_non_negative(identifier: str, kind: Any) -> None:
+    registered = newfoundland_kinds().kind(identifier)
 
-    assert registered is nl_catalog.NL428_LOW_INCOME_THRESHOLD_LINE_100
+    assert registered is kind
     assert non_negative(registered)
