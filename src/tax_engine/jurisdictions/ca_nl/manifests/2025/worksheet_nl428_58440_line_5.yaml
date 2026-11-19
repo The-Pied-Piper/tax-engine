@@ -4,12 +4,13 @@
 # 4 (if negative, enter "0")". The form names no label for line 5, so the step has no title. Line 3
 # is an optional input (`ca/disability_self_care_expenses`), read as 0 when blank. Line 4 is the
 # printed threshold from the `ca-nl/disability_self_care_threshold` dataset, claimed whole:
-# core/credit_amount, a step toward line 5 so it carries no reference. Line 5 is line 3 minus line
+# core/credit_amount, printed line 4, so it carries the reference "4". Line 5 is line 3 minus line
 # 4, not below zero, rounded half-up to the cent.
 form:
   name: ca-nl/nl428_worksheet
 capabilities:
   - name: core/credit_amount
+    reference: "4"
     unit: ca/cad
     params:
       amount: ca-nl/disability_self_care_threshold

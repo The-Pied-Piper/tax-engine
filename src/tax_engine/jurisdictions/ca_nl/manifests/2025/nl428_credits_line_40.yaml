@@ -15,6 +15,7 @@ form:
   name: ca-nl/nl428_credits
 capabilities:
   - name: ca/yes_or_no_count
+    title: "Disability amount for self claimed"
     consumes:
       count: ca-nl/nl428_disability_amount_self_claimed_line_40
     blank:
@@ -40,6 +41,7 @@ capabilities:
     produces:
       output: ca-nl/nl428_disability_amount_self_worksheet_line_40
   - name: core/choose_by_count
+    title: "Disability amount for self before the claim"
     unit: ca/cad
     consumes:
       count: ca/under_18_on_december_31_checked

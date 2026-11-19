@@ -1,8 +1,8 @@
 # Worksheet NL428 (CRA 5001-D) 2025, section "Line 58440 - Disability amount for self", lines 1 and
 # 7: "Line 1: Base amount 7,467.00" and "Line 7: Line 1 plus line 6 Enter this amount on line 58440
 # of your Form NL428. (maximum $10,981)". The form names no label for either line, so no step has
-# a title. Line 7 is the part's final step and carries the number; line 1 is a step toward it, so
-# it carries no reference. Line 1 is the printed base amount from the
+# a title. Each of the two steps carries its printed line number as
+# its reference. Line 1 is the printed base amount from the
 # `ca-nl/disability_self_base_amount` dataset, claimed whole: core/credit_amount. Line 7 is line 1
 # plus line 6, rounded half-up to the cent. The printed "(maximum $10,981)" is line 1 plus line 2
 # and line 6 is never above line 2, so it cannot bind and is not a step. Neither input is ever
@@ -11,6 +11,7 @@ form:
   name: ca-nl/nl428_worksheet
 capabilities:
   - name: core/credit_amount
+    reference: "1"
     unit: ca/cad
     params:
       amount: ca-nl/disability_self_base_amount

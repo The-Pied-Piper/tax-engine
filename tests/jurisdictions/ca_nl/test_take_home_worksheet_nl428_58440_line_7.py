@@ -5,7 +5,7 @@ Form text (Worksheet NL428, CRA 5001-D, 2025, 5001-d-25e.txt, confirmed 2026-11-
 age on December 31, 2025."
 "Line 1: Base amount 7,467.00" and "Line 7: Line 1 plus line 6 Enter this amount on line 58440 of
 your Form NL428. (maximum $10,981)". Line 1 is the `ca-nl/disability_self_base_amount` dataset
-claimed whole (no reference). Line 7 is core/sum rounded half-up to the cent and carries the
+claimed whole (reference "1"). Line 7 is core/sum rounded half-up to the cent and carries the
 reference "7". The "(maximum $10,981)" is line 1 plus line 2 and line 6 is never above line 2, so it
 cannot bind and is not a step.
 
@@ -183,7 +183,7 @@ def test_line_7_part_is_the_base_amount_and_the_sum() -> None:
     assert base["name"] == "core/credit_amount"
     assert base["params"] == {"amount": "ca-nl/disability_self_base_amount"}
     assert base["produces"] == {"output": LINE_1}
-    assert "reference" not in base
+    assert base["reference"] == "1"
     assert total["name"] == "core/sum"
     assert total["reference"] == "7"
     assert total["params"] == {"rounding": ROUNDING}

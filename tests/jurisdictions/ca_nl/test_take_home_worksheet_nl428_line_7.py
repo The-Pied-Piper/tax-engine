@@ -4,8 +4,8 @@ Form text (Worksheet NL428, CRA 5001-D, 2025, 5001-d-25e.txt): "Line 1: Maximum 
 "Line 6: Line 4 multiplied by the percentage from line 5 = ^" and "Line 7: Line 1 minus line 6 (if
 negative, enter \\"0\\") Enter this amount on line 58080of your Form NL428. = ^". The form names no
 label for any of the lines, so no step has a title. Line 1 is a printed maximum, the
-`ca-nl/age_maximum` dataset claimed whole (core/credit_amount), a step toward line 7 and so without
-a reference, as line 3 is in the line 4 part. Line 7 is the part's final step, a
+`ca-nl/age_maximum` dataset claimed whole (core/credit_amount), carrying the
+reference "1", as lines 2 and 3 do in the line 4 part. Line 7 is the part's final step, a
 core/subtract_not_below_zero over line 1 (`amount`) and line 6 (`less`), rounded half-up to the cent
 by `ca-nl/cent_rounding`, and carries the reference "7". Neither input is ever blank, so the
 subtraction has no blank rule. Line 7 and its kind already exist on the form export; this part adds
@@ -371,7 +371,7 @@ def test_the_floored_row_reads_in_english_with_the_zero_result(tmp_path: Path) -
     assert "rounded to the nearest cent" in row
 
 
-def test_the_part_is_two_untitled_steps_and_only_line_7_carries_a_reference() -> None:
+def test_the_part_is_two_untitled_steps_each_carrying_its_line_number() -> None:
     steps = _steps()
 
     assert [step["name"] for step in steps] == [
@@ -379,16 +379,17 @@ def test_the_part_is_two_untitled_steps_and_only_line_7_carries_a_reference() ->
         "core/subtract_not_below_zero",
     ]
     assert all("title" not in step for step in steps)
-    assert [step.get("reference") for step in steps] == [None, "7"]
+    assert [step.get("reference") for step in steps] == ["1", "7"]
 
 
-def test_line_1_is_the_age_maximum_claimed_whole_with_no_reference() -> None:
+def test_line_1_is_the_age_maximum_claimed_whole() -> None:
     step = _steps()[0]
 
-    assert "reference" not in step
-    assert list(step) == ["name", "unit", "params", "produces"]
+    assert step["reference"] == "1"
+    assert list(step) == ["name", "reference", "unit", "params", "produces"]
     assert step == {
         "name": "core/credit_amount",
+        "reference": "1",
         "unit": "ca/cad",
         "params": {"amount": MAXIMUM},
         "produces": {"output": LINE_1},

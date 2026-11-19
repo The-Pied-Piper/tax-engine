@@ -6,7 +6,7 @@ age on December 31, 2025."
 "Line 3: Total child care and attendant care expenses for you, claimed by you or another person",
 "Line 4: Threshold for child and attendant care expenses 2,987.00" and "Line 5: Line 3 minus line 4
 (if negative, enter "0")". Line 4 is the `ca-nl/disability_self_care_threshold` dataset claimed
-whole (no reference); line 3 is the optional shared input `ca/disability_self_care_expenses`, read
+whole (reference "4"); line 3 is the optional shared input `ca/disability_self_care_expenses`, read
 as 0 when blank. Line 5 is core/subtract_not_below_zero rounded half-up to the cent. It carries
 the reference "5".
 
@@ -173,7 +173,7 @@ def test_line_5_part_is_the_threshold_and_the_subtraction_with_a_blank_read_as_0
     assert threshold["name"] == "core/credit_amount"
     assert threshold["params"] == {"amount": "ca-nl/disability_self_care_threshold"}
     assert threshold["produces"] == {"output": LINE_4}
-    assert "reference" not in threshold
+    assert threshold["reference"] == "4"
     assert subtract["name"] == "core/subtract_not_below_zero"
     assert subtract["reference"] == "5"
     assert subtract["params"] == {"rounding": ROUNDING}

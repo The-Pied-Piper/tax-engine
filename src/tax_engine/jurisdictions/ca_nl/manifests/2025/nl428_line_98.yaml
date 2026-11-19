@@ -5,11 +5,13 @@
 # would come to $2,111, but line 97 refuses a return that also claims line 96, so the sum is at most
 # $1,554; the printed maximum is still applied: core/capped_amount takes the lesser of the sum and
 # the `ca-nl/low_income_reduction_maximum` dataset ($1,554). The sum is not a line of the form, so
-# it has no title and no reference; the line's number is on the capped step.
+# it has no reference, and its title is plain words, not printed wording, because the sentence of
+# line 98 names it; the line's number is on the capped step.
 form:
   name: ca-nl/nl428
 capabilities:
   - name: core/sum
+    title: "Low-income reduction before the maximum"
     unit: ca/cad
     params:
       rounding: ca-nl/cent_rounding
