@@ -128,6 +128,12 @@ NL428_SEARCH_AND_RESCUE_VOLUNTEERS_AMOUNT_LINE_32 = AmountKind.declare(
 volunteers' amount": the amount as the filer gives it, an optional input; a blank input is read as
 blank."""
 
+NL428_CHILD_CARE_AMOUNT_LINE_33 = AmountKind.declare(
+    CATALOG, "nl428_child_care_amount_line_33", non_negative=True
+)
+"""Child care amount, NL428 line 33 "Line 33 and line 58320: Child care amount": the amount as
+the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
     CATALOG, "nl428_adoption_expenses_line_34", non_negative=True
 )
