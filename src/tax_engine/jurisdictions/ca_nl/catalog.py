@@ -391,6 +391,14 @@ NL428_DIRECT_EQUITY_TAX_CREDIT_LINE_78 = AmountKind.declare(
 T1272)": the credit from Form T1272, an optional input that a salary-only caller leaves out; a
 blank input is read as blank."""
 
+NL428_VENTURE_CAPITAL_TAX_CREDIT_LINE_84 = AmountKind.declare(
+    CATALOG, "nl428_venture_capital_tax_credit_line_84", non_negative=True
+)
+"""Venture capital tax credit, NL428 line 84 "Line 84: Line 82 plus line 83": the venture capital
+tax credit from Certificate(s) NL VCTC (line 82) plus the unused credit from the most recent notice
+of assessment or reassessment (line 83), taken as one optional input that a salary-only caller
+leaves out; a blank input is read as blank."""
+
 NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
 )
