@@ -1,0 +1,22 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 77 "Line 77: Line 74 minus line 76 (if
+# negative, enter "0") =". One core/subtract_not_below_zero step: the tax after the provincial
+# foreign tax credit (line 74, `ca-nl/nl428_tax_line_74`) less the political contribution tax credit
+# (line 76, `ca-nl/nl428_political_contribution_tax_credit_line_76`), not below 0. Line 76 is an
+# optional input that a salary-only caller leaves blank; the line 76 step passes that blank on, and
+# the blank rule reads it as 0. The form prints no title for the line, so the step has none. The
+# output is `ca-nl/nl428_tax_line_77`, which is not exported yet.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "77"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_tax_line_74
+      less: ca-nl/nl428_political_contribution_tax_credit_line_76
+    blank:
+      less: "0"
+    produces:
+      output: ca-nl/nl428_tax_line_77
