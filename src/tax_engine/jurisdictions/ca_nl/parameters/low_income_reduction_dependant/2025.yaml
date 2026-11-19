@@ -1,0 +1,12 @@
+# Newfoundland and Labrador eligible dependant reduction, low income, 2025 tax year (Form NL428
+# line 97): "Line 97 and line 61890: Reduction for an eligible dependant claimed on line 58160 Claim
+# $557". The printed figure is taken as printed, so it is a credit, not a computed amount.
+# The figure is a dollars-and-cents figure, so it rounds half-up to the cent, the project's choice,
+# as the form states no rounding rule.
+family: ca-nl/low_income_reduction_dependant
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "557"

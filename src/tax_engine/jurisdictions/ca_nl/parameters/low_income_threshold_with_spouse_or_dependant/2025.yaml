@@ -1,0 +1,13 @@
+# Newfoundland and Labrador low income threshold with a spouse or dependant, 2025 tax year (Form
+# NL428 line 100): "Line 100: If you claimed an amount on line 96 or line 97, enter $40,460; if
+# not, enter $23,928." This dataset is the "if you claimed an amount on line 96 or line 97" branch,
+# $40,460. The printed figure is taken as printed, so it is a credit, not a computed amount.
+# The figure is a dollars-and-cents figure, so it rounds half-up to the cent, the project's choice,
+# as the form states no rounding rule.
+family: ca-nl/low_income_threshold_with_spouse_or_dependant
+tax_year: 2025
+kind: credit
+sources:
+  - https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt
+rounding: {increment: "0.01", mode: half_up}
+amount: "40460"
