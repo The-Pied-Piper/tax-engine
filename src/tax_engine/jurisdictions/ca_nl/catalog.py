@@ -213,6 +213,17 @@ NL428_TUITION_AND_EDUCATION_AMOUNTS_LINE_44 = AmountKind.declare(
 education amounts (attach Schedule NL(S11))": the amount as the filer gives it, an optional input;
 a blank input is read as blank."""
 
+NL428_TUITION_AND_EDUCATION_AMOUNTS_TRANSFERRED_FROM_A_CHILD_OR_GRANDCHILD_LINE_45 = (
+    AmountKind.declare(
+        CATALOG,
+        "nl428_tuition_and_education_amounts_transferred_from_a_child_or_grandchild_line_45",
+        non_negative=True,
+    )
+)
+"""Tuition and education amounts transferred from a child or grandchild, NL428 line 45 (line 58600)
+"Tuition and education amounts transferred from a child or grandchild": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
+
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
