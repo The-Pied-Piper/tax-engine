@@ -14,6 +14,24 @@ from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+WORKSHEET_NL428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_net_income_line_2", non_negative=True
+)
+"""Net income, Worksheet NL428 line 2 "Line 2: Amount from line 23600 of your return": the net
+income of the return."""
+
+WORKSHEET_NL428_AGE_AMOUNT_INCOME_THRESHOLD_LINE_3 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_income_threshold_line_3", non_negative=True
+)
+"""Income threshold, Worksheet NL428 line 3 "Line 3: Income threshold 38,712.00": the printed
+threshold."""
+
+WORKSHEET_NL428_AGE_AMOUNT_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_line_4", non_negative=True
+)
+"""Line 2 minus line 3, Worksheet NL428 line 4 "Line 4: Line 2 minus line 3 (if negative, enter "0")
+": the net income above the threshold, not below 0."""
+
 WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
     CATALOG, "worksheet_nl428_age_amount_line_7", non_negative=True
 )
