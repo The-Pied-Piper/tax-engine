@@ -253,10 +253,10 @@ def test_each_kind_is_a_registered_non_negative_decimal_amount(
 
 
 def test_the_docstrings_quote_the_form_text() -> None:
-    assert 'Line 49 "Amount from line 23600 of your return"' in squashed(docstring_of(LINE_49))
+    assert 'line 49 "Amount from line 23600 of your return"' in squashed(docstring_of(LINE_49))
     doc = squashed(docstring_of(KIND))
 
-    assert 'Line 51 "Line 49 multiplied by the percentage from line 50"' in doc
+    assert 'line 51 "Line 49 multiplied by the percentage from line 50"' in doc
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000"])
