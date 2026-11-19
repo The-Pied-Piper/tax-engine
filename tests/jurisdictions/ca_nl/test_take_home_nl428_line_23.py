@@ -10,7 +10,8 @@ The part has six steps: `core/credit_amount` produces the base amount and the ma
 `core/lesser_of` holds the result at the printed maximum 9,043, `core/amount_by_band` turns line 20
 into the most line 23 may be (the `ca-nl/eligible_dependant_spouse_gate` dataset: 9,043 where line
 20 is 0.00 or blank, 0 where an amount is claimed on line 20) and `core/at_most` is line 23, which
-refuses a return that claims both (NL Income Tax Act, 2000, s. 9(1)(b); the form text is silent). A
+refuses a return that claims both (guide 5000-G line 30400, "If you did not claim an amount on line
+30300 of your return", which line 58160 follows; NL Income Tax Act, 2000, s. 9(1)(b)). A
 blank line 22 (no eligible dependant) is passed on by all of them, so line 23 is blank.
 
 The real part files are loaded under a test-local header and form over the Newfoundland and
