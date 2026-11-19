@@ -299,6 +299,13 @@ NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.decla
 58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
+    CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
+)
+"""Newfoundland and Labrador minimum tax carryover, NL428 line 68 (line 61540) "Amount from line
+40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
+line, as the filer gives it; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
