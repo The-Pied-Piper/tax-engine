@@ -1,0 +1,20 @@
+# Form NL428 (Newfoundland and Labrador Tax, 2025, CRA 5001-C) line 71 (ca-nl/nl428). "Newfoundland and
+# Labrador additional tax for minimum tax purposes:" / "Line 71: Amount from line 14 of Part 7 of Form
+# T691 multiplied by 60% =". The 60% is a printed rate, held in the `ca-nl/minimum_tax_rate` dataset,
+# so line 71 is one calculation: 60% of the amount, rounded half-up to the cent. The amount is an
+# optional input (read as 0 when left out), declared by its own part.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/apply_rate
+    title: "Newfoundland and Labrador additional tax for minimum tax purposes"
+    reference: "71"
+    unit: ca/cad
+    params:
+      rate: ca-nl/minimum_tax_rate
+    consumes:
+      base: ca-nl/nl428_t691_amount_line_71
+    blank:
+      base: "0"
+    produces:
+      output: ca-nl/nl428_additional_tax_minimum_tax_line_71
