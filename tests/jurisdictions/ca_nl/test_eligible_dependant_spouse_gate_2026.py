@@ -85,3 +85,10 @@ def test_the_gate_maximum_is_the_eligible_dependant_maximum() -> None:
     maximum = SOURCE.get("ca-nl/eligible_dependant_amount_maximum", 2026, CREDIT).values.amount
 
     assert SOURCE.get(FAMILY, 2026, AMOUNT_BY_BAND).values.bands[0].amount == maximum
+
+
+def test_2025_eligible_dependant_spouse_gate_is_unchanged() -> None:
+    data = SOURCE.get(FAMILY, 2025, AMOUNT_BY_BAND)
+
+    assert data.values.bands[0].amount == D("9043")
+    assert data.sources != SOURCES
