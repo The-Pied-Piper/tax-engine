@@ -25,6 +25,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
@@ -43,6 +44,7 @@ NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / 
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_line_97.yaml"
 LINE_22 = "ca-nl/nl428_eligible_dependant_net_income_line_22"
+LINE_96_CLAIM = "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_claimed_line_96"
 IDENTIFIER = "ca-nl/nl428_low_income_reduction_dependant_line_97"
 FORM_NAME = "ca-nl/nl428"
 FEDERAL_PARTS = (
@@ -108,6 +110,8 @@ NL_PART_NAMES = (
     "nl428_credits_line_58.yaml",
     "nl428_credits_line_61_input.yaml",
     "nl428_credits_line_62.yaml",
+    "nl428_line_96_input.yaml",
+    "nl428_line_96.yaml",
     "nl428_line_97.yaml",
 )
 
@@ -147,6 +151,7 @@ FORMS = dedent("""\
       required: true
       exports:
         - ca-nl/nl428_low_income_reduction_dependant_line_97
+        - ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96
     capabilities: []
     """)
 
@@ -197,7 +202,8 @@ def _sheet(
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     kinds = newfoundland_kinds()
     for identifier, amount in (given_lines or {}).items():
-        given.append(Artifact(kinds.kind(identifier), D(amount)))
+        kind = kinds.kind(identifier)
+        given.append(Artifact(kind, int(amount) if kind.value_type is int else D(amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
     (sheet,) = worksheets[form]
     return sheet
@@ -207,8 +213,12 @@ def _value(sheet: Any, identifier: str) -> Decimal:
     return D(sheet.get(newfoundland_kinds().kind(identifier)).value)
 
 
-def _line_97(tmp_path: Path, salary: str, line_22: str | None = None) -> Any:
+def _line_97(
+    tmp_path: Path, salary: str, line_22: str | None = None, line_96: str | None = None
+) -> Any:
     given = {} if line_22 is None else {LINE_22: line_22}
+    if line_96 is not None:
+        given[LINE_96_CLAIM] = line_96
     return _sheet(tmp_path, salary, FORM_NAME, given).get(newfoundland_kinds().kind(IDENTIFIER))
 
 
@@ -226,17 +236,30 @@ def test_line_97_is_0_when_line_23_comes_to_nothing(tmp_path: Path) -> None:
     assert _line_97(tmp_path, "70000", "9948").value == D("0")
 
 
+def test_line_97_is_0_when_only_line_96_is_claimed(tmp_path: Path) -> None:
+    assert _line_97(tmp_path, "70000", None, "1").value == D("0")
+
+
+def test_line_97_is_557_when_the_line_96_claim_is_0(tmp_path: Path) -> None:
+    assert _line_97(tmp_path, "70000", "0", "0").value == D("557")
+
+
+def test_line_97_refuses_a_return_that_claims_line_96_and_a_dependant(tmp_path: Path) -> None:
+    with pytest.raises(InputAboveBoundError):
+        _line_97(tmp_path, "70000", "0", "1")
+
+
 def _part() -> dict[str, Any]:
     part = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
     assert isinstance(part, dict)
     return part
 
 
-def test_the_part_is_a_record_total_over_line_23_and_a_gated_amount_by_band() -> None:
+def test_the_part_is_a_record_total_a_gate_the_spouse_room_and_an_at_most() -> None:
     part = _part()
 
     assert part["form"] == {"name": FORM_NAME}
-    read, gate = part["capabilities"]
+    read, gate, room, line = part["capabilities"]
     assert read == {
         "name": "core/record_total",
         "unit": "ca/cad",
@@ -246,11 +269,30 @@ def test_the_part_is_a_record_total_over_line_23_and_a_gated_amount_by_band() ->
     }
     assert gate == {
         "name": "core/amount_by_band",
-        "title": "Reduction for an eligible dependant claimed on line 58160",
-        "reference": "97",
         "unit": "ca/cad",
         "params": {"table": "ca-nl/low_income_reduction_dependant_gate"},
         "consumes": {"base": "ca-nl/nl428_eligible_dependant_claimed_line_97"},
+        "produces": {"output": "ca-nl/nl428_low_income_reduction_dependant_before_check_line_97"},
+    }
+    assert room == {
+        "name": "core/subtract",
+        "unit": "ca/cad",
+        "params": {"rounding": "ca-nl/cent_rounding"},
+        "consumes": {
+            "amount": "ca-nl/low_income_reduction_spouse",
+            "less": "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96",
+        },
+        "produces": {"output": "ca-nl/nl428_low_income_reduction_dependant_most_line_97"},
+    }
+    assert line == {
+        "name": "core/at_most",
+        "title": "Reduction for an eligible dependant claimed on line 58160",
+        "reference": "97",
+        "unit": "ca/cad",
+        "consumes": {
+            "amount": "ca-nl/nl428_low_income_reduction_dependant_before_check_line_97",
+            "bound": "ca-nl/nl428_low_income_reduction_dependant_most_line_97",
+        },
         "produces": {"output": IDENTIFIER},
     }
 
