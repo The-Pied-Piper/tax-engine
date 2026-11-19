@@ -850,3 +850,8 @@ NL428_ADJUSTED_FAMILY_INCOME_LINE_93 = AmountKind.declare(
 Enter this amount on line 99. Adjusted family income": line 92 of column 1 (you) plus line 92 of
 column 2 (your spouse or common-law partner), both not below 0, so the kind is non-negative.
 Column 2 is taken as 0 when left blank."""
+
+NL428_LINE_101 = AmountKind.declare(CATALOG, "nl428_line_101", non_negative=True)
+"""NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0") =": line 99 (a copy of
+line 93, the adjusted family income) less line 100 (the low-income threshold), floored at 0 as the
+form prints, rounded half-up to the cent."""
