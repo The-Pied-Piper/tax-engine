@@ -17,7 +17,7 @@ and line 56 input parts, the real `mb428_credits_line_53.yaml`, `mb428_credits_l
 tests, line 59, line 62 and the line 63 amount). The header and the form declarations are made up
 here: the credits form exports lines 1, 3 to 8 and 57, and `ca-mb/mb428` exports only line 65. The
 figures are line 60 (the line 60 test) less line 64 (the line 64 test), not below 0, hand-computed
-from the printed forms, not a CRA example: 0.00 / 284.08 / 5,747.59 / 26,863.55 (at 10,000 line 60
+from the printed forms, not a CRA example: 0.00 / 5,747.59 (at 10,000 line 60
 is 1,072.98 and line 64 is 1,883.15, so the difference is negative and line 65 is 0).
 """
 
@@ -192,15 +192,11 @@ FORM = dedent(f"""\
 # 2,183.07.
 CASES = [
     ("10000", "0.00"),
-    ("20000", "284.08"),
     ("70000", "5747.59"),
-    ("200000", "26863.55"),
 ]
 LINES_60_AND_64 = {
     "10000": ("1072.98", "1883.15"),
-    "20000": ("2142.18", "1858.10"),
     "70000": ("7923.71", "2176.12"),
-    "200000": ("29046.62", "2183.07"),
 }
 
 

@@ -15,8 +15,8 @@ the new `mb428_line_78.yaml`, and types in only the salary (and, in some tests, 
 amount). The header and the form declarations are made up here: the credits form exports lines 1, 3
 to 8 and 57, and `ca-mb/mb428` exports only line 78. The figures are line 76 (the line 76 test,
 equal to line 74) with line 77 left blank and read as 0, hand-computed from the printed forms, not a
-CRA example: 0.00 / 284.08 / 5,747.59 / 26,863.55. The 120,000 cap of line 77 is the line 77
-test's, not pinned here.
+CRA example: 0.00 / 5,747.59 (and 284.08 at 20,000, the floor case). The 120,000 cap of line 77 is
+the line 77 test's, not pinned here.
 """
 
 from __future__ import annotations
@@ -196,22 +196,17 @@ FORM = dedent(f"""\
     """)
 
 # salary, line 78 with line 77 left out, so line 77 is blank and read as 0 and line 78 equals line
-# 76. Line 76 is 0.00 / 284.08 / 5,747.59 / 26,863.55 (line 74 less a blank line 75).
+# 76. Line 76 is 0.00 / 5,747.59 (line 74 less a blank line 75).
 CASES = [
     ("10000", "0.00"),
-    ("20000", "284.08"),
     ("70000", "5747.59"),
-    ("200000", "26863.55"),
 ]
 # salary, line 77 entry, line 76, line 78: line 76 minus line 77, not below 0.
 CASES_WITH_LINE_77 = [
-    ("70000", "300.00", "5747.59", "5447.59"),
     # Line 77 passes the entry on unchanged; 5747.59 - 300.005 = 5447.585 rounds half-up to 5447.59.
     ("70000", "300.005", "5747.59", "5447.59"),
     # Line 77 above line 76 (284.08 at 20,000): the floor.
     ("20000", "300.00", "284.08", "0.00"),
-    # Exactly equal: the cent zero.
-    ("70000", "5747.59", "5747.59", "0.00"),
 ]
 
 

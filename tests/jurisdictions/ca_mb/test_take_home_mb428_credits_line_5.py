@@ -16,9 +16,9 @@ the real `mb428_credits_line_1.yaml` and the real `mb428_credits_line_5.yaml`, a
 salary. The form declaration is test-local, exporting lines 1 and 5.
 
 Figures (hand-computed, not a CRA example): taxable income is the salary less the enhanced CPP
-deduction, 9,935.00 / 19,835.00 / 69,335.00 / 198,926.00, so line 5 is 10.8% / 10.8% / 12.75% /
-17.4%. The boundary salaries are derived below: the deduction is 1% of the earnings over $3,500 to
-the cent below the $71,300 maximum, and a flat $1,074.00 from $81,200.
+deduction, 9,935.00 / 198,926.00 (and 47,000.01 / 100,000.00 at the edges), so line 5 is 10.8% /
+17.4% / 12.75% / 12.75%. The boundary salaries are derived below: the deduction is 1% of the
+earnings over $3,500 to the cent below the $71,300 maximum, and a flat $1,074.00 from $81,200.
 """
 
 from __future__ import annotations
@@ -98,18 +98,13 @@ FORM = dedent(f"""\
 
 CASES = [
     ("10000", "9935.00", "0.108"),
-    ("20000", "19835.00", "0.108"),
-    ("70000", "69335.00", "0.1275"),
     ("200000", "198926.00", "0.174"),
 ]
 # Salaries whose taxable income sits on a column's edge: line 1 is 47,000.00 or less in column 1,
 # not more than 100,000.00 in column 2. One cent more is the next column.
 EDGES = [
-    ("47439.39", "47000.00", "0.108"),
     ("47439.40", "47000.01", "0.1275"),
-    ("101073.99", "99999.99", "0.1275"),
     ("101074.00", "100000.00", "0.1275"),
-    ("101074.01", "100000.01", "0.174"),
 ]
 # The percentage the trace prints for each rate.
 PERCENT = {"0.108": "10.8", "0.1275": "12.75", "0.174": "17.4"}

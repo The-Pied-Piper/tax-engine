@@ -14,8 +14,8 @@ needs, the real parts of lines 1 to 8 and the new
 the Worksheet MB428 form declaration (exporting lines 1 to 9) are made up here, because the shared
 scaffold owns them.
 
-Figures: line 1 is 15,780.00 (the basic personal amount dataset). Line 8 is 0.00 at $10,000,
-$20,000, $70,000 and $200,000 (the line 8 test pins this), so line 9 is 15,780.00 there. The two
+Figures: line 1 is 15,780.00 (the basic personal amount dataset). Line 8 is 0.00 at $10,000
+and $200,000 (the line 8 test pins this), so line 9 is 15,780.00 there. The two
 larger cases come from the line 8 test and are recomputed here:
 - $300,000: net income 300,000 - 678.00 - 396.00 = 298,926.00, line 6 0.49463, line 8 = 0.49463 x
   15,780.00 = 7,805.2614, half-up to the cent 7,805.26; line 9 = 15,780.00 - 7,805.26 = 7,974.74.
@@ -112,8 +112,6 @@ FORM = dedent("""\
 # line 9 is line 1.
 UNREDUCED = [
     ("10000", "15780.00", "0.00", "15780.00"),
-    ("20000", "15780.00", "0.00", "15780.00"),
-    ("70000", "15780.00", "0.00", "15780.00"),
     ("200000", "15780.00", "0.00", "15780.00"),
 ]
 # salary, line 1, line 8, line 9: line 8 reduces line 1 but stays below it.

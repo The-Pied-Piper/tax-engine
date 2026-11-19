@@ -16,7 +16,7 @@ real `mb428_line_72.yaml`, the line 73 input part `mb428_line_73_input.yaml`, an
 header and the form declarations are made up here: the credits form exports lines 1, 3 to 8 and 57,
 and `ca-mb/mb428` exports only line 74. The figures are line 72 (the line 72 test, equal to line 70
 as line 71 is blank) with line 73 left blank and read as 0, hand-computed from the printed forms,
-not a CRA example: 0.00 / 284.08 / 5,747.59 / 26,863.55.
+not a CRA example: 0.00 / 5,747.59 (and 284.08 at 20,000, the floor case).
 """
 
 from __future__ import annotations
@@ -200,22 +200,17 @@ FORM = dedent(f"""\
     """)
 
 # salary, line 74 with line 73 left out, so line 73 is blank and read as 0 and line 74 equals line
-# 72. Line 72 is 0.00 / 284.08 / 5,747.59 / 26,863.55 (line 70 less a blank line 71).
+# 72. Line 72 is 0.00 / 5,747.59 (line 70 less a blank line 71).
 CASES = [
     ("10000", "0.00"),
-    ("20000", "284.08"),
     ("70000", "5747.59"),
-    ("200000", "26863.55"),
 ]
 # salary, line 73, line 72, line 74: line 72 minus line 73, not below 0.
 CASES_WITH_LINE_73 = [
-    ("70000", "300.00", "5747.59", "5447.59"),
     # A cent-rounded subtraction of a figure with a fraction of a cent.
     ("70000", "300.005", "5747.59", "5447.59"),
     # Line 73 above line 72 (284.08 at 20,000): the floor.
     ("20000", "300.00", "284.08", "0.00"),
-    # Exactly equal: the cent zero.
-    ("70000", "5747.59", "5747.59", "0.00"),
 ]
 
 

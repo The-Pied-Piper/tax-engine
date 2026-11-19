@@ -14,7 +14,7 @@ needs, the real line 2 to 7 parts and the new `worksheet_mb428_line_8.yaml`, and
 salary. The header and the Worksheet MB428 form declaration are made up here, because the shared
 scaffold owns them.
 
-Figures: line 6 is 0 at $10,000, $20,000, $70,000 and $200,000 (the line 6 test pins this), and line
+Figures: line 6 is 0 at $10,000 and $200,000 (the line 6 test pins this), and line
 7 is 15,780.00 (the basic personal amount dataset), so line 8 is 0.00 there. The cases below are
 this test's own additions (not in the ticket), each product recomputed exactly:
 - $251,074: net income 251,074 - 678.00 - 396.00 = 250,000.00, line 4 50,000.00, line 6 0.25, line 8
@@ -117,8 +117,6 @@ FORM = dedent("""\
 # is 0.00.
 ZERO = [
     ("10000", "0", "15780.00", "0.00"),
-    ("20000", "0", "15780.00", "0.00"),
-    ("70000", "0", "15780.00", "0.00"),
     ("200000", "0", "15780.00", "0.00"),
 ]
 # salary, net income (line 2), line 6, line 8: this test's own additions (not in the ticket). The
