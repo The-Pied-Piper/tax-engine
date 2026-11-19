@@ -348,6 +348,14 @@ NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out;
 a blank input is read as blank."""
 
+NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
+    CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
+)
+"""UCCB and RDSP repayments, NL428 line 89 "Line 89: Total of the universal child care benefit
+(UCCB) repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
+repayment (included on line 23200 of the return)": the total of the two repayments as the filer
+gives it, an optional input; a blank input is read as blank, column 1 (you) only."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
