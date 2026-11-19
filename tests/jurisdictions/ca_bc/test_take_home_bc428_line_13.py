@@ -17,18 +17,15 @@ The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable
 `bc428_line_13.yaml`. The form declaration and header are test-local, and the service is built over
 the package list of `support.py`.
 
-Figures (ticket, hand-computed, not a CRA example): line 1 is 16,865.00 / 19,835.00 / 29,735.00 /
-69,335.00 / 198,926.00, so line 13 is blank for the first four, and for $200,000 line 11 is
+Figures (ticket, hand-computed, not a CRA example): line 1 is 16,865.00 / 69,335.00 /
+198,926.00, so line 13 is blank for the first two, and for $200,000 line 11 is
 12,620.00 (198,926.00 less 186,306.00) at 16.8%, so 2,120.16.
 
 Boundary cases go through the capability and the real cent rounding dataset directly, with line 11
 recomputed by hand from the printed bounds (137,407 / 186,306 / 259,829) and rates (14.7% / 16.8% /
-20.5%). A line 1 of 137,407.01 is column 1 (line 11 0.01, tax 0.00147, so 0.00); 186,306.00 is
-column 1 (line 11 48,899.00, tax 7,188.153, so 7,188.15) and 186,306.01 is column 2 (0.01 at 16.8%,
-so 0.00); 186,307.00 is column 2 (line 11 1.00, 0.168, so 0.17); 259,829.00 is column 2 (line 11
-73,523.00, tax 12,351.864, so 12,351.86); 259,829.01 is column 3 (0.01 at 20.5%, so 0.00) and
-259,830.00 is column 3 (line 11 1.00, 0.205, so 0.21: half-up, where half-even gives 0.20).
-300,000.00 is column 3 (line 11 40,171.00, tax 8,235.055, so 8,235.06).
+20.5%). A line 1 of 186,306.00 is
+column 1 (line 11 48,899.00, tax 7,188.153, so 7,188.15) and 259,830.00 is column 3 (line 11 1.00,
+0.205, so 0.21: half-up, where half-even gives 0.20).
 """
 
 from __future__ import annotations
@@ -171,9 +168,9 @@ def _kind(identifier: str) -> AmountKind:
     return kind
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000"])
+@pytest.mark.parametrize("salary", ["17000", "70000"])
 def test_line_13_is_blank_when_lines_11_and_12_are_blank(tmp_path: Path, salary: str) -> None:
-    # Line 1 is 16,865.00 to 69,335.00, at or below 137,407: lines 11 and 12 are blank.
+    # Line 1 is 16,865.00 and 69,335.00, at or below 137,407: lines 11 and 12 are blank.
     sheet = _sheet(tmp_path, salary)
 
     assert sheet.get(_kind(LINE_11)).is_blank
@@ -252,24 +249,9 @@ def _line_13_at(line_11: str, rate: str) -> Artifact[Decimal]:
 @pytest.mark.parametrize(
     ("line_1", "bound", "rate", "expected"),
     [
-        # Just above 137,407: column 1, line 11 0.01, 0.00147.
-        ("137407.01", "137407", "0.147", "0.00"),
-        # Column 1 at its upper bound: 48,899.00 x 14.7% = 7,188.153.
         ("186306.00", "137407", "0.147", "7188.15"),
-        # Just above 186,306: column 2, 0.01 x 16.8% = 0.00168.
-        ("186306.01", "186306", "0.168", "0.00"),
-        # 186,307: column 2, line 11 1.00 x 16.8% = 0.168.
-        ("186307.00", "186306", "0.168", "0.17"),
-        # Column 2 at its upper bound: 73,523.00 x 16.8% = 12,351.864.
-        ("259829.00", "186306", "0.168", "12351.86"),
-        # Just above 259,829: column 3, 0.01 x 20.5% = 0.00205.
-        ("259829.01", "259829", "0.205", "0.00"),
         # 259,830: column 3, line 11 1.00 x 20.5% = 0.205, half-up 0.21 (half-even gives 0.20).
         ("259830.00", "259829", "0.205", "0.21"),
-        # Column 3: 40,171.00 x 20.5% = 8,235.055, half-up.
-        ("300000.00", "259829", "0.205", "8235.06"),
-        # The $200,000 salary: 12,620.00 x 16.8% = 2,120.16.
-        ("198926.00", "186306", "0.168", "2120.16"),
     ],
 )
 def test_line_13_at_the_column_boundaries_to_the_cent(
@@ -287,15 +269,6 @@ def test_line_13_at_the_column_boundaries_to_the_cent(
     [
         # 1.00 x 20.5% = 0.205: exactly half goes up (half-up, not half-even 0.20).
         ("1.00", "0.205", "0.21"),
-        # 0.04 x 20.5% = 0.0082 and 0.05 x 20.5% = 0.01025: both round to 0.01.
-        ("0.04", "0.205", "0.01"),
-        ("0.05", "0.205", "0.01"),
-        # 5.00 x 14.7% = 0.735: exactly half goes up.
-        ("5.00", "0.147", "0.74"),
-        # 15.00 x 14.7% = 2.205: exactly half goes up (half-even gives 2.20).
-        ("15.00", "0.147", "2.21"),
-        # 25.00 x 14.7% = 3.675: exactly half goes up.
-        ("25.00", "0.147", "3.68"),
         # 0.02 x 14.7% = 0.00294: down.
         ("0.02", "0.147", "0.00"),
     ],

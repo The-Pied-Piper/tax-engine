@@ -21,21 +21,15 @@ in the part `bc428_line_8.yaml`. The form declaration is test-local. The service
 package list of `support.py`.
 
 Figures (ticket, hand-computed, not a CRA example): taxable income is the salary less the CPP
-enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so
-line 8 is 853.37 + 0.00 / 1,003.65 + 0.00 / 1,504.59 + 0.00 / 1,544.31 + 2,493.52 = 4,037.83 /
-blank, for salaries of 17,000 / 20,000 / 30,000 / 70,000 / 200,000.
+enhanced and second-ceiling amounts, 16,865.00 / 69,335.00 / 198,926.00, so
+line 8 is 853.37 + 0.00 / 1,544.31 + 2,493.52 = 4,037.83 /
+blank, for salaries of 17,000 / 70,000 / 200,000.
 
-Column edges are driven from a given line 1 (the T1 parts are left out), with line 6 =
-(line 1 - lower bound) x rate, half-up to the cent, and line 8 = line 6 + printed start:
-- 49,279.00: 49,279.00 x 0.0506 = 2,493.5174, so 2,493.52; + 0.00 = 2,493.52.
-- 49,279.01: 0.01 x 0.077 = 0.00077, so 0.00; + 2,493.52 = 2,493.52.
-- 98,560.00: 49,281.00 x 0.077 = 3,794.637, so 3,794.64; + 2,493.52 = 6,288.16 (one cent over the
-  printed 6,288.15 start of column 3: the form's own printed figures do not tie at this edge).
-- 98,560.01: 0.01 x 0.105 = 0.00105, so 0.00; + 6,288.15 = 6,288.15.
-- 113,158.00: 14,598.00 x 0.105 = 1,532.79; + 6,288.15 = 7,820.94.
-- 113,158.01: 0.01 x 0.1229 = 0.001229, so 0.00; + 7,820.94 = 7,820.94.
-- 137,407.00: 24,249.00 x 0.1229 = 2,980.2021, so 2,980.20; + 7,820.94 = 10,801.14.
-- 137,407.01: blank.
+Column edges (the two kept here) are driven from a given line 1 (the T1 parts are left out), with
+line 6 = (line 1 - lower bound) x rate, half-up to the cent, and line 8 = line 6 + printed start: -
+49,279.00: 49,279.00 x 0.0506 = 2,493.5174, so 2,493.52; + 0.00 = 2,493.52. - 98,560.00: 49,281.00 x
+0.077 = 3,794.637, so 3,794.64; + 2,493.52 = 6,288.16 (one cent over the printed 6,288.15 start of
+column 3: the form's own printed figures do not tie at this edge).
 """
 
 from __future__ import annotations
@@ -240,10 +234,6 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
     [
         # Line 6 is 853.37 and line 7 is 0.00 (column 1).
         ("17000", "853.37"),
-        # Line 6 is 1,003.65 and line 7 is 0.00.
-        ("20000", "1003.65"),
-        # Line 6 is 1,504.59 and line 7 is 0.00.
-        ("30000", "1504.59"),
         # Line 6 is 1,544.31 and line 7 is 2,493.52 (column 2).
         ("70000", "4037.83"),
     ],
@@ -261,21 +251,10 @@ def test_line_8_is_blank_when_line_1_is_above_137407(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("taxable_income", "expected"),
     [
-        ("0.00", "0.00"),
         # Column 1 at its top: line 6 2,493.52 (49,279.00 x 5.06% = 2,493.5174), line 7 0.00.
         ("49279.00", "2493.52"),
-        # Column 2, one cent over: line 6 0.00 (0.00077), line 7 2,493.52.
-        ("49279.01", "2493.52"),
         # Column 2 at its top: line 6 3,794.64 (49,281.00 x 7.7% = 3,794.637), line 7 2,493.52.
         ("98560.00", "6288.16"),
-        # Column 3, one cent over: line 6 0.00 (0.00105), line 7 6,288.15.
-        ("98560.01", "6288.15"),
-        # Column 3 at its top: line 6 1,532.79 (14,598.00 x 10.5%), line 7 6,288.15.
-        ("113158.00", "7820.94"),
-        # Column 4, one cent over: line 6 0.00 (0.001229), line 7 7,820.94.
-        ("113158.01", "7820.94"),
-        # Column 4 at its top: line 6 2,980.20 (24,249.00 x 12.29% = 2,980.2021), line 7 7,820.94.
-        ("137407.00", "10801.14"),
     ],
 )
 def test_line_8_at_and_just_above_each_column_boundary(

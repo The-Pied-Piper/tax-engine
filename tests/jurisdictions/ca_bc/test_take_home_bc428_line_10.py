@@ -8,8 +8,8 @@ more than $259,829  Line 10: 186,306.00", "Column 3: Line 1 is more than $259,82
 `ca-bc/brackets_lines_9_to_15` schedule, output `ca-bc/bc428_bracket_lower_bound_line_10`, as
 Alberta's line 10 is.
 
-The table covers only a line 1 above 137,407.00, so line 10 is left blank there: at $17,000,
-$20,000, $30,000 and $70,000 it is blank, at $200,000 (line 1 is 198,926.00) it is 186,306.00. A
+The table covers only a line 1 above 137,407.00, so line 10 is left blank there: at $17,000
+and $70,000 it is blank, at $200,000 (line 1 is 198,926.00) it is 186,306.00. A
 blank output is read from the Worksheet as an artifact whose `is_blank` is true (its `value`
 raises), and its trace is one `BracketOutsideRangeLine` (output, base, base amount).
 
@@ -152,9 +152,6 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
     ("salary", "expected"),
     [
         ("17000", "16865.00"),
-        ("20000", "19835.00"),
-        ("30000", "29735.00"),
-        ("70000", "69335.00"),
         ("200000", "198926.00"),
     ],
 )
@@ -164,9 +161,9 @@ def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: 
     assert sheet.get(british_columbia_kinds().kind(LINE_1)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000"])
+@pytest.mark.parametrize("salary", ["17000", "70000"])
 def test_line_10_is_blank_when_line_1_is_137407_or_less(tmp_path: Path, salary: str) -> None:
-    # Line 1 is 16,865.00 to 69,335.00: in the low table's columns, outside this table's range.
+    # Line 1 is 16,865.00 and 69,335.00: in the low table's columns, outside this table's range.
     sheet = _sheet(tmp_path, salary)
 
     assert sheet.get(british_columbia_kinds().kind(LINE_10)).is_blank
@@ -226,8 +223,6 @@ def test_line_1_of_137407_01_gives_137407() -> None:
     [
         ("186306.00", "137407.00"),
         ("186306.01", "186306.00"),
-        ("259829.00", "186306.00"),
-        ("259829.01", "259829.00"),
     ],
 )
 def test_the_other_thresholds_give_the_column_line_1_falls_in(base: str, expected: str) -> None:

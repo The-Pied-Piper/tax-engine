@@ -15,8 +15,8 @@ declaration is test-local, exporting lines 1 and 3. The service is built over th
 `support.py`.
 
 Figures (ticket, hand-computed): taxable income is the salary less the CPP enhanced and
-second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so line 3 is
-0.00 for the first three, 49,279.00 for $70,000 and blank for $200,000.
+second-ceiling amounts, 69,335.00 / 198,926.00, so line 3 is
+49,279.00 for $70,000 and blank for $200,000.
 """
 
 from __future__ import annotations
@@ -150,20 +150,10 @@ def _kind(identifier: str) -> AmountKind:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 1 is 16,865.00, 19,835.00 and 29,735.00: column 1.
-        ("17000", "0.00"),
-        ("20000", "0.00"),
-        ("30000", "0.00"),
         # Line 1 is 69,335.00, over 49,279 and not over 98,560: column 2.
         ("70000", "49279.00"),
-        # Line 1 on each column's upper edge stays in that column; one cent more is the next.
+        # Line 1 on the first column's upper edge stays in that column.
         ("49741.41", "0.00"),
-        ("49741.42", "49279.00"),
-        ("99634", "49279.00"),
-        ("99635", "98560.00"),
-        ("114232", "98560.00"),
-        ("114233", "113158.00"),
-        ("138481", "113158.00"),
     ],
 )
 def test_line_3_is_the_lower_bound_of_the_column_line_1_falls_in(

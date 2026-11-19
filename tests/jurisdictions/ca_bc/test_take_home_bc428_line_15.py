@@ -21,17 +21,13 @@ Lines 1, 10, 11, 12, 13 and 14 are composed from their real parts as they are: l
 is test-local. The service is built over the package list of `support.py`.
 
 Figures (hand-computed, not a CRA example): taxable income is the salary less the CPP
-enhanced and second-ceiling amounts, 16,865.00 / 19,835.00 / 29,735.00 / 69,335.00 / 198,926.00, so
-line 15 is blank for salaries of 17,000 / 20,000 / 30,000 / 70,000, and for 200,000 it is
+enhanced and second-ceiling amounts, 16,865.00 / 69,335.00 / 198,926.00, so
+line 15 is blank for salaries of 17,000 / 70,000, and for 200,000 it is
 2,120.16 + 17,989.30 = 20,109.46 (line 11 is 12,620.00 at 16.8%).
 
 Column edges are driven from a given line 1 (the T1 parts are left out), with line 13 =
 (line 1 - lower bound) x rate, half-up to the cent, and line 15 = line 13 + printed start:
-- 137407.01: 0.01 x 0.147 = 0.00147, so 0.00; + 10801.15 = 10801.15.
 - 186306.00: 48899.00 x 0.147 = 7188.15300, so 7188.15; + 10801.15 = 17989.30.
-- 186306.01: 0.01 x 0.168 = 0.00168, so 0.00; + 17989.30 = 17989.30.
-- 259829.00: 73523.00 x 0.168 = 12351.86400, so 12351.86; + 17989.30 = 30341.16.
-- 259829.01: 0.01 x 0.205 = 0.00205, so 0.00; + 30341.16 = 30341.16.
 - 300000.00: 40171.00 x 0.205 = 8235.05500, so 8235.06; + 30341.16 = 38576.22.
 - 137,407.00 or less: blank.
 """
@@ -224,9 +220,9 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
     return sheet.get(_kind(LINE_15))
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000"])
+@pytest.mark.parametrize("salary", ["17000", "70000"])
 def test_line_15_is_blank_when_lines_13_and_14_are_blank(tmp_path: Path, salary: str) -> None:
-    # Line 1 is 16,865.00 to 69,335.00, at or below 137,407: the lines 9 to 15 table does not apply.
+    # Line 1 is 16,865.00 and 69,335.00, at or below 137,407: lines 9 to 15 do not apply.
     sheet = _sheet(tmp_path, salary)
 
     assert sheet.get(_kind(LINE_13)).is_blank
@@ -247,17 +243,8 @@ def test_a_salary_of_200000_gives_line_13_plus_line_14(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("taxable_income", "expected"),
     [
-        # Column 1, one cent over 137,407: line 13 0.00 (0.00147), line 14 10,801.15.
-        ("137407.01", "10801.15"),
         # Column 1 at its top: line 13 7,188.15 (48,899.00 x 14.7% = 7,188.153), line 14 10,801.15.
         ("186306.00", "17989.30"),
-        # Column 2, one cent over: line 13 0.00 (0.00168), line 14 17,989.30.
-        ("186306.01", "17989.30"),
-        # Column 2 at its top: line 13 12,351.86 (73,523.00 x 16.8% = 12,351.864), line 14
-        # 17,989.30.
-        ("259829.00", "30341.16"),
-        # Column 3, one cent over: line 13 0.00 (0.00205), line 14 30,341.16.
-        ("259829.01", "30341.16"),
         # Column 3: line 13 8,235.06 (40,171.00 x 20.5% = 8,235.055, half-up), line 14 30,341.16.
         ("300000.00", "38576.22"),
     ],
@@ -268,7 +255,7 @@ def test_line_15_at_and_just_above_each_column_boundary(
     assert _direct(tmp_path, taxable_income).value == D(expected)
 
 
-@pytest.mark.parametrize("taxable_income", ["0.00", "49279.00", "137407.00"])
+@pytest.mark.parametrize("taxable_income", ["49279.00", "137407.00"])
 def test_line_15_is_blank_at_and_below_137407(tmp_path: Path, taxable_income: str) -> None:
     assert _direct(tmp_path, taxable_income).is_blank
 

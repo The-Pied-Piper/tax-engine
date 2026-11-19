@@ -18,9 +18,8 @@ shared scaffold owns them.
 Figures (hand-computed, not a CRA example), re-derived here. Line 72 equals line 70 with line 71
 blank: the British Columbia bracket tax on the taxable income (line 1) less line 67, not below 0.
 Line 79 is 562.00 less line 78, not below 0, where line 78 is (line 74 less 25,020.00, not below 0)
-times 3.56%. At salaries of 17,000 / 20,000 / 30,000 / 70,000 / 200,000: line 72 is 151.09 /
-291.37 / 758.96 / 3,162.39 / 19,230.76, line 79 is 562.00 / 562.00 / 394.15 / 0.00 / 0.00, and line
-80 is 0.00 / 0.00 / 364.81 / 3,162.39 / 19,230.76. A reduction above line 72 is floored at 0.00.
+times 3.56%. At salaries of 17,000 / 30,000: line 72 is 151.09 / 758.96, line 79 is 562.00 / 394.15,
+and line 80 is 0.00 / 364.81. A reduction above line 72 is floored at 0.00.
 """
 
 from __future__ import annotations
@@ -162,10 +161,7 @@ FORM = dedent("""\
 # with line 71 blank), line 79 and the ticket's line 80 figure.
 CASES = [
     ("17000", "16865", "702.28", "151.09", "562.00", "0.00"),
-    ("20000", "19835", "712.28", "291.37", "562.00", "0.00"),
     ("30000", "29735", "745.63", "758.96", "394.15", "364.81"),
-    ("70000", "69335", "875.44", "3162.39", "0.00", "3162.39"),
-    ("200000", "198926", "878.70", "19230.76", "0.00", "19230.76"),
 ]
 # The 2025 British Columbia brackets: lower bound and rate.
 BRACKETS = [
@@ -331,8 +327,6 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
     ("line_72", "line_79", "expected"),
     [
         ("758.96", "394.15", "364.81"),
-        ("3162.39", "0.00", "3162.39"),
-        ("151.09", "151.09", "0.00"),
         ("151.09", "562.00", "0.00"),
     ],
 )

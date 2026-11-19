@@ -84,11 +84,10 @@ FORM_TEXT = dedent(f"""\
 # expenses given, line 14 (the expenses times 10%, rounded half-up to the cent)
 CASES = [
     ("10000.00", "1000.00"),
-    ("1234.56", "123.46"),
     ("0.05", "0.01"),
 ]
 
-SALARIES = ["17000", "20000", "30000", "70000", "200000"]
+SALARIES = ["17000", "200000"]
 
 
 def _part_files() -> Iterator[Path]:

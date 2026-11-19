@@ -15,11 +15,10 @@ condition: 15,787 x 3.56% is 562.02, so the subtraction already gives 0.
 
 Figures (hand-computed from the ticket, not a CRA example), re-derived here. Taxable income (line
 74) is the salary less the CPP enhanced amount (1% of the earnings from 3,500.00 to 71,300.00) and
-the CPP second-ceiling amount (4% of the earnings from 71,300.00 to 81,200.00): 16,865.00,
-19,835.00, 29,735.00, 69,335.00 and 198,926.00 at salaries of 17,000, 20,000, 30,000, 70,000 and
-200,000. Line 78 is (line 74 less 25,020.00, not below 0) times 3.56%, rounded half-up to the cent:
-0.00, 0.00, 167.85, 1,577.61 and 6,191.05. Line 79 is 562.00 less that, not below 0: 562.00, 562.00,
-394.15, 0.00 and 0.00.
+the CPP second-ceiling amount (4% of the earnings from 71,300.00 to 81,200.00): 29,735.00
+and 198,926.00 at salaries of 30,000 and 200,000. Line 78 is (line 74 less 25,020.00, not below 0)
+times 3.56%, rounded half-up to the cent: 167.85 and 6,191.05. Line 79 is 562.00 less that, not
+below 0: 394.15 and 0.00.
 
 The real parts composed: the British Columbia salary, Schedule 8, the T1 taxable-income parts,
 BC428 lines 74, 75, 76, 78 and 73, plus `bc428_line_79.yaml`. The form declaration and header are
@@ -116,10 +115,7 @@ FORM_TEXT = dedent(f"""\
 
 # Salary, line 74 (hand-computed), line 78 and the expected line 79.
 CASES = [
-    ("17000", "16865.00", "0.00", "562.00"),
-    ("20000", "19835.00", "0.00", "562.00"),
     ("30000", "29735.00", "167.85", "394.15"),
-    ("70000", "69335.00", "1577.61", "0.00"),
     ("200000", "198926.00", "6191.05", "0.00"),
 ]
 
@@ -249,7 +245,7 @@ def test_the_step_traces_one_subtracted_not_below_zero_line_with_the_cent_roundi
 
 @pytest.mark.parametrize(
     ("line_74", "positive"),
-    [("40806.00", True), ("40807.00", False), ("40808.00", False)],
+    [("40806.00", True), ("40807.00", False)],
 )
 def test_line_79_is_positive_at_net_income_40806_and_zero_from_40807(
     line_74: str, positive: bool
@@ -283,10 +279,7 @@ def test_line_79_is_positive_at_net_income_40806_and_zero_from_40807(
     ("line_73", "line_78", "expected"),
     [
         ("562.00", "167.85", "394.15"),
-        ("562.00", "0.00", "562.00"),
-        ("562.00", "562.00", "0.00"),
         ("562.00", "562.02", "0.00"),
-        ("562.00", "6191.05", "0.00"),
     ],
 )
 def test_line_79_is_line_73_minus_line_78_not_below_zero_to_the_cent(

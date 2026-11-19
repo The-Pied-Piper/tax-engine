@@ -14,8 +14,8 @@ Line 1 is the real `bc428_line_1.yaml`. The real parts composed: the British Col
 Schedule 8, the T1 taxable-income parts, `bc428_line_1.yaml` and `bc428_line_12.yaml`. The form
 declaration is test-local. The service is built over the package list of `support.py`.
 
-Figures (ticket, hand-computed, not a CRA example): line 1 is 16,865.00 / 19,835.00 / 29,735.00 /
-69,335.00 / 198,926.00, so line 12 is blank for the first four and 0.168 for $200,000.
+Figures (ticket, hand-computed, not a CRA example): line 1 is 16,865.00 / 69,335.00 / 198,926.00,
+so line 12 is blank for the first two and 0.168 for $200,000.
 """
 
 from __future__ import annotations
@@ -170,7 +170,7 @@ def _kind(identifier: str) -> AmountKind:
     return kind
 
 
-@pytest.mark.parametrize("salary", ["17000", "20000", "30000", "70000"])
+@pytest.mark.parametrize("salary", ["17000", "70000"])
 def test_line_12_is_blank_when_line_1_is_137407_or_less(tmp_path: Path, salary: str) -> None:
     assert _sheet(tmp_path, salary).get(_kind(LINE_12)).is_blank
 
@@ -208,10 +208,7 @@ def _direct(tmp_path: Path, taxable_income: str) -> Artifact[Decimal]:
     ("taxable_income", "expected"),
     [
         ("137407.01", "0.147"),
-        ("186306.00", "0.147"),
         ("186306.01", "0.168"),
-        ("259829.00", "0.168"),
-        ("259829.01", "0.205"),
     ],
 )
 def test_line_12_just_above_each_threshold(

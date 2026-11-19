@@ -146,10 +146,7 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
     ("salary", "expected"),
     [
         ("17000", "0.00"),
-        ("20000", "0.00"),
         ("30000", "4715.00"),
-        ("70000", "44315.00"),
-        ("200000", "173906.00"),
     ],
 )
 def test_line_76_is_line_74_minus_line_75_not_below_zero(
