@@ -186,6 +186,12 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_line_48", non_negative=True
+)
+"""Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
@@ -226,6 +232,26 @@ NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
 """Disability amount for self, NL428 line 40 "Line 40 and line 58440: Disability amount for self
 (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when
 the claim is 1, 0 when the claim is blank or 0."""
+
+NL428_AGE_AMOUNT_WORKSHEET_LINE_17 = AmountKind.declare(
+    CATALOG, "nl428_age_amount_worksheet_line_17", non_negative=True
+)
+"""Age amount from the worksheet, NL428 line 17 and line 58080 "Age amount (if you were born in 1960
+or earlier) (use Worksheet NL428) (maximum $7,064)": Worksheet NL428 line 7, read from that form,
+before the born-in-1960-or-earlier claim is applied."""
+
+NL428_AGE_AMOUNT_LINE_17 = AmountKind.declare(
+    CATALOG, "nl428_age_amount_line_17", non_negative=True
+)
+"""Age amount, NL428 line 17 and line 58080 "Age amount (if you were born in 1960 or earlier) (use
+Worksheet NL428) (maximum $7,064)": the worksheet amount when the filer was born in 1960 or
+earlier, 0 when not."""
+
+NL428_CREDITS_SUBTOTAL_LINE_25 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_25", non_negative=True
+)
+"""Personal amounts subtotal, NL428 line 25 "Line 25: Add lines 16, 17, 20, 23, and 24. = ^": the
+sum of lines 16, 17, 20, 23 and 24, lines 20, 23 and 24 being optional and read as 0 when blank."""
 
 NL428_CPP_CONTRIBUTIONS_LINE_27 = AmountKind.declare(
     CATALOG, "nl428_cpp_contributions_line_27", non_negative=True
@@ -297,3 +323,15 @@ NL428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 """Lower bound of the column, NL428 line 3 "Line 3: 0.00" (44,192.00; 88,382.00; 157,792.00): the
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 220,910, where lines 9 to 15 apply."""
+
+NL428_NET_INCOME_LINE_49 = AmountKind.declare(
+    CATALOG, "nl428_net_income_line_49", non_negative=True
+)
+"""Net income, NL428 line 49 "Amount from line 23600 of your return": the T1 net income, read by
+line 51 before it is multiplied by the line 50 rate."""
+
+NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_rate_amount_line_51", non_negative=True
+)
+"""Net income multiplied by 3%, NL428 line 51 "Line 49 multiplied by the percentage from line 50":
+line 49 times the printed line 50 rate, rounded half-up to the cent."""
