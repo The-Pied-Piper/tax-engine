@@ -1,0 +1,13 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 67: "Line 67 and line 61520: Newfoundland and Labrador dividend tax credit (use Worksheet NL428)"
+# (Form NL428, CRA 5001-C). The Worksheet NL428 section behind this line exists only to compute a
+# credit a salary-only caller leaves empty, so that block is skipped and the line is taken as one
+# optional input. A request that leaves the line out is read as blank.
+inputs:
+  - name: ca-nl/nl428_dividend_tax_credit_line_67
+    title: "Newfoundland and Labrador dividend tax credit (use Worksheet NL428)"
+    reference: "67"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 67 and line 61520: Newfoundland and Labrador dividend tax credit (use Worksheet NL428)"
