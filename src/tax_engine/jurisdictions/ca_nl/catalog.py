@@ -185,12 +185,33 @@ NL428_PENSION_INCOME_AMOUNT_LINE_37 = AmountKind.declare(
 $1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
 left out; above the maximum it is refused, not capped."""
 
+NL428_CREDITS_SUBTOTAL_LINE_39 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_39", non_negative=True
+)
+"""Credits subtotal, NL428 line 39 "Line 39: Add lines 36 to 38. = ^": line 36 plus line 37 (the
+pension income amount) plus line 38 (the caregiver amount), lines 37 and 38 being read as 0 when
+blank."""
+
 NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declare(
     CATALOG, "nl428_disability_amount_transferred_from_a_dependant_line_41", non_negative=True
 )
 """Disability amount transferred from a dependant, NL428 line 41 "Line 41 and line 58480: Disability
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
+
+NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
+    CATALOG, "nl428_student_loan_interest_line_43", non_negative=True
+)
+"""Interest paid on your student loans, NL428 line 43 "Line 43 and line 58520: Interest paid on your
+student loans (amount from line 31900 of your return)": the amount as the filer gives it, an
+optional input; a blank input is read as blank."""
+
+NL428_TUITION_AND_EDUCATION_AMOUNTS_LINE_44 = AmountKind.declare(
+    CATALOG, "nl428_tuition_and_education_amounts_line_44", non_negative=True
+)
+"""Your tuition and education amounts, NL428 line 44 "Line 44 and line 58560: Your tuition and
+education amounts (attach Schedule NL(S11))": the amount as the filer gives it, an optional input;
+a blank input is read as blank."""
 
 NL428_TUITION_AND_EDUCATION_AMOUNTS_TRANSFERRED_FROM_A_CHILD_OR_GRANDCHILD_LINE_45 = (
     AmountKind.declare(
@@ -359,6 +380,12 @@ NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51 = AmountKind.declare(
 )
 """Net income multiplied by 3%, NL428 line 51 "Line 49 multiplied by the percentage from line 50":
 line 49 times the printed line 50 rate, rounded half-up to the cent."""
+
+NL428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_52 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_limited_amount_line_52", non_negative=True
+)
+"""Line 51 limited to $2,410, NL428 line 52 "Enter whichever is less: $2,410 or the amount on line
+51": the lesser of the printed $2,410 and line 51."""
 
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True

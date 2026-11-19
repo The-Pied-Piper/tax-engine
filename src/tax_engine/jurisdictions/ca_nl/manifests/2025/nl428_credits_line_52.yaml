@@ -1,0 +1,18 @@
+# NL428 (2025) line 52 (Form NL428, CRA 5001-C): "Line 52: Enter whichever is less: $2,410 or the
+# amount on line 51." The $2,410 is the printed ceiling, the `ca-nl/medical_expense_dollar_limit`
+# dataset, and has no step of its own. Line 52 is the lesser of that ceiling and line 51
+# (`ca-nl/nl428_medical_expenses_rate_amount_line_51`), one core/capped_amount step, rounded
+# half-up to the cent by the dataset's rule. The form names no label for the line, so the step has
+# no title. Line 51 is always a figure, so nothing is blank.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/capped_amount
+    reference: "52"
+    unit: ca/cad
+    params:
+      cap: ca-nl/medical_expense_dollar_limit
+    consumes:
+      base: ca-nl/nl428_medical_expenses_rate_amount_line_51
+    produces:
+      output: ca-nl/nl428_medical_expenses_limited_amount_line_52
