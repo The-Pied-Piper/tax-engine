@@ -13,5 +13,6 @@ form:
     - ca-nl/nl428_tax_on_taxable_income_line_8
     - ca-nl/nl428_bracket_rate_line_12
     - ca-nl/nl428_tax_on_taxable_income_line_15
+    - ca-nl/nl428_eligible_dependant_amount_line_23
     - ca-nl/nl428_non_refundable_credits_line_62
 capabilities: []

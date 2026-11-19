@@ -694,3 +694,17 @@ NL428_FAMILY_INCOME_LINE_90 = AmountKind.declare(
 """Line 88 plus line 89, NL428 line 90 "Line 88 plus line 89", column 1 (you): the net income of
 line 88 plus the UCCB and RDSP repayments of line 89. Line 88 can be negative, so the kind is
 signed."""
+
+NL428_ELIGIBLE_DEPENDANT_CLAIMED_LINE_97 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_claimed_line_97", non_negative=True
+)
+"""Amount claimed on line 58160, read by NL428 line 97 "Line 97 and line 61890: Reduction for an
+eligible dependant claimed on line 58160 Claim $557": line 23 of the credits form, the amount for
+an eligible dependant, read across the forms. It is blank when line 23 is blank."""
+
+NL428_LOW_INCOME_REDUCTION_DEPENDANT_LINE_97 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_dependant_line_97", non_negative=True
+)
+"""Reduction for an eligible dependant, NL428 line 97 and line 61890 "Reduction for an eligible
+dependant claimed on line 58160 Claim $557": the printed 557 where an amount is claimed on line
+58160, and blank where line 23 is blank."""
