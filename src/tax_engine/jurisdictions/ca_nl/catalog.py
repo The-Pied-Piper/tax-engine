@@ -422,6 +422,29 @@ NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_LINE_96 = CountKind.dec
 Reduction for spouse or common-law partner Claim $557": the eligibility claim, 1 when the reduction
 is claimed, read as blank when left out."""
 
+NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_CHECKED_LINE_96 = CountKind.declare(
+    CATALOG,
+    "nl428_reduction_for_spouse_or_common_law_partner_claimed_checked_line_96",
+    non_negative=True,
+)
+"""Reduction for spouse or common-law partner claim, checked, NL428 line 96 "Line 96 and line 61880:
+Reduction for spouse or common-law partner Claim $557": the claim with a blank read as 0, refused
+above 1 so the reduction cannot be claimed twice."""
+
+LOW_INCOME_REDUCTION_SPOUSE = AmountKind.declare(
+    CATALOG, "low_income_reduction_spouse", non_negative=True
+)
+"""Reduction for spouse or common-law partner, NL428 line 96 "Line 96 and line 61880: Reduction for
+spouse or common-law partner Claim $557": the printed $557, the amount claimed when the reduction is
+claimed."""
+
+NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_96 = AmountKind.declare(
+    CATALOG, "nl428_reduction_for_spouse_or_common_law_partner_line_96", non_negative=True
+)
+"""Reduction for spouse or common-law partner, NL428 line 96 "Line 96 and line 61880: Reduction for
+spouse or common-law partner Claim $557": the printed $557 when the claim is 1, 0 when the claim is
+blank or 0."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
