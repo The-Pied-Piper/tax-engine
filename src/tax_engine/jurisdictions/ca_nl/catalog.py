@@ -887,3 +887,7 @@ NL428_LINE_101 = AmountKind.declare(CATALOG, "nl428_line_101", non_negative=True
 """NL428 line 101 "Line 101: Line 99 minus line 100 (if negative, enter "0") =": line 99 (a copy of
 line 93, the adjusted family income) less line 100 (the low-income threshold), floored at 0 as the
 form prints, rounded half-up to the cent."""
+
+NL428_LINE_103 = AmountKind.declare(CATALOG, "nl428_line_103", non_negative=True)
+"""NL428 line 103 "Line 103: Line 101 multiplied by the percentage from line 102 =": line 101 times
+the printed line 102 rate of 16%, rounded half-up to the cent."""
