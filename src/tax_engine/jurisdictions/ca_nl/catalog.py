@@ -313,6 +313,13 @@ NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
 Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
 tax form."""
 
+NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_split_income_line_64", non_negative=True
+)
+"""Newfoundland and Labrador tax on split income, NL428 line 64 "Line 64 and line 61510:
+Newfoundland and Labrador tax on split income (complete Form T1206)": the amount as the filer gives
+it, an optional input; a blank input is read as blank."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
