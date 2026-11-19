@@ -237,6 +237,13 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_42", non_negative=True
+)
+"""Credits subtotal, NL428 line 42 "Line 42: Add lines 39 to 41. = ^": line 39 plus line 40 (the
+disability amount for self) plus line 41 (the disability amount transferred from a dependant),
+line 41 being read as 0 when blank."""
+
 NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
     CATALOG, "nl428_student_loan_interest_line_43", non_negative=True
 )
@@ -261,6 +268,15 @@ NL428_TUITION_AND_EDUCATION_AMOUNTS_TRANSFERRED_FROM_A_CHILD_OR_GRANDCHILD_LINE_
 """Tuition and education amounts transferred from a child or grandchild, NL428 line 45 (line 58600)
 "Tuition and education amounts transferred from a child or grandchild": the amount as the filer
 gives it, an optional input; a blank input is read as blank."""
+
+NL428_AMOUNTS_TRANSFERRED_FROM_YOUR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_46 = AmountKind.declare(
+    CATALOG,
+    "nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46",
+    non_negative=True,
+)
+"""Amounts transferred from your spouse or common-law partner, NL428 line 46 "Line 46 and line
+58640: Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
 
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
@@ -421,6 +437,13 @@ NL428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 220,910, where lines 9 to 15 apply."""
 
+NL428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "nl428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, NL428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero. It is blank when line 3 is blank, above
+220,910."""
+
 NL428_NET_INCOME_LINE_49 = AmountKind.declare(
     CATALOG, "nl428_net_income_line_49", non_negative=True
 )
@@ -438,6 +461,12 @@ NL428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_52 = AmountKind.declare(
 )
 """Line 51 limited to $2,410, NL428 line 52 "Enter whichever is less: $2,410 or the amount on line
 51": the lesser of the printed $2,410 and line 51."""
+
+NL428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_53 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_over_limit_line_53", non_negative=True
+)
+"""Medical expenses over the limit, NL428 line 53 "Line 48 minus line 52 (if negative, enter "0")":
+line 48 less line 52, not below 0; a blank line 48 is read as 0."""
 
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
