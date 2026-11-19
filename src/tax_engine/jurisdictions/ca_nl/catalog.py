@@ -554,3 +554,12 @@ NL428_DIVIDEND_TAX_CREDIT_LINE_67 = AmountKind.declare(
 """Newfoundland and Labrador dividend tax credit, NL428 line 67 "Line 67 and line 61520:
 Newfoundland and Labrador dividend tax credit (use Worksheet NL428)": the amount as the filer gives
 it, an optional input; a blank input is read as blank."""
+
+NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
+    CATALOG, "nl428_spouse_net_income_line_88", non_negative=False
+)
+"""Spouse or common-law partner's net income, NL428 line 88 column 2 "Line 88: Net income from line
+23600 of the return (or the amount you would have entered if the instructions on line 23600 said
+"if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
+signed because the line takes the amount as if negative were shown in brackets; a blank input is
+read as blank."""
