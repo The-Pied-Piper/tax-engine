@@ -782,3 +782,11 @@ NL428_LOW_INCOME_REDUCTION_DEPENDANT_LINE_97 = AmountKind.declare(
 """Reduction for an eligible dependant, NL428 line 97 and line 61890 "Reduction for an eligible
 dependant claimed on line 58160 Claim $557": the printed 557 where an amount is claimed on line
 58160, and 0 where line 23 is 0 or blank."""
+
+NL428_SPOUSE_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92 = AmountKind.declare(
+    CATALOG, "nl428_spouse_family_income_less_uccb_rdsp_line_92", non_negative=True
+)
+"""Line 90 minus line 91, NL428 line 92 "Line 92: Line 90 minus line 91 (if negative, enter "0")",
+column 2 (your spouse or common-law partner): the spouse's family income of line 90 less the
+spouse's UCCB and RDSP income of line 91, not below 0, so the kind is non-negative. The result is
+blank when line 90 is."""
