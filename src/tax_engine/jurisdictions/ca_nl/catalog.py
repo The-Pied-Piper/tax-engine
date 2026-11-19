@@ -162,3 +162,29 @@ NL428_SPOUSE_AMOUNT_LINE_20 = AmountKind.declare(
 """Spouse or common-law partner amount, NL428 line 20 "Line 20 and line 58120: Line 18 minus line 19
 (if negative, enter "0") (maximum $9,043) =": line 18 less line 19, not below 0, at most the printed
 maximum."""
+
+ELIGIBLE_DEPENDANT_AMOUNT_BASE = AmountKind.declare(
+    CATALOG, "eligible_dependant_amount_base", non_negative=True
+)
+"""Amount for an eligible dependant, base amount, NL428 line 21 "Base amount 9,948.00": the printed
+figure, from which line 23 takes line 22."""
+
+ELIGIBLE_DEPENDANT_AMOUNT_MAXIMUM = AmountKind.declare(
+    CATALOG, "eligible_dependant_amount_maximum", non_negative=True
+)
+"""Amount for an eligible dependant, maximum, NL428 line 23 "(maximum $9,043)": the printed figure,
+the most line 23 can be."""
+
+NL428_ELIGIBLE_DEPENDANT_AMOUNT_BEFORE_MAXIMUM_LINE_23 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_amount_before_maximum_line_23", non_negative=True
+)
+"""Amount for an eligible dependant before the maximum, NL428 line 23 "Line 23 and line 58160:
+Line 21 minus line 22 (if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below
+0, before the maximum is applied."""
+
+NL428_ELIGIBLE_DEPENDANT_AMOUNT_LINE_23 = AmountKind.declare(
+    CATALOG, "nl428_eligible_dependant_amount_line_23", non_negative=True
+)
+"""Amount for an eligible dependant, NL428 line 23 "Line 23 and line 58160: Line 21 minus line 22
+(if negative, enter "0") (maximum $9,043) =": line 21 less line 22, not below 0, at most the printed
+maximum."""
