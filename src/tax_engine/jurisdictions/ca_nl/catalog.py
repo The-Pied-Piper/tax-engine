@@ -89,6 +89,13 @@ NL428_INFIRM_DEPENDANTS_AMOUNT_LINE_24 = AmountKind.declare(
 infirm dependants age 18 or older (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_QPP_CONTRIBUTIONS_LINE_28 = AmountKind.declare(
+    CATALOG, "nl428_qpp_contributions_line_28", non_negative=True
+)
+"""Quebec Pension Plan contributions, NL428 line 28 "Line 28 and line 58280: Amount from line 31000
+of your return": the amount as the filer gives it, an optional input; a blank input is read as
+blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
