@@ -2,10 +2,11 @@
 
 Form text (Form NL428, CRA 5001-c-25e.txt, confirmed 2026-11-18): "Line 96 and line 61880: Reduction
 for spouse or common-law partner Claim $557". The part has three steps: `ca/yes_or_no_count` reads
-the optional claim (blank read as 0) and refuses a count above 1; `core/credit_amount` supplies the
-printed $557 from the `ca-nl/low_income_reduction_spouse` dataset; `core/times_count` multiplies it
-by the checked claim, rounded through `ca-nl/cent_rounding`, as line 40 does for its claim. A
-salary-only filer leaves the claim out, so line 96 is 0.00.
+the optional claim (a blank passed on) and refuses a count above 1; `core/credit_amount`
+supplies the printed $557 from the `ca-nl/low_income_reduction_spouse` dataset; `core/times_count`
+multiplies it by the checked claim, rounded through `ca-nl/cent_rounding`, as line 40 does for its
+claim, a blank claim passed on. A salary-only filer leaves the claim out, so line 96 is blank;
+a claim of 0 gives 0.00.
 
 The real input part and the new `nl428_line_96.yaml` are loaded under a test-local header and form
 over the Newfoundland and Labrador package list of `support.py`.
@@ -90,7 +91,8 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _line_96(tmp_path: Path, salary: str, claimed: int | None = None) -> Decimal:
+def _line_96(tmp_path: Path, salary: str, claimed: int | None = None) -> Decimal | None:
+    """Line 96's value, or None when the line is blank."""
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
     if claimed is not None:
         given.append(
@@ -98,12 +100,13 @@ def _line_96(tmp_path: Path, salary: str, claimed: int | None = None) -> Decimal
         )
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
     (sheet,) = worksheets[FORM]
-    return D(sheet.get(newfoundland_kinds().kind(LINE_96)).value)
+    artifact = sheet.get(newfoundland_kinds().kind(LINE_96))
+    return None if artifact.is_blank else D(artifact.value)
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
-def test_line_96_is_0_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
-    assert _line_96(tmp_path, salary) == D("0.00")
+def test_line_96_is_blank_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
+    assert _line_96(tmp_path, salary) is None
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
@@ -133,6 +136,8 @@ def test_the_part_has_the_check_the_dataset_and_line_96_in_order() -> None:
     ]
     assert [step.get("reference") for step in steps] == [None, None, "96"]
     assert steps[2]["title"] == "Reduction for spouse or common-law partner"
+    assert steps[0]["blank"] == {"count": "pass_on"}
+    assert steps[2]["blank"] == {"count": "pass_on"}
 
 
 @pytest.mark.parametrize(

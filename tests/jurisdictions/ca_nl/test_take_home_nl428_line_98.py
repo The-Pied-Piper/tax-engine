@@ -264,6 +264,10 @@ def test_the_part_is_a_sum_step_then_a_capped_amount_step() -> None:
         "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96",
         "ca-nl/nl428_low_income_reduction_dependant_line_97",
     ]
+    assert summed["blank"] == {
+        "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96": "0",
+        "ca-nl/nl428_low_income_reduction_dependant_line_97": "0",
+    }
     assert capped == {
         "name": "core/capped_amount",
         "reference": "98",

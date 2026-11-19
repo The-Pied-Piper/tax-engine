@@ -500,8 +500,8 @@ NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_CHECKED_LINE_96 = Count
     non_negative=True,
 )
 """Reduction for spouse or common-law partner claim, checked, NL428 line 96 "Line 96 and line 61880:
-Reduction for spouse or common-law partner Claim $557": the claim with a blank read as 0, refused
-above 1 so the reduction cannot be claimed twice."""
+Reduction for spouse or common-law partner Claim $557": the claim, a blank passed on blank,
+refused above 1 so the reduction cannot be claimed twice."""
 
 LOW_INCOME_REDUCTION_SPOUSE = AmountKind.declare(
     CATALOG, "low_income_reduction_spouse", non_negative=True
@@ -515,7 +515,7 @@ NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_96 = AmountKind.declare(
 )
 """Reduction for spouse or common-law partner, NL428 line 96 "Line 96 and line 61880: Reduction for
 spouse or common-law partner Claim $557": the printed $557 when the claim is 1, 0 when the claim is
-blank or 0."""
+0, and blank when the claim is blank."""
 
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
@@ -826,20 +826,21 @@ NL428_ELIGIBLE_DEPENDANT_CLAIMED_LINE_97 = AmountKind.declare(
 )
 """Amount claimed on line 58160, read by NL428 line 97 "Line 97 and line 61890: Reduction for an
 eligible dependant claimed on line 58160 Claim $557": line 23 of the credits form, the amount for
-an eligible dependant, read across the forms. A blank line 23 is read as 0."""
+an eligible dependant, read across the forms. A blank line 23 is passed on blank."""
 
 NL428_LOW_INCOME_REDUCTION_DEPENDANT_LINE_97 = AmountKind.declare(
     CATALOG, "nl428_low_income_reduction_dependant_line_97", non_negative=True
 )
 """Reduction for an eligible dependant, NL428 line 97 and line 61890 "Reduction for an eligible
 dependant claimed on line 58160 Claim $557": the printed 557 where an amount is claimed on line
-58160, and 0 where line 23 is 0 or blank."""
+58160, 0 where line 23 is 0, and blank where line 23 is blank."""
 
 NL428_LOW_INCOME_REDUCTION_DEPENDANT_BEFORE_CHECK_LINE_97 = AmountKind.declare(
     CATALOG, "nl428_low_income_reduction_dependant_before_check_line_97", non_negative=True
 )
 """Reduction for an eligible dependant before it is checked against line 96, NL428 line 97: the
-printed 557 where an amount is claimed on line 58160, and 0 where line 23 is 0 or blank."""
+printed 557 where an amount is claimed on line 58160, 0 where line 23 is 0, and blank where line 23
+is blank."""
 
 NL428_LOW_INCOME_REDUCTION_DEPENDANT_MOST_LINE_97 = AmountKind.declare(
     CATALOG, "nl428_low_income_reduction_dependant_most_line_97", non_negative=True
