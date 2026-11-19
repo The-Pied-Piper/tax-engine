@@ -50,6 +50,44 @@ WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
 """Age amount, Worksheet NL428 line 7 "Line 7: Line 1 minus line 6 (if negative, enter "0") Enter
 this amount on line 58080 of your Form NL428.": the amount entered on line 58080 of Form NL428."""
 
+WORKSHEET_NL428_DISABILITY_SELF_BASE_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_base_amount_line_1", non_negative=True
+)
+"""Base amount, Worksheet NL428 line 58440 line 1 "Line 1: Base amount 7,467.00": the printed
+base amount."""
+
+WORKSHEET_NL428_DISABILITY_SELF_SUPPLEMENT_MAXIMUM_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_supplement_maximum_line_2", non_negative=True
+)
+"""Maximum amount, Worksheet NL428 line 58440 line 2 "Line 2: Maximum amount 3,514.00": the printed
+maximum."""
+
+WORKSHEET_NL428_DISABILITY_SELF_CARE_THRESHOLD_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_care_threshold_line_4", non_negative=True
+)
+"""Threshold for child and attendant care expenses, Worksheet NL428 line 58440 line 4 "Line 4:
+Threshold for child and attendant care expenses 2,987.00": the printed threshold."""
+
+WORKSHEET_NL428_DISABILITY_SELF_CARE_OVER_THRESHOLD_LINE_5 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_care_over_threshold_line_5", non_negative=True
+)
+"""Care expenses over the threshold, Worksheet NL428 line 58440 line 5 "Line 5: Line 3 minus line 4
+(if negative, enter "0")": the child care and attendant care expenses of line 3 above the line 4
+threshold."""
+
+WORKSHEET_NL428_DISABILITY_SELF_SUPPLEMENT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_supplement_line_6", non_negative=True
+)
+"""Supplement, Worksheet NL428 line 58440 line 6 "Line 6: Line 2 minus line 5 (if negative, enter
+"0")": the maximum of line 2 less the care expenses over the threshold."""
+
+WORKSHEET_NL428_DISABILITY_SELF_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_line_7", non_negative=True
+)
+"""Disability amount for self, Worksheet NL428 line 58440 line 7 "Line 7: Line 1 plus line 6 Enter
+this amount on line 58440 of your Form NL428. (maximum $10,981)": the amount entered on line 58440
+of Form NL428, for a filer under 18 years of age on December 31, 2025."""
+
 NL428_BRACKET_RATE_LINE_5 = AmountKind.declare(
     CATALOG, "nl428_bracket_rate_line_5", non_negative=True
 )
@@ -277,6 +315,20 @@ NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
 """Disability amount for self, NL428 line 40 "Line 40 and line 58440: Disability amount for self
 (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when
 the claim is 1, 0 when the claim is blank or 0."""
+
+NL428_DISABILITY_AMOUNT_SELF_WORKSHEET_LINE_40 = AmountKind.declare(
+    CATALOG, "nl428_disability_amount_self_worksheet_line_40", non_negative=True
+)
+"""Disability amount for self from the worksheet, NL428 line 40 and line 58440 "Disability amount
+for self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": Worksheet NL428
+line 58440 line 7, read from that form, before the under-18 answer and the claim are applied."""
+
+NL428_DISABILITY_AMOUNT_SELF_BASIS_LINE_40 = AmountKind.declare(
+    CATALOG, "nl428_disability_amount_self_basis_line_40", non_negative=True
+)
+"""Disability amount for self before the claim, NL428 line 40 and line 58440 "Disability amount for
+self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467
+for a filer 18 or older (or blank), the worksheet amount for a filer under 18."""
 
 NL428_AGE_AMOUNT_WORKSHEET_LINE_17 = AmountKind.declare(
     CATALOG, "nl428_age_amount_worksheet_line_17", non_negative=True
