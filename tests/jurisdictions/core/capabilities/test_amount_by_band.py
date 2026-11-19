@@ -18,7 +18,12 @@ from typing import Any, assert_type, cast
 import pytest
 
 from tax_engine.domain.artifact import Artifact
-from tax_engine.domain.errors import InvalidCapabilityError, MissingArtifactError
+from tax_engine.domain.blank import BLANK, PASS_ON
+from tax_engine.domain.errors import (
+    BlankNotAllowedError,
+    InvalidCapabilityError,
+    MissingArtifactError,
+)
 from tax_engine.domain.kinds import AmountKind, CountKind
 from tax_engine.domain.parameters.amount_by_band import (
     AMOUNT_BY_BAND,
@@ -36,6 +41,7 @@ from tax_engine.domain.parameters.rounding import (
 )
 from tax_engine.domain.trace import AmountByBandLine
 from tax_engine.domain.trace import rate_tables as trace_rate_tables
+from tax_engine.domain.trace.blank import BlankPassedOnLine
 from tax_engine.jurisdictions.core.capabilities.amount_by_band import AmountFromBand
 from tests.capabilities import bundled_capabilities
 
@@ -384,3 +390,33 @@ def test_the_trace_line_is_exported_by_its_module_and_the_package() -> None:
     assert "AmountByBandLine" in trace_rate_tables.__all__
     assert trace_package.AmountByBandLine is AmountByBandLine
     assert issubclass(AmountByBandLine, trace_package.TraceLine)
+
+
+# --- a blank base -------------------------------------------------------------------------------
+
+
+def test_declares_that_the_base_may_be_blank() -> None:
+    assert AmountFromBand.BLANK_ALLOWED == frozenset({"base"})
+
+
+def test_without_rules_a_blank_base_is_refused_naming_the_slot() -> None:
+    with pytest.raises(BlankNotAllowedError, match="'base'"):
+        capability().run((Artifact(INCOME, BLANK),))
+
+
+def test_pass_on_blanks_the_output_for_a_blank_base() -> None:
+    passing = capability().with_blank_rules({"base": PASS_ON})
+
+    result = passing.run((Artifact(INCOME, BLANK),))
+
+    assert result.outputs == (Artifact(PREMIUM, BLANK),)
+    assert result.trace == (BlankPassedOnLine(PREMIUM, (INCOME,)),)
+
+
+def test_a_filled_base_is_unchanged_when_pass_on_is_declared() -> None:
+    passing = capability().with_blank_rules({"base": PASS_ON})
+
+    result = passing.run((Artifact(INCOME, D("250")),))
+
+    assert result.outputs == (Artifact(PREMIUM, D("12")),)
+    assert isinstance(result.trace[0], AmountByBandLine)
