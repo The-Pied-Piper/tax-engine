@@ -1,0 +1,28 @@
+# Form NL428 (CRA 5001-C) line 47: "Line 47: Add lines 42 to 46. = ^". Line 42 is the credits subtotal
+# (nl428_credits_line_42.yaml); lines 43 to 46 are optional inputs (nl428_credits_line_43_input.yaml to
+# nl428_credits_line_46_input.yaml): the student loan interest, the tuition and education amounts, the
+# amounts transferred from a child or grandchild and the amounts transferred from a spouse or
+# common-law partner. Lines 43 to 46 are blank for a salary-only filer and read as 0. Step 1 adds them
+# with core/sum.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "47"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_credits_subtotal_line_42
+        - ca-nl/nl428_student_loan_interest_line_43
+        - ca-nl/nl428_tuition_and_education_amounts_line_44
+        - ca-nl/nl428_tuition_and_education_amounts_transferred_from_a_child_or_grandchild_line_45
+        - ca-nl/nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46
+    blank:
+      ca-nl/nl428_student_loan_interest_line_43: "0"
+      ca-nl/nl428_tuition_and_education_amounts_line_44: "0"
+      ca-nl/nl428_tuition_and_education_amounts_transferred_from_a_child_or_grandchild_line_45: "0"
+      ca-nl/nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46: "0"
+    produces:
+      output: ca-nl/nl428_credits_subtotal_line_47
