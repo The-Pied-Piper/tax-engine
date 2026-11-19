@@ -118,6 +118,7 @@ def test_the_part_is_one_subtract_not_below_zero_step_over_line_1_and_line_3() -
     # another record fails this test.
     part = yaml.safe_load((TAKE_HOME / "on428_line_4.yaml").read_text(encoding="utf-8"))
 
+    assert list(part) == ["form", "capabilities"]
     assert part["form"] == {"name": FORM}
     assert part["capabilities"] == [
         {
