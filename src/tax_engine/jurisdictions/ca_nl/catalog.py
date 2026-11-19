@@ -220,6 +220,26 @@ NL428_TUITION_AND_EDUCATION_AMOUNTS_LINE_44 = AmountKind.declare(
 education amounts (attach Schedule NL(S11))": the amount as the filer gives it, an optional input;
 a blank input is read as blank."""
 
+NL428_TUITION_AND_EDUCATION_AMOUNTS_TRANSFERRED_FROM_A_CHILD_OR_GRANDCHILD_LINE_45 = (
+    AmountKind.declare(
+        CATALOG,
+        "nl428_tuition_and_education_amounts_transferred_from_a_child_or_grandchild_line_45",
+        non_negative=True,
+    )
+)
+"""Tuition and education amounts transferred from a child or grandchild, NL428 line 45 (line 58600)
+"Tuition and education amounts transferred from a child or grandchild": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
+
+NL428_AMOUNTS_TRANSFERRED_FROM_YOUR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_46 = AmountKind.declare(
+    CATALOG,
+    "nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46",
+    non_negative=True,
+)
+"""Amounts transferred from your spouse or common-law partner, NL428 line 46 "Line 46 and line
+58640: Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
@@ -382,6 +402,12 @@ NL428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_52 = AmountKind.declare(
 )
 """Line 51 limited to $2,410, NL428 line 52 "Enter whichever is less: $2,410 or the amount on line
 51": the lesser of the printed $2,410 and line 51."""
+
+NL428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_53 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_over_limit_line_53", non_negative=True
+)
+"""Medical expenses over the limit, NL428 line 53 "Line 48 minus line 52 (if negative, enter "0")":
+line 48 less line 52, not below 0; a blank line 48 is read as 0."""
 
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
