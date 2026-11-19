@@ -8,7 +8,7 @@ half-up to the cent by `ca-nl/cent_rounding`; a core/sum over line 86 alone (a b
 core/amount_by_band over that figure through the `ca-nl/low_income_reduction_line_86_gate` dataset
 (1 at 0.00, 0 from one cent); and a core/multiply of the first figure by the gate, which is line 104
 and the only step with the reference. The form prints no title the engine takes for the line, so
-the step is untitled. Line 94 is line 87 whether or not line 86 is claimed (a copy line with no
+the four steps carry the titles in the manifest. Line 94 is line 87 whether or not line 86 is claimed (a copy line with no
 step), so only line 104 changes with line 86.
 
 Figures (hand-computed from the printed form, not a CRA example): line 98 is 997.00 at every salary
@@ -314,7 +314,7 @@ def test_line_104_stands_when_line_86_is_blank_or_0(tmp_path: Path, given: str |
     assert _value(sheet, IDENTIFIER) == D("997.00")
 
 
-def test_line_104_is_four_steps_and_only_the_last_is_line_104() -> None:
+def test_line_104_is_four_titled_steps_and_only_the_last_is_line_104() -> None:
     part: Any = yaml.safe_load(LINE_PART.read_text(encoding="utf-8"))
 
     assert part == {
@@ -322,6 +322,7 @@ def test_line_104_is_four_steps_and_only_the_last_is_line_104() -> None:
         "capabilities": [
             {
                 "name": "core/subtract_not_below_zero",
+                "title": "Low-income tax reduction before the line 86 rule",
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
                 "consumes": {"amount": LINE_98, "less": LINE_103},
@@ -329,6 +330,10 @@ def test_line_104_is_four_steps_and_only_the_last_is_line_104() -> None:
             },
             {
                 "name": "core/sum",
+                "title": (
+                    "Unused low-income tax reduction from your spouse or common-law partner, "
+                    "with a blank counted as 0"
+                ),
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
                 "consumes": {"parts": [LINE_86]},
@@ -337,6 +342,10 @@ def test_line_104_is_four_steps_and_only_the_last_is_line_104() -> None:
             },
             {
                 "name": "core/amount_by_band",
+                "title": (
+                    "Multiplier that is 0 when you claim your spouse's or common-law "
+                    "partner's unused reduction"
+                ),
                 "unit": "ca/cad",
                 "params": {"table": "ca-nl/low_income_reduction_line_86_gate"},
                 "consumes": {"base": CLAIMED_86},
@@ -344,6 +353,7 @@ def test_line_104_is_four_steps_and_only_the_last_is_line_104() -> None:
             },
             {
                 "name": "core/multiply",
+                "title": "Newfoundland and Labrador low-income tax reduction",
                 "reference": "104",
                 "unit": "ca/cad",
                 "params": {"rounding": "ca-nl/cent_rounding"},
