@@ -4,8 +4,7 @@ Form text (Form NL428, CRA 5001-C, 5001-c-25e.txt): "Line 97 and line 61890: Red
 eligible dependant claimed on line 58160 Claim $557". Line 58160 is line 23 of the other form
 `ca-nl/nl428_credits`. A salary-only caller leaves line 22 blank, so line 23 is blank and line 97
 is 0 (hand-computed from the printed form, not a CRA example); a line 22 of 0 claims the
-dependant and
-gives 557, and a line 22 of 9,948 or more leaves line 23 at 0 and line 97 at 0.
+dependant and gives 557, and a line 22 of 9,948 or more leaves line 23 at 0 and line 97 at 0.
 """
 
 from __future__ import annotations
@@ -21,6 +20,7 @@ import yaml
 
 import tax_engine.jurisdictions.ca
 import tax_engine.jurisdictions.ca_nl
+import tax_engine.jurisdictions.ca_nl.catalog as nl_catalog
 from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSource
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
@@ -35,6 +35,7 @@ from tests.jurisdictions.ca_nl.support import (
     newfoundland_parameter_parsers,
     newfoundland_units,
 )
+from tests.kinds import non_negative
 from tests.manifest_support import inputs_without_form
 
 D = Decimal
@@ -252,3 +253,20 @@ def test_the_part_is_a_record_total_over_line_23_and_a_gated_amount_by_band() ->
         "consumes": {"base": "ca-nl/nl428_eligible_dependant_claimed_line_97"},
         "produces": {"output": IDENTIFIER},
     }
+
+
+@pytest.mark.parametrize(
+    ("identifier", "kind"),
+    [
+        (
+            "ca-nl/nl428_eligible_dependant_claimed_line_97",
+            nl_catalog.NL428_ELIGIBLE_DEPENDANT_CLAIMED_LINE_97,
+        ),
+        (IDENTIFIER, nl_catalog.NL428_LOW_INCOME_REDUCTION_DEPENDANT_LINE_97),
+    ],
+)
+def test_line_97_kinds_are_registered_non_negative_amounts(identifier: str, kind: Any) -> None:
+    registered = newfoundland_kinds().kind(identifier)
+
+    assert registered is kind
+    assert non_negative(registered)
