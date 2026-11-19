@@ -502,6 +502,12 @@ NL428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
 negative) =": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 220,910.00
 or less, where line 10 is blank."""
 
+NL428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
+    CATALOG, "nl428_bracket_tax_at_start_line_7", non_negative=True
+)
+"""Tax at the start of the column, NL428 line 7 "Line 7: 0.00": the printed tax at the start of the
+column of lines 2 to 8 that line 1 falls in, blank when line 1 is above 220,910."""
+
 NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
     CATALOG, "nl428_bracket_tax_at_start_line_14", non_negative=True
 )
