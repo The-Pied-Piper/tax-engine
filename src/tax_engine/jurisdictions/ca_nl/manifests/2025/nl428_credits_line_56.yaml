@@ -1,0 +1,18 @@
+# Form NL428 (CRA 5001-C) line 56: "Line 56 and line 58800: Line 47 plus line 55 =". Line 47 is the
+# credits subtotal (nl428_credits_line_47.yaml) and line 55 the allowable medical expenses
+# (nl428_credits_line_55.yaml). Neither is blank, so the step has no blank rule. Step 1 adds them with
+# core/sum. The form names no label for the line, so the step has no title.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "56"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_credits_subtotal_line_47
+        - ca-nl/nl428_medical_expenses_allowable_line_55
+    produces:
+      output: ca-nl/nl428_credits_total_line_56
