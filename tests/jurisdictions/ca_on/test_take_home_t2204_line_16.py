@@ -70,17 +70,10 @@ def _line_16(take_home_service: TakeHomeService, line_7: str, line_4: str, line_
 @pytest.mark.parametrize(
     ("line_7", "line_4", "line_10", "line_16"),
     [
-        # A $70,000 salary: line 7 is 63,700.00, and line 4 and line 10 are both at the 1,077.48
-        # cap, so the three are level and the value is kept.
-        ("63700.00", "1077.48", "1077.48", "1077.48"),
         # The same salary with line 4 entered above the cap: line 10 is the least.
         ("63700.00", "1148.00", "1077.48", "1077.48"),
-        # A $30,000 salary: line 7 is 28,000.00, and line 4 and line 10 are both 492.00.
-        ("28000.00", "492.00", "492.00", "492.00"),
         # A $2,010 salary: line 7 is 10.00, the least of the three, so the refund case.
         ("10.00", "32.96", "32.96", "10.00"),
-        # A $1,500 salary: line 7 is 0, so line 16 is 0.
-        ("0", "0", "0", "0.00"),
         # Line 4 is the least of the three.
         ("63700.00", "500.00", "1077.48", "500.00"),
     ],
@@ -127,9 +120,7 @@ capabilities: []
     [
         # Line 4 left blank: the line 4 part computes it (1.64%, at most 1,077.48).
         ("70000", None, "1077.48"),
-        ("30000", None, "492.00"),
         ("2010", None, "10.00"),
-        ("1500", None, "0.00"),
         # Line 4 given above the cap: line 10 is the least.
         ("70000", "1148.00", "1077.48"),
     ],

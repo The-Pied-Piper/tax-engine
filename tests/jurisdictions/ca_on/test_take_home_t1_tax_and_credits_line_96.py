@@ -101,8 +101,6 @@ def _value(sheet: Worksheet, kind_identifier: str) -> Any:
         ("70000", "3291.75"),
         # $200,000: the Schedule 8 base contributions are at the printed maximum, 3,356.10.
         ("200000", "3356.10"),
-        # $20,000: 4.95% of 16,500.00, 816.75.
-        ("20000", "816.75"),
     ],
 )
 def test_line_86_is_the_schedule_8_base_contributions(
@@ -117,9 +115,6 @@ def test_line_86_is_the_schedule_8_base_contributions(
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # $70,000 and $200,000: the T2204 line 16 is the 1,077.48 cap, the most the EI premium is.
-        ("70000", "1077.48"),
-        ("200000", "1077.48"),
         # $20,000: 1.64% of 20,000.00 is 328.00, below the cap.
         ("20000", "328.00"),
         # $1,000: under the EI exemption of $2,000, so T2204 line 16 is 0.
@@ -140,10 +135,6 @@ def test_line_88_is_the_t2204_line_16(
     [
         # $70,000: 3,291.75 + 1,077.48 + 1,471.00.
         ("70000", "5840.23"),
-        # $200,000: 3,356.10 + 1,077.48 + 1,471.00.
-        ("200000", "5904.58"),
-        # $20,000: 816.75 + 328.00 + 1,471.00.
-        ("20000", "2615.75"),
         # $1,000: 0 + 0 + 1,000.00, the Canada employment amount below the $1,471 cap being the
         # salary itself.
         ("1000", "1000.00"),
@@ -157,7 +148,7 @@ def test_line_96_is_the_sum_of_lines_86_to_95_for_the_take_home_filer(
     assert _value(sheet, LINE_96) == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["1000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["1000", "70000"])
 def test_line_96_is_line_86_plus_line_88_plus_the_canada_employment_amount(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

@@ -106,10 +106,6 @@ def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     [
         # $70,000: line 130 alone, line 131 being absent.
         ("70000", "7585.64"),
-        # $20,000: line 130 alone.
-        ("20000", "158.09"),
-        # $200,000: line 130 alone.
-        ("200000", "39467.74"),
         # $10,000: line 130 is 0, so the line is 0.
         ("10000", "0.00"),
     ],

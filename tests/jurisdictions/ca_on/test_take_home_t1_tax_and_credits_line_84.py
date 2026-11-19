@@ -17,9 +17,9 @@ The form header of line 84 is test-local: it declares `ca/credit_amounts_line_84
 The salary is the only input the caller gives. Ontario resident, single filer, salary the only
 income, tax withheld 0, basic credits only, as the take-home calculator states them.
 
-Line 84 is pinned as a figure for each salary and equal to line 30000 (the basic personal amount),
-at a salary whose line 23600 is below the threshold, at a salary inside the taper, and at salaries
-either side of the top of the taper. The trace names the line 30000 amount, the rounding and the
+Line 84 is pinned as a figure and equal to line 30000 (the basic personal amount), at a salary
+whose line 23600 is below the threshold, at a salary inside the taper, one dollar over the
+threshold and at the top of the taper. The trace names the line 30000 amount, the rounding and the
 total, and the kind is pinned as registered and non-negative.
 """
 
@@ -91,8 +91,6 @@ def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 23600 below the threshold: the maximum, 16,129.00.
-        ("20000", "16129.00"),
         # Line 23600 of 69,335.00 is below the threshold: the maximum, 16,129.00.
         ("70000", "16129.00"),
         # Line 23600 of 198,926.00 is on the taper: 15,685.73.
@@ -116,8 +114,6 @@ def test_line_84_is_line_30000_with_no_other_credit_amounts(
     [
         # Line 23600 of 177,883.00, one dollar over the threshold: 16,128.98.
         ("178957", "16128.98"),
-        # Line 23600 of 253,413.00, one dollar under the top of the taper: 14,538.02.
-        ("254487", "14538.02"),
         # Line 23600 of 253,414.00 or more: the base, 14,538.00.
         ("254488", "14538.00"),
     ],

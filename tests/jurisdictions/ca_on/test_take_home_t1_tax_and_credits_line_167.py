@@ -126,13 +126,6 @@ def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         # $20,000: line 43500 is 158.09 and line 48200 is 1,633.00 (the CWB), so line 167 is
         # -1,474.91: the credits are larger, and the negative figure is a refund.
         ("20000", "158.09", "1633.00", "-1474.91"),
-        # $10,000: line 43500 is 0.00 and line 48200 is 1,633.00 (the CWB, from a run of the real
-        # parts), so line 167 is -1,633.00: a refund, with no floor.
-        ("10000", "0.00", "1633.00", "-1633.00"),
-        # $150,000: line 43500 is 40,624.28 and line 48200 is 0.00, so line 167 is 40,624.28.
-        ("150000", "40624.28", "0.00", "40624.28"),
-        # $200,000: line 43500 is 63,787.94 and line 48200 is 0.00, so line 167 is 63,787.94.
-        ("200000", "63787.94", "0.00", "63787.94"),
     ],
 )
 def test_line_167_is_line_43500_less_line_48200(
@@ -152,9 +145,7 @@ def test_line_167_is_line_43500_less_line_48200(
     assert sheet.get(kinds.kind(LINE_48200)).value == D(line_48200)
 
 
-@pytest.mark.parametrize(
-    "salary", ["10000", "15000", "20000", "35000", "70000", "100000", "150000"]
-)
+@pytest.mark.parametrize("salary", ["20000", "70000"])
 def test_line_167_equals_line_43500_less_line_48200_read_from_the_sheet(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

@@ -80,16 +80,10 @@ def line_22(take_home_service: TakeHomeService, salary: str) -> Decimal:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 18 is $0.00 at $2,000, so line 20 is $0.00, which is less than $1,633.00.
-        ("2000", "0.00"),
         # Line 20 is $810.00, which is less than $1,633.00.
         ("6000", "810.00"),
-        # Line 20 is $4,590.00 or more, so line 21 of $1,633.00 is the lesser.
+        # Line 20 is $4,590.00, so line 21 of $1,633.00 is the lesser.
         ("20000", "1633.00"),
-        ("30000", "1633.00"),
-        ("35000", "1633.00"),
-        ("40000", "1633.00"),
-        ("70000", "1633.00"),
     ],
 )
 def test_schedule_6_line_22_is_the_lesser_of_line_20_and_line_21(

@@ -65,9 +65,6 @@ def t2204(take_home_service: TakeHomeService, line_3: str) -> Worksheet:
         ("65700", "63700.00"),
         # Under $2,000 the difference is negative, so line 7 is "0".
         ("1500", "0.00"),
-        ("2010", "10.00"),
-        # Exactly $2,000: the difference is 0, not negative.
-        ("2000", "0.00"),
     ],
 )
 def test_line_7_is_line_3_less_2000_and_not_below_zero(

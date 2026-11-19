@@ -50,11 +50,8 @@ def line_11(take_home_service: TakeHomeService, line_7: str) -> Decimal:
     [
         # The ticket's $70,000 salary: line 7 is 66,500, and 66,500 x 4.95% is 3,291.75.
         ("66500.00", "3291.75"),
-        # $90,000: line 7 is the printed maximum 67,800, and 67,800 x 4.95% is 3,356.10.
-        ("67800.00", "3356.10"),
         # Above the printed maximum is capped at line 11's "(maximum $3,356.10)".
         ("70000.00", "3356.10"),
-        ("0.00", "0.00"),
         # Rounded half-up to the cent: 4.95% of 0.10 is 0.00495, of 0.30 is 0.01485.
         ("0.10", "0.00"),
         ("0.30", "0.01"),

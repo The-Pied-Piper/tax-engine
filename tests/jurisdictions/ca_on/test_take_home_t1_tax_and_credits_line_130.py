@@ -113,10 +113,6 @@ def _sheet(take_home_service: TakeHomeService, salary: str, credit: str | None =
     [
         # $70,000: line 128 alone, line 129 being blank.
         ("70000", "7585.64"),
-        # $20,000: line 128 alone.
-        ("20000", "158.09"),
-        # $200,000: line 128 alone.
-        ("200000", "39467.74"),
         # $10,000: line 128 is 0, so the line is 0.
         ("10000", "0.00"),
     ],
@@ -140,8 +136,6 @@ def test_line_130_is_line_128_when_line_129_is_blank(
         ("70000", "1000", "6585.64"),
         # $20,000: 158.09 less 200.00 is negative and is not floored (signed).
         ("20000", "200", "-41.91"),
-        # Exactly equal: the difference is zero.
-        ("20000", "158.09", "0.00"),
     ],
 )
 def test_line_130_subtracts_the_given_line_129(

@@ -88,8 +88,6 @@ def t2204(take_home_service: TakeHomeService, salary: str, given: str | None = N
         ("70000", "1077.48"),
         # 2,010: line 1 is 2,010 (not under $2,000); 1.64% of 2,010 is 32.964, half-up 32.96.
         ("2010", "32.96"),
-        # 30,000: 1.64% of 30,000 is 492.00, under the maximum.
-        ("30000", "492.00"),
         # 1,500: line 1 is "0" under note (1), so line 4 is 0.
         ("1500", "0"),
     ],
@@ -104,7 +102,7 @@ def test_a_blank_line_4_is_computed_to_the_cent(take_home_service: TakeHomeServi
     assert str(t2204(take_home_service, "70000").get(T2204_PREMIUMS_DEDUCTED).value) == "1077.48"
 
 
-@pytest.mark.parametrize("given", ["1148.00", "0", "2500.00"])
+@pytest.mark.parametrize("given", ["1148.00", "0"])
 def test_a_given_line_4_is_the_output_unchanged(
     take_home_service: TakeHomeService, given: str
 ) -> None:

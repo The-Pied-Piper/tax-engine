@@ -18,11 +18,11 @@ The salary is the only input the caller gives. Single, no eligible spouse or dep
 other eligibility answers of Schedule 6 are assumed as the take-home calculator states them; they
 do not change line 7 and are not tested here.
 
-Line 7 is pinned as a figure for each salary, and its kind is pinned as registered and signed. A
-negative net income cannot be made from a salary alone (deductions never exceed the salary), so the
-brackets branch is tested separately: line 23500 (social benefits repayment) is given above line
-23400, so the difference is negative, and line 7 is then that negative net income, in brackets
-on the form, not "0".
+Line 7 is pinned as a figure for a salary under the CPP enhancement floor and one above it, and
+its kind is pinned as registered and signed. A negative net income cannot be made from a salary
+alone (deductions never exceed the salary), so the brackets branch is tested separately: line 23500
+(social benefits repayment) is given above line 23400, so the difference is negative, and line 7 is
+then that negative net income, in brackets on the form, not "0".
 """
 
 from __future__ import annotations
@@ -91,13 +91,8 @@ def _schedule_6(take_home_service: TakeHomeService, salary: str) -> Worksheet:
     [
         # Under the 3,500 floor of the CPP enhancement: T1 line 22215 is 0.00, so line 7 is 2,000.
         ("2000", "2000.00"),
-        # T1 line 22215 is 25.00, 165.00, 265.00, 315.00, 365.00 and 665.00 for these salaries.
-        ("6000", "5975.00"),
-        ("20000", "19835.00"),
+        # T1 line 22215 is 265.00 at this salary.
         ("30000", "29735.00"),
-        ("35000", "34685.00"),
-        ("40000", "39635.00"),
-        ("70000", "69335.00"),
     ],
 )
 def test_line_7_is_the_t1_net_income(

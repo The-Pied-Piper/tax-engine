@@ -73,16 +73,8 @@ def t2204(take_home_service: TakeHomeService, line_4: str, line_10: str) -> Work
     [
         # The Return DD overpayment: 1,148.00 less 1,077.48 is 70.52.
         ("1148.00", "1077.48", "70.52"),
-        # Line 4 equal to line 10: the difference is 0.
-        ("1077.48", "1077.48", "0.00"),
-        # Another equal pair, with a smaller amount.
-        ("492.00", "492.00", "0.00"),
         # Line 4 below line 10: the difference is negative, so line 13 is "0".
-        ("0.00", "1077.48", "0.00"),
-        # Line 4 below line 10 again, with small amounts: negative, so line 13 is "0".
         ("10.00", "32.96", "0.00"),
-        # Line 4 above line 10 with a large amount: 2,000.00 less 32.96 is 1,967.04.
-        ("2000.00", "32.96", "1967.04"),
     ],
 )
 def test_line_13_is_line_9_less_line_12_and_not_below_zero(

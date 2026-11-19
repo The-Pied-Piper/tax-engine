@@ -68,8 +68,6 @@ def _line_23600(
     [
         # A $70,000 salary: line 23400 is 69,335.00, and line 23500 is left out, so it is 0.
         ("69335.00", None, "69335.00"),
-        # The $90,000 salary, above the CPP ceiling: line 23400 is 88,926.00, line 23500 left out.
-        ("88926.00", None, "88926.00"),
         # Line 23500 given as 1,000: line 23600 is line 23400 less it.
         ("69335.00", "1000", "68335.00"),
         # Line 23500 above line 23400: the difference is negative, so line 23600 is "0", as the

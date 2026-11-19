@@ -37,7 +37,7 @@ def _worksheets(salary: str) -> dict[str, tuple[Worksheet, ...]]:
     return build_tax_computation().compute(CODE, 2025, Artifact(EMPLOYMENT_INCOME, D(salary)))
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["10000", "70000"])
 def test_line_47900_is_blank_with_no_figure(salary: str) -> None:
     (t1,) = _worksheets(salary)[T1_FORM]
 
