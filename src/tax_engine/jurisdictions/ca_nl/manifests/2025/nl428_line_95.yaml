@@ -1,0 +1,14 @@
+# Form NL428 (CRA 5001-C) line 95 and line 61870, the basic reduction. "Basic reduction Claim $997".
+# The $997 is the `ca-nl/low_income_reduction_basic` dataset, claimed whole through
+# core/credit_amount, so it is the same at every salary.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/credit_amount
+    title: "Basic reduction"
+    reference: "95"
+    unit: ca/cad
+    params:
+      amount: ca-nl/low_income_reduction_basic
+    produces:
+      output: ca-nl/low_income_reduction_basic

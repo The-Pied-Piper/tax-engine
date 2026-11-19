@@ -420,6 +420,12 @@ NL428_UCCB_RDSP_INCOME_LINE_91 = AmountKind.declare(
 and the RDSP income (line 12500 of the return)": the total of the two incomes as the filer gives it,
 an optional input; a blank input is read as blank, column 1 (you) only."""
 
+LOW_INCOME_REDUCTION_BASIC = AmountKind.declare(
+    CATALOG, "low_income_reduction_basic", non_negative=True
+)
+"""Basic reduction, NL428 line 95 "Line 95 and line 61870: Basic reduction Claim $997": the printed
+$997, claimed whole and not income-tested."""
+
 NL428_REDUCTION_FOR_SPOUSE_OR_COMMON_LAW_PARTNER_CLAIMED_LINE_96 = CountKind.declare(
     CATALOG,
     "nl428_reduction_for_spouse_or_common_law_partner_claimed_line_96",
