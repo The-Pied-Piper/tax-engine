@@ -9,7 +9,6 @@ from decimal import Decimal
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.rounding_only import ROUNDING_ONLY
-from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_packages,
