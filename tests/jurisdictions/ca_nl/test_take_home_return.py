@@ -64,22 +64,6 @@ T1_FORM = dedent("""\
         - ca/refund_or_balance_owing
     capabilities: []
     """)
-SK428_CREDITS_FORM = dedent("""\
-    form:
-      name: ca-nl/nl428_credits
-      required: true
-      exports:
-        - ca-nl/nl428_bracket_rate_line_5
-    capabilities: []
-    """)
-SK428_FORM = dedent("""\
-    form:
-      name: ca-nl/nl428
-      required: true
-      exports:
-        - ca-nl/nl428_tax_after_credits_line_67
-    capabilities: []
-    """)
 CREDITS_INPUT = dedent("""\
     inputs:
       - name: ca/total_credits
