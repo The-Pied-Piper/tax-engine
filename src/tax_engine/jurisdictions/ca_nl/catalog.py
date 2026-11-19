@@ -368,6 +368,13 @@ NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out;
 a blank input is read as blank."""
 
+NL428_RESORT_PROPERTY_INVESTMENT_TAX_CREDIT_LINE_80 = AmountKind.declare(
+    CATALOG, "nl428_resort_property_investment_tax_credit_line_80", non_negative=True
+)
+"""Resort property investment tax credit, NL428 line 80 "Line 80: Resort property investment tax
+credit (complete Form T1297)": the credit from Form T1297, an optional input that a salary-only
+caller leaves out; a blank input is read as blank."""
+
 NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_76 = AmountKind.declare(
     CATALOG, "nl428_political_contribution_tax_credit_claimed_line_76", non_negative=True
 )
