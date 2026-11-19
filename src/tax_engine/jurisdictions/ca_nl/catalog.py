@@ -50,6 +50,44 @@ WORKSHEET_NL428_AGE_AMOUNT_LINE_7 = AmountKind.declare(
 """Age amount, Worksheet NL428 line 7 "Line 7: Line 1 minus line 6 (if negative, enter "0") Enter
 this amount on line 58080 of your Form NL428.": the amount entered on line 58080 of Form NL428."""
 
+WORKSHEET_NL428_DISABILITY_SELF_BASE_AMOUNT_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_base_amount_line_1", non_negative=True
+)
+"""Base amount, Worksheet NL428 line 58440 line 1 "Line 1: Base amount 7,467.00": the printed
+base amount."""
+
+WORKSHEET_NL428_DISABILITY_SELF_SUPPLEMENT_MAXIMUM_LINE_2 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_supplement_maximum_line_2", non_negative=True
+)
+"""Maximum amount, Worksheet NL428 line 58440 line 2 "Line 2: Maximum amount 3,514.00": the printed
+maximum."""
+
+WORKSHEET_NL428_DISABILITY_SELF_CARE_THRESHOLD_LINE_4 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_care_threshold_line_4", non_negative=True
+)
+"""Threshold for child and attendant care expenses, Worksheet NL428 line 58440 line 4 "Line 4:
+Threshold for child and attendant care expenses 2,987.00": the printed threshold."""
+
+WORKSHEET_NL428_DISABILITY_SELF_CARE_OVER_THRESHOLD_LINE_5 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_care_over_threshold_line_5", non_negative=True
+)
+"""Care expenses over the threshold, Worksheet NL428 line 58440 line 5 "Line 5: Line 3 minus line 4
+(if negative, enter "0")": the child care and attendant care expenses of line 3 above the line 4
+threshold."""
+
+WORKSHEET_NL428_DISABILITY_SELF_SUPPLEMENT_LINE_6 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_supplement_line_6", non_negative=True
+)
+"""Supplement, Worksheet NL428 line 58440 line 6 "Line 6: Line 2 minus line 5 (if negative, enter
+"0")": the maximum of line 2 less the care expenses over the threshold."""
+
+WORKSHEET_NL428_DISABILITY_SELF_LINE_7 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_disability_self_line_7", non_negative=True
+)
+"""Disability amount for self, Worksheet NL428 line 58440 line 7 "Line 7: Line 1 plus line 6 Enter
+this amount on line 58440 of your Form NL428. (maximum $10,981)": the amount entered on line 58440
+of Form NL428, for a filer under 18 years of age on December 31, 2025."""
+
 NL428_BRACKET_RATE_LINE_5 = AmountKind.declare(
     CATALOG, "nl428_bracket_rate_line_5", non_negative=True
 )
@@ -199,6 +237,13 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_CREDITS_SUBTOTAL_LINE_42 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_42", non_negative=True
+)
+"""Credits subtotal, NL428 line 42 "Line 42: Add lines 39 to 41. = ^": line 39 plus line 40 (the
+disability amount for self) plus line 41 (the disability amount transferred from a dependant),
+line 41 being read as 0 when blank."""
+
 NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
     CATALOG, "nl428_student_loan_interest_line_43", non_negative=True
 )
@@ -212,6 +257,26 @@ NL428_TUITION_AND_EDUCATION_AMOUNTS_LINE_44 = AmountKind.declare(
 """Your tuition and education amounts, NL428 line 44 "Line 44 and line 58560: Your tuition and
 education amounts (attach Schedule NL(S11))": the amount as the filer gives it, an optional input;
 a blank input is read as blank."""
+
+NL428_TUITION_AND_EDUCATION_AMOUNTS_TRANSFERRED_FROM_A_CHILD_OR_GRANDCHILD_LINE_45 = (
+    AmountKind.declare(
+        CATALOG,
+        "nl428_tuition_and_education_amounts_transferred_from_a_child_or_grandchild_line_45",
+        non_negative=True,
+    )
+)
+"""Tuition and education amounts transferred from a child or grandchild, NL428 line 45 (line 58600)
+"Tuition and education amounts transferred from a child or grandchild": the amount as the filer
+gives it, an optional input; a blank input is read as blank."""
+
+NL428_AMOUNTS_TRANSFERRED_FROM_YOUR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_46 = AmountKind.declare(
+    CATALOG,
+    "nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46",
+    non_negative=True,
+)
+"""Amounts transferred from your spouse or common-law partner, NL428 line 46 "Line 46 and line
+58640: Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
 
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
@@ -266,6 +331,20 @@ NL428_DISABILITY_AMOUNT_SELF_LINE_40 = AmountKind.declare(
 """Disability amount for self, NL428 line 40 "Line 40 and line 58440: Disability amount for self
 (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467 when
 the claim is 1, 0 when the claim is blank or 0."""
+
+NL428_DISABILITY_AMOUNT_SELF_WORKSHEET_LINE_40 = AmountKind.declare(
+    CATALOG, "nl428_disability_amount_self_worksheet_line_40", non_negative=True
+)
+"""Disability amount for self from the worksheet, NL428 line 40 and line 58440 "Disability amount
+for self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": Worksheet NL428
+line 58440 line 7, read from that form, before the under-18 answer and the claim are applied."""
+
+NL428_DISABILITY_AMOUNT_SELF_BASIS_LINE_40 = AmountKind.declare(
+    CATALOG, "nl428_disability_amount_self_basis_line_40", non_negative=True
+)
+"""Disability amount for self before the claim, NL428 line 40 and line 58440 "Disability amount for
+self (claim $7,467 or, if you were under 18 years of age, use Worksheet NL428)": the printed $7,467
+for a filer 18 or older (or blank), the worksheet amount for a filer under 18."""
 
 NL428_AGE_AMOUNT_WORKSHEET_LINE_17 = AmountKind.declare(
     CATALOG, "nl428_age_amount_worksheet_line_17", non_negative=True
@@ -358,6 +437,13 @@ NL428_BRACKET_LOWER_BOUND_LINE_3 = AmountKind.declare(
 printed lower bound of the column of lines 2 to 8 that line 1 falls in. It is blank when line 1 is
 above 220,910, where lines 9 to 15 apply."""
 
+NL428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
+    CATALOG, "nl428_taxable_income_over_lower_bound_line_4", non_negative=True
+)
+"""Taxable income over the lower bound, NL428 line 4 "Line 4: Line 2 minus line 3 (cannot be
+negative) =": line 1 minus line 3, not below zero. It is blank when line 3 is blank, above
+220,910."""
+
 NL428_NET_INCOME_LINE_49 = AmountKind.declare(
     CATALOG, "nl428_net_income_line_49", non_negative=True
 )
@@ -376,6 +462,12 @@ NL428_MEDICAL_EXPENSES_LIMITED_AMOUNT_LINE_52 = AmountKind.declare(
 """Line 51 limited to $2,410, NL428 line 52 "Enter whichever is less: $2,410 or the amount on line
 51": the lesser of the printed $2,410 and line 51."""
 
+NL428_MEDICAL_EXPENSES_OVER_LIMIT_LINE_53 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_over_limit_line_53", non_negative=True
+)
+"""Medical expenses over the limit, NL428 line 53 "Line 48 minus line 52 (if negative, enter "0")":
+line 48 less line 52, not below 0; a blank line 48 is read as 0."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
@@ -388,3 +480,9 @@ NL428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_11 = AmountKind.declare(
 """Taxable income over the lower bound, NL428 line 11 "Line 11: Line 9 minus line 10 (cannot be
 negative) =": line 1 minus the lower bound of line 10, not below 0; blank when line 1 is 220,910.00
 or less, where line 10 is blank."""
+
+NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
+    CATALOG, "nl428_bracket_tax_at_start_line_14", non_negative=True
+)
+"""Tax at the start of the column, NL428 line 14 "Line 14: 32,454.04": the printed tax at the start
+of the column of lines 9 to 15 that line 1 falls in, blank when line 1 is 220,910 or less."""
