@@ -2,7 +2,8 @@
 # to 97. (maximum $1,554) =". Lines 95 to 97 are the basic reduction ($997), the reduction for a
 # spouse or common-law partner ($557) and the reduction for an eligible dependant ($557); lines 96
 # and 97 are 0.00, not blank, when nothing is claimed, so the sum has no blank rule. All three
-# together come to $2,111, so the printed maximum is applied: core/capped_amount takes the
+# together would come to $2,111, but line 97 refuses a return that also claims line 96, so the sum
+# is at most $1,554; the printed maximum is still applied: core/capped_amount takes the
 # lesser of the sum and the `ca-nl/low_income_reduction_maximum` dataset ($1,554). The sum is not a
 # line of the form, so it has no title and no reference; the line's number is on the capped step.
 form:

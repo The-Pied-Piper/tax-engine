@@ -24,6 +24,7 @@ from tax_engine.adapters.outbound.yaml_jurisdictions import YamlJurisdictionSour
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
+from tax_engine.domain.errors import InputAboveBoundError
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
 from tax_engine.domain.kinds import CountKind
 from tax_engine.domain.registry import Namespace
@@ -232,13 +233,11 @@ def test_line_98_adds_the_dependant_reduction_on_line_97(tmp_path: Path) -> None
     assert _line_98(tmp_path, "70000", {LINE_22: "0"}).value == D("1554.00")
 
 
-def test_line_98_is_capped_at_the_printed_maximum_when_lines_96_and_97_are_both_claimed(
+def test_a_return_claiming_lines_96_and_97_together_is_refused_at_line_97(
     tmp_path: Path,
 ) -> None:
-    sheet = _sheet(tmp_path, "70000", FORM_NAME, {LINE_96: "1", LINE_22: "0"})
-
-    assert _value(sheet, "ca-nl/nl428_low_income_reduction_before_maximum_line_98") == D("2111.00")
-    assert _value(sheet, IDENTIFIER) == D("1554")
+    with pytest.raises(InputAboveBoundError):
+        _sheet(tmp_path, "70000", FORM_NAME, {LINE_96: "1", LINE_22: "0"})
 
 
 def test_the_kinds_are_registered_non_negative_amount_kinds() -> None:
