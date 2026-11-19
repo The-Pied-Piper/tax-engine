@@ -179,6 +179,12 @@ NL428_PENSION_INCOME_AMOUNT_LINE_37 = AmountKind.declare(
 $1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
 left out; above the maximum it is refused, not capped."""
 
+NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_line_48", non_negative=True
+)
+"""Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
