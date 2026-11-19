@@ -21,7 +21,8 @@
 # bracket column rate and line 42900 "Basic federal tax", each totalled into the return's own kind,
 # and core/amount_by_band_rate reads line 42900 through the `ca-nl/marginal_rate_gate` dataset (0
 # where the tax is 0.00, 1 from one cent) so that the rate counts only where its own tax is above
-# zero; the gate multiplies the rate into `ca/federal_marginal_rate`, exact (`ca-nl/exact_rounding`).
+# zero; the gate multiplies the rate into `ca/federal_marginal_rate`, exact
+# (`ca-nl/exact_rounding`).
 #
 # The Newfoundland and Labrador bracket rate is printed on NL428 line 5 (table 1, lines 2 to 8,
 # taxable income up to 220,910) or on line 12 (table 2, lines 9 to 15, above it); the other is
@@ -30,9 +31,10 @@
 #
 # The Newfoundland and Labrador gate reads NL428 line 85 "Line 81 minus line 84 (if negative, enter
 # "0")": the Newfoundland and Labrador tax after the credits that payroll applies, before line 86
-# (the unused low-income tax reduction of a spouse) and lines 95 to 105 (the low-income tax
-# reduction), so a rate counts only while that tax is above zero. It is the counterpart of ON428
-# line 81, AB428 line 68, BC428 line 80 and MB428 line 65. Gated through `ca-nl/marginal_rate_gate`,
+# (the unused low-income tax reduction of a spouse) and lines 95 to 104 (the low-income tax
+# reduction), so a rate counts only while that tax is above zero. It is read as the
+# gates of the other provinces' returns are (ON428 line 81, AB428 line 68, BC428 line 80, MB428
+# line 65). Gated through `ca-nl/marginal_rate_gate`,
 # it multiplies the bracket rate into `ca-nl/newfoundland_and_labrador_marginal_rate`.
 #
 # The low-income tax reduction (NL428 lines 95 to 104) is left out of the rate, as payroll does:
@@ -47,8 +49,9 @@
 # `ca-nl/marginal_tax_rate`; it is exact too, is not printed on the form and has no title or line.
 #
 # Only line 167 carries a line reference: the steps below read figures for the rates and are
-# engine-internal, so they carry none. Known limits: the rate ignores the tax effect of CPP and EI, and it leaves out the low-income
-# tax reduction (NL428 lines 95 to 104), which payroll deductions do not apply.
+# engine-internal, so they carry none. Known limits: the rate ignores the tax effect of CPP and EI,
+# and it leaves out the low-income tax reduction (NL428 lines 95 to 104), which payroll deductions
+# do not apply.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"

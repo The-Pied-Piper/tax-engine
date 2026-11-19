@@ -4,11 +4,10 @@ Form text (Form NL428, Newfoundland and Labrador Tax, CRA 5001-C 2025): line 105
 minus line 104 (if negative, enter "0") Enter this amount on line 42800 of your return.
 Newfoundland and Labrador tax". The form is one form (lines 63 to 108) and exports line 105, the
 Newfoundland and Labrador tax, and supplies line 105 as `ca/provincial_tax.amount`, the name the
-federal T1 reads for line 42800. It also exports line 103 "Line 101 multiplied by the percentage
-from line 102" and line 104 "Line 98 minus line 103 (if negative, enter "0")", which the return
-summary reads for the marginal tax rate. The exports are declared as inputs of the test header:
-this test loads only the form declaration (`nl428.yaml`), not the line parts, which have their own
-tests.
+federal T1 reads for line 42800. It also exports line 85 "Line 81 minus line 84 (if negative,
+enter "0")", the tax after the credits, which the return summary reads for the marginal tax rate.
+The exports are declared as inputs of the test header: this test loads only the form declaration
+(`nl428.yaml`), not the line parts, which have their own tests.
 Lines 106 to 108 are deferred and are not declared here.
 """
 

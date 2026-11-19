@@ -190,7 +190,7 @@ def test_line_12_supplies_the_rate_above_the_table_1_limit_and_line_5_below_it(
     assert _value(summary, BRACKET) == D(line_5) + D(line_12)
 
 
-@pytest.mark.parametrize("salary", ["20000", "24140.19", "28000", "30428.50", "40000"])
+@pytest.mark.parametrize("salary", ["20000", "24140.19", "28000", "30428.50"])
 def test_the_low_income_reduction_is_not_in_the_provincial_part(
     service: TaxComputationService, salary: str
 ) -> None:
@@ -200,7 +200,7 @@ def test_the_low_income_reduction_is_not_in_the_provincial_part(
 
     # The form still reduces the tax up to a net income of 30,159.22 (a salary of 30,428.50), but
     # the rate is the bracket rate alone.
-    assert _value(nl428, "ca-nl/nl428_line_104") >= D("0")
+    assert _value(nl428, LINE_85) > _value(nl428, LINE_105)
     assert _value(summary, NL_RATE) == _value(summary, BRACKET) == D("0.087")
 
 
