@@ -1,0 +1,24 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 105 "Line 105: Line 94 minus line 104
+# (if negative, enter "0") Enter this amount on line 42800 of your return. Newfoundland and
+# Labrador tax =". One core/subtract_not_below_zero step: line 94 less the low-income tax reduction
+# of line 104 (`ca-nl/nl428_line_104`), not below 0, rounded half-up to the cent by the dataset's
+# rule (the form states no rounding rule). Line 94 is "Amount from line 87 of the previous page", a
+# copy line with no step of its own (owner ruling, 18 Nov 2026), so the step reads line 87
+# (`ca-nl/nl428_tax_line_87`) directly. Both lines are always present, so the step has no blank
+# rule. The form prints no title for the line, so the step has none. The form's instruction at line
+# 87 to enter 0 on line 104 when line 86 is claimed is not built here (#1682). Line 105 is the
+# output `ca-nl/nl428_newfoundland_and_labrador_tax_line_105`, the tax entered on line 42800,
+# supplied through the form's `ca/provincial_tax.amount` in nl428.yaml.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "105"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_tax_line_87
+      less: ca-nl/nl428_line_104
+    produces:
+      output: ca-nl/nl428_newfoundland_and_labrador_tax_line_105
