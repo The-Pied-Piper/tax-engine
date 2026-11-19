@@ -6,8 +6,8 @@ enter "0") =". One core/subtract_not_below_zero step, rounded half-up to the cen
 always computed. The form prints no title for the line, so the step is untitled.
 
 Figures (hand-computed from the printed form, not a CRA example), with lines 64, 67 and 68 blank:
-line 65 is 1,725.65 / 7,490.44 and line 69 is 1,062.42 / 1,342.95 at
-salaries of 20,000 / 70,000, so line 70 is 663.23 / 6,147.49. At a salary of
+line 65 is 1,725.65 / 7,490.44 / 28,540.88 and line 69 is 1,062.42 / 1,342.95 / 1,348.55 at
+salaries of 20,000 / 70,000 / 200,000, so line 70 is 663.23 / 6,147.49 / 27,192.33. At a salary of
 5,000 the credits exceed the tax, so line 70 is 0.00.
 """
 
@@ -173,6 +173,7 @@ FORMS = dedent("""\
 CASES = [
     ("20000", "663.23"),
     ("70000", "6147.49"),
+    ("200000", "27192.33"),
     ("5000", "0.00"),
 ]
 
