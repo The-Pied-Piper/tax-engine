@@ -327,6 +327,12 @@ NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
 Newfoundland and Labrador tax on split income (complete Form T1206)": the amount as the filer gives
 it, an optional input; a blank input is read as blank."""
 
+NL428_TAX_BEFORE_CREDITS_LINE_65 = AmountKind.declare(
+    CATALOG, "nl428_tax_before_credits_line_65", non_negative=True
+)
+"""Newfoundland and Labrador tax before credits, NL428 line 65 "Line 65: Line 63 plus line 64 =":
+line 63 plus line 64 (the tax on split income, blank read as 0), rounded half-up to the cent."""
+
 NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
     CATALOG, "nl428_minimum_tax_carryover_amount_line_68", non_negative=True
 )
@@ -347,6 +353,37 @@ NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
 """Provincial foreign tax credit, NL428 line 73 "Line 73: Provincial foreign tax credit (complete
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out;
 a blank input is read as blank."""
+
+NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_76 = AmountKind.declare(
+    CATALOG, "nl428_political_contribution_tax_credit_claimed_line_76", non_negative=True
+)
+"""Political contribution tax credit claimed, NL428 line 76 "Line 76: Newfoundland and Labrador
+political contribution tax credit (use Worksheet NL428) (maximum $500)": the amount as the filer
+gives it, an optional input; a blank input is read as blank, and the line 76 step checks it against
+the printed maximum."""
+
+NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "nl428_political_contribution_tax_credit_maximum", non_negative=True
+)
+"""Political contribution tax credit maximum, printed on NL428 line 76 "(maximum $500)": the printed
+maximum, from the `ca-nl/political_contribution_tax_credit_maximum` dataset; the bound line 76
+cannot pass."""
+
+NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_76 = AmountKind.declare(
+    CATALOG, "nl428_political_contribution_tax_credit_line_76", non_negative=True
+)
+"""Newfoundland and Labrador political contribution tax credit, NL428 line 76 "Line 76:
+Newfoundland and Labrador political contribution tax credit (use Worksheet NL428) (maximum $500)":
+the entered amount, passed on unchanged when it is at most the printed maximum, blank when left
+out; above the maximum it is refused, not capped."""
+
+NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
+    CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
+)
+"""UCCB and RDSP repayments, NL428 line 89 "Line 89: Total of the universal child care benefit
+(UCCB) repayment (line 21300 of the return) and the registered disability savings plan (RDSP) income
+repayment (included on line 23200 of the return)": the total of the two repayments as the filer
+gives it, an optional input; a blank input is read as blank, column 1 (you) only."""
 
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
@@ -588,6 +625,22 @@ NL428_T691_AMOUNT_LINE_71 = AmountKind.declare(
 """Form T691 amount, NL428 line 71 "Line 71: Amount from line 14 of Part 7 of Form T691 multiplied
 by 60% =": the amount from line 14 of Part 7 of Form T691 as the filer gives it, an optional input;
 a blank input is read as blank, and the 60% multiplication step reads it."""
+
+NL428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_71 = AmountKind.declare(
+    CATALOG, "nl428_additional_tax_minimum_tax_line_71", non_negative=True
+)
+"""Newfoundland and Labrador additional tax for minimum tax purposes, NL428 line 71 "Amount from
+line 14 of Part 7 of Form T691 multiplied by 60% =": calculated, the Form T691 amount multiplied by
+60%."""
+
+NL428_SPOUSE_NET_INCOME_LINE_88 = AmountKind.declare(
+    CATALOG, "nl428_spouse_net_income_line_88", non_negative=False
+)
+"""Spouse or common-law partner's net income, NL428 line 88 column 2 "Line 88: Net income from line
+23600 of the return (or the amount you would have entered if the instructions on line 23600 said
+"if negative, show in brackets")": the amount as the filer gives it, an optional input. It is
+signed because the line takes the amount as if negative were shown in brackets; a blank input is
+read as blank."""
 
 NL428_SPOUSE_UCCB_AND_RDSP_REPAYMENT_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_spouse_uccb_and_rdsp_repayment_line_89", non_negative=True
