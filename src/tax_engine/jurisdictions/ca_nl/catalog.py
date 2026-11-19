@@ -438,6 +438,11 @@ NL428_TAX_LINE_79 = AmountKind.declare(CATALOG, "nl428_tax_line_79", non_negativ
 77 minus line 78 (if negative, enter "0") =": line 77 less the credit of line 78 (blank read as
 0), floored at 0 as the form prints, rounded half-up to the cent."""
 
+NL428_TAX_LINE_85 = AmountKind.declare(CATALOG, "nl428_tax_line_85", non_negative=True)
+"""Newfoundland and Labrador tax after the venture capital tax credit, NL428 line 85 "Line 85: Line
+81 minus line 84 (if negative, enter "0") =": line 81 less the credit of line 84 (blank read as 0),
+floored at 0 as the form prints, rounded half-up to the cent."""
+
 NL428_VENTURE_CAPITAL_TAX_CREDIT_LINE_84 = AmountKind.declare(
     CATALOG, "nl428_venture_capital_tax_credit_line_84", non_negative=True
 )
