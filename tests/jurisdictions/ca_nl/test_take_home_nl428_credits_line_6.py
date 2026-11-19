@@ -71,7 +71,10 @@ LINE_5 = "ca-nl/nl428_bracket_rate_line_5"
 LINE_6 = "ca-nl/nl428_tax_on_excess_line_6"
 NL_PARTS = Path(tax_engine.jurisdictions.ca_nl.__file__).parent / "manifests" / "2025"
 FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
-LINE_PARTS = tuple(NL_PARTS / f"nl428_credits_line_{number}.yaml" for number in (1, 3, 4, 5, 6))
+LINE_1_PART = NL_PARTS / "nl428_credits_line_1.yaml"
+LINE_3_PART = NL_PARTS / "nl428_credits_line_3.yaml"
+LINE_4_PART = NL_PARTS / "nl428_credits_line_4.yaml"
+LINE_5_PART = NL_PARTS / "nl428_credits_line_5.yaml"
 LINE_PART = NL_PARTS / "nl428_credits_line_6.yaml"
 T1_PARTS = (
     "t1_taxable_income_inputs.yaml",
@@ -155,8 +158,11 @@ def _part_files() -> Iterator[tuple[str, str]]:
             if name.endswith("_inputs.yaml")
             else found.read_text("utf-8"),
         )
-    for part in LINE_PARTS:
-        yield part.name, part.read_text(encoding="utf-8")
+    yield LINE_1_PART.name, LINE_1_PART.read_text(encoding="utf-8")
+    yield LINE_3_PART.name, LINE_3_PART.read_text(encoding="utf-8")
+    yield LINE_4_PART.name, LINE_4_PART.read_text(encoding="utf-8")
+    yield LINE_5_PART.name, LINE_5_PART.read_text(encoding="utf-8")
+    yield LINE_PART.name, LINE_PART.read_text(encoding="utf-8")
 
 
 def _service(tmp_path: Path) -> TaxComputationService:
