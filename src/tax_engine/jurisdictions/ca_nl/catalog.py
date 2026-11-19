@@ -134,6 +134,13 @@ NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
 """Adoption expenses, NL428 line 34 "Line 34 and line 58330: Adoption expenses": the amount as the
 filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declare(
+    CATALOG, "nl428_disability_amount_transferred_from_a_dependant_line_41", non_negative=True
+)
+"""Disability amount transferred from a dependant, NL428 line 41 "Line 41 and line 58480: Disability
+amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
+optional input; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
