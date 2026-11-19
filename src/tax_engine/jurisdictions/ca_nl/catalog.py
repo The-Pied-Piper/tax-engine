@@ -835,6 +835,19 @@ NL428_LOW_INCOME_REDUCTION_DEPENDANT_LINE_97 = AmountKind.declare(
 dependant claimed on line 58160 Claim $557": the printed 557 where an amount is claimed on line
 58160, and 0 where line 23 is 0 or blank."""
 
+NL428_LOW_INCOME_REDUCTION_DEPENDANT_BEFORE_CHECK_LINE_97 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_dependant_before_check_line_97", non_negative=True
+)
+"""Reduction for an eligible dependant before it is checked against line 96, NL428 line 97: the
+printed 557 where an amount is claimed on line 58160, and 0 where line 23 is 0 or blank."""
+
+NL428_LOW_INCOME_REDUCTION_DEPENDANT_MOST_LINE_97 = AmountKind.declare(
+    CATALOG, "nl428_low_income_reduction_dependant_most_line_97", non_negative=True
+)
+"""The most NL428 line 97 may be: the printed $557 less line 96, so 557 where line 96 is 0 and 0
+where line 96 is 557. The spouse and the eligible dependant reductions are not both allowed
+(NL Income Tax Act, 2000, s. 9(1)(b) and s. 21.1(2.1)(b))."""
+
 NL428_SPOUSE_FAMILY_INCOME_LESS_UCCB_RDSP_LINE_92 = AmountKind.declare(
     CATALOG, "nl428_spouse_family_income_less_uccb_rdsp_line_92", non_negative=True
 )
