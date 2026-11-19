@@ -6,4 +6,6 @@ this package imports them all.
 
 from __future__ import annotations
 
-__all__: list[str] = []
+from tax_engine.jurisdictions.ca_nl.trace_english import tax_on_taxable_income
+
+__all__ = ["tax_on_taxable_income"]
