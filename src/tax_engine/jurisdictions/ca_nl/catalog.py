@@ -444,6 +444,13 @@ NL428_TAXABLE_INCOME_OVER_LOWER_BOUND_LINE_4 = AmountKind.declare(
 negative) =": line 1 minus line 3, not below zero. It is blank when line 3 is blank, above
 220,910."""
 
+NL428_TAX_ON_EXCESS_LINE_6 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_excess_line_6", non_negative=True
+)
+"""Tax on the taxable income over the lower bound, NL428 line 6 "Line 6: Line 4 multiplied by the
+percentage from line 5 =": line 4 times the line 5 rate, rounded half-up to the cent. It is blank
+when line 4 or line 5 is blank, above 220,910."""
+
 NL428_NET_INCOME_LINE_49 = AmountKind.declare(
     CATALOG, "nl428_net_income_line_49", non_negative=True
 )
