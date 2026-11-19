@@ -14,6 +14,12 @@ from tax_engine.jurisdictions.ca_nl import NAMESPACE
 
 CATALOG = ArtifactCatalog(Namespace(NAMESPACE))
 
+WORKSHEET_NL428_AGE_AMOUNT_MAXIMUM_LINE_1 = AmountKind.declare(
+    CATALOG, "worksheet_nl428_age_amount_maximum_line_1", non_negative=True
+)
+"""Maximum amount, Worksheet NL428 line 1 "Line 1: Maximum amount 7,064.00": the printed
+maximum."""
+
 WORKSHEET_NL428_AGE_AMOUNT_NET_INCOME_LINE_2 = AmountKind.declare(
     CATALOG, "worksheet_nl428_age_amount_net_income_line_2", non_negative=True
 )
@@ -127,6 +133,12 @@ NL428_SEARCH_AND_RESCUE_VOLUNTEERS_AMOUNT_LINE_32 = AmountKind.declare(
 """Search and rescue volunteers' amount, NL428 line 32 "Line 32 and line 58316: Search and rescue
 volunteers' amount": the amount as the filer gives it, an optional input; a blank input is read as
 blank."""
+
+NL428_CHILD_CARE_AMOUNT_LINE_33 = AmountKind.declare(
+    CATALOG, "nl428_child_care_amount_line_33", non_negative=True
+)
+"""Child care amount, NL428 line 33 "Line 33 and line 58320: Child care amount": the amount as
+the filer gives it, an optional input; a blank input is read as blank."""
 
 NL428_ADOPTION_EXPENSES_LINE_34 = AmountKind.declare(
     CATALOG, "nl428_adoption_expenses_line_34", non_negative=True
