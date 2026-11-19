@@ -251,6 +251,7 @@ def test_the_part_counts_the_claims_and_chooses_between_the_two_printed_figures(
         "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96",
         "ca-nl/nl428_low_income_reduction_dependant_line_97",
     ]
+    assert counted["blank"] == {"amounts": "0"}
     assert [figure["params"]["amount"] for figure in figures] == [
         "ca-nl/low_income_threshold",
         "ca-nl/low_income_threshold_with_spouse_or_dependant",

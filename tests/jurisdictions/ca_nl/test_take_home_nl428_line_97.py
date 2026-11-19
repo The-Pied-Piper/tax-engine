@@ -3,8 +3,9 @@
 Form text (Form NL428, CRA 5001-C, 5001-c-25e.txt): "Line 97 and line 61890: Reduction for an
 eligible dependant claimed on line 58160 Claim $557". Line 58160 is line 23 of the other form
 `ca-nl/nl428_credits`. A salary-only caller leaves line 22 blank, so line 23 is blank and line 97
-is 0 (hand-computed from the printed form, not a CRA example); a line 22 of 0 claims the
-dependant and gives 557, and a line 22 of 9,948 or more leaves line 23 at 0 and line 97 at 0.
+is blank too (Umar, 2026-11-19 16:24Z; hand-computed from the printed form, not a CRA
+example); a line 22 of 0 claims the dependant and gives 557, and a line 22 of 9,948 or more
+leaves line 23 at 0 and line 97 at 0.
 """
 
 from __future__ import annotations
@@ -223,8 +224,8 @@ def _line_97(
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
-def test_line_97_is_0_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
-    assert _line_97(tmp_path, salary).value == D("0")
+def test_line_97_is_blank_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
+    assert _line_97(tmp_path, salary).is_blank
 
 
 @pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
@@ -236,8 +237,8 @@ def test_line_97_is_0_when_line_23_comes_to_nothing(tmp_path: Path) -> None:
     assert _line_97(tmp_path, "70000", "9948").value == D("0")
 
 
-def test_line_97_is_0_when_only_line_96_is_claimed(tmp_path: Path) -> None:
-    assert _line_97(tmp_path, "70000", None, "1").value == D("0")
+def test_line_97_is_blank_when_only_line_96_is_claimed(tmp_path: Path) -> None:
+    assert _line_97(tmp_path, "70000", None, "1").is_blank
 
 
 def test_line_97_is_557_when_the_line_96_claim_is_0(tmp_path: Path) -> None:
@@ -264,7 +265,7 @@ def test_the_part_is_a_record_total_a_gate_the_spouse_room_and_an_at_most() -> N
         "name": "core/record_total",
         "unit": "ca/cad",
         "consumes": {"records": "ca-nl/nl428_credits.nl428_eligible_dependant_amount_line_23"},
-        "blank": {"records": {"ca-nl/nl428_eligible_dependant_amount_line_23": "0"}},
+        "blank": {"records": {"ca-nl/nl428_eligible_dependant_amount_line_23": "pass_on"}},
         "produces": {"output": "ca-nl/nl428_eligible_dependant_claimed_line_97"},
     }
     assert gate == {
@@ -272,6 +273,7 @@ def test_the_part_is_a_record_total_a_gate_the_spouse_room_and_an_at_most() -> N
         "unit": "ca/cad",
         "params": {"table": "ca-nl/low_income_reduction_dependant_gate"},
         "consumes": {"base": "ca-nl/nl428_eligible_dependant_claimed_line_97"},
+        "blank": {"base": "pass_on"},
         "produces": {"output": "ca-nl/nl428_low_income_reduction_dependant_before_check_line_97"},
     }
     assert room == {
@@ -282,6 +284,7 @@ def test_the_part_is_a_record_total_a_gate_the_spouse_room_and_an_at_most() -> N
             "amount": "ca-nl/low_income_reduction_spouse",
             "less": "ca-nl/nl428_reduction_for_spouse_or_common_law_partner_line_96",
         },
+        "blank": {"less": "0"},
         "produces": {"output": "ca-nl/nl428_low_income_reduction_dependant_most_line_97"},
     }
     assert line == {
@@ -293,6 +296,7 @@ def test_the_part_is_a_record_total_a_gate_the_spouse_room_and_an_at_most() -> N
             "amount": "ca-nl/nl428_low_income_reduction_dependant_before_check_line_97",
             "bound": "ca-nl/nl428_low_income_reduction_dependant_most_line_97",
         },
+        "blank": {"amount": "pass_on"},
         "produces": {"output": IDENTIFIER},
     }
 

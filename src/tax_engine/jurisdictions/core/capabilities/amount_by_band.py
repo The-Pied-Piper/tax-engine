@@ -2,6 +2,9 @@
 
 An income at a boundary is in the lower band. The band's flat or sloped figure is unrounded until
 the output, which the `table` dataset's rounding rule rounds once. Records one `AmountByBandLine`.
+
+A blank `base` is allowed. Under a `pass_on` rule it blanks the output; without a rule it is
+refused.
 """
 
 from __future__ import annotations
@@ -25,6 +28,7 @@ class AmountFromBand(Capability):
     PARAMETERS: ClassVar[Mapping[str, ParameterKind[AmountByBand]]] = {"table": AMOUNT_BY_BAND}
     CONSUMES: ClassVar[Mapping[str, type]] = {"base": Decimal}
     PRODUCES: ClassVar[Mapping[str, type]] = {"output": Decimal}
+    BLANK_ALLOWED: ClassVar[frozenset[str]] = frozenset({"base"})
 
     def __init__(self, table: ParameterDataset[AmountByBand], base: Money, output: Money) -> None:
         """Wire the capability: its chart dataset, the kind it reads the band from, the kind it
