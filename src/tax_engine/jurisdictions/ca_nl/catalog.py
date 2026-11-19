@@ -198,6 +198,13 @@ NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
 """Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.declare(
+    CATALOG, "nl428_allowable_medical_expenses_for_other_dependants_line_54", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, NL428 line 54 "Line 54 and line
+58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
