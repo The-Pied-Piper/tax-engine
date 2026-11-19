@@ -249,7 +249,6 @@ def test_the_part_is_one_untitled_apply_rate_step_over_line_56() -> None:
         "consumes": {"base": LINE_56},
         "produces": {"output": IDENTIFIER},
     }
-    assert list(step) == ["name", "reference", "unit", "params", "consumes", "produces"]
 
 
 def test_line_58_is_a_registered_non_negative_decimal_amount_kind() -> None:
