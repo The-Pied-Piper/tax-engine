@@ -1,0 +1,27 @@
+# Form NL428 (CRA 5001-C) line 25: "Line 25: Add lines 16, 17, 20, 23, and 24. = ^". Lines 16 and 17
+# are always figures (the basic personal amount, and the age amount, 0 unless born in 1960 or
+# earlier). Lines 20 and 23 are blank for a filer with no spouse or common-law partner and no
+# eligible dependant, and line 24 is an optional input left blank by a salary-only filer; the sum
+# reads each blank as 0, as ca-mb/mb428_credits line 18 and NL428 line 35 (nl428_credits_line_35.yaml) do. Line 26 is a copy of
+# this figure and has no step. Step 1 adds them with core/sum.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "25"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/basic_personal_amount
+        - ca-nl/nl428_age_amount_line_17
+        - ca-nl/nl428_spouse_amount_line_20
+        - ca-nl/nl428_eligible_dependant_amount_line_23
+        - ca-nl/nl428_infirm_dependants_amount_line_24
+    blank:
+      ca-nl/nl428_spouse_amount_line_20: "0"
+      ca-nl/nl428_eligible_dependant_amount_line_23: "0"
+      ca-nl/nl428_infirm_dependants_amount_line_24: "0"
+    produces:
+      output: ca-nl/nl428_credits_subtotal_line_25

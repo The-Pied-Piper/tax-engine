@@ -1,0 +1,36 @@
+# Form NL428 (CRA 5001-C) line 17 and line 58080: "Age amount (if you were born in 1960 or earlier)
+# (use Worksheet NL428) (maximum $7,064)". The amount is Worksheet NL428 line 7, claimed only if the
+# filer was born in 1960 or earlier.
+#
+# Step 1 reads the born-in-1960-or-earlier answer, a blank read as 0, and refuses a count above 1
+# through ca/yes_or_no_count. Step 2 reads the worksheet's line 7, which another form exports as a
+# record list, through core/record_total. Step 3 multiplies that amount by the checked count, so
+# line 17 is the worksheet amount when born in 1960 or earlier and 0.00 otherwise, as line 40 does
+# for its claim.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/born_in_1960_or_earlier
+    blank:
+      count: "0"
+    produces:
+      output: ca/born_in_1960_or_earlier_checked
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_worksheet.worksheet_nl428_age_amount_line_7
+    produces:
+      output: ca-nl/nl428_age_amount_worksheet_line_17
+  - name: core/times_count
+    title: "Age amount"
+    reference: "17"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_age_amount_worksheet_line_17
+      count: ca/born_in_1960_or_earlier_checked
+    produces:
+      output: ca-nl/nl428_age_amount_line_17
