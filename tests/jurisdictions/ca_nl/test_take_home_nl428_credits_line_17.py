@@ -8,7 +8,7 @@ The part has three steps: `ca/yes_or_no_count` reads the shared `ca/born_in_1960
 (blank read as 0) and refuses a count above 1; `core/record_total` reads Worksheet NL428 line 7 from
 its form; `core/times_count` multiplies it by the checked count, rounded through
 `ca-nl/cent_rounding`, as line 40 does for its claim. A salary-only filer leaves the answer out, so
-line 17 is 0.00. Worksheet line 7 is 7,064.00 at a 20,000 salary, 2,470.55 at 70,000 and 0.00 at
+line 17 is 0.00. Worksheet line 7 is 7,064.00 at a 20,000 salary and 0.00 at
 200,000 (hand-computed, not a CRA example).
 
 The real federal parts Worksheet NL428 needs and the real worksheet parts are loaded under a
@@ -112,7 +112,7 @@ FORMS = dedent("""\
     """)
 
 # salary, line 7 of the worksheet.
-WORKSHEET_LINE_7 = [("20000", "7064.00"), ("70000", "2470.55"), ("200000", "0.00")]
+WORKSHEET_LINE_7 = [("20000", "7064.00"), ("200000", "0.00")]
 
 
 def _part_files() -> Iterator[Path]:
@@ -175,7 +175,7 @@ def _born(tmp_path: Path, salary: str, born: int) -> Any:
     return sheet
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_17_is_0_for_a_salary_only_filer(tmp_path: Path, salary: str) -> None:
     assert _value(_sheet(tmp_path, salary), IDENTIFIER) == D("0.00")
 

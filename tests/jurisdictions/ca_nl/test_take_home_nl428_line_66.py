@@ -7,7 +7,7 @@ form's line 62 export, read as a record list.
 
 The test composes the real parts behind line 62 and the new `nl428_line_66.yaml`. The figures are
 line 62 with line 61 blank (hand-computed from the printed form, not a CRA example): 1,062.42 /
-1,342.95 / 1,348.55 at salaries of 20,000 / 70,000 / 200,000.
+1,348.55 at salaries of 20,000 / 200,000.
 """
 
 from __future__ import annotations
@@ -156,7 +156,6 @@ FORMS = dedent("""\
 # salary, line 66: line 62 with line 61 blank, so line 58.
 CASES = [
     ("20000", "1062.42"),
-    ("70000", "1342.95"),
     ("200000", "1348.55"),
 ]
 

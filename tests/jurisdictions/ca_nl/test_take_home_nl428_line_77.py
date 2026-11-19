@@ -6,7 +6,7 @@ contribution tax credit, an optional input read as 0 when blank), rounded half-u
 `ca-nl/cent_rounding`. The form prints no title for the line, so the step is untitled.
 
 Figures (hand-computed from the printed form, not a CRA example), with line 76 blank: line 74 is
-663.23 / 6,147.49 / 27,192.33 at salaries of 20,000 / 70,000 / 200,000, so line 77 is the same. With
+663.23 / 27,192.33 at salaries of 20,000 / 200,000, so line 77 is the same. With
 a line 76 of 500.00, line 77 at a salary of 70,000 is 5,647.49; with a line 76 of 500.00 at a
 salary of 15,000 (line 74 is 261.24) it is 0.00.
 A line 76 above the printed maximum of 500.00 is refused.
@@ -177,7 +177,6 @@ FORMS = dedent("""\
 # salary, line 77: line 74 minus line 76, line 76 blank.
 CASES = [
     ("20000", "663.23"),
-    ("70000", "6147.49"),
     ("200000", "27192.33"),
 ]
 

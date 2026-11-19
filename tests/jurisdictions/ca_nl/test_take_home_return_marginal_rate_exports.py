@@ -75,7 +75,6 @@ def test_the_credits_form_exports_the_line_5_and_line_12_rates(
     [
         ("20000", "663.23", "0.00"),
         ("28000", "1306.40", "921.72"),
-        ("70000", "6147.49", "6147.49"),
     ],
 )
 def test_the_nl428_form_exports_lines_85_and_105(

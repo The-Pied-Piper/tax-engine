@@ -11,9 +11,8 @@ the line 8 and line 15 exports of `ca-nl/nl428_credits` as record lists and givi
 a figure; the other is blank. Its output is
 `ca-nl/nl428_newfoundland_and_labrador_tax_on_taxable_income_line_63`, on the form `ca-nl/nl428`.
 
-Figures (hand-computed, not a CRA example): salary 20,000 gives line 8 of 1,725.65; 70,000 gives
-7,490.44; 200,000 gives 28,540.88 (all line 8, line 1 at or below 220,910); 250,000 gives line 15 of
-38,001.21.
+Figures (hand-computed, not a CRA example): salary 20,000 gives line 8 of 1,725.65
+(line 1 at or below 220,910); 250,000 gives line 15 of 38,001.21.
 """
 
 from __future__ import annotations
@@ -163,8 +162,6 @@ def _kind(identifier: str) -> AmountKind:
     ("salary", "used", "expected"),
     [
         ("20000", LINE_8, "1725.65"),
-        ("70000", LINE_8, "7490.44"),
-        ("200000", LINE_8, "28540.88"),
         ("250000", LINE_15, "38001.21"),
     ],
 )

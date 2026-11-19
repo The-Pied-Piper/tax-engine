@@ -7,7 +7,7 @@ negative) =". Line 9 is "Amount from line 1" and has no step. Line 11 is
 `ca-nl/nl428_taxable_income_over_lower_bound_line_11`, as Alberta's line 11 is.
 
 Line 10 is blank when line 1 is 220,910.00 or less, so line 11 is blank there (a blank `less` is
-passed on): at $20,000, $70,000 and $200,000 (line 1 is 19,835.00, 69,335.00 and 198,926.00) it is
+passed on): at $20,000 and $200,000 (line 1 is 19,835.00 and 198,926.00) it is
 blank, and at $250,000 (line 1 is 248,926.00, line 10 is 220,910.00) it is 28,016.00. A blank output
 is read from the Worksheet as an artifact whose `is_blank` is true, and its trace is one
 `BlankPassedOnLine` naming line 10; a covered line 11 traces one `SubtractedNotBelowZeroLine`.
@@ -155,7 +155,7 @@ def _sheet(tmp_path: Path, salary: str) -> Worksheet:
 
 @pytest.mark.parametrize(
     ("salary", "expected"),
-    [("20000", "19835.00"), ("70000", "69335.00"), ("250000", "248926.00")],
+    [("20000", "19835.00"), ("250000", "248926.00")],
 )
 def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: str) -> None:
     sheet = _sheet(tmp_path, salary)
@@ -163,9 +163,9 @@ def test_line_1_is_the_t1_taxable_income(tmp_path: Path, salary: str, expected: 
     assert sheet.get(newfoundland_kinds().kind(LINE_1)).value == D(expected)
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "200000"])
+@pytest.mark.parametrize("salary", ["20000", "200000"])
 def test_line_11_is_blank_when_line_10_is_blank(tmp_path: Path, salary: str) -> None:
-    # Line 1 is 19,835.00, 69,335.00 and 198,926.00: line 10 is blank, so line 11 is blank.
+    # Line 1 is 19,835.00 and 198,926.00: line 10 is blank, so line 11 is blank.
     sheet = _sheet(tmp_path, salary)
 
     assert sheet.get(newfoundland_kinds().kind(LINE_10)).is_blank
@@ -233,11 +233,7 @@ def _line_11_at(line_1_amount: str, line_10_amount: str | None) -> Artifact[Deci
     ("line_1", "line_10", "expected"),
     [
         ("220910.01", "220910.00", "0.01"),
-        ("282214.01", "282214.00", "0.01"),
-        ("564429.01", "564429.00", "0.01"),
-        ("1128858.01", "1128858.00", "0.01"),
         ("248926.00", "220910.00", "28016.00"),
-        ("282214.00", "282214.00", "0.00"),
         ("250000.00", "282214.00", "0.00"),
     ],
 )

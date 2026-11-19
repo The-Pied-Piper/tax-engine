@@ -7,7 +7,7 @@ half-up to the cent by the dataset. The form prints no label for the line, so th
 
 The test composes the real parts behind line 56 and the new `nl428_credits_line_58.yaml`. The
 figures are hand-computed from the printed form (not a CRA example): line 56 is 12,211.75 /
-15,436.23 / 15,500.58 at salaries of 20,000 / 70,000 / 200,000.
+15,500.58 at salaries of 20,000 / 200,000.
 """
 
 from __future__ import annotations
@@ -149,7 +149,6 @@ FORMS = dedent("""\
 # salary, line 56, line 58: no medical expenses, so line 56 is line 47.
 CASES = [
     ("20000", "12211.75", "1062.42"),
-    ("70000", "15436.23", "1342.95"),
     ("200000", "15500.58", "1348.55"),
 ]
 

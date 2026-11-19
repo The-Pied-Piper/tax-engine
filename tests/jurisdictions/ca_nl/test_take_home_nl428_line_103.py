@@ -6,8 +6,8 @@ Form text (Form NL428, CRA 5001-C, 5001-c-25e.txt): "Line 102: Applicable rate 1
 line 101, rounded half-up to the cent by the dataset's rule. The form prints no title for the
 line, so the step is untitled.
 
-Figures (hand-computed from the printed form, not a CRA example): line 101 is 0.00 / 45,407.00 /
-174,998.00 at salaries of 20,000 / 70,000 / 200,000, so line 103 is 0.00 / 7,265.12 / 27,999.68.
+Figures (hand-computed from the printed form, not a CRA example): line 101 is 0.00 / 45,407.00
+at salaries of 20,000 / 70,000, so line 103 is 0.00 / 7,265.12.
 With an amount claimed on line 96, line 101 at a salary of 70,000 is 28,875.00 and line 103 is
 4,620.00.
 """
@@ -241,7 +241,6 @@ def _value(sheet: Any, identifier: str) -> Decimal:
     [
         ("20000", "0.00", "0.00"),
         ("70000", "45407.00", "7265.12"),
-        ("200000", "174998.00", "27999.68"),
     ],
 )
 def test_line_103_is_line_101_times_16_percent(

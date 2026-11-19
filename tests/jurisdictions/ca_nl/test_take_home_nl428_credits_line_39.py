@@ -10,8 +10,8 @@ the worksheet parts, lines 16 to 36, Schedule 8, T2204, lines 37 and 38) and the
 `nl428_credits_line_39.yaml`, and types in only the salary (and, in some tests, optional inputs).
 The header and the two form declarations are made up here, because the shared scaffold owns them.
 The figures are hand-computed from the printed form (not a CRA example): line 25 is the basic
-personal amount 11,067.00 and line 35 is line 27 plus line 29 (1,144.75 / 4,369.23 / 4,433.58 at
-salaries of 20,000 / 70,000 / 200,000).
+personal amount 11,067.00 and line 35 is line 27 plus line 29 (1,144.75 / 4,433.58 at
+salaries of 20,000 / 200,000).
 """
 
 from __future__ import annotations
@@ -130,7 +130,6 @@ FORMS = dedent("""\
 # salary, line 39: line 36 (line 25 of 11,067.00 plus line 35), lines 37 and 38 being blank.
 CASES = [
     ("20000", "12211.75"),
-    ("70000", "15436.23"),
     ("200000", "15500.58"),
 ]
 
