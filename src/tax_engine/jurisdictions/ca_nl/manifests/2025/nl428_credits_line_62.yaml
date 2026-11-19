@@ -1,0 +1,22 @@
+# Form NL428 (CRA 5001-C) line 62: "Line 62 and line 61500: Line 58 plus line 61 Enter this amount on
+# line 66. Newfoundland and Labrador non-refundable tax credits =". Line 58 is the credits at the
+# credit rate (nl428_credits_line_58.yaml) and line 61 the donations and gifts credit, an optional
+# input (nl428_credits_line_61_input.yaml) that a salary-only filer leaves blank, read as 0. Step 1
+# adds them with core/sum; the form exports the result for line 66 on the tax form.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    title: "Newfoundland and Labrador non-refundable tax credits"
+    reference: "62"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_credits_at_rate_line_58
+        - ca-nl/nl428_donations_and_gifts_credit_line_61
+    blank:
+      ca-nl/nl428_donations_and_gifts_credit_line_61: "0"
+    produces:
+      output: ca-nl/nl428_non_refundable_credits_line_62
