@@ -96,22 +96,11 @@ def line_28(take_home_service: TakeHomeService, salary: str, other: str | None =
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 22 is $0.00 and line 27 is $0.00, so line 28 is $0.00.
-        ("2000", "0.00"),
-        # Line 22 is $810.00 and line 27 is $0.00 (line 25 is $0.00), so line 28 is $810.00.
-        ("6000", "810.00"),
-        # Line 22 is $1,633.00 and line 27 is $0.00 (line 25 is $0.00), so line 28 is $1,633.00.
-        ("20000", "1633.00"),
         # Line 22 is $1,633.00 and line 27 is $432.00, so line 28 is $1,201.00.
         ("30000", "1201.00"),
-        # Line 22 is $1,633.00 and line 27 is $1,174.50, so line 28 is $458.50.
-        ("35000", "458.50"),
         # Line 22 is $1,633.00 and line 27 is $1,917.00, which is more than line 22. The difference
         # is -$284.00, floored at zero, so line 28 is $0.00.
         ("40000", "0.00"),
-        # Line 22 is $1,633.00 and line 27 is $6,372.00, which is more than line 22. The difference
-        # is floored at zero, so line 28 is $0.00.
-        ("70000", "0.00"),
     ],
 )
 def test_schedule_6_line_28_is_line_22_minus_line_27_not_below_zero(

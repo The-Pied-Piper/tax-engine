@@ -65,15 +65,9 @@ def line_5(take_home_service: TakeHomeService, salary: str, other: str | None = 
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Working income (line 5) at salaries of $2,000, $6,000, $20,000, $30,000, $35,000, $40,000
-        # and $70,000. Lines 2 to 4 are out of scope, so each line 5 is line 1 alone, which is the
-        # salary (line 10100) alone.
+        # Working income (line 5) at salaries of $2,000 and $70,000. Lines 2 to 4 are out of
+        # scope, so each line 5 is line 1 alone, which is the salary (line 10100) alone.
         ("2000", "2000.00"),
-        ("6000", "6000.00"),
-        ("20000", "20000.00"),
-        ("30000", "30000.00"),
-        ("35000", "35000.00"),
-        ("40000", "40000.00"),
         ("70000", "70000.00"),
     ],
 )

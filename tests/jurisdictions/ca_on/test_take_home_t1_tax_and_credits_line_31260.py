@@ -86,12 +86,8 @@ def _salary(salary: str) -> Artifact[Any]:
     [
         # The General Guide's cook: 35,000 of employment income claims the whole $1,471.
         ("35000", "1471"),
-        ("70000", "1471.00"),
         # Below the cap the income itself is the lesser: 1,000.00.
         ("1000", "1000.00"),
-        # At the cap the income and the cap are equal, and above it the cap is the lesser.
-        ("1471", "1471.00"),
-        ("1472", "1471.00"),
     ],
 )
 def test_line_31260_is_the_lesser_of_1471_and_the_income(

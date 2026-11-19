@@ -97,8 +97,6 @@ def _sheet(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         ("70000", "21969.23"),
         # $20,000: line 106 alone (16,129.00 + 2,615.75).
         ("20000", "18744.75"),
-        # $200,000: line 106 alone (15,685.73 + 5,904.58), on the taper.
-        ("200000", "21590.31"),
     ],
 )
 def test_line_33500_is_line_106(

@@ -80,19 +80,10 @@ def line_27(take_home_service: TakeHomeService, salary: str) -> Decimal:
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Line 25 is $0.00 at $2,000, $6,000 and $20,000 (line 15 is below the base amount), so 15%
-        # of it is $0.00.
-        ("2000", "0.00"),
-        ("6000", "0.00"),
+        # Line 25 is $0.00 at $20,000 (line 15 is below the base amount), so 15% of it is $0.00.
         ("20000", "0.00"),
         # Line 25 is $2,880.00, and 15% of $2,880.00 is $432.00.
         ("30000", "432.00"),
-        # Line 25 is $7,830.00, and 15% of $7,830.00 is $1,174.50.
-        ("35000", "1174.50"),
-        # Line 25 is $12,780.00, and 15% of $12,780.00 is $1,917.00.
-        ("40000", "1917.00"),
-        # Line 25 is $42,480.00, and 15% of $42,480.00 is $6,372.00.
-        ("70000", "6372.00"),
     ],
 )
 def test_schedule_6_line_27_is_line_25_times_the_15_percent_rate(

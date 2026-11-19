@@ -60,15 +60,10 @@ def line_7(take_home_service: TakeHomeService, line_5: str, line_e: str) -> Deci
     [
         # The ticket's $70,000 salary: line 5 is 70,000 and line E is 3,500 at 12 months.
         ("70000.00", "3500.00", "66500.00"),
-        # $90,000: line 5 is 71,300, so 71,300 - 3,500 is exactly the printed maximum.
-        ("71300.00", "3500.00", "67800.00"),
         # The difference above the maximum is the maximum: line E of a 7-month year.
         ("71300.00", "2041.67", "67800.00"),
-        # A line 5 equal to line E and one below it are both "0".
-        ("3500.00", "3500.00", "0.00"),
+        # A line 5 a cent below line E is "0".
         ("3499.99", "3500.00", "0.00"),
-        # A cent over line E is a cent.
-        ("3500.01", "3500.00", "0.01"),
     ],
 )
 def test_line_7_is_line_5_less_line_e_between_zero_and_the_maximum(

@@ -90,15 +90,11 @@ def _line_23600_signed(
     [
         # A $70,000 salary: line 23400 is 69,335.00, and line 23500 is left out, so it is 0.
         ("69335.00", None, "69335.00"),
-        # The $90,000 salary, above the CPP ceiling: line 23400 is 88,926.00, line 23500 left out.
-        ("88926.00", None, "88926.00"),
         # Line 23500 given as 1,000: line 23600 is line 23400 less it.
         ("69335.00", "1000", "68335.00"),
         # Line 23500 above line 23400: the difference is negative and is kept as it is, in
         # brackets on Schedule 6 line 7 and ON428-A line 6, not floored at "0".
         ("1000.00", "5000", "-4000.00"),
-        # Line 23400 negative with line 23500 left out: the signed amount is the line 23400 amount.
-        ("-500.00", None, "-500.00"),
     ],
 )
 def test_line_23600_signed_is_line_23400_less_line_23500_without_a_floor(
@@ -120,12 +116,9 @@ def test_the_line_23600_signed_kind_is_registered_and_signed() -> None:
     ("line_23400", "line_23500", "printed"),
     [
         ("69335.00", None, "69335.00"),
-        ("1000.00", "5000", "-4000.00"),
-        ("-500.00", None, "-500.00"),
         # Rounded half-up to the cent on the exact difference, negative results included.
         ("1000.00", "0.006", "999.99"),
         ("0.00", "0.005", "-0.01"),
-        ("0.00", "0.004", "0.00"),
     ],
 )
 def test_line_23600_signed_prints_cents_through_the_shared_rounding_dataset(

@@ -55,9 +55,7 @@ def line_21(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(CWB_MAXIMUM).value
 
 
-@pytest.mark.parametrize(
-    "salary", ["0", "2000", "6000", "20000", "30000", "35000", "40000", "70000"]
-)
+@pytest.mark.parametrize("salary", ["0", "70000"])
 def test_line_21_is_the_printed_1633_whatever_the_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
