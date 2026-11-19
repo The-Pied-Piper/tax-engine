@@ -185,6 +185,13 @@ NL428_PENSION_INCOME_AMOUNT_LINE_37 = AmountKind.declare(
 $1,000)": the entered amount, passed on unchanged when it is at most the printed maximum, blank when
 left out; above the maximum it is refused, not capped."""
 
+NL428_CREDITS_SUBTOTAL_LINE_39 = AmountKind.declare(
+    CATALOG, "nl428_credits_subtotal_line_39", non_negative=True
+)
+"""Credits subtotal, NL428 line 39 "Line 39: Add lines 36 to 38. = ^": line 36 plus line 37 (the
+pension income amount) plus line 38 (the caregiver amount), lines 37 and 38 being read as 0 when
+blank."""
+
 NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declare(
     CATALOG, "nl428_disability_amount_transferred_from_a_dependant_line_41", non_negative=True
 )
