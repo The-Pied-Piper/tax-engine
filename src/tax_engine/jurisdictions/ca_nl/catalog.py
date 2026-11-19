@@ -192,10 +192,24 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_STUDENT_LOAN_INTEREST_LINE_43 = AmountKind.declare(
+    CATALOG, "nl428_student_loan_interest_line_43", non_negative=True
+)
+"""Interest paid on your student loans, NL428 line 43 "Line 43 and line 58520: Interest paid on your
+student loans (amount from line 31900 of your return)": the amount as the filer gives it, an
+optional input; a blank input is read as blank."""
+
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
 """Medical expenses, NL428 line 48 (line 58689) "Amount from line 33099 of your return": the amount
+as the filer gives it, an optional input; a blank input is read as blank."""
+
+NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.declare(
+    CATALOG, "nl428_allowable_medical_expenses_for_other_dependants_line_54", non_negative=True
+)
+"""Allowable amount of medical expenses for other dependants, NL428 line 54 "Line 54 and line
+58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
