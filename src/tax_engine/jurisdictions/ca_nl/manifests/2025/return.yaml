@@ -1,0 +1,21 @@
+# The Newfoundland and Labrador take-home return: T1 line 167 "Refund or balance owing" (positive is
+# owing, negative is a refund). The T1 form exports it, and another form's export is read only as a
+# record list, so the step is core/record_total over the T1 export, totalling the one amount into
+# the return's own `ca/refund_or_balance_owing`. The provincial tax reaches line 167 through T1
+# line 42800, which NL428 line 105 supplies (`ca/provincial_tax.amount`); T1 line 47900
+# "Provincial or territorial credits" has no Newfoundland and Labrador source for a salary-only
+# filer (Form NL479 is not built: its only credits, physical activity and research and
+# development, are claims needing receipts or Form T1129) and is read as 0, as in the other
+# provinces' returns.
+#
+# The average income tax rate and the marginal tax rate, the return's other two outputs, are built
+# by their own tickets, one step each in this part.
+capabilities:
+  - name: core/record_total
+    title: "Refund or balance owing"
+    reference: "167"
+    unit: ca/cad
+    consumes:
+      records: ca/t1_tax_and_credits.refund_or_balance_owing
+    produces:
+      output: ca/refund_or_balance_owing
