@@ -1,0 +1,23 @@
+# Worksheet NL428 (2025) line 58440's inputs.
+# Line 58440: "Line 58440 - Disability amount for self. Complete this calculation if you were under 18
+# years of age on December 31, 2025." (CRA 5001-D 2025). The worksheet asks the filer that yes or no
+# question and nothing else about age, so the input is the existing federal count
+# `ca/under_18_on_december_31` (1 when under 18, 0 or blank when 18 or older), a shared fact; no
+# new kind is declared. NL428 line 40 reads the same count.
+# Line 3: "Total child care and attendant care expenses for you, claimed by you or another person" is an
+# amount the filer enters; no other form computes it. It is the existing federal amount
+# `ca/disability_self_care_expenses`, left blank by a salary-only caller and read as 0 by line 5.
+inputs:
+  - name: ca/under_18_on_december_31
+    title: "Disability amount for self (if you were under 18 years of age on December 31, 2025)"
+    reference: "58440"
+    required: false
+    default: null
+    basis: "Complete this calculation if you were under 18 years of age on December 31, 2025."
+  - name: ca/disability_self_care_expenses
+    title: "Total child care and attendant care expenses for you, claimed by you or another person"
+    reference: "3"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: "Line 3: Total child care and attendant care expenses for you, claimed by you or another person"

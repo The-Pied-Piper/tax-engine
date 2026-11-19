@@ -1,12 +1,16 @@
 # NL428 (2025) line 40, the disability amount for self. Form NL428 (CRA 5001-C): "Line 40 and line
 # 58440: Disability amount for self (claim $7,467 or, if you were under 18 years of age, use
-# Worksheet NL428)". The under-18 branch (Worksheet NL428 line 58440) is a skipped block and is not
-# built.
+# Worksheet NL428)". The under-18 branch is Worksheet NL428 line 58440 line 7, built in the
+# `ca-nl/nl428_worksheet` form.
 #
 # Step 1 reads the optional claim (1 when the disability tax credit is approved), a blank read as 0,
 # and refuses a count above 1 through ca/yes_or_no_count. Step 2 produces the printed $7,467 from the
-# `ca-nl/disability_amount_self` dataset through core/credit_amount. Step 3 multiplies that amount by
-# the checked claim, so line 40 is 7,467.00 when claimed and 0.00 otherwise.
+# `ca-nl/disability_amount_self` dataset through core/credit_amount. Step 3 reads the shared
+# `ca/under_18_on_december_31` answer, a blank read as 0 (18 or over), and refuses a count above 1.
+# Step 4 reads the worksheet's line 7, which another form exports as a record list, through
+# core/record_total. Step 5 chooses between the two with core/choose_by_count: the printed $7,467 for
+# a filer 18 or over, the worksheet amount for a filer under 18. Step 6 multiplies the chosen amount
+# by the checked claim, so line 40 is that amount when claimed and 0.00 otherwise.
 form:
   name: ca-nl/nl428_credits
 capabilities:
@@ -22,6 +26,27 @@ capabilities:
       amount: ca-nl/disability_amount_self
     produces:
       output: ca-nl/disability_amount_self
+  - name: ca/yes_or_no_count
+    consumes:
+      count: ca/under_18_on_december_31
+    blank:
+      count: "0"
+    produces:
+      output: ca/under_18_on_december_31_checked
+  - name: core/record_total
+    unit: ca/cad
+    consumes:
+      records: ca-nl/nl428_worksheet.worksheet_nl428_disability_self_line_7
+    produces:
+      output: ca-nl/nl428_disability_amount_self_worksheet_line_40
+  - name: core/choose_by_count
+    unit: ca/cad
+    consumes:
+      count: ca/under_18_on_december_31_checked
+      when_none: ca-nl/disability_amount_self
+      when_any: ca-nl/nl428_disability_amount_self_worksheet_line_40
+    produces:
+      output: ca-nl/nl428_disability_amount_self_basis_line_40
   - name: core/times_count
     title: "Disability amount for self"
     reference: "40"
@@ -29,7 +54,7 @@ capabilities:
     params:
       rounding: ca-nl/cent_rounding
     consumes:
-      amount: ca-nl/disability_amount_self
+      amount: ca-nl/nl428_disability_amount_self_basis_line_40
       count: ca-nl/nl428_disability_amount_self_claimed_checked_line_40
     produces:
       output: ca-nl/nl428_disability_amount_self_line_40
