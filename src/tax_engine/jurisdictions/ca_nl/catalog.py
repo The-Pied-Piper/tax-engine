@@ -428,6 +428,11 @@ NL428_DIRECT_EQUITY_TAX_CREDIT_LINE_78 = AmountKind.declare(
 T1272)": the credit from Form T1272, an optional input that a salary-only caller leaves out; a
 blank input is read as blank."""
 
+NL428_TAX_LINE_79 = AmountKind.declare(CATALOG, "nl428_tax_line_79", non_negative=True)
+"""Newfoundland and Labrador tax after the direct equity tax credit, NL428 line 79 "Line 79: Line
+77 minus line 78 (if negative, enter "0") =": line 77 less the credit of line 78 (blank read as
+0), floored at 0 as the form prints, rounded half-up to the cent."""
+
 NL428_VENTURE_CAPITAL_TAX_CREDIT_LINE_84 = AmountKind.declare(
     CATALOG, "nl428_venture_capital_tax_credit_line_84", non_negative=True
 )
