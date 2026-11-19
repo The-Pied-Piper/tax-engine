@@ -1,0 +1,17 @@
+# NL428 (2025) line 51 (Form NL428, CRA 5001-C): "Line 50: Applicable rate 3%" and "Line 51: Line 49
+# multiplied by the percentage from line 50 =". Line 50 is the printed 3%, the
+# `ca-nl/medical_expense_rate` dataset, and has no step of its own. Line 51 applies that rate to
+# line 49 (`ca-nl/nl428_net_income_line_49`), rounded half-up to the cent by the dataset's rule. The
+# form names no label for the line, so the step has no title.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/apply_rate
+    reference: "51"
+    unit: ca/cad
+    params:
+      rate: ca-nl/medical_expense_rate
+    consumes:
+      base: ca-nl/nl428_net_income_line_49
+    produces:
+      output: ca-nl/nl428_medical_expenses_rate_amount_line_51
