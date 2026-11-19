@@ -380,6 +380,12 @@ NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
 Form T2036)": the credit from Form T2036, an optional input that a salary-only caller leaves out;
 a blank input is read as blank."""
 
+NL428_TAX_LINE_74 = AmountKind.declare(CATALOG, "nl428_tax_line_74", non_negative=True)
+"""Newfoundland and Labrador tax, NL428 line 74 "Line 74: Line 72 minus line 73 (if negative, enter
+"0") =": line 72 (the tax with the additional tax for minimum tax purposes) less line 73 (the
+provincial foreign tax credit, blank read as 0), floored at 0 as the form prints, rounded half-up to
+the cent."""
+
 NL428_RESORT_PROPERTY_INVESTMENT_TAX_CREDIT_LINE_80 = AmountKind.declare(
     CATALOG, "nl428_resort_property_investment_tax_credit_line_80", non_negative=True
 )
@@ -836,6 +842,14 @@ NL428_LOW_INCOME_THRESHOLD_LINE_100 = AmountKind.declare(
 """Low-income threshold, NL428 line 100 "Line 100: If you claimed an amount on line 96 or line 97,
 enter $40,460; if not, enter $23,928": $40,460 when an amount is claimed on line 96 or line 97,
 else $23,928."""
+
+NL428_ADJUSTED_FAMILY_INCOME_LINE_93 = AmountKind.declare(
+    CATALOG, "nl428_adjusted_family_income_line_93", non_negative=True
+)
+"""Adjusted family income, NL428 line 93 "Line 93: Add the amounts from line 92 of columns 1 and 2.
+Enter this amount on line 99. Adjusted family income": line 92 of column 1 (you) plus line 92 of
+column 2 (your spouse or common-law partner), both not below 0, so the kind is non-negative.
+Column 2 is taken as 0 when left blank."""
 
 NL428_LOW_INCOME_REDUCTION_BEFORE_MAXIMUM_LINE_98 = AmountKind.declare(
     CATALOG, "nl428_low_income_reduction_before_maximum_line_98", non_negative=True
