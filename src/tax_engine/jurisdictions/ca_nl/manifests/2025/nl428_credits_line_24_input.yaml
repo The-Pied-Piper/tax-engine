@@ -1,0 +1,14 @@
+# NL428 (2025) inputs a salary-only caller does not give.
+# Line 24: "Line 24 and line 58200: Amount for infirm dependants age 18 or older (use Worksheet NL428)"
+# (Form NL428, CRA 5001-C). The Worksheet NL428 section behind this line exists only to compute a
+# claim a salary-only caller leaves empty, so that block is skipped and the line is taken as one
+# optional input. A request that leaves the line out is read as blank. Line 25 (a later ticket)
+# reads it.
+inputs:
+  - name: ca-nl/nl428_infirm_dependants_amount_line_24
+    title: "Amount for infirm dependants age 18 or older (use Worksheet NL428)"
+    reference: "24"
+    unit: ca/cad
+    required: false
+    default: null
+    basis: 'Line 24 and line 58200: Amount for infirm dependants age 18 or older (use Worksheet NL428)'

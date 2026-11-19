@@ -56,6 +56,13 @@ partner's net income from line 23600 of their return": the amount as the filer g
 optional input. It is signed because a spouse's net income can be a loss, and the form prints no
 floor; a blank input is read as blank."""
 
+NL428_INFIRM_DEPENDANTS_AMOUNT_LINE_24 = AmountKind.declare(
+    CATALOG, "nl428_infirm_dependants_amount_line_24", non_negative=True
+)
+"""Amount for infirm dependants age 18 or older, NL428 line 24 "Line 24 and line 58200: Amount for
+infirm dependants age 18 or older (use Worksheet NL428)": the amount as the filer gives it, an
+optional input; a blank input is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
