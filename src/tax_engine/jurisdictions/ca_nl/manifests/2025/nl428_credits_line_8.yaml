@@ -1,0 +1,21 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) Part A, line 8, "Line 8: Line 6 plus line 7
+# Newfoundland and Labrador tax on taxable income =": the tax on taxable income. It sums line 6
+# (`ca-nl/nl428_tax_on_excess_line_6`) and line 7 (`ca-nl/nl428_bracket_tax_at_start_line_7`). Line 6
+# is already rounded to the cent and line 7 is a printed amount in cents, so the sum adds no rounding
+# of its own. Above 220,910 lines 9 to 15 apply and lines 6 and 7 are blank, so line 8 is blank too.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    title: "Newfoundland and Labrador tax on taxable income"
+    reference: "8"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts: [ca-nl/nl428_tax_on_excess_line_6, ca-nl/nl428_bracket_tax_at_start_line_7]
+    blank:
+      ca-nl/nl428_tax_on_excess_line_6: pass_on
+      ca-nl/nl428_bracket_tax_at_start_line_7: pass_on
+    produces:
+      output: ca-nl/nl428_tax_on_taxable_income_line_8
