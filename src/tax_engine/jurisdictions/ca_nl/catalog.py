@@ -316,3 +316,15 @@ NL428_TAXABLE_INCOME_LINE_1 = AmountKind.declare(
 )
 """Taxable income, Form NL428 Line 1 "Enter your taxable income from line 26000 of your return": the
 T1 taxable income, read directly by line 2."""
+
+NL428_NET_INCOME_LINE_49 = AmountKind.declare(
+    CATALOG, "nl428_net_income_line_49", non_negative=True
+)
+"""Net income, NL428 line 49 "Amount from line 23600 of your return": the T1 net income, read by
+line 51 before it is multiplied by the line 50 rate."""
+
+NL428_MEDICAL_EXPENSES_RATE_AMOUNT_LINE_51 = AmountKind.declare(
+    CATALOG, "nl428_medical_expenses_rate_amount_line_51", non_negative=True
+)
+"""Net income multiplied by 3%, NL428 line 51 "Line 49 multiplied by the percentage from line 50":
+line 49 times the printed line 50 rate, rounded half-up to the cent."""
