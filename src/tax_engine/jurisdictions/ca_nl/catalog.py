@@ -299,12 +299,26 @@ NL428_ALLOWABLE_MEDICAL_EXPENSES_FOR_OTHER_DEPENDANTS_LINE_54 = AmountKind.decla
 58729: Allowable amount of medical expenses for other dependants (use Worksheet NL428)": the amount
 as the filer gives it, an optional input; a blank input is read as blank."""
 
+NL428_DONATIONS_AND_GIFTS_CREDIT_LINE_61 = AmountKind.declare(
+    CATALOG, "nl428_donations_and_gifts_credit_line_61", non_negative=True
+)
+"""Donations and gifts credit, NL428 line 61 "Line 61 and line 58969: Line 59 plus line 60 =": the
+amount as the filer gives it, an optional input; lines 59 and 60 are not built, and a blank input
+is read as blank."""
+
 NL428_NON_REFUNDABLE_CREDITS_LINE_62 = AmountKind.declare(
     CATALOG, "nl428_non_refundable_credits_line_62", non_negative=True
 )
 """Newfoundland and Labrador non-refundable tax credits, NL428 line 62 "Line 62 and line 61500:
 Line 58 plus line 61 Enter this amount on line 66.": line 58 plus line 61, read by line 66 on the
 tax form."""
+
+NL428_TAX_ON_SPLIT_INCOME_LINE_64 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_split_income_line_64", non_negative=True
+)
+"""Newfoundland and Labrador tax on split income, NL428 line 64 "Line 64 and line 61510:
+Newfoundland and Labrador tax on split income (complete Form T1206)": the amount as the filer gives
+it, an optional input; a blank input is read as blank."""
 
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
@@ -489,6 +503,12 @@ NL428_MEDICAL_EXPENSES_ALLOWABLE_LINE_55 = AmountKind.declare(
 """Allowable medical expenses, NL428 line 55 "Line 53 plus line 54": line 53 plus line 54, line 54
 being an optional input read as 0 when blank."""
 
+NL428_CREDITS_TOTAL_LINE_56 = AmountKind.declare(
+    CATALOG, "nl428_credits_total_line_56", non_negative=True
+)
+"""Credits total, NL428 line 56 "Line 47 plus line 55": the credits subtotal of line 47 plus the
+allowable medical expenses of line 55."""
+
 NL428_BRACKET_LOWER_BOUND_LINE_10 = AmountKind.declare(
     CATALOG, "nl428_bracket_lower_bound_line_10", non_negative=True
 )
@@ -507,6 +527,13 @@ NL428_BRACKET_TAX_AT_START_LINE_7 = AmountKind.declare(
 )
 """Tax at the start of the column, NL428 line 7 "Line 7: 0.00": the printed tax at the start of the
 column of lines 2 to 8 that line 1 falls in, blank when line 1 is above 220,910."""
+
+NL428_TAX_ON_EXCESS_LINE_13 = AmountKind.declare(
+    CATALOG, "nl428_tax_on_excess_line_13", non_negative=True
+)
+"""Tax on the taxable income over the lower bound, NL428 line 13 "Line 13: Line 11 multiplied by the
+percentage from line 12 =": line 11 times the line 12 rate, rounded half-up to the cent. It is
+blank when line 11 or line 12 is blank, at or below 220,910."""
 
 NL428_BRACKET_TAX_AT_START_LINE_14 = AmountKind.declare(
     CATALOG, "nl428_bracket_tax_at_start_line_14", non_negative=True
