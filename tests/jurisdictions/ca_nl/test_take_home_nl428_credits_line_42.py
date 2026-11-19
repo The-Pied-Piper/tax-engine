@@ -9,9 +9,10 @@ The test composes the real parts behind lines 39 to 41 (the federal parts Worksh
 the worksheet parts, lines 16 to 39, Schedule 8, T2204, lines 40 and 41) and the new
 `nl428_credits_line_42.yaml`, and types in only the salary (and, in some tests, optional inputs).
 The header and the two form declarations are made up here, because the shared scaffold owns them.
-The figures are hand-computed from the printed form (not a CRA example): line 39 is line 36, that
-is the basic personal amount 11,067.00 plus line 35, which is line 27 plus line 29 (1,144.75 /
-4,369.23 / 4,433.58 at salaries of 20,000 / 70,000 / 200,000).
+The figures are hand-computed from the printed form (not a CRA example): line 39 is line 36,
+which is line 26 (the basic personal amount 11,067.00, the amount from line 25) plus line 35, and
+line 35 is line 27 plus line 29 (1,144.75 / 4,369.23 / 4,433.58 at salaries of 20,000 / 70,000 /
+200,000).
 """
 
 from __future__ import annotations
@@ -33,9 +34,10 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.application.services.tax_computation import TaxComputationService
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.jurisdiction_code import JurisdictionCode
-from tax_engine.domain.kinds import AmountKind, CountKind
+from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.registry import Namespace
 from tax_engine.jurisdictions.ca.catalog.income import EMPLOYMENT_INCOME
+from tax_engine.jurisdictions.ca_nl.catalog import NL428_DISABILITY_AMOUNT_SELF_CLAIMED_LINE_40
 from tests.jurisdictions.ca_nl.support import (
     newfoundland_capabilities,
     newfoundland_kinds,
@@ -52,7 +54,6 @@ FEDERAL_FORMS = Path(tax_engine.jurisdictions.ca.__file__).parent / "forms"
 LINE_PART = NL_PARTS / "nl428_credits_line_42.yaml"
 IDENTIFIER = "ca-nl/nl428_credits_subtotal_line_42"
 LINE_39 = "ca-nl/nl428_credits_subtotal_line_39"
-LINE_40_CLAIM = "ca-nl/nl428_disability_amount_self_claimed_line_40"
 LINE_40 = "ca-nl/nl428_disability_amount_self_line_40"
 LINE_41 = "ca-nl/nl428_disability_amount_transferred_from_a_dependant_line_41"
 FORM_NAME = "ca-nl/nl428_credits"
@@ -131,7 +132,7 @@ FORMS = dedent("""\
     capabilities: []
     """)
 
-# salary, line 42: line 39 (line 25 of 11,067.00 plus line 35), lines 40 and 41 being blank.
+# salary, line 42: line 39 (line 26 of 11,067.00 plus line 35), lines 40 and 41 being blank.
 CASES = [
     ("20000", "12211.75"),
     ("70000", "15436.23"),
@@ -176,12 +177,18 @@ def _service(tmp_path: Path) -> TaxComputationService:
     )
 
 
-def _sheet(tmp_path: Path, salary: str, given_lines: dict[str, str] | None = None) -> Any:
+def _sheet(
+    tmp_path: Path,
+    salary: str,
+    given_lines: dict[str, str] | None = None,
+    claim: int | None = None,
+) -> Any:
     given: list[Artifact[Any]] = [Artifact(EMPLOYMENT_INCOME, D(salary))]
+    if claim is not None:
+        given.append(Artifact(NL428_DISABILITY_AMOUNT_SELF_CLAIMED_LINE_40, claim))
     kinds = newfoundland_kinds()
     for identifier, amount in (given_lines or {}).items():
-        kind = kinds.kind(identifier)
-        given.append(Artifact(kind, int(amount) if isinstance(kind, CountKind) else D(amount)))
+        given.append(Artifact(kinds.kind(identifier), D(amount)))
     worksheets = _service(tmp_path).compute(JurisdictionCode("CA-NL"), 2025, *given)
     (sheet,) = worksheets[FORM_NAME]
     return sheet
@@ -204,7 +211,7 @@ def test_line_42_is_line_39_when_lines_40_and_41_are_blank(
 
 def test_line_42_adds_the_disability_amount_for_self(tmp_path: Path) -> None:
     # 12,211.75 plus 7,467.00 on line 40.
-    sheet = _sheet(tmp_path, "20000", {LINE_40_CLAIM: "1"})
+    sheet = _sheet(tmp_path, "20000", claim=1)
 
     assert _value(sheet, LINE_40) == D("7467.00")
     assert _value(sheet, IDENTIFIER) == D("19678.75")
@@ -219,7 +226,7 @@ def test_line_42_adds_the_disability_amount_transferred_from_a_dependant(tmp_pat
 
 def test_line_42_adds_lines_39_40_and_41(tmp_path: Path) -> None:
     # 12,211.75 plus 7,467.00 on line 40 plus 1,500.25 on line 41.
-    sheet = _sheet(tmp_path, "20000", {LINE_40_CLAIM: "1", LINE_41: "1500.25"})
+    sheet = _sheet(tmp_path, "20000", {LINE_41: "1500.25"}, claim=1)
 
     assert _value(sheet, IDENTIFIER) == D("21179.00")
 
