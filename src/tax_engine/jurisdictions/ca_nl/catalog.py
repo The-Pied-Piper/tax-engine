@@ -192,6 +192,15 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_AMOUNTS_TRANSFERRED_FROM_YOUR_SPOUSE_OR_COMMON_LAW_PARTNER_LINE_46 = AmountKind.declare(
+    CATALOG,
+    "nl428_amounts_transferred_from_your_spouse_or_common_law_partner_line_46",
+    non_negative=True,
+)
+"""Amounts transferred from your spouse or common-law partner, NL428 line 46 "Line 46 and line
+58640: Amounts transferred from your spouse or common-law partner (attach Schedule NL(S2))": the
+amount as the filer gives it, an optional input; a blank input is read as blank."""
+
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
