@@ -1,0 +1,22 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 85 "Line 85: Line 81 minus line 84 (if
+# negative, enter "0") =". One core/subtract_not_below_zero step: the tax after the resort property
+# investment tax credit (line 81, `ca-nl/nl428_tax_line_81`) less the venture capital tax credit
+# (line 84, `ca-nl/nl428_venture_capital_tax_credit_line_84`), not below 0. Line 84 is an optional
+# input that a salary-only caller leaves blank, read as 0 by the blank rule. The form prints no
+# title for the line, so the step has none. The output is `ca-nl/nl428_tax_line_85`, which is not
+# exported yet.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/subtract_not_below_zero
+    reference: "85"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      amount: ca-nl/nl428_tax_line_81
+      less: ca-nl/nl428_venture_capital_tax_credit_line_84
+    blank:
+      less: "0"
+    produces:
+      output: ca-nl/nl428_tax_line_85
