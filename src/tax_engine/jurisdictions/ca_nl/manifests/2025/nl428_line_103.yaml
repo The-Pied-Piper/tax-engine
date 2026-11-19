@@ -1,0 +1,18 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) line 103 "Line 103: Line 101 multiplied by
+# the percentage from line 102 =". Line 102 is the printed 16%, the
+# `ca-nl/low_income_reduction_rate` dataset, and has no step of its own. One core/apply_rate step
+# applies it to line 101 (`ca-nl/nl428_line_101`), rounded half-up to the cent by the dataset's
+# rule (the form states no rounding rule). The form prints no title for the line, so the step has
+# none. The output is `ca-nl/nl428_line_103`, which is not exported yet.
+form:
+  name: ca-nl/nl428
+capabilities:
+  - name: core/apply_rate
+    reference: "103"
+    unit: ca/cad
+    params:
+      rate: ca-nl/low_income_reduction_rate
+    consumes:
+      base: ca-nl/nl428_line_101
+    produces:
+      output: ca-nl/nl428_line_103
