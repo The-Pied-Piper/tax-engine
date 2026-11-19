@@ -327,6 +327,29 @@ NL428_MINIMUM_TAX_CARRYOVER_AMOUNT_LINE_68 = AmountKind.declare(
 40427 of your return": the amount from line 40427 of the T1 return, an optional input, box A of the
 line, as the filer gives it; a blank input is read as blank."""
 
+NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_CLAIMED_LINE_76 = AmountKind.declare(
+    CATALOG, "nl428_political_contribution_tax_credit_claimed_line_76", non_negative=True
+)
+"""Political contribution tax credit claimed, NL428 line 76 "Line 76: Newfoundland and Labrador
+political contribution tax credit (use Worksheet NL428) (maximum $500)": the amount as the filer
+gives it, an optional input; a blank input is read as blank, and the line 76 step checks it against
+the printed maximum."""
+
+NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_MAXIMUM = AmountKind.declare(
+    CATALOG, "nl428_political_contribution_tax_credit_maximum", non_negative=True
+)
+"""Political contribution tax credit maximum, printed on NL428 line 76 "(maximum $500)": the printed
+maximum, from the `ca-nl/political_contribution_tax_credit_maximum` dataset; the bound line 76
+cannot pass."""
+
+NL428_POLITICAL_CONTRIBUTION_TAX_CREDIT_LINE_76 = AmountKind.declare(
+    CATALOG, "nl428_political_contribution_tax_credit_line_76", non_negative=True
+)
+"""Newfoundland and Labrador political contribution tax credit, NL428 line 76 "Line 76:
+Newfoundland and Labrador political contribution tax credit (use Worksheet NL428) (maximum $500)":
+the entered amount, passed on unchanged when it is at most the printed maximum, blank when left
+out; above the maximum it is refused, not capped."""
+
 NL428_NEWFOUNDLAND_AND_LABRADOR_TAX_LINE_105 = AmountKind.declare(
     CATALOG, "nl428_newfoundland_and_labrador_tax_line_105", non_negative=True
 )
