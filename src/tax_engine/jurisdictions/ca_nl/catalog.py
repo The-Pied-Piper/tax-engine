@@ -361,6 +361,11 @@ NL428_CREDITS_TOTAL_LINE_69 = AmountKind.declare(
 plus line 67 (the dividend tax credit, blank read as 0) plus line 68, rounded half-up to the
 cent."""
 
+NL428_TAX_LINE_70 = AmountKind.declare(CATALOG, "nl428_tax_line_70", non_negative=True)
+"""Newfoundland and Labrador tax, NL428 line 70 "Line 70: Line 65 minus line 69 (if negative, enter
+"0") =": line 65 (the tax before credits) less line 69 (the credits total), floored at 0 as the form
+prints, rounded half-up to the cent."""
+
 NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "nl428_provincial_foreign_tax_credit_line_73", non_negative=True
 )
