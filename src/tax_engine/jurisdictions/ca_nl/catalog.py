@@ -354,6 +354,13 @@ NL428_MINIMUM_TAX_CARRYOVER_LINE_68 = AmountKind.declare(
 40427 of your return multiplied by 60% =": calculated, the amount from line 40427 multiplied by
 60%."""
 
+NL428_CREDITS_TOTAL_LINE_69 = AmountKind.declare(
+    CATALOG, "nl428_credits_total_line_69", non_negative=True
+)
+"""Newfoundland and Labrador credits total, NL428 line 69 "Line 69: Add lines 66 to 68. =": line 66
+plus line 67 (the dividend tax credit, blank read as 0) plus line 68, rounded half-up to the
+cent."""
+
 NL428_PROVINCIAL_FOREIGN_TAX_CREDIT_LINE_73 = AmountKind.declare(
     CATALOG, "nl428_provincial_foreign_tax_credit_line_73", non_negative=True
 )
@@ -726,3 +733,11 @@ NL428_FAMILY_INCOME_LINE_90 = AmountKind.declare(
 """Line 88 plus line 89, NL428 line 90 "Line 88 plus line 89", column 1 (you): the net income of
 line 88 plus the UCCB and RDSP repayments of line 89. Line 88 can be negative, so the kind is
 signed."""
+
+NL428_SPOUSE_FAMILY_INCOME_LINE_90 = AmountKind.declare(
+    CATALOG, "nl428_spouse_family_income_line_90", non_negative=False
+)
+"""Line 88 plus line 89, NL428 line 90 "Line 90: Line 88 plus line 89", column 2 (your spouse or
+common-law partner): the spouse's net income of line 88 plus the spouse's UCCB and RDSP repayments
+of line 89. Line 88 can be negative, so the kind is signed; both lines are optional inputs, so the
+result is blank when line 88 is."""
