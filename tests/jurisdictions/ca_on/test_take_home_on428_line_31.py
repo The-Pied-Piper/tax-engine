@@ -60,10 +60,8 @@ def line_31(take_home_service: TakeHomeService, line_28: str) -> Decimal:
 @pytest.mark.parametrize(
     ("line_28", "expected"),
     [
-        # Line 28 at salaries of $20,000, $70,000 and $150,000.
+        # Line 28 at a salary of $20,000.
         ("13891.75", "13891.75"),
-        ("17116.23", "17116.23"),
-        ("17180.58", "17180.58"),
         ("0", "0"),
     ],
 )

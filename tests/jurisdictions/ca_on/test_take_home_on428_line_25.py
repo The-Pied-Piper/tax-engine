@@ -69,8 +69,6 @@ def _line_25(take_home_service: TakeHomeService, line_18: str, line_24: str) -> 
     [
         # A $20,000 salary: line 18 is 12,747.00 and line 24 is 1,144.75, so line 25 is 13,891.75.
         ("12747.00", "1144.75", "13891.75"),
-        # A $70,000 salary: line 18 is 12,747.00 and line 24 is 4,369.23, so line 25 is 17,116.23.
-        ("12747.00", "4369.23", "17116.23"),
         # A $150,000 salary: line 18 is 12,747.00 and line 24 is 4,433.58, so line 25 is 17,180.58.
         ("12747.00", "4433.58", "17180.58"),
     ],

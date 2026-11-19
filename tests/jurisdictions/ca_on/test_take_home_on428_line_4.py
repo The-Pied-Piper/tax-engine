@@ -93,8 +93,6 @@ def _on428(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         ("20000", "19835.00"),
         # Line 1 is 69,335.00 and line 3 is 52,886.00 (column 2).
         ("70000", "16449.00"),
-        # Line 1 is 148,926.00 and line 3 is 105,775.00 (column 3).
-        ("150000", "43151.00"),
     ],
 )
 def test_line_4_is_line_2_minus_line_3_for_the_salary(

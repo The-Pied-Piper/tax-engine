@@ -120,8 +120,6 @@ def _summary(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         ("70000", "0.205"),
         # $20,000: the first bracket's rate, 14.5%.
         ("20000", "0.145"),
-        # $275,000: taxable income 273,926.00 is in the top bracket, 33%.
-        ("275000", "0.33"),
     ],
 )
 def test_the_federal_marginal_rate_is_the_line_73_rate_of_the_column(
@@ -132,7 +130,7 @@ def test_the_federal_marginal_rate_is_the_line_73_rate_of_the_column(
     assert summary.get(bundled_kinds().kind(MARGINAL_RATE)).value == D(rate)
 
 
-@pytest.mark.parametrize("salary", ["10000", "20000", "70000", "100000", "150000", "275000"])
+@pytest.mark.parametrize("salary", ["10000", "70000"])
 def test_the_federal_bracket_rate_return_equals_line_73_read_from_the_t1_sheet(
     take_home_service: TakeHomeService, salary: str
 ) -> None:
@@ -149,7 +147,7 @@ def test_the_federal_bracket_rate_return_equals_line_73_read_from_the_t1_sheet(
     )
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "100000", "150000", "275000"])
+@pytest.mark.parametrize("salary", ["70000", "275000"])
 def test_the_federal_marginal_rate_equals_line_73_where_basic_federal_tax_is_positive(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

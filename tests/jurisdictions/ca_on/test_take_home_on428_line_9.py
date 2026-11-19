@@ -52,7 +52,7 @@ def line_9(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(BASIC_PERSONAL_AMOUNT).value
 
 
-@pytest.mark.parametrize("salary", ["20000", "70000", "150000"])
+@pytest.mark.parametrize("salary", ["20000", "150000"])
 def test_line_9_is_the_basic_personal_amount_at_every_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

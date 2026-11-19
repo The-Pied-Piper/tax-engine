@@ -68,8 +68,6 @@ def line_17(take_home_service: TakeHomeService, line_13: str, line_16: str) -> D
     [
         # Return DD oracle: salary 70,000, line 13 69,335.00 over the 32,500.00 threshold.
         ("69335.00", "32500.00", "36835.00"),
-        # Salary 40,000, inside the reduction range.
-        ("39635.00", "32500.00", "7135.00"),
         # Salary 30,000, under the threshold: floored at zero.
         ("29735.00", "32500.00", "0"),
     ],

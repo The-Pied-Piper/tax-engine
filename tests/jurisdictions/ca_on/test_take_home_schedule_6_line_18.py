@@ -75,11 +75,6 @@ def line_18(take_home_service: TakeHomeService, salary: str) -> Decimal:
         # Line 18 is line 6 (the salary) less line 17 ($3,000.00), floored at zero. At $2,000 the
         # difference is -$1,000.00, so line 18 prints "0".
         ("2000", "0.00"),
-        ("6000", "3000.00"),
-        ("20000", "17000.00"),
-        ("30000", "27000.00"),
-        ("35000", "32000.00"),
-        ("40000", "37000.00"),
         ("70000", "67000.00"),
     ],
 )

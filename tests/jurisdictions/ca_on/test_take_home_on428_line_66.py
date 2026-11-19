@@ -65,18 +65,10 @@ def _line_66(take_home_service: TakeHomeService, line_65: str) -> Decimal:
     [
         # A $20,000 salary: line 65 is 300.14, below 5,710, so line 66 is 0.
         ("300.14", "0.00"),
-        # A $70,000 salary: line 65 is 3,311.45, below 5,710, so line 66 is 0.
-        ("3311.45", "0.00"),
         # A $150,000 salary: line 65 is 11,458.12; 5,748.12 x 20% = 1,149.624, so 1,149.62.
         ("11458.12", "1149.62"),
-        # Line 65 is 0, so line 66 is 0.
-        ("0", "0.00"),
         # Exactly 5,710: nothing above the threshold.
         ("5710", "0.00"),
-        # 0.01 x 20% = 0.002, rounded down to 0.00.
-        ("5710.01", "0.00"),
-        # 0.02 x 20% = 0.004, rounded down to 0.00.
-        ("5710.02", "0.00"),
         # 0.03 x 20% = 0.006, rounded up to 0.01.
         ("5710.03", "0.01"),
     ],

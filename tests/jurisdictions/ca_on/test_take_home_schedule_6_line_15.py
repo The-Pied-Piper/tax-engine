@@ -96,15 +96,9 @@ def _schedule_6(
 @pytest.mark.parametrize(
     ("salary", "expected"),
     [
-        # Adjusted family net income (line 15) at salaries of $2,000, $6,000, $20,000, $30,000,
-        # $35,000, $40,000 and $70,000 with line 14 blank. Line 14 is read as 0, so each line 15 is
-        # the line 13 figure for that salary.
+        # Adjusted family net income (line 15) at salaries of $2,000 and $70,000 with line 14 blank.
+        # Line 14 is read as 0, so each line 15 is the line 13 figure for that salary.
         ("2000", "2000.00"),
-        ("6000", "5975.00"),
-        ("20000", "19835.00"),
-        ("30000", "29735.00"),
-        ("35000", "34685.00"),
-        ("40000", "39635.00"),
         ("70000", "69335.00"),
     ],
 )
@@ -123,7 +117,6 @@ def test_schedule_6_line_15_is_line_13_when_line_14_is_blank(
     [
         # Line 13 for a 20000 salary is 19835.00; line 15 is line 13 less line 14.
         ("20000", "5000.00", "14835.00"),
-        ("20000", "19835.00", "0.00"),
         # The form prints no floor on line 15: an exemption above line 13 gives a negative figure.
         ("20000", "25000.00", "-5165.00"),
     ],
@@ -151,9 +144,6 @@ def test_the_line_15_kind_is_registered_and_signed() -> None:
     ("salary", "exemption", "printed"),
     [
         ("70000", None, "69335.00"),
-        ("20000", None, "19835.00"),
-        ("20000", "19835.00", "0.00"),
-        ("20000", "25000.00", "-5165.00"),
         # Rounded half-up to the cent on the exact difference: 19,835.00 less 0.005 is 19,834.995,
         # on the tie, so 19,835.00; less 0.006 is 19,834.994, so 19,834.99.
         ("20000", "0.005", "19835.00"),

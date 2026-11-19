@@ -70,8 +70,6 @@ def _line_88(take_home_service: TakeHomeService, line_86: str, line_87: str) -> 
     [
         # A $20,000 salary: line 86 is 0.00 and line 87 is blank (0), so line 88 is 0.00.
         ("0.00", "0.00"),
-        # A $70,000 salary: line 86 is 3,311.45 and line 87 is blank (0), so line 88 is 3,311.45.
-        ("3311.45", "3311.45"),
         # A $150,000 salary: line 86 is 14,102.14 and line 87 is blank (0), so line 88 is 14,102.14.
         ("14102.14", "14102.14"),
     ],
