@@ -28,37 +28,27 @@
 # blank. NL428 exports both, each is totalled into the return's own kind with a blank read as 0,
 # and core/sum adds them into the Newfoundland and Labrador bracket rate.
 #
-# The Newfoundland and Labrador gate reads NL428 line 105 "Line 94 minus line 104 (if negative,
-# enter "0")": the Newfoundland and Labrador tax after the credits and the low-income tax
-# reduction, so a rate counts only while that tax is above zero. Gated through
-# `ca-nl/marginal_rate_gate`, it multiplies the bracket rate (with the reduction, below) into
-# `ca-nl/newfoundland_and_labrador_marginal_rate`.
+# The Newfoundland and Labrador gate reads NL428 line 85 "Line 81 minus line 84 (if negative, enter
+# "0")": the Newfoundland and Labrador tax after the credits that payroll applies, before line 86
+# (the unused low-income tax reduction of a spouse) and lines 95 to 105 (the low-income tax
+# reduction), so a rate counts only while that tax is above zero. It is the counterpart of ON428
+# line 81, AB428 line 68, BC428 line 80 and MB428 line 65. Gated through `ca-nl/marginal_rate_gate`,
+# it multiplies the bracket rate into `ca-nl/newfoundland_and_labrador_marginal_rate`.
 #
-# The low-income tax reduction (NL428 lines 95 to 104) is 997 at an adjusted family income up to
-# 23,928 (40,460 with the spouse or eligible dependant reductions), falls by 16% of the excess
-# over that threshold (line 103) and is zero when the excess reaches the reduction. Between those
-# two figures it makes the tax rise 16 points faster than the bracket rate alone (the reduction
-# raises the marginal rate, it does not lower it): in that range the Newfoundland and Labrador rate
-# is the bracket rate plus 16%. The chain is British Columbia's: NL428 line 104 is totalled and
-# gated (the reduction is above zero, so the range ends where the reduction reaches zero); NL428
-# line 103 "Line 101 multiplied by the percentage from line 102" is read through the
-# `ca-nl/reduction_slope` dataset (the printed 16% where line 103 is above zero, so the range starts
-# above the line 100 threshold, and 0 where it is not); the two multiply into
-# `ca-nl/newfoundland_and_labrador_reduction_phase_out_rate`, exact; and core/sum adds that to the
-# bracket rate into `ca-nl/newfoundland_and_labrador_bracket_rate_with_reduction`, before the
-# line 105 gate multiplies it, so a reduction that has taken the whole of the tax (line 105 is 0.00)
-# adds nothing.
-#
-# `ca-nl/reduction_slope` is a dataset of its own, apart from `ca-nl/low_income_reduction_rate`
-# (NL428 line 102 itself, the same 16%): that one rounds half-up to the cent, as it feeds a
-# dollars-and-cents box, and the slope is exact. The slope reads line 103, which is rounded to the
-# cent, so it starts at the first cent of line 103, which is within cents of the printed threshold.
+# The low-income tax reduction (NL428 lines 95 to 104) is left out of the rate, as payroll does:
+# T4127 (Jan 2025, Table 8.2) has no Newfoundland and Labrador low-income tax reduction factor, so
+# the 16% phase-out between an adjusted family income of 23,928 (40,460 with the spouse or eligible
+# dependant reductions) and the point where the reduction reaches zero does not raise the rate.
+# Ontario, British Columbia and Manitoba include their phase-outs because T4127 applies them;
+# Manitoba leaves out the family tax benefit because T4127 does not, and this return leaves out
+# the Newfoundland and Labrador low-income tax reduction for the same reason.
 #
 # The last step adds the federal and the Newfoundland and Labrador marginal rate with core/sum into
 # `ca-nl/marginal_tax_rate`; it is exact too, is not printed on the form and has no title or line.
 #
 # Only line 167 carries a line reference: the steps below read figures for the rates and are
-# engine-internal, so they carry none. Known limit: the rate ignores the tax effect of CPP and EI.
+# engine-internal, so they carry none. Known limits: the rate ignores the tax effect of CPP and EI, and it leaves out the low-income
+# tax reduction (NL428 lines 95 to 104), which payroll deductions do not apply.
 capabilities:
   - name: core/record_total
     title: "Refund or balance owing"
@@ -143,71 +133,24 @@ capabilities:
   - name: core/record_total
     unit: ca/cad
     consumes:
-      records: ca-nl/nl428.nl428_newfoundland_and_labrador_tax_line_105
+      records: ca-nl/nl428.nl428_tax_line_85
     produces:
-      output: ca-nl/newfoundland_and_labrador_tax_after_reduction_return
+      output: ca-nl/newfoundland_and_labrador_tax_after_credits_return
   - name: core/amount_by_band_rate
     unit: core/percent
     params:
       table: ca-nl/marginal_rate_gate
     consumes:
-      base: ca-nl/newfoundland_and_labrador_tax_after_reduction_return
+      base: ca-nl/newfoundland_and_labrador_tax_after_credits_return
     produces:
       output: ca-nl/newfoundland_and_labrador_rate_gate
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca-nl/nl428.nl428_line_104
-    produces:
-      output: ca-nl/newfoundland_and_labrador_low_income_reduction_return
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-nl/marginal_rate_gate
-    consumes:
-      base: ca-nl/newfoundland_and_labrador_low_income_reduction_return
-    produces:
-      output: ca-nl/newfoundland_and_labrador_reduction_gate
-  - name: core/record_total
-    unit: ca/cad
-    consumes:
-      records: ca-nl/nl428.nl428_line_103
-    produces:
-      output: ca-nl/newfoundland_and_labrador_reduction_clawback_return
-  - name: core/amount_by_band_rate
-    unit: core/percent
-    params:
-      table: ca-nl/reduction_slope
-    consumes:
-      base: ca-nl/newfoundland_and_labrador_reduction_clawback_return
-    produces:
-      output: ca-nl/newfoundland_and_labrador_reduction_slope
-  - name: core/multiply_by_rate
-    unit: core/percent
-    params:
-      rounding: ca-nl/exact_rounding
-    consumes:
-      base: ca-nl/newfoundland_and_labrador_reduction_gate
-      rate: ca-nl/newfoundland_and_labrador_reduction_slope
-    produces:
-      output: ca-nl/newfoundland_and_labrador_reduction_phase_out_rate
-  - name: core/sum
-    unit: core/percent
-    params:
-      rounding: ca-nl/exact_rounding
-    consumes:
-      parts:
-        - ca-nl/newfoundland_and_labrador_bracket_rate_return
-        - ca-nl/newfoundland_and_labrador_reduction_phase_out_rate
-    produces:
-      output: ca-nl/newfoundland_and_labrador_bracket_rate_with_reduction
   - name: core/multiply_by_rate
     unit: core/percent
     params:
       rounding: ca-nl/exact_rounding
     consumes:
       base: ca-nl/newfoundland_and_labrador_rate_gate
-      rate: ca-nl/newfoundland_and_labrador_bracket_rate_with_reduction
+      rate: ca-nl/newfoundland_and_labrador_bracket_rate_return
     produces:
       output: ca-nl/newfoundland_and_labrador_marginal_rate
   - name: core/sum

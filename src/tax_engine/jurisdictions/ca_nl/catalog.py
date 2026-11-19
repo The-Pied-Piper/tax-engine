@@ -962,71 +962,28 @@ NEWFOUNDLAND_AND_LABRADOR_BRACKET_RATE_RETURN = AmountKind.declare(
 """Newfoundland and Labrador bracket rate: NL428 line 5 plus line 12, of which one is always blank,
 so the rate of the bracket the taxable income falls in. Not printed on the form."""
 
-NEWFOUNDLAND_AND_LABRADOR_TAX_AFTER_REDUCTION_RETURN = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_tax_after_reduction_return", non_negative=True
+NEWFOUNDLAND_AND_LABRADOR_TAX_AFTER_CREDITS_RETURN = AmountKind.declare(
+    CATALOG, "newfoundland_and_labrador_tax_after_credits_return", non_negative=True
 )
-"""Newfoundland and Labrador tax after the low-income tax reduction, NL428 line 105 "Line 94 minus
-line 104 (if negative, enter "0")": the one amount of NL428's export totalled into the return
+"""Newfoundland and Labrador tax after the credits, NL428 line 85 "Line 81 minus line 84 (if
+negative, enter "0")": the tax payroll applies, before the low-income tax reduction (T4127 has no
+such reduction). The one amount of NL428's export totalled into the return
 summary's own artifact, the base of the Newfoundland and Labrador rate gate."""
 
 NEWFOUNDLAND_AND_LABRADOR_RATE_GATE = AmountKind.declare(
     CATALOG, "newfoundland_and_labrador_rate_gate", non_negative=True
 )
 """Newfoundland and Labrador rate gate: 0 where the Newfoundland and Labrador tax after the
-low-income tax reduction (NL428 line 105) is 0.00 and 1 where it is at least one cent, from the
+credits (NL428 line 85) is 0.00 and 1 where it is at least one cent, from the
 `ca-nl/marginal_rate_gate` dataset. A plain figure, not printed on the form."""
-
-NEWFOUNDLAND_AND_LABRADOR_LOW_INCOME_REDUCTION_RETURN = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_low_income_reduction_return", non_negative=True
-)
-"""Newfoundland and Labrador low-income tax reduction, NL428 line 104 "Line 98 minus line 103 (if
-negative, enter "0")": the one amount of NL428's export totalled into the return summary's own
-artifact, the base of the reduction gate."""
-
-NEWFOUNDLAND_AND_LABRADOR_REDUCTION_GATE = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_reduction_gate", non_negative=True
-)
-"""Newfoundland and Labrador reduction gate: 0 where the low-income tax reduction (NL428 line 104)
-is 0.00 and 1 where it is at least one cent, from the `ca-nl/marginal_rate_gate` dataset: the
-reduction's slope counts only up to the adjusted family income where the reduction reaches zero. A
-plain figure, not printed on the form."""
-
-NEWFOUNDLAND_AND_LABRADOR_REDUCTION_CLAWBACK_RETURN = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_reduction_clawback_return", non_negative=True
-)
-"""Newfoundland and Labrador low-income tax reduction clawback, NL428 line 103 "Line 101 multiplied
-by the percentage from line 102": the one amount of NL428's export totalled into the return
-summary's own artifact, the base of the reduction slope."""
-
-NEWFOUNDLAND_AND_LABRADOR_REDUCTION_SLOPE = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_reduction_slope", non_negative=True
-)
-"""Newfoundland and Labrador reduction slope: 0 where the low-income tax reduction clawback (NL428
-line 103) is 0.00 and the printed 16% of line 102 where it is at least one cent, from the
-`ca-nl/reduction_slope` dataset, with no rounding: the reduction falls by this much for each further
-dollar of adjusted family income above the line 100 threshold. Not printed on the form."""
-
-NEWFOUNDLAND_AND_LABRADOR_REDUCTION_PHASE_OUT_RATE = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_reduction_phase_out_rate", non_negative=True
-)
-"""Newfoundland and Labrador reduction phase-out rate: the reduction gate (NL428 line 104 above
-zero) times the reduction slope (line 103 above zero): 16% inside the range where the low-income tax
-reduction falls with income, 0 outside it. Exact. Not printed on the form."""
-
-NEWFOUNDLAND_AND_LABRADOR_BRACKET_RATE_WITH_REDUCTION = AmountKind.declare(
-    CATALOG, "newfoundland_and_labrador_bracket_rate_with_reduction", non_negative=True
-)
-"""Newfoundland and Labrador bracket rate with the low-income tax reduction: the bracket rate plus
-the reduction phase-out rate, since a further dollar of income also takes away the reduction. Exact.
-Not printed on the form."""
 
 NEWFOUNDLAND_AND_LABRADOR_MARGINAL_RATE = AmountKind.declare(
     CATALOG, "newfoundland_and_labrador_marginal_rate", non_negative=True
 )
-"""Newfoundland and Labrador marginal rate: the bracket rate with the reduction where the
-Newfoundland and Labrador tax after the low-income tax reduction (NL428 line 105) is above zero, and
-0 where it is not: the rate a further dollar of income is taxed at in Newfoundland and Labrador, on
-the return summary. Not printed on the form."""
+"""Newfoundland and Labrador marginal rate: the bracket rate where the Newfoundland and Labrador
+tax after the credits (NL428 line 85) is above zero, and 0 where it is not: the rate a further
+dollar of income is taxed at in Newfoundland and Labrador, on the return summary. Not printed
+on the form."""
 
 MARGINAL_TAX_RATE = AmountKind.declare(CATALOG, "marginal_tax_rate", non_negative=True)
 """Marginal tax rate: the income tax rate on a further dollar of salary, the sum of the federal

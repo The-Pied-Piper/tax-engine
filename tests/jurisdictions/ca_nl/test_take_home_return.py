@@ -86,8 +86,7 @@ NL428_FORM = dedent("""\
       name: ca-nl/nl428
       required: true
       exports:
-        - ca-nl/nl428_line_103
-        - ca-nl/nl428_line_104
+        - ca-nl/nl428_tax_line_85
         - ca-nl/nl428_newfoundland_and_labrador_tax_line_105
     capabilities: []
     """)
@@ -124,8 +123,7 @@ OTHER_STEPS = [
     ("ca/t1_tax_and_credits", "ca/federal_tax_after_credits", "ca/cad"),
     ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_5", "core/percent"),
     ("ca-nl/nl428_credits", "ca-nl/nl428_bracket_rate_line_12", "core/percent"),
-    ("ca-nl/nl428", "ca-nl/nl428_line_103", "ca/cad"),
-    ("ca-nl/nl428", "ca-nl/nl428_line_104", "ca/cad"),
+    ("ca-nl/nl428", "ca-nl/nl428_tax_line_85", "ca/cad"),
     ("ca-nl/nl428", "ca-nl/nl428_newfoundland_and_labrador_tax_line_105", "ca/cad"),
 ]
 
@@ -138,14 +136,21 @@ CASES = [
 
 
 def _other_step(form: str, output: str, unit: str) -> str:
-    """A stand-in step for a figure the return reads: the reduction slope of the salary for a rate
-    (0.16, a rate is at most 1) and the salary itself for an amount."""
+    """A stand-in step for a figure the return reads: a gate of the salary for a rate (0 or 1, a
+    rate is at most 1) and the salary itself for an amount."""
     if unit == "core/percent":
+        # The two bracket rates of NL428 add to at most 1 as a rate must: the line 5 stand-in is 1
+        # and the line 12 stand-in, which reads the salary through a gate that is 0 above 0, is 0.
+        table = (
+            "ca-nl/low_income_reduction_line_86_gate"
+            if output.endswith("line_12")
+            else "ca-nl/marginal_rate_gate"
+        )
         step = f"""\
           - name: core/amount_by_band_rate
             unit: {unit}
             params:
-              table: ca-nl/reduction_slope
+              table: {table}
             consumes:
               base: ca/employment_income
             produces:

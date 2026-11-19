@@ -1,15 +1,14 @@
 """The wiring of the Newfoundland and Labrador return summary's marginal rate, read from the real
 `return.yaml`.
 
-The steps mirror the British Columbia return, with the low-income tax reduction as British
-Columbia's tax reduction (NL428 lines 95 to 104): the federal marginal rate (T1 line 73 rate gated
-on T1 line 42900 through `ca-nl/marginal_rate_gate`, exact through `ca-nl/exact_rounding`), the
-Newfoundland and Labrador bracket rate (NL428 line 5 plus line 12, one of them blank), the
-reduction's slope (16% where NL428 line 103 is above zero, from the `ca-nl/reduction_slope`
-dataset, switched off where line 104 is zero), and a last `core/sum` of the two marginal parts into
-`ca-nl/marginal_tax_rate`. The bracket rate plus the slope is gated on NL428 line 105 "Line 94
-minus line 104 (if negative, enter "0")". The figures are in
-`end_to_end/test_return_marginal_rates.py`. The average rate is pinned in
+The steps mirror the British Columbia return without its tax reduction: the federal marginal rate
+(T1 line 73 rate gated on T1 line 42900 through `ca-nl/marginal_rate_gate`, exact through
+`ca-nl/exact_rounding`), the Newfoundland and Labrador bracket rate (NL428 line 5 plus line 12, one
+of them blank) gated on NL428 line 85 "Line 81 minus line 84 (if negative, enter "0")", the tax
+after the credits and before the low-income tax reduction, and a last `core/sum` of the two
+marginal parts into `ca-nl/marginal_tax_rate`. The low-income tax reduction (NL428 lines 95 to 104)
+is not in the rate: payroll (T4127, Jan 2025, Table 8.2) has no such reduction factor. The figures
+are in `end_to_end/test_return_marginal_rates.py`. The average rate is pinned in
 `test_take_home_return_average_rate_manifest.py`.
 """
 
@@ -33,14 +32,8 @@ OUTPUTS = [
     "ca-nl/newfoundland_and_labrador_bracket_rate_line_5_return",
     "ca-nl/newfoundland_and_labrador_bracket_rate_line_12_return",
     "ca-nl/newfoundland_and_labrador_bracket_rate_return",
-    "ca-nl/newfoundland_and_labrador_tax_after_reduction_return",
+    "ca-nl/newfoundland_and_labrador_tax_after_credits_return",
     "ca-nl/newfoundland_and_labrador_rate_gate",
-    "ca-nl/newfoundland_and_labrador_low_income_reduction_return",
-    "ca-nl/newfoundland_and_labrador_reduction_gate",
-    "ca-nl/newfoundland_and_labrador_reduction_clawback_return",
-    "ca-nl/newfoundland_and_labrador_reduction_slope",
-    "ca-nl/newfoundland_and_labrador_reduction_phase_out_rate",
-    "ca-nl/newfoundland_and_labrador_bracket_rate_with_reduction",
     "ca-nl/newfoundland_and_labrador_marginal_rate",
     "ca-nl/marginal_tax_rate",
 ]
@@ -136,89 +129,27 @@ def test_the_bracket_rate_is_the_exact_sum_of_the_line_5_and_the_line_12_rate() 
     }
 
 
-def test_the_newfoundland_gate_reads_line_105_through_the_nl_gate_dataset() -> None:
-    line_105 = _producing("ca-nl/newfoundland_and_labrador_tax_after_reduction_return")
+def test_the_newfoundland_gate_reads_line_85_through_the_nl_gate_dataset() -> None:
+    line_85 = _producing("ca-nl/newfoundland_and_labrador_tax_after_credits_return")
     gate = _producing("ca-nl/newfoundland_and_labrador_rate_gate")
 
-    assert line_105["name"] == "core/record_total"
-    assert line_105["unit"] == "ca/cad"
-    assert line_105["consumes"] == {
-        "records": "ca-nl/nl428.nl428_newfoundland_and_labrador_tax_line_105"
-    }
+    assert line_85["name"] == "core/record_total"
+    assert line_85["unit"] == "ca/cad"
+    assert line_85["consumes"] == {"records": "ca-nl/nl428.nl428_tax_line_85"}
     assert gate["name"] == "core/amount_by_band_rate"
     assert gate["unit"] == "core/percent"
     assert gate["params"] == {"table": GATE}
-    assert gate["consumes"] == {
-        "base": "ca-nl/newfoundland_and_labrador_tax_after_reduction_return"
-    }
+    assert gate["consumes"] == {"base": "ca-nl/newfoundland_and_labrador_tax_after_credits_return"}
 
 
-def test_the_reduction_gate_reads_line_104_through_the_nl_gate_dataset() -> None:
-    line_104 = _producing("ca-nl/newfoundland_and_labrador_low_income_reduction_return")
-    gate = _producing("ca-nl/newfoundland_and_labrador_reduction_gate")
-
-    assert line_104["name"] == "core/record_total"
-    assert line_104["unit"] == "ca/cad"
-    assert line_104["consumes"] == {"records": "ca-nl/nl428.nl428_line_104"}
-    assert gate["name"] == "core/amount_by_band_rate"
-    assert gate["unit"] == "core/percent"
-    assert gate["params"] == {"table": GATE}
-    assert gate["consumes"] == {
-        "base": "ca-nl/newfoundland_and_labrador_low_income_reduction_return"
-    }
-
-
-def test_the_reduction_slope_reads_line_103_through_the_slope_dataset() -> None:
-    line_103 = _producing("ca-nl/newfoundland_and_labrador_reduction_clawback_return")
-    slope = _producing("ca-nl/newfoundland_and_labrador_reduction_slope")
-
-    assert line_103["name"] == "core/record_total"
-    assert line_103["unit"] == "ca/cad"
-    assert line_103["consumes"] == {"records": "ca-nl/nl428.nl428_line_103"}
-    assert slope["name"] == "core/amount_by_band_rate"
-    assert slope["unit"] == "core/percent"
-    assert slope["params"] == {"table": "ca-nl/reduction_slope"}
-    assert slope["consumes"] == {
-        "base": "ca-nl/newfoundland_and_labrador_reduction_clawback_return"
-    }
-
-
-def test_the_phase_out_rate_is_the_reduction_gate_times_the_slope_exactly() -> None:
-    assert _producing("ca-nl/newfoundland_and_labrador_reduction_phase_out_rate") == {
-        "name": "core/multiply_by_rate",
-        "unit": "core/percent",
-        "params": {"rounding": EXACT},
-        "consumes": {
-            "base": "ca-nl/newfoundland_and_labrador_reduction_gate",
-            "rate": "ca-nl/newfoundland_and_labrador_reduction_slope",
-        },
-        "produces": {"output": "ca-nl/newfoundland_and_labrador_reduction_phase_out_rate"},
-    }
-
-
-def test_the_bracket_rate_with_the_reduction_adds_the_phase_out_rate_exactly() -> None:
-    assert _producing("ca-nl/newfoundland_and_labrador_bracket_rate_with_reduction") == {
-        "name": "core/sum",
-        "unit": "core/percent",
-        "params": {"rounding": EXACT},
-        "consumes": {
-            "parts": [
-                "ca-nl/newfoundland_and_labrador_bracket_rate_return",
-                "ca-nl/newfoundland_and_labrador_reduction_phase_out_rate",
-            ]
-        },
-        "produces": {"output": "ca-nl/newfoundland_and_labrador_bracket_rate_with_reduction"},
-    }
-
-
-def test_the_newfoundland_marginal_rate_gates_the_bracket_rate_with_the_reduction() -> None:
+def test_the_newfoundland_marginal_rate_gates_the_bracket_rate() -> None:
     assert _producing("ca-nl/newfoundland_and_labrador_marginal_rate") == {
         "name": "core/multiply_by_rate",
         "unit": "core/percent",
         "params": {"rounding": EXACT},
         "consumes": {
             "base": "ca-nl/newfoundland_and_labrador_rate_gate",
-            "rate": "ca-nl/newfoundland_and_labrador_bracket_rate_with_reduction",
+            "rate": "ca-nl/newfoundland_and_labrador_bracket_rate_return",
         },
         "produces": {"output": "ca-nl/newfoundland_and_labrador_marginal_rate"},
     }
@@ -241,13 +172,8 @@ def test_the_last_step_sums_the_federal_and_the_newfoundland_marginal_rate() -> 
 def test_every_gate_uses_the_nl_gate_and_every_product_and_sum_of_rates_rounds_nothing() -> None:
     gates = [step for step in _steps() if step["name"] == "core/amount_by_band_rate"]
 
-    assert len(gates) == 4
-    assert [gate["params"]["table"] for gate in gates] == [
-        GATE,
-        GATE,
-        GATE,
-        "ca-nl/reduction_slope",
-    ]
+    assert len(gates) == 2
+    assert [gate["params"]["table"] for gate in gates] == [GATE, GATE]
     for step in _steps():
         if step["name"] in {"core/multiply_by_rate", "core/sum"}:
             assert step["params"]["rounding"] == EXACT
