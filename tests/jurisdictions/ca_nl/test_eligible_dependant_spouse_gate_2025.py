@@ -20,6 +20,7 @@ from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.artifact import Artifact
 from tax_engine.domain.kinds import AmountKind
 from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND
+from tax_engine.domain.parameters.credit import CREDIT
 from tax_engine.jurisdictions.core.capabilities.amount_by_band import AmountFromBand
 from tests.jurisdictions.ca_nl.support import newfoundland_packages, newfoundland_parameter_parsers
 
@@ -78,3 +79,17 @@ def test_the_gate_names_the_form_and_the_act_as_its_sources() -> None:
         "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5001-c/5001-c-25e.txt",
         "https://assembly.nl.ca/legislation/sr/statutes/i01-1.htm",
     )
+
+
+def test_the_gate_band_for_0_is_not_the_band_for_one_cent() -> None:
+    values = SOURCE.get(FAMILY, 2025, AMOUNT_BY_BAND).values
+
+    assert values.band_for(D("0.00")) is values.bands[0]
+    assert values.band_for(D("0.005")) is values.bands[0]
+    assert values.band_for(D("0.01")) is values.bands[1]
+
+
+def test_the_gate_maximum_is_the_eligible_dependant_maximum() -> None:
+    maximum = SOURCE.get("ca-nl/eligible_dependant_amount_maximum", 2025, CREDIT).values.amount
+
+    assert SOURCE.get(FAMILY, 2025, AMOUNT_BY_BAND).values.bands[0].amount == maximum

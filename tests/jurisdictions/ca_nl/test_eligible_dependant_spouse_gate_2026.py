@@ -9,6 +9,7 @@ from decimal import Decimal
 
 from tax_engine.adapters.outbound.yaml_parameters import YamlParameterSource
 from tax_engine.domain.parameters.amount_by_band import AMOUNT_BY_BAND
+from tax_engine.domain.parameters.credit import CREDIT
 from tax_engine.domain.parameters.rounding import RoundingMode, RoundTo
 from tax_engine.domain.registry import Namespace
 from tests.jurisdictions.ca_nl.support import (
@@ -70,3 +71,17 @@ def test_the_2026_file_is_provisional_and_states_its_derivation() -> None:
 
     assert lines[0] == PROVISIONAL_HEADER
     assert lines[1] == DERIVATION_HEADER
+
+
+def test_the_gate_band_for_0_is_not_the_band_for_one_cent() -> None:
+    values = SOURCE.get(FAMILY, 2026, AMOUNT_BY_BAND).values
+
+    assert values.band_for(D("0.00")) is values.bands[0]
+    assert values.band_for(D("0.005")) is values.bands[0]
+    assert values.band_for(D("0.01")) is values.bands[1]
+
+
+def test_the_gate_maximum_is_the_eligible_dependant_maximum() -> None:
+    maximum = SOURCE.get("ca-nl/eligible_dependant_amount_maximum", 2026, CREDIT).values.amount
+
+    assert SOURCE.get(FAMILY, 2026, AMOUNT_BY_BAND).values.bands[0].amount == maximum
