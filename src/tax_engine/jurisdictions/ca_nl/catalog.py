@@ -192,6 +192,13 @@ NL428_DISABILITY_AMOUNT_TRANSFERRED_FROM_A_DEPENDANT_LINE_41 = AmountKind.declar
 amount transferred from a dependant (use Worksheet NL428)": the amount as the filer gives it, an
 optional input; a blank input is read as blank."""
 
+NL428_TUITION_AND_EDUCATION_AMOUNTS_LINE_44 = AmountKind.declare(
+    CATALOG, "nl428_tuition_and_education_amounts_line_44", non_negative=True
+)
+"""Your tuition and education amounts, NL428 line 44 "Line 44 and line 58560: Your tuition and
+education amounts (attach Schedule NL(S11))": the amount as the filer gives it, an optional input;
+a blank input is read as blank."""
+
 NL428_MEDICAL_EXPENSES_LINE_48 = AmountKind.declare(
     CATALOG, "nl428_medical_expenses_line_48", non_negative=True
 )
