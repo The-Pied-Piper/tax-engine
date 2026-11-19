@@ -588,3 +588,10 @@ NL428_T691_AMOUNT_LINE_71 = AmountKind.declare(
 """Form T691 amount, NL428 line 71 "Line 71: Amount from line 14 of Part 7 of Form T691 multiplied
 by 60% =": the amount from line 14 of Part 7 of Form T691 as the filer gives it, an optional input;
 a blank input is read as blank, and the 60% multiplication step reads it."""
+
+NL428_ADDITIONAL_TAX_MINIMUM_TAX_LINE_71 = AmountKind.declare(
+    CATALOG, "nl428_additional_tax_minimum_tax_line_71", non_negative=True
+)
+"""Newfoundland and Labrador additional tax for minimum tax purposes, NL428 line 71 "Amount from
+line 14 of Part 7 of Form T691 multiplied by 60% =": calculated, the Form T691 amount multiplied by
+60%."""
