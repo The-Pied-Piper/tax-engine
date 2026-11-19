@@ -418,6 +418,14 @@ tax credit from Certificate(s) NL VCTC (line 82) plus the unused credit from the
 of assessment or reassessment (line 83), taken as one optional input that a salary-only caller
 leaves out; a blank input is read as blank."""
 
+NL428_UNUSED_LOW_INCOME_REDUCTION_FROM_SPOUSE_LINE_86 = AmountKind.declare(
+    CATALOG, "nl428_unused_low_income_reduction_from_spouse_line_86", non_negative=True
+)
+"""Unused low-income tax reduction from your spouse or common-law partner, NL428 line 86 "Line 86
+and line 61860: Amount from line 108 of your spouse's or common-law partner's Form NL428, if any":
+the amount from line 108 of the partner's own form, an optional input that a single filer leaves
+out; a blank input is read as blank."""
+
 NL428_UCCB_RDSP_REPAYMENTS_LINE_89 = AmountKind.declare(
     CATALOG, "nl428_uccb_rdsp_repayments_line_89", non_negative=True
 )
