@@ -1,0 +1,21 @@
+# Form NL428 (CRA 5001-C) line 55: "Line 55 and line 58769: Line 53 plus line 54 =". Line 53 is the
+# medical expenses over the limit (nl428_credits_line_53.yaml) and line 54 the allowable amount of
+# medical expenses for other dependants, an optional input (nl428_credits_line_54_input.yaml) that a
+# salary-only filer leaves blank, read as 0. Step 1 adds them with core/sum. The form names no label
+# for the line, so the step has no title.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    reference: "55"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts:
+        - ca-nl/nl428_medical_expenses_over_limit_line_53
+        - ca-nl/nl428_allowable_medical_expenses_for_other_dependants_line_54
+    blank:
+      ca-nl/nl428_allowable_medical_expenses_for_other_dependants_line_54: "0"
+    produces:
+      output: ca-nl/nl428_medical_expenses_allowable_line_55
