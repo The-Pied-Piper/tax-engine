@@ -1,0 +1,22 @@
+# Form NL428 (Newfoundland and Labrador Tax, CRA 5001-C) Part A, line 15, "Line 15: Line 13 plus line 14
+# Newfoundland and Labrador tax on taxable income =": the tax on taxable income when line 1 is more
+# than 220,910. It sums line 13 (`ca-nl/nl428_tax_on_excess_line_13`) and line 14
+# (`ca-nl/nl428_bracket_tax_at_start_line_14`). Line 13 is already rounded to the cent and line 14 is
+# a printed amount in cents, so the sum adds no rounding of its own. At or below 220,910 lines 13 and
+# 14 are blank (lines 2 to 8 apply), so line 15 is blank too.
+form:
+  name: ca-nl/nl428_credits
+capabilities:
+  - name: core/sum
+    title: "Newfoundland and Labrador tax on taxable income"
+    reference: "15"
+    unit: ca/cad
+    params:
+      rounding: ca-nl/cent_rounding
+    consumes:
+      parts: [ca-nl/nl428_tax_on_excess_line_13, ca-nl/nl428_bracket_tax_at_start_line_14]
+    blank:
+      ca-nl/nl428_tax_on_excess_line_13: pass_on
+      ca-nl/nl428_bracket_tax_at_start_line_14: pass_on
+    produces:
+      output: ca-nl/nl428_tax_on_taxable_income_line_15
