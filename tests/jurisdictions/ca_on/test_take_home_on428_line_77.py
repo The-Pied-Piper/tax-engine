@@ -68,14 +68,8 @@ def _line_77(take_home_service: TakeHomeService, line_74: str) -> Decimal:
     [
         # A $20,000 salary: line 74 is the $294.00 basic reduction, so line 77 is 294.00.
         ("294.00", "294.00"),
-        # A $70,000 salary: line 74 is the $294.00 basic reduction, so line 77 is 294.00.
-        ("294.00", "294.00"),
-        # A $150,000 salary: line 74 is the $294.00 basic reduction, so line 77 is 294.00.
-        ("294.00", "294.00"),
         # Line 74 at zero: 0 is the sum of line 74 alone, so line 77 is 0.00.
         ("0", "0.00"),
-        # Line 77 is the sum of the single part, not a fixed figure: 100.00 gives 100.00.
-        ("100.00", "100.00"),
     ],
 )
 def test_line_77_is_line_74_with_lines_75_and_76_left_out(

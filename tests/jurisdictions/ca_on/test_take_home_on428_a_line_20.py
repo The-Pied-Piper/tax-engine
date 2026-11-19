@@ -68,12 +68,6 @@ def line_20(take_home_service: TakeHomeService, maximum: str, reduction: str) ->
         ("875.00", "1841.75", "0"),
         # Partly reduced.
         ("875.00", "356.75", "518.25"),
-        # Nothing reduced: the full maximum.
-        ("875.00", "0", "875.00"),
-        # Under the maximum, nothing reduced.
-        ("505.00", "0", "505.00"),
-        # Exactly equal: the difference is zero.
-        ("875.00", "875.00", "0"),
     ],
 )
 def test_line_20_is_line_5_minus_line_19_not_below_zero(

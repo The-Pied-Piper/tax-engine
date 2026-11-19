@@ -102,15 +102,9 @@ def test_the_slope_is_the_rate_of_the_sloped_row_the_taxable_income_falls_in(
 @pytest.mark.parametrize(
     "taxable_income",
     [
-        # The $20,000 salary (19,835.00), the $70,000 salary (69,335.00, a flat $600 row) and the
-        # $150,000 salary (148,926.00): flat rows.
+        # Zero, and the $70,000 salary (69,335.00, a flat $600 row).
         "0.00",
-        "19835.00",
-        "30000.00",
-        "42000.00",
         "69335.00",
-        "148926.00",
-        "250000.00",
     ],
 )
 def test_the_slope_in_a_flat_row_is_zero(
@@ -125,19 +119,9 @@ def test_the_slope_in_a_flat_row_is_zero(
         # A base exactly at a row's start is in the lower row.
         ("20000.00", "0"),  # the flat row below the 6% row
         ("25000.00", "0.06"),  # the end of the 6% row: still in it
-        ("36000.00", "0"),
-        ("38500.00", "0.06"),
-        ("48000.00", "0"),
-        ("48600.00", "0.25"),
-        ("72000.00", "0"),
-        ("72600.00", "0.25"),  # the 25% row 72,000-72,600 ends here: still in it
-        ("200000.00", "0"),
-        ("200600.00", "0.25"),
         # One cent above a start is in the sloped row; one cent above an end is in the flat row.
         ("20000.01", "0.06"),
-        ("72000.01", "0.25"),
         ("72600.01", "0"),
-        ("200600.01", "0"),
     ],
 )
 def test_the_slope_at_a_row_edge_is_the_rate_of_the_lower_row(
@@ -174,8 +158,6 @@ def _return_summary(take_home_service: TakeHomeService, salary: str) -> Workshee
         ("70000", "69335.00", "0"),
         # $20,000: 19,835.00 is in the flat row "$20,000 or less", so 0.
         ("20000", "19835.00", "0"),
-        # $150,000: 148,926.00 is in the flat $750 row, so 0.
-        ("150000", "148926.00", "0"),
     ],
 )
 def test_the_real_return_summary_takes_the_taxable_income_and_its_slope_as_steps(

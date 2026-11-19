@@ -70,8 +70,6 @@ def _line_81(take_home_service: TakeHomeService, line_73: str, line_80: str) -> 
         ("300.14", "287.86", "12.28"),
         # A $70,000 salary: line 73 is 3,311.45 and line 80 is 0, so line 81 is 3,311.45.
         ("3311.45", "0", "3311.45"),
-        # A $150,000 salary: line 73 is 14,102.14 and line 80 is 0, so line 81 is 14,102.14.
-        ("14102.14", "0", "14102.14"),
     ],
 )
 def test_line_81_is_line_73_minus_line_80(

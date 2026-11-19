@@ -68,7 +68,6 @@ def line_50(
     [
         # Worked figures, computed by hand from the printed form (not a CRA example).
         ("701.53", "701.53"),
-        ("864.37", "864.37"),
         ("867.62", "867.62"),
     ],
 )

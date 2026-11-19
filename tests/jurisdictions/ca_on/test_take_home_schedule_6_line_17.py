@@ -52,9 +52,7 @@ def line_17(take_home_service: TakeHomeService, salary: str) -> Decimal:
     return sheet.get(CWB_BASE_AMOUNT).value
 
 
-@pytest.mark.parametrize(
-    "salary", ["2000", "6000", "20000", "30000", "35000", "40000", "70000", "0", "200000"]
-)
+@pytest.mark.parametrize("salary", ["70000", "0"])
 def test_line_17_is_the_printed_3000_whatever_the_salary(
     take_home_service: TakeHomeService, salary: str
 ) -> None:

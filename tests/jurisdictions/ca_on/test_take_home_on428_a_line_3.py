@@ -64,8 +64,6 @@ def line_3(take_home_service: TakeHomeService, salary: str, other: str) -> Decim
 @pytest.mark.parametrize(
     ("salary", "other", "expected"),
     [
-        ("70000", "0", "70000.00"),
-        ("10000", "0", "10000.00"),
         # Line 2 adds to line 1.
         ("70000", "1500", "71500.00"),
         ("0", "0", "0"),

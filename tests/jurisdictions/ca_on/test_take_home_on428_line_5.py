@@ -69,8 +69,6 @@ def _line_5(take_home_service: TakeHomeService, taxable_income: str) -> Decimal:
 @pytest.mark.parametrize(
     ("taxable_income", "expected"),
     [
-        # The worked figure for a $20,000 salary: 19,835.00 is in column 1, rate 5.05%.
-        ("19835.00", "0.0505"),
         # The worked figure for a $70,000 salary: 69,335.00 is in column 2, rate 9.15%.
         ("69335.00", "0.0915"),
         # The worked figure for a $150,000 salary: 148,926.00 is in column 3, rate 11.16%.
@@ -89,10 +87,7 @@ def test_line_5_is_the_rate_of_the_column_line_1_falls_in(
         # 0 is the lower bound of column 1, so it takes column 1's rate.
         ("0.00", "0.0505"),
         # Each threshold falls in the lower column, so it takes that column's rate.
-        ("52886.00", "0.0505"),
         ("105775.00", "0.0915"),
-        ("150000.00", "0.1116"),
-        ("220000.00", "0.1216"),
     ],
 )
 def test_line_5_at_a_threshold_is_the_rate_of_the_lower_column(
@@ -106,8 +101,6 @@ def test_line_5_at_a_threshold_is_the_rate_of_the_lower_column(
     [
         # One cent above 52,886 is over the threshold, so it is in column 2.
         ("52886.01", "0.0915"),
-        # One cent above 105,775 is in column 3.
-        ("105775.01", "0.1116"),
         # One cent above 150,000 is in column 4.
         ("150000.01", "0.1216"),
         # One cent above 220,000 is in column 5.

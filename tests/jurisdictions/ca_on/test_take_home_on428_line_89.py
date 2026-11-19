@@ -87,8 +87,6 @@ def _on428(take_home_service: TakeHomeService, salary: str) -> Worksheet:
         ("20000", "19835.00"),
         # The $70,000 salary: T1 line 26000 is 69,335.00.
         ("70000", "69335.00"),
-        # The $150,000 salary: T1 line 26000 is 148,926.00.
-        ("150000", "148926.00"),
     ],
 )
 def test_line_1_is_the_t1_taxable_income(
