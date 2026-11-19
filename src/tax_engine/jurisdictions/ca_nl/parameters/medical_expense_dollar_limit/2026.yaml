@@ -1,5 +1,5 @@
 # Provisional: taken from the 2025 form text named in sources; to be confirmed against the 2026 form text when CRA publishes it.
-# Derivation: 2025 amount 2410 x 1.011 (Newfoundland and Labrador's index rate in T4127 (Jan 2026) Table 8.2, which reproduces its 2026 thresholds and basic amount) = 2436.51, rounded down to 2436 as in 2025; unconfirmed, as the 2026 NL428 is not yet published.
+# Derivation: 2025 amount 2410 x 1.011 (Newfoundland and Labrador's index rate in T4127 (Jan 2026) Table 8.2; applied to the 2025 basic amount 11,067 it gives the printed 11,188) = 2436.51, rounded down to 2436 as in 2025; unconfirmed, as the 2026 NL428 is not yet published.
 # Newfoundland and Labrador medical expenses dollar limit, 2026 tax year (Form NL428 line 52).
 family: ca-nl/medical_expense_dollar_limit
 tax_year: 2026
